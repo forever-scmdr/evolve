@@ -1,0 +1,139 @@
+$(document).ready(function(){
+//-- всплавающие окошки
+$('span.javascript').click(function(){
+	toShow = $(this).next('.hidden');
+	toShow = ($(this).next('.hidden').length == 0)? $(this).parent().next('.hidden') : toShow;
+	$(toShow).toggle(400, 
+	function(){
+		$('.mainwrap, .footer, .menu').click(function(){
+			$('.hidden').hide();
+			$('.mainwrap, .footer, .menu').unbind('click');
+		});
+		$('.hidden').hover(
+			function(){$('.mainwrap, .footer, .menu').unbind('click');}, 
+			function(){
+				$('.mainwrap, .footer, .menu').click(function(){
+				$('.hidden').hide();
+				$('.mainwrap, .footer, .menu').unbind('click');
+		});
+			}
+			);
+	});
+	//if(toShow.width()<500){toShow.css('margin-left', '-'+(toShow.width()/2)+'px');}
+});
+$('.close').click(function(){$(this).parent('div').fadeOut('slow');})
+$('#mail').click(function(){
+	$('.hidden.mail').toggle(); 
+	$('.hidden.mail').css('margin-left', '-'+($('.hidden.mail').width()/2)+'px');
+});
+$('#calendar').click(function(){
+	displayDatePicker('data', false, 'dmy', '.');
+	$('.dpDiv:eq(0), #datepickeriframe').css({left: $('#calendar').position().left-45, top : 90});
+});
+//-- ссылки на скачивание
+$('a.download').each(function(index){
+	fileType = $(this).attr('href');
+	fileType = fileType.substring(fileType.lastIndexOf(".")+1).toLowerCase();
+	mimeType="";
+	extraClass="";
+	if(fileType == "doc" || fileType == "docx" || fileType == "rtf"){
+		mimeType = "application/msword";
+		extraClass = "doc";
+	}
+	else if(fileType == "xls" || fileType == "xlsx" || fileType == "xlsm"){
+		mimeType = "application/excel";
+		extraClass = "xls";
+	}
+	else if(fileType == "pdf"){
+		mimeType = "application/pdf";
+		extraClass = "pdf";
+	}
+	else{if($(this).css('background-image') =="none"){$(this).removeClass('download');}}
+	$(this).addClass(extraClass);
+	$(this).attr('type', mimeType);
+});
+
+//-- услуги
+$('.catalog .item a.big').click(function(){
+	$('.frame .slide').hide();
+	href = $(this).attr('href');
+	index = $('.catalog .item a.big').index(this);
+	$('.frame .direction_nav img.bck').attr('id', 'prev_'+index);
+	$('.frame .direction_nav img.fwd').attr('id', 'next_'+index);
+	var id = href.replace(/.html/g, "_html");
+	var id = id.replace(/:/g, "-");
+	if($("#"+id).length == 0){loadFromIframe(href);}
+	else{showFrame('#'+id);}
+return false;
+});
+$('.close2').click(function(){$(this).parents('.frame').fadeOut(1000);});
+$('.frame_content').hover(
+	 function(){$(this).children('.direction_nav').fadeIn('slow');}
+	,function(){$(this).children('.direction_nav').fadeOut('slow');}
+);
+$('.frame .direction_nav img.fwd').click(function(){
+		next = $(this).attr('id');
+		next = next.substring(next.lastIndexOf("_")+1)*1+1;
+		next = (next < $('.catalog .item a.big').length)? next : 0;
+		$('.catalog .item a.big:eq('+next+')').trigger('click');
+	});
+$('.frame .direction_nav img.bck').click(function(){
+		next = $(this).attr('id');
+		next = next.substring(next.lastIndexOf("_")+1)*1-1;
+		next = (next > -1)? next : $('.catalog .item a.big').length -1;
+		$('.catalog .item a.big:eq('+next+')').trigger('click');
+	 });
+ });
+
+//Show services
+function showFrame(el){
+	$('.frame .frame_content .close2').hide();
+	$('.frame').css('display', 'block');
+	$('.frame .frame_content').css(
+		{
+			display : 'block'
+			
+		});
+	var width = $(el).css('width').replace('px','');
+	$('.frame .direction_nav').css({width :$(el).width()});
+	$('.frame .direction_nav img.bck, .frame .direction_nav img.fwd').css({margin : 0, left : 0, right :0 });
+	$(el).css({opacity : 0, display : 'block'});
+	//ol = $(el).offset().left;
+//	$('.frame .direction_nav img.bck').css({marginLeft : ol+15});
+//	$('.frame .direction_nav img.fwd').css({marginLeft : ol+$(el).width()-15});
+	h = $(el).height();
+	$('.frame .frame_content').animate({width : width, height : h}, 500);
+	$(el).animate({opacity: 1}, 500, function(){$('.frame .frame_content .close2').show();});
+}
+//-- hide hidden
+
+//-- load from Iframe
+function loadFromIframe(src){
+	var id = href.replace(/.html/g, "_html");
+	var id = id.replace(/:/g, "-");
+	var id = id.replace(/=/g, "--");
+	tmp = $('<iframe>', 
+			{
+				 src : href
+				,style : 'display: none;'
+			}
+		);
+	$('body').append(tmp);
+	tmp.load(function(){
+			html = $(this).contents().find('#container').html();
+			height = $(this).contents().height();
+			slide = $('<div>',
+				{
+					 id : id
+					 ,style : 'display: none;'
+				}
+			);
+			$(slide).html(html);
+			$(slide).addClass('slide');
+			$('.frame_content').append(slide);
+			mi = $(slide).children('.main_img:eq(0)');
+			$(slide).width(mi.attr('width'));
+			$(tmp).remove();
+			showFrame(slide);
+		});
+}

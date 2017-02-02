@@ -1,0 +1,59 @@
+<!--
+При изменении модели, которое ведет к неявному удалению некоторых айтемов,
+должна выдаваться ошибка.
+Чтобы обойти эту ошибку, надо запустить обновление модели каким-то определенным специальным образом, например,
+опять же использовать meta?q=update_model
+-->
+<model>
+	<!--
+	Неявная ассоциация по умолчанию.
+	Когда используется assoc без названия в айтеме, то создается эта ассоциация
+	Эта ассоциация не может быть транизивной.
+	Транзитивность - это возможность получить из айтема предка не только прямых потомков, но и потомков их потомков
+	-->
+	<assoc name="_default" caption="Содержит" transitive="false"/>
+	<!--
+	Явно созданная ассоциация.
+	Ассоциация создается, когда либо нужна транзитивность, либо с айтемом одного типа может
+	быть ассоциирован айтем другого типа несколькими разными по смыслу способами.
+	Например, к товару могут быть прикреплены отдельно 1) сопутсвующие товары, 2) подарки, 3) похожие товары
+	-->
+	<assoc name="hierarchy" caption="Рубрикатор каталога" transitive="true"/>
+
+	<item name="catalog" caption="Каталог">
+		<subitem item="main_section"/>
+	</item>
+
+	<item name="section_abstract" caption="Абстрактный раздел каталога"/>
+
+	<item name="main_section" caption="Основной раздел" super="section_abstract">
+		<!-- Явное задание названия ассоциации -->
+		<!--
+		Существует проверка, если у потомка с явно заданной транзитивной ассоциацией не существует
+		своих потомков с такой же ассоциацией, то выдается ошибка, что нет смысла использовать
+		транзитивную ассоциацию (в таком случае надо использовать ассоциацию по умолчанию либо нетранзитивную).
+		-->
+		<subitem assoc="hierarchy" item="section"/>
+	</item>
+
+	<item name="section" caption="Раздел" super="section_abstract">
+		<subitem assoc="hierarchy" item="product"/>
+		<subitem assoc="hierarchy" item="section"/>
+	</item>
+
+	<assoc name="present" caption="Подарок при покупке" transitive="false"/>
+	<assoc name="go_with" caption="Сопутсвующий товар" transitive="false"/>
+
+	<item name="product" caption="Товар" key="name" key-unique="true">
+		<parameter name="art" type="string" caption="Артикул"/>
+		<parameter name="name" type="string" caption="Название"/>
+		<subitem assoc="present" item="product" single="true"/>
+		<subitem assoc="go_with" item="product"/>
+		<subitem item="gallery" single="true"/><!-- name="_default" -->
+		<on-update class="ecommander.extra.UpdatePrices"/>
+		<on-update class="ecommander.extra.SaveReview"/>
+		<on-delete class="ecommander.extra.UpdateRoom"/>
+	</item>
+
+	<item name="gallery" caption="Галерея"/>
+</model>

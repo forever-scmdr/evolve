@@ -1,0 +1,26 @@
+.editable-item, .editable-category{position: relative;}
+.item-edit-controls{
+	position: absolute; top: 0; font-size: 24px;
+	right: 0;
+	z-index: 1000;
+}
+.item-edit-controls .button-bar{
+	background: rgba(255,255,255,0.73);
+	padding: 5px 8px;
+	float:right;
+}
+.editable-category > .item-edit-controls{top: -42px; border: 1px solid silver;}
+.item-edit-controls a{text-decoration: none; color: #000; cursor: pointer;}
+.item-edit-controls a.delete{color: red; }
+.item-edit-controls a.add-subitem{color: green;}
+.editable-item .item-edit-controls{
+	height: 0;
+	overflow: hidden;
+	opacity: 0;
+}
+.editable-item:hover .item-edit-controls{
+	transition: opacity 0.5s linear;
+	height: auto;
+	overflow: auto;
+	opacity: 1;
+}

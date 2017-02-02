@@ -1,0 +1,132 @@
+.mainColoumn a, .buttonBar a, #deleteOptions a {
+  margin-right: 5px; }
+.mainColoumn a.button, .buttonBar a.button, #deleteOptions a.button {
+  display: inline-block;
+  border-radius: 3px;
+  border: #a8a38e 1px solid;
+  padding: 2px 6px 4px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: black;
+  padding-left: 28px; }
+.mainColoumn a.button:hover, .buttonBar a.button:hover, #deleteOptions a.button:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
+.mainColoumn a.totalDelete, .mainColoumn a.totalSave, .mainColoumn a.totalAdd, .buttonBar a.totalDelete, .buttonBar a.totalSave, .buttonBar a.totalAdd, #deleteOptions a.totalDelete, #deleteOptions a.totalSave, #deleteOptions a.totalAdd {
+  color: white;
+  padding-left: 23px; }
+.mainColoumn a.totalDelete, .buttonBar a.totalDelete, #deleteOptions a.totalDelete {
+  background: #8b070b url(../admin_img/buttonBgrDelete.png) left center no-repeat;
+  border-color: #8b070b;
+  color: white; }
+.mainColoumn a.totalAdd, .buttonBar a.totalAdd, #deleteOptions a.totalAdd {
+  background: #688292 url(../admin_img/buttonBgrAdd.png) left center no-repeat;
+  border-color: #688292;
+  color: white; }
+.mainColoumn a.partialDelete, .buttonBar a.partialDelete, #deleteOptions a.partialDelete {
+  background: #e1dfd7 url(../admin_img/buttonBgrDelete.png) left center no-repeat; }
+.mainColoumn a.totalSave, .buttonBar a.totalSave, #deleteOptions a.totalSave {
+  background: #47782c url(../admin_img/buttonBgrSave.png) left center no-repeat;
+  border-color: #47782c;
+  color: white; }
+.mainColoumn a.partialSave, .buttonBar a.partialSave, #deleteOptions a.partialSave {
+  background: #e1dfd7 url(../admin_img/buttonBgrSave.png) left center no-repeat; }
+.mainColoumn a.collapsed, .buttonBar a.collapsed, #deleteOptions a.collapsed {
+  background: #e1dfd7 url(../admin_img/buttonBgrCollapsed.png) center center no-repeat;
+  padding: 5px 7px !important; }
+.mainColoumn a.expanded, .buttonBar a.expanded, #deleteOptions a.expanded {
+  background: #e1dfd7 url(../admin_img/buttonBgrExpanded.png) center center no-repeat;
+  padding: 5px 7px !important; }
+.mainColoumn span.setPosition, .buttonBar span.setPosition, #deleteOptions span.setPosition {
+  display: inline-block;
+  padding: 5px 5px 5px 0; }
+
+.parameter {
+  min-width: 700px; }
+
+.parameter, .parameterOptions {
+  padding: 0 10px;
+  background: #eeeeee;
+  border-radius: 5px;
+  margin-left: -10px;
+  margin-bottom: 10px; }
+  .parameter a.button, .parameterOptions a.button {
+    display: inline-block;
+    border-radius: 3px;
+    border: #a8a38e 1px solid;
+    padding: 2px 6px 4px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: black;
+    padding-left: 28px; }
+  .parameter a.totalDelete, .parameter a.totalSave, .parameter a.totalAdd, .parameterOptions a.totalDelete, .parameterOptions a.totalSave, .parameterOptions a.totalAdd {
+    color: white;
+    padding-left: 23px; }
+  .parameter a.totalDelete, .parameterOptions a.totalDelete {
+    background: #8b070b url(../admin_img/buttonBgrDelete.png) left center no-repeat;
+    border-color: #8b070b;
+    color: white; }
+  .parameter a.totalAdd, .parameterOptions a.totalAdd {
+    background: #688292 url(../admin_img/buttonBgrAdd.png) left center no-repeat;
+    border-color: #688292;
+    color: white; }
+  .parameter a.partialDelete, .parameterOptions a.partialDelete {
+    background: #e1dfd7 url(../admin_img/buttonBgrDelete.png) left center no-repeat; }
+  .parameter a.totalSave, .parameterOptions a.totalSave {
+    background: #47782c url(../admin_img/buttonBgrSave.png) left center no-repeat;
+    border-color: #47782c;
+    color: white; }
+  .parameter a.partialSave, .parameterOptions a.partialSave {
+    background: #e1dfd7 url(../admin_img/buttonBgrSave.png) left center no-repeat; }
+  .parameter .head, .parameterOptions .head {
+    position: relative;
+    padding: 5px 0 10px;
+    font-weight: bold; }
+    .parameter .head a, .parameterOptions .head a {
+      position: absolute;
+      top: 10px;
+      right: 0; }
+  .parameter .inputFieldBlock, .parameterOptions .inputFieldBlock {
+    padding: 10px 0; }
+    .parameter .inputFieldBlock .expand, .parameter .inputFieldBlock .inputFieldContainer, .parameter .inputFieldBlock .subParameters, .parameterOptions .inputFieldBlock .expand, .parameterOptions .inputFieldBlock .inputFieldContainer, .parameterOptions .inputFieldBlock .subParameters {
+      display: table-cell; }
+    .parameter .inputFieldBlock .expand, .parameterOptions .inputFieldBlock .expand {
+      padding: 5px 10px;
+      background: #e7e2c2; }
+    .parameter .inputFieldBlock .inputFieldContainer, .parameterOptions .inputFieldBlock .inputFieldContainer {
+      width: 200px;
+      background: #e7e2c2;
+      padding: 5px 10px; }
+    .parameter .inputFieldBlock .subParameters, .parameterOptions .inputFieldBlock .subParameters {
+      padding-left: 10px; }
+  .parameter .inputField, .parameter .selectSmall, .parameter .textArea, .parameter .textAreaSmall, .parameter .inputFieldSmall, .parameter .select, .parameter .radioButtons, .parameterOptions .inputField, .parameterOptions .selectSmall, .parameterOptions .textArea, .parameterOptions .textAreaSmall, .parameterOptions .inputFieldSmall, .parameterOptions .select, .parameterOptions .radioButtons {
+    padding: 0 5px 10px 0; }
+  .parameter .inputField, .parameter .selectSmall, .parameter .select, .parameter .inputFieldSmall, .parameterOptions .inputField, .parameterOptions .selectSmall, .parameterOptions .select, .parameterOptions .inputFieldSmall {
+    display: inline-block; }
+  .parameter .selectSmall, .parameterOptions .selectSmall {
+    width: 60px; }
+    .parameter .selectSmall select, .parameterOptions .selectSmall select {
+      width: 100%; }
+  .parameter .inputField, .parameterOptions .inputField {
+    width: 200px; }
+    .parameter .inputField input[type="text"], .parameterOptions .inputField input[type="text"] {
+      width: 200px; }
+  .parameter .inputFieldSmall, .parameterOptions .inputFieldSmall {
+    width: 60px; }
+    .parameter .inputFieldSmall input[type="text"], .parameterOptions .inputFieldSmall input[type="text"] {
+      width: 100%; }
+  .parameter .textAreaSmall textarea, .parameterOptions .textAreaSmall textarea {
+    width: 200px; }
+
+.parameterOptions {
+  margin-top: 10px; }
+  .parameterOptions .select {
+    display: block; }
+  .parameterOptions .radioButtons .label {
+    display: inline-block;
+    padding-right: 10px; }
+
+.noGroup {
+  background: none;
+  border: #eeeeee 1px solid; }

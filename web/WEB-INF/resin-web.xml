@@ -1,0 +1,15 @@
+<web-app xmlns="http://caucho.com/ns/resin">
+
+  <database jndi-name="jdbc/ECommanderDB">
+    <driver type="com.mysql.jdbc.Driver">
+	<url>jdbc:mysql://localhost:3306/florence</url>
+	<user>florence</user>
+	<password>florence</password>
+	<init-param useUnicode="true"/>
+	<init-param allowMultiQueries="true"/>
+	<init-param characterEncoding="utf8"/>
+    </driver>
+    <max-connections>20</max-connections>
+  </database>
+
+</web-app>

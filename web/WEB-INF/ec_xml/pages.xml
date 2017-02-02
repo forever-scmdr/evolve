@@ -1,0 +1,860 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+
+
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////                        	ОБЩИЕ ЧАСТИ	          	             ////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+
+	<!-- Каталоги товаров, услуг и аренды со всеми разделами -->
+
+	<include-definition name="COMMON_AND_LINKS" cacheable="true">
+		<link name="index_link" target="index" />
+		<link name="about_link" target="about" />
+		<item name="about" cacheable="true">
+			<item name="abstract_page" id="page">
+				<link name="show_page" target="about">
+					<var name="p" item="page" style="translit" />
+				</link>
+				<item name="page_part">
+					<item name="picture_pair" />
+				</item>
+			</item>
+		</item>
+		<link name="rooms_link" target="rooms" />
+		<item name="services" id="services">
+			<link name="show_page" target="services">
+				<var name="sel" style="translit" item="services" />
+			</link>
+			<item name="service" id="service">
+				<link name="show_page" target="service">
+					<var name="parent" style="translit" item="services" />
+					<var name="parent2" style="translit" value="-" />
+					<var name="sel" style="translit" item="service" />
+				</link>
+				<item name="service" id="service2">
+					<link name="show_page" target="service">
+						<var name="parent" style="translit" item="services" />
+						<var name="parent2" style="translit" item="service" />
+						<var name="sel" style="translit" item="service2" />
+					</link>
+				</item>
+			</item>
+			<item name="file_list">
+				<item name="file" />
+			</item>
+			<item name="page_part">
+				<item name="picture_pair" />
+			</item>
+		</item>
+		<link name="news_link" target="news" />
+		<link name="book_link" target="book" />
+		<link name="contacts_link" target="contacts" />
+		<item name="common" cacheable="true" />
+		<form item-name="feedback_form" tag="fform" restore-var="error">
+			<link name="post_feedback_link" target="process_feedback" />
+		</form>
+		<link name="currency_link" target="currency_ajax" />
+		<link name="search_link" target="search" />
+		<link name="client_feedback_link" target="feedback_form" />
+		<link name="room_search_link" target="room_search"/>
+	</include-definition>
+
+
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////                        СТРАНИЦЫ САЙТА	          	             ////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+
+	<!-- ******************************* Главная страница ****************************** -->
+
+	<page name="search" template="search" cacheable="true">
+		<include name="COMMON_AND_LINKS" />
+		<variables>
+			<var name="query" />
+		</variables>
+	</page>
+
+
+	<page name="index" template="index" cacheable="false">
+		<include name="COMMON_AND_LINKS" />
+		<item name="main" cacheable="true">
+			<item name="frame" />
+		</item>
+		<item name="news_item" id="news_main" cacheable="true">
+			<filter>
+				<sorting direction="DESC">
+					<var value="date" />
+				</sorting>
+				<limit>
+					<var value="3" />
+				</limit>
+			</filter>
+			<link name="show_news_item" target="news_item">
+				<var name="ni" item="news_main" style="translit" />
+			</link>
+		</item>
+	</page>
+
+	<!-- ******************************* Новости ****************************** -->
+
+	<page name="news" template="news" cacheable="true">
+		<variables>
+			<var name="page" value="1" />
+		</variables>
+		<include name="COMMON_AND_LINKS" />
+		<item name="news">
+			<item name="news_item" id="news_item">
+				<link name="show_news_item" target="news_item">
+					<var name="ni" item="news_item" style="translit" />
+				</link>
+				<filter>
+					<sorting direction="DESC">
+						<var value="date" />
+					</sorting>
+					<limit>
+						<var value="10" />
+					</limit>
+					<pages>
+						<var name="page" var="page" />
+					</pages>
+				</filter>
+			</item>
+		</item>
+	</page>
+
+	<!-- ******************************* Новость ****************************** -->
+
+	<page name="news_item" template="news_item" cacheable="true">
+		<variables>
+			<var name="ni" style="translit" />
+		</variables>
+		<include name="COMMON_AND_LINKS" />
+		<item name="news_item" reference-var="ni" tag="sn" cacheable="true" cache-vars="ni" />
+	</page>
+
+	<!-- ******************************* О компании ****************************** -->
+
+	<page name="about" template="about" cacheable="true">
+		<variables>
+			<var name="p" style="translit" />
+		</variables>
+		<item name="feedback">
+			<filter>
+				<sorting direction="DESC">
+					<var value="date" />
+				</sorting>
+				<parameter name="show" sign="=" compare="SOME">
+					<var value="1" />
+				</parameter>
+			</filter>
+		</item>
+		<include name="COMMON_AND_LINKS" />
+	</page>
+
+	<!-- ******************************* Комнаты ****************************** -->
+
+	<page name="rooms" template="rooms" cacheable="true">
+		<variables>
+			<var name="r" style="translit" />
+			<var name="message" />
+			<var name="result" />
+		</variables>
+		<include name="COMMON_AND_LINKS" />
+		<item name="rooms" cacheable="true" id="rooms_rooms">
+			<item name="room" id="room">
+				<link name="show_room" target="rooms">
+					<var name="r" item="room" style="translit" />
+				</link>
+				<item name="picture_pair" />
+				<item name="feedback">
+					<filter>
+						<sorting direction="DESC">
+							<var value="date" />
+						</sorting>
+						<parameter name="show" sign="=" compare="SOME">
+							<var value="1" />
+						</parameter>
+					</filter>
+				</item>
+			</item>
+			<item name="page_part">
+				<item name="picture_pair" />
+			</item>
+		</item>
+	</page>
+
+	<!-- ******************************* Услуги ****************************** -->
+
+	<page name="services" template="services" cacheable="true">
+		<variables>
+			<var name="sel" style="translit" />
+		</variables>
+		<include name="COMMON_AND_LINKS" />
+	</page>
+
+	<!-- ******************************* Одна услуга ****************************** -->
+
+	<page name="service" template="services" cacheable="true">
+		<variables>
+			<var name="parent" style="translit" />
+			<var name="parent2" style="translit"/>
+			<var name="sel" style="translit" />
+		</variables>
+		<item name="service" reference-var="sel" tag="info" />
+		<include name="COMMON_AND_LINKS" />
+	</page>
+
+
+	<!-- ******************************* Форма отзыва ****************************** -->
+
+	<page name="feedback_form" template="feedback_form" cacheable="true" cache-vars="message">
+		<variables>
+			<var name="result" />
+			<var name="message" />
+		</variables>
+		<form item-name="feedback" restore-var="message" tag="form">
+			<link name="submit_link" target="process_client_feedback" />
+		</form>
+	</page>
+
+	<!-- ******************************* Заказ ****************************** -->
+
+	<page name="book" template="book" cacheable="false">
+		<variables>
+			<var name="rest_type" value="san"/>
+			<var name="pay_type" value="bel"/>
+		</variables>
+		<item name="rooms" cacheable="true" id="rooms_book">
+			<item name="room" id="room">
+				<link name="show_photos" target="pictures_ajax">
+					<var name="r" item="room" style="translit" />
+				</link>
+				<item name="picture_pair" />
+			</item>
+			<item name="page_part">
+				<item name="picture_pair" />
+			</item>
+		</item>
+		<include name="COMMON_AND_LINKS" />
+		<item name="book" cacheable="true">
+			<item name="book_type" />
+			<item name="page_part">
+				<item name="picture_pair" />
+			</item>
+		</item>
+		<link name="bel_san" target="book" />
+		<link name="ru_san" target="book">
+			<var name="pay_type" value="rus"/>
+		</link>
+		<link name="eur_san" target="book">
+			<var name="pay_type" value="eur"/>
+		</link>
+		
+		<link name="bel_ozd" target="book">
+			<var name="rest_type" value="ozd"/>
+		</link>
+		<link name="ru_ozd" target="book">
+			<var name="rest_type" value="ozd"/>
+			<var name="pay_type" value="rus"/>
+		</link>
+		<link name="eur_ozd" target="book">
+			<var name="rest_type" value="ozd"/>
+			<var name="pay_type" value="eur"/>
+		</link>
+		
+	</page>
+	
+	<page name="pictures_ajax" cacheable="true" template="pictures_ajax">
+		<variables>
+			<var name="r" style="translit" />
+		</variables>
+		<item name="room" reference-var="r" id="room">
+			<item name="picture_pair" />
+			<link name="show_room" target="rooms">
+				<var name="r" item="room" style="translit" />
+			</link>
+		</item>
+	</page>
+
+	<!-- ******************************* Контакты ****************************** -->
+
+	<page name="contacts" template="contacts" cacheable="true">
+		<include name="COMMON_AND_LINKS" />
+		<item name="contacts" cacheable="true" />
+	</page>
+
+
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////                        ПРОСТЫЕ ДЕЙСТВИЯ                        ////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+
+	<page name="process_feedback" template="process_feedback">
+		<variables>
+			<var name="email" value="info@sansputnik.by" /><!-- !!!!!!!!!!!!!!! ПОМЕНЯТЬ НА АКТУАЛЬНЫЙ E-MAIL !!!!!!!!!!!!!! -->
+			<var name="topic" value="Обратная связь" />
+			<var name="required" value="name,phone,message" />
+		</variables>
+		<link name="error_not_set" target="index">
+
+		</link>
+		<link name="general_error" target="index">
+
+		</link>
+		<link name="success" target="index">
+
+		</link>
+		<command class="ecommander.application.extra.NonemptyEmailCommand">
+			<result name="error_not_set" type="redirect" />
+			<result name="general_error" type="redirect" />
+			<result name="success" type="redirect" />
+		</command>
+	</page>
+
+	<page name="process_client_feedback">
+		<variables>
+			<var name="email" value="info@sansputnik.by, bio@forever-ds.com, support@forever-ds.com" />
+			<var name="required" value="fio,live_date,service_feedback|room_feedback" />
+			<var name="topic" value="Поступил новый отзыв" />
+			<var name="rn" />
+		</variables>
+		<link name="success" target="feedback_form">
+			<var name="result" value="success" />
+			<var name="message" value="Спасибо за отзыв!" />
+		</link>
+		<link name="error_not_set" target="feedback_form">
+			<var name="result" value="error" />
+			<var name="message" value="Заполните, пожалуйста, обязательные поля" />
+			<var name="rn" var="rn" />
+		</link>
+		<link name="general_error" target="feedback_form">
+			<var name="result" value="error" />
+			<var name="message" value="Отправка сообщения временно недоступна. Попробуйте позже" />
+			<var name="rn" var="rn" />
+		</link>
+		<command class="ecommander.extra.SaveReview">
+			<result name="success" type="redirect" />
+			<result name="error_not_set" type="redirect" />
+			<result name="general_error" type="redirect" />
+		</command>
+	</page>
+
+	<!-- ******************************* Контакты ****************************** -->
+
+	<page name="update_prices" template="update_prices" authority-groups="common">
+		<item name="rooms" id="rooms">
+			<input name="first_start_inp" item="rooms" />
+			<input name="first_end_inp" item="rooms" />
+			<input name="second_start_inp" item="rooms" />
+			<input name="second_end_inp" item="rooms" />
+			<input name="third_start_inp" item="rooms" />
+			<item name="room" id="room">
+				<input name="price_san_bel_first_inp" item="room" />
+				<input name="price_san_bel_second_inp" item="room" />
+				<input name="price_san_bel_third_inp" item="room" />
+
+				<input name="price_san_rus_first_inp" item="room" />
+				<input name="price_san_rus_second_inp" item="room" />
+				<input name="price_san_rus_third_inp" item="room" />
+				
+				<input name="price_san_eur_first_inp" item="room" />
+				<input name="price_san_eur_second_inp" item="room" />
+				<input name="price_san_eur_third_inp" item="room" />
+
+				<input name="price_ozd_bel_first_inp" item="room" />
+				<input name="price_ozd_bel_second_inp" item="room" />
+				<input name="price_ozd_bel_third_inp" item="room" />
+
+				<input name="price_ozd_rus_first_inp" item="room" />
+				<input name="price_ozd_rus_second_inp" item="room" />
+				<input name="price_ozd_rus_third_inp" item="room" />
+				
+				<input name="price_ozd_eur_first_inp" item="room" />
+				<input name="price_ozd_eur_second_inp" item="room" />
+				<input name="price_ozd_eur_third_inp" item="room" />
+			</item>
+		</item>
+		<link name="submit_prices" target="process_prices_update" type="itemvars" />
+		<include name="COMMON_AND_LINKS" />
+	</page>
+
+	<page name="process_prices_update" authority-groups="common">
+		<link name="success" target="update_prices">
+			<var name="result" value="success" />
+			<var name="message" value="Изменения сохранены" />
+		</link>
+		<link name="error" target="update_prices">
+			<var name="result" value="error" />
+			<var name="message" value="Ошбика при заполнении полей" />
+		</link>
+		<command class="ecommander.extra.UpdatePrices">
+			<result name="success" type="redirect" />
+			<result name="error" type="redirect" />
+		</command>
+	</page>
+
+	<!-- ******************************* Загрузка курсов валют с нацбанка ****************************** -->
+
+	<page name="currency_ajax" template="currency_ajax">
+		<variables>
+			<var name="url" value="http://www.nbrb.by/Services/XmlExRates.aspx" />
+		</variables>
+		<command class="ecommander.extra.CurrencyLoader">
+			<result name="result" type="xml" />
+		</command>
+	</page>
+
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////               СИСТЕМА БРОНИРОВАНИЯ (ПОСЕТИТЕЛЬ)                ////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+
+<page name="room_search" template="room_search">
+	<variables>
+		<var name="date" scope="session"/>
+<!-- 		<var name="adult" scope="session"/> -->
+<!-- 		<var name="infant" scope="session"/> -->
+		<var name="total" scope="session"/>
+		<var name="date_millis" scope="session"/><!-- миллисекунды -->
+		<var name="citizen_name" scope="session"/><!-- гражданство -->
+		<var name="citizen" scope="session"/><!-- гражданство -->
+		<var name="message"/><!-- Сообщение об ошибке -->
+	</variables>
+	<item name="booking" cacheable="true"/>
+	<item name="free_rooms">
+		<item name="free_room" id="froom">
+			<filter>
+				<parameter name="from" sign="&lt;=" compare="SOME"><var var="date_millis"/></parameter>
+				<parameter name="to" sign="&gt;=" compare="SOME"><var var="date_millis"/></parameter>
+				<parameter name="show" sign="="><var value="1"/></parameter>
+			</filter>
+			<item name="room" reference-item="froom" reference-parameter="type"/>
+			<link name="add" target="manage_cart">
+				<var name="fr" item="froom"/>
+			</link>
+		</item>
+	</item>
+	<session>
+		<item name="order">
+			<item name="free_room" id="ofroom">
+				<input name="new_from" item="ofroom"/>
+				<input name="new_to" item="ofroom"/>
+				<link name="delete" target="manage_cart">
+					<var name="action" value="delete"/>
+					<var name="fr" item="ofroom"/>
+				</link>
+			</item>
+			<item name="order_form" id="oform">
+				<input name="new_person_type" item="oform"/>
+				<input name="new_voucher_type" item="oform"/>
+			</item>
+		</item>
+	</session>
+	<item name="rooms">
+		<item name="room" tag="type">
+			<item name="picture_pair"/>
+		</item>
+	</item>
+	<link name="manage_cart" target="manage_cart" type="itemvars"/>
+	<link name="enter_pin" target="order"/>
+	<include name="COMMON_AND_LINKS" />
+</page>
+
+
+
+<page name="order" template="order">
+	<variables>
+		<var name="message"/>
+		<var name="pin"/>
+	</variables>
+	<session>
+		<!-- При заказе из корзины -->
+		<item name="order" id="cart_order">
+			<input name="new_contract_agreed" item="cart_order"/>
+			<item name="free_room" id="ofroom"/>
+			<item name="order_form" id="oform">
+				<input name="new_first_name" item="oform"/>
+				<input name="new_second_name" item="oform"/>
+				<input name="new_last_name" item="oform"/>
+				<input name="new_voucher_type" item="oform"/>
+				<input name="new_is_contractor" item="oform"/>
+				<input name="new_citizen" item="oform"/>
+				<input name="new_birth_date" item="oform"/>
+				<input name="new_phone" item="oform"/>
+				<input name="new_address" item="oform"/>
+				<input name="new_email" item="oform"/>
+				<input name="new_passport" item="oform"/>
+				<input name="new_id" item="oform"/>
+				<input name="new_passport_issued" item="oform"/>
+				<input name="new_passport_issued_date" item="oform"/>
+				<input name="new_pay_type" item="oform"/>
+				<link name="set_pay_only" target="manage_cart" type="itemvars">
+					<var name="action" value="pay_only"/>
+				</link>
+				<link name="set_pay_and_stay" target="manage_cart" type="itemvars">
+					<var name="action" value="pay_and_stay"/>
+				</link>
+			</item>
+			<link name="proceed" target="manage_cart" type="itemvars">
+				<var name="action" value="submit"/>
+			</link>
+		</item>
+	</session>
+	<!-- При введении пин-кода -->
+	<item name="order" tag="pin_order" reference-var="pin" reference-parameter="pin">
+		<item name="free_room"/>
+		<item name="order_form" id="pinform">
+			<input name="new_first_name" item="pinform"/>
+			<input name="new_second_name" item="pinform"/>
+			<input name="new_last_name" item="pinform"/>
+			<input name="new_voucher_type" item="pinform"/>
+			<input name="new_is_contractor" item="pinform"/>
+			<input name="new_citizen" item="pinform"/>
+			<input name="new_birth_date" item="pinform"/>
+			<input name="new_phone" item="pinform"/>
+			<input name="new_address" item="pinform"/>
+			<input name="new_email" item="pinform"/>
+			<input name="new_passport" item="pinform"/>
+			<input name="new_id" item="pinform"/>
+			<input name="new_passport_issued" item="pinform"/>
+			<input name="new_passport_issued_date" item="pinform"/>
+		</item>
+		<link name="proceed" target="manage_cart" type="itemvars">
+			<var name="action" value="submit_pin"/>
+			<var name="pin" var="pin"/>
+		</link>
+	</item>
+	<item name="rooms">
+		<item name="room" tag="type">
+			<item name="picture_pair"/>
+		</item>
+	</item>
+	<item name="booking" cacheable="true"/>
+	<link name="enter_pin" target="order"/>
+	<include name="COMMON_AND_LINKS" />
+</page>
+
+
+<page name="confirm" template="confirm">
+	<variables>
+		<var name="order"/>
+	</variables>
+	<item name="order" reference-var="order">
+		<item name="free_room"/>
+		<item name="order_form"/>
+	</item>
+	<item name="rooms">
+		<item name="room" tag="type">
+			<item name="picture_pair"/>
+		</item>
+	</item>
+	<include name="COMMON_AND_LINKS" />
+</page>
+
+
+<page name="manage_cart" template="manage_cart">
+	<variables>
+		<var name="fr"/><!-- свободный номер -->
+		<var name="action" value="add"/>
+		<var name="citizen_name" scope="session"/><!-- гражданство -->
+		<var name="citizen" scope="session"/><!-- гражданство -->
+	</variables>
+	<command class="ecommander.extra.CartManageCommand">
+		<result name="room_search" type="redirect" />
+		<result name="order" type="redirect"/>
+		<result name="confirm" type="redirect"/>
+	</command>
+	<link name="room_search" target="room_search"/>
+	<link name="order" target="order"/>
+	<link name="confirm" target="confirm"/>
+</page>
+
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////                 СИСТЕМА БРОНИРОВАНИЯ (АДМИН)                   ////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+
+	<page name="booking" template="booking/booking" authority-groups="common">
+		<variables>
+			<var name="status"/>
+			<var name="unpaid" value="0"/>
+			<var name="by_pin"/>
+		</variables>
+		<item name="order" id="order">
+			<filter>
+				<parameter name="status"><var var="status"/></parameter>
+				<parameter name="pin" sign="!="><var var="by_pin"/></parameter>
+				<sorting><var value="received_date"/></sorting>
+			</filter>
+			<item name="free_room"/>
+			<item name="order_form"/>
+			<link name="show_contract" target="contract">
+				<var name="order" item="order"/>
+			</link>
+		</item>
+		<item name="free_rooms">
+			<item name="free_room" id="room">
+				<filter>
+					<sorting><var value="num"/></sorting>
+				</filter>
+				<link name="show_room" target="room">
+					<var name="room" item="room"/>
+				</link>
+				<link name="toggle_room" target="update_room">
+					<var name="room" item="room"/>
+					<var name="action" value="toggle"/>
+				</link>
+			</item>
+		</item>
+		<item name="room" id="type">
+			<link name="add_room" target="room">
+				<var name="type" item="type"/>
+			</link>
+		</item>
+		<link name="show_order_new" target="booking">
+			<var name="status" value="0"/>
+		</link>
+		<link name="show_order_unconfirmed" target="booking">
+			<var name="status" value="1"/>
+		</link>
+		<link name="show_order_confirmed" target="booking">
+			<var name="status" value="2"/>
+		</link>
+		<link name="show_order_paid" target="booking">
+			<var name="status" value="3"/>
+		</link>
+		<link name="show_order_unpaid" target="booking">
+			<var name="status" value="2"/>
+			<var name="unpaid" value="1"/>
+		</link>
+		<link name="new_contract" target="manage_order" type="itemvars">
+			<var name="action" value="new_contract"/>
+		</link>
+		<link name="show_order_by_pin" target="booking">
+			<var name="by_pin" value="_no_pin_code_"/>
+		</link>
+		<link name="show_order_all" target="booking"/>
+	</page>
+
+
+
+	<page name="room" template="booking/room" authority-groups="common">
+		<variables>
+			<var name="room"/>
+			<var name="type"/>
+		</variables>
+		<item name="free_room" id="room" reference-var="room"/>
+		<form item="room" tag="room_form">
+			<link name="submit" target="update_room"/>
+		</form>
+		<item name="room" tag="type"/>
+	</page>
+	
+	
+	
+	<page name="update_room" authority-groups="common">
+		<variables>
+			<var name="action" value="update"/>
+			<var name="room"/>
+		</variables>
+		<command class="ecommander.extra.UpdateRoom">
+			<result name="success" type="redirect"/>
+		</command>
+		<link name="success" target="booking"/>
+	</page>
+
+
+
+	<page name="contract" template="booking/contract" authority-groups="common">
+		<variables>
+			<var name="order"/>
+			<var name="message"/><!-- Сообщение об ошибке -->
+		</variables>
+		<item name="order" reference-var="order" id="order">
+			<input name="new_num" item="order"/>
+			<input name="new_pin" item="order"/>
+			<input name="new_pay_until_date" item="order"/>
+			<input name="new_extra" item="order"/>
+			<item name="free_room" id="ofroom">
+				<input name="new_from" item="ofroom"/>
+				<input name="new_to" item="ofroom"/>
+				<input name="new_type" item="ofroom"/>
+				<input name="new_type_name" item="ofroom"/>
+				<input name="new_num" item="ofroom"/>
+				<input name="new_order_form_base" item="ofroom"/>
+				<input name="new_order_form_extra" item="ofroom"/>
+				<link name="delete" target="manage_order" type="itemvars">
+					<var name="action" value="delete_room"/>
+					<var name="room" item="ofroom"/>
+					<var name="order" var="order"/>
+				</link>
+			</item>
+			<item name="order_form" id="oform">
+				<input name="new_person_type" item="oform"/>
+				<input name="new_voucher_type" item="oform"/>
+				<input name="new_first_name" item="oform"/>
+				<input name="new_second_name" item="oform"/>
+				<input name="new_last_name" item="oform"/>
+				<input name="new_is_contractor" item="oform"/>
+				<input name="new_citizen" item="oform"/>
+				<input name="new_citizen_name" item="oform"/>
+				<input name="new_birth_date" item="oform"/>
+				<input name="new_phone" item="oform"/>
+				<input name="new_address" item="oform"/>
+				<input name="new_email" item="oform"/>
+				<input name="new_passport" item="oform"/>
+				<input name="new_id" item="oform"/>
+				<input name="new_passport_issued" item="oform"/>
+				<input name="new_passport_issued_date" item="oform"/>
+				<input name="new_pay_type" item="oform"/>
+				<link name="delete" target="manage_order" type="itemvars">
+					<var name="action" value="delete_form"/>
+					<var name="form" item="oform"/>
+					<var name="order" var="order"/>
+				</link>
+				<link name="set_main" target="manage_order" type="itemvars">
+					<var name="action" value="set_main_form"/>
+					<var name="form" item="oform"/>
+					<var name="order" var="order"/>
+				</link>
+			</item>
+		</item>
+		<item name="rooms">
+			<item name="room" tag="type"/>
+		</item>
+		<link name="manage_order" target="manage_order" type="itemvars"/>
+		<link name="add_form" target="manage_order" type="itemvars">
+			<var name="action" value="add_form"/>
+			<var name="order" var="order"/>
+		</link>
+		<link name="add_room" target="manage_order" type="itemvars">
+			<var name="action" value="add_room"/>
+			<var name="order" var="order"/>
+		</link>
+		<link name="save" target="manage_order" type="itemvars">
+			<var name="action" value="save"/>
+			<var name="order" var="order"/>
+		</link>
+		<link name="send_docs" target="manage_order" type="itemvars">
+			<var name="action" value="send_docs"/>
+			<var name="order" var="order"/>
+		</link>
+		<link name="confirm" target="manage_order" type="itemvars">
+			<var name="action" value="confirm"/>
+			<var name="order" var="order"/>
+		</link>
+		<link name="set_paid" target="manage_order" type="itemvars">
+			<var name="action" value="paid"/>
+			<var name="order" var="order"/>
+		</link>
+		<link name="set_not_paid" target="manage_order" type="itemvars">
+			<var name="action" value="not_paid"/>
+			<var name="order" var="order"/>
+		</link>
+		<link name="delete" target="manage_order" type="itemvars">
+			<var name="action" value="delete"/>
+			<var name="order" var="order"/>
+		</link>
+		<link name="back_link" target="booking"/>
+		<include name="COMMON_AND_LINKS" />
+	</page>
+
+
+
+	<page name="contract_email" template="booking/email" authority-groups="common">
+		<variables>
+			<var name="o"/>
+		</variables>
+		<item name="order" reference-var="o" id="order">
+			<item name="free_room" id="ofroom"/>
+			<item name="order_form" id="oform"/>
+		</item>
+		<item name="rooms">
+			<item name="room" tag="type"/>
+		</item>
+		<link name="process_link" target="process">
+			<var name="o" var="o"/>
+		</link>
+	</page>
+
+	<!-- 
+	Оплата карточкой
+	 -->
+	<page name="process" template="booking/process">
+		<variables>
+			<var name="o"/>
+		</variables>
+		<item name="order" reference-var="o">
+			<item name="order_form" id="oform"/>
+		</item>
+	</page>
+
+
+	<page name="manage_order" authority-groups="common">
+		<variables>
+			<var name="action"/>
+			<var name="order"/>
+			<var name="room_type"/>
+			<var name="room"/>
+			<var name="form"/>
+		</variables>
+		<item name="order" reference-var="order" id="order">
+			<item name="free_room" id="ofroom"/>
+			<item name="order_form" id="oform"/>
+		</item>
+		<item name="rooms" id="rooms">
+			<item name="room" id="room_type"/>
+		</item>
+		<command class="ecommander.extra.ContractManageCommand">
+			<result name="contract" type="redirect"/>
+			<result name="booking" type="redirect"/>
+		</command>
+		<link name="contract" target="contract">
+			<var name="order" var="order"/>
+		</link>
+		<link name="booking" target="booking"/>
+	</page>
+	
+</site>

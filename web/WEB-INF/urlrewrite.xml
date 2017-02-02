@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
+        "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+
+<!--
+
+    Configuration file for UrlRewriteFilter
+    http://www.tuckey.org/urlrewrite/
+
+-->
+<urlrewrite>
+    <rule match-type="regex" enabled="true">
+        <from>^/?$</from>
+        <to type="forward" last="false">/index/</to>
+    </rule>
+    <rule match-type="wildcard" enabled="true">
+        <from>/**.*</from>
+        <to type="forward" last="true">/$1.$2</to>
+    </rule>
+    <rule match-type="wildcard" enabled="true">
+        <from>/**</from>
+        <to type="forward" last="true">/eco/$1</to>
+    </rule>
+    <!-- 
+    <rule match-type="wildcard" enabled="true">
+        <from>/**/</from>
+        <to type="forward" last="true">/eco/$1</to>
+    </rule>
+    
+    <rule match-type="regex" enabled="true">
+        <from>^/(.*)/$</from>
+        <to type="forward" last="true">/eco/$1</to>
+    </rule>
+
+    <rule match-type="regex" enabled="true">
+        <from>^/(.*)/\?(.*)$</from>
+        <to type="forward" last="true">/eco/$1?$2</to>
+    </rule>
+    <rule match-type="regex" enabled="true">
+        <from>^/(.*(?!\..{3,4}$))</from>
+        <to type="forward">/un/eco/$1</to>
+    </rule>
+     -->
+</urlrewrite>

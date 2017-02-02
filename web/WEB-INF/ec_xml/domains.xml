@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<domains>
+	<domain name="yes-no" view-type="combobox">
+		<value>нет</value>
+		<value>да</value>
+	</domain>
+	<domain name="услуги" view-type="combobox">
+		<value>Диагностические и лечебно-реабилитационные услуги</value>
+		<value>Досуг</value>
+		<value>Консультации специалистов</value>
+		<value>Лечебные процедуры</value>
+		<value>Медицинские</value>
+		<value>Питание</value>
+		<value>Прочее</value>
+		<value>СПА-центр</value>
+	</domain>
+	<domain name="гражданство" view-type="combobox">
+		<value>РБ</value>
+		<value>ЕАЭС</value>
+		<value>Другое</value>
+	</domain>
+	<domain name="путевка" view-type="combobox">
+		<value>Санаторно-курортная</value>
+		<value>Оздоровительная</value>
+	</domain>
+	<domain name="возраст" view-type="combobox">
+		<value>Взрослый</value>
+		<value>Ребенок</value>
+	</domain>
+</domains>

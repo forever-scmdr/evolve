@@ -1,0 +1,8 @@
+@CHARSET "UTF-8";
+.pinp {
+	width: 90px;
+	border: 1px solid #669999;
+}
+.pdate, .psan, .pozd {
+	background: transparent;
+}
