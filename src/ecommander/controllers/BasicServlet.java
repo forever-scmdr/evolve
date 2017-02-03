@@ -33,6 +33,9 @@ import ecommander.common.exceptions.ValidationException;
 import ecommander.pages.elements.LinkPE;
 import ecommander.pages.elements.variables.VariablePE;
 
+/**
+ * Базовые функции всех сервлетов CMS
+ */
 public abstract class BasicServlet extends HttpServlet {
 	
 	public static final String PREFIX = "eco/";
