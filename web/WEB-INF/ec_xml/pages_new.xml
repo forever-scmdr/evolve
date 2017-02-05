@@ -22,9 +22,9 @@
 
 
 	<page name="section" template="section">
-		<variables>
+		<request>
 			<var name="sec" style="translit"/>
-		</variables>
+		</request>
 		<single item="section_abstract" reference-var="sec" tag="current_section">
 			<!-- Загрузить всех потомков (прямых и непрямых) айтема в виде одного списка -->
 			<list item="product" assoc="hierarchy" transitive="true" id="product">
