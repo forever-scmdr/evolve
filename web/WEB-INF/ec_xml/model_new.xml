@@ -18,13 +18,18 @@
 	быть ассоциирован айтем другого типа несколькими разными по смыслу способами.
 	Например, к товару могут быть прикреплены отдельно 1) сопутсвующие товары, 2) подарки, 3) похожие товары
 	-->
-	<assoc name="hierarchy" caption="Рубрикатор каталога" transitive="true"/>
+	<assoc name="hierarchy" caption="Рубрикатор каталога" transitive="true" ag-id="10" ag-hash="14bb45f"/>
 
 	<item name="catalog" caption="Каталог">
 		<subitem item="main_section"/>
 	</item>
-
-	<item name="section_abstract" caption="Абстрактный раздел каталога"/>
+	<!--
+	ag-id   (auto generated id) - ID типа айтема, параметра или ассоциации, который сгенерировался при первой вставке
+			этого объекта в соответствующую таблицу. Он нужен для отслеживания переименования айтемав
+	ag-hash (auto generated hash) - хеш-код названия айтема. Он нужен для предотвращения ситуации, когда был случайно
+			изменен атрибут ag-id айтема
+	-->
+	<item name="section_abstract" caption="Абстрактный раздел каталога" ag-id="15" ag-hash="25cc560"/>
 
 	<item name="main_section" caption="Основной раздел" super="section_abstract">
 		<!-- Явное задание названия ассоциации -->
