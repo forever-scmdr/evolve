@@ -481,6 +481,39 @@ public class AdminLoader {
 			return null;
 		return result.get(0);
 	}
+
+	/**
+	 * Загружает несколько айтемов по их ключу (Названию в CMS)
+	 * @param itemId
+	 * @return
+	 */
+	public ArrayList<ItemAccessor> loadItemAccessorsByKey(String key) throws Exception {
+		Connection conn = null;
+		ArrayList<ItemAccessor> result = new ArrayList<ItemAccessor>();
+		try {
+			conn = MysqlConnector.getConnection();
+			String sql = "SELECT " + DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID
+					+ ", " + DBConstants.Item.KEY + ", " + DBConstants.Item.INDEX_WEIGHT
+					+ " FROM " + DBConstants.Item.TABLE + " WHERE " + DBConstants.Item.KEY + " LIKE <<KEY>>";
+			TemplateQuery dbQuery = TemplateQuery.createFromString(sql, " ACCESSOR_KEY_SEARCH ");
+			dbQuery.getSubquery("<<KEY>>").setString("%"+key+"%");
+			PreparedStatement stmt = dbQuery.prepareQuery(conn);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				result.add(new ItemAccessor(rs.getInt(1), rs.getLong(2), rs.getLong(3), rs.getString(4), rs.getInt(5)));
+			}
+			rs.close();
+			stmt.close();
+			return result;
+
+		} catch(Exception e){e.printStackTrace(); throw e;}
+		finally {
+			if (conn != null && !conn.isClosed())
+				conn.close();
+		}
+
+	}
+
 	/**
 	 * Возвращает все названия айтемов, которые можно добавлять к текущему
 	 * @param itemName
