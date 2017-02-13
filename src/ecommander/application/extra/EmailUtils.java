@@ -1,12 +1,12 @@
 package ecommander.application.extra;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -23,20 +23,32 @@ import ecommander.model.item.Item;
 import ecommander.persistence.itemquery.ItemQuery;
 
 public class EmailUtils {
+	private static final HashMap<String, String> PORTS = new HashMap<String, String>() {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 2361116501952410474L;
+
+		{
+			put("smtp.gmail.com", "587");
+			put("smtp.yandex.ru", "25");
+		}
+	};
 	public static void sendGmail(String server, final String from, final String password, String to, String topic, Multipart mp)
-			throws MessagingException {
+			throws Exception {
 		
+		String port = (PORTS.get(server) == null) ? "25" : PORTS.get(server);
 		Properties props = new Properties();
 		// При использовании статического метода Transport.send()
 		// необходимо указать через какой хост будет передано сообщение
 		props.put("mail.smtp.host", server);
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.ssl.trust", "*");
+		props.put("mail.smtp.ssl.trust", server);
 		// Включение debug-режима
 		//props.put("mail.debug", "true");
 		props.put("mail.mime.charset", "utf-8");
-		props.put("mail.smtp.port", "587");
+		props.put("mail.smtp.port", port);
 
 		Session session = Session.getInstance(props, new Authenticator() {
 			@Override
@@ -50,10 +62,13 @@ public class EmailUtils {
 		// Установка атрибутов сообщения
 		msg.setFrom(new InternetAddress(from));
 		String[] addresses = StringUtils.split(to, ',');
+		InternetAddress[] arr = new InternetAddress[addresses.length];
 		for (int i = 0; i < addresses.length; i++) {
 			String s = addresses[i].trim();
-			msg.addRecipients(Message.RecipientType.TO, InternetAddress.parse(s));
+			arr[i] = new InternetAddress(s, "medbiotech");
+
 		}
+		msg.addRecipients(Message.RecipientType.BCC, arr);
 		msg.setSubject(topic, "UTF-8");
 		msg.setContent(mp);
 		msg.setSentDate(new Date());

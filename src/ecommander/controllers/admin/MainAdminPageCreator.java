@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang3.StringUtils;
 
 import ecommander.controllers.output.AggregateMDWriter;
 import ecommander.controllers.output.ItemFormMDWriter;
@@ -229,6 +230,7 @@ public class MainAdminPageCreator {
 	public static final String ALT_INPUT = "alt";
 	public static final String PARAM_INPUT = "param";
 	public static final String VISUAL_INPUT = "vis";
+	public static final String SEARCH_INPUT = "key_search";
 	/**
 	 * Значения
 	 */
@@ -404,6 +406,16 @@ public class MainAdminPageCreator {
 			subitems.addAll(items);
 		}
 		Collections.sort(subitems);
+		if (StringUtils.isNotBlank(searchQuery)) {
+			subitems = AdminLoader.getLoader().loadItemAccessorsByKey(searchQuery);
+		} else {
+			HashMap<String, ArrayList<ItemAccessor>> existingSubitems = createSubitemsInfo(baseId, itemType, itemsToAdd);
+
+			for (ArrayList<ItemAccessor> items : existingSubitems.values()) {
+				subitems.addAll(items);
+			}
+			Collections.sort(subitems);
+		}
 		for (ItemToAdd itemToAdd : itemsToAdd) {
 			basePage.addElement(itemToAdd);
 		}
@@ -418,12 +430,12 @@ public class MainAdminPageCreator {
 			subitem.addSubwriter(new LeafMDWriter(AdminXML.COPY_LINK_ELEMENT, copyUrl));
 			basePage.addElement(subitem);
 		}
-		String reorderUrl = createAdminUrl(REORDER_ACTION, 
-				ITEM_ID_INPUT, ":id:", 
-				WEIGHT_BEFORE_INPUT, ":wb:", 
+		String reorderUrl = (StringUtils.isBlank(searchQuery))? createAdminUrl(REORDER_ACTION,
+				ITEM_ID_INPUT, ":id:",
+				WEIGHT_BEFORE_INPUT, ":wb:",
 				WEIGHT_AFTER_INPUT, ":wa:",
 				ITEM_TYPE_INPUT, itemType,
-				PARENT_ID_INPUT, baseId);
+				PARENT_ID_INPUT, baseId):"";
 		String getPasteBufferUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, PASTE_VIEW_TYPE, PARENT_ID_INPUT, baseId, ITEM_TYPE_INPUT,
 				itemType);
 		basePage.addElement(new LeafMDWriter(AdminXML.GET_PASTE_LINK_ELEMENT, getPasteBufferUrl));
