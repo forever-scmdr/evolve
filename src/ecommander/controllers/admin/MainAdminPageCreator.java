@@ -388,7 +388,7 @@ public class MainAdminPageCreator {
 	 * @return
 	 * @throws Exception 
 	 */
-	public AdminPage createSubitemsPage(long baseId, int itemType) throws Exception {
+	public AdminPage createSubitemsPage(long baseId, int itemType, String searchQuery) throws Exception {
 		AdminPage basePage = new AdminPage(SUBITEMS_PAGE, domain, currentUser.getName());
 		ArrayList<ItemToAdd> itemsToAdd = new ArrayList<ItemToAdd>();
 		if (baseId <= 0) {
@@ -402,20 +402,16 @@ public class MainAdminPageCreator {
 			existingSubitems.putAll(createDefaultRootSubitemsInfo(itemsToAdd));
 		}
 		ArrayList<ItemAccessor> subitems = new ArrayList<ItemAccessor>();
-		for (ArrayList<ItemAccessor> items : existingSubitems.values()) {
-			subitems.addAll(items);
-		}
-		Collections.sort(subitems);
 		if (StringUtils.isNotBlank(searchQuery)) {
 			subitems = AdminLoader.getLoader().loadItemAccessorsByKey(searchQuery);
-		} else {
-			HashMap<String, ArrayList<ItemAccessor>> existingSubitems = createSubitemsInfo(baseId, itemType, itemsToAdd);
-
+		}
+		else {
+			//HashMap<String, ArrayList<ItemAccessor>> existingSubitems = createSubitemsInfo(baseId, itemType, itemsToAdd);
 			for (ArrayList<ItemAccessor> items : existingSubitems.values()) {
 				subitems.addAll(items);
 			}
-			Collections.sort(subitems);
 		}
+		Collections.sort(subitems);
 		for (ItemToAdd itemToAdd : itemsToAdd) {
 			basePage.addElement(itemToAdd);
 		}
@@ -948,19 +944,8 @@ public class MainAdminPageCreator {
 		}
 		return page;
 	}
-	/**
-	 * Страница загрузки картинки (плагин tinyMCE)
-	 * @param itemId
-	 * @param paramId
-	 * @return
-	 */
-	public AdminPage createImageUploadPage(long itemId, int paramId) {
-		AdminPage page = new AdminPage(IMG_UPLOAD_PAGE, domain, currentUser.getName());
-		page.addElement(new LeafMDWriter(AdminXML.UPLOAD_LINK_ELEMENT, createAdminUrl(UPLOAD_IMG_ACTION, ITEM_ID_INPUT, itemId,
-				PARAM_ID_INPUT, paramId)));
-		return page;
-	}
-	/**
+
+	/*
 	 * Страница, выводящаяся после загрузки картинки (через плагин tinyMCE)
 	 * @param itemId
 	 * @param paramId
