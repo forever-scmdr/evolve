@@ -1,9 +1,0 @@
-# Строки, начинающиеся со знака # - это комментарии
-
-c.eco?q=company_catalog                     company_catalog.html
-c.eco?q=company/selected_company:v:1930   megaeeeekompanya.html
-c.eco?q=section                             razdel
-selected_section:v:892                      ognetushitel.html
-c.eco?q=article                             statya
-selected_article:v:1998                     nomerdva.html
-c.eco?q=article/selected_article:v:1997   statya_odin.html

@@ -325,7 +325,7 @@ public class ItemHttpPostForm implements Serializable {
 	/**
 	 * Возвращает строковое значение установленного пользователем параметра
 	 * Желательно использовать в свзяке с getPostedParameterNames()
-	 * @param paramName
+	 * @param paramId
 	 * @return
 	 */
 	public Object getValue(int paramId) {
@@ -373,7 +373,6 @@ public class ItemHttpPostForm implements Serializable {
 	 * Заполняются также и файлы в виде оберток FileItem
 	 * Если через форму был передан ID айтема, то он тоже устанавливается
 	 * @param user
-	 * @param parentId
 	 * @return
 	 * @throws Exception 
 	 */
@@ -490,9 +489,9 @@ public class ItemHttpPostForm implements Serializable {
 	}
 	/**
 	 * Создать название инпута для определенного параметра определенного айтема
-	 * @param itemName
+	 * @param itemTypeId
 	 * @param itemId
-	 * @param paramName
+	 * @param paramId
 	 * @return
 	 */
 	private static String createParamInputName(int itemTypeId, long itemId, int paramId) {
@@ -532,6 +531,10 @@ public class ItemHttpPostForm implements Serializable {
 						for (Object file : (List<Object>)paramValue) {
 							if (file instanceof FileItem)
 								itemToEdit.setValue(paramId, file);
+						}
+					}else if(paramValue instanceof String){
+						if(StringUtils.isNotBlank((String)paramValue)){
+							itemToEdit.setValue(paramId, paramValue);
 						}
 					}
 				} else {

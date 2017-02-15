@@ -113,7 +113,7 @@ public class NonemptyEmailCommand extends Command {
 						String varName = param.getName();
 						String varValue = postForm.getValue(param.getId()).toString();
 						emailPage.addVariable(new StaticVariablePE(varName, varValue));
-					} else {
+					} else if(StringUtils.isNotBlank((String)postForm.getValue(param.getId()))){
 						mailMessage += postDesc.getParameter(param.getName()).getCaption() + ": "
 								+ postForm.getValue(param.getId()) + "\r\n";
 					}
