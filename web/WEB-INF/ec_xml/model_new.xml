@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 При изменении модели, которое ведет к неявному удалению некоторых айтемов,
 должна выдаваться ошибка.
@@ -48,6 +49,8 @@
 
 	<assoc name="present" caption="Подарок при покупке" transitive="false"/>
 	<assoc name="go_with" caption="Сопутсвующий товар" transitive="false"/>
+	<!-- Цены разных продавцов на определенный товар -->
+	<assoc name="seller_price" caption="Цена продавца" transitive="false"/>
 
 	<item name="product" caption="Товар" key="name" key-unique="true">
 		<parameter name="art" type="string" caption="Артикул"/>
@@ -55,10 +58,23 @@
 		<subitem assoc="present" item="product" single="true"/>
 		<subitem assoc="go_with" item="product"/>
 		<subitem item="gallery" single="true"/><!-- name="_default" -->
+		<subitem assoc="seller_price" item="price"/><!-- цены продавцов на этот товар -->
 		<on-update class="ecommander.extra.UpdatePrices"/>
 		<on-update class="ecommander.extra.SaveReview"/>
 		<on-delete class="ecommander.extra.UpdateRoom"/>
 	</item>
 
 	<item name="gallery" caption="Галерея"/>
+
+	<item name="price" caption="Цена продавца" description="цена, выставленная одним продавцом этого товара из многих">
+		<parameter name="price" type="currency" caption="Цена" format="BYN"/>
+		<parameter name="price_usd" type="currency" caption="Цена в долларах" format="USD"/>
+		<parameter name="price_rub" type="currency" caption="Цена в рублях" format="RUB"/>
+		<parameter name="extra" type="tiny-text" caption="Дополнительно о предложении"/>
+	</item>
+
+	<item name="seller" caption="Продавец">
+		<parameter name="name" caption="Название" type="string"/>
+		<subitem item="price"/><!-- Цены принадлежат продавцу, ассоциация _default -->
+	</item>
 </model>
