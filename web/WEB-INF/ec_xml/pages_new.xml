@@ -42,11 +42,13 @@
 	<page name="discount" template="section">
 		<request>
 			<var name="sec" style="translit"/>
+			<var name="price_to" style="query"/>
 		</request>
 		<single item="section_abstract" reference-var="sec" tag="current_section">
 			<list item="product" assoc="hierarchy" transitive="true" id="product">
 				<filter>
 					<!--Загрузить товары, которые содержат вложенный айтем цены со скидкой-->
+					<!--по идее не обязательно указывать оба атрибута assoc и child, иногда достаточно одного-->
 					<parameter name="discount" assoc="seller_price" child="price" sign="&gt;"><var value="2"/></parameter>
 				</filter>
 			</list>
