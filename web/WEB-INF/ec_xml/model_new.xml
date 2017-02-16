@@ -22,7 +22,7 @@
 	<assoc name="hierarchy" caption="Рубрикатор каталога" transitive="true" ag-id="10" ag-hash="14bb45f"/>
 
 	<item name="catalog" caption="Каталог">
-		<subitem item="main_section"/>
+		<child item="main_section"/>
 	</item>
 	<!--
 	ag-id   (auto generated id) - ID типа айтема, параметра или ассоциации, который сгенерировался при первой вставке
@@ -39,12 +39,12 @@
 		своих потомков с такой же ассоциацией, то выдается ошибка, что нет смысла использовать
 		транзитивную ассоциацию (в таком случае надо использовать ассоциацию по умолчанию либо нетранзитивную).
 		-->
-		<subitem assoc="hierarchy" item="section"/>
+		<child assoc="hierarchy" item="section"/>
 	</item>
 
 	<item name="section" caption="Раздел" super="section_abstract">
-		<subitem assoc="hierarchy" item="product"/>
-		<subitem assoc="hierarchy" item="section"/>
+		<child assoc="hierarchy" item="product"/>
+		<child assoc="hierarchy" item="section"/>
 	</item>
 
 	<assoc name="present" caption="Подарок при покупке" transitive="false"/>
@@ -55,10 +55,10 @@
 	<item name="product" caption="Товар" key="name" key-unique="true">
 		<parameter name="art" type="string" caption="Артикул"/>
 		<parameter name="name" type="string" caption="Название"/>
-		<subitem assoc="present" item="product" single="true"/>
-		<subitem assoc="go_with" item="product"/>
-		<subitem item="gallery" single="true"/><!-- name="_default" -->
-		<subitem assoc="seller_price" item="price"/><!-- цены продавцов на этот товар -->
+		<child assoc="present" item="product" single="true"/>
+		<child assoc="go_with" item="product"/>
+		<child item="gallery" single="true"/><!-- name="_default" -->
+		<child assoc="seller_price" item="price"/><!-- цены продавцов на этот товар -->
 		<on-update class="ecommander.extra.UpdatePrices"/>
 		<on-update class="ecommander.extra.SaveReview"/>
 		<on-delete class="ecommander.extra.UpdateRoom"/>
@@ -70,11 +70,12 @@
 		<parameter name="price" type="currency" caption="Цена" format="BYN"/>
 		<parameter name="price_usd" type="currency" caption="Цена в долларах" format="USD"/>
 		<parameter name="price_rub" type="currency" caption="Цена в рублях" format="RUB"/>
+		<parameter name="discount" type="double" caption="Скидка" description="в процентах"/>
 		<parameter name="extra" type="tiny-text" caption="Дополнительно о предложении"/>
 	</item>
 
 	<item name="seller" caption="Продавец">
 		<parameter name="name" caption="Название" type="string"/>
-		<subitem item="price"/><!-- Цены принадлежат продавцу, ассоциация _default -->
+		<child item="price"/><!-- Цены принадлежат продавцу, ассоциация _default -->
 	</item>
 </model>
