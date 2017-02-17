@@ -53,6 +53,10 @@
 	<item name="section" caption="Раздел" super="section_abstract">
 		<child assoc="hierarchy" item="product"/>
 		<child assoc="hierarchy" item="section"/>
+		<!--
+		Вычисляемый параметр (описание ниже).
+		Вычисляемый параметр может сам быть построен на базе других вычисляемых параметров
+		-->
 		<parameter name="price_qty" type="computed" caption="Количество предложений" function="SUM" default="0">
 			<child item="product" assoc="hierarchy" parameter="price_qty" transitive="true"/>
 		</parameter>
