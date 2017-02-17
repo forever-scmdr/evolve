@@ -53,6 +53,9 @@
 	<item name="section" caption="Раздел" super="section_abstract">
 		<child assoc="hierarchy" item="product"/>
 		<child assoc="hierarchy" item="section"/>
+		<parameter name="price_qty" type="computed" caption="Количество предложений" function="SUM" default="0">
+			<child item="product" assoc="hierarchy" parameter="price_qty" transitive="true"/>
+		</parameter>
 	</item>
 
 	<assoc name="present" caption="Подарок при покупке" transitive="false"/>
@@ -67,6 +70,25 @@
 		<child assoc="go_with" item="product"/>
 		<child item="gallery" single="true"/><!-- name="_default" -->
 		<child assoc="seller_price" item="price"/><!-- цены продавцов на этот товар -->
+		<!--
+		Вычисляемые параметры айтемов.
+		От обычных параметров отличаются тем, что имеют тип computed, функцию (атрибут function) и вложенный
+		элемент (эелменты), который является аргументом функции. Вложенный элемент должен определять множество
+		связанных заданной ассоциацией айтемов и параметр этих айтемов, который является аргументов вычисления.
+		Если параметр не указан, то считается что параметр - это ID айтема
+
+		В данном случае создаются 3 параметра, максимальная, минимальная цена, а также количесвто предложений
+		для некоторого товара.
+		-->
+		<parameter name="min_price" type="computed" caption="Минимальная цена товара" function="MIN">
+			<child item="price" assoc="seller_price" parameter="price" transitive="false"/>
+		</parameter>
+		<parameter name="max_price" type="computed" caption="Максимальная цена товара">
+			<child item="price" assoc="seller_price" parameter="price" transitive="false" function="MAX"/>
+		</parameter>
+		<parameter name="price_qty" type="computed" caption="Количество предложений">
+			<child item="price" assoc="seller_price" transitive="false" function="COUNT"/>
+		</parameter>
 		<on-update class="ecommander.extra.UpdatePrices"/>
 		<on-update class="ecommander.extra.SaveReview"/>
 		<on-delete class="ecommander.extra.UpdateRoom"/>
