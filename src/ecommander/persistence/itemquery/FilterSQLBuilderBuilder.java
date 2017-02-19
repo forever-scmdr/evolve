@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Stack;
 
 import ecommander.common.exceptions.FilterProcessException;
-import ecommander.model.item.COMPARE_TYPE;
+import ecommander.model.item.Compare;
 import ecommander.model.item.ItemType;
 import ecommander.model.item.ParameterDescription;
 import ecommander.model.item.filter.CriteriaDef;
@@ -49,7 +49,7 @@ class FilterSQLBuilderBuilder implements FilterDefinitionVisitor {
 			CriteriaDef criteria = (CriteriaDef)part;
 			ParameterDescription param = item.getParameter(criteria.getParamName());
 			List<String> values = userInput.getValue(input.getId());
-			destStack.peek().addParameterCriteria(param, item, values, criteria.getSign(), criteria.getPattern(), COMPARE_TYPE.ANY);
+			destStack.peek().addParameterCriteria(param, item, values, criteria.getSign(), criteria.getPattern(), Compare.ANY);
 		}
 	}
 	/**

@@ -3,12 +3,12 @@ package ecommander.pages.elements.filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import ecommander.model.item.Compare;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.ServerLogger;
 import ecommander.common.Strings;
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.item.COMPARE_TYPE;
 import ecommander.model.item.ItemType;
 import ecommander.model.item.ItemTypeRegistry;
 import ecommander.model.item.LOGICAL_SIGN;
@@ -107,9 +107,9 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkC
 	private static class ParentalCriteria {
 		private final String pageItemId; // страничный ID предшественников или потомков айтема
 		private final String sign; // IN или NOT IN
-		private final COMPARE_TYPE compType; // строгий критерий или нет
+		private final Compare compType; // строгий критерий или нет
 
-		private ParentalCriteria(String pageItemId, String sign, COMPARE_TYPE compType) {
+		private ParentalCriteria(String pageItemId, String sign, Compare compType) {
 			this.pageItemId = pageItemId;
 			this.sign = " " + sign + " ";
 			this.compType = compType;
@@ -233,7 +233,7 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkC
 		this.fulltext = fulltext;
 	}
 	
-	public void addPredecessor(String predecessorId, String sign, COMPARE_TYPE compType) {
+	public void addPredecessor(String predecessorId, String sign, Compare compType) {
 		if (predecessors == null)
 			predecessors = new ArrayList<ParentalCriteria>();
 		if (StringUtils.isBlank(sign))
@@ -241,7 +241,7 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkC
 		predecessors.add(new ParentalCriteria(predecessorId, sign, compType));
 	}
 	
-	public void addSuccessors(String successorId, String sign, COMPARE_TYPE compType) {
+	public void addSuccessors(String successorId, String sign, Compare compType) {
 		if (successors == null)
 			successors = new ArrayList<ParentalCriteria>();
 		if (StringUtils.isBlank(sign))
@@ -340,7 +340,7 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkC
 				// Если критерий имеет тип сравнения SOME или EVERY и не является валидным (не содержит образец для сравнения),
 				// то фильтр должен вернуть пустое множество, при условии что критерии фильтра соединяются логическим знаком И,
 				// (т. е. в большинстве случаев)
-				else if ((crit.getCompareType() == COMPARE_TYPE.SOME || crit.getCompareType() == COMPARE_TYPE.EVERY)) {
+				else if ((crit.getCompareType() == Compare.SOME || crit.getCompareType() == Compare.EVERY)) {
 					if (operation == LOGICAL_SIGN.AND)
 						return false;
 					else

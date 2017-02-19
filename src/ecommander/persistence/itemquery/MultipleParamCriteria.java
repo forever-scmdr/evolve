@@ -2,13 +2,13 @@ package ecommander.persistence.itemquery;
 
 import java.util.Collection;
 
+import ecommander.model.item.Compare;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
 
-import ecommander.model.item.COMPARE_TYPE;
 import ecommander.model.item.ItemType;
 import ecommander.model.item.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
@@ -31,7 +31,7 @@ class MultipleParamCriteria extends FilterParameterCriteria {
 	private static final String NOT_IN = " NOT IN ";
 	
 	MultipleParamCriteria(ParameterDescription param, ItemType item, Collection<String> values, String sign, String tableName,
-			COMPARE_TYPE type) {
+			Compare type) {
 		super(param, item, tableName);
 		this.values = values;
 		sign = sign.trim();
@@ -40,7 +40,7 @@ class MultipleParamCriteria extends FilterParameterCriteria {
 		else
 			this.sign = NOT_IN;
 		isBlank = (values == null || values.size() == 0);
-		if ((type == COMPARE_TYPE.SOME || type == COMPARE_TYPE.EVERY) && isBlank)
+		if ((type == Compare.SOME || type == Compare.EVERY) && isBlank)
 			isEmptySet = true;
 	}
 

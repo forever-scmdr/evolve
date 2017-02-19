@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.Strings;
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.item.COMPARE_TYPE;
+import ecommander.model.item.Compare;
 import ecommander.model.item.ItemType;
 import ecommander.pages.elements.ExecutablePagePE;
 import ecommander.pages.elements.PageElement;
@@ -26,10 +26,10 @@ public class FulltextCriteriaPE implements PageElement {
 	private int maxResultCount;
 	private String typesStr = FulltextQueryCreatorRegistry.DEFAULT;
 	private String[] types = new String[] {FulltextQueryCreatorRegistry.DEFAULT};
-	private COMPARE_TYPE compType = COMPARE_TYPE.ANY;
+	private Compare compType = Compare.ANY;
 	private float threshold = -1;
 	
-	public FulltextCriteriaPE(String types, VariablePE queryVar, int maxResultCount, String paramName, COMPARE_TYPE compType, float threshold) {
+	public FulltextCriteriaPE(String types, VariablePE queryVar, int maxResultCount, String paramName, Compare compType, float threshold) {
 		this.query = queryVar;
 		this.paramName = paramName;
 		this.maxResultCount = maxResultCount;
@@ -104,7 +104,7 @@ public class FulltextCriteriaPE implements PageElement {
 		return ELEMENT_NAME;
 	}
 	
-	public COMPARE_TYPE getCompareType() {
+	public Compare getCompareType() {
 		return compType;
 	}
 	

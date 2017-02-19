@@ -17,7 +17,7 @@ import ecommander.model.datatypes.DataType.Type;
  * 
 	<criteria sign="like" param="sys" pattern="*v*" id="3" type="integer" />
  * 
- * TODO <fix> добавить тип сравнения COMPARE_TYPE
+ * TODO <fix> добавить тип сравнения Compare
  * 
  * @author EEEE
  *

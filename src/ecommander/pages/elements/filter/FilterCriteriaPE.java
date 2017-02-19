@@ -3,9 +3,9 @@ package ecommander.pages.elements.filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import ecommander.model.item.Compare;
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.model.item.COMPARE_TYPE;
 import ecommander.model.item.ItemType;
 import ecommander.model.item.ParameterDescription;
 import ecommander.pages.elements.ExecutablePagePE;
@@ -39,7 +39,7 @@ public abstract class FilterCriteriaPE implements PageElement {
 	protected ArrayList<VariablePE> values = new ArrayList<VariablePE>(3);
 	protected String sign;
 	protected String pattern; // Для строковых критериев со знаком like. Формат: %v% - сначала символ %, потом значение параметра, потом опять %
-	protected COMPARE_TYPE compareType = COMPARE_TYPE.ANY;
+	protected Compare compareType = Compare.ANY;
 	/**
 	 * Конструктор создания исполяемой копии
 	 * @param template
@@ -55,7 +55,7 @@ public abstract class FilterCriteriaPE implements PageElement {
 		}
 	}
 	
-	protected FilterCriteriaPE(String sign, String pattern, COMPARE_TYPE compType) {
+	protected FilterCriteriaPE(String sign, String pattern, Compare compType) {
 		this.sign = sign;
 		this.pattern = pattern;
 		this.compareType = compType;
@@ -97,14 +97,14 @@ public abstract class FilterCriteriaPE implements PageElement {
 		return !StringUtils.isBlank(pattern);
 	}
 	
-	public final COMPARE_TYPE getCompareType() {
+	public final Compare getCompareType() {
 		return compareType;
 	}
 	
 	public static FilterCriteriaPE create(String paramName, String paramNameVar, String paramIdVar, String sign,
-			String pattern, COMPARE_TYPE compType) {
+			String pattern, Compare compType) {
 		if (compType == null)
-			compType = COMPARE_TYPE.ANY;
+			compType = Compare.ANY;
 		if (!StringUtils.isBlank(paramName)) {
 			return new HardParameterCriteriaPE(paramName, sign, pattern, compType);
 		} else if (!StringUtils.isBlank(paramNameVar)) {

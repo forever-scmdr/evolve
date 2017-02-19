@@ -3,10 +3,10 @@ package ecommander.persistence.itemquery;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ecommander.model.item.Compare;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 
-import ecommander.model.item.COMPARE_TYPE;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 /**
@@ -29,13 +29,13 @@ class SuccessorCriteria implements FilterCriteria, PossibleMainCriteria {
 	private final boolean isEmptySet;
 	
 	
-	SuccessorCriteria(String sign, Collection<Long> predItemIds, String tableName, COMPARE_TYPE type) {
+	SuccessorCriteria(String sign, Collection<Long> predItemIds, String tableName, Compare type) {
 		this.itemIds = new ArrayList<Long>();
 		if (predItemIds != null)
 			this.itemIds.addAll(predItemIds);
 		this.tableName = tableName;
 		this.sign = sign.trim();
-		if (itemIds.size() == 0 && sign.trim().equals(IN) && (type == COMPARE_TYPE.EVERY || type == COMPARE_TYPE.SOME))
+		if (itemIds.size() == 0 && sign.trim().equals(IN) && (type == Compare.EVERY || type == Compare.SOME))
 			isEmptySet = true;
 		else
 			isEmptySet = false;

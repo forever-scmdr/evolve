@@ -16,6 +16,7 @@ import java.util.Set;
 
 import javax.naming.NamingException;
 
+import ecommander.model.item.*;
 import org.apache.commons.collections4.MultiMapUtils;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.lang3.StringUtils;
@@ -29,12 +30,7 @@ import org.apache.lucene.search.TermQuery;
 import ecommander.common.MysqlConnector;
 import ecommander.common.MysqlConnector.ConnectionCount;
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.item.COMPARE_TYPE;
-import ecommander.model.item.Item;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
-import ecommander.model.item.LOGICAL_SIGN;
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.item.Compare;
 import ecommander.model.item.filter.FilterDefinition;
 import ecommander.pages.elements.variables.FilterStaticVariablePE;
 import ecommander.persistence.common.TemplateQuery;
@@ -342,7 +338,7 @@ public class ItemQuery {
 	 * @param pattern
 	 * @param compType
 	 */
-	public ItemQuery addAggregationGroupBy(String paramName, List<String> values, String sign, String pattern, COMPARE_TYPE compType) {
+	public ItemQuery addAggregationGroupBy(String paramName, List<String> values, String sign, String pattern, Compare compType) {
 		ensureFilter();
 		filter.addAggregationParameterCriteria(itemDesc.getParameter(paramName), values, sign, pattern, compType);
 		return this;
@@ -356,7 +352,7 @@ public class ItemQuery {
 	 * @param pattern
 	 * @param compType
 	 */
-	public ItemQuery addAggregationGroupBy(int paramId, List<String> values, String sign, String pattern, COMPARE_TYPE compType) {
+	public ItemQuery addAggregationGroupBy(int paramId, List<String> values, String sign, String pattern, Compare compType) {
 		ensureFilter();
 		filter.addAggregationParameterCriteria(itemDesc.getParameter(paramId), values, sign, pattern, compType);
 		return this;
@@ -370,7 +366,7 @@ public class ItemQuery {
 	 * @param pattern
 	 * @param compType
 	 */
-	public ItemQuery addAggregationGroupBy(ParameterDescription paramDesc, List<String> values, String sign, String pattern, COMPARE_TYPE compType) {
+	public ItemQuery addAggregationGroupBy(ParameterDescription paramDesc, List<String> values, String sign, String pattern, Compare compType) {
 		ensureFilter();
 		filter.addAggregationParameterCriteria(paramDesc, values, sign, pattern, compType);
 		return this;
@@ -383,7 +379,7 @@ public class ItemQuery {
 	 * @param pattern
 	 * @param compType
 	 */
-	public ItemQuery addParameterCriteria(String paramName, List<String> values, String sign, String pattern, COMPARE_TYPE compType) {
+	public ItemQuery addParameterCriteria(String paramName, List<String> values, String sign, String pattern, Compare compType) {
 		ensureFilter();
 		filter.addParameterCriteria(itemDesc.getParameter(paramName), itemDesc, values, sign, pattern, compType);
 		return this;
@@ -396,7 +392,7 @@ public class ItemQuery {
 	 * @param pattern
 	 * @param compType
 	 */
-	public ItemQuery addParameterCriteria(String paramName, String value, String sign, String pattern, COMPARE_TYPE compType) {
+	public ItemQuery addParameterCriteria(String paramName, String value, String sign, String pattern, Compare compType) {
 		ArrayList<String> values = new ArrayList<String>(1);
 		values.add(value);
 		return addParameterCriteria(paramName, values, sign, pattern, compType);
@@ -409,7 +405,7 @@ public class ItemQuery {
 	 * @param pattern
 	 * @param compType
 	 */
-	public ItemQuery addParameterCriteria(int paramId, List<String> values, String sign, String pattern, COMPARE_TYPE compType) {
+	public ItemQuery addParameterCriteria(int paramId, List<String> values, String sign, String pattern, Compare compType) {
 		ensureFilter();
 		filter.addParameterCriteria(itemDesc.getParameter(paramId), itemDesc, values, sign, pattern, compType);
 		return this;
@@ -422,7 +418,7 @@ public class ItemQuery {
 	 * @param pattern
 	 * @param compType
 	 */
-	public ItemQuery addParameterCriteria(ParameterDescription paramDesc, List<String> values, String sign, String pattern, COMPARE_TYPE compType) {
+	public ItemQuery addParameterCriteria(ParameterDescription paramDesc, List<String> values, String sign, String pattern, Compare compType) {
 		ensureFilter();
 		filter.addParameterCriteria(paramDesc, itemDesc, values, sign, pattern, compType);
 		return this;
@@ -438,7 +434,7 @@ public class ItemQuery {
 	 * @return
 	 * @throws EcommanderException
 	 */
-	public ItemQuery setFulltextCriteria(String[] types, String[] queries, int maxResults, String paramName, COMPARE_TYPE compType,
+	public ItemQuery setFulltextCriteria(String[] types, String[] queries, int maxResults, String paramName, Compare compType,
 			float threshold) throws EcommanderException {
 		String[] paramNames = null;
 		if (StringUtils.isBlank(paramName)) {
@@ -448,7 +444,7 @@ public class ItemQuery {
 			paramNames[0] = paramName;
 		}
 		fulltext = new FulltextCriteria(types, queries, maxResults, paramNames, compType, threshold);
-		if ((compType == COMPARE_TYPE.ANY || compType == COMPARE_TYPE.ALL) && !fulltext.isValid())
+		if ((compType == Compare.ANY || compType == Compare.ALL) && !fulltext.isValid())
 			fulltext = null;
 		return this;
 	}
@@ -460,7 +456,7 @@ public class ItemQuery {
 	 * @param paramName
 	 * @throws EcommanderException
 	 */
-	public void setFulltextCriteria(String type, String query, int maxResults, String paramName, COMPARE_TYPE compType) throws EcommanderException {
+	public void setFulltextCriteria(String type, String query, int maxResults, String paramName, Compare compType) throws EcommanderException {
 		setFulltextCriteria(new String[] {type}, new String[] {query}, maxResults, paramName, compType, -1);
  	}
 	/**
@@ -468,11 +464,11 @@ public class ItemQuery {
 	 * @param sign
 	 * @param itemIds
 	 */
-	public ItemQuery addPredecessors(String sign, Collection<Long> itemIds, COMPARE_TYPE compType) {
+	public ItemQuery addPredecessors(String sign, Collection<Long> itemIds, Compare compType) {
 		if (compType == null)
-			compType = COMPARE_TYPE.EVERY;
+			compType = Compare.EVERY;
 		// при условии если предшественников не найдено, а критерий поиска по ним не строгий - не учитывать этот критерий вообще
-		if ((itemIds == null || itemIds.size() == 0) && (compType == COMPARE_TYPE.ALL || compType == COMPARE_TYPE.ANY))
+		if ((itemIds == null || itemIds.size() == 0) && (compType == Compare.ALL || compType == Compare.ANY))
 			return this;
 		ensureFilter();
 		filter.addPredecessors(sign, itemIds, compType);
@@ -483,11 +479,11 @@ public class ItemQuery {
 	 * @param sign
 	 * @param itemIds
 	 */
-	public ItemQuery addSuccessors(String sign, Collection<Long> itemIds, COMPARE_TYPE compType) {
+	public ItemQuery addSuccessors(String sign, Collection<Long> itemIds, Compare compType) {
 		if (compType == null)
-			compType = COMPARE_TYPE.EVERY;
+			compType = Compare.EVERY;
 		// при условии если потомков не найдено, а критерий поиска по ним не строгий - не учитывать этот критерий вообще
-		if ((itemIds == null || itemIds.size() == 0) && (compType == COMPARE_TYPE.ALL || compType == COMPARE_TYPE.ANY))
+		if ((itemIds == null || itemIds.size() == 0) && (compType == Compare.ALL || compType == Compare.ANY))
 			return this;
 		ensureFilter();
 		filter.addSuccessors(sign, itemIds, compType);
@@ -792,7 +788,7 @@ public class ItemQuery {
 				loadFulltextIds();
 				Long[] ids = fulltext.getLoadedIds(limit);
 				// Если результат не найден, сразу вернуть пустое множество
-				if (ids.length == 0 && (fulltext.getCompareType() == COMPARE_TYPE.SOME || fulltext.getCompareType() == COMPARE_TYPE.EVERY))
+				if (ids.length == 0 && (fulltext.getCompareType() == Compare.SOME || fulltext.getCompareType() == Compare.EVERY))
 					return new ArrayList<Item>();
 				dbQuery.getSubquery(WHERE_OPT).sql(" AND " + DBConstants.Item.ID + " IN (").setLongArray(ids).sql(")");
 				order = ids;

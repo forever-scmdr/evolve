@@ -1,6 +1,6 @@
 package ecommander.pages.elements.filter;
 
-import ecommander.model.item.COMPARE_TYPE;
+import ecommander.model.item.Compare;
 import ecommander.model.item.ItemType;
 import ecommander.model.item.ParameterDescription;
 /**
@@ -10,7 +10,7 @@ import ecommander.model.item.ParameterDescription;
  */
 class IdVariableParameterCriteriaPE extends VariableParameterCriteriaPE {
 	
-	IdVariableParameterCriteriaPE(String paramIdVar, String sign, String pattern, COMPARE_TYPE compType) {
+	IdVariableParameterCriteriaPE(String paramIdVar, String sign, String pattern, Compare compType) {
 		super(paramIdVar, sign, pattern, compType);
 	}
 

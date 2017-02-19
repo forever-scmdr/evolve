@@ -3,11 +3,10 @@ package ecommander.persistence.itemquery;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.lucene.search.BooleanClause;
+import ecommander.model.item.Compare;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 
-import ecommander.model.item.COMPARE_TYPE;
 import ecommander.model.item.ItemType;
 import ecommander.model.item.LOGICAL_SIGN;
 import ecommander.model.item.ParameterDescription;
@@ -67,13 +66,13 @@ class CriteriaGroup implements FilterCriteria {
 	 * @param compType
 	 */
 	public void addParameterCriteria(ParameterDescription param, ItemType item, List<String> values, String sign, String pattern,
-			COMPARE_TYPE compType) {
+			Compare compType) {
 		String tableName = groupId + 'F' + criterias.size();
 		// Одно значение
 		if (values.size() == 1)
 			criterias.add(new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, compType));
 		// Множество значений с выбором любого варианта (параметр соответствует любому из значений)
-		else if (values.size() > 0 && (compType == COMPARE_TYPE.ANY || compType == COMPARE_TYPE.SOME))
+		else if (values.size() > 0 && (compType == Compare.ANY || compType == Compare.SOME))
 			criterias.add(new MultipleParamCriteria(param, item, values, sign, tableName, compType));
 		// Множество значений с выбором каждого варианта (параметр соответствует всем значениям)
 		else if (values.size() > 0) {

@@ -3,12 +3,12 @@ package ecommander.persistence.itemquery;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ecommander.model.item.Compare;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
 
-import ecommander.model.item.COMPARE_TYPE;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 /**
@@ -32,13 +32,13 @@ class PredecessorCriteria implements FilterCriteria, PossibleMainCriteria {
 	private final boolean isEmptySet;
 	
 	
-	PredecessorCriteria(String sign, Collection<Long> predItemIds, String tableName, COMPARE_TYPE type) {
+	PredecessorCriteria(String sign, Collection<Long> predItemIds, String tableName, Compare type) {
 		this.itemIds = new ArrayList<Long>();
 		if (predItemIds != null)
 			this.itemIds.addAll(predItemIds);
 		this.tableName = tableName;
 		this.sign = sign.trim();
-		if (itemIds.size() == 0 && this.sign.equals(IN) && (type == COMPARE_TYPE.EVERY || type == COMPARE_TYPE.SOME))
+		if (itemIds.size() == 0 && this.sign.equals(IN) && (type == Compare.EVERY || type == Compare.SOME))
 			isEmptySet = true;
 		else
 			isEmptySet = false;

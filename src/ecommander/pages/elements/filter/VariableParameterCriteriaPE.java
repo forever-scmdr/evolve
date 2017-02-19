@@ -1,6 +1,6 @@
 package ecommander.pages.elements.filter;
 
-import ecommander.model.item.COMPARE_TYPE;
+import ecommander.model.item.Compare;
 import ecommander.model.item.ItemType;
 import ecommander.model.item.ParameterDescription;
 import ecommander.pages.elements.ExecutablePagePE;
@@ -17,7 +17,7 @@ class VariableParameterCriteriaPE extends FilterCriteriaPE {
 	protected String paramNameVar;
 	protected ExecutablePagePE pageModel;
 
-	VariableParameterCriteriaPE(String paramNameVar, String sign, String pattern, COMPARE_TYPE compType) {
+	VariableParameterCriteriaPE(String paramNameVar, String sign, String pattern, Compare compType) {
 		super(sign, pattern, compType);
 		this.paramNameVar = paramNameVar;
 	}

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.lucene.search.BooleanQuery;
 
-import ecommander.model.item.COMPARE_TYPE;
+import ecommander.model.item.Compare;
 import ecommander.model.item.ItemType;
 import ecommander.model.item.LOGICAL_SIGN;
 import ecommander.model.item.ParameterDescription;
@@ -32,11 +32,11 @@ public final class FilterSQLBuilder extends CriteriaGroup {
 		this.item = item;
 	}
 
-	final void addPredecessors(String sign, Collection<Long> itemIds, COMPARE_TYPE compType) {
+	final void addPredecessors(String sign, Collection<Long> itemIds, Compare compType) {
 		criterias.add(new PredecessorCriteria(sign, itemIds, groupId + 'R' + criterias.size(), compType));
 	}
 	
-	final void addSuccessors(String sign, Collection<Long> itemIds, COMPARE_TYPE compType) {
+	final void addSuccessors(String sign, Collection<Long> itemIds, Compare compType) {
 		criterias.add(new SuccessorCriteria(sign, itemIds, groupId + 'R' + criterias.size(), compType));
 	}
 	
@@ -53,7 +53,7 @@ public final class FilterSQLBuilder extends CriteriaGroup {
 	 * @param pattern
 	 * @param compType
 	 */
-	final void addAggregationParameterCriteria(ParameterDescription param, List<String> values, String sign, String pattern, COMPARE_TYPE compType) {
+	final void addAggregationParameterCriteria(ParameterDescription param, List<String> values, String sign, String pattern, Compare compType) {
 		FilterParameterCriteria baseCrit = null;
 		String tableName = groupId + 'G' + criterias.size();
 		// Нет значений
@@ -63,7 +63,7 @@ public final class FilterSQLBuilder extends CriteriaGroup {
 		else if (values.size() == 1)
 			baseCrit = new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, compType);
 		// Множество значений с выбором любого варианта (параметр соответствует любому из значений)
-		else if (values.size() > 0 && (compType == COMPARE_TYPE.ANY || compType == COMPARE_TYPE.SOME))
+		else if (values.size() > 0 && (compType == Compare.ANY || compType == Compare.SOME))
 			baseCrit = new MultipleParamCriteria(param, item, values, sign, tableName, compType);
 		// Множество значений с выбором каждого варианта (параметр соответствует всем значениям)
 		else

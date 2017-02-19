@@ -19,6 +19,6 @@ package ecommander.model.item;
  * @author E
  *
  */
-public enum COMPARE_TYPE {
+public enum Compare {
 	ANY, ALL, SOME, EVERY
 }

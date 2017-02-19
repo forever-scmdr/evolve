@@ -3,6 +3,7 @@ package ecommander.persistence.itemquery;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import ecommander.model.item.Compare;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.BooleanClause.Occur;
@@ -11,7 +12,6 @@ import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
 
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.item.COMPARE_TYPE;
 import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
 import ecommander.persistence.itemquery.fulltext.LuceneQueryCreator;
 import ecommander.persistence.mappers.LuceneIndexMapper;
@@ -32,10 +32,10 @@ public class FulltextCriteria {
 	private final int maxResultCount;
 	private final float threshold;
 	private Long[] loadedIds = null;
-	private final COMPARE_TYPE compType;
+	private final Compare compType;
 	private ArrayList<LuceneQueryCreator> queryCreators = new ArrayList<LuceneQueryCreator>();
 	
-	public FulltextCriteria(String[] queryTypes, String[] queryStr, int maxResultCount, String[] paramNames, COMPARE_TYPE compType,
+	public FulltextCriteria(String[] queryTypes, String[] queryStr, int maxResultCount, String[] paramNames, Compare compType,
 			float threshold) throws EcommanderException {
 		this.queryVals = queryStr;
 		this.paramNames = paramNames;
@@ -67,7 +67,7 @@ public class FulltextCriteria {
 		if (isValid()) {
 			ArrayList<Query> queries = new ArrayList<Query>();
 			Occur occur = Occur.SHOULD;
-			if (compType == COMPARE_TYPE.EVERY || compType == COMPARE_TYPE.ALL)
+			if (compType == Compare.EVERY || compType == Compare.ALL)
 				occur = Occur.MUST;
 			if (queryVals.length == 1) {
 				for (LuceneQueryCreator creator : queryCreators) {
@@ -125,7 +125,7 @@ public class FulltextCriteria {
 		return loadedIds != null;
 	}
 	
-	COMPARE_TYPE getCompareType() {
+	Compare getCompareType() {
 		return compType;
 	}
 }

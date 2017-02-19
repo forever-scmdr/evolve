@@ -3,7 +3,7 @@ package ecommander.pages.elements.filter;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.item.COMPARE_TYPE;
+import ecommander.model.item.Compare;
 import ecommander.model.item.LOGICAL_SIGN;
 import ecommander.pages.elements.ExecutablePagePE;
 import ecommander.pages.elements.PageElement;
@@ -145,12 +145,12 @@ public class AggregationPE extends PageElementContainer {
 			// Переменная-значение критерия может хранить как один параметр, так и массив параметров
 			if (crit.isValid())
 				dbQuery.addAggregationGroupBy(crit.getParam(dbQuery.getItemToFilter()), crit.getValueArray(), crit.getSign(),
-						crit.getPattern(), /*COMPARE_TYPE.ALL ???*/ COMPARE_TYPE.SOME);
+						crit.getPattern(), /*Compare.ALL ???*/ Compare.SOME);
 			else {
 				// Если критерий имеет тип сравнения SOME или EVERY и не является валидным (не содержит образец для сравнения),
 				// то фильтр должен вернуть пустое множество, при условии что критерии фильтра соединяются логическим знаком И,
 				// (т. е. в большинстве случаев)
-				if ((crit.getCompareType() == COMPARE_TYPE.SOME || crit.getCompareType() == COMPARE_TYPE.EVERY)
+				if ((crit.getCompareType() == Compare.SOME || crit.getCompareType() == Compare.EVERY)
 						&& operation == LOGICAL_SIGN.AND) {
 					return false;
 				}

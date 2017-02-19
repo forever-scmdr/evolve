@@ -6,7 +6,7 @@ import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
 
-import ecommander.model.item.COMPARE_TYPE;
+import ecommander.model.item.Compare;
 import ecommander.model.item.ItemType;
 import ecommander.model.item.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
@@ -25,14 +25,14 @@ class SingleParamCriteria extends FilterParameterCriteria {
 	private boolean isEmptySet = false;
 	
 	SingleParamCriteria(ParameterDescription param, ItemType item, String value, String sign, String pattern, String tableName,
-			COMPARE_TYPE type) {
+			Compare type) {
 		super(param, item, tableName);
 		this.value = value;
 		this.sign = sign.trim();
 		if (StringUtils.isBlank(this.sign))
 			this.sign = "=";
 		this.pattern = pattern;
-		if ((type == COMPARE_TYPE.SOME || type == COMPARE_TYPE.EVERY) && StringUtils.isBlank(value))
+		if ((type == Compare.SOME || type == Compare.EVERY) && StringUtils.isBlank(value))
 			isEmptySet = true;
 	}
 

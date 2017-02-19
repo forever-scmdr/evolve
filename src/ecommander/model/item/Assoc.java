@@ -4,14 +4,14 @@ package ecommander.model.item;
  * Ассоциация
  * Created by E on 26/1/2017.
  */
-public class Association implements ModelElement {
-	private long id;
+public class Assoc implements ModelElement {
+	private byte id;
 	private String name;
 	private String caption;
 	private String description;
 	private boolean isTransitive;
 
-	public Association(long id, String name, String caption, String description, boolean isTransitive) {
+	public Assoc(byte id, String name, String caption, String description, boolean isTransitive) {
 		this.id = id;
 		this.name = name;
 		this.caption = caption;
@@ -20,7 +20,7 @@ public class Association implements ModelElement {
 	}
 
 	@Override
-	public long getId() {
+	public byte getId() {
 		return id;
 	}
 

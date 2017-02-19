@@ -1,6 +1,6 @@
 package ecommander.pages.elements.filter;
 
-import ecommander.model.item.COMPARE_TYPE;
+import ecommander.model.item.Compare;
 import ecommander.model.item.ItemType;
 import ecommander.model.item.ParameterDescription;
 import ecommander.pages.elements.ExecutablePagePE;
@@ -16,7 +16,7 @@ import ecommander.pages.elements.variables.VariablePE;
 class HardParameterCriteriaPE extends FilterCriteriaPE {
 	protected String paramName;
 	
-	HardParameterCriteriaPE(String paramName, String sign, String pattern, COMPARE_TYPE compType) {
+	HardParameterCriteriaPE(String paramName, String sign, String pattern, Compare compType) {
 		super(sign, pattern, compType);
 		this.paramName = paramName;
 	}

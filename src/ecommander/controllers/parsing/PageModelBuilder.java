@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import ecommander.model.item.Compare;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.Attr;
@@ -21,7 +22,6 @@ import ecommander.common.ServerLogger;
 import ecommander.common.exceptions.ValidationException;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
-import ecommander.model.item.COMPARE_TYPE;
 import ecommander.model.item.LOGICAL_SIGN;
 import ecommander.pages.elements.CommandPE;
 import ecommander.pages.elements.InputPE;
@@ -1085,11 +1085,11 @@ public class PageModelBuilder {
 			}
 			// Предшественник
 			else if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(PREDECESSOR_ELEMENT)) {
-				COMPARE_TYPE compare = null;
+				Compare compare = null;
 				Element predecessor = (Element) filterSubnode;
 				if (!StringUtils.isBlank(predecessor.getAttribute(COMPARE_ATTRIBUTE))) {
 					try {
-						compare = COMPARE_TYPE.valueOf(predecessor.getAttribute(COMPARE_ATTRIBUTE));
+						compare = Compare.valueOf(predecessor.getAttribute(COMPARE_ATTRIBUTE));
 					} catch (Exception e) {
 						throw new PrimaryValidationException(page.getPageName() + " > filter", " criteria '" + COMPARE_ATTRIBUTE
 								+ "' has invalid value");
@@ -1099,11 +1099,11 @@ public class PageModelBuilder {
 			}
 			// Последователь
 			else if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(SUCCESSOR_ELEMENT)) {
-				COMPARE_TYPE compare = null;
+				Compare compare = null;
 				Element successor = (Element) filterSubnode;
 				if (!StringUtils.isBlank(successor.getAttribute(COMPARE_ATTRIBUTE))) {
 					try {
-						compare = COMPARE_TYPE.valueOf(successor.getAttribute(COMPARE_ATTRIBUTE));
+						compare = Compare.valueOf(successor.getAttribute(COMPARE_ATTRIBUTE));
 					} catch (Exception e) {
 						throw new PrimaryValidationException(page.getPageName() + " > filter", " criteria '" + COMPARE_ATTRIBUTE
 								+ "' has invalid value");
@@ -1145,10 +1145,10 @@ public class PageModelBuilder {
 		String paramSign = criteriaNode.getAttribute(SIGN_ATTRIBUTE);
 		String paramPattern = criteriaNode.getAttribute(PATTERN_ATTRIBUTE);
 		String compareTypeStr = criteriaNode.getAttribute(COMPARE_ATTRIBUTE);
-		COMPARE_TYPE compare = null;
+		Compare compare = null;
 		if (!StringUtils.isBlank(compareTypeStr)) {
 			try {
-				compare = COMPARE_TYPE.valueOf(compareTypeStr);
+				compare = Compare.valueOf(compareTypeStr);
 			} catch (Exception e) {
 				throw new PrimaryValidationException(page.getPageName() + " > filter", " criteria '" + COMPARE_ATTRIBUTE
 						+ "' has invalid value");
@@ -1231,10 +1231,10 @@ public class PageModelBuilder {
 		String type = fulltextNode.getAttribute(TYPE_ATTRIBUTE);
 		String compareTypeStr = fulltextNode.getAttribute(COMPARE_ATTRIBUTE);
 		String thresholdStr = fulltextNode.getAttribute(THRESHOLD_ATTRIBUTE);
-		COMPARE_TYPE compare = null;
+		Compare compare = null;
 		if (!StringUtils.isBlank(compareTypeStr)) {
 			try {
-				compare = COMPARE_TYPE.valueOf(compareTypeStr);
+				compare = Compare.valueOf(compareTypeStr);
 			} catch (Exception e) {
 				throw new PrimaryValidationException(page.getPageName() + " > filter", " fulltext '" + COMPARE_ATTRIBUTE
 						+ "' has invalid value");
