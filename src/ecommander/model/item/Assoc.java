@@ -4,7 +4,7 @@ package ecommander.model.item;
  * Ассоциация
  * Created by E on 26/1/2017.
  */
-public class Assoc implements ModelElement {
+public class Assoc {
 	private byte id;
 	private String name;
 	private String caption;
@@ -19,27 +19,22 @@ public class Assoc implements ModelElement {
 		this.isTransitive = isTransitive;
 	}
 
-	@Override
 	public byte getId() {
 		return id;
 	}
 
-	@Override
 	public String getName() {
 		return name;
 	}
 
-	@Override
 	public int getHash() {
 		return name.hashCode();
 	}
 
-	@Override
 	public String getCaption() {
 		return caption;
 	}
 
-	@Override
 	public String getDescription() {
 		return description;
 	}
