@@ -9,7 +9,5 @@ import ecommander.persistence.PersistenceCommandUnit;
  *
  */
 public interface ItemEventCommandFactory {
-	PersistenceCommandUnit createSaveCommand(Item item) throws Exception;
-	PersistenceCommandUnit createUpdateCommand(Item updated, Item initial) throws Exception;
-	PersistenceCommandUnit createDeleteCommand(Item item) throws Exception;
+	PersistenceCommandUnit createCommand(Item item, Item initialVersion) throws Exception;
 }

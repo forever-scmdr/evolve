@@ -32,7 +32,6 @@ public class DataTypeRegistry {
 		dataTypes.put(Type.PICTURE, new FileDataType(Type.PICTURE));
 		dataTypes.put(Type.FILTER, new StringDataType(Type.FILTER));
 		dataTypes.put(Type.XML, new StringDataType(Type.XML));
-		dataTypes.put(Type.ASSOCIATED, new AssociatedDataType(Type.ASSOCIATED));
 	}
 	
 	private static DataTypeRegistry getRegistry() {

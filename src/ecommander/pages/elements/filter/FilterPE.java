@@ -418,14 +418,8 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkC
 				results.addError(elementPath + " > " + getKey(), "there is no '" + userFilterVarName + "' page variable on current page");
 			// Корректность использования кеширования
 			if (needPreloadDomains && !pageItem.hasCacheVars()) {
-				Integer[] containerIds = ItemTypeRegistry.getItemContainers(itemDesc.getTypeId());
-				for (Integer id : containerIds) {
-					if (ItemTypeRegistry.getItemType(id).isSubitemMultiple(itemDesc.getName())) {
-						results.addError(elementPath + " > " + getKey(), "Page " + pageItem.getKey() 
-								+ " must have attribute cache-vars set in order to operate filter cache correctly");
-						break;
-					}
-				}
+				results.addError(elementPath + " > " + getKey(), "Page " + pageItem.getKey()
+						+ " must have attribute cache-vars set in order to operate filter cache correctly");
 			}
 		}
 		

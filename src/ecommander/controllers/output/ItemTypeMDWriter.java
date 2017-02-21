@@ -94,7 +94,7 @@ public class ItemTypeMDWriter extends MetaDataWriter {
 			attrs.add(Boolean.TRUE.toString());
 		}
 		xml.startElement(mainTag, attrs.toArray(new Object[0]));
-		for (String subitem : itemType.getAllSubitemNames()) {
+		for (String subitem : itemType.getAllSubitems()) {
 			if (itemType.isSubitemOwn(subitem)) {
 				String quantifier = "single";
 				if (itemType.isSubitemMultiple(subitem))

@@ -36,7 +36,6 @@ import ecommander.model.item.ItemTypeContainer;
 import ecommander.model.item.ItemTypeRegistry;
 import ecommander.model.item.ParameterDescription;
 import ecommander.model.item.ParameterDescription.Quantifier;
-import ecommander.model.item.RootItemType;
 import ecommander.pages.elements.ValidationResults;
 import ecommander.persistence.TransactionException;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;

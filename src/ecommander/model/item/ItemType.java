@@ -1,6 +1,3 @@
-/*
- * Created on 11.08.2007
- */
 package ecommander.model.item;
 
 import java.util.ArrayList;
@@ -24,7 +21,20 @@ import ecommander.model.datatypes.DataType.Type;
  * @author E
  */
 public class ItemType extends ItemTypeContainer {
-	
+	public static enum Event {
+		create, update, delete;
+		public Event get(String eventName) {
+			if (StringUtils.endsWith(eventName, "create"))
+				return create;
+			if (StringUtils.endsWith(eventName, "update"))
+				return update;
+			if (StringUtils.endsWith(eventName, "delete"))
+				return delete;
+			return null;
+		}
+	}
+
+
 	public static final int SERVICE_ITEM_ID = -1; 	// ID айтема, который используется как заглушка для обеспечения целостности данных таблиц БД
 													// для хранения служебных и специальных значений и параметров
 	
@@ -39,7 +49,7 @@ public class ItemType extends ItemTypeContainer {
 	private boolean virtual;
 	private boolean inline; // является ли данный айтем инлайновым (для панели управления)
 	private boolean isExtendable; // Может ли пользователь расширять этот айтем
-	private boolean isKeyUnique;	// Должен ли айтем иметь уникальное имя, по которому можно было бы идентифицировать этот айтем 
+	private boolean isKeyUnique;	    // Должен ли айтем иметь уникальное имя, по которому можно было бы идентифицировать этот айтем
 										// при передаче этого имени через URL
 	private final boolean userDefined;	// является ли данный айтем пользовательским, т. е. был ли он создан пользователем 
 										// (не присутствовал в базовой модели данных)
@@ -49,7 +59,7 @@ public class ItemType extends ItemTypeContainer {
 	private LinkedHashMap<String, ParameterDescription> paramsByName = null;
 	private HashMap<String, LinkedHashSet<ParameterDescription>> fulltextIndexParams = null; // Название параметра, в котором сохраняется 
 						// значение этого параметра при полнотекстовом индексировании => список параметров для полнотекстового индекса
-	private LinkedHashSet<ItemEventCommandFactory> extraHandlers;	// фактори команд-обработчиков событий айтема
+	private HashMap<Event, LinkedHashSet<ItemEventCommandFactory>> extraHandlers;	// фактори команд-обработчиков событий айтема
 													//(выполнение дополнительных действий после сохранения, удаления)
 	private String extendsStr = ITEM_SELF; // перечисление всех предов айтема в порядке добавления параметров, сам айтем в этом списке обозначается *
 	
@@ -82,10 +92,15 @@ public class ItemType extends ItemTypeContainer {
 	 * Установить дополнительный обработчик сохранения айтейма
 	 * @param factory
 	 */
-	public void addExtraHandler(ItemEventCommandFactory factory) {
+	public void addExtraHandler(Event event, ItemEventCommandFactory factory) {
 		if (extraHandlers == null)
-			extraHandlers = new LinkedHashSet<ItemEventCommandFactory>(3);
-		extraHandlers.add(factory);
+			extraHandlers = new HashMap<>(3);
+		LinkedHashSet<ItemEventCommandFactory> listeners = extraHandlers.get(event);
+		if (listeners == null) {
+			listeners = new LinkedHashSet<>(3);
+			extraHandlers.put(event, listeners);
+		}
+		listeners.add(factory);
 	}
 	/**
 	 * @return
@@ -295,6 +310,14 @@ public class ItemType extends ItemTypeContainer {
 		return extraHandlers != null;
 	}
 	/**
+	 * Есть ли обработчики для определенного события
+	 * @param event
+	 * @return
+	 */
+	public boolean hasExtraHandlers(Event event) {
+		return hasExtraHandlers() && extraHandlers.get(event) != null;
+	}
+	/**
 	 * Содержит ли айтем XML параметры (их значения которых должны выводиться без эскейпинга)
 	 * @return
 	 */
@@ -305,9 +328,16 @@ public class ItemType extends ItemTypeContainer {
 	 * Вернуть фактори для создания обработчиков сохранения (и других событий) айтема
 	 * @return
 	 */
-	public ArrayList<ItemEventCommandFactory> getExtraHandlers() {
-		return new ArrayList<ItemEventCommandFactory>(extraHandlers);
+	public void addExtraHandlersToItem(ItemType itemToAdd) {
+		if (extraHandlers != null) {
+			for (Event event: extraHandlers.keySet()) {
+				for (ItemEventCommandFactory factory: extraHandlers.get(event)) {
+					itemToAdd.addExtraHandler(event, factory);
+				}
+			}
+		}
 	}
+
 	/**
 	 * Вернуть строку extends (перечисление всех предов айтема в порядке добавления параметров, сам айтем в этом списке обозначается *)
 	 * @return

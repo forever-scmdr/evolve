@@ -15,7 +15,6 @@ import ecommander.common.ServerLogger;
 import ecommander.model.item.ItemType;
 import ecommander.model.item.ItemTypeContainer;
 import ecommander.model.item.ItemTypeRegistry;
-import ecommander.model.item.RootItemType;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.users.User;
@@ -96,7 +95,7 @@ public class AdminLoader {
 			while (rs.next()) {
 				int itemTypeId = rs.getInt(1);
 				String itemName = ItemTypeRegistry.getItemType(itemTypeId).getName();
-				String baseName = ItemTypeRegistry.findItemPredecessor(itemDesc.getAllSubitemNames(), itemName);
+				String baseName = ItemTypeRegistry.findItemPredecessor(itemDesc.getAllSubitems(), itemName);
 				ArrayList<ItemAccessor> sameItems = result.get(baseName);
 				if (sameItems == null) {
 					sameItems = new ArrayList<ItemAccessor>();

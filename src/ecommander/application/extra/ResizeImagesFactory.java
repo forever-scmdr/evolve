@@ -269,16 +269,9 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 	
 	}
 
-	public PersistenceCommandUnit createSaveCommand(Item item) {
+	@Override
+	public PersistenceCommandUnit createCommand(Item item, Item initialVersion) throws Exception {
 		return new ResizeImages(item);
-	}
-
-	public PersistenceCommandUnit createDeleteCommand(Item item) {
-		return null;
-	}
-
-	public PersistenceCommandUnit createUpdateCommand(Item updated, Item initial) {
-		return new ResizeImages(updated);
 	}
 
 }

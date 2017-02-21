@@ -25,7 +25,6 @@ import ecommander.model.item.ItemType;
 import ecommander.model.item.ItemTypeContainer;
 import ecommander.model.item.ParameterDescription;
 import ecommander.model.item.ParameterDescription.Quantifier;
-import ecommander.model.item.RootItemType;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.commandunits.ItemModelFilePersistenceCommandUnit;
 import ecommander.persistence.mappers.DBConstants;

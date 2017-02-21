@@ -86,7 +86,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit {
 			if (rs.next() || newParent.getId() == baseItem.getId())
 				throw new EcommanderException("Unable to copy item ID " + baseItem.getId() + " to it's subitem (ID " + newParent.getId() + ").");
 			boolean possibleSubitem = false;
-			for (String subitemName : newParent.getItemType().getAllSubitemNames()) {
+			for (String subitemName : newParent.getItemType().getAllSubitems()) {
 				possibleSubitem |= ItemTypeRegistry.getItemExtenders(subitemName).contains(baseItem.getTypeName());
 			}
 			if (!possibleSubitem)

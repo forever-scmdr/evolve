@@ -20,16 +20,6 @@ public final class ParameterDescription {
 		none // Параметр не индексируется
 	}
 
-	private static final int USER_PARAM_MOCK_ID = -1;
-	private static final int USER_GROUP_PARAM_MOCK_ID = -2;
-	
-	// Специальный параметр - ID пользователя, используется при поиске айтемов, принадлежащих определенному пользователю
-	public static final ParameterDescription USER = new ParameterDescription("user", USER_PARAM_MOCK_ID, "long",
-			Quantifier.single, ItemType.SERVICE_ITEM_ID, null, null, null, null, false, true);
-	// Специальный параметр - ID группы, используется при поиске айтемов, принадлежащих определенной группе
-	public static final ParameterDescription GROUP = new ParameterDescription("group", USER_GROUP_PARAM_MOCK_ID,
-			"integer", Quantifier.single, ItemType.SERVICE_ITEM_ID, null, null, null, null, false, true);
-	
 	private String name = Strings.EMPTY;
 	private int paramId = 0; // ID параметра
 	private DataType type = null; // Тип параметра

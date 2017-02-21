@@ -11,6 +11,9 @@ public class Assoc {
 	private String description;
 	private boolean isTransitive;
 
+	private static final String DEFAULT_NAME = "_default_";
+	private static final Assoc DEFAULT = new Assoc((byte)0, DEFAULT_NAME, "Личный сабайтем", "", false);
+
 	public Assoc(byte id, String name, String caption, String description, boolean isTransitive) {
 		this.id = id;
 		this.name = name;
@@ -41,5 +44,13 @@ public class Assoc {
 
 	public boolean isTransitive() {
 		return isTransitive;
+	}
+
+	public static Assoc getDefault() {
+		return DEFAULT;
+	}
+
+	public static String getDefaultName() {
+		return DEFAULT_NAME;
 	}
 }

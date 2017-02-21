@@ -21,10 +21,10 @@ class TypeHierarchyRegistry {
 	private static final byte SELF = 3;
 
 	// Это отображение нужно для возможности напрямую через ID получать наследников и предшественников айтема
-	private HashMap<Integer, Integer> itemIdIndices = new HashMap<>(); // отображение айтем => индекс
-	private ArrayList<Integer> itemIds = new ArrayList<>(); // Массив айтемов (отображение индекс => ID айтема)
+	private HashMap<String, Integer> itemIndices = new HashMap<>(); // отображение айтем => индекс
+	private ArrayList<String> items = new ArrayList<>(); // Массив айтемов (отображение индекс => ID айтема)
 	// Изначальный (НЕ транзитивное замыкание) список смежности всех типов: тип => список прямых (непосредственных) предшественников
-	private HashMap<Integer, ArrayList<Integer>> basicIncedenceList = new HashMap<>();
+	private HashMap<String, ArrayList<String>> basicIncedenceList = new HashMap<>();
 	// Расширенная матрица смежности (транзитивное замыкание) графа наследования
 	// Если два айетма связаны через наследоввание каким-либо образом (непосредсвенно или нет), то соответсвующая
 	// ячейка матрицы будет содержать значение PARENT или CHILD
@@ -38,28 +38,27 @@ class TypeHierarchyRegistry {
 	 * Конструктор, получает иерархию в виде скиска смежности и перовначально заполняет матрицу смежности
 	 *
 	 * @param basicParentChildPairs
-	 * @param validation
 	 */
-	TypeHierarchyRegistry(ArrayList<int[]> basicParentChildPairs, boolean validation) {
+	TypeHierarchyRegistry(ArrayList<String[]> basicParentChildPairs) {
 		int indexCount = 0;
 		// Заполнение индексов айтемов и определение размеров матрицы
-		for (int[] parentChild : basicParentChildPairs) {
-			int parent = parentChild[0];
-			int child = parentChild[1];
+		for (String[] parentChild : basicParentChildPairs) {
+			String parent = parentChild[0];
+			String child = parentChild[1];
 			// Запоминание индексов айтемов
-			if (!itemIdIndices.containsKey(parent)) {
-				itemIds.add(parent);
+			if (!itemIndices.containsKey(parent)) {
+				items.add(parent);
 				indexCount++;
 			}
-			if (!itemIdIndices.containsKey(child)) {
-				itemIdIndices.put(child, indexCount);
-				itemIds.add(child);
+			if (!itemIndices.containsKey(child)) {
+				itemIndices.put(child, indexCount);
+				items.add(child);
 				indexCount++;
 			}
 			// Заполнение списка связности
-			ArrayList<Integer> parentsList = basicIncedenceList.get(child);
+			ArrayList<String> parentsList = basicIncedenceList.get(child);
 			if (parentsList == null) {
-				parentsList = new ArrayList<Integer>();
+				parentsList = new ArrayList<>();
 				basicIncedenceList.put(child, parentsList);
 			}
 			parentsList.add(parent);
@@ -68,11 +67,11 @@ class TypeHierarchyRegistry {
 		matrixDimension = indexCount;
 		extendedIncedenceMatrix = new byte[matrixDimension][matrixDimension];
 		// Первоначальное заполнение таблицы
-		for (int[] parentChild : basicParentChildPairs) {
-			int parent = parentChild[0];
-			int child = parentChild[1];
-			int i = itemIdIndices.get(parent);
-			int j = itemIdIndices.get(child);
+		for (String[] parentChild : basicParentChildPairs) {
+			String parent = parentChild[0];
+			String child = parentChild[1];
+			int i = itemIndices.get(parent);
+			int j = itemIndices.get(child);
 			extendedIncedenceMatrix[i][i] = SELF;
 			extendedIncedenceMatrix[j][j] = SELF;
 			extendedIncedenceMatrix[i][j] = PARENT;
@@ -124,7 +123,7 @@ class TypeHierarchyRegistry {
 	 */
 	private static TypeHierarchyRegistry createEmptySingleton() {
 		ServerLogger.warn("TypeHierarchyRegistry - NO SINGLETON SET. CREATING EMPTY ONE");
-		return new TypeHierarchyRegistry(new ArrayList<String[]>(), true);
+		return new TypeHierarchyRegistry(new ArrayList<String[]>());
 	}
 
 	/**
@@ -137,17 +136,17 @@ class TypeHierarchyRegistry {
 	/**
 	 * Получить всех потомков айтема (сам айтем тоже считается потомком)
 	 *
-	 * @param itemId
+	 * @param item
 	 * @return массив GeneralItem
 	 */
-	LinkedHashSet<Integer> getItemExtenders(int itemId) {
-		LinkedHashSet<Integer> extenders = new LinkedHashSet<>();
-		extenders.add(itemId);
-		if (itemIdIndices.containsKey(itemId)) {
-			int itemIndex = itemIdIndices.get(itemId);
+	LinkedHashSet<String> getItemExtenders(String item) {
+		LinkedHashSet<String> extenders = new LinkedHashSet<>();
+		extenders.add(item);
+		if (itemIndices.containsKey(item)) {
+			int itemIndex = itemIndices.get(item);
 			for (int j = 0; j < matrixDimension; j++) {
 				if (extendedIncedenceMatrix[itemIndex][j] == PARENT) {
-					extenders.add(itemIds.get(j));
+					extenders.add(items.get(j));
 				}
 			}
 		}
@@ -155,46 +154,22 @@ class TypeHierarchyRegistry {
 	}
 
 	/**
-	 * Получить всех потомков айтема (сам айтем тоже считается потомком)
-	 * Возвращается массив ID айтемов
-	 *
-	 * @param itemId
-	 * @return
-	 */
-	Integer[] getItemExtendersIds(int itemId) {
-		LinkedHashSet<Integer> extenders = getItemExtenders(itemId);
-		return extenders.toArray(new Integer[extenders.size()]);
-	}
-
-	/**
 	 * Получить всех предков айтема
 	 *
-	 * @param itemId
+	 * @param item
 	 * @return массив GeneralItem
 	 */
-	LinkedHashSet<Integer> getItemPredecessors(int itemId) {
-		LinkedHashSet<Integer> predecessors = new LinkedHashSet<>();
-		if (itemIdIndices.containsKey(itemId)) {
-			int itemIndex = itemIdIndices.get(itemId);
+	LinkedHashSet<String> getItemPredecessors(String item) {
+		LinkedHashSet<String> predecessors = new LinkedHashSet<>();
+		if (itemIndices.containsKey(item)) {
+			int itemIndex = itemIndices.get(item);
 			for (int j = 0; j < matrixDimension; j++) {
 				if (extendedIncedenceMatrix[itemIndex][j] == CHILD) {
-					predecessors.add(itemIds.get(j));
+					predecessors.add(items.get(j));
 				}
 			}
 		}
 		return predecessors;
-	}
-
-	/**
-	 * Получить всех предков айтема
-	 * Возвращается массив ID айтемов
-	 *
-	 * @param itemId
-	 * @return массив GeneralItem
-	 */
-	Integer[] getItemPredecessorsIds(int itemId) {
-		LinkedHashSet<Integer> predecessors = getItemPredecessors(itemId);
-		return predecessors.toArray(new Integer[predecessors.size()]);
 	}
 
 	/**
@@ -205,14 +180,14 @@ class TypeHierarchyRegistry {
 	TypeHierarchy getHierarchies(Collection<String> itemNames) {
 		TypeHierarchy root = new TypeHierarchy("ROOT");
 		for (String itemName : itemNames) {
-			Integer item = itemIndeces.get(itemName);
-			if (item == null) {
+			Integer itemIdx = itemIndices.get(itemName);
+			if (itemIdx == null) {
 				TypeHierarchy hchy = new TypeHierarchy(itemName);
 				root.getExtenders().add(hchy);
 			} else {
 				boolean isRoot = true;
 				for (int relative = 0; relative < matrixDimension; relative++) {
-					if (extendedIncedenceMatrix[item][relative] == CHILD) {
+					if (extendedIncedenceMatrix[itemIdx][relative] == CHILD) {
 						isRoot = false;
 						break;
 					}
@@ -220,44 +195,44 @@ class TypeHierarchyRegistry {
 				if (isRoot) {
 					TypeHierarchy hchy = new TypeHierarchy(itemName);
 					root.getExtenders().add(hchy);
-					HashSet<Integer> predecessors = new HashSet<Integer>();
-					predecessors.add(item);
-					addChildren(predecessors, hchy, item);
+					HashSet<Integer> predecessors = new HashSet<>();
+					predecessors.add(itemIdx);
+					addChildren(predecessors, hchy, itemIdx);
 				}
 			}
 		}
 		return root;
 	}
 
-	/**
-	 * Получить базовый тип (предок) айтема из ограниченного списка возможных предков
-	 * !!! Если предков несколько, то возвращается первый встреченный в списке возможный предок
-	 *
-	 * @param possiblePredecessors
-	 * @param itemId
-	 * @return
-	 */
-	int findItemPredecessor(Collection<Integer> possiblePredecessors, int itemId) {
-		if (possiblePredecessors.contains(itemId))
-			return itemId;
-		if (itemIdIndices.containsKey(itemId)) {
-			int itemIndex = itemIdIndices.get(itemId);
-			for (int possiblePred : possiblePredecessors) {
-				Integer predIndex = itemIdIndices.get(possiblePred);
-				if (predIndex != null) {
-					if (extendedIncedenceMatrix[itemIndex][predIndex] == CHILD || extendedIncedenceMatrix[itemIndex][predIndex] == SELF)
-						return possiblePred;
-				}
-			}
-		}
-		return -1;
-	}
+//	/** TODO <delete> delete
+//	 * Получить базовый тип (предок) айтема из ограниченного списка возможных предков
+//	 * !!! Если предков несколько, то возвращается первый встреченный в списке возможный предок
+//	 *
+//	 * @param possiblePredecessors
+//	 * @param item
+//	 * @return
+//	 */
+//	String findItemPredecessor(Collection<String> possiblePredecessors, String item) {
+//		if (possiblePredecessors.contains(item))
+//			return item;
+//		if (itemIndices.containsKey(item)) {
+//			int itemIndex = itemIndices.get(item);
+//			for (String possiblePred : possiblePredecessors) {
+//				Integer predIndex = itemIndices.get(possiblePred);
+//				if (predIndex != null) {
+//					if (extendedIncedenceMatrix[itemIndex][predIndex] == CHILD || extendedIncedenceMatrix[itemIndex][predIndex] == SELF)
+//						return possiblePred;
+//				}
+//			}
+//		}
+//		return null;
+//	}
 
-	private void addChildren(Set<Integer> processed, TypeHierarchy parentHchy, int parent) {
-		if (parent < 0)
+	private void addChildren(Set<Integer> processed, TypeHierarchy parentHchy, int parentIdx) {
+		if (parentIdx < 0)
 			return;
-		for (int item = 0; item < matrixDimension; item++) {
-			if (extendedIncedenceMatrix[parent][item] == PARENT/* && !processed.contains(item)*/) {
+		for (int itemIdx = 0; itemIdx < matrixDimension; itemIdx++) {
+			if (extendedIncedenceMatrix[parentIdx][itemIdx] == PARENT/* && !processed.contains(item)*/) {
 //				boolean add = true;
 //				for (int relative = 0; relative < matrixDimension; relative ++) {
 //					if (extendedIncidenceMatrix[item][relative] == CHILD && parent != relative && processed.contains(relative)) {
@@ -266,10 +241,10 @@ class TypeHierarchyRegistry {
 //					}
 //				}
 //				if (add) {
-				TypeHierarchy newHchy = new TypeHierarchy(items.get(item));
+				TypeHierarchy newHchy = new TypeHierarchy(items.get(itemIdx));
 				parentHchy.getExtenders().add(newHchy);
-				processed.add(item);
-				addChildren(processed, newHchy, item);
+				processed.add(itemIdx);
+				addChildren(processed, newHchy, itemIdx);
 //				}
 			}
 		}
@@ -278,23 +253,23 @@ class TypeHierarchyRegistry {
 	/**
 	 * Получить прямых предков айтема
 	 *
-	 * @param itemName
+	 * @param item
 	 * @return
 	 */
-	ArrayList<Integer> getDirectParents(int itemId) {
-		return basicIncedenceList.get(itemId);
+	ArrayList<String> getDirectParents(String item) {
+		return basicIncedenceList.get(item);
 	}
 
 	/**
 	 * Получить всех предков айтема + сам айтем
 	 *
-	 * @param itemName
+	 * @param item
 	 * @return
 	 * @throws Exception
 	 */
-	Set<Integer> getItemPredecessorsExt(Integer itemId) {
-		Set<String> predecessors = getItemPredecessors(itemName);
-		predecessors.add(itemName);
+	Set<String> getItemPredecessorsExt(String item) {
+		Set<String> predecessors = getItemPredecessors(item);
+		predecessors.add(item);
 		return predecessors;
 	}
 

@@ -1,6 +1,5 @@
 package ecommander.controllers.output;
 
-import ecommander.model.item.RootItemType;
 /**
  * Выводит определение корня айтемов
  * 
@@ -34,7 +33,7 @@ public class RootItemMDWriter extends MetaDataWriter {
 	@Override
 	public XmlDocumentBuilder write(XmlDocumentBuilder xml) {
 		xml.startElement(ROOT_TAG, GROUP_ATTRIBUTE, root.getGroup());
-		for (String subitem : root.getAllSubitemNames()) {
+		for (String subitem : root.getAllSubitems()) {
 			if (root.isSubitemOwn(subitem)) {
 				String quantifier = "single";
 				if (root.isSubitemMultiple(subitem))

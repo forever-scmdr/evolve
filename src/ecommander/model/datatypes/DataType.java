@@ -16,6 +16,8 @@ public abstract class DataType {
 		LONG("long"),
 		DATE("date"),
 		DOUBLE("double"),
+		DECIMAL("decimal"),
+		CURRENCY("currency"),
 		STRING("string"),
 		TINY_TEXT("tiny-text"),
 		SHORT_TEXT("short-text"),
@@ -24,8 +26,7 @@ public abstract class DataType {
 		FILE("file"),
 		PICTURE("picture"),
 		FILTER("filter"),
-		XML("xml"),
-		ASSOCIATED("associated");
+		XML("xml");
 
 		private final String text;
 

@@ -104,7 +104,7 @@ public class MoveItemDBUnit extends DBPersistenceCommandUnit {
 			if (rs.next() || newParent.getId() == item.getId() || newParent.getId() == item.getDirectParentId())
 				throw new EcommanderException("Unable to move item ID " + item.getId() + " to it's subitem (ID " + newParent.getId() + ").");
 			boolean possibleSubitem = false;
-			for (String subitemName : newParent.getItemType().getAllSubitemNames()) {
+			for (String subitemName : newParent.getItemType().getAllSubitems()) {
 				possibleSubitem |= ItemTypeRegistry.getItemExtenders(subitemName).contains(item.getTypeName());
 			}
 			if (!possibleSubitem)
