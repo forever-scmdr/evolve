@@ -7,7 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.ServerLogger;
-import ecommander.model.item.ItemType;
+import ecommander.model.ItemType;
 /**
  * Выводит определение айтема
  * 

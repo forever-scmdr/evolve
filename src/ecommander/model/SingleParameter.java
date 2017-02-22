@@ -1,4 +1,4 @@
-package ecommander.model.item;
+package ecommander.model;
 
 import java.util.ArrayList;
 

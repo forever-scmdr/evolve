@@ -6,9 +6,9 @@ import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
 
-import ecommander.model.item.Compare;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.Compare;
+import ecommander.model.ItemType;
+import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DataTypeMapper;
 import ecommander.persistence.mappers.DBConstants;

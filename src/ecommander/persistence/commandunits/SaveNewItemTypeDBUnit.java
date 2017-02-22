@@ -6,9 +6,9 @@ import ecommander.common.Strings;
 import ecommander.controllers.output.ItemTypeMDWriter;
 import ecommander.controllers.output.ParameterDescriptionMDWriter;
 import ecommander.controllers.output.XmlDocumentBuilder;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.ParameterDescription;
 
 /**
  * Сохраняет новый тип айтема в файле пользовательский айтемов.

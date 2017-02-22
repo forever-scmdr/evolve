@@ -2,8 +2,8 @@ package ecommander.persistence.itemquery;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.ItemType;
+import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 /**

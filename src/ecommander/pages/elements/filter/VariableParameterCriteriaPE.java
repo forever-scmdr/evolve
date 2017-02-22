@@ -1,8 +1,8 @@
 package ecommander.pages.elements.filter;
 
-import ecommander.model.item.Compare;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.Compare;
+import ecommander.model.ItemType;
+import ecommander.model.ParameterDescription;
 import ecommander.pages.elements.ExecutablePagePE;
 import ecommander.pages.elements.PageElement;
 import ecommander.pages.elements.PageElementContainer;

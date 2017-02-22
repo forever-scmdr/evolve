@@ -5,7 +5,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import ecommander.common.ServerLogger;
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.persistence.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;

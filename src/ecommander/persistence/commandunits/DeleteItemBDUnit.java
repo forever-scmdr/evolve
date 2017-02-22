@@ -6,7 +6,7 @@ import java.sql.Statement;
 
 import ecommander.application.extra.ItemEventCommandFactory;
 import ecommander.common.ServerLogger;
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.persistence.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;

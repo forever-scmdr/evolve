@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.itemquery.ItemQuery;
 
 /**

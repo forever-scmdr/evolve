@@ -3,7 +3,7 @@ package ecommander.persistence.commandunits;
 import java.util.ArrayList;
 
 import ecommander.common.exceptions.UserNotAllowedException;
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.persistence.PersistenceCommandUnit;
 import ecommander.persistence.TransactionContext;
 import ecommander.users.User;

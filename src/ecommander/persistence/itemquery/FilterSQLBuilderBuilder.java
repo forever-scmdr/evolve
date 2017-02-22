@@ -4,15 +4,15 @@ import java.util.List;
 import java.util.Stack;
 
 import ecommander.common.exceptions.FilterProcessException;
-import ecommander.model.item.Compare;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ParameterDescription;
-import ecommander.model.item.filter.CriteriaDef;
-import ecommander.model.item.filter.CriteriaGroupDef;
-import ecommander.model.item.filter.FilterDefPart;
-import ecommander.model.item.filter.FilterDefinitionVisitor;
-import ecommander.model.item.filter.FilterRootDef;
-import ecommander.model.item.filter.InputDef;
+import ecommander.model.Compare;
+import ecommander.model.ItemType;
+import ecommander.model.ParameterDescription;
+import ecommander.model.filter.CriteriaDef;
+import ecommander.model.filter.CriteriaGroupDef;
+import ecommander.model.filter.FilterDefPart;
+import ecommander.model.filter.FilterDefinitionVisitor;
+import ecommander.model.filter.FilterRootDef;
+import ecommander.model.filter.InputDef;
 import ecommander.pages.elements.variables.FilterStaticVariablePE;
 
 class FilterSQLBuilderBuilder implements FilterDefinitionVisitor {

@@ -11,9 +11,9 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.ServerLogger;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.ParameterDescription;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.mappers.DBConstants;
 

@@ -32,7 +32,7 @@ public class DateDataType extends FormatDataType {
 	
 	private static int TIMEZONE_HOUR_OFFSET = 100;
 	
-	DateDataType(Type type) {
+	public DateDataType(Type type) {
 		super(type);
 	}
 

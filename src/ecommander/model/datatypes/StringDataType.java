@@ -7,7 +7,7 @@ import ecommander.common.Strings;
 
 public class StringDataType extends FormatDataType {
 
-	StringDataType(Type type) {
+	public StringDataType(Type type) {
 		super(type);
 	}
 

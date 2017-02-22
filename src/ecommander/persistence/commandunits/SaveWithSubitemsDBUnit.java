@@ -2,7 +2,7 @@ package ecommander.persistence.commandunits;
 
 import java.util.ArrayList;
 
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 
 public class SaveWithSubitemsDBUnit extends DBPersistenceCommandUnit{
 

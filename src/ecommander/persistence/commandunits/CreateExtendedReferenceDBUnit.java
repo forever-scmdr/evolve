@@ -8,7 +8,7 @@ import java.sql.Statement;
 import ecommander.common.MysqlConnector;
 import ecommander.common.ServerLogger;
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;

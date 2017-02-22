@@ -10,9 +10,9 @@ import ecommander.common.ServerLogger;
 import ecommander.common.exceptions.FileException;
 import ecommander.controllers.AppContext;
 import ecommander.model.datatypes.FileDataType;
-import ecommander.model.item.Item;
-import ecommander.model.item.MultipleParameter;
-import ecommander.model.item.SingleParameter;
+import ecommander.model.Item;
+import ecommander.model.MultipleParameter;
+import ecommander.model.SingleParameter;
 
 /**
  * Временно сохраняет один из файлов множественного файлового параметра

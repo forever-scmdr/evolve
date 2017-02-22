@@ -2,8 +2,8 @@ package ecommander.controllers.admin;
 
 import ecommander.controllers.output.MetaDataWriter;
 import ecommander.controllers.output.XmlDocumentBuilder;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
 /**
  * Упрощенный айтем без параметров для упрощенного представления в админской части
  * Он также может выводиться в виде XML в следующем формате

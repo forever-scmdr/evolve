@@ -16,6 +16,7 @@ import java.util.Set;
 
 import javax.naming.NamingException;
 
+import ecommander.model.*;
 import ecommander.model.item.*;
 import org.apache.commons.collections4.MultiMapUtils;
 import org.apache.commons.collections4.MultiValuedMap;
@@ -30,8 +31,7 @@ import org.apache.lucene.search.TermQuery;
 import ecommander.common.MysqlConnector;
 import ecommander.common.MysqlConnector.ConnectionCount;
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.item.Compare;
-import ecommander.model.item.filter.FilterDefinition;
+import ecommander.model.filter.FilterDefinition;
 import ecommander.pages.elements.variables.FilterStaticVariablePE;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;

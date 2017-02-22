@@ -1,7 +1,8 @@
-package ecommander.model.datatypes;
+package ecommander.model;
 
 import java.util.HashMap;
 
+import ecommander.model.datatypes.*;
 import ecommander.model.datatypes.DataType.Type;
 
 /**
@@ -11,9 +12,9 @@ import ecommander.model.datatypes.DataType.Type;
  * @author EEEE
  */
 public class DataTypeRegistry {
-	
+
 	private static DataTypeRegistry singleton;
-	
+
 	private HashMap<Type, DataType> dataTypes = null;
 	
 	private DataTypeRegistry() {
@@ -23,6 +24,9 @@ public class DataTypeRegistry {
 		dataTypes.put(Type.LONG, new LongDataType(Type.LONG));
 		dataTypes.put(Type.DATE, new DateDataType(Type.DATE));
 		dataTypes.put(Type.DOUBLE, new DoubleDataType(Type.DOUBLE));
+		dataTypes.put(Type.DECIMAL, new DecimalDataType(Type.DECIMAL, 6));
+		dataTypes.put(Type.CURRENCY, new DecimalDataType(Type.CURRENCY, 2));
+		dataTypes.put(Type.CURRENCY_PRECISE, new DecimalDataType(Type.CURRENCY_PRECISE, 4));
 		dataTypes.put(Type.STRING, new StringDataType(Type.STRING));
 		dataTypes.put(Type.TINY_TEXT, new StringDataType(Type.TINY_TEXT));
 		dataTypes.put(Type.SHORT_TEXT, new StringDataType(Type.SHORT_TEXT));
@@ -33,7 +37,7 @@ public class DataTypeRegistry {
 		dataTypes.put(Type.FILTER, new StringDataType(Type.FILTER));
 		dataTypes.put(Type.XML, new StringDataType(Type.XML));
 	}
-	
+
 	private static DataTypeRegistry getRegistry() {
 		if (singleton == null) singleton = new DataTypeRegistry();
 		return singleton;
@@ -42,10 +46,10 @@ public class DataTypeRegistry {
 	public static DataType getType(Type type) {
 		return getRegistry().dataTypes.get(type);
 	}
-	
+
 	public static boolean isTypeNameValid(String typeName) {
 		try {
-			Type.fromString(typeName);
+			Type.get(typeName);
 			return true;
 		} catch (IllegalArgumentException e) {
 			return false;

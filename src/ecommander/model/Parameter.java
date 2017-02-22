@@ -1,4 +1,4 @@
-package ecommander.model.item;
+package ecommander.model;
 
 import ecommander.common.Strings;
 import ecommander.model.datatypes.DataType.Type;

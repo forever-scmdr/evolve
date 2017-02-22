@@ -1,4 +1,4 @@
-package ecommander.model.item;
+package ecommander.model;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,7 +20,6 @@ import ecommander.common.ServerLogger;
 import ecommander.common.Strings;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.parsing.ModelValidator;
-import ecommander.model.datatypes.DataTypeRegistry;
 
 public class DataModelCreationValidator extends ModelValidator {
 

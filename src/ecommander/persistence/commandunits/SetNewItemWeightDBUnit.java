@@ -6,7 +6,7 @@ import java.sql.Statement;
 
 import ecommander.common.ServerLogger;
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.persistence.mappers.DBConstants;
 /**
  * Поменять порядок следования сабайтемов одного айтема

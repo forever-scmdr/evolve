@@ -1,20 +1,19 @@
 /*
  * Created on 18.08.2007
  */
-package ecommander.model.item;
+package ecommander.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ecommander.users.User;
+import ecommander.model.datatypes.DataType;
 
 /**
  * Создает в памяти полную модель данных
@@ -30,6 +29,9 @@ public class ItemTypeRegistry {
 	private Map<Integer, ItemType> itemsByIds = null; // Числовые ID всех айтемов (для оптимизации)
 
 	private Map<Integer, Integer[]> itemExtenders = null;    // Список всех наследников всех айтемов
+
+	private AssocRegistry assocRegistry = null; // реестр ассоциаций
+	private TypeHierarchyRegistry hierarchyRegistry = null; // реестр наследования
 
 	private static ItemTypeRegistry singleton = new ItemTypeRegistry();
 	private static ItemTypeRegistry tempCopy = null;    // копия реестра, которая возвращается всем потокам кроме обновляющего (modifyThread) во время обновления,
@@ -51,6 +53,8 @@ public class ItemTypeRegistry {
 		itemsByIds = Collections.synchronizedMap(new HashMap<Integer, ItemType>());
 		itemNames = new ArrayList<String>();
 		itemExtenders = new HashMap<Integer, Integer[]>();
+
+		assocRegistry = new AssocRegistry();
 	}
 
 	/**
@@ -191,8 +195,8 @@ public class ItemTypeRegistry {
 	 */
 	public static synchronized TypeHierarchyRegistry createHierarchy(ArrayList<String[]> parentChildPairs, boolean validation) {
 		TypeHierarchyRegistry object = new TypeHierarchyRegistry(parentChildPairs);
-		TypeHierarchyRegistry.setSingleton(object);
 		if (!validation) {
+			getSingleton().hierarchyRegistry = object;
 			getSingleton().createExtendersCache(parentChildPairs);
 		}
 		return object;
@@ -207,7 +211,7 @@ public class ItemTypeRegistry {
 	private void createExtendersCache(ArrayList<String[]> parentChildPairs) {
 		for (String[] strings : parentChildPairs) {
 			String parent = strings[0];
-			LinkedHashSet<String> extenders = TypeHierarchyRegistry.getSingleton().getItemExtenders(parent);
+			LinkedHashSet<String> extenders = hierarchyRegistry.getItemExtenders(parent);
 			ArrayList<Integer> extIds = new ArrayList<>(extenders.size());
 			for (String item: extenders) {
 				extIds.add(getItemTypeId(item));
@@ -224,7 +228,7 @@ public class ItemTypeRegistry {
 	 * @return массив GeneralItem
 	 */
 	public static LinkedHashSet<String> getItemExtenders(String itemName) {
-		return TypeHierarchyRegistry.getSingleton().getItemExtenders(itemName);
+		return getSingleton().hierarchyRegistry.getItemExtenders(itemName);
 	}
 
 	/**
@@ -251,7 +255,7 @@ public class ItemTypeRegistry {
 	 * @return массив GeneralItem
 	 */
 	public static LinkedHashSet<String> getItemPredecessors(String itemName) {
-		return TypeHierarchyRegistry.getSingleton().getItemPredecessors(itemName);
+		return getSingleton().hierarchyRegistry.getItemPredecessors(itemName);
 	}
 
 	/**
@@ -260,7 +264,7 @@ public class ItemTypeRegistry {
 	 * @return
 	 */
 	public static TypeHierarchy getHierarchies(Collection<String> itemNames) {
-		return TypeHierarchyRegistry.getSingleton().getHierarchies(itemNames);
+		return getSingleton().hierarchyRegistry.getHierarchies(itemNames);
 	}
 
 //	/** TODO <delete>
@@ -282,7 +286,7 @@ public class ItemTypeRegistry {
 	 * @return
 	 */
 	public static ArrayList<String> getDirectParents(String itemName) {
-		return TypeHierarchyRegistry.getSingleton().getDirectParents(itemName);
+		return getSingleton().hierarchyRegistry.getDirectParents(itemName);
 	}
 
 	/**
@@ -293,6 +297,32 @@ public class ItemTypeRegistry {
 	 * @throws Exception
 	 */
 	public static Set<String> getItemPredecessorsExt(String itemName) {
-		return TypeHierarchyRegistry.getSingleton().getItemPredecessorsExt(itemName);
+		return getSingleton().hierarchyRegistry.getItemPredecessorsExt(itemName);
+	}
+
+	/**
+	 * Добавить ассоциацию
+	 * @param assoc
+	 */
+	public static void addAssoc(Assoc assoc) {
+		getSingleton().assocRegistry.addAssoc(assoc);
+	}
+
+	/**
+	 * Получить ассоциацию
+	 * @param name
+	 * @return
+	 */
+	public static Assoc getAssoc(String name) {
+		return getSingleton().getAssoc(name);
+	}
+
+	/**
+	 * Получить ассоциацию
+	 * @param id
+	 * @return
+	 */
+	public static Assoc getAssoc(int id) {
+		return getSingleton().getAssoc(id);
 	}
 }

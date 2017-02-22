@@ -14,9 +14,9 @@ import ecommander.common.ServerLogger;
 import ecommander.common.exceptions.EcommanderException;
 import ecommander.controllers.AppContext;
 import ecommander.model.datatypes.DataType.Type;
-import ecommander.model.item.Item;
-import ecommander.model.item.ItemTypeRegistry;
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.ParameterDescription;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
 

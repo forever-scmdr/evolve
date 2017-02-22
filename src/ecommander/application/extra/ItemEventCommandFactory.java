@@ -1,6 +1,6 @@
 package ecommander.application.extra;
 
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.persistence.PersistenceCommandUnit;
 /**
  * Интерфейс фабрики для создания команд, которые должны выполнятся по событию, которое происходит

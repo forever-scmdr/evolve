@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import ecommander.common.exceptions.EcommanderException;
 import ecommander.common.exceptions.PageNotFoundException;
 import ecommander.common.exceptions.UserNotAllowedException;
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.pages.elements.ExecutableItemPE.AllFoundIterator;
 import ecommander.pages.elements.ResultPE.ResultType;
 import ecommander.pages.elements.variables.StaticVariablePE;

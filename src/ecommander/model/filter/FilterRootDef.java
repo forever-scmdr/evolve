@@ -1,4 +1,4 @@
-package ecommander.model.item.filter;
+package ecommander.model.filter;
 
 import ecommander.controllers.output.XmlDocumentBuilder;
 

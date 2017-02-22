@@ -4,8 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.Strings;
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.item.Compare;
-import ecommander.model.item.ItemType;
+import ecommander.model.Compare;
+import ecommander.model.ItemType;
 import ecommander.pages.elements.ExecutablePagePE;
 import ecommander.pages.elements.PageElement;
 import ecommander.pages.elements.PageElementContainer;

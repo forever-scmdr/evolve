@@ -1,9 +1,8 @@
 /*
  * Created on 16.09.2008
  */
-package ecommander.model.item;
+package ecommander.model;
 
-import java.sql.SQLException;
 import java.util.*;
 
 import ecommander.common.ServerLogger;
@@ -30,9 +29,6 @@ class TypeHierarchyRegistry {
 	// ячейка матрицы будет содержать значение PARENT или CHILD
 	private byte[][] extendedIncedenceMatrix = null; // i - родитель, j - потомок
 	private int matrixDimension = 0;
-
-
-	private static TypeHierarchyRegistry SINGLETON = null;
 
 	/**
 	 * Конструктор, получает иерархию в виде скиска смежности и перовначально заполняет матрицу смежности
@@ -105,32 +101,13 @@ class TypeHierarchyRegistry {
 	}
 
 	/**
-	 * Получить синглетон
-	 *
-	 * @return
-	 * @throws SQLException
-	 */
-	static TypeHierarchyRegistry getSingleton() {
-		if (SINGLETON == null)
-			SINGLETON = createEmptySingleton();
-		return SINGLETON;
-	}
-
-	/**
 	 * Заглушка чтобы не было NullPointerException
 	 *
 	 * @return
 	 */
-	private static TypeHierarchyRegistry createEmptySingleton() {
+	static TypeHierarchyRegistry createEmpty() {
 		ServerLogger.warn("TypeHierarchyRegistry - NO SINGLETON SET. CREATING EMPTY ONE");
 		return new TypeHierarchyRegistry(new ArrayList<String[]>());
-	}
-
-	/**
-	 * Установить новый синглетон для этого класса
-	 */
-	static void setSingleton(TypeHierarchyRegistry newInstance) {
-		SINGLETON = newInstance;
 	}
 
 	/**

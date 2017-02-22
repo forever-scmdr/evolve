@@ -1,4 +1,4 @@
-package ecommander.model.item.filter;
+package ecommander.model.filter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,7 +42,7 @@ public class CriteriaDef extends FilterDefPart {
 		this.pattern = pattern;
 		this.type = null;
 		if (!StringUtils.isBlank(paramTypeName))
-			type = Type.fromString(paramTypeName);
+			type = Type.get(paramTypeName);
 		if (pattern == null) this.pattern = Strings.EMPTY;
 	}
 	
@@ -60,7 +60,7 @@ public class CriteriaDef extends FilterDefPart {
 		this.pattern = pattern;
 		this.type = null;
 		if (!StringUtils.isBlank(paramTypeName))
-			type = Type.fromString(paramTypeName);
+			type = Type.get(paramTypeName);
 		if (pattern == null) this.pattern = Strings.EMPTY;
 	}
 	

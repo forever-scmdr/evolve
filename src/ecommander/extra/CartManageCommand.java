@@ -14,7 +14,7 @@ import org.joda.time.LocalDate;
 
 import ecommander.application.extra.ItemUtils;
 import ecommander.extra._generated.ItemNames;
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.pages.elements.Command;
 import ecommander.pages.elements.ItemVariablesContainer;
 import ecommander.pages.elements.ItemVariablesContainer.ItemVariables;

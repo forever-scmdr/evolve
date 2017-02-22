@@ -1,4 +1,4 @@
-package ecommander.model.item.filter;
+package ecommander.model.filter;
 
 import java.io.IOException;
 import java.io.StringReader;

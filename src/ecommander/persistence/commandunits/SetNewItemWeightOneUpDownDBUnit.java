@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.persistence.mappers.DBConstants;
 /**
  * Поднять или опустить айтем на одну позицию вверх или вних

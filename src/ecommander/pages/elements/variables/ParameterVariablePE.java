@@ -7,11 +7,11 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.Strings;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
-import ecommander.model.item.MultipleParameter;
-import ecommander.model.item.Parameter;
-import ecommander.model.item.SingleParameter;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.MultipleParameter;
+import ecommander.model.Parameter;
+import ecommander.model.SingleParameter;
 import ecommander.pages.elements.ExecutableItemPE;
 import ecommander.pages.elements.ExecutableItemPE.AllFoundIterator;
 import ecommander.pages.elements.ExecutablePagePE;

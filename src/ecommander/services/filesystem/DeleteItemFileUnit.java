@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 import ecommander.controllers.AppContext;
-import ecommander.model.item.Item;
-import ecommander.model.item.MultipleParameter;
-import ecommander.model.item.SingleParameter;
+import ecommander.model.Item;
+import ecommander.model.MultipleParameter;
+import ecommander.model.SingleParameter;
 
 /**
  * Удаляет файлы - множественные параметры, также удаляет значение соответствующего параметра

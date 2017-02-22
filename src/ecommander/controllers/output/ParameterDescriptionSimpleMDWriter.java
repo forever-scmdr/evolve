@@ -1,6 +1,6 @@
 package ecommander.controllers.output;
 
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.ParameterDescription;
 /**
  * Выводит определение параметра
  * 

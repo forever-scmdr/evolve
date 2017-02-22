@@ -6,7 +6,7 @@ import org.apache.commons.io.FileUtils;
 
 import ecommander.common.Strings;
 import ecommander.controllers.AppContext;
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 
 /**
  * Базовый класс для всех команд, которые работают с айтемом и его файлами

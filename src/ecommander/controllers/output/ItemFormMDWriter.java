@@ -8,9 +8,9 @@ import java.util.Map;
 
 import ecommander.common.Strings;
 import ecommander.controllers.AppContext;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.ParameterDescription;
 import ecommander.pages.elements.ItemHttpPostForm;
 import ecommander.view.domain.Domain;
 import ecommander.view.domain.DomainRegistry;

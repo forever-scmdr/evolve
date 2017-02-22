@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import ecommander.model.item.Compare;
+import ecommander.model.Compare;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.Attr;
@@ -22,7 +22,7 @@ import ecommander.common.ServerLogger;
 import ecommander.common.exceptions.ValidationException;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
-import ecommander.model.item.LOGICAL_SIGN;
+import ecommander.model.LOGICAL_SIGN;
 import ecommander.pages.elements.CommandPE;
 import ecommander.pages.elements.InputPE;
 import ecommander.pages.elements.ItemFormPE;

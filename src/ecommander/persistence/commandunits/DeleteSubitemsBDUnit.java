@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import ecommander.common.ServerLogger;
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.LuceneIndexMapper;

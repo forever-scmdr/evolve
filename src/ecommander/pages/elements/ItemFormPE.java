@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.model.item.Item;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
+import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.pages.elements.variables.VariablePE;
 
 /**

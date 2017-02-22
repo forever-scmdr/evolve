@@ -1,4 +1,4 @@
-package ecommander.model.item;
+package ecommander.model;
 
 import org.apache.commons.lang3.StringUtils;
 

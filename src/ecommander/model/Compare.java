@@ -1,4 +1,4 @@
-package ecommander.model.item;
+package ecommander.model;
 /**
  * Способ сравнения с образцом.
  * Образец - одно или несколько значений некоторого параметра айтема.

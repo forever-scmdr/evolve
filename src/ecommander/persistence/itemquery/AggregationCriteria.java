@@ -3,7 +3,7 @@ package ecommander.persistence.itemquery;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 /**

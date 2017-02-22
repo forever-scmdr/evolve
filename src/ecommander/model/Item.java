@@ -1,4 +1,4 @@
-package ecommander.model.item;
+package ecommander.model;
 
 import java.io.File;
 import java.io.StringReader;
@@ -106,22 +106,30 @@ public class Item {
 	 **************************************************************************/
 	
 	private long id;
-	private long directParentId; // Непосредственный родитель айтема в хранишице айтемов (базе данных либо в сеансе)
-	private long contextParentId; 	// ID родителя айтема в данном некотором контексте. 
+
+	/*
+	 * Контекстный предок и контекстная ассоциация в некоторых случаях иметю значение, а в некоторых не имеют и
+	 * в принципе могут вообще не задаваться.
+	 */
+	private long contextParentId; 	// ID родителя айтема в данном некотором контексте.
 									// Например, при загрузке непрямых наследников, предок всех этих наследников будет их родителем в данном контексте
 									// (контектсе загрузки непрямых наследников)
-									// Этот параметр нигде постоянно не хранится и существует только в контексте выполнения
-	private String predecessorsPath; // Путь через предшественников в виде 2/225/5665/1001/ Этот путь НЕ содержит ID самого атйема
-	private long refId;
+									// Также при создании нового айтема. Тогда этот предок будет непосредственным предком
+									// айтема, что в совокупности с ассоциацией определяет где этот айтем будет размещен в БД
+									// (контекст создания айтема)
+	private Assoc contextAssoc = Assoc.getDefault();     // Ассоция айтема в текущем контектсе.
+									// Та ассоциация, которой айтем связан с контекстным предком
+									// Айтем может быть ассоциирован со многими предками многими ассоцациями (в т.ч. несколькими с одним предком),
+									// но в каждом определенном контексте у айтема имеет значение только один предок и одна ассоциация.
 	private int ownerGroupId = User.NO_GROUP_ID; // Группа пользователей установлена в любом случае. И для общих и для персональных айтемов
 	private long ownerUserId = User.NO_USER_ID; // ID юзера владельца этого айтема. Не равен 0 только в случае, если айтем является персональным
 	private String key = null; // Составляется из параметров айтема, чтобы юзер в системе управления понимал, что это за айтем
 	private String keyUnique = null; // уникальный текстовый ключ
 	private String oldKeyUnique = null; // старый уникальный ключ (нужен для корректного возвращения согласованной версии айтема, поскольку не хранится в строке XML)
 	private ItemType itemType = null; // Тип айтема
-	private LinkedHashMap<Integer, Parameter> paramMap = new LinkedHashMap<Integer, Parameter>(); // Все параметры (не только одиночные)
-																									// параметры (имя параметра => объект
-																									// Parameter)
+	private LinkedHashMap<Integer, Parameter> paramMap = new LinkedHashMap<>(); // Все параметры (не только одиночные)
+																				// параметры (имя параметра => объект
+																				// Parameter)
 	private HashMap<String, String> extras; // дополнительные значения (не параметры). Они существуют только в памяти, в БД не хранятся
 											// могут использоваться когда айтем создается в сеансе или в форме (поля extra формы переписываются сюда)
 	private String parametersXML = Strings.EMPTY; // Все параметры, записанные в виде XML
@@ -137,10 +145,8 @@ public class Item {
 	 */
 	public Item(Item src) {
 		this.id = src.id;
-		this.directParentId = src.directParentId;
+		this.contextAssoc = src.contextAssoc;
 		this.contextParentId = src.contextParentId;
-		this.predecessorsPath = src.predecessorsPath;
-		this.refId = src.refId;
 		this.ownerGroupId = src.ownerGroupId;
 		this.ownerUserId = src.ownerUserId;
 		this.key = src.key;
@@ -157,53 +163,23 @@ public class Item {
 		
 	}
 	
-	private Item(ItemType itemDesc, long parentId, String predIdPath, long userId, int groupId) {
+	private Item(ItemType itemDesc, Assoc contextAssoc, long parentId, long userId, int groupId) {
 		this.itemType = itemDesc;
 		this.ownerUserId = userId;
 		this.ownerGroupId = groupId;
-		this.directParentId = parentId;
+		this.contextAssoc = contextAssoc;
 		this.contextParentId = parentId;
-		this.predecessorsPath = predIdPath;
 		this.id = DEFAULT_ID;
-		this.refId = DEFAULT_ID;
 		this.key = itemDesc.getCaption();
 		this.mapConsistent = true;
 		this.stringConsistent = true;
 	}
 
-	private Item(ItemType itemDesc, long parentId, long userId, int groupId) {
-		this.itemType = itemDesc;
-		this.ownerUserId = userId;
-		this.ownerGroupId = groupId;
-		this.directParentId = parentId;
-		this.contextParentId = parentId;
-		this.id = DEFAULT_ID;
-		this.refId = DEFAULT_ID;
-		this.key = itemDesc.getCaption();
-		this.mapConsistent = true;
-		this.stringConsistent = true;
-	}
-
-	private Item(ItemType itemDesc, long refItemId, long parentId, long userId, int groupId) {
-		this.itemType = itemDesc;
-		this.refId = refItemId;
-		this.ownerUserId = userId;
-		this.ownerGroupId = groupId;
-		this.directParentId = parentId;
-		this.contextParentId = parentId;
-		this.id = DEFAULT_ID;
-		this.key = itemDesc.getCaption();
-		this.mapConsistent = true;
-		this.stringConsistent = true;
-	}
-	
-	private Item(ItemType itemDesc, long itemId, long parentId, String predIdPath, long refId, long userId, int groupId, int weight,
+	private Item(ItemType itemDesc, long itemId, Assoc contextAssoc, long parentId, long userId, int groupId, int weight,
 			String key, String parametersXML, String keyUnique, long timeUpdated) {
 		this.id = itemId;
-		this.refId = refId;
-		this.directParentId = parentId;
+		this.contextAssoc = contextAssoc;
 		this.contextParentId = parentId;
-		this.predecessorsPath = predIdPath;
 		this.itemType = itemDesc;
 		this.ownerUserId = userId;
 		this.ownerGroupId = groupId;
@@ -223,45 +199,17 @@ public class Item {
 	 * @param parent
 	 * @return
 	 */
-	public static Item newChildItem(ItemType itemDesc, Item parent) {
-		return new Item(itemDesc, parent.getId(), parent.getPredecessorsAndSelfPath(), parent.getOwnerUserId(), parent.getOwnerGroupId());
-	}
-	/**
-	 * Констркуктор для создания новых айтемов в случае когда есть загруженный предок.
-	 * @param itemDesc
-	 * @param parent
-	 * @return
-	 */
-	public static Item newChildItem(ItemType itemDesc, Item parent, long userId, int groupId) {
-		return new Item(itemDesc, parent.getId(), parent.getPredecessorsAndSelfPath(), userId, groupId);
+	public static Item newChildItem(ItemType itemDesc, Assoc assoc, Item parent) {
+		return new Item(itemDesc, assoc, parent.getId(), parent.getOwnerUserId(), parent.getOwnerGroupId());
 	}
 	/**
 	 * Конструктор для создания новых айтемов (которых еще нет в БД или сеансе)
 	 * @param itemDesc
-	 * @param userId
-	 * @param groupId
+	 * @param parent
+	 * @return
 	 */
-	public static Item newItem(ItemType itemDesc, long parentId, String predIdPath, long userId, int groupId) {
-		return new Item(itemDesc, parentId, predIdPath, userId, groupId);
-	}
-	/**
-	 * Конструктор для создания новых айтемов (которых еще нет в БД или сеансе) - без пути к предкам
-	 * Путь к предкам загружается в процессе выполнения команды создания айтема, если это надо
-	 * @param itemDesc
-	 * @param userId
-	 * @param groupId
-	 */
-	public static Item newItem(ItemType itemDesc, long parentId, long userId, int groupId) {
-		return new Item(itemDesc, parentId, userId, groupId);
-	}
-	/**
-	 * Конструктор для создания новых айтемов-ссылок (которых еще нет в БД или сеансе)
-	 * @param itemDesc
-	 * @param userId
-	 * @param groupId
-	 */
-	public static Item newReference(ItemType itemDesc, long refItemId, long parentId, long userId, int groupId) {
-		return new Item(itemDesc, refItemId, parentId, userId, groupId);
+	public static Item newItem(ItemType itemDesc, Assoc assoc, long parentId, long userId, int groupId) {
+		return new Item(itemDesc, assoc, parentId, userId, groupId);
 	}
 	/**
 	 * Констркуктор для создания новых сеансовых корневых айтемов
@@ -269,7 +217,7 @@ public class Item {
 	 * @return
 	 */
 	public static Item newSessionRootItem(ItemType itemDesc) {
-		return new Item(itemDesc, 0, 0, 0, 0);
+		return new Item(itemDesc, Assoc.getDefault(), 0, 0, 0);
 	}
 	/**
 	 * Создание айтема при загрузке айтемов из базона или из сеанса (когда айтем не новый, а уже существующий)
@@ -284,16 +232,9 @@ public class Item {
 	 * @param key
 	 * @param parametersXML
 	 */	
-	public static Item existingItem(ItemType itemDesc, long itemId, long parentId, String predIdPath, long refId, long userId, int groupId, int weight,
+	public static Item existingItem(ItemType itemDesc, long itemId, Assoc assoc, long parentId, long userId, int groupId, int weight,
 			String key, String parametersXML, String keyUnique, long timeUpdated) {
-		return new Item(itemDesc, itemId, parentId, predIdPath, refId, userId, groupId, weight, key, parametersXML, keyUnique, timeUpdated);
-	}
-	/**
-	 * Является ли айтем ссыкой
-	 * @return
-	 */
-	public final boolean isReference() {
-		return id != refId && refId != DEFAULT_ID;
+		return new Item(itemDesc, itemId, assoc, parentId, userId, groupId, weight, key, parametersXML, keyUnique, timeUpdated);
 	}
 	/**
 	 * Является ли айтем новым
@@ -515,7 +456,7 @@ public class Item {
 		if (!isUserDefined) {
 			xml.startElement(param.getName());
 			if (param.getDesc().getDataType().hasMeta()) {
-				HashMap<String, String> meta = param.getDesc().getDataType().getMeta(param.getValue(), getPredecessorsAndSelfPath());
+				HashMap<String, String> meta = param.getDesc().getDataType().getMeta(param.getValue());
 				ArrayList<String> attrs = new ArrayList<String>();
 				for (String attr : meta.keySet()) {
 					attrs.add(attr);
@@ -578,30 +519,11 @@ public class Item {
 		stringConsistent = false;
 	}
 	/**
-	 * Использовать только в крайнем случае (!!!)
-	 * Также устанавливает непосредственного родителя контекстным родителем
-	 * @param parentId
-	 */
-	public final void setDirectParentId(long parentId) {
-		if (parentId > 0)
-			predecessorsPath = StringUtils.replaceOnce(predecessorsPath, Strings.SLASH + directParentId + Strings.SLASH,
-					Strings.SLASH + parentId + Strings.SLASH);
-		directParentId = parentId;
-		contextParentId = parentId;
-	}
-	/**
 	 * Установить контекстного родителя (родителя в контексте выполнения)
 	 * @param parentId
 	 */
 	public final void setContextParentId(long parentId) {
 		contextParentId = parentId;
-	}
-	/**
-	 * Использовать только в крайнем случае (!!!)
-	 * @param predIdPath
-	 */
-	public final void setPredecessorsPath(String predIdPath) {
-		this.predecessorsPath = predIdPath;
 	}
 	/**
 	 * Возвращает значение одиночного парамтера
@@ -658,7 +580,7 @@ public class Item {
 	public final Item getConsistentVersion() {
 		if (stringConsistent)
 			return this;
-		return new Item(itemType, id, directParentId, predecessorsPath, refId, ownerUserId, ownerGroupId, childWeight, key, parametersXML,
+		return new Item(itemType, id, contextAssoc, contextParentId, ownerUserId, ownerGroupId, childWeight, key, parametersXML,
 				oldKeyUnique, timeUpdated);
 	}
 	/**
@@ -699,20 +621,6 @@ public class Item {
 	 */
 	public final void setId(long id) {
 		this.id = id;
-		this.refId = id;
-	}
-	/**
-	 * @return
-	 */
-	public final long getRefId() {
-		return refId;
-	}
-	/**
-	 * Установить новый REF_ID, использовать только в крайних случаях
-	 * @param id
-	 */
-	public final void setRefId(long refId) {
-		this.refId = refId;
 	}
 	/**
 	 * @return
@@ -766,26 +674,14 @@ public class Item {
 	/**
 	 * @return
 	 */
-	public final long getDirectParentId() {
-		return directParentId;
+	public final Assoc getContextAssoc() {
+		return contextAssoc;
 	}
 	/**
 	 * @return
 	 */
 	public final long getContextParentId() {
 		return contextParentId;
-	}
-	/**
-	 * @return
-	 */
-	public final String getPredecessorsPath() {
-		return predecessorsPath;
-	}
-	/**
-	 * @return
-	 */
-	public final String getPredecessorsAndSelfPath() {
-		return predecessorsPath + refId + Strings.SLASH;
 	}
 	/**
 	 * @return
@@ -848,10 +744,10 @@ public class Item {
 		try {
 			Collection<ParameterDescription> paramsToCopy = null;
 			// Если параметры переносятся из айтема-предка в айтем-потомок
-			if (TypeHierarchyRegistry.getSingleton().getItemPredecessorsExt(destination.getTypeName()).contains(source.getTypeName()))
+			if (ItemTypeRegistry.getItemPredecessorsExt(destination.getTypeName()).contains(source.getTypeName()))
 				paramsToCopy = source.itemType.getParameterList();
 			// Если параметры переносятся из айтема-потомка в айтем-предок
-			else if (TypeHierarchyRegistry.getSingleton().getItemPredecessorsExt(source.getTypeName()).contains(destination.getTypeName()))
+			else if (ItemTypeRegistry.getItemPredecessorsExt(source.getTypeName()).contains(destination.getTypeName()))
 				paramsToCopy = destination.itemType.getParameterList();
 			else
 				return;

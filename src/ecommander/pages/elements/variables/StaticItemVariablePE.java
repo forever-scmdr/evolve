@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.pages.elements.ExecutablePagePE;
 /**
  * Неитерируемая версия переменной страничного айтема

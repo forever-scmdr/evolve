@@ -8,9 +8,9 @@ import org.jsoup.nodes.Element;
 
 import ecommander.common.ServerLogger;
 import ecommander.controllers.AppContext;
-import ecommander.model.item.Item;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
+import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.DelayedTransaction;
 import ecommander.persistence.commandunits.CreateExtendedReferenceDBUnit;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;

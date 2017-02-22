@@ -1,6 +1,5 @@
-package ecommander.model.item;
+package ecommander.model;
 
-import java.util.Collections;
 import java.util.HashMap;
 
 /**

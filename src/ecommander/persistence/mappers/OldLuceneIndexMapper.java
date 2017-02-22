@@ -50,12 +50,12 @@ import org.xml.sax.SAXException;
 import ecommander.common.MysqlConnector;
 import ecommander.common.ServerLogger;
 import ecommander.controllers.AppContext;
-import ecommander.model.item.Item;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
-import ecommander.model.item.MultipleParameter;
-import ecommander.model.item.ParameterDescription;
-import ecommander.model.item.SingleParameter;
+import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.MultipleParameter;
+import ecommander.model.ParameterDescription;
+import ecommander.model.SingleParameter;
 
 public class OldLuceneIndexMapper {
 	/**

@@ -2,8 +2,8 @@
 package ecommander.extra._generated;
 
 import java.util.List;
-import ecommander.model.item.Item;
-import ecommander.model.item.ItemTypeRegistry;
+import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
 
 public class Free_room
     extends Item

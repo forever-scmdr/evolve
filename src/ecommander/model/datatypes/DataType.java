@@ -18,6 +18,7 @@ public abstract class DataType {
 		DOUBLE("double"),
 		DECIMAL("decimal"),
 		CURRENCY("currency"),
+		CURRENCY_PRECISE("currency-precise"),
 		STRING("string"),
 		TINY_TEXT("tiny-text"),
 		SHORT_TEXT("short-text"),
@@ -43,7 +44,7 @@ public abstract class DataType {
 			return text;
 		}
 
-		public static Type fromString(String text) {
+		public static Type get(String text) {
 			if (text != null) {
 				for (Type b : Type.values()) {
 					if (text.equalsIgnoreCase(b.text)) {
@@ -78,7 +79,7 @@ public abstract class DataType {
 	/**
 	 * Создать значение соответствующего типа по строке
 	 * @param stringValue
-	 * @param format
+	 * @param formatter
 	 * @return
 	 */
 	public abstract Object createValue(String stringValue, Object formatter);

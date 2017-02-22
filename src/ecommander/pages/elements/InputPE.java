@@ -2,7 +2,7 @@ package ecommander.pages.elements;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 /**
  * Поле ввода, которое относится к определенному айтему
  * @author EEEE

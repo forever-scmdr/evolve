@@ -21,7 +21,7 @@ public class FileDataType extends StringDataType {
 	private static final String CREATED_META = "created"; // дата создания файла
 	private static final String EXTENSION_META = "extenstion"; // расширение файла
 	
-	FileDataType(Type type) {
+	public FileDataType(Type type) {
 		super(type);
 	}
 

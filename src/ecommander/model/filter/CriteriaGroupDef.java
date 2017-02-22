@@ -1,8 +1,8 @@
-package ecommander.model.item.filter;
+package ecommander.model.filter;
 
 import ecommander.common.exceptions.EcommanderException;
 import ecommander.controllers.output.XmlDocumentBuilder;
-import ecommander.model.item.LOGICAL_SIGN;
+import ecommander.model.LOGICAL_SIGN;
 
 /**
  * Группа критериев с одним названием, описанием и логическим знаком, который 

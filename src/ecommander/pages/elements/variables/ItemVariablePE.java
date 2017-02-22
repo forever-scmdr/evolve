@@ -3,7 +3,7 @@ package ecommander.pages.elements.variables;
 import java.util.ArrayList;
 import java.util.List;
 
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.pages.elements.ExecutableItemPE;
 import ecommander.pages.elements.ExecutableItemPE.AllFoundIterator;
 import ecommander.pages.elements.ExecutablePagePE;

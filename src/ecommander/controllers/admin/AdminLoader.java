@@ -12,9 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.MysqlConnector;
 import ecommander.common.ServerLogger;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeContainer;
-import ecommander.model.item.ItemTypeRegistry;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeContainer;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.users.User;

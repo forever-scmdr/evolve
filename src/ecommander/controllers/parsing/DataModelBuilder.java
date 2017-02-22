@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import ecommander.common.exceptions.ValidationException;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
-import ecommander.model.item.DataModelCreationValidator;
-import ecommander.model.item.ItemTypeRegistry;
+import ecommander.model.DataModelCreationValidator;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.DelayedTransaction;
 
 /**

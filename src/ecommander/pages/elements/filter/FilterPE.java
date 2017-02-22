@@ -3,16 +3,16 @@ package ecommander.pages.elements.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import ecommander.model.item.Compare;
+import ecommander.model.Compare;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.ServerLogger;
 import ecommander.common.Strings;
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
-import ecommander.model.item.LOGICAL_SIGN;
-import ecommander.model.item.filter.FilterDefinition;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.LOGICAL_SIGN;
+import ecommander.model.filter.FilterDefinition;
 import ecommander.pages.elements.CacheablePE;
 import ecommander.pages.elements.ExecutablePagePE;
 import ecommander.pages.elements.ItemPE;

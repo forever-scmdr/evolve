@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import ecommander.application.extra.ItemEventCommandFactory;
 import ecommander.common.ServerLogger;
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.persistence.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;

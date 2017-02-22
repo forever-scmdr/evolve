@@ -21,10 +21,10 @@ import com.sun.codemodel.JVar;
 import ecommander.common.ServerLogger;
 import ecommander.controllers.AppContext;
 import ecommander.model.datatypes.DataType.Type;
-import ecommander.model.item.Item;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.ParameterDescription;
 /**
  * Генерация СТроковых констант айтемов и классов айтемов
  * @author E

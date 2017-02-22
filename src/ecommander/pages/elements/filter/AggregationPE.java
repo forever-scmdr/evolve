@@ -3,8 +3,8 @@ package ecommander.pages.elements.filter;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.item.Compare;
-import ecommander.model.item.LOGICAL_SIGN;
+import ecommander.model.Compare;
+import ecommander.model.LOGICAL_SIGN;
 import ecommander.pages.elements.ExecutablePagePE;
 import ecommander.pages.elements.PageElement;
 import ecommander.pages.elements.PageElementContainer;

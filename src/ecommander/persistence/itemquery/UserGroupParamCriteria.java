@@ -1,7 +1,7 @@
 package ecommander.persistence.itemquery;
 
-import ecommander.model.item.Compare;
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.Compare;
+import ecommander.model.ParameterDescription;
 /**
  * Одиночный критерий - Один параметр, одно значение
  * @author EEEE

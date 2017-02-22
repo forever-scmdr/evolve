@@ -19,7 +19,7 @@ import javax.mail.internet.MimeMultipart;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.persistence.itemquery.ItemQuery;
 
 public class EmailUtils {

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import ecommander.common.ServerLogger;
 import ecommander.common.exceptions.UserNotAllowedException;
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.users.User;
 

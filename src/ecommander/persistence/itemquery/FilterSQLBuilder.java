@@ -6,10 +6,10 @@ import java.util.List;
 
 import org.apache.lucene.search.BooleanQuery;
 
-import ecommander.model.item.Compare;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.LOGICAL_SIGN;
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.Compare;
+import ecommander.model.ItemType;
+import ecommander.model.LOGICAL_SIGN;
+import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
 
 /**

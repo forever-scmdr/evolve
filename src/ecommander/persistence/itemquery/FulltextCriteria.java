@@ -3,7 +3,7 @@ package ecommander.persistence.itemquery;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import ecommander.model.item.Compare;
+import ecommander.model.Compare;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.BooleanClause.Occur;

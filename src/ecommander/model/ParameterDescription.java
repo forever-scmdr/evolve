@@ -1,12 +1,10 @@
-package ecommander.model.item;
+package ecommander.model;
 
+import ecommander.model.datatypes.DataType;
+import ecommander.model.datatypes.FormatDataType;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.Strings;
-import ecommander.model.datatypes.DataType;
-import ecommander.model.datatypes.DataType.Type;
-import ecommander.model.datatypes.DataTypeRegistry;
-import ecommander.model.datatypes.FormatDataType;
 
 public final class ParameterDescription {
 	
@@ -32,7 +30,10 @@ public final class ParameterDescription {
 	private Object formatter = null;
 	private boolean isHidden = false; // параметр по умолчанию скрыт при редактировании в системе управления
 	private boolean isVirtual = false; // параметр не доступен для редактирования пользователем, только для специальных операций
-	
+	private String defaultValue = null; // Значение по умолчанию в виде строки
+
+	private ComputedDescription computed = null; // содержит описание вычисляемого параметра, если оно есть
+
 	private TextIndex textIndex = TextIndex.none; // Индексировать ли этот параметр для полнотекстового поиска
 	private float textIndexBoost = -1f; // Увеличение веса параметра в поисковой выдаче
 	private String textIndexParamName; // Название параметра, в котором сохраняется значение этого параметра при полнотекстовом индексировании
@@ -41,11 +42,11 @@ public final class ParameterDescription {
 	private boolean needsDBIndex = true; // нужно ли сохранять в индекс базы данных значение этого параметра
 	
 	public ParameterDescription(String name, int paramId, String type, Quantifier quantifier, int parentItemId, String domainName, String caption,
-			String description, String format, boolean isVirtual, boolean isHidden) {
+	                            String description, String format, boolean isVirtual, boolean isHidden, String defaultValue, ComputedDescription.Func computedFunc) {
 		super();
 		this.name = name;
 		this.paramId = paramId;
-		this.type = DataTypeRegistry.getType(Type.fromString(type));
+		this.type = DataTypeRegistry.getType(DataType.Type.get(type));
 		this.quantifier = quantifier;
 		this.ownerItemId = parentItemId;
 		if (domainName != null)
@@ -60,6 +61,10 @@ public final class ParameterDescription {
 			formatter = ((FormatDataType)this.type).createFormatter(format);
 		this.isVirtual = isVirtual;
 		this.isHidden = isHidden;
+		if (StringUtils.isNotBlank(defaultValue))
+			this.defaultValue = defaultValue;
+		if (computedFunc != null)
+			computed = new ComputedDescription(computedFunc);
 		
 		if (this.type.isFile() || this.type.isBigText() || this.isVirtual())
 			needsDBIndex = false;
@@ -125,7 +130,7 @@ public final class ParameterDescription {
 		return type;
 	}
 	
-	public Type getType() {
+	public DataType.Type getType() {
 		return type.getType();
 	}
 	
@@ -177,6 +182,22 @@ public final class ParameterDescription {
 	 */
 	public boolean hasDomain() {
 		return !StringUtils.isBlank(domainName);
+	}
+
+	/**
+	 * Есть ли значение по умолчанию
+	 * @return
+	 */
+	public boolean hasDefaultValue() {
+		return defaultValue != null;
+	}
+
+	/**
+	 * Проверить, есть ли вычисляемое значение
+	 * @return
+	 */
+	public boolean hasComputed() {
+		return computed != null;
 	}
 	/**
 	 * Нужна ли отедльная индексация этого параметра для полнотекстового поиска
@@ -231,6 +252,22 @@ public final class ParameterDescription {
 	 */
 	public String getFulltextParser() {
 		return textIndexParser;
+	}
+
+	/**
+	 * Получить значение по умолчанию в виде строки, так, как оно написано в XML файле
+	 * @return
+	 */
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	/**
+	 * Получть описание вычисляемого значения
+	 * @return
+	 */
+	public ComputedDescription getComputed() {
+		return computed;
 	}
 	/**
 	 * Вернуть название параметра, который создается в полнотекстовом индексе и по которому надо осуществлять поиск потом

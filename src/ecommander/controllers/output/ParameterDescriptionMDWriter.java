@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.model.item.ParameterDescription;
+import ecommander.model.ParameterDescription;
 /**
  * Выводит определение параметра
  * 

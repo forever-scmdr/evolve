@@ -3,8 +3,8 @@ package ecommander.extra._generated;
 
 import java.io.File;
 import ecommander.controllers.AppContext;
-import ecommander.model.item.Item;
-import ecommander.model.item.ItemTypeRegistry;
+import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
 
 public class Abstract_page
     extends Item

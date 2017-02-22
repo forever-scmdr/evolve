@@ -57,7 +57,7 @@
 		Вычисляемый параметр (описание ниже).
 		Вычисляемый параметр может сам быть построен на базе других вычисляемых параметров
 		-->
-		<parameter name="price_qty" type="computed" caption="Количество предложений" function="SUM" default="0">
+		<parameter name="price_qty" type="integer" caption="Количество предложений" function="COUNT" default="0">
 			<child item="product" assoc="hierarchy" parameter="price_qty" transitive="true"/>
 		</parameter>
 	</item>
@@ -84,13 +84,13 @@
 		В данном случае создаются 3 параметра, максимальная, минимальная цена, а также количесвто предложений
 		для некоторого товара.
 		-->
-		<parameter name="min_price" type="computed" caption="Минимальная цена товара" function="MIN">
+		<parameter name="min_price" type="currency" caption="Минимальная цена товара" function="MIN">
 			<child item="price" assoc="seller_price" parameter="price" transitive="false"/>
 		</parameter>
-		<parameter name="max_price" type="computed" caption="Максимальная цена товара">
+		<parameter name="max_price" type="currency" caption="Максимальная цена товара">
 			<child item="price" assoc="seller_price" parameter="price" transitive="false" function="MAX"/>
 		</parameter>
-		<parameter name="price_qty" type="computed" caption="Количество предложений">
+		<parameter name="price_qty" type="integer" caption="Количество предложений">
 			<child item="price" assoc="seller_price" transitive="false" function="COUNT"/>
 		</parameter>
 		<on-update class="ecommander.extra.UpdatePrices"/>

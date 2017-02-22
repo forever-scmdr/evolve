@@ -12,11 +12,11 @@ import java.util.HashMap;
 
 import ecommander.common.Strings;
 import ecommander.controllers.SessionContext;
-import ecommander.model.item.Item;
-import ecommander.model.item.Item.ParametersIterator;
-import ecommander.model.item.ItemType;
-import ecommander.model.item.ItemTypeRegistry;
-import ecommander.model.item.SingleParameter;
+import ecommander.model.Item;
+import ecommander.model.Item.ParametersIterator;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.SingleParameter;
 import ecommander.persistence.itemquery.ItemQuery;
 
 /**

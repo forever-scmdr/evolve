@@ -4,7 +4,7 @@ package ecommander.extra;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.model.item.Item;
+import ecommander.model.Item;
 import ecommander.pages.elements.Command;
 import ecommander.pages.elements.ItemVariablesContainer;
 import ecommander.pages.elements.ItemVariablesContainer.ItemVariables;
