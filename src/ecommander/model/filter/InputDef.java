@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.Strings;
-import ecommander.common.exceptions.EcommanderException;
-import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.fwk.Strings;
+import ecommander.fwk.EcommanderException;
+import ecommander.output.XmlDocumentBuilder;
 
 /**
  * Один инпут

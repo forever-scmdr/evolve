@@ -1,6 +1,6 @@
 package ecommander.persistence;
 
-import ecommander.common.exceptions.EcommanderException;
+import ecommander.fwk.EcommanderException;
 
 /**
  * Резльтат выполнения транзакции

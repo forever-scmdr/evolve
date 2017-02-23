@@ -47,8 +47,8 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-import ecommander.common.MysqlConnector;
-import ecommander.common.ServerLogger;
+import ecommander.fwk.MysqlConnector;
+import ecommander.fwk.ServerLogger;
 import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemType;

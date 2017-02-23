@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.Timer;
-import ecommander.common.exceptions.PageNotFoundException;
-import ecommander.common.exceptions.UserNotAllowedException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Timer;
+import ecommander.fwk.PageNotFoundException;
+import ecommander.fwk.UserNotAllowedException;
 
 /**
  * Сервлет, который обрабатывает запросы eco/

@@ -5,11 +5,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.exceptions.UserNotAllowedException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
 import ecommander.persistence.mappers.DBConstants;
-import ecommander.users.User;
+import ecommander.model.User;
 
 public class DeleteUserDBUnit extends DBPersistenceCommandUnit {
 

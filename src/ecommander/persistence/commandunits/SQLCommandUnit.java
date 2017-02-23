@@ -2,7 +2,7 @@ package ecommander.persistence.commandunits;
 
 import java.sql.Statement;
 
-import ecommander.common.ServerLogger;
+import ecommander.fwk.ServerLogger;
 
 public class SQLCommandUnit extends DBPersistenceCommandUnit {
 	

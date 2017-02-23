@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.controllers.output.MetaDataWriter;
-import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.output.MetaDataWriter;
+import ecommander.output.XmlDocumentBuilder;
 import ecommander.persistence.PersistenceCommandUnit;
 import ecommander.persistence.TransactionContext;
 

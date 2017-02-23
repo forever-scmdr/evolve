@@ -3,7 +3,7 @@ package ecommander.model.datatypes;
 import java.text.Format;
 import java.text.MessageFormat;
 
-import ecommander.common.Strings;
+import ecommander.fwk.Strings;
 
 public class StringDataType extends FormatDataType {
 

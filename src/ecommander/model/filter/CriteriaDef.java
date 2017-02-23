@@ -2,8 +2,8 @@ package ecommander.model.filter;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.Strings;
-import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.fwk.Strings;
+import ecommander.output.XmlDocumentBuilder;
 import ecommander.model.datatypes.DataType.Type;
 
 /**

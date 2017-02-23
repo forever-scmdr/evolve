@@ -7,7 +7,7 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import ecommander.common.Strings;
+import ecommander.fwk.Strings;
 /**
  * Конструирование значения из строки:
  * 		1) предполагается, что значение вводится в виде строки даты определенного формата типа День.Месяц.Год 

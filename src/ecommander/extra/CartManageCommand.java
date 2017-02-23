@@ -12,17 +12,17 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
-import ecommander.application.extra.ItemUtils;
+import ecommander.fwk.ItemUtils;
 import ecommander.extra._generated.ItemNames;
 import ecommander.model.Item;
-import ecommander.pages.elements.Command;
-import ecommander.pages.elements.ItemVariablesContainer;
-import ecommander.pages.elements.ItemVariablesContainer.ItemVariables;
-import ecommander.pages.elements.ResultPE;
+import ecommander.pages.Command;
+import ecommander.pages.ItemVariablesContainer;
+import ecommander.pages.ItemVariablesContainer.ItemVariables;
+import ecommander.pages.ResultPE;
 import ecommander.persistence.commandunits.SaveNewItemDBUnit;
 import ecommander.persistence.commandunits.UpdateItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.users.User;
+import ecommander.model.User;
 
 public class CartManageCommand extends Command {
 	public static final String BYN_CUR_CODE = "BYN";

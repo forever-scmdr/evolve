@@ -5,10 +5,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import ecommander.common.MysqlConnector;
-import ecommander.common.ServerLogger;
-import ecommander.common.exceptions.EcommanderException;
-import ecommander.users.User;
+import ecommander.fwk.MysqlConnector;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.EcommanderException;
+import ecommander.model.User;
 
 /**
  * Класс, который отвечает за выполнение одной транзакции, а также за откат всех операций, если

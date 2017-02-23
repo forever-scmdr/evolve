@@ -11,7 +11,7 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
 
-import ecommander.common.exceptions.EcommanderException;
+import ecommander.fwk.EcommanderException;
 import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
 import ecommander.persistence.itemquery.fulltext.LuceneQueryCreator;
 import ecommander.persistence.mappers.LuceneIndexMapper;

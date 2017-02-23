@@ -4,14 +4,14 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.Timer;
-import ecommander.common.exceptions.ValidationException;
-import ecommander.pages.elements.ExecutablePagePE;
-import ecommander.pages.elements.ItemHttpPostForm;
-import ecommander.pages.elements.ItemVariablesContainer;
-import ecommander.pages.elements.PageModelRegistry;
-import ecommander.pages.elements.ValidationResults.StructureMessage;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Timer;
+import ecommander.fwk.ValidationException;
+import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.ItemHttpPostForm;
+import ecommander.pages.ItemVariablesContainer;
+import ecommander.pages.PageModelRegistry;
+import ecommander.pages.ValidationResults.StructureMessage;
 
 /**
  * Класс, который координирует все действия по обработке запроса пользователя

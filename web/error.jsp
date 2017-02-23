@@ -1,10 +1,9 @@
 <%@page import="java.io.ByteArrayOutputStream"%>
 <%@page import="java.io.PrintWriter"%>
-<%@page import="ecommander.pages.elements.ValidationResults.StructureMessage"%>
-<%@page import="ecommander.pages.elements.ValidationResults.StructureMessage"%>
-<%@page import="ecommander.pages.elements.ValidationResults.StructureMessage"%>
+<%@page import="ecommander.pages.ValidationResults.StructureMessage"%>
+<%@page import="ecommander.pages.ValidationResults.StructureMessage"%>
 <%@page import="ecommander.controllers.BasicServlet"%>
-<%@page import="ecommander.pages.elements.ValidationResults.LineMessage"%>
+<%@page import="ecommander.pages.ValidationResults.LineMessage"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>

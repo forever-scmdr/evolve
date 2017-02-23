@@ -6,7 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import ecommander.common.ServerLogger;
+import ecommander.fwk.ServerLogger;
 import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemType;

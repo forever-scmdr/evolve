@@ -1,7 +1,7 @@
 package ecommander.model.filter;
 
-import ecommander.common.exceptions.EcommanderException;
-import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.fwk.EcommanderException;
+import ecommander.output.XmlDocumentBuilder;
 import ecommander.model.LOGICAL_SIGN;
 
 /**

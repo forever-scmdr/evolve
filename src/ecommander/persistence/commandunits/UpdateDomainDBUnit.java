@@ -6,9 +6,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 
-import ecommander.controllers.output.DomainMDWriter;
-import ecommander.controllers.output.XmlDocumentBuilder;
-import ecommander.view.domain.Domain;
+import ecommander.output.DomainMDWriter;
+import ecommander.output.XmlDocumentBuilder;
+import ecommander.model.Domain;
 
 /**
  * Обновляет описание в базе данных

@@ -2,7 +2,7 @@ package ecommander.persistence.itemquery.fulltext;
 
 import java.util.HashMap;
 
-import ecommander.common.exceptions.EcommanderException;
+import ecommander.fwk.EcommanderException;
 /**
  * Различные притерии полнотекстового поиска
  * @author E

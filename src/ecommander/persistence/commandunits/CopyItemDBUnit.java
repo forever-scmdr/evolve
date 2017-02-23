@@ -10,8 +10,8 @@ import java.util.Iterator;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.exceptions.EcommanderException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.EcommanderException;
 import ecommander.controllers.AppContext;
 import ecommander.model.datatypes.DataType.Type;
 import ecommander.model.Item;

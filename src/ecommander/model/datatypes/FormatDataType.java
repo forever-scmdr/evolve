@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.Strings;
+import ecommander.fwk.Strings;
 import ecommander.controllers.AppContext;
 
 public abstract class FormatDataType extends DataType {

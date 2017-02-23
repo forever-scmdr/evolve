@@ -10,7 +10,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormatter;
 
-import ecommander.common.Strings;
+import ecommander.fwk.Strings;
 import ecommander.model.datatypes.DataType.Type;
 import ecommander.model.datatypes.DateDataType;
 import ecommander.model.datatypes.DoubleDataType;

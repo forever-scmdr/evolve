@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.ServerLogger;
+import ecommander.fwk.ServerLogger;
 import ecommander.persistence.mappers.DBConstants;
 /**
  * Последовательность частей запроса

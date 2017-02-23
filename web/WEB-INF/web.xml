@@ -6,7 +6,7 @@
 	<display-name>Ecommander</display-name>
 	<filter>
 		<filter-name>CharsetFilter</filter-name>
-		<filter-class>ecommander.common.CharsetFilter</filter-class>
+		<filter-class>ecommander.fwk.CharsetFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>CharsetFilter</filter-name>
@@ -75,7 +75,7 @@
 
 	<servlet>
 		<servlet-name>MainAdminController</servlet-name>
-		<servlet-class>ecommander.controllers.admin.MainAdminServlet</servlet-class>
+		<servlet-class>ecommander.admin.MainAdminServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>MainAdminController</servlet-name>
@@ -93,7 +93,7 @@
 
 	<servlet>
 		<servlet-name>UserAdminController</servlet-name>
-		<servlet-class>ecommander.controllers.admin.UserAdminServlet</servlet-class>
+		<servlet-class>ecommander.admin.UserAdminServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserAdminController</servlet-name>
@@ -102,7 +102,7 @@
 
 	<servlet>
 		<servlet-name>DomainAdminController</servlet-name>
-		<servlet-class>ecommander.controllers.admin.DomainAdminServlet</servlet-class>
+		<servlet-class>ecommander.admin.DomainAdminServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DomainAdminController</servlet-name>
@@ -111,7 +111,7 @@
 
 	<servlet>
 		<servlet-name>ItemAdminController</servlet-name>
-		<servlet-class>ecommander.controllers.admin.ItemAdminServlet</servlet-class>
+		<servlet-class>ecommander.admin.ItemAdminServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ItemAdminController</servlet-name>
@@ -120,7 +120,7 @@
 
 	<servlet>
 		<servlet-name>FilterAdminController</servlet-name>
-		<servlet-class>ecommander.controllers.admin.FilterAdminServlet</servlet-class>
+		<servlet-class>ecommander.admin.FilterAdminServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>FilterAdminController</servlet-name>

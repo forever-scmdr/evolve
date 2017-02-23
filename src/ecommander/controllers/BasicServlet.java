@@ -25,13 +25,13 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.Strings;
-import ecommander.common.exceptions.EcommanderException;
-import ecommander.common.exceptions.UserNotAllowedException;
-import ecommander.common.exceptions.ValidationException;
-import ecommander.pages.elements.LinkPE;
-import ecommander.pages.elements.variables.VariablePE;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.fwk.EcommanderException;
+import ecommander.fwk.UserNotAllowedException;
+import ecommander.fwk.ValidationException;
+import ecommander.pages.LinkPE;
+import ecommander.pages.variables.VariablePE;
 
 /**
  * Базовые функции всех сервлетов CMS

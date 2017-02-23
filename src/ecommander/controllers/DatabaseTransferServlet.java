@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.exceptions.ValidationException;
-import ecommander.pages.elements.ValidationResults;
+import ecommander.fwk.ValidationException;
+import ecommander.pages.ValidationResults;
 
 public class DatabaseTransferServlet extends BasicServlet {
 

@@ -5,8 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.exceptions.EcommanderException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.EcommanderException;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;

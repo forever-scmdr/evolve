@@ -5,7 +5,7 @@ package ecommander.model;
 
 import java.util.*;
 
-import ecommander.common.ServerLogger;
+import ecommander.fwk.ServerLogger;
 
 /**
  * Иерархия наследования айтемов

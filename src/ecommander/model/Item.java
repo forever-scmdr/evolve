@@ -21,12 +21,11 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.Strings;
-import ecommander.controllers.output.ParameterDescriptionSimpleMDWriter;
-import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.output.ParameterDescriptionSimpleMDWriter;
+import ecommander.output.XmlDocumentBuilder;
 import ecommander.model.datatypes.DataType.Type;
-import ecommander.users.User;
 
 /**
  * Такие действия, как добавление (или удаление) сабайтема в айтем должны происходить следующим образом:
@@ -837,7 +836,7 @@ public class Item {
 		if (param == null) 
 			return new ArrayList<SingleParameter>(0);
 		if (!param.isMultiple()) {
-			ArrayList<SingleParameter> result = new ArrayList<SingleParameter>(1);
+			ArrayList<SingleParameter> result = new ArrayList<>(1);
 			result.add((SingleParameter) param);
 			return result;
 		}
@@ -859,7 +858,7 @@ public class Item {
 	 * @return
 	 */
 	public final ArrayList<Object> getValues(String paramName) {
-		ArrayList<Object> result = new ArrayList<Object>();
+		ArrayList<Object> result = new ArrayList<>();
 		Collection<SingleParameter> multipleValues = getParamValues(paramName);
 		for (SingleParameter sp : multipleValues) {
 			if (!sp.isEmpty())
@@ -874,7 +873,7 @@ public class Item {
 	 * @return
 	 */
 	public final ArrayList<String> getStringValues(String paramName) {
-		ArrayList<String> result = new ArrayList<String>();
+		ArrayList<String> result = new ArrayList<>();
 		Collection<SingleParameter> multipleValues = getParamValues(paramName);
 		for (SingleParameter sp : multipleValues) {
 			if (!sp.isEmpty())
@@ -889,7 +888,7 @@ public class Item {
 	 * @return
 	 */
 	public final ArrayList<Long> getLongValues(String paramName) {
-		ArrayList<Long> result = new ArrayList<Long>();
+		ArrayList<Long> result = new ArrayList<>();
 		Collection<SingleParameter> multipleValues = getParamValues(paramName);
 		for (SingleParameter sp : multipleValues) {
 			if (!sp.isEmpty())
@@ -904,7 +903,7 @@ public class Item {
 	 * @return
 	 */
 	public final ArrayList<Byte> getByteValues(String paramName) {
-		ArrayList<Byte> result = new ArrayList<Byte>();
+		ArrayList<Byte> result = new ArrayList<>();
 		Collection<SingleParameter> multipleValues = getParamValues(paramName);
 		for (SingleParameter sp : multipleValues) {
 			if (!sp.isEmpty())
@@ -919,7 +918,7 @@ public class Item {
 	 * @return
 	 */
 	public final ArrayList<Integer> getIntValues(String paramName) {
-		ArrayList<Integer> result = new ArrayList<Integer>();
+		ArrayList<Integer> result = new ArrayList<>();
 		Collection<SingleParameter> multipleValues = getParamValues(paramName);
 		for (SingleParameter sp : multipleValues) {
 			if (!sp.isEmpty())
@@ -934,11 +933,11 @@ public class Item {
 	 * @return
 	 */
 	public final ArrayList<File> getFileValues(String paramName, String filesRepositoryPath) {
-		ArrayList<File> result = new ArrayList<File>();
+		ArrayList<File> result = new ArrayList<>();
 		Collection<SingleParameter> multipleValues = getParamValues(paramName);
 		for (SingleParameter sp : multipleValues) {
 			if (!sp.isEmpty())
-				result.add(new File(filesRepositoryPath + getPredecessorsAndSelfPath() + sp.outputValue()));
+				result.add(new File(getParamFileName(filesRepositoryPath, id, sp.outputValue())));
 		}
 		return result;
 	}
@@ -949,7 +948,7 @@ public class Item {
 	 * @return
 	 */
 	public final ArrayList<String> outputValues(String paramName) {
-		ArrayList<String> result = new ArrayList<String>();
+		ArrayList<String> result = new ArrayList<>();
 		Collection<SingleParameter> multipleValues = getParamValues(paramName);
 		for (SingleParameter sp : multipleValues) {
 			if (!sp.isEmpty())
@@ -1005,7 +1004,7 @@ public class Item {
 	 */
 	public final File getFileValue(String paramName, String filesRepositoryPath) {
 		String fileName = ((SingleParameter)getParameterByName(paramName)).outputValue();
-		return new File(filesRepositoryPath + getPredecessorsAndSelfPath() + fileName);
+		return new File(getParamFileName(filesRepositoryPath, id, fileName));
 	}
 	/**
 	 * Возвращает значение одиночного парамтера.
@@ -1067,5 +1066,9 @@ public class Item {
 	 */
 	public final byte getByteValue(String paramName, byte defaultValue) {
 		return (Byte) getValue(paramName, defaultValue);
+	}
+
+	private static String getParamFileName(String basePath, long itemId, String fileName) {
+		return new StringBuilder(basePath).append('/').append(itemId).append('/').append(fileName).toString();
 	}
 }

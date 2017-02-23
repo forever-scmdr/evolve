@@ -2,11 +2,11 @@ package ecommander.persistence.commandunits;
 
 import java.util.ArrayList;
 
-import ecommander.common.exceptions.UserNotAllowedException;
+import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
 import ecommander.persistence.PersistenceCommandUnit;
 import ecommander.persistence.TransactionContext;
-import ecommander.users.User;
+import ecommander.model.User;
 
 /**
  * Абстрактный класс для команд базы данных

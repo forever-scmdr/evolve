@@ -15,13 +15,13 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.MysqlConnector;
-import ecommander.common.ServerLogger;
-import ecommander.common.Strings;
-import ecommander.pages.elements.ItemHttpPostForm;
+import ecommander.fwk.MysqlConnector;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.pages.ItemHttpPostForm;
 import ecommander.persistence.mappers.SessionItemMapper;
 import ecommander.persistence.mappers.SessionObjectStorage;
-import ecommander.users.User;
+import ecommander.model.User;
 /**
  * Интерфейс для работы со всем, что касается сеансов, а именно:
  * - установка текущего пользователя (после успешной аутентификации)

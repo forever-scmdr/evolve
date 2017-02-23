@@ -11,7 +11,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
-import ecommander.common.Strings;
+import ecommander.fwk.Strings;
 import ecommander.controllers.AppContext;
 
 

@@ -1,6 +1,6 @@
 package ecommander.persistence.commandunits;
 
-import ecommander.common.Strings;
+import ecommander.fwk.Strings;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;

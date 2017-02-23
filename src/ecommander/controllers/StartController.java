@@ -2,10 +2,10 @@ package ecommander.controllers;
 
 import javax.servlet.ServletContext;
 
-import ecommander.controllers.parsing.DataModelBuilder;
-import ecommander.controllers.parsing.DomainBuilder;
-import ecommander.controllers.parsing.PageModelBuilder;
-import ecommander.users.UserMapper;
+import ecommander.model.DataModelBuilder;
+import ecommander.model.DomainBuilder;
+import ecommander.pages.PageModelBuilder;
+import ecommander.model.UserMapper;
 
 /**
  * Обрабатывает запуск приложения

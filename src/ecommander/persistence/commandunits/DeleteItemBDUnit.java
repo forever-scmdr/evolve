@@ -4,14 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import ecommander.application.extra.ItemEventCommandFactory;
-import ecommander.common.ServerLogger;
+import ecommander.fwk.ItemEventCommandFactory;
+import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.persistence.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import ecommander.services.filesystem.DeleteItemAndSubitemsFilesUnit;
+import ecommander.filesystem.DeleteItemAndSubitemsFilesUnit;
 
 /**
  * Удаление айтема

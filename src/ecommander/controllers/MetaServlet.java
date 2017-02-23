@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ecommander.common.MysqlConnector;
+import ecommander.fwk.MysqlConnector;
 import ecommander.migration.FilterEntityIdToNameConverter;
 import ecommander.migration.OldModelConverter;
 import ecommander.migration.VeryOldItemsImporter;

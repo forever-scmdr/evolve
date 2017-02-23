@@ -2,8 +2,8 @@ package ecommander.model.filter;
 
 import java.util.LinkedList;
 
-import ecommander.common.exceptions.EcommanderException;
-import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.fwk.EcommanderException;
+import ecommander.output.XmlDocumentBuilder;
 /**
  * Контейнер для частей фильтра
  * Реализует все необходимые операции - добавление части, удаление, изменение порядка следования и возможно другие

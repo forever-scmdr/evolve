@@ -4,12 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import ecommander.common.ServerLogger;
+import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import ecommander.services.filesystem.DeleteSubitemsFilesUnit;
+import ecommander.filesystem.DeleteSubitemsFilesUnit;
 
 /**
  * Удаление сабайтемов айтема

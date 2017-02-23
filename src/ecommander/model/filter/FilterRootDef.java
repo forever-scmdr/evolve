@@ -1,6 +1,6 @@
 package ecommander.model.filter;
 
-import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.output.XmlDocumentBuilder;
 
 public class FilterRootDef extends CriteriaGroupDef {
 

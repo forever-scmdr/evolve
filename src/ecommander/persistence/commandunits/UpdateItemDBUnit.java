@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import ecommander.application.extra.ItemEventCommandFactory;
-import ecommander.common.ServerLogger;
+import ecommander.fwk.ItemEventCommandFactory;
+import ecommander.fwk.ServerLogger;
 import ecommander.model.datatypes.DataType.Type;
 import ecommander.model.Item;
 import ecommander.model.ParameterDescription;
@@ -17,7 +17,7 @@ import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import ecommander.services.filesystem.SaveItemFilesUnit;
+import ecommander.filesystem.SaveItemFilesUnit;
 
 /**
  * Команда для сохранения уже существующего айтема

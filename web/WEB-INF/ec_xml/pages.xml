@@ -330,7 +330,7 @@
 		<link name="success" target="index">
 
 		</link>
-		<command class="ecommander.application.extra.NonemptyEmailCommand">
+		<command class="ecommander.fwk.NonemptyEmailCommand">
 			<result name="error_not_set" type="redirect" />
 			<result name="general_error" type="redirect" />
 			<result name="success" type="redirect" />

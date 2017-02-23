@@ -3,7 +3,7 @@ package ecommander.persistence.itemquery;
 import java.util.List;
 import java.util.Stack;
 
-import ecommander.common.exceptions.FilterProcessException;
+import ecommander.fwk.FilterProcessException;
 import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.model.ParameterDescription;
@@ -13,7 +13,7 @@ import ecommander.model.filter.FilterDefPart;
 import ecommander.model.filter.FilterDefinitionVisitor;
 import ecommander.model.filter.FilterRootDef;
 import ecommander.model.filter.InputDef;
-import ecommander.pages.elements.variables.FilterStaticVariablePE;
+import ecommander.pages.variables.FilterStaticVariablePE;
 
 class FilterSQLBuilderBuilder implements FilterDefinitionVisitor {
 	private FilterSQLBuilder builder;

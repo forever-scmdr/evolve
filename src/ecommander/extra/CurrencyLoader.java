@@ -5,8 +5,8 @@ package ecommander.extra;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 
-import ecommander.pages.elements.Command;
-import ecommander.pages.elements.ResultPE;
+import ecommander.pages.Command;
+import ecommander.pages.ResultPE;
 
 public class CurrencyLoader extends Command {
 	

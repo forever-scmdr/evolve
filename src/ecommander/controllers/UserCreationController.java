@@ -8,7 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import ecommander.common.ServerLogger;
+import ecommander.fwk.ServerLogger;
 import ecommander.persistence.DelayedTransaction;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.mappers.DBConstants;

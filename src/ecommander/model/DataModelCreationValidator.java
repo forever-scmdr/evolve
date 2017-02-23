@@ -7,19 +7,18 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.Strings;
-import ecommander.controllers.AppContext;
-import ecommander.controllers.parsing.ModelValidator;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.fwk.ModelValidator;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 public class DataModelCreationValidator extends ModelValidator {
 
@@ -30,15 +29,29 @@ public class DataModelCreationValidator extends ModelValidator {
 		}
 	}
 	
-	private static class SubitemContainer extends Element {
-		protected ArrayList<Subitem> subitems;
-		protected SubitemContainer(int lineNumber) {
+	private static class ChildContainer extends Element {
+		protected ArrayList<Child> children;
+		protected ChildContainer(int lineNumber) {
 			super(lineNumber);
-			this.subitems = new ArrayList<Subitem>();			
+			this.children = new ArrayList<Child>();
 		}
 	}
-	
-	private static class Item extends SubitemContainer {
+
+	private static class Assoc extends ChildContainer {
+		public Assoc(int lineNumber, String name, String caption, String description, boolean isTransitive) {
+			super(lineNumber);
+			this.name = name;
+			this.caption = caption;
+			this.description = description;
+			this.isTransitive = isTransitive;
+		}
+		public final String name;
+		public final String caption;
+		public final String description;
+		public final boolean isTransitive;
+	}
+
+	private static class Item extends ChildContainer {
 		
 		private Item(String name, String caption, String key, int lineNumber, boolean isVirtual) {
 			super(lineNumber);
@@ -58,8 +71,8 @@ public class DataModelCreationValidator extends ModelValidator {
 		public final ArrayList<Parameter> parameters;
 	}
 	
-	private static class Subitem extends Element {
-		private Subitem(String name, String parentName, boolean isSingle, boolean isVirtual, int lineNumber) {
+	private static class Child extends Element {
+		private Child(String name, String parentName, boolean isSingle, boolean isVirtual, int lineNumber) {
 			super(lineNumber);
 			this.name = name;
 			this.isSingle = isSingle;
@@ -90,7 +103,7 @@ public class DataModelCreationValidator extends ModelValidator {
 		public final String caption;
 	}
 	
-	private static class Root extends SubitemContainer {
+	private static class Root extends ChildContainer {
 		private Root(String group, int lineNumber) {
 			super(lineNumber);
 			this.group = group;
@@ -125,8 +138,8 @@ public class DataModelCreationValidator extends ModelValidator {
 	 */
 	private static final String SINGLE_VALUE = "single";
 	private static final String MULTIPLE_VALUE = "multiple";
-	
-	private static final String TRUE_VALUE = "true";	
+
+	private static final String TRUE_VALUE = "true";
 	
 	private class DataModelHandler extends DefaultHandler {
 
@@ -171,7 +184,7 @@ public class DataModelCreationValidator extends ModelValidator {
 			}
 			else if (SUBITEM_ELEMENT.equalsIgnoreCase(qName)) {
 				Element parent = stack.peek();
-				if (!(parent instanceof SubitemContainer)) {
+				if (!(parent instanceof ChildContainer)) {
 					addError("Subitem element is in wrong place. 'subitem' most be a child of 'item'", locator.getLineNumber());
 					return;
 				}
@@ -180,7 +193,7 @@ public class DataModelCreationValidator extends ModelValidator {
 					addError("Name not set. Subitem 'name' attribute must not be empty.", locator.getLineNumber());
 					return;
 				}
-				if (((SubitemContainer)parent).subitems.contains(childName)) {
+				if (((ChildContainer)parent).children.contains(childName)) {
 					addError("Duplicate subitem name: " + childName, locator.getLineNumber());
 					return;
 				}
@@ -198,11 +211,11 @@ public class DataModelCreationValidator extends ModelValidator {
 				} else if (parent instanceof Root) {
 					parentName = ((Root)parent).group;
 				}
-				Subitem subitem = new Subitem(childName, parentName, isSingle, isVirtual, locator.getLineNumber());
+				Child child = new Child(childName, parentName, isSingle, isVirtual, locator.getLineNumber());
 				// Сохранение
-				stack.push(subitem);
-				((SubitemContainer)parent).subitems.add(subitem);
-				subitems.add(subitem);
+				stack.push(child);
+				((ChildContainer)parent).children.add(child);
+				children.add(child);
 			}
 			else if (PARAMETER_ELEMENT.equalsIgnoreCase(qName)) {
 				Element parent = stack.peek();
@@ -274,30 +287,29 @@ public class DataModelCreationValidator extends ModelValidator {
 
 	
 	}
-	
+
+	private ArrayList<String> modelFiles;
 	private HashMap<String, Item> items;
-	private ArrayList<Subitem> subitems;
+	private ArrayList<Child> children;
 	private ArrayList<Root> roots;
 	
-	public DataModelCreationValidator() {
+	public DataModelCreationValidator(ArrayList<String> modelFiles) {
 		items = new HashMap<String, Item>();
-		subitems = new ArrayList<Subitem>();
+		children = new ArrayList<Child>();
 		roots = new ArrayList<Root>();
+		this.modelFiles = modelFiles;
 	}
+
 
 	@Override
 	public void validate() {
-		// Прасить документ
+		// Создать парсер
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		try {
 			SAXParser parser = factory.newSAXParser();
-			ArrayList<File> modelFiles = findModelFiles(new File(AppContext.getMainModelPath()), null);
-			for (File modelFile : modelFiles) {
+			for (String modelFile : modelFiles) {
 				parser.parse(modelFile, new DataModelHandler());			
 			}
-			File userModelFile = new File(AppContext.getUserModelPath());
-			if (userModelFile.exists())
-				parser.parse(AppContext.getUserModelPath(), new DataModelHandler());
 		} catch (Exception se) {
 			ServerLogger.error("model.xml validation failed", se);
 			addError(se.getMessage(), 0);
@@ -342,23 +354,23 @@ public class DataModelCreationValidator extends ModelValidator {
 			}
 		}
 		// Проверка сабайтемов (есть ли такие айтемы)
-		for (Subitem subitem : subitems) {
-			Item item = items.get(subitem.name);
+		for (Child child : children) {
+			Item item = items.get(child.name);
 			if (item == null) {
 				criticalError = true;
-				addError("'" + subitem.parentName + "' item tries to subitem nonexisting item '" + subitem.name + "'", subitem.lineNumber);
+				addError("'" + child.parentName + "' item tries to subitem nonexisting item '" + child.name + "'", child.lineNumber);
 			}
 		}
 		if (criticalError)
 			return;
 		// Проверка key (есть ли key у айтемов, которые являются множественными сабайтемами)
-		for (Subitem subitem : subitems) {
-			if (!subitem.isSingle) {
-				Item item = items.get(subitem.name);
+		for (Child child : children) {
+			if (!child.isSingle) {
+				Item item = items.get(child.name);
 				if (item.isVirtual)
 					continue;
 				boolean hasKey = false;
-				for (String predName : hierarchy.getItemPredecessorsExt(subitem.name)) {
+				for (String predName : hierarchy.getItemPredecessorsExt(child.name)) {
 					Item pred = items.get(predName);
 					if (!StringUtils.isBlank(pred.key)) {
 						hasKey = true;
@@ -366,8 +378,8 @@ public class DataModelCreationValidator extends ModelValidator {
 					}
 				}
 				if (!hasKey)
-					addError("Multiple subitem '" + subitem.name + "' has no key. Multiple subitem items must have key parameters",
-							subitem.lineNumber);
+					addError("Multiple subitem '" + child.name + "' has no key. Multiple subitem items must have key parameters",
+							child.lineNumber);
 			}
 		}
 		// Проверка, достижим ли айтем из корня
@@ -397,7 +409,7 @@ public class DataModelCreationValidator extends ModelValidator {
 		}
 	}
 
-	private void checkSubitems(SubitemContainer item, HashSet<String> accessibleItems, HashSet<String> checkedItems, TypeHierarchyRegistry hierarchy) {
+	private void checkSubitems(ChildContainer item, HashSet<String> accessibleItems, HashSet<String> checkedItems, TypeHierarchyRegistry hierarchy) {
 		if (item instanceof Item) {
 			if (checkedItems.contains(((Item)item).name))
 				return;
@@ -409,8 +421,8 @@ public class DataModelCreationValidator extends ModelValidator {
 				checkSubitems(items.get(itemName), accessibleItems, checkedItems, hierarchy);
 			}
 		}
-		for (Subitem subitem : item.subitems) {
-			Set<String> succNames = hierarchy.getItemExtenders(subitem.name);
+		for (Child child : item.children) {
+			Set<String> succNames = hierarchy.getItemExtenders(child.name);
 			accessibleItems.addAll(succNames);
 			for (String succName : succNames) {
 				checkSubitems(items.get(succName), accessibleItems, checkedItems, hierarchy);

@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.Strings;
-import ecommander.common.exceptions.UserNotAllowedException;
-import ecommander.pages.elements.LinkPE;
-import ecommander.pages.elements.variables.FilterStaticVariablePE;
-import ecommander.pages.elements.variables.VariablePE;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.fwk.UserNotAllowedException;
+import ecommander.pages.LinkPE;
+import ecommander.pages.variables.FilterStaticVariablePE;
+import ecommander.pages.variables.VariablePE;
 /**
  * Подразумевается, что этот сервлет обрабатывает только 
  * @author EEEE

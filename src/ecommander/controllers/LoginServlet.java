@@ -6,8 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ecommander.users.User;
-import ecommander.users.UserMapper;
+import ecommander.model.User;
+import ecommander.model.UserMapper;
 
 /**
  * Отвечает за аутентификацию пользователя

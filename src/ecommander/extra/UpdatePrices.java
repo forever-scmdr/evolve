@@ -5,10 +5,10 @@ package ecommander.extra;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.model.Item;
-import ecommander.pages.elements.Command;
-import ecommander.pages.elements.ItemVariablesContainer;
-import ecommander.pages.elements.ItemVariablesContainer.ItemVariables;
-import ecommander.pages.elements.ResultPE;
+import ecommander.pages.Command;
+import ecommander.pages.ItemVariablesContainer;
+import ecommander.pages.ItemVariablesContainer.ItemVariables;
+import ecommander.pages.ResultPE;
 import ecommander.persistence.commandunits.UpdateItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 

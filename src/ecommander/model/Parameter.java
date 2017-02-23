@@ -1,6 +1,6 @@
 package ecommander.model;
 
-import ecommander.common.Strings;
+import ecommander.fwk.Strings;
 import ecommander.model.datatypes.DataType.Type;
 
 /**

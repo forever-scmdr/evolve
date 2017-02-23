@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.exceptions.EcommanderException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.EcommanderException;
 import ecommander.model.Item;
 import ecommander.persistence.mappers.DBConstants;
 /**

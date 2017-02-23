@@ -28,17 +28,17 @@ import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.QueryWrapperFilter;
 import org.apache.lucene.search.TermQuery;
 
-import ecommander.common.MysqlConnector;
-import ecommander.common.MysqlConnector.ConnectionCount;
-import ecommander.common.exceptions.EcommanderException;
+import ecommander.fwk.MysqlConnector;
+import ecommander.fwk.MysqlConnector.ConnectionCount;
+import ecommander.fwk.EcommanderException;
 import ecommander.model.filter.FilterDefinition;
-import ecommander.pages.elements.variables.FilterStaticVariablePE;
+import ecommander.pages.variables.FilterStaticVariablePE;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.DataTypeMapper;
 import ecommander.persistence.mappers.ItemMapper;
-import ecommander.users.User;
-import ecommander.users.UserGroupRegistry;
+import ecommander.model.User;
+import ecommander.model.UserGroupRegistry;
 
 /**
  * Этот класс строит и выволняет запрос на извлечение айтемов

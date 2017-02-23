@@ -6,10 +6,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.exceptions.UserNotAllowedException;
-import ecommander.pages.elements.ItemVariablesContainer;
-import ecommander.pages.elements.LinkPE;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.UserNotAllowedException;
+import ecommander.pages.ItemVariablesContainer;
+import ecommander.pages.LinkPE;
 
 /**
  * Контроллер, который создает и передает на обработку класс ItemVariablesContainer

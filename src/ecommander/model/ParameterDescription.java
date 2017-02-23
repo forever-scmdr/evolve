@@ -4,7 +4,7 @@ import ecommander.model.datatypes.DataType;
 import ecommander.model.datatypes.FormatDataType;
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.Strings;
+import ecommander.fwk.Strings;
 
 public final class ParameterDescription {
 	

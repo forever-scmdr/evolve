@@ -5,10 +5,10 @@ import java.util.LinkedHashSet;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.Strings;
-import ecommander.controllers.output.ItemTypeMDWriter;
-import ecommander.controllers.output.ParameterDescriptionMDWriter;
-import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.fwk.Strings;
+import ecommander.output.ItemTypeMDWriter;
+import ecommander.output.ParameterDescriptionMDWriter;
+import ecommander.output.XmlDocumentBuilder;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;

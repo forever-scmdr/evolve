@@ -11,13 +11,13 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import ecommander.common.ServerLogger;
-import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.fwk.ServerLogger;
+import ecommander.output.XmlDocumentBuilder;
 import ecommander.model.datatypes.DateDataType;
-import ecommander.pages.elements.ExecutablePagePE;
-import ecommander.pages.elements.PageModelRegistry;
-import ecommander.pages.elements.ResultPE;
-import ecommander.pages.elements.ResultPE.ResultType;
+import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.PageModelRegistry;
+import ecommander.pages.ResultPE;
+import ecommander.pages.ResultPE.ResultType;
 /**
  * Класс, который выполняет определенную страницу, имеющую команды, согласно расписанию
  * Quartz

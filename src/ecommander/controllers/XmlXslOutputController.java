@@ -16,9 +16,9 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.TransformerFactoryImpl;
-import ecommander.common.Timer;
-import ecommander.common.exceptions.EcommanderException;
-import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.fwk.Timer;
+import ecommander.fwk.EcommanderException;
+import ecommander.output.XmlDocumentBuilder;
 /**
  * Преобразует XML документ в html с помощью XSL файла
  * @author EEEE

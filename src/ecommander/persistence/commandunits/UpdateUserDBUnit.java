@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.exceptions.UserExistsExcepion;
-import ecommander.common.exceptions.UserNotAllowedException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.UserExistsExcepion;
+import ecommander.fwk.UserNotAllowedException;
 import ecommander.persistence.mappers.DBConstants;
-import ecommander.users.User;
+import ecommander.model.User;
 
 /**
  * Создается новый пользователь

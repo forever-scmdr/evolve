@@ -13,14 +13,14 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.MysqlConnector;
-import ecommander.common.ServerLogger;
-import ecommander.common.Strings;
+import ecommander.fwk.MysqlConnector;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
 import ecommander.controllers.AppContext;
-import ecommander.controllers.output.ItemTypeMDWriter;
-import ecommander.controllers.output.ParameterDescriptionMDWriter;
-import ecommander.controllers.output.RootItemMDWriter;
-import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.output.ItemTypeMDWriter;
+import ecommander.output.ParameterDescriptionMDWriter;
+import ecommander.output.RootItemMDWriter;
+import ecommander.output.XmlDocumentBuilder;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeContainer;
 import ecommander.model.ParameterDescription;

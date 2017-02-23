@@ -8,7 +8,7 @@ package ecommander.persistence;
 
 import java.sql.Connection;
 
-import ecommander.users.User;
+import ecommander.model.User;
 
 /**
  * Контекст тразнзакции, пока в нем хранится только подключение к базе данных

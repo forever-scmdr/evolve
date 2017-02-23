@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import ecommander.common.ServerLogger;
+import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.persistence.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;

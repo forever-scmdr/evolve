@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import ecommander.common.Strings;
+import ecommander.fwk.Strings;
 import ecommander.controllers.SessionContext;
 import ecommander.model.Item;
 import ecommander.model.Item.ParametersIterator;

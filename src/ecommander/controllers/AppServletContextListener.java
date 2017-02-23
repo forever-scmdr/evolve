@@ -6,7 +6,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import ecommander.common.ServerLogger;
+import ecommander.fwk.ServerLogger;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 
 public class AppServletContextListener implements ServletContextListener {

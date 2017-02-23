@@ -1,6 +1,6 @@
 package ecommander.model.filter;
 
-import ecommander.common.exceptions.EcommanderException;
+import ecommander.fwk.EcommanderException;
 
 /**
  * Посетитель для структуты фильтра.

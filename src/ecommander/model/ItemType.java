@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.application.extra.ItemEventCommandFactory;
+import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.model.datatypes.DataType.Type;
 
 /**

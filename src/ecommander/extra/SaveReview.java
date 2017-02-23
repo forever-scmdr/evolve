@@ -8,19 +8,19 @@ import javax.mail.internet.MimeMultipart;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.application.extra.EmailUtils;
-import ecommander.application.extra.ItemUtils;
-import ecommander.common.Strings;
+import ecommander.fwk.EmailUtils;
+import ecommander.fwk.ItemUtils;
+import ecommander.fwk.Strings;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;
-import ecommander.pages.elements.Command;
-import ecommander.pages.elements.ItemHttpPostForm;
-import ecommander.pages.elements.ResultPE;
+import ecommander.pages.Command;
+import ecommander.pages.ItemHttpPostForm;
+import ecommander.pages.ResultPE;
 import ecommander.persistence.commandunits.SaveNewItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.users.User;
+import ecommander.model.User;
 
 public class SaveReview extends Command {
 

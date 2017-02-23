@@ -7,16 +7,16 @@ import java.sql.SQLException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.application.extra.ItemEventCommandFactory;
-import ecommander.common.ServerLogger;
+import ecommander.fwk.ItemEventCommandFactory;
+import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.persistence.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import ecommander.services.filesystem.ItemFileUnit;
-import ecommander.services.filesystem.SaveItemFilesUnit;
+import ecommander.filesystem.ItemFileUnit;
+import ecommander.filesystem.SaveItemFilesUnit;
 
 /**
  * Сохранение нового айтема в базоне

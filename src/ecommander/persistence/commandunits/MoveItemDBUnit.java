@@ -5,14 +5,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import ecommander.common.ServerLogger;
-import ecommander.common.exceptions.EcommanderException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.EcommanderException;
 import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
-import ecommander.services.filesystem.FilePersistenceCommandUnit;
+import ecommander.filesystem.FilePersistenceCommandUnit;
 
 /**
  * Перемещение айтема (прикрепление айтема к другому родителю)

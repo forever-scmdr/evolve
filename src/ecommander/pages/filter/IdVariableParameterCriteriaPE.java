@@ -1,0 +1,23 @@
+package ecommander.pages.filter;
+
+import ecommander.model.Compare;
+import ecommander.model.ItemType;
+import ecommander.model.ParameterDescription;
+/**
+ * Критерий фильтра, в котором параметр определяется по его ID, который хранится в переменной страницы
+ * @author EEEE
+ *
+ */
+class IdVariableParameterCriteriaPE extends VariableParameterCriteriaPE {
+	
+	IdVariableParameterCriteriaPE(String paramIdVar, String sign, String pattern, Compare compType) {
+		super(paramIdVar, sign, pattern, compType);
+	}
+
+	@Override
+	public ParameterDescription getParam(ItemType itemDesc) {
+		int paramId = Integer.parseInt(pageModel.getVariable(paramNameVar).output());
+		return itemDesc.getParameter(paramId);
+	}
+
+}

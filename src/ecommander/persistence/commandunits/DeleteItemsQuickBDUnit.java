@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import ecommander.common.MysqlConnector;
+import ecommander.fwk.MysqlConnector;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 

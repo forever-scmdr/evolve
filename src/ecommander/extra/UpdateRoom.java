@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.application.extra.ItemUtils;
+import ecommander.fwk.ItemUtils;
 import ecommander.extra._generated.ItemNames;
 import ecommander.model.Item;
-import ecommander.pages.elements.Command;
-import ecommander.pages.elements.ResultPE;
+import ecommander.pages.Command;
+import ecommander.pages.ResultPE;
 import ecommander.persistence.commandunits.SaveNewItemDBUnit;
 import ecommander.persistence.commandunits.UpdateItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.users.User;
+import ecommander.model.User;
 
 public class UpdateRoom extends Command {
 

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.common.ServerLogger;
+import ecommander.fwk.ServerLogger;
 
 /**
  * Класс для установления соответствия между URL, которые задал пользователь и URL, которые используются
