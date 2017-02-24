@@ -216,7 +216,7 @@ import ecommander.model.UserGroupRegistry;
 		</item>
 		<parent-of name="main_item" quantifier="multiple"/> // Прямой родитель айтема, а также все айтемы, которые содержатт ссылку на данный айтем
 															// !!! parent-of не может содержать фильтр
-		<predecessors-of name="main_item" quantifier="multiple"/> // Все предки айтема с определенным названием в порядке иерархии
+		<baseItems-of name="main_item" quantifier="multiple"/> // Все предки айтема с определенным названием в порядке иерархии
 	</item>
 	
 	
@@ -387,11 +387,11 @@ import ecommander.model.UserGroupRegistry;
 	
 	// Последовательность предков айтема начиная от непосредственного родителя и до самого первого предка определенного типа
 	<item name="device" quantifier="multiple">
-		<predecessors name="section" quantifier="multiple">
+		<baseItems name="section" quantifier="multiple">
 			<item .../>
 			<link .../>
 			...
-		</predecessors>
+		</baseItems>
 	</item>
 	
 </page>
@@ -601,7 +601,7 @@ public class PageModelBuilder {
 	public static final String CHILD_ELEMENT = "child";
 	public static final String SUCCESSOR_ELEMENT = "successor";
 	public static final String PARENT_OF_ELEMENT = "parent-of";
-	public static final String PREDECESSORS_OF_ELEMENT = "predecessors-of";
+	public static final String PREDECESSORS_OF_ELEMENT = "baseItems-of";
 	public static final String PARAMETER_ELEMENT = "parameter";
 	public static final String SORTING_ELEMENT = "sorting";
 	public static final String LIMIT_ELEMENT = "limit";
@@ -971,7 +971,7 @@ public class PageModelBuilder {
 			} else if (itemSubnode.getNodeType() == Node.ELEMENT_NODE && itemSubnode.getNodeName().equalsIgnoreCase(FILTER_ELEMENT)) {
 				if (queryType == ItemQuery.Type.PARENT_OF || queryType == ItemQuery.Type.PREDECESSORS_OF)
 					throw new PrimaryValidationException(pageName + " > Item '" + itemName + "'",
-							"filters are not allowed in 'parent-of' and 'predecessors-of' elemets");
+							"filters are not allowed in 'parent-of' and 'baseItems-of' elemets");
 				pageItem.addElement(readFilter((Element) itemSubnode, includes));
 			// Группировка
 			} else if (itemSubnode.getNodeType() == Node.ELEMENT_NODE && itemSubnode.getNodeName().equalsIgnoreCase(AGGREGATION_ELEMENT)) {

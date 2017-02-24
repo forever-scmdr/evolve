@@ -22,7 +22,7 @@ public class ItemPE extends PageElementContainer {
 	public static final String ELEMENT_NAME = "item";
 	public static final String SUCCESSOR_ELEMENT_NAME = "successor";
 	public static final String PARENT_OF_ELEMENT_NAME = "parent-of";
-	public static final String PREDECESSORS_OF_ELEMENT_NAME = "predecessors-of";
+	public static final String PREDECESSORS_OF_ELEMENT_NAME = "baseItems-of";
 	
 	// Какой это айтем - personal, session или обычный
 	private ItemRootType itemRootType;

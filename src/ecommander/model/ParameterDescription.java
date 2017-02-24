@@ -7,11 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import ecommander.fwk.Strings;
 
 public final class ParameterDescription {
-	
-	public static enum Quantifier {
-		single, multiple;
-	}
-	
+
 	public static enum TextIndex {
 		fulltext, // Параметр индексируется и подвергается анализу
 		filter, // Параметр индексируется, но анализу не подвергается
@@ -21,7 +17,7 @@ public final class ParameterDescription {
 	private String name = Strings.EMPTY;
 	private int paramId = 0; // ID параметра
 	private DataType type = null; // Тип параметра
-	private Quantifier quantifier = Quantifier.single; // Одиночный или множественный параметр (может иметь одно значение или несколько)
+	private boolean isMultiple = false; // Одиночный или множественный параметр (может иметь одно значение или несколько)
 	private int ownerItemId = -1; // ID айтема, которому принадлежит параметр
 	private String domainName = Strings.EMPTY; // Название домена
 	private String caption = Strings.EMPTY; // Символьное обозначение для юзера на русском языке
@@ -41,13 +37,13 @@ public final class ParameterDescription {
 	
 	private boolean needsDBIndex = true; // нужно ли сохранять в индекс базы данных значение этого параметра
 	
-	public ParameterDescription(String name, int paramId, String type, Quantifier quantifier, int parentItemId, String domainName, String caption,
+	public ParameterDescription(String name, int paramId, String type, boolean isMultiple, int parentItemId, String domainName, String caption,
 	                            String description, String format, boolean isVirtual, boolean isHidden, String defaultValue, ComputedDescription.Func computedFunc) {
 		super();
 		this.name = name;
 		this.paramId = paramId;
 		this.type = DataTypeRegistry.getType(DataType.Type.get(type));
-		this.quantifier = quantifier;
+		this.isMultiple = isMultiple;
 		this.ownerItemId = parentItemId;
 		if (domainName != null)
 			this.domainName = domainName;
@@ -121,10 +117,6 @@ public final class ParameterDescription {
 	public int getId() {
 		return paramId;
 	}
-	
-	public Quantifier getQuantifier() {
-		return quantifier;
-	}
 
 	public DataType getDataType() {
 		return type;
@@ -153,7 +145,7 @@ public final class ParameterDescription {
 	 * @return
 	 */
 	public boolean isMultiple() {
-		return quantifier == Quantifier.multiple;
+		return isMultiple;
 	}
 	/**
 	 * Нужно ли скрывать параметр при редактировании в системе управления

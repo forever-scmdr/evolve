@@ -21,9 +21,9 @@ public class ComputedDescription {
 	public static enum Type {
 		parent, child;
 		public static Type get(String typeStr) {
-			if (StringUtils.equalsIgnoreCase(typeStr, "child"))
+			if (StringUtils.equalsIgnoreCase(typeStr, "base-child"))
 				return child;
-			if (StringUtils.equalsIgnoreCase(typeStr, "parent"))
+			if (StringUtils.equalsIgnoreCase(typeStr, "base-parent"))
 				return parent;
 			return null;
 		}

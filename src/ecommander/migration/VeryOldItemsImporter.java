@@ -30,7 +30,7 @@ public class VeryOldItemsImporter extends DBPersistenceCommandUnit {
 			long id = Long.parseLong(itemNode.attr("id"));
 			long refId = Long.parseLong(itemNode.attr("ref-id"));
 			long parentId = Long.parseLong(itemNode.attr("parent"));
-			String predecessors = itemNode.attr("predecessors");
+			String predecessors = itemNode.attr("baseItems");
 			long userId = Long.parseLong(itemNode.attr("user"));
 			if (userId == 1L)
 				userId = 0L;

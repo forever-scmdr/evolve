@@ -58,7 +58,7 @@
 		Вычисляемый параметр может сам быть построен на базе других вычисляемых параметров
 		-->
 		<parameter name="price_qty" type="integer" caption="Количество предложений" function="COUNT" default="0">
-			<child item="product" assoc="hierarchy" parameter="price_qty" transitive="true"/>
+			<base-child item="product" assoc="hierarchy" parameter="price_qty" transitive="true"/>
 		</parameter>
 	</item>
 
@@ -67,7 +67,15 @@
 	<!-- Цены разных продавцов на определенный товар -->
 	<assoc name="seller_price" caption="Цена продавца" transitive="false"/>
 
-	<item name="product" caption="Товар" key="name" key-unique="true">
+	<!--
+	default-page="product" Страница по умолчанию для айтема.
+	Алгоритм следующий: из урла извлекается потенциальное название страницы. Если страницы с таким названием не найдено
+	в модели страниц, предполагается, что эта страница - страница по умолчанию (default-page) одного из айтемов.
+	Из всех translit параметров страницы берется последний. Загружается айтем по уникальному ключу, и из типа
+	этого айтема извлекается страница по умолчанию. Это и будет запрашиваемая страница. Если айтем не найден по
+	ключу или для него не указана страница, выдается ошибка 404.
+	-->
+	<item name="product" caption="Товар" key="name" key-unique="true" default-page="product">
 		<parameter name="art" type="string" caption="Артикул"/>
 		<parameter name="name" type="string" caption="Название"/>
 		<child assoc="present" item="product" single="true"/>
@@ -85,13 +93,13 @@
 		для некоторого товара.
 		-->
 		<parameter name="min_price" type="currency" caption="Минимальная цена товара" function="MIN">
-			<child item="price" assoc="seller_price" parameter="price" transitive="false"/>
+			<base-child item="price" assoc="seller_price" parameter="price" transitive="false"/>
 		</parameter>
 		<parameter name="max_price" type="currency" caption="Максимальная цена товара">
-			<child item="price" assoc="seller_price" parameter="price" transitive="false" function="MAX"/>
+			<base-child item="price" assoc="seller_price" parameter="price" transitive="false" function="MAX"/>
 		</parameter>
 		<parameter name="price_qty" type="integer" caption="Количество предложений">
-			<child item="price" assoc="seller_price" transitive="false" function="COUNT"/>
+			<base-child item="price" assoc="seller_price" transitive="false" function="COUNT"/>
 		</parameter>
 		<on-update class="ecommander.extra.UpdatePrices"/>
 		<on-update class="ecommander.extra.SaveReview"/>

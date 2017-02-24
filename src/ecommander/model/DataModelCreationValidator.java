@@ -20,7 +20,7 @@ import ecommander.fwk.ModelValidator;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class DataModelCreationValidator extends ModelValidator {
+public class DataModelCreationValidator extends ModelValidator implements DataModelXmlElementNames {
 
 	private static class Element {
 		protected int lineNumber;
@@ -53,91 +53,86 @@ public class DataModelCreationValidator extends ModelValidator {
 
 	private static class Item extends ChildContainer {
 		
-		private Item(String name, String caption, String key, int lineNumber, boolean isVirtual) {
+		private Item(int lineNumber, String name, String caption, String key, boolean isKeyUnique, String defaultPage, boolean isVirtual) {
 			super(lineNumber);
 			this.name = name;
 			this.caption = caption;
 			this.key = key;
 			this.isVirtual = isVirtual;
-			this.predecessors = new ArrayList<String>();
+			this.baseItems = new ArrayList<String>();
 			this.parameters = new ArrayList<Parameter>();
+			this.isKeyUnique = isKeyUnique;
+			this.defaultPage = defaultPage;
 		}
 		public final String name;
 		@SuppressWarnings("unused")
 		public final String caption;
 		public final String key;
+		public final boolean isKeyUnique;
+		public final String defaultPage;
 		public final boolean isVirtual;
-		public final ArrayList<String> predecessors;
+		public final ArrayList<String> baseItems;
 		public final ArrayList<Parameter> parameters;
 	}
 	
 	private static class Child extends Element {
-		private Child(String name, String parentName, boolean isSingle, boolean isVirtual, int lineNumber) {
+		private Child(int lineNumber, String name, String parentName, String assoc, boolean isSingle, boolean isVirtual) {
 			super(lineNumber);
 			this.name = name;
 			this.isSingle = isSingle;
 			this.isVirtual = isVirtual;
 			this.parentName = parentName;
+			this.assoc = assoc;
 		}
 		public final String name;
 		public final String parentName;
+		public final String assoc;
 		public final boolean isSingle;
 		@SuppressWarnings("unused")
 		public final boolean isVirtual;
 	}
+
+	private static class BaseItemParam extends Element {
+		private final String type;
+		private final String item;
+		private final String assoc;
+		private final String parameter;
+		private final boolean isTransitive;
+		public BaseItemParam(int lineNumber, String type, String item, String assoc, String parameter, boolean isTransitive) {
+			super(lineNumber);
+			this.type = type;
+			this.item = item;
+			this.assoc = assoc;
+			this.parameter = parameter;
+			this.isTransitive = isTransitive;
+		}
+	}
 	
 	private static class Parameter extends Element {
-		private Parameter(String name, String type, boolean isSingle, String caption, int lineNumber) {
+		private Parameter(int lineNumber, String name, String type, boolean isMultiple, String caption, String function) {
 			super(lineNumber);
 			this.name = name;
 			this.type = type;
-			this.isSingle = isSingle;
+			this.isMultiple = isMultiple;
 			this.caption = caption;
+			this.function = function;
 		}
 		public final String name;
+		public final String function;
 		@SuppressWarnings("unused")
 		public final String type;
 		@SuppressWarnings("unused")
-		public final boolean isSingle;
+		public final boolean isMultiple;
 		@SuppressWarnings("unused")
 		public final String caption;
+		public final ArrayList<BaseItemParam> baseItemParams = new ArrayList<>(3);
 	}
-	
-	private static class Root extends ChildContainer {
-		private Root(String group, int lineNumber) {
-			super(lineNumber);
-			this.group = group;
-		}
-		private String group;
-	}
-	/**
-	 * Элементы
-	 */
-	private static final String ITEMS_ELEMENT = "items";
-	private static final String ITEM_ELEMENT = "item";
-	private static final String ROOT_ELEMENT = "root";
-	private static final String NAME_ATTRIBUTE = "name";
-	private static final String PARAMETER_ELEMENT = "parameter";
-	private static final String SUBITEM_ELEMENT = "subitem";
-	/**
-	 * Атрибуты
-	 */
-	private static final String TYPE_ATTRIBUTE = "type";
-	private static final String QUANTIFIER_ATTRIBUTE = "quantifier";
-	private static final String CAPTION_ATTRIBUTE = "caption";
-//	private static final String DESCRIPTION_ATTRIBUTE = "description";
-//	private static final String DOMAIN_ATTRIBUTE = "domain";
-//	private static final String FORMAT_ATTRIBUTE = "format";
-	private static final String GROUP_ATTRIBUTE = "group";
-	private static final String KEY_ATTRIBUTE = "key";
-	private static final String EXTENDS_ATTRIBUTE = "extends";
-	private static final String VIRTUAL_ATTRIBUTE = "virtual";
 
-	/**
-	 * Значения
-	 */
-	private static final String SINGLE_VALUE = "single";
-	private static final String MULTIPLE_VALUE = "multiple";
+	private static class Root extends ChildContainer {
+		private Root(int lineNumber) {
+			super(lineNumber);
+		}
+	}
 
 	private static final String TRUE_VALUE = "true";
 	
@@ -154,11 +149,34 @@ public class DataModelCreationValidator extends ModelValidator {
 			if (criticalError) {
 				return;
 			}
-			if (ITEM_ELEMENT.equalsIgnoreCase(qName)) {
-				String name = attributes.getValue(NAME_ATTRIBUTE);
-				String caption = attributes.getValue(CAPTION_ATTRIBUTE);
-				String key = attributes.getValue(KEY_ATTRIBUTE);
-				boolean isVirtual = TRUE_VALUE.equalsIgnoreCase(attributes.getValue(VIRTUAL_ATTRIBUTE));
+			if (ASSOC.equalsIgnoreCase(qName)) {
+				String name = attributes.getValue(NAME);
+				String caption = attributes.getValue(CAPTION);
+				String description = attributes.getValue(DESCRIPTION);
+				boolean isTransitive = StringUtils.endsWithIgnoreCase(attributes.getValue(TRANSITIVE), TRUE_VALUE);
+				if (StringUtils.isBlank(name)) {
+					addError("Name not set. Assoc 'name' attribute must not be empty.", locator.getLineNumber());
+					name = "error" + (errorCounter++);
+				}
+				if (StringUtils.isBlank(caption))
+					addError("Caption not set. Assoc 'caption' attribute must not be empty.", locator.getLineNumber());
+				if (items.containsKey(name)) {
+					addError("Duplicate item name '" + name + "'. All items must have unique names", locator.getLineNumber());
+					criticalError = true;
+				}
+				Assoc assoc = new Assoc(locator.getLineNumber(), name, caption, description, isTransitive);
+				String strExtends = attributes.getValue(SUPER);
+				// Сохранение
+				stack.push(assoc);
+				assocs.put(name, assoc);
+			}
+			else if (ITEM.equalsIgnoreCase(qName)) {
+				String name = attributes.getValue(NAME);
+				String caption = attributes.getValue(CAPTION);
+				String key = attributes.getValue(KEY);
+				String defaultPage = attributes.getValue(DEFAULT_PAGE);
+				boolean isVirtual = StringUtils.endsWithIgnoreCase(attributes.getValue(VIRTUAL), TRUE_VALUE);
+				boolean isKeyUnique = StringUtils.endsWithIgnoreCase(attributes.getValue(KEY_UNIQUE), TRUE_VALUE);
 				if (StringUtils.isBlank(name)) {
 					addError("Name not set. Item 'name' attribute must not be empty.", locator.getLineNumber());
 					name = "error" + (errorCounter++);
@@ -169,100 +187,112 @@ public class DataModelCreationValidator extends ModelValidator {
 					addError("Duplicate item name '" + name + "'. All items must have unique names", locator.getLineNumber());
 					criticalError = true;
 				}
-				Item item = new Item(name, caption, key, locator.getLineNumber(), isVirtual);
-				String strExtends = attributes.getValue(EXTENDS_ATTRIBUTE);
+				Item item = new Item(locator.getLineNumber(), name, caption, key, isKeyUnique, defaultPage, isVirtual);
+				String strExtends = attributes.getValue(SUPER);
 				if (strExtends != null) {
 					String[] parents = StringUtils.split(strExtends, ItemType.COMMON_DELIMITER);
 					for (String parent : parents) {
 						if (!StringUtils.isBlank(parent) && !parent.equals(ItemType.ITEM_SELF))
-							item.predecessors.add(parent);
+							item.baseItems.add(parent);
 					}
 				}
 				// Сохранение
 				stack.push(item);
 				items.put(name, item);
 			}
-			else if (SUBITEM_ELEMENT.equalsIgnoreCase(qName)) {
+			else if (CHILD.equalsIgnoreCase(qName)) {
 				Element parent = stack.peek();
 				if (!(parent instanceof ChildContainer)) {
-					addError("Subitem element is in wrong place. 'subitem' most be a child of 'item'", locator.getLineNumber());
+					addError("Subitem element is in wrong place. 'subitem' must be a child of 'item' or 'root'", locator.getLineNumber());
 					return;
 				}
-				String childName = attributes.getValue(NAME_ATTRIBUTE);
+				String childName = attributes.getValue(NAME);
 				if (StringUtils.isBlank(childName)) {
-					addError("Name not set. Subitem 'name' attribute must not be empty.", locator.getLineNumber());
+					addError("Name not set. Child 'name' attribute must not be empty.", locator.getLineNumber());
 					return;
 				}
 				if (((ChildContainer)parent).children.contains(childName)) {
-					addError("Duplicate subitem name: " + childName, locator.getLineNumber());
+					addError("Duplicate child name: " + childName, locator.getLineNumber());
 					return;
 				}
-				String quantifierStr = attributes.getValue(QUANTIFIER_ATTRIBUTE);
-				if (quantifierStr == null) quantifierStr = Strings.EMPTY;
-				if (!quantifierStr.equalsIgnoreCase(SINGLE_VALUE) && !quantifierStr.equalsIgnoreCase(MULTIPLE_VALUE))
-					addError("Subitem quantifier not set. Subitem 'quantifier' attribute must not be empty.", locator.getLineNumber());
-				String virtualityStr = attributes.getValue(VIRTUAL_ATTRIBUTE);
-				if (virtualityStr == null) virtualityStr = Strings.EMPTY;
-				boolean isSingle = !quantifierStr.equalsIgnoreCase(MULTIPLE_VALUE);
-				boolean isVirtual = virtualityStr.equalsIgnoreCase(TRUE_VALUE);
+				String assoc = attributes.getValue(ASSOC);
+				boolean isSingle = StringUtils.equalsIgnoreCase(attributes.getValue(SINGLE), TRUE_VALUE);
+				boolean isVirtual = StringUtils.equalsIgnoreCase(attributes.getValue(VIRTUAL), TRUE_VALUE);
 				String parentName = "";
 				if (parent instanceof Item) {
 					parentName = ((Item)parent).name;
 				} else if (parent instanceof Root) {
-					parentName = ((Root)parent).group;
+					parentName = "root";
 				}
-				Child child = new Child(childName, parentName, isSingle, isVirtual, locator.getLineNumber());
+				Child child = new Child(locator.getLineNumber(), childName, parentName, assoc, isSingle, isVirtual);
 				// Сохранение
 				stack.push(child);
 				((ChildContainer)parent).children.add(child);
 				children.add(child);
 			}
-			else if (PARAMETER_ELEMENT.equalsIgnoreCase(qName)) {
+			else if (PARAMETER.equalsIgnoreCase(qName)) {
 				Element parent = stack.peek();
 				if (!(parent instanceof Item)) {
-					addError("Parameter element is in wrong place. 'parameter' most be a child of 'item'", locator.getLineNumber());
+					addError("Parameter element is in wrong place. 'parameter' must be a child of 'item'", locator.getLineNumber());
 					return;
 				}
-				String name = attributes.getValue(NAME_ATTRIBUTE);
+				String name = attributes.getValue(NAME);
 				if (StringUtils.isBlank(name)) {
-					addError("Name not set. Subitem 'name' attribute must not be empty.", locator.getLineNumber());
+					addError("Name not set. Parameter 'name' attribute must not be empty.", locator.getLineNumber());
 					return;
 				}
 				if (((Item)parent).parameters.contains(name)) {
 					addError("Duplicate parameter name: " + name, locator.getLineNumber());
 					return;
 				}
-				String caption = attributes.getValue(CAPTION_ATTRIBUTE);
+				String caption = attributes.getValue(CAPTION);
 				if (StringUtils.isBlank(caption) && !((Item)parent).isVirtual)
 					addError("Caption not set. Parameter 'caption' attribute must not be empty.", locator.getLineNumber());
-				String quantifierStr = attributes.getValue(QUANTIFIER_ATTRIBUTE);
-				if (quantifierStr == null) quantifierStr = Strings.EMPTY;
-//				if (!quantifierStr.equalsIgnoreCase(SINGLE_VALUE) && !quantifierStr.equalsIgnoreCase(MULTIPLE_VALUE))
-//					addError("Parameter quantifier not set. Parameter 'quantifier' attribute must not be empty.", locator.getLineNumber());
-				String type = attributes.getValue(TYPE_ATTRIBUTE);
+				boolean isMultiple = StringUtils.equalsIgnoreCase(attributes.getValue(MULTIPLE), TRUE_VALUE);
+				String type = attributes.getValue(TYPE);
 				if (!DataTypeRegistry.isTypeNameValid(type))
 					addError("Parameter type is incorrect.", locator.getLineNumber());
-				boolean isSingle = !quantifierStr.equalsIgnoreCase(MULTIPLE_VALUE);
-				
-				Parameter parameter = new Parameter(name, type, isSingle, caption, locator.getLineNumber());
+				String function = attributes.getValue(FUNCTION);
+				Parameter parameter = new Parameter(locator.getLineNumber(), name, type, isMultiple, caption, function);
 				// Сохранение
 				stack.push(parameter);
 				((Item)parent).parameters.add(parameter);
 			}
-			else if (ROOT_ELEMENT.equalsIgnoreCase(qName)) {
+			else if (BASE_CHILD.equalsIgnoreCase(qName) || BASE_PARENT.equalsIgnoreCase(qName)) {
+				Element parent = stack.peek();
+				if (!(parent instanceof Parameter)) {
+					addError(qName + " element is in wrong place. It must be a child of 'parameter'", locator.getLineNumber());
+					return;
+				}
+				String item = attributes.getValue(ITEM);
+				if (StringUtils.isBlank(item)) {
+					addError("Base item not set. Base-parent/child 'item' attribute must not be empty.", locator.getLineNumber());
+					return;
+				}
+				String parameter = attributes.getValue(PARAMETER);
+				if (StringUtils.isBlank(parameter)) {
+					addError("Base item parameter not set. Base-parent/child 'parameter' attribute must not be empty.", locator.getLineNumber());
+					return;
+				}
+				String assoc = attributes.getValue(ASSOC);
+				boolean isTransitive = StringUtils.equalsIgnoreCase(attributes.getValue(TRANSITIVE), TRUE_VALUE);
+				BaseItemParam base = new BaseItemParam(locator.getLineNumber(), qName, item, assoc, parameter, isTransitive);
+				// Сохранение
+				stack.push(base);
+				((Parameter)parent).baseItemParams.add(base);
+			}
+			else if (ROOT.equalsIgnoreCase(qName)) {
 				if (stack.size() > 0) {
 					addError("Root element is in wrong place. 'root' most not be a child of any other node", locator.getLineNumber());
 					return;
 				}
-				String group = attributes.getValue(GROUP_ATTRIBUTE);
-				if (StringUtils.isBlank(group)) {
-					addError("Group not set. Root 'group' attribute must not be empty.", locator.getLineNumber());
-					return;
-				}
-				Root root = new Root(group, locator.getLineNumber());
+				Root root = new Root(locator.getLineNumber());
 				// Сохранение
 				stack.push(root);
-				roots.add(root);
+				if (root != null) {
+					addError("There must be only one 'root' element", locator.getLineNumber());
+					return;
+				}
 			}
 			else if (!ITEMS_ELEMENT.equalsIgnoreCase(qName)) {
 				addError("Invalid '" + qName + "' element", locator.getLineNumber());
@@ -289,14 +319,14 @@ public class DataModelCreationValidator extends ModelValidator {
 	}
 
 	private ArrayList<String> modelFiles;
+	private HashMap<String, Assoc> assocs;
 	private HashMap<String, Item> items;
 	private ArrayList<Child> children;
-	private ArrayList<Root> roots;
+	private Root roots;
 	
 	public DataModelCreationValidator(ArrayList<String> modelFiles) {
 		items = new HashMap<String, Item>();
 		children = new ArrayList<Child>();
-		roots = new ArrayList<Root>();
 		this.modelFiles = modelFiles;
 	}
 
@@ -319,7 +349,7 @@ public class DataModelCreationValidator extends ModelValidator {
 		ArrayList<String[]> parentChildPairs = new ArrayList<String[]>();
 		boolean criticalError = false;
 		for (Item item : items.values()) {
-			for (String parentName : item.predecessors) {
+			for (String parentName : item.baseItems) {
 				if (!items.containsKey(parentName)) {
 					addError("Item '" + item.name + "' tries to extend non existent item '" + parentName + "'", item.lineNumber);
 					criticalError = true;

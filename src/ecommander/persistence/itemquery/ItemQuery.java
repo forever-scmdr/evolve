@@ -117,7 +117,7 @@ public class ItemQuery {
 		ITEM, 				// <item>
 		SUCCESSOR, 			// <successor>
 		PARENT_OF, 			// <parent-of>
-		PREDECESSORS_OF;	// <predecessors-of>
+		PREDECESSORS_OF;	// <baseItems-of>
 		public static Type getValue(String val) {
 			if ("item".equals(val))
 				return ITEM;
@@ -125,7 +125,7 @@ public class ItemQuery {
 				return SUCCESSOR;
 			if ("parent-of".equals(val))
 				return PARENT_OF;
-			if ("predecessors-of".equals(val))
+			if ("baseItems-of".equals(val))
 				return PREDECESSORS_OF;
 			throw new IllegalArgumentException("there is no ItemQuery Type value for '" + val + "' string");
 		}

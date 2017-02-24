@@ -44,7 +44,8 @@ public class ItemType extends ItemTypeContainer {
 	private int typeId; // ID типа айтема (для ускорения)
 	private String caption =  StringUtils.EMPTY; // Символьное обозначение для юзера на русском языке
 	private String description =  StringUtils.EMPTY; // Описание на русском
-	private String key =  StringUtils.EMPTY; // Ключевые параметры, разделенные знаком :
+	private String key =  StringUtils.EMPTY; // Ключевые параметры, разделенные пробелом
+	private String defaultPage = null; // страница по умолчанию для
 	private boolean virtual;
 	private boolean inline; // является ли данный айтем инлайновым (для панели управления)
 	private boolean isExtendable; // Может ли пользователь расширять этот айтем
@@ -62,7 +63,7 @@ public class ItemType extends ItemTypeContainer {
 													//(выполнение дополнительных действий после сохранения, удаления)
 	private String extendsStr = ITEM_SELF; // перечисление всех предов айтема в порядке добавления параметров, сам айтем в этом списке обозначается *
 	
-	public ItemType(String typeName, int typeId, String caption, String description, String key, String extendsStr, boolean virtual,
+	public ItemType(String typeName, int typeId, String caption, String description, String key, String extendsStr, String defaultPage, boolean virtual,
 			boolean isUserDefined, boolean isInline, boolean isExtendable, boolean isKeyUnique) {
 		super();
 		// Заменить запятую на точку для корректного использования имени айтема в атрибуте extends
@@ -86,6 +87,8 @@ public class ItemType extends ItemTypeContainer {
 			if (!this.extendsStr.contains(ITEM_SELF))
 				this.extendsStr += COMMON_DELIMITER + ITEM_SELF;
 		}
+		if (StringUtils.isNotBlank(defaultPage))
+			this.defaultPage = defaultPage;
 	}
 	/**
 	 * Установить дополнительный обработчик сохранения айтейма
@@ -253,6 +256,14 @@ public class ItemType extends ItemTypeContainer {
 	public String getKey() {
 		return key;
 	}
+
+	/**
+	 * Получить страницу по умолчанию
+	 * @return
+	 */
+	public String getDefaultPage() {
+		return defaultPage;
+	}
 	/**
 	 * Добавить дополнительные ключевые параметры к существующим ключевым параметрам
 	 * @param keyAddOn
@@ -350,5 +361,13 @@ public class ItemType extends ItemTypeContainer {
 	 */
 	public boolean hasPredecessors() {
 		return !extendsStr.equals(ITEM_SELF);
+	}
+
+	/**
+	 * Есть ли у айтема страница по умолчанию
+	 * @return
+	 */
+	public boolean hasDefaultPage() {
+		return defaultPage != null;
 	}
 }
