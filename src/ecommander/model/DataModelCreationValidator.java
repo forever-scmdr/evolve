@@ -20,6 +20,11 @@ import ecommander.fwk.ModelValidator;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+/**
+ * Проверка файла model.xml
+ * TODO <enhance/> Сделать проверку доступности сабайетма с учетом ассоциации (сейчас ассоциация не учитывается)
+ * TODO <enhance/> Сделать проверку доступности базовых айтемов для вычистяемых парамтеров с учетом ассоциации
+ */
 public class DataModelCreationValidator extends ModelValidator implements DataModelXmlElementNames {
 
 	private static class Element {
@@ -93,12 +98,12 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 	}
 
 	private static class BaseItemParam extends Element {
-		private final String type;
+		private final ComputedDescription.Type type;
 		private final String item;
 		private final String assoc;
 		private final String parameter;
 		private final boolean isTransitive;
-		public BaseItemParam(int lineNumber, String type, String item, String assoc, String parameter, boolean isTransitive) {
+		public BaseItemParam(int lineNumber, ComputedDescription.Type type, String item, String assoc, String parameter, boolean isTransitive) {
 			super(lineNumber);
 			this.type = type;
 			this.item = item;
@@ -109,7 +114,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 	}
 	
 	private static class Parameter extends Element {
-		private Parameter(int lineNumber, String name, String type, boolean isMultiple, String caption, String function) {
+		private Parameter(int lineNumber, String name, String type, boolean isMultiple, String caption, ComputedDescription.Func function) {
 			super(lineNumber);
 			this.name = name;
 			this.type = type;
@@ -118,7 +123,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 			this.function = function;
 		}
 		public final String name;
-		public final String function;
+		public final ComputedDescription.Func function;
 		@SuppressWarnings("unused")
 		public final String type;
 		@SuppressWarnings("unused")
@@ -252,8 +257,11 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				String type = attributes.getValue(TYPE);
 				if (!DataTypeRegistry.isTypeNameValid(type))
 					addError("Parameter type is incorrect.", locator.getLineNumber());
-				String function = attributes.getValue(FUNCTION);
-				Parameter parameter = new Parameter(locator.getLineNumber(), name, type, isMultiple, caption, function);
+				String functionStr = attributes.getValue(FUNCTION);
+				ComputedDescription.Func func = null;
+				if (StringUtils.isNotBlank(functionStr) && (func = ComputedDescription.Func.get(functionStr)) == null)
+					addError("There is no '" + functionStr + "' predefined function", locator.getLineNumber());
+				Parameter parameter = new Parameter(locator.getLineNumber(), name, type, isMultiple, caption, func);
 				// Сохранение
 				stack.push(parameter);
 				((Item)parent).parameters.add(parameter);
@@ -276,7 +284,8 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				}
 				String assoc = attributes.getValue(ASSOC);
 				boolean isTransitive = StringUtils.equalsIgnoreCase(attributes.getValue(TRANSITIVE), TRUE_VALUE);
-				BaseItemParam base = new BaseItemParam(locator.getLineNumber(), qName, item, assoc, parameter, isTransitive);
+				ComputedDescription.Type type = ComputedDescription.Type.get(qName);
+				BaseItemParam base = new BaseItemParam(locator.getLineNumber(), type, item, assoc, parameter, isTransitive);
 				// Сохранение
 				stack.push(base);
 				((Parameter)parent).baseItemParams.add(base);
@@ -286,7 +295,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 					addError("Root element is in wrong place. 'root' most not be a child of any other node", locator.getLineNumber());
 					return;
 				}
-				Root root = new Root(locator.getLineNumber());
+				root = new Root(locator.getLineNumber());
 				// Сохранение
 				stack.push(root);
 				if (root != null) {
@@ -294,7 +303,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 					return;
 				}
 			}
-			else if (!ITEMS_ELEMENT.equalsIgnoreCase(qName)) {
+			else if (!MODEL.equalsIgnoreCase(qName)) {
 				addError("Invalid '" + qName + "' element", locator.getLineNumber());
 			}
 		}
@@ -303,10 +312,12 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		public void endElement(String uri, String localName, String qName) throws SAXException {
 			if (criticalError)
 				return;
-			if (ROOT_ELEMENT.equalsIgnoreCase(qName) || 
-					PARAMETER_ELEMENT.equalsIgnoreCase(qName) || 
-					SUBITEM_ELEMENT.equalsIgnoreCase(qName) || 
-					ITEM_ELEMENT.equalsIgnoreCase(qName))
+			if (ROOT.equalsIgnoreCase(qName) ||
+					ASSOC.equalsIgnoreCase(qName) ||
+					ITEM.equalsIgnoreCase(qName) ||
+					CHILD.equalsIgnoreCase(qName) ||
+					PARAMETER.equalsIgnoreCase(qName) ||
+					BASE_CHILD.equalsIgnoreCase(qName))
 				stack.pop();
 		}
 
@@ -322,7 +333,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 	private HashMap<String, Assoc> assocs;
 	private HashMap<String, Item> items;
 	private ArrayList<Child> children;
-	private Root roots;
+	private Root root;
 	
 	public DataModelCreationValidator(ArrayList<String> modelFiles) {
 		items = new HashMap<String, Item>();
@@ -383,12 +394,14 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				}
 			}
 		}
-		// Проверка сабайтемов (есть ли такие айтемы)
+		// Проверка сабайтемов (есть ли такие айтемы и ассоциации)
 		for (Child child : children) {
-			Item item = items.get(child.name);
-			if (item == null) {
+			if (items.get(child.name) == null) {
 				criticalError = true;
-				addError("'" + child.parentName + "' item tries to subitem nonexisting item '" + child.name + "'", child.lineNumber);
+				addError("'" + child.parentName + "' item uses undefined item '" + child.name + "' as a child", child.lineNumber);
+			}
+			if (StringUtils.isNotBlank(child.assoc) && assocs.get(child.assoc) == null) {
+				addError("'" + child.parentName + "' item tries to use undefiled assoc '" + child.assoc + "'", child.lineNumber);
 			}
 		}
 		if (criticalError)
@@ -408,18 +421,19 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 					}
 				}
 				if (!hasKey)
-					addError("Multiple subitem '" + child.name + "' has no key. Multiple subitem items must have key parameters",
+					addError("Multiple child '" + child.name + "' has no key. Multiple child items must have key parameters",
 							child.lineNumber);
 			}
 		}
 		// Проверка, достижим ли айтем из корня
-		HashSet<String> accessibleItems = new HashSet<String>();
-		HashSet<String> checkedItems = new HashSet<String>();
-		for (Root root : roots) {
-			checkSubitems(root, accessibleItems, checkedItems, hierarchy);
+		HashSet<String> accessibleItems = new HashSet<>();
+		HashSet<String> checkedItems = new HashSet<>();
+		if (root == null) {
+			addError("There is no root defined", 0);
 		}
+		checkSubitems(root, accessibleItems, checkedItems, hierarchy);
 		if (!accessibleItems.containsAll(items.keySet())) {
-			HashSet<String> allItems = new HashSet<String>(items.keySet());
+			HashSet<String> allItems = new HashSet<>(items.keySet());
 			allItems.removeAll(accessibleItems);
 			for (String inaccessibleItem : allItems) {
 				Item item = items.get(inaccessibleItem);
@@ -433,8 +447,101 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 					}
 				}
 				if (inaccessible && !item.isVirtual)
-					addError("Item '" + item.name + "' is not used in data structure. It must be either removed or linked as subitem",
+					addError("Item '" + item.name + "' is not used in data structure. It must be either removed or linked as a child",
 							item.lineNumber);
+			}
+		}
+
+		// Проверка базовых параметров
+		for (Item item : items.values()) {
+			for (Parameter parameter : item.parameters) {
+				// Если задана функция, то параметр вычисляемый
+				if (parameter.function != null) {
+					if (parameter.baseItemParams.size() == 0) {
+						addError("Computed parameter '" + parameter.name + "' has no base base-child or base-parent",
+								parameter.lineNumber);
+						continue;
+					}
+					for (BaseItemParam base : parameter.baseItemParams) {
+						Item baseItem = items.get(base.item);
+						Assoc assoc = assocs.get(base.assoc);
+						if (assoc == null) {
+							addError(base.type + " references undefiled assoc '" + base.assoc + "'", base.lineNumber);
+							continue;
+						}
+						if (baseItem == null) {
+							addError(base.type + " references undefiled item '" + base.item + "'", base.lineNumber);
+							continue;
+						}
+						// Проверка параметра
+						boolean hasParam = false;
+						for (String predName : hierarchy.getItemPredecessorsExt(base.item)) {
+							Item pred = items.get(predName);
+							for (Parameter param : pred.parameters) {
+								if (param.name.equals(base.parameter)) {
+									hasParam = true;
+									break;
+								}
+							}
+							if (hasParam) break;
+						}
+						if (!hasParam) {
+							addError("Item '" + base.item + "' have no '" + base.parameter + "' parameter referenced by " + base.type, item.lineNumber);
+							continue;
+						}
+						// Проверка доступность айтема через ассоциацию
+						if (base.type == ComputedDescription.Type.child) {
+							if (StringUtils.isNotBlank(base.assoc)) {
+								boolean hasAssoc = false;
+								for (Child child : item.children) {
+									if (StringUtils.equalsIgnoreCase(child.assoc, base.assoc)) {
+										hasAssoc = true;
+										break;
+									}
+								}
+								if (!hasAssoc) {
+									addError("Item '" + item.name + "' have no '" + base.assoc + "' assoc referenced by " + base.type, item.lineNumber);
+									continue;
+								}
+							} else {
+								boolean hasChild = false;
+								for (Child child : item.children) {
+									if (StringUtils.equalsIgnoreCase(child.name, base.item)) {
+										hasChild = true;
+										break;
+									}
+								}
+								if (!hasChild) {
+									addError("Item '" + item.name + "' have no default-assoc child '"
+											+ base.item + "' referenced by " + base.type, item.lineNumber);
+									continue;
+								}
+							}
+						} else if (base.type == ComputedDescription.Type.parent) {
+							boolean isChildHasParam = false;
+							for (Item container : items.values()) {
+								for (Child child : container.children) {
+									if (StringUtils.equalsIgnoreCase(child.name, base.item) && StringUtils.equalsIgnoreCase(child.assoc, base.assoc)) {
+										for (Parameter contParam : container.parameters) {
+											if (StringUtils.equalsIgnoreCase(contParam.name, base.parameter)) {
+												isChildHasParam = true;
+												break;
+											}
+										}
+									}
+									if (isChildHasParam) break;
+								}
+								if (isChildHasParam) break;
+							}
+							if (!isChildHasParam) {
+								addError("There is no suitable parent '" + base.item + "' with parameter '"
+										+ base.parameter + "' associated by '" + base.assoc + "' referenced by "
+										+ base.type, item.lineNumber);
+								continue;
+							}
+						}
+					}
+				}
 			}
 		}
 	}

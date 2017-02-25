@@ -99,7 +99,7 @@
 			<base-child item="price" assoc="seller_price" parameter="price" transitive="false" function="MAX"/>
 		</parameter>
 		<parameter name="price_qty" type="integer" caption="Количество предложений">
-			< zzbase-child item="price" assoc="seller_price" transitive="false" function="COUNT"/>
+			<base-child item="price" assoc="seller_price" transitive="false" function="COUNT"/>
 		</parameter>
 		<on-update class="ecommander.extra.UpdatePrices"/>
 		<on-update class="ecommander.extra.SaveReview"/>
