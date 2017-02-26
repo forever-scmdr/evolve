@@ -9,6 +9,7 @@ import java.util.Stack;
 
 import ecommander.pages.ValidationResults;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -160,6 +161,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				String caption = attributes.getValue(CAPTION);
 				String description = attributes.getValue(DESCRIPTION);
 				boolean isTransitive = StringUtils.endsWithIgnoreCase(attributes.getValue(TRANSITIVE), TRUE_VALUE);
+				byte id = NumberUtils.toByte(attributes.getValue(AG_ID), (byte) 0);
 				if (StringUtils.isBlank(name)) {
 					addError("Name not set. Assoc 'name' attribute must not be empty.", locator.getLineNumber());
 					name = "error" + (errorCounter++);
@@ -167,8 +169,14 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				if (StringUtils.isBlank(caption))
 					addError("Caption not set. Assoc 'caption' attribute must not be empty.", locator.getLineNumber());
 				if (assocs.containsKey(name)) {
-					addError("Duplicate item name '" + name + "'. All items must have unique names", locator.getLineNumber());
+					addError("Duplicate assoc name '" + name + "'. All assocs must have unique names", locator.getLineNumber());
 					criticalError = true;
+				}
+				if (id != (byte)0) {
+					if (assocIds.contains(id)) {
+						addError("Duplicate assoc ID '" + id + "'. All assocs must have unique IDs", locator.getLineNumber());
+					}
+					assocIds.add(id);
 				}
 				Assoc assoc = new Assoc(locator.getLineNumber(), name, caption, description, isTransitive);
 				String strExtends = attributes.getValue(SUPER);
@@ -183,6 +191,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				String defaultPage = attributes.getValue(DEFAULT_PAGE);
 				boolean isVirtual = StringUtils.endsWithIgnoreCase(attributes.getValue(VIRTUAL), TRUE_VALUE);
 				boolean isKeyUnique = StringUtils.endsWithIgnoreCase(attributes.getValue(KEY_UNIQUE), TRUE_VALUE);
+				int id = NumberUtils.toInt(attributes.getValue(AG_ID), 0);
 				if (StringUtils.isBlank(name)) {
 					addError("Name not set. Item 'name' attribute must not be empty.", locator.getLineNumber());
 					name = "error" + (errorCounter++);
@@ -192,6 +201,12 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				if (items.containsKey(name)) {
 					addError("Duplicate item name '" + name + "'. All items must have unique names", locator.getLineNumber());
 					criticalError = true;
+				}
+				if (id != 0) {
+					if (itemIds.contains(id)) {
+						addError("Duplicate item ID '" + id + "'. All items must have unique IDs", locator.getLineNumber());
+					}
+					itemIds.add(id);
 				}
 				Item item = new Item(locator.getLineNumber(), name, caption, key, isKeyUnique, defaultPage, isVirtual);
 				String strExtends = attributes.getValue(SUPER);
@@ -224,6 +239,13 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				String assoc = attributes.getValue(ASSOC);
 				boolean isSingle = StringUtils.equalsIgnoreCase(attributes.getValue(SINGLE), TRUE_VALUE);
 				boolean isVirtual = StringUtils.equalsIgnoreCase(attributes.getValue(VIRTUAL), TRUE_VALUE);
+				int id = NumberUtils.toInt(attributes.getValue(AG_ID), 0);
+				if (id != 0) {
+					if (paramIds.contains(id)) {
+						addError("Duplicate parameter ID '" + id + "'. All parameters must have unique IDs", locator.getLineNumber());
+					}
+					paramIds.add(id);
+				}
 				String parentName = "";
 				if (parent instanceof Item) {
 					parentName = ((Item)parent).name;
@@ -334,6 +356,9 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 	private HashMap<String, Assoc> assocs;
 	private HashMap<String, Item> items;
 	private ArrayList<Child> children;
+	private HashSet<Integer> itemIds = new HashSet<>();
+	private HashSet<Integer> paramIds = new HashSet<>();
+	private HashSet<Byte> assocIds = new HashSet<>();
 	private Root root;
 	
 	public DataModelCreationValidator(ArrayList<String> modelFiles) {

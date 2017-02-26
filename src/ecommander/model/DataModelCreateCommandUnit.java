@@ -68,9 +68,9 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 	// ID айтема => (название параметра => ID параметра)
 	private HashMap<Integer, HashMap<String, HashId>> paramIds = new HashMap<>();
 	private HashMap<Integer, ArrayList<ParameterDescription>> params = new HashMap<>();
-	private HashSet<Integer> itemsToDelete = new HashSet<>();
-	private HashSet<Integer> paramsToDelete = new HashSet<>();
-	private HashSet<Integer> assocsToDelete = new HashSet<>();
+	private HashMap<Integer, String> itemsById = new HashMap<>();
+	private HashMap<Integer, String> paramsById = new HashMap<>();
+	private HashMap<Integer, String> assocsById = new HashMap<>();
 	private HashSet<Integer> itemsToRefresh = new HashSet<>(); // айтемы, у которыз поменялись параметры и которые нао пересохранить
 	private boolean dbChanged = false; // были ли изменения в БД
 	
@@ -229,8 +229,8 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 	private String readItem(Element item) throws Exception {
 		String name = Strings.createXmlElementName(item.attr(NAME));
 		int newHash = name.hashCode();
-		int savedHash = NumberUtils.toInt(item.attr(AG_HASH));
-		int savedId = NumberUtils.toInt(item.attr(AG_ID));
+		int savedHash = NumberUtils.toInt(item.attr(AG_HASH), 0);
+		int savedId = NumberUtils.toInt(item.attr(AG_ID), 0);
 		String key = item.attr(KEY);
 		String caption = item.attr(CAPTION);
 		String description = item.attr(DESCRIPTION);
@@ -240,9 +240,12 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 		boolean isInline = Boolean.parseBoolean(item.attr(INLINE));
 		boolean isExt = Boolean.parseBoolean(item.attr(EXTENDABLE));
 		boolean isKeyUnique = Boolean.parseBoolean(item.attr(KEY_UNIQUE));
-		Integer itemId = null;
+		boolean nameUpdate = !itemIds.containsKey(name) && itemsById.containsKey(savedId);
 		// Если надо обновить название айтема
 		if (nameUpdate) {
+			if (savedHash != itemsById.get(savedId).hashCode()) {
+
+			}
 			itemId = itemIds.get(nameOld);
 			if (itemId == null) {
 				ValidationResults results = new ValidationResults();
@@ -307,7 +310,7 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 			}
 		}
 		// Пометить этот айтем для неудаления
-		itemsToDelete.remove(itemId);
+		itemsById.remove(itemId);
 		return name;
 	}
 	/**
@@ -408,7 +411,7 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 				containsOldTags = true;
 				paramsToDeleteFromIndex.add(paramId);
 			}
-			paramsToDelete.remove(paramId);
+			paramsById.remove(paramId);
 		}
 		ParameterDescription param = new ParameterDescription(name, paramId, dataTypeName, quantifier, itemId, domainName, caption,
 				description, format, isVirtual, isHidden);
@@ -496,25 +499,25 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 	 */
 	protected void mergeModel() throws TransactionException, SQLException {
 		// Из удаляемых айтемов и параметров удаляются служебные
-		itemsToDelete.remove(ParameterDescription.USER.getOwnerItemId());
-		paramsToDelete.remove(ParameterDescription.USER.getId());
-		paramsToDelete.remove(ParameterDescription.GROUP.getId());
+		itemsById.remove(ParameterDescription.USER.getOwnerItemId());
+		paramsById.remove(ParameterDescription.USER.getId());
+		paramsById.remove(ParameterDescription.GROUP.getId());
 		
 		Statement stmt = getTransactionContext().getConnection().createStatement();
 		try {
 			// ********************** Очистить таблицы ******************************
 			String sql;
 			// Удаление из таблицы ID айтемов
-			if (itemsToDelete.size() > 0) {
-				sql = "DELETE FROM " + DBConstants.ItemIds.TABLE + " WHERE " + DBConstants.ItemIds.ITEM_ID + " IN " + createIn(itemsToDelete);
+			if (itemsById.size() > 0) {
+				sql = "DELETE FROM " + DBConstants.ItemIds.TABLE + " WHERE " + DBConstants.ItemIds.ITEM_ID + " IN " + createIn(itemsById);
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;
 			}
 			// Удаление параметров, если нужно удалять, 
 			// изменение ID параметров, если параметр переместился в родительский класс
-			if (paramsToDelete.size() > 0) {
-				for (ParamToDelete pd : paramsToDelete.values()) {
+			if (paramsById.size() > 0) {
+				for (ParamToDelete pd : paramsById.values()) {
 					ParameterDescription newParamDesc = null; // новый ID параметра, на который надо поменять старый ID в таблицах индексов
 					Set<String> predNames = ItemTypeRegistry.getItemPredecessors(pd.itemName);
 					for (String predName : predNames) {
@@ -551,8 +554,8 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 				dbChanged = true;
 			}
 			// Удаление из главной таблицы айтемов
-			if (itemsToDelete.size() > 0) {
-				sql = "DELETE FROM " + DBConstants.Item.TABLE + " WHERE " + DBConstants.Item.TYPE_ID + " IN " + createIn(itemsToDelete);
+			if (itemsById.size() > 0) {
+				sql = "DELETE FROM " + DBConstants.Item.TABLE + " WHERE " + DBConstants.Item.TYPE_ID + " IN " + createIn(itemsById);
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;
@@ -574,7 +577,7 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 			int assocId = rs.getInt(DBConstants.AssocIds.ASSOC_ID);
 			String assocName = rs.getString(DBConstants.AssocIds.ASSOC_NAME);
 			assocIds.put(assocName, new HashId(assocName.hashCode(), assocId));
-			assocsToDelete.add(assocId);
+			assocsById.put(assocId, assocName);
 		}
 		rs.close();
 
@@ -587,7 +590,7 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 			String itemName = rs.getString(DBConstants.ItemIds.ITEM_NAME);
 			itemNames.put(itemId, itemName);
 			itemIds.put(itemName, new HashId(itemName.hashCode(), itemId));
-			itemsToDelete.add(itemId);
+			itemsById.put(itemId, itemName);
 			paramIds.put(itemId, new HashMap<String, HashId>());
 		}
 		rs.close();
@@ -606,7 +609,7 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 			int paramId = rs.getInt(DBConstants.ParamIds.PARAM_ID);
 			String paramName = rs.getString(DBConstants.ParamIds.PARAM_NAME);
 			paramIds.get(itemId).put(paramName, new HashId(paramName.hashCode(), paramId));
-			paramsToDelete.add(paramId);
+			paramsById.put(paramId, paramName);
 		}
 		stmt.close();
 	}
@@ -671,7 +674,13 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 		}
 		return files;
 	}
-	
+
+	private static ValidationException createValidationException(String errorName, String originator, String message) {
+		ValidationResults results = new ValidationResults();
+		results.addError(originator, message);
+		return new ValidationException(errorName, results);
+	}
+
 	public static void main(String[] args) throws JClassAlreadyExistsException, IOException {
 //		String str = "<eeee cool='rrrr' mega=\"dddd\" ultra='ffff'/><vvvv cool='dfdf' mega=\"ccccccc\"/>";
 //		str = str.replaceAll(" mega=\"[^\"]*\"", "");
