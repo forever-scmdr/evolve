@@ -97,6 +97,17 @@ public class DBConstants
 		String VALUE = "II_VAL"; // Занчение (одн
 	}
 	/**
+	 * Таблица, в которой хранятся ID всех ассоциаций
+	 * Она нужна для того, чтобы генерировать уникальные ID для ассоциаций
+	 * @author E
+	 *
+	 */
+	public interface AssocIds {
+		String TABLE = "AssocIds";
+		String ASSOC_NAME = "AID_NAME";
+		String ASSOC_ID = "AID_ID";
+	}
+	/**
 	 * Таблица, в которой хранятся ID всех айтемов
 	 * Она нужна для того, чтобы генерировать уникальные ID для айтемов
 	 * @author E

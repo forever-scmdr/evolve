@@ -20,9 +20,12 @@ import javax.xml.parsers.SAXParserFactory;
 
 import ecommander.fwk.CodeGenerator;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import com.sun.codemodel.JClassAlreadyExistsException;
 
@@ -32,325 +35,43 @@ import ecommander.fwk.Strings;
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ValidationException;
 import ecommander.controllers.AppContext;
-import ecommander.model.ParameterDescription.Quantifier;
 import ecommander.pages.ValidationResults;
 import ecommander.persistence.TransactionException;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.DataTypeMapper;
 
+import static ecommander.output.RootItemMDWriter.GROUP_ATTRIBUTE;
+
 /**
- * Юнит для чтения XML модели данных и сохранения дескрипшенов айтемов
-
- * Класс, который читает XML файл с моделью данных и сохраняет эту модель в БД
- * Файл модели данных
- * 
-<?xml version="1.0" encoding="utf-8"?>
-<items>
-
-
-// 		***********************   ОБЩИЕ ПОНЯТИЯ   ***********************
-
-
-<item name="index_text" caption="Главная страница" description="">
-	<parameter name="text" type="text" quantifier="single" caption="Текст" description=""/>
-	<parameter name="picture" type="picture" quantifier="multiple" caption="Изображение" description=""/>
-</item>
-
-<item name="production" caption="Продукция" description="">
-	<subitem name="section" quantifier="multiple"/>
-</item>
-
-// Типы параметров
-// text, short-text, tiny-text, plain-text -	длинные строки, отличаются только тем, что для них выводятся разные html редакторы в CMS
-//												plain-text выводится как простой поле ввода <textarea> без редактора. Хранятся в айтеме
-//												в виде XML с эскейпингом
-// string, byte, integer, long, double -	соответствуют примитивным типам данных java. Строки хранятся в XML айтема с эскейпингом
-// date - 	дата, хранится в виде long. Значение в CMS может задаваться с учетом заданного формата (параметра format)
-// file, picture -	файлы. Хранится название файла в виде строки. При загрузке файла через форму хранится объект библиотеки fileupload
-// filter -	по сути также длинная строка. Однако имеет особый XML-формат и хранит определение фильтра, которое создается пользователем
-//			и потом используется при фильтрации айтемов. Для редактирования параметров этого типа используестя специальный редактор.
-// xml -	так же как и filter хранит значение в виде XML. Однако значение такого типа может содержать XML любого вида, 
-// 			без специального формата, главное чтобы оно было валидным. Значение этого параметра не подвергается XML эскейпингу.
-// associated -	объекты long, которые представляют собой ID айтемов, связанный по смыслу с айтемом, содержашим параметр данного типа.
-				Например, это могут быть товары, сопутствующие некоторому товару.
-
-// Принадлежность (доступность для редактирования) айтемов.
-//
-// Айтемы могуть быть либо общими либо персональными.
-// У общих айтемов нет определенного владельца (USER_ID = 0), но есть определенная группа (USER_GROUP != 0).
-// У персональных айтемов есть как владелец (USER_ID != 0), так и группа (USER_GROUP != 0)
-//
-// Если сабайтем помечен как owner="group", значит все пользователи группы, указанной в атрибуте owner-group, имеют к нему доступ.
-// Все пользователи разделяют одни и те же такие айтемы, изменения, сделанные одним пользователем,
-// доступны всем другим пользователям.
-//
-// Если сабайтем помечен как owner="personal", значит каждый пользователь группы owner-group имеет свои персональные
-// айтемы. Другие пользователи этой группы имеют также свои собственные (другие) айтемы, 
-// и не имеют доступа к айтемам других пользователей этой группы.
-<item name="product" caption="Продукт">
-	<subitem name="desc_wiki" quantifier="single" owner="group" owner-group="editors"/> // Описание продукта в формате википедии
-	<subitem name="comment" quantifier="multiple" owner="personal" owner-group="users"/> // Комментарий к товару
-</item>
-
-<item 
-	name="news_item_lenta" 
-	caption="Новость в новостной ленте" 
-	description="" 
-	key="header date">
-	
-	<parameter name="header" type="string" quantifier="single" caption="Заголовок новости" description=""/>
-	<parameter name="date" type="date" quantifier="single" caption="Дата" description=""/>
-	<parameter name="short_description" type="text" quantifier="single" caption="Краткое описание новости" description=""/>
-</item>
-
-// extends - Наследование. В extends через пробел перечисляются все предки айтема
-// Добавление параметров предков айтема происходит в соответствии с порядком следования названий преков в вписке extends.
-// По умолчанию считается, что параметры самого айтема добавляются после параметров всех предшественников. Однако, если
-// параметры самого айтема должны идти, к примеру, в начале, то этот факт обозначатеся внесением символа * в соответствующее
-// место в списке наследования (в начало в данном случае). Символ * обозначает сам айтем в списке наследования.
-//
-// name-old - если надо переименовать айтем, здесь указывается старое название айтема 
-// (этот атрибут удаляется автоматически из файла после первого разбора)
-// key-unique="true" - значит для каждого такого айтема надо задавать уникальный ключ, который можно передавать через URL вместо ID
-// (в общем случае - транслитерация значения ключа)
-<item 
-	name="catalog_item" 
-	name-old="catalog_itm"
-	caption="Устройство" 
-	extends="* described searchable" 
-	key="device_name"
-	key-unique="true">
-	
-	<parameter name="device_name" type="string" quantifier="single" caption="Название устройства"/>
-	<parameter name="device_picture" type="picture" quantifier="single" caption="Изображение устройства"/>
-	<parameter name="device_description" type="text" quantifier="single" caption="Описание устройства"/>
-	<subitem name="catalog_menu_subitem" quantifier="multiple"/>
-</item>
-
-// virtual="true" примененное к айетму означает, что не нужно создавать таблицу для данного айтема
-<item name="cart" virtual="true">
-	<subitem name="bought" quantifier="multiple"/>
-</item>
-
-// name-old - если надо переименовать параметр, здесь указывается старое название параметра 
-// type-old - если надо поменять тип параметра, здесь указывается старый тип параметра 
-// (оба этих атрибута удаляются автоматически из файла после первого разбора)
-<item name="bought" virtual="true">
-	<parameter name="quantity" name-old="count" type="integer" type-old="double" format="##" quantifier="single"/>
-	<subitem name="device" quantifier="single"/>
-</item>
-
-// virtual="true" примененное к сабайтему означает, что в системе управления этот сабайтем может создаваться только в виде ссылки 
-// (прикреплением)
-<item name="main">
-	<parameter .../>
-	<subitem name="news_item" quantifier="multiple" virtual="true"/>
-</item>
-
-// Корневые айтемы
-// Каждой группе пользователей может соответствовать свой корневой айтем.
-// Корневой айтем определяет входную точку дерева айтемов начиная с которой пользователь группы, укзазанной в 
-// атрибуте group, может создавать и редактировать айтемы (персональные либо групповые, см. описание <subitem>).
-// Корневой айтем является родительским для персональных айтемов пользователей группы.
-//
-// В случаях, когда родительским для айтемов пользователя определенной группы является корень не его группы 
-// (эти айтемы являются сабайтемами айтемов других групп, в которых owner-group указывает на текущую группу),
-// система управления загружает дерево айтемов, потенциальных и реальных предшественников айтемов этой группы, которые
-// однако сами принадлежат другим группам. При этом загружаются только ключи айтемов, но не их параметры, и из всех
-// операций с ними доступна только операция сделать текущим (без генерации формы для параметров).
-//
-// Какие именно айтемы надо брать для этих целей система определяет автоматически на базе иерархической 
-// структуры айтемов и сабайтемов всех корней.
-//
-<root group="common">
-	<subitem name="products" quantifier="single"/>
-</root>
-
-<item name="products">
-	<subitem name="history" quantifier="single" owner="personal" owner-group="dealers"/>
-</item>
-
-// item-name - название айтема, group - название группы, в которой он создан
-<root group="dealers">
-	<reference item-name="products" group="common"/>
-</root>
-
-
-
-// 		***********************   ДОМЕНЫ   ***********************
-
-
-<parameter name="type" type="string" domain="types" quantifier="single"/>
-
-
-// 		***********************   Улучшенный вывод в админской части   *********************** 
-
-
-<item name="gallery" caption="Галерея картинок">
-	<subitem name="picture_pair" quantifier="multiple"/>
-</item>
-// inline="true" означает, что этот сабайтем надо выводить для редактирования на той же странице, что и родительский айтем
-// т. е. для его редактирования не обязательно заходить в айтем picture_pair
-<item name="picture_pair" caption="Пара картинок" inline="true">
-
-// extendable="true" значит, что этот айтем может быть расширен пользователем, т.е. пользователь может создать дочерний айтем в этой иерархии
-<item name="product" caption="Продукт" extendable="true"/>
-
-<item name="picture_pair" caption="Пара картинок" key="name">
-	<parameter name="name" type="string" caption="Название" description="для наглядности"/>
-	<parameter name="small" caption="Уменьшенное изображение" type="picture"/>
-	// hidden="true" означает, что при выводе параметров для их редактирования, этот параметр по умолчанию скрыт и чтобы его показать,
-	// надо нажать на соответствующую ссылку
-	<parameter name="big" caption="Большое изображение" type="picture" hidden="true"/>
-</item>
-
-
-// ***********************   Полнотекстовая индексация   ***********************
-
-
-// text-index - способ индексации (fulltext - производится полный разбор текста, filter - значение сохраняется целиком без разбора)
-// text-index-parameter - название параметра, который должен содержать текст. Один полнотекстовый параметр может объединять несколько
-						  параметров айтема. В этом случае значение этого параметра оъединяется из нескольких значений параметров айтема
-// text-index-boost - увеличение веса определенного параметра при поиске по нескольким параметрам при ранжировании
-// text-index-parser - парсер для разбора значения параметра (html, doc, pdf)
-
-<item name="product" caption="Продукт">
-	<parameter name="name" type="string" caption="Название" text-index="fulltext" text-index-boost="2"/>
-	<parameter name="short" type="text" caption="Краткое описание новости" text-index="fulltext" text-index-parser="html"/>
-	<parameter name="keywords" type="string" caption="Ключевый слова" text-index="fulltext" text-index-parameter="name"/>
-	<parameter name="code" type="string" caption="Артикул" text-index="filter"/>
-	<parameter name="size" type="string" caption="Размер" text-index="filter" text-index-parameter="name"/>
-	<parameter name="documentation" type="file" caption="Документация" text-index="fulltext" text-index-parser="pdf" />
-</item>
-
-
-// ***********************   Дополнительная обработка   ***********************
-
-
-// extra-handler	содержит название класса, который производит дополнительные действия с айтемами
-// 					в определенный момент, в данном случае, после сохранения. Класс расширяет PersistenceCommandUnit
-//					и представлен фабрикой, которая его создает (фабрика реализует ItemEventCommandFactory)
-<item name="product" caption="Продукт" extra-handler="ecommander.persistence.commandunits.extra.ResizeImages$Factory">
-....
-</item>
-
-</items>
- * TODO <fix> сделать удаление всех айтемов рута при удалении рута
- * 
+ * Разбор файла
  * @author EEEE
  * 
  */
-public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit {
+public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements DataModelXmlElementNames {
 
-	private class CreateHandler extends DefaultHandler {
-
-		private Exception exception;
-		private String itemName;
-		private String rootGroupName;
-		
-		@Override
-		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-			if (exception != null)
-				return;
-			try {
-				if (ITEM_ELEMENT.equalsIgnoreCase(qName)) {
-					itemName = readItem(attributes);
-				} else if (SUBITEM_ELEMENT.equalsIgnoreCase(qName)) {
-					readSubitem(attributes, itemName, rootGroupName);
-				} else if (PARAMETER_ELEMENT.equalsIgnoreCase(qName)) {
-					readParameter(attributes, itemName);
-				} else if (ROOT_ELEMENT.equalsIgnoreCase(qName)) {
-					rootGroupName = readRoot(attributes);
-					itemName = RootItemType.createRootName(rootGroupName);
-				}
-			} catch (Exception e) {
-				exception = e;
-			}
-		}
-		
-		@Override
-		public void endElement(String uri, String localName, String qName) throws SAXException {
-			if (exception != null)
-				return;
+	private static class HashId {
+		private final int hash;
+		private final int id;
+		public HashId(int hash, int id) {
+			this.hash = hash;
+			this.id = id;
 		}
 	}
-	
-	private static class ParamToDelete {
-		private final int paramId;
-		private final String paramName;
-		private final String itemName;
-		private ParamToDelete(int paramId, String paramName, String itemName) {
-			this.paramId = paramId;
-			this.paramName = paramName;
-			this.itemName = itemName;
-		}
-	}
-	/**
-	 * Элементы
-	 */
-	public static final String ITEM_ELEMENT = "item";
-	public static final String ROOT_ELEMENT = "root";
-	public static final String PARAMETER_ELEMENT = "parameter";
-	public static final String SUBITEM_ELEMENT = "subitem";
-	/**
-	 * Атрибуты
-	 */
-	public static final String NAME_ATTRIBUTE = "name";
-	public static final String NAME_OLD_ATTRIBUTE = "name-old";
-	public static final String TYPE_ATTRIBUTE = "type";
-	public static final String TYPE_OLD_ATTRIBUTE = "type-old";
-	public static final String QUANTIFIER_ATTRIBUTE = "quantifier";
-	public static final String CAPTION_ATTRIBUTE = "caption";
-	public static final String DESCRIPTION_ATTRIBUTE = "description";
-	public static final String DOMAIN_ATTRIBUTE = "domain";
-	public static final String FORMAT_ATTRIBUTE = "format";
-	public static final String GROUP_ATTRIBUTE = "group";
-	public static final String DATAMODEL_ELEMENT = "data-model";
-	public static final String KEY_ATTRIBUTE = "key";
-	public static final String PROPERTY_ATTRIBUTE = "property";
-	public static final String EXTENDS_ATTRIBUTE = "extends";
-	public static final String PERSISTENCE_ATTRIBUTE = "persistence";
-	public static final String VIRTUAL_ATTRIBUTE = "virtual"; // айтем либо параметр является виртуальным, т.е. не хранится в БД и используется только для спецдействий
-	public static final String OWNER_ATTRIBUTE = "owner"; // тип владения этим айтемом (персональный или групповой)
-	public static final String OWNER_GROUP_ATTRIBUTE = "owner-group"; // группа пользователей, которая может владеть этим айтемом
-	public static final String USER_DEF_ATTRIBUTE = "user-def"; // Айтем определен пользователем
-	public static final String INLINE_ATTRIBUTE = "inline"; // сабайтем надо выводить для редактирования на той же странице, что и родительский айтем
-	public static final String EXTENDABLE_ATTRIBUTE = "extendable";
-	public static final String KEY_UNIQUE_ATTRIBUTE = "key-unique"; // должны ли айтемы этого типа содержать уникальный ключ-название (для передачи через URL)
-	public static final String HIDDEN_ATTRIBUTE = "hidden"; // параметр по умолчанию скрыт (hidden="true")
 
-	public static final String TEXT_INDEX = "text-index"; // тип полнотекстового индекса (если он нужен)
-	public static final String TEXT_INDEX_PARAMETER = "text-index-parameter"; // название параметра для полнотекстового индекса
-	public static final String TEXT_INDEX_BOOST = "text-index-boost"; // увеличение веса параметра полнотекстового индекса
-	public static final String TEXT_INDEX_PARSER = "text-index-parser"; // парсер для значения параметра
-	
-	public static final String EXTRA_HANDLER = "extra-handler"; // дополнительные действия после сохранения, удаления
-	
-	/**
-	 * Значения
-	 */
-	public static final String SINGLE_VALUE = "single";
-	public static final String MULTIPLE_VALUE = "multiple";
-	
-	public static final String PERSONAL_VALUE = "personal";
-	
-	public static final String TRUE_VALUE = "true";
-	
-	public static final long ROOT_PARENT_ID = 0;
-	
 	/**
 	 * Поля класса
 	 */
-	private ArrayList<String[]> extensionParentChildPairs = new ArrayList<String[]>();
-	private HashMap<String, Integer> itemIds = new HashMap<String, Integer>(); // Название параметра => ID параметра
+	private ArrayList<String[]> extensionParentChildPairs = new ArrayList<>();
+	private HashMap<String, HashId> assocIds = new HashMap<>(); // Название ассоциации => ID ассоциации
+	private HashMap<String, HashId> itemIds = new HashMap<>(); // Название айтема => ID айтема
 	// ID айтема => (название параметра => ID параметра)
-	private HashMap<Integer, HashMap<String, Integer>> paramIds = new HashMap<Integer, HashMap<String,Integer>>();
-	private HashMap<Integer, ArrayList<ParameterDescription>> params = new HashMap<Integer, ArrayList<ParameterDescription>>();
-	private HashSet<Integer> itemsToDelete = new HashSet<Integer>();
-	private HashMap<Integer, ParamToDelete> paramsToDelete = new HashMap<Integer, ParamToDelete>();
-	private HashSet<Integer> paramsToDeleteFromIndex = new HashSet<Integer>();
-	private boolean containsOldTags = false; // были ли изменения имен или типов параметров и айтемов
+	private HashMap<Integer, HashMap<String, HashId>> paramIds = new HashMap<>();
+	private HashMap<Integer, ArrayList<ParameterDescription>> params = new HashMap<>();
+	private HashSet<Integer> itemsToDelete = new HashSet<>();
+	private HashSet<Integer> paramsToDelete = new HashSet<>();
+	private HashSet<Integer> assocsToDelete = new HashSet<>();
+	private HashSet<Integer> itemsToRefresh = new HashSet<>(); // айтемы, у которыз поменялись параметры и которые нао пересохранить
 	private boolean dbChanged = false; // были ли изменения в БД
 	
 	public void execute() throws Exception {
@@ -359,10 +80,7 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit {
 		
 		// Загрузить ID всех параметров и айтемов
 		loadIds();
-		
-		// Создать служебные параметры и айтемы, если они еще не созданы
-		createServiceItemsAndParameters();
-		
+
 		// Создать парсер
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		SAXParser parser = factory.newSAXParser();
@@ -389,7 +107,7 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit {
 		ItemTypeRegistry.createHierarchy(extensionParentChildPairs, false);
 		
 		// Распределить параметры и сабайтемы по айтемам
-		HashSet<String> processed = new HashSet<String>(20);
+		HashSet<String> processed = new HashSet<>(20);
 		for (String itemName : ItemTypeRegistry.getItemNames()) {
 			addParametersAndSubitems(ItemTypeRegistry.getItemType(itemName), processed);
 		}
@@ -413,6 +131,21 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit {
 		if(handler.exception != null)
 			throw handler.exception;
 	}
+
+	private void parseFile(File file) throws IOException {
+		Document doc = Jsoup.parse(file, "UTF-8");
+		Elements assocs = doc.getElementsByTag(ASSOC);
+		for (Element assoc : assocs) {
+			readAssoc(assoc);
+		}
+		Elements items = doc.getElementsByTag(ITEM);
+		for (Element item : items) {
+			readItem(item);
+		}
+		Element root = doc.getElementsByTag(ROOT).first();
+		readRoot(root);
+	}
+
 	/**
 	 * Читает корневой айтем
 	 * Сохраняет атрибуты коренвого атйема в столбцы таблицы обычного атйема:
@@ -483,28 +216,30 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit {
 				stmt.close();
 		}
 	}
+
+	private String readAssoc(Element assoc) {
+		return null;
+	}
 	/**
 	 * Читает айтем
 	 * @param itemNode
 	 * @param conn
 	 * @throws Exception
 	 */
-	private String readItem(Attributes attributes) throws Exception {
-		String name = Strings.createXmlElementName(attributes.getValue(NAME_ATTRIBUTE));
-		String nameOld = attributes.getValue(NAME_OLD_ATTRIBUTE);
-		boolean nameUpdate = !StringUtils.isBlank(nameOld);
-		String key = attributes.getValue(KEY_ATTRIBUTE);
-		if (key == null) 
-			key = Strings.EMPTY;
-		String caption = attributes.getValue(CAPTION_ATTRIBUTE);
-		String description = attributes.getValue(DESCRIPTION_ATTRIBUTE);
-		String exts = attributes.getValue(EXTENDS_ATTRIBUTE);
-		boolean virtual = Boolean.parseBoolean(attributes.getValue(VIRTUAL_ATTRIBUTE));
-		boolean userDefined = Boolean.parseBoolean(attributes.getValue(USER_DEF_ATTRIBUTE));
-		boolean isInline = Boolean.parseBoolean(attributes.getValue(INLINE_ATTRIBUTE));
-		boolean isExt = Boolean.parseBoolean(attributes.getValue(EXTENDABLE_ATTRIBUTE));
-		boolean isKeyUnique = Boolean.parseBoolean(attributes.getValue(KEY_UNIQUE_ATTRIBUTE));
-		String extraHandler = attributes.getValue(EXTRA_HANDLER);
+	private String readItem(Element item) throws Exception {
+		String name = Strings.createXmlElementName(item.attr(NAME));
+		int newHash = name.hashCode();
+		int savedHash = NumberUtils.toInt(item.attr(AG_HASH));
+		int savedId = NumberUtils.toInt(item.attr(AG_ID));
+		String key = item.attr(KEY);
+		String caption = item.attr(CAPTION);
+		String description = item.attr(DESCRIPTION);
+		String exts = item.attr(SUPER);
+		boolean virtual = Boolean.parseBoolean(item.attr(VIRTUAL));
+		boolean userDefined = Boolean.parseBoolean(item.attr(USER_DEF));
+		boolean isInline = Boolean.parseBoolean(item.attr(INLINE));
+		boolean isExt = Boolean.parseBoolean(item.attr(EXTENDABLE));
+		boolean isKeyUnique = Boolean.parseBoolean(item.attr(KEY_UNIQUE));
 		Integer itemId = null;
 		// Если надо обновить название айтема
 		if (nameUpdate) {
@@ -831,17 +566,29 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit {
 	
 	private void loadIds() throws SQLException {
 		Statement stmt = getTransactionContext().getConnection().createStatement();
+
+		String selectAssocIds = "SELECT * FROM " + DBConstants.AssocIds.TABLE;
+		ServerLogger.debug(selectAssocIds);
+		ResultSet rs = stmt.executeQuery(selectAssocIds);
+		while (rs.next()) {
+			int assocId = rs.getInt(DBConstants.AssocIds.ASSOC_ID);
+			String assocName = rs.getString(DBConstants.AssocIds.ASSOC_NAME);
+			assocIds.put(assocName, new HashId(assocName.hashCode(), assocId));
+			assocsToDelete.add(assocId);
+		}
+		rs.close();
+
 		String selectItemIds = "SELECT * FROM " + DBConstants.ItemIds.TABLE;
 		ServerLogger.debug(selectItemIds);
-		ResultSet rs = stmt.executeQuery(selectItemIds);
-		HashMap<Integer, String> itemNames = new HashMap<Integer, String>();
+		rs = stmt.executeQuery(selectItemIds);
+		HashMap<Integer, String> itemNames = new HashMap<>();
 		while (rs.next()) {
 			int itemId = rs.getInt(DBConstants.ItemIds.ITEM_ID);
 			String itemName = rs.getString(DBConstants.ItemIds.ITEM_NAME);
 			itemNames.put(itemId, itemName);
-			itemIds.put(itemName, itemId);
+			itemIds.put(itemName, new HashId(itemName.hashCode(), itemId));
 			itemsToDelete.add(itemId);
-			paramIds.put(itemId, new HashMap<String, Integer>());
+			paramIds.put(itemId, new HashMap<String, HashId>());
 		}
 		rs.close();
 		// удаление ненужных но почему-то присутствующих параметров
@@ -858,32 +605,10 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit {
 			int itemId = rs.getInt(DBConstants.ParamIds.ITEM_ID);
 			int paramId = rs.getInt(DBConstants.ParamIds.PARAM_ID);
 			String paramName = rs.getString(DBConstants.ParamIds.PARAM_NAME);
-			paramIds.get(itemId).put(paramName, paramId);
-			paramsToDelete.put(paramId, new ParamToDelete(paramId, paramName, itemNames.get(itemId)));
+			paramIds.get(itemId).put(paramName, new HashId(paramName.hashCode(), paramId));
+			paramsToDelete.add(paramId);
 		}
 		stmt.close();
-	}
-	/**
-	 * Создать служебные айтемы и параметры
-	 * @throws SQLException
-	 */
-	private void createServiceItemsAndParameters() throws SQLException {
-		ParameterDescription USER = ParameterDescription.USER;
-		ParameterDescription GROUP = ParameterDescription.GROUP;
-		if (!itemIds.containsKey(USER.getOwnerItemId())) {
-			String sql 
-				= "INSERT INTO " + DBConstants.ItemIds.TABLE + "(" + DBConstants.ItemIds.ITEM_NAME + ", "
-				+ DBConstants.ItemIds.ITEM_ID + ") VALUES ('_SERVICE_', " + USER.getOwnerItemId() 
-				+ ") ON DUPLICATE KEY UPDATE " + DBConstants.ItemIds.ITEM_ID + " = " + DBConstants.ItemIds.ITEM_ID + ";"
-				+ "INSERT INTO " + DBConstants.ParamIds.TABLE + "(" + DBConstants.ParamIds.PARAM_NAME + ", "
-				+ DBConstants.ParamIds.ITEM_ID + ", " + DBConstants.ParamIds.PARAM_ID + ") VALUES ('" 
-				+ USER.getName() + "', " + USER.getOwnerItemId() + ", " + USER.getId() + "), ('"
-				+ GROUP.getName() + "', " + GROUP.getOwnerItemId() + ", " + GROUP.getId() 
-				+ ") ON DUPLICATE KEY UPDATE " + DBConstants.ParamIds.PARAM_ID + " = " + DBConstants.ParamIds.PARAM_ID + ";";
-			Statement stmt = getTransactionContext().getConnection().createStatement();
-			stmt.executeUpdate(sql);
-			stmt.close();
-		}
 	}
 	/**
 	 * Создать SQL критерий IN
