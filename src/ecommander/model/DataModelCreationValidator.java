@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
+import ecommander.pages.ValidationResults;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
@@ -165,7 +166,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				}
 				if (StringUtils.isBlank(caption))
 					addError("Caption not set. Assoc 'caption' attribute must not be empty.", locator.getLineNumber());
-				if (items.containsKey(name)) {
+				if (assocs.containsKey(name)) {
 					addError("Duplicate item name '" + name + "'. All items must have unique names", locator.getLineNumber());
 					criticalError = true;
 				}
@@ -211,13 +212,13 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 					addError("Subitem element is in wrong place. 'subitem' must be a child of 'item' or 'root'", locator.getLineNumber());
 					return;
 				}
-				String childName = attributes.getValue(NAME);
-				if (StringUtils.isBlank(childName)) {
+				String itemName = attributes.getValue(ITEM);
+				if (StringUtils.isBlank(itemName)) {
 					addError("Name not set. Child 'name' attribute must not be empty.", locator.getLineNumber());
 					return;
 				}
-				if (((ChildContainer)parent).children.contains(childName)) {
-					addError("Duplicate child name: " + childName, locator.getLineNumber());
+				if (((ChildContainer)parent).children.contains(itemName)) {
+					addError("Duplicate child name: " + itemName, locator.getLineNumber());
 					return;
 				}
 				String assoc = attributes.getValue(ASSOC);
@@ -229,7 +230,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				} else if (parent instanceof Root) {
 					parentName = "root";
 				}
-				Child child = new Child(locator.getLineNumber(), childName, parentName, assoc, isSingle, isVirtual);
+				Child child = new Child(locator.getLineNumber(), itemName, parentName, assoc, isSingle, isVirtual);
 				// Сохранение
 				stack.push(child);
 				((ChildContainer)parent).children.add(child);
@@ -303,7 +304,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 					return;
 				}
 			}
-			else if (!MODEL.equalsIgnoreCase(qName)) {
+			else if (!MODEL.equalsIgnoreCase(qName) || ItemType.Event.get(qName) != null) {
 				addError("Invalid '" + qName + "' element", locator.getLineNumber());
 			}
 		}
@@ -338,6 +339,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 	public DataModelCreationValidator(ArrayList<String> modelFiles) {
 		items = new HashMap<String, Item>();
 		children = new ArrayList<Child>();
+		assocs = new HashMap<>();
 		this.modelFiles = modelFiles;
 	}
 
@@ -352,6 +354,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				parser.parse(modelFile, new DataModelHandler());			
 			}
 		} catch (Exception se) {
+			System.out.println(se.getMessage());
 			ServerLogger.error("model.xml validation failed", se);
 			addError(se.getMessage(), 0);
 			return;
@@ -592,5 +595,23 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 			}
 		}
 		return files;
+	}
+
+	public static void main(String[] args) {
+		String file = "F:/PROJECTS/evolve/web/WEB-INF/ec_xml/model_test.xml";
+		ServerLogger.init("F:/log.txt");
+		ArrayList<String> files = new ArrayList<>();
+		files.add(file);
+		DataModelCreationValidator validator = new DataModelCreationValidator(files);
+		validator.validate();
+		ValidationResults res = validator.getResults();
+		for (ValidationResults.LineMessage lineMessage : res.getLineErrors()) {
+			System.out.println(lineMessage);
+		}
+		for (ValidationResults.StructureMessage structureMessage : res.getStructureErrors()) {
+			System.out.println(structureMessage);
+		}
+		if (res.isSuccessful())
+			System.out.println("SUCCESS");
 	}
 }

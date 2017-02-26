@@ -22,7 +22,7 @@ import ecommander.model.datatypes.DataType.Type;
 public class ItemType extends ItemTypeContainer {
 	public static enum Event {
 		create, update, delete;
-		public Event get(String eventName) {
+		public static Event get(String eventName) {
 			if (StringUtils.endsWith(eventName, "create"))
 				return create;
 			if (StringUtils.endsWith(eventName, "update"))

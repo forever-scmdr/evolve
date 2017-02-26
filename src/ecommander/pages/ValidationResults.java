@@ -17,6 +17,11 @@ public class ValidationResults {
 			this.originator = originator;
 			this.message = message;
 		}
+
+		@Override
+		public String toString() {
+			return "Origin: " + originator + "\tMessage: " + message;
+		}
 	}
 	
 	public static class LineMessage {
@@ -26,6 +31,11 @@ public class ValidationResults {
 		public LineMessage(int lineNumber, String message) {
 			this.message = message;
 			this.lineNumber = lineNumber;
+		}
+
+		@Override
+		public String toString() {
+			return "Line: " + lineNumber + "\tMessage: " + message;
 		}
 	}
 	

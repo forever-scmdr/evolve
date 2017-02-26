@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model>
+	<assoc name="hierarchy" caption="Рубрикатор каталога" transitive="true"/>
+
+	<item name="catalog" caption="Каталог">
+		<child item="main_section"/>
+	</item>
+
+	<item name="section_abstract" caption="Абстрактный раздел каталога"/>
+
+	<item name="main_section" caption="Основной раздел" super="section_abstract">
+		<child assoc="hierarchy" item="section"/>
+	</item>
+
+	<item name="section" caption="Раздел" super="section_abstract">
+		<child assoc="hierarchy" item="product"/>
+		<child assoc="hierarchy" item="section"/>
+		<parameter name="price_qty" type="integer" caption="Количество предложений" function="COUNT" default="0">
+			<base-child item="product" assoc="hierarchy" parameter="price_qty" transitive="true"/>
+		</parameter>
+	</item>
+
+	<assoc name="present" caption="Подарок при покупке" transitive="false"/>
+	<assoc name="go_with" caption="Сопутсвующий товар" transitive="false"/>
+	<assoc name="seller_price" caption="Цена продавца" transitive="false"/>
+
+	<item name="product" caption="Товар" key="name" key-unique="true" default-page="product">
+		<parameter name="art" type="string" caption="Артикул"/>
+		<parameter name="name" type="string" caption="Название"/>
+		<child assoc="present" item="product" single="true"/>
+		<child assoc="go_with" item="product"/>
+		<child item="gallery" single="true"/>
+		<child assoc="seller_price" item="price"/>
+		<parameter name="min_price" type="currency" caption="Минимальная цена товара" function="MIN">
+			<base-child item="price" assoc="seller_price" parameter="price" transitive="false"/>
+		</parameter>
+		<parameter name="max_price" type="currency" caption="Максимальная цена товара">
+			<base-child item="price" assoc="seller_price" parameter="price" transitive="false" function="MAX"/>
+		</parameter>
+		<parameter name="price_qty" type="integer" caption="Количество предложений">
+			<base-child item="price" parameter="price" assoc="seller_price" transitive="false" function="COUNT"/>
+		</parameter>
+		<on-update class="ecommander.extra.UpdatePrices"/>
+		<on-update class="ecommander.extra.SaveReview"/>
+		<on-delete class="ecommander.extra.UpdateRoom"/>
+	</item>
+
+	<item name="gallery" caption="Галерея"/>
+
+	<item name="price" caption="Цена продавца" description="цена, выставленная одним продавцом этого товара из многих">
+		<parameter name="price" type="currency" caption="Цена" format="BYN"/>
+		<parameter name="price_usd" type="currency" caption="Цена в долларах" format="USD"/>
+		<parameter name="price_rub" type="currency" caption="Цена в рублях" format="RUB"/>
+		<parameter name="discount" type="double" caption="Скидка" description="в процентах"/>
+		<parameter name="extra" type="tiny-text" caption="Дополнительно о предложении"/>
+	</item>
+
+	<item name="seller" caption="Продавец">
+		<parameter name="name" caption="Название" type="string"/>
+		<child item="price"/>
+	</item>
+</model>

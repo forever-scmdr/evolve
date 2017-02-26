@@ -43,6 +43,7 @@ class TypeHierarchyRegistry {
 			String child = parentChild[1];
 			// Запоминание индексов айтемов
 			if (!itemIndices.containsKey(parent)) {
+				itemIndices.put(parent, indexCount);
 				items.add(parent);
 				indexCount++;
 			}
