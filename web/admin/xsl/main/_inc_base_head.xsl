@@ -8,11 +8,6 @@
 		<link href="admin/css/main_admin.css" rel="stylesheet" type="text/css"/>
 		<link href="admin/fancybox/jquery.fancybox.css" rel="stylesheet" type="text/css" media="screen" />
 		<link href="admin/jquery_css/ui-lightness/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" media="screen" />
-		<xsl:text disable-output-escaping="yes">
-			&lt;!--[if IE 7]&gt;
-			&lt;link href="css/ie.css" rel="stylesheet" type="text/css" /&gt;
-			&lt;![endif]--&gt;
-		</xsl:text>
 		<title>Система управления сайтом <xsl:value-of select="/admin-page/domain"/></title>
 		<script type="text/javascript" src="admin/js/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="admin/js/jquery.form.min.js"></script>

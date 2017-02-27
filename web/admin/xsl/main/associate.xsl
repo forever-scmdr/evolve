@@ -78,6 +78,7 @@
 			<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 			<meta http-equiv="Pragma" content="no-cache"/>
+			<link rel="stylesheet" type="text/css" href="admin/css/reset.css" />
 			<link href="admin/css/main_admin.css" rel="stylesheet" type="text/css"/>
 			<xsl:text disable-output-escaping="yes">
 				&lt;!--[if IE 7]&gt;
@@ -86,6 +87,8 @@
 			</xsl:text>
 			<title><xsl:call-template name="TITLE"/></title><!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO LOCAL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 			<script type="text/javascript" src="admin/js/jquery-1.10.2.min.js"></script>
+		
+			<link rel="stylesheet" type="text/css" href="admin/css/style.css" />
 			</head>
 			<body>
 			<script language="javascript" type="text/javascript" src="admin/js/admin.js"></script>
@@ -116,8 +119,8 @@
 											<xsl:apply-templates select="admin-page/mount/type"/>
 											<xsl:if test="admin-page/mount//input">
 											<div class="add_link_button">
-												<a href="#" onclick="$('#addForm').submit(); return false;">
-													<img src="{$button_img}" alt="" />
+												<a href="#" class="button" onclick="$('#addForm').submit(); return false;">
+													Добавить ассоциации
 												</a>
 											</div>
 											</xsl:if>
@@ -133,8 +136,8 @@
 											<xsl:apply-templates select="admin-page/mounted/type"/>
 											<xsl:if test="admin-page/mounted//input">
 											<div class="add_link_button">
-												<a href="#" onclick="$('#deleteForm').submit(); return false;">
-													<img src="admin/admin_img/remove_link.png" alt="" />
+												<a href="#" class="button delete" onclick="$('#deleteForm').submit(); return false;">
+													Удалить ассоциации
 												</a>
 											</div>
 											</xsl:if>

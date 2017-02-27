@@ -130,3 +130,4 @@
 .noGroup {
   background: none;
   border: #eeeeee 1px solid; }
+.save input{padding: 0; border:0;}

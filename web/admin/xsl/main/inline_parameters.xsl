@@ -17,10 +17,10 @@
 		<hr></hr>
 		<div class="forms">
 			<!-- ************************ Основные (одиночные) параметры айтема **************************** -->
-			<form id="iform_{$form/@id}" action="{$form/@action-url}" enctype="multipart/form-data" method="post">
-<!-- 				<xsl:for-each select="$form/hidden/field"> -->
-<!-- 					<input type="hidden" name="{@input}" value="{@value}"/> -->
-<!-- 				</xsl:for-each> -->
+			<form id="iform_{$form/@id}" action="{$form/@action}" enctype="multipart/form-data" method="post">
+				<xsl:for-each select="$form/hidden/field">
+					<input type="hidden" name="{@input}" value="{@value}"/>
+				</xsl:for-each>
 				<input type="hidden" name="inl" value="true"/>
 				<h2 class="title">Основные параметры</h2>
 				<xsl:for-each select="$form/field[@quantifier='single']">
