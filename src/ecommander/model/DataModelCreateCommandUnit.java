@@ -63,7 +63,7 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 	private byte maxAssocId = (byte)0;
 	private int maxItemId = 0;
 	private int maxParamId = 0;
-	boolean isTestMode = true;
+	private final boolean isTestMode;
 
 	public DataModelCreateCommandUnit(boolean isTestMode) {
 		this.isTestMode = isTestMode;
@@ -184,17 +184,19 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 						"Unable to update assoc '" + itemsById.get(savedId) + "' to new name '" + name + "'. Saved hash code doesn't match");
 			}
 			// Обновить название айтема в таблице ID айтемов
-			Statement stmt = getTransactionContext().getConnection().createStatement();
-			try {
-				String sql
-						= "UPDATE " + DBConstants.AssocIds.TABLE
-						+ " SET " + DBConstants.AssocIds.ASSOC_NAME + "='" + name
-						+ "' WHERE " + DBConstants.AssocIds.ASSOC_ID + "=" + savedId;
-				ServerLogger.debug(sql);
-				stmt.executeUpdate(sql);
-				dbChanged = true;
-			} finally {
-				stmt.close();
+			if (!isTestMode) {
+				Statement stmt = getTransactionContext().getConnection().createStatement();
+				try {
+					String sql
+							= "UPDATE " + DBConstants.AssocIds.TABLE
+							+ " SET " + DBConstants.AssocIds.ASSOC_NAME + "='" + name
+							+ "' WHERE " + DBConstants.AssocIds.ASSOC_ID + "=" + savedId;
+					ServerLogger.debug(sql);
+					stmt.executeUpdate(sql);
+					dbChanged = true;
+				} finally {
+					stmt.close();
+				}
 			}
 			// Заменить название айтема в списке ID айтемов
 			assocIds.remove(assocsById.get(savedId));
@@ -202,19 +204,22 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 		}
 		// Если появилась новая ассоциация, которой не было раньше - получить ID для нее
 		if (!assocIds.containsKey(name)) {
-			Statement stmt = getTransactionContext().getConnection().createStatement();
-			try {
-				String sql = "INSERT " + DBConstants.AssocIds.TABLE + " (" + DBConstants.AssocIds.ASSOC_NAME + ") VALUES ('" + name + "')";
-				ServerLogger.debug(sql);
-				stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-				ResultSet keys = stmt.getGeneratedKeys();
-				keys.next();
-				byte newId = keys.getByte(1);
-				assocIds.put(name, new HashId(name.hashCode(), newId));
-				dbChanged = true;
-			} finally {
-				stmt.close();
+			byte newId = ++maxAssocId;
+			if (!isTestMode) {
+				Statement stmt = getTransactionContext().getConnection().createStatement();
+				try {
+					String sql = "INSERT " + DBConstants.AssocIds.TABLE + " (" + DBConstants.AssocIds.ASSOC_NAME + ") VALUES ('" + name + "')";
+					ServerLogger.debug(sql);
+					stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+					ResultSet keys = stmt.getGeneratedKeys();
+					keys.next();
+					newId = keys.getByte(1);
+					dbChanged = true;
+				} finally {
+					stmt.close();
+				}
 			}
+			assocIds.put(name, new HashId(name.hashCode(), newId));
 		}
 		// Добавить описание айтема в реестр
 		Assoc assoc = new Assoc((byte)itemIds.get(name).id, name, caption, description, isTransitive);
@@ -256,17 +261,19 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 						"Unable to update item '" + itemsById.get(savedId) + "' to new name '" + name + "'. Saved hash code doesn't match");
 			}
 			// Обновить название айтема в таблице ID айтемов
-			Statement stmt = getTransactionContext().getConnection().createStatement();
-			try {
-				String sql 
-					= "UPDATE " + DBConstants.ItemIds.TABLE 
-					+ " SET " + DBConstants.ItemIds.ITEM_NAME + "='" + name 
-					+ "' WHERE " + DBConstants.ItemIds.ITEM_ID + "=" + savedId;
-				ServerLogger.debug(sql);
-				stmt.executeUpdate(sql);
-				dbChanged = true;
-			} finally {
-				stmt.close();
+			if (!isTestMode) {
+				Statement stmt = getTransactionContext().getConnection().createStatement();
+				try {
+					String sql
+							= "UPDATE " + DBConstants.ItemIds.TABLE
+							+ " SET " + DBConstants.ItemIds.ITEM_NAME + "='" + name
+							+ "' WHERE " + DBConstants.ItemIds.ITEM_ID + "=" + savedId;
+					ServerLogger.debug(sql);
+					stmt.executeUpdate(sql);
+					dbChanged = true;
+				} finally {
+					stmt.close();
+				}
 			}
 			// Заменить название айтема в списке ID айтемов
 			itemIds.remove(itemsById.get(savedId));
@@ -274,20 +281,23 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 		}
 		// Если появился новый айтем, которого не было раньше - получить ID для него
 		if (!itemIds.containsKey(name)) {
-			Statement stmt = getTransactionContext().getConnection().createStatement();
-			try {
-				String sql = "INSERT " + DBConstants.ItemIds.TABLE + " (" + DBConstants.ItemIds.ITEM_NAME + ") VALUES ('" + name + "')";
-				ServerLogger.debug(sql);
-				stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-				ResultSet keys = stmt.getGeneratedKeys();
-				keys.next();
-				int newId = keys.getInt(1);
-				itemIds.put(name, new HashId(name.hashCode(), newId));
-				paramIds.put(newId, new HashMap<String, HashId>());
-				dbChanged = true;
-			} finally {
-				stmt.close();
+			int newId = ++maxItemId;
+			if (!isTestMode) {
+				Statement stmt = getTransactionContext().getConnection().createStatement();
+				try {
+					String sql = "INSERT " + DBConstants.ItemIds.TABLE + " (" + DBConstants.ItemIds.ITEM_NAME + ") VALUES ('" + name + "')";
+					ServerLogger.debug(sql);
+					stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+					ResultSet keys = stmt.getGeneratedKeys();
+					keys.next();
+					newId = keys.getInt(1);
+					dbChanged = true;
+				} finally {
+					stmt.close();
+				}
 			}
+			itemIds.put(name, new HashId(name.hashCode(), newId));
+			paramIds.put(newId, new HashMap<String, HashId>());
 		}
 		// Временно сохранить сведения о иерархии наследования
 		if (!StringUtils.isBlank(exts)) {
@@ -386,17 +396,19 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 						"Unable to update parameter '" + itemsById.get(savedId) + "' to new name '" + name + "'. Saved hash code doesn't match");
 			}
 			// Обновить название параметра в таблице ID параметров
-			Statement stmt = getTransactionContext().getConnection().createStatement();
-			try {
-				String sql 
-					= "UPDATE " + DBConstants.ParamIds.TABLE 
-					+ " SET " + DBConstants.ParamIds.PARAM_NAME + "='" + name 
-					+ "' WHERE " + DBConstants.ParamIds.PARAM_ID + "=" + savedId;
-				ServerLogger.debug(sql);
-				stmt.executeUpdate(sql);
-				dbChanged = true;
-			} finally {
-				stmt.close();
+			if (!isTestMode) {
+				Statement stmt = getTransactionContext().getConnection().createStatement();
+				try {
+					String sql
+							= "UPDATE " + DBConstants.ParamIds.TABLE
+							+ " SET " + DBConstants.ParamIds.PARAM_NAME + "='" + name
+							+ "' WHERE " + DBConstants.ParamIds.PARAM_ID + "=" + savedId;
+					ServerLogger.debug(sql);
+					stmt.executeUpdate(sql);
+					dbChanged = true;
+				} finally {
+					stmt.close();
+				}
 			}
 			// Заменить название параметра в списке ID параметров
 			paramIds.get(item.getTypeId()).remove(paramsById.get(savedId));
@@ -404,22 +416,25 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 		}
 		// Если появился новый параметр, которого не было раньше - получить ID для него
 		if (!paramIds.get(item.getTypeId()).containsKey(name)) {
-			Statement stmt = getTransactionContext().getConnection().createStatement();
-			try {
-				String sql 
-					= "INSERT " + DBConstants.ParamIds.TABLE + " (" 
-					+ DBConstants.ParamIds.ITEM_ID + ", " + DBConstants.ParamIds.PARAM_NAME 
-					+ ") VALUES (" + item.getTypeId() + ", '" + name + "')";
-				ServerLogger.debug(sql);
-				stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-				ResultSet keys = stmt.getGeneratedKeys();
-				keys.next();
-				int paramId = keys.getInt(1);
-				paramIds.get(item.getTypeId()).put(name, new HashId(name.hashCode(), paramId));
-				dbChanged = true;
-			} finally {
-				stmt.close();
+			int newId = ++maxParamId;
+			if (!isTestMode) {
+				Statement stmt = getTransactionContext().getConnection().createStatement();
+				try {
+					String sql
+							= "INSERT " + DBConstants.ParamIds.TABLE + " ("
+							+ DBConstants.ParamIds.ITEM_ID + ", " + DBConstants.ParamIds.PARAM_NAME
+							+ ") VALUES (" + item.getTypeId() + ", '" + name + "')";
+					ServerLogger.debug(sql);
+					stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+					ResultSet keys = stmt.getGeneratedKeys();
+					keys.next();
+					newId = keys.getInt(1);
+					dbChanged = true;
+				} finally {
+					stmt.close();
+				}
 			}
+			paramIds.get(item.getTypeId()).put(name, new HashId(name.hashCode(), newId));
 		} else {
 			paramsById.remove(paramIds.get(item.getTypeId()).get(name).id);
 		}
@@ -528,11 +543,6 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 	 * @throws SQLException 
 	 */
 	protected void mergeModel() throws TransactionException, SQLException {
-		// Из удаляемых айтемов и параметров удаляются служебные
-		itemsById.remove(ParameterDescription.USER.getOwnerItemId());
-		paramsById.remove(ParameterDescription.USER.getId());
-		paramsById.remove(ParameterDescription.GROUP.getId());
-		
 		Statement stmt = getTransactionContext().getConnection().createStatement();
 		try {
 			// ********************** Очистить таблицы ******************************
