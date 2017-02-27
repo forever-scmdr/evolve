@@ -1,5 +1,22 @@
 package ecommander.model;
 
+import com.sun.codemodel.JClassAlreadyExistsException;
+import ecommander.controllers.AppContext;
+import ecommander.fwk.*;
+import ecommander.pages.ValidationResults;
+import ecommander.persistence.TransactionException;
+import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
+import ecommander.persistence.mappers.DBConstants;
+import ecommander.persistence.mappers.DataTypeMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -9,39 +26,7 @@ import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import ecommander.fwk.CodeGenerator;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.xml.sax.Attributes;
-
-import com.sun.codemodel.JClassAlreadyExistsException;
-
-import ecommander.fwk.ItemEventCommandFactory;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
-import ecommander.fwk.EcommanderException;
-import ecommander.fwk.ValidationException;
-import ecommander.controllers.AppContext;
-import ecommander.pages.ValidationResults;
-import ecommander.persistence.TransactionException;
-import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
-import ecommander.persistence.mappers.DBConstants;
-import ecommander.persistence.mappers.DataTypeMapper;
-
-import static ecommander.output.RootItemMDWriter.GROUP_ATTRIBUTE;
+import java.util.*;
 
 /**
  * Разбор файла
@@ -70,10 +55,20 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 	private HashMap<Integer, ArrayList<ParameterDescription>> params = new HashMap<>();
 	private HashMap<Integer, String> itemsById = new HashMap<>();
 	private HashMap<Integer, String> paramsById = new HashMap<>();
-	private HashMap<Integer, String> assocsById = new HashMap<>();
+	private HashMap<Byte, String> assocsById = new HashMap<>();
 	private HashSet<Integer> itemsToRefresh = new HashSet<>(); // айтемы, у которыз поменялись параметры и которые нао пересохранить
 	private boolean dbChanged = false; // были ли изменения в БД
-	
+	private boolean fileChanged = false;
+
+	private byte maxAssocId = (byte)0;
+	private int maxItemId = 0;
+	private int maxParamId = 0;
+	boolean isTestMode = true;
+
+	public DataModelCreateCommandUnit(boolean isTestMode) {
+		this.isTestMode = isTestMode;
+	}
+
 	public void execute() throws Exception {
 		// Очистить реестр айтемов
 		ItemTypeRegistry.clearRegistry();
@@ -81,33 +76,21 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 		// Загрузить ID всех параметров и айтемов
 		loadIds();
 
-		// Создать парсер
-		SAXParserFactory factory = SAXParserFactory.newInstance();
-		SAXParser parser = factory.newSAXParser();
-		CreateHandler handler = new CreateHandler();
-
 		// Прасить основную модель model.xml (получить базовые определения айтемов и параметров)
 		ArrayList<File> modelFiles = findModelFiles(new File(AppContext.getMainModelPath()), null);
 		for (File modelFile : modelFiles) {
-			parser.parse(modelFile, handler);			
+			parseFile(modelFile);
 		}
 		
 		// Парсить модели пользовательских айтемов
 		if (Files.exists(Paths.get(AppContext.getUserModelPath())))
-			parser.parse(AppContext.getUserModelPath(), handler);
-		
-		// Выбросить эксэпшен, если он случился
-		if (handler.exception != null) {
-			ValidationResults results = new ValidationResults();
-			results.setException(handler.exception);
-			throw new ValidationException("primary validation error", results);
-		}
-		
+			parseFile(new File(AppContext.getUserModelPath()));
+
 		// Создать иерархию айтемов
 		ItemTypeRegistry.createHierarchy(extensionParentChildPairs, false);
 		
 		// Распределить параметры и сабайтемы по айтемам
-		HashSet<String> processed = new HashSet<>(20);
+		HashSet<String> processed = new HashSet<>(30);
 		for (String itemName : ItemTypeRegistry.getItemNames()) {
 			addParametersAndSubitems(ItemTypeRegistry.getItemType(itemName), processed);
 		}
@@ -127,12 +110,9 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 		// Создать java класс с текстовыми константами для всех айтемов
 		createJavaConstants();
 		
-		// Если было исключение - выбросить его
-		if(handler.exception != null)
-			throw handler.exception;
 	}
 
-	private void parseFile(File file) throws IOException {
+	private void parseFile(File file) throws Exception {
 		Document doc = Jsoup.parse(file, "UTF-8");
 		Elements assocs = doc.getElementsByTag(ASSOC);
 		for (Element assoc : assocs) {
@@ -143,122 +123,73 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 			readItem(item);
 		}
 		Element root = doc.getElementsByTag(ROOT).first();
-		readRoot(root);
+		readRoot();
 	}
 
 	/**
 	 * Читает корневой айтем
 	 * Сохраняет атрибуты коренвого атйема в столбцы таблицы обычного атйема:
-	 * KEY_PARAMETER - group
-	 * CAPTION - persistence
 	 * @param attributes
-	 * @return - название группы пользователей этого корня
 	 * @throws Exception
 	 */
-	protected String readRoot(Attributes attributes) throws Exception {
+	protected void readRoot() throws Exception {
 		Statement stmt = null;
 		try {
-			String rootGroup = attributes.getValue(GROUP_ATTRIBUTE);
-			if (rootGroup == null) rootGroup = User.USER_DEFAULT_GROUP;
-			String rootName = RootItemType.createRootName(rootGroup);
 			// Загрузить ID корней из БД
 			stmt = getTransactionContext().getConnection().createStatement();
 			String sql 
 					= "SELECT " + DBConstants.Item.ID + " FROM " + DBConstants.Item.TABLE 
-					+ " WHERE " + DBConstants.Item.REF_ID + "=0 AND " + DBConstants.Item.KEY + " = '" + rootName + "'";			
+					+ " WHERE " + DBConstants.Item.ID + "=0";
 			ServerLogger.debug(sql);
 			ResultSet rs = stmt.executeQuery(sql);
-			long rootId = -1;
-			if (rs.next())
-				rootId = rs.getLong(1);
+			boolean hasRoot = rs.next();
+			rs.close();
 			// Сохранить рут в таблице конкретных айтемов, в случае если такого рута нет
-			if (rootId == -1) {
+			if (!hasRoot) {
 				sql
 					= "INSERT INTO "
-					+ DBConstants.Item.TABLE
-					+ " ("
-					+ DBConstants.Item.INDEX_WEIGHT + ", "
-					+ DBConstants.Item.DIRECT_PARENT_ID + ", "
-					+ DBConstants.Item.REF_ID + ", "
-					+ DBConstants.Item.OWNER_GROUP_ID + ", "
-					+ DBConstants.Item.OWNER_USER_ID + ", "
-					+ DBConstants.Item.TYPE_ID + ", "
-					+ DBConstants.Item.PRED_ID_PATH + ", "
-					+ DBConstants.Item.KEY 
-					+ ") SELECT 0, " + ROOT_PARENT_ID + ", 0, 0, 0, 0, '', '" + rootName + "' "
-					+ " FROM DUAL WHERE NOT EXISTS (SELECT * FROM " + DBConstants.Item.TABLE 
-					+ " WHERE " + DBConstants.Item.REF_ID + "=0 AND " + DBConstants.Item.KEY + "='" + rootName + "')";
-				ServerLogger.debug(sql);
-				stmt.executeUpdate(sql);
-				rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
-				rs.next();
-				rootId = rs.getLong(1);
-				rs.close();
-				// Сохранить рут в таблице предков айтемов
-				sql 
-					= "INSERT INTO " + DBConstants.ItemParent.TABLE + " ("
-					+ DBConstants.ItemParent.ITEM_ID + ", "
-					+ DBConstants.ItemParent.REF_ID + ", "
-					+ DBConstants.ItemParent.PARENT_ID + ", "
-					+ DBConstants.ItemParent.ITEM_TYPE + ", "
-					+ DBConstants.ItemParent.PARENT_LEVEL 
-					+ ") VALUES (" 
-					+ rootId + ", " + rootId + ", " + rootId + ", " + ItemType.SERVICE_ITEM_ID + ", 0)";
+						+ DBConstants.Item.TABLE
+						+ " ("
+						+ DBConstants.Item.ID + ", "
+						+ DBConstants.Item.TYPE_ID + ", "
+						+ DBConstants.Item.KEY + ", "
+						+ DBConstants.Item.TRANSLIT_KEY + ", "
+						+ DBConstants.Item.INDEX_WEIGHT + ", "
+						+ DBConstants.Item.PARAMS
+						+ ") VALUES (0, 0, 'root', 'root', 0, '')";
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;
 			}
-			// Добавить рут в реестр айтемов
-			ItemTypeRegistry.addRootDescription(new RootItemType(rootGroup, rootId));
-			return rootGroup;
 		} finally {
 			if (stmt != null)
 				stmt.close();
 		}
 	}
 
-	private String readAssoc(Element assoc) {
-		return null;
-	}
-	/**
-	 * Читает айтем
-	 * @param itemNode
-	 * @param conn
-	 * @throws Exception
-	 */
-	private String readItem(Element item) throws Exception {
-		String name = Strings.createXmlElementName(item.attr(NAME));
+	private void readAssoc(Element assocEl) throws ValidationException, SQLException {
+		String name = Strings.createXmlElementName(assocEl.attr(NAME));
 		int newHash = name.hashCode();
-		int savedHash = NumberUtils.toInt(item.attr(AG_HASH), 0);
-		int savedId = NumberUtils.toInt(item.attr(AG_ID), 0);
-		String key = item.attr(KEY);
-		String caption = item.attr(CAPTION);
-		String description = item.attr(DESCRIPTION);
-		String exts = item.attr(SUPER);
-		boolean virtual = Boolean.parseBoolean(item.attr(VIRTUAL));
-		boolean userDefined = Boolean.parseBoolean(item.attr(USER_DEF));
-		boolean isInline = Boolean.parseBoolean(item.attr(INLINE));
-		boolean isExt = Boolean.parseBoolean(item.attr(EXTENDABLE));
-		boolean isKeyUnique = Boolean.parseBoolean(item.attr(KEY_UNIQUE));
-		boolean nameUpdate = !itemIds.containsKey(name) && itemsById.containsKey(savedId);
-		// Если надо обновить название айтема
+		int savedHash = NumberUtils.toInt(assocEl.attr(AG_HASH), 0);
+		byte savedId = NumberUtils.toByte(assocEl.attr(AG_ID), (byte)0);
+		String caption = assocEl.attr(CAPTION);
+		String description = assocEl.attr(DESCRIPTION);
+		boolean isTransitive = Boolean.parseBoolean(assocEl.attr(TRANSITIVE));
+		boolean nameUpdate = !assocIds.containsKey(name) && assocsById.containsKey(savedId);
+		// Если надо обновить название ассоциации
 		if (nameUpdate) {
-			if (savedHash != itemsById.get(savedId).hashCode()) {
-
-			}
-			itemId = itemIds.get(nameOld);
-			if (itemId == null) {
-				ValidationResults results = new ValidationResults();
-				results.addError("Item '" + name + "'", "there was no item named '" + nameOld + "'");
-				throw new ValidationException("Item update error", results);
+			if (savedHash != assocsById.get(savedId).hashCode()) {
+				throw createValidationException("Assoc update error",
+						"Assoc '" + name + "'",
+						"Unable to update assoc '" + itemsById.get(savedId) + "' to new name '" + name + "'. Saved hash code doesn't match");
 			}
 			// Обновить название айтема в таблице ID айтемов
 			Statement stmt = getTransactionContext().getConnection().createStatement();
 			try {
-				String sql 
-					= "UPDATE " + DBConstants.ItemIds.TABLE 
-					+ " SET " + DBConstants.ItemIds.ITEM_NAME + "='" + name 
-					+ "' WHERE " + DBConstants.ItemIds.ITEM_ID + "=" + itemId;
+				String sql
+						= "UPDATE " + DBConstants.AssocIds.TABLE
+						+ " SET " + DBConstants.AssocIds.ASSOC_NAME + "='" + name
+						+ "' WHERE " + DBConstants.AssocIds.ASSOC_ID + "=" + savedId;
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;
@@ -266,14 +197,83 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 				stmt.close();
 			}
 			// Заменить название айтема в списке ID айтемов
-			itemIds.remove(nameOld);
-			itemIds.put(name, itemId);
-			containsOldTags = true;
-		} else {
-			itemId = itemIds.get(name);
+			assocIds.remove(assocsById.get(savedId));
+			assocIds.put(name, new HashId(name.hashCode(), savedId));
+		}
+		// Если появилась новая ассоциация, которой не было раньше - получить ID для нее
+		if (!assocIds.containsKey(name)) {
+			Statement stmt = getTransactionContext().getConnection().createStatement();
+			try {
+				String sql = "INSERT " + DBConstants.AssocIds.TABLE + " (" + DBConstants.AssocIds.ASSOC_NAME + ") VALUES ('" + name + "')";
+				ServerLogger.debug(sql);
+				stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+				ResultSet keys = stmt.getGeneratedKeys();
+				keys.next();
+				byte newId = keys.getByte(1);
+				assocIds.put(name, new HashId(name.hashCode(), newId));
+				dbChanged = true;
+			} finally {
+				stmt.close();
+			}
+		}
+		// Добавить описание айтема в реестр
+		Assoc assoc = new Assoc((byte)itemIds.get(name).id, name, caption, description, isTransitive);
+		ItemTypeRegistry.addAssoc(assoc);
+
+		// Пометить эту ассоциацию для неудаления
+		assocsById.remove((byte) assocIds.get(name).id);
+
+		// Сохранить новые значения для автоматически сгенерированных параметров (ag-id и ag-hash)
+		setElementAutoGenerated(assocEl, assocIds.get(name).id, name);
+	}
+	/**
+	 * Читает айтем
+	 * @param itemNode
+	 * @param conn
+	 * @throws Exception
+	 */
+	private void readItem(Element itemEl) throws Exception {
+		String name = Strings.createXmlElementName(itemEl.attr(NAME));
+		int newHash = name.hashCode();
+		int savedHash = NumberUtils.toInt(itemEl.attr(AG_HASH), 0);
+		int savedId = NumberUtils.toInt(itemEl.attr(AG_ID), 0);
+		String key = itemEl.attr(KEY);
+		String caption = itemEl.attr(CAPTION);
+		String description = itemEl.attr(DESCRIPTION);
+		String exts = itemEl.attr(SUPER);
+		String defaultPage = itemEl.attr(DEFAULT_PAGE);
+		boolean virtual = Boolean.parseBoolean(itemEl.attr(VIRTUAL));
+		boolean userDefined = Boolean.parseBoolean(itemEl.attr(USER_DEF));
+		boolean isInline = Boolean.parseBoolean(itemEl.attr(INLINE));
+		boolean isExt = Boolean.parseBoolean(itemEl.attr(EXTENDABLE));
+		boolean isKeyUnique = Boolean.parseBoolean(itemEl.attr(KEY_UNIQUE));
+		boolean nameUpdate = !itemIds.containsKey(name) && itemsById.containsKey(savedId);
+		// Если надо обновить название айтема
+		if (nameUpdate) {
+			if (savedHash != itemsById.get(savedId).hashCode()) {
+				throw createValidationException("Item update error",
+						"Item '" + name + "'",
+						"Unable to update item '" + itemsById.get(savedId) + "' to new name '" + name + "'. Saved hash code doesn't match");
+			}
+			// Обновить название айтема в таблице ID айтемов
+			Statement stmt = getTransactionContext().getConnection().createStatement();
+			try {
+				String sql 
+					= "UPDATE " + DBConstants.ItemIds.TABLE 
+					+ " SET " + DBConstants.ItemIds.ITEM_NAME + "='" + name 
+					+ "' WHERE " + DBConstants.ItemIds.ITEM_ID + "=" + savedId;
+				ServerLogger.debug(sql);
+				stmt.executeUpdate(sql);
+				dbChanged = true;
+			} finally {
+				stmt.close();
+			}
+			// Заменить название айтема в списке ID айтемов
+			itemIds.remove(itemsById.get(savedId));
+			itemIds.put(name, new HashId(name.hashCode(), savedId));
 		}
 		// Если появился новый айтем, которого не было раньше - получить ID для него
-		if (itemId == null) {
+		if (!itemIds.containsKey(name)) {
 			Statement stmt = getTransactionContext().getConnection().createStatement();
 			try {
 				String sql = "INSERT " + DBConstants.ItemIds.TABLE + " (" + DBConstants.ItemIds.ITEM_NAME + ") VALUES ('" + name + "')";
@@ -281,9 +281,9 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 				stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 				ResultSet keys = stmt.getGeneratedKeys();
 				keys.next();
-				itemId = keys.getInt(1);
-				itemIds.put(name, itemId);
-				paramIds.put(itemId, new HashMap<String, Integer>());
+				int newId = keys.getInt(1);
+				itemIds.put(name, new HashId(name.hashCode(), newId));
+				paramIds.put(newId, new HashMap<String, HashId>());
 				dbChanged = true;
 			} finally {
 				stmt.close();
@@ -291,27 +291,50 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 		}
 		// Временно сохранить сведения о иерархии наследования
 		if (!StringUtils.isBlank(exts)) {
-			String[] parents = StringUtils.split(exts, ItemType.COMMON_DELIMITER + ItemType.ITEM_SELF);
+			String[] parents = StringUtils.split(exts, ItemType.COMMON_DELIMITER + ItemType.ITEM_SELF_PARAMS);
 			for (String parent : parents) {
 				String[] pair = {parent, name};
 				extensionParentChildPairs.add(pair);
 			}
 		}
 		// Добавить описание айтема в реестр
-		ItemType item = new ItemType(name, itemId, caption, description, key, exts, virtual, userDefined, isInline, isExt, isKeyUnique);
+		ItemType item = new ItemType(name, itemIds.get(name).id, caption, description, key,
+				exts, defaultPage, virtual, userDefined, isInline, isExt, isKeyUnique);
 		ItemTypeRegistry.addItemDescription(item);
-		// Добавить обработчик сохранения, если он есть
-		if (!StringUtils.isBlank(extraHandler)) {
+
+		// Прочитать вложенные элементы (параметры, дочерние, обработчики)
+
+		// Обработчики
+		Elements handlers = itemEl.getElementsByTag(ON_CREATE);
+		handlers.addAll(itemEl.getElementsByTag(ON_DELETE));
+		handlers.addAll(itemEl.getElementsByTag(ON_UPDATE));
+		for (Element handler : handlers) {
 			try {
-				ItemEventCommandFactory factory = (ItemEventCommandFactory) Class.forName(extraHandler).getConstructor().newInstance();
-				item.addExtraHandler(factory);
+				String handlerClass = handler.attr(CLASS);
+				ItemEventCommandFactory factory = (ItemEventCommandFactory) Class.forName(handlerClass).getConstructor().newInstance();
+				item.addExtraHandler(ItemType.Event.get(handler.tagName()), factory);
 			} catch (Exception e) {
 				throw new EcommanderException(e);
 			}
 		}
+
+		// Вложенные айтемы
+		Elements children = itemEl.getElementsByTag(CHILD);
+		for (Element child : children) {
+			readChild(item, child);
+		}
+
+		// Параметры
+		Elements params = itemEl.getElementsByTag(PARAMETER);
+		for (Element param : params) {
+			readParameter(item, param);
+		}
+
 		// Пометить этот айтем для неудаления
-		itemsById.remove(itemId);
-		return name;
+		itemsById.remove(itemIds.get(name).id);
+
+		// Сохранить новые значения для автоматически сгенерированных параметров (ag-id и ag-hash)
+		setElementAutoGenerated(itemEl, itemIds.get(name).id, name);
 	}
 	/**
 	 * Читает параметры
@@ -322,28 +345,26 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 	 * @param itemName
 	 * @throws Exception
 	 */
-	protected void readParameter(Attributes attributes, String itemName) throws Exception {
-		String name = attributes.getValue(NAME_ATTRIBUTE);
-		String nameOld = attributes.getValue(NAME_OLD_ATTRIBUTE);
-		boolean nameUpdate = !StringUtils.isBlank(nameOld);
-		String caption = attributes.getValue(CAPTION_ATTRIBUTE);
-		String description = attributes.getValue(DESCRIPTION_ATTRIBUTE);
-		String domainName = attributes.getValue(DOMAIN_ATTRIBUTE);
-		String quantifierStr = attributes.getValue(QUANTIFIER_ATTRIBUTE);
-		Quantifier quantifier = Quantifier.single;
-		if (!StringUtils.isEmpty(quantifierStr)) 
-			quantifier = Quantifier.valueOf(Quantifier.class, quantifierStr);
-		String dataTypeName = attributes.getValue(TYPE_ATTRIBUTE);
-		String dataTypeNameOld = attributes.getValue(TYPE_OLD_ATTRIBUTE);
-		boolean typeUpdate = !StringUtils.isBlank(dataTypeNameOld);
-		String format = attributes.getValue(FORMAT_ATTRIBUTE);
-		boolean isHidden = Boolean.valueOf(attributes.getValue(HIDDEN_ATTRIBUTE));
-		boolean isVirtual = Boolean.parseBoolean(attributes.getValue(VIRTUAL_ATTRIBUTE));
-		String textIndexStr = attributes.getValue(TEXT_INDEX);
+	protected void readParameter(ItemType item, Element paramEl) throws Exception {
+		String name = paramEl.attr(NAME);
+		int newHash = name.hashCode();
+		int savedHash = NumberUtils.toInt(paramEl.attr(AG_HASH), 0);
+		int savedId = NumberUtils.toInt(paramEl.attr(AG_ID), 0);
+		String caption = paramEl.attr(CAPTION);
+		String description = paramEl.attr(DESCRIPTION);
+		String domainName = paramEl.attr(DOMAIN);
+		boolean isMultiple = StringUtils.equalsIgnoreCase(paramEl.attr(MULTIPLE), TRUE_VALUE);
+		String dataTypeName = paramEl.attr(TYPE);
+		String format = paramEl.attr(FORMAT);
+		boolean isHidden = Boolean.valueOf(paramEl.attr(HIDDEN));
+		boolean isVirtual = Boolean.parseBoolean(paramEl.attr(VIRTUAL));
+		String textIndexStr = paramEl.attr(TEXT_INDEX);
 		ParameterDescription.TextIndex textIndex = ParameterDescription.TextIndex.none;
-		String textIndexParameter = attributes.getValue(TEXT_INDEX_PARAMETER);
-		String textIndexParser = attributes.getValue(TEXT_INDEX_PARSER);
-		String textIndexBoostStr = attributes.getValue(TEXT_INDEX_BOOST);
+		String textIndexParameter = paramEl.attr(TEXT_INDEX_PARAMETER);
+		String textIndexParser = paramEl.attr(TEXT_INDEX_PARSER);
+		String textIndexBoostStr = paramEl.attr(TEXT_INDEX_BOOST);
+		String defaultValue = paramEl.attr(DEFAULT);
+		ComputedDescription.Func func = ComputedDescription.Func.get(paramEl.attr(FUNCTION));
 		float textIndexBoost = -1f;
 		if (!StringUtils.isBlank(textIndexStr)) {
 			try {
@@ -351,21 +372,18 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 				if (!StringUtils.isBlank(textIndexBoostStr))
 					textIndexBoost = Float.parseFloat(textIndexBoostStr);
 			} catch (Exception e) {
-				ValidationResults results = new ValidationResults();
-				results.addError("Item '" + itemName + "'", "fulltext search parameters provided are not correct");
-				throw new ValidationException("Fulltext search setup incorrect", results);
+				throw createValidationException("Fulltext search setup incorrect", "Item '" + item.getName() + "'",
+						"fulltext search parameters provided are not correct");
 			}
 		}
-		
-		int itemId = itemIds.get(itemName);
-		Integer paramId = null;
+
+		boolean nameUpdate = !paramIds.containsKey(name) && paramsById.containsKey(savedId);
 		// Если надо обновить название параметра
 		if (nameUpdate) {
-			paramId = paramIds.get(itemId).get(nameOld);
-			if (paramId == null) {
-				ValidationResults results = new ValidationResults();
-				results.addError("Item '" + itemName + "'", "there was no parameter named '" + nameOld + "' in this item");
-				throw new ValidationException("Item update error", results);
+			if (savedHash != paramsById.get(savedId).hashCode()) {
+				throw createValidationException("Parameter update error",
+						"Item '" + item.getName() + "' parameter '" + name + "'",
+						"Unable to update parameter '" + itemsById.get(savedId) + "' to new name '" + name + "'. Saved hash code doesn't match");
 			}
 			// Обновить название параметра в таблице ID параметров
 			Statement stmt = getTransactionContext().getConnection().createStatement();
@@ -373,7 +391,7 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 				String sql 
 					= "UPDATE " + DBConstants.ParamIds.TABLE 
 					+ " SET " + DBConstants.ParamIds.PARAM_NAME + "='" + name 
-					+ "' WHERE " + DBConstants.ParamIds.PARAM_ID + "=" + paramId;
+					+ "' WHERE " + DBConstants.ParamIds.PARAM_ID + "=" + savedId;
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;
@@ -381,50 +399,57 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 				stmt.close();
 			}
 			// Заменить название параметра в списке ID параметров
-			paramIds.get(itemId).remove(nameOld);
-			paramIds.get(itemId).put(name, paramId);
-			containsOldTags = true;
-		} else {
-			paramId = paramIds.get(itemId).get(name);
+			paramIds.get(item.getTypeId()).remove(paramsById.get(savedId));
+			paramIds.get(item.getTypeId()).put(name, new HashId(name.hashCode(), savedId));
 		}
 		// Если появился новый параметр, которого не было раньше - получить ID для него
-		if (paramId == null) {
+		if (!paramIds.get(item.getTypeId()).containsKey(name)) {
 			Statement stmt = getTransactionContext().getConnection().createStatement();
 			try {
 				String sql 
 					= "INSERT " + DBConstants.ParamIds.TABLE + " (" 
 					+ DBConstants.ParamIds.ITEM_ID + ", " + DBConstants.ParamIds.PARAM_NAME 
-					+ ") VALUES (" + itemId + ", '" + name + "')";
+					+ ") VALUES (" + item.getTypeId() + ", '" + name + "')";
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 				ResultSet keys = stmt.getGeneratedKeys();
 				keys.next();
-				paramId = keys.getInt(1);
-				paramIds.get(itemId).put(name, paramId);
+				int paramId = keys.getInt(1);
+				paramIds.get(item.getTypeId()).put(name, new HashId(name.hashCode(), paramId));
 				dbChanged = true;
 			} finally {
 				stmt.close();
 			}
 		} else {
-			// Пометить этот айтем для неудаления
-			if (typeUpdate) {
-				containsOldTags = true;
-				paramsToDeleteFromIndex.add(paramId);
-			}
-			paramsById.remove(paramId);
+			paramsById.remove(paramIds.get(item.getTypeId()).get(name).id);
 		}
-		ParameterDescription param = new ParameterDescription(name, paramId, dataTypeName, quantifier, itemId, domainName, caption,
-				description, format, isVirtual, isHidden);
+		int paramId = paramIds.get(item.getTypeId()).get(name).id;
+		ParameterDescription param = new ParameterDescription(name, paramId, dataTypeName, isMultiple, item.getTypeId(),
+				domainName, caption, description, format, isVirtual, isHidden, defaultValue, func);
 		if (textIndex != ParameterDescription.TextIndex.none)
 			param.setFulltextSearch(textIndex, textIndexParameter, textIndexBoost, textIndexParser);
+
+		// Если есть функция - надо считать базовый параметр
+		if (func != null) {
+			Elements baseParams = paramEl.getElementsByTag(BASE_CHILD);
+			baseParams.addAll(paramEl.getElementsByTag(BASE_PARENT));
+			for (Element base : baseParams) {
+				param.getComputed().addBasic(ComputedDescription.Type.get(base.tagName()), base.attr(ITEM),
+						base.attr(PARAMETER), base.attr(ASSOC));
+			}
+		}
+
 		// Добавление в реестр невозможно, т.к. неизвестны еще все потомки данного айтема по иерархии,
 		// поэтому сначала добавление в специальную структуру
-		ArrayList<ParameterDescription> itemParams = params.get(itemId);
+		ArrayList<ParameterDescription> itemParams = params.get(item.getTypeId());
 		if (itemParams == null) {
 			itemParams = new ArrayList<ParameterDescription>();
-			params.put(itemId, itemParams);
+			params.put(item.getTypeId(), itemParams);
 		}
 		itemParams.add(param);
+
+		// Сохранить новые значения для автоматически сгенерированных параметров (ag-id и ag-hash)
+		setElementAutoGenerated(paramEl, paramIds.get(item.getTypeId()).get(name).id, name);
 	}
 	/**
 	 * Распределение параметров и сабайтемов по айтемам с учетом их иерархии
@@ -436,7 +461,7 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 			return;
 		String[] exts = StringUtils.split(item.getExtendsString(), ItemType.COMMON_DELIMITER);
 		for (String ext : exts) {
-			if (ext.equals(ItemType.ITEM_SELF)) {
+			if (ext.equals(ItemType.ITEM_SELF_PARAMS)) {
 				ArrayList<ParameterDescription> itemParams = params.get(item.getTypeId());
 				// Добавление всех параметров в сам айтем
 				if (itemParams != null) {
@@ -457,12 +482,10 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 					item.addKeyParameter(predecessor.getKey(), predecessor.isKeyUnique());
 				}
 				// Добавление сабайтемов
-				item.addAllSubitems(predecessor);
+				item.addAllChildren(predecessor);
 				// Установить extra-handler
 				if (predecessor.hasExtraHandlers()) {
-					for (ItemEventCommandFactory factory : predecessor.getExtraHandlers()) {
-						item.addExtraHandler(factory);
-					}
+					predecessor.addExtraHandlersToItem(item);
 				}
 			}
 		}
@@ -476,21 +499,28 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 	 * @param itemName
 	 * @throws Exception
 	 */
-	protected void readSubitem(Attributes attributes, String itemName, String rootGroup) throws Exception {
+	protected void readChild(ItemTypeContainer parent, Element childEl) throws Exception {
 		// По очереди все сабайтемы
-		String subitemName = attributes.getValue(NAME_ATTRIBUTE);
-		if (subitemName == null) subitemName = Strings.EMPTY;
-		String quantifierStr = attributes.getValue(QUANTIFIER_ATTRIBUTE);
-		if (quantifierStr == null) quantifierStr = Strings.EMPTY;
-		boolean isSingle = !quantifierStr.equalsIgnoreCase(MULTIPLE_VALUE);
-		boolean isVitrual = Boolean.valueOf(attributes.getValue(VIRTUAL_ATTRIBUTE));
-		boolean isPersonal = PERSONAL_VALUE.equalsIgnoreCase(attributes.getValue(OWNER_ATTRIBUTE));
-		String ownerGroup = attributes.getValue(OWNER_GROUP_ATTRIBUTE);
-		// Не учитывать пренадлежность группе, которой атйем и так принадлежит
-		if (ownerGroup != null && ownerGroup.equalsIgnoreCase(rootGroup))
-			ownerGroup = null;
-		ItemTypeContainer desc = ItemTypeRegistry.getItemTypeContainer(itemName);
-		desc.addOwnSubitem(subitemName, isSingle, isVitrual, isPersonal, ownerGroup);
+		String childName = childEl.attr(NAME);
+		String assocName = childEl.attr(ASSOC);
+		boolean isSingle = StringUtils.equalsIgnoreCase(childEl.attr(SINGLE), TRUE_VALUE);
+		boolean isVitrual = StringUtils.equalsIgnoreCase(childEl.attr(VIRTUAL), TRUE_VALUE);
+		parent.addOwnChild(assocName, childName, isSingle, isVitrual);
+	}
+
+	/**
+	 * Сохранить новые значения для автоматически сгенерированных параметров (ag-id и ag-hash)
+	 * @param el
+	 * @param id
+	 * @param name
+	 */
+	private void setElementAutoGenerated(Element el, int id, String name) {
+		if (!StringUtils.equals(el.attr(AG_ID), id + "") ||
+				!StringUtils.equals(el.attr(AG_HASH), name.hashCode() + "")) {
+			el.attr(AG_ID, id + "");
+			el.attr(AG_HASH, name.hashCode() + "");
+			fileChanged = true;
+		}
 	}
 	/**
 	 * Очищает модель данных от удаленных айтемов и параметров.
@@ -574,10 +604,12 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 		ServerLogger.debug(selectAssocIds);
 		ResultSet rs = stmt.executeQuery(selectAssocIds);
 		while (rs.next()) {
-			int assocId = rs.getInt(DBConstants.AssocIds.ASSOC_ID);
+			byte assocId = rs.getByte(DBConstants.AssocIds.ASSOC_ID);
 			String assocName = rs.getString(DBConstants.AssocIds.ASSOC_NAME);
 			assocIds.put(assocName, new HashId(assocName.hashCode(), assocId));
 			assocsById.put(assocId, assocName);
+			if (assocId > maxAssocId)
+				maxAssocId = assocId;
 		}
 		rs.close();
 
@@ -592,6 +624,8 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 			itemIds.put(itemName, new HashId(itemName.hashCode(), itemId));
 			itemsById.put(itemId, itemName);
 			paramIds.put(itemId, new HashMap<String, HashId>());
+			if (itemId > maxItemId)
+				maxItemId = itemId;
 		}
 		rs.close();
 		// удаление ненужных но почему-то присутствующих параметров
@@ -610,6 +644,8 @@ public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit impleme
 			String paramName = rs.getString(DBConstants.ParamIds.PARAM_NAME);
 			paramIds.get(itemId).put(paramName, new HashId(paramName.hashCode(), paramId));
 			paramsById.put(paramId, paramName);
+			if (paramId > maxParamId)
+				maxParamId = paramId;
 		}
 		stmt.close();
 	}

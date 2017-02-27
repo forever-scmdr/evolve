@@ -157,7 +157,7 @@ public class OldModelConverter extends DBPersistenceCommandUnit {
 			boolean isVirtual = (flags & DBConstantsOld.VIRTUALITY_MASK) == DBConstantsOld.VIRTUALITY_VIRTUAL;
 			ItemTypeContainer parent = items.get(parentTypeName);
 			// Добавление сабайтема в айтем
-			parent.addOwnSubitem(itemTypeName, isSingle, isVirtual, false, null);
+			parent.addOwnChild(itemTypeName, isSingle, isVirtual, false, null);
 		}
 		rs.close();
 

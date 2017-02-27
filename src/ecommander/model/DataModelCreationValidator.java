@@ -16,7 +16,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
 import ecommander.fwk.ModelValidator;
 
 import javax.xml.parsers.SAXParser;
@@ -213,7 +212,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				if (strExtends != null) {
 					String[] parents = StringUtils.split(strExtends, ItemType.COMMON_DELIMITER);
 					for (String parent : parents) {
-						if (!StringUtils.isBlank(parent) && !parent.equals(ItemType.ITEM_SELF))
+						if (!StringUtils.isBlank(parent) && !parent.equals(ItemType.ITEM_SELF_PARAMS))
 							item.baseItems.add(parent);
 					}
 				}

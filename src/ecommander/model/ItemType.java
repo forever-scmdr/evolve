@@ -38,7 +38,7 @@ public class ItemType extends ItemTypeContainer {
 													// для хранения служебных и специальных значений и параметров
 	
 	public static final char COMMON_DELIMITER = ' ';
-	public static final String ITEM_SELF = "*";
+	public static final String ITEM_SELF_PARAMS = "*";
 
 	private String typeName = StringUtils.EMPTY; // Имя айтема в XML файле на английском языке
 	private int typeId; // ID типа айтема (для ускорения)
@@ -61,7 +61,7 @@ public class ItemType extends ItemTypeContainer {
 						// значение этого параметра при полнотекстовом индексировании => список параметров для полнотекстового индекса
 	private HashMap<Event, LinkedHashSet<ItemEventCommandFactory>> extraHandlers;	// фактори команд-обработчиков событий айтема
 													//(выполнение дополнительных действий после сохранения, удаления)
-	private String extendsStr = ITEM_SELF; // перечисление всех предов айтема в порядке добавления параметров, сам айтем в этом списке обозначается *
+	private String extendsStr = ITEM_SELF_PARAMS; // перечисление всех предов айтема в порядке добавления параметров, сам айтем в этом списке обозначается *
 	
 	public ItemType(String typeName, int typeId, String caption, String description, String key, String extendsStr, String defaultPage, boolean virtual,
 			boolean isUserDefined, boolean isInline, boolean isExtendable, boolean isKeyUnique) {
@@ -84,8 +84,8 @@ public class ItemType extends ItemTypeContainer {
 		paramsByName = new LinkedHashMap<String, ParameterDescription>();
 		if (!StringUtils.isBlank(extendsStr)) {
 			this.extendsStr = extendsStr;
-			if (!this.extendsStr.contains(ITEM_SELF))
-				this.extendsStr += COMMON_DELIMITER + ITEM_SELF;
+			if (!this.extendsStr.contains(ITEM_SELF_PARAMS))
+				this.extendsStr += COMMON_DELIMITER + ITEM_SELF_PARAMS;
 		}
 		if (StringUtils.isNotBlank(defaultPage))
 			this.defaultPage = defaultPage;
@@ -360,7 +360,7 @@ public class ItemType extends ItemTypeContainer {
 	 * @return
 	 */
 	public boolean hasPredecessors() {
-		return !extendsStr.equals(ITEM_SELF);
+		return !extendsStr.equals(ITEM_SELF_PARAMS);
 	}
 
 	/**

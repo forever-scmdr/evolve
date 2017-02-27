@@ -578,7 +578,7 @@ public class MainAdminPageCreator {
 		for (ItemAccessor item : mountToList) {
 			if (item.isMountableAndMoveable()) {
 				HashSet<String> predecessors = new HashSet<String>(ItemTypeRegistry.getItemPredecessorsExt(itemDesc.getName()));
-				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(item.getItemName()).getAllSubitems());
+				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(item.getItemName()).getAllChildren());
 				subitems.retainAll(predecessors);
 				if (subitems.size() > 0) {
 					String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), MOUNT_INPUT_PREFIX);
@@ -663,7 +663,7 @@ public class MainAdminPageCreator {
 		for (ItemAccessor item : toMountList) {
 			if (item.isMountableAndMoveable()) {
 				HashSet<String> predecessors = new HashSet<String>(ItemTypeRegistry.getItemPredecessorsExt(item.getItemName()));
-				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(itemType).getAllSubitems());
+				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(itemType).getAllChildren());
 				subitems.retainAll(predecessors);
 				if (subitems.size() > 0) {
 					String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), MOUNT_INPUT_PREFIX);
@@ -852,7 +852,7 @@ public class MainAdminPageCreator {
 		for (ItemAccessor item : moveToList) {
 			if (item.isMountableAndMoveable()) {
 				HashSet<String> predecessors = new HashSet<String>(ItemTypeRegistry.getItemPredecessorsExt(itemDesc.getName()));
-				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(item.getItemName()).getAllSubitems());
+				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(item.getItemName()).getAllChildren());
 				subitems.retainAll(predecessors);
 				if (subitems.size() > 0) {
 					String inputValue = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), MOVE_VALUE);
@@ -914,7 +914,7 @@ public class MainAdminPageCreator {
 		for (ItemAccessor item : toMoveList) {
 			if (item.isMountableAndMoveable()) {
 				HashSet<String> predecessors = new HashSet<String>(ItemTypeRegistry.getItemPredecessorsExt(item.getItemName()));
-				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(itemType).getAllSubitems());
+				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(itemType).getAllChildren());
 				subitems.retainAll(predecessors);
 				if (subitems.size() > 0) {
 					String inputValue = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), MOVE_VALUE);
@@ -1017,13 +1017,13 @@ public class MainAdminPageCreator {
 	 */
 	private void processItemForParent(long parentId, String itemName, ItemTypeContainer parentDesc, ArrayList<ItemToAdd> itemsToAdd,
 			HashMap<String, ArrayList<ItemAccessor>> existingSubitems) throws SQLException {
-		if (parentDesc.isSubitemMultiple(itemName) || existingSubitems.get(itemName) == null || existingSubitems.get(itemName).isEmpty()) {
-			String defaultExtender = ItemTypeRegistry.findItemPredecessor(parentDesc.getAllSubitems(), itemName);
+		if (parentDesc.isChildMultiple(itemName) || existingSubitems.get(itemName) == null || existingSubitems.get(itemName).isEmpty()) {
+			String defaultExtender = ItemTypeRegistry.findItemPredecessor(parentDesc.getAllChildren(), itemName);
 			ArrayList<ItemAccessor> subitems = existingSubitems.get(itemName);
 			if (subitems != null) {
 				defaultExtender = subitems.get(subitems.size() - 1).getItemName();
 			}
-			boolean isVirtual = parentDesc.isSubitemVirtual(itemName);
+			boolean isVirtual = parentDesc.isChildVirtual(itemName);
 			boolean isPersonal = ItemTypeRegistry.isSubitemPersonal(parentDesc, itemName);
 			itemsToAdd.add(new ItemToAdd(itemName, defaultExtender, parentId, isVirtual, isPersonal));
 		}

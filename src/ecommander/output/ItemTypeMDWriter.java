@@ -94,15 +94,15 @@ public class ItemTypeMDWriter extends MetaDataWriter {
 			attrs.add(Boolean.TRUE.toString());
 		}
 		xml.startElement(mainTag, attrs.toArray(new Object[0]));
-		for (String subitem : itemType.getAllSubitems()) {
-			if (itemType.isSubitemOwn(subitem)) {
+		for (String subitem : itemType.getAllChildren()) {
+			if (itemType.isChildOwn(subitem)) {
 				String quantifier = "single";
-				if (itemType.isSubitemMultiple(subitem))
+				if (itemType.isChildMultiple(subitem))
 					quantifier = "multiple";
 				xml.addEmptyElement(SUBITEM_TAG, 
 						NAME_ATTRIBUTE, subitem, 
 						QUANTIFIER_ATTRIBUTE, quantifier, 
-						VIRTUAL_ATTRIBUTE, itemType.isSubitemVirtual(subitem));
+						VIRTUAL_ATTRIBUTE, itemType.isChildVirtual(subitem));
 			}
 		}
 		for (MetaDataWriter part : additional) {

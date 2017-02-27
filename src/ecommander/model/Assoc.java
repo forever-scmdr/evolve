@@ -10,18 +10,13 @@ public class Assoc {
 	private final String caption;
 	private final String description;
 	private final boolean isTransitive;
-	private final int hash;
 
-	private static final String DEFAULT_NAME = "_default_";
-	private static final Assoc DEFAULT = new Assoc((byte)0, DEFAULT_NAME, "Личный сабайтем", "", false, 0);
-
-	public Assoc(byte id, String name, String caption, String description, boolean isTransitive, int hash) {
+	public Assoc(byte id, String name, String caption, String description, boolean isTransitive) {
 		this.id = id;
 		this.name = name;
 		this.caption = caption;
 		this.description = description;
 		this.isTransitive = isTransitive;
-		this.hash = hash;
 	}
 
 	public byte getId() {
@@ -48,11 +43,4 @@ public class Assoc {
 		return isTransitive;
 	}
 
-	public static Assoc getDefault() {
-		return DEFAULT;
-	}
-
-	public static String getDefaultName() {
-		return DEFAULT_NAME;
-	}
 }

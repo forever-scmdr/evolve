@@ -95,7 +95,7 @@ public class AdminLoader {
 			while (rs.next()) {
 				int itemTypeId = rs.getInt(1);
 				String itemName = ItemTypeRegistry.getItemType(itemTypeId).getName();
-				String baseName = ItemTypeRegistry.findItemPredecessor(itemDesc.getAllSubitems(), itemName);
+				String baseName = ItemTypeRegistry.findItemPredecessor(itemDesc.getAllChildren(), itemName);
 				ArrayList<ItemAccessor> sameItems = result.get(baseName);
 				if (sameItems == null) {
 					sameItems = new ArrayList<ItemAccessor>();
@@ -491,7 +491,7 @@ public class AdminLoader {
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemName);
 		result.addAll(itemDesc.getAllowedSubitemNames(user.getGroup()));
 		for (ItemAccessor item : existingSubitems) {
-			if (result.contains(item.getItemName()) && itemDesc.isSubitemSingle(item.getItemName()))
+			if (result.contains(item.getItemName()) && itemDesc.isChildSingle(item.getItemName()))
 				result.remove(item.getItemName());
 		}
 		return result;

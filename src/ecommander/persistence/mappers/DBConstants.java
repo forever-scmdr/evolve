@@ -37,16 +37,11 @@ public class DBConstants
 	public interface Item
 	{
 		String TABLE = "Item";
+		String ID = "I_ID"; // ID айтема (не типа айтема, а конкретного айтема)
 		String TYPE_ID = "I_TYPE_ID"; // уникальный ID типа айтема (PK)
 		String KEY = "I_KEY"; // Название айтема, которое юзер видит в CMS
 		String TRANSLIT_KEY = "I_T_KEY"; // Уникальный ключ айтема, который можно испльзовать для поиска вместо ID
-		String ID = "I_ID"; // ID айтема (не типа айтема, а конкретного айтема)
-		String DIRECT_PARENT_ID = "I_PARENT_ID"; // ID непосредственного предка айтема
-		String REF_ID = "I_REF_ID"; // Для нормальных айтемов REF_ID = ID, а для айтемов-ссылок - ID айтема, на который идет ссылка
-		String INDEX_WEIGHT = "I_WEIGHT"; // порядковый номер (вес с разницей 100 по умолчаню) в списке всех потомков одного родителя (для сортировки)
-		String OWNER_GROUP_ID = "I_OWNER_GROUP_ID"; // Группа владельца айтема
-		String OWNER_USER_ID = "I_OWNER_USER_ID"; // Юзер - владелец айтема
-		String PRED_ID_PATH = "I_PRED_ID_PATH"; // Путь к текущему айтему через всех его предшественников (для работы с файлами)
+		String INDEX_WEIGHT = "I_WEIGHT"; // порядковый номер (вес с разницей 64 по умолчаню) в списке всех потомков одного родителя (для сортировки)
 		String PARAMS = "I_PARAMS"; // значения всех параметров айтема в виде XML
 		String UPDATED = "I_UPDATED"; // время последнего обновления айтема
 	}

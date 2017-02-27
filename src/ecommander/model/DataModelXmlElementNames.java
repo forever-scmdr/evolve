@@ -31,7 +31,7 @@ public interface DataModelXmlElementNames {
 	String TYPE = "type";
 	String FUNCTION = "function";
 	String FORMAT = "format";
-	String CLASS = "format";
+	String CLASS = "class";
 	String VIRTUAL = "virtual";
 	String DOMAIN = "domain";
 	String KEY = "key";
@@ -43,6 +43,7 @@ public interface DataModelXmlElementNames {
 	String HIDDEN = "hidden";
 	String SINGLE = "single";
 	String MULTIPLE = "multiple";
+	String DEFAULT = "default";
 
 	String TEXT_INDEX = "text-index";
 	String TEXT_INDEX_PARAMETER = "text-index-parameter";

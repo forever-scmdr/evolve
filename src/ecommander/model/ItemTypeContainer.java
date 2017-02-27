@@ -1,5 +1,7 @@
 package ecommander.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -10,14 +12,14 @@ import java.util.HashMap;
  */
 public abstract class ItemTypeContainer {
 
-	public static class SubitemDesc {
+	public static class ChildDesc {
 		private final String assocName;
 		private final String itemName;
 		private final boolean isSingle;
 		private final boolean isVirtual;
 		private final boolean isOwn; // Является ли базовым владельцем сабайтема (не путем наследования)
 
-		public SubitemDesc(String assocName, String itemName, boolean isSingle, boolean isVirtual, boolean isOwn) {
+		public ChildDesc(String assocName, String itemName, boolean isSingle, boolean isVirtual, boolean isOwn) {
 			this.assocName = assocName;
 			this.itemName = itemName;
 			this.isSingle = isSingle;
@@ -26,14 +28,14 @@ public abstract class ItemTypeContainer {
 		}
 	}
 
-	private HashMap<String, SubitemDesc> subitemDescriptions = null;
+	private HashMap<String, ChildDesc> childDescriptions = null;
 
 	public ItemTypeContainer() {
-		subitemDescriptions = new HashMap<String, SubitemDesc>();
+		childDescriptions = new HashMap<String, ChildDesc>();
 	}
 
-	private static String createMapKey(String assocName, String subitemName) {
-		return assocName + "_" + subitemName;
+	private static String createMapKey(String assocName, String childName) {
+		return assocName + "_" + childName;
 	}
 
 	/**
@@ -41,13 +43,15 @@ public abstract class ItemTypeContainer {
 	 * При этом, айтем, в который добавляется сабайтем, будет являться изначальным владельцем сабайтема (не
 	 * унаследованным)
 	 *
-	 * @param subitemName
+	 * @param childName
 	 * @param assocName
 	 * @param single
 	 * @param virtual
 	 */
-	public void addOwnSubitem(String assocName, String subitemName, boolean single, boolean virtual) {
-		subitemDescriptions.put(createMapKey(assocName, subitemName), new SubitemDesc(assocName, subitemName, single, virtual, true));
+	public void addOwnChild(String assocName, String childName, boolean single, boolean virtual) {
+		if (StringUtils.isBlank(assocName))
+			assocName = AssocRegistry.DEFAULT_NAME;
+		childDescriptions.put(createMapKey(assocName, childName), new ChildDesc(assocName, childName, single, virtual, true));
 	}
 
 	/**
@@ -55,8 +59,8 @@ public abstract class ItemTypeContainer {
 	 *
 	 * @return
 	 */
-	public Collection<SubitemDesc> getAllSubitems() {
-		return subitemDescriptions.values();
+	public Collection<ChildDesc> getAllChildren() {
+		return childDescriptions.values();
 	}
 
 	/**
@@ -64,28 +68,28 @@ public abstract class ItemTypeContainer {
 	 *
 	 * @return
 	 */
-	public boolean isSubitemMultiple(String assocName, String subitemName) {
-		return !subitemDescriptions.get(createMapKey(assocName, subitemName)).isSingle;
+	public boolean isChildMultiple(String assocName, String childName) {
+		return !childDescriptions.get(createMapKey(assocName, childName)).isSingle;
 	}
 
 	/**
 	 * Проверяет, является ли сабайтем виртуальным
 	 *
-	 * @param subitemName
+	 * @param childName
 	 * @return
 	 */
-	public boolean isSubitemVirtual(String assocName, String subitemName) {
-		return subitemDescriptions.get(createMapKey(assocName, subitemName)).isVirtual;
+	public boolean isChildVirtual(String assocName, String childName) {
+		return childDescriptions.get(createMapKey(assocName, childName)).isVirtual;
 	}
 
 	/**
 	 * Проверяет, не унаследован ли этот сабайтем (является собственностью данного айтема)
 	 *
-	 * @param subitemName
+	 * @param childName
 	 * @return
 	 */
-	public boolean isSubitemOwn(String subitemName) {
-		return subitemDescriptions.get(subitemName).isOwn;
+	public boolean isChildOwn(String childName) {
+		return childDescriptions.get(childName).isOwn;
 	}
 
 	/**
@@ -94,10 +98,10 @@ public abstract class ItemTypeContainer {
 	 *
 	 * @param container
 	 */
-	public void addAllSubitems(ItemTypeContainer container) {
-		for (SubitemDesc sub : container.subitemDescriptions.values()) {
-			subitemDescriptions.put(createMapKey(sub.assocName, sub.itemName),
-					new SubitemDesc(sub.assocName, sub.itemName, sub.isSingle, sub.isVirtual, false));
+	public void addAllChildren(ItemTypeContainer container) {
+		for (ChildDesc sub : container.childDescriptions.values()) {
+			childDescriptions.put(createMapKey(sub.assocName, sub.itemName),
+					new ChildDesc(sub.assocName, sub.itemName, sub.isSingle, sub.isVirtual, false));
 		}
 	}
 
@@ -107,8 +111,8 @@ public abstract class ItemTypeContainer {
 	 * @param subitemName
 	 * @return
 	 */
-	public boolean isSubitemSingle(String assocName, String subitemName) {
-		return !isSubitemMultiple(assocName, subitemName);
+	public boolean isChildSingle(String assocName, String subitemName) {
+		return !isChildMultiple(assocName, subitemName);
 	}
 
 	/**
