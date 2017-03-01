@@ -36,7 +36,7 @@ public class DBConstants
 	 */
 	public interface Item
 	{
-		String TABLE = "Item";
+		String TABLE = "item";
 		String ID = "I_ID"; // ID айтема (не типа айтема, а конкретного айтема)
 		String TYPE_ID = "I_TYPE_ID"; // уникальный ID типа айтема (PK)
 		String KEY = "I_KEY"; // Название айтема, которое юзер видит в CMS
@@ -45,13 +45,24 @@ public class DBConstants
 		String PARAMS = "I_PARAMS"; // значения всех параметров айтема в виде XML
 		String UPDATED = "I_UPDATED"; // время последнего обновления айтема
 	}
+
+	/**
+	 * Таблица, в которой хранится описание модели данных в виде XML
+	 */
+	public interface ModelXML {
+		String TABLE = "model_xml";
+		String ID = "XML_ID";
+		String GUID = "XML_GUID";
+		String VERSION = "XML_VERSION";
+		String XML = "XML_MODEL";
+	}
 	/**
 	 * Уникальные строковые ключи некоторых айтемов, которые можно передавать через URL с целью уникальной идентификации айтема
 	 * @author E
 	 *
 	 */
 	public interface UniqueItemKeys {
-		String TABLE = "UniqueKey";
+		String TABLE = "unique_key";
 		String ID = "UK_ITEM_ID"; // ID айтема
 		String KEY = "UK_KEY"; // Уникальный текстовый ключ
 	}
@@ -61,7 +72,7 @@ public class DBConstants
 	 *
 	 */
 	public interface ItemParent {
-		String TABLE = "ItemParent";
+		String TABLE = "item_parent";
 		String REF_ID = "IP_REF_ID";
 		String PARENT_ID = "IP_PARENT_ID";
 		String ITEM_ID = "IP_ITEM_ID";
@@ -81,7 +92,7 @@ public class DBConstants
 	 * TODO <enhance> !!! Использовать в запросах фильтрации II_TYPE - меньше элементов остается после выбора из этой таблицы
 	 */
 	public interface ItemIndexes {
-		String INT_TABLE_NAME = "IntIndex";
+		String INT_TABLE_NAME = "int_index";
 		String DOUBLE_TABLE_NAME = "DoubleIndex";
 		String STRING_TABLE_NAME = "StringIndex";
 		String ASSOCIATED_TABLE_NAME = "AssocIndex";
@@ -98,7 +109,7 @@ public class DBConstants
 	 *
 	 */
 	public interface AssocIds {
-		String TABLE = "AssocIds";
+		String TABLE = "assoc_ids";
 		String ASSOC_NAME = "AID_NAME";
 		String ASSOC_ID = "AID_ID";
 	}
@@ -109,7 +120,7 @@ public class DBConstants
 	 *
 	 */
 	public interface ItemIds {
-		String TABLE = "ItemIds";
+		String TABLE = "item_ids";
 		String ITEM_NAME = "IID_NAME";
 		String ITEM_ID = "IID_ID";
 	}
@@ -120,7 +131,7 @@ public class DBConstants
 	 *
 	 */
 	public interface ParamIds {
-		String TABLE = "ParamIds";
+		String TABLE = "param_ids";
 		String ITEM_ID = "PID_ITEM_ID";
 		String PARAM_NAME = "PID_PARAM_NAME";
 		String PARAM_ID = "PID_PARAM_ID";
@@ -189,7 +200,7 @@ public class DBConstants
 	 */
 	public interface UserGroup
 	{
-		String TABLE = "UserGroup";
+		String TABLE = "user_group";
 		String ID = "UG_ID";
 		String NAME = "UG_NAME";
 	}
@@ -200,7 +211,7 @@ public class DBConstants
 	 */
 	public interface Users
 	{
-		String TABLE = "Users";
+		String TABLE = "uers";
 		String ID = "U_ID";
 		String GROUP = "U_GROUP";
 		String LOGIN = "U_LOGIN";

@@ -33,7 +33,7 @@ import java.util.*;
  * @author EEEE
  * 
  */
-public class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements DataModelXmlElementNames {
+class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements DataModelXmlElementNames {
 
 	private static class HashId {
 		private final int hash;
