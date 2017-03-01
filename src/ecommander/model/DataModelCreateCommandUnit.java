@@ -44,6 +44,15 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		}
 	}
 
+	private static class ItemParam {
+		private final String item;
+		private final String param;
+		public ItemParam(String item, String param) {
+			this.item = item;
+			this.param = param;
+		}
+	}
+
 	/**
 	 * Поля класса
 	 */
@@ -54,7 +63,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	private HashMap<Integer, HashMap<String, HashId>> paramIds = new HashMap<>();
 	private HashMap<Integer, ArrayList<ParameterDescription>> params = new HashMap<>();
 	private HashMap<Integer, String> itemsById = new HashMap<>();
-	private HashMap<Integer, String> paramsById = new HashMap<>();
+	private HashMap<Integer, ItemParam> paramsById = new HashMap<>();
 	private HashMap<Byte, String> assocsById = new HashMap<>();
 	private HashSet<Integer> itemsToRefresh = new HashSet<>(); // айтемы, у которыз поменялись параметры и которые нао пересохранить
 	private boolean dbChanged = false; // были ли изменения в БД
@@ -64,6 +73,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	private int maxItemId = 0;
 	private int maxParamId = 0;
 	private final boolean isTestMode;
+	private boolean noDeletion = true; // Нужно ли удалять айтемы или параметры из БД в связи с обновлением model.xml
 
 	public DataModelCreateCommandUnit(boolean isTestMode) {
 		this.isTestMode = isTestMode;
@@ -98,18 +108,12 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 //			addParametersAndSubitems(root);
 		
 		// Удалить все ненужные записи в таблицах ID и в таблицах индексов по параметрам (делается автоматически через foreign key)
-		mergeModel();
-		
-		// Удалить атрибуты name-old и type-old
-		if (containsOldTags) {
-			removeOldTags(AppContext.getMainModelPath());
-			if (Files.exists(Paths.get(AppContext.getUserModelPath())))
-				removeOldTags(AppContext.getUserModelPath());
+		noDeletion = itemsById.size() == 0 && paramsById.size() == 0;
+		if (!isTestMode) {
+			mergeModel();
+			// Создать java класс с текстовыми константами для всех айтемов
+			createJavaConstants();
 		}
-		
-		// Создать java класс с текстовыми константами для всех айтемов
-		createJavaConstants();
-		
 	}
 
 	private void parseFile(File file) throws Exception {
@@ -390,7 +394,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		boolean nameUpdate = !paramIds.containsKey(name) && paramsById.containsKey(savedId);
 		// Если надо обновить название параметра
 		if (nameUpdate) {
-			if (savedHash != paramsById.get(savedId).hashCode()) {
+			if (savedHash != paramsById.get(savedId).param.hashCode()) {
 				throw createValidationException("Parameter update error",
 						"Item '" + item.getName() + "' parameter '" + name + "'",
 						"Unable to update parameter '" + itemsById.get(savedId) + "' to new name '" + name + "'. Saved hash code doesn't match");
@@ -411,7 +415,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 				}
 			}
 			// Заменить название параметра в списке ID параметров
-			paramIds.get(item.getTypeId()).remove(paramsById.get(savedId));
+			paramIds.get(item.getTypeId()).remove(paramsById.get(savedId).param);
 			paramIds.get(item.getTypeId()).put(name, new HashId(name.hashCode(), savedId));
 		}
 		// Если появился новый параметр, которого не было раньше - получить ID для него
@@ -549,34 +553,33 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			String sql;
 			// Удаление из таблицы ID айтемов
 			if (itemsById.size() > 0) {
-				sql = "DELETE FROM " + DBConstants.ItemIds.TABLE + " WHERE " + DBConstants.ItemIds.ITEM_ID + " IN " + createIn(itemsById);
+				sql = "DELETE FROM " + DBConstants.ItemIds.TABLE
+						+ " WHERE " + DBConstants.ItemIds.ITEM_ID + " IN " + createIn(itemsById.keySet());
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;
 			}
 			// Удаление параметров, если нужно удалять, 
 			// изменение ID параметров, если параметр переместился в родительский класс
+			HashSet<Integer> paramsToDeleteFromIndex = new HashSet<>();
 			if (paramsById.size() > 0) {
-				for (ParamToDelete pd : paramsById.values()) {
+				for (Map.Entry<Integer, ItemParam> par : paramsById.entrySet()) {
+					ItemParam ip = par.getValue();
+					int pid = par.getKey();
+					int newParentItemId = itemIds.get(ip.item).id;
 					ParameterDescription newParamDesc = null; // новый ID параметра, на который надо поменять старый ID в таблицах индексов
-					Set<String> predNames = ItemTypeRegistry.getItemPredecessors(pd.itemName);
+					Set<String> predNames = ItemTypeRegistry.getItemPredecessors(ip.item);
 					for (String predName : predNames) {
-						newParamDesc = ItemTypeRegistry.getItemType(predName).getParameter(pd.paramName);
+						newParamDesc = ItemTypeRegistry.getItemType(predName).getParameter(ip.param);
 						if (newParamDesc != null)
 							break;
 					}
-					// Поменять ID параметра в таблицах-индексах
-					if (newParamDesc != null) {
-						String table = DataTypeMapper.getTableName(newParamDesc.getType());
-						sql = "UPDATE " + table + " SET " + DBConstants.ItemIndexes.ITEM_PARAM + "=" + newParamDesc.getId() + " WHERE "
-								+ DBConstants.ItemIndexes.ITEM_PARAM + "=" + pd.paramId;
-						ServerLogger.debug(sql);
-						stmt.executeUpdate(sql);
-					} else {
-						paramsToDeleteFromIndex.add(pd.paramId);
+					if (newParamDesc == null) {
+						paramsToDeleteFromIndex.add(pid);
 					}
-					// Удалить параметр из таблицы ID параметров
-					sql = "DELETE FROM " + DBConstants.ParamIds.TABLE + " WHERE " + DBConstants.ParamIds.PARAM_ID + "=" + pd.paramId;
+					// Обновить таблицу параметров - установить нового предка параметра
+					sql = "UPDATE " + DBConstants.ParamIds.TABLE + " SET " + DBConstants.ParamIds.ITEM_ID + "=" +
+							newParentItemId + " WHERE " + DBConstants.ParamIds.PARAM_ID + "=" + pid;
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
 					dbChanged = true;
@@ -595,7 +598,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			}
 			// Удаление из главной таблицы айтемов
 			if (itemsById.size() > 0) {
-				sql = "DELETE FROM " + DBConstants.Item.TABLE + " WHERE " + DBConstants.Item.TYPE_ID + " IN " + createIn(itemsById);
+				sql = "DELETE FROM " + DBConstants.Item.TABLE + " WHERE " + DBConstants.Item.TYPE_ID + " IN " + createIn(itemsById.keySet());
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;
@@ -626,11 +629,9 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		String selectItemIds = "SELECT * FROM " + DBConstants.ItemIds.TABLE;
 		ServerLogger.debug(selectItemIds);
 		rs = stmt.executeQuery(selectItemIds);
-		HashMap<Integer, String> itemNames = new HashMap<>();
 		while (rs.next()) {
 			int itemId = rs.getInt(DBConstants.ItemIds.ITEM_ID);
 			String itemName = rs.getString(DBConstants.ItemIds.ITEM_NAME);
-			itemNames.put(itemId, itemName);
 			itemIds.put(itemName, new HashId(itemName.hashCode(), itemId));
 			itemsById.put(itemId, itemName);
 			paramIds.put(itemId, new HashMap<String, HashId>());
@@ -653,7 +654,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			int paramId = rs.getInt(DBConstants.ParamIds.PARAM_ID);
 			String paramName = rs.getString(DBConstants.ParamIds.PARAM_NAME);
 			paramIds.get(itemId).put(paramName, new HashId(paramName.hashCode(), paramId));
-			paramsById.put(paramId, paramName);
+			paramsById.put(paramId, new ItemParam(itemsById.get(itemId), paramName));
 			if (paramId > maxParamId)
 				maxParamId = paramId;
 		}
@@ -673,26 +674,19 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		result.append(')');
 		return result.toString();
 	}
-	/**
-	 * Удалить тэги -old из файла
-	 * @param fileName
-	 * @throws IOException 
-	 */
-	private void removeOldTags(String fileName) throws IOException {
-		Charset utf8 = Charset.forName("UTF-8");
-		byte[] bytes = Files.readAllBytes(Paths.get(fileName));
-		String xml = new String(bytes, utf8);
-		xml = xml.replaceAll(" " + NAME_OLD_ATTRIBUTE + "=\"[^\"]*\"", "");
-		xml = xml.replaceAll(" " + NAME_OLD_ATTRIBUTE + "='[^']*\"", "");
-		xml = xml.replaceAll(" " + TYPE_OLD_ATTRIBUTE + "=\"[^\"]*\"", "");
-		xml = xml.replaceAll(" " + TYPE_OLD_ATTRIBUTE + "='[^']*\"", "");
-		Files.write(Paths.get(fileName), xml.getBytes(StandardCharsets.UTF_8));
-	}
-	
+
 	private void createJavaConstants() {
 		if (!dbChanged)
 			return;
 		CodeGenerator.createJavaConstants();
+	}
+
+	/**
+	 * Должны би удаляться айтемы или параметры из БД в связи с обновлением model.xml
+	 * @return
+	 */
+	boolean isNoDeletionNeeded() {
+		return noDeletion;
 	}
 	/**
 	 * Находит все файлы pages.xml

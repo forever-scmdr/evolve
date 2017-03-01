@@ -351,7 +351,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 	
 	}
 
-	private ArrayList<String> modelFiles;
+	private ArrayList<File> modelFiles;
 	private HashMap<String, Assoc> assocs;
 	private HashMap<String, Item> items;
 	private ArrayList<Child> children;
@@ -360,7 +360,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 	private HashSet<Byte> assocIds = new HashSet<>();
 	private Root root;
 	
-	public DataModelCreationValidator(ArrayList<String> modelFiles) {
+	public DataModelCreationValidator(ArrayList<File> modelFiles) {
 		items = new HashMap<String, Item>();
 		children = new ArrayList<Child>();
 		assocs = new HashMap<>();
@@ -374,7 +374,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		try {
 			SAXParser parser = factory.newSAXParser();
-			for (String modelFile : modelFiles) {
+			for (File modelFile : modelFiles) {
 				parser.parse(modelFile, new DataModelHandler());			
 			}
 		} catch (Exception se) {
@@ -622,9 +622,9 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 	}
 
 	public static void main(String[] args) {
-		String file = "F:/PROJECTS/evolve/web/WEB-INF/ec_xml/model_test.xml";
+		File file = new File("F:/PROJECTS/evolve/web/WEB-INF/ec_xml/model_test.xml");
 		ServerLogger.init("F:/log.txt");
-		ArrayList<String> files = new ArrayList<>();
+		ArrayList<File> files = new ArrayList<>();
 		files.add(file);
 		DataModelCreationValidator validator = new DataModelCreationValidator(files);
 		validator.validate();

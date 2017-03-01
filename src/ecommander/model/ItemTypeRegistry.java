@@ -135,11 +135,24 @@ public class ItemTypeRegistry {
 
 	/**
 	 * Разблокировать реестр после внесения изменений
+	 * Копия, используемая другими потоками, очищается и им начинает выдаваться измененный экземпляр
 	 */
-	static synchronized void unlock() {
+	static synchronized void unlockSumbit() {
 		if (modifyThread != Thread.currentThread())
 			throw new IllegalStateException("Illegal attempt to unlock item type registry by nonmodifying thread");
 		modifyThread = null;
+		tempCopy = null;
+	}
+
+	/**
+	 * Разблокировать реестр после внесения изменений с возвратом в начальное состояние (до внесения изменений)
+	 * Копия, используемая другими потоками, заменяет измененный экземпляр
+	 */
+	static synchronized void unlockRollback() {
+		if (modifyThread != Thread.currentThread())
+			throw new IllegalStateException("Illegal attempt to unlock item type registry by nonmodifying thread");
+		modifyThread = null;
+		singleton = tempCopy;
 		tempCopy = null;
 	}
 
