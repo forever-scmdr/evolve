@@ -18,7 +18,6 @@ import ecommander.fwk.UserNotAllowedException;
 import ecommander.fwk.ValidationException;
 import ecommander.controllers.ScheduledJob;
 import ecommander.controllers.SessionContext;
-import ecommander.model.DataModelBuilder;
 import ecommander.model.DomainBuilder;
 
 /**
@@ -41,7 +40,6 @@ public class PageModelRegistry {
 	public static PageModelRegistry testAndGetRegistry() throws Exception {
 		if (REGISTRY == null)
 			REGISTRY = new PageModelRegistry();
-		DataModelBuilder.testActuality();
 		PageModelBuilder.testActuality();
 		DomainBuilder.testActuality();
 		return REGISTRY;

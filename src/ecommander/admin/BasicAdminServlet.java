@@ -42,7 +42,6 @@ public abstract class BasicAdminServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
 			StartController.start(getServletContext());
-			DataModelBuilder.testActuality();
 			DomainBuilder.testActuality();
 			processRequest(req, resp);
 		} catch (Exception e) {
@@ -53,7 +52,6 @@ public abstract class BasicAdminServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
 			StartController.start(getServletContext());
-			DataModelBuilder.testActuality();
 			DomainBuilder.testActuality();
 			processRequest(req, resp);
 		} catch (Exception e) {
