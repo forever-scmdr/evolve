@@ -65,7 +65,10 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	private HashMap<Integer, String> itemsById = new HashMap<>();
 	private HashMap<Integer, ItemParam> paramsById = new HashMap<>();
 	private HashMap<Byte, String> assocsById = new HashMap<>();
-	private HashSet<Integer> itemsToRefresh = new HashSet<>(); // айтемы, у которыз поменялись параметры и которые нао пересохранить
+	//private HashSet<Integer> itemsToRefresh = new HashSet<>(); // айтемы, у которых поменялись параметры и которые нао пересохранить
+	private UUID siteId = null; // уникальный идентификатор сайта, чтобы не перепутать с
+	private int modelVersion = 0;
+
 	private boolean dbChanged = false; // были ли изменения в БД
 	private boolean fileChanged = false;
 
@@ -687,6 +690,21 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 */
 	boolean isNoDeletionNeeded() {
 		return noDeletion;
+	}
+
+	/**
+	 * Генерирует список удаляемых в обновлении model.xml айтемов и параметров
+	 * @return
+	 */
+	ArrayList<String> getElementsToDelete() {
+		ArrayList<String> result = new ArrayList<>();
+		for (String itemName : itemsById.values()) {
+			result.add("Item: " + itemName);
+		}
+		for (ItemParam param : paramsById.values()) {
+			result.add("Parameter: " + param.item + "." + param.param);
+		}
+		return result;
 	}
 	/**
 	 * Находит все файлы pages.xml

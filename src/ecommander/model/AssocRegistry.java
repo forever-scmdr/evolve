@@ -11,7 +11,7 @@ class AssocRegistry {
 
 	static final String DEFAULT_NAME = "_default_";
 	static final byte DEFAULT_ID = (byte)0;
-	static final Assoc DEFAULT = new Assoc(DEFAULT_ID, DEFAULT_NAME, "Личный сабайтем", "", false, 0);
+	static final Assoc DEFAULT = new Assoc(DEFAULT_ID, DEFAULT_NAME, "Личный сабайтем", "", false);
 
 	AssocRegistry() {
 		assocByName.put(DEFAULT_NAME, DEFAULT);

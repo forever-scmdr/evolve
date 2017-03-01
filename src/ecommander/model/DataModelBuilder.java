@@ -18,19 +18,29 @@ public class DataModelBuilder {
 
 	private static final Object SEMAPHORE = new Object();
 
+	private ArrayList<String> itemsToBeDeleted = null;
+	private boolean forceModel = false;
+
+	private DataModelBuilder(boolean forceModel) {
+		this.forceModel = forceModel;
+	}
+
+	public static DataModelBuilder create(boolean forceModel) {
+		return new DataModelBuilder(forceModel);
+	}
 	/**
 	 * Перезагрузка модели данных в случае если она не заблокирована
 	 * @throws Exception
 	 */
-	public static boolean tryLockAndReloadModel(boolean forceModel) throws Exception {
+	public boolean tryLockAndReloadModel() throws Exception {
 		if (!ItemTypeRegistry.isLocked()) {
 			synchronized (SEMAPHORE) {
+				boolean updated = false;
 				if (!ItemTypeRegistry.isLocked()) {
-					boolean updated = false;
 					try {
 						ItemTypeRegistry.lock();
 						PageController.clearCache();
-						updated = reloadModel(forceModel);
+						updated = reloadModel();
 						PageModelBuilder.invalidate();
 					} finally {
 						if (updated)
@@ -39,8 +49,8 @@ public class DataModelBuilder {
 							ItemTypeRegistry.unlockRollback();
 					}
 				}
+				return updated;
 			}
-			return true;
 		}
 		return false;
 	}
@@ -49,11 +59,10 @@ public class DataModelBuilder {
 	 * Парсит XML модели данных и сохраняет все в БД одной транзакцией
 	 * Не проверяет блокировку модели данных.
 	 * Метод, который вызывает reloadModel сам должен выставлять блокировку модели.
-	 * @param forceModel
 	 * @return если апдейт произощел - true, иначе - false
 	 * @throws Exception
 	 */
-	private static synchronized boolean reloadModel(boolean forceModel) throws Exception {
+	private boolean reloadModel() throws Exception {
 		ArrayList<File> modelFiles = DataModelCreateCommandUnit.findModelFiles(new File(AppContext.getMainModelPath()), null);
 		DataModelCreationValidator validator = new DataModelCreationValidator(modelFiles);
 		validator.validate();
@@ -76,5 +85,12 @@ public class DataModelBuilder {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * Получить список айтемов и параметров, которые будут удалены в случае апдейта модели данных
+	 * @return
+	 */
+	public ArrayList<String> getItemsToBeDeleted() {
+		return itemsToBeDeleted;
+	}
 }

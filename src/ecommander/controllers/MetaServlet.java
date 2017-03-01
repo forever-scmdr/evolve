@@ -3,15 +3,20 @@ package ecommander.controllers;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ecommander.fwk.EcommanderException;
+import ecommander.fwk.MessageError;
 import ecommander.fwk.MysqlConnector;
+import ecommander.fwk.ValidationException;
 import ecommander.migration.FilterEntityIdToNameConverter;
 import ecommander.migration.OldModelConverter;
 import ecommander.migration.VeryOldItemsImporter;
+import ecommander.model.DataModelBuilder;
 import ecommander.persistence.TransactionContext;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 
@@ -23,11 +28,16 @@ public class MetaServlet extends BasicServlet {
 	
 	public static final String LINK_PARAMETER_NAME = "q";
 	public static final String ACTION_CREATE_USERS = "create_users";
-	public static final String ACTION_CREATE_DOMAINS = "create_domains";
+	public static final String ACTION_CREATE_MODEL = "create_model";
+	public static final String ACTION_FORCE_MODEL = "force_model";
 	public static final String REINDEX = "reindex";
 	public static final String MIGRATE_ITEMS = "migrate_items";
-	public static final String CONVERT_FILTERS = "convert_filters";
 	public static final String IMPORT_ITEMS = "import_items";
+	public static final String ITEMS_TO_BE_DELETED_ATTR = "items_to_be_deleted";
+
+	public static final String SESSION_CONFIRM_CREATE_MODEL = "create_model_force_session";
+
+	public static final String CONFIRM_CREATE_MODEL_JSP = "/create_model_confirm.jsp";
 	
 	private static final String SUCCESS = "<html><body><table width='100%' height='100%'><tr>" 
 		+ "<td align='center' valign='middle'><h1>SUCCESS</h1></td></tr></table></body></html>";
@@ -64,14 +74,23 @@ public class MetaServlet extends BasicServlet {
 				} finally {
 					MysqlConnector.closeConnection(ctx.getConnection());
 				}
-			} else if (action.equalsIgnoreCase(CONVERT_FILTERS)) { // TODO <fix> удалить
-				TransactionContext ctx = new TransactionContext(MysqlConnector.getConnection(), null);
-				try {
-					FilterEntityIdToNameConverter converter = new FilterEntityIdToNameConverter();
-					converter.setTransactionContext(ctx);
-					converter.execute();
-				} finally {
-					MysqlConnector.closeConnection(ctx.getConnection());
+			} else if (action.equalsIgnoreCase(ACTION_CREATE_MODEL)) {
+				DataModelBuilder modelBuilder = DataModelBuilder.create(false);
+				boolean hasDeletions = modelBuilder.tryLockAndReloadModel();
+				if (hasDeletions) {
+					request.getSession().setAttribute(SESSION_CONFIRM_CREATE_MODEL, true);
+					request.setAttribute(ITEMS_TO_BE_DELETED_ATTR, modelBuilder.getItemsToBeDeleted());
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(CONFIRM_CREATE_MODEL_JSP);
+					dispatcher.forward(request, response);
+					return;
+				}
+			} else if (action.equalsIgnoreCase(ACTION_FORCE_MODEL)) {
+				boolean confirmed = (Boolean) request.getSession().getAttribute(SESSION_CONFIRM_CREATE_MODEL);
+				if (confirmed) {
+					DataModelBuilder modelBuilder = DataModelBuilder.create(true);
+					modelBuilder.tryLockAndReloadModel();
+				} else {
+					throw new MessageError("Force create model not confirmed", "Not confirmed");
 				}
 			}
 			response.setContentType("text/html");

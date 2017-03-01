@@ -121,7 +121,7 @@ public class CodeGenerator {
 						String methodName = null;
 						boolean needUIMethod = true;
 						boolean isFile = false;
-						if (param.getType() == Type.ASSOCIATED || param.getType() == Type.DATE || param.getType() == Type.LONG) {
+						if (param.getType() == Type.DATE || param.getType() == Type.LONG) {
 							type = Long.class;
 							methodName = "getLongValue";
 						} else if (param.getType() == Type.BYTE) {
