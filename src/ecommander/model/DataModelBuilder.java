@@ -26,13 +26,17 @@ public class DataModelBuilder {
 		if (!ItemTypeRegistry.isLocked()) {
 			synchronized (SEMAPHORE) {
 				if (!ItemTypeRegistry.isLocked()) {
+					boolean updated = false;
 					try {
 						ItemTypeRegistry.lock();
 						PageController.clearCache();
-						reloadModel(forceModel);
+						updated = reloadModel(forceModel);
 						PageModelBuilder.invalidate();
 					} finally {
-						ItemTypeRegistry.unlockSumbit();
+						if (updated)
+							ItemTypeRegistry.unlockSumbit();
+						else
+							ItemTypeRegistry.unlockRollback();
 					}
 				}
 			}
