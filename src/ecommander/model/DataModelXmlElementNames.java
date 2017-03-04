@@ -16,7 +16,7 @@ public interface DataModelXmlElementNames {
 	String BASE_PARENT = "base-parent";
 	String MODEL = "model";
 	String ON_CREATE = "on-create";
-	String ON_UPDATE = "on-update";
+	String ON_UPDATE = "on-force_update";
 	String ON_DELETE = "on-delete";
 	/**
 	 * Атрибуты

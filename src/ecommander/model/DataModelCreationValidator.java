@@ -1,6 +1,8 @@
 package ecommander.model;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +10,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import ecommander.pages.ValidationResults;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.xml.sax.Attributes;
@@ -351,7 +354,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 	
 	}
 
-	private ArrayList<File> modelFiles;
+	private ArrayList<String> modelFiles;
 	private HashMap<String, Assoc> assocs;
 	private HashMap<String, Item> items;
 	private ArrayList<Child> children;
@@ -360,7 +363,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 	private HashSet<Byte> assocIds = new HashSet<>();
 	private Root root;
 	
-	public DataModelCreationValidator(ArrayList<File> modelFiles) {
+	public DataModelCreationValidator(ArrayList<String> modelFiles) {
 		items = new HashMap<String, Item>();
 		children = new ArrayList<Child>();
 		assocs = new HashMap<>();
@@ -374,7 +377,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		try {
 			SAXParser parser = factory.newSAXParser();
-			for (File modelFile : modelFiles) {
+			for (String modelFile : modelFiles) {
 				parser.parse(modelFile, new DataModelHandler());			
 			}
 		} catch (Exception se) {
@@ -621,11 +624,11 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		return files;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		File file = new File("F:/PROJECTS/evolve/web/WEB-INF/ec_xml/model_test.xml");
 		ServerLogger.init("F:/log.txt");
-		ArrayList<File> files = new ArrayList<>();
-		files.add(file);
+		ArrayList<String> files = new ArrayList<>();
+		files.add(FileUtils.readFileToString(file, "UTF-8"));
 		DataModelCreationValidator validator = new DataModelCreationValidator(files);
 		validator.validate();
 		ValidationResults res = validator.getResults();

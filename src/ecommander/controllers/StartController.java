@@ -23,7 +23,7 @@ public class StartController {
 					// Загружаются домены
 					DomainBuilder.testActuality();
 					// Загружаются описания айтемов (из XML файла + БД)
-					DataModelBuilder.testActuality();
+					DataModelBuilder.newLoader().tryLockAndReloadModel();
 					// Загружаются пользователи
 					UserMapper.loadUserGorups();
 					// Загружается модели страниц (из XML файла)

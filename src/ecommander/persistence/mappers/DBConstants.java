@@ -51,9 +51,7 @@ public class DBConstants
 	 */
 	public interface ModelXML {
 		String TABLE = "model_xml";
-		String ID = "XML_ID";
-		String GUID = "XML_GUID";
-		String VERSION = "XML_VERSION";
+		String NAME = "XML_NAME";
 		String XML = "XML_MODEL";
 	}
 	/**

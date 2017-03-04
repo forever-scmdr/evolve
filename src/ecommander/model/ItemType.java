@@ -25,7 +25,7 @@ public class ItemType extends ItemTypeContainer {
 		public static Event get(String eventName) {
 			if (StringUtils.endsWith(eventName, "create"))
 				return create;
-			if (StringUtils.endsWith(eventName, "update"))
+			if (StringUtils.endsWith(eventName, "force_update"))
 				return update;
 			if (StringUtils.endsWith(eventName, "delete"))
 				return delete;
