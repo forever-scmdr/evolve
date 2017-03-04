@@ -2,6 +2,7 @@ package ecommander.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -378,7 +380,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		try {
 			SAXParser parser = factory.newSAXParser();
 			for (String modelFile : modelFiles) {
-				parser.parse(modelFile, new DataModelHandler());			
+				parser.parse(new InputSource(new StringReader(modelFile)), new DataModelHandler());
 			}
 		} catch (Exception se) {
 			System.out.println(se.getMessage());
@@ -453,32 +455,6 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				if (!hasKey)
 					addError("Multiple child '" + child.name + "' has no key. Multiple child items must have key parameters",
 							child.lineNumber);
-			}
-		}
-		// Проверка, достижим ли айтем из корня
-		HashSet<String> accessibleItems = new HashSet<>();
-		HashSet<String> checkedItems = new HashSet<>();
-		if (root == null) {
-			addError("There is no root defined", 0);
-		}
-		checkSubitems(root, accessibleItems, checkedItems, hierarchy);
-		if (!accessibleItems.containsAll(items.keySet())) {
-			HashSet<String> allItems = new HashSet<>(items.keySet());
-			allItems.removeAll(accessibleItems);
-			for (String inaccessibleItem : allItems) {
-				Item item = items.get(inaccessibleItem);
-				// Проверить всех предшественников по иерархии (если доступен предшественник, то доступен и наследник)
-				boolean inaccessible = true;
-				Set<String> inaccPreds = hierarchy.getItemPredecessors(inaccessibleItem);
-				for (String pred : inaccPreds) {
-					if (!allItems.contains(pred)) {
-						inaccessible = false;
-						break;
-					}
-				}
-				if (inaccessible && !item.isVirtual)
-					addError("Item '" + item.name + "' is not used in data structure. It must be either removed or linked as a child",
-							item.lineNumber);
 			}
 		}
 
@@ -572,6 +548,33 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 						}
 					}
 				}
+			}
+		}
+		// Проверка, достижим ли айтем из корня
+		HashSet<String> accessibleItems = new HashSet<>();
+		HashSet<String> checkedItems = new HashSet<>();
+		if (root == null) {
+			addError("There is no root defined", 0);
+			return;
+		}
+		checkSubitems(root, accessibleItems, checkedItems, hierarchy);
+		if (!accessibleItems.containsAll(items.keySet())) {
+			HashSet<String> allItems = new HashSet<>(items.keySet());
+			allItems.removeAll(accessibleItems);
+			for (String inaccessibleItem : allItems) {
+				Item item = items.get(inaccessibleItem);
+				// Проверить всех предшественников по иерархии (если доступен предшественник, то доступен и наследник)
+				boolean inaccessible = true;
+				Set<String> inaccPreds = hierarchy.getItemPredecessors(inaccessibleItem);
+				for (String pred : inaccPreds) {
+					if (!allItems.contains(pred)) {
+						inaccessible = false;
+						break;
+					}
+				}
+				if (inaccessible && !item.isVirtual)
+					addError("Item '" + item.name + "' is not used in data structure. It must be either removed or linked as a child",
+							item.lineNumber);
 			}
 		}
 	}

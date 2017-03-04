@@ -25,7 +25,7 @@ public class DataModelBuilder {
 	private static final Object SEMAPHORE = new Object();
 
 	private ArrayList<String> itemsToBeDeleted = null;
-	private final DataModelCreateCommandUnit.Mode mode;
+	private DataModelCreateCommandUnit.Mode mode;
 
 	private DataModelBuilder(DataModelCreateCommandUnit.Mode mode) {
 		this.mode = mode;
@@ -87,22 +87,8 @@ public class DataModelBuilder {
 	 * @throws Exception
 	 */
 	private boolean reloadModel() throws Exception {
-		// Валидация файла model.xml
-		if (mode != DataModelCreateCommandUnit.Mode.load) {
-			// TODO validate loaded
-			ArrayList<File> modelFiles = DataModelCreateCommandUnit.findModelFiles(new File(AppContext.getMainModelPath()), null);
-			ArrayList<String> xml = new ArrayList<>();
-			for (File file : modelFiles) {
-				xml.add(FileUtils.readFileToString(file, "UTF-8"));
-			}
-			DataModelCreationValidator validator = new DataModelCreationValidator(xml);
-			validator.validate();
-			if (!validator.isSuccessful()) {
-				throw new ValidationException("model.xml validation failed", null, validator.getResults());
-			}
-		}
 		// Валидация сохраненной в БД копии файла model.xml
-		else {
+		if (mode == DataModelCreateCommandUnit.Mode.load) {
 			Connection connection = MysqlConnector.getConnection();
 			Statement stmt = null;
 			ArrayList<String> xml = new ArrayList<>();
@@ -116,10 +102,27 @@ public class DataModelBuilder {
 				MysqlConnector.closeStatement(stmt);
 				MysqlConnector.closeConnection(connection);
 			}
+			if (xml.size() != 0) {
+				DataModelCreationValidator validator = new DataModelCreationValidator(xml);
+				validator.validate();
+				if (!validator.isSuccessful()) {
+					throw new ValidationException("DB model.xml is corrupted. Model must be recreated with XML files", null, validator.getResults());
+				}
+			} else {
+				mode = DataModelCreateCommandUnit.Mode.safe_update;
+			}
+		}
+		// Валидация файла model.xml
+		if (mode != DataModelCreateCommandUnit.Mode.load) {
+			ArrayList<File> modelFiles = DataModelCreateCommandUnit.findModelFiles(new File(AppContext.getMainModelPath()), null);
+			ArrayList<String> xml = new ArrayList<>();
+			for (File file : modelFiles) {
+				xml.add(FileUtils.readFileToString(file, "UTF-8"));
+			}
 			DataModelCreationValidator validator = new DataModelCreationValidator(xml);
 			validator.validate();
 			if (!validator.isSuccessful()) {
-				throw new ValidationException("DB model.xml is corrupted. Model must be recreated with XML files", null, validator.getResults());
+				throw new ValidationException("model.xml validation failed", null, validator.getResults());
 			}
 		}
 		// Тестовый запуск, если он нужен
