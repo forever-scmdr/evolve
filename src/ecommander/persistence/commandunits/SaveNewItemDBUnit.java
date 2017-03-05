@@ -144,7 +144,7 @@ public class SaveNewItemDBUnit extends DBPersistenceCommandUnit {
 		// Сохраняется значение REF_ID равное ID для нормальных (не ссылочных) айтемов,
 		// сохраняются параметры айтема в виде строки XML
 		// Также установить новый уникальный текстовый ключ, он мог поменяться
-		builder = new TemplateQuery("Item parameters main table force_update");
+		builder = new TemplateQuery("Item parameters main table update");
 		builder
 			.sql("UPDATE " + DBConstants.Item.TABLE + " SET " + DBConstants.Item.REF_ID + "=").setLong(item.getId())
 			.sql(", " + DBConstants.Item.TRANSLIT_KEY + "=").setString(item.getKeyUnique())

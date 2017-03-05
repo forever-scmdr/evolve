@@ -330,7 +330,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 					return;
 				}
 			}
-			else if (!MODEL.equalsIgnoreCase(qName) || ItemType.Event.get(qName) != null) {
+			else if (!MODEL.equalsIgnoreCase(qName) && ItemType.Event.get(qName) != null) {
 				addError("Invalid '" + qName + "' element", locator.getLineNumber());
 			}
 		}

@@ -49,8 +49,8 @@ public class ItemTypeRegistry {
 	 * В конструкторе выполняется загрузка модели из базона
 	 */
 	private ItemTypeRegistry() {
-		itemsByNames = Collections.synchronizedMap(new HashMap<String, ItemTypeContainer>());
-		itemsByIds = Collections.synchronizedMap(new HashMap<Integer, ItemType>());
+		itemsByNames = new HashMap<String, ItemTypeContainer>();
+		itemsByIds = new HashMap<Integer, ItemType>();
 		itemNames = new ArrayList<String>();
 		itemExtenders = new HashMap<Integer, Integer[]>();
 
@@ -200,7 +200,7 @@ public class ItemTypeRegistry {
 
 	/**
 	 * Заполнить реестр иерархи наследования айтемов
-	 * Можно запускать в обычномрезмие и режиме валидации.
+	 * Можно запускать в обычном режиме и режиме валидации.
 	 * В режиме валидации не заполняется кеш наследников
 	 *
 	 * @param parentChildPairs
