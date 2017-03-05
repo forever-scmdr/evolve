@@ -41,7 +41,7 @@ public class ItemTypeRegistry {
 	// Поток, который модифицирует модель данных. Он может быть только один и ему разрешено читать модель в процессе модификации
 
 	private static final long SESSION_ROOT_ID = -1L;
-	private static final long DEFAULT_ROOT_ID = 0L;
+	private static final long DEFAULT_ROOT_ID = 1L;
 
 //	private static final RootItemDescription NO_ROOT_DESC = new RootItemDescription("no_group", Persistence.PERSISTENT, NO_ROOT_ID);
 

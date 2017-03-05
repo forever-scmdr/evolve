@@ -52,7 +52,7 @@ public class DBConstants
 	public interface ModelXML {
 		String TABLE = "model_xml";
 		String NAME = "xml_name";
-		String XML = "xml_model";
+		String XML = "xml_xml";
 	}
 	/**
 	 * Уникальные строковые ключи некоторых айтемов, которые можно передавать через URL с целью уникальной идентификации айтема

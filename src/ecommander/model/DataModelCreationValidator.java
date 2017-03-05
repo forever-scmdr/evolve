@@ -322,15 +322,15 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 					addError("Root element is in wrong place. 'root' most not be a child of any other node", locator.getLineNumber());
 					return;
 				}
-				root = new Root(locator.getLineNumber());
-				// Сохранение
-				stack.push(root);
 				if (root != null) {
 					addError("There must be only one 'root' element", locator.getLineNumber());
 					return;
 				}
+				root = new Root(locator.getLineNumber());
+				// Сохранение
+				stack.push(root);
 			}
-			else if (!MODEL.equalsIgnoreCase(qName) && ItemType.Event.get(qName) != null) {
+			else if (!MODEL.equalsIgnoreCase(qName) && ItemType.Event.get(qName) == null) {
 				addError("Invalid '" + qName + "' element", locator.getLineNumber());
 			}
 		}

@@ -6,7 +6,9 @@
 		<child item="main_section"/>
 	</item>
 
-	<item name="section_abstract" caption="Абстрактный раздел каталога"/>
+	<item name="section_abstract" caption="Абстрактный раздел каталога" key="name">
+		<parameter name="name" type="string" caption="Название раздела"/>
+	</item>
 
 	<item name="main_section" caption="Основной раздел" super="section_abstract">
 		<child assoc="hierarchy" item="section"/>
@@ -47,7 +49,7 @@
 
 	<item name="gallery" caption="Галерея"/>
 
-	<item name="price" caption="Цена продавца" description="цена, выставленная одним продавцом этого товара из многих">
+	<item name="price" caption="Цена продавца" description="цена, выставленная одним продавцом этого товара из многих" key="price">
 		<parameter name="price" type="currency" caption="Цена" format="BYN"/>
 		<parameter name="price_usd" type="currency" caption="Цена в долларах" format="USD"/>
 		<parameter name="price_rub" type="currency" caption="Цена в рублях" format="RUB"/>
@@ -55,8 +57,17 @@
 		<parameter name="extra" type="tiny-text" caption="Дополнительно о предложении"/>
 	</item>
 
-	<item name="seller" caption="Продавец">
+	<item name="seller" caption="Продавец" key="name">
 		<parameter name="name" caption="Название" type="string"/>
 		<child item="price"/>
 	</item>
+
+	<item name="seller_catalog" caption="Продавцы">
+		<child item="seller"/>
+	</item>
+
+	<root>
+		<child item="catalog" single="true"/>
+		<child item="seller_catalog" single="true"/>
+	</root>
 </model>

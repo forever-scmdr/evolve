@@ -77,7 +77,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	private int maxParamId = 0;
 	private Mode mode;
 	private boolean noDeletion = true; // Нужно ли удалять айтемы или параметры из БД в связи с обновлением model.xml
-	private HashMap<String, String> xmlFileContents = new HashMap<>();
+	private HashMap<File, String> xmlFileContents = new HashMap<>();
 
 	public DataModelCreateCommandUnit(Mode mode) {
 		this.mode = mode;
@@ -112,17 +112,17 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		if (mode != Mode.load) {
 			ArrayList<File> modelFiles = findModelFiles(new File(AppContext.getMainModelPath()), null);
 			for (File modelFile : modelFiles) {
-				String xml = FileUtils.readFileToString(modelFile, "UTF_8");
-				parseFile(xml);
-				xmlFileContents.put(modelFile.getName(), xml);
+				String xml = FileUtils.readFileToString(modelFile, "UTF-8");
+				Document doc = parseFile(xml);
+				xmlFileContents.put(modelFile, doc.outerHtml());
 			}
 
 			// Парсить модели пользовательских айтемов
 			if (Files.exists(Paths.get(AppContext.getUserModelPath()))) {
 				File userFile = new File(AppContext.getUserModelPath());
-				String xml = FileUtils.readFileToString(userFile, "UTF_8");
-				parseFile(xml);
-				xmlFileContents.put(userFile.getName(), xml);
+				String xml = FileUtils.readFileToString(userFile, "UTF-8");
+				Document doc = parseFile(xml);
+				xmlFileContents.put(userFile, doc.outerHtml());
 			}
 		}
 
@@ -144,9 +144,15 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			// Создать java класс с текстовыми константами для всех айтемов
 			createJavaConstants();
 		}
+
+		// Добавить сгенерированные ID в файлы модели
+		for (File file : xmlFileContents.keySet()) {
+			String content = xmlFileContents.get(file);
+			fileInjectIds(file, content);
+		}
 	}
 
-	private void parseFile(String xml) throws Exception {
+	private Document parseFile(String xml) throws Exception {
 		Document doc = Jsoup.parse(xml);
 		Elements assocs = doc.getElementsByTag(ASSOC);
 		for (Element assoc : assocs) {
@@ -158,6 +164,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		}
 		Element root = doc.getElementsByTag(ROOT).first();
 		readRoot();
+		return doc;
 	}
 
 	/**
@@ -169,11 +176,11 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	protected void readRoot() throws Exception {
 		Statement stmt = null;
 		try {
-			// Загрузить ID корней из БД
+			// Загрузить ID корня из БД
 			stmt = getTransactionContext().getConnection().createStatement();
 			String sql 
 					= "SELECT " + DBConstants.Item.ID + " FROM " + DBConstants.Item.TABLE 
-					+ " WHERE " + DBConstants.Item.ID + "=0";
+					+ " WHERE " + DBConstants.Item.ID + "=" + ItemTypeRegistry.getDefaultRootId();
 			ServerLogger.debug(sql);
 			ResultSet rs = stmt.executeQuery(sql);
 			boolean hasRoot = rs.next();
@@ -256,7 +263,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			assocIds.put(name, new HashId(name.hashCode(), newId));
 		}
 		// Добавить описание айтема в реестр
-		Assoc assoc = new Assoc((byte)itemIds.get(name).id, name, caption, description, isTransitive);
+		Assoc assoc = new Assoc((byte)assocIds.get(name).id, name, caption, description, isTransitive);
 		ItemTypeRegistry.addAssoc(assoc);
 
 		// Пометить эту ассоциацию для неудаления
@@ -353,13 +360,16 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		handlers.addAll(itemEl.getElementsByTag(ON_DELETE));
 		handlers.addAll(itemEl.getElementsByTag(ON_UPDATE));
 		for (Element handler : handlers) {
+			ItemEventCommandFactory factory = null;
+			String handlerClass = handler.attr(CLASS);
 			try {
-				String handlerClass = handler.attr(CLASS);
-				ItemEventCommandFactory factory = (ItemEventCommandFactory) Class.forName(handlerClass).getConstructor().newInstance();
-				item.addExtraHandler(ItemType.Event.get(handler.tagName()), factory);
+				factory = (ItemEventCommandFactory) Class.forName(handlerClass).getConstructor().newInstance();
 			} catch (Exception e) {
-				throw new EcommanderException(e);
+				ServerLogger.warn("Unable to create class for name '" + handlerClass + "'", e);
+				//throw new EcommanderException(e);
 			}
+			if (factory != null)
+				item.addExtraHandler(ItemType.Event.get(handler.tagName()), factory);
 		}
 
 		// Вложенные айтемы
@@ -634,12 +644,12 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 				dbChanged = true;
 			}
 			// Сохранить в БД содержимое файлов модели данных
-			for (Map.Entry<String, String> file : xmlFileContents.entrySet()) {
+			for (Map.Entry<File, String> file : xmlFileContents.entrySet()) {
 				try {
 					sql
 						= "INSERT " + DBConstants.ModelXML.TABLE + " ("
 						+ DBConstants.ModelXML.NAME + ", " + DBConstants.ModelXML.XML
-						+ ") VALUES ('" + file.getKey() + "', '" + file.getValue() + "') ON DUPLICATE KEY UPDATE "
+						+ ") VALUES ('" + file.getKey().getName() + "', '" + file.getValue() + "') ON DUPLICATE KEY UPDATE "
 						+ DBConstants.ModelXML.XML + "='" + file.getValue()  +"'";
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
@@ -778,6 +788,23 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		ValidationResults results = new ValidationResults();
 		results.addError(originator, message);
 		return new ValidationException(errorName, results);
+	}
+
+	/**
+	 * Сохранить файл с добавленными атрибутами ag-hash и ag-id
+	 * @param file
+	 * @param jsoup
+	 * @throws IOException
+	 */
+	private void fileInjectIds(File file, String newXml) throws IOException {
+		String absPath = file.getAbsolutePath();
+		String filePath = absPath.substring(0, absPath.lastIndexOf(File.separator));
+		String newName = "~" + file.getName();
+		File backupFile = new File(filePath + newName);
+		if (backupFile.exists())
+			FileUtils.forceDelete(backupFile);
+		file.renameTo(backupFile);
+		FileUtils.writeStringToFile(file, newXml, "UTF-8");
 	}
 
 	public static void main(String[] args) throws JClassAlreadyExistsException, IOException {
