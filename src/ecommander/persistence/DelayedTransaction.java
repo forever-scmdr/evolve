@@ -67,15 +67,14 @@ public class DelayedTransaction {
 //		final String commitSql = "COMMIT";
 //		final String rollbackSql = "ROLLBACK";
 		for (int i = 0; i < NUMBER_OF_TRIES; i++) {
-			Statement stmt = null;
+//			Statement stmt = null;
 			try {
 				ServerLogger.debug("Start transaction, try #" + (i + 1));
 				conn = MysqlConnector.getConnection();
-				stmt = conn.createStatement();
-				context = new TransactionContext(conn, initiator);
-				conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 				conn.setAutoCommit(false);
-//				String beginTransactionSql = "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n" 
+				//stmt = conn.createStatement();
+				context = new TransactionContext(conn, initiator);
+//				String beginTransactionSql = "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n"
 //						+ "START TRANSACTION";
 //				ServerLogger.debug(beginTransactionSql);
 //				stmt.execute(beginTransactionSql);
@@ -117,7 +116,7 @@ public class DelayedTransaction {
 					}
 				}
 			} finally {
-				MysqlConnector.closeStatement(stmt);
+//				MysqlConnector.closeStatement(stmt);
 				MysqlConnector.closeConnection(conn);
 			}
 		}

@@ -28,7 +28,7 @@ public class MetaServlet extends BasicServlet {
 	
 	public static final String LINK_PARAMETER_NAME = "q";
 	public static final String ACTION_CREATE_USERS = "create_users";
-	public static final String ACTION_CREATE_MODEL = "create_model";
+	public static final String ACTION_UPDATE_MODEL = "update_model";
 	public static final String ACTION_FORCE_MODEL = "force_model";
 	public static final String REINDEX = "reindex";
 	public static final String MIGRATE_ITEMS = "migrate_items";
@@ -52,7 +52,7 @@ public class MetaServlet extends BasicServlet {
 			if (action.equalsIgnoreCase(ACTION_CREATE_USERS)) {
 				new UserCreationController().readAndCreateUsers();
 			} else if (action.equalsIgnoreCase(REINDEX)) {
-				StartController.start(getServletContext());
+				StartController.getSingleton().start(getServletContext());
 				LuceneIndexMapper.reindexAll();
 			} else if (action.equalsIgnoreCase(MIGRATE_ITEMS)) {
 				TransactionContext ctx = new TransactionContext(MysqlConnector.getConnection(), null);
@@ -74,9 +74,9 @@ public class MetaServlet extends BasicServlet {
 				} finally {
 					MysqlConnector.closeConnection(ctx.getConnection());
 				}
-			} else if (action.equalsIgnoreCase(ACTION_CREATE_MODEL)) {
-				DataModelBuilder modelBuilder = DataModelBuilder.create(false);
-				boolean hasDeletions = modelBuilder.tryLockAndReloadModel();
+			} else if (action.equalsIgnoreCase(ACTION_UPDATE_MODEL)) {
+				DataModelBuilder modelBuilder = DataModelBuilder.newSafeUpdate();
+				boolean hasDeletions = !modelBuilder.tryLockAndReloadModel();
 				if (hasDeletions) {
 					request.getSession().setAttribute(SESSION_CONFIRM_CREATE_MODEL, true);
 					request.setAttribute(ITEMS_TO_BE_DELETED_ATTR, modelBuilder.getItemsToBeDeleted());
@@ -87,7 +87,7 @@ public class MetaServlet extends BasicServlet {
 			} else if (action.equalsIgnoreCase(ACTION_FORCE_MODEL)) {
 				boolean confirmed = (Boolean) request.getSession().getAttribute(SESSION_CONFIRM_CREATE_MODEL);
 				if (confirmed) {
-					DataModelBuilder modelBuilder = DataModelBuilder.create(true);
+					DataModelBuilder modelBuilder = DataModelBuilder.newForceUpdate();
 					modelBuilder.tryLockAndReloadModel();
 				} else {
 					throw new MessageError("Force create model not confirmed", "Not confirmed");

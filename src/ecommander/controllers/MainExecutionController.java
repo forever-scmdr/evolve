@@ -43,7 +43,7 @@ public class MainExecutionController {
 		try {
 			Timer.getTimer().start(Timer.INIT);
 			// Старт приложения, если он еще не был осуществлен
-			StartController.start(servletContext);
+			StartController.getSingleton().start(servletContext);
 			// Создание контекста сеанса
 			sessContext = SessionContext.createSessionContext(req);
 			// Загрузка страницы

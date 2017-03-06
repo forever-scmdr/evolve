@@ -77,7 +77,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	private byte maxAssocId = (byte)0;
 	private int maxItemId = 0;
 	private int maxParamId = 0;
-	private Mode mode;
+	private final Mode mode;
 	private boolean noDeletion = true; // Нужно ли удалять айтемы или параметры из БД в связи с обновлением model.xml
 	private HashMap<File, String> xmlFileContents = new HashMap<>();
 
@@ -107,8 +107,6 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			for (String xml : xmls) {
 				parseFile(xml);
 			}
-			if (xmls.size() == 0)
-				mode = Mode.safe_update;
 		}
 		// Прасить основную модель model.xml (получить базовые определения айтемов и параметров)
 		if (mode != Mode.load) {

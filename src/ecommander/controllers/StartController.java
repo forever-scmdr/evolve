@@ -15,10 +15,23 @@ import ecommander.model.UserMapper;
 public class StartController {
 	
 	private static final String STARTED = "started";
-	
-	public static void start(ServletContext servletContext) throws Exception {
+
+	private static volatile StartController singleton;
+
+	private StartController() {
+
+	}
+
+	public static StartController getSingleton() {
+		if (singleton == null) {
+			singleton = new StartController();
+		}
+		return singleton;
+	}
+
+	public void start(ServletContext servletContext) throws Exception {
 		if (servletContext.getAttribute(STARTED) == null) {
-			synchronized (STARTED) {
+			synchronized (this) {
 				if (servletContext.getAttribute(STARTED) == null) {
 					// Загружаются домены
 					DomainBuilder.testActuality();
@@ -33,13 +46,5 @@ public class StartController {
 				}
 			}
 		}
-	}
-	
-	public static void restart(ServletContext servletContext) throws Exception {
-		// Флаг о том, что приложение запущено
-		synchronized (STARTED) {
-			servletContext.setAttribute(STARTED, null);
-		}
-		start(servletContext);
 	}
 }

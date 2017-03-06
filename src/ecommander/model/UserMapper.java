@@ -93,8 +93,6 @@ public class UserMapper {
 	}
 	/**
 	 * Получает всех пользователей
-	 * @param login
-	 * @param pass
 	 * @return
 	 * @throws SQLException
 	 * @throws NamingException 
