@@ -23,6 +23,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Разбор файла
@@ -114,7 +116,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			for (File modelFile : modelFiles) {
 				String xml = FileUtils.readFileToString(modelFile, "UTF-8");
 				Document doc = parseFile(xml);
-				xmlFileContents.put(modelFile, doc.outerHtml());
+				xmlFileContents.put(modelFile, xml);
 			}
 
 			// Парсить модели пользовательских айтемов
@@ -122,7 +124,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 				File userFile = new File(AppContext.getUserModelPath());
 				String xml = FileUtils.readFileToString(userFile, "UTF-8");
 				Document doc = parseFile(xml);
-				xmlFileContents.put(userFile, doc.outerHtml());
+				xmlFileContents.put(userFile, xml);
 			}
 		}
 
@@ -143,12 +145,11 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			mergeModel();
 			// Создать java класс с текстовыми константами для всех айтемов
 			createJavaConstants();
-		}
-
-		// Добавить сгенерированные ID в файлы модели
-		for (File file : xmlFileContents.keySet()) {
-			String content = xmlFileContents.get(file);
-			fileInjectIds(file, content);
+			// Добавить сгенерированные ID в файлы модели
+			for (File file : xmlFileContents.keySet()) {
+				String content = xmlFileContents.get(file);
+				fileInjectIds(file, content);
+			}
 		}
 	}
 
@@ -797,10 +798,26 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 * @throws IOException
 	 */
 	private void fileInjectIds(File file, String newXml) throws IOException {
+		// Найти все элементы, в которых должны быть сгенерированные атрибуты
+		for (String assoc : assocIds.keySet()) {
+			Pattern pattern = Pattern.compile("<" + ASSOC + "\\s+.*?" + NAME + "\\s*?=\\s*?\"" + assoc + "\".*?>");
+			Matcher matcher = pattern.matcher(newXml);
+			if (matcher.find()) {
+				String oldPart = matcher.group(0);
+				String newPart = oldPart.replaceAll("\\s+" + AG_ID + "\\s*?=\\s*?\".*?\"", "");
+				newPart = oldPart.replaceAll("\\s+" + AG_HASH + "\\s*?=\\s*?\".*?\"", "");
+				String newAg = " " + AG_ID + "=\"" + assocIds.get(assoc).id + "\" " + AG_HASH + "=\"" + assoc.hashCode() + "\"";
+				int lastQuote = newPart.lastIndexOf('"');
+				String newStart = newPart.substring(0, lastQuote + 1);
+				String newEnd = newPart.substring(lastQuote + 1);
+				newPart = newStart + newAg + newEnd;
+				newXml = matcher.replaceFirst(newPart);
+			}
+		}
 		String absPath = file.getAbsolutePath();
 		String filePath = absPath.substring(0, absPath.lastIndexOf(File.separator));
 		String newName = "~" + file.getName();
-		File backupFile = new File(filePath + newName);
+		File backupFile = new File(filePath + File.separator + newName);
 		if (backupFile.exists())
 			FileUtils.forceDelete(backupFile);
 		file.renameTo(backupFile);

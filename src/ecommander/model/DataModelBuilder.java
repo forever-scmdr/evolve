@@ -127,15 +127,16 @@ public class DataModelBuilder {
 		}
 		// Тестовый запуск, если он нужен
 		boolean doUpdate = mode == DataModelCreateCommandUnit.Mode.force_update;
-		DelayedTransaction transaction = new DelayedTransaction(null);
 		if (mode != DataModelCreateCommandUnit.Mode.force_update) {
 			DataModelCreateCommandUnit create = new DataModelCreateCommandUnit(mode);
+			DelayedTransaction transaction = new DelayedTransaction(null);
 			transaction.addCommandUnit(create);
 			transaction.execute();
 			itemsToBeDeleted = create.getElementsToDelete();
 			doUpdate |= create.isNoDeletionNeeded() && mode == DataModelCreateCommandUnit.Mode.safe_update;
 		}
 		if (doUpdate) {
+			DelayedTransaction transaction = new DelayedTransaction(null);
 			transaction.addCommandUnit(new DataModelCreateCommandUnit(DataModelCreateCommandUnit.Mode.force_update));
 			transaction.execute();
 			return true;
