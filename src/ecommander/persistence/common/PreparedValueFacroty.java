@@ -1,5 +1,6 @@
 package ecommander.persistence.common;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -69,6 +70,21 @@ class PreparedValueFacroty {
 		
 		public String simpleSql() { return toString(); }
 	}
+
+	private static class DecimalValue implements PreparedValue {
+		private BigDecimal value;
+
+		private DecimalValue(BigDecimal value) { this.value = value; }
+
+		public final void set(PreparedStatement pstmt, int index) throws SQLException { pstmt.setBigDecimal(index, value); }
+
+		@Override
+		public String toString() { return ((BigDecimal)value).toString(); }
+
+		public PreparedValue createClone() { return new DecimalValue(value); }
+
+		public String simpleSql() { return toString(); }
+	}
 	
 	private static class StringValue implements PreparedValue {
 		private String value;
@@ -99,6 +115,10 @@ class PreparedValueFacroty {
 	
 	static PreparedValue create(double value) {
 		return new DoubleValue(value);
+	}
+
+	static PreparedValue create(BigDecimal value) {
+		return new DecimalValue(value);
 	}
 	
 	static PreparedValue create(String value) {

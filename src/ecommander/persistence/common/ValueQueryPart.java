@@ -1,5 +1,6 @@
 package ecommander.persistence.common;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -25,6 +26,10 @@ class ValueQueryPart implements QueryPart {
 	}
 	
 	ValueQueryPart(double value) {
+		this.value = PreparedValueFacroty.create(value);
+	}
+
+	ValueQueryPart(BigDecimal value) {
 		this.value = PreparedValueFacroty.create(value);
 	}
 	

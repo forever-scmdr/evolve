@@ -19,6 +19,10 @@ public class DecimalDataType extends FormatDataType {
 
 	private int scale;
 
+	public static final int DECIMAL = 6;
+	public static final int CURRENCY = 2;
+	public static final int CURRENCY_PRECISE = 4;
+
 	public DecimalDataType(Type type, int scale) {
 		super(type);
 		this.scale = scale;

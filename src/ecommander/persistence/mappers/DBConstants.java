@@ -71,11 +71,14 @@ public class DBConstants
 	 */
 	public interface ItemParent {
 		String TABLE = "item_parent";
-		String REF_ID = "ip_ref_id";
-		String PARENT_ID = "ip_parent_id";
-		String ITEM_ID = "ip_item_id";
-		String ITEM_TYPE = "ip_type"; // Тип айтема
-		String PARENT_LEVEL = "ip_level"; // Уровень вложенности по отношению к предку
+		String ASSOC_ID = "ip_assoc_id"; // ID ассоциации
+		String PARENT_ID = "ip_parent_id"; // ID предка
+		String CHILD_ID = "ip_child_id"; // ID потомка
+		String CHILD_SUPERTYPE = "ip_child_supertype"; // Супертип (непользовательский тип) потомка
+		String PARENT_LEVEL = "ip_level"; // Уровень вложенности по отношению к предку (0 - прямой потомок, 1 - непрямой)
+		String SHOW = "ip_show"; // Показывать (0), скрытый (1), айтем удален (2)
+		String USER = "ip_user"; // Владелец айтема (0 - айтем принадлежит группе и не имеет владельца)
+		String GROUP = "ip_group"; // Группа-владелец айтема
 	}
 	/**
 	 * Параметры айтема
@@ -87,18 +90,17 @@ public class DBConstants
 	 * Таблица хранит все значения всех параметров типа Integet и Long всех айтемов и используется только при поиске по фильтру 
 	 * или при сортировке по значению параметра
 	 * @author EEEE
-	 * TODO <enhance> !!! Использовать в запросах фильтрации II_TYPE - меньше элементов остается после выбора из этой таблицы
 	 */
 	public interface ItemIndexes {
 		String INT_TABLE_NAME = "int_index";
+		String DECIMAL_TABLE_NAME = "decimal_index";
 		String DOUBLE_TABLE_NAME = "double_index";
 		String STRING_TABLE_NAME = "string_index";
-		String ASSOCIATED_TABLE_NAME = "assoc_index";
-		String REF_ID = "ii_ref_id"; // ID айтема (не типа айтема, а конкретного айтема)
-		String ITEM_PARAM = "ii_param"; // ID параметра айтема (каждый параметр имеет уникальный ID вне зависимости от уникальности его названия)
+		String ITEM_ID = "ii_item"; // ID айтема (не типа айтема, а конкретного айтема)
 		String ITEM_TYPE = "ii_type"; // ID типа айтема
-		String ITEM_PARENT = "ii_parent"; // ID прямого родителя айтема
-		String VALUE = "ii_val"; // Занчение (одн
+		String ITEM_PARAM = "ii_param"; // ID параметра айтема (каждый параметр имеет уникальный ID вне зависимости от уникальности его названия)
+		String II_VALUE_IDX = "ii_val_idx"; // порядковый номер значения (в логике не участвует, нужен для уникальности записи)
+		String VALUE = "ii_val"; // Занчение
 	}
 	/**
 	 * Таблица, в которой хранятся ID всех ассоциаций
@@ -145,41 +147,6 @@ public class DBConstants
 	 */
 	
 	
-//	/**************************************************************************************************
-//	 **                                        Домены
-//	 **************************************************************************************************/
-//	
-//	/**
-//	 * Таблицы для доменов. Так как они отвечают только
-//	 * за представление информации и удобство пользователя и не участвуют в процессах бизнес логики, то расположены отдельно. 
-//	 */
-//
-//	/**
-//	 * Таблица доменов без значений
-//	 * @author E
-//	 */
-//	public interface DomainAbstract
-//	{
-//		String TABLE = "DomainAbstract";
-//		String NAME = "D_NAME"; // уникальное имя домена
-//		String FORMAT = "D_FORMAT"; // формат домена, аналогично формату параметра. 
-//									// Нужен, т. к. домен иногда будет выводиться независимо от айтемов (в админке, например)
-//		String VIEW = "D_VIEW"; // Вид, в котором выводится домен (комбобокс, чекбокс, радиогруп)
-//	}
-//
-//	/**
-//	 * Поскольку использовать домены будет только пользователь (они нужны только для удобства пользователя и в логике не участвуют),
-//	 * значения любых типов данных хранятся в виде строки
-//	 * @author E
-//	 */
-//	public interface DomainValues
-//	{
-//		String TABLE = "DomainValues";
-//		String DOMAIN_NAME = "DV_DOMAIN_NAME"; // название домена
-//		String VALUE = "DV_VALUE"; // значение домена
-//		String INDEX = "DV_INDEX"; // порядковый номер значения домена
-//	}
-
 	/**************************************************************************************************
 	 **                                        ЮЗЕРЫ
 	 **************************************************************************************************/
@@ -209,25 +176,11 @@ public class DBConstants
 	 */
 	public interface Users
 	{
-		String TABLE = "uers";
+		String TABLE = "users";
 		String ID = "u_id";
 		String GROUP = "u_group";
 		String LOGIN = "u_login";
 		String PASSWORD = "u_password";
 		String DESCRIPTION = "u_description";
 	}
-	
-//	/**
-//	 * Таблица разрешений на каждый айтем, доступ к которому отличается от доступа по умолчанию
-//	 * !!! НА БУДУЩЕЕ !!!
-//	 * @author E
-//	 */
-//	public interface Permissions
-//	{
-//		String TABLE = "Permissions";
-//		String ITEM_TYPE_ID = "S_ITEM_TYPE_ID";
-//		String GROUP = "S_GROUP";
-//		String PERMISSION = "S_PERMISSION"; // может быть только READ или WRITE. По умолчанию все айтемы только READ.
-//	}
-//	
 }

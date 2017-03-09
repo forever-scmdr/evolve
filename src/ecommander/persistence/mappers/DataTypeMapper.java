@@ -1,11 +1,13 @@
 package ecommander.persistence.mappers;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 
+import ecommander.model.datatypes.DecimalDataType;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormatter;
@@ -292,26 +294,76 @@ public class DataTypeMapper {
 			}
 			pstmt.setDoubleArray(array);
 		}
-	}	
-	
-	private class AssociatedMapper extends LongMapper {
+	}
+
+	private class DecimalMapper extends TypeMapper {
+
+		private final int scale;
+
+		private DecimalMapper(int scale) {
+			this.scale = scale;
+		}
+
+		protected BigDecimal createValue(String string) {
+			return DecimalDataType.parse(string, scale);
+		}
+
 		@Override
-		protected String getTableName() {
-			return DBConstants.ItemIndexes.ASSOCIATED_TABLE_NAME;
+		protected void setPreparedStatementRequestValueFine(TemplateQuery pstmt, String value, String pattern) {
+			pstmt.setDecimal(createValue(value));
+		}
+
+		@Override
+		protected final String getTableName() {
+			return DBConstants.ItemIndexes.DECIMAL_TABLE_NAME;
+		}
+
+		@Override
+		protected Object createValueFromResultSet(ResultSet rs) throws SQLException {
+			return rs.getBigDecimal(DBConstants.ItemIndexes.VALUE);
+		}
+
+		@Override
+		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
+			pstmt.setDecimal((BigDecimal) value);
+		}
+
+		@Override
+		protected Object defaultValue() {
+			return new BigDecimal(0);
+		}
+
+		@Override
+		protected Object createValueFromResultSet(ResultSet rs, int col) throws SQLException {
+			return rs.getBigDecimal(col);
+		}
+
+		@Override
+		protected void setPreparedStatementRequestValues(TemplateQuery pstmt, Collection<String> values) {
+			BigDecimal[] array = new BigDecimal[values.size()];
+			int i = 0;
+			for (String val : values) {
+				array[i++] = createValue(val);
+			}
+			pstmt.setDecimalArray(array);
 		}
 	}
-	
+
+
 	private static DataTypeMapper instance = new DataTypeMapper();
 	
 	private HashMap<Type, TypeMapper> typeMappers = null;
 	
 	private DataTypeMapper() {
-		typeMappers = new HashMap<Type, TypeMapper>();
+		typeMappers = new HashMap<>();
 		StringMapper stringMapper = new StringMapper();
 		FileMapper fileMapper = new FileMapper();
 		typeMappers.put(Type.BYTE, new ByteMapper());
 		typeMappers.put(Type.DATE, new DateMapper());
 		typeMappers.put(Type.DOUBLE, new DoubleMapper());
+		typeMappers.put(Type.DECIMAL, new DecimalMapper(DecimalDataType.DECIMAL));
+		typeMappers.put(Type.CURRENCY, new DecimalMapper(DecimalDataType.CURRENCY));
+		typeMappers.put(Type.CURRENCY_PRECISE, new DecimalMapper(DecimalDataType.CURRENCY_PRECISE));
 		typeMappers.put(Type.FILE, fileMapper);
 		typeMappers.put(Type.INTEGER, new IntMapper());
 		typeMappers.put(Type.LONG, new LongMapper());
@@ -322,51 +374,53 @@ public class DataTypeMapper {
 		typeMappers.put(Type.TEXT, stringMapper);
 		typeMappers.put(Type.PLAIN_TEXT, stringMapper);
 		typeMappers.put(Type.FILTER, stringMapper);
-		typeMappers.put(Type.ASSOCIATED, new AssociatedMapper());
 		typeMappers.put(Type.XML, stringMapper);
 	}
+
 	/**
-	 * Генерирует SQL для инсертов и апдейтов 
-	 * @param typeName
+	 * Генерирует SQL для инсертов и апдейтов
+	 * @param type
+	 * @param builder
 	 * @param value
-	 * @return
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public static void appendPreparedStatementInsertValue(Type type, TemplateQuery builder, Object value) throws SQLException {
 		getMapper().typeMappers.get(type).setPreparedStatementInsertValue(builder, value);
 	}
+
 	/**
 	 * Генерирует SQL для поисковых запросов. Правильно оформляет искомое значение (в формате, который соответствует типу данных занчения)
-	 * @param typeName
+	 * @param type
+	 * @param builder
 	 * @param value
-	 * @param requestSign
 	 * @param pattern
-	 * @return
-	 * @throws SQLException 
 	 */
 	public static void appendPreparedStatementRequestValue(Type type, TemplateQuery builder, String value, String pattern) {
 		getMapper().typeMappers.get(type).setPreparedStatementRequestValue(builder, value, pattern);
 	}
+
 	/**
 	 * Генерирует SQL для поисковых запросов, аналогично appendPreparedStatementRequestValue, но работает с массивами значений
-	 * @param typeName
+	 * @param type
 	 * @param builder
 	 * @param value
 	 */
 	public static void appendPreparedStatementRequestValues(Type type, TemplateQuery builder, Collection<String> value) {
 		getMapper().typeMappers.get(type).setPreparedStatementRequestValues(builder, value);
 	}
+
 	/**
 	 * Получить название колонки для определенного типа данных
-	 * @param typeName
+	 * @param type
 	 * @return
 	 */
 	public static String getTableName(Type type) {
 		return getMapper().typeMappers.get(type).getTableName();
 	}
+
 	/**
 	 * Создать значение из резалт сета
-	 * @param typeName
+	 * @param type
 	 * @param rs
 	 * @return
 	 * @throws SQLException
@@ -374,10 +428,12 @@ public class DataTypeMapper {
 	public static Object createValue(Type type, ResultSet rs) throws SQLException {
 		return getMapper().typeMappers.get(type).createValueFromResultSet(rs);
 	}
+
 	/**
 	 * Создать значение из резалт сета
-	 * @param typeName
+	 * @param type
 	 * @param rs
+	 * @param col
 	 * @return
 	 * @throws SQLException
 	 */

@@ -327,7 +327,7 @@ public class ItemTypeRegistry {
 	 * @return
 	 */
 	public static Assoc getAssoc(String name) {
-		return getSingleton().getAssoc(name);
+		return getSingleton().assocRegistry.getAssoc(name);
 	}
 
 	/**
@@ -335,7 +335,16 @@ public class ItemTypeRegistry {
 	 * @param id
 	 * @return
 	 */
-	public static Assoc getAssoc(int id) {
-		return getSingleton().getAssoc(id);
+	public static Assoc getAssoc(byte id) {
+		return getSingleton().assocRegistry.getAssoc(id);
 	}
+
+	/**
+	 * Получить ассоциацию по умолчанию (прямая принадлженость айтему)
+	 * @return
+	 */
+	public static Assoc getDefaultAssoc() {
+		return getSingleton().assocRegistry.getDefault();
+	}
+
 }

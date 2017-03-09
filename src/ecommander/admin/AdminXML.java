@@ -34,12 +34,13 @@ public interface AdminXML {
 	 */
 	String NAME_ATTRIBUTE = "name";
 	String TYPE_NAME_ATTRIBUTE = "type-name";
+	String ASSOC_NAME_ATTRIBUTE = "assoc-name";
 	String CAPTION_ATTRIBUTE = "caption";
 	String VIRTUAL_ATTRIBUTE = "virtual";
 	String TYPE_CAPTION_ATTRIBUTE = "type-caption";
+	String ASSOC_CAPTION_ATTRIBUTE = "assoc-caption";
 	String TYPE_INLINE_ATTRIBUTE = "type-inline";
 	String ID_ATTRIBUTE = "id";
-	String REF_ID_ATTRIBUTE = "ref-id";
 	String TYPE_ID_ATTRIBUTE = "type-id";
 	String DEFAULT_ATTRIBUTE = "default";
 	String COMPATIBLE_ATTRIBUTE = "compatible";

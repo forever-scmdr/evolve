@@ -1,5 +1,6 @@
 package ecommander.persistence.common;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -165,6 +166,11 @@ public class TemplateQuery implements QueryPart {
 		queryParts.add(new ValueQueryPart(value));
 		return this;
 	}
+
+	public final TemplateQuery setDecimal(BigDecimal value) {
+		queryParts.add(new ValueQueryPart(value));
+		return this;
+	}
 	
 	public final TemplateQuery setString(String value) {
 		queryParts.add(new ValueQueryPart(value));
@@ -185,7 +191,12 @@ public class TemplateQuery implements QueryPart {
 		queryParts.add(new ValueArrayQueryPart(array));
 		return this;
 	}
-	
+
+	public final TemplateQuery setDecimalArray(BigDecimal[] array) {
+		queryParts.add(new ValueArrayQueryPart(array));
+		return this;
+	}
+
 	public final TemplateQuery setIntArray(Integer[] array) {
 		queryParts.add(new ValueArrayQueryPart(array));
 		return this;

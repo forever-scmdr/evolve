@@ -24,15 +24,17 @@ import ecommander.model.User;
  *
  */
 public class AdminLoader {
-	private static ThreadLocal<AdminLoader> threadLocalInstance = new ThreadLocal<AdminLoader>() {
-		@Override
-		protected AdminLoader initialValue() {
-			return new AdminLoader();
-		}
-	};
-	
+
+	private static AdminLoader loader;
+
+	private AdminLoader() {
+
+	}
+
 	public static AdminLoader getLoader() {
-		return threadLocalInstance.get();
+		if (loader == null)
+			loader = new AdminLoader();
+		return loader;
 	}
 	/**
 	 * Загружает всех сабайтемов определенного айтема (не сами айтемы, а их аксэсоры)
@@ -42,7 +44,7 @@ public class AdminLoader {
 	 * 		- айтемы не принадлежащие текущей группе, но которые могут иметь сабайтемы текущей группы (критерий - тип айтема)
 	 * @param itemDesc
 	 * @param parentId
-	 * @param userId
+	 * @param user
 	 * @return
 	 * @throws Exception
 	 */

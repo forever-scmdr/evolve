@@ -40,18 +40,16 @@ public abstract class BasicAdminServlet extends HttpServlet {
 	}
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		try {
-			StartController.start(getServletContext());
-			DomainBuilder.testActuality();
-			processRequest(req, resp);
-		} catch (Exception e) {
-			BasicServlet.handleError(req, resp, e);
-		}
+		basicProcess(req, resp);
 	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		basicProcess(req, resp);
+	}
+
+	private void basicProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			StartController.start(getServletContext());
+			StartController.getSingleton().start(getServletContext());
 			DomainBuilder.testActuality();
 			processRequest(req, resp);
 		} catch (Exception e) {

@@ -213,7 +213,7 @@ public class LuceneIndexMapper {
 	
 	private synchronized void insertItemInt(Item item, boolean needClose) throws IOException, SAXException, TikaException {
 		// Ссылки не добавлять в индекс
-		if (item.isReference() || !item.getItemType().isFulltextSearchable())
+		if (!item.getItemType().isFulltextSearchable())
 			return;
 		ensureWriter();
 		Document itemDoc = new Document();

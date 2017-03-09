@@ -1,5 +1,6 @@
 package ecommander.persistence.common;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -31,6 +32,13 @@ class ValueArrayQueryPart implements QueryPart {
 	}
 	
 	ValueArrayQueryPart(Double[] array) {
+		values = new PreparedValue[array.length];
+		for (int i = 0; i < array.length; i++) {
+			values[i] = PreparedValueFacroty.create(array[i]);
+		}
+	}
+
+	ValueArrayQueryPart(BigDecimal[] array) {
 		values = new PreparedValue[array.length];
 		for (int i = 0; i < array.length; i++) {
 			values[i] = PreparedValueFacroty.create(array[i]);

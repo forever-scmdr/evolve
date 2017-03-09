@@ -24,9 +24,9 @@ public class DataTypeRegistry {
 		dataTypes.put(Type.LONG, new LongDataType(Type.LONG));
 		dataTypes.put(Type.DATE, new DateDataType(Type.DATE));
 		dataTypes.put(Type.DOUBLE, new DoubleDataType(Type.DOUBLE));
-		dataTypes.put(Type.DECIMAL, new DecimalDataType(Type.DECIMAL, 6));
-		dataTypes.put(Type.CURRENCY, new DecimalDataType(Type.CURRENCY, 2));
-		dataTypes.put(Type.CURRENCY_PRECISE, new DecimalDataType(Type.CURRENCY_PRECISE, 4));
+		dataTypes.put(Type.DECIMAL, new DecimalDataType(Type.DECIMAL, DecimalDataType.DECIMAL));
+		dataTypes.put(Type.CURRENCY, new DecimalDataType(Type.CURRENCY, DecimalDataType.CURRENCY));
+		dataTypes.put(Type.CURRENCY_PRECISE, new DecimalDataType(Type.CURRENCY_PRECISE, DecimalDataType.CURRENCY_PRECISE));
 		dataTypes.put(Type.STRING, new StringDataType(Type.STRING));
 		dataTypes.put(Type.TINY_TEXT, new StringDataType(Type.TINY_TEXT));
 		dataTypes.put(Type.SHORT_TEXT, new StringDataType(Type.SHORT_TEXT));

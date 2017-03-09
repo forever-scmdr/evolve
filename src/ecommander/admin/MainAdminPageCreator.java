@@ -576,7 +576,7 @@ public class MainAdminPageCreator {
 		int currentTypeId = -1;
 		AggregateMDWriter typeGroup = null;
 		for (ItemAccessor item : mountToList) {
-			if (item.isMountableAndMoveable()) {
+			if (item.isParentCompatible()) {
 				HashSet<String> predecessors = new HashSet<String>(ItemTypeRegistry.getItemPredecessorsExt(itemDesc.getName()));
 				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(item.getItemName()).getAllChildren());
 				subitems.retainAll(predecessors);
@@ -661,7 +661,7 @@ public class MainAdminPageCreator {
 		int currentTypeId = -1;
 		AggregateMDWriter typeGroup = null;
 		for (ItemAccessor item : toMountList) {
-			if (item.isMountableAndMoveable()) {
+			if (item.isParentCompatible()) {
 				HashSet<String> predecessors = new HashSet<String>(ItemTypeRegistry.getItemPredecessorsExt(item.getItemName()));
 				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(itemType).getAllChildren());
 				subitems.retainAll(predecessors);
@@ -740,7 +740,7 @@ public class MainAdminPageCreator {
 		for (ArrayList<ItemAccessor> items : toAssocMap.values()) {
 			for (ItemAccessor item : items) {
 				if (!assocIds.contains(item.getItemId()))
-					item.setMountableAndMoveable(true);
+					item.setParentCompatible(true);
 				toAssocList.add(item);
 			}
 		}
@@ -765,7 +765,7 @@ public class MainAdminPageCreator {
 		int currentTypeId = -1;
 		AggregateMDWriter typeGroup = null;
 		for (ItemAccessor item : toAssocList) {
-			if (item.isMountableAndMoveable()) {
+			if (item.isParentCompatible()) {
 				String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), MOUNT_INPUT_PREFIX);
 				item.addSubwriter(new LeafMDWriter(AdminXML.INPUT_ELEMENT, ADD_VALUE, AdminXML.NAME_ATTRIBUTE, inputName));
 			}
@@ -850,7 +850,7 @@ public class MainAdminPageCreator {
 		int currentTypeId = -1;
 		AggregateMDWriter typeGroup = null;
 		for (ItemAccessor item : moveToList) {
-			if (item.isMountableAndMoveable()) {
+			if (item.isParentCompatible()) {
 				HashSet<String> predecessors = new HashSet<String>(ItemTypeRegistry.getItemPredecessorsExt(itemDesc.getName()));
 				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(item.getItemName()).getAllChildren());
 				subitems.retainAll(predecessors);
@@ -912,7 +912,7 @@ public class MainAdminPageCreator {
 		int currentTypeId = -1;
 		AggregateMDWriter typeGroup = null;
 		for (ItemAccessor item : toMoveList) {
-			if (item.isMountableAndMoveable()) {
+			if (item.isParentCompatible()) {
 				HashSet<String> predecessors = new HashSet<String>(ItemTypeRegistry.getItemPredecessorsExt(item.getItemName()));
 				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(itemType).getAllChildren());
 				subitems.retainAll(predecessors);

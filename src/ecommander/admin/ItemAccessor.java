@@ -1,5 +1,6 @@
 package ecommander.admin;
 
+import ecommander.model.Assoc;
 import ecommander.output.MetaDataWriter;
 import ecommander.output.XmlDocumentBuilder;
 import ecommander.model.ItemType;
@@ -22,27 +23,26 @@ import ecommander.model.ItemTypeRegistry;
 public class ItemAccessor extends MetaDataWriter implements Comparable<ItemAccessor> {
 	
 	private long itemId;
-	private long itemRefId;
 	private String key;
-	private boolean mount;
 	private int childWeight;
 	private int itemType;
 	private String typeName;
 	private String typeCaption;
+	private byte contextAssoc;
+	private String assocName;
+	private String assocCaption;
+	private boolean isParentCompatible;
 	private boolean inline = false;
 	
-	public ItemAccessor(int itemType, long itemId, long itemRefId, String key, int childWeight) {
-		this(itemType, itemId, itemRefId, key, childWeight, false);
-	}
-
-	public ItemAccessor(int itemType, long itemId, long itemRefId, String key, int childWeight, boolean mount) {
+	public ItemAccessor(int itemType, long itemId, String key, int childWeight, byte contextAssoc, boolean isParentCompatible) {
 		this.itemId = itemId;
-		this.itemRefId = itemRefId;
 		this.key = key;
-		this.mount = mount;
 		this.childWeight = childWeight;
 		this.itemType = itemType;
+		this.contextAssoc = contextAssoc;
+		this.isParentCompatible = isParentCompatible;
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemType);
+		Assoc assoc = ItemTypeRegistry.getAssoc(contextAssoc);
 		if (itemDesc != null) {
 			this.typeName = itemDesc.getName();
 			this.typeCaption = itemDesc.getCaption();
@@ -51,8 +51,12 @@ public class ItemAccessor extends MetaDataWriter implements Comparable<ItemAcces
 			this.typeName = "root";
 			this.typeCaption = "Корень";
 		}
-	}	
-	
+		if (assoc != null) {
+			assocName = assoc.getName();
+			assocCaption = assoc.getCaption();
+		}
+	}
+
 	public String getItemName() {
 		return typeName;
 	}
@@ -65,8 +69,8 @@ public class ItemAccessor extends MetaDataWriter implements Comparable<ItemAcces
 		return itemId;
 	}
 	
-	public boolean isMountableAndMoveable() {
-		return mount;
+	public boolean isParentCompatible() {
+		return isParentCompatible;
 	}
 
 	public int compareTo(ItemAccessor o) {
@@ -83,19 +87,20 @@ public class ItemAccessor extends MetaDataWriter implements Comparable<ItemAcces
 		xml.startElement(AdminXML.ITEM_ELEMENT, 
 				AdminXML.TYPE_NAME_ATTRIBUTE, typeName, 
 				AdminXML.TYPE_ID_ATTRIBUTE, itemType, 
-				AdminXML.TYPE_CAPTION_ATTRIBUTE, typeCaption, 
+				AdminXML.TYPE_CAPTION_ATTRIBUTE, typeCaption,
+				AdminXML.ASSOC_NAME_ATTRIBUTE, assocName,
+				AdminXML.ASSOC_CAPTION_ATTRIBUTE, assocCaption,
 				AdminXML.TYPE_INLINE_ATTRIBUTE, inline, 
 				AdminXML.ID_ATTRIBUTE, itemId,
-				AdminXML.REF_ID_ATTRIBUTE, itemRefId,
-				AdminXML.CAPTION_ATTRIBUTE, key, 
+				AdminXML.CAPTION_ATTRIBUTE, key,
 				AdminXML.WEIGHT_ATTRIBUTE, childWeight,
-				AdminXML.COMPATIBLE_ATTRIBUTE, mount);
+				AdminXML.COMPATIBLE_ATTRIBUTE, isParentCompatible);
 		writeAdditional(xml);
 		xml.endElement();
 		return xml;
 	}
 	
-	public void setMountableAndMoveable(boolean mountable) {
-		this.mount = mountable;
+	public void setParentCompatible(boolean compatible) {
+		this.isParentCompatible = compatible;
 	}
 }
