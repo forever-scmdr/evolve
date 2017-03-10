@@ -41,9 +41,8 @@ public final class SynchronousTransaction {
 			ServerLogger.debug("Start syncronous transaction");
 			executedCommands = new ArrayList<PersistenceCommandUnit>();
 			conn = MysqlConnector.getConnection();
-			context = new TransactionContext(conn, initiator);
-			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			conn.setAutoCommit(false);
+			context = new TransactionContext(conn, initiator);
 		} catch (Exception e) {
 			ServerLogger.error("Can not start the thransaction.\nHere's the error:", e);
 			MysqlConnector.closeConnection(conn);

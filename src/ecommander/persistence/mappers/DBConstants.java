@@ -99,7 +99,7 @@ public class DBConstants
 		String ITEM_ID = "ii_item"; // ID айтема (не типа айтема, а конкретного айтема)
 		String ITEM_TYPE = "ii_type"; // ID типа айтема
 		String ITEM_PARAM = "ii_param"; // ID параметра айтема (каждый параметр имеет уникальный ID вне зависимости от уникальности его названия)
-		String II_VALUE_IDX = "ii_val_idx"; // порядковый номер значения (в логике не участвует, нужен для уникальности записи)
+		String VALUE_IDX = "ii_val_idx"; // порядковый номер значения (в логике не участвует, нужен для уникальности записи)
 		String VALUE = "ii_val"; // Занчение
 	}
 	/**

@@ -26,22 +26,16 @@ public class ItemMapper {
 
 	private static final String PARAM_INSERT_PREPARED_START 
 		= " ("
-		+ DBConstants.ItemIndexes.REF_ID + ", " 
+		+ DBConstants.ItemIndexes.ITEM_ID + ", "
 		+ DBConstants.ItemIndexes.ITEM_PARAM + ", " 
 		+ DBConstants.ItemIndexes.ITEM_TYPE + ", " 
-		+ DBConstants.ItemIndexes.ITEM_PARENT + ", " 
+		+ DBConstants.ItemIndexes.VALUE_IDX + ", "
 		+ DBConstants.ItemIndexes.VALUE
 		+ ") VALUES (";
 	
 	private static final String PARAM_INSERT_PREPARED_END
 		= ") ON DUPLICATE KEY UPDATE " + DBConstants.ItemIndexes.VALUE + " = ";
-	
-//	private static final String PARAM_INSERT_PREPARED_END
-//		= ") ON DUPLICATE KEY UPDATE " + DBConstants.ItemIndexes.REF_ID + " = " + DBConstants.ItemIndexes.REF_ID + ";";
-//	private static final String DELETE_PREDECESSOR_PARAMS_ITEM
-//		= "UPDATE " + DatabaseConstants.Item.TABLE 
-//		+ " SET " + DatabaseConstants.Item.PARAMS + "='' WHERE " + DatabaseConstants.Item.TYPE_ID + "=?";
-	
+
 	private static final String DELETE_PREDECESSOR_PARAMS_INDEX
 		= " WHERE " + DBConstants.ItemIndexes.ITEM_PARAM + "=? AND " + DBConstants.ItemIndexes.ITEM_TYPE + "=?";
 	/**
@@ -74,12 +68,18 @@ public class ItemMapper {
 			Parameter param = item.getParameter(paramDesc.getId());
 			if (!param.needsDBIndex()) // не сохранять в БД виртуальные параметры
 				continue;
-			if (param.isMultiple() && !param.isEmpty()) {
-				for (SingleParameter singleParam : ((MultipleParameter)param).getValues())
-					createSingleValueInsert(query, item, singleParam);
+			if (param.isEmpty()) {
+
 			} else {
-				if (!param.isEmpty())
+				if (param.isMultiple()) {
+					byte i = (byte) 0;
+					for (SingleParameter singleParam : ((MultipleParameter)param).getValues()) {
+						createSingleValueInsert(query, item, singleParam, i++);
+					}
+					S
+				} else {
 					createSingleValueInsert(query, item, (SingleParameter)param);
+				}
 			}
 		}
 		// Добавить параметры пользователя и группы
@@ -98,73 +98,17 @@ public class ItemMapper {
 		}
 	}
 	
-	private static void createSingleValueInsert(TemplateQuery query, Item item, SingleParameter param) throws SQLException {
+	private static void createSingleValueInsert(TemplateQuery query, Item item, SingleParameter param, byte valIdx) throws SQLException {
 		query.sql("INSERT INTO ").sql(DataTypeMapper.getTableName(param.getType())).sql(PARAM_INSERT_PREPARED_START);
 		query
-			.setLong(item.getRefId()).sql(",")
-			.setInt(param.getParamId()).sql(",")
-			.setInt(item.getTypeId()).sql(",")
-			.setLong(item.getDirectParentId()).sql(",");
+				.setLong(item.getId()).sql(",")
+				.setInt(param.getParamId()).sql(",")
+				.setInt(item.getTypeId()).sql(",")
+				.setByte(valIdx).sql(",");
 		DataTypeMapper.appendPreparedStatementInsertValue(param.getType(), query, param.getValue());
 		query.sql(PARAM_INSERT_PREPARED_END);
 		DataTypeMapper.appendPreparedStatementInsertValue(param.getType(), query, param.getValue());
 		query.sql("; ");
-	}
-	/**
-	 * Произвести изменения, которые связаны с удалением предка айтема по иерархии типов, а именно
-	 * - удалить кешированные параметры айтемов из таблицы айтемов
-	 * - удалить параметры айтемов из индекса
-	 * 
-	 * TODO <performance> можно сделать удаление в виде IN списка
-	 * @param item
-	 * @param predecessorName
-	 * @param transaction
-	 * @throws SQLException
-	 */
-	public static void deleteItemPredecessor(ItemType item, String predecessorName, TransactionContext transaction) throws SQLException {
-		ItemType predecessor = ItemTypeRegistry.getItemType(predecessorName);
-		PreparedStatement deleteIndex = null;
-		try {
-			for (ParameterDescription param : predecessor.getParameterList()) {
-				String query = "DELETE FROM " + DataTypeMapper.getTableName(param.getType()) + DELETE_PREDECESSOR_PARAMS_INDEX;
-				deleteIndex = transaction.getConnection().prepareStatement(query);
-				deleteIndex.setInt(1, param.getId());
-				deleteIndex.setInt(2, item.getTypeId());
-				deleteIndex.executeUpdate();
-			}
-		} finally {
-			if (deleteIndex != null) deleteIndex.close();
-		}
-	}
-	/**
-	 * Удаляет параметр айтема из таблицы индекса
-	 * @param item
-	 * @param param
-	 * @param pstmt
-	 * @throws SQLException 
-	 */
-	public static void deleteItemParameter(ItemType item, String paramName, TransactionContext transaction) throws SQLException {
-		PreparedStatement deleteIndex = null;
-		try {
-			String query = "DELETE FROM " + DataTypeMapper.getTableName(item.getParameter(paramName).getType()) + DELETE_PREDECESSOR_PARAMS_INDEX;
-			deleteIndex = transaction.getConnection().prepareStatement(query);
-			deleteIndex.setInt(1, item.getParameter(paramName).getId());
-			deleteIndex.setInt(2, item.getTypeId());
-			deleteIndex.executeUpdate();
-		} finally {
-			if (deleteIndex != null) deleteIndex.close();
-		}
-	}
-	/**
-	 * Возвращает запрос для получения всех предшественников айтема
-	 * @param itemId
-	 * @return
-	 */
-	public static String getItemParentIdsSQL(long itemId) {
-		return 
-			"SELECT " + DBConstants.Item.PRED_ID_PATH 
-			+ " FROM " + DBConstants.Item.TABLE 
-			+ " WHERE " + DBConstants.Item.ID + "=" + itemId;
 	}
 	/**
 	 * Создать айтем из резалт сета

@@ -1,6 +1,7 @@
 package ecommander.model;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 
@@ -69,6 +70,10 @@ public final class MultipleParameter extends Parameter {
 	public boolean isEmpty() {
 		return values.size() == 0;
 	}
+
+	public byte valCount() {
+		return (byte) values.size();
+	}
 	
 	@Override
 	public boolean containsValue(Object value) {
@@ -85,5 +90,18 @@ public final class MultipleParameter extends Parameter {
 		if (values.size() == 0)
 			return null;
 		return values.iterator().next().getValue();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (values.size() != ((MultipleParameter)obj).values.size())
+			return false;
+		Iterator<SingleParameter> thisIter = values.iterator();
+		Iterator<SingleParameter> objIter = ((MultipleParameter)obj).values.iterator();
+		while (thisIter.hasNext()) {
+			if (!thisIter.next().equals(objIter.next()))
+				return false;
+		}
+		return true;
 	}
 }

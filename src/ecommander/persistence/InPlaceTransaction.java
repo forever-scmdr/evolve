@@ -48,26 +48,14 @@ public abstract class InPlaceTransaction {
 	public final void execute() throws Exception {
 		Connection conn = null;
 		Exception exception = null;
-//		final String commitSql = "COMMIT";
-//		final String rollbackSql = "ROLLBACK";
 		for (int i = 0; i < NUMBER_OF_TRIES; i++) {
-			Statement stmt = null;
 			try {
 				ServerLogger.debug("Start transaction, try #" + (i + 1));
 				conn = MysqlConnector.getConnection();
-				stmt = conn.createStatement();
-				context = new TransactionContext(conn, initiator);
-				conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 				conn.setAutoCommit(false);
-//				String beginTransactionSql = "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n" 
-//					+ "START TRANSACTION";
-//				ServerLogger.debug(beginTransactionSql);
-//				stmt.execute(beginTransactionSql);
+				context = new TransactionContext(conn, initiator);
 				performTransaction();
-//				ServerLogger.debug(commitSql);
-//				stmt.execute(commitSql);
 				conn.commit();
-				MysqlConnector.closeConnection(conn);
 				ServerLogger.debug("Transaction successfull at try #" + (i + 1));
 				// return not no make the exception
 				return;
@@ -75,8 +63,6 @@ public abstract class InPlaceTransaction {
 				if (conn != null) {
 					try {
 						conn.rollback();
-//						ServerLogger.debug(rollbackSql);
-//						stmt.execute(rollbackSql);
 						rollback();
 						MysqlConnector.closeConnection(conn);
 					} catch (SQLException sqlE) {
@@ -90,8 +76,6 @@ public abstract class InPlaceTransaction {
 				if (conn != null) {
 					try {
 						conn.rollback();
-//						ServerLogger.debug(rollbackSql);
-//						stmt.execute(rollbackSql);
 						rollback();
 						MysqlConnector.closeConnection(conn);
 					} catch (SQLException sqlE) {
@@ -99,7 +83,6 @@ public abstract class InPlaceTransaction {
 					}
 				}
 			} finally {
-				MysqlConnector.closeStatement(stmt);
 				MysqlConnector.closeConnection(conn);
 			}
 		}

@@ -47,7 +47,7 @@ public class SingleParameter extends Parameter {
 	public final Object getValue() {
 		return value;
 	}
-	
+
 	public String outputValue() {
 		return desc.getDataType().outputValue(value, desc.getFormatter());
 	}
@@ -79,7 +79,8 @@ public class SingleParameter extends Parameter {
 	}
 	@Override
 	public boolean equals(Object obj) {
-		return value != null && value.equals(((SingleParameter)obj).value);
+		return (value == null && ((SingleParameter)obj).value == null) ||
+				value != null && value.equals(((SingleParameter)obj).value);
 	}
 	@Override
 	public int hashCode() {

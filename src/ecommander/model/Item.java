@@ -129,6 +129,8 @@ public class Item {
 	private LinkedHashMap<Integer, Parameter> paramMap = new LinkedHashMap<>(); // Все параметры (не только одиночные)
 																				// параметры (имя параметра => объект
 																				// Parameter)
+	private HashMap<Integer, Parameter> initialParamMap = new HashMap<>();  // Значения параметров после загрузки айтема из БД
+																			// Нужны для отслеживания того, какие параметры поменялись
 	private HashMap<String, String> extras; // дополнительные значения (не параметры). Они существуют только в памяти, в БД не хранятся
 											// могут использоваться когда айтем создается в сеансе или в форме (поля extra формы переписываются сюда)
 	private String parametersXML = Strings.EMPTY; // Все параметры, записанные в виде XML

@@ -4,7 +4,6 @@ import com.sun.codemodel.JClassAlreadyExistsException;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
 import ecommander.pages.ValidationResults;
-import ecommander.persistence.TransactionException;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.mappers.DBConstants;
 import org.apache.commons.io.FileUtils;
@@ -585,7 +584,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 * Изменяет старые параметры в соответствии с новой моделью (при перемещении параметров из одного атйема в другой)
 	 * @throws SQLException 
 	 */
-	protected void mergeModel() throws TransactionException, SQLException {
+	protected void mergeModel() throws SQLException {
 		Statement stmt = getTransactionContext().getConnection().createStatement();
 		try {
 			// ********************** Очистить таблицы ******************************

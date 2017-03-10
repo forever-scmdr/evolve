@@ -64,23 +64,13 @@ public class DelayedTransaction {
 			return 0;
 		Connection conn = null;
 		Exception exception = null;
-//		final String commitSql = "COMMIT";
-//		final String rollbackSql = "ROLLBACK";
 		for (int i = 0; i < NUMBER_OF_TRIES; i++) {
-//			Statement stmt = null;
 			try {
 				ServerLogger.debug("Start transaction, try #" + (i + 1));
 				conn = MysqlConnector.getConnection();
 				conn.setAutoCommit(false);
-				//stmt = conn.createStatement();
 				context = new TransactionContext(conn, initiator);
-//				String beginTransactionSql = "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n"
-//						+ "START TRANSACTION";
-//				ServerLogger.debug(beginTransactionSql);
-//				stmt.execute(beginTransactionSql);
 				executeCommands();
-//				ServerLogger.debug(commitSql);
-//				stmt.execute(commitSql);
 				conn.commit();
 				MysqlConnector.closeConnection(conn);
 				ServerLogger.debug("Transaction successfull at try #" + (i + 1));
@@ -92,8 +82,6 @@ public class DelayedTransaction {
 				ServerLogger.error("Some error occured. Rolling back the transaction.\nHere's the error:", e);
 				if (conn != null) {
 					try {
-//						ServerLogger.debug(rollbackSql);
-//						stmt.execute(rollbackSql);
 						rollback();
 						conn.rollback();
 						MysqlConnector.closeConnection(conn);
@@ -106,8 +94,6 @@ public class DelayedTransaction {
 				ServerLogger.error("Some error occured. Rolling back the transaction.\nHere's the error:", e);
 				if (conn != null) {
 					try {
-//						ServerLogger.debug(rollbackSql);
-//						stmt.execute(rollbackSql);
 						rollback();
 						conn.rollback();
 						MysqlConnector.closeConnection(conn);
@@ -116,7 +102,6 @@ public class DelayedTransaction {
 					}
 				}
 			} finally {
-//				MysqlConnector.closeStatement(stmt);
 				MysqlConnector.closeConnection(conn);
 			}
 		}

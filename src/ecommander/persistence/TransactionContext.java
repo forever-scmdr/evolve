@@ -17,7 +17,7 @@ import ecommander.model.User;
  */
 public class TransactionContext {
 	private Connection connection;
-	private User initiator = User.getDefaultUser(); // TODO <fix> !!!!!!! добавить пользователя, который вызвал команду
+	private User initiator = User.getDefaultUser();
 
 	public TransactionContext(Connection conn, User initiator) {
 		this.connection = conn;
