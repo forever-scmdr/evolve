@@ -47,63 +47,13 @@ public class Item {
 	
 	public static final long DEFAULT_ID = 0;
 	public static final int WEIGHT_STEP = 64;
-	
+
+	public static final byte STATUS_NORMAL = (byte) 0;
+	public static final byte STATUS_NIDDEN = (byte) 1;
+	public static final byte STATUS_DELETED = (byte) 2;
+
 	private static final int _NO_PARAM_ID  = -1;
 
-	/**************************************************************************
-	 **************************************************************************
-	 *                     Классы для нормального доступа к параметрам
-	 */
-
-	/**
-	 * Выдает все подряд параметры, одиночные и множественные как одиночные 
-	 * @author EEEE
-	 */
-	public static final class ParametersIterator {
-		private Iterator<Parameter> allParameterIterator = null;
-		private Iterator<SingleParameter> multipleParamIterator = null;
-		private SingleParameter currentParameter = null;
-		
-		private ParametersIterator(Item item) {
-			allParameterIterator = item.paramMap.values().iterator();
-		}
-
-		public SingleParameter getCurrentParameter() {
-			return currentParameter;
-		}
-		
-		/**
-		 * Если переход осуществлен, то вернуть true. Это также означает, что  
-		 * getCurrentParameter() вернет не null
-		 * Иначе итерация закончена
-		 * @return
-		 */
-		public boolean goNext() {
-			if (multipleParamIterator != null && multipleParamIterator.hasNext()) {
-				currentParameter = multipleParamIterator.next();
-				return true;
-			}
-			if (allParameterIterator.hasNext()) {
-				Parameter param = allParameterIterator.next();
-				if (param.isMultiple()) {
-					multipleParamIterator = ((MultipleParameter) param).getValues().iterator();
-					return goNext();
-				} else {
-					currentParameter = (SingleParameter) param;
-					return true;
-				}
-			}
-			allParameterIterator = null;
-			return false;
-		}
-
-	}
-	
-	/**
-	 * 
-	 **************************************************************************
-	 **************************************************************************/
-	
 	private long id;
 
 	/*
@@ -120,8 +70,8 @@ public class Item {
 									// Та ассоциация, которой айтем связан с контекстным предком
 									// Айтем может быть ассоциирован со многими предками многими ассоцациями (в т.ч. несколькими с одним предком),
 									// но в каждом определенном контексте у айтема имеет значение только один предок и одна ассоциация.
-	private int ownerGroupId = User.NO_GROUP_ID; // Группа пользователей установлена в любом случае. И для общих и для персональных айтемов
-	private long ownerUserId = User.NO_USER_ID; // ID юзера владельца этого айтема. Не равен 0 только в случае, если айтем является персональным
+	private byte ownerGroupId = User.NO_GROUP_ID; // Группа пользователей установлена в любом случае. И для общих и для персональных айтемов
+	private int ownerUserId = User.NO_USER_ID; // ID юзера владельца этого айтема. Не равен 0 только в случае, если айтем является персональным
 	private String key = null; // Составляется из параметров айтема, чтобы юзер в системе управления понимал, что это за айтем
 	private String keyUnique = null; // уникальный текстовый ключ
 	private String oldKeyUnique = null; // старый уникальный ключ (нужен для корректного возвращения согласованной версии айтема, поскольку не хранится в строке XML)
@@ -132,7 +82,9 @@ public class Item {
 	private HashMap<String, String> extras; // дополнительные значения (не параметры). Они существуют только в памяти, в БД не хранятся
 											// могут использоваться когда айтем создается в сеансе или в форме (поля extra формы переписываются сюда)
 	private String parametersXML = Strings.EMPTY; // Все параметры, записанные в виде XML
-	
+
+	private byte status = STATUS_NORMAL; // статус айтема (нормальный, айтем удален, айтем скрыт)
+
 	private int childWeight; // порядковый номер (вес) в списке всех потомков одного родителя (для сортировки)
 	private long timeUpdated; // время последнего обновления или создания айтема
 	
@@ -154,6 +106,7 @@ public class Item {
 		this.itemType = src.itemType;
 		this.extras = src.extras;
 		this.parametersXML = src.parametersXML;
+		this.status = src.status;
 		this.childWeight = src.childWeight;
 		this.timeUpdated = src.timeUpdated;
 		this.paramMap.putAll(src.paramMap);
@@ -161,12 +114,13 @@ public class Item {
 		this.stringConsistent = src.stringConsistent;
 	}
 	
-	private Item(ItemType itemDesc, Assoc contextAssoc, long parentId, long userId, int groupId) {
+	private Item(ItemType itemDesc, Assoc contextAssoc, long parentId, int userId, byte groupId, byte status) {
 		this.itemType = itemDesc;
 		this.ownerUserId = userId;
 		this.ownerGroupId = groupId;
 		this.contextAssoc = contextAssoc;
 		this.contextParentId = parentId;
+		this.status = status;
 		this.id = DEFAULT_ID;
 		this.key = itemDesc.getCaption();
 		this.mapConsistent = true;
@@ -178,8 +132,8 @@ public class Item {
 		}
 	}
 
-	private Item(ItemType itemDesc, long itemId, Assoc contextAssoc, long parentId, long userId, int groupId, int weight,
-			String key, String parametersXML, String keyUnique, long timeUpdated) {
+	private Item(ItemType itemDesc, long itemId, Assoc contextAssoc, long parentId, int userId, byte groupId, byte status,
+	             int weight, String key, String parametersXML, String keyUnique, long timeUpdated) {
 		this.id = itemId;
 		this.contextAssoc = contextAssoc;
 		this.contextParentId = parentId;
@@ -191,6 +145,7 @@ public class Item {
 		this.keyUnique = keyUnique;
 		this.oldKeyUnique = keyUnique;
 		this.timeUpdated = timeUpdated;
+		this.status = status;
 		this.parametersXML = parametersXML;
 		this.mapConsistent = false;
 		this.stringConsistent = true;
@@ -200,49 +155,61 @@ public class Item {
 			paramMap.put(paramDesc.getId(), paramDesc.createParameter());
 		}
 	}
+
 	/**
 	 * Констркуктор для создания новых айтемов в случае когда есть загруженный предок.
 	 * Владелец айтема будет таким же, как и у предка.
 	 * @param itemDesc
+	 * @param assoc
 	 * @param parent
 	 * @return
 	 */
 	public static Item newChildItem(ItemType itemDesc, Assoc assoc, Item parent) {
-		return new Item(itemDesc, assoc, parent.getId(), parent.getOwnerUserId(), parent.getOwnerGroupId());
+		return new Item(itemDesc, assoc, parent.getId(), parent.getOwnerUserId(), parent.getOwnerGroupId(), parent.status);
 	}
+
 	/**
 	 * Конструктор для создания новых айтемов (которых еще нет в БД или сеансе)
 	 * @param itemDesc
-	 * @param parent
+	 * @param assoc
+	 * @param parentId
+	 * @param userId
+	 * @param groupId
+	 * @param status
 	 * @return
 	 */
-	public static Item newItem(ItemType itemDesc, Assoc assoc, long parentId, long userId, int groupId) {
-		return new Item(itemDesc, assoc, parentId, userId, groupId);
+	public static Item newItem(ItemType itemDesc, Assoc assoc, long parentId, int userId, byte groupId, byte status) {
+		return new Item(itemDesc, assoc, parentId, userId, groupId, status);
 	}
+
 	/**
 	 * Констркуктор для создания новых сеансовых корневых айтемов
 	 * @param itemDesc
 	 * @return
 	 */
 	public static Item newSessionRootItem(ItemType itemDesc) {
-		return new Item(itemDesc, AssocRegistry.DEFAULT, 0, 0, 0);
+		return new Item(itemDesc, AssocRegistry.DEFAULT, 0, User.NO_USER_ID, User.NO_GROUP_ID, STATUS_NORMAL);
 	}
+
 	/**
 	 * Создание айтема при загрузке айтемов из базона или из сеанса (когда айтем не новый, а уже существующий)
 	 * @param itemDesc
 	 * @param itemId
+	 * @param assoc
 	 * @param parentId
-	 * @param predIdPath
-	 * @param refId
 	 * @param userId
 	 * @param groupId
-	 * @param index
+	 * @param status
+	 * @param weight
 	 * @param key
 	 * @param parametersXML
-	 */	
-	public static Item existingItem(ItemType itemDesc, long itemId, Assoc assoc, long parentId, long userId, int groupId, int weight,
-			String key, String parametersXML, String keyUnique, long timeUpdated) {
-		return new Item(itemDesc, itemId, assoc, parentId, userId, groupId, weight, key, parametersXML, keyUnique, timeUpdated);
+	 * @param keyUnique
+	 * @param timeUpdated
+	 * @return
+	 */
+	public static Item existingItem(ItemType itemDesc, long itemId, Assoc assoc, long parentId, int userId, byte groupId,
+	                                byte status, int weight, String key, String parametersXML, String keyUnique, long timeUpdated) {
+		return new Item(itemDesc, itemId, assoc, parentId, userId, groupId, status, weight, key, parametersXML, keyUnique, timeUpdated);
 	}
 	/**
 	 * Является ли айтем новым
@@ -488,9 +455,10 @@ public class Item {
 		}
 		stringConsistent = false;
 	}
+
 	/**
 	 * Удаляет параметр с заданным ID
-	 * @param paramName
+	 * @param paramId
 	 */
 	public final void clearParameter(int paramId) {
 		populateMap();
@@ -582,8 +550,8 @@ public class Item {
 	public final Item getConsistentVersion() {
 		if (stringConsistent)
 			return this;
-		return new Item(itemType, id, contextAssoc, contextParentId, ownerUserId, ownerGroupId, childWeight, key, parametersXML,
-				oldKeyUnique, timeUpdated);
+		return new Item(itemType, id, contextAssoc, contextParentId, ownerUserId, ownerGroupId, status, childWeight,
+				key, parametersXML,	oldKeyUnique, timeUpdated);
 	}
 	/**
 	 * Принудительно разобрать содержимое строки параметров и установить флаг о том,
@@ -603,13 +571,14 @@ public class Item {
 		prepareToSave();
 		return parametersXML;
 	}
+
 	/**
-	 * Создает итератор по всем парамтерам айтема
+	 * Получить все параметры айтема
 	 * @return
 	 */
-	public final ParametersIterator createParameterIterator() {
+	public final Collection<Parameter> getAllParameters() {
 		populateMap();
-		return new ParametersIterator(this);
+		return paramMap.values();
 	}
 	/**
 	 * @return
@@ -645,26 +614,40 @@ public class Item {
 	/**
 	 * @return
 	 */
-	public final int getOwnerGroupId() {
+	public final byte getOwnerGroupId() {
 		return ownerGroupId;
 	}
 	/**
 	 * @param newGroup
 	 */
-	public final void setOwnerGroupId(int newGroup) {
+	public final void setOwnerGroupId(byte newGroup) {
 		this.ownerGroupId = newGroup;
 	}
 	/**
 	 * @return
 	 */
-	public final long getOwnerUserId() {
+	public final int getOwnerUserId() {
 		return ownerUserId;
 	}
 	/**
 	 * @param newGroup
 	 */
-	public final void setOwnerUserId(long newUser) {
+	public final void setOwnerUserId(int newUser) {
 		this.ownerUserId = newUser;
+	}
+
+	/**
+	 * @return
+	 */
+	public final byte getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status
+	 */
+	public final void setStatus(byte status) {
+		this.status = status;
 	}
 	/**
 	 * Является ли айтем персональным

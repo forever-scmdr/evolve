@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Iterator;
 
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.EcommanderException;
@@ -33,62 +34,74 @@ public class ItemMapper {
 		+ DBConstants.ItemIndexes.VALUE
 		+ ") VALUES (";
 	
-	private static final String PARAM_INSERT_PREPARED_END
+	private static final String ON_DUPLICATE_KEY_UPDATE
 		= ") ON DUPLICATE KEY UPDATE " + DBConstants.ItemIndexes.VALUE + " = ";
 
-	private static final String DELETE_PREDECESSOR_PARAMS_INDEX
-		= " WHERE " + DBConstants.ItemIndexes.ITEM_PARAM + "=? AND " + DBConstants.ItemIndexes.ITEM_TYPE + "=?";
 	/**
-	 * Сохраняет все параметры айтема в индекс, предварительно удалив старые значения если это нужно
+	 * Сохраняет все параметры айтема в индекс.
+	 * Удаление старых параметров происходит только в том случе, если это надо (параметры были удалены).
+	 * Обновление параметров также происходит только если это надо (параметры поменялись)
 	 * @param item
-	 * @param deleteNeeded
 	 * @param transaction
 	 * @throws SQLException
-	 * @throws EcommanderException 
+	 * @throws EcommanderException
 	 */
-	public static void insertItemParametersToIndex(Item item, boolean deleteNeeded, TransactionContext transaction) throws SQLException, EcommanderException {
-		// Подсчет количества непустых параметров для подготовки препаред стэйтмента
-		if (deleteNeeded) {
-			String deleteSql 
-				= "DELETE FROM " + DBConstants.ItemIndexes.INT_TABLE_NAME 
-				+ " WHERE " + DBConstants.ItemIndexes.REF_ID + "=" + item.getRefId()
-				+ "; DELETE FROM " + DBConstants.ItemIndexes.STRING_TABLE_NAME 
-				+ " WHERE " + DBConstants.ItemIndexes.REF_ID + "=" + item.getRefId()
-				+ "; DELETE FROM " + DBConstants.ItemIndexes.DOUBLE_TABLE_NAME 
-				+ " WHERE " + DBConstants.ItemIndexes.REF_ID + "=" + item.getRefId()
-				+ "; DELETE FROM " + DBConstants.ItemIndexes.ASSOCIATED_TABLE_NAME 
-				+ " WHERE " + DBConstants.ItemIndexes.REF_ID + "=" + item.getRefId();
-			ServerLogger.debug(deleteSql);
-			PreparedStatement deleteStmt = transaction.getConnection().prepareStatement(deleteSql);
-			deleteStmt.executeUpdate();
-		}
-		
-		TemplateQuery query = new TemplateQuery("Item index insert");
-		for (ParameterDescription paramDesc : item.getItemType().getParameterList()) {
-			Parameter param = item.getParameter(paramDesc.getId());
-			if (!param.needsDBIndex()) // не сохранять в БД виртуальные параметры
-				continue;
-			if (param.isEmpty()) {
-
-			} else {
-				if (param.isMultiple()) {
-					byte i = (byte) 0;
-					for (SingleParameter singleParam : ((MultipleParameter)param).getValues()) {
-						createSingleValueInsert(query, item, singleParam, i++);
+	public static void insertItemParametersToIndex(Item item, TransactionContext transaction) throws SQLException, EcommanderException {
+		if (!item.hasChanged())
+			return;
+		TemplateQuery query;
+		// Если айтем новый, то не нужно удалять старые значения и обновлять существующие
+		if (item.isNew()) {
+			query = new TemplateQuery("Item index insert new");
+			for (Parameter param : item.getAllParameters()) {
+				if (!param.isEmpty()) {
+					if (param.isMultiple()) {
+						byte i = (byte) 0;
+						for (SingleParameter singleParam : ((MultipleParameter)param).getValues()) {
+							createSingleValueInsert(query, item, singleParam, i++, false);
+						}
+					} else {
+						createSingleValueInsert(query, item, (SingleParameter)param, (byte) 0, false);
 					}
-					S
-				} else {
-					createSingleValueInsert(query, item, (SingleParameter)param);
 				}
 			}
 		}
-		// Добавить параметры пользователя и группы
-		SingleParameter userParam = ParameterDescription.USER.createSingleParameter();
-		userParam.setValue(new Long(item.getOwnerUserId()));
-		createSingleValueInsert(query, item, userParam);
-		SingleParameter groupParam = ParameterDescription.GROUP.createSingleParameter();
-		groupParam.setValue(new Integer(item.getOwnerGroupId()));
-		createSingleValueInsert(query, item, groupParam);
+		// Если айтем не новый, то нужно удалить значения которые были удалены, вставить или обновить остальные значения
+		else {
+			query = new TemplateQuery("Item index update");
+			for (Parameter param : item.getAllParameters()) {
+				// Пропустить все неизмененные параметры
+				if (!param.hasChanged())
+					continue;
+				// Удалить старое значение (параметр раньше имел значение, сейчас не имеет)
+				if (param.isEmpty()) {
+					query.sql("DELETE FROM ").sql(DataTypeMapper.getTableName(param.getType()))
+							.sql(" WHERE ").sql(DBConstants.ItemIndexes.ITEM_ID).sql("=").setLong(item.getId())
+							.sql(" AND ").sql(DBConstants.ItemIndexes.ITEM_PARAM).sql("=").setInt(param.getParamId()).sql("; ");
+				}
+				// Непустые параметры (одиночные и множественные)
+				else {
+					if (param.isMultiple()) {
+						// Обновить каждое значение в отдельности
+						MultipleParameter mp = ((MultipleParameter) param);
+						byte i = (byte) 0;
+						for (SingleParameter sp : mp.getValues()) {
+							createSingleValueInsert(query, item, sp, i++, true);
+						}
+						// Удалить лишние значения, если они были (если раньше у параметра было больше значений чем сейчас)
+						if (mp.valCount() < mp.initialValCount()) {
+							query.sql("DELETE FROM ").sql(DataTypeMapper.getTableName(param.getType()))
+									.sql(" WHERE ").sql(DBConstants.ItemIndexes.ITEM_ID).sql("=").setLong(item.getId())
+									.sql(" AND ").sql(DBConstants.ItemIndexes.ITEM_PARAM).sql("=").setInt(param.getParamId())
+									.sql(" AND ").sql(DBConstants.ItemIndexes.VALUE_IDX).sql(">=").setByte(mp.valCount()).sql("; ");
+						}
+					} else {
+						// Просто вставить значение парамета без удаления и с добавлением on duplicate key update
+						createSingleValueInsert(query, item, (SingleParameter) param, (byte) 0, true);
+					}
+				}
+			}
+		}
 		// Выполнения запроса
 		PreparedStatement insertStmt = query.prepareQuery(transaction.getConnection());
 		try {
@@ -97,8 +110,10 @@ public class ItemMapper {
 			throw new EcommanderException(query.getSimpleSql(), e);
 		}
 	}
-	
-	private static void createSingleValueInsert(TemplateQuery query, Item item, SingleParameter param, byte valIdx) throws SQLException {
+
+
+
+	private static void createSingleValueInsert(TemplateQuery query, Item item, SingleParameter param, byte valIdx, boolean needUpdate) throws SQLException {
 		query.sql("INSERT INTO ").sql(DataTypeMapper.getTableName(param.getType())).sql(PARAM_INSERT_PREPARED_START);
 		query
 				.setLong(item.getId()).sql(",")
@@ -106,9 +121,13 @@ public class ItemMapper {
 				.setInt(item.getTypeId()).sql(",")
 				.setByte(valIdx).sql(",");
 		DataTypeMapper.appendPreparedStatementInsertValue(param.getType(), query, param.getValue());
-		query.sql(PARAM_INSERT_PREPARED_END);
-		DataTypeMapper.appendPreparedStatementInsertValue(param.getType(), query, param.getValue());
-		query.sql("; ");
+		if (needUpdate) {
+			query.sql(ON_DUPLICATE_KEY_UPDATE);
+			DataTypeMapper.appendPreparedStatementInsertValue(param.getType(), query, param.getValue());
+			query.sql("; ");
+		} else {
+			query.sql("); ");
+		}
 	}
 	/**
 	 * Создать айтем из резалт сета
@@ -120,19 +139,19 @@ public class ItemMapper {
 	 */
 	public static Item buildItem(ResultSet rs, String parentColName) throws SQLException, Exception {
 		long itemId = rs.getLong(DBConstants.Item.ID);
-		long refId = rs.getLong(DBConstants.Item.REF_ID);
 		int itemTypeId = rs.getInt(DBConstants.Item.TYPE_ID);
 		int itemWeight= rs.getInt(DBConstants.Item.INDEX_WEIGHT);
-		long userId = rs.getLong(DBConstants.Item.OWNER_USER_ID);
-		int groupId = rs.getInt(DBConstants.Item.OWNER_GROUP_ID);
+		int userId = rs.getInt(DBConstants.ItemParent.USER);
+		byte groupId = rs.getByte(DBConstants.ItemParent.GROUP);
+		byte status = rs.getByte(DBConstants.ItemParent.SHOW);
+		byte assocId = rs.getByte(DBConstants.ItemParent.ASSOC_ID);
 		String key = rs.getString(DBConstants.Item.KEY);
 		String keyUnique = rs.getString(DBConstants.Item.TRANSLIT_KEY);
-		String predIdPath = rs.getString(DBConstants.Item.PRED_ID_PATH);
 		long parentId = rs.getLong(parentColName);
 		Timestamp timeUpdated = rs.getTimestamp(DBConstants.Item.UPDATED);
 		String params = rs.getString(DBConstants.Item.PARAMS);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemTypeId);
-		return Item.existingItem(itemDesc, itemId, parentId, predIdPath, refId, userId, groupId, itemWeight, key, params, keyUnique,
-				timeUpdated.getTime());
+		return Item.existingItem(itemDesc, itemId, ItemTypeRegistry.getAssoc(assocId), parentId, userId, groupId, status,
+				itemWeight, key, params, keyUnique,	timeUpdated.getTime());
 	}
 }

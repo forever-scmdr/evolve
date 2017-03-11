@@ -3,8 +3,8 @@ package ecommander.model;
 public class User {
 	public static final String USER_DEFAULT_GROUP = "common"; // группа по умолчанию
 	
-	public static final int NO_GROUP_ID = 0;
-	public static final long NO_USER_ID = 0;
+	public static final byte NO_GROUP_ID = (byte) 0;
+	public static final int NO_USER_ID = 0;
 	
 	private String name;
 	private String password;
