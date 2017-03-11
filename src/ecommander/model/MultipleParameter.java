@@ -79,8 +79,22 @@ public final class MultipleParameter extends Parameter {
 		return values.size() == 0;
 	}
 
+	/**
+	 * Количество значений параметра
+	 * @return
+	 */
 	public byte valCount() {
 		return (byte) values.size();
+	}
+
+	/**
+	 * Количество изначальных значений параметра при загрузке из БД
+	 * @return
+	 */
+	public byte initialValCount() {
+		if (backupValues == null)
+			return (byte) values.size();
+		return (byte) backupValues.size();
 	}
 	
 	@Override
