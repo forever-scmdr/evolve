@@ -129,8 +129,6 @@ public class Item {
 	private LinkedHashMap<Integer, Parameter> paramMap = new LinkedHashMap<>(); // Все параметры (не только одиночные)
 																				// параметры (имя параметра => объект
 																				// Parameter)
-	private HashMap<Integer, Parameter> initialParamMap = new HashMap<>();  // Значения параметров после загрузки айтема из БД
-																			// Нужны для отслеживания того, какие параметры поменялись
 	private HashMap<String, String> extras; // дополнительные значения (не параметры). Они существуют только в памяти, в БД не хранятся
 											// могут использоваться когда айтем создается в сеансе или в форме (поля extra формы переписываются сюда)
 	private String parametersXML = Strings.EMPTY; // Все параметры, записанные в виде XML
@@ -161,7 +159,6 @@ public class Item {
 		this.paramMap.putAll(src.paramMap);
 		this.mapConsistent = src.mapConsistent;
 		this.stringConsistent = src.stringConsistent;
-		
 	}
 	
 	private Item(ItemType itemDesc, Assoc contextAssoc, long parentId, long userId, int groupId) {
@@ -174,6 +171,11 @@ public class Item {
 		this.key = itemDesc.getCaption();
 		this.mapConsistent = true;
 		this.stringConsistent = true;
+		// Добавить все параметры, которые содержатся в типа айтема.
+		// Все параметры (даже пустые) нужны для отслеживания изменений параметров.
+		for (ParameterDescription paramDesc : itemType.getParameterList()) {
+			paramMap.put(paramDesc.getId(), paramDesc.createParameter());
+		}
 	}
 
 	private Item(ItemType itemDesc, long itemId, Assoc contextAssoc, long parentId, long userId, int groupId, int weight,
@@ -192,6 +194,11 @@ public class Item {
 		this.parametersXML = parametersXML;
 		this.mapConsistent = false;
 		this.stringConsistent = true;
+		// Добавить все параметры, которые содержатся в типа айтема.
+		// Все параметры (даже пустые) нужны для отслеживания изменений параметров.
+		for (ParameterDescription paramDesc : itemType.getParameterList()) {
+			paramMap.put(paramDesc.getId(), paramDesc.createParameter());
+		}
 	}
 	/**
 	 * Констркуктор для создания новых айтемов в случае когда есть загруженный предок.
@@ -252,7 +259,7 @@ public class Item {
 	 * @param map
 	 */
 	public final void setValueUI(int paramId, String value) throws Exception {
-		getParameter(paramId).createAndSetValue(value);
+		getParameter(paramId).createAndSetValue(value, isNew());
 		stringConsistent = false;
 	}
 	/**
@@ -270,7 +277,6 @@ public class Item {
 	/**
 	 * Прямая установка параметра. Используется когда сразу есть значение параметра соответствующего типа
 	 * и не нужно преобразование из строки
-	 * TODO <usability> добавить трай кэч для нулл поинтер эксэпшен, чтобы отслеживать параметры, которых не существует в айтеме
 	 * @param paramName
 	 * @param value
 	 */
@@ -280,7 +286,7 @@ public class Item {
 			if (itemType.getParameter(paramId).isMultiple())
 				return;
 			// Удалить параметр, если значение равно null
-			removeValue(paramId);
+			clearParameter(paramId);
 		} else {
 			getParameter(paramId).setValue(value);
 		}
@@ -289,7 +295,6 @@ public class Item {
 	/**
 	 * Прямая установка параметра. Используется когда сразу есть значение параметра соответствующего типа
 	 * и не нужно преобразование из строки
-	 * TODO <usability> добавить трай кэч для нулл поинтер эксэпшен, чтобы отслеживать параметры, которых не существует в айтеме
 	 * @param paramName
 	 * @param value
 	 */
@@ -324,7 +329,19 @@ public class Item {
 	 */
 	public final Parameter getParameter(int paramId) {
 		populateMap();
-		return getParameterInconsistent(paramId);
+		return getParameterFromMap(paramId);
+	}
+
+	/**
+	 * Возвращает параметр из карты параметров. Если параметр не найден в карте, выбрасывается исключение.
+	 * @param paramId
+	 * @return
+	 */
+	private final Parameter getParameterFromMap(int paramId) {
+		Parameter param = paramMap.get(paramId);
+		if (param == null)
+			throw new IllegalArgumentException("There is no parameter #" + paramId + " in '" + itemType.getName() + "' item");
+		return param;
 	}
 	/**
 	 * Возвращает параметр по его названию.
@@ -338,23 +355,7 @@ public class Item {
 	public final Parameter getParameterByName(String paramName) {
 		return getParameter(itemType.getParameter(paramName).getId());
 	}
-	/**
-	 * Создает и добавляет параметр
-	 * @param paramName
-	 * @return
-	 */
-	private Parameter getParameterInconsistent(int paramId) {
-		Parameter param = (Parameter) paramMap.get(paramId);
-		if (param == null) {
-			if (itemType.hasParameter(paramId)) {
-				param = itemType.getParameter(paramId).createParameter();
-				paramMap.put(paramId, param);
-			} else {
-				throw new IllegalArgumentException("There is no parameter #" + paramId + " in '" + itemType.getName() + "' item");
-			}
-		}
-		return param;
-	}
+
 	/**
 	 * Заполнить значения параметров из строки параметров XML в отображение (paramMap)
 	 */
@@ -367,7 +368,7 @@ public class Item {
 					int level = 0;
 					int paramId;
 					String paramName = "";
-					ParameterDescription currentParam = null;
+					ParameterDescription currentParamDesc = null;
 					StringBuilder paramValue = new StringBuilder();
 					
 					@Override
@@ -386,7 +387,7 @@ public class Item {
 								if (paramDesc != null) {
 									paramId = itemType.getParameter(qName).getId();
 									paramName = qName;
-									currentParam = paramDesc;
+									currentParamDesc = paramDesc;
 								} else {
 									paramId = _NO_PARAM_ID;
 								}
@@ -402,10 +403,10 @@ public class Item {
 							String strValue = paramValue.toString().trim();
 							if (!StringUtils.isBlank(strValue) && paramId != _NO_PARAM_ID) {
 								try {
-									if (currentParam.getType() == Type.XML)
-										getParameterInconsistent(paramId).createAndSetValue(StringEscapeUtils.unescapeXml(strValue));
-									else
-										getParameterInconsistent(paramId).createAndSetValue(strValue);
+									Parameter param = getParameterFromMap(paramId);
+									if (currentParamDesc.getType() == Type.XML)
+										strValue = StringEscapeUtils.unescapeXml(strValue);
+									param.createAndSetValue(strValue, true);
 								} catch (Exception e) {
 									throw new RuntimeException("ITEM params population from XML failed", e);
 								}
@@ -476,14 +477,14 @@ public class Item {
 	 * Можно удалить множественный или одиночный параметр
 	 * @param paramIndex
 	 */
-	public final void removeValue(int paramId, int paramIndex) {
+	public final void removeMultipleParamValue(int paramId, int paramIndex) {
 		// Значит айтем изменялся пользователем
 		populateMap();
 		Parameter param = (Parameter) paramMap.get(paramId);
 		if (param.isMultiple()) {
 			((MultipleParameter) param).deleteValue(paramIndex);
 		} else {
-			paramMap.remove(paramId);
+			throw new IllegalArgumentException("Unable to delete multiple value from single parameter " + param.getName());
 		}
 		stringConsistent = false;
 	}
@@ -491,17 +492,17 @@ public class Item {
 	 * Удаляет параметр с заданным ID
 	 * @param paramName
 	 */
-	public final void removeValue(int paramId) {
+	public final void clearParameter(int paramId) {
 		populateMap();
-		paramMap.remove(paramId);
+		getParameterFromMap(paramId).clear();
 		stringConsistent = false;
 	}
 	/**
 	 * Удалить все значения определенного параметра по его названию
 	 * @param paramName
 	 */
-	public final void removeValue(String paramName) {
-		removeValue(itemType.getParameter(paramName).getId());
+	public final void clearParameter(String paramName) {
+		clearParameter(itemType.getParameter(paramName).getId());
 	}
 	/**
 	 * Удалить определенное значение параметра
@@ -515,7 +516,7 @@ public class Item {
 			((MultipleParameter) param).deleteValue(paramValue);
 		} else {
 			if (param.containsValue(paramValue))
-				removeValue(paramId);
+				clearParameter(paramId);
 		}
 		stringConsistent = false;
 	}
@@ -724,9 +725,16 @@ public class Item {
 	 * Определяет, менялся ли айтем со времени его загрузки из БД
 	 * @return
 	 */
-	public final boolean isConsistent() {
-		return stringConsistent;
+	public final boolean hasChanged() {
+		if (stringConsistent)
+			return false;
+		for (Parameter param : paramMap.values()) {
+			if (param.hasChanged())
+				return true;
+		}
+		return false;
 	}
+
 	/**
 	 * @see Object#toString()
 	 */

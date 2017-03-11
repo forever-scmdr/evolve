@@ -55,8 +55,19 @@ public abstract class Parameter {
 	}
 	
 	public abstract boolean isMultiple();
-	public abstract void createAndSetValue(String value);
-	public abstract void setValue(Object value);
+
+	/**
+	 * Создать значение из строки и установить
+	 * @param value
+	 * @param isConsistent - при загрузке из БД - true, при изменении в процессе работы приложения - false
+	 */
+	abstract void createAndSetValue(String value, boolean isConsistent);
+
+	/**
+	 * Установить значение напрямую без создания
+	 * @param value
+	 */
+	abstract void setValue(Object value);
 	public abstract boolean isEmpty();
 	public abstract boolean containsValue(Object value);
 	/**
@@ -65,4 +76,15 @@ public abstract class Parameter {
 	 * @return
 	 */
 	public abstract Object getValue();
+
+	/**
+	 * Очистить значение параметра
+	 */
+	public abstract void clear();
+
+	/**
+	 * Узнать, менялся ли параметр с момента загрузки айтема
+	 * @return
+	 */
+	public abstract boolean hasChanged();
 }

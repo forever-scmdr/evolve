@@ -20,6 +20,8 @@ public class SingleParameter extends Parameter {
 	 * @param value
 	 */
 	public final void setValue(Object value) {
+		if (containsValue(value))
+			return;
 		storeOldValue();
 		this.value = value;
 	}
@@ -27,8 +29,12 @@ public class SingleParameter extends Parameter {
 	 * Установить значение, полученное из интерфейса пользователя в форме строки
 	 * @param value
 	 */
-	public void createAndSetValue(String value) {
-		storeOldValue();
+	public final void createAndSetValue(String value, boolean isConsistent) {
+		if (!isConsistent) {
+			if (containsValue(value))
+				return;
+			storeOldValue();
+		}
 		this.value = createTypeDependentValue(value);
 	}
 	/**
@@ -43,9 +49,24 @@ public class SingleParameter extends Parameter {
 			return new ArrayList<Object>(0);
 		return oldValues;
 	}
-	
+
+	/**
+	 * Проверяет, изменилось ли значение параметра после загрузки
+	 * Если параметр был пустым вначале, а потом получил значение, то
+	 * считается что параметр изменился
+	 * @return
+	 */
+	public boolean hasChanged() {
+		return oldValues != null && !containsValue(oldValues.get(0));
+	}
+
 	public final Object getValue() {
 		return value;
+	}
+
+	@Override
+	public void clear() {
+		setValue(null);
 	}
 
 	public String outputValue() {
@@ -57,11 +78,9 @@ public class SingleParameter extends Parameter {
 	}
 	
 	private void storeOldValue() {
-		if (!isEmpty()) {
-			if (oldValues == null)
-				oldValues = new ArrayList<Object>();
-			oldValues.add(value);
-		}
+		if (oldValues == null)
+			oldValues = new ArrayList<Object>();
+		oldValues.add(value);
 	}
 
 	@Override
@@ -74,11 +93,11 @@ public class SingleParameter extends Parameter {
 		return getName() + ": " + getValue();
 	}
 	@Override
-	public boolean containsValue(Object value) {
-		return value != null && value.equals(this.value);
+	public final boolean containsValue(Object value) {
+		return (value != null && value.equals(this.value)) || (value == null && this.value == null);
 	}
 	@Override
-	public boolean equals(Object obj) {
+	public final boolean equals(Object obj) {
 		return (value == null && ((SingleParameter)obj).value == null) ||
 				value != null && value.equals(((SingleParameter)obj).value);
 	}

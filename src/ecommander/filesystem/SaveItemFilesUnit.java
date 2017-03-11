@@ -94,7 +94,7 @@ public class SaveItemFilesUnit extends ItemFileUnit {
 					}
 				}
 				// Замена объектов на имена файлов
-				item.removeValue(paramDesc.getName());
+				item.clearParameter(paramDesc.getName());
 				for (String newVal : newValues) {
 					item.setValue(paramDesc.getName(), newVal);
 				}

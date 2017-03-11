@@ -82,7 +82,7 @@ public class CartManageCommand extends Command {
 		// Создание или загрузка корзины
 		cart = ItemUtils.ensureSingleSessionRootItem(ItemNames.ORDER, getSessionMapper());
 		// Удалить флаг об ознакомлении с условиями договора
-		cart.removeValue(ItemNames.order.CONTRACT_AGREED);
+		cart.clearParameter(ItemNames.order.CONTRACT_AGREED);
 		getSessionMapper().saveTemporaryItem(cart);
 		
 		// Сохранить состояние корзины (всех полей ввода)
@@ -328,7 +328,7 @@ public class CartManageCommand extends Command {
 			cart.setValue(ItemNames.order.RECEIVED_DATE, DateTime.now(DateTimeZone.UTC).getMillis());
 			// Т. к. ID главной формы будет меняться, его надо сохранить
 			long oldMainFormId = cart.getLongValue(ItemNames.order.MAIN_FORM);
-			cart.removeValue(ItemNames.order.MAIN_FORM);
+			cart.clearParameter(ItemNames.order.MAIN_FORM);
 			executeCommandUnit(new SaveNewItemDBUnit(cart, false));
 			
 			// Сохранение форм
@@ -349,8 +349,8 @@ public class CartManageCommand extends Command {
 				room.setDirectParentId(cart.getId());
 				ArrayList<Long> baseOldOrderIds = room.getLongValues(ItemNames.free_room.ORDER_FORM_BASE);
 				ArrayList<Long> extraOldOrderIds = room.getLongValues(ItemNames.free_room.ORDER_FORM_EXTRA);
-				room.removeValue(ItemNames.free_room.ORDER_FORM_BASE);
-				room.removeValue(ItemNames.free_room.ORDER_FORM_EXTRA);
+				room.clearParameter(ItemNames.free_room.ORDER_FORM_BASE);
+				room.clearParameter(ItemNames.free_room.ORDER_FORM_EXTRA);
 				for (Long oldBaseId : baseOldOrderIds) {
 					Item form = formsByOldIds.get(oldBaseId);
 					if (form != null)

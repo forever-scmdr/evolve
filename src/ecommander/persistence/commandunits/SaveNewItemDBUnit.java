@@ -26,7 +26,7 @@ import ecommander.filesystem.SaveItemFilesUnit;
  * 
  * @author EEEE
  */
-public class SaveNewItemDBUnit extends DBPersistenceCommandUnit {
+class SaveNewItemDBUnit extends DBPersistenceCommandUnit {
 
 	private Item item;
 	private boolean usingRefs = false;

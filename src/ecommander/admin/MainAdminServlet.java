@@ -604,7 +604,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		if (item.getItemType().getParameter(in.paramId).getDataType().isFile())
 			transaction.addCommandUnit(new DeleteItemFileUnit(item, in.paramId, in.index));
 		else
-			item.removeValue(in.paramId, in.index);
+			item.removeMultipleParamValue(in.paramId, in.index);
 		transaction.addCommandUnit(new UpdateItemDBUnit(item));
 		transaction.execute();
 		// Обновить индекс Lucene

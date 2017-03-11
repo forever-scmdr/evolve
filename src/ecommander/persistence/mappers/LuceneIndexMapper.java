@@ -301,7 +301,7 @@ public class LuceneIndexMapper {
 	
 	private synchronized void updateItemInt(Item item, boolean needClose) throws IOException, SAXException, TikaException {
 		// Ссылки не добавлять в индекс (и не дуалять соответственно)
-		if (item.isReference() || !item.getItemType().isFulltextSearchable())
+		if (!item.getItemType().isFulltextSearchable())
 			return;
 		ensureWriter();
 		writer.deleteDocuments(new Term(DBConstants.Item.ID, item.getId() + ""));
@@ -309,9 +309,6 @@ public class LuceneIndexMapper {
 	}
 	
 	private synchronized void deleteItemInt(Item item, boolean needClose) throws IOException {
-		// Ссылки не добавлять в индекс (и не удалять соответственно)
-		if (item.isReference())
-			return;
 		ensureWriter();
 		Term[] deleteTerms = new Term[2];
 		deleteTerms[0] = new Term(DBConstants.Item.DIRECT_PARENT_ID, item.getId() + "");
@@ -322,9 +319,6 @@ public class LuceneIndexMapper {
 	}
 	
 	private synchronized void deleteSubitemsInt(Item item, boolean needClose) throws IOException {
-		// Ссылки не добавлять в индекс (и не удалять соответственно)
-		if (item.isReference())
-			return;
 		ensureWriter();
 		Term deleteTerm = new Term(DBConstants.Item.DIRECT_PARENT_ID, item.getId() + "");
 		writer.deleteDocuments(deleteTerm);

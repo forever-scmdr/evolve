@@ -80,7 +80,7 @@ public class SaveItemFileUnit extends ItemFileUnit {
 				if (paramArray.get(index).getValue().equals(uploadedFileName)) break;
 			}
 			(new File(AppContext.getFilesDirPath() + createParameterFileName(item.getValue(paramId).toString()))).delete();
-			item.removeValue(paramId, index);			
+			item.removeMultipleParamValue(paramId, index);
 		}
 	}
 

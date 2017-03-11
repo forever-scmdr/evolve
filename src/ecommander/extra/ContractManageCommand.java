@@ -266,8 +266,8 @@ public class ContractManageCommand extends Command {
 				// Удалить ассоциированные формы для всех комнат
 				// т. к. они каждый раз устанавливаются заново
 				if (item.getTypeName().equals(ItemNames.FREE_ROOM)) {
-					item.removeValue(ItemNames.free_room.ORDER_FORM_BASE);
-					item.removeValue(ItemNames.free_room.ORDER_FORM_EXTRA);
+					item.clearParameter(ItemNames.free_room.ORDER_FORM_BASE);
+					item.clearParameter(ItemNames.free_room.ORDER_FORM_EXTRA);
 				}
 				for (String inputName : post.getPostedInputs()) {
 					String paramName = StringUtils.substringAfter(inputName, "new_");

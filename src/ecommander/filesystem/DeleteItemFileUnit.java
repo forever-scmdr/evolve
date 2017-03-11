@@ -34,11 +34,11 @@ public class DeleteItemFileUnit extends ItemFileUnit {
 			String paramValue = aramArray.get(paramIndex).outputValue();
 			deleteFile(paramValue);
 			// Удаление значения параметра в айтеме
-			item.removeValue(paramId, paramIndex);
+			item.removeMultipleParamValue(paramId, paramIndex);
 		} else {
 			String paramValue = ((SingleParameter)item.getParameter(paramId)).outputValue();
 			deleteFile(paramValue);
-			item.removeValue(paramId);
+			item.clearParameter(paramId);
 		}
 	}
 

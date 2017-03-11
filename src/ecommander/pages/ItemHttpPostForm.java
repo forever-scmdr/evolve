@@ -519,7 +519,7 @@ public class ItemHttpPostForm implements Serializable {
 	@SuppressWarnings("unchecked")
 	public static void editExistingItem(ItemHttpPostForm itemForm, Item itemToEdit, String... resetParams) throws Exception {
 		for (String param : resetParams) {
-			itemToEdit.removeValue(param);
+			itemToEdit.clearParameter(param);
 		}
 		for (Integer paramId : itemForm.getParameterIds()) {
 			ParameterDescription paramDesc = itemToEdit.getItemType().getParameter(paramId);

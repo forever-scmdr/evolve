@@ -103,7 +103,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit {
 				ParameterDescription paramDesc = iter.next();
 				if (paramDesc.getDataType().isFile()) {
 					ArrayList<File> files = baseItem.getFileValues(paramDesc.getName(), AppContext.getFilesDirPath());
-					item.removeValue(paramDesc.getName()); // для того, чтобы не было дублирования
+					item.clearParameter(paramDesc.getName()); // для того, чтобы не было дублирования
 					for (File file : files) {
 						item.setValue(paramDesc.getName(), file);
 					}

@@ -169,7 +169,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 								if (deleteFile.exists() && !deleteFile.delete())
 									throw new Exception("File '" + deleteFile.getName() + "' can not be deleted");
 							}
-							destVals.clearValues();
+							destVals.clear();
 						}
 						ArrayList<SingleParameter> vals = new ArrayList<SingleParameter>(((MultipleParameter) item.getParameter(srcParam
 								.getId())).getValues());
@@ -200,7 +200,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 				}
 			}
 			// Апдейт базы данных (сохранение новых параметров айтема)
-			if (!item.isConsistent()) {
+			if (item.hasChanged()) {
 				PreparedStatement pstmt = null;
 				try {
 					Connection conn = getTransactionContext().getConnection();

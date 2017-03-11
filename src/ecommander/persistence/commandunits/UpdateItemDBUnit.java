@@ -24,7 +24,7 @@ import ecommander.filesystem.SaveItemFilesUnit;
  * @author EEEE
  *
  */
-public class UpdateItemDBUnit extends DBPersistenceCommandUnit {
+class UpdateItemDBUnit extends DBPersistenceCommandUnit {
 	
 	private Item item;
 	private boolean triggerExtra = true;
