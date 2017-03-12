@@ -30,7 +30,7 @@ public class User {
 	 * @return
 	 */
 	public static User getDefaultUser() {
-		Integer defaultGroup = UserGroupRegistry.getDefaultGroup();
+		Byte defaultGroup = UserGroupRegistry.getDefaultGroup();
 		int groupId = NO_GROUP_ID;
 		if (defaultGroup != null)
 			groupId = defaultGroup;

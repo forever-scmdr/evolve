@@ -31,7 +31,7 @@ public class TemplateQuery implements QueryPart {
 	private String name; // название шаблона, например, <<PREDECESSOR_ID>>
 	private HashMap<String, TemplateQuery> subqueries; // Шаблоны по именам
 	private ArrayList<QueryPart> queryParts; // Все части запроса, в том числе шаблоны (которые также есть и в templates)
-	
+
 	private TemplateQuery(TemplateQuery prototype) {
 		this(prototype.name);
 		for (String key : prototype.subqueries.keySet()) {
@@ -108,18 +108,33 @@ public class TemplateQuery implements QueryPart {
 		queryParts.add(new SqlQueryPart(sql));
 		return this;
 	}
+
+	/**
+	 * Создать часть SELECT <поле1, поле2, ...>
+	 * @param colNames
+	 * @return
+	 */
+	public final TemplateQuery sqlSelect(String... colNames) {
+		queryParts.add(new SqlQueryPart(StringUtils.join(colNames, ", ")));
+		return this;
+	}
+
+	public final TemplateQuery sqlFrom(String tableName) {
+		queryParts.add(new SqlQueryPart(" FROM " + tableName));
+		return this;
+	}
+
+	public final TemplateQuery sqlInnerJoin(String tableName, String ownColoumn, String foreingColoumn) {
+		queryParts.add(new SqlQueryPart(" INNER JOIN " + tableName + " " + foreingColoumn + "=" + ownColoumn));
+		return this;
+	}
 	/**
 	 * Добавляет пустой плейсхолдер для подзапроса
 	 * @param name
 	 * @return
 	 */
 	public final TemplateQuery subquery(String name) {
-		TemplateQuery template = subqueries.get(name);
-		if (template == null) {
-			template = new TemplateQuery(name);
-			subqueries.put(name, template);
-		}
-		queryParts.add(template);
+		queryParts.add(getOrCreateSubquery(name));
 		return this;
 	}
 	/**

@@ -42,7 +42,7 @@ public class UserGroupRegistry {
 		return getRegistry().groups.containsKey(groupName);
 	}
 	
-	public static byte getDefaultGroup() {
+	public static Byte getDefaultGroup() {
 		return getRegistry().groups.get(User.USER_DEFAULT_GROUP);
 	}
 	/**

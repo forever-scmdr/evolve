@@ -50,8 +50,8 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit {
 			ServerLogger.debug(sql);
 			stmt.executeUpdate(sql);
 			// Установить новую группу пользователя во все айтемы этого пользователя
-			sql = "UPDATE " + DBConstants.Item.TABLE + " SET " + DBConstants.Item.OWNER_GROUP_ID + "=" + user.getGroupId()
-					+ " WHERE " + DBConstants.Item.OWNER_USER_ID + "=" + user.getUserId();
+			sql = "UPDATE " + DBConstants.ItemParent.TABLE + " SET " + DBConstants.ItemParent.GROUP + "=" + user.getGroupId()
+					+ " WHERE " + DBConstants.ItemParent.USER + "=" + user.getUserId();
 			ServerLogger.debug(sql);
 			stmt.executeUpdate(sql);
 		} finally {

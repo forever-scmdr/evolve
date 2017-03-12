@@ -159,7 +159,7 @@ public class UserMapper {
 			ServerLogger.debug(sql);
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next())
-				UserGroupRegistry.addGroup(rs.getString(DBConstants.UserGroup.NAME), rs.getInt(DBConstants.UserGroup.ID));
+				UserGroupRegistry.addGroup(rs.getString(DBConstants.UserGroup.NAME), rs.getByte(DBConstants.UserGroup.ID));
 		} finally {
 			if (conn != null && !conn.isClosed())
 				conn.close();

@@ -248,8 +248,8 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit {
 	public static int findNewWeight(Connection conn, long parentId) throws SQLException {
 		int maxWeight = 0;
 		String selectSql
-			= "SELECT MAX(" + DBConstants.Item.INDEX_WEIGHT + ") AS W FROM " 
-			+ DBConstants.Item.TABLE + " WHERE " +	DBConstants.Item.DIRECT_PARENT_ID + " = " + parentId;
+			= "SELECT MAX(" + DBConstants.Item.INDEX_WEIGHT + ") AS W FROM " + DBConstants.Item.TABLE
+			+ " INNER JOIN " + DBConstants.ItemParent.TABLE + " ON " + DBConstants.Item.ID + "=" + " WHERE " +	DBConstants.Item.DIRECT_PARENT_ID + " = " + parentId;
 		ServerLogger.debug(selectSql);
 		PreparedStatement pstmt = conn.prepareStatement(selectSql);
 		ResultSet rs = pstmt.executeQuery(selectSql);
