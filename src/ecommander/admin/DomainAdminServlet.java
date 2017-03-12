@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.Strings;
 import ecommander.controllers.StartController;
-import ecommander.persistence.DelayedTransaction;
+import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.commandunits.DeleteDomainDBUnit;
 import ecommander.persistence.commandunits.SaveNewDomainDBUnit;
 import ecommander.persistence.commandunits.UpdateDomainDBUnit;

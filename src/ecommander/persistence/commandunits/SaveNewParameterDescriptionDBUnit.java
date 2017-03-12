@@ -4,7 +4,6 @@ import ecommander.fwk.Strings;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;
-import ecommander.model.ParameterDescription.Quantifier;
 
 /**
  * Сохраняет новый тип айтема в БД
@@ -27,12 +26,13 @@ public class SaveNewParameterDescriptionDBUnit extends ItemModelFilePersistenceC
 	private String domain;
 	private String format;
 	private String type;
-	private Quantifier quantifier = Quantifier.single;
+	private boolean isMultiple = false;
 	private boolean hidden = false;
 	private boolean virtual = false;
+	private String defaultValue;
 
 	public SaveNewParameterDescriptionDBUnit(String paramName, int itemId, String caption, String description, String domain,
-			String format, String quantifierStr, String typeStr, boolean isVirtual, boolean isHidden) throws Exception {
+			String format, boolean isMultiple, String typeStr, boolean isVirtual, boolean isHidden, String defaultValue) throws Exception {
 		this.itemId = itemId;
 		this.hidden = isHidden;
 		this.virtual = isVirtual;
@@ -49,17 +49,15 @@ public class SaveNewParameterDescriptionDBUnit extends ItemModelFilePersistenceC
 		if (format == null) format = Strings.EMPTY;
 		this.type = typeStr;
 		if (type == null) type = Strings.EMPTY;
-		try {
-			this.quantifier = Quantifier.valueOf(quantifierStr);
-		} catch (Exception e) {
-			throw new Exception("Parsing Model XML: Parameter of an item '" + itemId + "' is not 'single' or 'multiple'");
-		}
+		this.isMultiple = isMultiple;
+		this.defaultValue = defaultValue;
 	}
 
 	@Override
 	protected void executeInt() throws Exception {
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemId);
-		itemDesc.putParameter(new ParameterDescription(name, 0, type, quantifier, itemId, domain, caption, description, format, virtual, hidden));
+		itemDesc.putParameter(new ParameterDescription(name, 0, type, isMultiple, itemId, domain, caption,
+				description, format, virtual, hidden, defaultValue, null));
 		executeCommand(new UpdateItemTypeDBUnit(itemDesc));
 	}
 }

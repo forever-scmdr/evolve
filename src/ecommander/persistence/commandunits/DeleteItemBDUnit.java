@@ -7,7 +7,7 @@ import java.sql.Statement;
 import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
-import ecommander.persistence.PersistenceCommandUnit;
+import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.LuceneIndexMapper;

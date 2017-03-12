@@ -4,7 +4,7 @@ import java.util.List;
 
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.persistence.DelayedTransaction;
+import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.commandunits.SaveNewItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.SessionItemMapper;

@@ -5,7 +5,7 @@ import ecommander.controllers.PageController;
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ValidationException;
 import ecommander.pages.PageModelBuilder;
-import ecommander.persistence.DelayedTransaction;
+import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.mappers.DBConstants;
 import org.apache.commons.io.FileUtils;
 

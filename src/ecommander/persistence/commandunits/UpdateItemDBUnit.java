@@ -12,7 +12,7 @@ import ecommander.fwk.ServerLogger;
 import ecommander.model.datatypes.DataType.Type;
 import ecommander.model.Item;
 import ecommander.model.ParameterDescription;
-import ecommander.persistence.PersistenceCommandUnit;
+import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;

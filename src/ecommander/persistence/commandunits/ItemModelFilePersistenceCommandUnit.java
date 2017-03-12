@@ -1,16 +1,15 @@
 package ecommander.persistence.commandunits;
 
 import ecommander.controllers.AppContext;
+import ecommander.model.DataModelXmlElementNames;
+
 /**
  * Базовая команда для работы с файлом определения типов айтемов
  * @author E
  *
  */
-public abstract class ItemModelFilePersistenceCommandUnit extends ModelFilePersistenceCommandUnit {
+public abstract class ItemModelFilePersistenceCommandUnit extends ModelFilePersistenceCommandUnit implements DataModelXmlElementNames {
 
-	public static final String ROOT_ELEMENT = "items";
-	public static final String ITEM_ELEMENT = "item";
-	
 	@Override
 	protected String getFileName() {
 		return AppContext.getUserModelPath();
@@ -18,7 +17,7 @@ public abstract class ItemModelFilePersistenceCommandUnit extends ModelFilePersi
 
 	@Override
 	protected String getRootElementName() {
-		return ROOT_ELEMENT;
+		return ITEMS;
 	}
 
 }

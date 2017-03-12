@@ -16,7 +16,7 @@ import ecommander.common.Strings;
 import ecommander.model.item.Item;
 import ecommander.model.item.ItemType;
 import ecommander.model.item.ItemTypeRegistry;
-import ecommander.persistence.DelayedTransaction;
+import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.commandunits.SaveNewItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.users.User;

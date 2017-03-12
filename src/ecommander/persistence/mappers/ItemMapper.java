@@ -1,22 +1,14 @@
 package ecommander.persistence.mappers;
 
+import ecommander.fwk.EcommanderException;
+import ecommander.model.*;
+import ecommander.persistence.common.TransactionContext;
+import ecommander.persistence.common.TemplateQuery;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Iterator;
-
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.EcommanderException;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.MultipleParameter;
-import ecommander.model.Parameter;
-import ecommander.model.ParameterDescription;
-import ecommander.model.SingleParameter;
-import ecommander.persistence.TransactionContext;
-import ecommander.persistence.common.TemplateQuery;
 
 /**
  * Выполняет различные операции с Item и БД
@@ -129,29 +121,29 @@ public class ItemMapper {
 			query.sql("); ");
 		}
 	}
+
 	/**
 	 * Создать айтем из резалт сета
 	 * @param rs
-	 * @param parentColName
+	 * @param contextAssocId
+	 * @param contextParentId
+	 * @param userId
+	 * @param groupId
+	 * @param status
 	 * @return
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public static Item buildItem(ResultSet rs, String parentColName) throws SQLException, Exception {
+	public static Item buildItem(ResultSet rs, byte contextAssocId, long contextParentId, int userId, byte groupId, byte status) throws SQLException, Exception {
 		long itemId = rs.getLong(DBConstants.Item.ID);
 		int itemTypeId = rs.getInt(DBConstants.Item.TYPE_ID);
-		int itemWeight= rs.getInt(DBConstants.Item.INDEX_WEIGHT);
-		int userId = rs.getInt(DBConstants.ItemParent.USER);
-		byte groupId = rs.getByte(DBConstants.ItemParent.GROUP);
-		byte status = rs.getByte(DBConstants.ItemParent.SHOW);
-		byte assocId = rs.getByte(DBConstants.ItemParent.ASSOC_ID);
+		int itemWeight = rs.getInt(DBConstants.Item.INDEX_WEIGHT);
 		String key = rs.getString(DBConstants.Item.KEY);
 		String keyUnique = rs.getString(DBConstants.Item.TRANSLIT_KEY);
-		long parentId = rs.getLong(parentColName);
 		Timestamp timeUpdated = rs.getTimestamp(DBConstants.Item.UPDATED);
 		String params = rs.getString(DBConstants.Item.PARAMS);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemTypeId);
-		return Item.existingItem(itemDesc, itemId, ItemTypeRegistry.getAssoc(assocId), parentId, userId, groupId, status,
-				itemWeight, key, params, keyUnique,	timeUpdated.getTime());
+		return Item.existingItem(itemDesc, itemId, ItemTypeRegistry.getAssoc(contextAssocId), contextParentId, userId, groupId, status,
+				itemWeight, key, params, keyUnique, timeUpdated.getTime());
 	}
 }

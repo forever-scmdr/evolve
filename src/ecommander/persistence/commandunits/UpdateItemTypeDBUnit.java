@@ -25,23 +25,16 @@ import ecommander.model.ParameterDescription;
  */
 public class UpdateItemTypeDBUnit extends ItemModelFilePersistenceCommandUnit {
 
-	private LinkedHashSet<Integer> paramsOrder = new LinkedHashSet<Integer>();
+	private LinkedHashSet<Integer> paramsOrder = new LinkedHashSet<>();
 	private String extendsStr;
 	private ItemType oldDesc;
 	private ItemType newDesc;
 	
-	public UpdateItemTypeDBUnit(int id, String itemName, String caption, String description, String strExtends, String virtualStr,
+	public UpdateItemTypeDBUnit(int id, String itemName, String caption, String description, String strExtends,
 			boolean inline, ArrayList<Integer> order, String itemKey) {
 		if (strExtends != null) this.extendsStr = strExtends;
 		if (order != null) paramsOrder.addAll(order);
 		oldDesc = ItemTypeRegistry.getItemType(id);
-		// Проверить, все ли параметры есть в айтеме. Отсутствующие удаляются из массива
-		for (int i = 0; i < order.size(); i++) {
-			if (oldDesc.getParameter(order.get(i)) == null) {
-				order.remove(i);
-				i--;
-			}
-		}
 		// Добавить в порядок параметров все остальные параметры, которых нет в переданном списке
 		for (ParameterDescription param : oldDesc.getParameterList()) {
 			paramsOrder.add(param.getId());
@@ -52,11 +45,11 @@ public class UpdateItemTypeDBUnit extends ItemModelFilePersistenceCommandUnit {
 			isKeyUnique = parent != null && parent.isKeyUnique();
 		}
 		itemName = Strings.createXmlElementName(itemName);
-		newDesc = new ItemType(itemName.trim(), id, caption, description, itemKey, extendsStr, Boolean.parseBoolean(virtualStr), true, inline,
-				true, isKeyUnique);
+		newDesc = new ItemType(itemName.trim(), id, caption, description, itemKey, extendsStr,
+				null, false, true, inline,true, isKeyUnique);
 	}
 	
-	public UpdateItemTypeDBUnit(ItemType desc) {
+	UpdateItemTypeDBUnit(ItemType desc) {
 		this.oldDesc = desc;
 		this.newDesc = desc;
 		paramsOrder = null;
@@ -64,11 +57,7 @@ public class UpdateItemTypeDBUnit extends ItemModelFilePersistenceCommandUnit {
 
 	@Override
 	protected void executeInt() throws Exception {
-		ItemTypeMDWriter writer = new ItemTypeMDWriter(newDesc, ITEM_ELEMENT);
-		// Если поменялось имя айтема - надо добавить атрибут old-name
-		if (!oldDesc.getName().equals(newDesc.getName())) {
-			writer.setNameOld(oldDesc.getName());
-		}
+		ItemTypeMDWriter writer = new ItemTypeMDWriter(newDesc, ITEM);
 		String startMark = getStartMark(oldDesc.getName());
 		String endMark = getEndMark(oldDesc.getName());
 		String startPart = StringUtils.substringBefore(getFileContents(), startMark);
@@ -78,6 +67,8 @@ public class UpdateItemTypeDBUnit extends ItemModelFilePersistenceCommandUnit {
 		if (paramsOrder != null) {
 			for (Integer paramId : paramsOrder) {
 				ParameterDescription paramDesc = oldDesc.getParameter(paramId);
+				if (paramDesc == null)
+					continue;
 				if (paramDesc.getOwnerItemId() == oldDesc.getTypeId())
 					writer.addSubwriter(new ParameterDescriptionMDWriter(paramDesc));
 			}

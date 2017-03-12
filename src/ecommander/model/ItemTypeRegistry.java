@@ -40,8 +40,9 @@ public class ItemTypeRegistry {
 	private static volatile Thread modifyThread = null; // Пока полностью не загрузилась модель данных, реестр считается заблокированным. Из него нельзя получать информацию.
 	// Поток, который модифицирует модель данных. Он может быть только один и ему разрешено читать модель в процессе модификации
 
+	private final RootType root = new RootType();
+
 	private static final long SESSION_ROOT_ID = -1L;
-	private static final long DEFAULT_ROOT_ID = 1L;
 
 //	private static final RootItemDescription NO_ROOT_DESC = new RootItemDescription("no_group", Persistence.PERSISTENT, NO_ROOT_ID);
 
@@ -72,12 +73,11 @@ public class ItemTypeRegistry {
 	}
 
 	/**
-	 * Возвращает корень по умолчанию, т. е. корень группы по умолчанию (common)
-	 *
+	 * Возвращает корень по умолчанию
 	 * @return
 	 */
-	public static long getDefaultRootId() {
-		return DEFAULT_ROOT_ID;
+	public static RootType getDefaultRoot() {
+		return getSingleton().root;
 	}
 
 	/**

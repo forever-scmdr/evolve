@@ -1,48 +1,34 @@
 package ecommander.output;
 
+import ecommander.model.DataModelXmlElementNames;
+import ecommander.model.ItemTypeContainer;
+import ecommander.model.ItemTypeRegistry;
+
 /**
  * Выводит определение корня айтемов
  * 
-	<root group="common" persistence="database">
-		<subitem name="catalog" quantifier="single" virtual="false"/>
-		<subitem name="news" quantifier="single" virtual="false"/>
+	<root>
+		<child name="catalog" quantifier="single" virtual="false"/>
+		<child name="news" quantifier="single" virtual="false"/>
 	</itemdesc>
  * 
  * @author EEEE
  *
  */
-public class RootItemMDWriter extends MetaDataWriter {
+public class RootItemMDWriter extends MetaDataWriter implements DataModelXmlElementNames {
 
-	public static final String ROOT_TAG = "root";
-	public static final String SUBITEM_TAG = "subitem";
-	
-	public static final String GROUP_ATTRIBUTE = "group";
-	
-	public static final String NAME_ATTRIBUTE = "name";
-	public static final String ID_ATTRIBUTE = "id";
-	public static final String VIRTUAL_ATTRIBUTE = "virtual";
-	public static final String QUANTIFIER_ATTRIBUTE = "quantifier";
-	
-	private RootItemType root;
-	
-	public RootItemMDWriter(RootItemType root) {
+	public RootItemMDWriter() {
 		super();
-		this.root = root;
 	}
 	
 	@Override
 	public XmlDocumentBuilder write(XmlDocumentBuilder xml) {
-		xml.startElement(ROOT_TAG, GROUP_ATTRIBUTE, root.getGroup());
-		for (String subitem : root.getAllSubitems()) {
-			if (root.isSubitemOwn(subitem)) {
-				String quantifier = "single";
-				if (root.isSubitemMultiple(subitem))
-					quantifier = "multiple";
-				xml.addEmptyElement(SUBITEM_TAG, 
-						NAME_ATTRIBUTE, subitem, 
-						QUANTIFIER_ATTRIBUTE, quantifier, 
-						VIRTUAL_ATTRIBUTE, root.isSubitemVirtual(subitem));
-			}
+		xml.startElement(ROOT);
+		for (ItemTypeContainer.ChildDesc child : ItemTypeRegistry.getDefaultRoot().getAllChildren()) {
+			xml.addEmptyElement(CHILD,
+					ITEM, child.itemName,
+					VIRTUAL, child.isVirtual,
+					SINGLE, child.isSingle);
 		}
 		for (MetaDataWriter part : additional) {
 			part.write(xml);

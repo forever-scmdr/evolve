@@ -7,8 +7,10 @@ public interface DataModelXmlElementNames {
 	/**
 	 * Элементы
 	 */
+	String ITEMS = "items";
 	String ASSOC = "assoc";
 	String ITEM = "item";
+	String ITEMDESC = "itemdesc";
 	String ROOT = "root";
 	String PARAMETER = "parameter";
 	String CHILD = "child";
@@ -44,6 +46,9 @@ public interface DataModelXmlElementNames {
 	String SINGLE = "single";
 	String MULTIPLE = "multiple";
 	String DEFAULT = "default";
+	String OWNER_ID = "owner-id";
+	String PARAM = "param";
+	String ID = "id";
 
 	String TEXT_INDEX = "text-index";
 	String TEXT_INDEX_PARAMETER = "text-index-parameter";

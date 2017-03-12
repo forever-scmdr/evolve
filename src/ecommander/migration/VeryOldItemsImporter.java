@@ -11,8 +11,7 @@ import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.persistence.DelayedTransaction;
-import ecommander.persistence.commandunits.CreateExtendedReferenceDBUnit;
+import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.commandunits.SaveNewItemDBUnit;
 

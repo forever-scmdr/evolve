@@ -1,4 +1,4 @@
-package ecommander.persistence;
+package ecommander.persistence.common;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import javax.xml.parsers.SAXParser;
@@ -23,7 +22,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
-import ecommander.output.ParameterDescriptionSimpleMDWriter;
+import ecommander.output.UserParameterDescriptionMDWriter;
 import ecommander.output.XmlDocumentBuilder;
 import ecommander.model.datatypes.DataType.Type;
 
@@ -426,7 +425,7 @@ public class Item {
 			xml.startElement(param.getName());
 			if (param.getDesc().getDataType().hasMeta()) {
 				HashMap<String, String> meta = param.getDesc().getDataType().getMeta(param.getValue());
-				ArrayList<String> attrs = new ArrayList<String>();
+				ArrayList<String> attrs = new ArrayList<>();
 				for (String attr : meta.keySet()) {
 					attrs.add(attr);
 					attrs.add(meta.get(attr));
@@ -435,7 +434,7 @@ public class Item {
 			}
 			xml.addText(param.outputValue()).endElement();
 		} else {
-			ParameterDescriptionSimpleMDWriter paramWriter = new ParameterDescriptionSimpleMDWriter(param.getDesc(), param.outputValue());
+			UserParameterDescriptionMDWriter paramWriter = new UserParameterDescriptionMDWriter(param.getDesc(), param.outputValue());
 			paramWriter.write(xml);
 		}
 	}

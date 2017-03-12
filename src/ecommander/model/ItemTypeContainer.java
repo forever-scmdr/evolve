@@ -13,11 +13,11 @@ import java.util.HashMap;
 public abstract class ItemTypeContainer {
 
 	public static class ChildDesc {
-		private final String assocName;
-		private final String itemName;
-		private final boolean isSingle;
-		private final boolean isVirtual;
-		private final boolean isOwn; // Является ли базовым владельцем сабайтема (не путем наследования)
+		public final String assocName;
+		public final String itemName;
+		public final boolean isSingle;
+		public final boolean isVirtual;
+		public final boolean isOwn; // Является ли базовым владельцем сабайтема (не путем наследования)
 
 		public ChildDesc(String assocName, String itemName, boolean isSingle, boolean isVirtual, boolean isOwn) {
 			this.assocName = assocName;

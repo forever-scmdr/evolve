@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
-import ecommander.persistence.PersistenceCommandUnit;
+import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;

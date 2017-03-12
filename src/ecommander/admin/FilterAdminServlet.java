@@ -28,7 +28,7 @@ import ecommander.model.filter.CriteriaGroupDef;
 import ecommander.model.filter.FilterDefPart;
 import ecommander.model.filter.FilterDefinition;
 import ecommander.model.filter.InputDef;
-import ecommander.persistence.InPlaceTransaction;
+import ecommander.persistence.common.InPlaceTransaction;
 import ecommander.persistence.commandunits.UpdateItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.model.DomainRegistry;

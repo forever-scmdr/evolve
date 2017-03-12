@@ -1,15 +1,13 @@
 package ecommander.persistence.commandunits;
 
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.fwk.Strings;
-import ecommander.output.ItemTypeMDWriter;
-import ecommander.output.ParameterDescriptionMDWriter;
-import ecommander.output.XmlDocumentBuilder;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;
-import ecommander.model.ParameterDescription.Quantifier;
+import ecommander.output.ItemTypeMDWriter;
+import ecommander.output.ParameterDescriptionMDWriter;
+import ecommander.output.XmlDocumentBuilder;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Сохраняет новый тип айтема в БД
@@ -29,7 +27,7 @@ public class UpdateParameterDescriptionDBUnit extends ItemModelFilePersistenceCo
 	private ParameterDescription oldDesc;
 	
 	public UpdateParameterDescriptionDBUnit(int paramId, int itemId, String name, String caption, String description, 
-			String domain, String format, String quantifierStr, String typeStr, boolean isVirtual, boolean isHidden) throws Exception {
+			String domain, String format, boolean isMultiple, String typeStr, boolean isVirtual, boolean isHidden, String defaultValue) throws Exception {
 		
 		if (name == null) name = Strings.EMPTY;
 		if (caption == null) caption = Strings.EMPTY;
@@ -37,30 +35,16 @@ public class UpdateParameterDescriptionDBUnit extends ItemModelFilePersistenceCo
 		if (domain == null) domain = Strings.EMPTY;
 		if (format == null) format = Strings.EMPTY;
 		if (typeStr == null) typeStr = Strings.EMPTY;
-		if (quantifierStr == null) quantifierStr = Strings.EMPTY;
-		Quantifier quantifier = Quantifier.single;
-		try {
-			quantifier = Quantifier.valueOf(quantifierStr);
-		} catch (Exception e) {
-			throw new Exception("Parsing Model XML: Parameter of an item '" + itemId + "' is not 'single' or 'multiple'");
-		}
 		oldDesc = ItemTypeRegistry.getItemType(itemId).getParameter(paramId);
-		newDesc = new ParameterDescription(name, paramId, typeStr, quantifier, itemId, domain, caption, description, format, isVirtual, isHidden);
+		newDesc = new ParameterDescription(name, paramId, typeStr, isMultiple, itemId, domain, caption, description,
+				format, isVirtual, isHidden, defaultValue, null);
 	}
 
 	@Override
 	protected void executeInt() throws Exception {
 		ParameterDescriptionMDWriter paramWriter = new ParameterDescriptionMDWriter(newDesc);
-		// Если поменялось имя параметра - надо добавить атрибут old-name
-		if (!oldDesc.getName().equals(newDesc.getName())) {
-			paramWriter.setNameOld(oldDesc.getName());
-		}
-		// Если поменялся тип параметра - надо добавить атрибут old-type
-		if (!oldDesc.getType().equals(newDesc.getType())) {
-			paramWriter.setTypeOld(oldDesc.getType().toString());
-		}
 		ItemType itemDesc = ItemTypeRegistry.getItemType(newDesc.getOwnerItemId());
-		ItemTypeMDWriter itemWriter = new ItemTypeMDWriter(itemDesc, ITEM_ELEMENT);
+		ItemTypeMDWriter itemWriter = new ItemTypeMDWriter(itemDesc, ITEM);
 		String startMark = getStartMark(itemDesc.getName());
 		String endMark = getEndMark(itemDesc.getName());
 		String startPart = StringUtils.substringBefore(getFileContents(), startMark);

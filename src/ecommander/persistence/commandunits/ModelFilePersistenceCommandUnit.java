@@ -14,8 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import ecommander.output.MetaDataWriter;
 import ecommander.output.XmlDocumentBuilder;
-import ecommander.persistence.PersistenceCommandUnit;
-import ecommander.persistence.TransactionContext;
+import ecommander.persistence.common.PersistenceCommandUnit;
+import ecommander.persistence.common.TransactionContext;
 
 /**
  * Абстрактный класс для команд базы данных

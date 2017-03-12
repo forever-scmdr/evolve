@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
-import ecommander.persistence.PersistenceCommandUnit;
-import ecommander.persistence.TransactionContext;
+import ecommander.persistence.common.PersistenceCommandUnit;
+import ecommander.persistence.common.TransactionContext;
 import ecommander.model.User;
 
 /**

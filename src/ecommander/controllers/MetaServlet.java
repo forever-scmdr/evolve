@@ -9,15 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ecommander.fwk.EcommanderException;
 import ecommander.fwk.MessageError;
 import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.ValidationException;
-import ecommander.migration.FilterEntityIdToNameConverter;
 import ecommander.migration.OldModelConverter;
 import ecommander.migration.VeryOldItemsImporter;
 import ecommander.model.DataModelBuilder;
-import ecommander.persistence.TransactionContext;
+import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 
 public class MetaServlet extends BasicServlet {

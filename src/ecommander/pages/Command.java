@@ -17,8 +17,8 @@ import ecommander.fwk.EcommanderException;
 import ecommander.fwk.PageNotFoundException;
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
-import ecommander.persistence.PersistenceCommandUnit;
-import ecommander.persistence.SynchronousTransaction;
+import ecommander.persistence.common.PersistenceCommandUnit;
+import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.mappers.SessionItemMapper;
 import ecommander.model.User;
 /**

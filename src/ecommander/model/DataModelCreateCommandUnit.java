@@ -67,8 +67,6 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	private HashMap<Integer, ItemParam> paramsById = new HashMap<>();
 	private HashMap<Byte, String> assocsById = new HashMap<>();
 	//private HashSet<Integer> itemsToRefresh = new HashSet<>(); // айтемы, у которых поменялись параметры и которые нао пересохранить
-	private UUID siteId = null; // уникальный идентификатор сайта, чтобы не перепутать с
-	private int modelVersion = 0;
 
 	private boolean dbChanged = false; // были ли изменения в БД
 	private boolean fileChanged = false;
@@ -161,7 +159,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			readItem(item);
 		}
 		Element root = doc.getElementsByTag(ROOT).first();
-		readRoot();
+		readRoot(root);
 		return doc;
 	}
 
@@ -171,14 +169,14 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 * @param attributes
 	 * @throws Exception
 	 */
-	protected void readRoot() throws Exception {
+	protected void readRoot(Element rootEl) throws Exception {
 		Statement stmt = null;
 		try {
 			// Загрузить ID корня из БД
 			stmt = getTransactionContext().getConnection().createStatement();
 			String sql 
 					= "SELECT " + DBConstants.Item.ID + " FROM " + DBConstants.Item.TABLE 
-					+ " WHERE " + DBConstants.Item.ID + "=" + ItemTypeRegistry.getDefaultRootId();
+					+ " WHERE " + DBConstants.Item.ID + "=" + ItemTypeRegistry.getDefaultRoot().getId();
 			ServerLogger.debug(sql);
 			ResultSet rs = stmt.executeQuery(sql);
 			boolean hasRoot = rs.next();
@@ -195,7 +193,10 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 						+ DBConstants.Item.TRANSLIT_KEY + ", "
 						+ DBConstants.Item.INDEX_WEIGHT + ", "
 						+ DBConstants.Item.PARAMS
-						+ ") VALUES (" + ItemTypeRegistry.getDefaultRootId() + ", 0, 'root', 'root', 0, '')";
+						+ ") VALUES ("
+						+ ItemTypeRegistry.getDefaultRoot().getId() + ", "
+						+ ItemTypeRegistry.getDefaultRoot().getTypeId()
+						+ ", 'root', 'root', 0, '')";
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;
@@ -203,6 +204,11 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		} finally {
 			if (stmt != null)
 				stmt.close();
+		}
+		// Вложенные айтемы
+		Elements children = rootEl.getElementsByTag(CHILD);
+		for (Element child : children) {
+			readChild(ItemTypeRegistry.getDefaultRoot(), child);
 		}
 	}
 

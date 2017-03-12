@@ -1,7 +1,7 @@
 package ecommander.fwk;
 
 import ecommander.model.Item;
-import ecommander.persistence.PersistenceCommandUnit;
+import ecommander.persistence.common.PersistenceCommandUnit;
 /**
  * Интерфейс фабрики для создания команд, которые должны выполнятся по событию, которое происходит
  * с айтемом. Например, дополнительная обработка после сохранения айтема

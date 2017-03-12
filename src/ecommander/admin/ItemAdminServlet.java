@@ -23,7 +23,7 @@ import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;
 import ecommander.model.TypeHierarchy;
-import ecommander.persistence.InPlaceTransaction;
+import ecommander.persistence.common.InPlaceTransaction;
 import ecommander.persistence.commandunits.DeleteItemTypeBDUnit;
 import ecommander.persistence.commandunits.DeleteParameterDescriptionBDUnit;
 import ecommander.persistence.commandunits.ItemModelFilePersistenceCommandUnit;
@@ -268,7 +268,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		}
 		// Сохранение айтема
 		final UpdateItemTypeDBUnit updateCommand 
-				= new UpdateItemTypeDBUnit(id, name, caption, description, itemExtends, "false", item.isInline(), paramOrder, item.getKey());
+				= new UpdateItemTypeDBUnit(id, name, caption, description, itemExtends, item.isInline(), paramOrder, item.getKey());
 		updateCommand.backup(); // бэкап файла
 		new InPlaceTransaction(getCurrentAdmin()) {
 			@Override
@@ -295,7 +295,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		String exts = StringUtils.join(ItemTypeRegistry.getDirectParents(i.getName()), ",");
 		// Сохранение айтема
 		final UpdateItemTypeDBUnit updateCommand = new UpdateItemTypeDBUnit(i.getTypeId(), i.getName(), i.getCaption(),
-				i.getDescription(), exts, i.isVirtual() + "", i.isInline(), paramOrder, i.getKey());
+				i.getDescription(), exts, i.isInline(), paramOrder, i.getKey());
 		updateCommand.backup(); // бэкап файла
 		new InPlaceTransaction(getCurrentAdmin()) {
 			@Override

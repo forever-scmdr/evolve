@@ -13,10 +13,10 @@ public class UserGroupRegistry {
 	
 	private static UserGroupRegistry REGISTRY;
 	
-	private HashMap<String, Integer> groups;
+	private HashMap<String, Byte> groups;
 	
 	private UserGroupRegistry() {
-		groups = new HashMap<String, Integer>();
+		groups = new HashMap<>();
 		groups.put(User.USER_DEFAULT_GROUP, User.NO_GROUP_ID);
 	}
 	
@@ -26,7 +26,7 @@ public class UserGroupRegistry {
 		return REGISTRY;
 	}
 	
-	public static void addGroup(String groupName, int groupId) {
+	public static void addGroup(String groupName, byte groupId) {
 		getRegistry().groups.put(groupName, groupId);
 	}
 	
@@ -42,7 +42,7 @@ public class UserGroupRegistry {
 		return getRegistry().groups.containsKey(groupName);
 	}
 	
-	public static Integer getDefaultGroup() {
+	public static byte getDefaultGroup() {
 		return getRegistry().groups.get(User.USER_DEFAULT_GROUP);
 	}
 	/**

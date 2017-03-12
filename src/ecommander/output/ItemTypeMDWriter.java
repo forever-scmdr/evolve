@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ecommander.model.DataModelXmlElementNames;
+import ecommander.model.ItemTypeContainer;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.ServerLogger;
@@ -12,50 +14,26 @@ import ecommander.model.ItemType;
  * Выводит определение айтема
  * 
 	<itemdesc 
-			name="section" id="22" virtual="true" user="false" key="name" 
-			caption="Раздел каталога" description="Раздел каталога продукции" extends="searchable,page_content" inline="true"
+			name="section" ag-id="22" ag-hash-"1234545345" virtual="true" user="false" key="name"
+			caption="Раздел каталога" description="Раздел каталога продукции" extends="searchable page_content" inline="true"
 			extendable="true" key-unique="true">
-		<subitem name="section" quantifier="multiple" virtual="false"/>
-		<subitem name="product" quantifier="multiple" virtual="false"/>
+		<child assoc="hierarchy" name="section" quantifier="multiple" virtual="false"/>
+		<child assoc="hierarchy" name="product" quantifier="multiple" virtual="false"/>
 	</itemdesc>
-
-	возможно использование old-name
-	
-	<itemdesc name="section" name-old="razdel" ...>
-		...
-	</itemdesc>
-
- * 
+ *
  * @author EEEE
  *
  */
-public class ItemTypeMDWriter extends MetaDataWriter {
+public class ItemTypeMDWriter extends MetaDataWriter implements DataModelXmlElementNames {
 
-	public static final String ITEMDESC_TAG = "itemdesc";
-	public static final String SUBITEM_TAG = "subitem";
-	
-	public static final String NAME_ATTRIBUTE = "name";
-	public static final String NAME_OLD_ATTRIBUTE = "name-old";
-	public static final String ID_ATTRIBUTE = "id";
-	public static final String VIRTUAL_ATTRIBUTE = "virtual";
-	public static final String USER_DEF_ATTRIBUTE = "user-def";
-	public static final String KEY_ATTRIBUTE = "key";
-	public static final String CAPTION_ATTRIBUTE = "caption";
-	public static final String DESCRIPTION_ATTRIBUTE = "description";
-	public static final String QUANTIFIER_ATTRIBUTE = "quantifier";
-	public static final String EXTENDS_ATTRIBUTE = "extends";
-	public static final String INLINE_ATTRIBUTE = "inline";
-	public static final String EXTENDABLE_ATTRIBUTE = "extendable";
-	public static final String KEY_UNIQUE_ATTRIBUTE = "key-unique";
-	
+
 	private ItemType itemType;
 	private String mainTag;
-	private String oldName;
-	
+
 	public ItemTypeMDWriter(ItemType itemDesc) {
 		super();
 		this.itemType = itemDesc;
-		mainTag = ITEMDESC_TAG;
+		mainTag = ITEMDESC;
 	}
 	
 	public ItemTypeMDWriter(ItemType itemDesc, String tag) {
@@ -66,43 +44,36 @@ public class ItemTypeMDWriter extends MetaDataWriter {
 	
 	public XmlDocumentBuilder write(XmlDocumentBuilder xml) {
 		List<String> attrs = new ArrayList<String>(Arrays.asList(
-				NAME_ATTRIBUTE, itemType.getName(), 
-				ID_ATTRIBUTE, itemType.getTypeId() + "", 
-				VIRTUAL_ATTRIBUTE, itemType.isVirtual() + "", 
-				USER_DEF_ATTRIBUTE, itemType.isUserDefined() + "",
-				INLINE_ATTRIBUTE, itemType.isInline() + "",
-				KEY_ATTRIBUTE, itemType.getKey(),
-				CAPTION_ATTRIBUTE, itemType.getCaption(),
-				DESCRIPTION_ATTRIBUTE, itemType.getDescription()
+				NAME, itemType.getName(),
+				CAPTION, itemType.getCaption(),
+				KEY, itemType.getKey(),
+				AG_ID, itemType.getTypeId() + "",
+				AG_HASH, itemType.getName().hashCode() + "",
+				VIRTUAL, itemType.isVirtual() + "",
+				USER_DEF, itemType.isUserDefined() + "",
+				INLINE, itemType.isInline() + "",
+				DESCRIPTION, itemType.getDescription()
 		));
 		if (itemType.hasPredecessors()) {
-			attrs.add(EXTENDS_ATTRIBUTE);
+			attrs.add(SUPER);
 			attrs.add(itemType.getExtendsString());
-		} else {
-			ServerLogger.debug(itemType.getName());
-		}
-		if (!StringUtils.isBlank(oldName)) {
-			attrs.add(NAME_OLD_ATTRIBUTE);
-			attrs.add(oldName);
 		}
 		if (itemType.isExtendable()) {
-			attrs.add(EXTENDABLE_ATTRIBUTE);
+			attrs.add(EXTENDABLE);
 			attrs.add(Boolean.TRUE.toString());
 		}
 		if (itemType.isKeyUnique()) {
-			attrs.add(KEY_UNIQUE_ATTRIBUTE);
+			attrs.add(KEY_UNIQUE);
 			attrs.add(Boolean.TRUE.toString());
 		}
 		xml.startElement(mainTag, attrs.toArray(new Object[0]));
-		for (String subitem : itemType.getAllChildren()) {
-			if (itemType.isChildOwn(subitem)) {
-				String quantifier = "single";
-				if (itemType.isChildMultiple(subitem))
-					quantifier = "multiple";
-				xml.addEmptyElement(SUBITEM_TAG, 
-						NAME_ATTRIBUTE, subitem, 
-						QUANTIFIER_ATTRIBUTE, quantifier, 
-						VIRTUAL_ATTRIBUTE, itemType.isChildVirtual(subitem));
+		for (ItemTypeContainer.ChildDesc child : itemType.getAllChildren()) {
+			if (child.isOwn) {
+				xml.addEmptyElement(CHILD,
+						ASSOC, child.assocName,
+						ITEM, child.itemName,
+						VIRTUAL, child.isVirtual,
+						SINGLE, child.isSingle);
 			}
 		}
 		for (MetaDataWriter part : additional) {
@@ -111,14 +82,7 @@ public class ItemTypeMDWriter extends MetaDataWriter {
 		xml.endElement();
 		return xml;
 	}
-	/**
-	 * Добавить старое название (нужно для изменения названия айтема)
-	 * @param nameOld
-	 */
-	public void setNameOld(String nameOld) {
-		this.oldName = nameOld;
-	}
-	
+
 	@Override
 	public String toString() {
 		return "item: " + itemType.getName();

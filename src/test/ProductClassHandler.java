@@ -24,7 +24,7 @@ import ecommander.model.item.ParameterDescription.Quantifier;
 import ecommander.model.item.filter.CriteriaDef;
 import ecommander.model.item.filter.FilterDefinition;
 import ecommander.model.item.filter.InputDef;
-import ecommander.persistence.DelayedTransaction;
+import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.commandunits.SaveNewItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.commandunits.UpdateItemDBUnit;

@@ -34,7 +34,8 @@ public class SaveNewItemTypeDBUnit extends ItemModelFilePersistenceCommandUnit {
 		itemName = Strings.createXmlElementName(itemName.trim());
 		ItemType parent = ItemTypeRegistry.getItemType(strExtends);
 		boolean isKeyUnique = parent != null && parent.isKeyUnique();
-		newType = new ItemType(itemName, 0, caption, description, itemKey, strExtends, itemVirtual, isUserDefined, inline, true, isKeyUnique);
+		newType = new ItemType(itemName, 0, caption, description, itemKey, strExtends, null,
+				itemVirtual, isUserDefined, inline, true, isKeyUnique);
 	}
 	
 	public SaveNewItemTypeDBUnit(ItemType type) {
@@ -43,7 +44,7 @@ public class SaveNewItemTypeDBUnit extends ItemModelFilePersistenceCommandUnit {
 
 	@Override
 	protected void executeInt() throws Exception {
-		ItemTypeMDWriter writer = new ItemTypeMDWriter(newType, ITEM_ELEMENT);
+		ItemTypeMDWriter writer = new ItemTypeMDWriter(newType, ITEM);
 		for (ParameterDescription param : newType.getParameterList()) {
 			writer.addSubwriter(new ParameterDescriptionMDWriter(param));
 		}
