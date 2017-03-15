@@ -47,6 +47,19 @@ public class DBConstants
 	}
 
 	/**
+	 * Порядок следавания потомков непосредственного родителя.
+	 * Определяется также ассоциацией
+	 */
+	public interface Weight
+	{
+		String TABLE = "weight";
+		String ITEM = "w_item";
+		String PARENT = "w_parent";
+		String ASSOC = "w_assoc";
+		String WEIGHT = "w_weight";
+	}
+
+	/**
 	 * Таблица, в которой хранится описание модели данных в виде XML
 	 */
 	public interface ModelXML {

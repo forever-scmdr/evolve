@@ -47,6 +47,15 @@ CREATE TABLE `item_parent` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE='utf8_general_ci';
 
 
+CREATE TABLE `weight` (
+  `w_item` BIGINT(20) UNSIGNED NOT NULL,
+  `w_assoc` TINYINT(3) UNSIGNED NOT NULL,
+  `w_parent` BIGINT(20) UNSIGNED NOT NULL,
+  `w_weight` INT(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`w_parent`, `w_assoc`, `w_item`, `w_weight`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE='utf8_general_ci';
+
+
 CREATE TABLE `int_index` (
   `ii_param` INT(10) UNSIGNED NOT NULL,
   `ii_val` BIGINT(20) NOT NULL,

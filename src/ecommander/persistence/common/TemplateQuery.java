@@ -114,18 +114,30 @@ public class TemplateQuery implements QueryPart {
 	 * @param colNames
 	 * @return
 	 */
-	public final TemplateQuery sqlSelect(String... colNames) {
-		queryParts.add(new SqlQueryPart(StringUtils.join(colNames, ", ")));
+	public final TemplateQuery SELECT(String... colNames) {
+		queryParts.add(new SqlQueryPart("SELECT " + StringUtils.join(colNames, ", ")));
 		return this;
 	}
 
-	public final TemplateQuery sqlFrom(String tableName) {
+	public final TemplateQuery FUNC(String function, String... args) {
+		queryParts.add(new SqlQueryPart(" " + function + "(" + StringUtils.join(args, ", ") + ")"));
+	}
+
+	public final TemplateQuery FROM(String tableName) {
 		queryParts.add(new SqlQueryPart(" FROM " + tableName));
 		return this;
 	}
 
-	public final TemplateQuery sqlInnerJoin(String tableName, String ownColoumn, String foreingColoumn) {
-		queryParts.add(new SqlQueryPart(" INNER JOIN " + tableName + " " + foreingColoumn + "=" + ownColoumn));
+	public final TemplateQuery INNER_JOIN(String tableName, String... columnPairs) {
+		if (columnPairs.length % 2 != 0 || columnPairs.length == 0)
+			throw new IllegalArgumentException("There must be pairs of columns as JOIN conditions");
+		StringBuilder sb = new StringBuilder(" INNER JOIN ");
+		for (int i = 0; i < columnPairs.length; i += 2) {
+			if (i > 0)
+				sb.append(" AND ");
+			sb.append(columnPairs[i]).append("=").append(columnPairs[i + 1]);
+		}
+		queryParts.add(new SqlQueryPart(sb));
 		return this;
 	}
 	/**

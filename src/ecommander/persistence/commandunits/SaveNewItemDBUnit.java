@@ -245,8 +245,12 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static int findNewWeight(Connection conn, long parentId) throws SQLException {
+	public static int findNewWeight(Connection conn, long parentId, ) throws SQLException {
 		int maxWeight = 0;
+		TemplateQuery query = new TemplateQuery("max weight");
+		query.SELECT().FUNC("MAX", DBConstants.Item.INDEX_WEIGHT).FROM(DBConstants.Item.TABLE)
+				.INNER_JOIN(DBConstants.ItemParent.TABLE, DBConstants.ItemParent.)
+
 		String selectSql
 			= "SELECT MAX(" + DBConstants.Item.INDEX_WEIGHT + ") AS W FROM " + DBConstants.Item.TABLE
 			+ " INNER JOIN " + DBConstants.ItemParent.TABLE + " ON " + DBConstants.Item.ID + "=" + " WHERE " +	DBConstants.Item.DIRECT_PARENT_ID + " = " + parentId;
