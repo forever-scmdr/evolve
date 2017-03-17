@@ -9,14 +9,27 @@
 
 -->
 <urlrewrite>
+    <!--Переход на страницу index-->
     <rule match-type="regex" enabled="true">
         <from>^/?$</from>
         <to type="forward" last="false">/index/</to>
     </rule>
+    <!--Защищенные файлы (доступные только для авторизованных пользователей) - спецсервлет protected-->
+    <rule match-type="wildcard" enabled="true">
+        <from>/restrict_files/**.*</from>
+        <to type="forward" last="true">/protected/$1.$2</to>
+    </rule>
+    <!--Закрытые для доступа файлы (скрытые и удаленные айтемы, нет доступа никому) - спецсервлет hidden-->
+    <rule match-type="wildcard" enabled="true">
+        <from>/hidden_files/**.*</from>
+        <to type="forward" last="true">/hidden/$1.$2</to>
+    </rule>
+    <!--Обычные файлы и обработчики для администратора (.action)-->
     <rule match-type="wildcard" enabled="true">
         <from>/**.*</from>
         <to type="forward" last="true">/$1.$2</to>
     </rule>
+    <!--Страницы сайта (основная работа CMS)-->
     <rule match-type="wildcard" enabled="true">
         <from>/**</from>
         <to type="forward" last="true">/eco/$1</to>

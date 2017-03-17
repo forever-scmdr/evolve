@@ -2,6 +2,7 @@ package ecommander.filesystem;
 
 import java.io.File;
 
+import ecommander.model.Item;
 import org.apache.commons.io.FileUtils;
 
 import ecommander.fwk.EcommanderException;
@@ -13,25 +14,20 @@ import ecommander.controllers.AppContext;
  * @author EEEE
  * TODO <low priority> переделать для возможности использования в одной команде с удалением айтема
  */
-public class DeleteItemAndSubitemsFilesUnit extends FilePersistenceCommandUnit {
-	
-	long itemId;
-	String predecessorsPath;
-	
-	public DeleteItemAndSubitemsFilesUnit(long itemId, String predIdpath) {
-		this.itemId = itemId;
-		this.predecessorsPath = predIdpath;
+public class DeleteItemFilesUnit extends ItemFileUnit {
+
+	public DeleteItemFilesUnit(Item item) {
+		super(item);
 	}
 
 	public void execute() throws Exception {
-		String itemFilesDirectory = createItemFileDirectoryName(itemId, predecessorsPath);
-		File systemItemFilesFolder = new File(AppContext.getFilesDirPath() + itemFilesDirectory);
+		File itemFilesFolder = new File(createItemFileDirectoryName());
 		/* Временно директория просто удаляется TODO <low priority>
 		boolean success = systemItemFilesFolder.renameTo(new File(TEMP_FOLDER + itemFilesDirectory));
 		*/
-		if (systemItemFilesFolder.exists()) {
-			if (!FileUtils.deleteQuietly(systemItemFilesFolder))
-				throw new EcommanderException("Files from '" + AppContext.getFilesDirPath() + itemFilesDirectory + "' have not been moved successfully");
+		if (itemFilesFolder.exists()) {
+			if (!FileUtils.deleteQuietly(itemFilesFolder))
+				throw new EcommanderException("Files from '" + itemFilesFolder + "' have not been moved successfully");
 		}
 	}
 

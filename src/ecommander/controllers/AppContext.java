@@ -27,6 +27,8 @@ public class AppContext {
 	private static String CACHE_XML_FOLDER;
 	private static String LUCENE_INDEX_FOLDER;
 	private static String FILES_FOLDER_NAME;
+	private static String PROTECTED_FILES_FOLDER_NAME;
+	private static String HIDDEN_FILES_FOLDER_NAME;
 	private static String PAGESMODEL_FILE;
 	private static String XSL_ROOT;
 	private static String DOMAINS_FILE;
@@ -47,6 +49,8 @@ public class AppContext {
 			CACHE_XML_FOLDER = props.getProperty("paths.cache_xml_folder");
 			LUCENE_INDEX_FOLDER = props.getProperty("paths.lucene_index_folder");
 			FILES_FOLDER_NAME = props.getProperty("paths.files_folder");
+			PROTECTED_FILES_FOLDER_NAME = "restrict_files/";
+			HIDDEN_FILES_FOLDER_NAME = "hidden_files/";
 			PAGESMODEL_FILE = props.getProperty("paths.pages_model");
 			XSL_ROOT = props.getProperty("paths.styles_folder");
 			DOMAINS_FILE = props.getProperty("paths.domains");
@@ -102,7 +106,15 @@ public class AppContext {
 	public static String getFilesDirPath() {
 		return getRealPath(FILES_FOLDER_NAME);
 	}
-	
+
+	public static String getProtectedDirPath() {
+		return getRealPath(PROTECTED_FILES_FOLDER_NAME);
+	}
+
+	public static String getHiddenDirPath() {
+		return getRealPath(HIDDEN_FILES_FOLDER_NAME);
+	}
+
 	public static String getFilesUrlPath() {
 		return FILES_FOLDER_NAME;
 	}

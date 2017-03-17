@@ -43,7 +43,10 @@ public class Item {
 	
 	public static final String PARAM_TAG = "param";
 	public static final String ID_ATTRIBUTE = "id";
-	
+
+	public static final int DIR_NAME_LENGTH = 3;
+	public static final char FINAL_DIR_CHAR = 'f';
+
 	public static final long DEFAULT_ID = 0;
 	public static final int WEIGHT_STEP = 64;
 
@@ -75,12 +78,15 @@ public class Item {
 	private String keyUnique = null; // уникальный текстовый ключ
 	private String oldKeyUnique = null; // старый уникальный ключ (нужен для корректного возвращения согласованной версии айтема, поскольку не хранится в строке XML)
 	private ItemType itemType = null; // Тип айтема
+	private Boolean areFilesInitiallyProtected = false; // Защищены ил файлы айтема вначале, т.е. после загрузки из БД.
+	private boolean areFilesProtected = false; // Защищены ли файлы айтема от анонимного доступа
 	private LinkedHashMap<Integer, Parameter> paramMap = new LinkedHashMap<>(); // Все параметры (не только одиночные)
 																				// параметры (имя параметра => объект
 																				// Parameter)
 	private HashMap<String, String> extras; // дополнительные значения (не параметры). Они существуют только в памяти, в БД не хранятся
 											// могут использоваться когда айтем создается в сеансе или в форме (поля extra формы переписываются сюда)
 	private String parametersXML = Strings.EMPTY; // Все параметры, записанные в виде XML
+	private String filesPath = null; // Относительный путь к файлам айтема
 
 	private byte status = STATUS_NORMAL; // статус айтема (нормальный, айтем удален, айтем скрыт)
 
@@ -106,6 +112,7 @@ public class Item {
 		this.extras = src.extras;
 		this.parametersXML = src.parametersXML;
 		this.status = src.status;
+		this.areFilesProtected = src.areFilesProtected;
 		this.childWeight = src.childWeight;
 		this.timeUpdated = src.timeUpdated;
 		this.paramMap.putAll(src.paramMap);
@@ -113,13 +120,14 @@ public class Item {
 		this.stringConsistent = src.stringConsistent;
 	}
 	
-	private Item(ItemType itemDesc, Assoc contextAssoc, long parentId, int userId, byte groupId, byte status) {
+	private Item(ItemType itemDesc, Assoc contextAssoc, long parentId, int userId, byte groupId, byte status, boolean filesProtected) {
 		this.itemType = itemDesc;
 		this.ownerUserId = userId;
 		this.ownerGroupId = groupId;
 		this.contextAssoc = contextAssoc;
 		this.contextParentId = parentId;
 		this.status = status;
+		this.areFilesProtected = filesProtected;
 		this.id = DEFAULT_ID;
 		this.key = itemDesc.getCaption();
 		this.mapConsistent = true;
@@ -132,7 +140,7 @@ public class Item {
 	}
 
 	private Item(ItemType itemDesc, long itemId, Assoc contextAssoc, long parentId, int userId, byte groupId, byte status,
-	             int weight, String key, String parametersXML, String keyUnique, long timeUpdated) {
+	             int weight, String key, String parametersXML, String keyUnique, long timeUpdated, boolean filesProtected) {
 		this.id = itemId;
 		this.contextAssoc = contextAssoc;
 		this.contextParentId = parentId;
@@ -145,6 +153,8 @@ public class Item {
 		this.oldKeyUnique = keyUnique;
 		this.timeUpdated = timeUpdated;
 		this.status = status;
+		this.areFilesInitiallyProtected = filesProtected;
+		this.areFilesProtected = filesProtected;
 		this.parametersXML = parametersXML;
 		this.mapConsistent = false;
 		this.stringConsistent = true;
@@ -153,6 +163,7 @@ public class Item {
 		for (ParameterDescription paramDesc : itemType.getParameterList()) {
 			paramMap.put(paramDesc.getId(), paramDesc.createParameter());
 		}
+		setFilesPath();
 	}
 
 	/**
@@ -164,7 +175,7 @@ public class Item {
 	 * @return
 	 */
 	public static Item newChildItem(ItemType itemDesc, Assoc assoc, Item parent) {
-		return new Item(itemDesc, assoc, parent.getId(), parent.getOwnerUserId(), parent.getOwnerGroupId(), parent.status);
+		return new Item(itemDesc, assoc, parent.getId(), parent.getOwnerUserId(), parent.getOwnerGroupId(), parent.status, parent.areFilesProtected);
 	}
 
 	/**
@@ -177,8 +188,8 @@ public class Item {
 	 * @param status
 	 * @return
 	 */
-	public static Item newItem(ItemType itemDesc, Assoc assoc, long parentId, int userId, byte groupId, byte status) {
-		return new Item(itemDesc, assoc, parentId, userId, groupId, status);
+	public static Item newItem(ItemType itemDesc, Assoc assoc, long parentId, int userId, byte groupId, byte status, boolean filesProtected) {
+		return new Item(itemDesc, assoc, parentId, userId, groupId, status, filesProtected);
 	}
 
 	/**
@@ -187,7 +198,7 @@ public class Item {
 	 * @return
 	 */
 	public static Item newSessionRootItem(ItemType itemDesc) {
-		return new Item(itemDesc, AssocRegistry.DEFAULT, 0, User.NO_USER_ID, User.NO_GROUP_ID, STATUS_NORMAL);
+		return new Item(itemDesc, AssocRegistry.DEFAULT, 0, User.NO_USER_ID, User.NO_GROUP_ID, STATUS_NORMAL, false);
 	}
 
 	/**
@@ -207,8 +218,10 @@ public class Item {
 	 * @return
 	 */
 	public static Item existingItem(ItemType itemDesc, long itemId, Assoc assoc, long parentId, int userId, byte groupId,
-	                                byte status, int weight, String key, String parametersXML, String keyUnique, long timeUpdated) {
-		return new Item(itemDesc, itemId, assoc, parentId, userId, groupId, status, weight, key, parametersXML, keyUnique, timeUpdated);
+	                                byte status, int weight, String key, String parametersXML, String keyUnique,
+	                                long timeUpdated, boolean filesProtected) {
+		return new Item(itemDesc, itemId, assoc, parentId, userId, groupId, status, weight, key, parametersXML, keyUnique,
+				timeUpdated, filesProtected);
 	}
 	/**
 	 * Является ли айтем новым
@@ -550,7 +563,7 @@ public class Item {
 		if (stringConsistent)
 			return this;
 		return new Item(itemType, id, contextAssoc, contextParentId, ownerUserId, ownerGroupId, status, childWeight,
-				key, parametersXML,	oldKeyUnique, timeUpdated);
+				key, parametersXML,	oldKeyUnique, timeUpdated, areFilesProtected);
 	}
 	/**
 	 * Принудительно разобрать содержимое строки параметров и установить флаг о том,
@@ -591,6 +604,7 @@ public class Item {
 	 */
 	public final void setId(long id) {
 		this.id = id;
+		setFilesPath();
 	}
 	/**
 	 * @return
@@ -642,12 +656,49 @@ public class Item {
 		return status;
 	}
 
+	public final boolean isStatusNormal() {
+		return status == STATUS_NORMAL;
+	}
+
+	public final boolean isStatusHidden() {
+		return status == STATUS_NIDDEN;
+	}
+
+	public final boolean isStatusDeleted() {
+		return status == STATUS_DELETED;
+	}
 	/**
 	 * @param status
 	 */
 	public final void setStatus(byte status) {
 		this.status = status;
 	}
+
+	/**
+	 * Проверяет, защищены ли файлы айтема от анонимного просмотра
+	 * @return
+	 */
+	public boolean isFileProtected() {
+		return areFilesProtected;
+	}
+
+	/**
+	 * Нужно ли перемещать файлы айтема в защищенное хранилище или из него при
+	 * сохранении айтема
+	 * @return
+	 */
+	public boolean filesNeedMoving() {
+		return areFilesInitiallyProtected != null && areFilesInitiallyProtected != areFilesProtected;
+	}
+	/**
+	 * Устанавливает или снимает защиту на анонимный просмотр файлов айтема
+	 * При установке и снятии защиты файлы айтема должны копироваться в другое место
+	 * @param filesProtected
+	 */
+	public void setFilesProtected(boolean filesProtected) {
+		this.areFilesProtected = areFilesProtected;
+	}
+
 	/**
 	 * Является ли айтем персональным
 	 * @return
@@ -1062,5 +1113,36 @@ public class Item {
 
 	private static String getParamFileName(String basePath, long itemId, String fileName) {
 		return new StringBuilder(basePath).append('/').append(itemId).append('/').append(fileName).toString();
+	}
+
+	private void setFilesPath() {
+		if (!isNew()) {
+			this.filesPath = createItemFilesPath(id);
+		}
+	}
+
+	/**
+	 * Получить отсносительный путь (без общей для всех айтемов части) к директории файлов айтема
+	 * @return
+	 */
+	public String getFilesPath() {
+		return filesPath;
+	}
+
+	/**
+	 * Создает путь к файлам айтема на базе ID айтема
+	 * @param itemId
+	 * @return
+	 */
+	public static String createItemFilesPath(long itemId) {
+		String idStr = itemId + "";
+		StringBuilder sb = new StringBuilder();
+		int index = 0;
+		while (index < idStr.length()) {
+			sb.append(idStr.substring(index, Math.min(index + DIR_NAME_LENGTH, idStr.length()))).append(File.separator);
+			index += DIR_NAME_LENGTH;
+		}
+		sb.setCharAt(sb.length() - 1, FINAL_DIR_CHAR);
+		return sb.toString();
 	}
 }

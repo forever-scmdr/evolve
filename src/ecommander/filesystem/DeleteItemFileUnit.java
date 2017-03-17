@@ -29,9 +29,9 @@ public class DeleteItemFileUnit extends ItemFileUnit {
 
 	public void execute() throws Exception {
 		if (item.getItemType().getParameter(paramId).isMultiple()) {
-			ArrayList<SingleParameter> aramArray = new ArrayList<SingleParameter>(
+			ArrayList<SingleParameter> paramArray = new ArrayList<>(
 					((MultipleParameter) item.getParameter(paramId)).getValues());
-			String paramValue = aramArray.get(paramIndex).outputValue();
+			String paramValue = paramArray.get(paramIndex).outputValue();
 			deleteFile(paramValue);
 			// Удаление значения параметра в айтеме
 			item.removeMultipleParamValue(paramId, paramIndex);

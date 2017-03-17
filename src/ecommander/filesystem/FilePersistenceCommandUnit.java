@@ -4,20 +4,18 @@ import ecommander.fwk.Strings;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TransactionContext;
 
+import java.io.File;
+
 /**
  * Команда для файлов. TransactionContext не используется
  * @author EEEE
  */
 public abstract class FilePersistenceCommandUnit implements PersistenceCommandUnit {
-	
+
 	public FilePersistenceCommandUnit() {
 
 	}
-	
-	protected String createItemFileDirectoryName(long itemId, String predIdPath) {
-		return predIdPath + itemId + Strings.SLASH;
-	}
-	
+
 	public TransactionContext getTransactionContext() {
 		return null;
 	}
