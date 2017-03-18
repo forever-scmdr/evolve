@@ -122,8 +122,8 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 					if (!srcParam.isMultiple())	{
 						try {
 							boolean selfResize = srcParam.getId() == param.getId();
-							File destFile = new File(createItemFileDirectoryName() + item.getValue(param.getId()));
-							File srcFile = new File(createItemFileDirectoryName() + item.getValue(srcParam.getId()));
+							File destFile = new File(createItemFilesDirectoryName() + item.getValue(param.getId()));
+							File srcFile = new File(createItemFilesDirectoryName() + item.getValue(srcParam.getId()));
 							// ничего не делать в случае если исходной картинки нет
 							if (!srcFile.exists())
 								continue;
@@ -146,7 +146,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 							String fileName = StringUtils.substringBeforeLast(srcFile.getName(), ".") + '.' + format;
 							if (!selfResize)
 								fileName = param.getName() + "_" + fileName;
-							destFile = new File(createItemFileDirectoryName() + fileName);
+							destFile = new File(createItemFilesDirectoryName() + fileName);
 							resize(srcImg, destFile, width, height, format, crop);
 							// Установка значения параметра
 							item.setValueUI(param.getId(), fileName);
@@ -165,7 +165,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 						MultipleParameter destVals = (MultipleParameter) item.getParameter(param.getId());
 						if (!selfResize) {
 							for (SingleParameter val : destVals.getValues()) {
-								File deleteFile = new File(createItemFileDirectoryName() + val.getValue());
+								File deleteFile = new File(createItemFilesDirectoryName() + val.getValue());
 								if (deleteFile.exists() && !deleteFile.delete())
 									throw new Exception("File '" + deleteFile.getName() + "' can not be deleted");
 							}
@@ -174,7 +174,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 						ArrayList<SingleParameter> vals = new ArrayList<SingleParameter>(((MultipleParameter) item.getParameter(srcParam
 								.getId())).getValues());
 						for (SingleParameter srcVal : vals) {
-							File srcFile = new File(createItemFileDirectoryName() + srcVal.getValue());
+							File srcFile = new File(createItemFilesDirectoryName() + srcVal.getValue());
 							if (srcFile.exists()) {
 								try {
 									if (format == null)
@@ -188,7 +188,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 									if (destVals.containsValue(fileName)) {
 										destVals.deleteValue(fileName);
 									}
-									File destFile = new File(createItemFileDirectoryName() + fileName);
+									File destFile = new File(createItemFilesDirectoryName() + fileName);
 									resize(srcImg, destFile, width, height, format, crop);
 									item.setValueUI(param.getId(), fileName);
 								} catch (Exception e) {

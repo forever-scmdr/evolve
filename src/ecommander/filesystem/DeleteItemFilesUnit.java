@@ -6,7 +6,6 @@ import ecommander.model.Item;
 import org.apache.commons.io.FileUtils;
 
 import ecommander.fwk.EcommanderException;
-import ecommander.controllers.AppContext;
 
 /**
  * Удаляет все файлы данного айтема и всех его сабайтемов.
@@ -21,7 +20,7 @@ public class DeleteItemFilesUnit extends ItemFileUnit {
 	}
 
 	public void execute() throws Exception {
-		File itemFilesFolder = new File(createItemFileDirectoryName());
+		File itemFilesFolder = new File(createItemFilesDirectoryName());
 		/* Временно директория просто удаляется TODO <low priority>
 		boolean success = systemItemFilesFolder.renameTo(new File(TEMP_FOLDER + itemFilesDirectory));
 		*/
@@ -33,7 +32,7 @@ public class DeleteItemFilesUnit extends ItemFileUnit {
 
 	public void rollback() throws Exception {
 		/* Временно ничего не происходит TODO <low priority>
-		String itemFilesDirectory = createItemFileDirectoryName(itemId);
+		String itemFilesDirectory = createItemFilesDirectoryName(itemId);
 		File systemTempFilesDirectory = new File(TEMP_FOLDER + itemFilesDirectory);
 		boolean success = systemTempFilesDirectory.renameTo(new File(FILES_FOLDER + itemFilesDirectory));
 		if (!success) {

@@ -52,7 +52,8 @@ public class Item {
 
 	public static final byte STATUS_NORMAL = (byte) 0;
 	public static final byte STATUS_NIDDEN = (byte) 1;
-	public static final byte STATUS_DELETED = (byte) 2;
+	public static final byte STATUS_DELETED_RESTORABLE = (byte) 2;
+	public static final byte STATUS_DELETED_COMPLETELY = (byte) 3;
 
 	private static final int _NO_PARAM_ID  = -1;
 

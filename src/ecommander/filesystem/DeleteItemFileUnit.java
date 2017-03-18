@@ -48,7 +48,7 @@ public class DeleteItemFileUnit extends ItemFileUnit {
 		if (file.exists()) {
 			/* Временно файл просто удаляется TODO <low priority>
 			// Создать директорию во временной папке
-			String itemFilesDirectory = createItemFileDirectoryName(item.getId());
+			String itemFilesDirectory = createItemFilesDirectoryName(item.getId());
 			new File(TEMP_FOLDER + itemFilesDirectory).mkdirs();
 			boolean success = file.renameTo(new File(TEMP_FOLDER + fileName));
 			if (!success) {

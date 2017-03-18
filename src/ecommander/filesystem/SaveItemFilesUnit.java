@@ -37,7 +37,7 @@ public class SaveItemFilesUnit extends ItemFileUnit {
 	 * Также устанавливает новое название в соответствующем параметре айтема
 	 */
 	public void execute() throws Exception {
-		String fileDirectoryName = createItemFileDirectoryName(item.getId(), item.getPredecessorsPath());
+		String fileDirectoryName = createItemFilesDirectoryName(item.getId(), item.getPredecessorsPath());
 		for (Iterator<ParameterDescription> iter = item.getItemType().getParameterList().iterator(); iter.hasNext();) {
 			ParameterDescription paramDesc = iter.next();
 			if (paramDesc.getDataType().isFile()) {

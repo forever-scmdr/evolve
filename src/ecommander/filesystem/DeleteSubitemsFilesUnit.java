@@ -40,7 +40,7 @@ public class DeleteSubitemsFilesUnit extends FilePersistenceCommandUnit {
 
 	public void rollback() throws Exception {
 		/* Временно ничего не происходит TODO <low priority>
-		String itemFilesDirectory = createItemFileDirectoryName(itemId);
+		String itemFilesDirectory = createItemFilesDirectoryName(itemId);
 		File systemTempFilesDirectory = new File(TEMP_FOLDER + itemFilesDirectory);
 		boolean success = systemTempFilesDirectory.renameTo(new File(FILES_FOLDER + itemFilesDirectory));
 		if (!success) {
