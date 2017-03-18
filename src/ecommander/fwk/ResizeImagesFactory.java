@@ -20,7 +20,7 @@ import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
-import ecommander.filesystem.ItemFileUnit;
+import ecommander.filesystem.SingleItemDirectoryFileUnit;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 /**
@@ -62,7 +62,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 	public static final String FORMAT = "format";
 	public static final String CROP = "crop";
 	
-	public static class ResizeImages extends ItemFileUnit {
+	public static class ResizeImages extends SingleItemDirectoryFileUnit {
 
 		private TransactionContext transaction;
 		private ArrayList<File> files = new ArrayList<File>();

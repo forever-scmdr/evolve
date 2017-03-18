@@ -1,10 +1,18 @@
 package ecommander.filesystem;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
@@ -16,15 +24,17 @@ import ecommander.model.datatypes.FileDataType;
 import ecommander.model.Item;
 import ecommander.model.ParameterDescription;
 import ecommander.model.SingleParameter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Сохраняет все файлы - одиночные параметры айтема
  * @author EEEE
  * TODO <enhance> переделать для новой версии сервлетов
- * TODO <fix> Сделать удаление старых файлов при замене их на новые (сейчас отсутствует). Загружать старые значения из StringIndex, 
- * 			  вызывать эту команду до апдейта параметров в индексе
+ * вызывать эту команду до апдейта параметров в индексе
  */
-public class SaveItemFilesUnit extends ItemFileUnit {
+public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
+
+	private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://[-\\wА-Яа-я+&@#/%?=~|!:,.;]*[-\\wА-Яа-я+&@#/%=~|]");
 
 	private ArrayList<File> files;
 	
@@ -37,25 +47,31 @@ public class SaveItemFilesUnit extends ItemFileUnit {
 	 * Также устанавливает новое название в соответствующем параметре айтема
 	 */
 	public void execute() throws Exception {
-		String fileDirectoryName = createItemFilesDirectoryName(item.getId(), item.getPredecessorsPath());
-		for (Iterator<ParameterDescription> iter = item.getItemType().getParameterList().iterator(); iter.hasNext();) {
-			ParameterDescription paramDesc = iter.next();
+		String fileDirectoryName = createItemDirectoryName();
+		for (ParameterDescription paramDesc : item.getItemType().getParameterList()) {
 			if (paramDesc.getDataType().isFile()) {
-				ArrayList<SingleParameter> params = new ArrayList<SingleParameter>();
+				// Пропустить параметры, которые не менялись
+				if (!item.getParameter(paramDesc.getId()).hasChanged())
+					continue;
+				ArrayList<SingleParameter> params = new ArrayList<>();
 				params.addAll(item.getParamValues(paramDesc.getName()));
-				ArrayList<String> newValues = new ArrayList<String>();
+				ArrayList<String> newValues = new ArrayList<>();
 				for (SingleParameter param : params) {
+					//-- Надо решить удалять файл или нет если занчение параметра null
+					Object value = param.getValue();
+					if (value == null)
+						continue;
 					// Удаляется старый файл - старое значение параметра, если оно было
 					for (Object oldVal : param.getOldValues()) {
 						if (oldVal instanceof String) {
-							File oldFile = new File(AppContext.getFilesDirPath() + fileDirectoryName + oldVal);
+							File oldFile = new File(fileDirectoryName + oldVal);
 							if (oldFile.exists())
 								oldFile.delete();
 						}
 					}
-					Object value = param.getValue();
-					if (value == null)
-						continue;
+//					Object value = param.getValue();
+//					if (value == null)
+//						continue;
 					boolean isUploaded = value instanceof FileItem;
 					boolean isDirect = value instanceof File;
 					// Если файл прикреплен, то он должен быть типа FileItem или типа File
@@ -67,10 +83,10 @@ public class SaveItemFilesUnit extends ItemFileUnit {
 						else
 							fileName = ((File) value).getName();
 						// Создание новой директории
-						File dir = new File(AppContext.getFilesDirPath() + fileDirectoryName);
+						File dir = new File(fileDirectoryName);
 						dir.mkdirs();
 						files.add(dir);
-						File newFile = new File(AppContext.getFilesDirPath() + fileDirectoryName + fileName);
+						File newFile = new File( fileDirectoryName + fileName);
 						// Удаление файла, если он уже есть
 						if (newFile.exists()) {
 							if (!newFile.canWrite())
@@ -90,7 +106,32 @@ public class SaveItemFilesUnit extends ItemFileUnit {
 						item.removeEqualValue(paramDesc.getName(), fileName);
 						item.setValueUI(paramDesc.getId(), fileName);
 					} else {
-						newValues.add((String)value);
+						Matcher m = URL_PATTERN.matcher((CharSequence) value);
+						ReadableByteChannel rbc = null;
+						FileOutputStream fos = null;
+						if (m.matches()) {
+							try {
+								URL webImg = new URL((String) value);
+								String fName = URLDecoder.decode(webImg.getPath(), "UTF-8");
+								fName = StringUtils.substringAfterLast(fName, "/");
+								URLConnection conn = webImg.openConnection();
+								conn.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
+								rbc = Channels.newChannel(conn.getInputStream());
+								File folder = new File(fileDirectoryName);
+								folder.mkdirs();
+								File newFile = new File(fileDirectoryName + fName);
+								fos = new FileOutputStream(newFile);
+								fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+								newValues.add((String) fName);
+							} catch (Exception e) {
+								e.printStackTrace();
+							} finally{
+								if(fos != null){fos.close();}
+								if(rbc != null){rbc.close();}
+							}
+						} else {
+							newValues.add((String) value);
+						}
 					}
 				}
 				// Замена объектов на имена файлов

@@ -3,7 +3,6 @@ package ecommander.filesystem;
 import java.io.File;
 import java.util.ArrayList;
 
-import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.MultipleParameter;
 import ecommander.model.SingleParameter;
@@ -16,7 +15,7 @@ import ecommander.model.SingleParameter;
  * @author EEEE
  *
  */
-public class DeleteItemFileUnit extends ItemFileUnit {
+public class DeleteItemFileUnit extends SingleItemDirectoryFileUnit {
 
 	private int paramId;
 	private int paramIndex;
@@ -43,8 +42,7 @@ public class DeleteItemFileUnit extends ItemFileUnit {
 	}
 
 	private void deleteFile(String name) {
-		String fileName = createParameterFileName(name);
-		File file = new File(AppContext.getFilesDirPath() + fileName);
+		File file = new File(createParameterFileName(name));
 		if (file.exists()) {
 			/* Временно файл просто удаляется TODO <low priority>
 			// Создать директорию во временной папке

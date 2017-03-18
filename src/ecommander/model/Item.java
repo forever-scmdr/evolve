@@ -666,7 +666,7 @@ public class Item {
 	}
 
 	public final boolean isStatusDeleted() {
-		return status == STATUS_DELETED;
+		return status == STATUS_DELETED_RESTORABLE;
 	}
 	/**
 	 * @param status

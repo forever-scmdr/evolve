@@ -12,7 +12,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
-import ecommander.filesystem.FilePersistenceCommandUnit;
+import ecommander.filesystem.ItemDirectoryCommandUnit;
 
 /**
  * Перемещение айтема (прикрепление айтема к другому родителю)
@@ -23,7 +23,7 @@ import ecommander.filesystem.FilePersistenceCommandUnit;
  */
 public class MoveItemDBUnit extends DBPersistenceCommandUnit {
 	
-	private static class MoveDirectoryFileUnit extends FilePersistenceCommandUnit {
+	private static class MoveDirectoryFileUnit extends ItemDirectoryCommandUnit {
 
 		private Item itemToMove;
 		private Item newParent;

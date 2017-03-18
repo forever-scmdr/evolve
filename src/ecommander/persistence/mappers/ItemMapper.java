@@ -129,21 +129,22 @@ public class ItemMapper {
 	 * @param contextParentId
 	 * @param userId
 	 * @param groupId
-	 * @param status
 	 * @return
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public static Item buildItem(ResultSet rs, byte contextAssocId, long contextParentId, int userId, byte groupId, byte status) throws SQLException, Exception {
+	public static Item buildItem(ResultSet rs, byte contextAssocId, long contextParentId, int userId, byte groupId) throws Exception {
 		long itemId = rs.getLong(DBConstants.Item.ID);
 		int itemTypeId = rs.getInt(DBConstants.Item.TYPE_ID);
 		int itemWeight = rs.getInt(DBConstants.Item.INDEX_WEIGHT);
 		String key = rs.getString(DBConstants.Item.KEY);
 		String keyUnique = rs.getString(DBConstants.Item.TRANSLIT_KEY);
 		Timestamp timeUpdated = rs.getTimestamp(DBConstants.Item.UPDATED);
+		byte status = rs.getByte(DBConstants.Item.STATUS);
+		boolean filesProtected = rs.getBoolean(DBConstants.Item.PROTECTED);
 		String params = rs.getString(DBConstants.Item.PARAMS);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemTypeId);
 		return Item.existingItem(itemDesc, itemId, ItemTypeRegistry.getAssoc(contextAssocId), contextParentId, userId, groupId, status,
-				itemWeight, key, params, keyUnique, timeUpdated.getTime());
+				itemWeight, key, params, keyUnique, timeUpdated.getTime(), filesProtected);
 	}
 }

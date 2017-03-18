@@ -11,7 +11,7 @@ import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import ecommander.filesystem.DeleteItemFilesUnit;
+import ecommander.filesystem.ApplyItemFileProtection;
 
 /**
  * Удаление айтема
@@ -104,7 +104,7 @@ public class DeleteItemBDUnit extends DBPersistenceCommandUnit {
 			}
 			
 			// Удаление файлов
-			executeCommand(new DeleteItemFilesUnit(item.getId(), item.getPredecessorsPath()));
+			executeCommand(new ApplyItemFileProtection(item.getId(), item.getPredecessorsPath()));
 			
 			// Удаление айтема из индекса Lucene
 			if (insertIntoFulltextIndex)

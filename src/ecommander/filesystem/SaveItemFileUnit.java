@@ -20,10 +20,8 @@ import ecommander.model.SingleParameter;
  * 
  * http://cwiki.apache.org/WW/handling-file-uploads.html
  */
-public class SaveItemFileUnit extends ItemFileUnit {
+public class SaveItemFileUnit extends SingleItemDirectoryFileUnit {
 
-	public static String MULTIPLE_FILE_INPUT_NAME = "multipleParamValue";
-	
 	private String uploadedFileName;
 	private int paramId;
 	private FileItem fileItem;
@@ -41,14 +39,14 @@ public class SaveItemFileUnit extends ItemFileUnit {
 		if (fileItem != null) {
 			// Если название файла содержит путь - удалить этот путь
 			String fileName = FileDataType.getFileName(fileItem);
-			String fileDirectoryName = item.getPredecessorsAndSelfPath();
 			uploadedFileName = fileName;
-			File newFile = new File(AppContext.getFilesDirPath() + fileDirectoryName + fileName);
+			String itemDir = createItemDirectoryName();
+			File newFile = new File(itemDir + fileName);
 			// Удаление файла, если он уже есть
 			if (newFile.exists())
 				newFile.delete();
 			// Создание новой директории
-			File itemFileDirectory = new File(AppContext.getFilesDirPath() + fileDirectoryName);
+			File itemFileDirectory = new File(itemDir);
 			if (!itemFileDirectory.exists() && !itemFileDirectory.mkdirs()) {
 				throw new FileException("Can not create diractory '" + itemFileDirectory.getName() + "'");
 			}
@@ -74,12 +72,12 @@ public class SaveItemFileUnit extends ItemFileUnit {
 		if (StringUtils.isBlank(uploadedFileName)) {
 			// Находится индекс значения параметра для удаления
 			MultipleParameter param = (MultipleParameter)item.getParameter(paramId);
-			ArrayList<SingleParameter> paramArray = new ArrayList<SingleParameter>(param.getValues());
+			ArrayList<SingleParameter> paramArray = new ArrayList<>(param.getValues());
 			int index = 0;
 			for (;index < param.getValues().size(); index++) {
 				if (paramArray.get(index).getValue().equals(uploadedFileName)) break;
 			}
-			(new File(AppContext.getFilesDirPath() + createParameterFileName(item.getValue(paramId).toString()))).delete();
+			(new File(createParameterFileName(item.getValue(paramId).toString()))).delete();
 			item.removeMultipleParamValue(paramId, index);
 		}
 	}

@@ -19,11 +19,6 @@
         <from>/restrict_files/**.*</from>
         <to type="forward" last="true">/protected/$1.$2</to>
     </rule>
-    <!--Закрытые для доступа файлы (скрытые и удаленные айтемы, нет доступа никому) - спецсервлет hidden-->
-    <rule match-type="wildcard" enabled="true">
-        <from>/hidden_files/**.*</from>
-        <to type="forward" last="true">/hidden/$1.$2</to>
-    </rule>
     <!--Обычные файлы и обработчики для администратора (.action)-->
     <rule match-type="wildcard" enabled="true">
         <from>/**.*</from>

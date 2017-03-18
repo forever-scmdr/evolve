@@ -119,15 +119,34 @@ public class TemplateQuery implements QueryPart {
 		return this;
 	}
 
+	/**
+	 * Создать вызов встроенной функции (функции агрегации или простой функции)
+	 * @param function
+	 * @param args
+	 * @return
+	 */
 	public final TemplateQuery FUNC(String function, String... args) {
 		queryParts.add(new SqlQueryPart(" " + function + "(" + StringUtils.join(args, ", ") + ")"));
+		return this;
 	}
 
+	/**
+	 * Создать директиву FROM
+	 * @param tableName
+	 * @return
+	 */
 	public final TemplateQuery FROM(String tableName) {
 		queryParts.add(new SqlQueryPart(" FROM " + tableName));
 		return this;
 	}
 
+	/**
+	 * Создать соединение с другой таблицей. Колонки, по которым происходит соединение,
+	 * перечисляются парами, т. е. Т1.Кол1, Т2.Кол1, Т1.Кол2, Т2.Кол2 и т.д.
+	 * @param tableName
+	 * @param columnPairs
+	 * @return
+	 */
 	public final TemplateQuery INNER_JOIN(String tableName, String... columnPairs) {
 		if (columnPairs.length % 2 != 0 || columnPairs.length == 0)
 			throw new IllegalArgumentException("There must be pairs of columns as JOIN conditions");

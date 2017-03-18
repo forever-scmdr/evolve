@@ -9,7 +9,7 @@ import ecommander.model.Item;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import ecommander.filesystem.DeleteSubitemsFilesUnit;
+import ecommander.filesystem.DeleteItemsDirectoriesUnit;
 
 /**
  * Удаление сабайтемов айтема
@@ -74,7 +74,7 @@ public class DeleteSubitemsBDUnit extends DBPersistenceCommandUnit {
 			}
 			
 			// Удаление файлов
-			executeCommand(new DeleteSubitemsFilesUnit(item.getId(), item.getPredecessorsPath()));
+			executeCommand(new DeleteItemsDirectoriesUnit(item.getId(), item.getPredecessorsPath()));
 			
 			// Удаление айтема из индекса Lucene
 			LuceneIndexMapper.deleteSubitems(item);

@@ -15,7 +15,7 @@ import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import ecommander.filesystem.ItemFileUnit;
+import ecommander.filesystem.SingleItemDirectoryFileUnit;
 import ecommander.filesystem.SaveItemFilesUnit;
 
 /**
@@ -266,7 +266,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit {
 	@Override
 	public void rollback() throws Exception {
 		super.rollback();
-		ServerLogger.debug("Deleting item directory '" + item.getPredecessorsAndSelfPath() + "' - " + ItemFileUnit.deleteItemDirectory(item));
+		ServerLogger.debug("Deleting item directory '" + item.getPredecessorsAndSelfPath() + "' - " + SingleItemDirectoryFileUnit.deleteItemDirectory(item));
 	}
 
 }
