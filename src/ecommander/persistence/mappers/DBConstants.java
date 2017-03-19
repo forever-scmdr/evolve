@@ -12,7 +12,7 @@ package ecommander.persistence.mappers;
  * @author E
  *
  */
-public class DBConstants
+public interface DBConstants
 {
 
 	/**************************************************************************************************
@@ -34,7 +34,7 @@ public class DBConstants
 	 * 
 	 * @author E
 	 */
-	public interface Item
+	interface ItemTbl
 	{
 		String TABLE = "item";
 		String ID = "i_id"; // ID айтема (не типа айтема, а конкретного айтема)
@@ -52,7 +52,7 @@ public class DBConstants
 	 * Порядок следавания потомков непосредственного родителя.
 	 * Определяется также ассоциацией
 	 */
-	public interface Weight
+	interface Weight
 	{
 		String TABLE = "weight";
 		String ITEM = "w_item";
@@ -64,7 +64,7 @@ public class DBConstants
 	/**
 	 * Таблица, в которой хранится описание модели данных в виде XML
 	 */
-	public interface ModelXML {
+	interface ModelXML {
 		String TABLE = "model_xml";
 		String NAME = "xml_name";
 		String XML = "xml_xml";
@@ -74,7 +74,7 @@ public class DBConstants
 	 * @author E
 	 *
 	 */
-	public interface UniqueItemKeys {
+	interface UniqueItemKeys {
 		String TABLE = "unique_key";
 		String ID = "uk_item_id"; // ID айтема
 		String KEY = "uk_key"; // Уникальный текстовый ключ
@@ -84,14 +84,14 @@ public class DBConstants
 	 * @author EEEE
 	 *
 	 */
-	public interface ItemParent {
+	interface ItemParent {
 		String TABLE = "item_parent";
 		String ASSOC_ID = "ip_assoc_id"; // ID ассоциации
 		String PARENT_ID = "ip_parent_id"; // ID предка
 		String CHILD_ID = "ip_child_id"; // ID потомка
 		String CHILD_SUPERTYPE = "ip_child_supertype"; // Супертип (непользовательский тип) потомка
 		String PARENT_LEVEL = "ip_level"; // Уровень вложенности по отношению к предку (0 - прямой потомок, 1 - непрямой)
-		String SHOW = "ip_show"; // Показывать (0), скрытый (1), айтем удален (2)
+		String STATUS = "ip_status"; // Показывать (0), скрытый (1), айтем удален но можно восстановить (2), айтем удален безвозвратно (3)
 		String USER = "ip_user"; // Владелец айтема (0 - айтем принадлежит группе и не имеет владельца)
 		String GROUP = "ip_group"; // Группа-владелец айтема
 	}
@@ -106,7 +106,7 @@ public class DBConstants
 	 * или при сортировке по значению параметра
 	 * @author EEEE
 	 */
-	public interface ItemIndexes {
+	interface ItemIndexes {
 		String INT_TABLE_NAME = "int_index";
 		String DECIMAL_TABLE_NAME = "decimal_index";
 		String DOUBLE_TABLE_NAME = "double_index";
@@ -123,7 +123,7 @@ public class DBConstants
 	 * @author E
 	 *
 	 */
-	public interface AssocIds {
+	interface AssocIds {
 		String TABLE = "assoc_ids";
 		String ASSOC_NAME = "aid_name";
 		String ASSOC_ID = "aid_id";
@@ -134,7 +134,7 @@ public class DBConstants
 	 * @author E
 	 *
 	 */
-	public interface ItemIds {
+	interface ItemIds {
 		String TABLE = "item_ids";
 		String ITEM_NAME = "iid_name";
 		String ITEM_ID = "iid_id";
@@ -145,7 +145,7 @@ public class DBConstants
 	 * @author E
 	 *
 	 */
-	public interface ParamIds {
+	interface ParamIds {
 		String TABLE = "param_ids";
 		String ITEM_ID = "pid_item_id";
 		String PARAM_NAME = "pid_param_name";
@@ -178,7 +178,7 @@ public class DBConstants
 	 * Группы пользователей
 	 * @author E
 	 */
-	public interface UserGroup
+	interface UserGroup
 	{
 		String TABLE = "user_group";
 		String ID = "ug_id";
@@ -189,7 +189,7 @@ public class DBConstants
 	 * Таблица юзеров и их принадлежность к группам
 	 * @author E
 	 */
-	public interface Users
+	interface UsersTbl
 	{
 		String TABLE = "users";
 		String ID = "u_id";

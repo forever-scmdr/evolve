@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -140,6 +141,25 @@ public class TemplateQuery implements QueryPart {
 		return this;
 	}
 
+	public final TemplateQuery WHERE() {
+		queryParts.add(new SqlQueryPart(" WHERE "));
+		return this;
+	}
+
+	public final TemplateQuery AND() {
+		queryParts.add(new SqlQueryPart(" AND "));
+		return this;
+	}
+
+	public final TemplateQuery UNION_ALL() {
+		queryParts.add(new SqlQueryPart(" UNION ALL "));
+		return this;
+	}
+
+	public final TemplateQuery crit(String column, String sign) {
+		queryParts.add(new SqlQueryPart(column + sign));
+		return this;
+	}
 	/**
 	 * Создать соединение с другой таблицей. Колонки, по которым происходит соединение,
 	 * перечисляются парами, т. е. Т1.Кол1, Т2.Кол1, Т1.Кол2, Т2.Кол2 и т.д.
@@ -339,10 +359,10 @@ public class TemplateQuery implements QueryPart {
 		
 		String QUERY_SKELETON 
 			= "SELECT ITEM.*<<PREDECESSOR_ID>>"
-			+ " FROM " + DBConstants.Item.TABLE + " AS ITEM <<JOIN>>"
-			+ " WHERE ITEM." + DBConstants.Item.TYPE_ID + " IN <<POLYMORPHIC_TYPE_IDS>>"
+			+ " FROM " + DBConstants.ItemTbl.TABLE + " AS ITEM <<JOIN>>"
+			+ " WHERE ITEM." + DBConstants.ItemTbl.TYPE_ID + " IN <<POLYMORPHIC_TYPE_IDS>>"
 			+ " <<PARENT_CONDITION>> <<USER_CONDITION>> <<FILTER_CONDITION>> "
-			+ " ORDER BY <<SORTING>> ITEM." + DBConstants.Item.INDEX_WEIGHT
+			+ " ORDER BY <<SORTING>> ITEM." + DBConstants.ItemTbl.INDEX_WEIGHT
 			+ " <<LIMIT>>";
 		TemplateQuery query = createFromString(QUERY_SKELETON, "main");
 		System.out.println(query);
