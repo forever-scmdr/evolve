@@ -8,13 +8,11 @@ package ecommander.fwk;
  */
 public class EcommanderException extends Exception {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	int errorCode = 0;
 
-	public EcommanderException(String message, Throwable cause) {
+	public EcommanderException(int errorCode, String message, Throwable cause) {
 		super(message, cause);
+		this.errorCode = errorCode;
 	}
 
 	public EcommanderException(Throwable cause) {
@@ -31,8 +29,12 @@ public class EcommanderException extends Exception {
 	/**
 	 * @param arg0
 	 */
-	public EcommanderException(String arg0) {
+	public EcommanderException(int errorCode, String arg0) {
 		super(arg0);
+		this.errorCode = errorCode;
 	}
 
+	public int getErrorCode() {
+		return errorCode;
+	}
 }
