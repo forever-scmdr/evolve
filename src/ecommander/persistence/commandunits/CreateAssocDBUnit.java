@@ -45,7 +45,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 				.WHERE().crit(ItemParent.CHILD_ID, "=").setLong(item.getId())
 				.AND().crit(ItemParent.ASSOC_ID, "=").setByte(assocId)
 				.UNION_ALL()
-				.SELECT(ItemParent.PARENT_ID, ItemParent.CHILD_ID, ItemParent.USER, ItemParent.CHILD_ID)
+				.SELECT(ItemParent.PARENT_ID, ItemParent.GROUP, ItemParent.USER, ItemParent.CHILD_ID)
 				.FROM(ItemParent.TABLE)
 				.WHERE().crit(ItemParent.CHILD_ID, "=").setLong(parentId)
 				.AND().crit(ItemParent.ASSOC_ID, "=").setByte(assocId);
