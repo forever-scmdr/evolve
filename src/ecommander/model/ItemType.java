@@ -42,6 +42,11 @@ public class ItemType extends ItemTypeContainer {
 
 	private String typeName = StringUtils.EMPTY; // Имя айтема в XML файле на английском языке
 	private int typeId; // ID типа айтема (для ускорения)
+
+	// Супертип - ближайший по иерархии предок - непользовательский айтем
+	// Для пользовательских айтемов найти его возмжно, т.к. у них есть только одиночное наследование
+	// Для непользовательских (базовых) айтемов супертипом является сам айтем
+	private ItemType superType = null;
 	private String caption =  StringUtils.EMPTY; // Символьное обозначение для юзера на русском языке
 	private String description =  StringUtils.EMPTY; // Описание на русском
 	private String key =  StringUtils.EMPTY; // Ключевые параметры, разделенные пробелом
@@ -89,12 +94,15 @@ public class ItemType extends ItemTypeContainer {
 		}
 		if (StringUtils.isNotBlank(defaultPage))
 			this.defaultPage = defaultPage;
+		if (!isUserDefined) {
+			superType = this;
+		}
 	}
 	/**
 	 * Установить дополнительный обработчик сохранения айтейма
 	 * @param factory
 	 */
-	public void addExtraHandler(Event event, ItemEventCommandFactory factory) {
+	void addExtraHandler(Event event, ItemEventCommandFactory factory) {
 		if (extraHandlers == null)
 			extraHandlers = new HashMap<>(3);
 		LinkedHashSet<ItemEventCommandFactory> listeners = extraHandlers.get(event);
@@ -151,20 +159,37 @@ public class ItemType extends ItemTypeContainer {
 	public int getTypeId() {
 		return typeId;
 	}
+
+	/**
+	 * Установить супертип (для пользовательских айтемов)
+	 * @param type
+	 */
+	final void setSuperType(ItemType type) {
+		this.superType = type;
+	}
+
+	/**
+	 * Получить супертип
+	 * Непользовательские (базовые) айтемы возвращают сами себя (this)
+	 * @return
+	 */
+	public ItemType getSuperType() {
+		return superType;
+	}
 	/**
 	 * @param map
 	 */
-	public final void putParameter(ParameterDescription parameter) {
+	final void putParameter(ParameterDescription parameter) {
 		parameters.put(parameter.getId(), parameter);
 		paramsByName.put(parameter.getName(), parameter);
 		// Добавление параметра в список параметров для полнотекстового поиска
 		if (parameter.isFulltextSearchable()) {
 			if (fulltextIndexParams == null) {
-				fulltextIndexParams = new HashMap<String, LinkedHashSet<ParameterDescription>>();
+				fulltextIndexParams = new HashMap<>();
 			}
 			LinkedHashSet<ParameterDescription> paramParams = fulltextIndexParams.get(parameter.getFulltextIndexParameter());
 			if (paramParams == null) {
-				paramParams = new LinkedHashSet<ParameterDescription>();
+				paramParams = new LinkedHashSet<>();
 				fulltextIndexParams.put(parameter.getFulltextIndexParameter(), paramParams);
 			}
 			paramParams.add(parameter);

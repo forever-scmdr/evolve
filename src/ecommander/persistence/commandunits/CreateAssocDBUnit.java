@@ -13,7 +13,7 @@ import java.util.HashSet;
 /**
  * Created by User on 20.03.2017.
  */
-public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBConstants, ErrorCodes {
+public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemParent, ErrorCodes {
 
 	private Item item;
 	private long parentId;
@@ -40,15 +40,15 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		// Также у них должны быть одинаковые группы владельцев и сами владельцы
 
 		TemplateQuery checkQuery = new TemplateQuery("check assoc validity");
-		checkQuery.SELECT(ItemParent.PARENT_ID, ItemParent.GROUP, ItemParent.USER, ItemParent.CHILD_ID)
-				.FROM(ItemParent.TABLE)
-				.WHERE().crit(ItemParent.CHILD_ID, "=").setLong(item.getId())
-				.AND().crit(ItemParent.ASSOC_ID, "=").setByte(assocId)
+		checkQuery.SELECT(PARENT_ID, GROUP, USER, CHILD_ID)
+				.FROM(TABLE)
+				.WHERE().col(CHILD_ID, "=").setLong(item.getId())
+				.AND().col(ASSOC_ID, "=").setByte(assocId)
 				.UNION_ALL()
-				.SELECT(ItemParent.PARENT_ID, ItemParent.GROUP, ItemParent.USER, ItemParent.CHILD_ID)
-				.FROM(ItemParent.TABLE)
-				.WHERE().crit(ItemParent.CHILD_ID, "=").setLong(parentId)
-				.AND().crit(ItemParent.ASSOC_ID, "=").setByte(assocId);
+				.SELECT(PARENT_ID, GROUP, USER, CHILD_ID)
+				.FROM(TABLE)
+				.WHERE().col(CHILD_ID, "=").setLong(parentId)
+				.AND().col(ASSOC_ID, "=").setByte(assocId);
 		try (
 			PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection());
 			ResultSet rs = pstmt.executeQuery()
@@ -74,6 +74,14 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			}
 		}
 
+		TemplateQuery insert = new TemplateQuery("New assoc insert");
+		insert.INSERT_INTO(TABLE, PARENT_ID, CHILD_ID, ASSOC_ID, CHILD_SUPERTYPE, PARENT_LEVEL, STATUS, USER, GROUP);
+
+		// Шаг 1. Вставить запись непосредственного предка и потомка
+
+		// Шаг 2. Добавить для нового потомка в качестве новых предков всех предков нового непосредственного родителя
+
+		// Шаг 3. Повторить предыдущий шаг для каждого потомка ассоциируемого айтема ("нового потомка" из шага 2)
 
 	}
 }

@@ -156,8 +156,18 @@ public class TemplateQuery implements QueryPart {
 		return this;
 	}
 
-	public final TemplateQuery crit(String column, String sign) {
+	public final TemplateQuery col(String column, String sign) {
 		queryParts.add(new SqlQueryPart(column + sign));
+		return this;
+	}
+
+	public final TemplateQuery INSERT_INTO(String tableName, String...colNames) {
+		StringBuilder sql = new StringBuilder("INSERT INTO ");
+		sql.append(tableName);
+		if (colNames.length > 0) {
+			sql.append(" (").append(StringUtils.join(colNames, ", ")).append(")");
+		}
+		queryParts.add(new SqlQueryPart(sql.toString()));
 		return this;
 	}
 	/**
