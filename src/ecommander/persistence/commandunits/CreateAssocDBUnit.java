@@ -74,14 +74,48 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			}
 		}
 
+		//////////////////////////////////////////////////////////////////////////////////////////
+		//                          Запись в таблицу ItemParent                                 //
+		//////////////////////////////////////////////////////////////////////////////////////////
+
+
+		long childId = item.getId();
+		int superTypeId = item.getItemType().getSuperType().getTypeId();
+		int userId = item.getOwnerUserId();
+		int groupId = item.getOwnerGroupId();
+		byte status = item.getStatus();
 		TemplateQuery insert = new TemplateQuery("New assoc insert");
 		insert.INSERT_INTO(TABLE, PARENT_ID, CHILD_ID, ASSOC_ID, CHILD_SUPERTYPE, PARENT_LEVEL, STATUS, USER, GROUP);
 
 		// Шаг 1. Вставить запись непосредственного предка и потомка
+		insert.SELECT(parentId, childId, assocId, superTypeId, 1, status, userId, groupId).sql(" \r\n");
 
 		// Шаг 2. Добавить для нового потомка в качестве новых предков всех предков нового непосредственного родителя
+		insert.UNION_ALL()
+				.SELECT(PARENT_ID, childId, assocId, superTypeId, 0, status, userId, groupId)
+				.FROM(TABLE).WHERE()
+				.col(CHILD_ID, "=").setLong(parentId).AND().col(ASSOC_ID, "=").setByte(assocId).sql(" \r\n");
 
 		// Шаг 3. Повторить предыдущий шаг для каждого потомка ассоциируемого айтема ("нового потомка" из шага 2)
+		if (!isItemNew) {
+			insert.UNION_ALL()
+					.SELECT("PRED." + PARENT_ID, "SUCC." + CHILD_ID, assocId, "SUCC." + CHILD_SUPERTYPE, 0,
+							"SUCC." + STATUS, "SUCC." + USER, "SUCC." + GROUP)
+					.FROM(TABLE + " AS PRED", TABLE + " AS SUCC")
+					.WHERE()
+					.col("PRED." + CHILD_ID, "=").setLong(parentId).AND().col("PRED." + ASSOC_ID, "=").setByte(assocId)
+					.AND()
+					.col("SUCC." + PARENT_ID, "=").setLong(childId).AND().col("SUCC." + ASSOC_ID, "=").setByte(assocId);
+		}
+
+
+
+
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+		//                              Запись в таблицу Weight                                 //
+		//////////////////////////////////////////////////////////////////////////////////////////
+
 
 	}
 }

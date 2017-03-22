@@ -45,7 +45,7 @@ public interface DBConstants
 		String PROTECTED = "i_protected"; // время последнего обновления айтема
 		String PARAMS = "i_params"; // значения всех параметров айтема в виде XML
 		String UPDATED = "i_updated"; // время последнего обновления айтема
-		String STATUS = "i_status"; // статус айтема как в таблице ItemParent
+		String DELETED = "i_deleted"; // удален айтем или нет (значение удален - как в таблице ItemParent, не удален - 0)
 	}
 
 	/**

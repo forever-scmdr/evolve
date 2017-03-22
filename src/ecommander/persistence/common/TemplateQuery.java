@@ -112,11 +112,11 @@ public class TemplateQuery implements QueryPart {
 
 	/**
 	 * Создать часть SELECT <поле1, поле2, ...>
-	 * @param colNames
+	 * @param columns
 	 * @return
 	 */
-	public final TemplateQuery SELECT(String... colNames) {
-		queryParts.add(new SqlQueryPart("SELECT " + StringUtils.join(colNames, ", ")));
+	public final TemplateQuery SELECT(Object... columns) {
+		queryParts.add(new SqlQueryPart("SELECT " + StringUtils.join(columns, ", ")));
 		return this;
 	}
 
@@ -136,8 +136,8 @@ public class TemplateQuery implements QueryPart {
 	 * @param tableName
 	 * @return
 	 */
-	public final TemplateQuery FROM(String tableName) {
-		queryParts.add(new SqlQueryPart(" FROM " + tableName));
+	public final TemplateQuery FROM(String...tableNames) {
+		queryParts.add(new SqlQueryPart(" FROM " + StringUtils.join(tableNames, ", ")));
 		return this;
 	}
 
@@ -165,9 +165,17 @@ public class TemplateQuery implements QueryPart {
 		StringBuilder sql = new StringBuilder("INSERT INTO ");
 		sql.append(tableName);
 		if (colNames.length > 0) {
-			sql.append(" (").append(StringUtils.join(colNames, ", ")).append(")");
+			sql.append(" (").append(StringUtils.join(colNames, ", ")).append(") ");
 		}
 		queryParts.add(new SqlQueryPart(sql.toString()));
+		return this;
+	}
+
+	public final TemplateQuery LIMIT(int limit, int...startFrom) {
+		StringBuilder sb = new StringBuilder(" LIMIT ");
+		sb.append(limit);
+		if (startFrom.length > 0)
+			sb.append(',').append(startFrom[0]);
 		return this;
 	}
 	/**
@@ -181,6 +189,7 @@ public class TemplateQuery implements QueryPart {
 		if (columnPairs.length % 2 != 0 || columnPairs.length == 0)
 			throw new IllegalArgumentException("There must be pairs of columns as JOIN conditions");
 		StringBuilder sb = new StringBuilder(" INNER JOIN ");
+		sb.append(tableName).append(" ON ");
 		for (int i = 0; i < columnPairs.length; i += 2) {
 			if (i > 0)
 				sb.append(" AND ");
