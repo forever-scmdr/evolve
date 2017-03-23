@@ -136,11 +136,11 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 		this.itemVariables = itemVars;
 	}
 	
-	final ItemHttpPostForm getItemFrom() {
+	public final ItemHttpPostForm getItemFrom() {
 		return itemForm;
 	}
 	
-	final ItemVariablesContainer getItemVariables() {
+	public final ItemVariablesContainer getItemVariables() {
 		return itemVariables;
 	}
 	/**

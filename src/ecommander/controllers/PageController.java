@@ -254,6 +254,7 @@ public class PageController {
 					// Загрузка страницы
 					ExecutablePagePE newPage = PageModelRegistry.testAndGetRegistry().getExecutablePage(linkUrl, page.getUrlBase(),
 							page.getSessionContext());
+					newPage.setPostData(page.getItemFrom(), page.getItemVariables());
 					return processPageInt(newPage);
 				} else {
 					return linkUrl;
