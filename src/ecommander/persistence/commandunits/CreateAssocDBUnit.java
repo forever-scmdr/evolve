@@ -75,7 +75,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////
-		//                          Запись в таблицу ItemParent                                 //
+		//                    Подготовка запроса записи в таблицу ItemParent                    //
 		//////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -88,13 +88,14 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		insert.INSERT_INTO(TABLE, PARENT_ID, CHILD_ID, ASSOC_ID, CHILD_SUPERTYPE, PARENT_LEVEL, STATUS, USER, GROUP);
 
 		// Шаг 1. Вставить запись непосредственного предка и потомка
-		insert.SELECT(parentId, childId, assocId, superTypeId, 1, status, userId, groupId).sql(" \r\n");
+		insert.SELECT(parentId, childId, assocId, superTypeId, 1, status, userId, groupId, "MAX(" + WEIGHT + ") + 64")
+				.FROM(TABLE).WHERE().col(PARENT_ID).setLong(parentId).AND().col(ASSOC_ID).setByte(assocId).sql(" \r\n");
 
 		// Шаг 2. Добавить для нового потомка в качестве новых предков всех предков нового непосредственного родителя
 		insert.UNION_ALL()
 				.SELECT(PARENT_ID, childId, assocId, superTypeId, 0, status, userId, groupId)
 				.FROM(TABLE).WHERE()
-				.col(CHILD_ID, "=").setLong(parentId).AND().col(ASSOC_ID, "=").setByte(assocId).sql(" \r\n");
+				.col(CHILD_ID).setLong(parentId).AND().col(ASSOC_ID).setByte(assocId).sql(" \r\n");
 
 		// Шаг 3. Повторить предыдущий шаг для каждого потомка ассоциируемого айтема ("нового потомка" из шага 2)
 		if (!isItemNew) {
@@ -103,18 +104,10 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 							"SUCC." + STATUS, "SUCC." + USER, "SUCC." + GROUP)
 					.FROM(TABLE + " AS PRED", TABLE + " AS SUCC")
 					.WHERE()
-					.col("PRED." + CHILD_ID, "=").setLong(parentId).AND().col("PRED." + ASSOC_ID, "=").setByte(assocId)
+					.col("PRED." + CHILD_ID).setLong(parentId).AND().col("PRED." + ASSOC_ID).setByte(assocId)
 					.AND()
-					.col("SUCC." + PARENT_ID, "=").setLong(childId).AND().col("SUCC." + ASSOC_ID, "=").setByte(assocId);
+					.col("SUCC." + PARENT_ID).setLong(childId).AND().col("SUCC." + ASSOC_ID).setByte(assocId);
 		}
-
-
-
-
-
-		//////////////////////////////////////////////////////////////////////////////////////////
-		//                              Запись в таблицу Weight                                 //
-		//////////////////////////////////////////////////////////////////////////////////////////
 
 
 	}

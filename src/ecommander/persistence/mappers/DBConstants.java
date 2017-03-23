@@ -49,19 +49,6 @@ public interface DBConstants
 	}
 
 	/**
-	 * Порядок следавания потомков непосредственного родителя.
-	 * Определяется также ассоциацией
-	 */
-	interface Weight
-	{
-		String TABLE = "weight";
-		String ITEM = "w_item";
-		String PARENT = "w_parent";
-		String ASSOC = "w_assoc";
-		String WEIGHT = "w_weight";
-	}
-
-	/**
 	 * Таблица, в которой хранится описание модели данных в виде XML
 	 */
 	interface ModelXML {
@@ -94,6 +81,7 @@ public interface DBConstants
 		String STATUS = "ip_status"; // Показывать (0), скрытый (1), айтем удален но можно восстановить (2), айтем удален безвозвратно (3)
 		String USER = "ip_user"; // Владелец айтема (0 - айтем принадлежит группе и не имеет владельца)
 		String GROUP = "ip_group"; // Группа-владелец айтема
+		String WEIGHT = "ip_weight"; // Вес прямого потомка среди всех прямых потомков предка с заданной ассоциацией
 	}
 	/**
 	 * Параметры айтема
@@ -114,7 +102,6 @@ public interface DBConstants
 		String ITEM_ID = "ii_item"; // ID айтема (не типа айтема, а конкретного айтема)
 		String ITEM_TYPE = "ii_type"; // ID типа айтема
 		String ITEM_PARAM = "ii_param"; // ID параметра айтема (каждый параметр имеет уникальный ID вне зависимости от уникальности его названия)
-		String VALUE_IDX = "ii_val_idx"; // порядковый номер значения (в логике не участвует, нужен для уникальности записи)
 		String VALUE = "ii_val"; // Занчение
 	}
 	/**

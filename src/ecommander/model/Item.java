@@ -387,7 +387,7 @@ public class Item {
 										strValue = StringEscapeUtils.unescapeXml(strValue);
 									param.createAndSetValue(strValue, true);
 								} catch (Exception e) {
-									throw new RuntimeException("ITEM params population from XML failed", e);
+									throw new RuntimeException("CHILD params population from XML failed", e);
 								}
 							}
 						}
@@ -400,7 +400,7 @@ public class Item {
 				InputSource is = new InputSource(new StringReader(doc.toString()));
 				parser.parse(is, handler);
 			} catch (Exception e) {
-				ServerLogger.error("ITEM params population from XML failed", e);
+				ServerLogger.error("CHILD params population from XML failed", e);
 			}
 			mapConsistent = true;
 		}
