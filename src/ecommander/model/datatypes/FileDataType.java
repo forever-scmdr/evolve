@@ -53,7 +53,7 @@ public class FileDataType extends StringDataType {
 			meta.put(SIZE_META, file.getSize() + "");
 			meta.put(CREATED_META, DateDataType.DAY_FORMATTER.print(System.currentTimeMillis()));
 			meta.put(EXTENSION_META, StringUtils.substringAfterLast(file.getName(), "."));
-		} else  {
+		} else {
 			try {
 				Path file = null;
 				if (value instanceof File) file = ((File) value).toPath();

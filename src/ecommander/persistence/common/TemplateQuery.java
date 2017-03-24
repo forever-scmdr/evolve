@@ -162,7 +162,7 @@ public class TemplateQuery implements QueryPart {
 	}
 
 	public final TemplateQuery col(String column, String...sign) {
-		queryParts.add(new SqlQueryPart(column + (sign.length > 0 ? sign[0] : "=")));
+		queryParts.add(new SqlQueryPart(" " + column + (sign.length > 0 ? sign[0] : "=")));
 		return this;
 	}
 
@@ -173,6 +173,21 @@ public class TemplateQuery implements QueryPart {
 			sql.append(" (").append(StringUtils.join(colNames, ", ")).append(") ");
 		}
 		queryParts.add(new SqlQueryPart(sql.toString()));
+		return this;
+	}
+
+	public final TemplateQuery UPDATE(String tableName) {
+		queryParts.add(new SqlQueryPart("UPDATE " + tableName));
+		return this;
+	}
+
+	public final TemplateQuery DELETE(String tableName) {
+		queryParts.add(new SqlQueryPart("DELETE FROM " + tableName));
+		return this;
+	}
+
+	public final TemplateQuery SET() {
+		queryParts.add(new SqlQueryPart(" SET "));
 		return this;
 	}
 

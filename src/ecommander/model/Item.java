@@ -90,7 +90,6 @@ public class Item {
 
 	private byte status = STATUS_NORMAL; // статус айтема (нормальный, айтем удален, айтем скрыт)
 
-	private int childWeight; // порядковый номер (вес) в списке всех потомков одного родителя (для сортировки)
 	private long timeUpdated; // время последнего обновления или создания айтема
 	
 	private boolean mapConsistent = false; // находится ли отображение параметров в актуальном состоянии (загружены ли значения из строки)
@@ -113,7 +112,6 @@ public class Item {
 		this.parametersXML = src.parametersXML;
 		this.status = src.status;
 		this.areFilesProtected = src.areFilesProtected;
-		this.childWeight = src.childWeight;
 		this.timeUpdated = src.timeUpdated;
 		this.paramMap.putAll(src.paramMap);
 		this.mapConsistent = src.mapConsistent;
@@ -140,14 +138,13 @@ public class Item {
 	}
 
 	private Item(ItemType itemDesc, long itemId, Assoc contextAssoc, long parentId, int userId, byte groupId, byte status,
-	             int weight, String key, String parametersXML, String keyUnique, long timeUpdated, boolean filesProtected) {
+	             String key, String parametersXML, String keyUnique, long timeUpdated, boolean filesProtected) {
 		this.id = itemId;
 		this.contextAssoc = contextAssoc;
 		this.contextParentId = parentId;
 		this.itemType = itemDesc;
 		this.ownerUserId = userId;
 		this.ownerGroupId = groupId;
-		this.childWeight = weight;
 		this.key = key;
 		this.keyUnique = keyUnique;
 		this.oldKeyUnique = keyUnique;
@@ -210,7 +207,6 @@ public class Item {
 	 * @param userId
 	 * @param groupId
 	 * @param status
-	 * @param weight
 	 * @param key
 	 * @param parametersXML
 	 * @param keyUnique
@@ -218,9 +214,9 @@ public class Item {
 	 * @return
 	 */
 	public static Item existingItem(ItemType itemDesc, long itemId, Assoc assoc, long parentId, int userId, byte groupId,
-	                                byte status, int weight, String key, String parametersXML, String keyUnique,
+	                                byte status, String key, String parametersXML, String keyUnique,
 	                                long timeUpdated, boolean filesProtected) {
-		return new Item(itemDesc, itemId, assoc, parentId, userId, groupId, status, weight, key, parametersXML, keyUnique,
+		return new Item(itemDesc, itemId, assoc, parentId, userId, groupId, status, key, parametersXML, keyUnique,
 				timeUpdated, filesProtected);
 	}
 	/**
@@ -387,7 +383,7 @@ public class Item {
 										strValue = StringEscapeUtils.unescapeXml(strValue);
 									param.createAndSetValue(strValue, true);
 								} catch (Exception e) {
-									throw new RuntimeException("CHILD params population from XML failed", e);
+									throw new RuntimeException("ITEM params population from XML failed", e);
 								}
 							}
 						}
@@ -400,7 +396,7 @@ public class Item {
 				InputSource is = new InputSource(new StringReader(doc.toString()));
 				parser.parse(is, handler);
 			} catch (Exception e) {
-				ServerLogger.error("CHILD params population from XML failed", e);
+				ServerLogger.error("ITEM params population from XML failed", e);
 			}
 			mapConsistent = true;
 		}
@@ -562,7 +558,7 @@ public class Item {
 	public final Item getConsistentVersion() {
 		if (stringConsistent)
 			return this;
-		return new Item(itemType, id, contextAssoc, contextParentId, ownerUserId, ownerGroupId, status, childWeight,
+		return new Item(itemType, id, contextAssoc, contextParentId, ownerUserId, ownerGroupId, status,
 				key, parametersXML,	oldKeyUnique, timeUpdated, areFilesProtected);
 	}
 	/**
@@ -717,12 +713,6 @@ public class Item {
 	 */
 	public final long getContextParentId() {
 		return contextParentId;
-	}
-	/**
-	 * @return
-	 */
-	public final int getChildWeight() {
-		return childWeight;
 	}
 	/**
 	 * Возвращает название, которое уникально идентифицирует данный айтем для юзера в системе управления

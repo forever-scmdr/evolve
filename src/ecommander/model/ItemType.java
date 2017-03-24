@@ -344,6 +344,17 @@ public class ItemType extends ItemTypeContainer {
 	public boolean hasExtraHandlers() {
 		return extraHandlers != null;
 	}
+
+	/**
+	 * Фактори для создания обработчиков собыний, связанных с айтемом
+	 * @param event
+	 * @return
+	 */
+	public LinkedHashSet<ItemEventCommandFactory> getExtrahandlers(Event event) {
+		if (!hasExtraHandlers())
+			return null;
+		return extraHandlers.get(event);
+	}
 	/**
 	 * Есть ли обработчики для определенного события
 	 * @param event
