@@ -26,7 +26,7 @@ import ecommander.filesystem.SaveItemFilesUnit;
  * 
  * @author EEEE
  */
-class SaveNewItemDBUnit extends DBPersistenceCommandUnit {
+class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemTbl {
 
 	private Item item;
 	private boolean usingRefs = false;
@@ -51,31 +51,19 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit {
 		item.prepareToSave();
 
 		Connection conn = getTransactionContext().getConnection();
-		String selectSql = null;
-		ResultSet rs = null;
-		
-		// Подсчет общего количества прямых потомков родителя айтема для установления его порядкового номера
-		int weight = findNewWeight(conn, item.getDirectParentId());
-		
-		// Строка PRED_ID_PATH (если указана и если не указана)
-		String predIdPath = item.getPredecessorsPath();
-		if (StringUtils.isBlank(predIdPath)) {
-			selectSql
-				= "SELECT CONCAT(" + DBConstants.Item.PRED_ID_PATH + ", " + DBConstants.Item.ID
-				+ ", '/') FROM " + DBConstants.Item.TABLE 
-				+ " WHERE " + DBConstants.Item.ID + " = " + item.getDirectParentId();
-			ServerLogger.debug(selectSql);
-			PreparedStatement predPathStmt = conn.prepareStatement(selectSql);
-			rs = predPathStmt.executeQuery(selectSql);
-			rs.next();
-			predIdPath = rs.getString(1);
-			item.setPredecessorsPath(predIdPath);
-			rs.close();
-			predPathStmt.close();
-		}
 
-		// Затем сохраняется айтем (без сохранения параметров, только для того чтобы получить ID)
-		TemplateQuery builder = new TemplateQuery("New item insert");
+		// сохраняется айтем (без сохранения параметров, только для того чтобы получить ID)
+		TemplateQuery itemInsert = new TemplateQuery("New item insert");
+		itemInsert.INSERT_INTO(TABLE, TYPE_ID, KEY, TRANSLIT_KEY, PROTECTED, DELETED, PARAMS, UPDATED)
+				.sql(" VALUES(")
+				.setInt(item.getTypeId()).com()
+				.setString(item.getKey()).com()
+				.setString(item.getKeyUnique()).com()
+				.setByte(item.isFileProtected() ? (byte)1 : (byte)0).com()
+				.setByte(item.getStatus()).com()
+				.setString(item.outputValues())
+
+
 		builder.sql(
 				"INSERT INTO " + 
 				DBConstants.Item.TABLE + 

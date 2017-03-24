@@ -75,7 +75,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////
-		//                    Подготовка запроса записи в таблицу ItemParent                    //
+		//                          Запрос записи в таблицу ItemParent                          //
 		//////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -108,7 +108,8 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 					.AND()
 					.col("SUCC." + PARENT_ID).setLong(childId).AND().col("SUCC." + ASSOC_ID).setByte(assocId);
 		}
-
-
+		try (PreparedStatement pstmt = insert.prepareQuery(getTransactionContext().getConnection())) {
+			pstmt.executeUpdate();
+		}
 	}
 }

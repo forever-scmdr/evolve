@@ -156,6 +156,11 @@ public class TemplateQuery implements QueryPart {
 		return this;
 	}
 
+	public final TemplateQuery com() {
+		queryParts.add(new SqlQueryPart(", "));
+		return this;
+	}
+
 	public final TemplateQuery col(String column, String...sign) {
 		queryParts.add(new SqlQueryPart(column + (sign.length > 0 ? sign[0] : "=")));
 		return this;
@@ -389,7 +394,7 @@ public class TemplateQuery implements QueryPart {
 			+ " FROM " + DBConstants.ItemTbl.TABLE + " AS CHILD <<JOIN>>"
 			+ " WHERE CHILD." + DBConstants.ItemTbl.TYPE_ID + " IN <<POLYMORPHIC_TYPE_IDS>>"
 			+ " <<PARENT_CONDITION>> <<USER_CONDITION>> <<FILTER_CONDITION>> "
-			+ " ORDER BY <<SORTING>> CHILD." + DBConstants.ItemTbl.INDEX_WEIGHT
+			+ " ORDER BY <<SORTING>> CHILD." + DBConstants.ItemTbl.KEY
 			+ " <<LIMIT>>";
 		TemplateQuery query = createFromString(QUERY_SKELETON, "main");
 		System.out.println(query);

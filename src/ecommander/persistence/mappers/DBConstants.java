@@ -41,7 +41,6 @@ public interface DBConstants
 		String TYPE_ID = "i_type_id"; // уникальный ID типа айтема (PK)
 		String KEY = "i_key"; // Название айтема, которое юзер видит в CMS
 		String TRANSLIT_KEY = "i_t_key"; // Уникальный ключ айтема, который можно испльзовать для поиска вместо ID
-		String INDEX_WEIGHT = "i_weight"; // порядковый номер (вес с разницей 64 по умолчаню) в списке всех потомков одного родителя (для сортировки)
 		String PROTECTED = "i_protected"; // время последнего обновления айтема
 		String PARAMS = "i_params"; // значения всех параметров айтема в виде XML
 		String UPDATED = "i_updated"; // время последнего обновления айтема
