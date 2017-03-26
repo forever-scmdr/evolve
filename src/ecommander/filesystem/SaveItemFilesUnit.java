@@ -1,5 +1,15 @@
 package ecommander.filesystem;
 
+import ecommander.fwk.FileException;
+import ecommander.fwk.ServerLogger;
+import ecommander.model.Item;
+import ecommander.model.ParameterDescription;
+import ecommander.model.SingleParameter;
+import ecommander.model.datatypes.FileDataType;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
@@ -10,21 +20,8 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.io.FileUtils;
-
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.FileException;
-import ecommander.controllers.AppContext;
-import ecommander.model.datatypes.FileDataType;
-import ecommander.model.Item;
-import ecommander.model.ParameterDescription;
-import ecommander.model.SingleParameter;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Сохраняет все файлы - одиночные параметры айтема
@@ -40,7 +37,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 	
 	public SaveItemFilesUnit(Item item) {
 		super(item);
-		files = new ArrayList<File>();
+		files = new ArrayList<>();
 	}
 	/**
 	 * Перемещает файлы из директории загрузки в постоянную директорию и дает им новое название (c ID предков)
@@ -77,7 +74,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 					// Если файл прикреплен, то он должен быть типа FileItem или типа File
 					if (isUploaded || isDirect) {
 						// Если название файла содержит путь - удалить этот путь
-						String fileName = null;
+						String fileName;
 						if (isUploaded)
 							fileName = FileDataType.getFileName((FileItem) value);
 						else
@@ -122,7 +119,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 								File newFile = new File(fileDirectoryName + fName);
 								fos = new FileOutputStream(newFile);
 								fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-								newValues.add((String) fName);
+								newValues.add(fName);
 							} catch (Exception e) {
 								e.printStackTrace();
 							} finally{

@@ -1,23 +1,19 @@
 package ecommander.persistence.commandunits;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import ecommander.model.ItemType;
-import org.apache.commons.lang3.StringUtils;
-
+import ecommander.filesystem.SaveItemFilesUnit;
 import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
+import ecommander.model.ItemType;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import ecommander.filesystem.SingleItemDirectoryFileUnit;
-import ecommander.filesystem.SaveItemFilesUnit;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  * Сохранение нового айтема в базоне
@@ -53,6 +49,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 				.col(TRANSLIT_KEY).setString(item.getKeyUnique())
 				.col(PROTECTED).setByte(item.isFileProtected() ? (byte)1 : (byte)0)
 				.col(DELETED).setByte(item.getStatus())
+				.col(PRED_PATH).setString(item.getPredIdPath())
 				.col(PARAMS).setString(item.outputValues());
 		// Иногда (например, при переносе со старой версии CMS) ID айтема уже задан (не равняется 0)
 		boolean hasId = item.getId() > 0;
@@ -131,16 +128,9 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		// Шаг 6.   Дополнительная обработка
 		//
 		if (item.getItemType().hasExtraHandlers(ItemType.Event.create)) {
-			for (ItemEventCommandFactory fac : item.getItemType().getExtrahandlers(ItemType.Event.create)) {
+			for (ItemEventCommandFactory fac : item.getItemType().getExtraHandlers(ItemType.Event.create)) {
 				PersistenceCommandUnit command = fac.createCommand(item);
-				if (command != null) {
-					if (command instanceof DBPersistenceCommandUnit) {
-						((DBPersistenceCommandUnit) command).fulltextIndex(insertIntoFulltextIndex, closeLuceneWriter);
-						((DBPersistenceCommandUnit) command).ignoreUser(ignoreUser);
-						((DBPersistenceCommandUnit) command).ignoreFileErrors(ignoreFileErrors);
-					}
-					executeCommand(command);
-				}
+				executeCommandInherited(command);
 			}
 		}
 

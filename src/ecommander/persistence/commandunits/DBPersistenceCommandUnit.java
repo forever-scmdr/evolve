@@ -16,10 +16,10 @@ import ecommander.model.User;
 public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit {
 	
 	protected TransactionContext context;
-	protected boolean ignoreUser = false;
-	protected boolean ignoreFileErrors = false;
-	protected boolean insertIntoFulltextIndex = true;
-	protected boolean closeLuceneWriter = true;
+	boolean ignoreUser = false;
+	boolean ignoreFileErrors = false;
+	boolean insertIntoFulltextIndex = true;
+	boolean closeLuceneWriter = true;
 	private ArrayList<PersistenceCommandUnit> executedCommands;
 	
 	public TransactionContext getTransactionContext() {
@@ -76,7 +76,8 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 * Иногда добавлять надо сразу, иногда потом.
 	 * Второй параметр - закрывать ли Writer Lucene (запись в полнотекстовый индекс) после выполнения команды.
 	 * Если выполняется блок команд, то закрывание-открывание райтера начинает занимать много времени.
-	 * @param close
+	 * @param fulltextIndex
+	 * @param closeWriter
 	 * @return
 	 */
 	public DBPersistenceCommandUnit fulltextIndex(boolean fulltextIndex, boolean... closeWriter) {
@@ -92,6 +93,24 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 		commandUnit.setTransactionContext(context);
 		commandUnit.execute();
 		executedCommands.add(commandUnit);
+	}
+
+	/**
+	 * Выполнить команду с такими же настройками, как и у вызывающей команды.
+	 * Настройки - записывать в полнотекстовый индекс, закрывать полнотекстовый индекс после записи,
+	 * игнорировать права пользователя, игнорировать файловые ошибки
+	 * @param command
+	 * @throws Exception
+	 */
+	protected final void executeCommandInherited(PersistenceCommandUnit command) throws Exception {
+		if (command != null) {
+			if (command instanceof DBPersistenceCommandUnit) {
+				((DBPersistenceCommandUnit) command).fulltextIndex(insertIntoFulltextIndex, closeLuceneWriter);
+				((DBPersistenceCommandUnit) command).ignoreUser(ignoreUser);
+				((DBPersistenceCommandUnit) command).ignoreFileErrors(ignoreFileErrors);
+			}
+			executeCommand(command);
+		}
 	}
 	/**
 	 * Проверка, можно ли текущему пользователю выполнять действия с заданным айтемом

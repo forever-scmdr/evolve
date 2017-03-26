@@ -80,6 +80,8 @@ public class Item {
 	private ItemType itemType = null; // Тип айтема
 	private Boolean areFilesInitiallyProtected = false; // Защищены ил файлы айтема вначале, т.е. после загрузки из БД.
 	private boolean areFilesProtected = false; // Защищены ли файлы айтема от анонимного доступа
+	private String predIdPath = null;   // Путь от корня через всех предков к этому айтему. Т.н. первичная иерархия айтемов
+										// Она используется при удалении/скрывании айтема, смене владельца и защите файлов
 	private LinkedHashMap<Integer, Parameter> paramMap = new LinkedHashMap<>(); // Все параметры (не только одиночные)
 																				// параметры (имя параметра => объект
 																				// Parameter)
@@ -112,13 +114,15 @@ public class Item {
 		this.parametersXML = src.parametersXML;
 		this.status = src.status;
 		this.areFilesProtected = src.areFilesProtected;
+		this.predIdPath = src.predIdPath;
 		this.timeUpdated = src.timeUpdated;
 		this.paramMap.putAll(src.paramMap);
 		this.mapConsistent = src.mapConsistent;
 		this.stringConsistent = src.stringConsistent;
 	}
 	
-	private Item(ItemType itemDesc, Assoc contextAssoc, long parentId, int userId, byte groupId, byte status, boolean filesProtected) {
+	private Item(ItemType itemDesc, Assoc contextAssoc, long parentId, int userId, byte groupId, byte status,
+	             boolean filesProtected, String predIdPath) {
 		this.itemType = itemDesc;
 		this.ownerUserId = userId;
 		this.ownerGroupId = groupId;
@@ -126,6 +130,7 @@ public class Item {
 		this.contextParentId = parentId;
 		this.status = status;
 		this.areFilesProtected = filesProtected;
+		this.predIdPath = predIdPath;
 		this.id = DEFAULT_ID;
 		this.key = itemDesc.getCaption();
 		this.mapConsistent = true;
@@ -137,8 +142,9 @@ public class Item {
 		}
 	}
 
-	private Item(ItemType itemDesc, long itemId, Assoc contextAssoc, long parentId, int userId, byte groupId, byte status,
-	             String key, String parametersXML, String keyUnique, long timeUpdated, boolean filesProtected) {
+	private Item(ItemType itemDesc, long itemId, Assoc contextAssoc, long parentId, int userId, byte groupId,
+	             byte status, String key, String parametersXML, String keyUnique, long timeUpdated,
+	             boolean filesProtected, String predIdPath) {
 		this.id = itemId;
 		this.contextAssoc = contextAssoc;
 		this.contextParentId = parentId;
@@ -152,6 +158,7 @@ public class Item {
 		this.status = status;
 		this.areFilesInitiallyProtected = filesProtected;
 		this.areFilesProtected = filesProtected;
+		this.predIdPath = predIdPath;
 		this.parametersXML = parametersXML;
 		this.mapConsistent = false;
 		this.stringConsistent = true;
@@ -172,7 +179,8 @@ public class Item {
 	 * @return
 	 */
 	public static Item newChildItem(ItemType itemDesc, Assoc assoc, Item parent) {
-		return new Item(itemDesc, assoc, parent.getId(), parent.getOwnerUserId(), parent.getOwnerGroupId(), parent.status, parent.areFilesProtected);
+		return new Item(itemDesc, assoc, parent.getId(), parent.getOwnerUserId(), parent.getOwnerGroupId(),
+				parent.status, parent.areFilesProtected, parent.getPredIdAndSelfPath());
 	}
 
 	/**
@@ -183,10 +191,13 @@ public class Item {
 	 * @param userId
 	 * @param groupId
 	 * @param status
+	 * @param filesProtected
+	 * @param predIdPath
 	 * @return
 	 */
-	public static Item newItem(ItemType itemDesc, Assoc assoc, long parentId, int userId, byte groupId, byte status, boolean filesProtected) {
-		return new Item(itemDesc, assoc, parentId, userId, groupId, status, filesProtected);
+	public static Item newItem(ItemType itemDesc, Assoc assoc, long parentId, int userId, byte groupId, byte status,
+	                           boolean filesProtected, String predIdPath) {
+		return new Item(itemDesc, assoc, parentId, userId, groupId, status, filesProtected, predIdPath);
 	}
 
 	/**
@@ -195,7 +206,7 @@ public class Item {
 	 * @return
 	 */
 	public static Item newSessionRootItem(ItemType itemDesc) {
-		return new Item(itemDesc, AssocRegistry.DEFAULT, 0, User.NO_USER_ID, User.NO_GROUP_ID, STATUS_NORMAL, false);
+		return new Item(itemDesc, AssocRegistry.DEFAULT, 0, User.NO_USER_ID, User.NO_GROUP_ID, STATUS_NORMAL, false, null);
 	}
 
 	/**
@@ -211,13 +222,15 @@ public class Item {
 	 * @param parametersXML
 	 * @param keyUnique
 	 * @param timeUpdated
+	 * @param filesProtected
+	 * @param predIdPath
 	 * @return
 	 */
 	public static Item existingItem(ItemType itemDesc, long itemId, Assoc assoc, long parentId, int userId, byte groupId,
 	                                byte status, String key, String parametersXML, String keyUnique,
-	                                long timeUpdated, boolean filesProtected) {
+	                                long timeUpdated, boolean filesProtected, String predIdPath) {
 		return new Item(itemDesc, itemId, assoc, parentId, userId, groupId, status, key, parametersXML, keyUnique,
-				timeUpdated, filesProtected);
+				timeUpdated, filesProtected, predIdPath);
 	}
 	/**
 	 * Является ли айтем новым
@@ -230,8 +243,10 @@ public class Item {
 	 * Установка или добавление парамтера.
 	 * Этот метод предназначен для установки параметров, полученных 
 	 * из интерфейса пользователя (т. е. все значения строковые)
-	 * 
-	 * @param map
+	 *
+	 * @param paramId
+	 * @param value
+	 * @throws Exception
 	 */
 	public final void setValueUI(int paramId, String value) throws Exception {
 		getParameter(paramId).createAndSetValue(value, isNew());
@@ -252,7 +267,7 @@ public class Item {
 	/**
 	 * Прямая установка параметра. Используется когда сразу есть значение параметра соответствующего типа
 	 * и не нужно преобразование из строки
-	 * @param paramName
+	 * @param paramId
 	 * @param value
 	 */
 	public final void setValue(int paramId, Object value) {
@@ -299,7 +314,7 @@ public class Item {
 	 * Метод нельзя использовать для установки новых значений параметра, так как
 	 * вновь установленное значение параметра не сохранится при сохранении айтема.
 	 * Создает и добавляет параметр с определенным названием и пустым значением
-	 * @param paramName
+	 * @param paramId
 	 * @return
 	 */
 	public final Parameter getParameter(int paramId) {
@@ -455,7 +470,7 @@ public class Item {
 	public final void removeMultipleParamValue(int paramId, int paramIndex) {
 		// Значит айтем изменялся пользователем
 		populateMap();
-		Parameter param = (Parameter) paramMap.get(paramId);
+		Parameter param = paramMap.get(paramId);
 		if (param.isMultiple()) {
 			((MultipleParameter) param).deleteValue(paramIndex);
 		} else {
@@ -535,10 +550,10 @@ public class Item {
 			if (itemType.hasKey()) {
 				String[] paramNames = StringUtils.split(itemType.getKey(), ItemType.COMMON_DELIMITER);
 				key = Strings.EMPTY;
-				for (int i = 0; i < paramNames.length; i++) {
-					int paramId = itemType.getParameter(paramNames[i]).getId();
+				for (String paramName : paramNames) {
+					int paramId = itemType.getParameter(paramName).getId();
 					if (paramMap.get(paramId) != null) {
-						key += ((SingleParameter)paramMap.get(paramId)).outputValue() + Strings.SPACE;
+						key += ((SingleParameter) paramMap.get(paramId)).outputValue() + Strings.SPACE;
 					}
 				}
 				key = key.trim();
@@ -559,7 +574,7 @@ public class Item {
 		if (stringConsistent)
 			return this;
 		return new Item(itemType, id, contextAssoc, contextParentId, ownerUserId, ownerGroupId, status,
-				key, parametersXML,	oldKeyUnique, timeUpdated, areFilesProtected);
+				key, parametersXML,	oldKeyUnique, timeUpdated, areFilesProtected, predIdPath);
 	}
 
 	/**
@@ -669,6 +684,21 @@ public class Item {
 	}
 
 	/**
+	 * Первичная вложенность айтемов (до непосредственного предка - родителя)
+	 * @return
+	 */
+	public String getPredIdPath() {
+		return predIdPath;
+	}
+
+	/**
+	 * Первичная вложенность айтемов включая сам айтем
+	 * @return
+	 */
+	public String getPredIdAndSelfPath() {
+		return predIdPath + id + "/";
+	}
+	/**
 	 * Нужно ли перемещать файлы айтема в защищенное хранилище или из него при
 	 * сохранении айтема
 	 * @return
@@ -728,7 +758,7 @@ public class Item {
 	}
 	/**
 	 * Установить уникальный текстовый ключ
-	 * @param key
+	 * @param newKey
 	 */
 	public final void setKeyUnique(String newKey) {
 		if (!StringUtils.isBlank(newKey))
@@ -764,7 +794,7 @@ public class Item {
 	public static void updateParamValues(Item source, Item destination, String...paramNamesToUpdate) {
 		// Если тип айтемов не совпадает - ничего не делать
 		try {
-			Collection<ParameterDescription> paramsToCopy = null;
+			Collection<ParameterDescription> paramsToCopy;
 			// Если параметры переносятся из айтема-предка в айтем-потомок
 			if (ItemTypeRegistry.getItemPredecessorsExt(destination.getTypeName()).contains(source.getTypeName()))
 				paramsToCopy = source.itemType.getParameterList();
@@ -777,7 +807,7 @@ public class Item {
 			HashSet<String> neededParams = null;
 			// Если переданы параметры для копирования, то создать из них множество
 			if (paramNamesToUpdate.length > 0)
-				neededParams = new HashSet<String>(Arrays.asList(paramNamesToUpdate));
+				neededParams = new HashSet<>(Arrays.asList(paramNamesToUpdate));
 			for (ParameterDescription paramDesc : paramsToCopy) {
 				// Пропустить ненужные параметры
 				if (neededParams != null && !neededParams.contains(paramDesc.getName()))
@@ -786,7 +816,7 @@ public class Item {
 				if (param != null) {
 					// Одиночные параметры
 					if (param instanceof SingleParameter) {
-						destination.setValue(paramDesc.getId(), ((SingleParameter)param).getValue());
+						destination.setValue(paramDesc.getId(), param.getValue());
 					// Множественные параметры
 					} else if (param instanceof MultipleParameter) {
 						for (SingleParameter singleParam : ((MultipleParameter)param).getValues()) {
@@ -806,7 +836,7 @@ public class Item {
 	 */
 	public final void setExtra(String name, String value) {
 		if (extras == null)
-			extras = new HashMap<String, String>();
+			extras = new HashMap<>();
 		extras.put(name, value);
 	}
 	/**
@@ -825,7 +855,7 @@ public class Item {
 	 */
 	public final Collection<String> getExtraKeys() {
 		if (extras == null)
-			return new ArrayList<String>(0);
+			return new ArrayList<>(0);
 		return extras.keySet();
 	}
 	/**
@@ -854,10 +884,10 @@ public class Item {
 	public final Collection<SingleParameter> getParamValues(String paramName) {
 		ParameterDescription paramDesc = itemType.getParameter(paramName);
 		if (paramDesc == null) 
-			return new ArrayList<SingleParameter>(0);
+			return new ArrayList<>(0);
 		Parameter param = getParameter(paramDesc.getId());
 		if (param == null) 
-			return new ArrayList<SingleParameter>(0);
+			return new ArrayList<>(0);
 		if (!param.isMultiple()) {
 			ArrayList<SingleParameter> result = new ArrayList<>(1);
 			result.add((SingleParameter) param);
@@ -1092,7 +1122,7 @@ public class Item {
 	}
 
 	private static String getParamFileName(String basePath, long itemId, String fileName) {
-		return new StringBuilder(basePath).append('/').append(itemId).append('/').append(fileName).toString();
+		return basePath + '/' + itemId + '/' + fileName;
 	}
 
 	private void setFilesPath() {

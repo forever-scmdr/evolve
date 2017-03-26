@@ -11,6 +11,6 @@ public class SaveItemDBUnit {
 		if (item.isNew())
 			return new SaveNewItemDBUnit(item);
 		else
-			return new UpdateItemDBUnit(item);
+			return new UpdateItemParamsDBUnit(item);
 	}
 }

@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.util.HashSet;
 
 /**
+ * Команда для создания новой ассоциации между двумя айтемами. Один айтем - продитель, второй атйем - потомок
  * Created by User on 20.03.2017.
  */
 public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemParent, ErrorCodes {

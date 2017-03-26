@@ -128,7 +128,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit {
 				}
 			}
 			if (corrections)
-				executeCommand(new UpdateItemDBUnit(item, false, true).fulltextIndex(false));
+				executeCommand(new UpdateItemParamsDBUnit(item, false, true).fulltextIndex(false));
 			
 			// Шаг 5. - Выполнить команду копирования для всех сабайтемов копируемого айтема
 			ArrayList<Item> subitems = ItemQuery.loadByParentId(baseItem.getId(), conn);

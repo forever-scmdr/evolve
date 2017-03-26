@@ -20,7 +20,7 @@ import ecommander.model.datatypes.DataType.Type;
  * @author E
  */
 public class ItemType extends ItemTypeContainer {
-	public static enum Event {
+	public enum Event {
 		create, update, delete;
 		public static Event get(String eventName) {
 			if (StringUtils.endsWith(eventName, "create"))
@@ -33,12 +33,8 @@ public class ItemType extends ItemTypeContainer {
 		}
 	}
 
-
-	public static final int SERVICE_ITEM_ID = -1; 	// ID айтема, который используется как заглушка для обеспечения целостности данных таблиц БД
-													// для хранения служебных и специальных значений и параметров
-	
 	public static final char COMMON_DELIMITER = ' ';
-	public static final String ITEM_SELF_PARAMS = "*";
+	static final String ITEM_SELF_PARAMS = "*";
 
 	private String typeName = StringUtils.EMPTY; // Имя айтема в XML файле на английском языке
 	private int typeId; // ID типа айтема (для ускорения)
@@ -85,8 +81,8 @@ public class ItemType extends ItemTypeContainer {
 		this.inline = isInline;
 		this.isExtendable = isExtendable;
 		this.isKeyUnique = isKeyUnique;
-		parameters = new HashMap<Integer, ParameterDescription>();
-		paramsByName = new LinkedHashMap<String, ParameterDescription>();
+		parameters = new HashMap<>();
+		paramsByName = new LinkedHashMap<>();
 		if (!StringUtils.isBlank(extendsStr)) {
 			this.extendsStr = extendsStr;
 			if (!this.extendsStr.contains(ITEM_SELF_PARAMS))
@@ -177,7 +173,7 @@ public class ItemType extends ItemTypeContainer {
 		return superType;
 	}
 	/**
-	 * @param map
+	 * @param parameter
 	 */
 	final void putParameter(ParameterDescription parameter) {
 		parameters.put(parameter.getId(), parameter);
@@ -253,11 +249,8 @@ public class ItemType extends ItemTypeContainer {
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (obj instanceof ItemType
-				&& ((ItemType) obj).getName().equals(getName())) {
-			return true;
-		}
-		return false;
+		return obj instanceof ItemType
+				&& ((ItemType) obj).getName().equals(getName());
 	}
 	/**
 	 * @see Object#toString()
@@ -296,7 +289,7 @@ public class ItemType extends ItemTypeContainer {
 	 */
 	public void addKeyParameter(String keyAddOn, boolean isKeyUnique) {
 		this.isKeyUnique |= isKeyUnique;
-		if (key.indexOf(keyAddOn) != -1)
+		if (key.contains(keyAddOn))
 			return;
 		if (!StringUtils.isBlank(key))
 			key += COMMON_DELIMITER;
@@ -350,7 +343,7 @@ public class ItemType extends ItemTypeContainer {
 	 * @param event
 	 * @return
 	 */
-	public LinkedHashSet<ItemEventCommandFactory> getExtrahandlers(Event event) {
+	public LinkedHashSet<ItemEventCommandFactory> getExtraHandlers(Event event) {
 		if (!hasExtraHandlers())
 			return null;
 		return extraHandlers.get(event);
@@ -374,7 +367,7 @@ public class ItemType extends ItemTypeContainer {
 	 * Вернуть фактори для создания обработчиков сохранения (и других событий) айтема
 	 * @return
 	 */
-	public void addExtraHandlersToItem(ItemType itemToAdd) {
+	void addExtraHandlersToItem(ItemType itemToAdd) {
 		if (extraHandlers != null) {
 			for (Event event: extraHandlers.keySet()) {
 				for (ItemEventCommandFactory factory: extraHandlers.get(event)) {

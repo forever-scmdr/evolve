@@ -45,6 +45,7 @@ public interface DBConstants
 		String PARAMS = "i_params"; // значения всех параметров айтема в виде XML
 		String UPDATED = "i_updated"; // время последнего обновления айтема
 		String DELETED = "i_deleted"; // удален айтем или нет (значение удален - как в таблице ItemParent, не удален - 0)
+		String PRED_PATH = "i_pred_path"; // ID всех предшественников от корня через слэш
 	}
 
 	/**
