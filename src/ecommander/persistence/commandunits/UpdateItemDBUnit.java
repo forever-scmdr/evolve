@@ -18,13 +18,14 @@ import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import ecommander.filesystem.SaveItemFilesUnit;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Команда для сохранения уже существующего айтема
  * @author EEEE
  *
  */
-class UpdateItemDBUnit extends DBPersistenceCommandUnit {
+class UpdateItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.UniqueItemKeys, DBConstants {
 	
 	private Item item;
 	private boolean triggerExtra = true;
@@ -41,63 +42,48 @@ class UpdateItemDBUnit extends DBPersistenceCommandUnit {
 	}
 	
 	public void execute() throws Exception {
-		PreparedStatement pstmt = null;
 		// Проверка прав пользователя
 		testPrivileges(item);
-		Item initial = item.getConsistentVersion();
 		try	{
 			Connection conn = getTransactionContext().getConnection();
-			// Сохранть новое уникальное ключевое значение, если это надо делать
-			if (item.getItemType().isKeyUnique()) {
+			// Сохранть новое уникальное ключевое значение, если это надо делать (если оно было изменено)
+			if (item.getItemType().isKeyUnique() && !StringUtils.equals(item.getKeyUnique(), item.getOldKeyUnique())) {
 				long itemId = 0;
 				// Запрос на получение значения
-				String selectSql 
-					= "SELECT " + DBConstants.UniqueItemKeys.ID + " FROM " + DBConstants.UniqueItemKeys.TABLE
-					+ " WHERE " + DBConstants.UniqueItemKeys.KEY + "=?";
-				pstmt = conn.prepareStatement(selectSql);
-				pstmt.setString(1, item.getKeyUnique());
-				ResultSet rs = pstmt.executeQuery();
-				if (rs.next()) itemId = rs.getLong(1);
-				pstmt.close();
-				rs.close();
-				// Если надо производить вставку значения
-				if (itemId != item.getId()) {
-					// Удаление старого значения
-					String deleteSql 
-						= "DELETE FROM " + DBConstants.UniqueItemKeys.TABLE 
-						+ " WHERE " + DBConstants.UniqueItemKeys.ID + "=?";
-					pstmt = conn.prepareStatement(deleteSql);
-					pstmt.setLong(1, item.getId());
+				String selectSql = "SELECT " + ID + " FROM " + TABLE + " WHERE " + KEY + "=?";
+				try (PreparedStatement pstmt = conn.prepareStatement(selectSql)) {
+					pstmt.setString(1, item.getKeyUnique());
+					ResultSet rs = pstmt.executeQuery();
+					if (rs.next())
+						itemId = rs.getLong(1);
+				}
+
+				TemplateQuery query = new TemplateQuery("Update key unique");
+				// Если новое значение ключа не уникально - нужно добавить ID айтема
+				if (itemId != 0)
+					item.setKeyUnique(item.getKeyUnique() + item.getId());
+				// Айтем имел значение уникального ключа
+				if (StringUtils.isNotBlank(item.getOldKeyUnique())) {
+					query.UPDATE(TABLE).SET().col(KEY).setString(item.getKeyUnique())
+							.WHERE().col(KEY).setString(item.getOldKeyUnique()).AND().col(ID).setLong(item.getId());
+				}
+				// Айтем раньше не имел уникального ключа
+				else {
+					query.INSERT_INTO(TABLE).SET().col(ID).setLong(item.getId()).col(KEY).setString(item.getKeyUnique());
+				}
+
+				try (PreparedStatement pstmt = query.prepareQuery(conn)) {
 					pstmt.executeUpdate();
-					pstmt.close();
-					// Запрос на вставку значения
-					String insertSql 
-						= "INSERT INTO " + DBConstants.UniqueItemKeys.TABLE 
-						+ "(" + DBConstants.UniqueItemKeys.ID + ", " + DBConstants.UniqueItemKeys.KEY + ") VALUES (?, ?)";
-					pstmt = conn.prepareStatement(insertSql);
-					// Найденный ID не равен ID айтема - надо сгенерировать уникальное значение
-					if (itemId != 0)
-						item.setKeyUnique(item.getKeyUnique() + item.getId());
-					// Вставка нового значения
-					pstmt.setLong(1, item.getId());
-					pstmt.setString(2, item.getKeyUnique());
-					pstmt.executeUpdate();
-					pstmt.close();
 				}
 			}
-			
-			// Теперь сохраняются файлы (перед сохранением значений параметров в БД)
-			if (updateParamsIndex) {
-				try {
-					executeCommand(new SaveItemFilesUnit(item));
-				} catch (Exception e) {
-					if (!ignoreFileErrors)
-						throw e;
-					else
-						ServerLogger.warn("Ignoring file error while updating item", e);
-				}
-			}
-			
+
+			TemplateQuery updateItem = new TemplateQuery("Update item");
+			updateItem.UPDATE(ItemTbl.TABLE).SET()
+					.col(ItemTbl.KEY).setString(item.getKey())
+					.col(ItemTbl.TRANSLIT_KEY).setString(item.getKeyUnique())
+					.col(ItemTbl.PROTECTED).setByte(item.isFileProtected() ? (byte) 1 : (byte) 0);
+
+
 			// Сохранить новое ключевое значение
 			String sql 
 					= "UPDATE " + DBConstants.Item.TABLE + " SET " 
@@ -119,10 +105,20 @@ class UpdateItemDBUnit extends DBPersistenceCommandUnit {
 			}
 			pstmt.executeUpdate();
 			pstmt.close();
-			
-			// Выполнить запросы для сохранения параметров
-			if (updateParamsIndex)
-				ItemMapper.insertItemParametersToIndex(item, true, getTransactionContext());
+
+			// Теперь сохраняются параметры и файлы
+			if (updateParamsIndex) {
+				ItemMapper.insertItemParametersToIndex(item, false, getTransactionContext());
+				try {
+					executeCommand(new SaveItemFilesUnit(item));
+				} catch (Exception e) {
+					if (!ignoreFileErrors)
+						throw e;
+					else
+						ServerLogger.warn("Ignoring file error while updating item", e);
+				}
+			}
+
 			
 			// Вставка в Lucene индекс
 			if (insertIntoFulltextIndex && updateParamsIndex)

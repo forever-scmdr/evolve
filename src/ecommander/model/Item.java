@@ -546,7 +546,7 @@ public class Item {
 				key = itemType.getCaption();
 			}
 			if (key.length() > 99) key = key.substring(0, 98);
-			if (StringUtils.isBlank(keyUnique))
+			if (itemType.isKeyUnique() && StringUtils.isBlank(keyUnique))
 				keyUnique = Strings.translit(key);
 		}
 	}
@@ -560,6 +560,14 @@ public class Item {
 			return this;
 		return new Item(itemType, id, contextAssoc, contextParentId, ownerUserId, ownerGroupId, status,
 				key, parametersXML,	oldKeyUnique, timeUpdated, areFilesProtected);
+	}
+
+	/**
+	 * Возвращает старый уникальный ключ (который айетм имел при загрузке из БД)
+	 * @return
+	 */
+	public final String getOldKeyUnique() {
+		return oldKeyUnique;
 	}
 	/**
 	 * Принудительно разобрать содержимое строки параметров и установить флаг о том,
@@ -627,22 +635,10 @@ public class Item {
 		return ownerGroupId;
 	}
 	/**
-	 * @param newGroup
-	 */
-	public final void setOwnerGroupId(byte newGroup) {
-		this.ownerGroupId = newGroup;
-	}
-	/**
 	 * @return
 	 */
 	public final int getOwnerUserId() {
 		return ownerUserId;
-	}
-	/**
-	 * @param newGroup
-	 */
-	public final void setOwnerUserId(int newUser) {
-		this.ownerUserId = newUser;
 	}
 
 	/**
@@ -662,12 +658,6 @@ public class Item {
 
 	public final boolean isStatusDeleted() {
 		return status == STATUS_DELETED;
-	}
-	/**
-	 * @param status
-	 */
-	public final void setStatus(byte status) {
-		this.status = status;
 	}
 
 	/**

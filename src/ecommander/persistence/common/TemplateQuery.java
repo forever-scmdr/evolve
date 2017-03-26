@@ -198,6 +198,11 @@ public class TemplateQuery implements QueryPart {
 			sb.append(',').append(startFrom[0]);
 		return this;
 	}
+
+	public final TemplateQuery ON_DUPLICATE_KEY_UPDATE(String colName) {
+		queryParts.add(new SqlQueryPart(" ON DUPLICATE KEY UPDATE " + colName + "="));
+		return this;
+	}
 	/**
 	 * Создать соединение с другой таблицей. Колонки, по которым происходит соединение,
 	 * перечисляются парами, т. е. Т1.Кол1, Т2.Кол1, Т1.Кол2, Т2.Кол2 и т.д.

@@ -36,41 +36,43 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 	@Override
 	public void execute() throws Exception {
 
-		// У ассоциируемых айтемов не должно быть общих предков
-		// Также у них должны быть одинаковые группы владельцев и сами владельцы
+		if (!isItemNew) {
+			// У ассоциируемых айтемов не должно быть общих предков
+			// Также у них должны быть одинаковые группы владельцев и сами владельцы
 
-		TemplateQuery checkQuery = new TemplateQuery("check assoc validity");
-		checkQuery.SELECT(PARENT_ID, GROUP, USER, CHILD_ID)
-				.FROM(TABLE)
-				.WHERE().col(CHILD_ID, "=").setLong(item.getId())
-				.AND().col(ASSOC_ID, "=").setByte(assocId)
-				.UNION_ALL()
-				.SELECT(PARENT_ID, GROUP, USER, CHILD_ID)
-				.FROM(TABLE)
-				.WHERE().col(CHILD_ID, "=").setLong(parentId)
-				.AND().col(ASSOC_ID, "=").setByte(assocId);
-		try (
-			PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection());
-			ResultSet rs = pstmt.executeQuery()
-		) {
-			HashSet<Long> nodesParents = new HashSet<>();
-			int userId = -1;
-			byte groupId = -1;
-			while (rs.next()) {
-				long parentId = rs.getLong(1);
-				byte gId = rs.getByte(2);
-				int uId = rs.getInt(3);
-				if (nodesParents.contains(parentId))
-					throw new EcommanderException(ASSOC_NODES_ILLEGAL,
-							"Association parent and child nodes must be in different branches");
-				if (userId == -1)
-					userId = uId;
-				if (groupId == -1)
-					groupId = gId;
-				if (userId != uId || groupId != gId)
-					throw new EcommanderException(ASSOC_USERS_NO_MATCH,
-							"Association parent and child nodes must belong to same users of same groups");
-				nodesParents.add(parentId);
+			TemplateQuery checkQuery = new TemplateQuery("check assoc validity");
+			checkQuery.SELECT(PARENT_ID, GROUP, USER, CHILD_ID)
+					.FROM(TABLE)
+					.WHERE().col(CHILD_ID, "=").setLong(item.getId())
+					.AND().col(ASSOC_ID, "=").setByte(assocId)
+					.UNION_ALL()
+					.SELECT(PARENT_ID, GROUP, USER, CHILD_ID)
+					.FROM(TABLE)
+					.WHERE().col(CHILD_ID, "=").setLong(parentId)
+					.AND().col(ASSOC_ID, "=").setByte(assocId);
+			try (
+					PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection());
+					ResultSet rs = pstmt.executeQuery()
+			) {
+				HashSet<Long> nodesParents = new HashSet<>();
+				int userId = -1;
+				byte groupId = -1;
+				while (rs.next()) {
+					long parentId = rs.getLong(1);
+					byte gId = rs.getByte(2);
+					int uId = rs.getInt(3);
+					if (nodesParents.contains(parentId))
+						throw new EcommanderException(ASSOC_NODES_ILLEGAL,
+								"Association parent and child nodes must be in different branches");
+					if (userId == -1)
+						userId = uId;
+					if (groupId == -1)
+						groupId = gId;
+					if (userId != uId || groupId != gId)
+						throw new EcommanderException(ASSOC_USERS_NO_MATCH,
+								"Association parent and child nodes must belong to same users of same groups");
+					nodesParents.add(parentId);
+				}
 			}
 		}
 
