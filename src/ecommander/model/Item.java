@@ -901,9 +901,11 @@ public class Item {
 	 * @return
 	 */
 	public final boolean isUserAllowed(User user) {
+		if (!user.belongsTo(getOwnerGroupId()))
+			return false;
 		if (isPersonal())
-			return getOwnerUserId() == user.getUserId();
-		return getOwnerGroupId() == user.getGroupId();
+			return getOwnerUserId() == user.getUserId() || user.getRole(getOwnerGroupId()) == User.ADMIN;
+		return true;
 	}
 	/**
 	 * Получить все значения заданного параметра (как одиночного так и множественного) в виде массива

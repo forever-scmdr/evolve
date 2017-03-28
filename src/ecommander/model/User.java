@@ -1,54 +1,99 @@
 package ecommander.model;
 
+import ecommander.extra._generated.Book;
+
+import java.util.HashMap;
+
 public class User {
+	private static class Group {
+		private String name;
+		private byte id;
+		private byte role;
+
+		private Group(String name, byte id, byte role) {
+			this.name = name;
+			this.id = id;
+			this.role = role;
+		}
+	}
+
+	public static final byte SIMPLE = (byte) 0;
+	public static final byte ADMIN = (byte) 1;
+
 	public static final String USER_DEFAULT_GROUP = "common"; // группа по умолчанию
-	
-	public static final byte NO_GROUP_ID = (byte) 0;
+
 	public static final int NO_USER_ID = 0;
-	
+	public static final byte NO_GROUP_ID = 0;
+
 	private String name;
 	private String password;
 	private String description;
-	private String group = USER_DEFAULT_GROUP;
-	
+
+	private HashMap<String, Group> groupRoles = new HashMap<>();
+
 	private long userId;
-	private int groupId = NO_GROUP_ID;
-	
-	
-	
-	public User(String name, String password, String description, String group, long userId, int groupId) {
-		super();
+
+	public User(String name, String password, String description, long userId) {
 		this.name = name;
 		this.password = password;
 		this.description = description;
-		this.group = group;
 		this.userId = userId;
-		this.groupId = groupId;
 	}
 	/**
-	 * Вернуть пользователя по умолчанию (группа - common, groupId - ID группы common, userId - 0)
+	 * Вернуть пользователя по умолчанию (userId - 0, группа - common, простой пользователь)
 	 * @return
 	 */
 	public static User getDefaultUser() {
 		Byte defaultGroup = UserGroupRegistry.getDefaultGroup();
-		int groupId = NO_GROUP_ID;
-		if (defaultGroup != null)
-			groupId = defaultGroup;
-		return new User("", "", "", USER_DEFAULT_GROUP, NO_USER_ID, groupId);
+		User user = new User("", "", "", NO_USER_ID);
+		user.addGroup(USER_DEFAULT_GROUP, defaultGroup, SIMPLE);
+		return user;
 	}
 
+	void addGroup(String name, byte id, byte role) {
+		groupRoles.put(name, new Group(name, id, role));
+	}
+
+	/**
+	 * Приналдлежит ли пользователь заданной групе
+	 * @param group
+	 * @return
+	 */
+	public boolean belongsTo(String group) {
+		return groupRoles.containsKey(group);
+	}
+
+	/**
+	 * Приналдлежит ли пользователь заданной групе
+	 * @param groupId
+	 * @return
+	 */
+	public boolean belongsTo(byte groupId) {
+		return belongsTo(UserGroupRegistry.getGroup(groupId));
+	}
+
+	/**
+	 * Получить роль пользователя в заданной группе
+	 * @param group
+	 * @return
+	 */
+	public Byte getRole(String group) {
+		return groupRoles.containsKey(group) ? groupRoles.get(group).role : null;
+	}
+
+	/**
+	 * Получить роль пользователя в заданной группе
+	 * @param group
+	 * @return
+	 */
+	public Byte getRole(byte group) {
+		return getRole(UserGroupRegistry.getGroup(group));
+	}
 	/**
 	 * @return
 	 */
 	public String getDescription() {
 		return description;
-	}
-
-	/**
-	 * @return
-	 */
-	public String getGroup() {
-		return group;
 	}
 
 	/**
@@ -72,27 +117,9 @@ public class User {
 	public void setNewName(String newName) {
 		name = newName;
 	}
-	
-	public boolean isDefaultGroup() {
-		return getGroup().equals(USER_DEFAULT_GROUP);
-	}
 
 	public boolean isAnonimous() {
 		return userId == NO_USER_ID;
-	}
-	/**
-	 * Обладает ли пользователь правами главного администратора
-	 * @return
-	 */
-	public boolean isSuperUser() {
-		return isDefaultGroup() && !isAnonimous();
-	}
-	
-	/**
-	 * @return
-	 */
-	public int getGroupId() {
-		return groupId;
 	}
 
 	/**

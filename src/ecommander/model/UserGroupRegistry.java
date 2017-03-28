@@ -1,5 +1,8 @@
 package ecommander.model;
 
+import org.apache.commons.collections4.BidiMap;
+import org.apache.commons.collections4.bidimap.DualHashBidiMap;
+
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -13,12 +16,9 @@ public class UserGroupRegistry {
 	
 	private static UserGroupRegistry REGISTRY;
 	
-	private HashMap<String, Byte> groups;
+	private BidiMap<String, Byte> groups = new DualHashBidiMap<>();
 	
-	private UserGroupRegistry() {
-		groups = new HashMap<>();
-		groups.put(User.USER_DEFAULT_GROUP, User.NO_GROUP_ID);
-	}
+	private UserGroupRegistry() { }
 	
 	private static UserGroupRegistry getRegistry() {
 		if (REGISTRY == null)
@@ -33,30 +33,30 @@ public class UserGroupRegistry {
 	public static Collection<String> getGroupNames() {
 		return getRegistry().groups.keySet();
 	}
-	
-	public static int getGroup(String groupName) {
+
+	/**
+	 * Получить ID группы по названию
+	 * @param groupName
+	 * @return
+	 */
+	public static byte getGroup(String groupName) {
 		return getRegistry().groups.get(groupName);
 	}
-	
+
+	/**
+	 * Получить название группы по ее ID
+	 * @param groupId
+	 * @return
+	 */
+	public static String getGroup(byte groupId) {
+		return getRegistry().groups.getKey(groupId);
+	}
+
 	public static boolean groupExists(String groupName) {
 		return getRegistry().groups.containsKey(groupName);
 	}
 	
 	public static Byte getDefaultGroup() {
 		return getRegistry().groups.get(User.USER_DEFAULT_GROUP);
-	}
-	/**
-	 * Создать нового пользователя (новый объект класса User), не сохраняя его в БД
-	 * @param groupName
-	 * @param userName
-	 * @param password
-	 * @param description
-	 * @return
-	 */
-	public static User createNewUser(String groupName, String userName, String password, String description) {
-		if (groupExists(groupName))
-			return new User(userName, password, description, groupName, User.NO_USER_ID, getGroup(groupName));
-		else
-			throw new IllegalArgumentException("There is no group '" + groupName + "'");
 	}
 }

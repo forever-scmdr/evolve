@@ -165,32 +165,4 @@ public class UserMapper {
 				conn.close();
 		}
 	}
-	/**
-	 * Загрузить пользователя по логину
-	 * @param login
-	 * @return
-	 * @throws SQLException
-	 * @throws NamingException
-	 */
-	public static User getUserByLogin(String login) throws SQLException, NamingException {
-		Connection conn = null;
-		User user = null;
-		try {
-			String sql = "SELECT * FROM " + DBConstants.Users.TABLE + ", " + DBConstants.UserGroup.TABLE + " WHERE " + DBConstants.Users.LOGIN
-					+ "=? AND " + DBConstants.Users.GROUP + "=" + DBConstants.UserGroup.NAME;
-			conn = MysqlConnector.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			ServerLogger.debug(sql);
-			pstmt.setString(1, login);
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next())
-				user = new User(rs.getString(DBConstants.Users.LOGIN), rs.getString(DBConstants.Users.PASSWORD),
-						rs.getString(DBConstants.Users.DESCRIPTION), rs.getString(DBConstants.UserGroup.NAME),
-						rs.getLong(DBConstants.Users.ID), rs.getInt(DBConstants.UserGroup.ID));
-			return user;
-		} finally {
-			if (conn != null && !conn.isClosed())
-				conn.close();
-		}
-	}
 }

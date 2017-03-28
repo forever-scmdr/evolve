@@ -153,36 +153,37 @@ public interface DBConstants
 	 **                                        ЮЗЕРЫ
 	 **************************************************************************************************/
 
-	/**
-	 * Для юзеров тоже надо делать отдельный файл, так же как и для айтемов и старниц.
-	 * Всего получается 3 настроечных файла - юзеры, айтемы и страницы.
-	 * В файле юзеров определяются группы, айтемы, которые могут просматривать либо редактировать эти группы
-	 * и юзеры, которые входят в эти группы
-	 * @author E
-	 */
 
 	/**
 	 * Группы пользователей
 	 * @author E
 	 */
-	interface UserGroup
-	{
-		String TABLE = "user_group";
-		String ID = "ug_id";
-		String NAME = "ug_name";
+	interface Group {
+		String TABLE = "group";
+		String ID = "g_id";
+		String NAME = "g_name";
 	}
 	
 	/**
 	 * Таблица юзеров и их принадлежность к группам
 	 * @author E
 	 */
-	interface UsersTbl
-	{
+	interface UsersTbl {
 		String TABLE = "users";
 		String ID = "u_id";
-		String GROUP = "u_group";
 		String LOGIN = "u_login";
 		String PASSWORD = "u_password";
 		String DESCRIPTION = "u_description";
+	}
+
+	/**
+	 * Группы, к которым принадлежать пользователь (один может принадлежать многим группам)
+	 * и роли пользователей в этих группах (простой пользователь или админ)
+	 */
+	interface UserGroups {
+		String TABLE = "user_groups";
+		String USER_ID = "ug_user_id";
+		String GROUP_ID = "ug_group_id";
+		String ROLE = "ug_role";
 	}
 }

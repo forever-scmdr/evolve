@@ -191,12 +191,11 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 						+ ItemTbl.TYPE_ID + ", "
 						+ ItemTbl.KEY + ", "
 						+ ItemTbl.TRANSLIT_KEY + ", "
-						+ ItemTbl.INDEX_WEIGHT + ", "
 						+ ItemTbl.PARAMS
 						+ ") VALUES ("
 						+ ItemTypeRegistry.getDefaultRoot().getId() + ", "
 						+ ItemTypeRegistry.getDefaultRoot().getTypeId()
-						+ ", 'root', 'root', 0, '')";
+						+ ", 'root', 'root', '')";
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;
