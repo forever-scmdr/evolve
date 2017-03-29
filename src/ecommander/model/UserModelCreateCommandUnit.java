@@ -56,11 +56,9 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	private HashMap<File, String> xmlFileContents = new HashMap<>();
 
 	public void execute() throws Exception {
-		// Очистить реестр айтемов
+		// Перезагрузить из БД реестр групп пользователей
 		UserGroupRegistry.clearRegistry();
-		
-		// Загрузить ID всех параметров и айтемов
-		loadIds();
+		UserMapper.loadUserGorups();
 
 		// Парсить загруженную из БД модель данных
 		// Если модель не найдена в БД, поменять режим на загрузку из файлов
@@ -642,7 +640,7 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		//clearSql = "SET FOREIGN_KEY_CHECKS=1";
 	}
 	
-	private void loadIds() throws SQLException {
+	private void loadGroups() throws SQLException {
 		Statement stmt = getTransactionContext().getConnection().createStatement();
 
 		String selectAssocIds = "SELECT * FROM " + AssocIds.TABLE;

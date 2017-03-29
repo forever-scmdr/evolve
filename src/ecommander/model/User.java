@@ -28,12 +28,10 @@ public class User {
 	private String name;
 	private String password;
 	private String description;
-
+	private int userId;
 	private HashMap<String, Group> groupRoles = new HashMap<>();
 
-	private long userId;
-
-	public User(String name, String password, String description, long userId) {
+	public User(String name, String password, String description, int userId) {
 		this.name = name;
 		this.password = password;
 		this.description = description;
@@ -129,7 +127,7 @@ public class User {
 		return userId;
 	}
 
-	public void setNewId(long id) {
+	public void setNewId(int id) {
 		userId = id;
 	}
 }

@@ -184,6 +184,7 @@ public interface DBConstants
 		String TABLE = "user_groups";
 		String USER_ID = "ug_user_id";
 		String GROUP_ID = "ug_group_id";
+		String GROUP_NAME = "ug_group_name";
 		String ROLE = "ug_role";
 	}
 }
