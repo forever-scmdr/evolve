@@ -25,7 +25,11 @@ public class UserGroupRegistry {
 			REGISTRY = new UserGroupRegistry();
 		return REGISTRY;
 	}
-	
+
+	public static void clearRegistry() {
+		REGISTRY = null;
+	}
+
 	public static void addGroup(String groupName, byte groupId) {
 		getRegistry().groups.put(groupName, groupId);
 	}
