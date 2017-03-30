@@ -23,6 +23,9 @@ public class SaveNewUserDBUnit extends DBPersistenceCommandUnit {
 	}
 	
 	public void execute() throws Exception {
+		// Проверка - пользователя в группу может добавлять только админ этой группы
+		User admin = getTransactionContext().getInitiator();
+
 		if (!getTransactionContext().getInitiator().isSuperUser() && !ignoreUser)
 			throw new UserNotAllowedException();
 		Statement stmt = null;

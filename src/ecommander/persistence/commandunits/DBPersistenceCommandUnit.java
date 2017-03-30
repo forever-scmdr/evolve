@@ -1,12 +1,18 @@
 package ecommander.persistence.commandunits;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
+import ecommander.model.UserMapper;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TransactionContext;
 import ecommander.model.User;
+
+import javax.naming.NamingException;
 
 /**
  * Абстрактный класс для команд базы данных
@@ -114,7 +120,6 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	}
 	/**
 	 * Проверка, можно ли текущему пользователю выполнять действия с заданным айтемом
-	 * Если пользователь 
 	 * @param item
 	 * @throws UserNotAllowedException 
 	 */
@@ -123,15 +128,29 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 			return;
 		if (context == null)
 			throw new IllegalStateException("Can not test user privileges against item before transaction context is set");
-		User user = context.getInitiator();
+		User admin = context.getInitiator();
 		// Если айтем персональный
 		if (item.isPersonal()) {
-			if (item.getOwnerUserId() != user.getUserId())
+			if (item.getOwnerUserId() != admin.getUserId() && !admin.isAdmin(item.getOwnerGroupId()))
 				throw new UserNotAllowedException();
 		// Если айтем общий (нет владельца)
 		} else {
-			if ((item.getOwnerGroupId() != user.getGroupId()) && !user.isSuperUser())
+			if (!admin.belongsTo(item.getOwnerGroupId()))
 				throw new UserNotAllowedException();
+		}
+	}
+
+	protected final void testPrivileges(User user) throws SQLException, NamingException {
+		if (ignoreUser || user == null)
+			return;
+		if (context == null)
+			throw new IllegalStateException("Can not test user privileges against another user before transaction context is set");
+		User admin = context.getInitiator();
+		// Для того, чтобы проверить, что поменял админ, нужно сначала загрузить старого пользователя
+		User oldUser = UserMapper.getUser(user.getUserId(), getTransactionContext().getConnection());
+		HashSet<String> rolesChanged = new HashSet<>();
+		for (String s : user.) {
+			
 		}
 	}
 }

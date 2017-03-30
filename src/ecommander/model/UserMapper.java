@@ -28,10 +28,9 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 		
 	}
 
-	private static User createUser(TemplateQuery query) throws SQLException, NamingException {
+	private static User createUser(TemplateQuery query, Connection conn) throws SQLException, NamingException {
 		User user = null;
 		try (
-				Connection conn = MysqlConnector.getConnection();
 				PreparedStatement pstmt = query.prepareQuery(conn)
 		) {
 			ResultSet rs = pstmt.executeQuery();
@@ -52,11 +51,11 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 	 * @throws SQLException
 	 * @throws NamingException 
 	 */
-	public static User getUser(String login, String pass) throws SQLException, NamingException {
+	public static User getUser(String login, String pass, Connection conn) throws SQLException, NamingException {
 		TemplateQuery selectUser = new TemplateQuery("Select user by login and password");
 		selectUser.SELECT("*").FROM(TABLE).INNER_JOIN(UserGroups.TABLE, ID, UserGroups.USER_ID)
 				.WHERE().col(LOGIN).setString(login).AND().col(PASSWORD).setString(pass);
-		return createUser(selectUser);
+		return createUser(selectUser, conn);
 	}
 	/**
 	 * Загружает юзера по его ID
@@ -65,11 +64,11 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 	 * @throws SQLException
 	 * @throws NamingException 
 	 */
-	public static User getUser(int userId) throws SQLException, NamingException {
+	public static User getUser(int userId, Connection conn) throws SQLException, NamingException {
 		TemplateQuery selectUser = new TemplateQuery("Select user by ID");
 		selectUser.SELECT("*").FROM(TABLE).INNER_JOIN(UserGroups.TABLE, ID, UserGroups.USER_ID)
 				.WHERE().col(ID).setInt(userId);
-		return createUser(selectUser);
+		return createUser(selectUser, conn);
 	}
 	/**
 	 * Получает всех пользователей
@@ -77,12 +76,11 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 	 * @throws SQLException
 	 * @throws NamingException 
 	 */
-	public static ArrayList<User> getAllUsers() throws SQLException, NamingException {
+	public static ArrayList<User> getAllUsers(Connection conn) throws SQLException, NamingException {
 		TemplateQuery selectUsers = new TemplateQuery("Select all users");
 		selectUsers.SELECT("*").FROM(TABLE).INNER_JOIN(UserGroups.TABLE, ID, UserGroups.USER_ID);
 		HashMap<Integer, User> allUsers = new HashMap<>();
 		try (
-				Connection conn = MysqlConnector.getConnection();
 				PreparedStatement pstmt = selectUsers.prepareQuery(conn)
 		) {
 			ResultSet rs = pstmt.executeQuery();
@@ -105,11 +103,10 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 	 * @throws SQLException 
 	 * @throws NamingException 
 	 */
-	public static boolean userNameExists(String userName) throws NamingException, SQLException {
+	public static boolean userNameExists(String userName, Connection conn) throws NamingException, SQLException {
 		TemplateQuery checkUserName = new TemplateQuery("Check user name");
 		checkUserName.SELECT("*").FROM(TABLE).WHERE().col(LOGIN).setString(userName);
 		try (
-				Connection conn = MysqlConnector.getConnection();
 				PreparedStatement pstmt = checkUserName.prepareQuery(conn)
 		) {
 			ResultSet rs = pstmt.executeQuery();
@@ -138,7 +135,7 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 		}
 	}
 
-	public static void updateUser(User user) {
+	public static void updateUser(User user, boolean updateGorups) {
 
 	}
 

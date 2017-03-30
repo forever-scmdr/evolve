@@ -50,7 +50,7 @@ public class User {
 		return user;
 	}
 
-	void addGroup(String name, byte id, byte role) {
+	public void addGroup(String name, byte id, byte role) {
 		groupRoles.put(name, new Group(name, id, role));
 	}
 
@@ -81,6 +81,24 @@ public class User {
 		return groupRoles.containsKey(group) ? groupRoles.get(group).role : null;
 	}
 
+	/**
+	 * Проверить, является ли пользователь админом заданной группы
+	 * @param group
+	 * @return
+	 */
+	public boolean isAdmin(String group) {
+		return groupRoles.containsKey(group) && groupRoles.get(group).role == ADMIN;
+	}
+
+	/**
+	 * Проверить, является ли пользователь админом заданной группы
+	 * @param group
+	 * @return
+	 */
+	public boolean isAdmin(byte group) {
+		String groupName = UserGroupRegistry.getGroup(group);
+		return groupRoles.containsKey(groupName) && groupRoles.get(groupName).role == ADMIN;
+	}
 	/**
 	 * Получить роль пользователя в заданной группе
 	 * @param group
