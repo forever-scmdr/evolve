@@ -140,7 +140,15 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 		}
 	}
 
-	protected final void testPrivileges(User user) throws SQLException, NamingException {
+	/**
+	 * Проверка, можно ли текущему пользователю выполнять заданные действия с другип пользователем
+	 * @param user
+	 * @param justGroups - только изменение принадлежности к группам (не удаление или изменение пароля)
+	 * @throws SQLException
+	 * @throws NamingException
+	 * @throws UserNotAllowedException
+	 */
+	protected final void testPrivileges(User user, boolean justGroups) throws SQLException, NamingException, UserNotAllowedException {
 		if (ignoreUser || user == null)
 			return;
 		if (context == null)
@@ -148,9 +156,31 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 		User admin = context.getInitiator();
 		// Для того, чтобы проверить, что поменял админ, нужно сначала загрузить старого пользователя
 		User oldUser = UserMapper.getUser(user.getUserId(), getTransactionContext().getConnection());
-		HashSet<String> rolesChanged = new HashSet<>();
-		for (String s : user.) {
-			
+		HashSet<String> adminGroups = new HashSet<>();
+		for (User.Group group : admin.getGroups()) {
+			if (admin.isAdmin(group.name))
+				adminGroups.add(group.name);
+		}
+		HashSet<String> oldUserGroups = new HashSet<>();
+		for (User.Group group : oldUser.getGroups()) {
+			oldUserGroups.add(group.name);
+		}
+		HashSet<String> newUserGroups = new HashSet<>();
+		for (User.Group group : user.getGroups()) {
+			newUserGroups.add(group.name);
+		}
+		if (justGroups) {
+			HashSet<String> addedGroups = new HashSet<>(newUserGroups);
+			addedGroups.removeAll(oldUserGroups);
+			HashSet<String> removedGroups = new HashSet<>(oldUserGroups);
+			removedGroups.removeAll(newUserGroups);
+			if (!adminGroups.containsAll(addedGroups) || !addedGroups.containsAll(removedGroups)) {
+				throw new UserNotAllowedException();
+			}
+		} else {
+			if (!adminGroups.containsAll(newUserGroups) || !adminGroups.containsAll(oldUserGroups)) {
+				throw new UserNotAllowedException();
+			}
 		}
 	}
 }
