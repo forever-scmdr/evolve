@@ -137,4 +137,37 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 			}
 		}
 	}
+
+	public static void updateUser(User user) {
+
+	}
+
+	public static void createUser(User user) throws SQLException, NamingException {
+		TemplateQuery insertUser = new TemplateQuery("Create new User");
+		insertUser.INSERT_INTO(TABLE, LOGIN, PASSWORD, DESCRIPTION).sql(" VALUES (").setString(user.getName()).com()
+				.setString(user.getPassword()).com().setString(user.getDescription()).sql(";\r\n");
+		ArrayList<User.Group> groups = user.getGroups();
+		if (groups.size() > 0)
+			insertUser.INSERT_INTO(UserGroups.TABLE, UserGroups.GROUP_ID, UserGroups.GROUP_NAME, UserGroups.ROLE, UserGroups.USER_ID)
+					.sql(" VALUES ");
+		boolean notFirst = false;
+		for (User.Group group : groups) {
+			if (notFirst)
+				insertUser.com();
+			insertUser.sql(" (").setByte(group.id).com()
+					.setString(group.name).com()
+					.setByte(group.role).com()
+					.setInt(user.getUserId()).sql(")");
+			notFirst = false;
+		}
+		try (
+				Connection conn = MysqlConnector.getConnection();
+				PreparedStatement pstmt = insertUser.prepareQuery(conn, true);
+		) {
+			pstmt.executeUpdate();
+			ResultSet rs = pstmt.getGeneratedKeys();
+			rs.next();
+			user.setNewId(rs.getInt(1));
+		}
+	}
 }

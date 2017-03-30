@@ -2,13 +2,15 @@ package ecommander.model;
 
 import ecommander.extra._generated.Book;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class User {
-	private static class Group {
-		private String name;
-		private byte id;
-		private byte role;
+	public static class Group {
+		public final String name;
+		public final byte id;
+		public final byte role;
 
 		private Group(String name, byte id, byte role) {
 			this.name = name;
@@ -87,6 +89,14 @@ public class User {
 	public Byte getRole(byte group) {
 		return getRole(UserGroupRegistry.getGroup(group));
 	}
+
+	/**
+	 * Получить все группы пользователя и его роли в этих группах
+	 * @return
+	 */
+	public ArrayList<Group> getGroups() {
+		return new ArrayList<>(groupRoles.values());
+	}
 	/**
 	 * @return
 	 */
@@ -123,7 +133,7 @@ public class User {
 	/**
 	 * @return
 	 */
-	public long getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 

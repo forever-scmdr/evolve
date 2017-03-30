@@ -26,11 +26,11 @@ public class UserGroupRegistry {
 		return REGISTRY;
 	}
 
-	public static void clearRegistry() {
+	static void clearRegistry() {
 		REGISTRY = null;
 	}
 
-	public static void addGroup(String groupName, byte groupId) {
+	static void addGroup(String groupName, byte groupId) {
 		getRegistry().groups.put(groupName, groupId);
 	}
 	

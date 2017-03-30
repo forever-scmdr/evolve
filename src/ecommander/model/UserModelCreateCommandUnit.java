@@ -5,6 +5,7 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
 import ecommander.pages.ValidationResults;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
+import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +18,9 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -30,7 +33,7 @@ import java.util.regex.Pattern;
  * @author EEEE
  * 
  */
-class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements DataModelXmlElementNames, DBConstants {
+class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements UserModelXmlElementNames, DBConstants {
 
 	/**
 	 * Поля класса
@@ -59,193 +62,51 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		// Перезагрузить из БД реестр групп пользователей
 		UserGroupRegistry.clearRegistry();
 		UserMapper.loadUserGorups();
-
-		// Парсить загруженную из БД модель данных
-		// Если модель не найдена в БД, поменять режим на загрузку из файлов
-		if (mode == Mode.load) {
-			Statement stmt = getTransactionContext().getConnection().createStatement();
-			String selectXML = "SELECT * FROM " + ModelXML.TABLE;
-			ServerLogger.debug(selectXML);
-			ResultSet rs = stmt.executeQuery(selectXML);
-			ArrayList<String> xmls = new ArrayList<>();
-			while (rs.next()) {
-				xmls.add(rs.getString(ModelXML.XML));
-			}
-			rs.close();
-			for (String xml : xmls) {
-				parseFile(xml);
-			}
-		}
-		// Прасить основную модель model.xml (получить базовые определения айтемов и параметров)
-		if (mode != Mode.load) {
-			ArrayList<File> modelFiles = findModelFiles(new File(AppContext.getMainModelPath()), null);
-			for (File modelFile : modelFiles) {
-				String xml = FileUtils.readFileToString(modelFile, "UTF-8");
-				Document doc = parseFile(xml);
-				xmlFileContents.put(modelFile, xml);
-			}
-
-			// Парсить модели пользовательских айтемов
-			if (Files.exists(Paths.get(AppContext.getUserModelPath()))) {
-				File userFile = new File(AppContext.getUserModelPath());
-				String xml = FileUtils.readFileToString(userFile, "UTF-8");
-				Document doc = parseFile(xml);
-				xmlFileContents.put(userFile, xml);
-			}
-		}
-
-		// Создать иерархию айтемов
-		ItemTypeRegistry.createHierarchy(extensionParentChildPairs, false);
-		
-		// Распределить параметры и сабайтемы по айтемам
-		HashSet<String> processed = new HashSet<>(30);
-		for (String itemName : ItemTypeRegistry.getItemNames()) {
-			addParametersAndSubitems(ItemTypeRegistry.getItemType(itemName), processed);
-		}
-//			TypeHierarchy root = ItemTypeRegistry.getHierarchies(ItemTypeRegistry.getItemNames());
-//			addParametersAndSubitems(root);
-		
-		// Удалить все ненужные записи в таблицах ID и в таблицах индексов по параметрам (делается автоматически через foreign key)
-		noDeletion = itemsById.size() == 0 && paramsById.size() == 0;
-		if (mode == Mode.force_update) {
-			mergeModel();
-			// Создать java класс с текстовыми константами для всех айтемов
-			createJavaConstants();
-			// Добавить сгенерированные ID в файлы модели
-			for (File file : xmlFileContents.keySet()) {
-				String content = xmlFileContents.get(file);
-				fileInjectIds(file, content);
-			}
+		Path usersFile = Paths.get(AppContext.getUsersPath());
+		if (Files.exists(usersFile)) {
+			File userFile = new File(AppContext.getUserModelPath());
+			String xml = FileUtils.readFileToString(userFile, "UTF-8");
+			parseFile(xml);
+		} else {
+			throw createValidationException("Users file not found", "initial", "Не найден файл групп пользователей");
 		}
 	}
 
-	private Document parseFile(String xml) throws Exception {
+	private void parseFile(String xml) throws Exception {
 		Document doc = Jsoup.parse(xml);
-		Elements assocs = doc.getElementsByTag(ASSOC);
-		for (Element assoc : assocs) {
-			readAssoc(assoc);
+		Element groups = doc.getElementsByTag(GROUPS).first();
+		if (groups == null) {
+			throw createValidationException("Groups tag not found", "initial", "Не найден элемент с группами пользователей");
 		}
-		Elements items = doc.getElementsByTag(ITEM);
-		for (Element item : items) {
-			readItem(item);
+		for (Element group : groups.getElementsByTag(GROUP)) {
+			readGroup(group);
 		}
-		Element root = doc.getElementsByTag(ROOT).first();
-		readRoot(root);
+		Element users = doc.getElementsByTag(USERS).first();
+		if (groups == null) {
+			throw createValidationException("Users tag not found", "initial", "Не найден элемент с пользователями");
+		}
+		for (Element user : users.getElementsByTag(USER)) {
+			readUser(item);
+		}
 		return doc;
 	}
 
-	/**
-	 * Читает корневой айтем
-	 * Сохраняет атрибуты коренвого атйема в столбцы таблицы обычного атйема:
-	 * @param attributes
-	 * @throws Exception
-	 */
-	protected void readRoot(Element rootEl) throws Exception {
-		Statement stmt = null;
-		try {
-			// Загрузить ID корня из БД
-			stmt = getTransactionContext().getConnection().createStatement();
-			String sql 
-					= "SELECT " + ItemTbl.ID + " FROM " + ItemTbl.TABLE
-					+ " WHERE " + ItemTbl.ID + "=" + ItemTypeRegistry.getDefaultRoot().getId();
-			ServerLogger.debug(sql);
-			ResultSet rs = stmt.executeQuery(sql);
-			boolean hasRoot = rs.next();
-			rs.close();
-			// Сохранить рут в таблице конкретных айтемов, в случае если такого рута нет
-			if (!hasRoot && mode == Mode.force_update) {
-				sql
-					= "INSERT INTO "
-						+ ItemTbl.TABLE
-						+ " ("
-						+ ItemTbl.ID + ", "
-						+ ItemTbl.TYPE_ID + ", "
-						+ ItemTbl.KEY + ", "
-						+ ItemTbl.TRANSLIT_KEY + ", "
-						+ ItemTbl.PARAMS
-						+ ") VALUES ("
-						+ ItemTypeRegistry.getDefaultRoot().getId() + ", "
-						+ ItemTypeRegistry.getDefaultRoot().getTypeId()
-						+ ", 'root', 'root', '')";
-				ServerLogger.debug(sql);
-				stmt.executeUpdate(sql);
-				dbChanged = true;
+
+	private void readGroup(Element group) throws ValidationException, SQLException {
+		String name = group.attr(NAME);
+		if (!UserGroupRegistry.groupExists(name)) {
+			TemplateQuery insertGroup = new TemplateQuery("Save new group");
+			insertGroup.INSERT_INTO(Group.TABLE, Group.NAME).sql(" VALUES (").setString(name).sql(")");
+			try (PreparedStatement pstmt = insertGroup.prepareQuery(getTransactionContext().getConnection(), true)) {
+				pstmt.executeUpdate();
+				ResultSet rs = pstmt.getGeneratedKeys();
+				rs.next();
+				UserGroupRegistry.addGroup(name, rs.getByte(1));
 			}
-		} finally {
-			if (stmt != null)
-				stmt.close();
-		}
-		// Вложенные айтемы
-		Elements children = rootEl.getElementsByTag(CHILD);
-		for (Element child : children) {
-			readChild(ItemTypeRegistry.getDefaultRoot(), child);
 		}
 	}
 
-	private void readAssoc(Element assocEl) throws ValidationException, SQLException {
-		String name = Strings.createXmlElementName(assocEl.attr(NAME));
-		int newHash = name.hashCode();
-		int savedHash = NumberUtils.toInt(assocEl.attr(AG_HASH), 0);
-		byte savedId = NumberUtils.toByte(assocEl.attr(AG_ID), (byte)0);
-		String caption = assocEl.attr(CAPTION);
-		String description = assocEl.attr(DESCRIPTION);
-		boolean isTransitive = Boolean.parseBoolean(assocEl.attr(TRANSITIVE));
-		boolean nameUpdate = !assocIds.containsKey(name) && assocsById.containsKey(savedId);
-		// Если надо обновить название ассоциации
-		if (nameUpdate) {
-			if (savedHash != assocsById.get(savedId).hashCode()) {
-				throw createValidationException("Assoc force_update error",
-						"Assoc '" + name + "'",
-						"Unable to force_update assoc '" + itemsById.get(savedId) + "' to new name '" + name + "'. Saved hash code doesn't match");
-			}
-			// Обновить название айтема в таблице ID айтемов
-			if (mode == Mode.force_update) {
-				Statement stmt = getTransactionContext().getConnection().createStatement();
-				try {
-					String sql
-							= "UPDATE " + AssocIds.TABLE
-							+ " SET " + AssocIds.ASSOC_NAME + "='" + name
-							+ "' WHERE " + AssocIds.ASSOC_ID + "=" + savedId;
-					ServerLogger.debug(sql);
-					stmt.executeUpdate(sql);
-					dbChanged = true;
-				} finally {
-					stmt.close();
-				}
-			}
-			// Заменить название айтема в списке ID айтемов
-			assocIds.remove(assocsById.get(savedId));
-			assocIds.put(name, new HashId(name.hashCode(), savedId));
-		}
-		// Если появилась новая ассоциация, которой не было раньше - получить ID для нее
-		if (!assocIds.containsKey(name)) {
-			byte newId = ++maxAssocId;
-			if (mode == Mode.force_update) {
-				Statement stmt = getTransactionContext().getConnection().createStatement();
-				try {
-					String sql = "INSERT " + AssocIds.TABLE + " (" + AssocIds.ASSOC_NAME + ") VALUES ('" + name + "')";
-					ServerLogger.debug(sql);
-					stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-					ResultSet keys = stmt.getGeneratedKeys();
-					keys.next();
-					newId = keys.getByte(1);
-					dbChanged = true;
-				} finally {
-					stmt.close();
-				}
-			}
-			assocIds.put(name, new HashId(name.hashCode(), newId));
-		}
-		// Добавить описание айтема в реестр
-		Assoc assoc = new Assoc((byte)assocIds.get(name).id, name, caption, description, isTransitive);
-		ItemTypeRegistry.addAssoc(assoc);
 
-		// Пометить эту ассоциацию для неудаления
-		assocsById.remove((byte) assocIds.get(name).id);
-
-		// Сохранить новые значения для автоматически сгенерированных параметров (ag-id и ag-hash)
-		setElementAutoGenerated(assocEl, assocIds.get(name).id, name);
-	}
 	/**
 	 * Читает айтем
 	 * @param itemNode
