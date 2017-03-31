@@ -1,11 +1,17 @@
 package ecommander.persistence.commandunits;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.UserExistsExcepion;
 import ecommander.fwk.UserNotAllowedException;
+import ecommander.model.UserMapper;
+import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.model.User;
 
@@ -14,7 +20,7 @@ import ecommander.model.User;
  * @author EEEE
  *
  */
-public class SaveNewUserDBUnit extends DBPersistenceCommandUnit {
+public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBConstants, DBConstants.UsersTbl {
 
 	private User user;
 	
@@ -23,32 +29,41 @@ public class SaveNewUserDBUnit extends DBPersistenceCommandUnit {
 	}
 	
 	public void execute() throws Exception {
-		// Проверка - пользователя в группу может добавлять только админ этой группы
-		User admin = getTransactionContext().getInitiator();
 
-		if (!getTransactionContext().getInitiator().isSuperUser() && !ignoreUser)
-			throw new UserNotAllowedException();
-		Statement stmt = null;
-		try	{
-			Connection conn = getTransactionContext().getConnection();
-			stmt = conn.createStatement();
-			String sql = new String();
-			sql += "INSERT INTO " + DBConstants.Users.TABLE + " SET " + DBConstants.Users.LOGIN + "='" + user.getName() + "', "
-					+ DBConstants.Users.GROUP + "='" + user.getGroup() + "', " + DBConstants.Users.PASSWORD + "='"
-					+ user.getPassword() + "', " + DBConstants.Users.DESCRIPTION + "='" + user.getDescription() + "'";
-			ServerLogger.debug(sql);
-			stmt.executeUpdate(sql);
-			if (user.getUserId() == User.NO_USER_ID) {
-				// Получается ID нового айтема и устанавливается этот объект айтема
-				ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
-				rs.next();
-				user.setNewId(rs.getLong(1));
-			}
-		} finally {
-			if (stmt != null)
-				stmt.close();
+		// Проверить права доступа
+		testPrivileges(user, false);
+
+		// Проверить существование пользователя с таким именем
+		if (UserMapper.userNameExists(user.getName(), getTransactionContext().getConnection()))
+			throw new UserExistsExcepion(user.getName());
+
+		// Сохранить пользователя и его права
+		TemplateQuery insertUser = new TemplateQuery("Create new User");
+		insertUser.INSERT_INTO(TABLE, LOGIN, PASSWORD, DESCRIPTION).sql(" VALUES (").setString(user.getName()).com()
+				.setString(user.getPassword()).com().setString(user.getDescription()).sql(";\r\n");
+		ArrayList<User.Group> groups = user.getGroups();
+		if (groups.size() > 0)
+			insertUser
+					.INSERT_INTO(DBConstants.UserGroups.TABLE, DBConstants.UserGroups.GROUP_ID,
+							DBConstants.UserGroups.GROUP_NAME, DBConstants.UserGroups.ROLE,
+							DBConstants.UserGroups.USER_ID)
+					.sql(" VALUES ");
+		boolean notFirst = false;
+		for (User.Group group : groups) {
+			if (notFirst)
+				insertUser.com();
+			insertUser.sql(" (").setByte(group.id).com()
+					.setString(group.name).com()
+					.setByte(group.role).com()
+					.setInt(user.getUserId()).sql(")");
+			notFirst = false;
 		}
-		
+		try (PreparedStatement pstmt = insertUser.prepareQuery(getTransactionContext().getConnection(), true)) {
+			pstmt.executeUpdate();
+			ResultSet rs = pstmt.getGeneratedKeys();
+			rs.next();
+			user.setNewId(rs.getInt(1));
+		}
 	}
 
 }

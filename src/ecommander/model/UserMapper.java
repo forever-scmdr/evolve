@@ -30,9 +30,7 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 
 	private static User createUser(TemplateQuery query, Connection conn) throws SQLException, NamingException {
 		User user = null;
-		try (
-				PreparedStatement pstmt = query.prepareQuery(conn)
-		) {
+		try (PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				if (user == null)
@@ -80,9 +78,7 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 		TemplateQuery selectUsers = new TemplateQuery("Select all users");
 		selectUsers.SELECT("*").FROM(TABLE).INNER_JOIN(UserGroups.TABLE, ID, UserGroups.USER_ID);
 		HashMap<Integer, User> allUsers = new HashMap<>();
-		try (
-				PreparedStatement pstmt = selectUsers.prepareQuery(conn)
-		) {
+		try (PreparedStatement pstmt = selectUsers.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				int userId = rs.getInt(ID);
@@ -106,15 +102,33 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 	public static boolean userNameExists(String userName, Connection conn) throws NamingException, SQLException {
 		TemplateQuery checkUserName = new TemplateQuery("Check user name");
 		checkUserName.SELECT("*").FROM(TABLE).WHERE().col(LOGIN).setString(userName);
-		try (
-				PreparedStatement pstmt = checkUserName.prepareQuery(conn)
-		) {
+		try (PreparedStatement pstmt = checkUserName.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Загрузить ID пользователя по его имени
+	 * @param userName
+	 * @param conn
+	 * @return
+	 * @throws NamingException
+	 * @throws SQLException
+	 */
+	public static int getUserId(String userName, Connection conn) throws NamingException, SQLException {
+		TemplateQuery checkUserName = new TemplateQuery("Check user name");
+		checkUserName.SELECT(ID).FROM(TABLE).WHERE().col(LOGIN).setString(userName);
+		try (PreparedStatement pstmt = checkUserName.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(ID);
+			}
+		}
+		return -1;
 	}
 	/**
 	 * Загрузить все группы пользователей
@@ -132,39 +146,6 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 			if (rs.next()) {
 				UserGroupRegistry.addGroup(rs.getString(Group.NAME), rs.getByte(Group.ID));
 			}
-		}
-	}
-
-	public static void updateUser(User user, boolean updateGorups) {
-
-	}
-
-	public static void createUser(User user) throws SQLException, NamingException {
-		TemplateQuery insertUser = new TemplateQuery("Create new User");
-		insertUser.INSERT_INTO(TABLE, LOGIN, PASSWORD, DESCRIPTION).sql(" VALUES (").setString(user.getName()).com()
-				.setString(user.getPassword()).com().setString(user.getDescription()).sql(";\r\n");
-		ArrayList<User.Group> groups = user.getGroups();
-		if (groups.size() > 0)
-			insertUser.INSERT_INTO(UserGroups.TABLE, UserGroups.GROUP_ID, UserGroups.GROUP_NAME, UserGroups.ROLE, UserGroups.USER_ID)
-					.sql(" VALUES ");
-		boolean notFirst = false;
-		for (User.Group group : groups) {
-			if (notFirst)
-				insertUser.com();
-			insertUser.sql(" (").setByte(group.id).com()
-					.setString(group.name).com()
-					.setByte(group.role).com()
-					.setInt(user.getUserId()).sql(")");
-			notFirst = false;
-		}
-		try (
-				Connection conn = MysqlConnector.getConnection();
-				PreparedStatement pstmt = insertUser.prepareQuery(conn, true);
-		) {
-			pstmt.executeUpdate();
-			ResultSet rs = pstmt.getGeneratedKeys();
-			rs.next();
-			user.setNewId(rs.getInt(1));
 		}
 	}
 }

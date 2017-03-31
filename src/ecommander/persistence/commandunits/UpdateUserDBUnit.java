@@ -1,29 +1,70 @@
 package ecommander.persistence.commandunits;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.UserExistsExcepion;
 import ecommander.fwk.UserNotAllowedException;
+import ecommander.model.UserMapper;
+import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.model.User;
 
 /**
- * Создается новый пользователь
+ * Обновить пользователя
+ * Можно обновить всего пользователя (с логином и паролем) или только его группы
+ *
+ * Политика удаления пользователя - оставлять или нет айтемы, которые ему принадлежат (персональные)
+ * Если айтемы сохраняются, то они становятся общими для группы, которой они принадлежали.
+ * Если айтемы удаляются, то они просто удаляются.
+ *
  * @author EEEE
  *
  */
-public class UpdateUserDBUnit extends DBPersistenceCommandUnit {
+public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBConstants, DBConstants.UsersTbl {
 
 	private User user;
+	private boolean justGroups;
 	
-	public UpdateUserDBUnit(User user) {
+	public UpdateUserDBUnit(User user, boolean...justGroups) {
 		this.user = user;
+		if (justGroups.length > 0)
+			this.justGroups = justGroups[0];
+		else
+			this.justGroups = false;
 	}
 	
 	public void execute() throws Exception {
+
+		// Проверка прав
+		testPrivileges(user, justGroups);
+
+		// Проверка существования логина
+		int existingId = UserMapper.getUserId(user.getName(), getTransactionContext().getConnection());
+		if (existingId >= 0 && existingId != user.getUserId())
+			throw new UserExistsExcepion(user.getName());
+
+		// Сохранение групп
+		TemplateQuery deleteGroups = new TemplateQuery("Update user groups");
+
+		// Сохранение пользователя
+		if (!justGroups) {
+			TemplateQuery updateUser = new TemplateQuery("Update user attributes");
+			updateUser
+					.UPDATE(TABLE).SET()
+					.col(LOGIN).setString(user.getName()).com()
+					.col(PASSWORD).setString(user.getPassword()).com()
+					.col(DESCRIPTION).setString(user.getDescription());
+			try (PreparedStatement pstmt = updateUser.prepareQuery(getTransactionContext().getConnection())) {
+				pstmt.executeUpdate();
+			}
+		}
+
+
+
 		Statement stmt = null;
 		ResultSet rs = null;
 		if (getTransactionContext().getInitiator().getUserId() != user.getUserId() 
