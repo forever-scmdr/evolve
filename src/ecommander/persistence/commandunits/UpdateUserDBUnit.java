@@ -12,6 +12,7 @@ import ecommander.model.UserMapper;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.model.User;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Обновить пользователя
@@ -27,25 +28,30 @@ import ecommander.model.User;
 public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBConstants, DBConstants.UsersTbl {
 
 	private User user;
-	private boolean justGroups;
-	
-	public UpdateUserDBUnit(User user, boolean...justGroups) {
+	boolean deleteItems;
+
+	public UpdateUserDBUnit(User user, boolean deleteItems) {
 		this.user = user;
-		if (justGroups.length > 0)
-			this.justGroups = justGroups[0];
-		else
-			this.justGroups = false;
+		this.deleteItems = deleteItems;
 	}
 	
 	public void execute() throws Exception {
 
+		// Проверка, изменились ли параметры пользователя
+		User oldUser = UserMapper.getUser(user.getUserId(), getTransactionContext().getConnection());
+		boolean justGroups = StringUtils.equals(user.getName(), oldUser.getName())
+				&& StringUtils.equals(user.getPassword(), oldUser.getPassword())
+				&& StringUtils.equals(user.getDescription(), oldUser.getDescription());
+
 		// Проверка прав
 		testPrivileges(user, justGroups);
 
-		// Проверка существования логина
-		int existingId = UserMapper.getUserId(user.getName(), getTransactionContext().getConnection());
-		if (existingId >= 0 && existingId != user.getUserId())
-			throw new UserExistsExcepion(user.getName());
+		// Проверка существования нового логина
+		if (!justGroups) {
+			int existingId = UserMapper.getUserId(user.getName(), getTransactionContext().getConnection());
+			if (existingId >= 0 && existingId != user.getUserId())
+				throw new UserExistsExcepion(user.getName());
+		}
 
 		// Сохранение групп
 		TemplateQuery deleteGroups = new TemplateQuery("Update user groups");
