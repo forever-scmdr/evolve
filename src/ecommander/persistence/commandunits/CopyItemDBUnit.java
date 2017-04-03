@@ -78,8 +78,8 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit {
 			
 			// Проверка, можно ли копировать
 			String selectSql 
-				= "SELECT " + DBConstants.ItemParent.REF_ID + " FROM " + DBConstants.ItemParent.TABLE 
-				+ " WHERE (" + DBConstants.ItemParent.PARENT_ID  + " = " + baseItem.getId()
+				= "SELECT " + DBConstants.ItemParent.REF_ID + " FROM " + DBConstants.ItemParent.IP_TABLE
+				+ " WHERE (" + DBConstants.ItemParent.IP_PARENT_ID + " = " + baseItem.getId()
 				+ " AND " + DBConstants.ItemParent.REF_ID + " = " + newParent.getId() + ")";
 			ServerLogger.debug(selectSql);
 			ResultSet rs = stmt.executeQuery(selectSql);

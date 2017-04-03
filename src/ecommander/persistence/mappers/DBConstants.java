@@ -36,26 +36,26 @@ public interface DBConstants
 	 */
 	interface ItemTbl
 	{
-		String TABLE = "item";
-		String ID = "i_id"; // ID айтема (не типа айтема, а конкретного айтема)
-		String TYPE_ID = "i_type_id"; // уникальный ID типа айтема (PK)
-		String KEY = "i_key"; // Название айтема, которое юзер видит в CMS
-		String TRANSLIT_KEY = "i_t_key"; // Уникальный ключ айтема, который можно испльзовать для поиска вместо ID
-		String PROTECTED = "i_protected"; // время последнего обновления айтема
-		String PARAMS = "i_params"; // значения всех параметров айтема в виде XML
-		String UPDATED = "i_updated"; // время последнего обновления айтема
-		String STATUS = "ip_status"; // Показывать (0), скрытый (1), айтем удален но можно восстановить (2), айтем удален безвозвратно (3)
-		String USER_ID = "i_user"; // Владелец айтема (0 - айтем принадлежит группе и не имеет владельца)
-		String GROUP_ID = "i_group"; // Группа-владелец айтема
+		String I_TABLE = "item";
+		String I_ID = "i_id"; // ID айтема (не типа айтема, а конкретного айтема)
+		String I_TYPE_ID = "i_type_id"; // уникальный ID типа айтема (PK)
+		String I_KEY = "i_key"; // Название айтема, которое юзер видит в CMS
+		String I_T_KEY = "i_t_key"; // Уникальный ключ айтема, который можно испльзовать для поиска вместо ID
+		String I_PROTECTED = "i_protected"; // время последнего обновления айтема
+		String I_PARAMS = "i_params"; // значения всех параметров айтема в виде XML
+		String I_UPDATED = "i_updated"; // время последнего обновления айтема
+		String I_STATUS = "i_status"; // Показывать (0), скрытый (1), айтем удален но можно восстановить (2), айтем удален безвозвратно (3)
+		String I_USER = "i_user"; // Владелец айтема (0 - айтем принадлежит группе и не имеет владельца)
+		String I_GROUP = "i_group"; // Группа-владелец айтема
 	}
 
 	/**
 	 * Таблица, в которой хранится описание модели данных в виде XML
 	 */
 	interface ModelXML {
-		String TABLE = "model_xml";
-		String NAME = "xml_name";
-		String XML = "xml_xml";
+		String XML_TABLE = "model_xml";
+		String XML_NAME = "xml_name";
+		String XML_XML = "xml_xml";
 	}
 	/**
 	 * Уникальные строковые ключи некоторых айтемов, которые можно передавать через URL с целью уникальной идентификации айтема
@@ -63,9 +63,9 @@ public interface DBConstants
 	 *
 	 */
 	interface UniqueItemKeys {
-		String TABLE = "unique_key";
-		String ID = "uk_item_id"; // ID айтема
-		String KEY = "uk_key"; // Уникальный текстовый ключ
+		String UK_TABLE = "unique_key";
+		String UK_ID = "uk_item_id"; // ID айтема
+		String UK_KEY = "uk_key"; // Уникальный текстовый ключ
 	}
 	/**
 	 * Таблица, в которой хранятся пары родитель-потомок для всех возможных комбинаций айтемов родителей и айтемов потомков
@@ -73,13 +73,13 @@ public interface DBConstants
 	 *
 	 */
 	interface ItemParent {
-		String TABLE = "item_parent";
-		String ASSOC_ID = "ip_assoc_id"; // ID ассоциации
-		String PARENT_ID = "ip_parent_id"; // ID предка
-		String CHILD_ID = "ip_child_id"; // ID потомка
-		String CHILD_SUPERTYPE = "ip_child_supertype"; // Супертип (непользовательский тип) потомка
-		String PARENT_LEVEL = "ip_level"; // Уровень вложенности по отношению к предку (0 - прямой потомок, 1 - непрямой)
-		String WEIGHT = "ip_weight"; // Вес прямого потомка среди всех прямых потомков предка с заданной ассоциацией
+		String IP_TABLE = "item_parent";
+		String IP_ASSOC_ID = "ip_assoc_id"; // ID ассоциации
+		String IP_PARENT_ID = "ip_parent_id"; // ID предка
+		String IP_CHILD_ID = "ip_child_id"; // ID потомка
+		String IP_CHILD_SUPERTYPE = "ip_child_supertype"; // Супертип (непользовательский тип) потомка
+		String IP_PARENT_LEVEL = "ip_level"; // Уровень вложенности по отношению к предку (0 - прямой потомок, 1 - непрямой)
+		String IP_WEIGHT = "ip_weight"; // Вес прямого потомка среди всех прямых потомков предка с заданной ассоциацией
 	}
 	/**
 	 * Параметры айтема
@@ -97,10 +97,10 @@ public interface DBConstants
 		String DECIMAL_TABLE_NAME = "decimal_index";
 		String DOUBLE_TABLE_NAME = "double_index";
 		String STRING_TABLE_NAME = "string_index";
-		String ITEM_ID = "ii_item"; // ID айтема (не типа айтема, а конкретного айтема)
-		String ITEM_TYPE = "ii_type"; // ID типа айтема
-		String ITEM_PARAM = "ii_param"; // ID параметра айтема (каждый параметр имеет уникальный ID вне зависимости от уникальности его названия)
-		String VALUE = "ii_val"; // Занчение
+		String II_ITEM_ID = "ii_item"; // ID айтема (не типа айтема, а конкретного айтема)
+		String II_ITEM_TYPE = "ii_type"; // ID типа айтема
+		String II_PARAM = "ii_param"; // ID параметра айтема (каждый параметр имеет уникальный ID вне зависимости от уникальности его названия)
+		String II_VALUE = "ii_val"; // Занчение
 	}
 	/**
 	 * Таблица, в которой хранятся ID всех ассоциаций
@@ -109,9 +109,9 @@ public interface DBConstants
 	 *
 	 */
 	interface AssocIds {
-		String TABLE = "assoc_ids";
-		String ASSOC_NAME = "aid_name";
-		String ASSOC_ID = "aid_id";
+		String AID_TABLE = "assoc_ids";
+		String AID_ASSOC_NAME = "aid_name";
+		String AID_ASSOC_ID = "aid_id";
 	}
 	/**
 	 * Таблица, в которой хранятся ID всех айтемов
@@ -120,9 +120,9 @@ public interface DBConstants
 	 *
 	 */
 	interface ItemIds {
-		String TABLE = "item_ids";
-		String ITEM_NAME = "iid_name";
-		String ITEM_ID = "iid_id";
+		String IID_TABLE = "item_ids";
+		String IID_ITEM_NAME = "iid_name";
+		String IID_ITEM_ID = "iid_id";
 	}
 	/**
 	 * Таблица, в которой хранятся ID всех айтемов
@@ -131,10 +131,10 @@ public interface DBConstants
 	 *
 	 */
 	interface ParamIds {
-		String TABLE = "param_ids";
-		String ITEM_ID = "pid_item_id";
-		String PARAM_NAME = "pid_param_name";
-		String PARAM_ID = "pid_param_id";
+		String PID_TABLE = "param_ids";
+		String PID_ITEM_ID = "pid_item_id";
+		String PID_PARAM_NAME = "pid_param_name";
+		String PID_PARAM_ID = "pid_param_id";
 	}
 	/**************************************************************************************************
 	 **                                        СТРАНИЦЫ
@@ -157,9 +157,9 @@ public interface DBConstants
 	 * @author E
 	 */
 	interface Group {
-		String TABLE = "group";
-		String ID = "g_id";
-		String NAME = "g_name";
+		String G_TABLE = "group";
+		String G_ID = "g_id";
+		String G_NAME = "g_name";
 	}
 	
 	/**
@@ -167,11 +167,11 @@ public interface DBConstants
 	 * @author E
 	 */
 	interface UsersTbl {
-		String TABLE = "users";
-		String ID = "u_id";
-		String LOGIN = "u_login";
-		String PASSWORD = "u_password";
-		String DESCRIPTION = "u_description";
+		String U_TABLE = "users";
+		String U_ID = "u_id";
+		String U_LOGIN = "u_login";
+		String U_PASSWORD = "u_password";
+		String U_DESCRIPTION = "u_description";
 	}
 
 	/**
@@ -179,10 +179,10 @@ public interface DBConstants
 	 * и роли пользователей в этих группах (простой пользователь или админ)
 	 */
 	interface UserGroups {
-		String TABLE = "user_groups";
-		String USER_ID = "ug_user_id";
-		String GROUP_ID = "ug_group_id";
-		String GROUP_NAME = "ug_group_name";
-		String ROLE = "ug_role";
+		String UG_TABLE = "user_groups";
+		String UG_USER_ID = "ug_user_id";
+		String UG_GROUP_ID = "ug_group_id";
+		String UG_GROUP_NAME = "ug_group_name";
+		String UG_ROLE = "ug_role";
 	}
 }

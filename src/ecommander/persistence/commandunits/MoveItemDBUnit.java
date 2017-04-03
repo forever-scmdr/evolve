@@ -96,8 +96,8 @@ public class MoveItemDBUnit extends DBPersistenceCommandUnit {
 			
 			// Проверка, можно ли копировать
 			String selectSql 
-				= "SELECT " + DBConstants.ItemParent.REF_ID + " FROM " + DBConstants.ItemParent.TABLE 
-				+ " WHERE (" + DBConstants.ItemParent.PARENT_ID  + " = " + item.getId()
+				= "SELECT " + DBConstants.ItemParent.REF_ID + " FROM " + DBConstants.ItemParent.IP_TABLE
+				+ " WHERE (" + DBConstants.ItemParent.IP_PARENT_ID + " = " + item.getId()
 				+ " AND " + DBConstants.ItemParent.REF_ID + " = " + newParent.getId() + ")";
 			ServerLogger.debug(selectSql);
 			ResultSet rs = stmt.executeQuery(selectSql);
@@ -117,15 +117,15 @@ public class MoveItemDBUnit extends DBPersistenceCommandUnit {
 			// Если проверки прошли успешно - продолжение
 			// Шаг 1. - Удалить старые связи всех родителей айтема со всеми потомками айтема (а также с самим айтемом)
 			String sql
-				= "DELETE " + DBConstants.ItemParent.TABLE + " FROM " + DBConstants.ItemParent.TABLE 
-				+ ", (SELECT " + DBConstants.ItemParent.PARENT_ID + " AS PARENT FROM " + DBConstants.ItemParent.TABLE 
+				= "DELETE " + DBConstants.ItemParent.IP_TABLE + " FROM " + DBConstants.ItemParent.IP_TABLE
+				+ ", (SELECT " + DBConstants.ItemParent.IP_PARENT_ID + " AS PARENT FROM " + DBConstants.ItemParent.IP_TABLE
 				+ " WHERE " + DBConstants.ItemParent.REF_ID + " = " + item.getId() 
-				+ " AND " + DBConstants.ItemParent.PARENT_ID + " != " + item.getId()
-				+ ") AS P, (SELECT " + DBConstants.ItemParent.REF_ID + " AS REF FROM " + DBConstants.ItemParent.TABLE 
-				+ " WHERE " + DBConstants.ItemParent.PARENT_ID + " = " + item.getId() 
+				+ " AND " + DBConstants.ItemParent.IP_PARENT_ID + " != " + item.getId()
+				+ ") AS P, (SELECT " + DBConstants.ItemParent.REF_ID + " AS REF FROM " + DBConstants.ItemParent.IP_TABLE
+				+ " WHERE " + DBConstants.ItemParent.IP_PARENT_ID + " = " + item.getId()
 				+ " AND " + DBConstants.ItemParent.REF_ID + " != " + item.getId() 
 				+ " UNION SELECT " + item.getId() 
-				+ ") AS R WHERE " + DBConstants.ItemParent.PARENT_ID + " = PARENT AND " + DBConstants.ItemParent.REF_ID 
+				+ ") AS R WHERE " + DBConstants.ItemParent.IP_PARENT_ID + " = PARENT AND " + DBConstants.ItemParent.REF_ID
 				+ " = REF";
 			ServerLogger.debug(sql);
 			stmt.executeUpdate(sql);
@@ -133,30 +133,30 @@ public class MoveItemDBUnit extends DBPersistenceCommandUnit {
 			// Шаг 2. - Создать новые связи всех новых родителей айтема со всеми потомками айтема (а также с самим айтемом)
 			// " AND " + DBConstants.ItemParent.ITEM_ID + " = " + newParentId // для производительности (т.к. по REF_ID есть индекс)
 			sql
-				= "INSERT INTO " + DBConstants.ItemParent.TABLE + "("
-				+ DBConstants.ItemParent.PARENT_ID + ", "
+				= "INSERT INTO " + DBConstants.ItemParent.IP_TABLE + "("
+				+ DBConstants.ItemParent.IP_PARENT_ID + ", "
 				+ DBConstants.ItemParent.ITEM_ID + ", " 
 				+ DBConstants.ItemParent.REF_ID + ", "
 				+ DBConstants.ItemParent.ITEM_TYPE + ", "
-				+ DBConstants.ItemParent.PARENT_LEVEL 
+				+ DBConstants.ItemParent.IP_PARENT_LEVEL
 				+ ") SELECT T3." 
-				+ DBConstants.ItemParent.PARENT_ID 
+				+ DBConstants.ItemParent.IP_PARENT_ID
 				+ ", T1." + DBConstants.ItemParent.ITEM_ID 
 				+ ", T1." + DBConstants.ItemParent.REF_ID 
 				+ ", T1." + DBConstants.ItemParent.ITEM_TYPE 
-				+ ", T1." + DBConstants.ItemParent.PARENT_LEVEL + " + T3." + DBConstants.ItemParent.PARENT_LEVEL + " + 1 FROM (SELECT " 
-				+ DBConstants.ItemParent.PARENT_ID + ", " 
-				+ DBConstants.ItemParent.PARENT_LEVEL
-				+ " FROM " + DBConstants.ItemParent.TABLE 
+				+ ", T1." + DBConstants.ItemParent.IP_PARENT_LEVEL + " + T3." + DBConstants.ItemParent.IP_PARENT_LEVEL + " + 1 FROM (SELECT "
+				+ DBConstants.ItemParent.IP_PARENT_ID + ", "
+				+ DBConstants.ItemParent.IP_PARENT_LEVEL
+				+ " FROM " + DBConstants.ItemParent.IP_TABLE
 				+ " WHERE " + DBConstants.ItemParent.REF_ID + " = " + newParent.getId()
 				+ " AND " + DBConstants.ItemParent.ITEM_ID + " = " + newParent.getId()
 				+ " UNION SELECT " + newParent.getId() + ", 0) AS T3, (SELECT " 
 				+ DBConstants.ItemParent.ITEM_ID + ", " 
 				+ DBConstants.ItemParent.REF_ID + ", " 
 				+ DBConstants.ItemParent.ITEM_TYPE + ", " 
-				+ DBConstants.ItemParent.PARENT_LEVEL 
-				+ " FROM " + DBConstants.ItemParent.TABLE 
-				+ " WHERE " + DBConstants.ItemParent.PARENT_ID + " = " + item.getId()
+				+ DBConstants.ItemParent.IP_PARENT_LEVEL
+				+ " FROM " + DBConstants.ItemParent.IP_TABLE
+				+ " WHERE " + DBConstants.ItemParent.IP_PARENT_ID + " = " + item.getId()
 				+ " UNION SELECT " + item.getId() + ", " + item.getId() + ", " + item.getTypeId() + ", 0) AS T1";
 			ServerLogger.debug(sql);
 			stmt.executeUpdate(sql);
@@ -171,11 +171,11 @@ public class MoveItemDBUnit extends DBPersistenceCommandUnit {
 			
 			// Шаг 4. - Поменять пути к файлам айтемов потомков перемещаемого айтема в таблице айтемов
 			sql
-				= "UPDATE " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.TABLE + " SET " 
+				= "UPDATE " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.IP_TABLE + " SET "
 				+ DBConstants.Item.PRED_ID_PATH + " = REPLACE(" + DBConstants.Item.PRED_ID_PATH + ", '" 
 				+ item.getPredecessorsPath() + "', '" + newParent.getPredecessorsAndSelfPath() + "') WHERE " 
-				+ DBConstants.ItemParent.PARENT_ID + " = " + item.getId() + " AND "
-				+ DBConstants.ItemParent.PARENT_ID + " != " + DBConstants.ItemParent.ITEM_ID + " AND "
+				+ DBConstants.ItemParent.IP_PARENT_ID + " = " + item.getId() + " AND "
+				+ DBConstants.ItemParent.IP_PARENT_ID + " != " + DBConstants.ItemParent.ITEM_ID + " AND "
 				+ DBConstants.ItemParent.ITEM_ID + " = " + DBConstants.Item.ID;
 			ServerLogger.debug(sql);
 			stmt.executeUpdate(sql);

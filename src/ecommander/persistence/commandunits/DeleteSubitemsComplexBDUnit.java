@@ -44,11 +44,11 @@ public class DeleteSubitemsComplexBDUnit extends DeleteItemBDUnit {
 			
 			while (true) {
 				String sql 
-					= "SELECT " + DBConstants.ItemParent.ITEM_ID + ", " + DBConstants.ItemParent.PARENT_LEVEL 
-					+ " FROM " + DBConstants.ItemParent.TABLE 
-					+ " WHERE "+ DBConstants.ItemParent.PARENT_ID + " = " + itemId 
+					= "SELECT " + DBConstants.ItemParent.ITEM_ID + ", " + DBConstants.ItemParent.IP_PARENT_LEVEL
+					+ " FROM " + DBConstants.ItemParent.IP_TABLE
+					+ " WHERE "+ DBConstants.ItemParent.IP_PARENT_ID + " = " + itemId
 					+ " AND " + DBConstants.ItemParent.ITEM_ID + " != " + itemId
-					+ " ORDER BY " + DBConstants.ItemParent.PARENT_LEVEL + " DESC LIMIT " + PACK_SIZE;
+					+ " ORDER BY " + DBConstants.ItemParent.IP_PARENT_LEVEL + " DESC LIMIT " + PACK_SIZE;
 				ServerLogger.debug(sql);
 				ResultSet rs = stmt.executeQuery(sql);
 				ArrayList<Long> idsToDelete = new ArrayList<Long>();

@@ -96,7 +96,7 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 		String name = group.attr(NAME);
 		if (!UserGroupRegistry.groupExists(name)) {
 			TemplateQuery insertGroup = new TemplateQuery("Save new group");
-			insertGroup.INSERT_INTO(Group.TABLE, Group.NAME).sql(" VALUES (").setString(name).sql(")");
+			insertGroup.INSERT_INTO(Group.G_TABLE, Group.G_NAME).sql(" VALUES (").setString(name).sql(")");
 			try (PreparedStatement pstmt = insertGroup.prepareQuery(getTransactionContext().getConnection(), true)) {
 				pstmt.executeUpdate();
 				ResultSet rs = pstmt.getGeneratedKeys();
@@ -141,9 +141,9 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 				Statement stmt = getTransactionContext().getConnection().createStatement();
 				try {
 					String sql
-							= "UPDATE " + ItemIds.TABLE
-							+ " SET " + ItemIds.ITEM_NAME + "='" + name
-							+ "' WHERE " + ItemIds.ITEM_ID + "=" + savedId;
+							= "UPDATE " + ItemIds.IID_TABLE
+							+ " SET " + ItemIds.IID_ITEM_NAME + "='" + name
+							+ "' WHERE " + ItemIds.IID_ITEM_ID + "=" + savedId;
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
 					dbChanged = true;
@@ -161,7 +161,7 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 			if (mode == Mode.force_update) {
 				Statement stmt = getTransactionContext().getConnection().createStatement();
 				try {
-					String sql = "INSERT " + ItemIds.TABLE + " (" + ItemIds.ITEM_NAME + ") VALUES ('" + name + "')";
+					String sql = "INSERT " + ItemIds.IID_TABLE + " (" + ItemIds.IID_ITEM_NAME + ") VALUES ('" + name + "')";
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 					ResultSet keys = stmt.getGeneratedKeys();
@@ -279,9 +279,9 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 				Statement stmt = getTransactionContext().getConnection().createStatement();
 				try {
 					String sql
-							= "UPDATE " + ParamIds.TABLE
-							+ " SET " + ParamIds.PARAM_NAME + "='" + name
-							+ "' WHERE " + ParamIds.PARAM_ID + "=" + savedId;
+							= "UPDATE " + ParamIds.PID_TABLE
+							+ " SET " + ParamIds.PID_PARAM_NAME + "='" + name
+							+ "' WHERE " + ParamIds.PID_PARAM_ID + "=" + savedId;
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
 					dbChanged = true;
@@ -300,8 +300,8 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 				Statement stmt = getTransactionContext().getConnection().createStatement();
 				try {
 					String sql
-							= "INSERT " + ParamIds.TABLE + " ("
-							+ ParamIds.ITEM_ID + ", " + ParamIds.PARAM_NAME
+							= "INSERT " + ParamIds.PID_TABLE + " ("
+							+ ParamIds.PID_ITEM_ID + ", " + ParamIds.PID_PARAM_NAME
 							+ ") VALUES (" + item.getTypeId() + ", '" + name + "')";
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
@@ -431,8 +431,8 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 			String sql;
 			// Удаление из таблицы ID айтемов
 			if (itemsById.size() > 0) {
-				sql = "DELETE FROM " + ItemIds.TABLE
-						+ " WHERE " + ItemIds.ITEM_ID + " IN " + createIn(itemsById.keySet());
+				sql = "DELETE FROM " + ItemIds.IID_TABLE
+						+ " WHERE " + ItemIds.IID_ITEM_ID + " IN " + createIn(itemsById.keySet());
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;
@@ -456,8 +456,8 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 						paramsToDeleteFromIndex.add(pid);
 					}
 					// Обновить таблицу параметров - установить нового предка параметра
-					sql = "UPDATE " + ParamIds.TABLE + " SET " + ParamIds.ITEM_ID + "=" +
-							newParentItemId + " WHERE " + ParamIds.PARAM_ID + "=" + pid;
+					sql = "UPDATE " + ParamIds.PID_TABLE + " SET " + ParamIds.PID_ITEM_ID + "=" +
+							newParentItemId + " WHERE " + ParamIds.PID_PARAM_ID + "=" + pid;
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
 					dbChanged = true;
@@ -467,7 +467,7 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 			if (paramsToDeleteFromIndex.size() > 0) {
 				String[] tables = {ItemIndexes.INT_TABLE_NAME, ItemIndexes.DOUBLE_TABLE_NAME, ItemIndexes.STRING_TABLE_NAME};
 				for (String table : tables) {
-					sql = "DELETE FROM " + table + " WHERE " + ItemIndexes.ITEM_PARAM + " IN " + createIn(paramsToDeleteFromIndex);
+					sql = "DELETE FROM " + table + " WHERE " + ItemIndexes.II_PARAM + " IN " + createIn(paramsToDeleteFromIndex);
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
 				}
@@ -475,7 +475,7 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 			}
 			// Удаление из главной таблицы айтемов
 			if (itemsById.size() > 0) {
-				sql = "DELETE FROM " + ItemTbl.TABLE + " WHERE " + ItemTbl.TYPE_ID + " IN " + createIn(itemsById.keySet());
+				sql = "DELETE FROM " + ItemTbl.I_TABLE + " WHERE " + ItemTbl.I_TYPE_ID + " IN " + createIn(itemsById.keySet());
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;
@@ -484,10 +484,10 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 			for (Map.Entry<File, String> file : xmlFileContents.entrySet()) {
 				try {
 					sql
-						= "INSERT " + ModelXML.TABLE + " ("
-						+ ModelXML.NAME + ", " + ModelXML.XML
+						= "INSERT " + ModelXML.XML_TABLE + " ("
+						+ ModelXML.XML_NAME + ", " + ModelXML.XML_XML
 						+ ") VALUES ('" + file.getKey().getName() + "', '" + file.getValue() + "') ON DUPLICATE KEY UPDATE "
-						+ ModelXML.XML + "='" + file.getValue()  +"'";
+						+ ModelXML.XML_XML + "='" + file.getValue()  +"'";
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
 				} finally {
@@ -504,12 +504,12 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 	private void loadGroups() throws SQLException {
 		Statement stmt = getTransactionContext().getConnection().createStatement();
 
-		String selectAssocIds = "SELECT * FROM " + AssocIds.TABLE;
+		String selectAssocIds = "SELECT * FROM " + AssocIds.AID_TABLE;
 		ServerLogger.debug(selectAssocIds);
 		ResultSet rs = stmt.executeQuery(selectAssocIds);
 		while (rs.next()) {
-			byte assocId = rs.getByte(AssocIds.ASSOC_ID);
-			String assocName = rs.getString(AssocIds.ASSOC_NAME);
+			byte assocId = rs.getByte(AssocIds.AID_ASSOC_ID);
+			String assocName = rs.getString(AssocIds.AID_ASSOC_NAME);
 			assocIds.put(assocName, new HashId(assocName.hashCode(), assocId));
 			assocsById.put(assocId, assocName);
 			if (assocId > maxAssocId)
@@ -517,12 +517,12 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 		}
 		rs.close();
 
-		String selectItemIds = "SELECT * FROM " + ItemIds.TABLE;
+		String selectItemIds = "SELECT * FROM " + ItemIds.IID_TABLE;
 		ServerLogger.debug(selectItemIds);
 		rs = stmt.executeQuery(selectItemIds);
 		while (rs.next()) {
-			int itemId = rs.getInt(ItemIds.ITEM_ID);
-			String itemName = rs.getString(ItemIds.ITEM_NAME);
+			int itemId = rs.getInt(ItemIds.IID_ITEM_ID);
+			String itemName = rs.getString(ItemIds.IID_ITEM_NAME);
 			itemIds.put(itemName, new HashId(itemName.hashCode(), itemId));
 			itemsById.put(itemId, itemName);
 			paramIds.put(itemName, new HashMap<String, HashId>());
@@ -532,18 +532,18 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 		rs.close();
 		// удаление ненужных но почему-то присутствующих параметров
 		String deleteParamIds 
-			= "DELETE FROM " + ParamIds.TABLE + " WHERE " + ParamIds.ITEM_ID
-			+ " NOT IN (SELECT " + ItemIds.ITEM_ID + " FROM " + ItemIds.TABLE + ")";
+			= "DELETE FROM " + ParamIds.PID_TABLE + " WHERE " + ParamIds.PID_ITEM_ID
+			+ " NOT IN (SELECT " + ItemIds.IID_ITEM_ID + " FROM " + ItemIds.IID_TABLE + ")";
 		ServerLogger.debug(deleteParamIds);
 		stmt.executeUpdate(deleteParamIds);
 
-		String selectParamIds = "SELECT * FROM " + ParamIds.TABLE;
+		String selectParamIds = "SELECT * FROM " + ParamIds.PID_TABLE;
 		ServerLogger.debug(selectParamIds);
 		rs = stmt.executeQuery(selectParamIds);
 		while (rs.next()) {
-			int itemId = rs.getInt(ParamIds.ITEM_ID);
-			int paramId = rs.getInt(ParamIds.PARAM_ID);
-			String paramName = rs.getString(ParamIds.PARAM_NAME);
+			int itemId = rs.getInt(ParamIds.PID_ITEM_ID);
+			int paramId = rs.getInt(ParamIds.PID_PARAM_ID);
+			String paramName = rs.getString(ParamIds.PID_PARAM_NAME);
 			paramIds.get(itemsById.get(itemId)).put(paramName, new HashId(paramName.hashCode(), paramId));
 			paramsById.put(paramId, new ItemParam(itemsById.get(itemId), paramName));
 			if (paramId > maxParamId)

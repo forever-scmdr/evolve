@@ -49,7 +49,7 @@ class PredecessorCriteria implements FilterCriteria, PossibleMainCriteria {
 		TemplateQuery fromPart = query.getSubquery(ItemQuery.FROM_OPT);
 		if (!fromPart.isEmpty())
 			fromPart.sql(", ");
-		fromPart.sql(DBConstants.ItemParent.TABLE + " AS " + tableName);
+		fromPart.sql(DBConstants.ItemParent.IP_TABLE + " AS " + tableName);
 		
 		TemplateQuery wherePart = query.getSubquery(ItemQuery.WHERE_OPT);
 		
@@ -73,16 +73,16 @@ class PredecessorCriteria implements FilterCriteria, PossibleMainCriteria {
 			// Добавление списка ID родителей
 			if (itemIds.size() > 0) {
 				critPart
-					.sql(tableName + '.' + DBConstants.ItemParent.PARENT_ID).subquery(ItemQuery.PARENT_CRIT_OPT);
+					.sql(tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID).subquery(ItemQuery.PARENT_CRIT_OPT);
 			} else {
-				critPart.sql(tableName + '.' + DBConstants.ItemParent.PARENT_ID + " " + sign + " (-1)");
+				critPart.sql(tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID + " " + sign + " (-1)");
 			}
 			
 			// Добавление критерия родительского айтема (производится централизованно другом месте)
 			String parentCritTableName = tableName + "P";
-			fromPart.sql(", " + DBConstants.ItemParent.TABLE + " AS " + parentCritTableName);
+			fromPart.sql(", " + DBConstants.ItemParent.IP_TABLE + " AS " + parentCritTableName);
 			joinPart.sql(parentCritTableName + '.' + DBConstants.ItemParent.REF_ID + " = ").subquery(ItemQuery.COMMON_COL_OPT).sql(" AND ");
-			critPart.sql(" AND " + parentCritTableName + '.' + DBConstants.ItemParent.PARENT_ID + " IN (")
+			critPart.sql(" AND " + parentCritTableName + '.' + DBConstants.ItemParent.IP_PARENT_ID + " IN (")
 				.setLongArray(itemIds.toArray(new Long[itemIds.size()]))
 				.sql(")");
 			
@@ -91,11 +91,11 @@ class PredecessorCriteria implements FilterCriteria, PossibleMainCriteria {
 			// Добавление списка ID родителей
 			if (itemIds.size() > 0) {
 				critPart
-					.sql(tableName + '.' + DBConstants.ItemParent.PARENT_ID + " " + sign + " (")
+					.sql(tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID + " " + sign + " (")
 					.setLongArray(itemIds.toArray(new Long[itemIds.size()]))
 					.sql(")");
 			} else {
-				critPart.sql(tableName + '.' + DBConstants.ItemParent.PARENT_ID + " " + sign + " (-1)");
+				critPart.sql(tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID + " " + sign + " (-1)");
 			}
 			
 		}
@@ -148,7 +148,7 @@ class PredecessorCriteria implements FilterCriteria, PossibleMainCriteria {
 	}
 
 	public String getParentColumnName() {
-		return tableName + '.' + DBConstants.ItemParent.PARENT_ID;
+		return tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID;
 	}
 
 	public boolean isEmptySet() {

@@ -49,7 +49,7 @@ abstract class FilterParameterCriteria implements FilterCriteria, PossibleMainCr
 		critPart.sql("(");
 		
 		// Добавление ID параметра
-		critPart.sql(tableName + '.' + DBConstants.ItemIndexes.ITEM_PARAM + '=').setInt(param.getId());
+		critPart.sql(tableName + '.' + DBConstants.ItemIndexes.II_PARAM + '=').setInt(param.getId());
 		
 		// Добавление критерия родительского айтема (производится централизованно другом месте)
 		if (useParentCriteria)
@@ -61,7 +61,7 @@ abstract class FilterParameterCriteria implements FilterCriteria, PossibleMainCr
 		// добавлен, чтобы исключить айтемы не искомых типов (базового и его других потомков), 
 		// значение данного параметра которых подходит под критерий фильтра.
 		if (item == null || item.getTypeId() != param.getOwnerItemId())
-			critPart.sql(" AND " + tableName + '.' + DBConstants.ItemIndexes.ITEM_TYPE).subquery(ItemQuery.TYPE_CRIT_OPT);
+			critPart.sql(" AND " + tableName + '.' + DBConstants.ItemIndexes.II_ITEM_TYPE).subquery(ItemQuery.TYPE_CRIT_OPT);
 		
 		// Добавление значения параметра
 		appendParameterValue(query);

@@ -421,8 +421,8 @@ public class OldModelConverter extends DBPersistenceCommandUnit {
 		try {
 			stmt = conn.createStatement();
 			stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-			ServerLogger.debug("TRUNCATE " + DBConstants.UniqueItemKeys.TABLE);
-			stmt.executeUpdate("TRUNCATE " + DBConstants.UniqueItemKeys.TABLE);
+			ServerLogger.debug("TRUNCATE " + DBConstants.UniqueItemKeys.UK_TABLE);
+			stmt.executeUpdate("TRUNCATE " + DBConstants.UniqueItemKeys.UK_TABLE);
 			ServerLogger.debug("TRUNCATE " + DBConstants.ItemIndexes.ASSOCIATED_TABLE_NAME);
 			stmt.executeUpdate("TRUNCATE " + DBConstants.ItemIndexes.ASSOCIATED_TABLE_NAME);
 			ServerLogger.debug("TRUNCATE " + DBConstants.ItemIndexes.DOUBLE_TABLE_NAME);
@@ -431,14 +431,14 @@ public class OldModelConverter extends DBPersistenceCommandUnit {
 			stmt.executeUpdate("TRUNCATE " + DBConstants.ItemIndexes.INT_TABLE_NAME);
 			ServerLogger.debug("TRUNCATE " + DBConstants.ItemIndexes.STRING_TABLE_NAME);
 			stmt.executeUpdate("TRUNCATE " + DBConstants.ItemIndexes.STRING_TABLE_NAME);
-			ServerLogger.debug("TRUNCATE " + DBConstants.ItemParent.TABLE);
-			stmt.executeUpdate("TRUNCATE " + DBConstants.ItemParent.TABLE);
+			ServerLogger.debug("TRUNCATE " + DBConstants.ItemParent.IP_TABLE);
+			stmt.executeUpdate("TRUNCATE " + DBConstants.ItemParent.IP_TABLE);
 			ServerLogger.debug("TRUNCATE " + DBConstants.Item.TABLE);
 			stmt.executeUpdate("TRUNCATE " + DBConstants.Item.TABLE);
-			ServerLogger.debug("TRUNCATE " + DBConstants.ParamIds.TABLE);
-			stmt.executeUpdate("TRUNCATE " + DBConstants.ParamIds.TABLE);
-			ServerLogger.debug("TRUNCATE " + DBConstants.ItemIds.TABLE);
-			stmt.executeUpdate("TRUNCATE " + DBConstants.ItemIds.TABLE);
+			ServerLogger.debug("TRUNCATE " + DBConstants.ParamIds.PID_TABLE);
+			stmt.executeUpdate("TRUNCATE " + DBConstants.ParamIds.PID_TABLE);
+			ServerLogger.debug("TRUNCATE " + DBConstants.ItemIds.IID_TABLE);
+			stmt.executeUpdate("TRUNCATE " + DBConstants.ItemIds.IID_TABLE);
 			ServerLogger.debug("TRUNCATE " + DBConstants.Users.TABLE);
 			stmt.executeUpdate("TRUNCATE " + DBConstants.Users.TABLE);
 			ServerLogger.debug("TRUNCATE " + DBConstants.UserGroup.TABLE);

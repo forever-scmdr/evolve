@@ -14,18 +14,18 @@ import java.util.ArrayList;
  * @author EEEE
  *
  */
-public class ItemMapper implements DBConstants.ItemIndexes, DBConstants {
+public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 
 	private static final String PARAM_INSERT_PREPARED_START 
 		= " ("
-		+ ITEM_ID + ", "
-		+ ITEM_PARAM + ", "
-		+ ITEM_TYPE + ", "
-		+ VALUE
+		+ ItemIndexes.II_ITEM_ID + ", "
+		+ ItemIndexes.II_PARAM + ", "
+		+ ItemIndexes.II_ITEM_TYPE + ", "
+		+ ItemIndexes.II_VALUE
 		+ ") VALUES (";
 	
 	private static final String ON_DUPLICATE_KEY_UPDATE
-		= ") ON DUPLICATE KEY UPDATE " + DBConstants.ItemIndexes.VALUE + " = ";
+		= ") ON DUPLICATE KEY UPDATE " + DBConstants.ItemIndexes.II_VALUE + " = ";
 
 	/**
 	 * Сохраняет все параметры айтема в индекс.
@@ -66,8 +66,8 @@ public class ItemMapper implements DBConstants.ItemIndexes, DBConstants {
 				// Удалить старое значение (параметр раньше имел значение, сейчас не имеет)
 				if (param.isEmpty()) {
 					query.sql("DELETE FROM ").sql(DataTypeMapper.getTableName(param.getType()))
-							.sql(" WHERE ").sql(ITEM_ID).sql("=").setLong(item.getId())
-							.sql(" AND ").sql(ITEM_PARAM).sql("=").setInt(param.getParamId()).sql("; ");
+							.sql(" WHERE ").sql(ItemIndexes.II_ITEM_ID).sql("=").setLong(item.getId())
+							.sql(" AND ").sql(ItemIndexes.II_PARAM).sql("=").setInt(param.getParamId()).sql("; ");
 				}
 				// Непустые параметры (одиночные и множественные)
 				else {
@@ -82,9 +82,9 @@ public class ItemMapper implements DBConstants.ItemIndexes, DBConstants {
 						// Удалить лишние значения, если они были
 						query.DELETE(DataTypeMapper.getTableName(param.getType()))
 								.WHERE()
-								.col(ITEM_ID).setLong(item.getId()).AND()
-								.col(ITEM_PARAM).setInt(param.getParamId()).AND()
-								.col(VALUE, " NOT IN (");
+								.col(ItemIndexes.II_ITEM_ID).setLong(item.getId()).AND()
+								.col(ItemIndexes.II_PARAM).setInt(param.getParamId()).AND()
+								.col(ItemIndexes.II_VALUE, " NOT IN (");
 						DataTypeMapper.appendPreparedStatementRequestValues(param.getType(), query, mpVals);
 						query.sql(");");
 					} else {
@@ -130,14 +130,15 @@ public class ItemMapper implements DBConstants.ItemIndexes, DBConstants {
 	 */
 	public static ItemBasics loadItemBasics(long itemId, Connection conn) throws SQLException {
 		TemplateQuery query = new TemplateQuery("Select item basics");
-		query.SELECT(" * ").FROM(ItemTbl.TABLE).WHERE().col(ItemTbl.ID).setLong(itemId);
+		query.SELECT(I_ID, I_TYPE_ID, I_KEY, I_GROUP, I_USER, I_STATUS, I_PROTECTED)
+				.FROM(I_TABLE).WHERE().col(I_ID).setLong(itemId);
 		try (PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				return new DefaultItemBasics(
-						rs.getLong(ItemTbl.ID), rs.getInt(ItemTbl.TYPE_ID), rs.getString(ItemTbl.KEY),
-						rs.getByte(ItemTbl.GROUP_ID), rs.getInt(ItemTbl.USER_ID), rs.getByte(ItemTbl.STATUS),
-						rs.getBoolean(ItemTbl.PROTECTED));
+						rs.getLong(1), rs.getInt(2), rs.getString(3),
+						rs.getByte(4), rs.getInt(5), rs.getByte(6),
+						rs.getBoolean(7));
 			} else {
 				return null;
 			}
@@ -154,16 +155,16 @@ public class ItemMapper implements DBConstants.ItemIndexes, DBConstants {
 	 * @throws Exception
 	 */
 	public static Item buildItem(ResultSet rs, byte contextAssocId, long contextParentId) throws Exception {
-		long itemId = rs.getLong(ItemTbl.ID);
-		int itemTypeId = rs.getInt(ItemTbl.TYPE_ID);
-		String key = rs.getString(ItemTbl.KEY);
-		String keyUnique = rs.getString(ItemTbl.TRANSLIT_KEY);
-		Timestamp timeUpdated = rs.getTimestamp(ItemTbl.UPDATED);
-		byte status = rs.getByte(ItemTbl.STATUS);
-		byte groupId = rs.getByte(ItemTbl.GROUP_ID);
-		int userId = rs.getByte(ItemTbl.USER_ID);
-		boolean filesProtected = rs.getBoolean(ItemTbl.PROTECTED);
-		String params = rs.getString(ItemTbl.PARAMS);
+		long itemId = rs.getLong(I_ID);
+		int itemTypeId = rs.getInt(I_TYPE_ID);
+		String key = rs.getString(I_KEY);
+		String keyUnique = rs.getString(I_T_KEY);
+		Timestamp timeUpdated = rs.getTimestamp(I_UPDATED);
+		byte status = rs.getByte(I_STATUS);
+		byte groupId = rs.getByte(I_GROUP);
+		int userId = rs.getByte(I_USER);
+		boolean filesProtected = rs.getBoolean(I_PROTECTED);
+		String params = rs.getString(I_PARAMS);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemTypeId);
 		return Item.existingItem(itemDesc, itemId, ItemTypeRegistry.getAssoc(contextAssocId), contextParentId, userId, groupId, status,
 				key, params, keyUnique, timeUpdated.getTime(), filesProtected);

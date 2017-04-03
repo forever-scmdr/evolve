@@ -60,10 +60,10 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 		if (!justGroups) {
 			TemplateQuery updateUser = new TemplateQuery("Update user attributes");
 			updateUser
-					.UPDATE(TABLE).SET()
-					.col(LOGIN).setString(user.getName()).com()
-					.col(PASSWORD).setString(user.getPassword()).com()
-					.col(DESCRIPTION).setString(user.getDescription());
+					.UPDATE(U_TABLE).SET()
+					.col(U_LOGIN).setString(user.getName()).com()
+					.col(U_PASSWORD).setString(user.getPassword()).com()
+					.col(U_DESCRIPTION).setString(user.getDescription());
 			try (PreparedStatement pstmt = updateUser.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();
 			}
@@ -97,7 +97,7 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 			ServerLogger.debug(sql);
 			stmt.executeUpdate(sql);
 			// Установить новую группу пользователя во все айтемы этого пользователя
-			sql = "UPDATE " + DBConstants.ItemParent.TABLE + " SET " + DBConstants.ItemParent.GROUP + "=" + user.getGroupId()
+			sql = "UPDATE " + DBConstants.ItemParent.IP_TABLE + " SET " + DBConstants.ItemParent.GROUP + "=" + user.getGroupId()
 					+ " WHERE " + DBConstants.ItemParent.USER + "=" + user.getUserId();
 			ServerLogger.debug(sql);
 			stmt.executeUpdate(sql);

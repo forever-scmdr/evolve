@@ -47,7 +47,7 @@ class MultipleParamCriteria extends FilterParameterCriteria {
 	@Override
 	protected void appendParameterValue(TemplateQuery query) {
 		query = query.getSubquery(ItemQuery.WHERE_OPT).getSubquery(ItemQuery.FILTER_CRITS_OPT);
-		query.sql(" AND " + tableName + "." + DBConstants.ItemIndexes.VALUE + " " + sign + " ");
+		query.sql(" AND " + tableName + "." + DBConstants.ItemIndexes.II_VALUE + " " + sign + " ");
 		if (values.size() > 0) {
 			query.sql("(");
 			DataTypeMapper.appendPreparedStatementRequestValues(param.getType(), query, values);

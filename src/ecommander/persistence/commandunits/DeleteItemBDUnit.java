@@ -74,7 +74,7 @@ public class DeleteItemBDUnit extends DBPersistenceCommandUnit {
 				stmt.executeUpdate(sql);
 				// нужно удаление из таблицы сабайтемов, т.к. сейчас в этой таблице уже нет 
 				// индекса по ID айтема (есть только по REF_ID)
-				sql = "DELETE FROM " + DBConstants.ItemParent.TABLE 
+				sql = "DELETE FROM " + DBConstants.ItemParent.IP_TABLE
 					+ " WHERE " + DBConstants.ItemParent.REF_ID + " = " + item.getRefId() 
 					+ " AND " + DBConstants.ItemParent.ITEM_ID + " = " + item.getId();
 				ServerLogger.debug(sql);
@@ -89,8 +89,8 @@ public class DeleteItemBDUnit extends DBPersistenceCommandUnit {
 					// Удаляются сабайтемы из главной таблицы айтемов
 					// Также удаляются все ссылки на этот айтем
 					sql = "DELETE " + DBConstants.Item.TABLE
-						+ " FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.TABLE
-						+ " WHERE " + DBConstants.ItemParent.PARENT_ID + " = " + item.getId()
+						+ " FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.IP_TABLE
+						+ " WHERE " + DBConstants.ItemParent.IP_PARENT_ID + " = " + item.getId()
 						+ " AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.ITEM_ID;
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
@@ -117,8 +117,8 @@ public class DeleteItemBDUnit extends DBPersistenceCommandUnit {
 	
 	protected int getSubitemCount() throws SQLException {
 		String countSql 
-			= "SELECT COUNT(" + DBConstants.ItemParent.ITEM_ID + ") FROM " + DBConstants.ItemParent.TABLE 
-			+ " WHERE "	+ DBConstants.ItemParent.PARENT_ID + " = " + item.getId();
+			= "SELECT COUNT(" + DBConstants.ItemParent.ITEM_ID + ") FROM " + DBConstants.ItemParent.IP_TABLE
+			+ " WHERE "	+ DBConstants.ItemParent.IP_PARENT_ID + " = " + item.getId();
 		Statement stmt = null;
 		try {
 			stmt = getTransactionContext().getConnection().createStatement();

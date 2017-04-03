@@ -1,15 +1,10 @@
 package ecommander.persistence.commandunits;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.ServerLogger;
 import ecommander.fwk.UserExistsExcepion;
-import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.UserMapper;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
@@ -20,7 +15,7 @@ import ecommander.model.User;
  * @author EEEE
  *
  */
-public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBConstants, DBConstants.UsersTbl {
+public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBConstants, DBConstants.UserGroups {
 
 	private User user;
 	
@@ -39,14 +34,14 @@ public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBCon
 
 		// Сохранить пользователя и его права
 		TemplateQuery insertUser = new TemplateQuery("Create new User");
-		insertUser.INSERT_INTO(TABLE, LOGIN, PASSWORD, DESCRIPTION).sql(" VALUES (").setString(user.getName()).com()
-				.setString(user.getPassword()).com().setString(user.getDescription()).sql(";\r\n");
+		insertUser.INSERT_INTO(UsersTbl.U_TABLE, UsersTbl.U_LOGIN, UsersTbl.U_PASSWORD, UsersTbl.U_DESCRIPTION)
+				.sql(" VALUES (")
+				.setString(user.getName()).com()
+				.setString(user.getPassword()).com()
+				.setString(user.getDescription()).sql(";\r\n");
 		ArrayList<User.Group> groups = user.getGroups();
 		if (groups.size() > 0)
-			insertUser
-					.INSERT_INTO(DBConstants.UserGroups.TABLE, DBConstants.UserGroups.GROUP_ID,
-							DBConstants.UserGroups.GROUP_NAME, DBConstants.UserGroups.ROLE,
-							DBConstants.UserGroups.USER_ID)
+			insertUser.INSERT_INTO(UG_TABLE, UG_GROUP_ID, UG_GROUP_NAME, UG_ROLE, UG_USER_ID)
 					.sql(" VALUES ");
 		boolean notFirst = false;
 		for (User.Group group : groups) {

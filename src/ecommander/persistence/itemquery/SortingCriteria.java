@@ -31,7 +31,7 @@ class SortingCriteria extends FilterParameterCriteria {
 	@Override
 	protected void appendParameterValue(TemplateQuery query) {
 		// Добавление в SELECT
-		String colName = tableName + '.' + DBConstants.ItemIndexes.VALUE;
+		String colName = tableName + '.' + DBConstants.ItemIndexes.II_VALUE;
 		// Нужна такая проверка, потому что при подсчете количества сортировка не применяется и 
 		// частей для нее в запросе нет
 		boolean needSorting = query.getSubquery(ItemQuery.SORT_VAL_OPT) != null;

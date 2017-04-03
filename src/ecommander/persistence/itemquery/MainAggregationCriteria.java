@@ -26,7 +26,7 @@ class MainAggregationCriteria extends AggregationCriteria {
 
 	@Override
 	public void appendQuery(TemplateQuery query) {
-		String valCol = baseCriteria.tableName + '.' + DBConstants.ItemIndexes.VALUE;
+		String valCol = baseCriteria.tableName + '.' + DBConstants.ItemIndexes.II_VALUE;
 		String selectPart = valCol;
 		// Добавление в блок SELECT параметра группировки
 		if (!StringUtils.isEmpty(function)) {
@@ -46,7 +46,7 @@ class MainAggregationCriteria extends AggregationCriteria {
 			// ... и задана функция - то в их качестве задается ID самого параметра (в запросе вернется только одно значение - MAX, MIN и т.д.)
 			// в GROUP BY Подставляется ID параметра, который агрегируется
 			else
-				groupPart.sql(baseCriteria.tableName + '.' + DBConstants.ItemIndexes.ITEM_PARAM);
+				groupPart.sql(baseCriteria.tableName + '.' + DBConstants.ItemIndexes.II_PARAM);
 		}
 		// Добавление в блок ORDER BY параметра группировки
 		if (!StringUtils.isEmpty(sorting))

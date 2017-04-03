@@ -46,7 +46,7 @@ class SuccessorCriteria implements FilterCriteria, PossibleMainCriteria {
 		TemplateQuery fromPart = query.getSubquery(ItemQuery.FROM_OPT);
 		if (!fromPart.isEmpty())
 			fromPart.sql(", ");
-		fromPart.sql(DBConstants.ItemParent.TABLE + " AS " + tableName);
+		fromPart.sql(DBConstants.ItemParent.IP_TABLE + " AS " + tableName);
 		
 		TemplateQuery wherePart = query.getSubquery(ItemQuery.WHERE_OPT);
 		
@@ -55,11 +55,11 @@ class SuccessorCriteria implements FilterCriteria, PossibleMainCriteria {
 		// сейчас REF_ID, потому что по нему построен индекс, а по ITEM_ID индекса нет
 		TemplateQuery joinPart = wherePart.getSubquery(ItemQuery.FILTER_JOIN_OPT);
 		if (isMainCriteria) {
-			joinPart.getOrCreateSubquery(ItemQuery.COMMON_COL_OPT).sql(tableName + '.' + DBConstants.ItemParent.PARENT_ID);
+			joinPart.getOrCreateSubquery(ItemQuery.COMMON_COL_OPT).sql(tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID);
 		} else {
 			if (!joinPart.isEmpty())
 				joinPart.sql(" AND ");
-			joinPart.sql(tableName + '.' + DBConstants.ItemParent.PARENT_ID + " = ").subquery(ItemQuery.COMMON_COL_OPT).sql(" AND ");
+			joinPart.sql(tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID + " = ").subquery(ItemQuery.COMMON_COL_OPT).sql(" AND ");
 		}
 //		// Чтобы ссылки не попадали - дополнительное условие что ITEM_ID = REF_ID
 //		joinPart.sql(tableName + '.' + DBConstants.ItemParent.REF_ID + " = " + tableName + '.' + DBConstants.ItemParent.ITEM_ID + " AND ");
@@ -71,9 +71,9 @@ class SuccessorCriteria implements FilterCriteria, PossibleMainCriteria {
 			
 			// Добавление критерия родительского айтема (производится централизованно другом месте)
 			String parentCritTableName = tableName + "P";
-			fromPart.sql(", " + DBConstants.ItemParent.TABLE + " AS " + parentCritTableName);
+			fromPart.sql(", " + DBConstants.ItemParent.IP_TABLE + " AS " + parentCritTableName);
 			joinPart.sql(parentCritTableName + '.' + DBConstants.ItemParent.REF_ID + " = ").subquery(ItemQuery.COMMON_COL_OPT).sql(" AND ");
-			critPart.sql(parentCritTableName + '.' + DBConstants.ItemParent.PARENT_ID).subquery(ItemQuery.PARENT_CRIT_OPT).sql(" AND ");
+			critPart.sql(parentCritTableName + '.' + DBConstants.ItemParent.IP_PARENT_ID).subquery(ItemQuery.PARENT_CRIT_OPT).sql(" AND ");
 			
 		}
 			
@@ -120,7 +120,7 @@ class SuccessorCriteria implements FilterCriteria, PossibleMainCriteria {
 	}
 
 	public String getSelectedColumnName() {
-		return tableName + '.' + DBConstants.ItemParent.PARENT_ID;
+		return tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID;
 	}
 
 	public BooleanQuery appendLuceneQuery(BooleanQuery query, Occur occur) {
@@ -129,7 +129,7 @@ class SuccessorCriteria implements FilterCriteria, PossibleMainCriteria {
 
 	public String getParentColumnName() {
 		if (useParentCriteria)
-			return tableName + "P." + DBConstants.ItemParent.PARENT_ID;
+			return tableName + "P." + DBConstants.ItemParent.IP_PARENT_ID;
 		return "0";
 	}
 

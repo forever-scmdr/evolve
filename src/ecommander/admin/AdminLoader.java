@@ -143,14 +143,14 @@ public class AdminLoader {
 				= "SELECT " + DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID 
 				+ ", " + DBConstants.Item.KEY + ", " + DBConstants.Item.INDEX_WEIGHT + ", "
 				+ DBConstants.Item.ID + " NOT IN (SELECT DISTINCT " + DBConstants.ItemParent.REF_ID 
-				+ " FROM " + DBConstants.ItemParent.TABLE + " WHERE " + DBConstants.ItemParent.PARENT_ID + " = " + itemToMoveId 
+				+ " FROM " + DBConstants.ItemParent.IP_TABLE + " WHERE " + DBConstants.ItemParent.IP_PARENT_ID + " = " + itemToMoveId
 				+ " ) AND " + DBConstants.Item.ID + " != " + itemToMoveId	
 				+ " AND " + DBConstants.Item.ID + " != " + itemToMoveParentId	
-				+ " AS M FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.TABLE 
+				+ " AS M FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.IP_TABLE
 				+ " WHERE " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.ITEM_ID
 				+ " AND " + DBConstants.Item.ID + " = " + DBConstants.Item.REF_ID
-				+ " AND " + DBConstants.ItemParent.PARENT_ID + " = " + parentMoveToId
-				+ " AND " + DBConstants.ItemParent.PARENT_LEVEL + " = 1 ORDER BY " 
+				+ " AND " + DBConstants.ItemParent.IP_PARENT_ID + " = " + parentMoveToId
+				+ " AND " + DBConstants.ItemParent.IP_PARENT_LEVEL + " = 1 ORDER BY "
 				+ DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.INDEX_WEIGHT;
 
 			// Выполнение запроса
@@ -231,16 +231,16 @@ public class AdminLoader {
 			String sql 
 				= "SELECT " + DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID 
 				+ ", " + DBConstants.Item.KEY + ", " + DBConstants.Item.INDEX_WEIGHT + ", " + DBConstants.Item.ID 
-				+ " NOT IN (SELECT DISTINCT " + DBConstants.ItemParent.PARENT_ID + " FROM " + DBConstants.ItemParent.TABLE 
-				+ " WHERE " + DBConstants.ItemParent.REF_ID  + " = " + itemToMountId + " AND " + DBConstants.ItemParent.PARENT_LEVEL + "=1"
-				+ " UNION SELECT DISTINCT " + DBConstants.ItemParent.REF_ID + " FROM " + DBConstants.ItemParent.TABLE
-				+ " WHERE " + DBConstants.ItemParent.PARENT_ID + " = " + itemToMountId + " AND " + DBConstants.ItemParent.PARENT_LEVEL + "=1"
+				+ " NOT IN (SELECT DISTINCT " + DBConstants.ItemParent.IP_PARENT_ID + " FROM " + DBConstants.ItemParent.IP_TABLE
+				+ " WHERE " + DBConstants.ItemParent.REF_ID  + " = " + itemToMountId + " AND " + DBConstants.ItemParent.IP_PARENT_LEVEL + "=1"
+				+ " UNION SELECT DISTINCT " + DBConstants.ItemParent.REF_ID + " FROM " + DBConstants.ItemParent.IP_TABLE
+				+ " WHERE " + DBConstants.ItemParent.IP_PARENT_ID + " = " + itemToMountId + " AND " + DBConstants.ItemParent.IP_PARENT_LEVEL + "=1"
 				+ " ) AND " + DBConstants.Item.ID + " != " + itemToMountId	
-				+ " AS M FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.TABLE 
+				+ " AS M FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.IP_TABLE
 				+ " WHERE " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.ITEM_ID
 				+ " AND " + DBConstants.Item.ID + " = " + DBConstants.Item.REF_ID
-				+ " AND " + DBConstants.ItemParent.PARENT_ID + " = " + parentMountToId
-				+ " AND " + DBConstants.ItemParent.PARENT_LEVEL + " = 1 ORDER BY " 
+				+ " AND " + DBConstants.ItemParent.IP_PARENT_ID + " = " + parentMountToId
+				+ " AND " + DBConstants.ItemParent.IP_PARENT_LEVEL + " = 1 ORDER BY "
 				+ DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.INDEX_WEIGHT;
 
 			// Выполнение запроса
@@ -287,15 +287,15 @@ public class AdminLoader {
 			String sql 
 				= "SELECT " + DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID + ", "
 				+ DBConstants.Item.KEY + ", " + DBConstants.Item.INDEX_WEIGHT + ", "
-				+ DBConstants.Item.ID + " NOT IN (SELECT DISTINCT " + DBConstants.ItemParent.PARENT_ID 
-				+ " FROM " + DBConstants.ItemParent.TABLE + " WHERE " + DBConstants.ItemParent.REF_ID  + " = " + itemToMoveToId
+				+ DBConstants.Item.ID + " NOT IN (SELECT DISTINCT " + DBConstants.ItemParent.IP_PARENT_ID
+				+ " FROM " + DBConstants.ItemParent.IP_TABLE + " WHERE " + DBConstants.ItemParent.REF_ID  + " = " + itemToMoveToId
 				+ " ) AND " + DBConstants.Item.ID + " != " + itemToMoveToId 
 				+ " AND " + DBConstants.Item.DIRECT_PARENT_ID + " != " + itemToMoveToId 
-				+ " AS M FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.TABLE 
+				+ " AS M FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.IP_TABLE
 				+ " WHERE " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.ITEM_ID
 				+ " AND " + DBConstants.Item.ID + " = " + DBConstants.Item.REF_ID
-				+ " AND " + DBConstants.ItemParent.PARENT_ID + " = " + parentToMoveId
-				+ " AND " + DBConstants.ItemParent.PARENT_LEVEL + " = 1 ORDER BY " 
+				+ " AND " + DBConstants.ItemParent.IP_PARENT_ID + " = " + parentToMoveId
+				+ " AND " + DBConstants.ItemParent.IP_PARENT_LEVEL + " = 1 ORDER BY "
 				+ DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.INDEX_WEIGHT;
 
 			// Выполнение запроса
@@ -378,15 +378,15 @@ public class AdminLoader {
 				= "SELECT " + DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID + ", " 
 				+ DBConstants.Item.KEY + ", " + DBConstants.Item.INDEX_WEIGHT + ", "
 				+ DBConstants.Item.ID + " NOT IN (SELECT DISTINCT " + DBConstants.ItemParent.REF_ID 
-				+ " FROM " + DBConstants.ItemParent.TABLE + " WHERE " + DBConstants.ItemParent.PARENT_ID  + " = " + itemToMountToId
-				+ " UNION SELECT DISTINCT " + DBConstants.ItemParent.PARENT_ID 
-				+ " FROM " + DBConstants.ItemParent.TABLE + " WHERE " + DBConstants.ItemParent.REF_ID  + " = " + itemToMountToId
+				+ " FROM " + DBConstants.ItemParent.IP_TABLE + " WHERE " + DBConstants.ItemParent.IP_PARENT_ID + " = " + itemToMountToId
+				+ " UNION SELECT DISTINCT " + DBConstants.ItemParent.IP_PARENT_ID
+				+ " FROM " + DBConstants.ItemParent.IP_TABLE + " WHERE " + DBConstants.ItemParent.REF_ID  + " = " + itemToMountToId
 				+ " ) AND " + DBConstants.Item.ID + " != " + itemToMountToId 
-				+ " AS M FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.TABLE 
+				+ " AS M FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.IP_TABLE
 				+ " WHERE " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.ITEM_ID
 				+ " AND " + DBConstants.Item.ID + " = " + DBConstants.Item.REF_ID
-				+ " AND " + DBConstants.ItemParent.PARENT_ID + " = " + parentToMountId
-				+ " AND " + DBConstants.ItemParent.PARENT_LEVEL + " = 1 ORDER BY " 
+				+ " AND " + DBConstants.ItemParent.IP_PARENT_ID + " = " + parentToMountId
+				+ " AND " + DBConstants.ItemParent.IP_PARENT_LEVEL + " = 1 ORDER BY "
 				+ DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.INDEX_WEIGHT;
 
 			// Выполнение запроса
@@ -419,11 +419,11 @@ public class AdminLoader {
 					= "SELECT DISTINCT " 
 					+ DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID  + ", "
 					+ DBConstants.Item.KEY  + ", " + DBConstants.Item.INDEX_WEIGHT
-					+ " FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.TABLE
-					+ " WHERE " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.PARENT_ID 
+					+ " FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.IP_TABLE
+					+ " WHERE " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.IP_PARENT_ID
 					+ " AND " + DBConstants.ItemParent.ITEM_ID + " = " + baseId 
 					+ " AND " + DBConstants.Item.DIRECT_PARENT_ID + " != 0" 
-					+ " ORDER BY " + DBConstants.ItemParent.PARENT_LEVEL + " DESC";
+					+ " ORDER BY " + DBConstants.ItemParent.IP_PARENT_LEVEL + " DESC";
 			ServerLogger.debug(sql);
 			ResultSet rs = stmt.executeQuery(sql);
 			// Добавить корень

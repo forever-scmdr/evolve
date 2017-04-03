@@ -155,8 +155,8 @@ public class ItemQuery {
 	private static final String ITEMS_BY_IDS_ASSOCIATED_SELECT_QUERY 
 		= "SELECT " + DBConstants.Item.TABLE + ".*, " + DBConstants.ItemIndexes.REF_ID + " AS PID FROM " 
 		+ DBConstants.Item.TABLE + ", " + DBConstants.ItemIndexes.ASSOCIATED_TABLE_NAME
-		+ " WHERE " + DBConstants.Item.ID + "=" + DBConstants.ItemIndexes.VALUE
-		+ " AND " + DBConstants.ItemIndexes.VALUE + " IN (<<ID_CRIT_REQ>>) <<SORT_BY_OPT>>";
+		+ " WHERE " + DBConstants.Item.ID + "=" + DBConstants.ItemIndexes.II_VALUE
+		+ " AND " + DBConstants.ItemIndexes.II_VALUE + " IN (<<ID_CRIT_REQ>>) <<SORT_BY_OPT>>";
 	
 	// Простая загрузка без фильтра и без группировки
 	private static final String COMMON_SELECT_QUERY 
@@ -168,8 +168,8 @@ public class ItemQuery {
 		+ "WHERE <<PARAM_CRIT_REQ>>";
 	// Загрузка ID айтема по уникальному текстовому ключу
 	private static final String ID_BY_UNIQUE_KEY_SELECT_QUERY 
-		= "SELECT " + DBConstants.UniqueItemKeys.ID + " FROM " + DBConstants.UniqueItemKeys.TABLE 
-		+ " WHERE " + DBConstants.UniqueItemKeys.KEY + " IN (<<ID_CRIT_REQ>>)";
+		= "SELECT " + DBConstants.UniqueItemKeys.UK_ID + " FROM " + DBConstants.UniqueItemKeys.UK_TABLE
+		+ " WHERE " + DBConstants.UniqueItemKeys.UK_KEY + " IN (<<ID_CRIT_REQ>>)";
 	// Загрузка всех прямых потомков заданного айтема
 	private static final String ALL_DIRECT_SUBITEMS_SELECT_QUERY 
 		= "SELECT " + DBConstants.Item.TABLE + ".* FROM " + DBConstants.Item.TABLE 
@@ -604,16 +604,16 @@ public class ItemQuery {
 					.getSubquery(PARENT_CRIT_OPT).sql(" IN (").setLongArray(parentIds.toArray(new Long[parentIds.size()])).sql(")");
 		} else if (queryType == Type.SUCCESSOR) {
 			// Извлечение ID предка
-			dbQuery.getSubquery(PARENT_ID_REQ).sql(PARENT_TABLE + '.' + DBConstants.ItemParent.PARENT_ID);
+			dbQuery.getSubquery(PARENT_ID_REQ).sql(PARENT_TABLE + '.' + DBConstants.ItemParent.IP_PARENT_ID);
 			// Подстановка таблицы предков айтемов
 			TemplateQuery fromPart = dbQuery.getSubquery(FROM_OPT);
 			if (!fromPart.isEmpty())
 				fromPart.sql(", ");
-			fromPart.sql(DBConstants.ItemParent.TABLE + " AS " + PARENT_TABLE);
+			fromPart.sql(DBConstants.ItemParent.IP_TABLE + " AS " + PARENT_TABLE);
 			// Подстановка критерия ID предков и типа предков
 			TemplateQuery wherePart = dbQuery.getSubquery(WHERE_OPT);
 			wherePart.getSubquery(FILTER_JOIN_OPT)
-				.sql(PARENT_TABLE + '.' + DBConstants.ItemParent.PARENT_ID + " IN (")
+				.sql(PARENT_TABLE + '.' + DBConstants.ItemParent.IP_PARENT_ID + " IN (")
 				.setLongArray(parentIds.toArray(new Long[parentIds.size()]))
 				.sql(")")
 				
@@ -695,27 +695,27 @@ public class ItemQuery {
 			}
 		}
 		else if (queryType == Type.SUCCESSOR) {
-			query.getSubquery(PARENT_ID_REQ).sql(DBConstants.ItemParent.PARENT_ID);
-			query.getSubquery(FROM_OPT).sql(", " + DBConstants.ItemParent.TABLE);
+			query.getSubquery(PARENT_ID_REQ).sql(DBConstants.ItemParent.IP_PARENT_ID);
+			query.getSubquery(FROM_OPT).sql(", " + DBConstants.ItemParent.IP_TABLE);
 			query.getSubquery(WHERE_OPT)
 					.sql(" AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.REF_ID + " AND "
-							+ DBConstants.ItemParent.PARENT_ID + " IN (")
+							+ DBConstants.ItemParent.IP_PARENT_ID + " IN (")
 					.setLongArray(parentIds.toArray(new Long[parentIds.size()])).sql(")");
 		}
 		else if (queryType == Type.PARENT_OF) {
 			query.getSubquery(PARENT_ID_REQ).sql(DBConstants.ItemParent.REF_ID);
-			query.getSubquery(FROM_OPT).sql(", " + DBConstants.ItemParent.TABLE);
+			query.getSubquery(FROM_OPT).sql(", " + DBConstants.ItemParent.IP_TABLE);
 			query.getSubquery(WHERE_OPT)
-					.sql(" AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.PARENT_ID + " AND "
+					.sql(" AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.IP_PARENT_ID + " AND "
 							+ DBConstants.ItemParent.REF_ID + " IN (")
 					.setLongArray(parentIds.toArray(new Long[parentIds.size()])).sql(")")
-					.sql(" AND " + DBConstants.ItemParent.PARENT_LEVEL + "=1");
+					.sql(" AND " + DBConstants.ItemParent.IP_PARENT_LEVEL + "=1");
 		}
 		else if (queryType == Type.PREDECESSORS_OF) {
 			query.getSubquery(PARENT_ID_REQ).sql(DBConstants.ItemParent.REF_ID);
-			query.getSubquery(FROM_OPT).sql(", " + DBConstants.ItemParent.TABLE);
+			query.getSubquery(FROM_OPT).sql(", " + DBConstants.ItemParent.IP_TABLE);
 			query.getSubquery(WHERE_OPT)
-					.sql(" AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.PARENT_ID + " AND "
+					.sql(" AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.IP_PARENT_ID + " AND "
 							+ DBConstants.ItemParent.REF_ID + " IN (")
 					.setLongArray(parentIds.toArray(new Long[parentIds.size()])).sql(")");
 		}
@@ -1018,8 +1018,8 @@ public class ItemQuery {
 		dbQuery.getSubquery(PARAM_TABLE_REQ).sql(DataTypeMapper.getTableName(param.getType()));
 		dbQuery.getSubquery(PARAM_CRIT_REQ)
 			.sql(DBConstants.ItemIndexes.REF_ID + " = " + DBConstants.Item.ID)
-			.sql(" AND " + DBConstants.ItemIndexes.ITEM_PARAM + " = ").setInt(param.getId())
-			.sql(" AND " + DBConstants.ItemIndexes.VALUE + " IN (");
+			.sql(" AND " + DBConstants.ItemIndexes.II_PARAM + " = ").setInt(param.getId())
+			.sql(" AND " + DBConstants.ItemIndexes.II_VALUE + " IN (");
 		DataTypeMapper.appendPreparedStatementRequestValues(param.getType(), dbQuery, paramValue);
 		dbQuery.sql(")");
 		// Если параметр принадлежит самому запрашиваемому айтему,
@@ -1027,7 +1027,7 @@ public class ItemQuery {
 		// Если параметр принадлежит предку айтема, то в случае неиспользования критерия типа айтема
 		// могут вернуться лишние айтемы (тип которых является предком искомого типа)
 		if (param.getOwnerItemId() != item.getTypeId()) {
-			dbQuery.sql(" AND " + DBConstants.ItemIndexes.ITEM_TYPE + " IN (").setIntArray(extenders).sql(")");
+			dbQuery.sql(" AND " + DBConstants.ItemIndexes.II_ITEM_TYPE + " IN (").setIntArray(extenders).sql(")");
 		}
 		return loadByQuery(dbQuery, DBConstants.Item.DIRECT_PARENT_ID, null, conn);		
 	}

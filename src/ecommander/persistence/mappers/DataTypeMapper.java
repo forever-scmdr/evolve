@@ -66,7 +66,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected Object createValueFromResultSet(ResultSet rs) throws SQLException {
-			return rs.getString(DBConstants.ItemIndexes.VALUE);
+			return rs.getString(DBConstants.ItemIndexes.II_VALUE);
 		}
 
 		@Override
@@ -123,7 +123,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected Object createValueFromResultSet(ResultSet rs) throws SQLException {
-			return rs.getInt(DBConstants.ItemIndexes.VALUE);
+			return rs.getInt(DBConstants.ItemIndexes.II_VALUE);
 		}
 
 		@Override
@@ -165,7 +165,7 @@ public class DataTypeMapper {
 		
 		@Override
 		protected Object createValueFromResultSet(ResultSet rs) throws SQLException {
-			return (byte)rs.getInt(DBConstants.ItemIndexes.VALUE);
+			return (byte)rs.getInt(DBConstants.ItemIndexes.II_VALUE);
 		}
 		
 		@Override
@@ -197,7 +197,7 @@ public class DataTypeMapper {
 		
 		@Override
 		protected Object createValueFromResultSet(ResultSet rs) throws SQLException {
-			return rs.getLong(DBConstants.ItemIndexes.VALUE);
+			return rs.getLong(DBConstants.ItemIndexes.II_VALUE);
 		}
 		
 		@Override
@@ -267,7 +267,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected Object createValueFromResultSet(ResultSet rs) throws SQLException {
-			return rs.getDouble(DBConstants.ItemIndexes.VALUE);
+			return rs.getDouble(DBConstants.ItemIndexes.II_VALUE);
 		}
 
 		@Override
@@ -320,7 +320,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected Object createValueFromResultSet(ResultSet rs) throws SQLException {
-			return rs.getBigDecimal(DBConstants.ItemIndexes.VALUE);
+			return rs.getBigDecimal(DBConstants.ItemIndexes.II_VALUE);
 		}
 
 		@Override

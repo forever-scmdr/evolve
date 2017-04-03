@@ -1,13 +1,10 @@
 package ecommander.persistence.commandunits;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.UserNotAllowedException;
-import ecommander.model.Item;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.model.User;
 
@@ -28,7 +25,7 @@ public class DeleteUserDBUnit extends DBPersistenceCommandUnit {
 			stmt = conn.createStatement();
 			// Сделать айтемы пользователя общими
 			String sql
-				= "UPDATE " + DBConstants.ItemParent.TABLE
+				= "UPDATE " + DBConstants.ItemParent.IP_TABLE
 				+ " SET " + DBConstants.ItemParent.USER  + "=0"
 				+ " WHERE " + DBConstants.ItemParent.USER + "=" + user.getUserId();
 			stmt.executeUpdate(sql);

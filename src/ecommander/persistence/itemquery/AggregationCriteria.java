@@ -36,7 +36,7 @@ class AggregationCriteria implements FilterCriteria, PossibleMainCriteria {
 	}
 
 	String getResultColumnName() {
-		return baseCriteria.tableName + '.' + DBConstants.ItemIndexes.VALUE;
+		return baseCriteria.tableName + '.' + DBConstants.ItemIndexes.II_VALUE;
 	}
 	
 	ParameterDescription getParam() {
@@ -60,7 +60,7 @@ class AggregationCriteria implements FilterCriteria, PossibleMainCriteria {
 	}
 
 	public String getSelectedColumnName() {
-		return baseCriteria.getTableName() + '.' + DBConstants.ItemIndexes.VALUE;
+		return baseCriteria.getTableName() + '.' + DBConstants.ItemIndexes.II_VALUE;
 	}
 
 	public BooleanQuery appendLuceneQuery(BooleanQuery query, Occur occur) {

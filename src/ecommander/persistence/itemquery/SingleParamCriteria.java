@@ -39,7 +39,7 @@ class SingleParamCriteria extends FilterParameterCriteria {
 	@Override
 	protected final void appendParameterValue(TemplateQuery query) {
 		query = query.getSubquery(ItemQuery.WHERE_OPT).getSubquery(ItemQuery.FILTER_CRITS_OPT);
-		query.sql(" AND " + tableName + "." + DBConstants.ItemIndexes.VALUE + " " + sign + " ");
+		query.sql(" AND " + tableName + "." + DBConstants.ItemIndexes.II_VALUE + " " + sign + " ");
 		DataTypeMapper.appendPreparedStatementRequestValue(param.getType(), query, value, pattern);
 	}
 

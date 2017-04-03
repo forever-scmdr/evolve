@@ -6,7 +6,6 @@ import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.model.ItemBasics;
 import ecommander.model.ItemType;
-import ecommander.model.User;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
@@ -25,7 +24,7 @@ import java.sql.ResultSet;
  * 
  * @author EEEE
  */
-class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemTbl, DBConstants {
+class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemTbl, DBConstants.UniqueItemKeys {
 
 	private Item item;
 	private ItemBasics parent;
@@ -44,14 +43,10 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		item.prepareToSave();
 
 		// Загрузка и валидация родительского айтема, если надо
-		// Также определяется, должнен ли айтем становиться корневым для пользователя
 		Connection conn = getTransactionContext().getConnection();
 		if (parent == null)
 			parent = ItemMapper.loadItemBasics(item.getContextParentId(), conn);
 		testPrivileges(parent);
-		if (parent.getOwnerUserId() != item.getOwnerUserId() || parent.getOwnerGroupId() != item.getOwnerGroupId()) {
-
-		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 1.   Сохранение айтема в таблицу айтемов, получение и установка в объект айтема нового ID
@@ -59,20 +54,20 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		//          (для этого не нужно выполнять команду сохранения файлов)
 		//
 		TemplateQuery itemInsert = new TemplateQuery("New item insert");
-		itemInsert.INSERT_INTO(TABLE).SET()
-				.col(TYPE_ID).setInt(item.getTypeId())
-				.col(KEY).setString(item.getKey())
-				.col(TRANSLIT_KEY).setString(item.getKeyUnique())
-				.col(PROTECTED).setByte(item.isFileProtected() ? (byte)1 : (byte)0)
-				.col(STATUS).setByte(item.getStatus())
-				.col(GROUP_ID).setByte(item.getOwnerGroupId())
-				.col(USER_ID).setInt(item.getOwnerUserId())
-				.col(STATUS).setByte(item.getStatus())
-				.col(PARAMS).setString(item.outputValues());
+		itemInsert.INSERT_INTO(I_TABLE).SET()
+				.col(I_TYPE_ID).setInt(item.getTypeId())
+				.col(I_KEY).setString(item.getKey())
+				.col(I_T_KEY).setString(item.getKeyUnique())
+				.col(I_PROTECTED).setByte(item.isFileProtected() ? (byte)1 : (byte)0)
+				.col(I_STATUS).setByte(item.getStatus())
+				.col(I_GROUP).setByte(item.getOwnerGroupId())
+				.col(I_USER).setInt(item.getOwnerUserId())
+				.col(I_STATUS).setByte(item.getStatus())
+				.col(I_PARAMS).setString(item.outputValues());
 		// Иногда (например, при переносе со старой версии CMS) ID айтема уже задан (не равняется 0)
 		boolean hasId = item.getId() > 0;
 		if (hasId)
-			itemInsert.col(ID).setLong(item.getId());
+			itemInsert.col(I_ID).setLong(item.getId());
 
 		if (!hasId) {
 			try (PreparedStatement pstmt = itemInsert.prepareQuery(conn, true)) {
@@ -91,9 +86,9 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		if (item.getItemType().isKeyUnique()) {
 			TemplateQuery uniqueKeyInsert = new TemplateQuery("Unique key insert");
 			uniqueKeyInsert
-					.INSERT_INTO(UniqueItemKeys.TABLE).SET()
-					.col(UniqueItemKeys.ID).setLong(item.getId())
-					.col(UniqueItemKeys.KEY).setString(item.getKeyUnique());
+					.INSERT_INTO(UK_TABLE).SET()
+					.col(UK_ID).setLong(item.getId())
+					.col(UK_KEY).setString(item.getKeyUnique());
 			PreparedStatement keyUniqueStmt = uniqueKeyInsert.prepareQuery(conn);
 			boolean needItemUpdate = false;
 			try {
@@ -111,9 +106,9 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 			// Обновление уникального ключа айтема (если это нужно)
 			if (needItemUpdate) {
 				TemplateQuery keyUpdate = new TemplateQuery("Item unique key update");
-				keyUpdate.UPDATE(TABLE)
-						.SET().col(TRANSLIT_KEY).setString(item.getKeyUnique())
-						.WHERE().col(ID).setLong(item.getId());
+				keyUpdate.UPDATE(I_TABLE)
+						.SET().col(I_T_KEY).setString(item.getKeyUnique())
+						.WHERE().col(I_ID).setLong(item.getId());
 				try (PreparedStatement pstmt = keyUpdate.prepareQuery(conn)) {
 					pstmt.executeUpdate();
 				}

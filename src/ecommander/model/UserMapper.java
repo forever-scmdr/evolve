@@ -19,7 +19,7 @@ import java.util.HashMap;
  * @author EEEE
  *
  */
-public class UserMapper implements DBConstants.UsersTbl, DBConstants {
+public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups, DBConstants.Group {
 	
 	/**
 	 * Привтный конструктор
@@ -34,8 +34,8 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				if (user == null)
-					user = new User(rs.getString(LOGIN), rs.getString(PASSWORD), rs.getString(DESCRIPTION), rs.getInt(ID));
-				user.addGroup(rs.getString(UserGroups.GROUP_NAME), rs.getByte(UserGroups.GROUP_ID), rs.getByte(UserGroups.ROLE));
+					user = new User(rs.getString(U_LOGIN), rs.getString(U_PASSWORD), rs.getString(U_DESCRIPTION), rs.getInt(U_ID));
+				user.addGroup(rs.getString(UG_GROUP_NAME), rs.getByte(UG_GROUP_ID), rs.getByte(UG_ROLE));
 			}
 		}
 		return user;
@@ -51,8 +51,8 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 	 */
 	public static User getUser(String login, String pass, Connection conn) throws SQLException, NamingException {
 		TemplateQuery selectUser = new TemplateQuery("Select user by login and password");
-		selectUser.SELECT("*").FROM(TABLE).INNER_JOIN(UserGroups.TABLE, ID, UserGroups.USER_ID)
-				.WHERE().col(LOGIN).setString(login).AND().col(PASSWORD).setString(pass);
+		selectUser.SELECT("*").FROM(U_TABLE).INNER_JOIN(UG_TABLE, U_ID, UG_USER_ID)
+				.WHERE().col(U_LOGIN).setString(login).AND().col(U_PASSWORD).setString(pass);
 		return createUser(selectUser, conn);
 	}
 	/**
@@ -64,8 +64,8 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 	 */
 	public static User getUser(int userId, Connection conn) throws SQLException, NamingException {
 		TemplateQuery selectUser = new TemplateQuery("Select user by ID");
-		selectUser.SELECT("*").FROM(TABLE).INNER_JOIN(UserGroups.TABLE, ID, UserGroups.USER_ID)
-				.WHERE().col(ID).setInt(userId);
+		selectUser.SELECT("*").FROM(U_TABLE).INNER_JOIN(UG_TABLE, U_ID, UG_USER_ID)
+				.WHERE().col(U_ID).setInt(userId);
 		return createUser(selectUser, conn);
 	}
 	/**
@@ -76,18 +76,18 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 	 */
 	public static ArrayList<User> getAllUsers(Connection conn) throws SQLException, NamingException {
 		TemplateQuery selectUsers = new TemplateQuery("Select all users");
-		selectUsers.SELECT("*").FROM(TABLE).INNER_JOIN(UserGroups.TABLE, ID, UserGroups.USER_ID);
+		selectUsers.SELECT("*").FROM(U_TABLE).INNER_JOIN(UG_TABLE, U_ID, UG_USER_ID);
 		HashMap<Integer, User> allUsers = new HashMap<>();
 		try (PreparedStatement pstmt = selectUsers.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				int userId = rs.getInt(ID);
+				int userId = rs.getInt(U_ID);
 				User user = allUsers.get(userId);
 				if (user == null) {
-					user = new User(rs.getString(LOGIN), rs.getString(PASSWORD), rs.getString(DESCRIPTION), rs.getInt(ID));
+					user = new User(rs.getString(U_LOGIN), rs.getString(U_PASSWORD), rs.getString(U_DESCRIPTION), rs.getInt(U_ID));
 					allUsers.put(userId, user);
 				}
-				user.addGroup(rs.getString(UserGroups.GROUP_NAME), rs.getByte(UserGroups.GROUP_ID), rs.getByte(UserGroups.ROLE));
+				user.addGroup(rs.getString(UG_GROUP_NAME), rs.getByte(UG_GROUP_ID), rs.getByte(UG_ROLE));
 			}
 		}
 		return new ArrayList<>(allUsers.values());
@@ -101,7 +101,7 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 	 */
 	public static boolean userNameExists(String userName, Connection conn) throws NamingException, SQLException {
 		TemplateQuery checkUserName = new TemplateQuery("Check user name");
-		checkUserName.SELECT("*").FROM(TABLE).WHERE().col(LOGIN).setString(userName);
+		checkUserName.SELECT("*").FROM(U_TABLE).WHERE().col(U_LOGIN).setString(userName);
 		try (PreparedStatement pstmt = checkUserName.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -121,11 +121,11 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 	 */
 	public static int getUserId(String userName, Connection conn) throws NamingException, SQLException {
 		TemplateQuery checkUserName = new TemplateQuery("Check user name");
-		checkUserName.SELECT(ID).FROM(TABLE).WHERE().col(LOGIN).setString(userName);
+		checkUserName.SELECT(U_ID).FROM(U_TABLE).WHERE().col(U_LOGIN).setString(userName);
 		try (PreparedStatement pstmt = checkUserName.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				return rs.getInt(ID);
+				return rs.getInt(U_ID);
 			}
 		}
 		return -1;
@@ -137,14 +137,14 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants {
 	 */
 	public static void loadUserGorups() throws SQLException, NamingException {
 		TemplateQuery selectGroups = new TemplateQuery("Select all groups");
-		selectGroups.SELECT("*").FROM(Group.TABLE);
+		selectGroups.SELECT("*").FROM(G_TABLE);
 		try (
 				Connection conn = MysqlConnector.getConnection();
 				PreparedStatement pstmt = selectGroups.prepareQuery(conn)
 		) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				UserGroupRegistry.addGroup(rs.getString(Group.NAME), rs.getByte(Group.ID));
+				UserGroupRegistry.addGroup(rs.getString(G_NAME), rs.getByte(G_ID));
 			}
 		}
 	}

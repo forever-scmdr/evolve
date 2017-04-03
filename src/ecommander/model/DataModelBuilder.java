@@ -94,9 +94,9 @@ public class DataModelBuilder {
 			ArrayList<String> xml = new ArrayList<>();
 			try {
 				stmt = connection.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT * FROM " + DBConstants.ModelXML.TABLE);
+				ResultSet rs = stmt.executeQuery("SELECT * FROM " + DBConstants.ModelXML.XML_TABLE);
 				while (rs.next())
-					xml.add(rs.getString(DBConstants.ModelXML.XML));
+					xml.add(rs.getString(DBConstants.ModelXML.XML_XML));
 				rs.close();
 			} finally {
 				MysqlConnector.closeStatement(stmt);
