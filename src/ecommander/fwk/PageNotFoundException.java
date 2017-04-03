@@ -4,11 +4,11 @@ package ecommander.fwk;
  * @author EEEE
  *
  */
-public class PageNotFoundException extends EcommanderException {
+public class PageNotFoundException extends EcommanderException implements ErrorCodes {
 
 	
 	public PageNotFoundException(String message) {
-		super(message);
+		super(PAGE_NOT_FOUND, message);
 	}
 	
 	

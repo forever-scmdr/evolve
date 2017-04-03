@@ -834,7 +834,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			buffer = new LinkedHashMap<Long, ItemAccessor>();
 		}
 		ItemAccessor item = AdminLoader.getLoader().loadItemAccessor(in.itemId);
-		buffer.put(item.getItemId(), item);
+		buffer.put(item.getId(), item);
 		in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 		return pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId, getCurrentAdmin().getGroup());
 	}

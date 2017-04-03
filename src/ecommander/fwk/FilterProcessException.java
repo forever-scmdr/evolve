@@ -4,18 +4,14 @@ package ecommander.fwk;
  * @author EEEE
  *
  */
-public class FilterProcessException extends EcommanderException {
+public class FilterProcessException extends EcommanderException implements ErrorCodes {
 
 	public FilterProcessException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public FilterProcessException(Throwable cause) {
-		super(cause);
+		super(FILTER_FORMAT_ERROR, message, cause);
 	}
 
 	public FilterProcessException(String arg0) {
-		super(arg0);
+		super(FILTER_FORMAT_ERROR, arg0);
 	}
 
 	/**

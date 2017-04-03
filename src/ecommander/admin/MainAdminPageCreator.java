@@ -366,7 +366,7 @@ public class MainAdminPageCreator {
 			}
 		}
 		for (ItemAccessor pred : pathItems) {
-			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, pred.getItemId(), ITEM_TYPE_INPUT, pred.getTypeId());
+			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, pred.getId(), ITEM_TYPE_INPUT, pred.getTypeId());
 			pred.addSubwriter(new LeafMDWriter(AdminXML.EDIT_LINK_ELEMENT, editUrl));
 			path.addSubwriter(pred);
 		}
@@ -407,10 +407,10 @@ public class MainAdminPageCreator {
 			basePage.addElement(itemToAdd);
 		}
 		for (ItemAccessor subitem : subitems) {
-			String delUrl = createAdminUrl(DELETE_ITEM_ACTION, ITEM_ID_INPUT, subitem.getItemId(), ITEM_TYPE_INPUT, itemType, PARENT_ID_INPUT, baseId);
-			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, subitem.getItemId(), ITEM_TYPE_INPUT, subitem.getTypeId());
-			String editInlineUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, INLINE_VIEW_TYPE, ITEM_ID_INPUT, subitem.getItemId());
-			String copyUrl = createAdminUrl(COPY_ACTION, ITEM_ID_INPUT, subitem.getItemId(), PARENT_ID_INPUT, baseId, ITEM_TYPE_INPUT, itemType);
+			String delUrl = createAdminUrl(DELETE_ITEM_ACTION, ITEM_ID_INPUT, subitem.getId(), ITEM_TYPE_INPUT, itemType, PARENT_ID_INPUT, baseId);
+			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, subitem.getId(), ITEM_TYPE_INPUT, subitem.getTypeId());
+			String editInlineUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, INLINE_VIEW_TYPE, ITEM_ID_INPUT, subitem.getId());
+			String copyUrl = createAdminUrl(COPY_ACTION, ITEM_ID_INPUT, subitem.getId(), PARENT_ID_INPUT, baseId, ITEM_TYPE_INPUT, itemType);
 			subitem.addSubwriter(new LeafMDWriter(AdminXML.DELETE_LINK_ELEMENT, delUrl));
 			subitem.addSubwriter(new LeafMDWriter(AdminXML.EDIT_LINK_ELEMENT, editUrl));
 			subitem.addSubwriter(new LeafMDWriter(AdminXML.EDIT_INLINE_LINK_ELEMENT, editInlineUrl));
@@ -449,14 +449,14 @@ public class MainAdminPageCreator {
 			subitemNames = ItemTypeRegistry.getUserGroupAllowedSubitems(parentDesc.getName(), userGroup, false);
 		for (ItemAccessor item : buffer.values()) {
 			item.clearSubwriters();
-			String deleteUrl = createAdminUrl(DELETE_PASTE_ACTION, ITEM_ID_INPUT, item.getItemId(), PARENT_ID_INPUT, newParentId,
+			String deleteUrl = createAdminUrl(DELETE_PASTE_ACTION, ITEM_ID_INPUT, item.getId(), PARENT_ID_INPUT, newParentId,
 					ITEM_TYPE_INPUT, newParentTypeId);
-			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, item.getItemId(), ITEM_TYPE_INPUT, item.getTypeId());
+			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, item.getId(), ITEM_TYPE_INPUT, item.getTypeId());
 			item.addSubwriter(new LeafMDWriter(AdminXML.DELETE_LINK_ELEMENT, deleteUrl));
 			item.addSubwriter(new LeafMDWriter(AdminXML.EDIT_LINK_ELEMENT, editUrl));
 			// Добавлять урл для вставки только при совместимости типов
 			if (subitemNames.contains(ItemTypeRegistry.getItemType(item.getTypeId()).getName())) {
-				String pasteUrl = createAdminUrl(PASTE_ACTION, ITEM_ID_INPUT, item.getItemId(), PARENT_ID_INPUT, newParentId, ITEM_TYPE_INPUT,
+				String pasteUrl = createAdminUrl(PASTE_ACTION, ITEM_ID_INPUT, item.getId(), PARENT_ID_INPUT, newParentId, ITEM_TYPE_INPUT,
 						newParentTypeId);
 				item.addSubwriter(new LeafMDWriter(AdminXML.PASTE_LINK_ELEMENT, pasteUrl));
 			}
@@ -562,7 +562,7 @@ public class MainAdminPageCreator {
 		AggregateMDWriter path = new AggregateMDWriter(AdminXML.PATH_ELEMENT);
 		for (ItemAccessor pred : mountToParentPathItems) {
 			String setMountParentUrl = createAdminUrl(SET_MOUNT_TO_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType,
-					PARENT_ID_INPUT, pred.getItemId());
+					PARENT_ID_INPUT, pred.getId());
 			pred.addSubwriter(new LeafMDWriter(AdminXML.LINK_ELEMENT, setMountParentUrl));
 			path.addSubwriter(pred);
 		}
@@ -581,12 +581,12 @@ public class MainAdminPageCreator {
 				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(item.getItemName()).getAllChildren());
 				subitems.retainAll(predecessors);
 				if (subitems.size() > 0) {
-					String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), MOUNT_INPUT_PREFIX);
+					String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), MOUNT_INPUT_PREFIX);
 					item.addSubwriter(new LeafMDWriter(AdminXML.INPUT_ELEMENT, ADD_VALUE, AdminXML.NAME_ATTRIBUTE, inputName));
 				}
 			}
 			String setMountParentUrl = createAdminUrl(SET_MOUNT_TO_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType,
-					PARENT_ID_INPUT, item.getItemId());
+					PARENT_ID_INPUT, item.getId());
 			item.addSubwriter(new LeafMDWriter(AdminXML.LINK_ELEMENT, setMountParentUrl));
 			// Создать новую группу по типам, если у текущего айтема тип не совпадает с типом предыдущего айтема
 			if (item.getTypeId() != currentTypeId) {
@@ -606,7 +606,7 @@ public class MainAdminPageCreator {
 		currentTypeId = -1;
 		typeGroup = null;
 		for (ItemAccessor item : mountedList) {
-			String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), UNMOUNT_INPUT_PREFIX);
+			String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), UNMOUNT_INPUT_PREFIX);
 			item.addSubwriter(new LeafMDWriter(AdminXML.INPUT_ELEMENT, DELETE_VALUE, AdminXML.NAME_ATTRIBUTE, inputName));
 			// Создать новую группу по типам, если у текущего айтема тип не совпадает с типом предыдущего айтема
 			if (item.getTypeId() != currentTypeId) {
@@ -647,7 +647,7 @@ public class MainAdminPageCreator {
 		AggregateMDWriter path = new AggregateMDWriter(AdminXML.PATH_ELEMENT);
 		for (ItemAccessor pred : mountToParentPathItems) {
 			String setMountParentUrl = createAdminUrl(SET_TO_MOUNT_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType,
-					PARENT_ID_INPUT, pred.getItemId());
+					PARENT_ID_INPUT, pred.getId());
 			pred.addSubwriter(new LeafMDWriter(AdminXML.LINK_ELEMENT, setMountParentUrl));
 			path.addSubwriter(pred);
 		}
@@ -666,12 +666,12 @@ public class MainAdminPageCreator {
 				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(itemType).getAllChildren());
 				subitems.retainAll(predecessors);
 				if (subitems.size() > 0) {
-					String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), MOUNT_INPUT_PREFIX);
+					String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), MOUNT_INPUT_PREFIX);
 					item.addSubwriter(new LeafMDWriter(AdminXML.INPUT_ELEMENT, ADD_VALUE, AdminXML.NAME_ATTRIBUTE, inputName));
 				}
 			}
 			String setMountParentUrl = createAdminUrl(SET_TO_MOUNT_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType,
-					PARENT_ID_INPUT, item.getItemId());
+					PARENT_ID_INPUT, item.getId());
 			item.addSubwriter(new LeafMDWriter(AdminXML.LINK_ELEMENT, setMountParentUrl));
 			mountTo.addSubwriter(item);
 			// Создать новую группу по типам, если у текущего айтема тип не совпадает с типом предыдущего айтема
@@ -692,7 +692,7 @@ public class MainAdminPageCreator {
 		currentTypeId = -1;
 		typeGroup = null;
 		for (ItemAccessor item : mountedList) {
-			String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), UNMOUNT_INPUT_PREFIX);
+			String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), UNMOUNT_INPUT_PREFIX);
 			item.addSubwriter(new LeafMDWriter(AdminXML.INPUT_ELEMENT, DELETE_VALUE, AdminXML.NAME_ATTRIBUTE, inputName));
 			// Создать новую группу по типам, если у текущего айтема тип не совпадает с типом предыдущего айтема
 			if (item.getTypeId() != currentTypeId) {
@@ -739,7 +739,7 @@ public class MainAdminPageCreator {
 		ArrayList<ItemAccessor> associatedList = mapper.loadItemAccessors(assocIds.toArray(new Long[0]));	
 		for (ArrayList<ItemAccessor> items : toAssocMap.values()) {
 			for (ItemAccessor item : items) {
-				if (!assocIds.contains(item.getItemId()))
+				if (!assocIds.contains(item.getId()))
 					item.setParentCompatible(true);
 				toAssocList.add(item);
 			}
@@ -751,7 +751,7 @@ public class MainAdminPageCreator {
 		AggregateMDWriter path = new AggregateMDWriter(AdminXML.PATH_ELEMENT);
 		for (ItemAccessor pred : mountToParentPathItems) {
 			String setAssocParentUrl = createAdminUrl(SET_ASSOCIATE_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT,
-					baseItem.getTypeId(), PARENT_ID_INPUT, pred.getItemId(), PARAM_ID_INPUT, assocParamId);
+					baseItem.getTypeId(), PARENT_ID_INPUT, pred.getId(), PARAM_ID_INPUT, assocParamId);
 			pred.addSubwriter(new LeafMDWriter(AdminXML.LINK_ELEMENT, setAssocParentUrl));
 			path.addSubwriter(pred);
 		}
@@ -766,11 +766,11 @@ public class MainAdminPageCreator {
 		AggregateMDWriter typeGroup = null;
 		for (ItemAccessor item : toAssocList) {
 			if (item.isParentCompatible()) {
-				String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), MOUNT_INPUT_PREFIX);
+				String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), MOUNT_INPUT_PREFIX);
 				item.addSubwriter(new LeafMDWriter(AdminXML.INPUT_ELEMENT, ADD_VALUE, AdminXML.NAME_ATTRIBUTE, inputName));
 			}
 			String setAssocParentUrl = createAdminUrl(SET_ASSOCIATE_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, item.getTypeId(),
-					PARENT_ID_INPUT, item.getItemId(), PARAM_ID_INPUT, assocParamId);
+					PARENT_ID_INPUT, item.getId(), PARAM_ID_INPUT, assocParamId);
 			item.addSubwriter(new LeafMDWriter(AdminXML.LINK_ELEMENT, setAssocParentUrl));
 			associate.addSubwriter(item);
 			// Создать новую группу по типам, если у текущего айтема тип не совпадает с типом предыдущего айтема
@@ -791,7 +791,7 @@ public class MainAdminPageCreator {
 		currentTypeId = -1;
 		typeGroup = null;
 		for (ItemAccessor item : associatedList) {
-			String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), UNMOUNT_INPUT_PREFIX);
+			String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), UNMOUNT_INPUT_PREFIX);
 			item.addSubwriter(new LeafMDWriter(AdminXML.INPUT_ELEMENT, DELETE_VALUE, AdminXML.NAME_ATTRIBUTE, inputName));
 			// Создать новую группу по типам, если у текущего айтема тип не совпадает с типом предыдущего айтема
 			if (item.getTypeId() != currentTypeId) {
@@ -804,7 +804,7 @@ public class MainAdminPageCreator {
 		}
 		
 		// Ссылка для перезагрузки родительской страницы
-		String reloadUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, baseAcc.getItemId(), ITEM_TYPE_INPUT, baseAcc.getTypeId());
+		String reloadUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, baseAcc.getId(), ITEM_TYPE_INPUT, baseAcc.getTypeId());
 		page.addElement(new LeafMDWriter(AdminXML.LINK_ELEMENT, reloadUrl));
 		return page;
 	}
@@ -837,7 +837,7 @@ public class MainAdminPageCreator {
 		AggregateMDWriter path = new AggregateMDWriter(AdminXML.PATH_ELEMENT);
 		for (ItemAccessor pred : moveToParentPathItems) {
 			String setMoveParentUrl = createAdminUrl(SET_MOVE_TO_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType,
-					PARENT_ID_INPUT, pred.getItemId());
+					PARENT_ID_INPUT, pred.getId());
 			pred.addSubwriter(new LeafMDWriter(AdminXML.LINK_ELEMENT, setMoveParentUrl));
 			path.addSubwriter(pred);
 		}
@@ -855,12 +855,12 @@ public class MainAdminPageCreator {
 				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(item.getItemName()).getAllChildren());
 				subitems.retainAll(predecessors);
 				if (subitems.size() > 0) {
-					String inputValue = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), MOVE_VALUE);
+					String inputValue = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), MOVE_VALUE);
 					item.addSubwriter(new LeafMDWriter(AdminXML.INPUT_ELEMENT, inputValue, AdminXML.NAME_ATTRIBUTE, MOVING_ITEM_INPUT));
 				}
 			}
 			String setMoveParentUrl = createAdminUrl(SET_MOVE_TO_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType,
-					PARENT_ID_INPUT, item.getItemId());
+					PARENT_ID_INPUT, item.getId());
 			item.addSubwriter(new LeafMDWriter(AdminXML.LINK_ELEMENT, setMoveParentUrl));
 			// Создать новую группу по типам, если у текущего айтема тип не совпадает с типом предыдущего айтема
 			if (item.getTypeId() != currentTypeId) {
@@ -899,7 +899,7 @@ public class MainAdminPageCreator {
 		AggregateMDWriter path = new AggregateMDWriter(AdminXML.PATH_ELEMENT);
 		for (ItemAccessor pred : toMoveParentPathItems) {
 			String setMoveParentUrl = createAdminUrl(SET_TO_MOVE_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType,
-					PARENT_ID_INPUT, pred.getItemId());
+					PARENT_ID_INPUT, pred.getId());
 			pred.addSubwriter(new LeafMDWriter(AdminXML.LINK_ELEMENT, setMoveParentUrl));
 			path.addSubwriter(pred);
 		}
@@ -917,12 +917,12 @@ public class MainAdminPageCreator {
 				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(itemType).getAllChildren());
 				subitems.retainAll(predecessors);
 				if (subitems.size() > 0) {
-					String inputValue = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getItemId(), MOVE_VALUE);
+					String inputValue = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), MOVE_VALUE);
 					item.addSubwriter(new LeafMDWriter(AdminXML.INPUT_ELEMENT, inputValue, AdminXML.NAME_ATTRIBUTE, MOVING_ITEM_INPUT));
 				}
 			}
 			String setMoveParentUrl = createAdminUrl(SET_TO_MOVE_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType,
-					PARENT_ID_INPUT, item.getItemId());
+					PARENT_ID_INPUT, item.getId());
 			item.addSubwriter(new LeafMDWriter(AdminXML.LINK_ELEMENT, setMoveParentUrl));
 			// Создать новую группу по типам, если у текущего айтема тип не совпадает с типом предыдущего айтема
 			if (item.getTypeId() != currentTypeId) {

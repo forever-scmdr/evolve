@@ -4,7 +4,9 @@ import ecommander.filesystem.SaveItemFilesUnit;
 import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
+import ecommander.model.ItemBasics;
 import ecommander.model.ItemType;
+import ecommander.model.User;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
@@ -26,16 +28,30 @@ import java.sql.ResultSet;
 class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemTbl, DBConstants {
 
 	private Item item;
+	private ItemBasics parent;
 
 	public SaveNewItemDBUnit(Item item) {
 		this.item = item;
+	}
+
+	public SaveNewItemDBUnit(Item item, ItemBasics parent) {
+		this.item = item;
+		this.parent = parent;
 	}
 	
 	public void execute() throws Exception {
 		// Создать значение ключа
 		item.prepareToSave();
 
+		// Загрузка и валидация родительского айтема, если надо
+		// Также определяется, должнен ли айтем становиться корневым для пользователя
 		Connection conn = getTransactionContext().getConnection();
+		if (parent == null)
+			parent = ItemMapper.loadItemBasics(item.getContextParentId(), conn);
+		testPrivileges(parent);
+		if (parent.getOwnerUserId() != item.getOwnerUserId() || parent.getOwnerGroupId() != item.getOwnerGroupId()) {
+
+		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 1.   Сохранение айтема в таблицу айтемов, получение и установка в объект айтема нового ID
@@ -48,8 +64,10 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 				.col(KEY).setString(item.getKey())
 				.col(TRANSLIT_KEY).setString(item.getKeyUnique())
 				.col(PROTECTED).setByte(item.isFileProtected() ? (byte)1 : (byte)0)
-				.col(DELETED).setByte(item.getStatus())
-				.col(PRED_PATH).setString(item.getPredIdPath())
+				.col(STATUS).setByte(item.getStatus())
+				.col(GROUP_ID).setByte(item.getOwnerGroupId())
+				.col(USER_ID).setInt(item.getOwnerUserId())
+				.col(STATUS).setByte(item.getStatus())
 				.col(PARAMS).setString(item.outputValues());
 		// Иногда (например, при переносе со старой версии CMS) ID айтема уже задан (не равняется 0)
 		boolean hasId = item.getId() > 0;
@@ -105,7 +123,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 3.   Сохранить связь нового айтема с его предщественниками по иерархии ассоциации
 		//
-		executeCommand(new CreateAssocDBUnit(item, item.getContextParentId(), item.getContextAssoc().getId(), true));
+		executeCommand(new CreateAssocDBUnit(item, parent, item.getContextAssoc().getId(), true));
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 4.   Сохранить параметры айтема в таблицах индексов

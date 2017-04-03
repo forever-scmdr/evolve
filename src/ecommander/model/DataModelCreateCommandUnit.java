@@ -39,7 +39,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	private static class HashId {
 		private final int hash;
 		private final int id;
-		public HashId(int hash, int id) {
+		private HashId(int hash, int id) {
 			this.hash = hash;
 			this.id = id;
 		}
@@ -48,7 +48,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	private static class ItemParam {
 		private final String item;
 		private final String param;
-		public ItemParam(String item, String param) {
+		private ItemParam(String item, String param) {
 			this.item = item;
 			this.param = param;
 		}
@@ -166,7 +166,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	/**
 	 * Читает корневой айтем
 	 * Сохраняет атрибуты коренвого атйема в столбцы таблицы обычного атйема:
-	 * @param attributes
+	 * @param rootEl
 	 * @throws Exception
 	 */
 	protected void readRoot(Element rootEl) throws Exception {
@@ -277,8 +277,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	}
 	/**
 	 * Читает айтем
-	 * @param itemNode
-	 * @param conn
+	 * @param itemEl
 	 * @throws Exception
 	 */
 	private void readItem(Element itemEl) throws Exception {
@@ -398,8 +397,8 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 * Сначала параметры добавляются во временную структуру, 
 	 * чтобы была возможность добавлять параметры во все потомки айтема сразу,
 	 * а для этого надо сначала создать иерархию айтемов
-	 * @param attributes
-	 * @param itemName
+	 * @param item
+	 * @param paramEl
 	 * @throws Exception
 	 */
 	protected void readParameter(ItemType item, Element paramEl) throws Exception {
@@ -559,9 +558,8 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	}
 	/**
 	 * Читает сабайтемы
-	 * @param subitemNode
-	 * @param conn
-	 * @param itemName
+	 * @param parent
+	 * @param childEl
 	 * @throws Exception
 	 */
 	protected void readChild(ItemTypeContainer parent, Element childEl) throws Exception {
@@ -798,7 +796,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	/**
 	 * Сохранить файл с добавленными атрибутами ag-hash и ag-id
 	 * @param file
-	 * @param jsoup
+	 * @param xml
 	 * @throws IOException
 	 */
 	private void fileInjectIds(File file, String xml) throws IOException {

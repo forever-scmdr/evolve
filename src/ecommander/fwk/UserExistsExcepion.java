@@ -4,20 +4,16 @@ package ecommander.fwk;
  * @author EEEE
  *
  */
-public class UserExistsExcepion extends EcommanderException {
+public class UserExistsExcepion extends EcommanderException implements ErrorCodes {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5583894018968145590L;
 	private String userName;
-	
-	public UserExistsExcepion() {
-		super();
-	}
 
 	public UserExistsExcepion(String userName) {
-		super(userName);
+		super(USER_ALREADY_EXISTS, userName);
 		this.userName = userName;
 	}
 

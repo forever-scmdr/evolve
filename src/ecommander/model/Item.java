@@ -39,7 +39,7 @@ import ecommander.model.datatypes.DataType.Type;
  * 
  * @author E
  */
-public class Item {
+public class Item implements ItemBasics {
 	
 	public static final String PARAM_TAG = "param";
 	public static final String ID_ATTRIBUTE = "id";
@@ -80,8 +80,6 @@ public class Item {
 	private ItemType itemType = null; // Тип айтема
 	private Boolean areFilesInitiallyProtected = false; // Защищены ил файлы айтема вначале, т.е. после загрузки из БД.
 	private boolean areFilesProtected = false; // Защищены ли файлы айтема от анонимного доступа
-	private String predIdPath = null;   // Путь от корня через всех предков к этому айтему. Т.н. первичная иерархия айтемов
-										// Она используется при удалении/скрывании айтема, смене владельца и защите файлов
 	private LinkedHashMap<Integer, Parameter> paramMap = new LinkedHashMap<>(); // Все параметры (не только одиночные)
 																				// параметры (имя параметра => объект
 																				// Parameter)
@@ -114,7 +112,6 @@ public class Item {
 		this.parametersXML = src.parametersXML;
 		this.status = src.status;
 		this.areFilesProtected = src.areFilesProtected;
-		this.predIdPath = src.predIdPath;
 		this.timeUpdated = src.timeUpdated;
 		this.paramMap.putAll(src.paramMap);
 		this.mapConsistent = src.mapConsistent;
@@ -122,7 +119,7 @@ public class Item {
 	}
 	
 	private Item(ItemType itemDesc, Assoc contextAssoc, long parentId, int userId, byte groupId, byte status,
-	             boolean filesProtected, String predIdPath) {
+	             boolean filesProtected) {
 		this.itemType = itemDesc;
 		this.ownerUserId = userId;
 		this.ownerGroupId = groupId;
@@ -130,7 +127,6 @@ public class Item {
 		this.contextParentId = parentId;
 		this.status = status;
 		this.areFilesProtected = filesProtected;
-		this.predIdPath = predIdPath;
 		this.id = DEFAULT_ID;
 		this.key = itemDesc.getCaption();
 		this.mapConsistent = true;
@@ -144,7 +140,7 @@ public class Item {
 
 	private Item(ItemType itemDesc, long itemId, Assoc contextAssoc, long parentId, int userId, byte groupId,
 	             byte status, String key, String parametersXML, String keyUnique, long timeUpdated,
-	             boolean filesProtected, String predIdPath) {
+	             boolean filesProtected) {
 		this.id = itemId;
 		this.contextAssoc = contextAssoc;
 		this.contextParentId = parentId;
@@ -158,7 +154,6 @@ public class Item {
 		this.status = status;
 		this.areFilesInitiallyProtected = filesProtected;
 		this.areFilesProtected = filesProtected;
-		this.predIdPath = predIdPath;
 		this.parametersXML = parametersXML;
 		this.mapConsistent = false;
 		this.stringConsistent = true;
@@ -180,7 +175,7 @@ public class Item {
 	 */
 	public static Item newChildItem(ItemType itemDesc, Assoc assoc, Item parent) {
 		return new Item(itemDesc, assoc, parent.getId(), parent.getOwnerUserId(), parent.getOwnerGroupId(),
-				parent.status, parent.areFilesProtected, parent.getPredIdAndSelfPath());
+				parent.status, parent.areFilesProtected);
 	}
 
 	/**
@@ -192,12 +187,11 @@ public class Item {
 	 * @param groupId
 	 * @param status
 	 * @param filesProtected
-	 * @param predIdPath
 	 * @return
 	 */
 	public static Item newItem(ItemType itemDesc, Assoc assoc, long parentId, int userId, byte groupId, byte status,
-	                           boolean filesProtected, String predIdPath) {
-		return new Item(itemDesc, assoc, parentId, userId, groupId, status, filesProtected, predIdPath);
+	                           boolean filesProtected) {
+		return new Item(itemDesc, assoc, parentId, userId, groupId, status, filesProtected);
 	}
 
 	/**
@@ -206,7 +200,7 @@ public class Item {
 	 * @return
 	 */
 	public static Item newSessionRootItem(ItemType itemDesc) {
-		return new Item(itemDesc, AssocRegistry.DEFAULT, 0, User.NO_USER_ID, User.NO_GROUP_ID, STATUS_NORMAL, false, null);
+		return new Item(itemDesc, AssocRegistry.DEFAULT, 0, User.NO_USER_ID, User.NO_GROUP_ID, STATUS_NORMAL, false);
 	}
 
 	/**
@@ -223,14 +217,13 @@ public class Item {
 	 * @param keyUnique
 	 * @param timeUpdated
 	 * @param filesProtected
-	 * @param predIdPath
 	 * @return
 	 */
 	public static Item existingItem(ItemType itemDesc, long itemId, Assoc assoc, long parentId, int userId, byte groupId,
 	                                byte status, String key, String parametersXML, String keyUnique,
-	                                long timeUpdated, boolean filesProtected, String predIdPath) {
+	                                long timeUpdated, boolean filesProtected) {
 		return new Item(itemDesc, itemId, assoc, parentId, userId, groupId, status, key, parametersXML, keyUnique,
-				timeUpdated, filesProtected, predIdPath);
+				timeUpdated, filesProtected);
 	}
 	/**
 	 * Является ли айтем новым
@@ -574,7 +567,7 @@ public class Item {
 		if (stringConsistent)
 			return this;
 		return new Item(itemType, id, contextAssoc, contextParentId, ownerUserId, ownerGroupId, status,
-				key, parametersXML,	oldKeyUnique, timeUpdated, areFilesProtected, predIdPath);
+				key, parametersXML,	oldKeyUnique, timeUpdated, areFilesProtected);
 	}
 
 	/**
@@ -683,21 +676,6 @@ public class Item {
 		return areFilesProtected;
 	}
 
-	/**
-	 * Первичная вложенность айтемов (до непосредственного предка - родителя)
-	 * @return
-	 */
-	public String getPredIdPath() {
-		return predIdPath;
-	}
-
-	/**
-	 * Первичная вложенность айтемов включая сам айтем
-	 * @return
-	 */
-	public String getPredIdAndSelfPath() {
-		return predIdPath + id + "/";
-	}
 	/**
 	 * Нужно ли перемещать файлы айтема в защищенное хранилище или из него при
 	 * сохранении айтема

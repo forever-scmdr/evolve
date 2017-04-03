@@ -4,7 +4,7 @@ package ecommander.fwk;
  * @author EEEE
  *
  */
-public class FileException extends EcommanderException {
+public class FileException extends EcommanderException implements ErrorCodes {
 
 	/**
 	 * 
@@ -12,15 +12,11 @@ public class FileException extends EcommanderException {
 	private static final long serialVersionUID = -7845957178977944631L;
 
 	public FileException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public FileException(Throwable cause) {
-		super(cause);
+		super(FILE_ERROR, message, cause);
 	}
 
 	public FileException(String arg0) {
-		super(arg0);
+		super(FILE_ERROR, arg0);
 	}
 
 

@@ -1,6 +1,7 @@
 package ecommander.admin;
 
 import ecommander.model.Assoc;
+import ecommander.model.ItemBasics;
 import ecommander.output.MetaDataWriter;
 import ecommander.output.XmlDocumentBuilder;
 import ecommander.model.ItemType;
@@ -20,7 +21,7 @@ import ecommander.model.ItemTypeRegistry;
  * @author EEEE
  *
  */
-public class ItemAccessor extends MetaDataWriter implements Comparable<ItemAccessor> {
+public class ItemAccessor extends MetaDataWriter implements ItemBasics, Comparable<ItemAccessor> {
 	
 	private long itemId;
 	private String key;
@@ -33,14 +34,23 @@ public class ItemAccessor extends MetaDataWriter implements Comparable<ItemAcces
 	private String assocCaption;
 	private boolean isParentCompatible;
 	private boolean inline = false;
-	
-	public ItemAccessor(int itemType, long itemId, String key, int childWeight, byte contextAssoc, boolean isParentCompatible) {
+	private byte groupId;
+	private int userId;
+	private byte status;
+	private boolean isFileProtected;
+
+	public ItemAccessor(int itemType, long itemId, String key, byte groupId, int userId, byte status,
+	                    boolean isFileProtected, int childWeight, byte contextAssoc, boolean isParentCompatible) {
 		this.itemId = itemId;
 		this.key = key;
 		this.childWeight = childWeight;
 		this.itemType = itemType;
 		this.contextAssoc = contextAssoc;
 		this.isParentCompatible = isParentCompatible;
+		this.userId = userId;
+		this.groupId = groupId;
+		this.status = status;
+		this.isFileProtected = isFileProtected;
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemType);
 		Assoc assoc = ItemTypeRegistry.getAssoc(contextAssoc);
 		if (itemDesc != null) {
@@ -65,7 +75,32 @@ public class ItemAccessor extends MetaDataWriter implements Comparable<ItemAcces
 		return itemType;
 	}
 
-	public long getItemId() {
+	@Override
+	public byte getOwnerGroupId() {
+		return groupId;
+	}
+
+	@Override
+	public int getOwnerUserId() {
+		return userId;
+	}
+
+	@Override
+	public byte getStatus() {
+		return status;
+	}
+
+	@Override
+	public String getKey() {
+		return key;
+	}
+
+	@Override
+	public boolean isFileProtected() {
+		return isFileProtected;
+	}
+
+	public long getId() {
 		return itemId;
 	}
 	

@@ -6,16 +6,12 @@ package ecommander.fwk;
  * @author EEEE
  *
  */
-public class FatalError extends EcommanderException {
+public class FatalError extends EcommanderException implements ErrorCodes {
 
 	private static final long serialVersionUID = 1849938205052253584L;
 
-	public FatalError() {
-		super();
-	}
-
 	public FatalError(String arg0) {
-		super(arg0);
+		super(NO_SPECIAL_ERROR, arg0);
 	}
 	
 }

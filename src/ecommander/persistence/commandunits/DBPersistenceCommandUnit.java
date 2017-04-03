@@ -7,6 +7,7 @@ import java.util.HashSet;
 
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
+import ecommander.model.ItemBasics;
 import ecommander.model.UserMapper;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TransactionContext;
@@ -123,7 +124,7 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 * @param item
 	 * @throws UserNotAllowedException 
 	 */
-	protected final void testPrivileges(Item item) throws UserNotAllowedException {
+	protected final void testPrivileges(ItemBasics item) throws UserNotAllowedException {
 		if (ignoreUser || item == null)
 			return;
 		if (context == null)
@@ -132,11 +133,11 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 		// Если айтем персональный
 		if (item.isPersonal()) {
 			if (item.getOwnerUserId() != admin.getUserId() && !admin.isAdmin(item.getOwnerGroupId()))
-				throw new UserNotAllowedException();
+				throw new UserNotAllowedException("Action is not allowed to user " + admin.getName());
 		// Если айтем общий (нет владельца)
 		} else {
 			if (!admin.belongsTo(item.getOwnerGroupId()))
-				throw new UserNotAllowedException();
+				throw new UserNotAllowedException("Action is not allowed to user " + admin.getName());
 		}
 	}
 
@@ -175,11 +176,11 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 			HashSet<String> removedGroups = new HashSet<>(oldUserGroups);
 			removedGroups.removeAll(newUserGroups);
 			if (!adminGroups.containsAll(addedGroups) || !addedGroups.containsAll(removedGroups)) {
-				throw new UserNotAllowedException();
+				throw new UserNotAllowedException("Action is not allowed to user " + admin.getName());
 			}
 		} else {
 			if (!adminGroups.containsAll(newUserGroups) || !adminGroups.containsAll(oldUserGroups)) {
-				throw new UserNotAllowedException();
+				throw new UserNotAllowedException("Action is not allowed to user " + admin.getName());
 			}
 		}
 	}

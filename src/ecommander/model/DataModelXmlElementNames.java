@@ -27,6 +27,7 @@ public interface DataModelXmlElementNames {
 	String CAPTION = "caption";
 	String DESCRIPTION = "description";
 	String TRANSITIVE = "transitive";
+	String GROUP = "group";
 	String AG_ID = "ag-id";
 	String AG_HASH = "ag-hash";
 	String SUPER = "super";

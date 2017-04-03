@@ -6,10 +6,7 @@ import ecommander.model.*;
 import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.common.TemplateQuery;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -125,23 +122,46 @@ public class ItemMapper implements DBConstants.ItemIndexes, DBConstants {
 	}
 
 	/**
+	 * Загрузить сведения об айтеме по его ID
+	 * @param itemId
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 */
+	public static ItemBasics loadItemBasics(long itemId, Connection conn) throws SQLException {
+		TemplateQuery query = new TemplateQuery("Select item basics");
+		query.SELECT(" * ").FROM(ItemTbl.TABLE).WHERE().col(ItemTbl.ID).setLong(itemId);
+		try (PreparedStatement pstmt = query.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return new DefaultItemBasics(
+						rs.getLong(ItemTbl.ID), rs.getInt(ItemTbl.TYPE_ID), rs.getString(ItemTbl.KEY),
+						rs.getByte(ItemTbl.GROUP_ID), rs.getInt(ItemTbl.USER_ID), rs.getByte(ItemTbl.STATUS),
+						rs.getBoolean(ItemTbl.PROTECTED));
+			} else {
+				return null;
+			}
+		}
+	}
+
+	/**
 	 * Создать айтем из резалт сета
 	 * @param rs
 	 * @param contextAssocId
 	 * @param contextParentId
-	 * @param userId
-	 * @param groupId
 	 * @return
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public static Item buildItem(ResultSet rs, byte contextAssocId, long contextParentId, int userId, byte groupId) throws Exception {
+	public static Item buildItem(ResultSet rs, byte contextAssocId, long contextParentId) throws Exception {
 		long itemId = rs.getLong(ItemTbl.ID);
 		int itemTypeId = rs.getInt(ItemTbl.TYPE_ID);
 		String key = rs.getString(ItemTbl.KEY);
 		String keyUnique = rs.getString(ItemTbl.TRANSLIT_KEY);
 		Timestamp timeUpdated = rs.getTimestamp(ItemTbl.UPDATED);
-		byte status = rs.getByte(ItemTbl.DELETED);
+		byte status = rs.getByte(ItemTbl.STATUS);
+		byte groupId = rs.getByte(ItemTbl.GROUP_ID);
+		int userId = rs.getByte(ItemTbl.USER_ID);
 		boolean filesProtected = rs.getBoolean(ItemTbl.PROTECTED);
 		String params = rs.getString(ItemTbl.PARAMS);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemTypeId);

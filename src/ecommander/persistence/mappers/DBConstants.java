@@ -44,8 +44,9 @@ public interface DBConstants
 		String PROTECTED = "i_protected"; // время последнего обновления айтема
 		String PARAMS = "i_params"; // значения всех параметров айтема в виде XML
 		String UPDATED = "i_updated"; // время последнего обновления айтема
-		String DELETED = "i_deleted"; // удален айтем или нет (значение удален - как в таблице ItemParent, не удален - 0)
-		String PRED_PATH = "i_pred_path"; // ID всех предшественников от корня через слэш
+		String STATUS = "ip_status"; // Показывать (0), скрытый (1), айтем удален но можно восстановить (2), айтем удален безвозвратно (3)
+		String USER_ID = "i_user"; // Владелец айтема (0 - айтем принадлежит группе и не имеет владельца)
+		String GROUP_ID = "i_group"; // Группа-владелец айтема
 	}
 
 	/**
@@ -78,9 +79,6 @@ public interface DBConstants
 		String CHILD_ID = "ip_child_id"; // ID потомка
 		String CHILD_SUPERTYPE = "ip_child_supertype"; // Супертип (непользовательский тип) потомка
 		String PARENT_LEVEL = "ip_level"; // Уровень вложенности по отношению к предку (0 - прямой потомок, 1 - непрямой)
-		String STATUS = "ip_status"; // Показывать (0), скрытый (1), айтем удален но можно восстановить (2), айтем удален безвозвратно (3)
-		String USER = "ip_user"; // Владелец айтема (0 - айтем принадлежит группе и не имеет владельца)
-		String GROUP = "ip_group"; // Группа-владелец айтема
 		String WEIGHT = "ip_weight"; // Вес прямого потомка среди всех прямых потомков предка с заданной ассоциацией
 	}
 	/**

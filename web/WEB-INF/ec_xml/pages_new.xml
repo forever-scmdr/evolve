@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
 
+	<admin-page group="seller">
+		<personal>
+			<single item="seller"/>
+		</personal>
+	</admin-page>
 
+	<admin-page group="common" item="product">
+		<single item="product">
+			<single item="gallery">
+				<list item="picture_pair"/>
+			</single>
+		</single>
+	</admin-page>
 
 	<page name="index_new" template="index_new">
 		<!-- Загрузить одиночный айтем (когда точно известно, что айтем может быть только один) -->

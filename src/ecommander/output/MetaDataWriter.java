@@ -16,7 +16,7 @@ public abstract class MetaDataWriter {
 	public abstract XmlDocumentBuilder write(XmlDocumentBuilder xml);
 	/**
 	 * Добавить часть, которая будет выводиться в дополнение к свойствам выводимого объекта и будет относиться к нему
-	 * @param xmlPart
+	 * @param part
 	 */
 	public final void addSubwriter(MetaDataWriter part) {
 		additional.add(part);

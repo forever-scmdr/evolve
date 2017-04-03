@@ -8,24 +8,12 @@ package ecommander.fwk;
  */
 public class EcommanderException extends Exception {
 
-	int errorCode = 0;
+	private int errorCode = 0;
 
 	public EcommanderException(int errorCode, String message, Throwable cause) {
 		super(message, cause);
 		this.errorCode = errorCode;
 	}
-
-	public EcommanderException(Throwable cause) {
-		super(cause);
-	}
-
-	/**
-	 * 
-	 */
-	public EcommanderException() {
-		super();
-	}
-
 	/**
 	 * @param arg0
 	 */

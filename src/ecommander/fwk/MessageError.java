@@ -8,18 +8,14 @@ package ecommander.fwk;
  * @author EEEE
  *
  */
-public class MessageError extends EcommanderException {
+public class MessageError extends EcommanderException implements ErrorCodes {
 
 	private static final long serialVersionUID = -4719592998720627367L;
 
 	private String message;
-	
-	public MessageError() {
-		super();
-	}
 
 	public MessageError(String logMessage, String userMessage) {
-		super(logMessage);
+		super(NO_SPECIAL_ERROR, logMessage);
 		message = userMessage;
 	}
 	
