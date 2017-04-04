@@ -1,10 +1,8 @@
 package ecommander.model;
 
-import ecommander.extra._generated.Book;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class User {
 	public static class Group {
@@ -59,7 +57,7 @@ public class User {
 	 * @param group
 	 * @return
 	 */
-	public boolean belongsTo(String group) {
+	public boolean inGroup(String group) {
 		return groupRoles.containsKey(group);
 	}
 
@@ -68,8 +66,8 @@ public class User {
 	 * @param groupId
 	 * @return
 	 */
-	public boolean belongsTo(byte groupId) {
-		return belongsTo(UserGroupRegistry.getGroup(groupId));
+	public boolean inGroup(byte groupId) {
+		return inGroup(UserGroupRegistry.getGroup(groupId));
 	}
 
 	/**
@@ -157,5 +155,41 @@ public class User {
 
 	public void setNewId(int id) {
 		userId = id;
+	}
+
+	/**
+	 * Группы, которые есть у другого пользователя, но которых нет у этого пользователя
+	 * @param user
+	 * @return
+	 */
+	public HashSet<String> groupsNotInOf(User user) {
+		HashSet<String> ownGroups = new HashSet<>(groupRoles.keySet());
+		HashSet<String> otherUserGroups = new HashSet<>(user.groupRoles.keySet());
+		otherUserGroups.removeAll(ownGroups);
+		return otherUserGroups;
+	}
+
+	/**
+	 * Группы, которые есть у этого пользователя, но которых нет у другого пользователя
+	 * @param user
+	 * @return
+	 */
+	public HashSet<String> groupsExtraOf(User user) {
+		HashSet<String> ownGroups = new HashSet<>(groupRoles.keySet());
+		HashSet<String> otherUserGroups = new HashSet<>(user.groupRoles.keySet());
+		ownGroups.removeAll(otherUserGroups);
+		return ownGroups;
+	}
+
+	/**
+	 * Находит общие группы для обоих пользователей (этого и другого)
+	 * @param user
+	 * @return
+	 */
+	public HashSet<String> commonGroups(User user) {
+		HashSet<String> ownGroups = new HashSet<>(groupRoles.keySet());
+		HashSet<String> otherUserGroups = new HashSet<>(user.groupRoles.keySet());
+		ownGroups.retainAll(otherUserGroups);
+		return ownGroups;
 	}
 }

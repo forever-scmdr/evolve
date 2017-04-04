@@ -63,4 +63,7 @@ public interface DataModelXmlElementNames {
 
 	String TRUE_VALUE = "true";
 	String FALSE_VALUE = "false";
+
+	String SIMPLE_VALUE = "simple";
+	String ADMIN_VALUE = "admin";
 }

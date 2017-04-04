@@ -4,10 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.UserExistsExcepion;
 import ecommander.fwk.UserNotAllowedException;
+import ecommander.model.UserGroupRegistry;
 import ecommander.model.UserMapper;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
@@ -25,7 +28,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author EEEE
  *
  */
-public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBConstants, DBConstants.UsersTbl {
+public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemTbl, DBConstants.UsersTbl, DBConstants.UserGroups {
 
 	private User user;
 	boolean deleteItems;
@@ -53,8 +56,63 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 				throw new UserExistsExcepion(user.getName());
 		}
 
-		// Сохранение групп
-		TemplateQuery deleteGroups = new TemplateQuery("Update user groups");
+		// Сохранение новых групп
+		HashSet<String> newGroups = user.groupsExtraOf(oldUser);
+		if (newGroups.size() > 0) {
+			TemplateQuery insertGroups = new TemplateQuery("Insert new user groups");
+			insertGroups.INSERT_INTO(UG_TABLE, UG_USER_ID, UG_GROUP_ID, UG_GROUP_NAME, UG_ROLE)
+					.sql(" VALUES ");
+			boolean isNotFirst = false;
+			for (String newGroup : newGroups) {
+				String sqlStart = isNotFirst ? ", (" : "(";
+				insertGroups.sql(sqlStart).setInt(user.getUserId()).com()
+						.setByte(UserGroupRegistry.getGroup(newGroup)).com()
+						.setString(newGroup).com()
+						.setByte(user.getRole(newGroup)).sql(")");
+			}
+			try (PreparedStatement pstmt = insertGroups.prepareQuery(getTransactionContext().getConnection())) {
+				pstmt.executeUpdate();
+			}
+		}
+
+		// Удаление новых групп
+		HashSet<String> deletedGroups = user.groupsNotInOf(oldUser);
+		if (deletedGroups.size() > 0) {
+			ArrayList<Byte> groupIds = new ArrayList<>();
+			for (String deletedGroup : deletedGroups) {
+				groupIds.add(UserGroupRegistry.getGroup(deletedGroup));
+			}
+			TemplateQuery deleteGroups = new TemplateQuery("Delete user groups");
+			deleteGroups
+					.DELETE_FROM_WHERE(UG_TABLE).col(UG_USER_ID).setInt(user.getUserId()).AND()
+					.col(UG_GROUP_ID, " IN(").setByteArray(groupIds.toArray(new Byte[groupIds.size()])).sql(")");
+			try (PreparedStatement pstmt = deleteGroups.prepareQuery(getTransactionContext().getConnection())) {
+				pstmt.executeUpdate();
+			}
+		}
+
+		// Обновление ролей в группах
+		HashSet<String> commonGroups = user.commonGroups(oldUser);
+		if (commonGroups.size() > 0) {
+			boolean hasChanged = false;
+			TemplateQuery updateRoles = new TemplateQuery("Update user group roles");
+			for (String commonGroup : commonGroups) {
+				if (user.getRole(commonGroup) != oldUser.getRole(commonGroup)) {
+					updateRoles.UPDATE(UG_TABLE).SET().col(UG_ROLE).setByte(user.getRole(commonGroup))
+							.WHERE().col(UG_USER_ID).setInt(user.getUserId())
+							.AND().col(UG_GROUP_ID).setByte(UserGroupRegistry.getGroup(commonGroup)).sql(";\r\n");
+					hasChanged = true;
+				}
+			}
+			if (hasChanged) {
+				try(PreparedStatement pstmt = updateRoles.prepareQuery(getTransactionContext().getConnection())) {
+					pstmt.executeUpdate();
+				}
+			}
+		}
+
+		// Удаление айтемов пользователя, либо установка им нулевого владельца (сделать общими)
+
 
 		// Сохранение пользователя
 		if (!justGroups) {

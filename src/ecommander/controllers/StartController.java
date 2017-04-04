@@ -2,10 +2,8 @@ package ecommander.controllers;
 
 import javax.servlet.ServletContext;
 
-import ecommander.model.DataModelBuilder;
-import ecommander.model.DomainBuilder;
+import ecommander.model.*;
 import ecommander.pages.PageModelBuilder;
-import ecommander.model.UserMapper;
 
 /**
  * Обрабатывает запуск приложения
@@ -35,10 +33,10 @@ public class StartController {
 				if (servletContext.getAttribute(STARTED) == null) {
 					// Загружаются домены
 					DomainBuilder.testActuality();
+					// Загружаются пользователи
+					UserModelBuilder.testActuality();
 					// Загружаются описания айтемов (из XML файла + БД)
 					DataModelBuilder.newLoader().tryLockAndReloadModel();
-					// Загружаются пользователи
-					UserMapper.loadUserGorups();
 					// Загружается модели страниц (из XML файла)
 					PageModelBuilder.testActuality();
 					// Флаг о том, что приложение запущено

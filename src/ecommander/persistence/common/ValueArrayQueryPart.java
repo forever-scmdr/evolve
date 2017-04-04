@@ -16,7 +16,14 @@ class ValueArrayQueryPart implements QueryPart {
 		for (int i = 0; i < values.length; i++)
 			this.values[i] = values[i].createClone();
 	}
-	
+
+	ValueArrayQueryPart(Byte[] array) {
+		values = new PreparedValue[array.length];
+		for (int i = 0; i < array.length; i++) {
+			values[i] = PreparedValueFacroty.create(array[i]);
+		}
+	}
+
 	ValueArrayQueryPart(Integer[] array) {
 		values = new PreparedValue[array.length];
 		for (int i = 0; i < array.length; i++) {

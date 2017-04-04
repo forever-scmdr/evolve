@@ -879,7 +879,7 @@ public class Item implements ItemBasics {
 	 * @return
 	 */
 	public final boolean isUserAllowed(User user) {
-		if (!user.belongsTo(getOwnerGroupId()))
+		if (!user.inGroup(getOwnerGroupId()))
 			return false;
 		if (isPersonal())
 			return getOwnerUserId() == user.getUserId() || user.getRole(getOwnerGroupId()) == User.ADMIN;

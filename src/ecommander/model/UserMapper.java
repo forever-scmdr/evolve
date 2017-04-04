@@ -135,7 +135,7 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 	 * @throws SQLException
 	 * @throws NamingException 
 	 */
-	public static void loadUserGorups() throws SQLException, NamingException {
+	public static void loadUserGroups() throws SQLException, NamingException {
 		TemplateQuery selectGroups = new TemplateQuery("Select all groups");
 		selectGroups.SELECT("*").FROM(G_TABLE);
 		try (

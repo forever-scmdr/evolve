@@ -100,6 +100,11 @@ public class ItemAccessor extends MetaDataWriter implements ItemBasics, Comparab
 		return isFileProtected;
 	}
 
+	@Override
+	public boolean isPersonal() {
+		return userId != 0;
+	}
+
 	public long getId() {
 		return itemId;
 	}

@@ -2,11 +2,9 @@ package ecommander.persistence.commandunits;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 
 import ecommander.fwk.UserNotAllowedException;
-import ecommander.model.Item;
 import ecommander.model.ItemBasics;
 import ecommander.model.UserMapper;
 import ecommander.persistence.common.PersistenceCommandUnit;
@@ -136,7 +134,7 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 				throw new UserNotAllowedException("Action is not allowed to user " + admin.getName());
 		// Если айтем общий (нет владельца)
 		} else {
-			if (!admin.belongsTo(item.getOwnerGroupId()))
+			if (!admin.inGroup(item.getOwnerGroupId()))
 				throw new UserNotAllowedException("Action is not allowed to user " + admin.getName());
 		}
 	}

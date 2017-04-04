@@ -85,7 +85,7 @@ public class UserAdminServlet extends BasicAdminServlet {
 		StartController.start(getServletContext());
 		users = UserMapper.getAllUsers();
 		if (UserGroupRegistry.getGroupNames().size() == 0)
-			UserMapper.loadUserGorups();
+			UserMapper.loadUserGroups();
 		userGroup = req.getParameter(USER_GROUP_INPUT);
 		userName = req.getParameter(USER_NAME_INPUT);
 		password = req.getParameter(PASSWORD_INPUT);
@@ -146,7 +146,7 @@ public class UserAdminServlet extends BasicAdminServlet {
 		req.setAttribute("message", "Пользователь успешно сохранен");
 		users = UserMapper.getAllUsers();
 		if (UserGroupRegistry.getGroupNames().size() == 0)
-			UserMapper.loadUserGorups();
+			UserMapper.loadUserGroups();
 		return USERS;
 	}
 	/**
@@ -165,7 +165,7 @@ public class UserAdminServlet extends BasicAdminServlet {
 		req.setAttribute("message", "Пользователь успешно удален");
 		users = UserMapper.getAllUsers();
 		if (UserGroupRegistry.getGroupNames().size() == 0)
-			UserMapper.loadUserGorups();
+			UserMapper.loadUserGroups();
 		return USERS;
 	}
 	

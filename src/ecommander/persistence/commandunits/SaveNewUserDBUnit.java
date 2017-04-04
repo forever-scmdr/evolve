@@ -15,7 +15,7 @@ import ecommander.model.User;
  * @author EEEE
  *
  */
-public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBConstants, DBConstants.UserGroups {
+public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBConstants.UsersTbl, DBConstants.UserGroups {
 
 	private User user;
 	
@@ -34,7 +34,7 @@ public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBCon
 
 		// Сохранить пользователя и его права
 		TemplateQuery insertUser = new TemplateQuery("Create new User");
-		insertUser.INSERT_INTO(UsersTbl.U_TABLE, UsersTbl.U_LOGIN, UsersTbl.U_PASSWORD, UsersTbl.U_DESCRIPTION)
+		insertUser.INSERT_INTO(U_TABLE, U_LOGIN, U_PASSWORD, U_DESCRIPTION)
 				.sql(" VALUES (")
 				.setString(user.getName()).com()
 				.setString(user.getPassword()).com()
@@ -49,8 +49,8 @@ public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBCon
 				insertUser.com();
 			insertUser.sql(" (").setByte(group.id).com()
 					.setString(group.name).com()
-					.setByte(group.role).com()
-					.setInt(user.getUserId()).sql(")");
+					.setByte(group.role)
+					.sql(", LAST_INSERT_ID())");
 			notFirst = false;
 		}
 		try (PreparedStatement pstmt = insertUser.prepareQuery(getTransactionContext().getConnection(), true)) {
