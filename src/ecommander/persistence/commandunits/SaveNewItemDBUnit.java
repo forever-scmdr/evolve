@@ -56,18 +56,18 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		TemplateQuery itemInsert = new TemplateQuery("New item insert");
 		itemInsert.INSERT_INTO(I_TABLE).SET()
 				.col(I_TYPE_ID).setInt(item.getTypeId())
-				.col(I_KEY).setString(item.getKey())
-				.col(I_T_KEY).setString(item.getKeyUnique())
-				.col(I_PROTECTED).setByte(item.isFileProtected() ? (byte)1 : (byte)0)
-				.col(I_STATUS).setByte(item.getStatus())
-				.col(I_GROUP).setByte(item.getOwnerGroupId())
-				.col(I_USER).setInt(item.getOwnerUserId())
-				.col(I_STATUS).setByte(item.getStatus())
-				.col(I_PARAMS).setString(item.outputValues());
+				._col(I_KEY).setString(item.getKey())
+				._col(I_T_KEY).setString(item.getKeyUnique())
+				._col(I_PROTECTED).setByte(item.isFileProtected() ? (byte)1 : (byte)0)
+				._col(I_STATUS).setByte(item.getStatus())
+				._col(I_GROUP).setByte(item.getOwnerGroupId())
+				._col(I_USER).setInt(item.getOwnerUserId())
+				._col(I_STATUS).setByte(item.getStatus())
+				._col(I_PARAMS).setString(item.outputValues());
 		// Иногда (например, при переносе со старой версии CMS) ID айтема уже задан (не равняется 0)
 		boolean hasId = item.getId() > 0;
 		if (hasId)
-			itemInsert.col(I_ID).setLong(item.getId());
+			itemInsert._col(I_ID).setLong(item.getId());
 
 		if (!hasId) {
 			try (PreparedStatement pstmt = itemInsert.prepareQuery(conn, true)) {
@@ -75,6 +75,10 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 				ResultSet rs = pstmt.getGeneratedKeys();
 				if (rs.next())
 					item.setId(rs.getLong(1));
+			}
+		} else {
+			try (PreparedStatement pstmt = itemInsert.prepareQuery(conn)) {
+				pstmt.executeUpdate();
 			}
 		}
 
@@ -88,7 +92,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 			uniqueKeyInsert
 					.INSERT_INTO(UK_TABLE).SET()
 					.col(UK_ID).setLong(item.getId())
-					.col(UK_KEY).setString(item.getKeyUnique());
+					._col(UK_KEY).setString(item.getKeyUnique());
 			PreparedStatement keyUniqueStmt = uniqueKeyInsert.prepareQuery(conn);
 			boolean needItemUpdate = false;
 			try {

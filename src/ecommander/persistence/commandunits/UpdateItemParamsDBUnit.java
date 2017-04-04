@@ -63,7 +63,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 			}
 			// Айтем раньше не имел уникального ключа
 			else {
-				query.INSERT_INTO(UK_TABLE).SET().col(UK_ID).setLong(item.getId()).col(UK_KEY).setString(item.getKeyUnique());
+				query.INSERT_INTO(UK_TABLE).SET().col(UK_ID).setLong(item.getId())._col(UK_KEY).setString(item.getKeyUnique());
 			}
 
 			try (PreparedStatement pstmt = query.prepareQuery(conn)) {
@@ -75,8 +75,8 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 		TemplateQuery updateItem = new TemplateQuery("Update item");
 		updateItem.UPDATE(ItemTbl.I_TABLE).SET()
 				.col(ItemTbl.I_KEY).setString(item.getKey())
-				.col(ItemTbl.I_T_KEY).setString(item.getKeyUnique())
-				.col(ItemTbl.I_PARAMS).setString(item.outputValues());
+				._col(ItemTbl.I_T_KEY).setString(item.getKeyUnique())
+				._col(ItemTbl.I_PARAMS).setString(item.outputValues());
 		try (PreparedStatement pstmt = updateItem.prepareQuery(conn)) {
 			pstmt.executeUpdate();
 		}

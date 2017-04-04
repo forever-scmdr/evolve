@@ -165,6 +165,17 @@ public class TemplateQuery implements QueryPart {
 		return this;
 	}
 
+	/**
+	 * Аналогично col только с идущей спереди запятой (для второго и последующих значений в списке колонок)
+	 * @param column
+	 * @param sign
+	 * @return
+	 */
+	public final TemplateQuery _col(String column, String...sign) {
+		queryParts.add(new SqlQueryPart(", " + column + (sign.length > 0 ? sign[0] : "=")));
+		return this;
+	}
+
 	public final TemplateQuery INSERT_INTO(String tableName, String...colNames) {
 		StringBuilder sql = new StringBuilder("INSERT INTO ");
 		sql.append(tableName);

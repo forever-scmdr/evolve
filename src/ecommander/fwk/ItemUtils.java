@@ -29,7 +29,7 @@ public class ItemUtils {
 		if (items.size() == 1) {
 			item = items.get(0);
 		} else if (items.size() == 0) {
-			long userId = isPersonal ? owner.getUserId() : User.NO_USER_ID;
+			long userId = isPersonal ? owner.getUserId() : User.ANONYMOUS_ID;
 			item = Item.newItem(ItemTypeRegistry.getItemType(itemName),	parentId, userId, owner.getGroupId());
 			transaction.addCommandUnit(new SaveNewItemDBUnit(item));
 			transaction.execute();

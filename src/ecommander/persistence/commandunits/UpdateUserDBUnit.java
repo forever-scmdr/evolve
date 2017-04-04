@@ -1,21 +1,17 @@
 package ecommander.persistence.commandunits;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashSet;
-
-import ecommander.fwk.ServerLogger;
 import ecommander.fwk.UserExistsExcepion;
-import ecommander.fwk.UserNotAllowedException;
+import ecommander.model.Item;
+import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
 import ecommander.model.UserMapper;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
-import ecommander.model.User;
 import org.apache.commons.lang3.StringUtils;
+
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Обновить пользователя
@@ -31,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemTbl, DBConstants.UsersTbl, DBConstants.UserGroups {
 
 	private User user;
-	boolean deleteItems;
+	private boolean deleteItems;
 
 	public UpdateUserDBUnit(User user, boolean deleteItems) {
 		this.user = user;
@@ -69,13 +65,14 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 						.setByte(UserGroupRegistry.getGroup(newGroup)).com()
 						.setString(newGroup).com()
 						.setByte(user.getRole(newGroup)).sql(")");
+				isNotFirst = true;
 			}
 			try (PreparedStatement pstmt = insertGroups.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();
 			}
 		}
 
-		// Удаление новых групп
+		// Удаление старых групп
 		HashSet<String> deletedGroups = user.groupsNotInOf(oldUser);
 		if (deletedGroups.size() > 0) {
 			ArrayList<Byte> groupIds = new ArrayList<>();
@@ -112,60 +109,38 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 		}
 
 		// Удаление айтемов пользователя, либо установка им нулевого владельца (сделать общими)
-
+		if (deletedGroups.size() > 0) {
+			ArrayList<Byte> groupIds = new ArrayList<>();
+			for (String deletedGroup : deletedGroups) {
+				groupIds.add(UserGroupRegistry.getGroup(deletedGroup));
+			}
+			TemplateQuery modifyUserItems = new TemplateQuery("Modify or delete user items");
+			modifyUserItems.UPDATE(I_TABLE).SET();
+			if (deleteItems) {
+				modifyUserItems.col(I_STATUS).setByte(Item.STATUS_DELETED);
+			} else {
+				modifyUserItems.col(I_USER).setInt(User.ANONYMOUS_ID);
+			}
+			modifyUserItems
+					.WHERE().col(I_GROUP, " IN(").setByteArray(groupIds.toArray(new Byte[groupIds.size()])).sql(") ")
+					.AND().col(I_USER).setInt(user.getUserId());
+			try(PreparedStatement pstmt = modifyUserItems.prepareQuery(getTransactionContext().getConnection())) {
+				pstmt.executeUpdate();
+			}
+		}
 
 		// Сохранение пользователя
 		if (!justGroups) {
 			TemplateQuery updateUser = new TemplateQuery("Update user attributes");
 			updateUser
 					.UPDATE(U_TABLE).SET()
-					.col(U_LOGIN).setString(user.getName()).com()
-					.col(U_PASSWORD).setString(user.getPassword()).com()
-					.col(U_DESCRIPTION).setString(user.getDescription());
+					.col(U_LOGIN).setString(user.getName())
+					._col(U_PASSWORD).setString(user.getPassword())
+					._col(U_DESCRIPTION).setString(user.getDescription());
 			try (PreparedStatement pstmt = updateUser.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();
 			}
 		}
-
-
-
-		Statement stmt = null;
-		ResultSet rs = null;
-		if (getTransactionContext().getInitiator().getUserId() != user.getUserId() 
-				&& getTransactionContext().getInitiator().isSuperUser()
-				&& !ignoreUser)
-			throw new UserNotAllowedException();
-		try	{
-			Connection conn = getTransactionContext().getConnection();
-			stmt = conn.createStatement();
-			// Проверяется наличие логина
-			String sql = new String();
-			sql = "SELECT COUNT(*) FROM " + DBConstants.Users.TABLE + " WHERE " + DBConstants.Users.LOGIN + "='" 
-					+ user.getName() + "' AND " + DBConstants.Users.ID + "!=" + user.getUserId();
-			ServerLogger.debug(sql);
-			rs = stmt.executeQuery(sql);
-			if (rs.next() && rs.getInt(1) != 0) {
-				throw new UserExistsExcepion(user.getName());
-			}
-			// Поменять запись юзера
-			sql = "UPDATE " + DBConstants.Users.TABLE + " SET " + DBConstants.Users.LOGIN + "='" + user.getName() + "', "
-					+ DBConstants.Users.GROUP + "='" + user.getGroup() + "', " + DBConstants.Users.PASSWORD + "='"
-					+ user.getPassword() + "', " + DBConstants.Users.DESCRIPTION + "='" + user.getDescription() + "' WHERE "
-					+ DBConstants.Users.ID + "=" + user.getUserId();
-			ServerLogger.debug(sql);
-			stmt.executeUpdate(sql);
-			// Установить новую группу пользователя во все айтемы этого пользователя
-			sql = "UPDATE " + DBConstants.ItemParent.IP_TABLE + " SET " + DBConstants.ItemParent.GROUP + "=" + user.getGroupId()
-					+ " WHERE " + DBConstants.ItemParent.USER + "=" + user.getUserId();
-			ServerLogger.debug(sql);
-			stmt.executeUpdate(sql);
-		} finally {
-			if (stmt != null)
-				stmt.close();
-			if (rs != null)
-				rs.close();
-		}
-		
 	}
 
 }

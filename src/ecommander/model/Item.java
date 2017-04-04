@@ -73,7 +73,7 @@ public class Item implements ItemBasics {
 									// Айтем может быть ассоциирован со многими предками многими ассоцациями (в т.ч. несколькими с одним предком),
 									// но в каждом определенном контексте у айтема имеет значение только один предок и одна ассоциация.
 	private byte ownerGroupId = User.NO_GROUP_ID; // Группа пользователей установлена в любом случае. И для общих и для персональных айтемов
-	private int ownerUserId = User.NO_USER_ID; // ID юзера владельца этого айтема. Не равен 0 только в случае, если айтем является персональным
+	private int ownerUserId = User.ANONYMOUS_ID; // ID юзера владельца этого айтема. Не равен 0 только в случае, если айтем является персональным
 	private String key = null; // Составляется из параметров айтема, чтобы юзер в системе управления понимал, что это за айтем
 	private String keyUnique = null; // уникальный текстовый ключ
 	private String oldKeyUnique = null; // старый уникальный ключ (нужен для корректного возвращения согласованной версии айтема, поскольку не хранится в строке XML)
@@ -200,7 +200,7 @@ public class Item implements ItemBasics {
 	 * @return
 	 */
 	public static Item newSessionRootItem(ItemType itemDesc) {
-		return new Item(itemDesc, AssocRegistry.DEFAULT, 0, User.NO_USER_ID, User.NO_GROUP_ID, STATUS_NORMAL, false);
+		return new Item(itemDesc, AssocRegistry.DEFAULT, 0, User.ANONYMOUS_ID, User.NO_GROUP_ID, STATUS_NORMAL, false);
 	}
 
 	/**
@@ -698,7 +698,7 @@ public class Item implements ItemBasics {
 	 * @return
 	 */
 	public final boolean isPersonal() {
-		return ownerUserId != User.NO_USER_ID;
+		return ownerUserId != User.ANONYMOUS_ID;
 	}
 	/**
 	 * @return

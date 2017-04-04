@@ -22,7 +22,7 @@ public class User {
 
 	public static final String USER_DEFAULT_GROUP = "common"; // группа по умолчанию
 
-	public static final int NO_USER_ID = 0;
+	public static final int ANONYMOUS_ID = 0;
 	public static final byte NO_GROUP_ID = 0;
 
 	private String name;
@@ -43,7 +43,7 @@ public class User {
 	 */
 	public static User getDefaultUser() {
 		Byte defaultGroup = UserGroupRegistry.getDefaultGroup();
-		User user = new User("", "", "", NO_USER_ID);
+		User user = new User("", "", "", ANONYMOUS_ID);
 		user.addGroup(USER_DEFAULT_GROUP, defaultGroup, SIMPLE);
 		return user;
 	}
@@ -75,8 +75,8 @@ public class User {
 	 * @param group
 	 * @return
 	 */
-	public Byte getRole(String group) {
-		return groupRoles.containsKey(group) ? groupRoles.get(group).role : null;
+	public byte getRole(String group) {
+		return groupRoles.containsKey(group) ? groupRoles.get(group).role : (byte)-1;
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class User {
 	 * @param group
 	 * @return
 	 */
-	public Byte getRole(byte group) {
+	public byte getRole(byte group) {
 		return getRole(UserGroupRegistry.getGroup(group));
 	}
 
@@ -143,7 +143,7 @@ public class User {
 	}
 
 	public boolean isAnonimous() {
-		return userId == NO_USER_ID;
+		return userId == ANONYMOUS_ID;
 	}
 
 	/**
