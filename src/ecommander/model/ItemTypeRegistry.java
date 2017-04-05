@@ -5,15 +5,12 @@ package ecommander.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import ecommander.model.datatypes.DataType;
 
 /**
  * Создает в памяти полную модель данных
@@ -340,11 +337,11 @@ public class ItemTypeRegistry {
 	}
 
 	/**
-	 * Получить ассоциацию по умолчанию (прямая принадлженость айтему)
+	 * Получить первичную ассоциацию
 	 * @return
 	 */
-	public static Assoc getDefaultAssoc() {
-		return getSingleton().assocRegistry.getDefault();
+	public static Assoc getPrimaryAssoc() {
+		return getSingleton().assocRegistry.getPrimary();
 	}
 
 }

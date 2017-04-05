@@ -9,13 +9,13 @@ class AssocRegistry {
 	private HashMap<String, Assoc> assocByName = new HashMap<>(10);
 	private HashMap<Byte, Assoc> assocById = new HashMap<>(10);
 
-	static final String DEFAULT_NAME = "_default_";
-	static final byte DEFAULT_ID = (byte)0;
-	static final Assoc DEFAULT = new Assoc(DEFAULT_ID, DEFAULT_NAME, "Личный сабайтем", "", false);
+	static final String PRIMARY_NAME = "_default_";
+	static final byte PRIMARY_ID = (byte)0;
+	static final Assoc PRIMARY = new Assoc(PRIMARY_ID, PRIMARY_NAME, "Первичная иерархия", "", true);
 
 	AssocRegistry() {
-		assocByName.put(DEFAULT_NAME, DEFAULT);
-		assocById.put(DEFAULT_ID, DEFAULT);
+		assocByName.put(PRIMARY_NAME, PRIMARY);
+		assocById.put(PRIMARY_ID, PRIMARY);
 	}
 
 	void addAssoc(Assoc assoc) {
@@ -23,8 +23,8 @@ class AssocRegistry {
 		assocById.put(assoc.getId(), assoc);
 	}
 
-	Assoc getDefault() {
-		return DEFAULT;
+	Assoc getPrimary() {
+		return PRIMARY;
 	}
 
 	Assoc getAssoc(String name) {
