@@ -37,7 +37,7 @@ import ecommander.pages.ItemHttpPostForm;
 import ecommander.pages.UrlParameterFormatConverter;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.commandunits.CopyItemDBUnit;
-import ecommander.persistence.commandunits.DeleteItemBDUnit;
+import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.MoveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemDBUnit;
 import ecommander.persistence.commandunits.SetNewItemWeightDBUnit;
@@ -426,7 +426,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 */
 	protected AdminPage deleteItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
-		transaction.addCommandUnit(new DeleteItemBDUnit(in.itemId));
+		transaction.addCommandUnit(new CleanAllDeletedItemsDBUnit(in.itemId));
 		transaction.execute();
 		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId);
 		// Удалить айтем из индекса Lucene
@@ -905,7 +905,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		for (String itemInput : in.mount.keySet()) {
 			String[] parts = UrlParameterFormatConverter.splitInputName(itemInput);
-			transaction.addCommandUnit(new DeleteItemBDUnit(Long.parseLong(parts[2])));
+			transaction.addCommandUnit(new CleanAllDeletedItemsDBUnit(Long.parseLong(parts[2])));
 		}
 		transaction.execute();
 		// Очистить кеш страниц

@@ -206,6 +206,11 @@ public class TemplateQuery implements QueryPart {
 		return this;
 	}
 
+	public final TemplateQuery ORDER_BY(String...colNames) {
+		queryParts.add(new SqlQueryPart(" ORDER BY " + StringUtils.join(colNames, ',')));
+		return this;
+	}
+
 	public final TemplateQuery LIMIT(int limit, int...startFrom) {
 		StringBuilder sb = new StringBuilder(" LIMIT ");
 		sb.append(limit);

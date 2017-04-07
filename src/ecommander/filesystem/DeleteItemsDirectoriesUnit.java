@@ -14,9 +14,9 @@ import org.apache.commons.io.FileUtils;
  */
 public class DeleteItemsDirectoriesUnit extends ItemDirectoryCommandUnit {
 	
-	long[] itemIds;
+	Long[] itemIds;
 
-	public DeleteItemsDirectoriesUnit(long...itemIds) {
+	public DeleteItemsDirectoriesUnit(Long...itemIds) {
 		this.itemIds = itemIds;
 	}
 

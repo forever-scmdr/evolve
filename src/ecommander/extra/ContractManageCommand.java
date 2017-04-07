@@ -58,7 +58,7 @@ import ecommander.pages.ItemVariablesContainer;
 import ecommander.pages.ItemVariablesContainer.ItemVariables;
 import ecommander.pages.LinkPE;
 import ecommander.pages.ResultPE;
-import ecommander.persistence.commandunits.DeleteItemBDUnit;
+import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemDBUnit;
 import ecommander.persistence.commandunits.UpdateItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -144,7 +144,7 @@ public class ContractManageCommand extends Command {
 		initialize();
 		// Удаление выполняется до сохранения значения полей
 		if (StringUtils.equalsIgnoreCase(action, DELETE_ORDER)) {
-			executeAndCommitCommandUnits(new DeleteItemBDUnit(contract));
+			executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(contract));
 			return getResult(BOOKING);
 		}
 		// Сохранить все поля всех элементов заказа
@@ -180,7 +180,7 @@ public class ContractManageCommand extends Command {
 					executeCommandUnit(new UpdateItemDBUnit(room));
 			}
 			// Удалить форму
-			executeCommandUnit(new DeleteItemBDUnit(form));
+			executeCommandUnit(new CleanAllDeletedItemsDBUnit(form));
 		}
 		
 		else if (StringUtils.equalsIgnoreCase(action, SET_MAIN_FORM)) {
@@ -210,7 +210,7 @@ public class ContractManageCommand extends Command {
 			Item room  = rooms.get(roomId);
 			if (room == null)
 				return getResult(CONTRACT);
-			executeCommandUnit(new DeleteItemBDUnit(room));
+			executeCommandUnit(new CleanAllDeletedItemsDBUnit(room));
 			rooms.remove(room.getId());
 		}
 		
