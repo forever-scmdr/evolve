@@ -308,11 +308,11 @@ public class LuceneIndexMapper {
 		insertItemInt(item, needClose);
 	}
 	
-	private synchronized void deleteItemInt(Item item, boolean needClose) throws IOException {
+	private synchronized void deleteItemInt(long itemId, boolean needClose) throws IOException {
 		ensureWriter();
 		Term[] deleteTerms = new Term[2];
-		deleteTerms[0] = new Term(DBConstants.Item.DIRECT_PARENT_ID, item.getId() + "");
-		deleteTerms[1] = new Term(DBConstants.Item.ID, item.getId() + "");
+		deleteTerms[0] = new Term(DBConstants.Item.DIRECT_PARENT_ID, itemId + "");
+		deleteTerms[1] = new Term(DBConstants.Item.ID, itemId + "");
 		writer.deleteDocuments(deleteTerms);
 		if (needClose)
 			closeWriter();
@@ -520,16 +520,17 @@ public class LuceneIndexMapper {
 	/**
 	 * Удалить айтем и все вложенные в него айтемы из индекса
 	 * Сабмит не вызывается. Его надо вызывать отдельно
-	 * @param item
+	 * @param itemId
+	 * @param needClose
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	public static void deleteItem(Item item, boolean... needClose) throws IOException, SAXException, TikaException {
+	public static void deleteItem(long itemId, boolean... needClose) throws IOException, SAXException, TikaException {
 		boolean doClose = true;
 		if (needClose.length > 0)
 			doClose = needClose[0];
-		getSingleton().deleteItemInt(item, doClose);
+		getSingleton().deleteItemInt(itemId, doClose);
 	}
 	/**
 	 * Удалить все сабайтемы определенного айтема

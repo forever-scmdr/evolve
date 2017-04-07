@@ -4,6 +4,7 @@ import ecommander.filesystem.DeleteItemsDirectoriesUnit;
 import ecommander.model.Item;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
+import ecommander.persistence.mappers.LuceneIndexMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,6 +48,12 @@ public class CleanDeletedItemsDBUnit extends DBPersistenceCommandUnit implements
 		try (PreparedStatement pstmt = delete.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}
+
+		// Удаление из полнотекстового индекса
+		for (Long deletedId : deletedIds) {
+			LuceneIndexMapper.deleteItem(deletedId, false);
+		}
+
 		deletedQty = deletedIds.size();
 	}
 
