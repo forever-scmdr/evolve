@@ -16,9 +16,6 @@ import ecommander.model.ParameterDescription;
  */
 public class SaveNewParameterDescriptionDBUnit extends ItemModelFilePersistenceCommandUnit {
 
-	public static final String SINGLE_VALUE = "single";
-	public static final String MULTIPLE_VALUE = "multiple";
-	
 	private int itemId;
 	private String name;
 	private String caption;
@@ -40,13 +37,13 @@ public class SaveNewParameterDescriptionDBUnit extends ItemModelFilePersistenceC
 		paramName = Strings.createXmlElementName(paramName);
 		this.name = paramName;
 		this.caption = caption;
-		if (caption == null) caption = Strings.EMPTY;
+		if (caption == null) this.caption = Strings.EMPTY;
 		this.description = description;
-		if (description == null) description = Strings.EMPTY;
+		if (description == null) this.description = Strings.EMPTY;
 		this.domain = domain;
-		if (domain == null) domain = Strings.EMPTY;
+		if (domain == null) this.domain = Strings.EMPTY;
 		this.format = format;
-		if (format == null) format = Strings.EMPTY;
+		if (format == null) this.format = Strings.EMPTY;
 		this.type = typeStr;
 		if (type == null) type = Strings.EMPTY;
 		this.isMultiple = isMultiple;

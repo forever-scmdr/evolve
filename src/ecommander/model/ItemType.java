@@ -175,7 +175,7 @@ public class ItemType extends ItemTypeContainer {
 	/**
 	 * @param parameter
 	 */
-	final void putParameter(ParameterDescription parameter) {
+	public final void putParameter(ParameterDescription parameter) {
 		parameters.put(parameter.getId(), parameter);
 		paramsByName.put(parameter.getName(), parameter);
 		// Добавление параметра в список параметров для полнотекстового поиска
