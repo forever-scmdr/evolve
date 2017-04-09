@@ -94,7 +94,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		long childId = item.getId();
 		int superTypeId = item.getItemType().getSuperType().getTypeId();
 		TemplateQuery insert = new TemplateQuery("New assoc insert");
-		insert.INSERT_INTO(IP_TABLE, IP_PARENT_ID, IP_CHILD_ID, IP_ASSOC_ID, IP_CHILD_SUPERTYPE, IP_PARENT_LEVEL, IP_WEIGHT);
+		insert.INSERT_INTO(IP_TABLE, IP_PARENT_ID, IP_CHILD_ID, IP_ASSOC_ID, IP_CHILD_SUPERTYPE, IP_PARENT_DIRECT, IP_WEIGHT);
 
 		// Шаг 1. Вставить запись непосредственного предка и потомка
 		insert.SELECT(parentId, childId, assocId, superTypeId, 1, "MAX(" + IP_WEIGHT + ") + 64")

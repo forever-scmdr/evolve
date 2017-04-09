@@ -78,7 +78,7 @@ public interface DBConstants
 		String IP_PARENT_ID = "ip_parent_id"; // ID предка
 		String IP_CHILD_ID = "ip_child_id"; // ID потомка
 		String IP_CHILD_SUPERTYPE = "ip_child_supertype"; // Супертип (непользовательский тип) потомка
-		String IP_PARENT_LEVEL = "ip_level"; // Уровень вложенности по отношению к предку (0 - прямой потомок, 1 - непрямой)
+		String IP_PARENT_DIRECT = "ip_parent_direct"; // Уровень вложенности по отношению к предку (1 - прямой потомок, 0 - непрямой)
 		String IP_WEIGHT = "ip_weight"; // Вес прямого потомка среди всех прямых потомков предка с заданной ассоциацией
 	}
 	/**

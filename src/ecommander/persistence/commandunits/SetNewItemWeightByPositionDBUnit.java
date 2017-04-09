@@ -11,14 +11,14 @@ import ecommander.persistence.mappers.DBConstants;
  * @author EEEE
  *
  */
-public class SetNewItemWeightOneUpDownDBUnit extends DBPersistenceCommandUnit {
+public class SetNewItemWeightByPositionDBUnit extends DBPersistenceCommandUnit {
 
 	private Item item;
-	private boolean up;
+	private int newPosition;
 	
-	public SetNewItemWeightOneUpDownDBUnit(Item item, boolean up) {
+	public SetNewItemWeightByPositionDBUnit(Item item, int newPosition) {
 		this.item = item;
-		this.up = up;
+		this.newPosition = newPosition;
 	}
 	
 	public void execute() throws Exception {

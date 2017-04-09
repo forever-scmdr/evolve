@@ -138,15 +138,15 @@ public class MoveItemDBUnit extends DBPersistenceCommandUnit {
 				+ DBConstants.ItemParent.ITEM_ID + ", " 
 				+ DBConstants.ItemParent.REF_ID + ", "
 				+ DBConstants.ItemParent.ITEM_TYPE + ", "
-				+ DBConstants.ItemParent.IP_PARENT_LEVEL
+				+ DBConstants.ItemParent.IP_PARENT_DIRECT
 				+ ") SELECT T3." 
 				+ DBConstants.ItemParent.IP_PARENT_ID
 				+ ", T1." + DBConstants.ItemParent.ITEM_ID 
 				+ ", T1." + DBConstants.ItemParent.REF_ID 
 				+ ", T1." + DBConstants.ItemParent.ITEM_TYPE 
-				+ ", T1." + DBConstants.ItemParent.IP_PARENT_LEVEL + " + T3." + DBConstants.ItemParent.IP_PARENT_LEVEL + " + 1 FROM (SELECT "
+				+ ", T1." + DBConstants.ItemParent.IP_PARENT_DIRECT + " + T3." + DBConstants.ItemParent.IP_PARENT_DIRECT + " + 1 FROM (SELECT "
 				+ DBConstants.ItemParent.IP_PARENT_ID + ", "
-				+ DBConstants.ItemParent.IP_PARENT_LEVEL
+				+ DBConstants.ItemParent.IP_PARENT_DIRECT
 				+ " FROM " + DBConstants.ItemParent.IP_TABLE
 				+ " WHERE " + DBConstants.ItemParent.REF_ID + " = " + newParent.getId()
 				+ " AND " + DBConstants.ItemParent.ITEM_ID + " = " + newParent.getId()
@@ -154,7 +154,7 @@ public class MoveItemDBUnit extends DBPersistenceCommandUnit {
 				+ DBConstants.ItemParent.ITEM_ID + ", " 
 				+ DBConstants.ItemParent.REF_ID + ", " 
 				+ DBConstants.ItemParent.ITEM_TYPE + ", " 
-				+ DBConstants.ItemParent.IP_PARENT_LEVEL
+				+ DBConstants.ItemParent.IP_PARENT_DIRECT
 				+ " FROM " + DBConstants.ItemParent.IP_TABLE
 				+ " WHERE " + DBConstants.ItemParent.IP_PARENT_ID + " = " + item.getId()
 				+ " UNION SELECT " + item.getId() + ", " + item.getId() + ", " + item.getTypeId() + ", 0) AS T1";

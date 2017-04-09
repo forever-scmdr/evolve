@@ -709,7 +709,7 @@ public class ItemQuery {
 					.sql(" AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.IP_PARENT_ID + " AND "
 							+ DBConstants.ItemParent.REF_ID + " IN (")
 					.setLongArray(parentIds.toArray(new Long[parentIds.size()])).sql(")")
-					.sql(" AND " + DBConstants.ItemParent.IP_PARENT_LEVEL + "=1");
+					.sql(" AND " + DBConstants.ItemParent.IP_PARENT_DIRECT + "=1");
 		}
 		else if (queryType == Type.PREDECESSORS_OF) {
 			query.getSubquery(PARENT_ID_REQ).sql(DBConstants.ItemParent.REF_ID);
