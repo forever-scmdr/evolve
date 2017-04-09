@@ -68,7 +68,7 @@ public class Item implements ItemBasics {
 									// Также при создании нового айтема. Тогда этот предок будет непосредственным предком
 									// айтема, что в совокупности с ассоциацией определяет где этот айтем будет размещен в БД
 									// (контекст создания айтема)
-	private Assoc contextAssoc = AssocRegistry.DEFAULT;     // Ассоция айтема в текущем контектсе.
+	private Assoc contextAssoc = AssocRegistry.PRIMARY;     // Ассоция айтема в текущем контектсе.
 									// Та ассоциация, которой айтем связан с контекстным предком
 									// Айтем может быть ассоциирован со многими предками многими ассоцациями (в т.ч. несколькими с одним предком),
 									// но в каждом определенном контексте у айтема имеет значение только один предок и одна ассоциация.
@@ -200,7 +200,7 @@ public class Item implements ItemBasics {
 	 * @return
 	 */
 	public static Item newSessionRootItem(ItemType itemDesc) {
-		return new Item(itemDesc, AssocRegistry.DEFAULT, 0, User.ANONYMOUS_ID, User.NO_GROUP_ID, STATUS_NORMAL, false);
+		return new Item(itemDesc, AssocRegistry.PRIMARY, 0, User.ANONYMOUS_ID, User.NO_GROUP_ID, STATUS_NORMAL, false);
 	}
 
 	/**
@@ -320,7 +320,7 @@ public class Item implements ItemBasics {
 	 * @param paramId
 	 * @return
 	 */
-	private final Parameter getParameterFromMap(int paramId) {
+	private Parameter getParameterFromMap(int paramId) {
 		Parameter param = paramMap.get(paramId);
 		if (param == null)
 			throw new IllegalArgumentException("There is no parameter #" + paramId + " in '" + itemType.getName() + "' item");

@@ -50,7 +50,7 @@ public abstract class ItemTypeContainer {
 	 */
 	public void addOwnChild(String assocName, String childName, boolean single, boolean virtual) {
 		if (StringUtils.isBlank(assocName))
-			assocName = AssocRegistry.DEFAULT_NAME;
+			assocName = AssocRegistry.PRIMARY_NAME;
 		childDescriptions.put(createMapKey(assocName, childName), new ChildDesc(assocName, childName, single, virtual, true));
 	}
 
