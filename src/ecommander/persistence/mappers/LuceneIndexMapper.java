@@ -60,7 +60,7 @@ import ecommander.model.MultipleParameter;
 import ecommander.model.ParameterDescription;
 import ecommander.model.SingleParameter;
 
-public class LuceneIndexMapper {
+public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	/**
 	 * Класс для увеличения позиции токена в случае если он принадлежит другому значению множественого параметра
 	 * По умолчанию множественные значения полей объединяются в одну строку с обычным увеличением позиции (на 1)
@@ -218,18 +218,19 @@ public class LuceneIndexMapper {
 		ensureWriter();
 		Document itemDoc = new Document();
 		// Устанавливается ID айтема
-		itemDoc.add(new StringField(DBConstants.Item.ID, item.getId() + "", Store.YES));
+		itemDoc.add(new StringField(I_ID, item.getId() + "", Store.YES));
 		// Заполняются все типы айтема (иерархия типов айтема)
+		LinkedHashSet<String> itemExtenders = ItemTypeRegistry.getItemExtenders(item.getTypeName());
 		Integer[] predIds = ItemTypeRegistry.getItemPredecessorsIds(item.getTypeId());
 		for (Integer predId : predIds) {
 			itemDoc.add(new StringField(DBConstants.Item.TYPE_ID, predId.toString(), Store.NO));
 		}
 		itemDoc.add(new StringField(DBConstants.Item.TYPE_ID, item.getTypeId() + "", Store.NO));
-		// Заполняются все предшественники (в которые айтем вложен)
-		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');
-		for (String contId : containerIds) {
-			itemDoc.add(new StringField(DBConstants.Item.DIRECT_PARENT_ID, contId, Store.YES));
-		}
+//		// Заполняются все предшественники (в которые айтем вложен)
+//		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');
+//		for (String contId : containerIds) {
+//			itemDoc.add(new StringField(DBConstants.Item.DIRECT_PARENT_ID, contId, Store.YES));
+//		}
 		// Заполняются все индексируемые параметры
 		// Заполнение полнотекстовых параметров
 		for (String ftParam : item.getItemType().getFulltextParams()) {

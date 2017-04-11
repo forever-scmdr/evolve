@@ -1,5 +1,6 @@
 package ecommander.persistence.itemquery.fulltext;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import ecommander.fwk.EcommanderException;
@@ -37,14 +38,10 @@ public class FulltextQueryCreatorRegistry {
 		creators.put(WILDCARD, new WildcardFulltextQuery());
 	}
 	
-	private LuceneQueryCreator getQueryCreator(String type) throws EcommanderException {
+	private LuceneQueryCreator getQueryCreator(String type) throws Exception {
 		LuceneQueryCreator creator = creators.get(type);
 		if (creator == null) {
-			try {
-				creator = (LuceneQueryCreator) Class.forName(type).getConstructor().newInstance();
-			} catch (Exception e) {
-				throw new EcommanderException(e);
-			}
+			creator = (LuceneQueryCreator) Class.forName(type).getConstructor().newInstance();
 			creators.put(type, creator);
 		}
 		return creator;
@@ -55,7 +52,7 @@ public class FulltextQueryCreatorRegistry {
 	 * @return
 	 * @throws EcommanderException
 	 */
-	public static LuceneQueryCreator getCriteria(String type) throws EcommanderException {
+	public static LuceneQueryCreator getCriteria(String type) throws Exception {
 		return getSingleton().getQueryCreator(type);
 	}
 	/**
@@ -63,7 +60,7 @@ public class FulltextQueryCreatorRegistry {
 	 * @return
 	 * @throws EcommanderException
 	 */
-	public static LuceneQueryCreator getCriteria() throws EcommanderException {
+	public static LuceneQueryCreator getCriteria() throws Exception {
 		return getSingleton().getQueryCreator(DEFAULT);
 	}
 }

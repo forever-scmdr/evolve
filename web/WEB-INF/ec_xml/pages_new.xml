@@ -3,7 +3,7 @@
 
 	<admin-page group="seller">
 		<personal>
-			<single item="seller" id="subitems"/><!-- Боковой список айтемов (сабайтемы) - id="subitems" -->
+			<single item="seller" id="item"/><!-- Боковой список айтемов (сабайтемы) - id="subitems" -->
 		</personal>
 	</admin-page>
 

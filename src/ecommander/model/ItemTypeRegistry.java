@@ -47,10 +47,10 @@ public class ItemTypeRegistry {
 	 * В конструкторе выполняется загрузка модели из базона
 	 */
 	private ItemTypeRegistry() {
-		itemsByNames = new HashMap<String, ItemTypeContainer>();
-		itemsByIds = new HashMap<Integer, ItemType>();
-		itemNames = new ArrayList<String>();
-		itemExtenders = new HashMap<Integer, Integer[]>();
+		itemsByNames = new HashMap<>();
+		itemsByIds = new HashMap<>();
+		itemNames = new ArrayList<>();
+		itemExtenders = new HashMap<>();
 
 		assocRegistry = new AssocRegistry();
 	}
