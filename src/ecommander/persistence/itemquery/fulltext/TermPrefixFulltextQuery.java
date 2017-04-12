@@ -26,7 +26,7 @@ public class TermPrefixFulltextQuery extends LuceneQueryCreator {
 			query = new TermPrefixQuery(new Term(param, value));
 		} else if (query instanceof BooleanQuery) {
 			BooleanQuery boolQuery = (BooleanQuery) query;
-			for (BooleanClause clause : boolQuery.getClauses()) {
+			for (BooleanClause clause : boolQuery.clauses()) {
 				Query subquery = clause.getQuery();
 				clause.setOccur(occur);
 				if (subquery instanceof TermQuery) {

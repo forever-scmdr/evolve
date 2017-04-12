@@ -29,7 +29,7 @@ import ecommander.persistence.mappers.DBConstants;
  */
 public class CopyItemDBUnit extends DBPersistenceCommandUnit {
 	
-	private static final HashSet<Type> TEXT_PARAM_TYPES = new HashSet<Type>();
+	private static final HashSet<Type> TEXT_PARAM_TYPES = new HashSet<>();
 	static {
 		TEXT_PARAM_TYPES.add(Type.PLAIN_TEXT);
 		TEXT_PARAM_TYPES.add(Type.SHORT_TEXT);

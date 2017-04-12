@@ -6,6 +6,9 @@ import org.apache.lucene.search.DisjunctionMaxQuery;
 import org.apache.lucene.search.Query;
 
 import ecommander.persistence.mappers.LuceneIndexMapper;
+
+import java.util.ArrayList;
+
 /**
  * Класс, который должен создавать запрос Lucene по имеющийся строке запроса и параметрам запроса
  * @author E
@@ -18,11 +21,11 @@ public abstract class LuceneQueryCreator {
 		if (paramNames.length == 1) {
 			return createQuery(parser, paramNames[0], queryStr, occur);
 		}
-		DisjunctionMaxQuery djQuery = new DisjunctionMaxQuery(0.0f);
+		ArrayList<Query> queries = new ArrayList<>();
 		for (String paramName : paramNames) {
-			djQuery.add(createQuery(parser, paramName, queryStr, occur));
+			queries.add(createQuery(parser, paramName, queryStr, occur));
 		}
-		return djQuery;
+		return new DisjunctionMaxQuery(queries, 0.1f);
 	}
 	
 	protected abstract Query createQuery(QueryParser parser, String param, String value, Occur occur);

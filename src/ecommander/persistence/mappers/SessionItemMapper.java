@@ -6,33 +6,29 @@
  */
 package ecommander.persistence.mappers;
 
+import ecommander.controllers.SessionContext;
+import ecommander.fwk.Strings;
+import ecommander.model.*;
+import ecommander.persistence.itemquery.ItemQuery;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-
-import ecommander.fwk.Strings;
-import ecommander.controllers.SessionContext;
-import ecommander.model.Item;
-import ecommander.model.Item.ParametersIterator;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.SingleParameter;
-import ecommander.persistence.itemquery.ItemQuery;
 
 /**
  * @author EEEE
  * TODO <enhance> Переработать хранение айтемов в сеансе. Аналогично айтему, хранить только XML текст параметров и разбирать его по требованию
  */
 public class SessionItemMapper {
-	public static final byte ID = -1;
-	public static final byte TAG_NAME = -2; // Чаще всего - имя типа айтема, либо имя типа предшественника айтема по иерархии наследования (
-	public static final byte PARENT_ID = -3;
+	private static final byte ID = -1;
+	private static final byte TAG_NAME = -2; // Чаще всего - имя типа айтема, либо имя типа предшественника айтема по иерархии наследования (
+	private static final byte PARENT_ID = -3;
 
 	public abstract static class SessionItemMemento {
-		protected long id;
-		protected long parentId;
-		protected String typeName;
-		protected String tagName;
+		long id;
+		long parentId;
+		String typeName;
+		String tagName;
 
 		private SessionItemMemento(long id, long parentId, String typeName, String tagName) {
 			this.id = id;
@@ -72,9 +68,8 @@ public class SessionItemMapper {
 	 */
 	private static class TransientMemento extends SessionItemMemento {
 
-		private String predecessorsPath;
-		private long userId;
-		private int groupId;
+		private int userId;
+		private byte groupId;
 
 		private HashMap<Integer, Object> parameters = null; // Массив объектов SessionParameter (название и значение параметра)
 		private String[] extras = null; // дополнительные значения айтема
@@ -82,36 +77,24 @@ public class SessionItemMapper {
 		 * Создает SessionItem из обычного Item Это нужно для нормального сохранения айтема в сеансе. По идее этот метод должен использоваться
 		 * только для сохранения айтемов, которые вновь созданы в сеансе (не хранятся в БД)
 		 * @param item
-		 * @return
-		 */
-		private TransientMemento(Item item) {
-			this(item, item.getTypeName());
-		}
-		/**
-		 * Создает SessionItem из обычного Item Это нужно для нормального сохранения айтема в сеансе. По идее этот метод должен использоваться
-		 * только для сохранения айтемов, которые вновь созданы в сеансе (не хранятся в БД)
-		 * @param item
-		 * @param typeName - Название типа айтема, в случае если название динамическое (определяется пользователем)
+		 * @param tagName
 		 */
 		private TransientMemento(Item item, String tagName) {
-			super(item.getId(), item.getDirectParentId(), item.getTypeName(), tagName);
-			this.predecessorsPath = item.getPredecessorsPath();
+			super(item.getId(), item.getContextParentId(), item.getTypeName(), tagName);
 			this.userId = item.getOwnerUserId();
 			this.groupId = item.getOwnerGroupId();
-			parameters = new HashMap<Integer, Object>();
-			ParametersIterator paramIter = item.createParameterIterator();
-			while (paramIter.goNext()) {
-				SingleParameter param = paramIter.getCurrentParameter();
-				if (param.isDescMultiple()) {
+			parameters = new HashMap<>();
+			Collection<Parameter> parameters = item.getAllParameters();
+			for (Parameter parameter : parameters) {
+				if (parameter.isDescMultiple()) {
 					@SuppressWarnings("unchecked")
-					ArrayList<Object> list = (ArrayList<Object>) parameters.get(param.getParamId());
-					if (list == null) {
-						list = new ArrayList<Object>();
-						parameters.put(param.getParamId(), list);
+					ArrayList<Object> list = new ArrayList<>();
+					this.parameters.put(parameter.getParamId(), list);
+					for (SingleParameter sp : ((MultipleParameter) parameter).getValues()) {
+						list.add(sp.getValue());
 					}
-					list.add(param.getValue());
 				} else {
-					parameters.put(param.getParamId(), param.getValue());
+					this.parameters.put(parameter.getParamId(), parameter.getValue());
 				}
 			}
 			if (item.hasExtras()) {
@@ -130,8 +113,8 @@ public class SessionItemMapper {
 		 * @throws Exception
 		 */
 		public Item restoreItem() throws Exception {
-			Item item = Item.existingItem(ItemTypeRegistry.getItemType(typeName), id, parentId, predecessorsPath, id, userId, groupId, 0,
-					Strings.EMPTY, null, null, 0);
+			Item item = Item.existingItem(ItemTypeRegistry.getItemType(typeName), id, ItemTypeRegistry.getPrimaryAssoc(),
+					parentId, userId, groupId, Item.STATUS_NORMAL, Strings.EMPTY, null, null, 0, false);
 			if (parameters != null) {
 				for (Integer paramId : parameters.keySet()) {
 					if (item.getItemType().getParameter(paramId).isMultiple()) {
@@ -152,40 +135,6 @@ public class SessionItemMapper {
 			return item;
 		}
 	}
-//	/**
-//	 * Класс, который должен сохранять постоянный объект, который есть в БД, но имеет отношение к конкретному сеансу
-//	 *
-//	 * @author EEEE
-//	 */
-//	private static class PersistentMemento extends SessionItemMemento {
-//		/**
-//		 * Создает сеансовый айтем без парамтеров
-//		 * По идее этот метод должен использоваться только для сохранения постоянных айтемов (хранятся в БД)
-//		 * @param itemId
-//		 * @param parentId
-//		 * @param itemType
-//		 * @param tagName
-//		 */
-//		private PersistentMemento(long itemId, long parentId, String itemType, String tagName) {
-//			super(itemId, parentId, itemType, tagName);
-//		}
-//		/**
-//		 * Создает сеансовый айтем без парамтеров
-//		 * По идее этот метод должен использоваться только для сохранения постоянных айтемов (хранятся в БД)
-//		 * @param itemId
-//		 * @param parentId
-//		 * @param itemType
-//		 */
-//		private PersistentMemento(long itemId, long parentId, String itemType) {
-//			super(itemId, parentId, itemType, itemType);
-//		}
-//		/**
-//		 * @see SessionItemMapper.SessionItemStorage.SessionItemMemento#restoreItem()
-//		 */
-//		public Item restoreItem() throws Exception {
-//			return ItemLoadingDBMapper.getMapper().load(id);
-//		}
-//	}
 	/**
 	 * Хранилище айтемов (класс SessionItem) Параметры, по которым осуществляется доступ: - ID айтема (Long) - ID родителя айтема (Long) -
 	 * название типа айтема (String)
@@ -196,9 +145,9 @@ public class SessionItemMapper {
 		protected Object getParameter(Object object, int parameterId) {
 			switch (parameterId) {
 			case ID:
-				return new Long(((SessionItemMemento) object).getId());
+				return ((SessionItemMemento) object).getId();
 			case PARENT_ID:
-				return new Long(((SessionItemMemento) object).getParentId());
+				return ((SessionItemMemento) object).getParentId();
 			case TAG_NAME:
 				return ((SessionItemMemento) object).getTagName();
 			default:
@@ -206,8 +155,6 @@ public class SessionItemMapper {
 			}
 		}
 	}
-
-	public static final String SESSION_NAME = "session_model";
 
 	private SessionContext sess = null;
 	private long rootItemId;
@@ -234,8 +181,7 @@ public class SessionItemMapper {
 	 * @return
 	 */
 	public static SessionItemMapper getMapper(SessionContext sessionContext) {
-		SessionItemMapper instance = new SessionItemMapper(sessionContext, ItemTypeRegistry.getSessionRoot().getItemId());
-		return instance;
+		return new SessionItemMapper(sessionContext, ItemTypeRegistry.getSessionRootId());
 	}
 	/**
 	 * Добавляет временный айтем в хранилище сеанса
@@ -266,14 +212,14 @@ public class SessionItemMapper {
 		if (item.getId() == Item.DEFAULT_ID)
 			item.setId(forceGetStorage().generateId());
 		// сделать корень сеанса родительским айтемом в случае если родитель не установлен либо родитель не найден в сеансе
-		if (item.getDirectParentId() == Item.DEFAULT_ID || item.getDirectParentId() == rootItemId) {
-			item.setDirectParentId(rootItemId);
+		if (item.getContextParentId() == Item.DEFAULT_ID || item.getContextParentId() == rootItemId) {
+			item.setContextParentId(rootItemId);
 		} else {
 			int[] parameters = { ID };
-			Object[] paramValues = { item.getDirectParentId() };
+			Object[] paramValues = { item.getContextParentId() };
 			ArrayList<Object> mementoArray = getStorage().select(parameters, paramValues);
 			if (mementoArray.size() == 0)
-				item.setDirectParentId(rootItemId);
+				item.setContextParentId(rootItemId);
 		}
 		SessionItemMemento sessionItem = new TransientMemento(item, itemTag);
 		// Удалить старый айтем, если такой уже есть
@@ -294,16 +240,14 @@ public class SessionItemMapper {
 		long itemId = forceGetStorage().generateId();
 		if (parentId == 0)
 			return createSessionItem(itemName, rootItemId);
-		Item item = Item.existingItem(ItemTypeRegistry.getItemType(itemName), itemId, parentId, Strings.EMPTY, itemId,
-				sess.getUser().getUserId(), sess.getUser().getGroupId(), 0, Strings.EMPTY, null, null, 0);
-		return item;
+		return Item.existingItem(ItemTypeRegistry.getItemType(itemName), itemId, ItemTypeRegistry.getPrimaryAssoc(),
+				parentId, sess.getUser().getUserId(), UserGroupRegistry.getDefaultGroup(), Item.STATUS_NORMAL,
+				Strings.EMPTY, null, null, 0, false);
 	}
 	/**
 	 * Создает новый айтем первого уровня не добавляя его в сеанс В этом методе создается сеансовый айтем (временный)
 	 * @param itemName
-	 * @param parentId
 	 * @return
-	 * @throws Exception
 	 */
 	public Item createSessionRootItem(String itemName) {
 		return createSessionItem(itemName, rootItemId);
@@ -325,19 +269,13 @@ public class SessionItemMapper {
 	 *    например, загружать на странице. В этом случае всем таким айтемам присвается один общий тэг
 	 * 2) Когда один и тот же айтем должен присутствовать в сеансе несколько раз и трактоваться как разные айтемы.
 	 *    В этом случае каждой копии айтема присваиваются разные тэги
-	 * @param item
+	 * @param itemId
 	 * @param itemTag - название типа айтема для динамических типов, определенных пользователем
 	 */
 	public void removeItems(long itemId, String itemTag) {
 		int[] paramIds = { ID, TAG_NAME };
 		Object[] paramValues = { itemId, itemTag };
-		forceGetStorage().delete(paramIds, paramValues);
-		// получить всех потомков и удалить их
-		ArrayList<Object> children = forceGetStorage().select(PARENT_ID, itemId);
-		for (Object memento : children) {
-			SessionItemMemento sim = (SessionItemMemento) memento;
-			removeItem(sim.getId(), itemId, sim.tagName);
-		}
+		removeItems(itemId, paramIds, paramValues);
 	}
 	/**
 	 * Удаляет айтем и его сабайтемы. Аналогично removeItems(long itemId, String itemTag)
@@ -349,6 +287,10 @@ public class SessionItemMapper {
 		// Удаление айтема
 		int[] paramIds = { ID, PARENT_ID, TAG_NAME };
 		Object[] paramValues = { itemId, parentId, itemTag };
+		removeItems(itemId, paramIds, paramValues);
+	}
+
+	private void removeItems(long itemId, int[] paramIds, Object[] paramValues) {
 		forceGetStorage().delete(paramIds, paramValues);
 		// Удаление потомков
 		ArrayList<Object> children = forceGetStorage().select(PARENT_ID, itemId);
@@ -363,15 +305,15 @@ public class SessionItemMapper {
 	 */
 	public void removeItems(long itemId) {
 		// получить всех потомков и удалить их
-		ArrayList<Object> children = forceGetStorage().select(PARENT_ID, new Long(itemId));
+		ArrayList<Object> children = forceGetStorage().select(PARENT_ID, itemId);
 		for (Object memento : children) {
 			removeItems(((SessionItemMemento)memento).getId());
 		}
-		forceGetStorage().delete(ID, new Long(itemId));
+		forceGetStorage().delete(ID, itemId);
 	}
 	/**
 	 * Удаляет айтем и все его сабайтемы.
-	 * @param itemId
+	 * @param itemTag
 	 */
 	public void removeItems(String itemTag) {
 		// получить всех потомков и удалить их
@@ -382,14 +324,14 @@ public class SessionItemMapper {
 	}
 	/**
 	 * Возвращает айтем определенного типа с определенным ID
-	 * @param itemName
-	 * @param parentId
+	 * @param itemId
+	 * @param itemTag
 	 * @return
 	 * @throws Exception
 	 */
 	public Item getItem(long itemId, String itemTag) throws Exception {
 		int[] parameters = { ID, TAG_NAME };
-		Object[] paramValues = { new Long(itemId), itemTag };
+		Object[] paramValues = { itemId, itemTag };
 		ArrayList<Object> mementoArray = getStorage().select(parameters, paramValues);
 		if (mementoArray.size() == 0)
 			return null;
@@ -403,7 +345,7 @@ public class SessionItemMapper {
 	 */
 	public Item getItemSingle(long itemId) throws Exception {
 		int[] parameters = { ID };
-		Object[] paramValues = { new Long(itemId) };
+		Object[] paramValues = { itemId };
 		ArrayList<Object> mementoArray = getStorage().select(parameters, paramValues);
 		if (mementoArray.size() == 0)
 			return null;
@@ -418,7 +360,7 @@ public class SessionItemMapper {
 	 */
 	public ArrayList<Item> getItemsByName(String itemName, long parentId) throws Exception {
 		int[] parameters = { TAG_NAME, PARENT_ID };
-		Object[] paramValues = { ItemTypeRegistry.getItemExtenders(itemName), new Long(parentId) };
+		Object[] paramValues = { ItemTypeRegistry.getItemExtenders(itemName), parentId };
 		ArrayList<Object> mementoArray = getStorage().select(parameters, paramValues);
 		return restoreItemsArray(mementoArray);
 	}
@@ -444,7 +386,7 @@ public class SessionItemMapper {
 	 */
 	public Item getSingleItemByName(String itemName, long parentId) throws Exception {
 		int[] parameters = { TAG_NAME, PARENT_ID };
-		Object[] paramValues = { ItemTypeRegistry.getItemExtenders(itemName), new Long(parentId) };
+		Object[] paramValues = { ItemTypeRegistry.getItemExtenders(itemName), parentId };
 		ArrayList<Object> sessionItems = getStorage().select(parameters, paramValues);
 		if (sessionItems.size() == 0)
 			return null;
@@ -482,7 +424,7 @@ public class SessionItemMapper {
 	 * @return
 	 */
 	public ArrayList<Item> getClosestSubitems(long parentId) throws Exception {
-		ArrayList<Object> mementoArray = getStorage().select(PARENT_ID, new Long(parentId));
+		ArrayList<Object> mementoArray = getStorage().select(PARENT_ID, parentId);
 		return restoreItemsArray(mementoArray);
 	}
 	/**
@@ -504,8 +446,8 @@ public class SessionItemMapper {
 	 * @return
 	 */
 	protected ArrayList<Item> restoreItemsArray(ArrayList<Object> mementoArray) throws Exception {
-		ArrayList<Item> result = new ArrayList<Item>();
-		ArrayList<Long> itemIds = new ArrayList<Long>();
+		ArrayList<Item> result = new ArrayList<>();
+		ArrayList<Long> itemIds = new ArrayList<>();
 		// Для всех memento
 		for (Object mementoObj : mementoArray) {
 			SessionItemMemento memento = (SessionItemMemento) mementoObj;

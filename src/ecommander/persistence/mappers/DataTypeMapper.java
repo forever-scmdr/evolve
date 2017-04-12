@@ -10,6 +10,7 @@ import java.util.HashMap;
 import ecommander.model.datatypes.DecimalDataType;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.document.*;
 import org.joda.time.format.DateTimeFormatter;
 
 import ecommander.fwk.Strings;
@@ -38,6 +39,8 @@ public class DataTypeMapper {
 		protected abstract void setPreparedStatementRequestValueFine(TemplateQuery pstmt, String value, String pattern);
 		
 		protected abstract void setPreparedStatementRequestValues(TemplateQuery pstmt, Collection<String> values);
+
+		protected abstract void setLuceneDocumentField(Document itemDoc, String fieldName, Object value);
 		
 		protected abstract Object createValueFromResultSet(ResultSet rs) throws SQLException;
 		
@@ -87,6 +90,11 @@ public class DataTypeMapper {
 		@Override
 		protected void setPreparedStatementRequestValues(TemplateQuery pstmt, Collection<String> values) {
 			pstmt.setStringArray(values.toArray(new String[0]));
+		}
+
+		@Override
+		protected void setLuceneDocumentField(Document itemDoc, String fieldName, Object value) {
+			itemDoc.add(new StringField(fieldName, (String) value, Field.Store.NO));
 		}
 	}
 	
@@ -149,6 +157,11 @@ public class DataTypeMapper {
 				array[i++] = createValue(val);
 			}
 			pstmt.setIntArray(array);
+		}
+
+		@Override
+		protected void setLuceneDocumentField(Document itemDoc, String fieldName, Object value) {
+			itemDoc.add(new IntPoint(fieldName, (Integer) value));
 		}
 	}
 	
@@ -224,6 +237,11 @@ public class DataTypeMapper {
 			}
 			pstmt.setLongArray(array);
 		}
+
+		@Override
+		protected void setLuceneDocumentField(Document itemDoc, String fieldName, Object value) {
+			itemDoc.add(new LongPoint(fieldName, (Long) value));
+		}
 	}
 	
 	private class DateMapper extends LongMapper {
@@ -294,6 +312,11 @@ public class DataTypeMapper {
 			}
 			pstmt.setDoubleArray(array);
 		}
+
+		@Override
+		protected void setLuceneDocumentField(Document itemDoc, String fieldName, Object value) {
+			itemDoc.add(new DoublePoint(fieldName, (Double) value));
+		}
 	}
 
 	private class DecimalMapper extends TypeMapper {
@@ -346,6 +369,11 @@ public class DataTypeMapper {
 				array[i++] = createValue(val);
 			}
 			pstmt.setDecimalArray(array);
+		}
+
+		@Override
+		protected void setLuceneDocumentField(Document itemDoc, String fieldName, Object value) {
+			itemDoc.add(new DoublePoint(fieldName, ((BigDecimal) value).doubleValue()));
 		}
 	}
 
@@ -407,6 +435,17 @@ public class DataTypeMapper {
 	 */
 	public static void appendPreparedStatementRequestValues(Type type, TemplateQuery builder, Collection<String> value) {
 		getMapper().typeMappers.get(type).setPreparedStatementRequestValues(builder, value);
+	}
+
+	/**
+	 * Добавляет к документу Lucene айтема поле со значением в зависимости от типа параметра
+	 * @param type
+	 * @param doc
+	 * @param fieldName
+	 * @param value
+	 */
+	public static void setLuceneItemDocField(Type type, Document doc, String fieldName, Object value) {
+		getMapper().typeMappers.get(type).setLuceneDocumentField(doc, fieldName, value);
 	}
 
 	/**

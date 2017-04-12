@@ -213,9 +213,9 @@ public class TemplateQuery implements QueryPart {
 
 	public final TemplateQuery LIMIT(int limit, int...startFrom) {
 		StringBuilder sb = new StringBuilder(" LIMIT ");
-		sb.append(limit);
 		if (startFrom.length > 0)
-			sb.append(',').append(startFrom[0]);
+			sb.append(startFrom[0]).append(',');
+		sb.append(limit);
 		return this;
 	}
 

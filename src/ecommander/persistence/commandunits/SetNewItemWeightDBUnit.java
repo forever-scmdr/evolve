@@ -1,5 +1,6 @@
 package ecommander.persistence.commandunits;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -67,27 +68,38 @@ class SetNewItemWeightDBUnit extends DBPersistenceCommandUnit implements DBConst
 	 * @throws SQLException
 	 * @return
 	 */
-	private boolean tryToNormalize(int newIndex) throws SQLException {
+	 private boolean tryToNormalize(int newIndex) throws SQLException {
 		if (newIndex - indexBefore == 1 || indexAfter - newIndex == 1) {
-			TemplateQuery normalize = new TemplateQuery("Noramlize child weight");
-			normalize.sql("SET @index = 0;")
-					.UPDATE(IP_TABLE).SET().col(IP_WEIGHT).sql("(SELECT @index := @index + 1) * " + Item.WEIGHT_STEP)
-					.WHERE().col(IP_ASSOC_ID).setByte(assocId)
-					.AND().col(IP_PARENT_DIRECT).setByte((byte)1)
-					.AND().col(IP_PARENT_ID).setLong(itemParentId)
-					.ORDER_BY(IP_WEIGHT);
+			normalizeWeights(assocId, itemParentId, getTransactionContext().getConnection());
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Нормализация весов прямых сабайтемов заданного айтема и заданной ассоциации
+	 * @param assocId
+	 * @param parentId
+	 * @param conn
+	 * @throws SQLException
+	 */
+	static void normalizeWeights(byte assocId, long parentId, Connection conn) throws SQLException {
+		TemplateQuery normalize = new TemplateQuery("Noramlize child weight");
+		normalize.sql("SET @index = 0;")
+				.UPDATE(IP_TABLE).SET().col(IP_WEIGHT).sql("(SELECT @index := @index + 1) * " + Item.WEIGHT_STEP)
+				.WHERE().col(IP_ASSOC_ID).setByte(assocId)
+				.AND().col(IP_PARENT_DIRECT).setByte((byte)1)
+				.AND().col(IP_PARENT_ID).setLong(parentId)
+				.ORDER_BY(IP_WEIGHT);
 //			String sql
 //				= "SET @index = 0;"
 //				+ "UPDATE " + DBConstants.Item.TABLE
 //				+ " SET " + DBConstants.Item.INDEX_WEIGHT + " = (SELECT @index := @index + 1) * " + Item.WEIGHT_STEP
 //				+ " WHERE " + DBConstants.Item.DIRECT_PARENT_ID + " = " + itemParentId
 //				+ " ORDER BY " + DBConstants.Item.INDEX_WEIGHT;
-			try (PreparedStatement pstmt = normalize.prepareQuery(getTransactionContext().getConnection())) {
-				pstmt.executeUpdate();
-			}
-			return true;
+		try (PreparedStatement pstmt = normalize.prepareQuery(conn)) {
+			pstmt.executeUpdate();
 		}
-		return false;
 	}
 
 }
