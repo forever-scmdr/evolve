@@ -1,24 +1,24 @@
 package ecommander.persistence.commandunits;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.EcommanderException;
 import ecommander.controllers.AppContext;
-import ecommander.model.datatypes.DataType.Type;
+import ecommander.fwk.EcommanderException;
+import ecommander.fwk.ErrorCodes;
 import ecommander.model.Item;
+import ecommander.model.ItemTypeContainer;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;
+import ecommander.model.datatypes.DataType.Type;
+import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
+import ecommander.persistence.mappers.ItemMapper;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Перемещение айтема (прикрепление айтема к другому родителю)
@@ -27,7 +27,7 @@ import ecommander.persistence.mappers.DBConstants;
  * @author EEEE
  *
  */
-public class CopyItemDBUnit extends DBPersistenceCommandUnit {
+public class CopyItemDBUnit extends DBPersistenceCommandUnit implements ErrorCodes, DBConstants.ItemParent, DBConstants.ItemTbl {
 	
 	private static final HashSet<Type> TEXT_PARAM_TYPES = new HashSet<>();
 	static {
@@ -58,86 +58,91 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit {
 	}
 	
 	public void execute() throws Exception {
-		Statement stmt = null;
-		try	{
-			Connection conn = getTransactionContext().getConnection();
-			stmt = conn.createStatement();
-			
-			// Загрузка айтемов
-			if (baseItem == null)
-				baseItem = ItemQuery.loadById(baseItemId, getTransactionContext().getConnection());
-			if (newParent == null)
-				newParent = ItemQuery.loadById(newParentId, getTransactionContext().getConnection());
-			
-			////// Проверка прав пользователя на айтем //////
-			//
-			testPrivileges(baseItem);
-			testPrivileges(newParent);
-			//
-			/////////////////////////////////////////////////
-			
-			// Проверка, можно ли копировать
-			String selectSql 
-				= "SELECT " + DBConstants.ItemParent.REF_ID + " FROM " + DBConstants.ItemParent.IP_TABLE
-				+ " WHERE (" + DBConstants.ItemParent.IP_PARENT_ID + " = " + baseItem.getId()
-				+ " AND " + DBConstants.ItemParent.REF_ID + " = " + newParent.getId() + ")";
-			ServerLogger.debug(selectSql);
-			ResultSet rs = stmt.executeQuery(selectSql);
+		// Загрузка айтемов
+		if (baseItem == null)
+			baseItem = ItemQuery.loadById(baseItemId, getTransactionContext().getConnection());
+		if (newParent == null)
+			newParent = ItemQuery.loadById(newParentId, getTransactionContext().getConnection());
+
+		////// Проверка прав пользователя на айтем //////
+		//
+		testPrivileges(baseItem);
+		testPrivileges(newParent);
+		//
+		/////////////////////////////////////////////////
+
+		// Проверка, можно ли копировать
+		TemplateQuery check = new TemplateQuery("Check if copying possible");
+		check.SELECT(IP_CHILD_ID).FROM(IP_TABLE).WHERE()
+				.col(IP_PARENT_ID).setLong(baseItem.getId()).AND()
+				.col(IP_CHILD_ID).setLong(newParent.getId());
+		try (PreparedStatement pstmt = check.prepareQuery(getTransactionContext().getConnection())) {
+			ResultSet rs = pstmt.executeQuery();
 			if (rs.next() || newParent.getId() == baseItem.getId())
-				throw new EcommanderException("Unable to copy item ID " + baseItem.getId() + " to it's subitem (ID " + newParent.getId() + ").");
-			boolean possibleSubitem = false;
-			for (String subitemName : newParent.getItemType().getAllChildren()) {
-				possibleSubitem |= ItemTypeRegistry.getItemExtenders(subitemName).contains(baseItem.getTypeName());
-			}
-			if (!possibleSubitem)
-				throw new EcommanderException("Unable to copy item ID " + baseItem.getId() + " to parent ID " + newParent.getId()
-						+ ". Incompatible types.");
-			
-			// Если проверки прошли успешно - продолжение
-			// Шаг 1. - Создать новый айтем с копией всех параметров базового, установить заданного родителя
-			Item item = Item.newChildItem(baseItem.getItemType(), newParent);
-			Item.updateParamValues(baseItem, item);
-			
-			// Шаг 2. - Установить во все параметры-файлы объекты типа File, чтобы эти файлы были скопированы при сохранении айтема
-			for (Iterator<ParameterDescription> iter = baseItem.getItemType().getParameterList().iterator(); iter.hasNext();) {
-				ParameterDescription paramDesc = iter.next();
-				if (paramDesc.getDataType().isFile()) {
-					ArrayList<File> files = baseItem.getFileValues(paramDesc.getName(), AppContext.getFilesDirPath());
-					item.clearParameter(paramDesc.getName()); // для того, чтобы не было дублирования
-					for (File file : files) {
-						item.setValue(paramDesc.getName(), file);
-					}
+				throw new EcommanderException(ASSOC_NODES_ILLEGAL,
+						"Unable to copy item ID " + baseItem.getId() + " to own subitem (" + newParent.getId() + ")");
+		}
+		boolean possibleSubitem = false;
+		for (ItemTypeContainer.ChildDesc child : newParent.getItemType().getAllChildren()) {
+			if (child.assocName.equals(ItemTypeRegistry.getPrimaryAssoc().getName()))
+				possibleSubitem |= ItemTypeRegistry.getItemExtenders(child.itemName).contains(baseItem.getTypeName());
+		}
+		if (!possibleSubitem) {
+			throw new EcommanderException(INCOMPATIBLE_ITEM_TYPES, "Unable to copy item ID " + baseItem.getId() +
+					" to parent ID " + newParent.getId() + ". Incompatible types.");
+		}
+
+		// Если проверки прошли успешно - продолжение
+		// Шаг 1. - Создать новый айтем с копией всех параметров базового, установить заданного родителя
+		Item item = Item.newChildItem(baseItem.getItemType(), ItemTypeRegistry.getPrimaryAssoc(), newParent);
+		Item.updateParamValues(baseItem, item);
+
+		// Шаг 2. - Установить во все параметры-файлы объекты типа File, чтобы эти файлы были скопированы при сохранении айтема
+		for (ParameterDescription paramDesc : baseItem.getItemType().getParameterList()) {
+			if (paramDesc.getDataType().isFile()) {
+				ArrayList<File> files = baseItem.getFileValues(paramDesc.getName(),
+						AppContext.getFilesDirPath(baseItem.isFileProtected()));
+				item.clearParameter(paramDesc.getName()); // для того, чтобы не было дублирования
+				for (File file : files) {
+					item.setValue(paramDesc.getName(), file);
 				}
 			}
-			
-			// Шаг 3. - Созранить новый айтем
-			executeCommand(new SaveNewItemDBUnit(item, false));
-			
-			// Шаг 4. - Обновить пути к файлам во всех текстовых параметрах айтема
-			boolean corrections = false;
-			for (Iterator<ParameterDescription> iter = item.getItemType().getParameterList().iterator(); iter.hasNext();) {
-				ParameterDescription paramDesc = iter.next();
-				if (TEXT_PARAM_TYPES.contains(paramDesc.getType())) {
-					String value = item.getStringValue(paramDesc.getName(), "");
-					String oldPath = baseItem.getPredecessorsAndSelfPath();
-					String newPath = item.getPredecessorsAndSelfPath();
-					if (StringUtils.contains(value, oldPath)) {
-						corrections = true;
-						item.setValue(paramDesc.getName(), StringUtils.replace(value, oldPath, newPath));
-					}
+		}
+
+		// Шаг 3. - Сохранить новый айтем
+		executeCommand(new SaveNewItemDBUnit(item, newParent));
+
+		// Шаг 4. - Обновить пути к файлам во всех текстовых параметрах айтема
+		boolean corrections = false;
+		for (ParameterDescription paramDesc : item.getItemType().getParameterList()) {
+			if (TEXT_PARAM_TYPES.contains(paramDesc.getType())) {
+				String value = item.getStringValue(paramDesc.getName(), "");
+				String oldPath = baseItem.getRelativeFilesPath();
+				String newPath = item.getRelativeFilesPath();
+				if (StringUtils.contains(value, oldPath)) {
+					corrections = true;
+					item.setValue(paramDesc.getName(), StringUtils.replace(value, oldPath, newPath));
 				}
 			}
-			if (corrections)
-				executeCommand(new UpdateItemParamsDBUnit(item, false, true).fulltextIndex(false));
-			
-			// Шаг 5. - Выполнить команду копирования для всех сабайтемов копируемого айтема
-			ArrayList<Item> subitems = ItemQuery.loadByParentId(baseItem.getId(), conn);
-			for (Item subitem : subitems) {
-				executeCommand(new CopyItemDBUnit(subitem, item));
+		}
+		if (corrections)
+			executeCommand(new UpdateItemParamsDBUnit(item, false).fulltextIndex(false));
+
+		// Шаг 5. - Выполнить команду копирования для всех сабайтемов копируемого айтема
+		TemplateQuery allSubitems = new TemplateQuery("Load item primary subitems");
+		allSubitems.SELECT("*").FROM(I_TABLE).INNER_JOIN(IP_TABLE, I_ID, IP_CHILD_ID).WHERE()
+				.col(IP_ASSOC_ID).setByte(ItemTypeRegistry.getPrimaryAssoc().getId()).AND()
+				.col(IP_PARENT_ID).setLong(baseItem.getId()).AND()
+				.col(IP_PARENT_DIRECT).setByte((byte) 1);
+		ArrayList<Item> subitems = new ArrayList<>();
+		try (PreparedStatement pstmt = allSubitems.prepareQuery(getTransactionContext().getConnection())) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				subitems.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), baseItem.getId()));
 			}
-		} finally {
-			if (stmt != null)
-				stmt.close();
+		}
+		for (Item subitem : subitems) {
+			executeCommand(new CopyItemDBUnit(subitem, item));
 		}
 	}
 

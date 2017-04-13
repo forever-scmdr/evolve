@@ -55,9 +55,15 @@ public class FileDataType extends StringDataType {
 			meta.put(EXTENSION_META, StringUtils.substringAfterLast(file.getName(), "."));
 		} else {
 			try {
-				Path file = null;
-				if (value instanceof File) file = ((File) value).toPath();
-				else file = new File(AppContext.getFilesDirPath() + parentPath + value).toPath();
+				Path file;
+				if (value instanceof File)
+					file = ((File) value).toPath();
+				else
+					file = new File(AppContext.getCommonFilesDirPath() + parentPath + value).toPath();
+				if (!Files.exists(file))
+					file = new File(AppContext.getProtectedFilesDirPath() + parentPath + value).toPath();
+				if (!Files.exists(file))
+					return meta;
 				BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
 				meta.put(SIZE_META, attr.size() + "");
 				meta.put(CREATED_META, DateDataType.DATE_FORMATTER.print(new DateTime(attr.creationTime().toMillis())));
@@ -79,7 +85,7 @@ public class FileDataType extends StringDataType {
 	}
 	/**
 	 * Получить название файла из пути к файлу
-	 * @param fileItem
+	 * @param fileName
 	 * @return
 	 */
 	public static String getFileName(String fileName) {

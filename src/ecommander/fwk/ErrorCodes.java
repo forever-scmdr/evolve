@@ -15,4 +15,5 @@ public interface ErrorCodes {
 	int USER_ALREADY_EXISTS = 7; // Пользователь с таким логином уже зарегистрирован
 	int FILTER_FORMAT_ERROR = 8; // Ошибка формата пользовательского фильтра
 	int FILE_ERROR = 9; // Ошибка при работе с файлами
+	int INCOMPATIBLE_ITEM_TYPES = 10; // Несовместимые типы айтемов для операции
 }

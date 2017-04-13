@@ -1115,7 +1115,7 @@ public class Item implements ItemBasics {
 	 * Получить отсносительный путь (без общей для всех айтемов части) к директории файлов айтема
 	 * @return
 	 */
-	public String getFilesPath() {
+	public String getRelativeFilesPath() {
 		return filesPath;
 	}
 

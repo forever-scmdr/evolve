@@ -20,7 +20,7 @@ public class VeryOldItemsImporter extends DBPersistenceCommandUnit {
 	private static final String DUMP_NAME = "items.xml";
 	
 	public void execute() throws Exception {
-		Document doc = Jsoup.parse(new File(AppContext.getFilesDirPath() + DUMP_NAME), "UTF-8");
+		Document doc = Jsoup.parse(new File(AppContext.getCommonFilesDirPath() + DUMP_NAME), "UTF-8");
 		int itemCount = 0;
 		long currentParentId = 1;
 		DelayedTransaction transaction = new DelayedTransaction(null);

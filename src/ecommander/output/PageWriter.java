@@ -108,7 +108,8 @@ public class PageWriter {
 	private static final String SOURCE_LINK_ELEMENT = "source_link";
 	private static final String USER_ELEMENT = "user";
 	private static final String ID_ATTRIBUTE = "id";
-	private static final String GROUP_ATTRIBUTE = "group";
+	private static final String ROLE_ATTRIBUTE = "admin";
+	private static final String GROUP_ELEMENT = "group";
 	private static final String VISUAL_ATTRIBUTE = "visual";
 	
 	private ExecutablePagePE page;
@@ -124,10 +125,17 @@ public class PageWriter {
 		xml.startElement(ROOT_ELEMENT, NAME_ATTRIBUTE, page.getPageName());
 		// <source_link>catalog/device_type:v:/device_field:v:Маркировка шита/manufacturer:v:Markem</source_link>
 		xml.startElement(SOURCE_LINK_ELEMENT).addText(page.getRequestLink().serialize()).endElement();
-		// <user id="4455" group="common"/>
+		// <user id="4455">
+		//      <group name="common" id="0" admin="1"/>
+		//      ...
+		// </user>
 		User user = page.getSessionContext().getUser();
-		xml.addEmptyElement(USER_ELEMENT, ID_ATTRIBUTE, user.getUserId(), GROUP_ATTRIBUTE, user.getGroup(), NAME_ATTRIBUTE, user.getName(),
+		xml.startElement(USER_ELEMENT, ID_ATTRIBUTE, user.getUserId(), NAME_ATTRIBUTE, user.getName(),
 				VISUAL_ATTRIBUTE, page.getSessionContext().isContentUpdateMode());
+		for (User.Group group : user.getGroups()) {
+			xml.addEmptyElement(GROUP_ELEMENT, NAME_ATTRIBUTE, group.name, ID_ATTRIBUTE, group.id, ROLE_ATTRIBUTE, group.role);
+		}
+		xml.endElement();
 		// <base>http://test.forever-ds.com</base>
 		xml.startElement(BASE_ELEMENT).addText(page.getUrlBase()).endElement();
 		// <variables>

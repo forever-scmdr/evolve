@@ -1,11 +1,6 @@
 package ecommander.filesystem;
 
-import java.io.File;
-import java.io.IOException;
-
-import ecommander.fwk.EcommanderException;
 import ecommander.controllers.AppContext;
-import org.apache.commons.io.FileUtils;
 
 /**
  * Удаляет все файлы сабайтемов данного айтема.
@@ -22,9 +17,9 @@ public class DeleteItemsDirectoriesUnit extends ItemDirectoryCommandUnit {
 
 	public void execute() throws Exception {
 		for (long itemId : itemIds) {
-			boolean deleted = deleteItemDirectory(AppContext.getFilesDirPath(), itemId);
+			boolean deleted = deleteItemDirectory(AppContext.getCommonFilesDirPath(), itemId);
 			if (!deleted)
-				deleteItemDirectory(AppContext.getProtectedDirPath(), itemId);
+				deleteItemDirectory(AppContext.getProtectedFilesDirPath(), itemId);
 		}
 	}
 

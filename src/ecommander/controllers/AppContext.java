@@ -101,18 +101,34 @@ public class AppContext {
 		return getRealPath(LUCENE_INDEX_FOLDER);
 	}
 	
-	public static String getFilesDirPath() {
+	public static String getCommonFilesDirPath() {
 		return getRealPath(FILES_FOLDER_NAME);
 	}
 
-	public static String getProtectedDirPath() {
+	public static String getProtectedFilesDirPath() {
 		return getRealPath(PROTECTED_FILES_FOLDER_NAME);
 	}
 
-	public static String getFilesUrlPath() {
+	public static String getFilesDirPath(boolean isProtected) {
+		if (isProtected)
+			return getProtectedFilesDirPath();
+		return getCommonFilesDirPath();
+	}
+
+	public static String getCommonFilesUrlPath() {
 		return FILES_FOLDER_NAME;
 	}
-	
+
+	public static String getProtectedFilesUrlPath() {
+		return PROTECTED_FILES_FOLDER_NAME;
+	}
+
+	public static String getFilesUrlPath(boolean isProtected) {
+		if (isProtected)
+			return getProtectedFilesUrlPath();
+		return getCommonFilesUrlPath();
+	}
+
 	public static String getPagesModelPath() {
 		return getRealPath(MAIN_XML_MODELS_DIR + PAGESMODEL_FILE);
 	}

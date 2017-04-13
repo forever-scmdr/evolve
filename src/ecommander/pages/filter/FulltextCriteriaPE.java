@@ -58,7 +58,7 @@ public class FulltextCriteriaPE implements PageElement {
 		for (String type : types) {
 			try {
 				FulltextQueryCreatorRegistry.getCriteria(type);
-			} catch (EcommanderException e) {
+			} catch (Exception e) {
 				results.addError(elementPath + " > " + getKey(), "there is no '" + type + "' class or named fulltext query");
 			}
 		}

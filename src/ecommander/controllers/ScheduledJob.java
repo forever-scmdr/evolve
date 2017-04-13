@@ -51,7 +51,7 @@ public class ScheduledJob implements Job {
 					else
 						XmlXslOutputController.outputXml(out, xml);
 				}
-				String reportFileName = AppContext.getFilesDirPath() + executable.getPageName() + "/"
+				String reportFileName = AppContext.getCommonFilesDirPath() + executable.getPageName() + "/"
 						+ DateDataType.outputDate(System.currentTimeMillis(), DateDataType.REPORT_FORMATTER) + ".html";
 				File reportFile = new File(reportFileName);
 				reportFile.getParentFile().mkdirs();

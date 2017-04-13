@@ -30,9 +30,7 @@ public abstract class SingleItemDirectoryFileUnit extends ItemDirectoryCommandUn
 	 * @return
 	 */
 	protected String createItemDirectoryName() {
-		if (item.isFileProtected())
-			return AppContext.getProtectedDirPath() + item.getFilesPath();
-		return AppContext.getFilesDirPath() + item.getFilesPath();
+		return AppContext.getFilesDirPath(item.isFileProtected()) + item.getRelativeFilesPath();
 	}
 
 

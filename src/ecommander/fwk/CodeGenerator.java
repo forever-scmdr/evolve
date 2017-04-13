@@ -177,7 +177,7 @@ public class CodeGenerator {
 							}
 						}
 						if (isFile) {
-							getterInvoke.arg(codeModel.ref(AppContext.class).staticInvoke("getFilesDirPath"));
+							getterInvoke.arg(codeModel.ref(AppContext.class).staticInvoke("getCommonFilesDirPath"));
 						}
 						JVar valDirect = setterDirect.param(type, "value");
 						setterDirect.body().invoke("setValue").arg(param.getName()).arg(valDirect);

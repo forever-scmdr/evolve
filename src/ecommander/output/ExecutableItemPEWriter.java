@@ -29,10 +29,11 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 	/**
 	 * Вывести один найденный айтем (и запустить вывод сабайтемов этого айтема)
 	 * @param itemToWrite
-	 * @param parentNode
-	 * TODO <low priority> удалить дублирование в конце метода
+	 * @param xml
+	 * @param isVisualEditing
+	 * @throws Exception
 	 */
-	protected void writeItem(ExecutableItemPE itemToWrite, XmlDocumentBuilder xml, boolean isVisualEditing) throws Exception {
+	private void writeItem(ExecutableItemPE itemToWrite, XmlDocumentBuilder xml, boolean isVisualEditing) throws Exception {
 		Item item = itemToWrite.getParentRelatedFoundItemIterator().getCurrentItem();
 		// Создать тэг для айтема и добавить его в структуру
 		String tagName = null;
@@ -47,7 +48,7 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 		}
 		// <item id="123" path="sitefiles/1/20/255/4055" updated="190456373"> (ID айтема, путь к файлам айтема)
 		xml.startElement(tagName, TYPE_ATTRIBUTE, item.getTypeName(), ID_ATTRIBUTE, item.getId(), PATH_ATTRIBUTE,
-				AppContext.getFilesUrlPath() + item.getPredecessorsAndSelfPath(), KEY_ATTRIBUTE, item.getKeyUnique());
+				AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath(), KEY_ATTRIBUTE, item.getKeyUnique());
 		// Если включен режим визуального редактирования
 		if (isVisualEditing)
 			addConentUpdateAttrs(xml, item);
@@ -67,8 +68,6 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 	}
 	/**
 	 * Вывести список айтемов
-	 * @param items
-	 * @param parentNode
 	 */
 	public void write(PageElement elementToWrite, XmlDocumentBuilder xml) throws Exception {
 		ExecutableItemPE executableItem = (ExecutableItemPE)elementToWrite;
@@ -83,7 +82,7 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 		// Создается элемент <item_count>10</item_count>
 		String tagName = StringUtils.isBlank(executableItem.getTag()) ? executableItem.getItemName() : executableItem.getTag();
 		tagName += ITEM_COUNT_ELEMENT_SUFFIX;
-		String quantity = new Integer(executableItem.getParentRelatedFoundItemIterator().getTotalQuantity()).toString();
+		String quantity = Integer.toString(executableItem.getParentRelatedFoundItemIterator().getTotalQuantity());
 		xml.startElement(tagName).addText(quantity).endElement();
 		// Выводится фильтр, если он есть
 		if (executableItem.hasFilter()) {
@@ -124,9 +123,9 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 	private void addConentUpdateAttrs(XmlDocumentBuilder itemTag, Item item) {
 		String paramsUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, PARAMS_VIEW_TYPE, ITEM_ID_INPUT, item.getId());
 		String allUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, item.getId(), ITEM_TYPE_INPUT, item.getTypeId());
-		String deleteUrl = createAdminUrl(DELETE_ITEM_ACTION, ITEM_ID_INPUT, item.getId(), PARENT_ID_INPUT, item.getDirectParentId());
+		String deleteUrl = createAdminUrl(DELETE_ITEM_ACTION, ITEM_ID_INPUT, item.getId(), PARENT_ID_INPUT, item.getContextParentId());
 		String newSiblingUrl = createAdminUrl(CREATE_ITEM_ACTION, ITEM_TYPE_INPUT, item.getTypeId(), PARENT_ID_INPUT,
-				item.getDirectParentId());
+				item.getContextParentId());
 		itemTag.insertAttributes(ADMIN_PARAMETERS_ATTRIBUTE, paramsUrl, ADMIN_FULL_ATTRIBUTE, allUrl, ADMIN_DELETE_ATTRIBUTE, deleteUrl,
 				ADMIN_SIBLING_ATTRIBUTE, newSiblingUrl);
 	}
