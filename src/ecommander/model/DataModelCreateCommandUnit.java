@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  */
 class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements DataModelXmlElementNames, DBConstants {
 
-	public static enum Mode {
+	public enum Mode {
 		safe_update, force_update, load
 	}
 
@@ -69,7 +69,6 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	//private HashSet<Integer> itemsToRefresh = new HashSet<>(); // айтемы, у которых поменялись параметры и которые нао пересохранить
 
 	private boolean dbChanged = false; // были ли изменения в БД
-	private boolean fileChanged = false;
 
 	private byte maxAssocId = (byte)0;
 	private int maxItemId = 0;
@@ -78,7 +77,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	private boolean noDeletion = true; // Нужно ли удалять айтемы или параметры из БД в связи с обновлением model.xml
 	private HashMap<File, String> xmlFileContents = new HashMap<>();
 
-	public DataModelCreateCommandUnit(Mode mode) {
+	DataModelCreateCommandUnit(Mode mode) {
 		this.mode = mode;
 	}
 
@@ -110,7 +109,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			ArrayList<File> modelFiles = findModelFiles(new File(AppContext.getMainModelPath()), null);
 			for (File modelFile : modelFiles) {
 				String xml = FileUtils.readFileToString(modelFile, "UTF-8");
-				Document doc = parseFile(xml);
+				parseFile(xml);
 				xmlFileContents.put(modelFile, xml);
 			}
 
@@ -118,7 +117,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			if (Files.exists(Paths.get(AppContext.getUserModelPath()))) {
 				File userFile = new File(AppContext.getUserModelPath());
 				String xml = FileUtils.readFileToString(userFile, "UTF-8");
-				Document doc = parseFile(xml);
+				parseFile(xml);
 				xmlFileContents.put(userFile, xml);
 			}
 		}
@@ -169,7 +168,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 * @param rootEl
 	 * @throws Exception
 	 */
-	protected void readRoot(Element rootEl) throws Exception {
+	private void readRoot(Element rootEl) throws Exception {
 		Statement stmt = null;
 		try {
 			// Загрузить ID корня из БД
@@ -213,7 +212,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 
 	private void readAssoc(Element assocEl) throws ValidationException, SQLException {
 		String name = Strings.createXmlElementName(assocEl.attr(NAME));
-		int newHash = name.hashCode();
+		//int newHash = name.hashCode();
 		int savedHash = NumberUtils.toInt(assocEl.attr(AG_HASH), 0);
 		byte savedId = NumberUtils.toByte(assocEl.attr(AG_ID), (byte)0);
 		String caption = assocEl.attr(CAPTION);
@@ -229,8 +228,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			}
 			// Обновить название айтема в таблице ID айтемов
 			if (mode == Mode.force_update) {
-				Statement stmt = getTransactionContext().getConnection().createStatement();
-				try {
+				try (Statement stmt = getTransactionContext().getConnection().createStatement()) {
 					String sql
 							= "UPDATE " + AssocIds.AID_TABLE
 							+ " SET " + AssocIds.AID_ASSOC_NAME + "='" + name
@@ -238,8 +236,6 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
 					dbChanged = true;
-				} finally {
-					stmt.close();
 				}
 			}
 			// Заменить название айтема в списке ID айтемов
@@ -250,8 +246,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		if (!assocIds.containsKey(name)) {
 			byte newId = ++maxAssocId;
 			if (mode == Mode.force_update) {
-				Statement stmt = getTransactionContext().getConnection().createStatement();
-				try {
+				try (Statement stmt = getTransactionContext().getConnection().createStatement()) {
 					String sql = "INSERT " + AssocIds.AID_TABLE + " (" + AssocIds.AID_ASSOC_NAME + ") VALUES ('" + name + "')";
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
@@ -259,8 +254,6 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 					keys.next();
 					newId = keys.getByte(1);
 					dbChanged = true;
-				} finally {
-					stmt.close();
 				}
 			}
 			assocIds.put(name, new HashId(name.hashCode(), newId));
@@ -292,7 +285,6 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		String defaultPage = itemEl.attr(DEFAULT_PAGE);
 		boolean virtual = Boolean.parseBoolean(itemEl.attr(VIRTUAL));
 		boolean userDefined = Boolean.parseBoolean(itemEl.attr(USER_DEF));
-		boolean isInline = Boolean.parseBoolean(itemEl.attr(INLINE));
 		boolean isExt = Boolean.parseBoolean(itemEl.attr(EXTENDABLE));
 		boolean isKeyUnique = Boolean.parseBoolean(itemEl.attr(KEY_UNIQUE));
 		boolean nameUpdate = !itemIds.containsKey(name) && itemsById.containsKey(savedId);
@@ -305,8 +297,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			}
 			// Обновить название айтема в таблице ID айтемов
 			if (mode == Mode.force_update) {
-				Statement stmt = getTransactionContext().getConnection().createStatement();
-				try {
+				try (Statement stmt = getTransactionContext().getConnection().createStatement()) {
 					String sql
 							= "UPDATE " + ItemIds.IID_TABLE
 							+ " SET " + ItemIds.IID_ITEM_NAME + "='" + name
@@ -314,8 +305,6 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
 					dbChanged = true;
-				} finally {
-					stmt.close();
 				}
 			}
 			// Заменить название айтема в списке ID айтемов
@@ -352,7 +341,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		}
 		// Добавить описание айтема в реестр
 		ItemType item = new ItemType(name, itemIds.get(name).id, caption, description, key,
-				exts, defaultPage, virtual, userDefined, isInline, isExt, isKeyUnique);
+				exts, defaultPage, virtual, userDefined, isExt, isKeyUnique);
 		ItemTypeRegistry.addItemDescription(item);
 
 		// Прочитать вложенные элементы (параметры, дочерние, обработчики)
@@ -401,7 +390,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 * @param paramEl
 	 * @throws Exception
 	 */
-	protected void readParameter(ItemType item, Element paramEl) throws Exception {
+	private void readParameter(ItemType item, Element paramEl) throws Exception {
 		String name = paramEl.attr(NAME);
 		int newHash = name.hashCode();
 		int savedHash = NumberUtils.toInt(paramEl.attr(AG_HASH), 0);
@@ -443,8 +432,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			}
 			// Обновить название параметра в таблице ID параметров
 			if (mode == Mode.force_update) {
-				Statement stmt = getTransactionContext().getConnection().createStatement();
-				try {
+				try (Statement stmt = getTransactionContext().getConnection().createStatement()) {
 					String sql
 							= "UPDATE " + ParamIds.PID_TABLE
 							+ " SET " + ParamIds.PID_PARAM_NAME + "='" + name
@@ -452,8 +440,6 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
 					dbChanged = true;
-				} finally {
-					stmt.close();
 				}
 			}
 			// Заменить название параметра в списке ID параметров
@@ -464,8 +450,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		if (!paramIds.get(item.getName()).containsKey(name)) {
 			int newId = ++maxParamId;
 			if (mode == Mode.force_update) {
-				Statement stmt = getTransactionContext().getConnection().createStatement();
-				try {
+				try (Statement stmt = getTransactionContext().getConnection().createStatement()) {
 					String sql
 							= "INSERT " + ParamIds.PID_TABLE + " ("
 							+ ParamIds.PID_ITEM_ID + ", " + ParamIds.PID_PARAM_NAME
@@ -476,8 +461,6 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 					keys.next();
 					newId = keys.getInt(1);
 					dbChanged = true;
-				} finally {
-					stmt.close();
 				}
 			}
 			paramIds.get(item.getName()).put(name, new HashId(name.hashCode(), newId));
@@ -562,7 +545,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 * @param childEl
 	 * @throws Exception
 	 */
-	protected void readChild(ItemTypeContainer parent, Element childEl) throws Exception {
+	private void readChild(ItemTypeContainer parent, Element childEl) throws Exception {
 		// По очереди все сабайтемы
 		String childName = childEl.attr(NAME);
 		String assocName = childEl.attr(ASSOC);
@@ -582,7 +565,6 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 				!StringUtils.equals(el.attr(AG_HASH), name.hashCode() + "")) {
 			el.attr(AG_ID, id + "");
 			el.attr(AG_HASH, name.hashCode() + "");
-			fileChanged = true;
 		}
 	}
 	/**
@@ -590,9 +572,8 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 * Изменяет старые параметры в соответствии с новой моделью (при перемещении параметров из одного атйема в другой)
 	 * @throws SQLException 
 	 */
-	protected void mergeModel() throws SQLException {
-		Statement stmt = getTransactionContext().getConnection().createStatement();
-		try {
+	private void mergeModel() throws SQLException {
+		try (Statement stmt = getTransactionContext().getConnection().createStatement()) {
 			// ********************** Очистить таблицы ******************************
 			String sql;
 			// Удаление из таблицы ID айтемов
@@ -603,7 +584,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 				stmt.executeUpdate(sql);
 				dbChanged = true;
 			}
-			// Удаление параметров, если нужно удалять, 
+			// Удаление параметров, если нужно удалять,
 			// изменение ID параметров, если параметр переместился в родительский класс
 			HashSet<Integer> paramsToDeleteFromIndex = new HashSet<>();
 			if (paramsById.size() > 0) {
@@ -650,18 +631,16 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			for (Map.Entry<File, String> file : xmlFileContents.entrySet()) {
 				try {
 					sql
-						= "INSERT " + ModelXML.XML_TABLE + " ("
-						+ ModelXML.XML_NAME + ", " + ModelXML.XML_XML
-						+ ") VALUES ('" + file.getKey().getName() + "', '" + file.getValue() + "') ON DUPLICATE KEY UPDATE "
-						+ ModelXML.XML_XML + "='" + file.getValue()  +"'";
+							= "INSERT " + ModelXML.XML_TABLE + " ("
+							+ ModelXML.XML_NAME + ", " + ModelXML.XML_XML
+							+ ") VALUES ('" + file.getKey().getName() + "', '" + file.getValue() + "') ON DUPLICATE KEY UPDATE "
+							+ ModelXML.XML_XML + "='" + file.getValue() + "'";
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
 				} finally {
 					stmt.close();
 				}
 			}
-		} finally {
-			stmt.close();
 		}
 		//clearSql = "SET FOREIGN_KEY_CHECKS=0";
 		//clearSql = "SET FOREIGN_KEY_CHECKS=1";
@@ -776,11 +755,13 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		} else {
 			if (startFile.isDirectory()) {
 				File[] filesList = startFile.listFiles();
-				for (File file : filesList) {
-					if (file.isFile())
-						files.add(file);
-					else if (file.isDirectory())
-						findModelFiles(file, files);
+				if (filesList != null) {
+					for (File file : filesList) {
+						if (file.isFile())
+							files.add(file);
+						else if (file.isDirectory())
+							findModelFiles(file, files);
+					}
 				}
 			}
 		}

@@ -7,23 +7,21 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 
+import ecommander.model.*;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeContainer;
-import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
-import ecommander.model.User;
 
 /**
  * @author EEEE
  *
  */
-public class AdminLoader {
+public class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 
 	private static AdminLoader loader;
 
@@ -41,19 +39,58 @@ public class AdminLoader {
 	 * Загружаются следующие айтемы:
 	 * 		- неперсональные айтемы текущей группы (критерий - тип айтема и номер группы)
 	 * 		- персональные айтемы текущей группы (критерий - тип айтема и номер юзера)
-	 * 		- айтемы не принадлежащие текущей группе, но которые могут иметь сабайтемы текущей группы (критерий - тип айтема)
+	 * 	    - загружаются потомки по всем ассоциациям
 	 * @param itemDesc
 	 * @param parentId
 	 * @param user
 	 * @return
 	 * @throws Exception
 	 */
-	public HashMap<String, ArrayList<ItemAccessor>> loadClosestSubitems(ItemTypeContainer itemDesc, long parentId, User user) throws Exception {
-		HashMap<String, ArrayList<ItemAccessor>> result = new HashMap<String, ArrayList<ItemAccessor>>();
+	public ArrayList<ItemAccessor> loadClosestSubitems(ItemTypeContainer itemDesc, long parentId, User user) throws Exception {
+		ArrayList<ItemAccessor> result = new ArrayList<>();
+		Byte[] allAssocs = ItemTypeRegistry.getItemOwnAssocIds(itemDesc.getName()).toArray(new Byte[0]);
+		HashSet<Byte> adminGroups = new HashSet<>();
+		HashSet<Byte> commonGroups = new HashSet<>();
+		for (User.Group group : user.getGroups()) {
+			if (group.role == User.ADMIN)
+				adminGroups.add(group.id);
+			else
+				commonGroups.add(group.id);
+		}
+		TemplateQuery base = new TemplateQuery("Load closest subitems part");
+		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED, IP_TABLE + ".*")
+				.FROM(I_TABLE).INNER_JOIN(IP_TABLE, I_ID, IP_CHILD_ID).WHERE()
+				.col(IP_PARENT_ID).setLong(parentId).AND()
+				.col(IP_PARENT_DIRECT).setByte((byte) 1).AND()
+				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")").AND()
+				.col(IP_ASSOC_ID, " IN(").setByteArray(allAssocs).sql(")").AND();
+
+		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
+		TemplateQuery commonQuery = (TemplateQuery) base.createClone();
+		adminQuery.col(I_GROUP, " IN(").setByteArray(adminGroups.toArray(new Byte[0])).sql(")");
+		commonQuery.col(I_GROUP, " IN(").setByteArray(commonGroups.toArray(new Byte[0])).sql(")").AND()
+				.col(I_USER).setInt(user.getUserId());
+
+		TemplateQuery select = new TemplateQuery("Load closest subitems union");
+		select.getOrCreateSubquery("ADMIN").replace(adminQuery);
+		select.UNION_ALL().getOrCreateSubquery("COMMON").replace(commonQuery);
+
+		try (PreparedStatement pstmt = select.prepareQuery(MysqlConnector.getConnection())) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result.add();
+			}
+		}
+
+
 		Connection conn = null;
 		try {
-			conn = MysqlConnector.getConnection();
-		
+			conn = ;
+
+
+
+
+
 			// Общий шаблон
 			String template 
 				= "<<UNION>>SELECT " + DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID 

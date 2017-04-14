@@ -30,12 +30,12 @@ public class SaveNewItemTypeDBUnit extends ItemModelFilePersistenceCommandUnit {
 	
 	private ItemType newType = null;
 	
-	public SaveNewItemTypeDBUnit(String itemName, String caption, String description, String strExtends, String itemKey, boolean inline) {
+	public SaveNewItemTypeDBUnit(String itemName, String caption, String description, String strExtends, String itemKey) {
 		itemName = Strings.createXmlElementName(itemName.trim());
 		ItemType parent = ItemTypeRegistry.getItemType(strExtends);
 		boolean isKeyUnique = parent != null && parent.isKeyUnique();
 		newType = new ItemType(itemName, 0, caption, description, itemKey, strExtends, null,
-				itemVirtual, isUserDefined, inline, true, isKeyUnique);
+				itemVirtual, isUserDefined, true, isKeyUnique);
 	}
 	
 	public SaveNewItemTypeDBUnit(ItemType type) {

@@ -33,7 +33,6 @@ public class ItemAccessor extends MetaDataWriter implements ItemBasics, Comparab
 	private String assocName;
 	private String assocCaption;
 	private boolean isParentCompatible;
-	private boolean inline = false;
 	private byte groupId;
 	private int userId;
 	private byte status;
@@ -56,7 +55,6 @@ public class ItemAccessor extends MetaDataWriter implements ItemBasics, Comparab
 		if (itemDesc != null) {
 			this.typeName = itemDesc.getName();
 			this.typeCaption = itemDesc.getCaption();
-			this.inline = itemDesc.isInline();
 		} else {
 			this.typeName = "root";
 			this.typeCaption = "Корень";
@@ -130,7 +128,6 @@ public class ItemAccessor extends MetaDataWriter implements ItemBasics, Comparab
 				AdminXML.TYPE_CAPTION_ATTRIBUTE, typeCaption,
 				AdminXML.ASSOC_NAME_ATTRIBUTE, assocName,
 				AdminXML.ASSOC_CAPTION_ATTRIBUTE, assocCaption,
-				AdminXML.TYPE_INLINE_ATTRIBUTE, inline, 
 				AdminXML.ID_ATTRIBUTE, itemId,
 				AdminXML.CAPTION_ATTRIBUTE, key,
 				AdminXML.WEIGHT_ATTRIBUTE, childWeight,

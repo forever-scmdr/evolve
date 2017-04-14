@@ -599,33 +599,6 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 			}
 		}
 	}
-	
-	/**
-	 * Находит все файлы pages.xml
-	 * @param startFile
-	 * @param files
-	 * @return
-	 */
-	private static ArrayList<File> findModelFiles(File startFile, ArrayList<File> files) {
-		if (files == null) {
-			files = new ArrayList<File>();
-			if (startFile.isFile())
-				files.add(startFile);
-			else
-				return findModelFiles(startFile, files);
-		} else {
-			if (startFile.isDirectory()) {
-				File[] filesList = startFile.listFiles();
-				for (File file : filesList) {
-					if (file.isFile())
-						files.add(file);
-					else if (file.isDirectory())
-						findModelFiles(file, files);
-				}
-			}
-		}
-		return files;
-	}
 
 	public static void main(String[] args) throws IOException {
 		File file = new File("F:/PROJECTS/evolve/web/WEB-INF/ec_xml/model_test.xml");

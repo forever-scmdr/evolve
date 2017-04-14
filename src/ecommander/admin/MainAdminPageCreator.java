@@ -240,7 +240,6 @@ public class MainAdminPageCreator {
 	 */
 	public static final String PARAMS_VIEW_TYPE = "parameters";
 	public static final String SUBITEMS_VIEW_TYPE = "subitems";
-	public static final String INLINE_VIEW_TYPE = "inline";
 	public static final String MOUNT_TO_VIEW_TYPE = "mountTo";
 	public static final String TO_MOUNT_VIEW_TYPE = "toMount";
 	public static final String MOVE_TO_VIEW_TYPE = "moveTo";

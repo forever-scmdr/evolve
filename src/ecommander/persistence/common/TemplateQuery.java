@@ -103,7 +103,7 @@ public class TemplateQuery implements QueryPart {
 		}
 		return query;
 	}
-	
+
 	public final TemplateQuery sql(String sql) {
 		queryParts.add(new SqlQueryPart(sql));
 		return this;
@@ -267,10 +267,11 @@ public class TemplateQuery implements QueryPart {
 	 * Нужно для того, чтобы исходный объект оставался тем же, а содержимое полностью менялось
 	 * @param query
 	 */
-	public final void replace(TemplateQuery query) {
+	public final TemplateQuery replace(TemplateQuery query) {
 		this.name = query.name;
 		this.queryParts = query.queryParts;
 		this.subqueries = query.subqueries;
+		return this;
 	}
 
 	public final boolean isEmpty() {

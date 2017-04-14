@@ -31,7 +31,7 @@ public class UpdateItemTypeDBUnit extends ItemModelFilePersistenceCommandUnit {
 	private ItemType newDesc;
 	
 	public UpdateItemTypeDBUnit(int id, String itemName, String caption, String description, String strExtends,
-			boolean inline, ArrayList<Integer> order, String itemKey) {
+			ArrayList<Integer> order, String itemKey) {
 		if (strExtends != null) this.extendsStr = strExtends;
 		if (order != null) paramsOrder.addAll(order);
 		oldDesc = ItemTypeRegistry.getItemType(id);
@@ -46,7 +46,7 @@ public class UpdateItemTypeDBUnit extends ItemModelFilePersistenceCommandUnit {
 		}
 		itemName = Strings.createXmlElementName(itemName);
 		newDesc = new ItemType(itemName.trim(), id, caption, description, itemKey, extendsStr,
-				null, false, true, inline,true, isKeyUnique);
+				null, false, true,true, isKeyUnique);
 	}
 	
 	UpdateItemTypeDBUnit(ItemType desc) {

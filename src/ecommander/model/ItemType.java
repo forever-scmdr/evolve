@@ -48,7 +48,6 @@ public class ItemType extends ItemTypeContainer {
 	private String key =  StringUtils.EMPTY; // Ключевые параметры, разделенные пробелом
 	private String defaultPage = null; // страница по умолчанию для
 	private boolean virtual;
-	private boolean inline; // является ли данный айтем инлайновым (для панели управления)
 	private boolean isExtendable; // Может ли пользователь расширять этот айтем
 	private boolean isKeyUnique;	    // Должен ли айтем иметь уникальное имя, по которому можно было бы идентифицировать этот айтем
 										// при передаче этого имени через URL
@@ -65,7 +64,7 @@ public class ItemType extends ItemTypeContainer {
 	private String extendsStr = ITEM_SELF_PARAMS; // перечисление всех предов айтема в порядке добавления параметров, сам айтем в этом списке обозначается *
 	
 	public ItemType(String typeName, int typeId, String caption, String description, String key, String extendsStr, String defaultPage, boolean virtual,
-			boolean isUserDefined, boolean isInline, boolean isExtendable, boolean isKeyUnique) {
+			boolean isUserDefined, boolean isExtendable, boolean isKeyUnique) {
 		super();
 		// Заменить запятую на точку для корректного использования имени айтема в атрибуте extends
 		this.typeName = typeName;
@@ -78,7 +77,6 @@ public class ItemType extends ItemTypeContainer {
 			this.key = key;
 		this.virtual = virtual;
 		this.userDefined = isUserDefined;
-		this.inline = isInline;
 		this.isExtendable = isExtendable;
 		this.isKeyUnique = isKeyUnique;
 		parameters = new HashMap<>();
@@ -308,13 +306,6 @@ public class ItemType extends ItemTypeContainer {
 	 */
 	public boolean isUserDefined() {
 		return userDefined;
-	}
-	/**
-	 * Является ли данный айтем инлайновым (выводить ли его на странице родительского айтема в панели управления)
-	 * @return
-	 */
-	public boolean isInline() {
-		return inline;
 	}
 	/**
 	 * Может ли пользователь расширять этот айтем (создавать потомков)

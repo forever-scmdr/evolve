@@ -9,7 +9,6 @@ public interface AdminXML {
 	String EXTENDER_ELEMENT = "extender";
 	String CREATE_LINK_ELEMENT = "create-link";
 	String EDIT_LINK_ELEMENT = "edit-link";
-	String EDIT_INLINE_LINK_ELEMENT = "edit-inline-link";
 	String DELETE_LINK_ELEMENT = "delete-link";
 	String UPLOAD_LINK_ELEMENT = "upload-link";
 	String VIEW_TYPE_ELEMENT = "view-type";
@@ -39,7 +38,6 @@ public interface AdminXML {
 	String VIRTUAL_ATTRIBUTE = "virtual";
 	String TYPE_CAPTION_ATTRIBUTE = "type-caption";
 	String ASSOC_CAPTION_ATTRIBUTE = "assoc-caption";
-	String TYPE_INLINE_ATTRIBUTE = "type-inline";
 	String ID_ATTRIBUTE = "id";
 	String TYPE_ID_ATTRIBUTE = "type-id";
 	String DEFAULT_ATTRIBUTE = "default";

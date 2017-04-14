@@ -311,6 +311,20 @@ public class ItemTypeRegistry {
 	}
 
 	/**
+	 * Получить все ассоциации определенного айтема
+	 * @param itemName
+	 * @return
+	 */
+	public static Set<Byte> getItemOwnAssocIds(String itemName) {
+		HashSet<Byte> ids = new HashSet<>();
+		ItemTypeContainer item = getSingleton().itemsByNames.get(itemName);
+		for (ItemTypeContainer.ChildDesc childDesc : item.getAllChildren()) {
+			ids.add(getSingleton().assocRegistry.getAssoc(childDesc.assocName).getId());
+		}
+		return ids;
+	}
+
+	/**
 	 * Добавить ассоциацию
 	 * @param assoc
 	 */

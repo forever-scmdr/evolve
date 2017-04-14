@@ -40,7 +40,6 @@ public interface DataModelXmlElementNames {
 	String KEY = "key";
 	String DEFAULT_PAGE = "default-page";
 	String USER_DEF = "user-def";
-	String INLINE = "inline";
 	String EXTENDABLE = "extendable";
 	String KEY_UNIQUE = "key-unique";
 	String HIDDEN = "hidden";

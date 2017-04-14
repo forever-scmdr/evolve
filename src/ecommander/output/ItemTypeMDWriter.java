@@ -15,7 +15,7 @@ import ecommander.model.ItemType;
  * 
 	<itemdesc 
 			name="section" ag-id="22" ag-hash-"1234545345" virtual="true" user="false" key="name"
-			caption="Раздел каталога" description="Раздел каталога продукции" extends="searchable page_content" inline="true"
+			caption="Раздел каталога" description="Раздел каталога продукции" extends="searchable page_content"
 			extendable="true" key-unique="true">
 		<child assoc="hierarchy" name="section" quantifier="multiple" virtual="false"/>
 		<child assoc="hierarchy" name="product" quantifier="multiple" virtual="false"/>
@@ -51,7 +51,6 @@ public class ItemTypeMDWriter extends MetaDataWriter implements DataModelXmlElem
 				AG_HASH, itemType.getName().hashCode() + "",
 				VIRTUAL, itemType.isVirtual() + "",
 				USER_DEF, itemType.isUserDefined() + "",
-				INLINE, itemType.isInline() + "",
 				DESCRIPTION, itemType.getDescription()
 		));
 		if (itemType.hasPredecessors()) {
