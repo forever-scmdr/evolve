@@ -21,7 +21,7 @@ public class NearFulltextQuery extends LuceneQueryCreator {
 	@Override
 	protected Query createQuery(QueryParser parser, String param, String value, Occur occur) {
 		Query parsedQuery = parser.createPhraseQuery(param, value);
-		ArrayList<SpanQuery> parts = new ArrayList<SpanQuery>(4);
+		ArrayList<SpanQuery> parts = new ArrayList<>(4);
 		if (parsedQuery instanceof PhraseQuery) {
 			PhraseQuery phraseQuery = (PhraseQuery) parsedQuery;
 			for (Term term : phraseQuery.getTerms()) {

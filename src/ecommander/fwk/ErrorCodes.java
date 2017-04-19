@@ -16,4 +16,5 @@ public interface ErrorCodes {
 	int FILTER_FORMAT_ERROR = 8; // Ошибка формата пользовательского фильтра
 	int FILE_ERROR = 9; // Ошибка при работе с файлами
 	int INCOMPATIBLE_ITEM_TYPES = 10; // Несовместимые типы айтемов для операции
+	int EMAIL_IS_NOT_CONFIGURED = 11; // Не скорфигурированы параметры для отправки email
 }

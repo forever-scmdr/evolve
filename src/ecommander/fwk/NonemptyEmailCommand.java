@@ -185,7 +185,7 @@ public class NonemptyEmailCommand extends Command {
 	}
 
 	private ResultPE sendError(String message, ItemHttpPostForm postForm) throws Exception {
-		Item userPost = postForm.createItem(getInitiator().getUserId(), getInitiator().getGroupId());
+		Item userPost = postForm.createItem(getInitiator());
 		getSessionMapper().saveTemporaryItem(userPost);
 		ResultPE result = getRollbackResult("general_error");
 		result.addVariable("message", message);

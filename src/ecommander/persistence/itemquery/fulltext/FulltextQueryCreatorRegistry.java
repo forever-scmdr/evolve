@@ -29,7 +29,7 @@ public class FulltextQueryCreatorRegistry {
 	private HashMap<String, LuceneQueryCreator> creators;
 	
 	private FulltextQueryCreatorRegistry() {
-		creators = new HashMap<String, LuceneQueryCreator>();
+		creators = new HashMap<>();
 		creators.put(PREFIX, new TermPrefixFulltextQuery());
 		creators.put(DEFAULT, new TermFulltextQuery());
 		creators.put(NEAR, new NearFulltextQuery());

@@ -19,11 +19,13 @@ public class WildcardFulltextQuery extends LuceneQueryCreator {
 			query = new WildcardQuery(new Term(param, '*' + value + '*'));
 		} else if (query instanceof BooleanQuery) {
 			BooleanQuery boolQuery = (BooleanQuery) query;
-			for (BooleanClause clause : boolQuery.getClauses()) {
+			BooleanQuery.Builder resultBuilder = new BooleanQuery.Builder();
+			for (BooleanClause clause : boolQuery.clauses()) {
 				Query subquery = clause.getQuery();
-				clause.setOccur(occur);
 				if (subquery instanceof TermQuery) {
-					clause.setQuery(new WildcardQuery(((TermQuery) subquery).getTerm()));
+					resultBuilder.add(new WildcardQuery(((TermQuery) subquery).getTerm()), occur);
+				} else {
+					resultBuilder.add(subquery, occur);
 				}
 			}
 		} else if (query instanceof TermQuery) {

@@ -12,30 +12,33 @@ import org.apache.lucene.search.TermQuery;
 
 public class TermPrefixFulltextQuery extends LuceneQueryCreator {
 
-	public static final class TermPrefixQuery extends BooleanQuery {
-		public TermPrefixQuery(Term term) {
-			add(new PrefixQuery(term), Occur.SHOULD);
-			add(new TermQuery(term), Occur.SHOULD);
-		}
-	}
-
 	@Override
 	protected Query createQuery(QueryParser parser, String param, String value, Occur occur) {
 		Query query = parser.createBooleanQuery(param, value);
 		if (query == null && !StringUtils.isBlank(value)) {
-			query = new TermPrefixQuery(new Term(param, value));
+			query = createTermPrefixQuery(new Term(param, value));
 		} else if (query instanceof BooleanQuery) {
 			BooleanQuery boolQuery = (BooleanQuery) query;
+			BooleanQuery.Builder resultBuilder = new BooleanQuery.Builder();
 			for (BooleanClause clause : boolQuery.clauses()) {
 				Query subquery = clause.getQuery();
-				clause.setOccur(occur);
 				if (subquery instanceof TermQuery) {
-					clause.setQuery(new TermPrefixQuery(((TermQuery) subquery).getTerm()));
+					resultBuilder.add(new BooleanClause(createTermPrefixQuery(((TermQuery) subquery).getTerm()), occur));
+				} else {
+					resultBuilder.add(subquery, occur);
 				}
 			}
+			query = resultBuilder.build();
 		} else if (query instanceof TermQuery) {
-			query = new TermPrefixQuery(((TermQuery) query).getTerm());
+			query = createTermPrefixQuery(((TermQuery) query).getTerm());
 		}
 		return query;
+	}
+
+	public static BooleanQuery createTermPrefixQuery(Term term) {
+		BooleanQuery.Builder builder = new BooleanQuery.Builder();
+		builder.add(new PrefixQuery(term), Occur.SHOULD);
+		builder.add(new TermQuery(term), Occur.SHOULD);
+		return builder.build();
 	}
 }

@@ -21,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import ecommander.model.Item;
 import ecommander.persistence.itemquery.ItemQuery;
 
-public class EmailUtils {
+public class EmailUtils implements ErrorCodes {
 	public static void sendGmail(String server, final String from, final String password, String to, String topic, Multipart mp)
 			throws MessagingException {
 		
@@ -49,8 +49,8 @@ public class EmailUtils {
 		// Установка атрибутов сообщения
 		msg.setFrom(new InternetAddress(from));
 		String[] addresses = StringUtils.split(to, ',');
-		for (int i = 0; i < addresses.length; i++) {
-			String s = addresses[i].trim();
+		for (String address : addresses) {
+			String s = address.trim();
 			msg.addRecipients(Message.RecipientType.TO, InternetAddress.parse(s));
 		}
 		msg.setSubject(topic, "UTF-8");
@@ -78,7 +78,7 @@ public class EmailUtils {
 		ItemQuery query = new ItemQuery(ItemQuery.Type.ITEM, "feedback_params");
 		List<Item> items = query.loadItems();
 		if (items.size() != 1)
-			throw new EcommanderException("Feedback parameters are not set correctly");
+			throw new EcommanderException(EMAIL_IS_NOT_CONFIGURED, "Feedback parameters are not set correctly");
 		Item feedbackParams = items.get(0);
 		String emailFrom = (String) feedbackParams.getValue("email_from");
 		String serverFrom = (String) feedbackParams.getValue("server_from");
@@ -86,7 +86,7 @@ public class EmailUtils {
 		String encoding = (String) feedbackParams.getValue("encoding");
 		if (StringUtils.isBlank(to) || StringUtils.isBlank(serverFrom) || StringUtils.isBlank(emailFrom)
 				|| StringUtils.isBlank(emailFromPassword) || StringUtils.isBlank(encoding))
-			throw new EcommanderException("Feedback parameters are not set correctly");
+			throw new EcommanderException(EMAIL_IS_NOT_CONFIGURED, "Feedback parameters are not set correctly");
 		// Отправка письма
 		EmailUtils.sendGmail(serverFrom, emailFrom, emailFromPassword, to, topic, mp);
 	}

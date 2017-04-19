@@ -4,8 +4,8 @@ import java.util.List;
 
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
-import ecommander.persistence.commandunits.SaveNewItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.SessionItemMapper;
 import ecommander.model.User;
@@ -14,14 +14,15 @@ public class ItemUtils {
 	/**
 	 * Загрузить определенный одиночный айтем по его названию. Если айтем не найден, то создать его.
 	 * @param itemName - название айтема
+	 * @param initiator - пользователь, который инициировал действие (текущий пользователь)
 	 * @param parentId - ID родительского айтема
-	 * @param owner - пользователь владелец айтема
-	 * @param isPersonal - является ли айтем персональным
+	 * @param groupId - ID группы-владельца
+	 * @param userId - ID пользователя-владельца
 	 * @return
 	 * @throws Exception
 	 */
-	public static Item ensureSingleItem(String itemName, long parentId, User owner, boolean isPersonal) throws Exception {
-		DelayedTransaction transaction = new DelayedTransaction(owner);
+	public static Item ensureSingleItem(String itemName, User initiator, long parentId, byte groupId, int userId) throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(initiator);
 		ItemQuery dbQuery = ItemQuery.newItemQuery(itemName);
 		dbQuery.setPredecessorId(parentId);
 		List<Item> items = dbQuery.loadItems();
@@ -29,9 +30,9 @@ public class ItemUtils {
 		if (items.size() == 1) {
 			item = items.get(0);
 		} else if (items.size() == 0) {
-			long userId = isPersonal ? owner.getUserId() : User.ANONYMOUS_ID;
-			item = Item.newItem(ItemTypeRegistry.getItemType(itemName),	parentId, userId, owner.getGroupId());
-			transaction.addCommandUnit(new SaveNewItemDBUnit(item));
+			item = Item.newItem(ItemTypeRegistry.getItemType(itemName), ItemTypeRegistry.getPrimaryAssoc(),	parentId,
+					userId, groupId, Item.STATUS_NORMAL, false);
+			transaction.addCommandUnit(SaveItemDBUnit.get(item));
 			transaction.execute();
 		}
 		return item;
@@ -39,14 +40,14 @@ public class ItemUtils {
 	/**
 	 * Загрузить определенный одиночный корневой айтем по его названию. Если айтем не найден, то создать его.
 	 * @param itemName - название айтема
-	 * @param owner - пользователь владелец айтема
-	 * @param isPersonal - является ли айтем персональным
+	 * @param initiator - пользователь, который инициировал действие (текущий пользователь)
+	 * @param groupId - ID группы-владельца
+	 * @param userId - ID пользователя-владельца
 	 * @return
 	 * @throws Exception
 	 */
-	public static Item ensureSingleRootItem(String itemName, User owner, boolean isPersonal) throws Exception {
-		RootItemType root = ItemTypeRegistry.getGroupRoot(owner.getGroup());
-		return ensureSingleItem(itemName, root.getItemId(), owner, isPersonal);
+	public static Item ensureSingleRootItem(String itemName, User initiator, byte groupId, int userId) throws Exception {
+		return ensureSingleItem(itemName, initiator, ItemTypeRegistry.getDefaultRoot().getId(), groupId, userId);
 	}
 	/**
 	 * Загрузить определенный одиночный айтем по его названию из сеанса. Если айтем не найден, то создать его и сохранить в сеансе.

@@ -9,6 +9,8 @@ import ecommander.pages.ResultPE.ResultType;
 import ecommander.model.User;
 import ecommander.model.UserMapper;
 
+import java.sql.Connection;
+
 /**
  * Стандартная команда, которая осуществляет вход и выход пользователя
  * Работает в двух режимах.
@@ -70,10 +72,13 @@ public class LoginCommand extends Command {
 				endUserSession();
 				return getResult(OUT);
 			}
-			User user = UserMapper.getUser(userName, password);
+			User user = null;
+			try (Connection conn = MysqlConnector.getConnection()) {
+				user = UserMapper.getUser(userName, password, conn);
+			}
 			if (user != null) {
 				startUserSession(user);
-				return getResult(RESULT).setValue(user.getGroup());
+				return getResult(RESULT);
 			} else {
 				return getResult(RESULT).setValue(NOT_CORRECT);
 			}

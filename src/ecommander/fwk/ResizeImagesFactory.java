@@ -55,17 +55,17 @@ import net.coobird.thumbnailator.geometry.Positions;
  * @author E
  *
  */
-public class ResizeImagesFactory implements ItemEventCommandFactory {
+public class ResizeImagesFactory implements ItemEventCommandFactory, ErrorCodes, DBConstants.ItemTbl {
 	public static final String SRC = "src";
 	public static final String WIDTH = "width";
 	public static final String HEIGHT = "height";
 	public static final String FORMAT = "format";
 	public static final String CROP = "crop";
-	
+
 	public static class ResizeImages extends SingleItemDirectoryFileUnit {
 
 		private TransactionContext transaction;
-		private ArrayList<File> files = new ArrayList<File>();
+		private ArrayList<File> files = new ArrayList<>();
 		private String format;
 		
 		private ResizeImages(Item item) {
@@ -114,16 +114,17 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 						if (srcParam == null || srcParam.getType() != Type.PICTURE)
 							throw new Exception("There is no picture parameter '" + src + "' in an item");
 					} catch (Exception e) {
-						throw new EcommanderException("String resize format error. Item: '" + item.getTypeName() + "', parameter: '"
-								+ param.getName() + ", format: " + param.getFormat(), e);
+						throw new EcommanderException(VALIDATION_FAILED, "String resize format error. Item: '"
+								+ item.getTypeName() + "', parameter: '" + param.getName()
+								+ ", format: " + param.getFormat(), e);
 					}
 					
 					// Одиночный параметр - более сложная логика (нужна проверка, если файл существует)
 					if (!srcParam.isMultiple())	{
 						try {
 							boolean selfResize = srcParam.getId() == param.getId();
-							File destFile = new File(createItemFilesDirectoryName() + item.getValue(param.getId()));
-							File srcFile = new File(createItemFilesDirectoryName() + item.getValue(srcParam.getId()));
+							File destFile = new File(createItemDirectoryName() + "/" + item.getValue(param.getId()));
+							File srcFile = new File(createItemDirectoryName() + "/" + item.getValue(srcParam.getId()));
 							// ничего не делать в случае если исходной картинки нет
 							if (!srcFile.exists())
 								continue;
@@ -146,7 +147,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 							String fileName = StringUtils.substringBeforeLast(srcFile.getName(), ".") + '.' + format;
 							if (!selfResize)
 								fileName = param.getName() + "_" + fileName;
-							destFile = new File(createItemFilesDirectoryName() + fileName);
+							destFile = new File(createItemDirectoryName() + "/" + fileName);
 							resize(srcImg, destFile, width, height, format, crop);
 							// Установка значения параметра
 							item.setValueUI(param.getId(), fileName);
@@ -165,7 +166,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 						MultipleParameter destVals = (MultipleParameter) item.getParameter(param.getId());
 						if (!selfResize) {
 							for (SingleParameter val : destVals.getValues()) {
-								File deleteFile = new File(createItemFilesDirectoryName() + val.getValue());
+								File deleteFile = new File(createItemDirectoryName() + "/" + val.getValue());
 								if (deleteFile.exists() && !deleteFile.delete())
 									throw new Exception("File '" + deleteFile.getName() + "' can not be deleted");
 							}
@@ -174,7 +175,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 						ArrayList<SingleParameter> vals = new ArrayList<SingleParameter>(((MultipleParameter) item.getParameter(srcParam
 								.getId())).getValues());
 						for (SingleParameter srcVal : vals) {
-							File srcFile = new File(createItemFilesDirectoryName() + srcVal.getValue());
+							File srcFile = new File(createItemDirectoryName() + "/" + srcVal.getValue());
 							if (srcFile.exists()) {
 								try {
 									if (format == null)
@@ -188,7 +189,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 									if (destVals.containsValue(fileName)) {
 										destVals.deleteValue(fileName);
 									}
-									File destFile = new File(createItemFilesDirectoryName() + fileName);
+									File destFile = new File(createItemDirectoryName() + "/" + fileName);
 									resize(srcImg, destFile, width, height, format, crop);
 									item.setValueUI(param.getId(), fileName);
 								} catch (Exception e) {
@@ -205,11 +206,8 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 				try {
 					Connection conn = getTransactionContext().getConnection();
 					// Сохранить новое ключевое значение и параметры в основную таблицу
-					String sql 
-							= "UPDATE " + DBConstants.Item.TABLE + " SET " + DBConstants.Item.KEY + "=?, " 
-							+ DBConstants.Item.TRANSLIT_KEY + "=?, "
-							+ DBConstants.Item.PARAMS + "=?, " 
-							+ DBConstants.Item.UPDATED + "=NULL WHERE " + DBConstants.Item.REF_ID + "=" + item.getId();
+					String sql = "UPDATE " + I_TABLE + " SET " + I_KEY + "=?, " + I_T_KEY + "=?, " + I_PARAMS + "=?, "
+							+ I_UPDATED + "=NULL WHERE " + I_ID + "=" + item.getId();
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setString(1, item.getKey());
 					pstmt.setString(2, item.getKeyUnique());
@@ -267,7 +265,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 	}
 
 	@Override
-	public PersistenceCommandUnit createCommand(Item item, Item initialVersion) throws Exception {
+	public PersistenceCommandUnit createCommand(Item item) throws Exception {
 		return new ResizeImages(item);
 	}
 
