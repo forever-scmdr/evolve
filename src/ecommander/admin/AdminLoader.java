@@ -78,77 +78,20 @@ public class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent 
 		try (PreparedStatement pstmt = select.prepareQuery(MysqlConnector.getConnection())) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				result.add();
+				result.add(new ItemAccessor(
+						rs.getInt(I_TYPE_ID),
+						rs.getLong(I_ID),
+						rs.getString(I_KEY),
+						rs.getByte(I_GROUP),
+						rs.getInt(I_USER),
+						rs.getByte(I_STATUS),
+						rs.getByte(I_PROTECTED) == (byte) 1 ? true: false,
+						rs.getInt(IP_WEIGHT),
+						rs.getByte(IP_ASSOC_ID),
+						true));
 			}
 		}
-
-
-		Connection conn = null;
-		try {
-			conn = ;
-
-
-
-
-
-			// Общий шаблон
-			String template 
-				= "<<UNION>>SELECT " + DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID 
-				+ ", " + DBConstants.Item.KEY	+ ", " + DBConstants.Item.INDEX_WEIGHT
-				+ " FROM " + DBConstants.Item.TABLE + " WHERE " + DBConstants.Item.DIRECT_PARENT_ID + " = " + parentId 
-				+ " AND " + DBConstants.Item.TYPE_ID + " IN (<<TYPE>>) <<WHERE>> <<NEXT_QUERY>>";
-			
-			// Общие (неперсональные) айтемы текущей группы
-			Collection<String> subitemNames = ItemTypeRegistry.getUserGroupAllowedSubitems(itemDesc.getName(), user.getGroup(), false);
-			Collection<Integer> subitemIds = ItemTypeRegistry.getItemTypeIds(subitemNames);
-			TemplateQuery query = TemplateQuery.createFromString(template, "Public subitems SELECT");
-			query.getSubquery("<<TYPE>>").setIntArray(subitemIds.toArray(new Integer[0]));
-			query.getSubquery("<<WHERE>>")
-				.sql(" AND " + DBConstants.Item.OWNER_GROUP_ID + " = " + user.getGroupId())
-				.sql(" AND " + DBConstants.Item.OWNER_USER_ID + " = 0");
-			
-			// Персональные айтемы текущей группы
-			subitemNames = ItemTypeRegistry.getUserGroupAllowedSubitems(itemDesc.getName(), user.getGroup(), true);
-			subitemIds = ItemTypeRegistry.getItemTypeIds(subitemNames);
-			TemplateQuery personalQuery = query.getSubquery("<<NEXT_QUERY>>").createFromTemplate(template);
-			personalQuery.getSubquery("<<UNION>>").sql(" UNION ");
-			personalQuery.getSubquery("<<TYPE>>").setIntArray(subitemIds.toArray(new Integer[0]));
-			personalQuery.getSubquery("<<WHERE>>")
-				.sql(" AND " + DBConstants.Item.OWNER_USER_ID + " = " + user.getUserId());
-			
-			// Транзитные айтемы (принадлежащие другим группам, но могущие содержать айтемы текущей группы пользователей)
-			// Нужны для того, чтобы юзер мог перейти к нужным айтемам в CMS
-			subitemNames = ItemTypeRegistry.getUserGroupAllowedTransitionalSubitems(itemDesc.getName(), user.getGroup());
-			subitemIds = ItemTypeRegistry.getItemTypeIds(subitemNames);
-			TemplateQuery transitionalQuery = personalQuery.getSubquery("<<NEXT_QUERY>>").createFromTemplate(template);
-			transitionalQuery.getSubquery("<<UNION>>").sql(" UNION ");
-			transitionalQuery
-				.getSubquery("<<TYPE>>").setIntArray(subitemIds.toArray(new Integer[0]));
-			
-			// Сортировка по весу
-			transitionalQuery.sql(" ORDER BY " + DBConstants.Item.INDEX_WEIGHT);
-			
-			// Выполнение запроса
-			PreparedStatement pstmt = query.prepareQuery(conn);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				int itemTypeId = rs.getInt(1);
-				String itemName = ItemTypeRegistry.getItemType(itemTypeId).getName();
-				String baseName = ItemTypeRegistry.findItemPredecessor(itemDesc.getAllChildren(), itemName);
-				ArrayList<ItemAccessor> sameItems = result.get(baseName);
-				if (sameItems == null) {
-					sameItems = new ArrayList<ItemAccessor>();
-					result.put(baseName, sameItems);
-				}
-				sameItems.add(new ItemAccessor(itemTypeId, rs.getLong(2), rs.getLong(3), rs.getString(4), rs.getInt(5)));
-			}
-			rs.close();
-			pstmt.close();
-			return result;
-		} finally {
-			if (conn != null && !conn.isClosed())
-				conn.close();
-		}
+		return result;
 	}
 	/**
 	 * Загружает всех сабайтемов определенного айтема, в которые можно перемещать заданный

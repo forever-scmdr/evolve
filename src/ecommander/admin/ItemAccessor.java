@@ -106,7 +106,11 @@ public class ItemAccessor extends MetaDataWriter implements ItemBasics, Comparab
 	public long getId() {
 		return itemId;
 	}
-	
+
+	public byte getContextAssoc() {
+		return contextAssoc;
+	}
+
 	public boolean isParentCompatible() {
 		return isParentCompatible;
 	}
