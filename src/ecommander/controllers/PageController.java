@@ -125,11 +125,9 @@ public class PageController {
 	/**
 	 * Если в буфере есть страница, то этот метод ее возвращает, если нет, то генерирует, возвращает и записывает в буфер
 	 * 
-	 * @param url
-	 * @param out
-	 * @param pageGenerator
 	 * @throws IOException
 	 * @throws Exception
+	 * @return
 	 */
 	private String processCacheablePage() throws Exception {
 		String xslFileName = AppContext.getStylesDirPath() + page.getTemplate() + ".xsl";
@@ -143,7 +141,7 @@ public class PageController {
 			requestUrl = StringUtils.replaceChars(requestUrl, '|', '_');
 			requestUrl = StringUtils.replaceChars(requestUrl, '/', '_');
 			requestUrl = StringUtils.replaceChars(requestUrl, '?', '_');
-			String cacheFileName = domainName + "/" + page.getSessionContext().getUser().getGroup() + "/" + requestUrl + ".html";
+			String cacheFileName = domainName + "/" + page.getSessionContext().getUser().getGroupRolesStr() + "/" + requestUrl + ".html";
 			File cachedFile = new File(AppContext.getCacheHtmlDirPath() + cacheFileName);
 			File xslFile = new File(xslFileName);
 			if (cachedFile.exists() && xslFile.lastModified() < cachedFile.lastModified() && cachedFile.length() > 0) {
@@ -190,13 +188,11 @@ public class PageController {
 	/**
 	 * Вывести содержимое страницы в поток вывода. Страница полностью выполнятеся, учитывается только кеш XML
 	 * Возвращается ссылка для внешнего перехода, если он должен быть осуществлен. Иначе возвращается null
-	 * @param page
-	 * @param out
 	 * @return - ссылка для внешнего редиректа
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	private String processSimplePage() throws IOException, Exception {
+	private String processSimplePage() throws Exception {
 		String xslFileName = AppContext.getStylesDirPath() + page.getTemplate() + ".xsl";
 		// Загрузка страницы и выполнение команд страницы
 		Timer.getTimer().start(Timer.LOAD_DB_ITEMS);

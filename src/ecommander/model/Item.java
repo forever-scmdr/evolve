@@ -712,6 +712,14 @@ public class Item implements ItemBasics {
 	public final long getContextParentId() {
 		return contextParentId;
 	}
+
+	public final boolean hasNoParent() {
+		return contextParentId == RootType.ID;
+	}
+
+	public final boolean hasParent() {
+		return contextParentId != RootType.ID;
+	}
 	/**
 	 * Возвращает название, которое уникально идентифицирует данный айтем для юзера в системе управления
 	 * @return

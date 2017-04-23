@@ -15,6 +15,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import ecommander.fwk.ErrorCodes;
 import net.sf.saxon.TransformerFactoryImpl;
 import ecommander.fwk.Timer;
 import ecommander.fwk.EcommanderException;
@@ -72,7 +73,7 @@ public class XmlXslOutputController {
 			Reader reader = new StringReader(xml.toString());
 			transformer.transform(new StreamSource(reader), new StreamResult(ostream));
 		} catch (TransformerConfigurationException e) {
-			throw new EcommanderException(errors.errors);
+			throw new EcommanderException(ErrorCodes.NO_SPECIAL_ERROR, errors.errors);
 		} finally {
 			Timer.getTimer().stop(Timer.XSL_TRANSFORM);
 		}

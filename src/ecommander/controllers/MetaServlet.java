@@ -1,21 +1,16 @@
 package ecommander.controllers;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import ecommander.fwk.MessageError;
+import ecommander.model.DataModelBuilder;
+import ecommander.persistence.mappers.LuceneIndexMapper;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import ecommander.fwk.MessageError;
-import ecommander.fwk.MysqlConnector;
-import ecommander.migration.OldModelConverter;
-import ecommander.migration.VeryOldItemsImporter;
-import ecommander.model.DataModelBuilder;
-import ecommander.persistence.common.TransactionContext;
-import ecommander.persistence.mappers.LuceneIndexMapper;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class MetaServlet extends BasicServlet {
 	/**
@@ -28,8 +23,8 @@ public class MetaServlet extends BasicServlet {
 	public static final String ACTION_UPDATE_MODEL = "update_model";
 	public static final String ACTION_FORCE_MODEL = "force_model";
 	public static final String REINDEX = "reindex";
-	public static final String MIGRATE_ITEMS = "migrate_items";
-	public static final String IMPORT_ITEMS = "import_items";
+	//public static final String MIGRATE_ITEMS = "migrate_items";
+	//public static final String IMPORT_ITEMS = "import_items";
 	public static final String ITEMS_TO_BE_DELETED_ATTR = "items_to_be_deleted";
 
 	public static final String SESSION_CONFIRM_CREATE_MODEL = "create_model_force_session";
@@ -51,26 +46,6 @@ public class MetaServlet extends BasicServlet {
 			} else if (action.equalsIgnoreCase(REINDEX)) {
 				StartController.getSingleton().start(getServletContext());
 				LuceneIndexMapper.reindexAll();
-			} else if (action.equalsIgnoreCase(MIGRATE_ITEMS)) {
-				TransactionContext ctx = new TransactionContext(MysqlConnector.getConnection(), null);
-				try {
-					String src = request.getParameter("src");
-					String dest = request.getParameter("dest");
-					OldModelConverter converter = new OldModelConverter(src, dest);
-					converter.setTransactionContext(ctx);
-					converter.execute();
-				} finally {
-					MysqlConnector.closeConnection(ctx.getConnection());
-				}
-			} else if (action.equalsIgnoreCase(IMPORT_ITEMS)) {
-				TransactionContext ctx = new TransactionContext(MysqlConnector.getConnection(), null);
-				try {
-					VeryOldItemsImporter importer = new VeryOldItemsImporter();
-					importer.setTransactionContext(ctx);
-					importer.execute();
-				} finally {
-					MysqlConnector.closeConnection(ctx.getConnection());
-				}
 			} else if (action.equalsIgnoreCase(ACTION_UPDATE_MODEL)) {
 				DataModelBuilder modelBuilder = DataModelBuilder.newSafeUpdate();
 				boolean hasDeletions = !modelBuilder.tryLockAndReloadModel();

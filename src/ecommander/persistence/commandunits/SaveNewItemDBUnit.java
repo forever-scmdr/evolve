@@ -44,9 +44,11 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 
 		// Загрузка и валидация родительского айтема, если надо
 		Connection conn = getTransactionContext().getConnection();
-		if (parent == null)
-			parent = ItemMapper.loadItemBasics(item.getContextParentId(), conn);
-		testPrivileges(parent);
+		if (item.hasParent()) {
+			if (parent == null)
+				parent = ItemMapper.loadItemBasics(item.getContextParentId(), conn);
+			testPrivileges(parent);
+		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 1.   Сохранение айтема в таблицу айтемов, получение и установка в объект айтема нового ID
@@ -120,9 +122,11 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 3.   Сохранить связь нового айтема с его предщественниками по иерархии ассоциации
+		// Шаг 3.   Сохранить связь нового айтема с его предшественниками по иерархии ассоциации
 		//
-		executeCommand(new CreateAssocDBUnit(item, parent, item.getContextAssoc().getId(), true));
+		if (item.hasParent()) {
+			executeCommand(new CreateAssocDBUnit(item, parent, item.getContextAssoc().getId(), true));
+		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 4.   Сохранить параметры айтема в таблицах индексов

@@ -39,13 +39,11 @@ public class MainExecutionController {
 	 * @throws Exception 
 	 */
 	public void execute(String baseUrl, ServletContext servletContext) throws Exception {
-		SessionContext sessContext = null;
-		try {
-			Timer.getTimer().start(Timer.INIT);
-			// Старт приложения, если он еще не был осуществлен
-			StartController.getSingleton().start(servletContext);
-			// Создание контекста сеанса
-			sessContext = SessionContext.createSessionContext(req);
+		Timer.getTimer().start(Timer.INIT);
+		// Старт приложения, если он еще не был осуществлен
+		StartController.getSingleton().start(servletContext);
+		// Создание контекста сеанса
+		try (SessionContext sessContext = SessionContext.createSessionContext(req)) {
 			// Загрузка страницы
 			ExecutablePagePE page = PageModelRegistry.testAndGetRegistry().getExecutablePage(requestUrl, baseUrl, sessContext);
 			// Установить переменные, если есть команды на странице
@@ -60,9 +58,6 @@ public class MainExecutionController {
 			if (ve.getResults().getException() != null)
 				ServerLogger.error("Cause: ", ve.getResults().getException());
 			throw ve;
-		} finally {
-			if (sessContext != null)
-				sessContext.closeDBConnection();		
 		}
 	}
 

@@ -169,40 +169,6 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 * @throws Exception
 	 */
 	private void readRoot(Element rootEl) throws Exception {
-		Statement stmt = null;
-		try {
-			// Загрузить ID корня из БД
-			stmt = getTransactionContext().getConnection().createStatement();
-			String sql 
-					= "SELECT " + ItemTbl.I_ID + " FROM " + ItemTbl.I_TABLE
-					+ " WHERE " + ItemTbl.I_ID + "=" + ItemTypeRegistry.getDefaultRoot().getId();
-			ServerLogger.debug(sql);
-			ResultSet rs = stmt.executeQuery(sql);
-			boolean hasRoot = rs.next();
-			rs.close();
-			// Сохранить рут в таблице конкретных айтемов, в случае если такого рута нет
-			if (!hasRoot && mode == Mode.force_update) {
-				sql
-					= "INSERT INTO "
-						+ ItemTbl.I_TABLE
-						+ " ("
-						+ ItemTbl.I_ID + ", "
-						+ ItemTbl.I_TYPE_ID + ", "
-						+ ItemTbl.I_KEY + ", "
-						+ ItemTbl.I_T_KEY + ", "
-						+ ItemTbl.I_PARAMS
-						+ ") VALUES ("
-						+ ItemTypeRegistry.getDefaultRoot().getId() + ", "
-						+ ItemTypeRegistry.getDefaultRoot().getTypeId()
-						+ ", 'root', 'root', '')";
-				ServerLogger.debug(sql);
-				stmt.executeUpdate(sql);
-				dbChanged = true;
-			}
-		} finally {
-			if (stmt != null)
-				stmt.close();
-		}
 		// Вложенные айтемы
 		Elements children = rootEl.getElementsByTag(CHILD);
 		for (Element child : children) {

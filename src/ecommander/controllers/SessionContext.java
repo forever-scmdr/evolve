@@ -35,7 +35,7 @@ import ecommander.model.User;
  * @author EEEE
  *
  */
-public class SessionContext {
+public class SessionContext implements AutoCloseable {
 
 	private static final String STORAGE_SESSION_NAME = "session_storage";
 	private static final String USER_SESSION_NAME = "session_user";
@@ -44,6 +44,11 @@ public class SessionContext {
 	private static final String FORM_SESSION_NAME_PREFIX = "form_";
 	private static final String CONTENT_UPDATE_VAR_NAME = "adm$content$update";
 	private static final int COOKIE_EXPIRE = 10 * 24 * 60 * 60;
+
+	@Override
+	public void close() throws Exception {
+		closeDBConnection();
+	}
 
 	public static class Progress implements Serializable {
 		private static final long serialVersionUID = -8802030992284237402L;
@@ -180,7 +185,7 @@ public class SessionContext {
 	 */
 	public void setCookie(String name, String value) {
 		if (cookies == null)
-			cookies = new HashMap<String, String>();
+			cookies = new HashMap<>();
 		cookies.put(name, value);
 	}
 	/**
@@ -237,11 +242,11 @@ public class SessionContext {
 	 * Записать все установленные куки в ответ сервера
 	 * @param resp
 	 */
-	public void flushCookies(HttpServletResponse resp) {
+	void flushCookies(HttpServletResponse resp) {
 		if (cookies != null) {
 			for (Entry<String, String> vals : cookies.entrySet()) {
 				try {
-					Cookie cookie = null;
+					Cookie cookie;
 					if (StringUtils.isBlank(vals.getValue())) {
 						cookie = new Cookie(vals.getKey(), "");
 						cookie.setMaxAge(0); // удаление куки
@@ -295,7 +300,7 @@ public class SessionContext {
 	/**
 	 * Закрыть подключение
 	 */
-	public void closeDBConnection() {
+	private void closeDBConnection() {
 		MysqlConnector.closeConnection(dbConnection);
 		dbConnection = null;
 	}

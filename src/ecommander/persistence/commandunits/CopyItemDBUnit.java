@@ -27,7 +27,7 @@ import java.util.HashSet;
  * @author EEEE
  *
  */
-public class CopyItemDBUnit extends DBPersistenceCommandUnit implements ErrorCodes, DBConstants.ItemParent, DBConstants.ItemTbl {
+public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemParent, DBConstants.ItemTbl {
 	
 	private static final HashSet<Type> TEXT_PARAM_TYPES = new HashSet<>();
 	static {
@@ -79,7 +79,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements ErrorCod
 		try (PreparedStatement pstmt = check.prepareQuery(getTransactionContext().getConnection())) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next() || newParent.getId() == baseItem.getId())
-				throw new EcommanderException(ASSOC_NODES_ILLEGAL,
+				throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
 						"Unable to copy item ID " + baseItem.getId() + " to own subitem (" + newParent.getId() + ")");
 		}
 		boolean possibleSubitem = false;
@@ -88,7 +88,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements ErrorCod
 				possibleSubitem |= ItemTypeRegistry.getItemExtenders(child.itemName).contains(baseItem.getTypeName());
 		}
 		if (!possibleSubitem) {
-			throw new EcommanderException(INCOMPATIBLE_ITEM_TYPES, "Unable to copy item ID " + baseItem.getId() +
+			throw new EcommanderException(ErrorCodes.INCOMPATIBLE_ITEM_TYPES, "Unable to copy item ID " + baseItem.getId() +
 					" to parent ID " + newParent.getId() + ". Incompatible types.");
 		}
 

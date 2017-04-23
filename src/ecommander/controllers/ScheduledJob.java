@@ -32,11 +32,9 @@ public class ScheduledJob implements Job {
 	public static final String TRIGGER_PREFIX = "trigger_";
 	
 	public void execute(JobExecutionContext ctx) throws JobExecutionException {
-		SessionContext sessContext = null;
-		try {
-			String pageName = ctx.getJobDetail().getJobDataMap().getString(PAGE_NAME);
-			ServerLogger.debug("Start scheduled job page '" + pageName + "'");
-			sessContext = SessionContext.createSessionContext(null);
+		String pageName = ctx.getJobDetail().getJobDataMap().getString(PAGE_NAME);
+		ServerLogger.debug("Start scheduled job page '" + pageName + "'");
+		try (SessionContext sessContext = SessionContext.createSessionContext(null)) {
 			ExecutablePagePE executable = PageModelRegistry.testAndGetRegistry().getExecutablePage(pageName, null, sessContext);
 			ResultPE result = executable.execute();
 			if (result != null && result.getType() != ResultType.none) {
@@ -62,9 +60,6 @@ public class ScheduledJob implements Job {
 		} catch (Exception e) {
 			ServerLogger.error(e);
 			throw new JobExecutionException(e);
-		} finally {
-			if (sessContext != null)
-				sessContext.closeDBConnection();		
 		}
 	}
 

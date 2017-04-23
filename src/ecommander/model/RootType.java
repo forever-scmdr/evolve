@@ -6,8 +6,8 @@ package ecommander.model;
  */
 public class RootType extends ItemTypeContainer {
 
-	private static final int TYPE_ID = 0;
-	private static final long ID = 1L;
+	static final int TYPE_ID = 0;
+	static final long ID = 0L;
 
 	RootType() {
 

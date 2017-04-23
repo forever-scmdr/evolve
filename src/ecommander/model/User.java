@@ -3,6 +3,7 @@ package ecommander.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 
 public class User {
 	public static class Group {
@@ -30,6 +31,7 @@ public class User {
 	private String description;
 	private int userId;
 	private HashMap<String, Group> groupRoles = new HashMap<>();
+	private String groupRolesStr; // Строка с группами и ролями. Используется при кешировании страниц
 
 	public User(String name, String password, String description, int userId) {
 		this.name = name;
@@ -50,6 +52,7 @@ public class User {
 
 	public void addGroup(String name, byte id, byte role) {
 		groupRoles.put(name, new Group(name, id, role));
+		groupRolesStr += name + "_" + (role == ADMIN ? "adm_" : "sim_");
 	}
 
 	/**
@@ -112,6 +115,14 @@ public class User {
 	 */
 	public ArrayList<Group> getGroups() {
 		return new ArrayList<>(groupRoles.values());
+	}
+
+	/**
+	 * Получить строку с группами и ролями, для кеширования страниц
+	 * @return
+	 */
+	public String getGroupRolesStr() {
+		return groupRolesStr;
 	}
 	/**
 	 * @return

@@ -26,12 +26,7 @@ public class LoginServlet extends BasicServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 9037531651966389223L;
-	
-	private String name;
-	private String password;
-	private String target;
-	private String action;
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		processRequest(req, resp);
@@ -43,17 +38,15 @@ public class LoginServlet extends BasicServlet {
 	}
 
 	public void processRequest(HttpServletRequest request, HttpServletResponse response) {
-		SessionContext sessionCtx = null;
-		try {
-			name = request.getParameter(NAME_INPUT);
-			password = request.getParameter(PASSWORD_INPUT);
-			target = request.getParameter(TARGET_INPUT);
-			action = request.getServletPath().replaceFirst("/", "").replaceFirst("\\..*", "");
-			sessionCtx = SessionContext.createSessionContext(request);
+		String name = request.getParameter(NAME_INPUT);
+		String password = request.getParameter(PASSWORD_INPUT);
+		String target = request.getParameter(TARGET_INPUT);
+		String action = request.getServletPath().replaceFirst("/", "").replaceFirst("\\..*", "");
+		try (SessionContext sessionCtx = SessionContext.createSessionContext(request)) {
 			if (action.equalsIgnoreCase(LOGOUT_ACTION)) {
 				sessionCtx.userExit();
 			} else if (action.equalsIgnoreCase(LOGIN_ACTION)) {
-				User user = UserMapper.getUser(name, password);
+				User user = UserMapper.getUser(name, password, sessionCtx.getDBConnection());
 				if (user != null)
 					sessionCtx.setUser(user);
 			}
@@ -64,9 +57,6 @@ public class LoginServlet extends BasicServlet {
 			} catch (Exception e1) {
 				handleError(request, response, e1);
 			}
-		} finally {
-			if (sessionCtx != null)
-				sessionCtx.closeDBConnection();			
 		}
 	}
 }

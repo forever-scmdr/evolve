@@ -175,7 +175,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 					result = innerResult;
 			}
 		} finally {
-			sessionContext.closeDBConnection();
+			sessionContext.close();
 		}
 		return result;
 	}

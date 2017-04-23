@@ -55,7 +55,7 @@ import net.coobird.thumbnailator.geometry.Positions;
  * @author E
  *
  */
-public class ResizeImagesFactory implements ItemEventCommandFactory, ErrorCodes, DBConstants.ItemTbl {
+public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants.ItemTbl {
 	public static final String SRC = "src";
 	public static final String WIDTH = "width";
 	public static final String HEIGHT = "height";
@@ -114,7 +114,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, ErrorCodes,
 						if (srcParam == null || srcParam.getType() != Type.PICTURE)
 							throw new Exception("There is no picture parameter '" + src + "' in an item");
 					} catch (Exception e) {
-						throw new EcommanderException(VALIDATION_FAILED, "String resize format error. Item: '"
+						throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, "String resize format error. Item: '"
 								+ item.getTypeName() + "', parameter: '" + param.getName()
 								+ ", format: " + param.getFormat(), e);
 					}

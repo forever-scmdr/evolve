@@ -19,7 +19,7 @@ import java.util.HashSet;
  * его загрузка для проверки прав
  * Created by User on 20.03.2017.
  */
-public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemParent, ErrorCodes {
+public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemParent {
 
 	private Item item;
 	private long parentId;
@@ -79,7 +79,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 					while (rs.next()) {
 						long parentId = rs.getLong(1);
 						if (nodesParents.contains(parentId))
-							throw new EcommanderException(ASSOC_NODES_ILLEGAL,
+							throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
 									"Association parent and child nodes must be in different branches");
 						nodesParents.add(parentId);
 					}
@@ -94,7 +94,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 				try (PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection())) {
 					ResultSet rs = pstmt.executeQuery();
 					if (rs.next())
-						throw new EcommanderException(ASSOC_NODES_ILLEGAL,
+						throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
 								"Association parent already has specified child");
 				}
 			}

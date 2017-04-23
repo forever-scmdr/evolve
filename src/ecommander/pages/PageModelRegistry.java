@@ -142,18 +142,13 @@ public class PageModelRegistry {
 	 * @throws ValidationException
 	 */
 	public synchronized void validate(ValidationResults results) throws ValidationException {
-		SessionContext sessContext = null;
-		try {
-			sessContext = SessionContext.createSessionContext(null);
+		try (SessionContext sessContext = SessionContext.createSessionContext(null)) {
 			for (PagePE page : pageModels.values()) {
 				ExecutablePagePE execPage = getPageModel(page.getPageName()).createExecutableClone(sessContext);
 				execPage.validate("", results);
 			}
 		} catch (Exception e) {
 			results.setException(e);
-		} finally {
-			if (sessContext != null)
-				sessContext.closeDBConnection();		
 		}
 		if (!results.isSuccessful())
 			throw new ValidationException("validation error", results);
