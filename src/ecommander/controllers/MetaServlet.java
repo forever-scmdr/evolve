@@ -19,7 +19,6 @@ public class MetaServlet extends BasicServlet {
 	private static final long serialVersionUID = 6967843764716842592L;
 	
 	public static final String LINK_PARAMETER_NAME = "q";
-	public static final String ACTION_CREATE_USERS = "create_users";
 	public static final String ACTION_UPDATE_MODEL = "update_model";
 	public static final String ACTION_FORCE_MODEL = "force_model";
 	public static final String REINDEX = "reindex";
@@ -40,10 +39,7 @@ public class MetaServlet extends BasicServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter(LINK_PARAMETER_NAME);
 		try {
-			// Старт приложения, если он еще не был осуществлен
-			if (action.equalsIgnoreCase(ACTION_CREATE_USERS)) {
-				new UserCreationController().readAndCreateUsers();
-			} else if (action.equalsIgnoreCase(REINDEX)) {
+			if (action.equalsIgnoreCase(REINDEX)) {
 				StartController.getSingleton().start(getServletContext());
 				LuceneIndexMapper.reindexAll();
 			} else if (action.equalsIgnoreCase(ACTION_UPDATE_MODEL)) {

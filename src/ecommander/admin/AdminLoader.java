@@ -1,21 +1,16 @@
 package ecommander.admin;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-
-import ecommander.model.*;
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
+import ecommander.model.*;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
+import org.apache.commons.lang3.StringUtils;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * @author EEEE
@@ -29,10 +24,32 @@ public class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent 
 
 	}
 
-	public static AdminLoader getLoader() {
+	static AdminLoader getLoader() {
 		if (loader == null)
 			loader = new AdminLoader();
 		return loader;
+	}
+
+	private TemplateQuery createAccessorQueryBase(String queryName) {
+		TemplateQuery base = new TemplateQuery("Load closest subitems part");
+		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED, IP_TABLE + ".*")
+				.FROM(I_TABLE).INNER_JOIN(IP_TABLE, I_ID, IP_CHILD_ID).WHERE();
+	}
+
+	private void readAccessorResultSet(ResultSet rs, Collection<ItemAccessor> result) throws SQLException {
+		while (rs.next()) {
+			result.add(new ItemAccessor(
+					rs.getInt(I_TYPE_ID),
+					rs.getLong(I_ID),
+					rs.getString(I_KEY),
+					rs.getByte(I_GROUP),
+					rs.getInt(I_USER),
+					rs.getByte(I_STATUS),
+					rs.getByte(I_PROTECTED) == (byte) 1 ? true: false,
+					rs.getInt(IP_WEIGHT),
+					rs.getByte(IP_ASSOC_ID),
+					true));
+		}
 	}
 	/**
 	 * Загружает всех сабайтемов определенного айтема (не сами айтемы, а их аксэсоры)
@@ -46,7 +63,7 @@ public class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent 
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<ItemAccessor> loadClosestSubitems(ItemTypeContainer itemDesc, long parentId, User user) throws Exception {
+	ArrayList<ItemAccessor> loadClosestSubitems(ItemTypeContainer itemDesc, long parentId, User user) throws Exception {
 		ArrayList<ItemAccessor> result = new ArrayList<>();
 		Byte[] allAssocs = ItemTypeRegistry.getItemOwnAssocIds(itemDesc.getName()).toArray(new Byte[0]);
 		HashSet<Byte> adminGroups = new HashSet<>();
@@ -57,10 +74,8 @@ public class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent 
 			else
 				commonGroups.add(group.id);
 		}
-		TemplateQuery base = new TemplateQuery("Load closest subitems part");
-		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED, IP_TABLE + ".*")
-				.FROM(I_TABLE).INNER_JOIN(IP_TABLE, I_ID, IP_CHILD_ID).WHERE()
-				.col(IP_PARENT_ID).setLong(parentId).AND()
+		TemplateQuery base = createAccessorQueryBase("Load closest subitems part");
+		base.col(IP_PARENT_ID).setLong(parentId).AND()
 				.col(IP_PARENT_DIRECT).setByte((byte) 1).AND()
 				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")").AND()
 				.col(IP_ASSOC_ID, " IN(").setByteArray(allAssocs).sql(")").AND();
@@ -77,348 +92,28 @@ public class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent 
 
 		try (PreparedStatement pstmt = select.prepareQuery(MysqlConnector.getConnection())) {
 			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				result.add(new ItemAccessor(
-						rs.getInt(I_TYPE_ID),
-						rs.getLong(I_ID),
-						rs.getString(I_KEY),
-						rs.getByte(I_GROUP),
-						rs.getInt(I_USER),
-						rs.getByte(I_STATUS),
-						rs.getByte(I_PROTECTED) == (byte) 1 ? true: false,
-						rs.getInt(IP_WEIGHT),
-						rs.getByte(IP_ASSOC_ID),
-						true));
-			}
+			readAccessorResultSet(rs, result);
 		}
 		return result;
 	}
 	/**
-	 * Загружает всех сабайтемов определенного айтема, в которые можно перемещать заданный
-	SELECT
-	I_TYPE_NAME, I_ID, I_KEY, I_ID NOT IN
-	(
-	  SELECT DISTINCT IP_ITEM_ID
-	  FROM ItemParent
-	  WHERE IP_PARENT_ID = itemToMoveId
-	) AND I_ID != itemToMoveId AMD I_ID != itemToMoveParentId AS M
-	FROM Item, ItemParent
-	WHERE I_ID = IP_ITEM_ID
-	AND I_ID = I_REF_ID
-	AND IP_PARENT_ID = parentMoveToId
-	AND IP_LEVEL = 1
-	ORDER BY I_CHILD_INDEX
-
-	 * @param parentId
-	 * @return
-	 * @throws Exception
-	 */
-	public ArrayList<ItemAccessor> loadItemsToMoveTo(long parentMoveToId, long itemToMoveId, long itemToMoveParentId) throws Exception {
-		ArrayList<ItemAccessor> result = new ArrayList<ItemAccessor>();
-		Connection conn = null;
-		try {
-			conn = MysqlConnector.getConnection();
-			Statement stmt = conn.createStatement();
-			String sql 
-				= "SELECT " + DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID 
-				+ ", " + DBConstants.Item.KEY + ", " + DBConstants.Item.INDEX_WEIGHT + ", "
-				+ DBConstants.Item.ID + " NOT IN (SELECT DISTINCT " + DBConstants.ItemParent.REF_ID 
-				+ " FROM " + DBConstants.ItemParent.IP_TABLE + " WHERE " + DBConstants.ItemParent.IP_PARENT_ID + " = " + itemToMoveId
-				+ " ) AND " + DBConstants.Item.ID + " != " + itemToMoveId	
-				+ " AND " + DBConstants.Item.ID + " != " + itemToMoveParentId	
-				+ " AS M FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.IP_TABLE
-				+ " WHERE " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.ITEM_ID
-				+ " AND " + DBConstants.Item.ID + " = " + DBConstants.Item.REF_ID
-				+ " AND " + DBConstants.ItemParent.IP_PARENT_ID + " = " + parentMoveToId
-				+ " AND " + DBConstants.ItemParent.IP_PARENT_DIRECT + " = 1 ORDER BY "
-				+ DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.INDEX_WEIGHT;
-
-			// Выполнение запроса
-			ServerLogger.debug(sql);
-			ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				result.add(new ItemAccessor(rs.getInt(1), rs.getLong(2), rs.getLong(3), rs.getString(4), rs.getInt(5), rs.getBoolean(6)));
-			}
-			rs.close();
-			stmt.close();
-			return result;
-		} finally {
-			if (conn != null && !conn.isClosed())
-				conn.close();
-		}
-	}
-	/**
-	 * Загружает всех сабайтемов определенного айтема, в которых можно создавать ссылки на заданный
-
-	SELECT
-	I_TYPE_NAME, I_ID, I_KEY, I_ID NOT IN
-	(
-	  SELECT DISTINCT IP_PARENT_ID
-	  FROM ItemParent
-	  WHERE IP_REF_ID = 22
-	  UNION
-	  SELECT DISTINCT IP_REF_ID
-	  FROM ItemParent
-	  WHERE IP_PARENT_ID = 22
-	  UNION
-	  SELECT I_PARENT_ID
-	  FROM Item
-	  WHERE I_REF_ID = 22
-	) AS M
-	FROM Item, ItemParent
-	WHERE I_ID = IP_REF_ID
-	AND I_ID = I_REF_ID
-	AND IP_PARENT_ID = 25
-	AND IP_LEVEL = 1
-	AND IP_REF_ID NOT IN
-	(
-	  SELECT DISTINCT IP_REF_ID
-	  FROM ItemParent
-	  WHERE IP_PARENT_ID = 22 OR IP_REF_ID = 22
-	)
-	ORDER BY I_CHILD_INDEX
-
-	Сейчас не так, как написано выше. Сейчас можно создавать все ссылки, кроме ссылки на самого себя и ссылки на непосредственного потомка
-	
-	SELECT
-	I_TYPE_NAME, I_ID, I_KEY, I_ID NOT IN
-	(
-	  SELECT DISTINCT IP_PARENT_ID
-	  FROM ItemParent
-	  WHERE IP_REF_ID = itemToMountId
-	  UNION
-	  SELECT DISTINCT IP_REF_ID
-	  FROM ItemParent
-	  WHERE IP_PARENT_ID = itemToMountId
-	) AND I_ID != itemToMountId AS M
-	FROM Item, ItemParent
-	WHERE I_ID = IP_REF_ID
-	AND I_ID = I_REF_ID
-	AND IP_PARENT_ID = parentMountToId
-	AND IP_LEVEL = 1
-	ORDER BY I_CHILD_INDEX
-
-	 * @param parentId
-	 * @return
-	 * @throws Exception
-	 */
-	public ArrayList<ItemAccessor> loadItemsToMountTo(long parentMountToId, long itemToMountId) throws Exception {
-		ArrayList<ItemAccessor> result = new ArrayList<ItemAccessor>();
-		Connection conn = null;
-		try {
-			conn = MysqlConnector.getConnection();
-			Statement stmt = conn.createStatement();
-			String sql 
-				= "SELECT " + DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID 
-				+ ", " + DBConstants.Item.KEY + ", " + DBConstants.Item.INDEX_WEIGHT + ", " + DBConstants.Item.ID 
-				+ " NOT IN (SELECT DISTINCT " + DBConstants.ItemParent.IP_PARENT_ID + " FROM " + DBConstants.ItemParent.IP_TABLE
-				+ " WHERE " + DBConstants.ItemParent.REF_ID  + " = " + itemToMountId + " AND " + DBConstants.ItemParent.IP_PARENT_DIRECT + "=1"
-				+ " UNION SELECT DISTINCT " + DBConstants.ItemParent.REF_ID + " FROM " + DBConstants.ItemParent.IP_TABLE
-				+ " WHERE " + DBConstants.ItemParent.IP_PARENT_ID + " = " + itemToMountId + " AND " + DBConstants.ItemParent.IP_PARENT_DIRECT + "=1"
-				+ " ) AND " + DBConstants.Item.ID + " != " + itemToMountId	
-				+ " AS M FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.IP_TABLE
-				+ " WHERE " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.ITEM_ID
-				+ " AND " + DBConstants.Item.ID + " = " + DBConstants.Item.REF_ID
-				+ " AND " + DBConstants.ItemParent.IP_PARENT_ID + " = " + parentMountToId
-				+ " AND " + DBConstants.ItemParent.IP_PARENT_DIRECT + " = 1 ORDER BY "
-				+ DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.INDEX_WEIGHT;
-
-			// Выполнение запроса
-			ServerLogger.debug(sql);
-			ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				result.add(new ItemAccessor(rs.getInt(1), rs.getLong(2), rs.getLong(3), rs.getString(4), rs.getInt(5), rs.getBoolean(6)));
-			}
-			rs.close();
-			stmt.close();
-			return result;
-		} finally {
-			if (conn != null && !conn.isClosed())
-				conn.close();
-		}
-	}
-	/**
-	 * Загружает всех сабайтемов определенного айтема, в которые можно переместить заданный
-
-	SELECT
-	I_TYPE_NAME, I_ID, I_KEY, I_ID NOT IN
-	(
-	  SELECT DISTINCT IP_PARENT_ID
-	  FROM ItemParent
-	  WHERE IP_REF_ID = itemToMoveToId
-	) AND I_ID != itemToMoveToId AND I_PARENT_ID != itemToMoveToId AS M
-	FROM Item, ItemParent
-	WHERE I_ID = IP_REF_ID
-	AND I_ID = I_REF_ID
-	AND IP_PARENT_ID = parentMoveToId
-	AND IP_LEVEL = 1
-	ORDER BY I_CHILD_INDEX
-		
-	 * @param parentId
-	 * @return
-	 * @throws Exception
-	 */
-	public ArrayList<ItemAccessor> loadItemsToMove(long parentToMoveId, long itemToMoveToId) throws Exception {
-		ArrayList<ItemAccessor> result = new ArrayList<ItemAccessor>();
-		Connection conn = null;
-		try {
-			conn = MysqlConnector.getConnection();
-			Statement stmt = conn.createStatement();
-			String sql 
-				= "SELECT " + DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID + ", "
-				+ DBConstants.Item.KEY + ", " + DBConstants.Item.INDEX_WEIGHT + ", "
-				+ DBConstants.Item.ID + " NOT IN (SELECT DISTINCT " + DBConstants.ItemParent.IP_PARENT_ID
-				+ " FROM " + DBConstants.ItemParent.IP_TABLE + " WHERE " + DBConstants.ItemParent.REF_ID  + " = " + itemToMoveToId
-				+ " ) AND " + DBConstants.Item.ID + " != " + itemToMoveToId 
-				+ " AND " + DBConstants.Item.DIRECT_PARENT_ID + " != " + itemToMoveToId 
-				+ " AS M FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.IP_TABLE
-				+ " WHERE " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.ITEM_ID
-				+ " AND " + DBConstants.Item.ID + " = " + DBConstants.Item.REF_ID
-				+ " AND " + DBConstants.ItemParent.IP_PARENT_ID + " = " + parentToMoveId
-				+ " AND " + DBConstants.ItemParent.IP_PARENT_DIRECT + " = 1 ORDER BY "
-				+ DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.INDEX_WEIGHT;
-
-			// Выполнение запроса
-			ServerLogger.debug(sql);
-			ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				result.add(new ItemAccessor(rs.getInt(1), rs.getLong(2), rs.getLong(3), rs.getString(4), rs.getInt(5), rs.getBoolean(6)));
-			}
-			rs.close();
-			stmt.close();
-			return result;
-		} finally {
-			if (conn != null && !conn.isClosed())
-				conn.close();
-		}
-	}
-	/**
-	 * Загружает всех сабайтемов определенного айтема, в которых можно создавать ссылки на заданный
-		
-	SELECT I_TYPE_NAME, I_ID, I_KEY, I_ID NOT IN
-	(
-	  SELECT DISTINCT IP_PARENT_ID
-	  FROM ItemParent
-	  WHERE IP_ITEM_ID = 22
-	  UNION
-	  SELECT DISTINCT IP_ITEM_ID
-	  FROM ItemParent
-	  WHERE IP_PARENT_ID = 22
-	  UNION
-	  SELECT I_REF_ID  // Отличие от mount to
-	  FROM Item
-	  WHERE I_PARENT_ID = 22
-	)
-	AS M
-	FROM Item, ItemParent
-	WHERE I_ID = IP_ITEM_ID
-	AND IP_PARENT_ID = 5
-	AND IP_LEVEL = 1
-	AND I_ID != I_PARENT_ID
-	AND IP_ITEM_ID NOT IN
-	(
-	  SELECT DISTINCT IP_ITEM_ID
-	  FROM ItemParent
-	  WHERE IP_PARENT_ID = 22 OR IP_ITEM_ID = 22
-	)
-	ORDER BY I_CHILD_INDEX
-
-	Сейчас не так, как написано выше. Сейчас можно создавать все ссылки, кроме ссылки на самого себя и ссылки на непосредственного потомка
-	
-	SELECT
-	I_TYPE_NAME, I_ID, I_KEY, I_ID NOT IN
-	(
-	  SELECT DISTINCT IP_REF_ID
-	  FROM ItemParent
-	  WHERE IP_PARENT_ID = itemToMountToId
-	  UNION
-	  SELECT DISTINCT IP_PARENT_ID
-	  FROM ItemParent
-	  WHERE IP_REF_ID = itemToMountToId
-	) AND I_ID != itemToMountToId AS M
-	FROM Item, ItemParent
-	WHERE I_ID = IP_REF_ID
-	AND I_ID = I_REF_ID
-	AND IP_PARENT_ID = parentMountToId
-	AND IP_LEVEL = 1
-	ORDER BY I_CHILD_INDEX
-	
-		
-	 * @param parentId
-	 * @return
-	 * @throws Exception
-	 */
-	public ArrayList<ItemAccessor> loadItemsToMount(long parentToMountId, long itemToMountToId) throws Exception {
-		ArrayList<ItemAccessor> result = new ArrayList<ItemAccessor>();
-		Connection conn = null;
-		try {
-			conn = MysqlConnector.getConnection();
-			Statement stmt = conn.createStatement();
-			String sql 
-				= "SELECT " + DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID + ", " 
-				+ DBConstants.Item.KEY + ", " + DBConstants.Item.INDEX_WEIGHT + ", "
-				+ DBConstants.Item.ID + " NOT IN (SELECT DISTINCT " + DBConstants.ItemParent.REF_ID 
-				+ " FROM " + DBConstants.ItemParent.IP_TABLE + " WHERE " + DBConstants.ItemParent.IP_PARENT_ID + " = " + itemToMountToId
-				+ " UNION SELECT DISTINCT " + DBConstants.ItemParent.IP_PARENT_ID
-				+ " FROM " + DBConstants.ItemParent.IP_TABLE + " WHERE " + DBConstants.ItemParent.REF_ID  + " = " + itemToMountToId
-				+ " ) AND " + DBConstants.Item.ID + " != " + itemToMountToId 
-				+ " AS M FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.IP_TABLE
-				+ " WHERE " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.ITEM_ID
-				+ " AND " + DBConstants.Item.ID + " = " + DBConstants.Item.REF_ID
-				+ " AND " + DBConstants.ItemParent.IP_PARENT_ID + " = " + parentToMountId
-				+ " AND " + DBConstants.ItemParent.IP_PARENT_DIRECT + " = 1 ORDER BY "
-				+ DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.INDEX_WEIGHT;
-
-			// Выполнение запроса
-			ServerLogger.debug(sql);
-			ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				result.add(new ItemAccessor(rs.getInt(1), rs.getLong(2), rs.getLong(3), rs.getString(4), rs.getInt(5), rs.getBoolean(6)));
-			}
-			rs.close();
-			stmt.close();
-			return result;
-		} finally {
-			if (conn != null && !conn.isClosed())
-				conn.close();
-		}
-	}
-	/**
 	 * Загружает айтем и всех его предков
-	 * @param itemId
+	 * @param baseId
+	 * @param assocId
 	 * @return
+	 * @throws Exception
 	 */
-	public ArrayList<ItemAccessor> loadWholeBranch(long baseId, User user) throws Exception {
-		ArrayList<ItemAccessor> result = new ArrayList<ItemAccessor>();
-		Connection conn = null;
-		try {
-			conn = MysqlConnector.getConnection();
-			Statement stmt = conn.createStatement();
-			// Чтобы не загружать корневые айтемы, добавляется критерий DIRECT_PARENT != 0
-			String sql 
-					= "SELECT DISTINCT " 
-					+ DBConstants.Item.TYPE_ID + ", " + DBConstants.Item.ID + ", " + DBConstants.Item.REF_ID  + ", "
-					+ DBConstants.Item.KEY  + ", " + DBConstants.Item.INDEX_WEIGHT
-					+ " FROM " + DBConstants.Item.TABLE + ", " + DBConstants.ItemParent.IP_TABLE
-					+ " WHERE " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.IP_PARENT_ID
-					+ " AND " + DBConstants.ItemParent.ITEM_ID + " = " + baseId 
-					+ " AND " + DBConstants.Item.DIRECT_PARENT_ID + " != 0" 
-					+ " ORDER BY " + DBConstants.ItemParent.IP_PARENT_DIRECT + " DESC";
-			ServerLogger.debug(sql);
-			ResultSet rs = stmt.executeQuery(sql);
-			// Добавить корень
-			RootItemType rootDesc = ItemTypeRegistry.getGroupRoot(user.getGroup());
-			result.add(new ItemAccessor(0, rootDesc.getItemId(), rootDesc.getItemId(), "Корень", 0));
-			while (rs.next()) {
-				result.add(new ItemAccessor(rs.getInt(1), rs.getLong(2), rs.getLong(3), rs.getString(4), rs.getInt(5)));
-			}
-			rs.close();
-			stmt.close();
-			return result;
-		} finally {
-			if (conn != null && !conn.isClosed())
-				conn.close();
+	public ArrayList<ItemAccessor> loadWholeBranch(long baseId, byte assocId) throws Exception {
+		ArrayList<ItemAccessor> result = new ArrayList<>();
+		TemplateQuery query = createAccessorQueryBase("Load item branch");
+		query.col(IP_CHILD_ID).setLong(baseId).AND().col(IP_ASSOC_ID).setByte(assocId)
+				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")").AND()
+				.ORDER_BY(IP_PARENT_DIRECT, IP_PARENT_ID);
+		try (PreparedStatement pstmt = query.prepareQuery(MysqlConnector.getConnection())) {
+			ResultSet rs = pstmt.executeQuery();
+			readAccessorResultSet(rs, result);
 		}
+		return result;
 	}
 	/**
 	 * Загружает несколько айтемов по их ID

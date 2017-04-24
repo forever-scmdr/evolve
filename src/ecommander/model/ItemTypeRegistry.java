@@ -300,6 +300,23 @@ public class ItemTypeRegistry {
 	}
 
 	/**
+	 * Проверить, может ли один айтем непосредственно вкладываться в другой айтем
+	 * @param parentName
+	 * @param childName
+	 * @param assocName
+	 * @return
+	 */
+	public static boolean isDirectContainer(int parentTypeId, int childTypeId, byte assocId) {
+		Set<String> preds = getItemPredecessorsExt(getItemType(parentTypeId).getName());
+		ItemType parentType = getItemType(parentTypeId);
+		String assocName = getAssoc(assocId).getName();
+		for (String pred : preds) {
+			if (parentType.hasChild(assocName, pred))
+				return true;
+		}
+		return false;
+	}
+	/**
 	 * Получить всех предков айтема + сам айтем
 	 *
 	 * @param itemName

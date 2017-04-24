@@ -2,9 +2,7 @@ package ecommander.persistence.commandunits;
 
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
-import ecommander.model.Item;
-import ecommander.model.ItemBasics;
-import ecommander.model.ItemTypeRegistry;
+import ecommander.model.*;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
@@ -56,16 +54,25 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 	@Override
 	public void execute() throws Exception {
 
+		//////////////////////////////////////////////////////////////////////////////////////////
+		//                Проверки прав пользователя и корректности агрументов                  //
+		//////////////////////////////////////////////////////////////////////////////////////////
+
 		// Проверить права пользователя
 		if (parent == null)
 			parent = ItemMapper.loadItemBasics(parentId, getTransactionContext().getConnection());
 		testPrivileges(item);
 		testPrivileges(parent);
 
-		boolean isAssocTransitive = ItemTypeRegistry.getAssoc(assocId).isTransitive();
+		Assoc assoc = ItemTypeRegistry.getAssoc(assocId);
 
+		// Тип родителя должен поддерживать создаваемую связь
+		if (!ItemTypeRegistry.isDirectContainer(parent.getTypeId(), item.getTypeId(), assocId)) {
+			throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
+					"Association parent and child must be compatible by type");
+		}
 		if (!isItemNew) {
-			if (isAssocTransitive) {
+			if (assoc.isTransitive()) {
 				// У ассоциируемых айтемов не должно быть общих предков
 				TemplateQuery checkQuery = new TemplateQuery("check assoc validity transitive");
 				checkQuery.SELECT(IP_PARENT_ID).FROM(IP_TABLE).WHERE()
@@ -115,7 +122,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 				.FROM(IP_TABLE).WHERE().col(IP_PARENT_ID).setLong(parentId).AND().col(IP_ASSOC_ID).setByte(assocId).sql(" \r\n");
 
 		// Остальные шаги только для транзитивных ассоциаций
-		if (isAssocTransitive) {
+		if (assoc.isTransitive()) {
 
 			// Шаг 2. Добавить для нового потомка в качестве новых предков всех предков нового непосредственного родителя
 			insert.UNION_ALL()

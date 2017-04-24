@@ -4,8 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Класс, который может содержать в себе айтемы
@@ -21,7 +19,7 @@ public abstract class ItemTypeContainer {
 		public final boolean isVirtual;
 		public final boolean isOwn; // Является ли базовым владельцем сабайтема (не путем наследования)
 
-		public ChildDesc(String assocName, String itemName, boolean isSingle, boolean isVirtual, boolean isOwn) {
+		ChildDesc(String assocName, String itemName, boolean isSingle, boolean isVirtual, boolean isOwn) {
 			this.assocName = assocName;
 			this.itemName = itemName;
 			this.isSingle = isSingle;
@@ -33,7 +31,7 @@ public abstract class ItemTypeContainer {
 	private HashMap<String, ChildDesc> childDescriptions = null;
 
 	public ItemTypeContainer() {
-		childDescriptions = new HashMap<String, ChildDesc>();
+		childDescriptions = new HashMap<>();
 	}
 
 	private static String createMapKey(String assocName, String childName) {
@@ -50,7 +48,7 @@ public abstract class ItemTypeContainer {
 	 * @param single
 	 * @param virtual
 	 */
-	public void addOwnChild(String assocName, String childName, boolean single, boolean virtual) {
+	void addOwnChild(String assocName, String childName, boolean single, boolean virtual) {
 		if (StringUtils.isBlank(assocName))
 			assocName = AssocRegistry.PRIMARY_NAME;
 		childDescriptions.put(createMapKey(assocName, childName), new ChildDesc(assocName, childName, single, virtual, true));
@@ -85,22 +83,20 @@ public abstract class ItemTypeContainer {
 	}
 
 	/**
-	 * Проверяет, не унаследован ли этот сабайтем (является собственностью данного айтема)
-	 *
+	 * Проверить, содержит ли айтем указанный вложенный айтем
 	 * @param childName
 	 * @return
 	 */
-	public boolean isChildOwn(String childName) {
-		return childDescriptions.get(childName).isOwn;
+	public boolean hasChild(String assocName, String childName) {
+		return childDescriptions.containsKey(createMapKey(assocName, childName));
 	}
-
 	/**
 	 * Добавляет все сабайтемы из container в текущий контейнер
 	 * При этом все добавляемые сабайтемы помечаются как унаследованные, а не прямые
 	 *
 	 * @param container
 	 */
-	public void addAllChildren(ItemTypeContainer container) {
+	void addAllChildren(ItemTypeContainer container) {
 		for (ChildDesc sub : container.childDescriptions.values()) {
 			childDescriptions.put(createMapKey(sub.assocName, sub.itemName),
 					new ChildDesc(sub.assocName, sub.itemName, sub.isSingle, sub.isVirtual, false));
