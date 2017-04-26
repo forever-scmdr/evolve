@@ -76,22 +76,22 @@ public class UserAdminServlet extends BasicAdminServlet {
 	 * @throws Exception
 	 */
 	protected void start(HttpServletRequest req) throws Exception {
-		userGroup = Strings.EMPTY;
-		userName = Strings.EMPTY;
-		password = Strings.EMPTY;
-		description = Strings.EMPTY;
-		userId = 0;
-		// Старт приложения, если он еще не был осуществлен
-		StartController.start(getServletContext());
-		users = UserMapper.getAllUsers();
-		if (UserGroupRegistry.getGroupNames().size() == 0)
-			UserMapper.loadUserGroups();
-		userGroup = req.getParameter(USER_GROUP_INPUT);
-		userName = req.getParameter(USER_NAME_INPUT);
-		password = req.getParameter(PASSWORD_INPUT);
-		description = req.getParameter(DESCRIPTION_INPUT);
-		if (!StringUtils.isBlank(req.getParameter(USER_ID_INPUT)))
-			userId = Long.parseLong(req.getParameter(USER_ID_INPUT));
+//		userGroup = Strings.EMPTY;
+//		userName = Strings.EMPTY;
+//		password = Strings.EMPTY;
+//		description = Strings.EMPTY;
+//		userId = 0;
+//		// Старт приложения, если он еще не был осуществлен
+//		StartController.getSingleton().start(getServletContext());
+//		users = UserMapper.getAllUsers();
+//		if (UserGroupRegistry.getGroupNames().size() == 0)
+//			UserMapper.loadUserGroups();
+//		userGroup = req.getParameter(USER_GROUP_INPUT);
+//		userName = req.getParameter(USER_NAME_INPUT);
+//		password = req.getParameter(PASSWORD_INPUT);
+//		description = req.getParameter(DESCRIPTION_INPUT);
+//		if (!StringUtils.isBlank(req.getParameter(USER_ID_INPUT)))
+//			userId = Long.parseLong(req.getParameter(USER_ID_INPUT));
 	}
 	/**
 	 * Начало работы с юзерами - загрузка списка всех юзеров
@@ -113,14 +113,14 @@ public class UserAdminServlet extends BasicAdminServlet {
 	 * @throws Exception 
 	 */
 	protected String setUser(HttpServletRequest req) throws Exception {
-		start(req);
-		User user = UserMapper.getUser(getUserId());
-		userId = user.getUserId();
-		userName = user.getName();
-		userGroup = user.getGroup();
-		password = user.getPassword();
-		description = user.getDescription();
-		req.setAttribute("message", "Редактирование существующего пользователя");
+//		start(req);
+//		User user = UserMapper.getUser(getUserId());
+//		userId = user.getUserId();
+//		userName = user.getName();
+//		userGroup = user.getGroup();
+//		password = user.getPassword();
+//		description = user.getDescription();
+//		req.setAttribute("message", "Редактирование существующего пользователя");
 		return USERS;
 	}
 	/**
@@ -129,24 +129,24 @@ public class UserAdminServlet extends BasicAdminServlet {
 	 * @throws Exception 
 	 */
 	protected String saveUser(HttpServletRequest req) throws Exception {
-		// Старт приложения, если он еще не был осуществлен
-		StartController.start(getServletContext());
-		int groupId = UserGroupRegistry.getGroup(userGroup);
-		User user = new User(userName, password, description, userGroup, userId, groupId);
-		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
-		if (user.isAnonimous())
-			transaction.addCommandUnit(new SaveNewUserDBUnit(user));
-		else
-			transaction.addCommandUnit(new UpdateUserDBUnit(user));
-		transaction.execute();
-		userGroup = Strings.EMPTY;
-		userName = Strings.EMPTY;
-		password = Strings.EMPTY;
-		description = Strings.EMPTY;
-		req.setAttribute("message", "Пользователь успешно сохранен");
-		users = UserMapper.getAllUsers();
-		if (UserGroupRegistry.getGroupNames().size() == 0)
-			UserMapper.loadUserGroups();
+//		// Старт приложения, если он еще не был осуществлен
+//		StartController.start(getServletContext());
+//		int groupId = UserGroupRegistry.getGroup(userGroup);
+//		User user = new User(userName, password, description, userGroup, userId, groupId);
+//		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
+//		if (user.isAnonimous())
+//			transaction.addCommandUnit(new SaveNewUserDBUnit(user));
+//		else
+//			transaction.addCommandUnit(new UpdateUserDBUnit(user));
+//		transaction.execute();
+//		userGroup = Strings.EMPTY;
+//		userName = Strings.EMPTY;
+//		password = Strings.EMPTY;
+//		description = Strings.EMPTY;
+//		req.setAttribute("message", "Пользователь успешно сохранен");
+//		users = UserMapper.getAllUsers();
+//		if (UserGroupRegistry.getGroupNames().size() == 0)
+//			UserMapper.loadUserGroups();
 		return USERS;
 	}
 	/**
@@ -155,17 +155,17 @@ public class UserAdminServlet extends BasicAdminServlet {
 	 * @throws Exception 
 	 */
 	protected String deleteUser(HttpServletRequest req) throws Exception {
-		// Старт приложения, если он еще не был осуществлен
-		StartController.start(getServletContext());
-		User user = UserMapper.getUser(getUserId());
-		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
-		transaction.addCommandUnit(new DeleteUserDBUnit(user));
-		transaction.execute();
-		userName = Strings.EMPTY;
-		req.setAttribute("message", "Пользователь успешно удален");
-		users = UserMapper.getAllUsers();
-		if (UserGroupRegistry.getGroupNames().size() == 0)
-			UserMapper.loadUserGroups();
+//		// Старт приложения, если он еще не был осуществлен
+//		StartController.getSingleton().start(getServletContext());
+//		User user = UserMapper.getUser(getUserId());
+//		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
+//		transaction.addCommandUnit(new DeleteUserDBUnit(user));
+//		transaction.execute();
+//		userName = Strings.EMPTY;
+//		req.setAttribute("message", "Пользователь успешно удален");
+//		users = UserMapper.getAllUsers();
+//		if (UserGroupRegistry.getGroupNames().size() == 0)
+//			UserMapper.loadUserGroups();
 		return USERS;
 	}
 	

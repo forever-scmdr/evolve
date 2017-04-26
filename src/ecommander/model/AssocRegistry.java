@@ -34,4 +34,8 @@ class AssocRegistry {
 	Assoc getAssoc(byte id) {
 		return assocById.get(id);
 	}
+
+	Byte[] getAllAssocIds() {
+		return assocById.keySet().toArray(new Byte[0]);
+	}
 }

@@ -1,37 +1,21 @@
 package ecommander.admin;
 
-import java.sql.SQLException;
-import java.util.HashSet;
+import ecommander.controllers.PageController;
+import ecommander.controllers.StartController;
+import ecommander.fwk.Strings;
+import ecommander.model.*;
+import ecommander.model.datatypes.DataType.Type;
+import ecommander.model.filter.*;
+import ecommander.output.*;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.common.InPlaceTransaction;
+import ecommander.persistence.itemquery.ItemQuery;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.fwk.Strings;
-import ecommander.controllers.PageController;
-import ecommander.controllers.StartController;
-import ecommander.output.AggregateMDWriter;
-import ecommander.output.ItemTypeMDWriter;
-import ecommander.output.LeafMDStringWriter;
-import ecommander.output.LeafMDWriter;
-import ecommander.output.MetaDataWriter;
-import ecommander.output.ParameterDescriptionMDWriter;
-import ecommander.model.datatypes.DataType.Type;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.ParameterDescription;
-import ecommander.model.TypeHierarchy;
-import ecommander.model.filter.CriteriaDef;
-import ecommander.model.filter.CriteriaGroupDef;
-import ecommander.model.filter.FilterDefPart;
-import ecommander.model.filter.FilterDefinition;
-import ecommander.model.filter.InputDef;
-import ecommander.persistence.common.InPlaceTransaction;
-import ecommander.persistence.commandunits.UpdateItemDBUnit;
-import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.model.DomainRegistry;
+import java.sql.SQLException;
+import java.util.HashSet;
 /**
  * TODO <enhance> Перенести все операции по обновлению в сами элементы фильтра. Необходимые проверки проводить там же (выдавать эксэпшен)
  * @author EEEE
@@ -151,7 +135,7 @@ public class FilterAdminServlet extends BasicAdminServlet {
 		pattern = Strings.EMPTY;
 		
 		// Старт приложения, если он еще не был осуществлен
-		StartController.start(getServletContext());
+		StartController.getSingleton().start(getServletContext());
 		name = req.getParameter(NAME_INPUT);
 		try {
 			if (req.getParameter(ITEM_ID_INPUT) != null)
@@ -178,7 +162,7 @@ public class FilterAdminServlet extends BasicAdminServlet {
 		
 		// Загрузка айтема
 		item = ItemQuery.loadById(itemId);
-		filterStr = (String)item.getValue(paramName);
+		filterStr = item.getStringValue(paramName, "");
 		filter = FilterDefinition.create(filterStr);
 		if (!filter.isEmpty())
 			baseName = filter.getBaseItemName();
@@ -206,7 +190,7 @@ public class FilterAdminServlet extends BasicAdminServlet {
 	 * @throws Exception
 	 */
 	private void createFilter(HttpServletResponse resp) throws Exception {
-		AdminPage page = null;
+		AdminPage page;
 		if (StringUtils.isBlank(baseName)) {
 			page = createPage();
 			page.addMessage("Не задан базовый тип", true);
@@ -226,7 +210,7 @@ public class FilterAdminServlet extends BasicAdminServlet {
 	 * @throws Exception
 	 */
 	private void saveNewGroup(HttpServletResponse resp) throws Exception {
-		AdminPage page = null;
+		AdminPage page;
 		if (StringUtils.isBlank(name) || StringUtils.isBlank(sign)) {
 			page = createPage();
 			page.addMessage("Не заданы обязательные свойства группы", true);
@@ -246,7 +230,7 @@ public class FilterAdminServlet extends BasicAdminServlet {
 	 * @throws Exception
 	 */
 	private void updateGroup(HttpServletResponse resp) throws Exception {
-		AdminPage page = null;
+		AdminPage page;
 		if (StringUtils.isBlank(name) || StringUtils.isBlank(sign)) {
 			page = createPage();
 			page.addMessage("Не заданы обязательные свойства группы", true);
@@ -266,7 +250,7 @@ public class FilterAdminServlet extends BasicAdminServlet {
 	 * @throws Exception
 	 */
 	private void saveNewInput(HttpServletResponse resp) throws Exception {
-		AdminPage page = null;
+		AdminPage page;
 		if (StringUtils.isBlank(name) || StringUtils.isBlank(type)) {
 			page = createPage();
 			page.addMessage("Не заданы обязательные свойства поля ввода", true);
@@ -287,7 +271,7 @@ public class FilterAdminServlet extends BasicAdminServlet {
 	 * @throws Exception
 	 */
 	private void updateInput(HttpServletResponse resp) throws Exception {
-		AdminPage page = null;
+		AdminPage page;
 		if (StringUtils.isBlank(name) || StringUtils.isBlank(type)) {
 			page = createPage();
 			page.addMessage("Не заданы обязательные свойства поля ввода", true);
@@ -307,7 +291,7 @@ public class FilterAdminServlet extends BasicAdminServlet {
 	 * @throws Exception
 	 */
 	private void saveNewCriteria(HttpServletResponse resp) throws Exception {
-		AdminPage page = null;
+		AdminPage page;
 		if (StringUtils.isBlank(sign) || StringUtils.isBlank(critParamName)) {
 			page = createPage();
 			page.addMessage("Не заданы обязательные свойства критерия", true);
@@ -335,7 +319,7 @@ public class FilterAdminServlet extends BasicAdminServlet {
 	 * @throws Exception
 	 */
 	private void updateCriteria(HttpServletResponse resp) throws Exception {
-		AdminPage page = null;
+		AdminPage page;
 		if (StringUtils.isBlank(sign) || StringUtils.isBlank(critParamName)) {
 			page = createPage();
 			page.addMessage("Не заданы обязательные свойства критерия", true);
@@ -362,7 +346,7 @@ public class FilterAdminServlet extends BasicAdminServlet {
 	 * @throws Exception
 	 */
 	private void delete(HttpServletResponse resp) throws Exception {
-		AdminPage page = null;
+		AdminPage page;
 		FilterDefPart part = filter.getPart(id);
 		if (part == null) {
 			page = createPage();
@@ -378,7 +362,6 @@ public class FilterAdminServlet extends BasicAdminServlet {
 	}
 	/**
 	 * Начальная страница, никакой айтем не выбран
-	 * @param domain
 	 * @return
 	 * @throws Exception
 	 */
@@ -419,7 +402,7 @@ public class FilterAdminServlet extends BasicAdminServlet {
 		new InPlaceTransaction(getCurrentAdmin()) {
 			@Override
 			public void performTransaction() throws Exception {
-				executeCommandUnit(new UpdateItemDBUnit(item).fulltextIndex(false));
+				executeCommandUnit(SaveItemDBUnit.get(item).fulltextIndex(false));
 				PageController.clearCache();
 			}
 		}.execute();
@@ -432,17 +415,17 @@ public class FilterAdminServlet extends BasicAdminServlet {
 		TypeHierarchy root = ItemTypeRegistry.getHierarchies(ItemTypeRegistry.getItemNames());
 		AggregateMDWriter itemsWriter = new AggregateMDWriter(ITEMS_TAG, "");
 		page.addElement(itemsWriter);
-		HashSet<String> exist = new HashSet<String>();
+		HashSet<String> exist = new HashSet<>();
 		for (TypeHierarchy firstLevel : root.getExtenders()) {
 			writeItem(firstLevel, itemsWriter, exist);
 		}
 	}
 	
-	private void writeItem(TypeHierarchy itemHierarchy, MetaDataWriter parent, HashSet<String> exist) throws SQLException, Exception {
+	private void writeItem(TypeHierarchy itemHierarchy, MetaDataWriter parent, HashSet<String> exist) throws Exception {
 		if (exist.contains(itemHierarchy.getItemName()))
 			return;
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemHierarchy.getItemName());
-		ItemTypeMDWriter itemWriter = null;
+		ItemTypeMDWriter itemWriter;
 		if (itemDesc.getName().equals(baseName))
 			itemWriter = writeItemFull(itemDesc);
 		else

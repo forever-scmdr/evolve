@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import ecommander.model.*;
 import org.apache.commons.fileupload.FileItem;
 
 import ecommander.output.AggregateMDWriter;
@@ -20,15 +21,9 @@ import ecommander.output.MetaDataWriter;
 import ecommander.output.XmlDocumentBuilder;
 import ecommander.model.datatypes.DataType.Type;
 import ecommander.model.datatypes.FileDataType;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeContainer;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.ParameterDescription;
 import ecommander.pages.ItemHttpPostForm;
 import ecommander.pages.UrlParameterFormatConverter;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.model.User;
 
 /**
  * Создает все страницы (которые являются частями общей админской страницы и загружаются с помощь AJAX), 
@@ -275,7 +270,7 @@ public class MainAdminPageCreator {
 		private final boolean isPersonal;
 		
 		private ItemToAdd(String baseItem, String defaultExtender, long parentId, boolean isVirtual, boolean isPersonal) throws SQLException {
-			extenders = new ArrayList<String>();
+			extenders = new ArrayList<>();
 			this.baseItem = baseItem;
 			this.defaultExtender = defaultExtender;
 			this.parentId = parentId;
@@ -312,15 +307,12 @@ public class MainAdminPageCreator {
 		}
 	}
 
-	// Корневой айтем для текущего пользователя
-	private RootItemType root = null;
 	// Текущий пользователь
 	private User currentUser = null;
 	// Текущий домен сайта
 	private String domain = null;
 	
-	public MainAdminPageCreator(User user, String domain) {
-		root = ItemTypeRegistry.getGroupRoot(user.getGroup());
+	MainAdminPageCreator(User user, String domain) {
 		this.currentUser = user;
 		this.domain = domain;
 	}
@@ -349,16 +341,16 @@ public class MainAdminPageCreator {
 	 * @return
 	 * @throws Exception
 	 */
-	public AdminPage createPageBase(String defaultViewType, long baseId, int itemType) throws Exception {
+	AdminPage createPageBase(String defaultViewType, long baseId, int itemType) throws Exception {
 		AdminPage basePage = new AdminPage(BASE_PAGE, domain, currentUser.getName());
 		basePage.addElement(new LeafMDWriter(AdminXML.VIEW_TYPE_ELEMENT, defaultViewType));
 		basePage.addElement(new LeafMDWriter(AdminXML.BASE_ID_ELEMENT, baseId));
 		basePage.addElement(new LeafMDWriter(AdminXML.BASE_TYPE_ELEMENT, itemType));
 		// Путь к текущему элементу
 		AggregateMDWriter path = new AggregateMDWriter(AdminXML.PATH_ELEMENT);
-		ArrayList<ItemAccessor> pathItems = AdminLoader.getLoader().loadWholeBranch(baseId, currentUser);
+		ArrayList<ItemAccessor> pathItems = AdminLoader.getLoader().loadWholeBranch(baseId, ItemTypeRegistry.getPrimaryAssoc().getId());
 		// Текущий элемент
-		if (baseId > 0 && baseId != root.getItemId()) {
+		if (baseId > 0 && baseId != ItemTypeRegistry.getDefaultRoot().getId()) {
 			ItemAccessor item = AdminLoader.getLoader().loadItemAccessor(baseId);
 			if (item != null) {
 				basePage.addElement(item);
@@ -384,11 +376,11 @@ public class MainAdminPageCreator {
 	 * @return
 	 * @throws Exception 
 	 */
-	public AdminPage createSubitemsPage(long baseId, int itemType) throws Exception {
+	AdminPage createSubitemsPage(long baseId, int itemType) throws Exception {
 		AdminPage basePage = new AdminPage(SUBITEMS_PAGE, domain, currentUser.getName());
-		ArrayList<ItemToAdd> itemsToAdd = new ArrayList<ItemToAdd>();
+		ArrayList<ItemToAdd> itemsToAdd = new ArrayList<>();
 		if (baseId <= 0) {
-			baseId = root.getItemId();
+			baseId = ItemTypeRegistry.getDefaultRoot().getId();
 		} else if (itemType <= 0) {
 			ItemAccessor baseItem = AdminLoader.getLoader().loadItemAccessor(baseId);
 			itemType = baseItem.getTypeId();
@@ -397,7 +389,7 @@ public class MainAdminPageCreator {
 		if (!currentUser.getGroup().equals(User.USER_DEFAULT_GROUP) && baseId == root.getItemId()) {
 			existingSubitems.putAll(createDefaultRootSubitemsInfo(itemsToAdd));
 		}
-		ArrayList<ItemAccessor> subitems = new ArrayList<ItemAccessor>();
+		ArrayList<ItemAccessor> subitems = new ArrayList<>();
 		for (ArrayList<ItemAccessor> items : existingSubitems.values()) {
 			subitems.addAll(items);
 		}
@@ -408,11 +400,9 @@ public class MainAdminPageCreator {
 		for (ItemAccessor subitem : subitems) {
 			String delUrl = createAdminUrl(DELETE_ITEM_ACTION, ITEM_ID_INPUT, subitem.getId(), ITEM_TYPE_INPUT, itemType, PARENT_ID_INPUT, baseId);
 			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, subitem.getId(), ITEM_TYPE_INPUT, subitem.getTypeId());
-			String editInlineUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, INLINE_VIEW_TYPE, ITEM_ID_INPUT, subitem.getId());
 			String copyUrl = createAdminUrl(COPY_ACTION, ITEM_ID_INPUT, subitem.getId(), PARENT_ID_INPUT, baseId, ITEM_TYPE_INPUT, itemType);
 			subitem.addSubwriter(new LeafMDWriter(AdminXML.DELETE_LINK_ELEMENT, delUrl));
 			subitem.addSubwriter(new LeafMDWriter(AdminXML.EDIT_LINK_ELEMENT, editUrl));
-			subitem.addSubwriter(new LeafMDWriter(AdminXML.EDIT_INLINE_LINK_ELEMENT, editInlineUrl));
 			subitem.addSubwriter(new LeafMDWriter(AdminXML.COPY_LINK_ELEMENT, copyUrl));
 			basePage.addElement(subitem);
 		}
@@ -436,14 +426,14 @@ public class MainAdminPageCreator {
 	 * @param userGroup
 	 * @return
 	 */
-	public AdminPage createPastePage(HttpSession session, long newParentId, int newParentTypeId, String userGroup) {
+	AdminPage createPastePage(HttpSession session, long newParentId, int newParentTypeId, String userGroup) {
 		AdminPage page = new AdminPage(PASTE_PAGE, domain, currentUser.getName());
 		@SuppressWarnings("unchecked")
 		LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) session.getAttribute(PASTE_LIST);
 		if (buffer == null)
 			return page;
 		ItemType parentDesc = ItemTypeRegistry.getItemType(newParentTypeId);
-		Set<String> subitemNames = new HashSet<String>();
+		Set<String> subitemNames = new HashSet<>();
 		if (parentDesc != null)
 			subitemNames = ItemTypeRegistry.getUserGroupAllowedSubitems(parentDesc.getName(), userGroup, false);
 		for (ItemAccessor item : buffer.values()) {
@@ -471,11 +461,11 @@ public class MainAdminPageCreator {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public AdminPage createParamsPage(long itemId, boolean isInline, boolean isVisual) throws SQLException, Exception {
+	AdminPage createParamsPage(long itemId, boolean isInline, boolean isVisual) throws Exception {
 		AdminPage basePage = new AdminPage(isInline ? INLINE_PAGE : PARAMETERS_PAGE, domain, currentUser.getName());
 		basePage.addElement(new LeafMDWriter(AdminXML.VISUAL_ELEMENT, isVisual));
 		Item item = null;
-		if (itemId != root.getItemId())
+		if (itemId != ItemTypeRegistry.getDefaultRoot().getId())
 			item = ItemQuery.loadById(itemId);
 		if (item != null) {
 			ItemHttpPostForm itemForm = new ItemHttpPostForm(item, basePage.getName());
@@ -489,25 +479,14 @@ public class MainAdminPageCreator {
 			// Надо найти параметр, в котором должна храниться подгружаемая картинка
 			// Также надо найти все ассоциированные айтемы и загрузить их. Они хранястя в параметрах типа associated
 			int paramId = 0;
-			ArrayList<Long> associatedIds = new ArrayList<Long>();
 			for (ParameterDescription param : item.getItemType().getParameterList()) {
 				if (param.getType() == Type.PICTURE && param.isMultiple() && paramId == 0) {
 					paramId = param.getId();
-				} else if (param.getType() == Type.ASSOCIATED) {
-					associatedIds.addAll(item.getLongValues(param.getName()));
 				}
 			}
 			if (paramId > 0)
 				basePage.addElement(new LeafMDWriter(AdminXML.UPLOAD_LINK_ELEMENT, createAdminUrl(UPLOAD_START_ACTION, ITEM_ID_INPUT,
 						item.getId(), PARAM_ID_INPUT, paramId)));
-			if (associatedIds.size() > 0) {
-				ArrayList<ItemAccessor> associatedItems = AdminLoader.getLoader().loadItemAccessors(associatedIds.toArray(new Long[0]));
-				AggregateMDWriter associated = new AggregateMDWriter(AdminXML.MOUNT_ELEMENT);
-				basePage.addElement(associated);
-				for (ItemAccessor acc : associatedItems) {
-					associated.addSubwriter(acc);
-				}
-			}
 		}
 		// Ссылки на другие виды редактирования
 		addViewLinks(basePage, itemId);
@@ -520,7 +499,7 @@ public class MainAdminPageCreator {
 	 * @param isInline - нужно ли создавать форму для инлайнового атйема
 	 * @return
 	 */
-	public AdminPage createParamsPage(int itemType, long parentId, boolean isInline, boolean isVisual) {
+	AdminPage createParamsPage(int itemType, long parentId, boolean isInline, boolean isVisual) {
 		AdminPage basePage = new AdminPage(isInline ? INLINE_PAGE : PARAMETERS_PAGE, domain, currentUser.getName());
 		basePage.addElement(new LeafMDWriter(AdminXML.VISUAL_ELEMENT, isVisual));
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemType);
@@ -540,13 +519,13 @@ public class MainAdminPageCreator {
 	 * @return
 	 * @throws Exception
 	 */
-	public AdminPage createMountToPage(long itemId, long mountToParent) throws Exception {
+	AdminPage createMountToPage(long itemId, long mountToParent) throws Exception {
 		if (mountToParent <= 0)
-			mountToParent = root.getItemId();
+			mountToParent = ItemTypeRegistry.getDefaultRoot().getId();
 		AdminPage page = new AdminPage(MOUNT_TO_PAGE, domain, currentUser.getName());
 		// Ссылки на другие виды редактирования
 		addViewLinks(page, itemId);
-		if (itemId <= 0 || itemId == root.getItemId())
+		if (itemId <= 0 || itemId == ItemTypeRegistry.getDefaultRoot().getId())
 			return page;
 		AdminLoader mapper = AdminLoader.getLoader();
 		ItemAccessor baseItem = mapper.loadItemAccessor(itemId);
@@ -622,17 +601,17 @@ public class MainAdminPageCreator {
 	 * Создает часть страницы, которая содержит список айтемов, доступных для прикрепления к выбранному айтема, а также
 	 * список айтемов, которые прикреплены к выбранному айтему
 	 * @param itemId
-	 * @param mountToParent
+	 * @param toMountParent
 	 * @return
 	 * @throws Exception
 	 */
-	public AdminPage createToMountPage(long itemId, long toMountParent) throws Exception {
+	AdminPage createToMountPage(long itemId, long toMountParent) throws Exception {
 		if (toMountParent <= 0)
-			toMountParent = root.getItemId();
+			toMountParent = ItemTypeRegistry.getDefaultRoot().getId();
 		AdminPage page = new AdminPage(TO_MOUNT_PAGE, domain, currentUser.getName());
 		// Ссылки на другие виды редактирования
 		addViewLinks(page, itemId);
-		if (itemId <= 0 || itemId == root.getItemId())
+		if (itemId <= 0 || itemId == ItemTypeRegistry.getDefaultRoot().getId())
 			return page;
 		AdminLoader mapper = AdminLoader.getLoader();
 		ItemAccessor baseItem = mapper.loadItemAccessor(itemId);
@@ -713,12 +692,12 @@ public class MainAdminPageCreator {
 	 * @return
 	 * @throws Exception
 	 */
-	public AdminPage createAssociatedPage(long itemId, long associateParent, int assocParamId) throws Exception {
+	AdminPage createAssociatedPage(long itemId, long associateParent, int assocParamId) throws Exception {
 		if (associateParent <= 0) {
-			associateParent = root.getItemId();
+			associateParent = ItemTypeRegistry.getDefaultRoot().getId();
 		}
 		AdminPage page = new AdminPage(ASSOCIATE_PAGE, domain, currentUser.getName());
-		if (itemId <= 0 || itemId == root.getItemId())
+		if (itemId <= 0 || itemId == ItemTypeRegistry.getDefaultRoot().getId())
 			return page;
 		AdminLoader mapper = AdminLoader.getLoader();
 		Item baseItem = ItemQuery.loadById(itemId);
@@ -726,7 +705,7 @@ public class MainAdminPageCreator {
 				baseItem.getChildWeight());
 		ArrayList<ItemAccessor> mountToParentPathItems = mapper.loadWholeBranch(associateParent, currentUser);
 		HashMap<String, ArrayList<ItemAccessor>> toAssocMap = null;
-		if (root.getItemId() == associateParent) {
+		if (ItemTypeRegistry.getDefaultRoot().getId() == associateParent) {
 			toAssocMap = mapper.loadClosestSubitems(root, associateParent, currentUser);
 		} else {
 			Item parent = ItemQuery.loadById(associateParent);
@@ -810,17 +789,17 @@ public class MainAdminPageCreator {
 	/**
 	 * Создает часть страницы, которая содержит список айтемов, доступных для перемещения в них выбранного айтема
 	 * @param itemId
-	 * @param mountToParent
+	 * @param moveToParent
 	 * @return
 	 * @throws Exception
 	 */
-	public AdminPage createMoveToPage(long itemId, long moveToParent) throws Exception {
+	AdminPage createMoveToPage(long itemId, long moveToParent) throws Exception {
 		if (moveToParent <= 0)
-			moveToParent = root.getItemId();
+			moveToParent = ItemTypeRegistry.getDefaultRoot().getId();
 		AdminPage page = new AdminPage(MOVE_TO_PAGE, domain, currentUser.getName());
 		// Ссылки на другие виды редактирования
 		addViewLinks(page, itemId);
-		if (itemId <= 0 || itemId == root.getItemId())
+		if (itemId <= 0 || itemId == ItemTypeRegistry.getDefaultRoot().getId())
 			return page;
 		AdminLoader mapper = AdminLoader.getLoader();
 		Item currentItem = ItemQuery.loadById(itemId);
@@ -850,8 +829,8 @@ public class MainAdminPageCreator {
 		AggregateMDWriter typeGroup = null;
 		for (ItemAccessor item : moveToList) {
 			if (item.isParentCompatible()) {
-				HashSet<String> predecessors = new HashSet<String>(ItemTypeRegistry.getItemPredecessorsExt(itemDesc.getName()));
-				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(item.getItemName()).getAllChildren());
+				HashSet<String> predecessors = new HashSet<>(ItemTypeRegistry.getItemPredecessorsExt(itemDesc.getName()));
+				HashSet<String> subitems = new HashSet<>(ItemTypeRegistry.getItemType(item.getItemName()).getAllChildren());
 				subitems.retainAll(predecessors);
 				if (subitems.size() > 0) {
 					String inputValue = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), MOVE_VALUE);
@@ -875,17 +854,17 @@ public class MainAdminPageCreator {
 	/**
 	 * Создает часть страницы, которая содержит список айтемов, доступных для перемещения в выбранный айтем
 	 * @param itemId
-	 * @param mountToParent
+	 * @param toMoveParent
 	 * @return
 	 * @throws Exception
 	 */
-	public AdminPage createToMovePage(long itemId, long toMoveParent) throws Exception {
+	AdminPage createToMovePage(long itemId, long toMoveParent) throws Exception {
 		if (toMoveParent <= 0)
-			toMoveParent = root.getItemId();
+			toMoveParent = ItemTypeRegistry.getDefaultRoot().getId();
 		AdminPage page = new AdminPage(TO_MOVE_PAGE, domain, currentUser.getName());
 		// Ссылки на другие виды редактирования
 		addViewLinks(page, itemId);
-		if (itemId <= 0 || itemId == root.getItemId())
+		if (itemId <= 0 || itemId == ItemTypeRegistry.getDefaultRoot().getId())
 			return page;
 		AdminLoader mapper = AdminLoader.getLoader();
 		ItemAccessor baseItem = mapper.loadItemAccessor(itemId);
@@ -909,11 +888,11 @@ public class MainAdminPageCreator {
 		String submitMoveFormUrl = createAdminUrl(TO_MOVE_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType, PARENT_ID_INPUT, toMoveParent);
 		toMove.addSubwriter(new LeafMDWriter(AdminXML.LINK_ELEMENT, submitMoveFormUrl));
 		int currentTypeId = -1;
-		AggregateMDWriter typeGroup = null;
+		AggregateMDWriter typeGroup;
 		for (ItemAccessor item : toMoveList) {
 			if (item.isParentCompatible()) {
-				HashSet<String> predecessors = new HashSet<String>(ItemTypeRegistry.getItemPredecessorsExt(item.getItemName()));
-				HashSet<String> subitems = new HashSet<String>(ItemTypeRegistry.getItemType(itemType).getAllChildren());
+				HashSet<String> predecessors = new HashSet<>(ItemTypeRegistry.getItemPredecessorsExt(item.getItemName()));
+				HashSet<String> subitems = new HashSet<>(ItemTypeRegistry.getItemType(itemType).getAllChildren());
 				subitems.retainAll(predecessors);
 				if (subitems.size() > 0) {
 					String inputValue = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), MOVE_VALUE);
@@ -940,7 +919,7 @@ public class MainAdminPageCreator {
 	 * @param paramId
 	 * @return
 	 */
-	public AdminPage createImageUploadPage(long itemId, int paramId) {
+	AdminPage createImageUploadPage(long itemId, int paramId) {
 		AdminPage page = new AdminPage(IMG_UPLOAD_PAGE, domain, currentUser.getName());
 		page.addElement(new LeafMDWriter(AdminXML.UPLOAD_LINK_ELEMENT, createAdminUrl(UPLOAD_IMG_ACTION, ITEM_ID_INPUT, itemId,
 				PARAM_ID_INPUT, paramId)));
@@ -952,7 +931,7 @@ public class MainAdminPageCreator {
 	 * @param paramId
 	 * @return
 	 */
-	public AdminPage createImageUploadedPage(long itemId, int paramId, ArrayList<FileItem> pictures, String path, String alt) {
+	AdminPage createImageUploadedPage(long itemId, int paramId, ArrayList<FileItem> pictures, String path, String alt) {
 		AdminPage page = new AdminPage(IMG_UPLOADED_PAGE, domain, currentUser.getName());
 		page.addElement(new LeafMDWriter(AdminXML.UPLOAD_LINK_ELEMENT, createAdminUrl(UPLOAD_START_ACTION, ITEM_ID_INPUT, itemId,
 				PARAM_ID_INPUT, paramId)));
@@ -967,17 +946,18 @@ public class MainAdminPageCreator {
 	 * @param parentId - ID родительского айтема
 	 * @param baseType - ID типа родительского айтема
 	 * @param itemsToAdd - список сабайтемов для добавления (пустой)
-	 * @param existingSubitems - список существующих сабайтемов (пустой)
-	 * @throws Exception 
+	 * @throws Exception
+	 * @return
 	 */
-	private HashMap<String, ArrayList<ItemAccessor>> createSubitemsInfo(long parentId, int baseType, ArrayList<ItemToAdd> itemsToAdd)
+	private ArrayList<ItemAccessor> createSubitemsInfo(long parentId, int baseType, ArrayList<ItemToAdd> itemsToAdd)
 			throws Exception {
 		// Для корневого айтема
+		long rootId = ItemTypeRegistry.getDefaultRoot().getId();
 		HashMap<String, ArrayList<ItemAccessor>> existingSubitems = null;
-		if (parentId == root.getItemId()) {
-			existingSubitems = AdminLoader.getLoader().loadClosestSubitems(root, root.getItemId(), currentUser);
+		if (parentId == rootId) {
+			existingSubitems = AdminLoader.getLoader().loadClosestSubitems(ItemTypeRegistry.getDefaultRoot(), rootId, currentUser);
 			for (ItemType subitemDesc : ItemTypeRegistry.getAllowedTopLevelItems(root.getGroup())) {
-				processItemForParent(root.getItemId(), subitemDesc.getName(), root, itemsToAdd, existingSubitems);
+				processItemForParent(root.getItemId(), subitemDesc.getName(), ItemTypeRegistry.getDefaultRoot(), itemsToAdd, existingSubitems);
 			}
 		}
 		// Для обычных айтемов
@@ -992,15 +972,14 @@ public class MainAdminPageCreator {
 	}
 	/**
 	 * Заполнение существующих (созданных) айтемов и айтемов для создания для корневого атйема
-	 * @param rootId
 	 * @param itemsToAdd
 	 * @return
 	 * @throws Exception
 	 */
 	private HashMap<String, ArrayList<ItemAccessor>> createDefaultRootSubitemsInfo(ArrayList<ItemToAdd> itemsToAdd)
 			throws Exception {
-		RootItemType dr = ItemTypeRegistry.getDefaultRoot();
-		HashMap<String, ArrayList<ItemAccessor>> existingSubitems = AdminLoader.getLoader().loadClosestSubitems(dr, dr.getItemId(),
+		RootType dr = ItemTypeRegistry.getDefaultRoot();
+		HashMap<String, ArrayList<ItemAccessor>> existingSubitems = AdminLoader.getLoader().loadClosestSubitems(dr, dr.getId(),
 				currentUser);
 		for (ItemType subitemDesc : ItemTypeRegistry.getAllowedTopLevelItems(dr.getGroup())) {
 			processItemForParent(dr.getItemId(), subitemDesc.getName(), dr, itemsToAdd, existingSubitems);
@@ -1053,7 +1032,7 @@ public class MainAdminPageCreator {
 	 * @param attributes
 	 * @return
 	 */
-	public static String createAdminUrl(String action, String...attributes) {
+	static String createAdminUrl(String action, String...attributes) {
 		StringBuilder sb = new StringBuilder(action).append(DOT_ACTION);
 		char union = '?';
 		for (int i = 0; i < attributes.length; i += 2) {

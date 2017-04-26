@@ -92,7 +92,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 	private String domainName;
 	private String paramName;
 	private int paramId;
-	private String quantifier;
+	private boolean isMultiple;
 	private String format;
 	private boolean hidden;
 	private String itemExtends;
@@ -135,13 +135,13 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		domainName = Strings.EMPTY;
 		paramName = Strings.EMPTY;
 		paramId = NOT_SET;
-		quantifier = Strings.EMPTY;
+		isMultiple = false;
 		format = Strings.EMPTY;
 		itemExtends = Strings.EMPTY;
-		String paramOrderStr = Strings.EMPTY;
+		String paramOrderStr;
 		
 		// Старт приложения, если он еще не был осуществлен
-		StartController.start(getServletContext());
+		StartController.getSingleton().start(getServletContext());
 		name = req.getParameter(NAME_INPUT);
 		if (name != null) {
 			caption = name;
@@ -159,12 +159,12 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		paramName = req.getParameter(PARAM_NAME_INPUT);
 		if (req.getParameter(PARAM_ID_INPUT) != null)
 			paramId = Integer.parseInt(req.getParameter(PARAM_ID_INPUT));
-		quantifier = req.getParameter(QUANTIFIER_INPUT);
+		isMultiple = StringUtils.equalsIgnoreCase(req.getParameter(QUANTIFIER_INPUT), "multiple");
 		format = req.getParameter(FORMAT_INPUT);
 		hidden = Boolean.valueOf(req.getParameter(HIDDEN_INPUT));
 		itemExtends = req.getParameter(EXTENDS_INPUT);
 		paramOrderStr = req.getParameter(PARAMETER_ORDER);
-		paramOrder = new ArrayList<Integer>();
+		paramOrder = new ArrayList<>();
 		if (!StringUtils.isBlank(paramOrderStr)) {
 			String[] paramIds = StringUtils.split(paramOrderStr, ',');
 			for (String paramId : paramIds) {
@@ -229,7 +229,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		}
 		// Сохранение айтема
 		final SaveNewItemTypeDBUnit saveCommand 
-				= new SaveNewItemTypeDBUnit(name, caption, description, parent.getName(), parent.getKey(), parent.isInline());
+				= new SaveNewItemTypeDBUnit(name, caption, description, parent.getName(), parent.getKey());
 		saveCommand.backup(); // бэкап файла
 		new InPlaceTransaction(getCurrentAdmin()) {
 			@Override
@@ -268,7 +268,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		}
 		// Сохранение айтема
 		final UpdateItemTypeDBUnit updateCommand 
-				= new UpdateItemTypeDBUnit(id, name, caption, description, itemExtends, item.isInline(), paramOrder, item.getKey());
+				= new UpdateItemTypeDBUnit(id, name, caption, description, itemExtends, paramOrder, item.getKey());
 		updateCommand.backup(); // бэкап файла
 		new InPlaceTransaction(getCurrentAdmin()) {
 			@Override
@@ -291,11 +291,11 @@ public class ItemAdminServlet extends BasicAdminServlet {
 	 */
 	private void paramsOrder(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		ItemType i = ItemTypeRegistry.getItemType(id);
-		AdminPage page = null;
+		AdminPage page;
 		String exts = StringUtils.join(ItemTypeRegistry.getDirectParents(i.getName()), ",");
 		// Сохранение айтема
 		final UpdateItemTypeDBUnit updateCommand = new UpdateItemTypeDBUnit(i.getTypeId(), i.getName(), i.getCaption(),
-				i.getDescription(), exts, i.isInline(), paramOrder, i.getKey());
+				i.getDescription(), exts, paramOrder, i.getKey());
 		updateCommand.backup(); // бэкап файла
 		new InPlaceTransaction(getCurrentAdmin()) {
 			@Override
@@ -316,7 +316,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 	 * @throws Exception
 	 */
 	private void deleteItem(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		AdminPage page = null;
+		AdminPage page;
 		// Удаление айтема
 		final DeleteItemTypeBDUnit deleteCommand = new DeleteItemTypeBDUnit(id, newId);
 		deleteCommand.backup(); // бэкап файла
@@ -343,7 +343,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 	private void saveNewParameter(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		ItemType item = ItemTypeRegistry.getItemType(id);
 		AdminPage page = null;
-		if (StringUtils.isBlank(paramName) || StringUtils.isBlank(typeName) || StringUtils.isBlank(quantifier)) {
+		if (StringUtils.isBlank(paramName) || StringUtils.isBlank(typeName)) {
 			page = createEditPage(getContextPath(req));
 			page.addMessage("Заполните обязательные поля", true);
 		} else if (item.getParameter(paramName) != null) {
@@ -357,7 +357,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		}
 		// Сохранение айтема
 		final SaveNewParameterDescriptionDBUnit saveCommand = new SaveNewParameterDescriptionDBUnit(paramName, item.getTypeId(), paramName,
-				description, domainName, format, quantifier, typeName, false, hidden);
+				description, domainName, format, isMultiple, typeName, false, hidden, "");
 		saveCommand.backup(); // бэкап файла
 		new InPlaceTransaction(getCurrentAdmin()) {
 			@Override
@@ -372,7 +372,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		description = "";
 		domainName = "";
 		format = "";
-		quantifier = "";
+		isMultiple = false;
 		typeName = "";
 		// Создание страницы
 		page = createEditPage(getContextPath(req));
@@ -404,7 +404,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		}
 		// Сохранение айтема
 		final UpdateParameterDescriptionDBUnit updateCommand = new UpdateParameterDescriptionDBUnit(paramId, id, paramName, caption,
-				description, domainName, format, quantifier, typeName, false, hidden);
+				description, domainName, format, isMultiple, typeName, false, hidden, "");
 		updateCommand.backup(); // бэкап файла
 		new InPlaceTransaction(getCurrentAdmin()) {
 			@Override
@@ -419,7 +419,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		description = "";
 		domainName = "";
 		format = "";
-		quantifier = "";
+		isMultiple = false;
 		typeName = "";
 		// Создание страницы
 		page = createEditPage(getContextPath(req));
@@ -456,7 +456,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 	 */
 	private void reloadModel(ItemModelFilePersistenceCommandUnit command) throws Exception {
 		try {
-			DataModelBuilder.tryLockAndReloadModel();
+			DataModelBuilder.newLoader().tryLockAndReloadModel();
 		} catch (Exception e) {
 			ServerLogger.error("Error while updating model_custom.xml file", e);
 			command.restore();
@@ -488,7 +488,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		AdminPage page = new AdminPage(EDIT_ITEM_PAGE, domain, getCurrentAdmin().getName());
 		createItemHierarchy(page);
 		ItemType item = ItemTypeRegistry.getItemType(id);
-		ItemTypeMDWriter itemWriter = null;
+		ItemTypeMDWriter itemWriter;
 		itemWriter = writeItemFull(item, page);
 		itemWriter.addSubwriter(new LeafMDWriter("delete_link", DELETE_ACTION + EXT + '?' + ID_INPUT + '=' + id));
 		itemWriter.addSubwriter(new LeafMDWriter("update_link", UPDATE_ACTION + EXT + '?' + ID_INPUT + '=' + id));
@@ -523,19 +523,19 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		TypeHierarchy root = ItemTypeRegistry.getHierarchies(ItemTypeRegistry.getItemNames());
 		AggregateMDWriter itemsWriter = new AggregateMDWriter(ITEMS_TAG, "");
 		page.addElement(itemsWriter);
-		HashSet<Integer> writtenItems = new HashSet<Integer>();
+		HashSet<Integer> writtenItems = new HashSet<>();
 		for (TypeHierarchy firstLevel : root.getExtenders()) {
 			writeItem(firstLevel, itemsWriter, writtenItems);
 		}
 	}
 	
-	private void writeItem(TypeHierarchy itemHierarchy, MetaDataWriter parent, HashSet<Integer> alreadyWritten) throws SQLException, Exception {
+	private void writeItem(TypeHierarchy itemHierarchy, MetaDataWriter parent, HashSet<Integer> alreadyWritten) throws Exception {
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemHierarchy.getItemName());
 		// Не выводить айтемы повторно
 		if (alreadyWritten.contains(itemDesc.getTypeId()))
 			return;
 		alreadyWritten.add(itemDesc.getTypeId());
-		ItemTypeMDWriter itemWriter = null;
+		ItemTypeMDWriter itemWriter;
 		if (itemDesc.getTypeId() == id)
 			itemWriter = new ItemTypeMDWriter(itemDesc, SELECTED_ITEM_TAG);
 		else
@@ -576,7 +576,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 		data.addSubwriter(new LeafMDWriter(NAME_INPUT, paramName));
 		data.addSubwriter(new LeafMDWriter(DESCRIPTION_INPUT, description));
 		data.addSubwriter(new LeafMDWriter(TYPE_NAME_INPUT, typeName));
-		data.addSubwriter(new LeafMDWriter(QUANTIFIER_INPUT, quantifier));
+		data.addSubwriter(new LeafMDWriter(QUANTIFIER_INPUT, isMultiple ? "multiple" : "single"));
 		data.addSubwriter(new LeafMDWriter(FORMAT_INPUT, format));
 		data.addSubwriter(new LeafMDWriter(DOMAIN_NAME_INPUT, domainName));
 		page.addElement(data);

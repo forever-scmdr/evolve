@@ -89,7 +89,7 @@ public class DomainAdminServlet extends BasicAdminServlet {
 		value = Strings.EMPTY;
 		currentName = Strings.EMPTY;
 		// Старт приложения, если он еще не был осуществлен
-		StartController.start(getServletContext());
+		StartController.getSingleton().start(getServletContext());
 		name = req.getParameter(NAME_INPUT);
 		viewType = req.getParameter(VIEW_TYPE_INPUT);
 		format = req.getParameter(FORMAT_INPUT);
@@ -100,7 +100,7 @@ public class DomainAdminServlet extends BasicAdminServlet {
 	 * Начало работы с юзерами - загрузка списка всех юзеров
 	 * @return
 	 */
-	protected String initialize(HttpServletRequest req) {
+	private String initialize(HttpServletRequest req) {
 		name = Strings.EMPTY;
 		value = Strings.EMPTY;
 		currentName = Strings.EMPTY;
@@ -111,7 +111,7 @@ public class DomainAdminServlet extends BasicAdminServlet {
 	 * Выбран один из доменов для редактирования
 	 * @return
 	 */
-	protected String setDomain(HttpServletRequest req) {
+	private String setDomain(HttpServletRequest req) {
 		currentName = name;
 		req.setAttribute("message", "Редактирование домена");
 		return DOMAINS;
@@ -140,7 +140,7 @@ public class DomainAdminServlet extends BasicAdminServlet {
 	 * Удаление значения из домена
 	 * @throws Exception 
 	 */
-	protected String deleteValue(HttpServletRequest req) throws Exception {
+	private String deleteValue(HttpServletRequest req) throws Exception {
 		if (StringUtils.isBlank(value)) {
 			req.setAttribute("message", "Задайте, пожалуйста, удаляемое значение");
 			return DOMAINS;
@@ -157,7 +157,7 @@ public class DomainAdminServlet extends BasicAdminServlet {
 	 * Создание нового домена
 	 * @throws Exception 
 	 */
-	protected String addDomain(HttpServletRequest req) throws Exception {
+	private String addDomain(HttpServletRequest req) throws Exception {
 		if (StringUtils.isBlank(name) || StringUtils.isBlank(viewType)) {
 			req.setAttribute("message", "Задайте, пожалуйста, название и тип домена");
 			return DOMAINS;
@@ -175,7 +175,7 @@ public class DomainAdminServlet extends BasicAdminServlet {
 	 * Удаление домена
 	 * @throws Exception 
 	 */
-	protected String removeDomain(HttpServletRequest req) throws Exception {
+	private String removeDomain(HttpServletRequest req) throws Exception {
 		if (StringUtils.isBlank(name)) {
 			req.setAttribute("message", "Задайте, пожалуйста, название домена");
 			return DOMAINS;
@@ -193,7 +193,7 @@ public class DomainAdminServlet extends BasicAdminServlet {
 	 * Сохранение
 	 * @throws Exception 
 	 */
-	protected String updateDomain(HttpServletRequest req) throws Exception {
+	private String updateDomain(HttpServletRequest req) throws Exception {
 		if (StringUtils.isBlank(name) || StringUtils.isBlank(viewType)) {
 			req.setAttribute("message", "Задайте, пожалуйста, название и тип домена");
 			return DOMAINS;

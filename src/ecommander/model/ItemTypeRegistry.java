@@ -92,7 +92,7 @@ public class ItemTypeRegistry {
 	 *
 	 * @param itemDesc
 	 */
-	public static void addItemDescription(ItemType itemDesc) {
+	static void addItemDescription(ItemType itemDesc) {
 		getSingleton().itemsByNames.put(itemDesc.getName(), itemDesc);
 		getSingleton().itemsByIds.put(itemDesc.getTypeId(), itemDesc);
 		getSingleton().itemNames.add(itemDesc.getName());
@@ -203,7 +203,7 @@ public class ItemTypeRegistry {
 	 * @param parentChildPairs
 	 * @param validation
 	 */
-	public static synchronized TypeHierarchyRegistry createHierarchy(ArrayList<String[]> parentChildPairs, boolean validation) {
+	static synchronized TypeHierarchyRegistry createHierarchy(ArrayList<String[]> parentChildPairs, boolean validation) {
 		TypeHierarchyRegistry object = new TypeHierarchyRegistry(parentChildPairs);
 		if (!validation) {
 			getSingleton().hierarchyRegistry = object;
@@ -301,13 +301,13 @@ public class ItemTypeRegistry {
 
 	/**
 	 * Проверить, может ли один айтем непосредственно вкладываться в другой айтем
-	 * @param parentName
-	 * @param childName
-	 * @param assocName
+	 * @param parentTypeId
+	 * @param childTypeId
+	 * @param assocId
 	 * @return
 	 */
 	public static boolean isDirectContainer(int parentTypeId, int childTypeId, byte assocId) {
-		Set<String> preds = getItemPredecessorsExt(getItemType(parentTypeId).getName());
+		Set<String> preds = getItemPredecessorsExt(getItemType(childTypeId).getName());
 		ItemType parentType = getItemType(parentTypeId);
 		String assocName = getAssoc(assocId).getName();
 		for (String pred : preds) {
@@ -345,7 +345,7 @@ public class ItemTypeRegistry {
 	 * Добавить ассоциацию
 	 * @param assoc
 	 */
-	public static void addAssoc(Assoc assoc) {
+	static void addAssoc(Assoc assoc) {
 		getSingleton().assocRegistry.addAssoc(assoc);
 	}
 
@@ -373,6 +373,14 @@ public class ItemTypeRegistry {
 	 */
 	public static Assoc getPrimaryAssoc() {
 		return getSingleton().assocRegistry.getPrimary();
+	}
+
+	/**
+	 * Получить ID всех ассоциаций из модели данных (включая базовую)
+	 * @return
+	 */
+	public static Byte[] getAllAssocIds() {
+		return getSingleton().assocRegistry.getAllAssocIds();
 	}
 
 }

@@ -38,7 +38,7 @@ public class StartController {
 					// Загружаются описания айтемов (из XML файла + БД)
 					DataModelBuilder.newLoader().tryLockAndReloadModel();
 					// Загружается модели страниц (из XML файла)
-					PageModelBuilder.testActuality();
+					//PageModelBuilder.testActuality();
 					// Флаг о том, что приложение запущено
 					servletContext.setAttribute(STARTED, STARTED);
 				}
