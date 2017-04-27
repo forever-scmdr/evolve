@@ -65,13 +65,14 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * 		- неперсональные айтемы текущей группы (критерий - тип айтема и номер группы)
 	 * 		- персональные айтемы текущей группы (критерий - тип айтема и номер юзера)
 	 * 	    - загружаются потомки по всем ассоциациям
-	 * @param itemDesc
 	 * @param parentId
 	 * @param user
 	 * @return
 	 * @throws Exception
 	 */
-	ArrayList<ItemAccessor> loadClosestSubitems(ItemTypeContainer itemDesc, long parentId, User user) throws Exception {
+	ArrayList<ItemAccessor> loadClosestSubitems(long parentId, User user) throws Exception {
+		ItemAccessor parent = loadItemAccessor(parentId);
+		ItemType itemDesc = ItemTypeRegistry.getItemType(parent.getTypeId());
 		Byte[] allAssocs = ItemTypeRegistry.getItemOwnAssocIds(itemDesc.getName()).toArray(new Byte[0]);
 		HashSet<Byte> adminGroups = new HashSet<>();
 		HashSet<Byte> commonGroups = new HashSet<>();
@@ -190,32 +191,6 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		if (result.size() == 0)
 			return null;
 		return result.get(0);
-	}
-	/**
-	 * Возвращает все названия айтемов, которые можно добавлять к текущему
-	 * @param desc
-	 * @param existingSubitems
-	 * @return
-	 */
-	ArrayList<ItemTypeContainer.ChildDesc> getItemsToAdd(ItemTypeContainer desc, ArrayList<ItemAccessor> existingSubitems) {
-		ArrayList<ItemTypeContainer.ChildDesc> subitems = new ArrayList<>(desc.getAllChildren());
-		ArrayList<ItemTypeContainer.ChildDesc> result = new ArrayList<>();
-		for (ItemTypeContainer.ChildDesc childDesc : subitems) {
-			if (childDesc.isSingle) {
-				boolean exists = false;
-				for (ItemAccessor subitem : existingSubitems) {
-					if (StringUtils.equals(subitem.getItemName(), childDesc.itemName)) {
-						exists = true;
-						break;
-					}
-				}
-				if (!exists)
-					result.add(childDesc);
-			} else {
-				result.add(childDesc);
-			}
-		}
-		return result;
 	}
 	/**
 	 * Загрузить все айтемы, которые хранят ссылки на данный айтем (все айтемы, к которым прицеплен данный айтем)

@@ -316,6 +316,24 @@ public class ItemTypeRegistry {
 		}
 		return false;
 	}
+
+	/**
+	 * Вернуть все ассоциации, которыми могут быть связаны родитель и прямой потомок заданных типов
+	 * Если эти типы не могут быть связаны, возвращается пустое множество
+	 * @param parentTypeId
+	 * @param childTypeId
+	 * @return
+	 */
+	public static Set<Assoc> getDirectContainerAssocs(int parentTypeId, int childTypeId) {
+		Set<String> preds = getItemPredecessorsExt(getItemType(childTypeId).getName());
+		ItemType parentType = getItemType(parentTypeId);
+		LinkedHashSet<Assoc> result = new LinkedHashSet<>();
+		for (ItemTypeContainer.ChildDesc childDesc : parentType.getAllChildren()) {
+			if (preds.contains(childDesc.itemName))
+				result.add(getAssoc(childDesc.assocName));
+		}
+		return result;
+	}
 	/**
 	 * Получить всех предков айтема + сам айтем
 	 *

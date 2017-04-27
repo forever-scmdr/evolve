@@ -23,6 +23,16 @@ public class Assoc {
 		return id;
 	}
 
+	@Override
+	public int hashCode() {
+		return id;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id == ((Assoc) obj).getId();
+	}
+
 	public String getName() {
 		return name;
 	}

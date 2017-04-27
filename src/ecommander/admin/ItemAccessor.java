@@ -111,11 +111,21 @@ public class ItemAccessor extends MetaDataWriter implements ItemBasics, Comparab
 		return contextAssoc;
 	}
 
+	public String getAssocName() {
+		return assocName;
+	}
+
+	public String getAssocCaption() {
+		return assocCaption;
+	}
+
 	public boolean isParentCompatible() {
 		return isParentCompatible;
 	}
 
 	public int compareTo(ItemAccessor o) {
+		if (contextAssoc != o.contextAssoc)
+			return contextAssoc - o.contextAssoc;
 		return childWeight - o.childWeight;
 	}
 
