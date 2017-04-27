@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public abstract class MetaDataWriter {
 	
-	protected ArrayList<MetaDataWriter> additional;
+	private ArrayList<MetaDataWriter> additional;
 	
 	protected MetaDataWriter() {
-		additional = new ArrayList<MetaDataWriter>();
+		additional = new ArrayList<>();
 	}
 	/**
 	 * Вывести краткое содержание объекта
@@ -25,7 +25,7 @@ public abstract class MetaDataWriter {
 	 * Удалить все дополнительные части
 	 */
 	public final void clearSubwriters() {
-		additional = new ArrayList<MetaDataWriter>();
+		additional = new ArrayList<>();
 	}
 	/**
 	 * Вывести содержимое дополнительных элементов

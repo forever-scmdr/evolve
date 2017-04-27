@@ -1,10 +1,7 @@
 package ecommander.admin;
 
 import ecommander.fwk.MysqlConnector;
-import ecommander.model.Item;
-import ecommander.model.ItemTypeContainer;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.User;
+import ecommander.model.*;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 
 /**
@@ -101,13 +99,59 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		return loadAccessorsByQuery(select);
 	}
 
-	ArrayList<ItemAccessor> loadDefaultRootSubitems() {
-		HashSet<Byte> typeIds = new HashSet<>();
-		for (ItemTypeContainer.ChildDesc childDesc : ItemTypeRegistry.getDefaultRoot().getAllChildren()) {
-			typeIds.add(ItemTypeRegistry.getAssoc(childDesc.assocName).getId());
+	/**
+	 * Загрузить корневые айтемы для главного админа
+	 * @param user
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	ArrayList<ItemAccessor> loadSuperUserRootItems(User user) throws SQLException, NamingException {
+		Collection<ItemTypeContainer.ChildDesc> rootChildren = ItemTypeRegistry.getDefaultRoot().getAllChildren();
+		HashSet<Integer> allTypes = new HashSet<>();
+		for (ItemTypeContainer.ChildDesc rootChild : rootChildren) {
+			allTypes.add(ItemTypeRegistry.getItemTypeId(rootChild.itemName));
 		}
-		TemplateQuery query = createAccessorQueryBase("Load root subitems");
-		query.col(I_USER).setInt(User.getSuperUser());
+		HashSet<Byte> adminGroups = new HashSet<>();
+		HashSet<Byte> commonGroups = new HashSet<>();
+		for (User.Group group : user.getGroups()) {
+			if (group.role == User.ADMIN)
+				adminGroups.add(group.id);
+			else
+				commonGroups.add(group.id);
+		}
+		TemplateQuery base = new TemplateQuery("Load root subitems part");
+		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED).FROM(I_TABLE)
+				.WHERE().col(I_TYPE_ID, " IN(").setIntArray(allTypes.toArray(new Integer[0])).AND()
+				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")").AND();
+
+		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
+		TemplateQuery commonQuery = (TemplateQuery) base.createClone();
+		adminQuery.col(I_GROUP, " IN(").setByteArray(adminGroups.toArray(new Byte[0])).sql(")");
+		commonQuery.col(I_GROUP, " IN(").setByteArray(commonGroups.toArray(new Byte[0])).sql(")").AND()
+				.col(I_USER).setInt(user.getUserId());
+
+		TemplateQuery select = new TemplateQuery("Load root subitems union");
+		select.getOrCreateSubquery("ADMIN").replace(adminQuery);
+		select.UNION_ALL().getOrCreateSubquery("COMMON").replace(commonQuery);
+		ArrayList<ItemAccessor> result = new ArrayList<>();
+		try (PreparedStatement pstmt = select.prepareQuery(MysqlConnector.getConnection())) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result.add(new ItemAccessor(
+						rs.getInt(I_TYPE_ID),
+						rs.getLong(I_ID),
+						rs.getString(I_KEY),
+						rs.getByte(I_GROUP),
+						rs.getInt(I_USER),
+						rs.getByte(I_STATUS),
+						rs.getByte(I_PROTECTED) == (byte) 1,
+						0,
+						ItemTypeRegistry.getPrimaryAssoc().getId(),
+						true));
+			}
+		}
+		return result;
 	}
 	/**
 	 * Загружает айтем и всех его предков

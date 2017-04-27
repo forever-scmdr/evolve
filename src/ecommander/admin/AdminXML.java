@@ -4,6 +4,7 @@ public interface AdminXML {
 	/**
 	 * Элементы XML	
 	 */
+	String ASSOC_ELEMENT = "assoc";
 	String ITEM_ELEMENT = "item";
 	String ITEM_TO_ADD_ELEMENT = "item-to-add";
 	String EXTENDER_ELEMENT = "extender";
