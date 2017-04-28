@@ -20,7 +20,7 @@ public class AggregateMDWriter extends MetaDataWriter {
 	@Override
 	public XmlDocumentBuilder write(XmlDocumentBuilder xml) {
 		xml.startElement(name, attributes);
-		writeAdditional(xml);
+		writeSubwriters(xml);
 		xml.endElement();
 		return xml;
 	}

@@ -42,15 +42,9 @@ public class ParameterDescriptionMDWriter extends MetaDataWriter implements Data
 				VIRTUAL, paramDesc.isVirtual() + "",
 				HIDDEN, paramDesc.isHidden() + ""
 		));
-		if (additional.size() > 0) {
-			xml.startElement(PARAMETER, attrs.toArray(new Object[0]));
-			for (MetaDataWriter part : additional) {
-				part.write(xml);
-			}
-			xml.endElement();
-		} else {
-			xml.addEmptyElement(PARAMETER, attrs.toArray(new Object[0]));
-		}
+		xml.startElement(PARAMETER, attrs.toArray(new Object[0]));
+		writeSubwriters(xml);
+		xml.endElement();
 		return xml;
 	}
 

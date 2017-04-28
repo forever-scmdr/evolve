@@ -30,9 +30,7 @@ public class RootItemMDWriter extends MetaDataWriter implements DataModelXmlElem
 					VIRTUAL, child.isVirtual,
 					SINGLE, child.isSingle);
 		}
-		for (MetaDataWriter part : additional) {
-			part.write(xml);
-		}
+		writeSubwriters(xml);
 		xml.endElement();
 		return xml;
 	}

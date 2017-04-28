@@ -1,53 +1,37 @@
 package ecommander.admin;
 
-import java.io.UnsupportedEncodingException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.fwk.ResizeImagesFactory;
-import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
-import ecommander.fwk.EcommanderException;
 import ecommander.controllers.PageController;
 import ecommander.controllers.SessionContext;
+import ecommander.filesystem.DeleteItemFileUnit;
+import ecommander.filesystem.SaveItemFileUnit;
+import ecommander.filesystem.SaveItemFilesUnit;
+import ecommander.fwk.*;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeContainer;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.pages.ItemHttpPostForm;
 import ecommander.pages.UrlParameterFormatConverter;
+import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.DelayedTransaction;
-import ecommander.persistence.commandunits.CopyItemDBUnit;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
-import ecommander.persistence.commandunits.MoveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewItemDBUnit;
-import ecommander.persistence.commandunits.SetNewItemWeightDBUnit;
-import ecommander.persistence.commandunits.UpdateItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import ecommander.filesystem.DeleteItemFileUnit;
-import ecommander.filesystem.SaveItemFileUnit;
-import ecommander.filesystem.SaveItemFilesUnit;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
 
 /**
  * Класс контроллер для админской части
@@ -63,8 +47,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 	private static class UserInput {
 		// ID типа айтема
 		private int itemTypeId= -1;
-		// Делается ли действие инлайн (для инлайновой формы, т.е. для формы, которая выводится на странице родительского айтема)
-		private boolean isInline = false;
 		// Является ли действие пользователя действием в режиме визуального редактирования
 		private boolean isVisual = false;
 		// Является ли создаваемый айтем персональным (или общим для группы)
@@ -78,6 +60,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 		private String movingItem = null;
 		// Название множественного парамтера
 		private int paramId = -1;
+		// ID ассоциации
+		private byte assocId = -1;
 		private int index = -1;
 		private int weightBefore = -1;
 		private int weightAfter = -1;
@@ -103,11 +87,11 @@ public class MainAdminServlet extends BasicAdminServlet {
 		String actionName = getAction(req);
 		MainAdminPageCreator pageCreator = new MainAdminPageCreator(getCurrentAdmin(), getContextPath(req));
 		if (actionName.equalsIgnoreCase(MainAdminPageCreator.INITIALIZE_ACTION))
-			result = initialize(input, pageCreator);
+			result = initialize(pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.SET_ITEM_ACTION))
 			result = setItem(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.CREATE_ITEM_ACTION))
-			result = createItem(input, pageCreator, input.isInline);
+			result = createItem(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.DELETE_ITEM_ACTION))
 			result = deleteItem(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.SAVE_ITEM_ACTION))
@@ -145,7 +129,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		else if (actionName.equals(MainAdminPageCreator.GET_VIEW_ACTION))
 			result = getView(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.REINDEX_ACTION))
-			result = reindex(input, pageCreator);
+			result = reindex(pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.DROP_ALL_CACHES_ACTION))
 			result = dropAllCaches(pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.UPLOAD_START_ACTION))
@@ -165,7 +149,9 @@ public class MainAdminServlet extends BasicAdminServlet {
 			return;
 		}
 		// Форвард
-		result.output(resp);
+		if (result != null) {
+			result.output(resp);
+		}
 	}
 	/**
 	 * Начало работы
@@ -175,7 +161,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	private UserInput start(HttpServletRequest req) throws FileUploadException, UnsupportedEncodingException {
 		UserInput input = new UserInput();
 		// Если запрос multipart/formdata, то обрабатывать его как file upload
-		input.mount = new HashMap<String, String>();
+		input.mount = new HashMap<>();
 //		if (!ServletFileUpload.isMultipartContent(req)) {
 			// Простые параметры
 			input.movingItem = req.getParameter(MainAdminPageCreator.MOVING_ITEM_INPUT);
@@ -191,14 +177,12 @@ public class MainAdminServlet extends BasicAdminServlet {
 				input.weightBefore = Integer.parseInt(req.getParameter(MainAdminPageCreator.WEIGHT_BEFORE_INPUT));
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.WEIGHT_AFTER_INPUT)))
 				input.weightAfter = Integer.parseInt(req.getParameter(MainAdminPageCreator.WEIGHT_AFTER_INPUT));
+			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT)))
+				input.paramId = Integer.parseInt(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT));
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PARAM_ID_INPUT)))
 				input.paramId = Integer.parseInt(req.getParameter(MainAdminPageCreator.PARAM_ID_INPUT));
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.VIEW_TYPE_INPUT)))
 				input.viewType = req.getParameter(MainAdminPageCreator.VIEW_TYPE_INPUT);
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.INLINE_INPUT)))
-				input.isInline = Boolean.parseBoolean(req.getParameter(MainAdminPageCreator.INLINE_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PERSONAL_INPUT)))
-				input.isPersonal = Boolean.parseBoolean(req.getParameter(MainAdminPageCreator.PERSONAL_INPUT));
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.VISUAL_INPUT)))
 				input.isVisual = Boolean.parseBoolean(req.getParameter(MainAdminPageCreator.VISUAL_INPUT));
 			// Создание ссылок
@@ -221,19 +205,18 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * @return
 	 * @throws Exception 
 	 */
-	protected AdminPage initialize(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
+	private AdminPage initialize(MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
 		page.addMessage("Приложение готово к работе, выбран корневой элемент", false);
 		return page;
 	}
 	/**
 	 * Переиндексация всех айтемов (Lucene)
-	 * @param in
 	 * @param pageCreator
 	 * @return
 	 * @throws Exception
 	 */
-	protected AdminPage reindex(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
+	private AdminPage reindex(MainAdminPageCreator pageCreator) throws Exception {
 		LuceneIndexMapper.reindexAll();
 		AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
 		page.addMessage("Переиндексация завершена успешно", false);
@@ -247,7 +230,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * @return
 	 * @throws Exception
 	 */
-	protected AdminPage dropAllCaches(MainAdminPageCreator pageCreator) throws Exception {
+	private AdminPage dropAllCaches(MainAdminPageCreator pageCreator) throws Exception {
 		PageController.clearCache();
 		Connection conn = null;
 		Statement stmt = null;
@@ -255,13 +238,15 @@ public class MainAdminServlet extends BasicAdminServlet {
 		try {
 			conn = MysqlConnector.getConnection();
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT " + DBConstants.Item.ID + " FROM " + DBConstants.Item.TABLE + " WHERE "
-					+ DBConstants.Item.TYPE_ID + " > 0");
+			ResultSet rs = stmt.executeQuery("SELECT " + DBConstants.ItemTbl.I_ID + " FROM " + DBConstants.ItemTbl.I_TABLE
+					+ " WHERE " + DBConstants.ItemTbl.I_TYPE_ID + " > 0");
 			DelayedTransaction tr = new DelayedTransaction(getCurrentAdmin());
 			while (rs.next()) {
 				Item item = ItemQuery.loadById(rs.getLong(1), conn);
+				if (item == null)
+					continue;
 				item.forceInitialInconsistent();
-				tr.addCommandUnit(new UpdateItemDBUnit(item, false, true).ignoreUser(true).fulltextIndex(true, false) );
+				tr.addCommandUnit(SaveItemDBUnit.get(item).ignoreUser(true).fulltextIndex(true, false));
 				if (tr.getCommandCount() >= 10) {
 					tr.execute();
 				}
@@ -294,31 +279,23 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * @throws Exception 
 	 * @throws SQLException 
 	 */
-	protected AdminPage getView(UserInput in, MainAdminPageCreator pageCreator) throws SQLException, Exception {
+	private AdminPage getView(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = null;
 		if (MainAdminPageCreator.SUBITEMS_VIEW_TYPE.equals(in.viewType)) {
 			page = pageCreator.createSubitemsPage(in.itemId, in.itemTypeId);
 		} else if (MainAdminPageCreator.PARAMS_VIEW_TYPE.equals(in.viewType)) {
-			page = pageCreator.createParamsPage(in.itemId, false, in.isVisual);
+			page = pageCreator.createParamsPage(in.itemId, in.isVisual);
 			page.addMessage("Включен режим редактирования параметров выбранного элемента", false);
 		} else if (MainAdminPageCreator.MOUNT_TO_VIEW_TYPE.equals(in.viewType)) {
 			page = pageCreator.createMountToPage(in.itemId, 0);
 			page.addMessage("Включен режим создания ссылок из текущего элемента другие элементы", false);
-		} else if (MainAdminPageCreator.TO_MOUNT_VIEW_TYPE.equals(in.viewType)) {
-			page = pageCreator.createToMountPage(in.itemId, 0);
-			page.addMessage("Включен режим создания связей других элементов с текущим", false);
 		} else if (MainAdminPageCreator.MOVE_TO_VIEW_TYPE.equals(in.viewType)) {
 			page = pageCreator.createMoveToPage(in.itemId, 0);
 			page.addMessage("Включен режим перемещения текущего элемента в другой элемент", false);
-		} else if (MainAdminPageCreator.TO_MOVE_VIEW_TYPE.equals(in.viewType)) {
-			page = pageCreator.createToMovePage(in.itemId, 0);
-			page.addMessage("Включен режим перемещения другого элемента в текущий", false);
-		} else if (MainAdminPageCreator.INLINE_VIEW_TYPE.equals(in.viewType)) {
-			page = pageCreator.createParamsPage(in.itemId, true, in.isVisual);
 		} else if (MainAdminPageCreator.ASSOCIATE_VIEW_TYPE.equals(in.viewType)) {
-			page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.paramId);
+			page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId);
 		} else if (MainAdminPageCreator.PASTE_VIEW_TYPE.equals(in.viewType)) {
-			page = pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId, getCurrentAdmin().getGroup());
+			page = pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId);
 		}
 		return page;
 	}
@@ -333,7 +310,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * @throws Exception 
 	 * @throws SQLException 
 	 */
-	protected AdminPage setItem(UserInput in, MainAdminPageCreator pageCreator) throws SQLException, Exception {
+	private AdminPage setItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, in.itemId, in.itemTypeId);
 		page.addMessage("Выбран элемент для редактирования. После редактирования нажмите кнопку 'Сохранить'", false);
 		return page;
@@ -348,8 +325,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * @return
 	 * @throws Exception 
 	 */
-	protected AdminPage createItem(UserInput in, MainAdminPageCreator pageCreator, boolean isInline) throws Exception {
-		AdminPage page = pageCreator.createParamsPage(in.itemTypeId, in.parentId, isInline, in.isVisual);
+	private AdminPage createItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
+		AdminPage page = pageCreator.createParamsPage(in.itemTypeId, in.parentId, in.isVisual);
 		page.addMessage("Создан новый элемент. Заполните необходимые параметры и нажмите 'Сохранить'. ВНИМАНИЕ!!!" +
 				" Возможность добавлять дополнительные параметры и создавать вложенные элементы появится только после нажатия" +
 				" кнопки 'Сохранить'", false);
@@ -365,11 +342,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * @throws Exception 
 	 * @throws SQLException 
 	 */
-	protected AdminPage saveItem(UserInput in, HttpServletRequest req, MainAdminPageCreator pageCreator)
-			throws SQLException, Exception {
+	private AdminPage saveItem(UserInput in, HttpServletRequest req, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		ItemHttpPostForm itemForm = new ItemHttpPostForm(req, null);
-		Item item = null;
+		Item item;
 		boolean needBasePage = true;
 		// Сохраняется новый айтем
 		if (itemForm.getItemId() == ItemHttpPostForm.NO_ID) {

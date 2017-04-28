@@ -31,7 +31,7 @@ public abstract class MetaDataWriter {
 	 * Вывести содержимое дополнительных элементов
 	 * @param xml
 	 */
-	protected final void writeAdditional(XmlDocumentBuilder xml) {
+	protected final void writeSubwriters(XmlDocumentBuilder xml) {
 		for (MetaDataWriter writer : additional) {
 			writer.write(xml);
 		}

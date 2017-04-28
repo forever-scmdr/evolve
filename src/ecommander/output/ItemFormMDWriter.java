@@ -214,7 +214,7 @@ public class ItemFormMDWriter extends MetaDataWriter {
 			// </domain>
 			xml.endElement();
 		}
-		writeAdditional(xml);
+		writeSubwriters(xml);
 		// </item_form>
 		xml.endElement();
 		return xml;

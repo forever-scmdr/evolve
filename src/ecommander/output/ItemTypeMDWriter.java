@@ -6,9 +6,7 @@ import java.util.List;
 
 import ecommander.model.DataModelXmlElementNames;
 import ecommander.model.ItemTypeContainer;
-import org.apache.commons.lang3.StringUtils;
 
-import ecommander.fwk.ServerLogger;
 import ecommander.model.ItemType;
 /**
  * Выводит определение айтема
@@ -75,9 +73,7 @@ public class ItemTypeMDWriter extends MetaDataWriter implements DataModelXmlElem
 						SINGLE, child.isSingle);
 			}
 		}
-		for (MetaDataWriter part : additional) {
-			part.write(xml);
-		}
+		writeSubwriters(xml);
 		xml.endElement();
 		return xml;
 	}
