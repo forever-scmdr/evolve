@@ -26,12 +26,12 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 	private Item item;
 	private boolean triggerExtra = true;
 
-	public UpdateItemParamsDBUnit(Item item, boolean triggerExtra) {
+	UpdateItemParamsDBUnit(Item item, boolean triggerExtra) {
 		this.item = item;
 		this.triggerExtra = triggerExtra;
 	}
 	
-	public UpdateItemParamsDBUnit(Item item) {
+	UpdateItemParamsDBUnit(Item item) {
 		this(item, true);
 	}
 	

@@ -200,8 +200,7 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String ITEM_ID_INPUT = "itemId";
 	public static final String PARENT_ID_INPUT = "parentId";
 	public static final String INDEX_INPUT = "index";
-	public static final String WEIGHT_BEFORE_INPUT = "weight_before";
-	public static final String WEIGHT_AFTER_INPUT = "weight_after";
+	public static final String NEW_ITEM_POSITION = "item_position";
 	public static final String VIEW_TYPE_INPUT = "vt";
 	public static final String INLINE_INPUT = "inl";
 	public static final String MOUNT_INPUT_PREFIX = "mount";
@@ -410,8 +409,7 @@ public class MainAdminPageCreator implements AdminXML {
 		}
 		String reorderUrl = createAdminUrl(REORDER_ACTION, 
 				ITEM_ID_INPUT, ":id:", 
-				WEIGHT_BEFORE_INPUT, ":wb:", 
-				WEIGHT_AFTER_INPUT, ":wa:",
+				NEW_ITEM_POSITION, ":pos:",
 				ITEM_TYPE_INPUT, itemType,
 				PARENT_ID_INPUT, baseId);
 		String getPasteBufferUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, PASTE_VIEW_TYPE, PARENT_ID_INPUT, baseId, ITEM_TYPE_INPUT,

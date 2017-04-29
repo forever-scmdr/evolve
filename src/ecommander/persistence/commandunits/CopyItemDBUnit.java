@@ -94,7 +94,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 
 		// Если проверки прошли успешно - продолжение
 		// Шаг 1. - Создать новый айтем с копией всех параметров базового, установить заданного родителя
-		Item item = Item.newChildItem(baseItem.getItemType(), ItemTypeRegistry.getPrimaryAssoc(), newParent);
+		Item item = Item.newChildItem(baseItem.getItemType(), newParent);
 		Item.updateParamValues(baseItem, item);
 
 		// Шаг 2. - Установить во все параметры-файлы объекты типа File, чтобы эти файлы были скопированы при сохранении айтема

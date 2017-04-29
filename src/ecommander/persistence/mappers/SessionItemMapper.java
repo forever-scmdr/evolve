@@ -213,13 +213,13 @@ public class SessionItemMapper {
 			item.setId(forceGetStorage().generateId());
 		// сделать корень сеанса родительским айтемом в случае если родитель не установлен либо родитель не найден в сеансе
 		if (item.getContextParentId() == Item.DEFAULT_ID || item.getContextParentId() == rootItemId) {
-			item.setContextParentId(rootItemId);
+			item.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), rootItemId);
 		} else {
 			int[] parameters = { ID };
 			Object[] paramValues = { item.getContextParentId() };
 			ArrayList<Object> mementoArray = getStorage().select(parameters, paramValues);
 			if (mementoArray.size() == 0)
-				item.setContextParentId(rootItemId);
+				item.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), rootItemId);
 		}
 		SessionItemMemento sessionItem = new TransientMemento(item, itemTag);
 		// Удалить старый айтем, если такой уже есть

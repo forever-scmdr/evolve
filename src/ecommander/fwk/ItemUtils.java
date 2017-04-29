@@ -30,8 +30,7 @@ public class ItemUtils {
 		if (items.size() == 1) {
 			item = items.get(0);
 		} else if (items.size() == 0) {
-			item = Item.newItem(ItemTypeRegistry.getItemType(itemName), ItemTypeRegistry.getPrimaryAssoc(),	parentId,
-					userId, groupId, Item.STATUS_NORMAL, false);
+			item = Item.newItem(ItemTypeRegistry.getItemType(itemName),	parentId, userId, groupId, Item.STATUS_NORMAL, false);
 			transaction.addCommandUnit(SaveItemDBUnit.get(item));
 			transaction.execute();
 		}

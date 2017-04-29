@@ -28,16 +28,28 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 
 	private Item item;
 	private ItemBasics parent;
+	private boolean triggerExtra = true;
 
-	public SaveNewItemDBUnit(Item item) {
+	SaveNewItemDBUnit(Item item) {
 		this.item = item;
 	}
 
-	public SaveNewItemDBUnit(Item item, ItemBasics parent) {
+	SaveNewItemDBUnit(Item item, ItemBasics parent) {
 		this.item = item;
 		this.parent = parent;
 	}
-	
+
+	SaveNewItemDBUnit(Item item, boolean triggerExtra) {
+		this.item = item;
+		this.triggerExtra = triggerExtra;
+	}
+
+	SaveNewItemDBUnit(Item item, ItemBasics parent, boolean triggerExtra) {
+		this.item = item;
+		this.parent = parent;
+		this.triggerExtra = triggerExtra;
+	}
+
 	public void execute() throws Exception {
 		// Создать значение ключа
 		item.prepareToSave();
@@ -148,7 +160,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 6.   Дополнительная обработка
 		//
-		if (item.getItemType().hasExtraHandlers(ItemType.Event.create)) {
+		if (triggerExtra && item.getItemType().hasExtraHandlers(ItemType.Event.create)) {
 			for (ItemEventCommandFactory fac : item.getItemType().getExtraHandlers(ItemType.Event.create)) {
 				PersistenceCommandUnit command = fac.createCommand(item);
 				executeCommandInherited(command);

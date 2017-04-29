@@ -14,4 +14,11 @@ public class SaveItemDBUnit {
 		else
 			return new UpdateItemParamsDBUnit(item);
 	}
+
+	public static DBPersistenceCommandUnit get(Item item, boolean triggerExtra) {
+		if (item.isNew())
+			return new SaveNewItemDBUnit(item, triggerExtra);
+		else
+			return new UpdateItemParamsDBUnit(item, triggerExtra);
+	}
 }

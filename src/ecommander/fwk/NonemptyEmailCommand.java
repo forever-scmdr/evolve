@@ -10,15 +10,12 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
+import ecommander.model.*;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.controllers.PageController;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.ParameterDescription;
 import ecommander.pages.Command;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.ItemHttpPostForm;
@@ -185,7 +182,7 @@ public class NonemptyEmailCommand extends Command {
 	}
 
 	private ResultPE sendError(String message, ItemHttpPostForm postForm) throws Exception {
-		Item userPost = postForm.createItem(getInitiator());
+		Item userPost = postForm.createItem(User.ANONYMOUS_ID, User.NO_GROUP_ID);
 		getSessionMapper().saveTemporaryItem(userPost);
 		ResultPE result = getRollbackResult("general_error");
 		result.addVariable("message", message);

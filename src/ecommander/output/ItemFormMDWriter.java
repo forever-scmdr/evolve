@@ -128,7 +128,7 @@ public class ItemFormMDWriter extends MetaDataWriter {
 		xml.startElement(tag, 
 				ACTION_ATTRIBUTE, action, 
 				ACTION_URL_ATTRIBUTE, createActionUrl(),
-				FILE_PATH_ATTRIBUTE, AppContext.getCommonFilesUrlPath() + form.getPredIdPath(),
+				FILE_PATH_ATTRIBUTE, AppContext.getFilesDirPath(form.isFileProtected()) + form.getFilesRelPath(),
 				ID_ATTRIBUTE, form.getItemId(),
 				CAPTION_ATTRIBUTE, form.getItemCaption());
 		// <hidden>

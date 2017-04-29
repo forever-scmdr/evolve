@@ -1,32 +1,18 @@
 package ecommander.pages;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import ecommander.controllers.BasicServlet;
+import ecommander.fwk.Strings;
+import ecommander.model.*;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.fwk.Strings;
-import ecommander.controllers.BasicServlet;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.MultipleParameter;
-import ecommander.model.Parameter;
-import ecommander.model.ParameterDescription;
-import ecommander.model.SingleParameter;
-import ecommander.model.User;
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 /**
  * Класс, который представляет форму для редактирования айтема
@@ -46,9 +32,9 @@ public class ItemHttpPostForm implements Serializable {
 	private static final String FORM_HIDDEN_ITEM_ID = "-ii-";
 	private static final String FORM_HIDDEN_ITEM_PARENT_ID = "-ip-";
 	private static final String FORM_HIDDEN_FORM_ID = "-fi-";
-	public static final String FORM_ITEM_UNIQUE_KEY = "ukey";
+	private static final String FORM_ITEM_UNIQUE_KEY = "ukey";
 	private static final String PARAM_PREFIX = "-param-";
-	public static final int PARAM_PREFIX_LENGTH = PARAM_PREFIX.length();
+	private static final int PARAM_PREFIX_LENGTH = PARAM_PREFIX.length();
 	
 	private int itemTypeId;
 	private String itemCaption;
@@ -57,8 +43,9 @@ public class ItemHttpPostForm implements Serializable {
 	private String formId; // часть для уникального ID формы, например название страницы, с которой пришла форма (для сохранения форм в сеансе)
 	private ParameterValues parameterValues; //Значения хранятся или в виде String (обычные парамтеры) или в виде FileItem (файлы)
 	private LinkedHashSet<Integer> paramIds;
-	private String predIdPath; // Путь к айтему начиная от корня
 	private ParameterValues extra; // дополнительные параметры запроса (НЕ параметры айтема)
+	private String filesPath; // Путь к файлам айтема
+	private boolean isFileProtected = false; // Защищены ли файлы айтема
 	
 	/**
 	 * Для создания формы на базе вновь создаваемого айтема
@@ -70,8 +57,7 @@ public class ItemHttpPostForm implements Serializable {
 		itemCaption = itemDesc.getCaption();
 		itemParentId = parentId;
 		this.formId = formId;
-		paramIds = new LinkedHashSet<Integer>();
-		predIdPath = "";
+		paramIds = new LinkedHashSet<>();
 		parameterValues = new ParameterValues();
 		for (String paramName : parametersToEdit) {
 			ParameterDescription param = itemDesc.getParameter(paramName);
@@ -98,13 +84,14 @@ public class ItemHttpPostForm implements Serializable {
 	 * @param item
 	 */
 	public ItemHttpPostForm(Item item, String formId, Collection<String> parametersToEdit) {
-		itemId = item.getRefId();
+		itemId = item.getId();
 		itemTypeId = item.getTypeId();
 		itemCaption = item.getKey();
-		itemParentId = item.getDirectParentId();
+		itemParentId = item.getContextParentId();
+		filesPath = item.getRelativeFilesPath();
+		isFileProtected = item.isFileProtected();
 		this.formId = formId;
-		paramIds = new LinkedHashSet<Integer>();
-		predIdPath = item.getPredecessorsAndSelfPath();
+		paramIds = new LinkedHashSet<>();
 		parameterValues = new ParameterValues();
 		for (String paramName : parametersToEdit) {
 			Parameter param = item.getParameterByName(paramName);
@@ -147,7 +134,7 @@ public class ItemHttpPostForm implements Serializable {
 	@SuppressWarnings("unchecked")
 	public ItemHttpPostForm(HttpServletRequest request, LinkPE targetUrl) throws FileUploadException,
 			UnsupportedEncodingException {
-		paramIds = new LinkedHashSet<Integer>();
+		paramIds = new LinkedHashSet<>();
 		parameterValues = new ParameterValues();
 		if (targetUrl == null) {
 			String urlStr = BasicServlet.getUserUrl(request);
@@ -232,10 +219,10 @@ public class ItemHttpPostForm implements Serializable {
 	 * @return
 	 */
 	public HashMap<String, String> getHiddenFields() {
-		HashMap<String, String> result = new HashMap<String, String>();
-		result.put(FORM_HIDDEN_TYPE_ID, new Integer(itemTypeId).toString());
-		result.put(FORM_HIDDEN_ITEM_ID, new Long(itemId).toString());
-		result.put(FORM_HIDDEN_ITEM_PARENT_ID,  new Long(itemParentId).toString());
+		HashMap<String, String> result = new HashMap<>();
+		result.put(FORM_HIDDEN_TYPE_ID, Integer.toString(itemTypeId));
+		result.put(FORM_HIDDEN_ITEM_ID, Long.toString(itemId));
+		result.put(FORM_HIDDEN_ITEM_PARENT_ID, Long.toString(itemParentId));
 		result.put(FORM_HIDDEN_FORM_ID,  formId);
 		return result;
 	}
@@ -303,10 +290,6 @@ public class ItemHttpPostForm implements Serializable {
 	public String getSrcPageName() {
 		return formId;
 	}
-	
-	public String getPredIdPath() {
-		return predIdPath;
-	}
 
 	public String getItemCaption() {
 		return itemCaption;
@@ -314,6 +297,14 @@ public class ItemHttpPostForm implements Serializable {
 	
 	public static String getUniqueKeyInput() {
 		return FORM_ITEM_UNIQUE_KEY;
+	}
+
+	public String getFilesRelPath() {
+		return filesPath;
+	}
+
+	public boolean isFileProtected() {
+		return isFileProtected;
 	}
 	/**
 	 * Возвращает названия параметров, которые были установлены пользователем
@@ -325,7 +316,7 @@ public class ItemHttpPostForm implements Serializable {
 	/**
 	 * Возвращает строковое значение установленного пользователем параметра
 	 * Желательно использовать в свзяке с getPostedParameterNames()
-	 * @param paramName
+	 * @param paramId
 	 * @return
 	 */
 	public Object getValue(int paramId) {
@@ -360,37 +351,29 @@ public class ItemHttpPostForm implements Serializable {
 	 * Создает новый айтем на базе HTML формы и заполняет его парамтеры параметрами, переданными из формы
 	 * Заполняются также и файлы в виде оберток FileItem
 	 * Если через форму был передан ID айтема, то он тоже устанавливается
-	 * @param user
-	 * @param parentId
+	 * Статус айтема устанавливается в нормальный и защита файлов айтема не включается
+	 * @param userId
+	 * @param groupId
 	 * @return
 	 * @throws Exception 
 	 */
-	public Item createItem(User user, long parentId) throws Exception {
-		return createItem(user.getUserId(), user.getGroupId(), parentId);
+	public Item createItem(int userId, byte groupId) throws Exception {
+		return createItem(userId, groupId, itemParentId, Item.STATUS_NORMAL, false);
 	}
-	/**
-	 * Создает новый айтем на базе HTML формы и заполняет его парамтеры параметрами, переданными из формы
-	 * Заполняются также и файлы в виде оберток FileItem
-	 * Если через форму был передан ID айтема, то он тоже устанавливается
-	 * @param user
-	 * @param parentId
-	 * @return
-	 * @throws Exception 
-	 */
-	public Item createItem(User user) throws Exception {
-		return createItem(user.getUserId(), user.getGroupId(), itemParentId);
-	}
+
 	/**
 	 * Создает новый айтем на базе HTML формы и заполняет его парамтеры параметрами, переданными из формы
 	 * Заполняются также и файлы в виде оберток FileItem
 	 * Если через форму был передан ID айтема, то он тоже устанавливается
 	 * @param userId
 	 * @param groupId
+	 * @param status
+	 * @param isFileProtected
 	 * @return
 	 * @throws Exception
 	 */
-	public Item createItem(long userId, int groupId) throws Exception {
-		return createItem(userId, groupId, itemParentId);
+	public Item createItem(int userId, byte groupId, byte status, boolean isFileProtected) throws Exception {
+		return createItem(userId, groupId, itemParentId, status, isFileProtected);
 	}
 	/**
 	 * Создает новый айтем на базе HTML формы и заполняет его парамтеры параметрами, переданными из формы
@@ -403,9 +386,9 @@ public class ItemHttpPostForm implements Serializable {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public Item createItem(long userId, int groupId, long parentId) throws Exception {
+	public Item createItem(int userId, byte groupId, long parentId, byte status, boolean isFileProtected) throws Exception {
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemTypeId);
-		Item result = Item.newItem(itemDesc, parentId, userId, groupId);
+		Item result = Item.newItem(itemDesc, parentId, userId, groupId, status, isFileProtected);
 		for (Integer paramId : paramIds) {
 			Object paramValue = parameterValues.get(paramId);
 			if (itemDesc.getParameter(paramId).getDataType().isFile()) {
@@ -459,7 +442,7 @@ public class ItemHttpPostForm implements Serializable {
 		if (extra != null) {
 			return extra.getList(extraName);
 		}
-		return new ArrayList<Object>();
+		return new ArrayList<>();
 	}
 	/**
 	 * Дополнительный параметр (поле)
@@ -477,7 +460,7 @@ public class ItemHttpPostForm implements Serializable {
 	 */
 	public Collection<Object> getExtras() {
 		if (extra == null)
-			return new ArrayList<Object>();
+			return new ArrayList<>();
 		return extra.getExtraNames();
 	}
 	/**
@@ -490,9 +473,9 @@ public class ItemHttpPostForm implements Serializable {
 	}
 	/**
 	 * Создать название инпута для определенного параметра определенного айтема
-	 * @param itemName
+	 * @param itemTypeId
 	 * @param itemId
-	 * @param paramName
+	 * @param paramId
 	 * @return
 	 */
 	private static String createParamInputName(int itemTypeId, long itemId, int paramId) {

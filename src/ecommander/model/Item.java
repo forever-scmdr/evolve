@@ -41,11 +41,11 @@ import ecommander.model.datatypes.DataType.Type;
  */
 public class Item implements ItemBasics {
 	
-	public static final String PARAM_TAG = "param";
+	private static final String PARAM_TAG = "param";
 	public static final String ID_ATTRIBUTE = "id";
 
-	public static final int DIR_NAME_LENGTH = 3;
-	public static final char FINAL_DIR_CHAR = 'f';
+	private static final int DIR_NAME_LENGTH = 3;
+	private static final char FINAL_DIR_CHAR = 'f';
 
 	public static final long DEFAULT_ID = 0;
 	public static final int WEIGHT_STEP = 64;
@@ -169,19 +169,17 @@ public class Item implements ItemBasics {
 	 * Констркуктор для создания новых айтемов в случае когда есть загруженный предок.
 	 * Владелец айтема будет таким же, как и у предка.
 	 * @param itemDesc
-	 * @param assoc
 	 * @param parent
 	 * @return
 	 */
-	public static Item newChildItem(ItemType itemDesc, Assoc assoc, Item parent) {
-		return new Item(itemDesc, assoc, parent.getId(), parent.getOwnerUserId(), parent.getOwnerGroupId(),
-				parent.status, parent.areFilesProtected);
+	public static Item newChildItem(ItemType itemDesc, Item parent) {
+		return new Item(itemDesc, AssocRegistry.PRIMARY, parent.getId(), parent.getOwnerUserId(),
+				parent.getOwnerGroupId(), parent.status, parent.areFilesProtected);
 	}
 
 	/**
 	 * Конструктор для создания новых айтемов (которых еще нет в БД или сеансе)
 	 * @param itemDesc
-	 * @param assoc
 	 * @param parentId
 	 * @param userId
 	 * @param groupId
@@ -189,9 +187,9 @@ public class Item implements ItemBasics {
 	 * @param filesProtected
 	 * @return
 	 */
-	public static Item newItem(ItemType itemDesc, Assoc assoc, long parentId, int userId, byte groupId, byte status,
+	public static Item newItem(ItemType itemDesc, long parentId, int userId, byte groupId, byte status,
 	                           boolean filesProtected) {
-		return new Item(itemDesc, assoc, parentId, userId, groupId, status, filesProtected);
+		return new Item(itemDesc, AssocRegistry.PRIMARY, parentId, userId, groupId, status, filesProtected);
 	}
 
 	/**
@@ -506,10 +504,12 @@ public class Item implements ItemBasics {
 	}
 	/**
 	 * Установить контекстного родителя (родителя в контексте выполнения)
+	 * Вместе с родителем устанавливается и ассоциация
 	 * @param parentId
 	 */
-	public final void setContextParentId(long parentId) {
-		contextParentId = parentId;
+	public final void setContextParentId(Assoc assoc, long parentId) {
+		this.contextParentId = parentId;
+		this.contextAssoc = assoc;
 	}
 	/**
 	 * Возвращает значение одиночного парамтера

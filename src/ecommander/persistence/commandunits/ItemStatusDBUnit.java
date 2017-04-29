@@ -12,40 +12,40 @@ import java.sql.PreparedStatement;
  * Удаление или скрытие айтема
  * Created by E on 5/4/2017.
  */
-public class DeleteHideRestoreItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemTbl, DBConstants.ItemParent {
+public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemTbl, DBConstants.ItemParent {
 
 	private byte newStatus;
 	private long itemId;
 	private ItemBasics item;
 
-	public DeleteHideRestoreItemDBUnit(byte status, long itemId, ItemBasics item) {
+	public ItemStatusDBUnit(byte status, long itemId, ItemBasics item) {
 		this.newStatus = status;
 		this.itemId = itemId;
 		this.item = item;
 	}
 
-	public static DeleteHideRestoreItemDBUnit delete(long itemId) {
-		return new DeleteHideRestoreItemDBUnit(Item.STATUS_DELETED, itemId, null);
+	public static ItemStatusDBUnit delete(long itemId) {
+		return new ItemStatusDBUnit(Item.STATUS_DELETED, itemId, null);
 	}
 
-	public static DeleteHideRestoreItemDBUnit delete(ItemBasics item) {
-		return new DeleteHideRestoreItemDBUnit(Item.STATUS_DELETED, -1, item);
+	public static ItemStatusDBUnit delete(ItemBasics item) {
+		return new ItemStatusDBUnit(Item.STATUS_DELETED, -1, item);
 	}
 
-	public static DeleteHideRestoreItemDBUnit hide(long itemId) {
-		return new DeleteHideRestoreItemDBUnit(Item.STATUS_NIDDEN, itemId, null);
+	public static ItemStatusDBUnit hide(long itemId) {
+		return new ItemStatusDBUnit(Item.STATUS_NIDDEN, itemId, null);
 	}
 
-	public static DeleteHideRestoreItemDBUnit hide(ItemBasics item) {
-		return new DeleteHideRestoreItemDBUnit(Item.STATUS_NIDDEN, -1, item);
+	public static ItemStatusDBUnit hide(ItemBasics item) {
+		return new ItemStatusDBUnit(Item.STATUS_NIDDEN, -1, item);
 	}
 
-	public static DeleteHideRestoreItemDBUnit restore(long itemId) {
-		return new DeleteHideRestoreItemDBUnit(Item.STATUS_NORMAL, itemId, null);
+	public static ItemStatusDBUnit restore(long itemId) {
+		return new ItemStatusDBUnit(Item.STATUS_NORMAL, itemId, null);
 	}
 
-	public static DeleteHideRestoreItemDBUnit restore(ItemBasics item) {
-		return new DeleteHideRestoreItemDBUnit(Item.STATUS_NORMAL, -1, item);
+	public static ItemStatusDBUnit restore(ItemBasics item) {
+		return new ItemStatusDBUnit(Item.STATUS_NORMAL, -1, item);
 	}
 
 	@Override

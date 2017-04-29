@@ -1,18 +1,7 @@
 package ecommander.persistence.commandunits;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.EcommanderException;
-import ecommander.controllers.AppContext;
 import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.DBConstants;
-import ecommander.filesystem.ItemDirectoryCommandUnit;
 
 /**
  * Перемещение айтема (прикрепление айтема к другому родителю)
@@ -54,7 +43,7 @@ public class MoveItemDBUnit extends DBPersistenceCommandUnit {
 		executeCommand(new CopyItemDBUnit(item, newParent));
 
 		// Удаление
-		executeCommand(DeleteHideRestoreItemDBUnit.delete(item));
+		executeCommand(ItemStatusDBUnit.delete(item));
 	}
 
 }
