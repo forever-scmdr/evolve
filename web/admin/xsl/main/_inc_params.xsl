@@ -7,7 +7,7 @@
 
 
 	<!--********************************************************************************** 
-						     ОДИНОЧНЫЕ ПАРАМЕТРЫ (ПОЛЯ ВВОДА)
+							 ОДИНОЧНЫЕ ПАРАМЕТРЫ (ПОЛЯ ВВОДА)
 	***********************************************************************************-->
 
 
@@ -22,97 +22,194 @@
 
 	<!-- Одиночный файл -->
 	<xsl:template match="field[ @type='file' ]" mode="single">
-		<input type="file" name="{@input}" value=""/><xsl:call-template name="BR"/>
-		<xsl:if test=". != ''"><a href="{$form/@file-path}{.}">Скачать файл</a></xsl:if>
-		<xsl:if test=". != ''">
-			<a href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={@id}&amp;itemId={$form/@id}', 'main_view', true)">
-				<img src="admin/admin_img/action_delete.png" alt="" />
-			</a>
+		<p class="form_title">
+			<xsl:value-of select="@caption" />
+		</p>
+		<xsl:if test="@description != ''">
+			<p class="form_comment">[<xsl:value-of select="@description" />]</p>
 		</xsl:if>
+		<table style="margin-top: 8px;">
+			<tbody>
+				<tr>
+					<td>
+						<div>
+							<div class="file-load-block">
+								<input type="text" placeholder="Введие URL файла" class="url" name="{@input}" title="для загрузки файлов из интернета" />
+								<input type="text" style="display: none;" class="text_ipt" />
+								<label class="file">
+									Прикрепите или перетащите файл
+									<input type="file" class="file" name="{@input}" />
+								</label>
+							</div>
+						</div>
+					</td>
+					<xsl:if test=". != ''">
+						<td style="padding-left: 20px; vertical-align: top;">
+							<div style="position: relative;">
+								<a class="delete" href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={@id}&amp;itemId={$form/@id}', 'main_view', true)"></a>
+								<a href="{$form/@file-path}{.}" style="display: block;" target="blank">Открыть файл</a>
+							</div>
+						</td>
+					</xsl:if>
+				</tr>
+			</tbody>
+		</table>
 	</xsl:template>
 
 	<!-- Одиночная картинка -->
 	<xsl:template match="field[ @type='picture' ]" mode="single">
-		<input type="file" name="{@input}" value=""/><xsl:call-template name="BR"/>
-		<xsl:if test=". != ''">
-			<a href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={@id}&amp;itemId={$form/@id}', 'main_view', true)">
-				<img src="admin/admin_img/action_delete.png" alt="" />
-			</a>
-			<xsl:call-template name="BR"/><xsl:call-template name="BR"/>
-			<img src="{$form/@file-path}{.}" alt="" />
+		<p class="form_title">
+			<xsl:value-of select="@caption" />
+		</p>
+		<xsl:if test="@description != ''">
+			<p class="form_comment">[<xsl:value-of select="@description" />]</p>
 		</xsl:if>
+		<table style="margin-top: 8px;">
+			<tbody>
+				<tr>
+					<td>
+						<div>
+							<div class="file-load-block">
+								<input type="text" placeholder="Введие URL картинки" class="url" name="{@input}" title="для загрузки файлов из интернета" />
+								<input type="text" style="display: none;" class="text_ipt" />
+								<label class="file">
+									Прикрепите или перетащите картинку
+									<input type="file" class="file" name="{@input}" />
+								</label>
+							</div>
+						</div>
+					</td>
+					<xsl:if test=". != ''">
+						<td style="padding-left: 20px; vertical-align: top;">
+							<div style="position: relative;">
+								<a class="delete" href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={@id}&amp;itemId={$form/@id}', 'main_view', true)"></a>
+								<img style="max-width:400px; max-height:250px;" alt="{@caption}" src="{$form/@file-path}{.}" />
+							</div>
+						</td>
+					</xsl:if>
+				</tr>
+			</tbody>
+		</table>
 	</xsl:template>
 
 	<!-- Длинный текст -->
 	<xsl:template match="field[ @type='text' ]" mode="single">
-		<textarea class="mce_big" name="{@input}" cols="" rows=""><xsl:value-of select="." disable-output-escaping="yes"/></textarea>
+		<label>
+			<span class=""><xsl:value-of select="@caption" /></span>
+			<xsl:if test="@description != ''">
+				<p class="form_comment" style="padding: 4px 0 6px;">
+					[<xsl:value-of select="@description" />]
+				</p>
+			</xsl:if>
+			<textarea class="mce_big" name="{@input}" cols="" rows="">
+				<xsl:value-of select="." disable-output-escaping="yes" />
+			</textarea>					
+		</label>
 	</xsl:template>
 
 	<!-- Средний текст -->
 	<xsl:template match="field[ @type='short-text' ]" mode="single">
-		<textarea class="mce_medium" name="{@input}" cols="" rows=""><xsl:value-of select="." disable-output-escaping="yes"/></textarea>
+		<label>
+			<span class=""><xsl:value-of select="@caption" /></span>
+			<xsl:if test="@description != ''">
+				<p class="form_comment" style="padding: 4px 0 6px;">
+					[<xsl:value-of select="@description" />]
+				</p>
+			</xsl:if>
+			<textarea class="mce_medium" name="{@input}" cols="" rows="">
+				<xsl:value-of select="." disable-output-escaping="yes" />
+			</textarea>
+		</label>
 	</xsl:template>
 
 	<!-- Маленикий текст -->
 	<xsl:template match="field[ @type='tiny-text' ]" mode="single">
-		<textarea class="mce_small" name="{@input}" cols="" rows=""><xsl:value-of select="." disable-output-escaping="yes"/></textarea>
+		<label>
+			<span class=""><xsl:value-of select="@caption" /></span>
+			<xsl:if test="@description != ''">
+				<p class="form_comment" style="padding: 4px 0 6px;">
+					[<xsl:value-of select="@description" />]
+				</p>
+			</xsl:if>
+			<textarea class="mce_small" name="{@input}" cols="" rows="">
+				<xsl:value-of select="." disable-output-escaping="yes" />
+			</textarea>
+		</label>
 	</xsl:template>
 
 	<!-- Текст без форматирования -->
 	<xsl:template match="field[ @type='plain-text' ]" mode="single">
-		<textarea name="{@input}" cols="" rows="" style="{@format}"><xsl:value-of select="." disable-output-escaping="yes"/></textarea>
-	</xsl:template>
-
-	<!-- XML код без форматирования -->
-	<xsl:template match="field[ @type='xml' ]" mode="single">
-		<textarea name="{@input}" cols="" rows="" style="{@format}"><xsl:value-of select="." disable-output-escaping="yes"/></textarea>
+		<label>
+			<span class=""><xsl:value-of select="@caption" /></span>
+			<xsl:if test="@description != ''">
+				<p class="form_comment" style="padding: 4px 0 6px;">
+					[<xsl:value-of select="@description" />]
+				</p>
+			</xsl:if>
+			<textarea style="@format" name="{@input}" cols="" rows="">
+				<xsl:value-of select="." disable-output-escaping="yes" />
+			</textarea>
+		</label>
 	</xsl:template>
 	
 	<!-- Простое поле ввода -->
 	<xsl:template match="field" mode="single">
 		<xsl:choose>
 		<xsl:when test="@domain">
-			<select style="width: 300px; float: left;" onchange="this.nextElementSibling.value = this.value">
-				<option/>
-				<xsl:for-each select="//domain[@name=current()/@domain]/value">
-					<xsl:sort select="."/>
-					<option><xsl:value-of select="."/></option>
-				</xsl:for-each>
-			</select>
-			<input 
-				style="width: 280px; margin-left: -299px; margin-top: 1px; border: none; float: left;" 
-				class="field" type="text" name="{@input}" value="{.}"/>
-			<div style="clear: both"/>
+			<label for="{@input}">
+				<span class=""><xsl:value-of select="@caption" /></span>
+				<xsl:if test="@description != ''">
+					<p class="form_comment" style="padding: 4px 0 6px;">
+						[<xsl:value-of select="@description" />]
+					</p>
+				</xsl:if>
+			</label>
+			<div class="combobox" >
+				<select onchange="this.nextElementSibling.value = this.value">
+					<option/>
+					<xsl:for-each select="//domain[@name=current()/@domain]/value">
+						<xsl:sort select="."/>
+						<option><xsl:value-of select="."/></option>
+					</xsl:for-each>
+				</select>
+				<input id="{@input}" class="field" type="text" name="{@input}" value="{.}"/>
+			</div>
 		</xsl:when>
 		<xsl:otherwise>
-			<input class="field" type="text" name="{@input}" value="{.}" style="width: 280px;"/>
+			<label>
+				<span class=""><xsl:value-of select="@caption" /></span>
+				<xsl:if test="@description != ''">
+					<p class="form_comment" style="padding: 4px 0 6px;">
+						[<xsl:value-of select="@description" />]
+					</p>
+				</xsl:if>
+				<input class="field" type="text" name="{@input}" value="{.}" style="width: 280px;"/>
+			</label>
 		</xsl:otherwise>
 		</xsl:choose>
-<!-- 		<xsl:choose> -->
-<!-- 		<xsl:when test="@domain"> -->
-<!-- 			<select class="field" name="{@input}"> -->
-<!-- 			<xsl:call-template name="domain_select"> -->
-<!-- 				<xsl:with-param name="domain" select="//domain[@name=current()/@domain]"/> -->
-<!-- 				<xsl:with-param name="value" select="."/> -->
-<!-- 			</xsl:call-template> -->
-<!-- 			</select> -->
-<!-- 		</xsl:when> -->
-<!-- 		<xsl:otherwise> -->
-<!-- 			<input class="field" type="text" name="{@input}" value="{.}"/> -->
-<!-- 		</xsl:otherwise> -->
-<!-- 		</xsl:choose> -->
 	</xsl:template>
 
 	<!-- Дата -->
 	<xsl:template match="field[ @type='date']" mode="single">
 		<!-- Дата и время -->
-		<div class="timeStamp" style="font-size: 14px; width: 128px; height: 20px; padding: 4px 0; margin-bottom: 10px;">
+		<div class="timeStamp" style="">
+			<p style="clear: both;">
+				<span class=""><xsl:value-of select="@caption" /></span>
+				<xsl:if test="@description != ''">
+					<p class="form_comment" style="padding: 4px 0 6px;">
+						[<xsl:value-of select="@description" />]
+					</p>
+				</xsl:if>
+			</p>
 			<label style="float:left;padding-right: 5px;">
-				<input type="text" class="datepicker" style="width: 62px;"/>
+				<input type="text" class="datepicker" style="width: 80px; padding: 4px 0; text-align: center;"/>
 			</label>
-			<label style="float:left;">
-				<input type="text" class="time" style="width: 42px;text-align:center;"/>
-			</label>
+			<xsl:if test="@format = '' or @format = 'dd.MM.YYYY hh:mm'">
+				<label style="float:left;">
+					<input type="text" class="time" style="width: 42px;text-align:center; padding: 4px 0;"/>
+				</label>
+			</xsl:if>
+		
 			<!-- этот инпут отправляется. Дата в формате dd.mm.yy, hh:mm -->
 			<input class="whole" type="hidden" name="{@input}" value="{.}" />
 		</div>
@@ -121,7 +218,7 @@
 
 
 	<!--********************************************************************************** 
-						     		 ДОПОЛНИТЕЛЬНО
+									 ДОПОЛНИТЕЛЬНО
 	***********************************************************************************-->
 
 
@@ -142,154 +239,24 @@
 	</xsl:template>
 
 	<!-- TINY_MCE -->
-	<xsl:template name="TINY_MCE">
+	<xsl:template name="TINY_MCE">	
 	<script type="text/javascript">
-	var startUploadUrl = "<xsl:value-of select="admin-page/upload-link"/>";
-	var openAssocUrl = "<xsl:value-of select="admin-page/open-associated-link"/>";
-	<xsl:text disable-output-escaping="yes">
-	tinymce.init({
-	    selector: "textarea.mce_big",
-	    language : 'ru',
-	    theme: "modern",
-//	    content_css: "css/main.css", - стили этого файла потом появляются в выпадающем меню Формат
-	    autoresize_min_height: 300,
-	    autoresize_max_height: 700,
-	    plugins: [
-//	    	 "importcss", - плагин, который отвечает за вывод списка стилей файла content_css в выпадающем меню
-	    	 "autoresize",
-	    	 "imageUpload", 
-	         "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-	         "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-	         "table contextmenu directionality template paste textcolor"
-	   ],
-	   toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link upload image | print preview media fullpage | forecolor backcolor | code" 
-//	   style_formats : [
-//		    {title : 'Крутая таблица', selector : 'table', classes : 'table_cool'}
-//	   ]
-	 });
-	tinymce.init({
-	    selector: "textarea.mce_medium",
-	    language : 'ru',
-	    plugins: ["code paste"],
-	    menubar : false,
-	    statusbar: false,
-	    height: 200,
-	    theme: "modern",
-	    toolbar: "insertfile undo redo | styleselect | bold italic | code",
-	 });
-	tinymce.init({
-	    selector: "textarea.mce_small",
-	    language : 'ru',
-	    plugins: ["code paste"],
-	    menubar : false,
-	    statusbar: false,
-	    height: 100,
-	    theme: "modern",
-	    toolbar: "insertfile undo redo | styleselect | bold italic | code",
-	 });
-	 
-	// Открытие окна редактирования фильтра
-	function openFilter(filterId, itemId, paramId) {
-		var url = "admin_filter_init.afilter?input=" + filterId + "&amp;itemId=" + itemId + "&amp;paramName=" + paramId;
-		var winW = 630, winH = 460;
-		if (document.body &amp;&amp; document.body.offsetWidth) {
-			winW = document.body.offsetWidth;
-			winH = document.body.offsetHeight;
-		}
-		if (document.compatMode=='CSS1Compat' &amp;&amp;
-		    document.documentElement &amp;&amp;
-		    document.documentElement.offsetWidth ) {
-			winW = document.documentElement.offsetWidth;
-			winH = document.documentElement.offsetHeight;
-		}
-		if (window.innerWidth &amp;&amp; window.innerHeight) {
-			winW = window.innerWidth;
-			winH = window.innerHeight;
-		}
-		var w = winW - 300;
-		var h = winH - 100;
-		var x = 150;
-		var y = 50;
-		window.open(
-				url, 
-				"Filter", 
-				"toolbar=no,scrollbars=yes,menubar=no,status=no,directories=no,width=" + w + ",height=" + h + ",left=" + x + ",top=" + y).focus();
-	}
-	
-	// Открытие окна редактирования ассоциированных элементов
-	function openAssoc(paramId) {
-		var url = openAssocUrl + paramId;
-		var winW = 630, winH = 460;
-		if (document.body &amp;&amp; document.body.offsetWidth) {
-			winW = document.body.offsetWidth;
-			winH = document.body.offsetHeight;
-		}
-		if (document.compatMode=='CSS1Compat' &amp;&amp;
-		    document.documentElement &amp;&amp;
-		    document.documentElement.offsetWidth ) {
-			winW = document.documentElement.offsetWidth;
-			winH = document.documentElement.offsetHeight;
-		}
-		if (window.innerWidth &amp;&amp; window.innerHeight) {
-			winW = window.innerWidth;
-			winH = window.innerHeight;
-		}
-		var w = winW - 300;
-		var MAX_W = 800;
-		w = w &lt; MAX_W ? w : MAX_W;
-		var h = winH - 100;
-		var x = (winW - w) / 2;
-		var y = 50;
-		window.open(
-				url, 
-				"Associated", 
-				"toolbar=no,scrollbars=yes,menubar=no,status=no,directories=no,width=" + w + ",height=" + h + ",left=" + x + ",top=" + y).focus();
-	}
-	</xsl:text>
-	<xsl:if test="//field[ @type='date']">
-		//-- всегда
-		$.datepicker.setDefaults($.datepicker.regional["ru"]);
-		$(".datepicker").datepicker();
-		var now = new Date().toLocaleString("ru").substring(0,17).replace(',', '');
-		$(".timeStamp").each(function() {
-			var targ = $(this).find(".whole");
-			var date = $(this).find(".datepicker");
-			var time = $(this).find(".time");
-		
-			var dv = $(targ).val();
-			var tls = (dv == "")? now : dv;
-			date.val(tls.substring(0,10));
-			time.val(tls.substring(11));
-			if(dv == "") {
-				targ.val(tls);
-			}
-			if(time.val() == ""){
-				time.val("0:0");
-			}
-			date.change(function() {
-				makeVal(targ, date, time);
-			});
-			time.change(function() {
-				validateTime(this);
-				makeVal(targ, date, time);
-			});
-		});
-		function validateTime(el) {
-			tv = $(el).val().substring(0,5);
-			arr = tv.split(':');
-			<xsl:text disable-output-escaping="yes">
-			arr[0]=(arr[0]*1 &gt; 23)? 23 : arr[0];
-			arr[1]=(arr[1]*1 &gt; 59)? 59 : arr[1];
-			arr[0]=(arr[0]*1 &lt; 0)? 0 : arr[0];
-			arr[1]=(arr[1]*1 &lt; 0)? 0 : arr[1];
-			</xsl:text>
-			$(el).val(arr.join(":"));
-		}
-		function makeVal(target, date, time) {
-			$(target).val($(date).val()+' '+$(time).val());
-		}
+		var startUploadUrl = "<xsl:value-of select="admin-page/upload-link"/>";
+		var openAssocUrl = "<xsl:value-of select="admin-page/open-associated-link"/>";
+		//-- mce image upload settings for tinyMCE
+		window.uploadPath = "<xsl:value-of select="$form/@file-path"/>";
+	<xsl:if test="$form/@id != '0'">
+		window.itemId = <xsl:value-of select="$form/@id" />;
+		<xsl:if test="$form/field[ @type='picture' and @quantifier = 'multiple']">
+			window.imgId =	<xsl:value-of select="$form/field[ @type='picture' and @quantifier = 'multiple']/@id" />;
+		</xsl:if>
+		<xsl:if test="$form/field[ @type='file' and @quantifier = 'multiple']">
+			window.fileId = <xsl:value-of select="$form/field[ @type='file' and @quantifier = 'multiple']/@id" />;
+		</xsl:if>
 	</xsl:if>
 	</script>
+	<script type="text/javascript" src="admin/js/mce-setup.js"></script>
+	<script type="text/javascript" src="admin/js/inputs_script.js"></script>
 	</xsl:template>
 		
 </xsl:stylesheet>

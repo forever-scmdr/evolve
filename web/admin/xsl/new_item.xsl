@@ -19,25 +19,25 @@
 				<form id="f1" action="{//save_link}" method="post">
 					<table class="basicContainer">
 						<tr>
-							<td class="sideColoumn">
+							<td class="sideColoumn" style="vertical-align: middle; padding-right: 10px;">
 								Название:
 							</td>
 							<td class="mainColoumn">
-								<input type="text" class="textForm" name="name" value="{//data/name}"/>
+								<input type="text" id="name" class="textForm" name="name" value="{//data/name}"/>
 							</td>
 						</tr>
 						<tr>
-							<td class="sideColoumn">
+							<td class="sideColoumn" style="vertical-align: middle; padding-right: 10px;">
 								Описание:
 							</td>
 							<td class="mainColoumn">
-								<textarea name="description"><xsl:value-of select="//data/description"/></textarea>
+								<input type="text" name="description" value="{//data/description}" />
 							</td>
 						</tr>
 						<tr>
 							<td class="sideColoumn"></td>
 							<td class="mainColoumn">
-								<a href="javascript:$('#f1').submit()" class="button totalSave">Создать новый тип</a>
+								<a style="padding: 5px 10px; color: #fff; background: #56C493; display: block; text-align: center; text-decoration: none; margin-top: 7px;" onclick="$('#f1').submit();" class="button totalSave">Создать новый тип</a>
 							</td>
 						</tr>
 					</table>
@@ -46,6 +46,14 @@
 			<!-- ***************************************************************************************** -->
 		</tr>
 		</table>
+		<script type="text/javascript">
+			$("#f1").submit(function(e){
+				if($("#name").val() == ""){
+					e.preventDefault();
+					alert("Введите название для нового типа!");
+				}
+			});
+		</script>
 	</xsl:template>
 
 </xsl:stylesheet>

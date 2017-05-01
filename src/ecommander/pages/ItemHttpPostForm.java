@@ -516,6 +516,10 @@ public class ItemHttpPostForm implements Serializable {
 							if (file instanceof FileItem)
 								itemToEdit.setValue(paramId, file);
 						}
+					} else if(paramValue instanceof String) {
+						if(StringUtils.isNotBlank((String)paramValue)) {
+							itemToEdit.setValue(paramId, paramValue);
+						}
 					}
 				} else {
 					if (paramValue instanceof List) {

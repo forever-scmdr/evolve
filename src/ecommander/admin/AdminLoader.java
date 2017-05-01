@@ -180,6 +180,20 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		query.col(IP_CHILD_ID, " IN(").setLongArray(itemId).sql(")");
 		return loadAccessorsByQuery(query);
 	}
+
+	/**
+	 * Загружает айетмы по их ключу (Антоновский фикс)
+	 * @param key
+	 * @return
+	 * @throws Exception
+	 */
+	ArrayList<ItemAccessor> loadItemAccessorsByKey(String key) throws Exception {
+		if (StringUtils.isBlank(key))
+			return new ArrayList<>(0);
+		TemplateQuery query = createAccessorQueryBase("Load accessors by ids");
+		query.col(I_KEY, " LIKE ").setString("%" + key + "%");
+		return loadAccessorsByQuery(query);
+	}
 	/**
 	 * Загружает один айтем по его ID
 	 * @param itemId

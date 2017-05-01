@@ -9,53 +9,32 @@
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
 
 	<xsl:template match="/">
-	<xsl:if test="admin-page/item">
-		<!-- Буфер обмена -->
-		<div id="pasteBuffer">
-			<div class="side_block">
-				<div class="head" style="background:url(admin/admin_img/side_block_head_copy.png) left top no-repeat;">
-					<span>Буфер обмена (вставить):</span>
+		<xsl:if test="admin-page/item">
+			<!-- Буфер обмена -->
+			<div id="pasteBuffer">
+				<div class="list">
+					<h4>Буфер обмена (вставить)</h4>
+					<ul class="edit">
+						<xsl:for-each select="admin-page/item">
+
+							<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']" />
+
+							<li class="drop-zone"></li>
+							<li class="dragable visible multiple">
+								<a href="{edit-link}" class="name" title="радактировать">
+									<span class="description">[<xsl:value-of select="@type-caption" />]</span>
+									<br />
+									<xsl:value-of select="$caption" />
+								</a>
+								<a href="#" onclick="insertAjaxView('{paste-link}', 'subitems', false, 'hidden_mes', 'message_main'); return false;" class="copy paste" title="вставить">вставить</a>
+								<a href="#" onclick="insertAjaxView('{delete-link}', 'pasteBuffer'); return false;"  class="delete" title="удалить">удалить</a>
+							</li>
+						</xsl:for-each>
+						<li class="drop-zone"></li>
+					</ul>
 				</div>
-				<div class="items">
-					<xsl:for-each select="admin-page/item">
-						<div class="exist_item">
-							<div class="item_type">
-								[<xsl:value-of select="@type-caption"/>]
-							</div>
-							<table>
-								<tr>
-									<td class="link">
-										<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
-										<a href="{edit-link}"><xsl:value-of select="$caption"/></a>
-									</td>
-									<td class="action">
-										<a href="#" onclick="insertAjaxView('{delete-link}', 'pasteBuffer'); return false;">
-											<img src="admin/admin_img/action_delete.png" />
-										</a>
-									</td>
-								</tr>
-							</table>
-							<div class="copyWhat">
-								<div class="copySpacer"></div>
-								<xsl:if test="paste-link">
-									<div class="copyButton">
-										<a href="#" onclick="insertAjaxView('{paste-link}', 'subitems', false, 'hidden_mes', 'message_main'); return false;">вставить</a>
-									</div>
-								</xsl:if>
-								<xsl:if test="not(paste-link)">
-									<div class="noPasteButton">
-										вставить
-									</div>
-								</xsl:if>
-							</div>
-						</div>
-						<div class="spacer"></div>
-					</xsl:for-each>
-				</div>
-				<div class="bottom"></div>
 			</div>
-		</div>
-	</xsl:if>
+		</xsl:if>
 	</xsl:template>
 		
 </xsl:stylesheet>

@@ -21,10 +21,10 @@
 		<xsl:param name="name"/>
 		<xsl:choose>
 			<xsl:when test="$value = $check">
-				<input name="{$name}" type="radio" group="qu" checked="checked" value="{$value}" />
+				<input name="{$name}" type="radio" group="qu" checked="checked" value="{$value}" id="{$value}" />
 			</xsl:when>
 			<xsl:otherwise>
-				<input name="{$name}" type="radio" group="qu" value="{$value}" />
+				<input name="{$name}" type="radio" group="qu" value="{$value}" id="{$value}" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

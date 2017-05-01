@@ -54,6 +54,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 		private boolean isPersonal = false;
 		// ID айтема
 		private long itemId = -1;
+		// Поисковый запрос (Антон)
+		private String searchQuery = null;
 		// ID айтема (родительский)
 		private long parentId = -1;
 		// Название и ID айтема, который перемещается или в который перемещается текущий
@@ -131,8 +133,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 			result = reindex(pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.DROP_ALL_CACHES_ACTION))
 			result = dropAllCaches(pageCreator);
-		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.UPLOAD_START_ACTION))
-			result = startUploadImage(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.UPLOAD_IMG_ACTION))
 			result = uploadImage(input, req, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.COPY_ACTION))
@@ -182,6 +182,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 				input.viewType = req.getParameter(MainAdminPageCreator.VIEW_TYPE_INPUT);
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.VISUAL_INPUT)))
 				input.isVisual = Boolean.parseBoolean(req.getParameter(MainAdminPageCreator.VISUAL_INPUT));
+			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.SEARCH_INPUT)))
+				input.searchQuery = req.getParameter(MainAdminPageCreator.SEARCH_INPUT);
 			// Создание ссылок
 			Enumeration<String> paramNames = req.getParameterNames();
 			while (paramNames.hasMoreElements()) {
@@ -279,7 +281,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	private AdminPage getView(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = null;
 		if (MainAdminPageCreator.SUBITEMS_VIEW_TYPE.equals(in.viewType)) {
-			page = pageCreator.createSubitemsPage(in.itemId, in.itemTypeId);
+			page = pageCreator.createSubitemsPage(in.itemId, in.itemTypeId, in.searchQuery);
 		} else if (MainAdminPageCreator.PARAMS_VIEW_TYPE.equals(in.viewType)) {
 			page = pageCreator.createParamsPage(in.itemId, in.isVisual);
 			page.addMessage("Включен режим редактирования параметров выбранного элемента", false);
@@ -364,10 +366,19 @@ public class MainAdminServlet extends BasicAdminServlet {
 		// Очистить кеш страниц
 		PageController.clearCache();
 		AdminPage page = null;
-		if (needBasePage)
-			page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, item.getId(), item.getTypeId());
-		else
+		if (needBasePage) {
+			// Антоновские изменения
+			//page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, item.getId(), item.getTypeId());
+			boolean toParent = itemForm.getSingleExtra("parent-url").equals("yes");
+			long id = (toParent) ? item.getContextParentId() : item.getId();
+			if (id == ItemTypeRegistry.getDefaultRoot().getId()){
+				return setItem(in, pageCreator);
+			}
+			int type = (toParent)? ItemQuery.loadById(id).getTypeId() : item.getTypeId();
+			page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, id, type);
+		} else {
 			page = pageCreator.createParamsPage(item.getId(), in.isVisual);
+		}
 		page.addMessage("Изменения успешно сохранены", false);
 		return page;
 	}
@@ -386,7 +397,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		transaction.addCommandUnit(ItemStatusDBUnit.delete(in.itemId));
 		transaction.execute();
-		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId);
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.searchQuery);
 		// Удалить айтем из индекса Lucene
 		LuceneIndexMapper.commit();
 		// Очистить кеш страниц
@@ -414,7 +425,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		transaction.execute();
 		// Очистить кеш страниц
 		PageController.clearCache();
-		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId);
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.searchQuery);
 		page.addMessage("Порядок следования элементов изменен", false);
 		return page;
 	}
@@ -471,19 +482,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 		AdminPage page = pageCreator.createParamsPage(in.itemId, in.isVisual);
 		page.addMessage("Дополнительный параметр добавлен и отображается в колонке справа", false);
 		return page;
-	}
-	/**
-	 * Показать окно загрузки картинки (плагин tinyMCE)
-	 * 
-	 * Параметры:
-	 * itemId - ID айтема владельца параметра
-	 * multipleParamId - ID параметра картинки
-	 * 
-	 * @return
-	 * @throws Exception 
-	 */
-	private AdminPage startUploadImage(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
-		return pageCreator.createImageUploadPage(in.itemId, in.paramId);
 	}
 	/**
 	 * Загрузка картинки (плагин tinyMCE)
@@ -797,13 +795,13 @@ public class MainAdminServlet extends BasicAdminServlet {
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Unable to copy item", e);
-			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId);
+			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.searchQuery);
 			page.addMessage("Невозможно вставить скопированный элемент", false);
 			return page;
 		}
 		// Очистить кеш страниц
 		PageController.clearCache();
-		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId);
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.searchQuery);
 		page.addMessage("Элемент успешно копирован", false);
 		return page;
 	}

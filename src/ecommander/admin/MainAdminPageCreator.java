@@ -8,6 +8,7 @@ import ecommander.pages.ItemHttpPostForm;
 import ecommander.pages.UrlParameterFormatConverter;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
@@ -210,6 +211,7 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String ALT_INPUT = "alt";
 	public static final String PARAM_INPUT = "param";
 	public static final String VISUAL_INPUT = "vis";
+	public static final String SEARCH_INPUT = "key_search";
 	/**
 	 * Значения
 	 */
@@ -359,7 +361,7 @@ public class MainAdminPageCreator implements AdminXML {
 	 * @return
 	 * @throws Exception 
 	 */
-	AdminPage createSubitemsPage(long baseId, int itemType) throws Exception {
+	AdminPage createSubitemsPage(long baseId, int itemType, String searchQuery) throws Exception {
 		AdminPage basePage = new AdminPage(SUBITEMS_PAGE, domain, currentUser.getName());
 		ArrayList<ItemToAdd> itemsToAdd = new ArrayList<>();
 		if (baseId <= 0) {
@@ -368,7 +370,13 @@ public class MainAdminPageCreator implements AdminXML {
 			ItemAccessor baseItem = AdminLoader.getLoader().loadItemAccessor(baseId);
 			itemType = baseItem.getTypeId();
 		}
-		ArrayList<ItemAccessor> subitems = createSubitemsInfo(baseId, itemType, itemsToAdd);
+		ArrayList<ItemAccessor> subitems;
+		// Антоновский поиск по ключу
+		if (StringUtils.isNotBlank(searchQuery)) {
+			subitems = AdminLoader.getLoader().loadItemAccessorsByKey(searchQuery);
+		} else {
+			subitems = createSubitemsInfo(baseId, itemType, itemsToAdd);
+		}
 		Collections.sort(subitems);
 		// Отсортировать по ассоциации
 		Collections.sort(itemsToAdd, new Comparator<ItemToAdd>() {
@@ -415,7 +423,10 @@ public class MainAdminPageCreator implements AdminXML {
 		String getPasteBufferUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, PASTE_VIEW_TYPE, PARENT_ID_INPUT, baseId, ITEM_TYPE_INPUT,
 				itemType);
 		basePage.addElement(new LeafMDWriter(GET_PASTE_LINK_ELEMENT, getPasteBufferUrl));
-		basePage.addElement(new LeafMDWriter(LINK_ELEMENT, reorderUrl, NAME_ATTRIBUTE, REORDER_VALUE));
+		// Антоновский поиск по ключу
+		if (StringUtils.isBlank(searchQuery)) {
+			basePage.addElement(new LeafMDWriter(LINK_ELEMENT, reorderUrl, NAME_ATTRIBUTE, REORDER_VALUE));
+		}
 		return basePage;
 	}
 

@@ -1,270 +1,234 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-	<xsl:import href="_inc_base_head.xsl"/>
-	<xsl:import href="_inc_message.xsl"/>
-	<xsl:output method="html" encoding="UTF-8" media-type="text/html" indent="yes"/>
-	<xsl:strip-space elements="*"/>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+	<xsl:import href="_inc_message.xsl" />
+	<xsl:output method="html" encoding="UTF-8" media-type="text/html" indent="yes" />
+	<xsl:strip-space elements="*" />
 
-	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br/&gt;</xsl:text></xsl:template>
+	<xsl:variable name="pre-last" select="count(/admin-page/path/item) - 1"/>
+	<xsl:variable name="parent" select="/admin-page/path/item[$pre-last]" />
+	
 
-	<xsl:template name="TITLE">CMS - Режим редактирования</xsl:template><!-- ******************* TODO LOCAL ******************** -->
+	<xsl:template name="DOCTYPE">
+		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</xsl:text>
+	</xsl:template>
 
-	<!-- ****************************    СТРАНИЦА    ******************************** -->
+	<xsl:template name="BR">
+		<xsl:text disable-output-escaping="yes">&lt;br/&gt;</xsl:text>
+	</xsl:template>
 
-	<xsl:template match="/">
-		<xsl:call-template name="DOCTYPE"/>
-		<html>
-			<xsl:call-template name="HEAD"/>
-			<body>
-			<!-- ************************ Основная форма **************************** -->
-			<!-- ******************************************************************** -->
-			<div class="mainwrap">
-				<div class="header">
-					<div class="logo">
-						<a href=""><img src="admin/admin_img/logo.png" alt=""/></a>
-					</div>
-					<div class="domain">
-						<div class="domain_right">
-							 <xsl:value-of select="/admin-page/domain"/>
-						</div>
-					</div>
-					<a href="admin/help.html"><img class="help" src="admin/admin_img/help.png" alt=""/></a>
-					<table class="user">
-					<tr>
-						<td>
-							<xsl:value-of select="/admin-page/@username"/>
-						</td>
-						<td class="logout">
-							<a href="logout.login?target=admin_initialize.action"><img src="admin/admin_img/logout.png" alt=""/></a>
-						</td>
-					</tr>
-					</table>
-				</div>
-				<div class="path">
-					<xsl:for-each select="/admin-page/path/item[position() != last()]">
-					<a href="{edit-link}"><xsl:value-of select="@caption"/></a><xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					</xsl:for-each>
-					<strong><xsl:value-of select="/admin-page/path/item[position() = last()]/@caption"/></strong>
-				</div>
-				<table class="main_table">
-				<tr>
-					<td class="side_col">
-						<div id="subitems">
-							
-						<!-- Сюда помещаются айтемы для создания и уже созданные -->
-						
-						</div>
-						<div class="side_block">
-							<div class="head">
-								<span>Дополнительно</span>
-							</div>
-							<div class="items">
-								<div class="exist_item">
-									<table>
-										<tr>
-											<td class="link">
-												<a href="admin_types_init.type">Управление классами объектов</a>
-											</td>
-										</tr>
-									</table>
-								</div>
-								<div class="spacer">
-									<div>
-									</div>
-								</div>
-								<div class="exist_item">
-									<table>
-									<tr>
-										<td class="link">
-											<a href="admin_users_initialize.user">Управление пользователями</a>
-										</td>
-									</tr>
-									</table>
-								</div>
-								<div class="spacer">
-									<div>
-									</div>
-								</div>
-								<div class="exist_item">
-									<table>
-									<tr>
-										<td class="link">
-											<a href="admin_domains_initialize.domain">Управление доменами</a>
-										</td>
-									</tr>
-									</table>
-								</div>
-								<div class="spacer">
-									<div>
-									</div>
-								</div>
-								<div class="exist_item">
-									<table>
-									<tr>
-										<td class="link">
-											<a href="admin_reindex.action">Переиндексация</a>
-										</td>
-									</tr>
-									</table>
-								</div>
-								<div class="spacer">
-									<div>
-									</div>
-								</div>
-								<div class="exist_item">
-									<table>
-									<tr>
-										<td class="link">
-											<a href="admin_drop_all_caches.action">Очистить все кеши</a>
-										</td>
-									</tr>
-									</table>
-								</div>
-								<div class="spacer">
-									<div>
-									</div>
-								</div>
-								<div class="exist_item">
-									<table>
-									<tr>
-										<td class="link">
-											<a href="update_prices">Изменение цен</a>
-										</td>
-									</tr>
-									</table>
-								</div>
-								<div class="spacer">
-									<div>
-									</div>
-								</div>
-								<div class="exist_item">
-									<table>
-									<tr>
-										<td class="link">
-											<a href="booking">Онлайн-бронирование</a>
-										</td>
-									</tr>
-									</table>
-								</div>
-							</div>
-							<div class="bottom">
-							</div>
-						</div>
-					</td>
-					<td class="main">
-						<div class="warning">
-							<div class="tl">
-								<div class="bl">
-									<div class="message">
-										<span id="message_main">
-											<xsl:value-of select="admin-page/message"/>
-										</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<h1 class="title">
-							<xsl:if test="admin-page/item"><xsl:value-of select="admin-page/item/@caption"/></xsl:if>
-							<xsl:if test="not(admin-page/item)">Корневой элемент</xsl:if>
-						</h1>
-						<script>
-						function selectTab(tabId, url) {
-							$('.tab_bgr_selected').removeClass('tab_bgr_selected').addClass('tab_bgr');
-							$('#' + tabId).addClass('tab_bgr_selected');
-							mainView(url);
-						}
-						</script>
-						<xsl:if test="admin-page/item">
-						<div class="tabs_container">
-							<div class="tabs">
-								<div class="tab_bgr_selected" id="tabParams">
-									<div class="tab_left">
-										<div class="tab_right">
-											<a href="javascript:selectTab('tabParams', '{/admin-page/link[@name='parameters']}')">
-											Свойства элемента</a>
-										</div>
-									</div>
-								</div>
-								<div class="tab_bgr" id="tabMountTo">
-									<div class="tab_left">
-										<div class="tab_right">
-											<a href="javascript:selectTab('tabMountTo', '{/admin-page/link[@name='mountTo']}')">
-											Связи нижнего уровня</a>
-										</div>
-									</div>
-								</div>
-								<div class="tab_bgr" id="tabToMount">
-									<div class="tab_left">
-										<div class="tab_right">
-											<a href="javascript:selectTab('tabToMount', '{/admin-page/link[@name='toMount']}')">
-											Связи верхнего уровня</a>
-										</div>
-									</div>
-								</div>
-								<div class="tab_bgr" id="tabMoveTo">
-									<div class="tab_left">
-										<div class="tab_right">
-											<a href="javascript:selectTab('tabMoveTo', '{/admin-page/link[@name='moveTo']}')">
-											Переместить выбранный элемент в</a>
-										</div>
-									</div>
-								</div>
-								<div class="tab_bgr" id="tabToMove">
-									<div class="tab_left">
-										<div class="tab_right">
-											<a href="javascript:selectTab('tabToMove', '{/admin-page/link[@name='toMove']}')">
-											Переместить в выбранный элемент</a>
-										</div>
-									</div>
-								</div>
-								<div class="clear"></div>
-							</div>
-						</div>
-						</xsl:if>
-						<div id="main_view">							
-						
-						<!-- Сюда помещаются формы для редактирования айтема (параметры, связи, перемещение) -->
+	<xsl:template name="TITLE">
+		CMS - Режим редактирования
+	</xsl:template>
 
-						</div>
-						<div id="inline_view">							
-						
-						<!-- Сюда помещаются формы для редактирования inline-сабайтемов редактируемого айтема -->
+	<xsl:template name="HEAD">
+		<head>
+			<base href="{admin-page/domain}" />
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+			<meta http-equiv="Pragma" content="no-cache" />
+			<link rel="stylesheet" type="text/css" href="admin/css/reset.css" />
+			<link rel="stylesheet" type="text/css" href="admin/css/style.css" />
+			<link href="admin/jquery_css/ui-lightness/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" media="screen" />
+			<title>
+				Система управления сайтом
+				<xsl:value-of select="/admin-page/domain" />
+			</title>
+			<script src="admin/js/jquery-2.2.4.min.js" ></script>		
+		</head>
+	</xsl:template>
 
-						</div>
-					</td>
-				</tr>
-				</table>
-			</div>
-			<script type="text/javascript">
+	<xsl:template name="JS">
+		<!-- FORM -->
+		<script type="text/javascript" src="admin/js/jquery.form.min.js"></script>
+		<!-- UI -->
+		<script type="text/javascript" src="admin/js/jquery-ui-1.10.3.custom.min.js"></script>
+		<!-- MCE -->
+		<script type="text/javascript" src="admin/tinymce/tinymce.min.js"></script>
+		<script type="text/javascript" src="admin/js/regional-ru.js"></script>
+		<!-- FILE UPLOAD -->
+	
+		<!-- AJAX -->
+		<script type="text/javascript" src="admin/js/ajax.js"></script>
+		<!-- ADMIN -->
+		<script type="text/javascript" src="admin/js/admin.js"></script>
+		<script type="text/javascript">
+
+			function selectTab(tabId, url) {
+				$('.wtf-list .active').removeClass('active');
+				$('#' + tabId).addClass('active');
+				mainView(url);
+			}
+
 			/**
-			 * Отправка AJAX запроса для обновления основной (центральной) части страницы
-			 * Отдельно выводится сообщение для пользователя
-			 */
+			* Отправка AJAX запроса для обновления основной (центральной) части страницы
+			* Отдельно выводится сообщение для пользователя
+			*/
 			function mainView(link, postProcess) {
-				insertAjaxView(link, "main_view", false, "hidden_mes", "message_main", postProcess);
-				$('#inline_view').html('');
+			insertAjaxView(link,
+			"main_view", false, "hidden_mes", "message_main", postProcess);
+			$('#inline_view').html('');
 			}
 			/**
-			 * Отправка AJAX запроса для обновления указанной части страницы
-			 * Отдельно выводится сообщение для пользователя
-			 */
+			* Отправка AJAX запроса для обновления указанной части страницы
+			* Отдельно выводится сообщение для
+			пользователя
+			*/
 			function defaultView(link, viewId, confirm, postProcess) {
-				insertAjaxView(link, viewId, confirm, "hidden_mes", "message_main", postProcess);
+			insertAjaxView(link, viewId, confirm, "hidden_mes", "message_main", postProcess);
 			}
 			/**
-			 * Отправка AJAX POST запроса для обновления основной (центральной) части страницы
-			 * Отдельно выводится сообщение для пользователя
-			 */
+			* Отправка AJAX POST запроса для
+			обновления основной (центральной) части страницы
+			* Отдельно выводится сообщение для пользователя
+			*/
 			function mainForm(formId, additionalHandling) {
-				prepareForm(formId, "main_view", "hidden_mes", "message_main", additionalHandling);
+			prepareForm(formId, "main_view", "hidden_mes",
+			"message_main", additionalHandling);
 			}
 			$(document).ready(function() {
-				insertAjaxView("<xsl:value-of select="admin-page/link[@name='subitems']"/>", "subitems");
-				insertAjaxView("<xsl:value-of select="admin-page/link[@name='parameters']"/>", "main_view");
+			insertAjaxView("<xsl:value-of select="admin-page/link[@name='subitems']" />", "subitems");
+			insertAjaxView("<xsl:value-of select="admin-page/link[@name='parameters']" />", "main_view");
 			});
-			</script>
+		</script>
+	</xsl:template>
+	
+	<!-- **************************** СТРАНИЦА ******************************** -->
+
+	<xsl:template match="/">
+		<xsl:call-template name="DOCTYPE" />
+		<html>
+			<xsl:call-template name="HEAD" />
+			<body>
+
+				<!-- ************************ Основная форма **************************** -->
+				<div class="mainwrap">
+					<div class="header">
+						<div class="left-col">
+							<div class="logo">
+								<a href="admin_initialize.action">
+									<img src="admin/img/forever_logo.png" alt="forever-CMS" />
+								</a>
+							</div>
+						</div>
+						<div class="right-col">
+							<a href="{/admin-page/domain}" class="gray" target="blank">
+								<xsl:value-of select="/admin-page/domain" />
+							</a>
+							<a href="#" onclik="alert('Функция в разрабтке'); return false;">
+								<img src="admin/img/visual_btn.png" alt="visual editor" />
+							</a>
+							<a href="admin/help.html" style="margin-left: 5px;">F1 - справка</a>
+							<a href="logout.login?target=admin_initialize.action" class="logout" title="выйти">
+								<xsl:value-of select="/admin-page/@username" />
+							</a>
+						</div>
+					</div>
+					<div class="path">
+						<span class="pad"></span>
+						<xsl:for-each select="/admin-page/path/item[position() != last()]">
+							<a href="{edit-link}">
+								<xsl:value-of select="@caption" />
+							</a>
+							<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
+						</xsl:for-each>
+						<b>
+							<xsl:value-of select="/admin-page/path/item[position() = last()]/@caption" />
+						</b>
+					</div>
+					<div class="mid">
+						<div class="left-col">
+							<!-- Поиск -->
+							<div class="list position-relative">
+								<form id="search-form" class="ajax-form" action="get_view.action" method="POST">
+									<input type="text" id="key_search" name="key_search" placeholder="поиск по названию" />
+									<input type="hidden" name="itemId" value="0"/>
+									<input type="hidden" name="itemType" value="0"/>
+									<input type="hidden" name="vt" value="subitems"/>
+									<a onclick="postFormView('search-form')" >искать</a>
+								</form>
+								<a onclick="insertAjaxView('{admin-page/link[@name='subitems']}', 'subitems'); $('#key_search').val('');" style="text-decoration: underline;">Очистить поиск</a>
+							</div>
+							<div id="subitems"></div>
+							<div class="list">
+								<h4>Дополнительно</h4>
+								<ul class="no-drag">
+									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">
+										<a href="admin_drop_all_caches.action">Очистить все кеши</a>
+									</li>
+									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">
+										<a href="admin_reindex.action">Переиндексация</a>
+									</li>
+									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">
+										<a href="admin_domains_initialize.domain">
+											Упарвление доменами
+										</a>
+									</li>
+									<li class="visible" title="Измениение паролей, создание и удаление пользователей">
+										<a href="admin_users_initialize.user">
+											Упарвление пользователями
+										</a>
+									</li>
+									<li class="visible" title="???">
+										<a href="admin_types_init.type">
+											Упарвление классами объектов
+										</a>
+									</li>
+									<li class="visible" title="Функция в разработке">
+										<a href="#" onclick="alert('Функция в разработке'); return false;">
+											Управление миром
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="right-col">
+							<div class="inner">
+								<h1 class="title">
+									<xsl:if test="admin-page/item">
+										<xsl:value-of select="admin-page/item/@caption" />
+									</xsl:if>
+									<xsl:if test="not(admin-page/item)">
+										Справка
+									</xsl:if>
+								</h1>
+								<div class="edit-arena">
+									<xsl:if test="admin-page/item">
+										<div class="wide">
+											<div class="margin">
+												<table class="wtf-list">
+													<tr>
+														<td class="active" id="tabParams">
+															<a href="javascript:selectTab('tabParams', '{/admin-page/link[@name='parameters']}')" >Редактировть элемент</a>
+														</td>
+<!-- 														<td id="tabMountTo"> -->
+<!-- 															<a href="javascript:selectTab('tabMountTo', '{/admin-page/link[@name='mountTo']}')" title="???">Прикпрепить элемент к</a> -->
+<!-- 														</td> -->
+<!-- 														<td id="tabToMount"> -->
+<!-- 															<a href="javascript:selectTab('tabToMount', '{/admin-page/link[@name='toMount']}')" title="¿¿¿">Прикпрепить к элементу</a> -->
+<!-- 														</td> -->
+														<td id="tabMoveTo">
+															<a href="javascript:selectTab('tabMoveTo', '{/admin-page/link[@name='moveTo']}')" title='Например из раздела "важные новости" в раздел "очень важные новости"'>Переместить выбранный элемент в</a>
+														</td>
+														<td id="tabToMove">
+															<a href="javascript:selectTab('tabToMove', '{/admin-page/link[@name='toMove']}')">Переместить в выбранный элемент</a>
+														</td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									</xsl:if>
+									<div id="main_view">
+										
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<xsl:call-template name="JS"/>
 			</body>
 		</html>
 	</xsl:template>
-		
+
 </xsl:stylesheet>

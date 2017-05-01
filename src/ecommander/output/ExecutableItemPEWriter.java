@@ -2,6 +2,8 @@ package ecommander.output;
 
 import java.util.ArrayList;
 
+import ecommander.model.ParameterDescription;
+import ecommander.model.datatypes.DataType;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -55,7 +57,18 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 		// Параметры айтема
 		// Если айтем содержит XML параметры, то им надо убрать эскейпинг
 		if (item.getItemType().hasXML()) {
-			xml.addElements(StringEscapeUtils.unescapeXml(item.outputValues()));
+			//xml.addElements(StringEscapeUtils.unescapeXml(item.outputValues()));
+			String values = item.outputValues();
+			for (ParameterDescription paramDescr : item.getItemType().getParameterList()) {
+				if (paramDescr.getType() == DataType.Type.XML) {
+					String start = "<" + paramDescr.getName() + ">";
+					String end = "</" + paramDescr.getName() + ">";
+					String xmlVal = StringUtils.substringBetween(values, start, end);
+					xmlVal = StringEscapeUtils.unescapeXml(xmlVal);
+					values = StringUtils.substringBefore(values, start) + start + xmlVal + end + StringUtils.substringAfter(values, end);
+				}
+			}
+			xml.addElements(values);
 		} else {
 			xml.addElements(item.outputValues());
 		}
