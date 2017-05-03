@@ -167,7 +167,7 @@ public interface DBConstants
 	 * @author E
 	 */
 	interface UsersTbl {
-		String U_TABLE = "users";
+		String U_TABLE = "user";
 		String U_ID = "u_id";
 		String U_LOGIN = "u_login";
 		String U_PASSWORD = "u_password";
@@ -179,7 +179,7 @@ public interface DBConstants
 	 * и роли пользователей в этих группах (простой пользователь или админ)
 	 */
 	interface UserGroups {
-		String UG_TABLE = "user_groups";
+		String UG_TABLE = "user_group";
 		String UG_USER_ID = "ug_user_id";
 		String UG_GROUP_ID = "ug_group_id";
 		String UG_GROUP_NAME = "ug_group_name";
