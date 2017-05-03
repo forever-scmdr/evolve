@@ -17,12 +17,11 @@ import ecommander.model.User;
  */
 public class TransactionContext {
 	private Connection connection;
-	private User initiator = User.getDefaultUser();
+	private User initiator;
 
 	public TransactionContext(Connection conn, User initiator) {
 		this.connection = conn;
-		if (initiator != null)
-			this.initiator = initiator;
+		this.initiator = initiator;
 	}
 	/**
 	 * @return

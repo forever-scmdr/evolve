@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `unique_key` (
 -- ************************************************************
 
 
-CREATE TABLE IF NOT EXISTS `group` (
+CREATE TABLE IF NOT EXISTS `groups` (
   `g_id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `g_name` varchar(100) NOT NULL,
   PRIMARY KEY (`g_id`) USING BTREE
