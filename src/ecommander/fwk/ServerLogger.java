@@ -6,10 +6,10 @@
  */
 package ecommander.fwk;
 
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.RollingFileAppender;
+import ecommander.controllers.AppContext;
+import org.apache.log4j.*;
+
+import java.io.File;
 
 
 /**
@@ -18,9 +18,10 @@ import org.apache.log4j.RollingFileAppender;
  * @author karlov
  */
 public class ServerLogger {
-	protected static final Logger logger = Logger.getLogger(ServerLogger.class);
+	protected static Logger logger = Logger.getLogger(ServerLogger.class);
 
-	public static void init(String fineName) {
+	public static void init(String propsFile, String fineName) {
+		PropertyConfigurator.configure(propsFile);
 		RollingFileAppender fileApp = new RollingFileAppender();
 		fileApp.setName("FileLogger");
 		fileApp.setEncoding("UTF-8");

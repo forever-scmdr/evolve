@@ -23,7 +23,7 @@ public class AppServletContextListener implements ServletContextListener {
 		ServletContext context = event.getServletContext();
 		// Инициализация конектста приложения (установка базового пути к файлам)
 		AppContext.init(context);
-		ServerLogger.init(AppContext.getCommonFilesDirPath() + "eco.log");
+		ServerLogger.init(AppContext.getLogPropsPath(), AppContext.getCommonFilesDirPath() + "eco.log");
 		ServerLogger.error("CONTEXT INITED");
 	}
 

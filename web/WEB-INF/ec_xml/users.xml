@@ -12,7 +12,7 @@
 			<group name="editor" role="admin"/>
 		</user>
 		<user name="test" password="test" description="test">
-			<group name="registered"/>
+			<group name="registered" role="simple"/>
 		</user>
 		<user name="super_editor" password="qwerty" description="Главный редактор">
 			<group name="editor" role="admin"/>

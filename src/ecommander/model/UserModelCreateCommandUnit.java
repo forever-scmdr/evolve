@@ -39,8 +39,7 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 		Path usersFile = Paths.get(AppContext.getUsersPath());
 		usersFileName = usersFile.getFileName().toString();
 		if (Files.exists(usersFile)) {
-			File userFile = new File(AppContext.getUserModelPath());
-			String xml = FileUtils.readFileToString(userFile, "UTF-8");
+			String xml = FileUtils.readFileToString(usersFile.toFile(), "UTF-8");
 			parseFile(xml);
 		} else {
 			throw createValidationException("Users file not found", "initial", "Не найден файл групп пользователей");

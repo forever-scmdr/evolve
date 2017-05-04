@@ -602,7 +602,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 
 	public static void main(String[] args) throws IOException {
 		File file = new File("F:/PROJECTS/evolve/web/WEB-INF/ec_xml/model_test.xml");
-		ServerLogger.init("F:/log.txt");
+		ServerLogger.init("F:/log4j.properties", "F:/log.txt");
 		ArrayList<String> files = new ArrayList<>();
 		files.add(FileUtils.readFileToString(file, "UTF-8"));
 		DataModelCreationValidator validator = new DataModelCreationValidator(files);

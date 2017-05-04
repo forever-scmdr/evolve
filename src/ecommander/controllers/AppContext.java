@@ -33,6 +33,7 @@ public class AppContext {
 	private static String DOMAINS_FILE;
 	private static String URL_FILE;
 	private static String USERS_FILE;
+	private static String LOG_FILE;
 	
 	private static String _REAL_BASE_PATH;
 	
@@ -54,7 +55,7 @@ public class AppContext {
 			DOMAINS_FILE = props.getProperty("paths.domains");
 			URL_FILE = props.getProperty("paths.urls");
 			USERS_FILE = props.getProperty("paths.users");
-			
+
 			CACHE_ENABLED = props.getProperty("settings.enable_cache").equalsIgnoreCase("yes");
 			LOCALE = new Locale(props.getProperty("locale.language"), props.getProperty("locale.country"));
 			ITEM_NAMES_CLASS = props.getProperty("generated.constants_class");
@@ -71,6 +72,7 @@ public class AppContext {
 			_REAL_BASE_PATH = servletContext.getRealPath("") + "/";
 		else
 			_REAL_BASE_PATH = contextRoot;
+		LOG_FILE = _REAL_BASE_PATH + "WEB-INF/log4j.properties";
 	}
 
 	public static String getContextPath() {
@@ -148,7 +150,11 @@ public class AppContext {
 	public static String getUsersPath() {
 		return getRealPath(MAIN_XML_MODELS_DIR + USERS_FILE);
 	}
-	
+
+	public static String getLogPropsPath() {
+		return LOG_FILE;
+	}
+
 	public static String getModelPath() {
 		return getRealPath(MAIN_XML_MODELS_DIR);
 	}
