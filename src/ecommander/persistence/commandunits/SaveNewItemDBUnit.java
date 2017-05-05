@@ -73,7 +73,6 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 				._col(I_KEY).setString(item.getKey())
 				._col(I_T_KEY).setString(item.getKeyUnique())
 				._col(I_PROTECTED).setByte(item.isFileProtected() ? (byte)1 : (byte)0)
-				._col(I_STATUS).setByte(item.getStatus())
 				._col(I_GROUP).setByte(item.getOwnerGroupId())
 				._col(I_USER).setInt(item.getOwnerUserId())
 				._col(I_STATUS).setByte(item.getStatus())

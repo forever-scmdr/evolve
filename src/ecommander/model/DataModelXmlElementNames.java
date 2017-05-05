@@ -1,6 +1,7 @@
 package ecommander.model;
 
 /**
+ * Элементы файла модели данных
  * Created by E on 23/2/2017.
  */
 public interface DataModelXmlElementNames {

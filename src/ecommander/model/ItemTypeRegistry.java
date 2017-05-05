@@ -37,7 +37,7 @@ public class ItemTypeRegistry {
 	private static volatile Thread modifyThread = null; // Пока полностью не загрузилась модель данных, реестр считается заблокированным. Из него нельзя получать информацию.
 	// Поток, который модифицирует модель данных. Он может быть только один и ему разрешено читать модель в процессе модификации
 
-	private final RootType root = new RootType();
+	private static final RootType root = new RootType();
 
 	private static final long SESSION_ROOT_ID = -1L;
 
@@ -73,8 +73,12 @@ public class ItemTypeRegistry {
 	 * Возвращает корень по умолчанию
 	 * @return
 	 */
-	public static RootType getDefaultRoot() {
-		return getSingleton().root;
+	public static RootType getPrimaryRoot() {
+		return root;
+	}
+
+	public static long getPrimaryRootId() {
+		return root.getId();
 	}
 
 	/**

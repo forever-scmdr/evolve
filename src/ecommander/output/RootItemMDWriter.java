@@ -24,7 +24,7 @@ public class RootItemMDWriter extends MetaDataWriter implements DataModelXmlElem
 	@Override
 	public XmlDocumentBuilder write(XmlDocumentBuilder xml) {
 		xml.startElement(ROOT);
-		for (ItemTypeContainer.ChildDesc child : ItemTypeRegistry.getDefaultRoot().getAllChildren()) {
+		for (ItemTypeContainer.ChildDesc child : ItemTypeRegistry.getPrimaryRoot().getAllChildren()) {
 			xml.addEmptyElement(CHILD,
 					ITEM, child.itemName,
 					VIRTUAL, child.isVirtual,

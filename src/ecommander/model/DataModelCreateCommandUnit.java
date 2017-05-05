@@ -172,7 +172,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		// Вложенные айтемы
 		Elements children = rootEl.getElementsByTag(CHILD);
 		for (Element child : children) {
-			readChild(ItemTypeRegistry.getDefaultRoot(), child);
+			readChild(ItemTypeRegistry.getPrimaryRoot(), child);
 		}
 	}
 
@@ -513,7 +513,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 */
 	private void readChild(ItemTypeContainer parent, Element childEl) throws Exception {
 		// По очереди все сабайтемы
-		String childName = childEl.attr(NAME);
+		String childName = childEl.attr(ITEM);
 		String assocName = childEl.attr(ASSOC);
 		boolean isSingle = StringUtils.equalsIgnoreCase(childEl.attr(SINGLE), TRUE_VALUE);
 		boolean isVitrual = StringUtils.equalsIgnoreCase(childEl.attr(VIRTUAL), TRUE_VALUE);

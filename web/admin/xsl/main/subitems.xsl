@@ -44,17 +44,21 @@
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
 
 	<xsl:template match="/">
+
 		<xsl:call-template name="MESSAGE"/>
 		
 
 		<!-- Создание новых айтемов -->
-		<xsl:if test="admin-page/item-to-add">
+		<xsl:if test="admin-page/assoc/item-to-add">
 			<div class="list">
 				<h4>Созадать</h4>
-				<ul class="create">
-					<li class="drop-zone"></li>
-					<xsl:apply-templates select="admin-page/item-to-add"/>
-				</ul>
+				<xsl:for-each select="admin-page/assoc">
+					<h5><xsl:value-of select="@caption"/></h5>
+					<ul class="create">
+						<li class="drop-zone"></li>
+						<xsl:apply-templates select="item-to-add"/>
+					</ul>
+				</xsl:for-each>
 			</div>
 		</xsl:if>
 

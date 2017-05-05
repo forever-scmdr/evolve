@@ -7,9 +7,7 @@ import ecommander.filesystem.DeleteItemFileUnit;
 import ecommander.filesystem.SaveItemFileUnit;
 import ecommander.filesystem.SaveItemFilesUnit;
 import ecommander.fwk.*;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
+import ecommander.model.*;
 import ecommander.pages.ItemHttpPostForm;
 import ecommander.pages.UrlParameterFormatConverter;
 import ecommander.persistence.commandunits.*;
@@ -348,10 +346,19 @@ public class MainAdminServlet extends BasicAdminServlet {
 		boolean needBasePage = true;
 		// Сохраняется новый айтем
 		if (itemForm.getItemId() == ItemHttpPostForm.NO_ID) {
-			Item parent = ItemQuery.loadById(itemForm.getItemParentId());
+			int userId;
+			byte groupId;
+			if (itemForm.getItemParentId() == ItemTypeRegistry.getPrimaryRootId()) {
+				userId = User.ANONYMOUS_ID;
+				groupId = UserGroupRegistry.getDefaultGroup();
+			} else {
+				ItemBasics parent = AdminLoader.getLoader().loadItemAccessor(itemForm.getItemParentId());
+				userId = parent.getOwnerUserId();
+				groupId = parent.getOwnerGroupId();
+			}
 			ItemType newItemType = ItemTypeRegistry.getItemType(itemForm.getItemTypeId());
 			// Создание айтема
-			item = itemForm.createItem(parent.getOwnerUserId(), parent.getOwnerGroupId());
+			item = itemForm.createItem(userId, groupId);
 			transaction.addCommandUnit(SaveItemDBUnit.get(item));
 		}
 		// Сохраняется существующий айтем
@@ -371,7 +378,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			//page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, item.getId(), item.getTypeId());
 			boolean toParent = itemForm.getSingleExtra("parent-url").equals("yes");
 			long id = (toParent) ? item.getContextParentId() : item.getId();
-			if (id == ItemTypeRegistry.getDefaultRoot().getId()){
+			if (id == ItemTypeRegistry.getPrimaryRootId()){
 				return setItem(in, pageCreator);
 			}
 			int type = (toParent)? ItemQuery.loadById(id).getTypeId() : item.getTypeId();

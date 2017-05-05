@@ -130,7 +130,7 @@ public class Item implements ItemBasics {
 		this.id = DEFAULT_ID;
 		this.key = itemDesc.getCaption();
 		this.mapConsistent = true;
-		this.stringConsistent = true;
+		this.stringConsistent = false; // для вновь создаваемых айтемов чтобы обеспечить генерацию keyUnique при отсутствии параметров
 		// Добавить все параметры, которые содержатся в типа айтема.
 		// Все параметры (даже пустые) нужны для отслеживания изменений параметров.
 		for (ParameterDescription paramDesc : itemType.getParameterList()) {
@@ -554,7 +554,7 @@ public class Item implements ItemBasics {
 				key = itemType.getCaption();
 			}
 			if (key.length() > 99) key = key.substring(0, 98);
-			if (itemType.isKeyUnique() && StringUtils.isBlank(keyUnique))
+			if (StringUtils.isBlank(keyUnique))
 				keyUnique = Strings.translit(key);
 		}
 	}
@@ -714,11 +714,11 @@ public class Item implements ItemBasics {
 	}
 
 	public final boolean hasNoParent() {
-		return contextParentId == RootType.ID;
+		return contextParentId == RootType.ROOT_ITEM_ID;
 	}
 
 	public final boolean hasParent() {
-		return contextParentId != RootType.ID;
+		return contextParentId != RootType.ROOT_ITEM_ID;
 	}
 	/**
 	 * Возвращает название, которое уникально идентифицирует данный айтем для юзера в системе управления

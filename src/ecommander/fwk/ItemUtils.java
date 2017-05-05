@@ -46,7 +46,7 @@ public class ItemUtils {
 	 * @throws Exception
 	 */
 	public static Item ensureSingleRootItem(String itemName, User initiator, byte groupId, int userId) throws Exception {
-		return ensureSingleItem(itemName, initiator, ItemTypeRegistry.getDefaultRoot().getId(), groupId, userId);
+		return ensureSingleItem(itemName, initiator, ItemTypeRegistry.getPrimaryRootId(), groupId, userId);
 	}
 	/**
 	 * Загрузить определенный одиночный айтем по его названию из сеанса. Если айтем не найден, то создать его и сохранить в сеансе.

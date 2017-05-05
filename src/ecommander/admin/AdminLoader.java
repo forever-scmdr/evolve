@@ -75,12 +75,12 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		ItemType itemDesc = ItemTypeRegistry.getItemType(parent.getTypeId());
 		Byte[] allAssocs = ItemTypeRegistry.getItemOwnAssocIds(itemDesc.getName()).toArray(new Byte[0]);
 		HashSet<Byte> adminGroups = new HashSet<>();
-		HashSet<Byte> commonGroups = new HashSet<>();
+		HashSet<Byte> simpleGroups = new HashSet<>();
 		for (User.Group group : user.getGroups()) {
 			if (group.role == User.ADMIN)
 				adminGroups.add(group.id);
 			else
-				commonGroups.add(group.id);
+				simpleGroups.add(group.id);
 		}
 		TemplateQuery base = createAccessorQueryBase("Load closest subitems part");
 		base.col(IP_PARENT_ID).setLong(parentId).AND()
@@ -89,14 +89,19 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 				.col(IP_ASSOC_ID, " IN(").setByteArray(allAssocs).sql(")").AND();
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
-		TemplateQuery commonQuery = (TemplateQuery) base.createClone();
+		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
 		adminQuery.col(I_GROUP, " IN(").setByteArray(adminGroups.toArray(new Byte[0])).sql(")");
-		commonQuery.col(I_GROUP, " IN(").setByteArray(commonGroups.toArray(new Byte[0])).sql(")").AND()
+		simpleQuery.col(I_GROUP, " IN(").setByteArray(simpleGroups.toArray(new Byte[0])).sql(")").AND()
 				.col(I_USER).setInt(user.getUserId());
 
 		TemplateQuery select = new TemplateQuery("Load closest subitems union");
-		select.getOrCreateSubquery("ADMIN").replace(adminQuery);
-		select.UNION_ALL().getOrCreateSubquery("COMMON").replace(commonQuery);
+		if (adminGroups.size() > 0)
+			select.getOrCreateSubquery("ADMIN").replace(adminQuery);
+		if (simpleGroups.size() > 0) {
+			if (adminGroups.size() > 0)
+				select.UNION_ALL();
+			select.getOrCreateSubquery("COMMON").replace(simpleQuery);
+		}
 		return loadAccessorsByQuery(select);
 	}
 
@@ -108,33 +113,38 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @throws NamingException
 	 */
 	ArrayList<ItemAccessor> loadSuperUserRootItems(User user) throws SQLException, NamingException {
-		Collection<ItemTypeContainer.ChildDesc> rootChildren = ItemTypeRegistry.getDefaultRoot().getAllChildren();
+		Collection<ItemTypeContainer.ChildDesc> rootChildren = ItemTypeRegistry.getPrimaryRoot().getAllChildren();
 		HashSet<Integer> allTypes = new HashSet<>();
 		for (ItemTypeContainer.ChildDesc rootChild : rootChildren) {
 			allTypes.add(ItemTypeRegistry.getItemTypeId(rootChild.itemName));
 		}
 		HashSet<Byte> adminGroups = new HashSet<>();
-		HashSet<Byte> commonGroups = new HashSet<>();
+		HashSet<Byte> simpleGroups = new HashSet<>();
 		for (User.Group group : user.getGroups()) {
 			if (group.role == User.ADMIN)
 				adminGroups.add(group.id);
 			else
-				commonGroups.add(group.id);
+				simpleGroups.add(group.id);
 		}
 		TemplateQuery base = new TemplateQuery("Load root subitems part");
 		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED).FROM(I_TABLE)
-				.WHERE().col(I_TYPE_ID, " IN(").setIntArray(allTypes.toArray(new Integer[0])).AND()
+				.WHERE().col(I_TYPE_ID, " IN(").setIntArray(allTypes.toArray(new Integer[0])).sql(")").AND()
 				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")").AND();
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
-		TemplateQuery commonQuery = (TemplateQuery) base.createClone();
+		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
 		adminQuery.col(I_GROUP, " IN(").setByteArray(adminGroups.toArray(new Byte[0])).sql(")");
-		commonQuery.col(I_GROUP, " IN(").setByteArray(commonGroups.toArray(new Byte[0])).sql(")").AND()
+		simpleQuery.col(I_GROUP, " IN(").setByteArray(simpleGroups.toArray(new Byte[0])).sql(")").AND()
 				.col(I_USER).setInt(user.getUserId());
 
 		TemplateQuery select = new TemplateQuery("Load root subitems union");
-		select.getOrCreateSubquery("ADMIN").replace(adminQuery);
-		select.UNION_ALL().getOrCreateSubquery("COMMON").replace(commonQuery);
+		if (adminGroups.size() > 0)
+			select.subquery("ADMIN").replace(adminQuery);
+		if (simpleGroups.size() > 0) {
+			if (adminGroups.size() > 0)
+				select.UNION_ALL();
+			select.subquery("COMMON").replace(simpleQuery);
+		}
 		ArrayList<ItemAccessor> result = new ArrayList<>();
 		try (PreparedStatement pstmt = select.prepareQuery(MysqlConnector.getConnection())) {
 			ResultSet rs = pstmt.executeQuery();
@@ -214,12 +224,12 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 */
 	ArrayList<ItemAccessor> loadDirectParents(long itemId, User user) throws Exception {
 		HashSet<Byte> adminGroups = new HashSet<>();
-		HashSet<Byte> commonGroups = new HashSet<>();
+		HashSet<Byte> simpleGroups = new HashSet<>();
 		for (User.Group group : user.getGroups()) {
 			if (group.role == User.ADMIN)
 				adminGroups.add(group.id);
 			else
-				commonGroups.add(group.id);
+				simpleGroups.add(group.id);
 		}
 		TemplateQuery base = createAccessorQueryBase("Load direct parents part");
 		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED, IP_TABLE + ".*")
@@ -230,14 +240,19 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 				.col(IP_ASSOC_ID, " IN(").setByteArray(ItemTypeRegistry.getAllAssocIds()).sql(")").AND();
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
-		TemplateQuery commonQuery = (TemplateQuery) base.createClone();
+		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
 		adminQuery.col(I_GROUP, " IN(").setByteArray(adminGroups.toArray(new Byte[0])).sql(")");
-		commonQuery.col(I_GROUP, " IN(").setByteArray(commonGroups.toArray(new Byte[0])).sql(")").AND()
+		simpleQuery.col(I_GROUP, " IN(").setByteArray(simpleGroups.toArray(new Byte[0])).sql(")").AND()
 				.col(I_USER).setInt(user.getUserId());
 
 		TemplateQuery select = new TemplateQuery("Load direct parents union");
-		select.getOrCreateSubquery("ADMIN").replace(adminQuery);
-		select.UNION_ALL().getOrCreateSubquery("COMMON").replace(commonQuery);
+		if (adminGroups.size() > 0)
+			select.getOrCreateSubquery("ADMIN").replace(adminQuery);
+		if (simpleGroups.size() > 0) {
+			if (adminGroups.size() > 0)
+				select.UNION_ALL();
+			select.getOrCreateSubquery("COMMON").replace(simpleQuery);
+		}
 		return loadAccessorsByQuery(select);
 	}
 }

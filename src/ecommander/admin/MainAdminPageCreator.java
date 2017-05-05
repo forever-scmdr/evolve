@@ -335,7 +335,7 @@ public class MainAdminPageCreator implements AdminXML {
 		AggregateMDWriter path = new AggregateMDWriter(PATH_ELEMENT);
 		ArrayList<ItemAccessor> pathItems = AdminLoader.getLoader().loadWholeBranch(baseId, ItemTypeRegistry.getPrimaryAssoc().getId());
 		// Текущий элемент
-		if (baseId > 0 && baseId != ItemTypeRegistry.getDefaultRoot().getId()) {
+		if (baseId > 0 && baseId != ItemTypeRegistry.getPrimaryRootId()) {
 			ItemAccessor item = AdminLoader.getLoader().loadItemAccessor(baseId);
 			if (item != null) {
 				basePage.addElement(item);
@@ -365,7 +365,7 @@ public class MainAdminPageCreator implements AdminXML {
 		AdminPage basePage = new AdminPage(SUBITEMS_PAGE, domain, currentUser.getName());
 		ArrayList<ItemToAdd> itemsToAdd = new ArrayList<>();
 		if (baseId <= 0) {
-			baseId = ItemTypeRegistry.getDefaultRoot().getId();
+			baseId = ItemTypeRegistry.getPrimaryRootId();
 		} else if (itemType <= 0) {
 			ItemAccessor baseItem = AdminLoader.getLoader().loadItemAccessor(baseId);
 			itemType = baseItem.getTypeId();
@@ -468,7 +468,7 @@ public class MainAdminPageCreator implements AdminXML {
 		AdminPage basePage = new AdminPage(PARAMETERS_PAGE, domain, currentUser.getName());
 		basePage.addElement(new LeafMDWriter(VISUAL_ELEMENT, isVisual));
 		Item item = null;
-		if (itemId != ItemTypeRegistry.getDefaultRoot().getId())
+		if (itemId != ItemTypeRegistry.getPrimaryRootId())
 			item = ItemQuery.loadById(itemId);
 		if (item != null) {
 			ItemHttpPostForm itemForm = new ItemHttpPostForm(item, basePage.getName());
@@ -523,11 +523,11 @@ public class MainAdminPageCreator implements AdminXML {
 	 */
 	AdminPage createMountToPage(long itemId, long mountToParent) throws Exception {
 		if (mountToParent <= 0)
-			mountToParent = ItemTypeRegistry.getDefaultRoot().getId();
+			mountToParent = ItemTypeRegistry.getPrimaryRootId();
 		AdminPage page = new AdminPage(MOUNT_TO_PAGE, domain, currentUser.getName());
 		// Ссылки на другие виды редактирования
 		addViewLinks(page, itemId);
-		if (itemId <= 0 || itemId == ItemTypeRegistry.getDefaultRoot().getId())
+		if (itemId <= 0 || itemId == ItemTypeRegistry.getPrimaryRootId())
 			return page;
 		AdminLoader mapper = AdminLoader.getLoader();
 		ItemAccessor baseItem = mapper.loadItemAccessor(itemId);
@@ -610,10 +610,10 @@ public class MainAdminPageCreator implements AdminXML {
 	 */
 	AdminPage createAssociatedPage(long itemId, long associateParent, byte assocId) throws Exception {
 		if (associateParent <= 0) {
-			associateParent = ItemTypeRegistry.getDefaultRoot().getId();
+			associateParent = ItemTypeRegistry.getPrimaryRootId();
 		}
 		AdminPage page = new AdminPage(ASSOCIATE_PAGE, domain, currentUser.getName());
-		if (itemId <= 0 || itemId == ItemTypeRegistry.getDefaultRoot().getId())
+		if (itemId <= 0 || itemId == ItemTypeRegistry.getPrimaryRootId())
 			return page;
 		AdminLoader mapper = AdminLoader.getLoader();
 		ItemAccessor baseAcc = mapper.loadItemAccessor(itemId);
@@ -675,11 +675,11 @@ public class MainAdminPageCreator implements AdminXML {
 	 */
 	AdminPage createMoveToPage(long itemId, long moveToParent) throws Exception {
 		if (moveToParent <= 0)
-			moveToParent = ItemTypeRegistry.getDefaultRoot().getId();
+			moveToParent = ItemTypeRegistry.getPrimaryRootId();
 		AdminPage page = new AdminPage(MOVE_TO_PAGE, domain, currentUser.getName());
 		// Ссылки на другие виды редактирования
 		addViewLinks(page, itemId);
-		if (itemId <= 0 || itemId == ItemTypeRegistry.getDefaultRoot().getId())
+		if (itemId <= 0 || itemId == ItemTypeRegistry.getPrimaryRootId())
 			return page;
 		AdminLoader mapper = AdminLoader.getLoader();
 		ItemAccessor baseItem = mapper.loadItemAccessor(itemId);
@@ -751,12 +751,12 @@ public class MainAdminPageCreator implements AdminXML {
 	private ArrayList<ItemAccessor> createSubitemsInfo(long parentId, int baseType, ArrayList<ItemToAdd> itemsToAdd)
 			throws Exception {
 		// Для корневого айтема
-		long rootId = ItemTypeRegistry.getDefaultRoot().getId();
+		long rootId = ItemTypeRegistry.getPrimaryRootId();
 		ArrayList<ItemAccessor> existingSubitems;
 		if (parentId == rootId) {
 			existingSubitems = AdminLoader.getLoader().loadSuperUserRootItems(currentUser);
-			for (ItemTypeContainer.ChildDesc childDesc : ItemTypeRegistry.getDefaultRoot().getAllChildren()) {
-				processItemForParent(rootId, childDesc, ItemTypeRegistry.getDefaultRoot(), itemsToAdd, existingSubitems);
+			for (ItemTypeContainer.ChildDesc childDesc : ItemTypeRegistry.getPrimaryRoot().getAllChildren()) {
+				processItemForParent(rootId, childDesc, ItemTypeRegistry.getPrimaryRoot(), itemsToAdd, existingSubitems);
 			}
 		}
 		// Для обычных айтемов
@@ -777,17 +777,16 @@ public class MainAdminPageCreator implements AdminXML {
 	 */
 	private void processItemForParent(long parentId, ItemTypeContainer.ChildDesc childDesc, ItemTypeContainer parentDesc,
 	                                  ArrayList<ItemToAdd> itemsToAdd, ArrayList<ItemAccessor> existingSubitems) throws SQLException {
-		boolean addItemToAdd = false;
+		boolean addItemToAdd = true;
 		byte assocId = ItemTypeRegistry.getAssoc(childDesc.assocName).getId();
 		if (!parentDesc.isChildMultiple(childDesc.assocName, childDesc.itemName)) {
 			for (ItemAccessor subitem : existingSubitems) {
 				if (subitem.getContextAssoc() == assocId
 						&& ItemTypeRegistry.getItemPredecessorsExt(subitem.getItemName()).contains(childDesc.itemName)) {
+					addItemToAdd = false;
 					break;
 				}
 			}
-		} else {
-			addItemToAdd = true;
 		}
 		if (addItemToAdd) {
 			boolean isVirtual = parentDesc.isChildVirtual(childDesc.assocName, childDesc.itemName);

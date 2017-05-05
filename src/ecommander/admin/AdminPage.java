@@ -11,6 +11,7 @@ import javax.xml.transform.TransformerException;
 import ecommander.fwk.EcommanderException;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.XmlXslOutputController;
+import ecommander.fwk.ServerLogger;
 import ecommander.output.LeafMDWriter;
 import ecommander.output.MetaDataWriter;
 import ecommander.output.XmlDocumentBuilder;
@@ -56,6 +57,7 @@ public class AdminPage {
 		prepare();
 		String xslFileName = AppContext.getRealPath("admin/xsl/" + name + ".xsl");
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ServerLogger.debug(pageText);
 		XmlXslOutputController.outputXmlTransformed(bos, pageText, xslFileName);
 		response.setContentType("text/html");
 		bos.writeTo(response.getOutputStream());
