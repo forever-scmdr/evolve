@@ -163,8 +163,8 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 */
 	ArrayList<ItemAccessor> loadWholeBranch(long baseId, byte assocId) throws Exception {
 		TemplateQuery query = createAccessorQueryBase("Load item branch");
-		query.col(IP_CHILD_ID).setLong(baseId).AND().col(IP_ASSOC_ID).setByte(assocId)
-				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")").AND()
+		query.col(IP_CHILD_ID).setLong(baseId).AND().col(IP_ASSOC_ID).setByte(assocId).AND()
+				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")")
 				.ORDER_BY(IP_PARENT_DIRECT, IP_PARENT_ID);
 		return loadAccessorsByQuery(query);
 	}

@@ -143,7 +143,7 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 				PreparedStatement pstmt = selectGroups.prepareQuery(conn)
 		) {
 			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				UserGroupRegistry.addGroup(rs.getString(G_NAME), rs.getByte(G_ID));
 			}
 		}

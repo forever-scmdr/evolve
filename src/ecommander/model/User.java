@@ -31,7 +31,7 @@ public class User {
 	private String description;
 	private int userId;
 	private HashMap<String, Group> groupRoles = new HashMap<>();
-	private String groupRolesStr; // Строка с группами и ролями. Используется при кешировании страниц
+	private String groupRolesStr = ""; // Строка с группами и ролями. Используется при кешировании страниц
 
 	public User(String name, String password, String description, int userId) {
 		this.name = name;
