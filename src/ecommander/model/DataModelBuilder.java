@@ -88,18 +88,13 @@ public class DataModelBuilder {
 	private boolean reloadModel() throws Exception {
 		// Валидация сохраненной в БД копии файла model.xml
 		if (mode == DataModelCreateCommandUnit.Mode.load) {
-			Connection connection = MysqlConnector.getConnection();
-			Statement stmt = null;
 			ArrayList<String> xml = new ArrayList<>();
-			try {
-				stmt = connection.createStatement();
+			try (Connection connection = MysqlConnector.getConnection();
+			     Statement stmt = connection.createStatement()) {
 				ResultSet rs = stmt.executeQuery("SELECT * FROM " + DBConstants.ModelXML.XML_TABLE);
 				while (rs.next())
 					xml.add(rs.getString(DBConstants.ModelXML.XML_XML));
 				rs.close();
-			} finally {
-				MysqlConnector.closeStatement(stmt);
-				MysqlConnector.closeConnection(connection);
 			}
 			if (xml.size() != 0) {
 				DataModelCreationValidator validator = new DataModelCreationValidator(xml);

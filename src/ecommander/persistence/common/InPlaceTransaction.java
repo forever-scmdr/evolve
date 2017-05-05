@@ -30,7 +30,7 @@ public abstract class InPlaceTransaction {
 	public abstract void performTransaction() throws Exception;
 	
 	public InPlaceTransaction(User initiator) {
-		executedCommands = new ArrayList<PersistenceCommandUnit>();
+		executedCommands = new ArrayList<>();
 		this.initiator = initiator;
 	}
 	/**
@@ -45,44 +45,23 @@ public abstract class InPlaceTransaction {
 	 * @throws Exception
 	 */
 	public final void execute() throws Exception {
-		Connection conn = null;
 		Exception exception = null;
 		for (int i = 0; i < NUMBER_OF_TRIES; i++) {
-			try {
+			try (Connection conn = MysqlConnector.getConnection();
+			     MysqlConnector.AutoRollback committer = new MysqlConnector.AutoRollback(conn)
+			) {
 				ServerLogger.debug("Start transaction, try #" + (i + 1));
-				conn = MysqlConnector.getConnection();
 				conn.setAutoCommit(false);
 				context = new TransactionContext(conn, initiator);
 				performTransaction();
-				conn.commit();
+				committer.commit();
 				ServerLogger.debug("Transaction successfull at try #" + (i + 1));
 				// return not no make the exception
 				return;
-			} catch (EcommanderException e) {
-				if (conn != null) {
-					try {
-						conn.rollback();
-						rollback();
-						MysqlConnector.closeConnection(conn);
-					} catch (SQLException sqlE) {
-						ServerLogger.error("SQL Exception during rolling back the transaction.", sqlE);
-					}
-				}
-				throw e;
 			} catch (Exception e) {
-				ServerLogger.error("Some error occured. Rolling back the transaction.\nHere's the error:", e);
 				exception = e;
-				if (conn != null) {
-					try {
-						conn.rollback();
-						rollback();
-						MysqlConnector.closeConnection(conn);
-					} catch (SQLException sqlE) {
-						ServerLogger.error("SQL Exception during rolling back the transaction.", sqlE);
-					}
-				}
-			} finally {
-				MysqlConnector.closeConnection(conn);
+				ServerLogger.error("Some error occured. Rolling back the transaction.\nHere's the error:", e);
+				rollback();
 			}
 		}
 		throw exception;

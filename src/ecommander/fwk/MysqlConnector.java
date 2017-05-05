@@ -58,13 +58,34 @@ public class MysqlConnector
 	
 	private static final Lock lock = new ReentrantLock();
 	private static final Condition isNotFull = lock.newCondition();
-	
+
+	public static class AutoRollback implements AutoCloseable {
+		private boolean committed = false;
+		private Connection conn;
+
+		public AutoRollback(Connection conn) {
+			this.conn = conn;
+		}
+
+		public void commit() throws SQLException {
+			conn.commit();
+			committed = true;
+		}
+
+		@Override
+		public void close() throws Exception {
+			if (!committed)
+				conn.rollback();
+			conn.close();
+		}
+	}
+
 	public static class ConnectionCount implements Connection {
 
 		private final Connection conn;
 		private final HttpServletRequest request;
-		private ArrayList<Long> queryTimes = new ArrayList<Long>();
-		private ArrayList<String> queries = new ArrayList<String>();
+		private ArrayList<Long> queryTimes = new ArrayList<>();
+		private ArrayList<String> queries = new ArrayList<>();
 		private long startQueryTime;
 		private long createTime;
 		private String currentQuery;
@@ -122,6 +143,8 @@ public class MysqlConnector
 		}
 
 		public void close() throws SQLException {
+			if (conn.isClosed())
+				return;
 			Integer name = connectionNames.get(conn.hashCode());
 			conn.close();
 			try {

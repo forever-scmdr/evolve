@@ -97,8 +97,7 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 	 * @throws Exception
 	 */
 	public final ResultPE execute() throws Exception {
-		Command command = commandClass.newInstance();
-		try {
+		try (Command command = commandClass.newInstance()) {
 		    command.init(parentPage, required);
 			if (hasNested()) {
 				for (PageElement nested : getAllNested()) {
@@ -119,10 +118,6 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 				}
 			}
 			return command.execute();
-	    } catch (Exception e) {
-	    	throw e;
-	    } finally {
-	    	command.finalize();
 	    }
 	}
 	

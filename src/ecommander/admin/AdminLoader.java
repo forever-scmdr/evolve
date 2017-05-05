@@ -7,6 +7,7 @@ import ecommander.persistence.mappers.DBConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.naming.NamingException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,7 +42,9 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 
 	private ArrayList<ItemAccessor> loadAccessorsByQuery(TemplateQuery query) throws SQLException, NamingException {
 		ArrayList<ItemAccessor> result = new ArrayList<>();
-		try (PreparedStatement pstmt = query.prepareQuery(MysqlConnector.getConnection())) {
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = query.prepareQuery(conn);
+		) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				result.add(new ItemAccessor(
@@ -146,7 +149,9 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			select.subquery("COMMON").replace(simpleQuery);
 		}
 		ArrayList<ItemAccessor> result = new ArrayList<>();
-		try (PreparedStatement pstmt = select.prepareQuery(MysqlConnector.getConnection())) {
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = select.prepareQuery(conn);
+		) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				result.add(new ItemAccessor(

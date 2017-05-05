@@ -37,17 +37,20 @@ public final class SynchronousTransaction {
 	 * @throws Exception
 	 */
 	private void startTransaction() throws Exception {
+		boolean inited = false;
 		try {
 			ServerLogger.debug("Start syncronous transaction");
-			executedCommands = new ArrayList<PersistenceCommandUnit>();
+			executedCommands = new ArrayList<>();
 			conn = MysqlConnector.getConnection();
 			conn.setAutoCommit(false);
 			context = new TransactionContext(conn, initiator);
+			inited = true;
 		} catch (Exception e) {
 			ServerLogger.error("Can not start the thransaction.\nHere's the error:", e);
-			MysqlConnector.closeConnection(conn);
-			conn = null;
 			throw e;
+		} finally {
+			if (!inited)
+				finalize();
 		}
 	}
 	/**
@@ -57,7 +60,7 @@ public final class SynchronousTransaction {
 	public final void commit() throws Exception {
 		if (conn == null)
 			return;
-		Exception exception = null;
+		Exception exception;
 		try {
 			conn.commit();
 			ServerLogger.debug("Transaction successfull");
@@ -71,8 +74,7 @@ public final class SynchronousTransaction {
 				ServerLogger.error("SQL Exception during rolling back the transaction.", sqlE);
 			}
 		} finally {
-			MysqlConnector.closeConnection(conn);
-			conn = null;
+			finalize();
 		}
 		throw exception;
 	}
@@ -84,13 +86,15 @@ public final class SynchronousTransaction {
 	public final void executeCommandUnit(PersistenceCommandUnit command) throws Exception {
 		if (conn == null)
 			startTransaction();
+		boolean executed = false;
 		try {
 			command.setTransactionContext(context);
 			command.execute();
 			executedCommands.add(command);
-		} catch (Exception e) {
-			rollback();
-			throw e;
+			executed = true;
+		} finally {
+			if (!executed)
+				rollback();
 		}
 	}
 	/**
@@ -105,8 +109,7 @@ public final class SynchronousTransaction {
 				command.rollback();
 			}
 		} finally {
-			MysqlConnector.closeConnection(conn);
-			conn = null;
+			finalize();
 		}
 	}
 	/**
@@ -116,5 +119,7 @@ public final class SynchronousTransaction {
 	 */
 	public final void finalize() {
 		MysqlConnector.closeConnection(conn);
+		conn = null;
 	}
+
 }

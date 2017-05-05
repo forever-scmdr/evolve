@@ -26,7 +26,7 @@ import ecommander.model.User;
  * @author EEEE
  *
  */
-public abstract class Command {
+public abstract class Command implements AutoCloseable {
 	
 	private ExecutablePagePE page;
 	private HashMap<String, ResultPE> results = null; // резльтаты выполнения команды
@@ -38,6 +38,12 @@ public abstract class Command {
 		this.page = page;
 		this.required = required;
 		transaction = new SynchronousTransaction(page.getSessionContext().getUser());
+	}
+
+	@Override
+	public void close() throws Exception {
+		if (transaction != null)
+			transaction.finalize();
 	}
 	/**
 	 * Установить значение переменной сеанса (получение значения переменной осуществляется в методах getVar*)
@@ -175,7 +181,7 @@ public abstract class Command {
 		HashSet<String> reqParams = required.get(requiredName);
 		if (reqParams == null || reqParams.size() == 0)
 			return null;
-		HashSet<String> unset = new HashSet<String>();
+		HashSet<String> unset = new HashSet<>();
 		for (String paramName : reqParams) {
 			if (!getItemForm().isParameterSet(paramName))
 				unset.add(paramName);
@@ -207,7 +213,7 @@ public abstract class Command {
 	 * @return
 	 */
 	protected final LinkedHashMap<Long, Item> getLoadedItems(String itemPageId) {
-		LinkedHashMap<Long, Item> items = new LinkedHashMap<Long, Item>();
+		LinkedHashMap<Long, Item> items = new LinkedHashMap<>();
 		ExecutableItemPE.AllFoundIterator iter = page.getItemPEById(itemPageId).getAllFoundItemIterator();
 		while (iter.next()) {
 			items.put(iter.getCurrentItem().getId(), iter.getCurrentItem());
@@ -290,14 +296,6 @@ public abstract class Command {
 	 * @throws Exception
 	 */
 	public abstract ResultPE execute() throws Exception;
-	/**
-	 * Завершение выполнения транзакции
-	 * !!!   ВСЕГДА   !!! вызывать после выполнения в блоке finally,
-	 * т. к. в этом методе выполняется закрытие соединения
-	 */
-	protected final void finalize() {
-		transaction.finalize();
-	}
 	/**
 	 * Найти результат по его названию для последующего возвращения при выполении команды
 	 * Если результат не найден, возвращается резлуьтат по умолчанию, т. е. 

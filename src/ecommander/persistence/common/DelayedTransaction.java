@@ -26,7 +26,7 @@ public class DelayedTransaction {
 	private User initiator = null;
 
 	public DelayedTransaction(User initiator) {
-		commands = new LinkedList<PersistenceCommandUnit>();
+		commands = new LinkedList<>();
 		this.initiator = initiator;
 	}
 	/**
@@ -50,7 +50,7 @@ public class DelayedTransaction {
 	
 	private void refresh() {
 		if (finished) {
-			commands = new LinkedList<PersistenceCommandUnit>();
+			commands = new LinkedList<>();
 			finished = false;
 		}
 	}
@@ -61,47 +61,24 @@ public class DelayedTransaction {
 	public int execute() throws Exception {
 		if (finished)
 			return 0;
-		Connection conn = null;
 		Exception exception = null;
 		for (int i = 0; i < NUMBER_OF_TRIES; i++) {
-			try {
+			try (Connection conn = MysqlConnector.getConnection();
+			     MysqlConnector.AutoRollback committer = new MysqlConnector.AutoRollback(conn)
+			) {
 				ServerLogger.debug("Start transaction, try #" + (i + 1));
-				conn = MysqlConnector.getConnection();
 				conn.setAutoCommit(false);
 				context = new TransactionContext(conn, initiator);
 				executeCommands();
-				conn.commit();
-				MysqlConnector.closeConnection(conn);
+				committer.commit();
 				ServerLogger.debug("Transaction successfull at try #" + (i + 1));
 				finished = true;
 				// return not no make the exception
 				return commands.size();
-			} catch (EcommanderException e) {
-				exception = e;
-				ServerLogger.error("Some error occured. Rolling back the transaction.\nHere's the error:", e);
-				if (conn != null) {
-					try {
-						rollback();
-						conn.rollback();
-						MysqlConnector.closeConnection(conn);
-					} catch (SQLException sqlE) {
-						ServerLogger.error("SQL Exception during rolling back the transaction.", sqlE);
-					}
-				}
 			} catch (Exception e) {
 				exception = e;
 				ServerLogger.error("Some error occured. Rolling back the transaction.\nHere's the error:", e);
-				if (conn != null) {
-					try {
-						rollback();
-						conn.rollback();
-						MysqlConnector.closeConnection(conn);
-					} catch (SQLException sqlE) {
-						ServerLogger.error("SQL Exception during rolling back the transaction.", sqlE);
-					}
-				}
-			} finally {
-				MysqlConnector.closeConnection(conn);
+				rollback();
 			}
 		}
 		if (exception != null) throw exception;
