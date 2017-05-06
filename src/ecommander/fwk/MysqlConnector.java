@@ -76,7 +76,6 @@ public class MysqlConnector
 		public void close() throws Exception {
 			if (!committed)
 				conn.rollback();
-			conn.close();
 		}
 	}
 
