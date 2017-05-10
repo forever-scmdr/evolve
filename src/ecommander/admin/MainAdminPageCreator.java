@@ -339,6 +339,7 @@ public class MainAdminPageCreator implements AdminXML {
 			ItemAccessor item = AdminLoader.getLoader().loadItemAccessor(baseId);
 			if (item != null) {
 				basePage.addElement(item);
+
 			}
 		}
 		for (ItemAccessor pred : pathItems) {
@@ -461,7 +462,7 @@ public class MainAdminPageCreator implements AdminXML {
 		basePage.addElement(new LeafMDWriter(VISUAL_ELEMENT, isVisual));
 		Item item = null;
 		if (itemId != ItemTypeRegistry.getPrimaryRootId())
-			item = ItemQuery.loadById(itemId);
+			item = AdminLoader.getLoader().loadItem(itemId);
 		if (item != null) {
 			ItemHttpPostForm itemForm = new ItemHttpPostForm(item, basePage.getName());
 			ItemFormMDWriter formWriter = new ItemFormMDWriter(itemForm, FORM_ELEMENT);
