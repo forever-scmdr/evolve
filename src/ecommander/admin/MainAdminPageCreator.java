@@ -378,34 +378,26 @@ public class MainAdminPageCreator implements AdminXML {
 			subitems = createSubitemsInfo(baseId, itemType, itemsToAdd);
 		}
 		Collections.sort(subitems);
-		// Отсортировать по ассоциации
-		Collections.sort(itemsToAdd, new Comparator<ItemToAdd>() {
-			@Override
-			public int compare(ItemToAdd o1, ItemToAdd o2) {
-				return o1.assocId - o2.assocId;
-			}
-		});
-		byte currentAssoc = -1;
-		AggregateMDWriter assocWriter = new AggregateMDWriter("empty");
+		HashMap<Byte, AggregateMDWriter> assocWriters = new HashMap<>();
 		for (ItemToAdd itemToAdd : itemsToAdd) {
-			if (currentAssoc != itemToAdd.assocId) {
+			AggregateMDWriter assocWriter = assocWriters.get(itemToAdd.assocId);
+			if (assocWriter == null) {
 				Assoc assoc = ItemTypeRegistry.getAssoc(itemToAdd.assocId);
 				assocWriter = new AggregateMDWriter(ASSOC_ELEMENT, NAME_ATTRIBUTE, assoc.getName(),
 						CAPTION_ATTRIBUTE, assoc.getCaption(), ID_ATTRIBUTE, assoc.getId());
 				basePage.addElement(assocWriter);
-				currentAssoc = itemToAdd.assocId;
+				assocWriters.put(itemToAdd.assocId, assocWriter);
 			}
 			assocWriter.addSubwriter(itemToAdd);
 		}
-		currentAssoc = -1;
-		assocWriter = new AggregateMDWriter("empty");
 		for (ItemAccessor subitem : subitems) {
-			if (currentAssoc != subitem.getContextAssoc()) {
+			AggregateMDWriter assocWriter = assocWriters.get(subitem.getContextAssoc());
+			if (assocWriter == null) {
 				Assoc assoc = ItemTypeRegistry.getAssoc(subitem.getContextAssoc());
 				assocWriter = new AggregateMDWriter(ASSOC_ELEMENT, NAME_ATTRIBUTE, assoc.getName(),
 						CAPTION_ATTRIBUTE, assoc.getCaption(), ID_ATTRIBUTE, assoc.getId());
 				basePage.addElement(assocWriter);
-				currentAssoc = subitem.getContextAssoc();
+				assocWriters.put(subitem.getContextAssoc(), assocWriter);
 			}
 			String delUrl = createAdminUrl(DELETE_ITEM_ACTION, ITEM_ID_INPUT, subitem.getId(), ITEM_TYPE_INPUT, itemType, PARENT_ID_INPUT, baseId);
 			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, subitem.getId(), ITEM_TYPE_INPUT, subitem.getTypeId());

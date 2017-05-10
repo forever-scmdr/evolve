@@ -66,41 +66,32 @@
 		<div id="pasteBuffer"></div>
 		
 		<!-- Редактирование существующих айтемов -->
-		<xsl:if test="admin-page/item">
+		<xsl:if test="admin-page/assoc/item">
 
-			<xsl:variable name="differentSubitems" select="count(admin-page/item-to-add) &gt; 1 or admin-page/item-to-add/item or admin-page/item/@type-id != admin-page/item/@type-id"/>
-			<xsl:variable name="items" select="admin-page/item"/>
+			<xsl:variable name="differentSubitems" select="count(admin-page/assoc/item-to-add) &gt; 1 or admin-page/assoc/item-to-add/item or admin-page/assoc/item/@type-id != admin-page/assoc/item/@type-id"/>
 			<div class="list">
 				<h4>Редактировать</h4>
-				<ul class="edit">
-					
-					<xsl:for-each select="admin-page/item">
-						<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
-						<xsl:variable name="prev" select="position() - 1" />
-						<xsl:variable name="spaceId">
-							<xsl:choose>
-								<xsl:when test="position() = 1">space0:<xsl:value-of select="@weight" /></xsl:when>
-								<xsl:otherwise>space<xsl:value-of select="$items[$prev]/@weight" />:<xsl:value-of select="@weight" /></xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
-						<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />
-		
-						<li class="drop-zone" id="{$spaceId}"></li>
-						<li class="dragable visible multiple" id="{$itemId}">
-							<a href="{edit-link}" class="name" title="радактировать">
-								<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
-									<span class="description">[<xsl:value-of select="@type-caption"/>]</span><br/>
-								</xsl:if>
-								<xsl:value-of select="$caption"/>
-							</a>
-							<a onclick="insertAjaxView('{copy-link}', 'pasteBuffer'); return false;" class="copy" title="копировать">копировать</a>
-							<a href="javascript:defaultView('{delete-link}','subitems',true,refreshMain)" class="delete" title="удалить">удалить</a>
-						</li>
-					</xsl:for-each>
-					<xsl:variable name="itemsCount" select="count($items)"/>
-					<xsl:variable name="spaceId" select="concat('space', $items[$itemsCount]/@weight, ':', ($itemsCount + 1) * 64)"/>
-					<li class="drop-zone" id="{$spaceId}"></li>
-				</ul>
+				<xsl:for-each select="admin-page/assoc">
+					<xsl:value-of select="@caption"/>
+					<ul class="edit">
+						<xsl:for-each select="item">
+							<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
+							<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />
+							<li class="drop-zone"></li>
+							<li class="dragable visible multiple" id="{$itemId}">
+								<a href="{edit-link}" class="name" title="редактировать">
+									<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
+										<span class="description">[<xsl:value-of select="@type-caption"/>]</span><br/>
+									</xsl:if>
+									<xsl:value-of select="$caption"/>
+								</a>
+								<a onclick="insertAjaxView('{copy-link}', 'pasteBuffer'); return false;" class="copy" title="копировать">копировать</a>
+								<a href="javascript:defaultView('{delete-link}','subitems',true, refreshMain)" class="delete" title="удалить">удалить</a>
+							</li>
+						</xsl:for-each>
+						<li class="drop-zone"></li>
+					</ul>
+				</xsl:for-each>
 			</div>
 		</xsl:if>
 		<script type="text/javascript">
