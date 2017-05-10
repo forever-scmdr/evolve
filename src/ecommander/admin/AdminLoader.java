@@ -4,6 +4,7 @@ import ecommander.fwk.MysqlConnector;
 import ecommander.model.*;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
+import ecommander.persistence.mappers.ItemMapper;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.naming.NamingException;
@@ -74,7 +75,12 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @throws Exception
 	 */
 	ArrayList<ItemAccessor> loadClosestSubitems(long parentId, User user) throws Exception {
-		ItemAccessor parent = loadItemAccessor(parentId);
+		ItemBasics parent;
+		try (Connection conn = MysqlConnector.getConnection()) {
+			parent = ItemMapper.loadItemBasics(parentId, conn);
+		}
+		if (parent == null)
+			return new ArrayList<>(0);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(parent.getTypeId());
 		Byte[] allAssocs = ItemTypeRegistry.getItemOwnAssocIds(itemDesc.getName()).toArray(new Byte[0]);
 		HashSet<Byte> adminGroups = new HashSet<>();
@@ -221,6 +227,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			return null;
 		return result.get(0);
 	}
+
 	/**
 	 * Загрузить все айтемы, которые хранят ссылки на данный айтем (все айтемы, к которым прицеплен данный айтем)
 	 * @param itemId
