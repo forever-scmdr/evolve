@@ -462,7 +462,7 @@ public class MainAdminPageCreator implements AdminXML {
 		basePage.addElement(new LeafMDWriter(VISUAL_ELEMENT, isVisual));
 		Item item = null;
 		if (itemId != ItemTypeRegistry.getPrimaryRootId())
-			item = AdminLoader.getLoader().loadItem(itemId);
+			item = AdminLoader.getLoader().loadItem(itemId, currentUser);
 		if (item != null) {
 			ItemHttpPostForm itemForm = new ItemHttpPostForm(item, basePage.getName());
 			ItemFormMDWriter formWriter = new ItemFormMDWriter(itemForm, FORM_ELEMENT);

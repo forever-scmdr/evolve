@@ -6,6 +6,7 @@ import java.util.HashSet;
 
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.ItemBasics;
+import ecommander.model.Security;
 import ecommander.model.UserMapper;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TransactionContext;
@@ -129,14 +130,7 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 			throw new IllegalStateException("Can not test user privileges against item before transaction context is set");
 		User admin = context.getInitiator();
 		// Если айтем персональный
-		if (item.isPersonal()) {
-			if (item.getOwnerUserId() != admin.getUserId() && !admin.isAdmin(item.getOwnerGroupId()))
-				throw new UserNotAllowedException("Action is not allowed to user " + admin.getName());
-		// Если айтем общий (нет владельца)
-		} else {
-			if (!admin.inGroup(item.getOwnerGroupId()))
-				throw new UserNotAllowedException("Action is not allowed to user " + admin.getName());
-		}
+		Security.testPrivileges(admin, item);
 	}
 
 	/**

@@ -228,14 +228,26 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		return result.get(0);
 	}
 
-	Item loadItem(long itemId) throws Exception {
+	/**
+	 * Загрузить айтем (не аксэсор)
+	 * @param itemId
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	Item loadItem(long itemId, User user) throws Exception {
 		TemplateQuery query = new TemplateQuery("Admin load item");
 		query.SELECT("*").FROM(I_TABLE).WHERE().col(I_ID).setLong(itemId);
+		Item item = null;
 		try (Connection conn = MysqlConnector.getConnection();
 			PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
-			return ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), Item.DEFAULT_ID);
+			if (rs.next())
+				item = ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), Item.DEFAULT_ID);
 		}
+		if (item != null)
+			Security.testPrivileges(user, item);
+		return item;
 	}
 
 	/**
