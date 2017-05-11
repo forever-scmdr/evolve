@@ -105,11 +105,11 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 
 		TemplateQuery select = new TemplateQuery("Load closest subitems union");
 		if (adminGroups.size() > 0)
-			select.getOrCreateSubquery("ADMIN").replace(adminQuery);
+			select.subquery("ADMIN").replace(adminQuery);
 		if (simpleGroups.size() > 0) {
 			if (adminGroups.size() > 0)
 				select.UNION_ALL();
-			select.getOrCreateSubquery("COMMON").replace(simpleQuery);
+			select.subquery("COMMON").replace(simpleQuery);
 		}
 		return loadAccessorsByQuery(select);
 	}
