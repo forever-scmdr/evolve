@@ -331,6 +331,8 @@ public class MainAdminPageCreator implements AdminXML {
 		basePage.addElement(new LeafMDWriter(VIEW_TYPE_ELEMENT, defaultViewType));
 		basePage.addElement(new LeafMDWriter(BASE_ID_ELEMENT, baseId));
 		basePage.addElement(new LeafMDWriter(BASE_TYPE_ELEMENT, itemType));
+		// Ссылка на корень
+		basePage.addElement(new LeafMDWriter(ROOT_LINK_ELEMENT, createAdminUrl(INITIALIZE_ACTION)));
 		// Путь к текущему элементу
 		AggregateMDWriter path = new AggregateMDWriter(PATH_ELEMENT);
 		ArrayList<ItemAccessor> pathItems = AdminLoader.getLoader().loadWholeBranch(baseId, ItemTypeRegistry.getPrimaryAssoc().getId());
@@ -339,7 +341,6 @@ public class MainAdminPageCreator implements AdminXML {
 			ItemAccessor item = AdminLoader.getLoader().loadItemAccessor(baseId);
 			if (item != null) {
 				basePage.addElement(item);
-
 			}
 		}
 		for (ItemAccessor pred : pathItems) {

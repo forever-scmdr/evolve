@@ -352,11 +352,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 				userId = User.ANONYMOUS_ID;
 				groupId = UserGroupRegistry.getDefaultGroup();
 			} else {
-				ItemBasics parent = AdminLoader.getLoader().loadItemAccessor(itemForm.getItemParentId());
+				ItemBasics parent = AdminLoader.getLoader().loadItem(itemForm.getItemParentId(), getCurrentAdmin());
 				userId = parent.getOwnerUserId();
 				groupId = parent.getOwnerGroupId();
 			}
-			ItemType newItemType = ItemTypeRegistry.getItemType(itemForm.getItemTypeId());
 			// Создание айтема
 			item = itemForm.createItem(userId, groupId);
 			transaction.addCommandUnit(SaveItemDBUnit.get(item));

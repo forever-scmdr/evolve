@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <model>
-	<assoc name="hierarchy" caption="Рубрикатор каталога" transitive="true" ag-id="1" ag-hash="2115146293"/>
 
 	<item name="catalog" caption="Каталог" ag-id="1" ag-hash="555704345">
 		<child item="main_section"/>
@@ -11,14 +10,14 @@
 	</item>
 
 	<item name="main_section" caption="Основной раздел" super="section_abstract" ag-id="3" ag-hash="-1697553825">
-		<child assoc="hierarchy" item="section"/>
+		<child item="section"/>
 	</item>
 
 	<item name="section" caption="Раздел" super="section_abstract" ag-id="4" ag-hash="1970241253">
-		<child assoc="hierarchy" item="product"/>
-		<child assoc="hierarchy" item="section"/>
+		<child item="product"/>
+		<child item="section"/>
 		<parameter name="price_qty" type="integer" caption="Количество предложений" function="COUNT" default="0" ag-id="2" ag-hash="-2125411648">
-			<base-child item="product" assoc="hierarchy" parameter="price_qty" transitive="true"/>
+			<base-child item="product" parameter="price_qty" transitive="true"/>
 		</parameter>
 	</item>
 

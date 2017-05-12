@@ -118,7 +118,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		insert.INSERT_INTO(IP_TABLE, IP_PARENT_ID, IP_CHILD_ID, IP_ASSOC_ID, IP_CHILD_SUPERTYPE, IP_PARENT_DIRECT, IP_WEIGHT);
 
 		// Шаг 1. Вставить запись непосредственного предка и потомка
-		insert.SELECT(parent.getId(), childId, assocId, superTypeId, 1, "MAX(" + IP_WEIGHT + ") + 64")
+		insert.SELECT(parent.getId(), childId, assocId, superTypeId, 1, "COALESCE(MAX(" + IP_WEIGHT + "), 0) + 64")
 				.FROM(IP_TABLE).WHERE().col(IP_PARENT_ID).setLong(parent.getId()).AND().col(IP_ASSOC_ID).setByte(assocId).sql(" \r\n");
 
 		// Остальные шаги только для транзитивных ассоциаций

@@ -109,7 +109,10 @@ public class ComputedDescription {
 			this.type = type;
 			this.item = item;
 			this.param = param;
-			this.assoc = assoc;
+			if (StringUtils.isBlank(assoc))
+				this.assoc = AssocRegistry.PRIMARY_NAME;
+			else
+				this.assoc = assoc;
 		}
 	}
 	// Функция агрегации

@@ -29,6 +29,7 @@ public interface AdminXML {
 	String GET_PASTE_LINK_ELEMENT = "get-paste";
 	String MESSAGE_ELEMENT = "message";
 	String VISUAL_ELEMENT = "visual";
+	String ROOT_LINK_ELEMENT = "root-link";
 	/**
 	 * Атрибут XML
 	 */

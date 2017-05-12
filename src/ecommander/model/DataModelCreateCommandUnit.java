@@ -542,6 +542,22 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		try (Statement stmt = getTransactionContext().getConnection().createStatement()) {
 			// ********************** Очистить таблицы ******************************
 			String sql;
+			// Удаление из табилцы ассоциаций
+			// Удаление из таблицы родтиелей и потомков по ассоциации
+			if (assocsById.size() > 0) {
+				sql = "DELETE FROM " + AssocIds.AID_TABLE
+						+ " WHERE " + AssocIds.AID_ASSOC_ID + " IN " + createInByte(assocsById.keySet());
+				ServerLogger.debug(sql);
+				stmt.executeUpdate(sql);
+
+				sql = "DELETE FROM " + ItemParent.IP_TABLE
+						+ " WHERE " + ItemParent.IP_ASSOC_ID + " IN " + createInByte(assocsById.keySet());
+				ServerLogger.debug(sql);
+				stmt.executeUpdate(sql);
+
+				dbChanged = true;
+			}
+
 			// Удаление из таблицы ID айтемов
 			if (itemsById.size() > 0) {
 				sql = "DELETE FROM " + ItemIds.IID_TABLE
@@ -677,6 +693,16 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		return result.toString();
 	}
 
+	private String createInByte(Collection<Byte> ids) {
+		StringBuilder result = new StringBuilder("(");
+		for (Byte id : ids) {
+			result.append(id).append(',');
+		}
+		result.deleteCharAt(result.length() - 1);
+		result.append(')');
+		return result.toString();
+	}
+
 	private void createJavaConstants() {
 		if (!dbChanged)
 			return;
@@ -697,6 +723,9 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 */
 	ArrayList<String> getElementsToDelete() {
 		ArrayList<String> result = new ArrayList<>();
+		for (String assocName : assocsById.values()) {
+			result.add("Association: " + assocName);
+		}
 		for (String itemName : itemsById.values()) {
 			result.add("Item: " + itemName);
 		}

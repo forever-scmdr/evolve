@@ -124,6 +124,7 @@
 						</div>
 					</div>
 					<div class="path">
+						<a href="{admin-page/root-link}">Корень</a>
 						<span class="pad"></span>
 						<xsl:for-each select="/admin-page/path/item[position() != last()]">
 							<a href="{edit-link}">

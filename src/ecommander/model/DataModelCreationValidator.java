@@ -310,6 +310,8 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 					return;
 				}
 				String assoc = attributes.getValue(ASSOC);
+				if (StringUtils.isBlank(assoc))
+					assoc = AssocRegistry.PRIMARY_NAME;
 				boolean isTransitive = StringUtils.equalsIgnoreCase(attributes.getValue(TRANSITIVE), TRUE_VALUE);
 				ComputedDescription.Type type = ComputedDescription.Type.get(qName);
 				BaseItemParam base = new BaseItemParam(locator.getLineNumber(), type, item, assoc, parameter, isTransitive);
@@ -369,6 +371,9 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		items = new HashMap<String, Item>();
 		children = new ArrayList<Child>();
 		assocs = new HashMap<>();
+		ecommander.model.Assoc pa = AssocRegistry.PRIMARY;
+		assocs.put(AssocRegistry.PRIMARY_NAME,
+				new Assoc(0, pa.getName(), pa.getCaption(), pa.getDescription(), pa.isTransitive()));
 		this.modelFiles = modelFiles;
 	}
 
@@ -497,7 +502,8 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 						}
 						// Проверка доступность айтема через ассоциацию
 						if (base.type == ComputedDescription.Type.child) {
-							if (StringUtils.isNotBlank(base.assoc)) {
+							if (StringUtils.isNotBlank(base.assoc) &&
+									!StringUtils.equalsIgnoreCase(AssocRegistry.PRIMARY_NAME, base.assoc)) {
 								boolean hasAssoc = false;
 								for (Child child : item.children) {
 									if (StringUtils.equalsIgnoreCase(child.assoc, base.assoc)) {

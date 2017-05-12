@@ -4,10 +4,9 @@
 -- ************************************************************
 
 CREATE TABLE IF NOT EXISTS `model_xml` (
-  `xml_id` int(4) NOT NULL AUTO_INCREMENT,
-  `xml_name` varchar(255) NOT NULL,
-  `xml_xml` longtext NOT NULL,
-  PRIMARY KEY (`xml_id`) USING BTREE
+  `xml_name` VARCHAR(255) NOT NULL,
+  `xml_xml` LONGTEXT NOT NULL,
+  PRIMARY KEY (`xml_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ************************************************************
