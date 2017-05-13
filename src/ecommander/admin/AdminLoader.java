@@ -34,20 +34,26 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		return loader;
 	}
 
-	private TemplateQuery createAccessorQueryBase(String queryName) {
+	private TemplateQuery createAccessorQueryBase(String queryName, boolean joinByChild) {
 		TemplateQuery base = new TemplateQuery(queryName);
 		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED, IP_TABLE + ".*")
-				.FROM(I_TABLE).INNER_JOIN(IP_TABLE, I_ID, IP_CHILD_ID).WHERE();
+				.FROM(I_TABLE).INNER_JOIN(IP_TABLE, I_ID, joinByChild ? IP_CHILD_ID : IP_PARENT_ID).WHERE();
 		return base;
 	}
 
-	private ArrayList<ItemAccessor> loadAccessorsByQuery(TemplateQuery query) throws SQLException, NamingException {
+	private ArrayList<ItemAccessor> loadAccessorsByQuery(TemplateQuery query, boolean hasParentTableJoin) throws SQLException, NamingException {
 		ArrayList<ItemAccessor> result = new ArrayList<>();
 		try (Connection conn = MysqlConnector.getConnection();
 		     PreparedStatement pstmt = query.prepareQuery(conn);
 		) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
+				int weight = 0;
+				byte assoc = ItemTypeRegistry.getPrimaryAssoc().getId();
+				if (hasParentTableJoin) {
+					weight = rs.getInt(IP_WEIGHT);
+					assoc = rs.getByte(IP_ASSOC_ID);
+				}
 				result.add(new ItemAccessor(
 						rs.getInt(I_TYPE_ID),
 						rs.getLong(I_ID),
@@ -56,8 +62,8 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 						rs.getInt(I_USER),
 						rs.getByte(I_STATUS),
 						rs.getByte(I_PROTECTED) == (byte) 1,
-						rs.getInt(IP_WEIGHT),
-						rs.getByte(IP_ASSOC_ID),
+						weight,
+						assoc,
 						true));
 			}
 		}
@@ -91,7 +97,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			else
 				simpleGroups.add(group.id);
 		}
-		TemplateQuery base = createAccessorQueryBase("Load closest subitems part");
+		TemplateQuery base = createAccessorQueryBase("Load closest subitems part", true);
 		base.col(IP_PARENT_ID).setLong(parentId).AND()
 				.col(IP_PARENT_DIRECT).setByte((byte) 1).AND()
 				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")").AND()
@@ -111,7 +117,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 				select.UNION_ALL();
 			select.subquery("COMMON").replace(simpleQuery);
 		}
-		return loadAccessorsByQuery(select);
+		return loadAccessorsByQuery(select, true);
 	}
 
 	/**
@@ -183,11 +189,11 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @throws Exception
 	 */
 	ArrayList<ItemAccessor> loadWholeBranch(long baseId, byte assocId) throws Exception {
-		TemplateQuery query = createAccessorQueryBase("Load item branch");
+		TemplateQuery query = createAccessorQueryBase("Load item branch", false);
 		query.col(IP_CHILD_ID).setLong(baseId).AND().col(IP_ASSOC_ID).setByte(assocId).AND()
 				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")")
 				.ORDER_BY(IP_PARENT_DIRECT, IP_PARENT_ID);
-		return loadAccessorsByQuery(query);
+		return loadAccessorsByQuery(query, true);
 	}
 	/**
 	 * Загружает несколько айтемов по их ID
@@ -197,9 +203,10 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	ArrayList<ItemAccessor> loadItemAccessors(Long... itemId) throws Exception {
 		if (itemId.length == 0)
 			return new ArrayList<>(0);
-		TemplateQuery query = createAccessorQueryBase("Load accessors by ids");
-		query.col(IP_CHILD_ID, " IN(").setLongArray(itemId).sql(")");
-		return loadAccessorsByQuery(query);
+		TemplateQuery query = new TemplateQuery("Load accessors by ids");
+		query.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED)
+				.FROM(I_TABLE).WHERE().col(I_ID, " IN(").setLongArray(itemId).sql(")");
+		return loadAccessorsByQuery(query, false);
 	}
 
 	/**
@@ -211,9 +218,10 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	ArrayList<ItemAccessor> loadItemAccessorsByKey(String key) throws Exception {
 		if (StringUtils.isBlank(key))
 			return new ArrayList<>(0);
-		TemplateQuery query = createAccessorQueryBase("Load accessors by ids");
-		query.col(I_KEY, " LIKE ").setString("%" + key + "%");
-		return loadAccessorsByQuery(query);
+		TemplateQuery query = new TemplateQuery("Load accessors by ids");
+		query.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED)
+				.FROM(I_TABLE).WHERE().col(I_KEY, " LIKE ").setString("%" + key + "%");
+		return loadAccessorsByQuery(query, false);
 	}
 	/**
 	 * Загружает один айтем по его ID
@@ -265,10 +273,8 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			else
 				simpleGroups.add(group.id);
 		}
-		TemplateQuery base = createAccessorQueryBase("Load direct parents part");
-		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED, IP_TABLE + ".*")
-				.FROM(I_TABLE).INNER_JOIN(IP_TABLE, I_ID, IP_PARENT_ID).WHERE()
-				.col(IP_CHILD_ID).setLong(itemId).AND()
+		TemplateQuery base = createAccessorQueryBase("Load direct parents part", false);
+		base.col(IP_CHILD_ID).setLong(itemId).AND()
 				.col(IP_PARENT_DIRECT).setByte((byte) 1).AND()
 				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")").AND()
 				.col(IP_ASSOC_ID, " IN(").setByteArray(ItemTypeRegistry.getAllAssocIds()).sql(")").AND();
@@ -287,6 +293,6 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 				select.UNION_ALL();
 			select.getOrCreateSubquery("COMMON").replace(simpleQuery);
 		}
-		return loadAccessorsByQuery(select);
+		return loadAccessorsByQuery(select, true);
 	}
 }

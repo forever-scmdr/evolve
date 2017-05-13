@@ -124,17 +124,14 @@
 						</div>
 					</div>
 					<div class="path">
-						<a href="{admin-page/root-link}">Корень</a>
 						<span class="pad"></span>
-						<xsl:for-each select="/admin-page/path/item[position() != last()]">
+						<a href="{admin-page/root-link}">Корень</a>
+						<xsl:for-each select="/admin-page/path/item">
+							<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
 							<a href="{edit-link}">
 								<xsl:value-of select="@caption" />
 							</a>
-							<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
 						</xsl:for-each>
-						<b>
-							<xsl:value-of select="/admin-page/path/item[position() = last()]/@caption" />
-						</b>
 					</div>
 					<div class="mid">
 						<div class="left-col">
