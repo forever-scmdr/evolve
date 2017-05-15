@@ -96,6 +96,7 @@ if(typeof $.draggable != 'undefined'){
 	});
 	
 	$(".drop-zone").droppable({
+		tolerance: "touch",
 		accept: ".dragable",
 		hoverClass: "spacer_selected",
 		drop: function(event, ui) {

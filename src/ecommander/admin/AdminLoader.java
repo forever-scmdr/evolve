@@ -22,26 +22,14 @@ import java.util.HashSet;
  */
 class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 
-	private static AdminLoader loader;
-
-	private AdminLoader() {
-
-	}
-
-	static AdminLoader getLoader() {
-		if (loader == null)
-			loader = new AdminLoader();
-		return loader;
-	}
-
-	private TemplateQuery createAccessorQueryBase(String queryName, boolean joinByChild) {
+	private static TemplateQuery createAccessorQueryBase(String queryName, boolean joinByChild) {
 		TemplateQuery base = new TemplateQuery(queryName);
 		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED, IP_TABLE + ".*")
 				.FROM(I_TABLE).INNER_JOIN(IP_TABLE, I_ID, joinByChild ? IP_CHILD_ID : IP_PARENT_ID).WHERE();
 		return base;
 	}
 
-	private ArrayList<ItemAccessor> loadAccessorsByQuery(TemplateQuery query, boolean hasParentTableJoin) throws SQLException, NamingException {
+	private static ArrayList<ItemAccessor> loadAccessorsByQuery(TemplateQuery query, boolean hasParentTableJoin) throws SQLException, NamingException {
 		ArrayList<ItemAccessor> result = new ArrayList<>();
 		try (Connection conn = MysqlConnector.getConnection();
 		     PreparedStatement pstmt = query.prepareQuery(conn);
@@ -80,7 +68,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @return
 	 * @throws Exception
 	 */
-	ArrayList<ItemAccessor> loadClosestSubitems(long parentId, User user) throws Exception {
+	static ArrayList<ItemAccessor> loadClosestSubitems(long parentId, User user) throws Exception {
 		ItemBasics parent;
 		try (Connection conn = MysqlConnector.getConnection()) {
 			parent = ItemMapper.loadItemBasics(parentId, conn);
@@ -127,7 +115,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @throws SQLException
 	 * @throws NamingException
 	 */
-	ArrayList<ItemAccessor> loadSuperUserRootItems(User user) throws SQLException, NamingException {
+	static ArrayList<ItemAccessor> loadSuperUserRootItems(User user) throws SQLException, NamingException {
 		Collection<ItemTypeContainer.ChildDesc> rootChildren = ItemTypeRegistry.getPrimaryRoot().getAllChildren();
 		HashSet<Integer> allTypes = new HashSet<>();
 		for (ItemTypeContainer.ChildDesc rootChild : rootChildren) {
@@ -188,7 +176,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @return
 	 * @throws Exception
 	 */
-	ArrayList<ItemAccessor> loadWholeBranch(long baseId, byte assocId) throws Exception {
+	static ArrayList<ItemAccessor> loadWholeBranch(long baseId, byte assocId) throws Exception {
 		TemplateQuery query = createAccessorQueryBase("Load item branch", false);
 		query.col(IP_CHILD_ID).setLong(baseId).AND().col(IP_ASSOC_ID).setByte(assocId).AND()
 				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")")
@@ -200,7 +188,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @param itemId
 	 * @return
 	 */
-	ArrayList<ItemAccessor> loadItemAccessors(Long... itemId) throws Exception {
+	static ArrayList<ItemAccessor> loadItemAccessors(Long... itemId) throws Exception {
 		if (itemId.length == 0)
 			return new ArrayList<>(0);
 		TemplateQuery query = new TemplateQuery("Load accessors by ids");
@@ -215,7 +203,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @return
 	 * @throws Exception
 	 */
-	ArrayList<ItemAccessor> loadItemAccessorsByKey(String key) throws Exception {
+	static ArrayList<ItemAccessor> loadItemAccessorsByKey(String key) throws Exception {
 		if (StringUtils.isBlank(key))
 			return new ArrayList<>(0);
 		TemplateQuery query = new TemplateQuery("Load accessors by ids");
@@ -229,7 +217,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @return
 	 * @throws Exception
 	 */
-	ItemAccessor loadItemAccessor(long itemId) throws Exception {
+	static ItemAccessor loadItemAccessor(long itemId) throws Exception {
 		ArrayList<ItemAccessor> result = loadItemAccessors(itemId);
 		if (result.size() == 0)
 			return null;
@@ -243,7 +231,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @return
 	 * @throws Exception
 	 */
-	Item loadItem(long itemId, User user) throws Exception {
+	static Item loadItem(long itemId, User user) throws Exception {
 		TemplateQuery query = new TemplateQuery("Admin load item");
 		query.SELECT("*").FROM(I_TABLE).WHERE().col(I_ID).setLong(itemId);
 		Item item = null;
@@ -264,7 +252,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @return
 	 * @throws Exception
 	 */
-	ArrayList<ItemAccessor> loadDirectParents(long itemId, User user) throws Exception {
+	static ArrayList<ItemAccessor> loadDirectParents(long itemId, User user) throws Exception {
 		HashSet<Byte> adminGroups = new HashSet<>();
 		HashSet<Byte> simpleGroups = new HashSet<>();
 		for (User.Group group : user.getGroups()) {

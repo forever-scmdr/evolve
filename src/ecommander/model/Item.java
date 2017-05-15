@@ -439,7 +439,7 @@ public class Item implements ItemBasics {
 		if (!isUserDefined) {
 			xml.startElement(param.getName());
 			if (param.getDesc().getDataType().hasMeta()) {
-				HashMap<String, String> meta = param.getDesc().getDataType().getMeta(param.getValue());
+				HashMap<String, String> meta = param.getDesc().getDataType().getMeta(param.getValue(), getRelativeFilesPath());
 				ArrayList<String> attrs = new ArrayList<>();
 				for (String attr : meta.keySet()) {
 					attrs.add(attr);
@@ -1141,6 +1141,7 @@ public class Item implements ItemBasics {
 			index += DIR_NAME_LENGTH;
 		}
 		sb.setCharAt(sb.length() - 1, FINAL_DIR_CHAR);
+		sb.append('/');
 		return sb.toString();
 	}
 }

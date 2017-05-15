@@ -28,7 +28,8 @@
 			<meta http-equiv="Pragma" content="no-cache" />
 			<link rel="stylesheet" type="text/css" href="admin/css/reset.css" />
 			<link rel="stylesheet" type="text/css" href="admin/css/style.css" />
-			<link href="admin/jquery_css/ui-lightness/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" media="screen" />
+			<link rel="stylesheet" type="text/css" href="admin/js/jquery-ui.min.css" />
+			<link href="admin/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" media="screen" />
 			<title>
 				Система управления сайтом
 				<xsl:value-of select="/admin-page/domain" />
@@ -38,10 +39,10 @@
 	</xsl:template>
 
 	<xsl:template name="JS">
+		<!-- UI -->
+		<script type="text/javascript" src="admin/jquery-ui/jquery-ui.min.js"></script>
 		<!-- FORM -->
 		<script type="text/javascript" src="admin/js/jquery.form.min.js"></script>
-		<!-- UI -->
-		<script type="text/javascript" src="admin/js/jquery-ui-1.10.3.custom.min.js"></script>
 		<!-- MCE -->
 		<script type="text/javascript" src="admin/tinymce/tinymce.min.js"></script>
 		<script type="text/javascript" src="admin/js/regional-ru.js"></script>

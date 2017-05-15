@@ -73,23 +73,25 @@
 				<h4>Редактировать</h4>
 				<xsl:for-each select="admin-page/assoc">
 					<xsl:value-of select="@caption"/>
-					<ul class="edit">
-						<xsl:for-each select="item">
-							<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
-							<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />
+					<ul class="edit drag_area">
+						<div style="padding-top: 14px; padding-bottom: 14px">
+							<xsl:for-each select="item">
+								<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
+								<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />
+								<li class="drop-zone"></li>
+								<li class="dragable visible multiple" id="{$itemId}">
+									<a href="{edit-link}" class="name" title="редактировать">
+										<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
+											<span class="description">[<xsl:value-of select="@type-caption"/>]</span><br/>
+										</xsl:if>
+										<xsl:value-of select="$caption"/>
+									</a>
+									<a onclick="insertAjaxView('{copy-link}', 'pasteBuffer'); return false;" class="copy" title="копировать">копировать</a>
+									<a href="javascript:defaultView('{delete-link}','subitems',true, refreshMain)" class="delete" title="удалить">удалить</a>
+								</li>
+							</xsl:for-each>
 							<li class="drop-zone"></li>
-							<li class="dragable visible multiple" id="{$itemId}">
-								<a href="{edit-link}" class="name" title="редактировать">
-									<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
-										<span class="description">[<xsl:value-of select="@type-caption"/>]</span><br/>
-									</xsl:if>
-									<xsl:value-of select="$caption"/>
-								</a>
-								<a onclick="insertAjaxView('{copy-link}', 'pasteBuffer'); return false;" class="copy" title="копировать">копировать</a>
-								<a href="javascript:defaultView('{delete-link}','subitems',true, refreshMain)" class="delete" title="удалить">удалить</a>
-							</li>
-						</xsl:for-each>
-						<li class="drop-zone"></li>
+						</div>
 					</ul>
 				</xsl:for-each>
 			</div>

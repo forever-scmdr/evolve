@@ -128,7 +128,7 @@ public class ItemFormMDWriter extends MetaDataWriter {
 		xml.startElement(tag, 
 				ACTION_ATTRIBUTE, action, 
 				ACTION_URL_ATTRIBUTE, createActionUrl(),
-				FILE_PATH_ATTRIBUTE, AppContext.getFilesDirPath(form.isFileProtected()) + form.getFilesRelPath(),
+				FILE_PATH_ATTRIBUTE, AppContext.getFilesUrlPath(form.isFileProtected()) + form.getFilesRelPath(),
 				ID_ATTRIBUTE, form.getItemId(),
 				CAPTION_ATTRIBUTE, form.getItemCaption());
 		// <hidden>
@@ -141,7 +141,7 @@ public class ItemFormMDWriter extends MetaDataWriter {
 		}
 		// </hidden>
 		xml.endElement();
-		HashSet<String> domains = new HashSet<String>();
+		HashSet<String> domains = new HashSet<>();
 		for (Integer paramId : form.getParameterIds()) {
 			ParameterDescription paramDesc = itemDesc.getParameter(paramId);
 			ItemType ownerItemType = ItemTypeRegistry.getItemType(paramDesc.getOwnerItemId());
@@ -158,7 +158,7 @@ public class ItemFormMDWriter extends MetaDataWriter {
 					INPUT_ATTRIBUTE, form.getParamFieldName(paramId), 
 					QUANTIFIER_ATTRIBUTE, paramDesc.isMultiple() ? MULTIPLE_VALUE : SINGLE_VALUE
 				};
-			List<String> attrs = new ArrayList<String>(Arrays.asList(attrsArr));
+			List<String> attrs = new ArrayList<>(Arrays.asList(attrsArr));
 			if (paramDesc.hasDomain()) {
 				domains.add(paramDesc.getDomainName());
 				attrs.add(DOMAIN_ATTRIBUTE);

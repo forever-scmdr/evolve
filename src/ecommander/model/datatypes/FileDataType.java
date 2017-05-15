@@ -47,7 +47,7 @@ public class FileDataType extends StringDataType {
 	@Override
 	public HashMap<String, String> getMeta(Object value, Object... extraParams) {
 		String parentPath = (String) extraParams[0];
-		HashMap<String, String> meta = new HashMap<String, String>(3);
+		HashMap<String, String> meta = new HashMap<>(3);
 		if (value instanceof FileItem) {
 			FileItem file = (FileItem) value;
 			meta.put(SIZE_META, file.getSize() + "");
@@ -69,7 +69,7 @@ public class FileDataType extends StringDataType {
 				meta.put(CREATED_META, DateDataType.DATE_FORMATTER.print(new DateTime(attr.creationTime().toMillis())));
 				meta.put(EXTENSION_META, StringUtils.substringAfterLast(file.getFileName().toString(), "."));
 			} catch (IOException e) {
-				return new HashMap<String, String>(0);
+				return new HashMap<>(0);
 			}
 		}
 		return meta;
@@ -88,7 +88,7 @@ public class FileDataType extends StringDataType {
 	 * @param fileName
 	 * @return
 	 */
-	public static String getFileName(String fileName) {
+	private static String getFileName(String fileName) {
 		return Strings.translit(fileName.replaceFirst(".*[\\/]", ""));
 	}
 }

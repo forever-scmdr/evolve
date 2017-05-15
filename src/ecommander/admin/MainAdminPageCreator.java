@@ -335,10 +335,10 @@ public class MainAdminPageCreator implements AdminXML {
 		basePage.addElement(new LeafMDWriter(ROOT_LINK_ELEMENT, createAdminUrl(INITIALIZE_ACTION)));
 		// Путь к текущему элементу
 		AggregateMDWriter path = new AggregateMDWriter(PATH_ELEMENT);
-		ArrayList<ItemAccessor> pathItems = AdminLoader.getLoader().loadWholeBranch(baseId, ItemTypeRegistry.getPrimaryAssoc().getId());
+		ArrayList<ItemAccessor> pathItems = AdminLoader.loadWholeBranch(baseId, ItemTypeRegistry.getPrimaryAssoc().getId());
 		// Текущий элемент
 		if (baseId > 0 && baseId != ItemTypeRegistry.getPrimaryRootId()) {
-			ItemAccessor item = AdminLoader.getLoader().loadItemAccessor(baseId);
+			ItemAccessor item = AdminLoader.loadItemAccessor(baseId);
 			if (item != null) {
 				basePage.addElement(item);
 			}
@@ -369,13 +369,13 @@ public class MainAdminPageCreator implements AdminXML {
 		if (baseId <= 0) {
 			baseId = ItemTypeRegistry.getPrimaryRootId();
 		} else if (itemType <= 0) {
-			ItemAccessor baseItem = AdminLoader.getLoader().loadItemAccessor(baseId);
+			ItemAccessor baseItem = AdminLoader.loadItemAccessor(baseId);
 			itemType = baseItem.getTypeId();
 		}
 		ArrayList<ItemAccessor> subitems;
 		// Антоновский поиск по ключу
 		if (StringUtils.isNotBlank(searchQuery)) {
-			subitems = AdminLoader.getLoader().loadItemAccessorsByKey(searchQuery);
+			subitems = AdminLoader.loadItemAccessorsByKey(searchQuery);
 		} else {
 			subitems = createSubitemsInfo(baseId, itemType, itemsToAdd);
 		}
@@ -463,7 +463,7 @@ public class MainAdminPageCreator implements AdminXML {
 		basePage.addElement(new LeafMDWriter(VISUAL_ELEMENT, isVisual));
 		Item item = null;
 		if (itemId != ItemTypeRegistry.getPrimaryRootId())
-			item = AdminLoader.getLoader().loadItem(itemId, currentUser);
+			item = AdminLoader.loadItem(itemId, currentUser);
 		if (item != null) {
 			ItemHttpPostForm itemForm = new ItemHttpPostForm(item, basePage.getName());
 			ItemFormMDWriter formWriter = new ItemFormMDWriter(itemForm, FORM_ELEMENT);
@@ -523,12 +523,11 @@ public class MainAdminPageCreator implements AdminXML {
 		addViewLinks(page, itemId);
 		if (itemId <= 0 || itemId == ItemTypeRegistry.getPrimaryRootId())
 			return page;
-		AdminLoader mapper = AdminLoader.getLoader();
-		ItemAccessor baseItem = mapper.loadItemAccessor(itemId);
+		ItemAccessor baseItem = AdminLoader.loadItemAccessor(itemId);
 		int itemType = baseItem.getTypeId();
-		ArrayList<ItemAccessor> mountToParentPathItems = mapper.loadWholeBranch(mountToParent, ItemTypeRegistry.getPrimaryAssoc().getId());
-		ArrayList<ItemAccessor> mountToList = mapper.loadClosestSubitems(mountToParent, currentUser);
-		ArrayList<ItemAccessor> mountedList = mapper.loadDirectParents(itemId, currentUser);
+		ArrayList<ItemAccessor> mountToParentPathItems = AdminLoader.loadWholeBranch(mountToParent, ItemTypeRegistry.getPrimaryAssoc().getId());
+		ArrayList<ItemAccessor> mountToList = AdminLoader.loadClosestSubitems(mountToParent, currentUser);
+		ArrayList<ItemAccessor> mountedList = AdminLoader.loadDirectParents(itemId, currentUser);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemType);
 		// Базовый айтем
 		page.addElement(baseItem);
@@ -609,10 +608,9 @@ public class MainAdminPageCreator implements AdminXML {
 		AdminPage page = new AdminPage(ASSOCIATE_PAGE, domain, currentUser.getName());
 		if (itemId <= 0 || itemId == ItemTypeRegistry.getPrimaryRootId())
 			return page;
-		AdminLoader mapper = AdminLoader.getLoader();
-		ItemAccessor baseAcc = mapper.loadItemAccessor(itemId);
-		ArrayList<ItemAccessor> mountToParentPathItems = mapper.loadWholeBranch(associateParent, ItemTypeRegistry.getPrimaryAssoc().getId());
-		ArrayList<ItemAccessor> toAssoc = mapper.loadClosestSubitems(associateParent, currentUser);
+		ItemAccessor baseAcc = AdminLoader.loadItemAccessor(itemId);
+		ArrayList<ItemAccessor> mountToParentPathItems = AdminLoader.loadWholeBranch(associateParent, ItemTypeRegistry.getPrimaryAssoc().getId());
+		ArrayList<ItemAccessor> toAssoc = AdminLoader.loadClosestSubitems(associateParent, currentUser);
 
 		// Базовый айтем
 		page.addElement(baseAcc);
@@ -675,11 +673,10 @@ public class MainAdminPageCreator implements AdminXML {
 		addViewLinks(page, itemId);
 		if (itemId <= 0 || itemId == ItemTypeRegistry.getPrimaryRootId())
 			return page;
-		AdminLoader mapper = AdminLoader.getLoader();
-		ItemAccessor baseItem = mapper.loadItemAccessor(itemId);
+		ItemAccessor baseItem = AdminLoader.loadItemAccessor(itemId);
 		int itemType = baseItem.getTypeId();
-		ArrayList<ItemAccessor> moveToParentPathItems = mapper.loadWholeBranch(moveToParent, ItemTypeRegistry.getPrimaryAssoc().getId());
-		ArrayList<ItemAccessor> moveToList = mapper.loadClosestSubitems(moveToParent, currentUser);
+		ArrayList<ItemAccessor> moveToParentPathItems = AdminLoader.loadWholeBranch(moveToParent, ItemTypeRegistry.getPrimaryAssoc().getId());
+		ArrayList<ItemAccessor> moveToList = AdminLoader.loadClosestSubitems(moveToParent, currentUser);
 		// Базовый айтем
 		page.addElement(baseItem);
 		// Путь к айтемам, к которым можно прикреплять выбранный
@@ -748,7 +745,7 @@ public class MainAdminPageCreator implements AdminXML {
 		long rootId = ItemTypeRegistry.getPrimaryRootId();
 		ArrayList<ItemAccessor> existingSubitems;
 		if (parentId == rootId) {
-			existingSubitems = AdminLoader.getLoader().loadSuperUserRootItems(currentUser);
+			existingSubitems = AdminLoader.loadSuperUserRootItems(currentUser);
 			for (ItemTypeContainer.ChildDesc childDesc : ItemTypeRegistry.getPrimaryRoot().getAllChildren()) {
 				processItemForParent(rootId, childDesc, ItemTypeRegistry.getPrimaryRoot(), itemsToAdd, existingSubitems);
 			}
@@ -756,7 +753,7 @@ public class MainAdminPageCreator implements AdminXML {
 		// Для обычных айтемов
 		else {
 			ItemType parentDesc = ItemTypeRegistry.getItemType(baseType);
-			existingSubitems = AdminLoader.getLoader().loadClosestSubitems(parentId, currentUser);
+			existingSubitems = AdminLoader.loadClosestSubitems(parentId, currentUser);
 			for (ItemTypeContainer.ChildDesc childDesc : parentDesc.getAllChildren()) {
 				processItemForParent(parentId, childDesc, parentDesc, itemsToAdd, existingSubitems);
 			}

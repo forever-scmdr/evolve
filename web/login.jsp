@@ -1,4 +1,5 @@
 <%@page import="org.apache.commons.lang3.StringUtils"%>
+<%@ page import="ecommander.controllers.LoginServlet" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -12,7 +13,7 @@
 	<%
 	String target = request.getParameter("q");
 		if (StringUtils.isBlank(target))
-			target = "admin_initialize.action";
+			target = (String) request.getAttribute(LoginServlet.TARGET_INPUT);
 	%>
 	<form action="login.login" method="post">
 		<input type="hidden" name="target" value="<%=target%>"/>

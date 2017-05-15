@@ -46,7 +46,7 @@ public class SingleParameter extends Parameter {
 	 */
 	public ArrayList<Object> getOldValues() {
 		if (oldValues == null)
-			return new ArrayList<Object>(0);
+			return new ArrayList<>(0);
 		return oldValues;
 	}
 
@@ -79,7 +79,7 @@ public class SingleParameter extends Parameter {
 	
 	private void storeOldValue() {
 		if (oldValues == null)
-			oldValues = new ArrayList<Object>();
+			oldValues = new ArrayList<>();
 		oldValues.add(value);
 	}
 

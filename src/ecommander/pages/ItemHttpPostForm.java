@@ -263,10 +263,10 @@ public class ItemHttpPostForm implements Serializable {
 	@SuppressWarnings("unchecked")
 	public List<String> getValuesStr(int paramId) {
 		Object value = parameterValues.get(paramId);
-		if (value == NO_VALUE) return new ArrayList<String>();
+		if (value == NO_VALUE) return new ArrayList<>();
 		if (value instanceof List)
 			return (List<String>) value;
-		ArrayList<String> values = new ArrayList<String>();
+		ArrayList<String> values = new ArrayList<>();
 		values.add((String) value);
 		return values;
 	}

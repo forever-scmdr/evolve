@@ -239,7 +239,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 					+ " WHERE " + DBConstants.ItemTbl.I_TYPE_ID + " > 0");
 			DelayedTransaction tr = new DelayedTransaction(getCurrentAdmin());
 			while (rs.next()) {
-				Item item = ItemQuery.loadById(rs.getLong(1), conn);
+				Item item = AdminLoader.loadItem(rs.getLong(1), getCurrentAdmin());
 				if (item == null)
 					continue;
 				item.forceInitialInconsistent();
@@ -352,7 +352,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 				userId = User.ANONYMOUS_ID;
 				groupId = UserGroupRegistry.getDefaultGroup();
 			} else {
-				ItemBasics parent = AdminLoader.getLoader().loadItem(itemForm.getItemParentId(), getCurrentAdmin());
+				ItemBasics parent = AdminLoader.loadItem(itemForm.getItemParentId(), getCurrentAdmin());
 				userId = parent.getOwnerUserId();
 				groupId = parent.getOwnerGroupId();
 			}
@@ -362,7 +362,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		}
 		// Сохраняется существующий айтем
 		else {
-			item = ItemQuery.loadById(itemForm.getItemId());
+			item = AdminLoader.loadItem(itemForm.getItemId(), getCurrentAdmin());
 			ItemHttpPostForm.editExistingItem(itemForm, item);
 			transaction.addCommandUnit(SaveItemDBUnit.get(item).fulltextIndex(true, true));
 			boolean isInline = Boolean.parseBoolean(itemForm.getSingleExtra(MainAdminPageCreator.INLINE_INPUT));
@@ -380,7 +380,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			if (id == ItemTypeRegistry.getPrimaryRootId()){
 				return setItem(in, pageCreator);
 			}
-			int type = (toParent)? ItemQuery.loadById(id).getTypeId() : item.getTypeId();
+			int type = (toParent) ? AdminLoader.loadItem(id, getCurrentAdmin()).getTypeId() : item.getTypeId();
 			page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, id, type);
 		} else {
 			page = pageCreator.createParamsPage(item.getId(), in.isVisual);
@@ -770,7 +770,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		if (buffer == null) {
 			buffer = new LinkedHashMap<>();
 		}
-		ItemAccessor item = AdminLoader.getLoader().loadItemAccessor(in.itemId);
+		ItemAccessor item = AdminLoader.loadItemAccessor(in.itemId);
 		buffer.put(item.getId(), item);
 		in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 		return pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId);
@@ -840,7 +840,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 */
 	private AdminPage deleteReference(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
-		Item item = ItemQuery.loadById(in.itemId);
+		Item item = AdminLoader.loadItem(in.itemId, getCurrentAdmin());
 		transaction.addCommandUnit(new DeleteAssocDBUnit(item, in.parentId, in.assocId));
 		transaction.execute();
 		// Очистить кеш страниц
@@ -866,10 +866,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 */
 	private AdminPage deleteAssociated(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
-		Item baseItem = ItemQuery.loadById(in.itemId);
+		Item baseItem = AdminLoader.loadItem(in.itemId, getCurrentAdmin());
 		for (String itemInput : in.mount.keySet()) {
 			String[] parts = UrlParameterFormatConverter.splitInputName(itemInput);
-			Item child = ItemQuery.loadById(Long.parseLong(parts[2]));
+			Item child = AdminLoader.loadItem(Long.parseLong(parts[2]), getCurrentAdmin());
 			transaction.addCommandUnit(new DeleteAssocDBUnit(child, baseItem, in.assocId));
 		}
 		transaction.execute();
