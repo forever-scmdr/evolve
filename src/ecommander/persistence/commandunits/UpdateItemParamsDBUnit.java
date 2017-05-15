@@ -76,7 +76,8 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 		updateItem.UPDATE(ItemTbl.I_TABLE).SET()
 				.col(ItemTbl.I_KEY).setString(item.getKey())
 				._col(ItemTbl.I_T_KEY).setString(item.getKeyUnique())
-				._col(ItemTbl.I_PARAMS).setString(item.outputValues());
+				._col(ItemTbl.I_PARAMS).setString(item.outputValues())
+				.WHERE().col(ItemTbl.I_ID).setLong(item.getId());
 		try (PreparedStatement pstmt = updateItem.prepareQuery(conn)) {
 			pstmt.executeUpdate();
 		}
