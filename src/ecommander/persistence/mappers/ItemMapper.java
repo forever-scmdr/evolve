@@ -63,33 +63,21 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 				// Пропустить все неизмененные параметры
 				if (!param.hasChanged())
 					continue;
-				// Удалить старое значение (параметр раньше имел значение, сейчас не имеет)
-				if (param.isEmpty()) {
-					query.sql("DELETE FROM ").sql(DataTypeMapper.getTableName(param.getType()))
-							.sql(" WHERE ").sql(ItemIndexes.II_ITEM_ID).sql("=").setLong(item.getId())
-							.sql(" AND ").sql(ItemIndexes.II_PARAM).sql("=").setInt(param.getParamId()).sql("; ");
-				}
+				// Удалить старое значение
+				query.sql("DELETE FROM ").sql(DataTypeMapper.getTableName(param.getType()))
+						.sql(" WHERE ").sql(ItemIndexes.II_ITEM_ID).sql("=").setLong(item.getId())
+						.sql(" AND ").sql(ItemIndexes.II_PARAM).sql("=").setInt(param.getParamId()).sql("; ");
 				// Непустые параметры (одиночные и множественные)
-				else {
+				if (!param.isEmpty()) {
 					if (param.isMultiple()) {
 						// Обновить каждое значение в отдельности
 						MultipleParameter mp = ((MultipleParameter) param);
-						ArrayList<String> mpVals = new ArrayList<>();
 						for (SingleParameter sp : mp.getValues()) {
-							createSingleValueInsert(query, item, sp, true);
-							mpVals.add(sp.outputValue());
+							createSingleValueInsert(query, item, sp, false);
 						}
-						// Удалить лишние значения, если они были
-						query.DELETE(DataTypeMapper.getTableName(param.getType()))
-								.WHERE()
-								.col(ItemIndexes.II_ITEM_ID).setLong(item.getId()).AND()
-								.col(ItemIndexes.II_PARAM).setInt(param.getParamId()).AND()
-								.col(ItemIndexes.II_VALUE, " NOT IN (");
-						DataTypeMapper.appendPreparedStatementRequestValues(param.getType(), query, mpVals);
-						query.sql(");");
 					} else {
 						// Просто вставить значение парамета без удаления и с добавлением on duplicate key update
-						createSingleValueInsert(query, item, (SingleParameter) param, true);
+						createSingleValueInsert(query, item, (SingleParameter) param, false);
 					}
 				}
 			}

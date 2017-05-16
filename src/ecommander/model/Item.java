@@ -35,12 +35,22 @@ import ecommander.model.datatypes.DataType.Type;
  * Айтемы могуть быть либо общими либо персональными.
  * У общих айтемов нет определенного владельца (USER_ID = 0), но есть определенная группа (USER_GROUP != 0).
  * У персональных айтемов есть как владелец (USER_ID != 0), так и группа (USER_GROUP != 0)
- * 
+ *
+ * Параметры айетма и их сохранение:
+ * Айтем может пребывать в следующих состояниях
+ * 1) не менялся, параметры еще не разобраны
+ * 2) не менялся, параметры разобраны
+ * 3) менялся (естественно параметры разобраны), параметры не в XML
+ * 4) менялся (естественно параметры разобраны), параметры в XML
  * 
  * @author E
  */
 public class Item implements ItemBasics {
-	
+
+	private enum State {
+		consistent_NO_map, consistent_WITH_map, modified_NO_xml, modified_WITH_xml
+	}
+
 	private static final String PARAM_TAG = "param";
 	public static final String ID_ATTRIBUTE = "id";
 
@@ -92,8 +102,7 @@ public class Item implements ItemBasics {
 
 	private long timeUpdated; // время последнего обновления или создания айтема
 	
-	private boolean mapConsistent = false; // находится ли отображение параметров в актуальном состоянии (загружены ли значения из строки)
-	private boolean stringConsistent = true; // находится ли строка в согласованном состоянии
+	private State state;
 	/**
 	 * Простой конструктор копирования, не выполняет глубокое копирование
 	 * @param src
@@ -114,8 +123,7 @@ public class Item implements ItemBasics {
 		this.areFilesProtected = src.areFilesProtected;
 		this.timeUpdated = src.timeUpdated;
 		this.paramMap.putAll(src.paramMap);
-		this.mapConsistent = src.mapConsistent;
-		this.stringConsistent = src.stringConsistent;
+		this.state = src.state;
 	}
 	
 	private Item(ItemType itemDesc, Assoc contextAssoc, long parentId, int userId, byte groupId, byte status,
@@ -129,8 +137,7 @@ public class Item implements ItemBasics {
 		this.areFilesProtected = filesProtected;
 		this.id = DEFAULT_ID;
 		this.key = itemDesc.getCaption();
-		this.mapConsistent = true;
-		this.stringConsistent = false; // для вновь создаваемых айтемов чтобы обеспечить генерацию keyUnique при отсутствии параметров
+		this.state = State.modified_NO_xml;
 		// Добавить все параметры, которые содержатся в типа айтема.
 		// Все параметры (даже пустые) нужны для отслеживания изменений параметров.
 		for (ParameterDescription paramDesc : itemType.getParameterList()) {
@@ -155,8 +162,7 @@ public class Item implements ItemBasics {
 		this.areFilesInitiallyProtected = filesProtected;
 		this.areFilesProtected = filesProtected;
 		this.parametersXML = parametersXML;
-		this.mapConsistent = false;
-		this.stringConsistent = true;
+		this.state = State.consistent_NO_map;
 		// Добавить все параметры, которые содержатся в типа айтема.
 		// Все параметры (даже пустые) нужны для отслеживания изменений параметров.
 		for (ParameterDescription paramDesc : itemType.getParameterList()) {
@@ -241,7 +247,7 @@ public class Item implements ItemBasics {
 	 */
 	public final void setValueUI(int paramId, String value) throws Exception {
 		getParameter(paramId).createAndSetValue(value, isNew());
-		stringConsistent = false;
+		state = State.modified_NO_xml;
 	}
 	/**
 	 * Установка или добавление парамтера.
@@ -271,7 +277,7 @@ public class Item implements ItemBasics {
 		} else {
 			getParameter(paramId).setValue(value);
 		}
-		stringConsistent = false;
+		state = State.modified_NO_xml;
 	}
 	/**
 	 * Прямая установка параметра. Используется когда сразу есть значение параметра соответствующего типа
@@ -341,7 +347,7 @@ public class Item implements ItemBasics {
 	 * Заполнить значения параметров из строки параметров XML в отображение (paramMap)
 	 */
 	private void populateMap() {
-		if (stringConsistent && !mapConsistent) {
+		if (state == State.consistent_NO_map) {
 			try {
 				XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
 				doc.startElement("params").addElements(parametersXML).endElement();
@@ -404,7 +410,7 @@ public class Item implements ItemBasics {
 			} catch (Exception e) {
 				ServerLogger.error("ITEM params population from XML failed", e);
 			}
-			mapConsistent = true;
+			state = State.consistent_WITH_map;
 		}
 	}
 	/**
@@ -412,7 +418,7 @@ public class Item implements ItemBasics {
 	 */
 	private void createXML() {
 		try {
-			if (mapConsistent && !stringConsistent) {
+			if (state == State.modified_NO_xml) {
 				XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 				for (ParameterDescription paramDesc : itemType.getParameterList()) {
 					Parameter param = paramMap.get(paramDesc.getId());
@@ -426,7 +432,7 @@ public class Item implements ItemBasics {
 					}
 				}
 				parametersXML = xml.toString();
-				stringConsistent = true;
+				state = State.modified_WITH_xml;
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Can not serialize item parameters", e);
@@ -467,7 +473,7 @@ public class Item implements ItemBasics {
 		} else {
 			throw new IllegalArgumentException("Unable to delete multiple value from single parameter " + param.getName());
 		}
-		stringConsistent = false;
+		state = State.modified_NO_xml;
 	}
 
 	/**
@@ -477,7 +483,7 @@ public class Item implements ItemBasics {
 	public final void clearParameter(int paramId) {
 		populateMap();
 		getParameterFromMap(paramId).clear();
-		stringConsistent = false;
+		state = State.modified_NO_xml;
 	}
 	/**
 	 * Удалить все значения определенного параметра по его названию
@@ -500,7 +506,7 @@ public class Item implements ItemBasics {
 			if (param.containsValue(paramValue))
 				clearParameter(paramId);
 		}
-		stringConsistent = false;
+		state = State.modified_NO_xml;
 	}
 	/**
 	 * Установить контекстного родителя (родителя в контексте выполнения)
@@ -536,7 +542,7 @@ public class Item implements ItemBasics {
 	 * Вызывается перед сохранением айтема
 	 */
 	public final void prepareToSave() {
-		if (!stringConsistent) {
+		if (state == State.modified_NO_xml) {
 			// Записать параметры в XML формате
 			createXML();
 			// Сформировать ключевой параметр
@@ -558,17 +564,17 @@ public class Item implements ItemBasics {
 				keyUnique = Strings.translit(key);
 		}
 	}
-	/**
-	 * Вернуть версию айтема, которая была сразу после загрузки из БД
-	 * (до установки и изменения параметров)
-	 * @return
-	 */
-	public final Item getConsistentVersion() {
-		if (stringConsistent)
-			return this;
-		return new Item(itemType, id, contextAssoc, contextParentId, ownerUserId, ownerGroupId, status,
-				key, parametersXML,	oldKeyUnique, timeUpdated, areFilesProtected);
-	}
+//	/**
+//	 * Вернуть версию айтема, которая была сразу после загрузки из БД
+//	 * (до установки и изменения параметров)
+//	 * @return
+//	 */
+//	public final Item getConsistentVersion() {
+//		if (state == State.consistent_NO_map || state == State.consistent_WITH_map)
+//			return this;
+//		return new Item(itemType, id, contextAssoc, contextParentId, ownerUserId, ownerGroupId, status,
+//				key, parametersXML,	oldKeyUnique, timeUpdated, areFilesProtected);
+//	}
 
 	/**
 	 * Возвращает старый уникальный ключ (который айетм имел при загрузке из БД)
@@ -584,7 +590,7 @@ public class Item implements ItemBasics {
 	 */
 	public final void forceInitialInconsistent() {
 		populateMap();
-		stringConsistent = false;
+		state = State.modified_NO_xml;
 	}
 	/**
 	 * Получить XML со всеми параметрами айтема
@@ -755,7 +761,7 @@ public class Item implements ItemBasics {
 	 * @return
 	 */
 	public final boolean hasChanged() {
-		if (stringConsistent)
+		if (state == State.consistent_NO_map || state == State.consistent_WITH_map)
 			return false;
 		for (Parameter param : paramMap.values()) {
 			if (param.hasChanged())

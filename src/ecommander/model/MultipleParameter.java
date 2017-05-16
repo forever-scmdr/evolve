@@ -2,9 +2,7 @@ package ecommander.model;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 
 /**
@@ -15,12 +13,12 @@ import java.util.Iterator;
  */
 public final class MultipleParameter extends Parameter {
 	
-	private ArrayList<SingleParameter> values;
-	private ArrayList<SingleParameter> backupValues;
+	private LinkedHashSet<SingleParameter> values;
+	private HashSet<SingleParameter> backupValues;
 	
 	public MultipleParameter(ParameterDescription desc) {
 		super(desc);
-		values = new ArrayList<>();
+		values = new LinkedHashSet<>();
 	}
 	/**
 	 * Добавление значения
@@ -114,7 +112,7 @@ public final class MultipleParameter extends Parameter {
 	 */
 	private void backup() {
 		if (backupValues == null) {
-			backupValues = new ArrayList<>();
+			backupValues = new HashSet<>();
 			backupValues.addAll(values);
 		}
 	}
@@ -131,28 +129,17 @@ public final class MultipleParameter extends Parameter {
 		if (values.size() == 0)
 			return;
 		backup();
-		values = new ArrayList<>();
+		values = new LinkedHashSet<>();
 	}
 
 	@Override
 	public boolean hasChanged() {
-		return backupValues != null && !singleParamArraysEqual(backupValues, values);
+		return backupValues != null && (!values.containsAll(backupValues) || !backupValues.containsAll(values));
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return singleParamArraysEqual(values, ((MultipleParameter)obj).values);
-	}
-
-	private boolean singleParamArraysEqual(ArrayList<SingleParameter> first, ArrayList<SingleParameter> second) {
-		if (first.size() != second.size())
-			return false;
-		Iterator<SingleParameter> firstIter = first.iterator();
-		Iterator<SingleParameter> secondIter = second.iterator();
-		while (firstIter.hasNext()) {
-			if (!firstIter.next().equals(secondIter.next()))
-				return false;
-		}
-		return true;
+		MultipleParameter mp = (MultipleParameter)obj;
+		return values.containsAll(mp.values) && mp.values.containsAll(values);
 	}
 }
