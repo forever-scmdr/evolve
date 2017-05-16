@@ -64,9 +64,9 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 				if (!param.hasChanged())
 					continue;
 				// Удалить старое значение
-				query.sql("DELETE FROM ").sql(DataTypeMapper.getTableName(param.getType()))
-						.sql(" WHERE ").sql(ItemIndexes.II_ITEM_ID).sql("=").setLong(item.getId())
-						.sql(" AND ").sql(ItemIndexes.II_PARAM).sql("=").setInt(param.getParamId()).sql("; ");
+				query.DELETE_FROM_WHERE(DataTypeMapper.getTableName(param.getType()))
+						.col(ItemIndexes.II_ITEM_ID).setLong(item.getId()).AND()
+						.col(ItemIndexes.II_PARAM).setInt(param.getParamId()).sql("; ");
 				// Непустые параметры (одиночные и множественные)
 				if (!param.isEmpty()) {
 					if (param.isMultiple()) {
@@ -94,7 +94,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 
 
 	private static void createSingleValueInsert(TemplateQuery query, Item item, SingleParameter param, boolean needUpdate) throws SQLException {
-		query.sql("INSERT INTO ").sql(DataTypeMapper.getTableName(param.getType())).sql(PARAM_INSERT_PREPARED_START);
+		query.INSERT_INTO(DataTypeMapper.getTableName(param.getType())).sql(PARAM_INSERT_PREPARED_START);
 		query
 				.setLong(item.getId()).sql(",")
 				.setInt(param.getParamId()).sql(",")
