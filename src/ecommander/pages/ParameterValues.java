@@ -16,7 +16,7 @@ import java.util.List;
 class ParameterValues implements Serializable {
 	private static final long serialVersionUID = -1721171544301221441L;
 
-	private HashMap<Object, Object> map = new HashMap<Object, Object>();
+	private HashMap<Object, Object> map = new HashMap<>();
 	ParameterValues() {}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -28,7 +28,7 @@ class ParameterValues implements Serializable {
 			if (stored instanceof List<?>) {
 				((ArrayList) stored).add(value);
 			} else {
-				ArrayList<Object> newVal = new ArrayList<Object>();
+				ArrayList<Object> newVal = new ArrayList<>();
 				newVal.add(stored);
 				newVal.add(value);
 				map.put(paramId, newVal);
@@ -57,10 +57,10 @@ class ParameterValues implements Serializable {
 	public ArrayList<Object> getList(Object paramId) {
 		Object value = map.get(paramId);
 		if (value == null)
-			return new ArrayList<Object>(0);
+			return new ArrayList<>(0);
 		if (value instanceof List<?>)
 			return (ArrayList<Object>)value;
-		ArrayList<Object> values = new ArrayList<Object>();
+		ArrayList<Object> values = new ArrayList<>();
 		values.add(value);
 		return values;
 	}

@@ -234,7 +234,7 @@ public class Item implements ItemBasics {
 	 * @return
 	 */
 	public final boolean isNew() {
-		return id == DEFAULT_ID;
+		return id <= DEFAULT_ID;
 	}
 	/**
 	 * Установка или добавление парамтера.
