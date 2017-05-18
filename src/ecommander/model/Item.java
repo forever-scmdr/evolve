@@ -57,7 +57,7 @@ public class Item implements ItemBasics {
 	private static final int DIR_NAME_LENGTH = 3;
 	private static final char FINAL_DIR_CHAR = 'f';
 
-	public static final long DEFAULT_ID = 0;
+	public static final long DEFAULT_ID = 0l;
 	public static final int WEIGHT_STEP = 64;
 
 	public static final byte STATUS_NORMAL = (byte) 0;
@@ -102,7 +102,7 @@ public class Item implements ItemBasics {
 
 	private long timeUpdated; // время последнего обновления или создания айтема
 	
-	private State state;
+	private State state; // состояние объекта. Определяет, менялись ли параметры айтема и находится ли он в согласованном с БД состоянии
 	/**
 	 * Простой конструктор копирования, не выполняет глубокое копирование
 	 * @param src
@@ -516,6 +516,15 @@ public class Item implements ItemBasics {
 	public final void setContextParentId(Assoc assoc, long parentId) {
 		this.contextParentId = parentId;
 		this.contextAssoc = assoc;
+	}
+
+	/**
+	 * Установить контекстного родителя (родителя в контексте выполнения)
+	 * Ассоциация считается первичной
+	 * @param parentId
+	 */
+	public final void setContextPrimaryParentId(long parentId) {
+		this.contextParentId = parentId;
 	}
 	/**
 	 * Возвращает значение одиночного парамтера

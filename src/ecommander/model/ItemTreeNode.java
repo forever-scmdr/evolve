@@ -1,6 +1,7 @@
 package ecommander.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -23,6 +24,7 @@ public class ItemTreeNode {
 
 	private ItemTreeNode(Item item) {
 		this.item = item;
+		register(this);
 	}
 
 	public static ItemTreeNode createPureRoot() {
@@ -40,8 +42,12 @@ public class ItemTreeNode {
 	}
 
 	private void register(ItemTreeNode successor) {
-		if (successor.item.isNew()) {
+		if (successor.item.getId() == Item.DEFAULT_ID) {
 			successor.item.setId(newIdGenerator--);
+		}
+		if (successor.item.getContextParentId() == Item.DEFAULT_ID) {
+			if (parent != null && parent.item != null)
+				successor.item.setContextPrimaryParentId(parent.item.getContextParentId());
 		}
 		nodesByItemId.put(successor.item.getId(), successor);
 		if (parent != null)
@@ -68,10 +74,13 @@ public class ItemTreeNode {
 	 * @param itemId
 	 * @return
 	 */
-	public ItemTreeNode findSuccessor(long itemId) {
+	public ItemTreeNode find(long itemId) {
 		return nodesByItemId.get(itemId);
 	}
 
+	public Collection<Long> getAllIds() {
+		return nodesByItemId.keySet();
+	}
 	/**
 	 * Найти прямого потока по названию айтема
 	 * @param typeName
@@ -100,5 +109,9 @@ public class ItemTreeNode {
 
 	public boolean isPureRoot() {
 		return parent == null && item == null;
+	}
+
+	public boolean isRoot() {
+		return parent == null;
 	}
 }

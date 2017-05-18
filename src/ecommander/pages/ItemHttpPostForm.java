@@ -41,9 +41,9 @@ public class ItemHttpPostForm implements Serializable {
 	private long itemId;
 	private long itemParentId;
 	private String formId; // часть для уникального ID формы, например название страницы, с которой пришла форма (для сохранения форм в сеансе)
-	private ParameterValues parameterValues; //Значения хранятся или в виде String (обычные парамтеры) или в виде FileItem (файлы)
+	private HttpInputValues parameterValues; //Значения хранятся или в виде String (обычные парамтеры) или в виде FileItem (файлы)
 	private LinkedHashSet<Integer> paramIds;
-	private ParameterValues extra; // дополнительные параметры запроса (НЕ параметры айтема)
+	private HttpInputValues extra; // дополнительные параметры запроса (НЕ параметры айтема)
 	private String filesPath; // Путь к файлам айтема
 	private boolean isFileProtected = false; // Защищены ли файлы айтема
 	
@@ -58,7 +58,7 @@ public class ItemHttpPostForm implements Serializable {
 		itemParentId = parentId;
 		this.formId = formId;
 		paramIds = new LinkedHashSet<>();
-		parameterValues = new ParameterValues();
+		parameterValues = new HttpInputValues();
 		for (String paramName : parametersToEdit) {
 			ParameterDescription param = itemDesc.getParameter(paramName);
 			if (param.isVirtual())
@@ -67,7 +67,7 @@ public class ItemHttpPostForm implements Serializable {
 			parameterValues.add(param.getId(), NO_VALUE);
 		}
 		if (itemDesc.isKeyUnique()) {
-			extra = new ParameterValues();
+			extra = new HttpInputValues();
 			extra.add(FORM_ITEM_UNIQUE_KEY, "");
 		}
 	}
@@ -92,7 +92,7 @@ public class ItemHttpPostForm implements Serializable {
 		isFileProtected = item.isFileProtected();
 		this.formId = formId;
 		paramIds = new LinkedHashSet<>();
-		parameterValues = new ParameterValues();
+		parameterValues = new HttpInputValues();
 		for (String paramName : parametersToEdit) {
 			Parameter param = item.getParameterByName(paramName);
 			if (param.isVirtual())
@@ -135,7 +135,7 @@ public class ItemHttpPostForm implements Serializable {
 	public ItemHttpPostForm(HttpServletRequest request, LinkPE targetUrl) throws FileUploadException,
 			UnsupportedEncodingException {
 		paramIds = new LinkedHashSet<>();
-		parameterValues = new ParameterValues();
+		parameterValues = new HttpInputValues();
 		if (targetUrl == null) {
 			String urlStr = BasicServlet.getUserUrl(request);
 			targetUrl = LinkPE.parseLink(urlStr);
@@ -151,7 +151,7 @@ public class ItemHttpPostForm implements Serializable {
 		targetUrl.removeVariable(FORM_HIDDEN_FORM_ID);
 		targetUrl.removeVariable(FORM_ITEM_UNIQUE_KEY);
 		// Разбор параметров айтема
-		ParameterValues extra = new ParameterValues();
+		HttpInputValues extra = new HttpInputValues();
 		if (ServletFileUpload.isMultipartContent(request)) {
 			DiskFileItemFactory filesFactory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(filesFactory);
@@ -451,7 +451,7 @@ public class ItemHttpPostForm implements Serializable {
 	 */
 	public void putExtra(String name, String value) {
 		if (extra == null)
-			extra = new ParameterValues();
+			extra = new HttpInputValues();
 		extra.add(name, value);
 	}
 	/**
@@ -461,7 +461,7 @@ public class ItemHttpPostForm implements Serializable {
 	public Collection<Object> getExtras() {
 		if (extra == null)
 			return new ArrayList<>();
-		return extra.getExtraNames();
+		return extra.getInputNames();
 	}
 	/**
 	 * Возвращает уникальный ID, который однозначно идентифицирует именно эту форму

@@ -1,8 +1,13 @@
 package ecommander.pages;
 
-import org.apache.commons.lang.StringUtils;
+import ecommander.model.Item;
+import ecommander.model.ItemTreeNode;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Форма на замену ItemHttpPostForm
@@ -18,26 +23,26 @@ import java.io.Serializable;
  *
  * Названия полей состоят из следующих составляющих:
  *
- * 1) Код формы айтема. Генерируестя простым счетчиком.  Начинается с f (form)
- * 2) Код родительской формы (в которую вложена текущая, т.е. родительский айтем для текущего) - аналогично 1.
- *    Начинается с s (successor)
- * 3) ID айтема i (item). Форма существующего или нового айтема, задан ID айтема. Новые айтемы
+ * 1) ID айтема i (item). Форма существующего или нового айтема, задан ID айтема. Новые айтемы
  *    также имеют ID, но он отрицательный
- * 4) ID родительского айтема a (ancestor). Нужна только для новых айтемов
- * 5) Тип айтема (начинается с t)
- * 6) Параметр айтема (начинается с p). Возможно при отсутствии части 6. (parameter)
- * 7) Переменная айтема (начинается с v). Возможно при отсутствии части 5. (variable)
+ * 2) ID родительского айтема a (ancestor). Нужна только для новых айтемов
+ * 3) Тип айтема (начинается с t)
+ * 4) Параметр айтема (начинается с p). Возможно при отсутствии части 6. (parameter)
+ * 5) Переменная айтема (начинается с v). Возможно при отсутствии части 5. (variable)
+ *
+ * !!!  ПОЯСНЕНИЕ - теперь все айтемы, даже новые, имеют уникальный ID, поэтому можно использовать эти ID
+ *      для уникальной идентификации формы (набора инпутов) айтема
+ *
  *
  * Название поля состоит из частей, разделенных подчеркиванием (_), например
- * f0003_s0001_n15_t8_p22
- *
+ * i15_t8_p22 - существующий айтем с ID=15, тип айтема 8, параметр 22
+ * i-3_a-1_t22_p35 - новый айтем ID=-3, родитель - тоже новый айтем с ID=-1, тип айтема 22, параметр 35
+ * i15_t8_vukey - существующий айтем с ID=15, тип айтема 8, переменная айтема с названием ukey (уникальный ключ)
  *
  * Created by E on 17/5/2017.
  */
 public class MultipleHttpPostForm implements Serializable{
 
-	private final static char FORM = 'f';
-	private final static char CONTAINER_FORM = 'c';
 	private final static char ITEM = 'i';
 	private final static char ANCESTOR = 'a';
 	private final static char TYPE = 't';
@@ -45,27 +50,22 @@ public class MultipleHttpPostForm implements Serializable{
 	private final static char VAR = 'v';
 
 	private static class InputDesc {
-		private int formCode;
-		private int parentCode;
 		private long parentId;
 		private long itemId;
 		private int itemType;
 		private int paramId;
 		private String varName;
 
-		public InputDesc(String inputName) {
+		private String inputName;
+
+		private InputDesc(String inputName) {
+			this.inputName = inputName;
 			String[] parts = StringUtils.split(inputName);
 			for (String part : parts) {
 				if (part.length() > 0) {
 					char desc = part.charAt(0);
 					String value = org.apache.commons.lang3.StringUtils.substring(part, 1);
 					switch (desc) {
-						case FORM:
-							formCode = Integer.parseInt(value);
-							break;
-						case CONTAINER_FORM:
-							parentCode = Integer.parseInt(value);
-							break;
 						case ITEM:
 							itemId = Long.parseLong(value);
 							break;
@@ -84,6 +84,41 @@ public class MultipleHttpPostForm implements Serializable{
 					}
 				}
 			}
+		}
+
+		private InputDesc(long itemId, long parentId, int itemType, int paramId, String varName) {
+			this.parentId = parentId;
+			this.itemId = itemId;
+			this.itemType = itemType;
+			this.paramId = paramId;
+			this.varName = varName;
+			StringBuilder sb = new StringBuilder();
+			sb.append(ITEM).append(itemId);
+			if (parentId != Item.DEFAULT_ID)
+				sb.append(ANCESTOR).append(parentId);
+			sb.append(TYPE).append(itemType);
+			if (paramId > 0)
+				sb.append(PARAM).append(paramId);
+			if (StringUtils.isNotBlank(varName))
+				sb.append(VAR).append(varName);
+			inputName = sb.toString();
+		}
+	}
+
+	private int formIdGenerator = 1;
+	private String cacheId;
+	private HashMap<Long, HttpInputValues> inputs = new HashMap<>();
+
+	private transient ItemTreeNode items;
+
+	MultipleHttpPostForm() { }
+
+	public MultipleHttpPostForm(String cacheId, ItemTreeNode items) {
+		this.cacheId = cacheId;
+		this.items = items;
+		for (Long itemId : items.getAllIds()) {
+			Item item = items.find(itemId).getItem();
+			InputDesc input = new InputDesc(item.getId(), item.getContextParentId(), item.getTypeId(), )
 		}
 	}
 

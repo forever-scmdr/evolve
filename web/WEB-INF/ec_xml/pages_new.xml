@@ -28,7 +28,7 @@
 			  -->
 			<tree item="section_abstract" assoc="hierarchy" id="section">
 				<link name="show_section" target="section">
-					<var name="sec" id="section" style="translit" />
+					<var name="sec" ref="section" style="translit" />
 				</link>
 			</tree>
 		</single>
@@ -40,11 +40,15 @@
 		<request>
 			<var name="sec" style="translit"/>
 		</request>
-		<single item="section_abstract" reference-var="sec" tag="current_section">
+		<!--Если в записи используются фигурные скобки, значит это переменная (значение переменно страницы)-->
+		<single item="section_abstract" ref="{sec}" tag="current_section">
 			<!-- Загрузить всех потомков (прямых и непрямых) айтема в виде одного списка -->
 			<list item="product" assoc="hierarchy" transitive="true" id="product">
+				<!-- Блок инпутов, которые относястя к айтему ref. Названия инпутов перечисляются в тэге name -->
+				<!-- Эти параметры не являются параметрами айтема -->
+				<extra-input ref="product" name="qty compare"/>
 				<link name="show_product" target="product">
-					<var name="prod" id="product" style="translit"/>
+					<var name="prod" ref="product" style="translit"/>
 				</link>
 			</list>
 			<!-- Загрузить всех предшественников (transitive="true") по определенной ассоциации -->
@@ -59,12 +63,13 @@
 			<var name="sec" style="translit"/>
 			<var name="price_to" style="query"/>
 		</request>
-		<single item="section_abstract" reference-var="sec" tag="current_section">
+		<single item="section_abstract" reference="{sec}" tag="current_section">
 			<list item="product" assoc="hierarchy" transitive="true" id="product">
 				<filter>
 					<!--Загрузить товары, которые содержат вложенный айтем цены со скидкой-->
 					<!--по идее не обязательно указывать оба атрибута assoc и child, иногда достаточно одного-->
-					<parameter name="discount" assoc="seller_price" child="price" sign="&gt;"><var value="2"/></parameter>
+					<parameter name="discount" assoc="seller_price" child="price" sign="&gt;" value="2"><var value="2"/></parameter>
+					<parameter name="price" sign="&lt;=" ><var value="{price_to}"/></parameter>
 				</filter>
 			</list>
 		</single>
@@ -75,11 +80,39 @@
 		<variables>
 			<var name="prod" style="translit"/>
 		</variables>
-		<single item="product" reference-var="prod">
+		<single item="product" reference="{prod}">
 
 		</single>
 	</page>
 
+
+
+	<page name="section_edit" template="section">
+		<request>
+			<var name="sec" style="translit"/>
+		</request>
+		<single item="section_abstract" id="section" reference="{sec}" tag="current_section">
+			<!-- Блок инпутов, которые относястя к айтему ref. Если не уканан атрибут name - генерируются все параметры-->
+			<parameter-input ref="section" name="name"/>
+			<list item="product" assoc="hierarchy" transitive="true" id="product">
+				<!-- Блок инпутов, которые относястя к айтему ref. Если не задан name, то выводятся все параметры-->
+				<parameter-input ref="product" restore-var="message"/>
+				<extra-input ref="product" name="popular" restore-var="message"/>
+				<link name="show_product" target="product">
+					<var name="prod" ref="product" style="translit"/>
+				</link>
+			</list>
+			<!-- Вместо загрузки айтема создает его (без сохранения в БД). В качестве родителя указывается parent-ref -->
+			<new item="product" parent-ref="section" id="new_product">
+				<parameter-input ref="new_product" restore-var="message"/>
+				<extra-input ref="new_product" name="popular" restore-var="message"/>
+			</new>
+			<parent item="section_abstract" assoc="hierarchy" transitive="true" tag="breadcrumb"/>
+			<list item="section_abstract" assoc="hierarchy" tag="subsection"/>
+			<link name="submit_all" target="save_items" type="post"/>
+		</single>
+
+	</page>
 
 <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

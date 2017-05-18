@@ -13,11 +13,11 @@ import java.util.List;
  * @author E
  *
  */
-class ParameterValues implements Serializable {
+class HttpInputValues implements Serializable {
 	private static final long serialVersionUID = -1721171544301221441L;
 
 	private HashMap<Object, Object> map = new HashMap<>();
-	ParameterValues() {}
+	HttpInputValues() {}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void add(Object paramId, Object value) {
@@ -69,7 +69,7 @@ class ParameterValues implements Serializable {
 		return !map.isEmpty();
 	}
 	
-	public Collection<Object> getExtraNames() {
+	public Collection<Object> getInputNames() {
 		return map.keySet();
 	}
 	

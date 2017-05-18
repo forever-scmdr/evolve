@@ -39,12 +39,12 @@ public class ItemVariablesContainer implements Serializable {
 
 		private long itemId;
 		private int typeId;
-		private ParameterValues variables;
+		private HttpInputValues variables;
 		
 		protected ItemVariables(long itemId, int itemTypeIs) {
 			this.itemId = itemId;
 			this.typeId = itemTypeIs;
-			this.variables = new ParameterValues();
+			this.variables = new HttpInputValues();
 		}
 		/**
 		 * Добавить значение
@@ -85,7 +85,7 @@ public class ItemVariablesContainer implements Serializable {
 		
 		public Collection<String> getPostedInputs() {
 			ArrayList<String> inputNames = new ArrayList<String>();
-			for (Object paramId : variables.getExtraNames()) {
+			for (Object paramId : variables.getInputNames()) {
 				inputNames.add((String) paramId);
 			}
 			return inputNames;
