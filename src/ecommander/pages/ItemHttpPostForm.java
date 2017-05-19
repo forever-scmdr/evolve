@@ -20,6 +20,8 @@ import java.util.*;
  * На этом уровне абстракции этот урл не нужен, он нужен только в XSL файле
  * @author EEEE
  *
+ * @deprecated TODO delete
+ *
  */
 public class ItemHttpPostForm implements Serializable {
 	private static final long serialVersionUID = 4449373285150234982L;
@@ -461,7 +463,7 @@ public class ItemHttpPostForm implements Serializable {
 	public Collection<Object> getExtras() {
 		if (extra == null)
 			return new ArrayList<>();
-		return extra.getInputNames();
+		return extra.getInputKeys();
 	}
 	/**
 	 * Возвращает уникальный ID, который однозначно идентифицирует именно эту форму

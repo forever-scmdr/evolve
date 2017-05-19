@@ -93,7 +93,7 @@ public class Item implements ItemBasics {
 	private LinkedHashMap<Integer, Parameter> paramMap = new LinkedHashMap<>(); // Все параметры (не только одиночные)
 																				// параметры (имя параметра => объект
 																				// Parameter)
-	private HashMap<String, String> extras; // дополнительные значения (не параметры). Они существуют только в памяти, в БД не хранятся
+	private HashMap<String, Object> extras; // дополнительные значения (не параметры). Они существуют только в памяти, в БД не хранятся
 											// могут использоваться когда айтем создается в сеансе или в форме (поля extra формы переписываются сюда)
 	private String parametersXML = Strings.EMPTY; // Все параметры, записанные в виде XML
 	private String filesPath = null; // Относительный путь к файлам айтема
@@ -835,7 +835,7 @@ public class Item implements ItemBasics {
 	 * @param name
 	 * @param value
 	 */
-	public final void setExtra(String name, String value) {
+	public final void setExtra(String name, Object value) {
 		if (extras == null)
 			extras = new HashMap<>();
 		extras.put(name, value);
@@ -845,7 +845,7 @@ public class Item implements ItemBasics {
 	 * @param name
 	 * @return
 	 */
-	public final String getExtra(String name) {
+	public final Object getExtra(String name) {
 		if (extras == null)
 			return null;
 		return extras.get(name);

@@ -85,7 +85,7 @@ public class ItemVariablesContainer implements Serializable {
 		
 		public Collection<String> getPostedInputs() {
 			ArrayList<String> inputNames = new ArrayList<String>();
-			for (Object paramId : variables.getInputNames()) {
+			for (Object paramId : variables.getInputKeys()) {
 				inputNames.add((String) paramId);
 			}
 			return inputNames;

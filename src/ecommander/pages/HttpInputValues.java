@@ -69,7 +69,7 @@ class HttpInputValues implements Serializable {
 		return !map.isEmpty();
 	}
 	
-	public Collection<Object> getInputNames() {
+	public Collection<Object> getInputKeys() {
 		return map.keySet();
 	}
 	

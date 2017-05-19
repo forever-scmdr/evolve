@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Содержит методы по преобразованию различных внутренних вещей в формат HTML
  * @author EEEE
- *
+ * @deprecated TODO delete
  */
 public class UrlParameterFormatConverter {
 	// Разделитель названия поля ввода и ID айтема, когда айтем ассоциирован с полями ввода

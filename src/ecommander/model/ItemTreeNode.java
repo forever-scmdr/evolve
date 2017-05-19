@@ -14,8 +14,6 @@ public class ItemTreeNode {
 	private ItemTreeNode parent = null;
 	private Item item = null;
 
-	private long newIdGenerator = -1;
-
 	private HashMap<Long, ItemTreeNode> nodesByItemId = new HashMap<>();
 
 	private ItemTreeNode() {
@@ -42,9 +40,6 @@ public class ItemTreeNode {
 	}
 
 	private void register(ItemTreeNode successor) {
-		if (successor.item.getId() == Item.DEFAULT_ID) {
-			successor.item.setId(newIdGenerator--);
-		}
 		if (successor.item.getContextParentId() == Item.DEFAULT_ID) {
 			if (parent != null && parent.item != null)
 				successor.item.setContextPrimaryParentId(parent.item.getContextParentId());
@@ -67,6 +62,12 @@ public class ItemTreeNode {
 
 	public ArrayList<ItemTreeNode> getChildren() {
 		return children;
+	}
+
+	public ItemTreeNode getFirstChild() {
+		if (children.size() > 0)
+			return children.get(0);
+		return null;
 	}
 
 	/**

@@ -12,7 +12,7 @@ public class TypeHierarchy implements Comparable<TypeHierarchy> {
 	
 	TypeHierarchy(String name) {
 		itemName = name;
-		extenders = new ArrayList<TypeHierarchy>();
+		extenders = new ArrayList<>();
 	}
 	
 	public String getItemName() {
