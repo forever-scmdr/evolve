@@ -102,7 +102,7 @@ public class SessionItemMapper {
 				int i = 0;
 				for (String key : item.getExtraKeys()) {
 					extras[i++] = key;
-					extras[i++] = item.getExtra(key);
+					extras[i++] = (String) item.getExtra(key);
 				}
 			}
 		}

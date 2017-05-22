@@ -44,7 +44,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	// Базовая ссылка, все урлы страницы должны быть относительны этой ссылке
 	private String urlBase;
 	// Форма, которая пришла в результате POST запроса (форма на базе одного айтема)
-	private ItemHttpPostForm itemForm;
+	private SingleItemHttpPostFormDeprecated itemForm;
 	// Тоже форма, которая пришла в результате POST запроса (форма на базе инпутов, принадлежащих разным айтемам)
 	private ItemVariablesContainer itemVariables;
 	// Нужно ли очищать кеш после выполнения всех команд этой страницы
@@ -131,12 +131,12 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	 * @param itemForm
 	 * @param itemVars
 	 */
-	public void setPostData(ItemHttpPostForm itemForm, ItemVariablesContainer itemVars) {
+	public void setPostData(SingleItemHttpPostFormDeprecated itemForm, ItemVariablesContainer itemVars) {
 		this.itemForm = itemForm;
 		this.itemVariables = itemVars;
 	}
 	
-	public final ItemHttpPostForm getItemFrom() {
+	public final SingleItemHttpPostFormDeprecated getItemFrom() {
 		return itemForm;
 	}
 	

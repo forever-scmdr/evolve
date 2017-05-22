@@ -13,12 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ecommander.pages.SingleItemHttpPostFormDeprecated;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
-import ecommander.pages.ItemHttpPostForm;
 import ecommander.persistence.mappers.SessionItemMapper;
 import ecommander.persistence.mappers.SessionObjectStorage;
 import ecommander.model.User;
@@ -216,14 +216,14 @@ public class SessionContext implements AutoCloseable {
 	 * Вызывается не автоматически, и только в процессе выполнения команд по требованию
 	 * @param form
 	 */
-	public void saveForm(ItemHttpPostForm form) {
+	public void saveForm(SingleItemHttpPostFormDeprecated form) {
 		forceGetSession().setAttribute(FORM_SESSION_NAME_PREFIX + form.getFormId(), form);
 	}
 	/**
 	 * Удалить форму из сеанса
 	 * @param form
 	 */
-	public void removeForm(ItemHttpPostForm form) {
+	public void removeForm(SingleItemHttpPostFormDeprecated form) {
 		if (hasSession())
 			forceGetSession().removeAttribute(FORM_SESSION_NAME_PREFIX + form.getFormId());
 	}
@@ -233,9 +233,9 @@ public class SessionContext implements AutoCloseable {
 	 * @param formId
 	 * @return
 	 */
-	public ItemHttpPostForm getForm(String formId) {
+	public SingleItemHttpPostFormDeprecated getForm(String formId) {
 		if (hasSession())
-			return (ItemHttpPostForm) forceGetSession().getAttribute(FORM_SESSION_NAME_PREFIX + formId);
+			return (SingleItemHttpPostFormDeprecated) forceGetSession().getAttribute(FORM_SESSION_NAME_PREFIX + formId);
 		return null;
 	}
 	/**

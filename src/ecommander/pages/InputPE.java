@@ -7,6 +7,7 @@ import ecommander.model.Item;
  * Поле ввода, которое относится к определенному айтему
  * @author EEEE
  *
+ * @deprecated TODO delete
  */
 public class InputPE implements PageElement {
 	

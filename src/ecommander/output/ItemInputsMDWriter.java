@@ -4,16 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import ecommander.fwk.Strings;
 import ecommander.controllers.AppContext;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.ParameterDescription;
-import ecommander.pages.ItemHttpPostForm;
-import ecommander.model.Domain;
-import ecommander.model.DomainRegistry;
+import ecommander.model.*;
+import ecommander.pages.ItemInputName;
 
 /**
  * Создает следующую структуру
@@ -26,8 +21,8 @@ import ecommander.model.DomainRegistry;
 	// id="35322" - ID рекактирукмого айтема
 	<item_form 
 		caption="Отделка баров" 
-		action="item_post.item" 
-		action-url="item_post.item?$post_in$=article&$post_ii$=35322&$post_ip$=532" 
+		action="item_post.item"
+		action-url="item_post.item?$post_in$=article&$post_ii$=35322&$post_ip$=532"
 		file-path="/var/www/..." id="35322"> 
 		<hidden>                                           // hidden поля
 			<field input="$post_in$" value="article">       // одно hidden поле
@@ -79,11 +74,9 @@ import ecommander.model.DomainRegistry;
 
  * 
  * @author EEEE
- *
  */
-public class ItemFormMDWriter extends MetaDataWriter {
+public class ItemInputsMDWriter extends MetaDataWriter {
 
-	private static final String HIDDEN_ELEMENT = "hidden";
 	private static final String FIELD_ELEMENT = "field";
 	private static final String EXTRA_ELEMENT = "extra";
 	private static final String DOMAIN_ELEMENT = "domain";
@@ -91,7 +84,6 @@ public class ItemFormMDWriter extends MetaDataWriter {
 	
 	private static final String NAME_ATTRIBUTE = "name";
 	private static final String TYPE_ATTRIBUTE = "type";
-	private static final String ACTION_ATTRIBUTE = "action";
 	private static final String ACTION_URL_ATTRIBUTE = "action-url";
 	private static final String INPUT_ATTRIBUTE = "input";
 	private static final String QUANTIFIER_ATTRIBUTE = "quantifier";
@@ -102,60 +94,49 @@ public class ItemFormMDWriter extends MetaDataWriter {
 	private static final String DESCRIPTION_ATTRIBUTE = "description";
 	private static final String INDEX_ATTRIBUTE = "index";
 	private static final String FILE_PATH_ATTRIBUTE = "file-path";
-	private static final String VALUE_ATTRIBUTE = VALUE_ELEMENT;
 	private static final String DOMAIN_ATTRIBUTE = DOMAIN_ELEMENT;
 	
 	private static final String SINGLE_VALUE = "single";
 	private static final String MULTIPLE_VALUE = "multiple";
 	
-	private ItemHttpPostForm form;
+	private Item item;
 	private String tag;
-	private String action = "";
+	private String actionUrl = "";
 	
-	public ItemFormMDWriter(ItemHttpPostForm form, String tag) {
-		this.form = form;
+	public ItemInputsMDWriter(Item item, String tag) {
+		this.item = item;
 		this.tag = tag;
 	}
 	
-	public void setAction(String action) {
-		this.action = action;
+	public void setActionUrl(String actionUrl) {
+		this.actionUrl = actionUrl;
 	}
 	
 	@Override
 	public XmlDocumentBuilder write(XmlDocumentBuilder xml) {
-		ItemType itemDesc = ItemTypeRegistry.getItemType(form.getItemTypeId());
+		ItemType itemDesc = item.getItemType();
 		// <item_form>
 		xml.startElement(tag, 
-				ACTION_ATTRIBUTE, action, 
-				ACTION_URL_ATTRIBUTE, createActionUrl(),
-				FILE_PATH_ATTRIBUTE, AppContext.getFilesUrlPath(form.isFileProtected()) + form.getFilesRelPath(),
-				ID_ATTRIBUTE, form.getItemId(),
-				CAPTION_ATTRIBUTE, form.getItemCaption());
-		// <hidden>
-		xml.startElement(HIDDEN_ELEMENT);
-		Map<String, String> hiddenFields = form.getHiddenFields();
-		// Заполняются hidden поля
-		for (String inputName : hiddenFields.keySet()) {
-			// <field name="..." value="..."/>
-			xml.addEmptyElement(FIELD_ELEMENT, INPUT_ATTRIBUTE, inputName, VALUE_ATTRIBUTE, hiddenFields.get(inputName));
-		}
-		// </hidden>
-		xml.endElement();
+				ACTION_URL_ATTRIBUTE, actionUrl,
+				FILE_PATH_ATTRIBUTE, AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath(),
+				ID_ATTRIBUTE, item.getId(),
+				CAPTION_ATTRIBUTE, itemDesc.getCaption());
 		HashSet<String> domains = new HashSet<>();
-		for (Integer paramId : form.getParameterIds()) {
-			ParameterDescription paramDesc = itemDesc.getParameter(paramId);
+		for (ParameterDescription paramDesc : itemDesc.getParameterList()) {
 			ItemType ownerItemType = ItemTypeRegistry.getItemType(paramDesc.getOwnerItemId());
 			if (paramDesc.isVirtual())
 				continue;
+			ItemInputName input = new ItemInputName(item.getId(), item.getContextParentId(), itemDesc.getTypeId(),
+					paramDesc.getId(), null);
 			String[] attrsArr = {
-					ID_ATTRIBUTE, paramId + "", 
+					ID_ATTRIBUTE, paramDesc.getId() + "",
 					TYPE_ATTRIBUTE, paramDesc.getType().toString(),
 					NAME_ATTRIBUTE, paramDesc.getName(), 
 					USER_DEF_ATTRIBUTE, ownerItemType.isUserDefined() + "",
 					FORMAT_ATTRIBUTE, paramDesc.getFormat(),
 					CAPTION_ATTRIBUTE, paramDesc.getCaption(), 
 					DESCRIPTION_ATTRIBUTE, paramDesc.getDescription(), 
-					INPUT_ATTRIBUTE, form.getParamFieldName(paramId), 
+					INPUT_ATTRIBUTE, input.getInputName(),
 					QUANTIFIER_ATTRIBUTE, paramDesc.isMultiple() ? MULTIPLE_VALUE : SINGLE_VALUE
 				};
 			List<String> attrs = new ArrayList<>(Arrays.asList(attrsArr));
@@ -169,36 +150,40 @@ public class ItemFormMDWriter extends MetaDataWriter {
 			// </field>
 			xml.startElement(FIELD_ELEMENT, attrs.toArray(new Object[0]));
 			if (paramDesc.isMultiple()) {
-				List<String> values = form.getValuesStr(paramId);
+				List<Object> values = item.getValues(paramDesc.getName());
 				for (int i = 0; i < values.size(); i++ ) {
 					xml.startElement(VALUE_ELEMENT, INDEX_ATTRIBUTE, i).addText(values.get(i)).endElement();
 				}
 			} else {
-				xml.addText(form.getValueStr(paramId));
+				xml.addText(item.getValue(paramDesc.getName()));
 			}
 			xml.endElement();
 			
 			// <header input="$param$header@article@35322">Ремонт и отделка кафе, баров и ресторанов</header>
 			String elementName = Strings.createXmlElementName(paramDesc.getName());
 			if (paramDesc.isMultiple()) {
-				List<String> values = form.getValuesStr(paramId);
-				for (String val : values) {
-					xml.startElement(elementName, INPUT_ATTRIBUTE, form.getParamFieldName(paramId)).addText(val).endElement();
+				List<Object> values = item.getValues(paramDesc.getName());
+				for (Object val : values) {
+					xml.startElement(elementName, INPUT_ATTRIBUTE, input.getInputName()).addText(val).endElement();
 				}
 				// пустое поле, когда значений еще нет
-				xml.addEmptyElement(elementName, INPUT_ATTRIBUTE, form.getParamFieldName(paramId));
+				xml.addEmptyElement(elementName, INPUT_ATTRIBUTE, input.getInputName());
 			} else {
 				xml
-					.startElement(elementName, INPUT_ATTRIBUTE, form.getParamFieldName(paramId))
-					.addText(form.getValueStr(paramId))
+					.startElement(elementName, INPUT_ATTRIBUTE, input.getInputName())
+					.addText(item.getValue(paramDesc.getName()))
 					.endElement();
 			}
 		}
 		// <extra input="some_name">some_value</extra>
-		for (Object extra : form.getExtras()) {
-			List<Object> vals = form.getMultipleExtra(extra);
-			for (Object val : vals) {
-				xml.startElement(EXTRA_ELEMENT, INPUT_ATTRIBUTE, extra).addText(val).endElement();
+		for (String extraName : item.getExtraKeys()) {
+			ItemInputName input = new ItemInputName(item.getId(), item.getContextParentId(), itemDesc.getTypeId(),
+					0, extraName);
+			List<Object> vals = item.getListExtra(extraName);
+			if (vals != null) {
+				for (Object val : vals) {
+					xml.startElement(EXTRA_ELEMENT, INPUT_ATTRIBUTE, input.getInputName()).addText(val).endElement();
+				}
 			}
 		}
 		for (String domain : domains) {
@@ -219,22 +204,5 @@ public class ItemFormMDWriter extends MetaDataWriter {
 		xml.endElement();
 		return xml;
 	}
-	/**
-	 * Создать предполагаемый URL для отправки формы
-	 * @return
-	 */
-	private String createActionUrl() {
-		StringBuilder url = new StringBuilder(action);
-		char symbol = '?';
-		if (form.getHiddenFields().size() > 0) {
-			if (action.indexOf('?') > 0)
-				symbol = '&';
-		}
-		for (String field : form.getHiddenFields().keySet()) {
-			url.append(symbol).append(field).append('=').append(form.getHiddenFields().get(field));
-			symbol = '&';
-		}
-		return url.toString();
-	}
-	
+
 }

@@ -8,7 +8,7 @@ import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
 import ecommander.fwk.ValidationException;
 import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.ItemHttpPostForm;
+import ecommander.pages.SingleItemHttpPostFormDeprecated;
 import ecommander.pages.ItemVariablesContainer;
 import ecommander.pages.PageModelRegistry;
 import ecommander.pages.ValidationResults.StructureMessage;
@@ -21,7 +21,7 @@ import ecommander.pages.ValidationResults.StructureMessage;
 public class MainExecutionController {
 
 	// Форма, которая была отправлена пользователем, устанавливается из экшена struts
-	private ItemHttpPostForm itemForm = null;
+	private SingleItemHttpPostFormDeprecated itemForm = null;
 	private ItemVariablesContainer postItemVariables = null;
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
@@ -61,7 +61,7 @@ public class MainExecutionController {
 		}
 	}
 
-	public void setPostItemForm(ItemHttpPostForm itemPostForm) {
+	public void setPostItemForm(SingleItemHttpPostFormDeprecated itemPostForm) {
 		itemForm = itemPostForm;
 	}
 

@@ -4,9 +4,8 @@ import ecommander.model.*;
 import ecommander.model.datatypes.DataType.Type;
 import ecommander.model.datatypes.FileDataType;
 import ecommander.output.*;
-import ecommander.pages.ItemHttpPostForm;
+import ecommander.pages.SingleItemHttpPostFormDeprecated;
 import ecommander.pages.UrlParameterFormatConverter;
-import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 
@@ -203,7 +202,6 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String INDEX_INPUT = "index";
 	public static final String NEW_ITEM_POSITION = "item_position";
 	public static final String VIEW_TYPE_INPUT = "vt";
-	public static final String INLINE_INPUT = "inl";
 	public static final String MOUNT_INPUT_PREFIX = "mount";
 	public static final String UNMOUNT_INPUT_PREFIX = "unmount";
 	public static final String HEIGHT_INPUT = "height";
@@ -465,9 +463,8 @@ public class MainAdminPageCreator implements AdminXML {
 		if (itemId != ItemTypeRegistry.getPrimaryRootId())
 			item = AdminLoader.loadItem(itemId, currentUser);
 		if (item != null) {
-			ItemHttpPostForm itemForm = new ItemHttpPostForm(item, basePage.getName());
-			ItemFormMDWriter formWriter = new ItemFormMDWriter(itemForm, FORM_ELEMENT);
-			formWriter.setAction(createAdminUrl(SAVE_ITEM_ACTION));
+			ItemInputsMDWriter formWriter = new ItemInputsMDWriter(item, FORM_ELEMENT);
+			formWriter.setActionUrl(createAdminUrl(SAVE_ITEM_ACTION));
 			basePage.addElement(formWriter);
 			basePage.addElement(new LeafMDWriter(LINK_ELEMENT, createAdminUrl(DELETE_PARAMETER_ACTION, PARAM_ID_INPUT, "")));
 			basePage.addElement(new LeafMDWriter(OPEN_ASSOC_LINK_ELEMENT, createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT,
@@ -499,9 +496,9 @@ public class MainAdminPageCreator implements AdminXML {
 		AdminPage basePage = new AdminPage( PARAMETERS_PAGE, domain, currentUser.getName());
 		basePage.addElement(new LeafMDWriter(VISUAL_ELEMENT, isVisual));
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemType);
-		ItemHttpPostForm itemForm = new ItemHttpPostForm(itemDesc, parentId, basePage.getName());
-		ItemFormMDWriter formWriter = new ItemFormMDWriter(itemForm, FORM_ELEMENT);
-		formWriter.setAction(createAdminUrl(SAVE_ITEM_ACTION));
+		Item newItem = Item.newItem(itemDesc, parentId, User.ANONYMOUS_ID, User.NO_GROUP_ID, Item.STATUS_NORMAL, false);
+		ItemInputsMDWriter formWriter = new ItemInputsMDWriter(newItem, FORM_ELEMENT);
+		formWriter.setActionUrl(createAdminUrl(SAVE_ITEM_ACTION));
 		basePage.addElement(formWriter);
 		// Ссылки на другие виды редактирования
 		addViewLinks(basePage, parentId);

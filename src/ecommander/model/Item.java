@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import ecommander.pages.GeneralValues;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
@@ -93,7 +94,7 @@ public class Item implements ItemBasics {
 	private LinkedHashMap<Integer, Parameter> paramMap = new LinkedHashMap<>(); // Все параметры (не только одиночные)
 																				// параметры (имя параметра => объект
 																				// Parameter)
-	private HashMap<String, Object> extras; // дополнительные значения (не параметры). Они существуют только в памяти, в БД не хранятся
+	private GeneralValues extras; // дополнительные значения (не параметры). Они существуют только в памяти, в БД не хранятся
 											// могут использоваться когда айтем создается в сеансе или в форме (поля extra формы переписываются сюда)
 	private String parametersXML = Strings.EMPTY; // Все параметры, записанные в виде XML
 	private String filesPath = null; // Относительный путь к файлам айтема
@@ -837,8 +838,8 @@ public class Item implements ItemBasics {
 	 */
 	public final void setExtra(String name, Object value) {
 		if (extras == null)
-			extras = new HashMap<>();
-		extras.put(name, value);
+			extras = new GeneralValues();
+		extras.add(name, value);
 	}
 	/**
 	 * Извлечь дополнительное значение из айтема
@@ -850,6 +851,28 @@ public class Item implements ItemBasics {
 			return null;
 		return extras.get(name);
 	}
+
+	/**
+	 * Извлечь дополнительное значение из айтема
+	 * @param name
+	 * @return
+	 */
+	public final String getStringExtra(String name) {
+		if (extras == null)
+			return null;
+		return extras.getString(name);
+	}
+
+	/**
+	 * Извлечь дополнительное значение из айтема
+	 * @param name
+	 * @return
+	 */
+	public final ArrayList<Object> getListExtra(String name) {
+		if (extras == null)
+			return null;
+		return extras.getList(name);
+	}
 	/**
 	 * Получить все ключи дополнительных значений
 	 * @return
@@ -857,7 +880,11 @@ public class Item implements ItemBasics {
 	public final Collection<String> getExtraKeys() {
 		if (extras == null)
 			return new ArrayList<>(0);
-		return extras.keySet();
+		HashSet<String> keys = new HashSet<>();
+		for (Object key : extras.getKeys()) {
+			keys.add((String) key);
+		}
+		return keys;
 	}
 	/**
 	 * Содержит ли айтем дополнительные значения

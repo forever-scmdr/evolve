@@ -8,7 +8,8 @@ import ecommander.filesystem.SaveItemFileUnit;
 import ecommander.filesystem.SaveItemFilesUnit;
 import ecommander.fwk.*;
 import ecommander.model.*;
-import ecommander.pages.ItemHttpPostForm;
+import ecommander.pages.MultipleHttpPostForm;
+import ecommander.pages.SingleItemHttpPostFormDeprecated;
 import ecommander.pages.UrlParameterFormatConverter;
 import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.DelayedTransaction;
@@ -333,7 +334,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * Сохраняет айтем
 	 * 
 	 * Параметры:
-	 * html форма айтема (ItemHttpPostForm)
+	 * html форма айтема (SingleItemHttpPostFormDeprecated)
 	 * 
 	 * @return
 	 * @throws Exception 
@@ -341,50 +342,47 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 */
 	private AdminPage saveItem(UserInput in, HttpServletRequest req, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
-		ItemHttpPostForm itemForm = new ItemHttpPostForm(req, null);
+		MultipleHttpPostForm itemForm = new MultipleHttpPostForm(req);
+		Item formItem = itemForm.getItemTree().getFirstChild().getItem();
 		Item item;
 		boolean needBasePage = true;
 		// Сохраняется новый айтем
-		if (itemForm.getItemId() == ItemHttpPostForm.NO_ID) {
+		if (formItem.isNew()) {
 			int userId;
 			byte groupId;
-			if (itemForm.getItemParentId() == ItemTypeRegistry.getPrimaryRootId()) {
+			if (formItem.getContextParentId() == ItemTypeRegistry.getPrimaryRootId()) {
 				userId = User.ANONYMOUS_ID;
 				groupId = UserGroupRegistry.getDefaultGroup();
 			} else {
-				ItemBasics parent = AdminLoader.loadItem(itemForm.getItemParentId(), getCurrentAdmin());
+				ItemBasics parent = AdminLoader.loadItem(formItem.getContextParentId(), getCurrentAdmin());
 				userId = parent.getOwnerUserId();
 				groupId = parent.getOwnerGroupId();
 			}
 			// Создание айтема
-			item = itemForm.createItem(userId, groupId);
+			item = Item.newItem(formItem.getItemType(), formItem.getContextParentId(), userId,
+					groupId, Item.STATUS_NORMAL, false);
+			Item.updateParamValues(formItem, item);
 			transaction.addCommandUnit(SaveItemDBUnit.get(item));
 		}
 		// Сохраняется существующий айтем
 		else {
-			item = AdminLoader.loadItem(itemForm.getItemId(), getCurrentAdmin());
-			ItemHttpPostForm.editExistingItem(itemForm, item);
+			item = AdminLoader.loadItem(formItem.getId(), getCurrentAdmin());
+			Item.updateParamValues(formItem, item);
 			transaction.addCommandUnit(SaveItemDBUnit.get(item).fulltextIndex(true, true));
-			boolean isInline = Boolean.parseBoolean(itemForm.getSingleExtra(MainAdminPageCreator.INLINE_INPUT));
-			needBasePage = !isInline;
 		}
 		transaction.execute();
 		// Очистить кеш страниц
 		PageController.clearCache();
 		AdminPage page = null;
-		if (needBasePage) {
-			// Антоновские изменения
-			//page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, item.getId(), item.getTypeId());
-			boolean toParent = itemForm.getSingleExtra("parent-url").equals("yes");
-			long id = (toParent) ? item.getContextParentId() : item.getId();
-			if (id == ItemTypeRegistry.getPrimaryRootId()){
-				return setItem(in, pageCreator);
-			}
-			int type = (toParent) ? AdminLoader.loadItem(id, getCurrentAdmin()).getTypeId() : item.getTypeId();
-			page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, id, type);
-		} else {
-			page = pageCreator.createParamsPage(item.getId(), in.isVisual);
+		// Антоновские изменения
+		//page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, item.getId(), item.getTypeId());
+		boolean toParent = StringUtils.equalsIgnoreCase(itemForm.getSingleStringExtra("parent-url"), "yes");
+		long id = (toParent) ? item.getContextParentId() : item.getId();
+		if (id == ItemTypeRegistry.getPrimaryRootId()){
+			return setItem(in, pageCreator);
 		}
+		int type = (toParent) ? AdminLoader.loadItem(id, getCurrentAdmin()).getTypeId() : item.getTypeId();
+		page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, id, type);
 		page.addMessage("Изменения успешно сохранены", false);
 		return page;
 	}

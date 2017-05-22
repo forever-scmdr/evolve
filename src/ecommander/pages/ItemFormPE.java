@@ -36,6 +36,7 @@ import ecommander.pages.variables.VariablePE;
  * который будет отвечать за создание XML (ели параметр множественный, то писать <multiple> и тд)
  * 
  * @author EEEE
+ * @deprecated
  *
  */
 public class ItemFormPE extends PageElementContainer {
@@ -80,13 +81,13 @@ public class ItemFormPE extends PageElementContainer {
 		return paramNames != null && paramNames.size() > 0;
 	}
 	/**
-	 * Вернуть объект ItemHttpPostForm, построенный на базе имеющейся иформации
+	 * Вернуть объект SingleItemHttpPostFormDeprecated, построенный на базе имеющейся иформации
 	 * Если форма с полученным ID существует в сенасе, то вернуть ее, иначе вернуть форму, которая создалась
 	 * @return
 	 */
-	public ItemHttpPostForm getItemHtmlForm() {
+	public SingleItemHttpPostFormDeprecated getItemHtmlForm() {
 		String formId = pageModel.getPageName() + "_" + StringUtils.defaultString(tag, "");
-		ItemHttpPostForm newForm = null;
+		SingleItemHttpPostFormDeprecated newForm = null;
 		long itemParentId = Item.DEFAULT_ID;
 		// Если указан родительский айтем
 		if (pageModel.getItemPEById(parentItemPageId) != null) {
@@ -99,26 +100,26 @@ public class ItemFormPE extends PageElementContainer {
 			Item item = pageModel.getItemPEById(itemPageId).getParentRelatedFoundItemIterator().getCurrentItem();
 			if (item != null) {
 				if (hasParameters())
-					newForm = new ItemHttpPostForm(item, formId, paramNames);
+					newForm = new SingleItemHttpPostFormDeprecated(item, formId, paramNames);
 				else
-					newForm = new ItemHttpPostForm(item, formId, item.getItemType().getParameterNames());
+					newForm = new SingleItemHttpPostFormDeprecated(item, formId, item.getItemType().getParameterNames());
 			} else {
 				ItemType itemDesc = ItemTypeRegistry.getItemType(pageModel.getItemPEById(itemPageId).getItemName());
-				newForm = new ItemHttpPostForm(itemDesc, itemParentId, formId);
+				newForm = new SingleItemHttpPostFormDeprecated(itemDesc, itemParentId, formId);
 			}
 		} else {
 			ItemType itemDesc = ItemTypeRegistry.getItemType(itemName);
 			if (hasParameters()) {
-				newForm = new ItemHttpPostForm(itemDesc, itemParentId, formId, paramNames);
+				newForm = new SingleItemHttpPostFormDeprecated(itemDesc, itemParentId, formId, paramNames);
 			} else {
-				newForm = new ItemHttpPostForm(itemDesc, itemParentId, formId, itemDesc.getParameterNames());
+				newForm = new SingleItemHttpPostFormDeprecated(itemDesc, itemParentId, formId, itemDesc.getParameterNames());
 			}
 		}
 		// Проверка, нужно ли восстаналвивать форму из сеанса
 		if (!StringUtils.isBlank(restoreVarName)) {
 			VariablePE restoreVar = pageModel.getVariable(restoreVarName);
 			if (restoreVar != null && !restoreVar.isEmpty()) {
-				ItemHttpPostForm savedForm = pageModel.getSessionContext().getForm(newForm.getFormId());
+				SingleItemHttpPostFormDeprecated savedForm = pageModel.getSessionContext().getForm(newForm.getFormId());
 				if (savedForm != null)
 					return savedForm;
 			}

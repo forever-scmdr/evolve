@@ -26,6 +26,8 @@ import org.apache.commons.lang3.StringUtils;
 	Конец формы
  * @author EEEE
  *
+ * @deprecated TODO delete
+ *
  */
 public class ItemVariablesContainer implements Serializable {
 	private static final long serialVersionUID = 329324718894163450L;
@@ -39,12 +41,12 @@ public class ItemVariablesContainer implements Serializable {
 
 		private long itemId;
 		private int typeId;
-		private HttpInputValues variables;
+		private GeneralValues variables;
 		
 		protected ItemVariables(long itemId, int itemTypeIs) {
 			this.itemId = itemId;
 			this.typeId = itemTypeIs;
-			this.variables = new HttpInputValues();
+			this.variables = new GeneralValues();
 		}
 		/**
 		 * Добавить значение
@@ -85,7 +87,7 @@ public class ItemVariablesContainer implements Serializable {
 		
 		public Collection<String> getPostedInputs() {
 			ArrayList<String> inputNames = new ArrayList<String>();
-			for (Object paramId : variables.getInputKeys()) {
+			for (Object paramId : variables.getKeys()) {
 				inputNames.add((String) paramId);
 			}
 			return inputNames;

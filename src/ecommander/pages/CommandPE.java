@@ -15,7 +15,7 @@ import ecommander.pages.variables.StaticVariablePE;
 
 /**
  * Элемент - команда
- * Дает доступ к переменным страницы и объектам ItemHttpPostForm и ItemVariablesContainer
+ * Дает доступ к переменным страницы и объектам SingleItemHttpPostFormDeprecated и ItemVariablesContainer
  * 
  <required name="register_form" params="name organization phone email"/> - необязательный элемент, в котором указываются параметры айтема, которые не должны быть пустыми
  импользование required - вызов метода getUnsetRequired(name), который возарвщает незаполненные обязательные поля формы

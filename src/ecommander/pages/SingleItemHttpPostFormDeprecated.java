@@ -20,10 +20,10 @@ import java.util.*;
  * На этом уровне абстракции этот урл не нужен, он нужен только в XSL файле
  * @author EEEE
  *
- * @deprecated TODO delete
+ * @deprecated
  *
  */
-public class ItemHttpPostForm implements Serializable {
+public class SingleItemHttpPostFormDeprecated implements Serializable {
 	private static final long serialVersionUID = 4449373285150234982L;
 
 	public static final long NO_ID = 0;
@@ -43,9 +43,9 @@ public class ItemHttpPostForm implements Serializable {
 	private long itemId;
 	private long itemParentId;
 	private String formId; // часть для уникального ID формы, например название страницы, с которой пришла форма (для сохранения форм в сеансе)
-	private HttpInputValues parameterValues; //Значения хранятся или в виде String (обычные парамтеры) или в виде FileItem (файлы)
+	private GeneralValues parameterValues; //Значения хранятся или в виде String (обычные парамтеры) или в виде FileItem (файлы)
 	private LinkedHashSet<Integer> paramIds;
-	private HttpInputValues extra; // дополнительные параметры запроса (НЕ параметры айтема)
+	private GeneralValues extra; // дополнительные параметры запроса (НЕ параметры айтема)
 	private String filesPath; // Путь к файлам айтема
 	private boolean isFileProtected = false; // Защищены ли файлы айтема
 	
@@ -53,14 +53,14 @@ public class ItemHttpPostForm implements Serializable {
 	 * Для создания формы на базе вновь создаваемого айтема
 	 * @param itemDesc
 	 */
-	public ItemHttpPostForm(ItemType itemDesc, long parentId, String formId, Collection<String> parametersToEdit) {
+	public SingleItemHttpPostFormDeprecated(ItemType itemDesc, long parentId, String formId, Collection<String> parametersToEdit) {
 		itemId = NO_ID;
 		itemTypeId = itemDesc.getTypeId();
 		itemCaption = itemDesc.getCaption();
 		itemParentId = parentId;
 		this.formId = formId;
 		paramIds = new LinkedHashSet<>();
-		parameterValues = new HttpInputValues();
+		parameterValues = new GeneralValues();
 		for (String paramName : parametersToEdit) {
 			ParameterDescription param = itemDesc.getParameter(paramName);
 			if (param.isVirtual())
@@ -69,7 +69,7 @@ public class ItemHttpPostForm implements Serializable {
 			parameterValues.add(param.getId(), NO_VALUE);
 		}
 		if (itemDesc.isKeyUnique()) {
-			extra = new HttpInputValues();
+			extra = new GeneralValues();
 			extra.add(FORM_ITEM_UNIQUE_KEY, "");
 		}
 	}
@@ -78,14 +78,14 @@ public class ItemHttpPostForm implements Serializable {
 	 * @param itemDesc
 	 * @param parentId
 	 */
-	public ItemHttpPostForm(ItemType itemDesc, long parentId, String formId) {
+	public SingleItemHttpPostFormDeprecated(ItemType itemDesc, long parentId, String formId) {
 		this(itemDesc, parentId, formId, itemDesc.getParameterNames());
 	}
 	/**
 	 * Создание формы на базе ранее созданного (существующего) айтема
 	 * @param item
 	 */
-	public ItemHttpPostForm(Item item, String formId, Collection<String> parametersToEdit) {
+	public SingleItemHttpPostFormDeprecated(Item item, String formId, Collection<String> parametersToEdit) {
 		itemId = item.getId();
 		itemTypeId = item.getTypeId();
 		itemCaption = item.getKey();
@@ -94,7 +94,7 @@ public class ItemHttpPostForm implements Serializable {
 		isFileProtected = item.isFileProtected();
 		this.formId = formId;
 		paramIds = new LinkedHashSet<>();
-		parameterValues = new HttpInputValues();
+		parameterValues = new GeneralValues();
 		for (String paramName : parametersToEdit) {
 			Parameter param = item.getParameterByName(paramName);
 			if (param.isVirtual())
@@ -122,7 +122,7 @@ public class ItemHttpPostForm implements Serializable {
 	 * Создание формы на базе существующего айтема
 	 * @param item
 	 */
-	public ItemHttpPostForm(Item item, String srcPage) {
+	public SingleItemHttpPostFormDeprecated(Item item, String srcPage) {
 		this(item, srcPage, item.getItemType().getParameterNames());
 	}
 	/**
@@ -134,10 +134,10 @@ public class ItemHttpPostForm implements Serializable {
 	 * @throws UnsupportedEncodingException
 	 */
 	@SuppressWarnings("unchecked")
-	public ItemHttpPostForm(HttpServletRequest request, LinkPE targetUrl) throws FileUploadException,
+	public SingleItemHttpPostFormDeprecated(HttpServletRequest request, LinkPE targetUrl) throws FileUploadException,
 			UnsupportedEncodingException {
 		paramIds = new LinkedHashSet<>();
-		parameterValues = new HttpInputValues();
+		parameterValues = new GeneralValues();
 		if (targetUrl == null) {
 			String urlStr = BasicServlet.getUserUrl(request);
 			targetUrl = LinkPE.parseLink(urlStr);
@@ -153,7 +153,7 @@ public class ItemHttpPostForm implements Serializable {
 		targetUrl.removeVariable(FORM_HIDDEN_FORM_ID);
 		targetUrl.removeVariable(FORM_ITEM_UNIQUE_KEY);
 		// Разбор параметров айтема
-		HttpInputValues extra = new HttpInputValues();
+		GeneralValues extra = new GeneralValues();
 		if (ServletFileUpload.isMultipartContent(request)) {
 			DiskFileItemFactory filesFactory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(filesFactory);
@@ -453,7 +453,7 @@ public class ItemHttpPostForm implements Serializable {
 	 */
 	public void putExtra(String name, String value) {
 		if (extra == null)
-			extra = new HttpInputValues();
+			extra = new GeneralValues();
 		extra.add(name, value);
 	}
 	/**
@@ -463,7 +463,7 @@ public class ItemHttpPostForm implements Serializable {
 	public Collection<Object> getExtras() {
 		if (extra == null)
 			return new ArrayList<>();
-		return extra.getInputKeys();
+		return extra.getKeys();
 	}
 	/**
 	 * Возвращает уникальный ID, который однозначно идентифицирует именно эту форму
@@ -502,7 +502,7 @@ public class ItemHttpPostForm implements Serializable {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static void editExistingItem(ItemHttpPostForm itemForm, Item itemToEdit, String... resetParams) throws Exception {
+	public static void editExistingItem(SingleItemHttpPostFormDeprecated itemForm, Item itemToEdit, String... resetParams) throws Exception {
 		for (String param : resetParams) {
 			itemToEdit.clearParameter(param);
 		}

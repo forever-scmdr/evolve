@@ -2,14 +2,11 @@ package ecommander.output;
 
 import java.util.HashMap;
 
-import ecommander.pages.ItemFormPE;
-import ecommander.pages.ItemHttpPostForm;
-import ecommander.pages.LinkPE;
-import ecommander.pages.PageElement;
-import ecommander.pages.PageElementContainer;
+import ecommander.pages.*;
+import ecommander.pages.SingleItemHttpPostFormDeprecated;
 
 /**
- * Выводит результат выполнения ItemFormMDWriter
+ * Выводит результат выполнения ItemInputsMDWriter
  * Дополнительно выводит ссылки, которые содержатся в форме
  * 
  * @author EEEE
@@ -18,9 +15,9 @@ import ecommander.pages.PageElementContainer;
 public class ItemFormPEWriter implements PageElementWriter {
 	
 	public void write(PageElement elementToWrite, XmlDocumentBuilder xml) throws Exception {
-		ItemHttpPostForm htmlForm = ((ItemFormPE) elementToWrite).getItemHtmlForm();
+		SingleItemHttpPostFormDeprecated htmlForm = ((ItemFormPE) elementToWrite).getItemHtmlForm();
 		String tag = ((ItemFormPE) elementToWrite).getTag();
-		ItemFormMDWriter writer = new ItemFormMDWriter(htmlForm, tag);
+		ItemInputsMDWriter writer = new ItemInputsMDWriter(htmlForm, tag);
 		if (((PageElementContainer)elementToWrite).hasNested()) {
 			HashMap<String, String> hiddenFields = htmlForm.getHiddenFields();
 			XmlDocumentBuilder linkXml = XmlDocumentBuilder.newDocPart();

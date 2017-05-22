@@ -11,16 +11,13 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
 import ecommander.model.*;
+import ecommander.pages.*;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.controllers.PageController;
-import ecommander.pages.Command;
-import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.ItemHttpPostForm;
-import ecommander.pages.PagePE;
-import ecommander.pages.ResultPE;
+import ecommander.pages.SingleItemHttpPostFormDeprecated;
 import ecommander.pages.variables.StaticVariablePE;
 /**
  * Отправка сообщения на email с валидацией (проверка заполненности определенных полей).
@@ -60,7 +57,7 @@ public class NonemptyEmailCommand extends Command {
 		if (requiredStr == null) requiredStr = Strings.EMPTY;
 		String spamStr = getVarSingleValue("spam");
 		if (spamStr == null) spamStr = Strings.EMPTY;
-		ItemHttpPostForm postForm = getItemForm();
+		SingleItemHttpPostFormDeprecated postForm = getItemForm();
 		String templatePageName = getVarSingleValue("template");
 		// Сообщение об ошибке в случае если не все поля заполнены
 		String validationResult = validateInput(requiredStr, postForm);
@@ -142,7 +139,7 @@ public class NonemptyEmailCommand extends Command {
 		return getResult("success");
 	}
 
-	private String validateInput(String requiredStr, ItemHttpPostForm form) {
+	private String validateInput(String requiredStr, SingleItemHttpPostFormDeprecated form) {
 		ArrayList<String> notSetParams = new ArrayList<String>();
 		requiredStr = StringUtils.replace(requiredStr, " ", "");
 		String[] required = StringUtils.split(requiredStr, ',');
@@ -158,7 +155,7 @@ public class NonemptyEmailCommand extends Command {
 		return StringUtils.join(notSetParams, ',');
 	}
 	
-	private boolean isSpam(String spamStr, ItemHttpPostForm form) {
+	private boolean isSpam(String spamStr, SingleItemHttpPostFormDeprecated form) {
 		spamStr = StringUtils.replace(spamStr, " ", "");
 		String[] spam = StringUtils.split(spamStr, ',');
 		for (String spamParam : spam) {
@@ -168,7 +165,7 @@ public class NonemptyEmailCommand extends Command {
 		return false;
 	}
 
-	private boolean validateInputOr(String requiredStr, ItemHttpPostForm form) {
+	private boolean validateInputOr(String requiredStr, SingleItemHttpPostFormDeprecated form) {
 		String[] required = StringUtils.split(requiredStr, '|');
 		boolean isValid = false;
 		for (String reqParam : required) {
@@ -181,7 +178,7 @@ public class NonemptyEmailCommand extends Command {
 		return isValid;
 	}
 
-	private ResultPE sendError(String message, ItemHttpPostForm postForm) throws Exception {
+	private ResultPE sendError(String message, SingleItemHttpPostFormDeprecated postForm) throws Exception {
 		Item userPost = postForm.createItem(User.ANONYMOUS_ID, User.NO_GROUP_ID);
 		getSessionMapper().saveTemporaryItem(userPost);
 		ResultPE result = getRollbackResult("general_error");

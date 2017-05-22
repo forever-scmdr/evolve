@@ -169,7 +169,7 @@ public abstract class Command implements AutoCloseable {
 	 * Вернуть форму айтема
 	 * @return
 	 */
-	protected final ItemHttpPostForm getItemForm() {
+	protected final SingleItemHttpPostFormDeprecated getItemForm() {
 		return page.getItemFrom();
 	}
 	/**
