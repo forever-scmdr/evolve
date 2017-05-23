@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import ecommander.fwk.ErrorCodes;
 import ecommander.fwk.Strings;
 import ecommander.fwk.EcommanderException;
 import ecommander.controllers.AppContext;
@@ -41,7 +42,7 @@ import ecommander.model.DomainRegistry;
 public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer, FilterContainer, ReferenceContainer, AggregationContainer,
 		CacheablePE, ExecutablePE {
 	
-	protected static final long NO_PARENT_ID = -1;
+	static final long NO_PARENT_ID = -1;
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	//                                  ВНУТРЕННИЕ КЛАССЫ
@@ -56,7 +57,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		private int currentItemIndex = -1;
 		private long currentParentId = NO_PARENT_ID;
 
-		protected ParentRelatedFoundIterator(ExecutableItemPE pageItem) {
+		ParentRelatedFoundIterator(ExecutableItemPE pageItem) {
 			this.itemPE = pageItem;
 			init();
 		}
@@ -71,9 +72,9 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		 * @return
 		 */
 		public boolean next() {
-			ArrayList<Item> foundItems = null;
+			ArrayList<Item> foundItems;
 			if (itemPE.hasParent()) {
-				long parentItemId = itemPE.parentItem.iterator.currentItem.getRefId();
+				long parentItemId = itemPE.parentItem.iterator.currentItem.getId();
 				foundItems = itemPE.getFoundItemsByParent(parentItemId);
 				// Сбросить значение индекса, если закончились потомки одного айтема, и начались потомки другого
 				if (currentParentId != parentItemId) {
@@ -83,7 +84,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			} else
 				foundItems = itemPE.getFoundItemsByParent(currentParentId);
 			if (foundItems.size() > currentItemIndex + 1) {
-				currentItem = (Item) foundItems.get(++currentItemIndex);
+				currentItem = foundItems.get(++currentItemIndex);
 				return true;
 			}
 			// переинициализация
@@ -101,10 +102,10 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		 * Возвращает количество найденных айтемов для определенного (текущего) родителя
 		 */
 		public int getTotalQuantity() {
-			if (itemPE.isSingle()) return 1;
+			if (itemPE.getQueryType() == Type.SINGLE) return 1;
 			if (itemPE.hasParent()) {
 				Item currentParentItem = itemPE.getParentItemPE().getParentRelatedFoundItemIterator().getCurrentItem();
-				return itemPE.getFoundItemsByParentQuantity(currentParentItem.getRefId());
+				return itemPE.getFoundItemsByParentQuantity(currentParentItem.getId());
 			}
 			return itemPE.getFoundItemsByParentQuantity(currentParentId);
 		}
@@ -119,7 +120,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		private Iterator<Item> listIterator = null;
 		private Item currentItem = null;
 		
-		protected AllFoundIterator(ExecutableItemPE pageItem) {
+		AllFoundIterator(ExecutableItemPE pageItem) {
 			if (pageItem.hasFoundItems()) {
 				mapIterator = pageItem.foundItemsByParent.values().iterator();
 				if (mapIterator.hasNext()) {
@@ -166,14 +167,14 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 */
 	protected static class FoundItemBundle {
 		// Массив найденных айтемов (Item)
-		ArrayList<Item> items = new ArrayList<Item>();
+		ArrayList<Item> items = new ArrayList<>();
 		// общее число таких айтемов в базоне, чтобы было известно сколько всего будет страниц, например
 		int totalQuantity = 0;
 		@Override
 		public String toString() {
 			String result = "Quantity: " + totalQuantity + "  Items: ";
 			for (Item item : items) {
-				result += item.getTypeName() + "-" + item.getId() + "-" + item.getRefId() + ", ";
+				result += item.getTypeName() + "-" + item.getId() + "-" + item.getId() + ", ";
 			}
 			return result;
 		}
@@ -210,23 +211,23 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * @param itemPageId
 	 * @param tag
 	 */
-	protected ExecutableItemPE(ItemQuery.Type itemType, String itemName, String itemPageId, String tag, ItemRootType itemRootType,
+	protected ExecutableItemPE(Type itemType, String itemName, String assocName, String itemPageId, String tag, ItemRootType itemRootType,
 			String itemRootGroupName, boolean isSingle, boolean isCacheable, boolean isVirtual, ArrayList<String> cacheVars,
 			ExecutablePagePE parentPage) {
-		super(itemType, itemName, itemPageId, tag, itemRootType, itemRootGroupName, isSingle, isCacheable, isVirtual, cacheVars);
+		super(itemType, itemName, assocName, itemPageId, tag, itemRootType, itemRootGroupName, isSingle, isCacheable, isVirtual, cacheVars);
 		parentPageModel = parentPage;
-		foundItemsByParent = new HashMap<Long, FoundItemBundle>();
+		foundItemsByParent = new HashMap<>();
 	}
 	
-	public final ExecutableItemPE getParentItemPE() {
+	final ExecutableItemPE getParentItemPE() {
 		return parentItem;
 	}
 	
-	public final boolean hasParent() {
+	final boolean hasParent() {
 		return parentItem != null;
 	}
 
-	public final boolean hasReference() {
+	private boolean hasReference() {
 		return reference != null;
 	}
 	
@@ -251,10 +252,10 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * Если айтемы не найдены, возвращается пустой список
 	 * @return
 	 */
-	public final ArrayList<Item> getFoundItemsByParent(long parentId) {
-		FoundItemBundle foundItems = (FoundItemBundle) foundItemsByParent.get(new Long(parentId));
+	final ArrayList<Item> getFoundItemsByParent(long parentId) {
+		FoundItemBundle foundItems = foundItemsByParent.get(parentId);
 		if (foundItems == null)
-			return new ArrayList<Item>();
+			return new ArrayList<>();
 		return foundItems.items;
 	}
 	
@@ -270,8 +271,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * @param parentItemId
 	 * @return
 	 */
-	public final int getFoundItemsByParentQuantity(long parentItemId) {
-		FoundItemBundle foundItemBundle = (FoundItemBundle) foundItemsByParent.get(new Long(parentItemId));
+	final int getFoundItemsByParentQuantity(long parentItemId) {
+		FoundItemBundle foundItemBundle = foundItemsByParent.get(parentItemId);
 		if (foundItemBundle == null)
 			return 0;
 		return foundItemBundle.totalQuantity;
@@ -281,12 +282,12 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * @return
 	 */
 	public final ArrayList<Long> getFoundItemRefIds() {
-		ArrayList<Long> result = new ArrayList<Long>();
+		ArrayList<Long> result = new ArrayList<>();
 		if (!isLoaded() || !hasFoundItems())
 			return result;
 		AllFoundIterator iter = getAllFoundItemIterator();
 		while (iter.next())
-			result.add(iter.getCurrentItem().getRefId());
+			result.add(iter.getCurrentItem().getId());
 		return result;
 	}
 	/**
@@ -296,7 +297,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		if (item == null)
 			return;
 		// Добавить в отображение по ID родителям
-		FoundItemBundle parentSubitems = null;
+		FoundItemBundle parentSubitems;
 		if (foundItemsByParent.containsKey(parentId)) {
 			parentSubitems = foundItemsByParent.get(parentId);
 		} else {
@@ -387,7 +388,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		}
 		// Загрузка
 		if (!loaded) {
-			HashMap<Long, Integer> quantities = new HashMap<Long, Integer>();
+			HashMap<Long, Integer> quantities = new HashMap<>();
 			List<Item> items = loadItems(quantities);
 			if (hasParent()) {
 				for (Item item : items) {
@@ -428,10 +429,10 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * Возвращает массив айтемов. В случае если ничего не найдено, возвращается пустой список
 	 * @throws Exception 
 	 */
-	protected List<Item> loadItems(HashMap<Long, Integer> quantities) throws Exception {
+	private List<Item> loadItems(HashMap<Long, Integer> quantities) throws Exception {
 		// Список загруженных предшественников айтема
 		ArrayList<Long> loadedIds = null;
-		ItemType itemDesc = ItemTypeRegistry.getItemType(itemName);
+		ItemType itemDesc = ItemTypeRegistry.getItemType(getItemName());
 		if (hasParent()) {
 			loadedIds = getParentItemPE().getFoundItemRefIds();
 		}
@@ -445,17 +446,17 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 					return ItemQuery.loadByUniqueKey(values, getSessionContext().getDBConnection());
 				}
 				else if (getReference().isAssociatedReference()) {
-					return ItemQuery.loadAssociatedString(values, itemName, getSessionContext().getDBConnection());
+					return ItemQuery.loadAssociatedString(values, getItemName(), getSessionContext().getDBConnection());
 				} else {
 					if (getReference().isVarParamReference())
-						return ItemQuery.loadByParamValue(itemName, getReference().getParamName(), values, getSessionContext()
+						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), values, getSessionContext()
 								.getDBConnection());
 					else
-						return ItemQuery.loadByIdsString(values, itemName, getSessionContext().getDBConnection());
+						return ItemQuery.loadByIdsString(values, getItemName(), getSessionContext().getDBConnection());
 				}
 			}
 			// Создание запроса
-			ItemQuery query = new ItemQuery(getItemQueryType(), itemDesc, hasParent());
+			ItemQuery query = new ItemQuery(getQueryType(), itemDesc, hasParent());
 			query.setPredecessorIds(loadedIds);
 			// Установка фильтра, если он должен быть
 			boolean needLoading = true;
@@ -465,20 +466,20 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			if (hasAggregation())
 				needLoading &= getAggregation().appendCriteriasToQuery(query);
 			// Установить дополнительные параметры (пользователь и группа, если они есть)
-			if (getItemRootType() == ItemRootType.GROUP)
-				query.setGroup(getItemRootGroupName());
-			else if (getItemRootType() == ItemRootType.PERSONAL)
+			if (getRootType() == ItemRootType.GROUP)
+				query.setGroup(getRootGroupName());
+			else if (getRootType() == ItemRootType.PERSONAL)
 				query.setUser(getSessionContext().getUser());
 			// Если есть фильтр и ограничение - загрузка общего числа айтемов
 			if (query.hasLimit() && getFilter().hasPage()) {
 				quantities.putAll(query.loadTotalQuantities(getSessionContext().getDBConnection()));
 			}
 			// Выполнение запроса (если это нужно)
-			List<Item> items = null;
+			List<Item> items;
 			if (needLoading)
 				items = query.loadItems(getSessionContext().getDBConnection());
 			else
-				items = new ArrayList<Item>(0);
+				items = new ArrayList<>(0);
 			// Загрузка фильтра (домены полей ввода пользовательского фильтра)
 			// Нужно выполнять после основной загрузки айтемов, т.к. в методе модифицируестя объект ItemQuery
 			loadFilter(query);
@@ -493,12 +494,12 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				List<String> values = getReference().getValuesArray();
 				long itemId = 0;
 				if (values.size() > 0) itemId = Long.parseLong(values.get(0));
-				ArrayList<Item> result = new ArrayList<Item>(1);
-				result.add(storage.getItem(itemId, itemName));
+				ArrayList<Item> result = new ArrayList<>(1);
+				result.add(storage.getItem(itemId, getItemName()));
 				return result;
 			}
 			// Иначе - обычная загрузка по родителю и типу айтема
-			return storage.getItemsByName(itemName, loadedIds);
+			return storage.getItemsByName(getItemName(), loadedIds);
 		}
 	}
 	/**
@@ -509,7 +510,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * @param baseQuery - базовый запрос, по которому извлекался этот (текущий) страничный айтем.
 	 * @throws Exception
 	 */
-	protected void loadFilter(final ItemQuery baseQuery) throws Exception {
+	private void loadFilter(final ItemQuery baseQuery) throws Exception {
 		if (hasFilter() && getFilter().isCacheable()) {
 			// Если фильтр есть в кеше, загрузить его из кеша и завершить выполнение метода
 			if (CacheablePEManager.getCache(getFilter()))
@@ -534,11 +535,11 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 							ParameterDescription paramDesc = itemType.getParameter(crit.getParamName());
 							baseQuery.createFilter(LOGICAL_SIGN.AND);
 							baseQuery.setAggregation(paramDesc, null, "ASC");
-							List<Item> items = null;
+							List<Item> items;
 							try {
 								items = baseQuery.loadItems(getSessionContext().getDBConnection());
 							} catch (Exception e) {
-								throw new EcommanderException("Unable to load filter fields domains", e);
+								throw new EcommanderException(ErrorCodes.NO_SPECIAL_ERROR, "Unable to load filter fields domains", e);
 							}
 							for (Item item : items) {
 								Parameter param = item.getParameter(paramDesc.getId());
@@ -568,7 +569,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 */
 	public final void addExecutableItem(ExecutableItemPE itemPE) {
 		if (subitems == null)
-			subitems = new ArrayList<ExecutableItemPE>();
+			subitems = new ArrayList<>();
 		parentPageModel.registerItemPE(itemPE);
 		subitems.add(itemPE);
 		itemPE.parentItem = this;
@@ -596,12 +597,12 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * @return
 	 */
 	public final String getCacheableId() {
-		String id = null;
-		if (hasId()) id = itemPageId;
-		else id = itemName;
+		String id;
+		if (hasId()) id = getId();
+		else id = getItemName();
 		if (hasCacheVars()) {
 			id += "/";
-			for (String varName : cacheVars) {
+			for (String varName : getCacheVars()) {
 				VariablePE var = parentPageModel.getVariable(varName);
 				if (var != null && !var.isEmpty()) {
 					id += var.getName() + "_" + Strings.translit(var.output()) + "_";					

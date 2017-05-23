@@ -45,8 +45,8 @@ public abstract class ParametricObjectStorage
 	// Массив объектов (любые объекты)
 	private ArrayList<Object> storage;
 
-	public ParametricObjectStorage() {
-		storage = new ArrayList<Object>();
+	ParametricObjectStorage() {
+		storage = new ArrayList<>();
 	}
 
 	/**
@@ -67,7 +67,7 @@ public abstract class ParametricObjectStorage
 				return parameterValue.equals(getParameter(arg0, parameterId));
 			}
 		};
-		ArrayList<Object> result = new ArrayList<Object>();
+		ArrayList<Object> result = new ArrayList<>();
 		CollectionUtils.select(storage, equalityPredicate, result);
 		return result;
 	}
@@ -101,7 +101,7 @@ public abstract class ParametricObjectStorage
 				return equal;
 			}
 		};
-		ArrayList<Object> result = new ArrayList<Object>();
+		ArrayList<Object> result = new ArrayList<>();
 		if (parameterIds.length <= 0)
 			return result;
 		CollectionUtils.select(storage, equalityPredicate, result);
@@ -126,7 +126,7 @@ public abstract class ParametricObjectStorage
 				return parameterValues.contains(value);
 			}
 		};
-		ArrayList<Object> result = new ArrayList<Object>();
+		ArrayList<Object> result = new ArrayList<>();
 		CollectionUtils.select(storage, equalityPredicate, result);
 		return result;
 	}
@@ -172,5 +172,9 @@ public abstract class ParametricObjectStorage
 	 */
 	public void delete(int[] parameterIds, Object[] parameterValues) {
 		storage.removeAll(select(parameterIds, parameterValues));
+	}
+
+	public boolean isEmpty() {
+		return storage.isEmpty();
 	}
 }

@@ -10,6 +10,7 @@ import ecommander.pages.SingleItemHttpPostFormDeprecated;
  * Дополнительно выводит ссылки, которые содержатся в форме
  * 
  * @author EEEE
+ * @deprecated
  *
  */
 public class ItemFormPEWriter implements PageElementWriter {

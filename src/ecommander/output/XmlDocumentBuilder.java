@@ -140,7 +140,8 @@ public class XmlDocumentBuilder {
 	 * @param text
 	 */
 	public XmlDocumentBuilder addText(Object text) {
-		xml.append(StringEscapeUtils.escapeXml(text.toString()));
+		if (text != null)
+			xml.append(StringEscapeUtils.escapeXml(text.toString()));
 		return this;
 	}
 	/**

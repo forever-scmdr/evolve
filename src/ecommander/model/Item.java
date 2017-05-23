@@ -200,6 +200,21 @@ public class Item implements ItemBasics {
 	}
 
 	/**
+	 * Конструктор для создания айтема из полей формы.
+	 * Такой айтем сам по себе не полноценный, т.к. не хранит информацию о пользователе, статусе и т.п.
+	 * Он предоставляет информацию об установленных пользователем параметрах, ID и типе айтема
+	 * Такой айтем должен использоваться как источних значений параметров, самого его нельзя сохранять в БД или сеанс
+	 * @param itemDesc
+	 * @param itemId
+	 * @param parentId
+	 * @return
+	 */
+	public static Item newFormItem(ItemType itemDesc, long itemId, long parentId) {
+		Item item = new Item(itemDesc, AssocRegistry.PRIMARY, parentId, User.ANONYMOUS_ID, User.NO_GROUP_ID, STATUS_NORMAL, false);
+		item.setId(itemId);
+		return item;
+	}
+	/**
 	 * Констркуктор для создания новых сеансовых корневых айтемов
 	 * @param itemDesc
 	 * @return

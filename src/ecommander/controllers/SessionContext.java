@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ecommander.pages.SingleItemHttpPostFormDeprecated;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.MysqlConnector;
@@ -32,6 +33,9 @@ import ecommander.model.User;
  * - получение значения переменной страницы
  * 
  * Также этот класс позволяет работать с cookie аналогично сеансовым переменным
+ *
+ * TODO хранить счетчик объектов в сеансе, чтобы после удаления последнего объекта можно было бы завершать сеанс
+ *
  * @author EEEE
  *
  */
@@ -43,6 +47,9 @@ public class SessionContext implements AutoCloseable {
 	private static final String PROGRESS_SESSION_NAME_PREFIX = "progress_";
 	private static final String FORM_SESSION_NAME_PREFIX = "form_";
 	private static final String CONTENT_UPDATE_VAR_NAME = "adm$content$update";
+
+	private static final String SESSION_OBJECT_COUNT = "$object_count$";
+
 	private static final int COOKIE_EXPIRE = 10 * 24 * 60 * 60;
 
 	@Override
@@ -81,6 +88,43 @@ public class SessionContext implements AutoCloseable {
 
 	public static SessionContext createSessionContext(HttpServletRequest request) {
 		return new SessionContext(request);
+	}
+
+	/**
+	 * Добавить занчение в сеанс и увеличить счетчик, если раньше в сеансе не было значения с таким именем
+	 * @param name
+	 * @param object
+	 */
+	private void setSessionObject(String name, Object object) {
+		if (object == null) {
+			removeSessionObject(name);
+		} else {
+			HttpSession session = forceGetSession();
+			int objectCount = (Integer) ObjectUtils.defaultIfNull(session.getAttribute(SESSION_OBJECT_COUNT), 0);
+			Object oldValue = session.getAttribute(name);
+			session.setAttribute(name, object);
+			if (oldValue == null) {
+				objectCount++;
+				session.setAttribute(SESSION_OBJECT_COUNT, objectCount);
+			}
+		}
+	}
+
+	/**
+	 * Удалить значение из сеанса и уменьшить счетчик.
+	 * Если счетчик достиг 0, завершить сеанс
+	 * @param name
+	 */
+	private void removeSessionObject(String name) {
+		HttpSession session = forceGetSession();
+		int objectCount = (Integer) ObjectUtils.defaultIfNull(session.getAttribute(SESSION_OBJECT_COUNT), 0);
+		Object oldValue = session.getAttribute(name);
+		session.removeAttribute(name);
+		if (oldValue != null) {
+			objectCount--;
+		}
+		if (objectCount <= 0)
+			session.invalidate();
 	}
 	/**
 	 * Получить сеансовое хранилище

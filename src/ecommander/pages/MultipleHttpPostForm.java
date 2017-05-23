@@ -30,7 +30,8 @@ import java.util.*;
  */
 public class MultipleHttpPostForm implements Serializable {
 
-	private int formIdGenerator = 1;
+	private static final String FORM_ITEM_UNIQUE_KEY = "ukey";
+
 	private String cacheId;
 	private HashMap<Long, GeneralValues> inputs = new HashMap<>();
 	private GeneralValues extras = new GeneralValues();
@@ -104,7 +105,7 @@ public class MultipleHttpPostForm implements Serializable {
 	 * Возвращается корень, который сам не содержит айтем (Pure Root). Он содержит только потомков.
 	 * @return
 	 */
-	public ItemTreeNode getItemTree() {
+	public ItemTreeNode getItemTree() throws Exception {
 		HashSet<Long> itemsToAdd = new HashSet<>(inputs.keySet());
 		ItemTreeNode root = ItemTreeNode.createPureRoot();
 		for (GeneralValues input : inputs.values()) {
@@ -131,17 +132,36 @@ public class MultipleHttpPostForm implements Serializable {
 	 * @param input
 	 * @return
 	 */
-	private ItemTreeNode insertItem(ItemTreeNode parent, GeneralValues input) {
+	private ItemTreeNode insertItem(ItemTreeNode parent, GeneralValues input) throws Exception {
 		ItemInputName desc = (ItemInputName) input.getKeys().iterator().next();
 		ItemType itemType = ItemTypeRegistry.getItemType(desc.getItemType());
-		Item item = Item.newItem(itemType, desc.getParentId(), User.ANONYMOUS_ID, User.NO_GROUP_ID, Item.STATUS_NORMAL, false);
-		item.setId(desc.getItemId());
-		for (Object obj : input.getKeys()) {
-			ItemInputName inDesc = (ItemInputName) obj;
+		Item item = Item.newFormItem(itemType, desc.getItemId(), desc.getParentId());
+		for (Object key : input.getKeys()) {
+			ItemInputName inDesc = (ItemInputName) key;
 			if (inDesc.isParameter()) {
-				item.setValue(inDesc.getParamId(), input.get(inDesc));
+				Object paramValue = input.get(inDesc);
+				if (itemType.getParameter(inDesc.getParamId()).getDataType().isFile()) {
+					if (paramValue instanceof List) {
+						for (Object file : (List<Object>) paramValue) {
+							item.setValue(inDesc.getParamId(), file);
+						}
+					} else {
+						item.setValue(inDesc.getParamId(), paramValue);
+					}
+				} else {
+					if (paramValue instanceof List) {
+						for (String val : (List<String>) paramValue) {
+							item.setValueUI(inDesc.getParamId(), val);
+						}
+					} else {
+						item.setValueUI(inDesc.getParamId(), (String)paramValue);
+					}
+				}
 			} else if (inDesc.isVariable()) {
-				item.setExtra(inDesc.getVarName(), input.get(inDesc));
+				if (StringUtils.equalsIgnoreCase(inDesc.getVarName(), FORM_ITEM_UNIQUE_KEY))
+					item.setKeyUnique((String) input.get(inDesc));
+				else
+					item.setExtra(inDesc.getVarName(), input.get(inDesc));
 			}
 		}
 		return parent.addChild(item);
