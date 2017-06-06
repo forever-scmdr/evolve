@@ -313,6 +313,21 @@
 	<parameter name="pay_only" type="byte" caption="Только оплата" description="если человке не едет, а только платит, то 1, иначе 0 или ничего"/>
 </item>
 
+	<item name="resize" caption="resize test" extra-handler="ecommander.application.extra.ResizeAndBackupImagesFactory">
+		<parameter name="picture" type="picture" format="width: 500; height: 500; parameter: format;" caption="picture"/>
+		<parameter name="small" type="picture" format="width: 250; height: 250; src:picture; crop: CENTER;" caption="small"/>
+		<parameter name="format" type="string" caption="resize format"/>
+		<parameter name="multiple" type="picture" format="width:500;" caption="multiple" quantifier="multiple"/>
+	</item>
+
+	<item name="assoc_container" caption="Ассоциации">
+		<subitem name="assoc" quantifier="multiple"/>
+	</item>
+
+	<item name="assoc" key="name" caption="тест. ассоциаций">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="association" type="associated" quantifier="multiple" caption="Ассоциация"/>
+	</item>
 
 <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -337,6 +352,8 @@
 	<subitem name="contacts" quantifier="single"/>
 	<subitem name="feedbacks" quantifier="single"/>
 	<subitem name="booking" quantifier="single"/>
+	<subitem name="resize" quantifier="single"/>
+	<subitem name="assoc_container" quantifier="single"/>
 </root>
 
 </items>

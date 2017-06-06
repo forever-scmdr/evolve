@@ -39,6 +39,9 @@ public class ItemNames {
     public final static String FREE_ROOM = "free_room";
     public final static String ORDER = "order";
     public final static String ORDER_FORM = "order_form";
+    public final static String RESIZE = "resize";
+    public final static String ASSOC_CONTAINER = "assoc_container";
+    public final static String ASSOC = "assoc";
 
     public interface about {
 
@@ -51,6 +54,20 @@ public class ItemNames {
         String _ITEM_NAME = "abstract_page";
         String HEADER = "header";
         String HEADER_PIC = "header_pic";
+
+    }
+
+    public interface assoc {
+
+        String _ITEM_NAME = "assoc";
+        String NAME = "name";
+        String ASSOCIATION = "association";
+
+    }
+
+    public interface assoc_container {
+
+        String _ITEM_NAME = "assoc_container";
 
     }
 
@@ -343,6 +360,16 @@ public class ItemNames {
         String NAME = "name";
         String SMALL = "small";
         String BIG = "big";
+
+    }
+
+    public interface resize {
+
+        String _ITEM_NAME = "resize";
+        String PICTURE = "picture";
+        String SMALL = "small";
+        String FORMAT = "format";
+        String MULTIPLE = "multiple";
 
     }
 
