@@ -43,7 +43,11 @@ public class GeneralValues implements Serializable {
 	public Object get(Object paramId) {
 		return map.get(paramId);
 	}
-	
+
+	public void remove(Object paramId) {
+		map.remove(paramId);
+	}
+
 	public String getString(Object paramId) {
 		Object value = map.get(paramId);
 		if (value == null)

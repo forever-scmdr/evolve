@@ -114,7 +114,7 @@ class PredecessorCriteria implements FilterCriteria, PossibleMainCriteria {
 	}
 	
 	public boolean isNotBlank() {
-		return itemIds.size() > 0;
+		return itemIds.size() > 0 || isEmptySet;
 	}
 
 	public boolean isMain() {

@@ -93,11 +93,13 @@
 		</request>
 		<single item="section_abstract" id="section" reference="{sec}" tag="current_section">
 			<!-- Блок инпутов, которые относястя к айтему ref. Если не уканан атрибут name - генерируются все параметры-->
-			<parameter-input ref="section" name="name"/>
+			<!-- атрибут form является ID формы, все блоки инпутов, которые будут содержаться в одной и той же форме, -->
+			<!-- должны иметь одинаковые значения этого атрибута. -->
+			<parameter-input ref="section" name="name" form="all_products"/>
 			<list item="product" assoc="hierarchy" transitive="true" id="product">
 				<!-- Блок инпутов, которые относястя к айтему ref. Если не задан name, то выводятся все параметры-->
-				<parameter-input ref="product" restore-var="message"/>
-				<extra-input ref="product" name="popular" restore-var="message"/>
+				<parameter-input ref="product" restore-var="message" form="all_products"/>
+				<extra-input ref="product" name="popular" restore-var="message" form="all_products"/>
 				<link name="show_product" target="product">
 					<var name="prod" ref="product" style="translit"/>
 				</link>

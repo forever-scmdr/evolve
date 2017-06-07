@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ecommander.pages.MultipleHttpPostForm;
 import ecommander.pages.SingleItemHttpPostFormDeprecated;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +56,11 @@ public class SessionContext implements AutoCloseable {
 	@Override
 	public void close() throws Exception {
 		closeDBConnection();
+		if (hasSession()) {
+			storage = (SessionObjectStorage) forceGetSession().getAttribute(STORAGE_SESSION_NAME);
+			if (storage.isEmpty())
+				removeSessionObject(STORAGE_SESSION_NAME);
+		}
 	}
 
 	public static class Progress implements Serializable {
@@ -134,10 +140,10 @@ public class SessionContext implements AutoCloseable {
 	public final SessionObjectStorage getStorage(boolean create) {
 		if (storage == null) {
 			if (hasSession() || create) {
-				storage = (SessionObjectStorage)forceGetSession().getAttribute(STORAGE_SESSION_NAME);
+				storage = (SessionObjectStorage) forceGetSession().getAttribute(STORAGE_SESSION_NAME);
 				if (storage == null) {
 					storage = SessionItemMapper.createSessionStorage();
-					forceGetSession().setAttribute(STORAGE_SESSION_NAME, storage);
+					setSessionObject(STORAGE_SESSION_NAME, storage);
 				}
 			} else {
 				return SessionItemMapper.createSessionStorage();
@@ -148,7 +154,7 @@ public class SessionContext implements AutoCloseable {
 	
 	public void setUser(User user) {
 		this.user = user;
-		forceGetSession().setAttribute(USER_SESSION_NAME, user);
+		setSessionObject(USER_SESSION_NAME, user);
 	}
 
 	public void userExit() {
@@ -174,9 +180,9 @@ public class SessionContext implements AutoCloseable {
 	 */
 	public void setVariableValue(String varName, String varValue) {
 		if (!StringUtils.isBlank(varName) && !StringUtils.isBlank(varValue))
-			forceGetSession().setAttribute(VARIABLE_SESSION_NAME_PREFIX + varName, varValue);
+			setSessionObject(VARIABLE_SESSION_NAME_PREFIX + varName, varValue);
 		else if (!StringUtils.isBlank(varName))
-			forceGetSession().removeAttribute(VARIABLE_SESSION_NAME_PREFIX + varName);
+			removeSessionObject(VARIABLE_SESSION_NAME_PREFIX + varName);
 	}
 	/**
 	 * Вернуть значение переменной страницы.
@@ -200,7 +206,7 @@ public class SessionContext implements AutoCloseable {
 	 */
 	public void setProgress(String progressName, double size, double total, double percent, String unit, String message) {
 		if (hasSession())
-			forceGetSession().setAttribute(PROGRESS_SESSION_NAME_PREFIX + progressName, new Progress(percent, size, total, unit, message));
+			setSessionObject(PROGRESS_SESSION_NAME_PREFIX + progressName, new Progress(percent, size, total, unit, message));
 	}
 	/**
 	 * Получить текущий прогресс по длительной операции с заданным именем
@@ -211,6 +217,14 @@ public class SessionContext implements AutoCloseable {
 		if (hasSession())
 			return (Progress) forceGetSession().getAttribute(PROGRESS_SESSION_NAME_PREFIX + progressName);
 		return null;
+	}
+
+	/**
+	 * Удалить прогресс из сеанса
+	 * @param progressName
+	 */
+	public void removeProgress(String progressName) {
+		removeSessionObject(PROGRESS_SESSION_NAME_PREFIX + progressName);
 	}
 	/**
 	 * Вернуть любой объект (ранее установленный) из сеанса
@@ -259,17 +273,18 @@ public class SessionContext implements AutoCloseable {
 	 * Сохранить форму ввода пользователя в сеансе (например, если возникли ошибки валидации формы)
 	 * Вызывается не автоматически, и только в процессе выполнения команд по требованию
 	 * @param form
+	 * @param formId
 	 */
-	public void saveForm(SingleItemHttpPostFormDeprecated form) {
-		forceGetSession().setAttribute(FORM_SESSION_NAME_PREFIX + form.getFormId(), form);
+	public void saveForm(MultipleHttpPostForm form, String formId) {
+		setSessionObject(FORM_SESSION_NAME_PREFIX + formId, form);
 	}
 	/**
 	 * Удалить форму из сеанса
-	 * @param form
+	 * @param formId
 	 */
-	public void removeForm(SingleItemHttpPostFormDeprecated form) {
+	public void removeForm(String formId) {
 		if (hasSession())
-			forceGetSession().removeAttribute(FORM_SESSION_NAME_PREFIX + form.getFormId());
+			removeSessionObject(FORM_SESSION_NAME_PREFIX + formId);
 	}
 	/**
 	 * Получить из сеанса ранее сохраненную форму
@@ -277,9 +292,9 @@ public class SessionContext implements AutoCloseable {
 	 * @param formId
 	 * @return
 	 */
-	public SingleItemHttpPostFormDeprecated getForm(String formId) {
+	public MultipleHttpPostForm getForm(String formId) {
 		if (hasSession())
-			return (SingleItemHttpPostFormDeprecated) forceGetSession().getAttribute(FORM_SESSION_NAME_PREFIX + formId);
+			return (MultipleHttpPostForm) forceGetSession().getAttribute(FORM_SESSION_NAME_PREFIX + formId);
 		return null;
 	}
 	/**
