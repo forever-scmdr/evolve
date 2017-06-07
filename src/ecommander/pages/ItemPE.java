@@ -24,7 +24,8 @@ public class ItemPE extends PageElementContainer {
 		SINGLE, 		// <single>
 		LIST, 			// <list>
 		TREE, 			// <tree>
-		PARENT;	        // <parent>
+		PARENT,         // <new>
+		NEW;	        // <parent>
 		public static Type getValue(String val) {
 			if (StringUtils.equalsIgnoreCase("single", val))
 				return SINGLE;
@@ -34,6 +35,8 @@ public class ItemPE extends PageElementContainer {
 				return TREE;
 			if (StringUtils.equalsIgnoreCase("parent", val))
 				return PARENT;
+			if (StringUtils.equalsIgnoreCase("new", val))
+				return NEW;
 			throw new IllegalArgumentException("there is no ItemQuery Type value for '" + val + "' string");
 		}
 	}

@@ -113,8 +113,8 @@ public class User {
 	 * Получить все группы пользователя и его роли в этих группах
 	 * @return
 	 */
-	public ArrayList<Group> getGroups() {
-		return new ArrayList<>(groupRoles.values());
+	public HashSet<Group> getGroups() {
+		return new HashSet<>(groupRoles.values());
 	}
 
 	/**

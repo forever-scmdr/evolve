@@ -39,7 +39,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 															  // имя переменной не передается через ссылку. В этом случае для определения имени переменной
 															  // используется ее порядковый номер в списке переменных.
 
-	private String schedule; // Расписание запусков стрницы (Cron)
+	private String schedule; // Расписание запусков страницы (Cron)
 	private HashMap<String, String> headers = null;
 	
 	public PagePE(String pageName, String pageTemplateName, boolean cacheable, Collection<String> cacheVars) {
@@ -68,7 +68,6 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	}
 	/**
 	 * Получить все заголовки, которые должны быть отправлены клиенту
-	 * @param transformationNeeded
 	 * @return
 	 */
 	public Map<String, String> getResponseHeaders() {
@@ -118,7 +117,15 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	 * @return
 	 */
 	public boolean isUserAuthorized(User user) {
-		return userGroups.isEmpty() || (!user.isAnonimous() && userGroups.contains(user.getGroup()));
+		if (userGroups.isEmpty())
+			return true;
+		if (user.isAnonimous())
+			return false;
+		for (String userGroup : userGroups) {
+			if (user.inGroup(userGroup))
+				return true;
+		}
+		return false;
 	}
 	/**
 	 * Добавить группу
