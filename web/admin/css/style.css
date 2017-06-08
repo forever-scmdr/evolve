@@ -128,7 +128,7 @@ a, button, *[type="submit"], label.file, input[type="file"] {
 	background: #56C493 url('../img/add_icon.png') right center no-repeat;
 }
 
-.list ul .visible a {
+.list ul .visible a.name {
 	display: block;
 	text-decoration: none;
 	color: #363636;
@@ -144,8 +144,26 @@ a, button, *[type="submit"], label.file, input[type="file"] {
 
 .list ul.create .visible a {
 	min-height: 27px;
+	display: table;
+	text-decoration: none;
+	padding: 5px 6px;
+	padding-right: 27px;
+	width: 100%;
+	box-sizing: border-box;
+	color: #363636;
+	background: #fff;
 }
-
+.list ul.create .visible a::after{
+	position: absolute;
+	display: block;
+	top: -1px;
+	bottom: -1px;
+	right: 0;
+	width: 27px;
+	content:'';
+	background: #56C493 url('../img/add_icon.png') right center no-repeat;
+	border: 1px solid #56C493;
+}
 .list ul.create .visible a .name {
 	display: block;
 	background: #fff;
@@ -154,6 +172,15 @@ a, button, *[type="submit"], label.file, input[type="file"] {
 	text-decoration: none;
 }
 
+.list.additional{
+	line-height: 27px;
+	font-weight: bold;
+
+}
+.list.additional a{
+	color: #363636;
+	font-size: 12px;
+}
 .list ul.no-drag {
 	padding-bottom: 11px;
 	padding-top: 9px;
@@ -195,13 +222,54 @@ a, button, *[type="submit"], label.file, input[type="file"] {
 	margin-right: 28px;
 }
 
-.edit li.multiple a.name {
-	margin-right:80px;
-}
-
-.edit a.delete, .edit a.copy,  .edit a.hide_item, .edit a.show_item{
+.edit .controls{
 	position: absolute;
+	top:-1px;
+	bottom:-1px;
+	background: #fff;
+	right:0;
+	width: 82px;
+	margin-right:-82px;
+	border: 1px solid #ccc;
+	border-left: 0;
+	display: none;
+}
+.edit .drag{
+	position: absolute;
+	top:-1px;
+	bottom:-1px;
+	background: #fff;
+	width: 20px;
+	text-align: center;
+	left:0;
+	margin-left: -20px;
+	border: 1px solid #ccc;
+	border-right: 0;
+	cursor: n-resize;
+	display: none;
+}
+.edit .drag.active{
+	background-color: #ffe45c;
+	display: block !important;
+}
+.edit .drag::after{
+	position: absolute;
+	width: 20px;
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	content: '↕';
+	top: 50%;
+	font-size: 16px;
+	margin-top: -8px;
+	line-height: 16px;
+}
+.edit li:hover .controls, .edit li:hover .drag{
 	display: block;
+}
+.edit a.delete, .edit a.copy,  .edit a.hide_item, .edit a.show_item{
+	/*position: absolute;*/
+	display: inline-block;
 	width: 27px;
 	height: 27px;
 	text-indent: 10000px;

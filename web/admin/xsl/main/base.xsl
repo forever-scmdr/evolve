@@ -150,7 +150,7 @@
 								<a onclick="insertAjaxView('{admin-page/link[@name='subitems']}', 'subitems'); $('#key_search').val('');" style="text-decoration: underline;">Очистить поиск</a>
 							</div>
 							<div id="subitems"></div>
-							<div class="list">
+							<div class="list additional">
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
 									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">

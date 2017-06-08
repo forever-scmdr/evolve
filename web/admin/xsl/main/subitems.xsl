@@ -23,8 +23,8 @@
 	<xsl:template match="item-to-add[not(item)]">
 		<xsl:param name="ass" select="'ass_0'" />
 		<li class="dragable visible {$ass}">
-			<a href="javascript:mainView('{create-link}')" >
-				<span class="name"><xsl:value-of select="@caption"/></span>
+			<a href="javascript:mainView('{create-link}')" title="создать" >
+				<xsl:value-of select="@caption"/>
 			</a>
 		</li>
 		<li class="drop-zone {$ass}"></li>
@@ -96,16 +96,19 @@
 						<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />
 		
 						<li class="drop-zone" id="{$spaceId}"></li>
-						<li class="dragable visible multiple call-context-menu default" data-link="{edit-link}" data-del="{delete-link}">
+						<li class="dragable11 visible multiple call-context-menu default" data-link="{edit-link}" data-del="{delete-link}">
+							<div class="drag" title="нажмите, чтобы перемещать айтем"></div>
 							<a href="{edit-link}" class="name" title="радактировать">
 								<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
 									<span class="description">[<xsl:value-of select="@type-caption"/>]</span><br/>
 								</xsl:if>
 								<xsl:value-of select="$caption"/>
 							</a>
-							<a class="hide_item" title="скрыть">скрыть</a>
-							<a onclick="insertAjaxView('{copy-link}', 'pasteBuffer'); return false;" class="copy" title="копировать">копировать</a>
-							<a href="javascript:defaultView('{delete-link}','subitems',true,refreshMain)" class="delete" title="удалить">удалить</a>
+							<div class="controls">
+								<a class="hide_item" title="скрыть">скрыть</a>
+								<a onclick="insertAjaxView('{copy-link}', 'pasteBuffer'); return false;" class="copy" title="копировать">копировать</a>
+								<a href="javascript:defaultView('{delete-link}','subitems',true,refreshMain)" class="delete" title="удалить">удалить</a>
+							</div>
 						</li>
 					</xsl:for-each>
 					<xsl:variable name="itemsCount" select="count($items)"/>

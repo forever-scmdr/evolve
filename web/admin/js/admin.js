@@ -114,6 +114,7 @@ if(typeof $.draggable != 'undefined'){
 			 }
 		}
 	});
+
 }
 
 
@@ -129,4 +130,7 @@ $(document).on("click", ".toggle-hidden", function (e) {
 	e.preventDefault();
 	t = $(this);
 	$(t.attr("href")).toggle();
+});
+$(document).on("click", ".drag", function (e) {
+	$(this).toggleClass("active");
 });
