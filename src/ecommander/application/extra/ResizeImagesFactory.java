@@ -8,13 +8,14 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import ecommander.model.datatypes.DataType;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.common.MysqlConnector;
 import ecommander.common.ServerLogger;
 import ecommander.common.exceptions.EcommanderException;
-import ecommander.model.datatypes.DataType.Type;
+import ecommander.model.datatypes.DataTypeRegistry;
 import ecommander.model.item.Item;
 import ecommander.model.item.MultipleParameter;
 import ecommander.model.item.ParameterDescription;
@@ -29,32 +30,32 @@ import net.coobird.thumbnailator.geometry.Positions;
 /**
  * Команда, которая преобразует картинки айтема к определенному формату после сохранения айтема
  * Используется атрибут format определения параметра (ParameterDescription)
- * 
+ *
  * src - параметр, который хранит исходную картинку, если он пустой - исходная картинка есть сам параметр
  * width - новая ширина картинки (в пикселях), если не установлена, масштабируется пропорционально с высотой
  * height - новая высота картинки (в пикселях), если не установлена, масштабируется пропорционально с шириной
  * format - формат файла (расширение), используется в алгоритмах сжатия
- * crop - если заданы ширина и высота, каким образом обрезать картинку 
+ * crop - если заданы ширина и высота, каким образом обрезать картинку
  * 		  (BOTTOM_CENTER, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER, CENTER_LEFT, CENTER_RIGHT, TOP_CENTER, TOP_LEFT, TOP_RIGHT)
- * 
+ *
  * format="src:main_img;width:400;height:500;crop:CENTER"
  * 		  картинка делается размерами 400х500 и обрезается по центру (чтобы не деформировалось изображение)
- * 
+ *
  * format="src:main_img;width:400;height:500"
  * 		  ширина и высота преборазуются таким образом, чтобы максимальный был равен заданному соответствующему,
  * 		  в то же время сохраняются пропорции картинки
- * 
+ *
  * format="src:main_img;width:400"
  * 		  картинка из параметра main_img преобразуется к ширине 400 и высоте, пропорционально изменению ширины
- * 
+ *
  * format="height:50;format:gif"
  * 		  картинка самого параметра преобразуется к высоте 400 и ширине, пропорционально изменению высоты
- * 
+ *
  * Принцип работы:
  * Если картинка для ресайза имеет заполненный src, а также значение - файл (т. е. есть файл картинки для этого параметра),
  * то этот файл не заменяется. Однако, если источником картинки является сам этот параметр, т.е. сам должен ресайзиться,
  * то ресайз происходит всегда, даже когда есть заполненная картинка.
- * 
+ *
  * @author E
  *
  */
@@ -64,26 +65,26 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 	public static final String HEIGHT = "height";
 	public static final String FORMAT = "format";
 	public static final String CROP = "crop";
-	
+
 	public static class ResizeImages extends ItemFileUnit {
 
 		private TransactionContext transaction;
 		private ArrayList<File> files = new ArrayList<File>();
 		private String format;
-		
+
 		private ResizeImages(Item item) {
 			super(item);
 			format = null;
 		}
-		
+
 		public ResizeImages(Item item, String format) {
 			super(item);
 			this.format = format;
 		}
-		
+
 		public void execute() throws Exception {
 			for (ParameterDescription param : item.getItemType().getParameterList()) {
-				if (param.getType() == Type.PICTURE && (param.hasFormat() || format != null)) {
+				if (param.getType() == DataType.Type.PICTURE && (param.hasFormat() || format != null)) {
 					String currentFormat = format;
 					if (param.hasFormat())
 						currentFormat = param.getFormat();
@@ -94,7 +95,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 					int width = 0;
 					String format = null;
 					Positions crop = null;
-					
+
 					// Разбор параметров ресайза
 					try {
 						for (String opt : opts) {
@@ -114,13 +115,13 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 						if (StringUtils.isBlank(src))
 							src = param.getName();
 						srcParam = item.getItemType().getParameter(src);
-						if (srcParam == null || srcParam.getType() != Type.PICTURE)
+						if (srcParam == null || param.getType() != DataType.Type.PICTURE)
 							throw new Exception("There is no picture parameter '" + src + "' in an item");
 					} catch (Exception e) {
 						throw new EcommanderException("String resize format error. Item: '" + item.getTypeName() + "', parameter: '"
 								+ param.getName() + ", format: " + param.getFormat(), e);
 					}
-					
+
 					// Одиночный параметр - более сложная логика (нужна проверка, если файл существует)
 					if (!srcParam.isMultiple())	{
 						try {
@@ -137,15 +138,15 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 								continue;
 							if (format == null)
 								format = StringUtils.substringAfterLast(srcFile.getName(), ".");
-							
+
 							// Сначала прочитать файл, перед тем как он может быть удален
 							BufferedImage srcImg = ImageIO.read(srcFile);
-			
+
 							// Проверка, нужен ли ресайз
 							boolean resizeNeeded = (width > 0 && srcImg.getWidth() > width) || (height > 0 && srcImg.getHeight() > height);
 							if (!resizeNeeded)
 								continue;
-							
+
 							String fileName = StringUtils.substringBeforeLast(srcFile.getName(), ".") + '.' + format;
 							if (!selfResize)
 								fileName = param.getName() + "_" + fileName;
@@ -157,7 +158,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 							ServerLogger.error("Error resizing image", e);
 						}
 					}
-					
+
 					// Множественный параметр - всегда удаляются и пересоздаются все производные файлы
 					else {
 						boolean selfResize = srcParam.getId() == param.getId();
@@ -208,10 +209,10 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 				try {
 					Connection conn = getTransactionContext().getConnection();
 					// Сохранить новое ключевое значение и параметры в основную таблицу
-					String sql 
-							= "UPDATE " + DBConstants.Item.TABLE + " SET " + DBConstants.Item.KEY + "=?, " 
+					String sql
+							= "UPDATE " + DBConstants.Item.TABLE + " SET " + DBConstants.Item.KEY + "=?, "
 							+ DBConstants.Item.TRANSLIT_KEY + "=?, "
-							+ DBConstants.Item.PARAMS + "=?, " 
+							+ DBConstants.Item.PARAMS + "=?, "
 							+ DBConstants.Item.UPDATED + "=NULL WHERE " + DBConstants.Item.REF_ID + "=" + item.getId();
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setString(1, item.getKey());
@@ -219,7 +220,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 					pstmt.setString(3, item.outputValues());
 					pstmt.executeUpdate();
 					pstmt.close();
-					
+
 					// Выполнить запросы для сохранения параметров
 					ItemMapper.insertItemParametersToIndex(item, true, getTransactionContext());
 				} finally {
@@ -227,7 +228,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 				}
 			}
 		}
-		
+
 		private void resize(BufferedImage srcImg, File destFile, int width, int height, String format, Positions crop) throws Exception {
 			// Если исходный файл и файл назначения совпадают (т.е. ресайзится картинка одного параметра)
 			// то надо удалить старый файл
@@ -237,7 +238,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 			// Если заданы и высота и ширина, выбрать один из этих параметров
 			// на основании соотношения сторон исходного изображения
 			if (width > 0 && height > 0) {
-				
+
 			}
 			if (width > 0)
 				thumbnailer.width(width);
@@ -250,7 +251,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 			// Добавить файл для удаления в случае отката команды
 			files.add(destFile);
 		}
-		
+
 		public void rollback() throws Exception {
 			for (File file : files) {
 				ServerLogger.debug("Deleting file '" + file.getAbsolutePath() + "' - " + FileUtils.deleteQuietly(file));
@@ -266,7 +267,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory {
 		public void setTransactionContext(TransactionContext context) {
 			this.transaction = context;
 		}
-	
+
 	}
 
 	public PersistenceCommandUnit createSaveCommand(Item item) {

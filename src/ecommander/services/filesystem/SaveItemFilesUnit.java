@@ -62,8 +62,18 @@ public class SaveItemFilesUnit extends ItemFileUnit {
 					for (Object oldVal : param.getOldValues()) {
 						if (oldVal instanceof String) {
 							File oldFile = new File(AppContext.getFilesDirPath() + fileDirectoryName + oldVal);
+							// Удаление бэкапа (если есть)
+							File  oldBackupFile =  new File(AppContext.getFilesDirPath()+ fileDirectoryName +"backup/" + oldVal);
+							if(((String) oldVal).indexOf("[resized_to") != -1 && ((String) oldVal).indexOf("].") != -1){
+								String resizeTrace = ((String) oldVal).substring(((String) oldVal).indexOf("[resized_to"), ((String) oldVal).indexOf("].")+1);
+								oldBackupFile =  new File(AppContext.getFilesDirPath()+ fileDirectoryName +"backup/" + ((String) oldVal).replace(resizeTrace,""));
+							}
+							if(oldBackupFile.exists())
+								oldBackupFile.delete();
+
 							if (oldFile.exists())
 								oldFile.delete();
+
 						}
 					}
 //					Object value = param.getValue();

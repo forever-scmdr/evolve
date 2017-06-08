@@ -44,6 +44,7 @@ public class SaveItemFileUnit extends ItemFileUnit {
 			String fileDirectoryName = item.getPredecessorsAndSelfPath();
 			uploadedFileName = fileName;
 			File newFile = new File(AppContext.getFilesDirPath() + fileDirectoryName + fileName);
+
 			// Удаление файла, если он уже есть
 			if (newFile.exists())
 				newFile.delete();
