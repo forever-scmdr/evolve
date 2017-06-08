@@ -45,7 +45,7 @@ public class PageController {
 		this.useCache = useCache;
 	}
 	
-	public static PageController newUsingCache(String requestUrl, String domainName) {
+	static PageController newUsingCache(String requestUrl, String domainName) {
 		return new PageController(requestUrl, domainName, true);
 	}
 	
@@ -61,7 +61,7 @@ public class PageController {
 		if (AppContext.isCacheEnabled()) {
 			File cacheHtmlDir = new File(AppContext.getCacheHtmlDirPath());
 			File cacheXmlDir = new File(AppContext.getCacheXmlDirPath());
-			ArrayList<File> files = new ArrayList<File>();
+			ArrayList<File> files = new ArrayList<>();
 			File[] html = cacheHtmlDir.listFiles();
 			File[] xml = cacheXmlDir.listFiles();
 			if (html != null) Collections.addAll(files, html);
@@ -75,7 +75,7 @@ public class PageController {
 		}
 	}
 	
-	public void processPage(ExecutablePagePE page, HttpServletResponse resp) throws Exception {
+	void processPage(ExecutablePagePE page, HttpServletResponse resp) throws Exception {
 		this.page = page;
 		this.out = new ByteArrayOutputStream();
 		String result = processPageInt(page);
@@ -114,7 +114,7 @@ public class PageController {
 		this.out.close();
 	}
 	
-	private String processPageInt(ExecutablePagePE page) throws IOException, Exception {
+	private String processPageInt(ExecutablePagePE page) throws Exception {
 		this.page = page;
 		if (useCache)
 			return processCacheablePage();
@@ -148,7 +148,7 @@ public class PageController {
 				Timer.getTimer().start(Timer.GET_FROM_CACHE);
 				FileInputStream fis = new FileInputStream(cachedFile);
 				byte[] buffer = new byte[4096];
-				int byteCount = 0;
+				int byteCount;
 				while ((byteCount = fis.read(buffer)) >= 0) {
 					out.write(buffer, 0, byteCount);
 				}
@@ -250,7 +250,7 @@ public class PageController {
 					// Загрузка страницы
 					ExecutablePagePE newPage = PageModelRegistry.testAndGetRegistry().getExecutablePage(linkUrl, page.getUrlBase(),
 							page.getSessionContext());
-					newPage.setPostData(page.getItemFrom(), page.getItemVariables());
+					newPage.setPostData(page.getItemFrom());
 					return processPageInt(newPage);
 				} else {
 					return linkUrl;

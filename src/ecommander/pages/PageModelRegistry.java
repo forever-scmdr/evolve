@@ -98,7 +98,7 @@ public class PageModelRegistry {
 	}
 	/**
 	 * Назначить график регулярного автоматического выполнения страницы с определенным именем
-	 * @param pageModel
+	 * @param pageName
 	 * @param schedule
 	 * @throws SchedulerException 
 	 */
@@ -116,7 +116,7 @@ public class PageModelRegistry {
 	}
 	/**
 	 * Вернуть загружаемую модель страницы
-	 * @param link
+	 * @param linkUrl
 	 * @param urlBase - базовая ссылка, если на странице есть относительные ссылки, то базой для них должен быть этот урл
 	 * @param context
 	 * @return
@@ -132,7 +132,7 @@ public class PageModelRegistry {
 			throw new PageNotFoundException("The page '" + link.getPageName() + "' is not found");
 		ExecutablePagePE execPageModel = pageModel.createExecutableClone(context);
 		if (context != null && !execPageModel.isUserAuthorized(context.getUser()))
-			throw new UserNotAllowedException();
+			throw new UserNotAllowedException("Requested page is not allowed for current user");
 		execPageModel.setRequestLink(link, linkUrl, urlBase);
 		return execPageModel;
 	}

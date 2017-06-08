@@ -20,7 +20,7 @@ public class ItemInputs {
 
 	private InputValues inputs = new InputValues();
 	private long[] predecessors;
-+
+
 	ItemInputs(Item item, long... predecessors) {
 		this.item = item;
 		this.predecessors = predecessors;

@@ -38,15 +38,6 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>ItemVariablesController</servlet-name>
-		<servlet-class>ecommander.controllers.ItemVariablesServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ItemVariablesController</servlet-name>
-		<url-pattern>/eco/itemvars/*</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
 		<servlet-name>FilterFormController</servlet-name>
 		<servlet-class>ecommander.controllers.FilterFormServlet</servlet-class>
 	</servlet>

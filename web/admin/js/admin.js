@@ -125,3 +125,9 @@ $(document).on("keypress", "body", function(e){
 		t.trigger("click");
 	}
 });
+
+$(document).on("click", ".toggle-hidden", function (e) {
+	e.preventDefault();
+	t = $(this);
+	$(t.attr("href")).toggle();
+});

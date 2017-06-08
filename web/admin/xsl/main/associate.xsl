@@ -65,6 +65,17 @@
 	</table>
 	</xsl:template>
 
+	<xsl:template name="SEARCH_FORM">
+		<div class="list position-relative" style="margin-top: 40px; width: 300px;">
+			<xsl:value-of select="$item" />
+			<form id="search-form" class="ajax-form" action="get_view.action" method="POST">
+				<input type="text" id="key_search" name="key_search" placeholder="поиск по названию" />
+				<a onclick="" >искать</a>
+			</form>
+			<a onclick="">Очистить поиск</a>
+		</div>
+	</xsl:template>
+
 
 	<!--**************************************************************************-->
 	<!--**************************    СТРАНИЦА    ********************************-->
@@ -96,6 +107,9 @@
 			<!-- ******************************************************************** -->
 			<div class="mainwrap">
 				<xsl:call-template name="MESSAGE"/>
+
+				<xsl:call-template name="SEARCH_FORM" />
+
 				<table class="type_1">
 					<tr>
 						<td class="left">

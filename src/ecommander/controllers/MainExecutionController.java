@@ -7,10 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
 import ecommander.fwk.ValidationException;
-import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.SingleItemHttpPostFormDeprecated;
-import ecommander.pages.ItemVariablesContainer;
-import ecommander.pages.PageModelRegistry;
+import ecommander.pages.*;
 import ecommander.pages.ValidationResults.StructureMessage;
 
 /**
@@ -21,8 +18,7 @@ import ecommander.pages.ValidationResults.StructureMessage;
 public class MainExecutionController {
 
 	// Форма, которая была отправлена пользователем, устанавливается из экшена struts
-	private SingleItemHttpPostFormDeprecated itemForm = null;
-	private ItemVariablesContainer postItemVariables = null;
+	private MultipleHttpPostForm itemForm = null;
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
 	private String requestUrl;
@@ -35,8 +31,9 @@ public class MainExecutionController {
 	/**
 	 * Если юзеру не разрешен доступ к этой странице, то возвращаетс false
 	 * Иначе возвращается true
-	 * @param ostream
-	 * @throws Exception 
+	 * @param baseUrl
+	 * @param servletContext
+	 * @throws Exception
 	 */
 	public void execute(String baseUrl, ServletContext servletContext) throws Exception {
 		Timer.getTimer().start(Timer.INIT);
@@ -47,7 +44,7 @@ public class MainExecutionController {
 			// Загрузка страницы
 			ExecutablePagePE page = PageModelRegistry.testAndGetRegistry().getExecutablePage(requestUrl, baseUrl, sessContext);
 			// Установить переменные, если есть команды на странице
-			page.setPostData(itemForm, postItemVariables);
+			page.setPostData(itemForm);
 			Timer.getTimer().stop(Timer.INIT);
 			// Выполнить страницу (загрузить и выполнить команды) или взять ее из кеша
 			PageController.newUsingCache(requestUrl, req.getServerName()).processPage(page, resp);
@@ -61,12 +58,8 @@ public class MainExecutionController {
 		}
 	}
 
-	public void setPostItemForm(SingleItemHttpPostFormDeprecated itemPostForm) {
+	public void setPostItemForm(MultipleHttpPostForm itemPostForm) {
 		itemForm = itemPostForm;
 	}
 
-	public void setPostItemVariables(ItemVariablesContainer postItemVariables) {
-		this.postItemVariables = postItemVariables;
-	}
-	
 }

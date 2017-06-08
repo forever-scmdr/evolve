@@ -63,7 +63,7 @@ import ecommander.model.UserGroupRegistry;
 	// Например Content-Type="text/xml" - MIME тип содержимого страницы (для этого заголовка есть значение по умолчанию - text/html)
 	// Expires="-1" - исключение кеширования
 
-	<variables>
+	<request>
 		// Порядок следования переменных в этом блоке имеет значение при использовании транслитерации переменных
 		<var name="device" style="translit"/> // значит этот параметр передается как уникальный строковый идентификатор
 		<var name="list" value="100,101,102"/>
@@ -74,10 +74,9 @@ import ecommander.model.UserGroupRegistry;
 		<var name="color" scope="session"/> // Значение этой переменной будет взято из сеанса, либо сохранено в сеансе, если это значение будет
 										    // передано данной странице через ссылку
 		<var name="size" scope="session" value=""/> // Значение переменной сеанса с именем size будет очищено
-	</variables>
-	<item 
+	</request>
+	<list
 		name="company" 				// название айтема, который извлекается
-		quantifier="single" 		// количество, можно не задавать, по умолчанию multiple
 		id="company"				// страничный ID айтема, с помощью него можно ссылаться на этот айтем
 		virtual="true"				// если айтем нужен только для того, чтобы загрузить другие айтемы, его можно не выводить в XML чтобы
 									// не перегружать файл ненужным текстом. В таком случае айтем надо обозначить как виртуальный
@@ -128,7 +127,7 @@ import ecommander.model.UserGroupRegistry;
 		// Этот класс должен расширять ExecutableItemPE. В нем для переопределения открыт только один метод - 
 		// loadItem. Этот метод отвечает за загрузку айтемов
 		<item name="device" tag="special" loader="extra.SpecialItem"/>
-	</item>
+	</list>
 
 
 
@@ -596,12 +595,10 @@ public class PageModelBuilder {
 	public static final String PERSONAL_ELEMENT = "personal";
 	public static final String SESSION_ELEMENT = "session";
 	public static final String USER_GROUP_ELEMENT = "usergroup";
-	public static final String ITEM_ELEMENT = "item";
+	public static final String SINGLE_ELEMENT = "single";
+	public static final String LIST_ELEMENT = "list";
+	public static final String TREE_ELEMENT = "tree";
 	public static final String PARENT_ELEMENT = "parent";
-	public static final String CHILD_ELEMENT = "child";
-	public static final String SUCCESSOR_ELEMENT = "successor";
-	public static final String PARENT_OF_ELEMENT = "parent-of";
-	public static final String PREDECESSORS_OF_ELEMENT = "baseItems-of";
 	public static final String PARAMETER_ELEMENT = "parameter";
 	public static final String SORTING_ELEMENT = "sorting";
 	public static final String LIMIT_ELEMENT = "limit";
@@ -612,24 +609,21 @@ public class PageModelBuilder {
 	public static final String LINK_ELEMENT = "link";
 	public static final String VAR_ELEMENT = "var";
 	public static final String REFERENCE_ELEMENT = "reference";
-	public static final String VARIABLES_ELEMENT = "variables";
-	public static final String INPUT_ELEMENT = "input";
-	public static final String FORM_ELEMENT = "form";
+	public static final String REQUEST_ELEMENT = "request";
+	public static final String PARAMETER_INPUT_ELEMENT = "parameter-input";
+	public static final String EXTRA_INPUT_ELEMENT = "extra-input";
 	public static final String COMMAND_ELEMENT = "command";
-	public static final String ARGUMENT_ELEMENT = "argument";
 	public static final String RESULT_ELEMENT = "result";
 	public static final String INCLUDE_ELEMENT = "include";
 	public static final String INCLUDE_DEFINITION_ELEMENT = "include-definition";
 	public static final String AGGREGATION_ELEMENT = "aggregation";
 	public static final String FULLTEXT_ELEMENT = "fulltext";
 	public static final String HEADERS_ELEMENT = "headers";
-	public static final String REQUIRED_ELEMENT = "required";
 
 	public static final String NAME_ATTRIBUTE = "name";
-	public static final String ITEM_NAME_ATTRIBUTE = "item-name";
+	public static final String ITEM_ATTRIBUTE = "item";
 	public static final String FUNCTION_ATTRIBUTE = "function";
 	public static final String ID_ATTRIBUTE = "id";
-	public static final String ITEM_ATTRIBUTE = "item";
 	public static final String PARAMETER_ATTRIBUTE = "parameter";
 	public static final String SIGN_ATTRIBUTE = "sign";
 	public static final String DIRECTION_ATTRIBUTE = "direction";

@@ -125,13 +125,13 @@ public class ItemPE extends PageElementContainer {
 		ExecutableItemPE clone;
 		if (specialLoaderConstructor != null) {
 			try {
-				clone = specialLoaderConstructor.newInstance(type, itemName, pageId, tag, rootType,
+				clone = specialLoaderConstructor.newInstance(type, itemName, pageId, parentPageId, tag, rootType,
 						rootGroupName, isTransitive, cacheable, cacheVars, parentPage);
 			} catch (Exception e) {
 				throw new RuntimeException("Can not create special loader", e);
 			}
 		} else {
-			clone = new ExecutableItemPE(type, itemName, assocName, pageId, tag, rootType,
+			clone = new ExecutableItemPE(type, itemName, assocName, pageId, parentPageId, tag, rootType,
 					rootGroupName, isTransitive, cacheable, virtual, cacheVars, parentPage);
 		}
 		if (container != null)

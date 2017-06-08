@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.UserNotAllowedException;
+import ecommander.pages.MultipleHttpPostForm;
 import ecommander.pages.SingleItemHttpPostFormDeprecated;
 import ecommander.pages.LinkPE;
 /**
@@ -27,7 +28,7 @@ public class ItemFormServlet extends BasicServlet {
 		targetUrl = targetUrl.substring(ITEM_FORM_PREFIX_LENGTH);
 		try {
 			LinkPE target = LinkPE.parseLink(targetUrl);
-			SingleItemHttpPostFormDeprecated itemForm = new SingleItemHttpPostFormDeprecated(req, target);
+			MultipleHttpPostForm itemForm = new MultipleHttpPostForm(req);
 			MainExecutionController mainController = new MainExecutionController(req, resp, target.serialize());
 			mainController.setPostItemForm(itemForm);
 			mainController.execute(getBaseUrl(req), getServletContext());

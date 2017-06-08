@@ -28,8 +28,8 @@
 			<meta http-equiv="Pragma" content="no-cache" />
 			<link rel="stylesheet" type="text/css" href="admin/css/reset.css" />
 			<link rel="stylesheet" type="text/css" href="admin/css/style.css" />
-			<link rel="stylesheet" type="text/css" href="admin/js/jquery-ui.min.css" />
-			<link href="admin/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" media="screen" />
+			<link rel="stylesheet" type="text/css" href="admin/css/context.css" />
+			<link href="admin/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css" media="screen" />
 			<title>
 				Система управления сайтом
 				<xsl:value-of select="/admin-page/domain" />
@@ -225,9 +225,78 @@
 						</div>
 					</div>
 				</div>
+
+				<xsl:call-template name="CONTEXT_MENU"/>
+
 				<xsl:call-template name="JS"/>
 			</body>
 		</html>
+	</xsl:template>
+
+	<xsl:template name="CONTEXT_MENU">
+
+		<xsl:param name="actions" select="'default'"/>
+
+		<nav id="context_menu-{$actions}" class="context-menu">
+			<ul class="context-menu__items">
+				<xsl:call-template name="DEAFAULT_CONTEXT_LINKS" />
+				<xsl:choose>
+					<xsl:when test="'default' = $actions">
+						<xsl:call-template name="ITEM_CONTEXT_ACTIONS" />
+					</xsl:when>
+				</xsl:choose>
+			</ul>
+		</nav>
+	</xsl:template>
+
+	<xsl:template name="ITEM_CONTEXT_ACTIONS">
+		<li class="context-menu__item">
+			<a href="#" data-action="toggle" rel="Показать" class="context-menu__link">Скрыть</a>
+		</li>
+		<li class="context-menu__item">
+			<form method="post" action="set_user" id="chown">
+				<xsl:variable name="curr" select="''" />
+				<input type="hidden" name="id" value="" />
+				<label>
+					Назначить владельца
+					<select name="user_id" value="0">
+						<option value="0">Все</option>
+						<option value="12">User 1</option>
+						<option value="13">User 2</option>
+						<option value="13">User 3</option>
+					</select>
+				</label>
+			</form>
+		</li>
+		<li class="context-menu__item">
+			<form method="post" action="set_user" id="chgroup">
+				<input type="hidden" name="id" value="" />
+				<label>
+					Назначить группу
+					<select name="group_id" value="13">
+						<option value="0">Все</option>
+						<option value="12">group 1</option>
+						<option value="13">group 2</option>
+						<option value="14">group 3</option>
+					</select>
+				</label>
+			</form>
+		</li>
+		<li class="context-menu__item">
+			<a href="#" data-action="modify_access" class="context-menu__link">Запретить доступ к файлам</a>
+		</li>
+	</xsl:template>
+
+	<xsl:template name="DEAFAULT_CONTEXT_LINKS" >
+		<li class="context-menu__item">
+			<a href="#" target="blank" class="context-menu__link link">Открыть в новой вкладке</a>
+		</li>
+		<li class="context-menu__item">
+			<a href="#" data-action="new_window"  class="context-menu__link link">Открыть в новом окне</a>
+		</li>
+		<li class="context-menu__item">
+			<a href="#" data-action="copy" class="context-menu__link link">Копировать ссылку</a>
+		</li>
 	</xsl:template>
 
 </xsl:stylesheet>

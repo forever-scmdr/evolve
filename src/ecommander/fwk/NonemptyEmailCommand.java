@@ -57,7 +57,7 @@ public class NonemptyEmailCommand extends Command {
 		if (requiredStr == null) requiredStr = Strings.EMPTY;
 		String spamStr = getVarSingleValue("spam");
 		if (spamStr == null) spamStr = Strings.EMPTY;
-		SingleItemHttpPostFormDeprecated postForm = getItemForm();
+		MultipleHttpPostForm postForm = getItemForm();
 		String templatePageName = getVarSingleValue("template");
 		// Сообщение об ошибке в случае если не все поля заполнены
 		String validationResult = validateInput(requiredStr, postForm);

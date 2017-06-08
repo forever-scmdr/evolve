@@ -26,12 +26,12 @@ label, a, button {
 }
 
 .right-col {
-	width: 83%;
+	width: 79%;
 	margin: 0;
 }
 
 .left-col {
-	width: 16%;
+	width: 20%;
 	box-sizing: border-box;
 	margin: 0;
 }
@@ -196,26 +196,37 @@ a, button, *[type="submit"], label.file, input[type="file"] {
 }
 
 .edit li.multiple a.name {
-	margin-right: 56px;
+	margin-right:80px;
 }
 
-.edit a.delete, .edit a.copy {
+.edit a.delete, .edit a.copy,  .edit a.hide_item, .edit a.show_item{
 	position: absolute;
 	display: block;
 	width: 27px;
 	height: 27px;
 	text-indent: 10000px;
 	overflow: hidden;
+	top: 0;
 }
 
+.edit a.hide_item{
+	background: url("../img/eye-blocked.png") center no-repeat;
+	background-size: 18px auto;
+	right:52px;
+} .edit a.show_item{
+	  background: url("../img/eye-plus.png") center no-repeat;
+	  background-size: 18px auto;
+	  right:52px;
+  }
+
 .edit a.delete {
-	top: 0;
+
 	right: 0;
 	background: url('../img/delete_icon.png') center no-repeat;
 }
 
 .edit a.copy {
-	top: 0;
+
 	right: 28px;
 	background: url('../img/copy-icon.gif') center no-repeat;
 	background-size: 18px auto;
@@ -942,18 +953,107 @@ h2.title {
 	background: #66BB5E url('../img/zoom-search-2-icon.png') right bottom no-repeat;
 	background-size: 25px 25px; 
 }
-#search-form input{padding: 5px;width: 195px; margin-bottom: 5px;}
+#search-form input{padding: 5px;width: 261px; margin-bottom: 5px;}
 .position-relative{position: relative;}
 .plain-text textarea{display: block; height: 200px; width: 100%;} 
+.deleted_items{
+	margin: 0 16px;
+}
+.deleted_items a{
+	cursor : pointer;
+}
+.deleted_items .item{
+	display: inline-block;
+	width: 250px;
+	vertical-align: top;
+	margin-right:30px;
+}
+.deleted_items .item .main{
+	padding: 15px;
+	background: #ebebeb;
+	-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+	box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+	border-bottom-right-radius: 6px;
+	border-top-left-radius: 6px;
+}
+.deleted_items .item .main a{
+	margin: 10px 0;
+	color: #000;
+	display: block;
+	font-size: 15px;
 
+}
+.deleted_items .item .main span{
+	color: #707070;
+}
+.deleted_items .item .control{
+	display: inline-block;
+	float: right;
+	overflow: hidden;
+	width: 18px;
+	height: 18px;
+	border-radius: 18px;
+	text-indent: 20px;
+	margin-left: 7px;
+	margin-bottom:5px;
+}
+.deleted_items .item .delete{
+	background: url(../img/delete_icon.png) center no-repeat;
+}
+.deleted_items .item .restore{
+	background: greenyellow;
+}
+.deleted_items .item .move{
+	background: gold;
+}
+#subitems .list .assoc-name{
+	margin-bottom: 10px;
+	/*font-weight: 600;*/
+	text-align: center;
 
+	letter-spacing: .5px;
+	/*text-transform: uppercase;*/
+}
+#subitems .list .assoc-name a{
+	color: #363636;
+	display: block;
+}
+#subitems .pages{
+	position: relative;
+	margin-top: 15px;
+	background: #e8e8e8;
+	padding: 5px;
 
+}
+#subitems .pages a{
+	display: inline-block;
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+#subitems .pages .links-container{
+	position: absolute;
+	margin-left: 70px;
+	top: 5px;
+	height: 18px;
+	overflow: hidden;
+}
+#subitems .pages:hover .links-container.big{
+	background: #fff;
+	overflow: visible;
+	height: auto;
+	width: 400px;
+	-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+	box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+	z-index: 2;
+}
+#subitems .pages a.active{
+	color: #707070;
+	text-decoration: none;
+}
+.hidden-items h4 a{
+	color: #fff;
+	text-decoration: none;
 
-
-
-
-
-
-
-
-
+}
