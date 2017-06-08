@@ -33,8 +33,8 @@ public class MultipleHttpPostForm implements Serializable {
 	private static final String FORM_ITEM_UNIQUE_KEY = "ukey";
 
 	private String cacheId;
-	private HashMap<Long, GeneralValues> inputs = new HashMap<>();
-	private GeneralValues extras = new GeneralValues();
+	private HashMap<Long, InputValues> inputs = new HashMap<>();
+	private InputValues extras = new InputValues();
 
 	private transient ItemTreeNode items;
 
@@ -95,7 +95,7 @@ public class MultipleHttpPostForm implements Serializable {
 		return (String) extras.get(key);
 	}
 
-	public GeneralValues getItemInput(long itemId) {
+	public InputValues getItemInput(long itemId) {
 		return inputs.get(itemId);
 	}
 
@@ -108,7 +108,7 @@ public class MultipleHttpPostForm implements Serializable {
 	public ItemTreeNode getItemTree() throws Exception {
 		HashSet<Long> itemsToAdd = new HashSet<>(inputs.keySet());
 		ItemTreeNode root = ItemTreeNode.createPureRoot();
-		for (GeneralValues input : inputs.values()) {
+		for (InputValues input : inputs.values()) {
 			ItemInputName desc = (ItemInputName) input.getKeys().iterator().next();
 			ItemTreeNode parent = root;
 			for (Long pred : desc.getPredecessors()) {
@@ -132,7 +132,7 @@ public class MultipleHttpPostForm implements Serializable {
 	 * @param input
 	 * @return
 	 */
-	private ItemTreeNode insertItem(ItemTreeNode parent, GeneralValues input) throws Exception {
+	private ItemTreeNode insertItem(ItemTreeNode parent, InputValues input) throws Exception {
 		ItemInputName desc = (ItemInputName) input.getKeys().iterator().next();
 		ItemType itemType = ItemTypeRegistry.getItemType(desc.getItemType());
 		Item item = Item.newFormItem(itemType, desc.getItemId(), desc.getParentId());
@@ -168,9 +168,9 @@ public class MultipleHttpPostForm implements Serializable {
 	}
 
 	private void addItemInput(ItemInputName inputDesc, Object value) {
-		GeneralValues values = inputs.get(inputDesc.getItemId());
+		InputValues values = inputs.get(inputDesc.getItemId());
 		if (values == null) {
-			values = new GeneralValues();
+			values = new InputValues();
 			inputs.put(inputDesc.getItemId(), values);
 		}
 		values.add(inputDesc, value);

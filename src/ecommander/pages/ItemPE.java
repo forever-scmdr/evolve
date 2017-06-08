@@ -53,6 +53,8 @@ public class ItemPE extends PageElementContainer {
 	private String assocName = null;
 	// Название айтема, уникальное для него на странице
 	private String pageId = null;
+	// ID родительского айтема для новый айтемов (айтемов типа new)
+	private String parentPageId = null;
 	// Какой это айтем - personal, session или обычный
 	private ItemRootType rootType;
 	// Какой группе пользователей принадлежит айтем (когда пользователю из одной группы надо загрузить данные пользователей других групп)
@@ -70,13 +72,14 @@ public class ItemPE extends PageElementContainer {
 	// Особый класс айтема (когда нужна нестандартная загрузка)
 	private Constructor<ExecutableItemPE> specialLoaderConstructor = null;
 	
-	ItemPE(Type type, String itemName, String assocName, String pageId, String tag, ItemRootType rootType,
+	ItemPE(Type type, String itemName, String assocName, String pageId, String parentPageId, String tag, ItemRootType rootType,
 	       String rootGroupName, boolean isTransitive, boolean isCacheable, boolean isVirtual, ArrayList<String> cacheVarNames) {
 		super();
 		this.type = type;
 		this.itemName = itemName;
 		this.assocName = assocName;
 		this.pageId = pageId;
+		this.parentPageId = parentPageId;
 		this.tag = tag;
 		this.rootType = rootType;
 		this.rootGroupName = rootGroupName;
@@ -138,6 +141,10 @@ public class ItemPE extends PageElementContainer {
 
 	public final String getId() {
 		return pageId;
+	}
+
+	public final String getParentId() {
+		return parentPageId;
 	}
 	
 	protected final boolean hasId() {

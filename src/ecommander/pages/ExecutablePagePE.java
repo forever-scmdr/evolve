@@ -1,17 +1,16 @@
 package ecommander.pages;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-
 import ecommander.controllers.SessionContext;
+import ecommander.model.User;
 import ecommander.pages.CommandPE.CommandContainer;
 import ecommander.pages.variables.SessionStaticVariablePE;
 import ecommander.pages.variables.StaticVariablePE;
 import ecommander.pages.variables.VariablePE;
-import ecommander.model.User;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Модель страницы, которая предназначена для загрузки.
@@ -26,11 +25,10 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	 */
 	public static final String NOW_VALUE = "$now"; // текущая дата на сервере
 	public static final String USERNAME_VALUE = "$username"; // текущий ползователь
-	public static final String USERGROUP_VALUE = "$usergroup"; // имя группы текущего пользователя
 	public static final String PAGENAME_VALUE = "$pagename"; // название текущей страницы
 	public static final String PAGEURL_VALUE = "$pageurl"; // URL текущей страницы со всеми переменными
 	
-	protected HashMap<String, ExecutableItemPE> identifiedElements = null; // отображение ID-название айтема => PageItem
+	private HashMap<String, ExecutableItemPE> identifiedElements = null; // отображение ID-название айтема => PageItem
 	// сабайтемы вместе с командами (одни айтемы могут загружаться перед командами, другие - после)
 	private ArrayList<ExecutablePE> executables;
 	// Переменные, переданные при вызове страницы (взяты из Link или из форм)
@@ -44,27 +42,24 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	// Базовая ссылка, все урлы страницы должны быть относительны этой ссылке
 	private String urlBase;
 	// Форма, которая пришла в результате POST запроса (форма на базе одного айтема)
-	private SingleItemHttpPostFormDeprecated itemForm;
-	// Тоже форма, которая пришла в результате POST запроса (форма на базе инпутов, принадлежащих разным айтемам)
-	private ItemVariablesContainer itemVariables;
+	private MultipleHttpPostForm itemForm;
 	// Нужно ли очищать кеш после выполнения всех команд этой страницы
 	private boolean cacheClearNeeded = false;
 	
 	ExecutablePagePE(String pageName, String pageTemplateName, boolean cacheable, SessionContext sessionContext,
 			Collection<String> cacheVars) {
 		super(pageName, pageTemplateName, cacheable, cacheVars);
-		this.identifiedElements = new HashMap<String, ExecutableItemPE>();
-		this.executables = new ArrayList<ExecutablePE>();
-		this.variables = new LinkedHashMap<String, VariablePE>();
+		this.identifiedElements = new HashMap<>();
+		this.executables = new ArrayList<>();
+		this.variables = new LinkedHashMap<>();
 		this.sessionContext = sessionContext;
-		User user = null;
+		User user;
 		if (sessionContext != null)
 			user = sessionContext.getUser();
 		else
 			user = User.getDefaultUser();
 		addVariable(new StaticVariablePE(NOW_VALUE, System.currentTimeMillis() + ""));
 		addVariable(new StaticVariablePE(USERNAME_VALUE, user.getName()));
-		addVariable(new StaticVariablePE(USERGROUP_VALUE, user.getGroup()));
 		addVariable(new StaticVariablePE(PAGENAME_VALUE, this.name));
 	}
 	/**
@@ -86,7 +81,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	 * Зарегисрировать страничный айтем
 	 * @param registrableElement
 	 */
-	public final void registerItemPE(ExecutableItemPE registrableElement) {
+	final void registerItemPE(ExecutableItemPE registrableElement) {
 		if (registrableElement.hasId())
 			identifiedElements.put(registrableElement.getId(), registrableElement);
 	}
@@ -112,14 +107,12 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	 * @param linkUrl - передается для того, чтобы не вызывать лишний раз serialize в ссылке
 	 * @param baseLink
 	 */
-	public final void setRequestLink(LinkPE link, String linkUrl, String baseLink) {
+	final void setRequestLink(LinkPE link, String linkUrl, String baseLink) {
 		this.requestLink = link;
 		this.urlBase = baseLink;
-		Iterator<VariablePE> linkIter = requestLink.getAllVariables().iterator();
-		while (linkIter.hasNext()) {
-			VariablePE variable = linkIter.next();
+		for (VariablePE variable : requestLink.getAllVariables()) {
 			if (variables.containsKey(variable.getName()) && variables.get(variable.getName()) instanceof SessionStaticVariablePE)
-				((SessionStaticVariablePE)variables.get(variable.getName())).update(variable);
+				((SessionStaticVariablePE) variables.get(variable.getName())).update(variable);
 			else {
 				addVariable(variable);
 			}
@@ -129,19 +122,13 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	/**
 	 * Установить формы, переданные через POST - переменные разный айтемов и форму на базе определенного типа айтема
 	 * @param itemForm
-	 * @param itemVars
 	 */
-	public void setPostData(SingleItemHttpPostFormDeprecated itemForm, ItemVariablesContainer itemVars) {
+	public void setPostData(MultipleHttpPostForm itemForm) {
 		this.itemForm = itemForm;
-		this.itemVariables = itemVars;
 	}
 	
-	public final SingleItemHttpPostFormDeprecated getItemFrom() {
+	public final MultipleHttpPostForm getItemFrom() {
 		return itemForm;
-	}
-	
-	public final ItemVariablesContainer getItemVariables() {
-		return itemVariables;
 	}
 	/**
 	 * Получить ссылку, по которому была получена данная страница
@@ -197,7 +184,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	 * Удаляет переменную из страницы
 	 * @param varName
 	 */
-	public final void removeVariable(String varName) {
+	final void removeVariable(String varName) {
 		variables.remove(varName);
 	}
 	/**
@@ -210,7 +197,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	
 	public final void addLink(LinkPE linkPE) {
 		if (identifiedLinks == null)
-			identifiedLinks = new HashMap<String, LinkPE>();
+			identifiedLinks = new HashMap<>();
 		identifiedLinks.put(linkPE.getLinkName(), linkPE);
 	}
 

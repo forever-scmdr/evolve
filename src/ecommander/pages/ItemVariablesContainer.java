@@ -41,12 +41,12 @@ public class ItemVariablesContainer implements Serializable {
 
 		private long itemId;
 		private int typeId;
-		private GeneralValues variables;
+		private InputValues variables;
 		
 		protected ItemVariables(long itemId, int itemTypeIs) {
 			this.itemId = itemId;
 			this.typeId = itemTypeIs;
-			this.variables = new GeneralValues();
+			this.variables = new InputValues();
 		}
 		/**
 		 * Добавить значение

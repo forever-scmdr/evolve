@@ -211,10 +211,10 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * @param itemPageId
 	 * @param tag
 	 */
-	protected ExecutableItemPE(Type itemType, String itemName, String assocName, String itemPageId, String tag, ItemRootType itemRootType,
-			String itemRootGroupName, boolean isSingle, boolean isCacheable, boolean isVirtual, ArrayList<String> cacheVars,
-			ExecutablePagePE parentPage) {
-		super(itemType, itemName, assocName, itemPageId, tag, itemRootType, itemRootGroupName, isSingle, isCacheable, isVirtual, cacheVars);
+	protected ExecutableItemPE(Type itemType, String itemName, String assocName, String itemPageId, String parentPageId,
+	                           String tag, ItemRootType itemRootType, String itemRootGroupName, boolean isSingle,
+	                           boolean isCacheable, boolean isVirtual, ArrayList<String> cacheVars,	ExecutablePagePE parentPage) {
+		super(itemType, itemName, assocName, itemPageId, parentPageId, tag, itemRootType, itemRootGroupName, isSingle, isCacheable, isVirtual, cacheVars);
 		parentPageModel = parentPage;
 		foundItemsByParent = new HashMap<>();
 	}

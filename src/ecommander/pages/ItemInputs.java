@@ -15,13 +15,13 @@ import ecommander.model.ParameterDescription;
  *
  * Created by E on 22/5/2017.
  */
-public class ItemInputsPE {
+public class ItemInputs {
 	private Item item;
 
-	private GeneralValues inputs = new GeneralValues();
+	private InputValues inputs = new InputValues();
 	private long[] predecessors;
-
-	ItemInputsPE(Item item, long... predecessors) {
++
+	ItemInputs(Item item, long... predecessors) {
 		this.item = item;
 		this.predecessors = predecessors;
 	}
@@ -54,7 +54,7 @@ public class ItemInputsPE {
 		}
 	}
 
-	GeneralValues getInputs() {
+	InputValues getInputs() {
 		return inputs;
 	}
 }

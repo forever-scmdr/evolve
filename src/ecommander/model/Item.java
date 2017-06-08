@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import ecommander.pages.GeneralValues;
+import ecommander.pages.InputValues;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
@@ -94,7 +94,7 @@ public class Item implements ItemBasics {
 	private LinkedHashMap<Integer, Parameter> paramMap = new LinkedHashMap<>(); // Все параметры (не только одиночные)
 																				// параметры (имя параметра => объект
 																				// Parameter)
-	private GeneralValues extras; // дополнительные значения (не параметры). Они существуют только в памяти, в БД не хранятся
+	private InputValues extras; // дополнительные значения (не параметры). Они существуют только в памяти, в БД не хранятся
 											// могут использоваться когда айтем создается в сеансе или в форме (поля extra формы переписываются сюда)
 	private String parametersXML = Strings.EMPTY; // Все параметры, записанные в виде XML
 	private String filesPath = null; // Относительный путь к файлам айтема
@@ -853,7 +853,7 @@ public class Item implements ItemBasics {
 	 */
 	public final void setExtra(String name, Object value) {
 		if (extras == null)
-			extras = new GeneralValues();
+			extras = new InputValues();
 		extras.add(name, value);
 	}
 	/**

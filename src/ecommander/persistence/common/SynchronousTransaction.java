@@ -15,7 +15,7 @@ import ecommander.model.User;
  * полученные в этой же транзакции.
  * @author EEEE
  */
-public final class SynchronousTransaction {
+public final class SynchronousTransaction implements AutoCloseable {
 
 	private ArrayList<PersistenceCommandUnit> executedCommands;
 	private TransactionContext context;
@@ -50,7 +50,7 @@ public final class SynchronousTransaction {
 			throw e;
 		} finally {
 			if (!inited)
-				finalize();
+				close();
 		}
 	}
 	/**
@@ -74,7 +74,7 @@ public final class SynchronousTransaction {
 				ServerLogger.error("SQL Exception during rolling back the transaction.", sqlE);
 			}
 		} finally {
-			finalize();
+			close();
 		}
 		throw exception;
 	}
@@ -109,17 +109,13 @@ public final class SynchronousTransaction {
 				command.rollback();
 			}
 		} finally {
-			finalize();
+			close();
 		}
 	}
-	/**
-	 * Завершение выполнения транзакции
-	 * !!!   ВСЕГДА   !!! вызывать после выполнения в блоке finally,
-	 * т. к. в этом методе выполняется закрытие соединения
-	 */
-	public final void finalize() {
+
+	@Override
+	public void close() throws Exception {
 		MysqlConnector.closeConnection(conn);
 		conn = null;
 	}
-
 }

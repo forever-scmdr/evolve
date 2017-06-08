@@ -45,8 +45,7 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 	private boolean cacheClearNeeded = false; // Нужно ли проводить очистку кеша после выполнения этой команды
 	private VariablePE methodVar = null; // Переменная, которая хранит названия методов, которые должны быть в команде и котороые выполняют разные действия
 	private ExecutablePagePE parentPage;
-	private HashMap<String, HashSet<String>> required = null; // обязательные поля для форм, если форм нет, или поля не обязательные, то равен null
-	
+
 	@SuppressWarnings("unchecked")
 	public CommandPE(String className, boolean clearCache) throws ClassNotFoundException {
 		this.commandClass = (Class<Command>) Class.forName(className);
@@ -56,7 +55,6 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 	private CommandPE(CommandPE base, ExecutablePagePE parentPage) {
 		this.commandClass = base.commandClass;
 		this.cacheClearNeeded = base.cacheClearNeeded;
-		this.required = base.required;
 		this.parentPage = parentPage;
 	}
 	
@@ -69,18 +67,7 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 		if (!StringUtils.isBlank(methodName))
 			methodVar = new StaticVariablePE("method", methodName);
 	}
-	
-	public final void addRequired(String name, String paramList) {
-		if (!StringUtils.isBlank(paramList) && !StringUtils.isBlank(name)) {
-			HashSet<String> params = new HashSet<String>(Arrays.asList(StringUtils.split(paramList, ", ")));
-			if (params.size() > 0) {
-				if (required == null)
-					required = new HashMap<String, HashSet<String>>();
-				required.put(name, params);
-			}
-		}
-	}
-	
+
 	@Override
 	protected PageElementContainer createExecutableShallowClone(PageElementContainer container, ExecutablePagePE parentPage) {
 		CommandPE clone = new CommandPE(this, parentPage);
@@ -98,7 +85,7 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 	 */
 	public final ResultPE execute() throws Exception {
 		try (Command command = commandClass.newInstance()) {
-		    command.init(parentPage, required);
+		    command.init(parentPage);
 			if (hasNested()) {
 				for (PageElement nested : getAllNested()) {
 					command.addResult((ResultPE) nested);

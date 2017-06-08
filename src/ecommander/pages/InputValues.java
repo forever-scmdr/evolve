@@ -13,11 +13,11 @@ import java.util.List;
  * @author E
  *
  */
-public class GeneralValues implements Serializable {
+public class InputValues implements Serializable {
 	private static final long serialVersionUID = -1721171544301221441L;
 
 	private HashMap<Object, Object> map = new HashMap<>();
-	public GeneralValues() {}
+	public InputValues() {}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void add(Object paramId, Object value) {

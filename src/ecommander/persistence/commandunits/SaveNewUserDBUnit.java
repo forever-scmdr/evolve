@@ -1,14 +1,14 @@
 package ecommander.persistence.commandunits;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-
 import ecommander.fwk.UserExistsExcepion;
+import ecommander.model.User;
 import ecommander.model.UserMapper;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
-import ecommander.model.User;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashSet;
 
 /**
  * Создается новый пользователь
@@ -39,7 +39,7 @@ public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBCon
 				.setString(user.getName()).com()
 				.setString(user.getPassword()).com()
 				.setString(user.getDescription()).sql(");\r\n");
-		ArrayList<User.Group> groups = user.getGroups();
+		HashSet<User.Group> groups = user.getGroups();
 		if (groups.size() > 0)
 			insertUser.INSERT_INTO(UG_TABLE, UG_GROUP_ID, UG_GROUP_NAME, UG_ROLE, UG_USER_ID)
 					.sql(" VALUES ");

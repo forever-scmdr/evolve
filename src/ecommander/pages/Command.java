@@ -32,18 +32,16 @@ public abstract class Command implements AutoCloseable {
 	private HashMap<String, ResultPE> results = null; // резльтаты выполнения команды
 	private SynchronousTransaction transaction = null;
 	private SessionItemMapper sessionMapper = null;
-	private HashMap<String, HashSet<String>> required = null;
 
-	void init(ExecutablePagePE page, HashMap<String, HashSet<String>> required) {
+	void init(ExecutablePagePE page) {
 		this.page = page;
-		this.required = required;
 		transaction = new SynchronousTransaction(page.getSessionContext().getUser());
 	}
 
 	@Override
 	public void close() throws Exception {
 		if (transaction != null)
-			transaction.finalize();
+			transaction.close();
 	}
 	/**
 	 * Установить значение переменной сеанса (получение значения переменной осуществляется в методах getVar*)
@@ -92,17 +90,19 @@ public abstract class Command implements AutoCloseable {
 	}
 	/**
 	 * Сохранить текущую форму в сеансе
+	 * @param formName
 	 */
-	protected final void saveSessionForm() {
+	protected final void saveSessionForm(String formName) {
 		if (page.getItemFrom() != null)
-			page.getSessionContext().saveForm(page.getItemFrom());
+			page.getSessionContext().saveForm(page.getItemFrom(), formName);
 	}
 	/**
 	 * Удалить текущую форму из сеанса
+	 * @param formName
 	 */
-	protected final void removeSessionForm() {
+	protected final void removeSessionForm(String formName) {
 		if (page.getItemFrom() != null)
-			page.getSessionContext().removeForm(page.getItemFrom());
+			page.getSessionContext().removeForm(formName);
 	}
 	/**
 	 * Получить другую страницу
@@ -169,41 +169,8 @@ public abstract class Command implements AutoCloseable {
 	 * Вернуть форму айтема
 	 * @return
 	 */
-	protected final SingleItemHttpPostFormDeprecated getItemForm() {
+	protected final MultipleHttpPostForm getItemForm() {
 		return page.getItemFrom();
-	}
-	/**
-	 * Возвращает список полей (параметров) формы, которые обязательны для заполнения, но не заполнены
-	 * @param requiredName
-	 * @return
-	 */
-	protected final Set<String> getFormUnsetRequired(String requiredName) {
-		HashSet<String> reqParams = required.get(requiredName);
-		if (reqParams == null || reqParams.size() == 0)
-			return null;
-		HashSet<String> unset = new HashSet<>();
-		for (String paramName : reqParams) {
-			if (!getItemForm().isParameterSet(paramName))
-				unset.add(paramName);
-		}
-		if (unset.size() == 0)
-			return null;
-		return unset;
-	}
-	/**
-	 * Создать временный айтем для сохранения в сеансе и для временного использования на базе
-	 * отправленной пользователем формы
-	 * @return
-	 * @throws Exception
-	 */
-	protected final Item createTemporaryFormItem() throws Exception {
-		return getItemForm().createItem(getInitiator().getUserId(), getInitiator().getGroupId());
-	}
-	/**
-	 * Вернуть переменные айтемов (объект ItemVariablesContainer)
-	 */
-	protected final ItemVariablesContainer getItemVariables() {
-		return page.getItemVariables();
 	}
 	/**
 	 * Вернуть все айтемы, загруженные заданным страничным айтемом (с заданным ID)
@@ -268,7 +235,7 @@ public abstract class Command implements AutoCloseable {
 	 */
 	public final void addResult(ResultPE result) {
 		if (results == null) {
-			results = new HashMap<String, ResultPE>();
+			results = new HashMap<>();
 		}
 		results.put(result.getName(), result);
 	}
