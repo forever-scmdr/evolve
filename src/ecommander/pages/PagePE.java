@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.controllers.SessionContext;

@@ -1,7 +1,7 @@
 package ecommander.output;
 
 import ecommander.pages.PageElement;
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 
 public class VariablePEWriter implements PageElementWriter {
 

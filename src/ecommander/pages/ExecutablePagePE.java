@@ -5,7 +5,7 @@ import ecommander.model.User;
 import ecommander.pages.CommandPE.CommandContainer;
 import ecommander.pages.variables.SessionStaticVariablePE;
 import ecommander.pages.variables.StaticVariablePE;
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -35,7 +35,7 @@ import ecommander.pages.variables.SessionStaticVariablePE;
 import ecommander.pages.variables.StaticItemVariablePE;
 import ecommander.pages.variables.StaticParameterVariablePE;
 import ecommander.pages.variables.StaticVariablePE;
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.model.UserGroupRegistry;
 
@@ -620,6 +620,10 @@ public class PageModelBuilder {
 	public static final String FULLTEXT_ELEMENT = "fulltext";
 	public static final String HEADERS_ELEMENT = "headers";
 
+	public static final String ASSOC_ATTRIBUTE = "assoc";
+	public static final String CHILD_ATTRIBUTE = "child";
+	public static final String TRANSITIVE_ATTRIBUTE = "name";
+	public static final String REF_ATTRIBUTE = "ref";
 	public static final String NAME_ATTRIBUTE = "name";
 	public static final String ITEM_ATTRIBUTE = "item";
 	public static final String FUNCTION_ATTRIBUTE = "function";
@@ -630,7 +634,6 @@ public class PageModelBuilder {
 	public static final String QUANTIFIER_ATTRIBUTE = "quantifier";
 	public static final String TARGET_ATTRIBUTE = "target";
 	public static final String TARGET_VAR_ATTRIBUTE = "target-var";
-	public static final String VAR_ATTRIBUTE = "var";
 	public static final String VALUE_ATTRIBUTE = "value";
 	public static final String TAG_ATTRIBUTE = "tag";
 	public static final String TEMPLATE_ATTRIBUTE = "template";
@@ -641,8 +644,7 @@ public class PageModelBuilder {
 	public static final String VIRTUAL_ATTRIBUTE = "virtual";
 	public static final String LINK_ATTRIBUTE = "link";
 	public static final String PATTERN_ATTRIBUTE = "pattern";
-	public static final String REFERENCE_VAR_ATTRIBUTE = "reference-var";
-	public static final String REFERENCE_PARAMETER_ATTRIBUTE = "reference-parameter";
+	public static final String REF_PARAMETER_ATTRIBUTE = "ref-parameter";
 	public static final String NAME_VAR_ATTRIBUTE = "name-var";
 	public static final String ID_VAR_ATTRIBUTE = "id-var";
 	public static final String DIRECTION_VAR_ATTRIBUTE = "direction-var";

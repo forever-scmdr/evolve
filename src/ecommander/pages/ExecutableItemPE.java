@@ -28,7 +28,7 @@ import ecommander.pages.filter.AggregationPE;
 import ecommander.pages.filter.AggregationPE.AggregationContainer;
 import ecommander.pages.filter.FilterPE;
 import ecommander.pages.filter.FilterPE.FilterContainer;
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.SessionItemMapper;
 import ecommander.model.DomainRegistry;

@@ -7,7 +7,7 @@ import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElement;
 import ecommander.pages.PageElementContainer;
 import ecommander.pages.ValidationResults;
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 /**
  * Критерий фильтра, в котором название параметра жестко задано в коде страницы
  * @author EEEE

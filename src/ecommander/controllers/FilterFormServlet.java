@@ -15,7 +15,7 @@ import ecommander.fwk.Strings;
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.pages.LinkPE;
 import ecommander.pages.variables.FilterStaticVariablePE;
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 /**
  * Подразумевается, что этот сервлет обрабатывает только 
  * @author EEEE

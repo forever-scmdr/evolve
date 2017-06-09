@@ -4,13 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 import ecommander.pages.variables.StaticVariablePE;
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.EcommanderException;

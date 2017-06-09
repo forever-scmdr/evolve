@@ -10,7 +10,7 @@ import ecommander.pages.PageElement;
 import ecommander.pages.filter.FilterPE;
 import ecommander.pages.variables.FilterStaticVariablePE;
 import ecommander.pages.variables.StaticVariablePE;
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 /**
  * Хранит по одной копии райтера для каждого элемента для каждого потока
  * Flyweight

@@ -31,7 +31,7 @@ import ecommander.fwk.EcommanderException;
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.fwk.ValidationException;
 import ecommander.pages.LinkPE;
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 
 /**
  * Базовые функции всех сервлетов CMS

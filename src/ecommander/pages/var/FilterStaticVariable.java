@@ -1,14 +1,13 @@
-package ecommander.pages.variables;
+package ecommander.pages.var;
+
+import ecommander.fwk.FilterProcessException;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.fwk.FilterProcessException;
-import ecommander.pages.ExecutablePagePE;
 /**
  * Страничная переменная, которая содержит данные, которые ввел пользователь сайта для фильтрации
  * Формат переменной фильтра
@@ -22,33 +21,24 @@ import ecommander.pages.ExecutablePagePE;
  * @author EEEE
  *
  */
-public class FilterStaticVariablePE extends StaticVariablePE {
-	public static final String ELEMENT_NAME = "filter-var";
-	
+public class FilterStaticVariable extends StaticVariable {
+
 	private static final int DELIM_LENGTH = 4;
 	public static final String TOKEN_DELIM = "-fl-";
 	public static final char VALUE_DELIM = '~';
 	public static final String SORTING = "-fs-";
 	public static final String PAGE = "-fp-";
-	
+
 	private HashMap<Integer, ArrayList<String>> paramValues;
 	private int sortingParamId;
 	private String sortingDirection;
 	private int pageNumber = 1;
 	private boolean isParsed = false;
-	
-	public FilterStaticVariablePE(String varId, String value) {
-		super(varId, value);
+
+	public FilterStaticVariable(String varId, String value) {
+		super(null, varId, value);
 	}
 
-	protected FilterStaticVariablePE(FilterStaticVariablePE source, ExecutablePagePE parentPage) {
-		super(source, parentPage);
-	}
-
-	@Override
-	protected VariablePE createVarClone(ExecutablePagePE parentPage) {
-		return new FilterStaticVariablePE(this, parentPage);
-	}
 	/**
 	 * Получить все отправленные пользователем поля ввода
 	 * @return
@@ -57,8 +47,8 @@ public class FilterStaticVariablePE extends StaticVariablePE {
 	public Set<Integer> getPostedInputs() throws FilterProcessException {
 		parse();
 		if (paramValues != null)
-			return new HashSet<Integer>(paramValues.keySet());
-		return new HashSet<Integer>();
+			return new HashSet<>(paramValues.keySet());
+		return new HashSet<>();
 	}
 	/**
 	 * Получить значение параметра
@@ -91,7 +81,7 @@ public class FilterStaticVariablePE extends StaticVariablePE {
 	
 	private void parse() throws FilterProcessException {
 		if (!isParsed) {
-			String filterUrlStr = output();
+			String filterUrlStr = (String) getSingleValue();
 			if (paramValues == null && !StringUtils.isBlank(filterUrlStr)) {
 				paramValues = new HashMap<Integer, ArrayList<String>>(10);
 				String[] tokens = StringUtils.splitByWholeSeparator(filterUrlStr, TOKEN_DELIM);
@@ -138,11 +128,5 @@ public class FilterStaticVariablePE extends StaticVariablePE {
 			isParsed = true;
 		}
 	}
-
-	@Override
-	public String getElementName() {
-		return ELEMENT_NAME;
-	}
-	
 
 }

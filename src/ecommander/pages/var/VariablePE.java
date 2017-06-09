@@ -1,8 +1,7 @@
-package ecommander.pages.variables;
+package ecommander.pages.var;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.List;
 
 import ecommander.pages.PageElement;
 import ecommander.pages.ValidationResults;
@@ -11,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import ecommander.fwk.Strings;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElementContainer;
+import org.apache.xerces.util.XMLChar;
 
 /**
  * Страничная переменная
@@ -35,7 +35,7 @@ public abstract class VariablePE implements PageElement {
 	 * @author E
 	 *
 	 */
-	public static enum Style {
+	public enum Style {
 		path, query, translit
 	}
 	
@@ -43,7 +43,7 @@ public abstract class VariablePE implements PageElement {
 	 * Интерфейс, который должны реализовывать контейнеры, обрабатывающие добавление ExecutableItemPE особым образом
 	 * @author EEEE
 	 */
-	public static interface VariableContainer {
+	public interface VariableContainer {
 		void addVariable(VariablePE variablePE);
 	}
 	
@@ -58,9 +58,8 @@ public abstract class VariablePE implements PageElement {
 	}
 	/**
 	 * Конструктор для клонирования
-	 * @param linkName
+	 * @param var
 	 * @param parentPage
-	 * @param transliterable
 	 */
 	protected VariablePE(VariablePE var, ExecutablePagePE parentPage) {
 		this.name = var.name;
@@ -89,10 +88,12 @@ public abstract class VariablePE implements PageElement {
 		return name;
 	}
 
-	public abstract String output();
-	
-	public abstract List<String> outputArray();
-	
+	/**
+	 * Получить переменную, которая
+	 * @return
+	 */
+	protected abstract Variable getVariable();
+
 	public abstract boolean isEmpty();
 	/**
 	 * Может ли переменная хранить множество значений
@@ -127,12 +128,13 @@ public abstract class VariablePE implements PageElement {
 		if (isMultiple()) {
 			 return writeMultipleVariableInAnUrlFormat(this);
 		} else {
+			String output = getVariable().getSingleLocalValue();
 			if (style == Style.path)
-				return getName() + COMMON_DELIMITER + URLEncoder.encode(output(), Strings.SYSTEM_ENCODING);
+				return getName() + COMMON_DELIMITER + URLEncoder.encode(output, Strings.SYSTEM_ENCODING);
 			if (style == Style.query)
-				return getName() + EQ_SIGN + URLEncoder.encode(output(), Strings.SYSTEM_ENCODING);
+				return getName() + EQ_SIGN + URLEncoder.encode(output, Strings.SYSTEM_ENCODING);
 			// В случае транслита
-			return URLEncoder.encode(output(), Strings.SYSTEM_ENCODING);
+			return URLEncoder.encode(output, Strings.SYSTEM_ENCODING);
 		}
 	}
 
@@ -143,18 +145,18 @@ public abstract class VariablePE implements PageElement {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	protected static String writeMultipleVariableInAnUrlFormat(VariablePE var) throws UnsupportedEncodingException {
-		String result = new String();
+	private static String writeMultipleVariableInAnUrlFormat(VariablePE var) throws UnsupportedEncodingException {
+		String result = "";
 		if (var.getStyle() == Style.path) {
-			for (String value : var.outputArray()) {
+			for (String value : var.getVariable().getLocalValues()) {
 				result += COMMON_DELIMITER + var.getName() + COMMON_DELIMITER + URLEncoder.encode(value, Strings.SYSTEM_ENCODING);
 			}
 		} else if (var.getStyle() == Style.query) {
-			for (String value : var.outputArray()) {
+			for (String value : var.getVariable().getLocalValues()) {
 				result += AMP_SIGN + var.getName() + EQ_SIGN + URLEncoder.encode(value, Strings.SYSTEM_ENCODING);
 			}
 		} else if (var.getStyle() == Style.translit) {
-			for (String value : var.outputArray()) {
+			for (String value : var.getVariable().getLocalValues()) {
 				result += COMMON_DELIMITER + URLEncoder.encode(value, Strings.SYSTEM_ENCODING);
 			}
 		}
@@ -174,6 +176,8 @@ public abstract class VariablePE implements PageElement {
 	public void validate(String elementPath, ValidationResults results) {
 		if (StringUtils.isBlank(name) && name.startsWith("$"))
 			results.addError(elementPath + " > " + getKey(), "user defined variable can not start with $ sign. $ is reserved for predefined variables");
+		if (!XMLChar.isValidName(name))
+			results.addError(elementPath + " > " + getKey(), "variable name is not a valid XML element name");
 	}
-	
+
 }

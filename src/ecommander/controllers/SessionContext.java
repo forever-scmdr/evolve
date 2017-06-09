@@ -1,29 +1,27 @@
 package ecommander.controllers;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map.Entry;
+import ecommander.fwk.MysqlConnector;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.model.User;
+import ecommander.pages.MultipleHttpPostForm;
+import ecommander.persistence.mappers.SessionItemMapper;
+import ecommander.persistence.mappers.SessionObjectStorage;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import ecommander.pages.MultipleHttpPostForm;
-import ecommander.pages.SingleItemHttpPostFormDeprecated;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
-import ecommander.persistence.mappers.SessionItemMapper;
-import ecommander.persistence.mappers.SessionObjectStorage;
-import ecommander.model.User;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 /**
  * Интерфейс для работы со всем, что касается сеансов, а именно:
  * - установка текущего пользователя (после успешной аутентификации)

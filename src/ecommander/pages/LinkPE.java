@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.ServerLogger;

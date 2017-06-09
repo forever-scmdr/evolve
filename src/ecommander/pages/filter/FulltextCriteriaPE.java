@@ -2,11 +2,10 @@ package ecommander.pages.filter;
 
 import ecommander.pages.PageElement;
 import ecommander.pages.ValidationResults;
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.Strings;
-import ecommander.fwk.EcommanderException;
 import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.pages.ExecutablePagePE;

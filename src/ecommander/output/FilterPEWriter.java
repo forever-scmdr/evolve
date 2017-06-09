@@ -7,7 +7,7 @@ import ecommander.pages.LinkPE;
 import ecommander.pages.PageElement;
 import ecommander.pages.filter.FilterPE;
 import ecommander.pages.variables.StaticVariablePE;
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 /**
  * Метод write работает не на базе фильтра, а на базе страничного айтема
  * @author EEEE

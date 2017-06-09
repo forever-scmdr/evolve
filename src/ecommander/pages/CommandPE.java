@@ -1,11 +1,8 @@
 package ecommander.pages;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.ServerLogger;

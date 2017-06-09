@@ -24,7 +24,7 @@ import ecommander.pages.LinkPE;
 import ecommander.pages.PageModelRegistry;
 import ecommander.pages.ResultPE;
 import ecommander.pages.ResultPE.ResultType;
-import ecommander.pages.variables.VariablePE;
+import ecommander.pages.var.VariablePE;
 /**
  * Контроллер кэша
  * @author EEEE
