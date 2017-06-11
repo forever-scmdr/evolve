@@ -14,8 +14,8 @@ public class StaticVariable extends Variable {
 
 	private ArrayList<Object> values = new ArrayList<>(5);
 
-	public StaticVariable(ExecutablePagePE parentPage, String name, Object... values) {
-		super(parentPage, name);
+	public StaticVariable(String name, Object... values) {
+		super(null, name);
 		for (Object value : values) {
 			if (StringUtils.isNotBlank(value.toString()))
 				this.values.add(value);

@@ -1,21 +1,14 @@
 package ecommander.pages;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import ecommander.pages.var.VariablePE;
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.controllers.SessionContext;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
+import ecommander.pages.var.RequestVariablePE;
+import ecommander.pages.var.VariablePE;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Модель страницы, эта модель просто описывает страницу
@@ -35,7 +28,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	protected final boolean cacheable; // Можно ли кешировать эту страницу
 	protected LinkedHashSet<String> cacheVars = null; 		// переменные, которые используются для уникального кеширования. Если страница содержит переменные, 
 															// не содержащиеся в этом списке, то если эти переменные установлены, страница не кешируется
-	private LinkedHashMap<String, VariablePE> varDefs = null; // важен порядок следования переменных. Когда используенся уникальный текстовый ключ айтема, 
+	private LinkedHashMap<String, RequestVariablePE> varDefs = null; // важен порядок следования переменных. Когда используенся уникальный текстовый ключ айтема,
 															  // имя переменной не передается через ссылку. В этом случае для определения имени переменной
 															  // используется ее порядковый номер в списке переменных.
 
@@ -151,8 +144,8 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	 */
 	public void addVariable(VariablePE variablePE) {
 		if (varDefs == null)
-			varDefs = new LinkedHashMap<String, VariablePE>(5);
-		varDefs.put(variablePE.getName(), variablePE);
+			varDefs = new LinkedHashMap<>(5);
+		varDefs.put(variablePE.getName(), (RequestVariablePE) variablePE);
 	}
 
 	public String getKey() {
@@ -162,10 +155,10 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	 * Получить список переменных, которые были перечислены в разделе <variables> страницы
 	 * @return
 	 */
-	public Collection<VariablePE> getInitVariablesList() {
+	public Collection<RequestVariablePE> getInitVariablesList() {
 		if (varDefs != null)
 			return varDefs.values();
-		return new ArrayList<VariablePE>(0);
+		return new ArrayList<>(0);
 	}
 	/**
 	 * Получить переменную страницы, которая была указана в списке <variables>
@@ -173,7 +166,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	 * @param name
 	 * @return
 	 */
-	public VariablePE getInitVariable(String name) {
+	public RequestVariablePE getInitVariable(String name) {
 		if (varDefs != null)
 			return varDefs.get(name);
 		return null;

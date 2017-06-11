@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import ecommander.pages.var.VariablePE;
+import ecommander.pages.var.*;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.ServerLogger;
@@ -46,13 +46,12 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	public static final String ELEMENT_NAME = "link";
 	
 	public static char QUESTION_SIGN = '?';
-	public static final String ITEM_VARS_PREFIX = "itemvars/";
 	public static final String ITEM_FORM_PREFIX = "itemform/";
 	public static final String FILTER_PREFIX = "fil/";
 	public static final String VAR_VARIABLE = "var"; // используестя в пользовательском фильтре
 	
-	public static enum Type {
-		normal, itemvars, itemform, filter
+	public enum Type {
+		normal, itemform, filter
 	}
 	
 	/**
@@ -64,7 +63,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	}
 	
 	// URL страницы
-	private VariablePE pageNameVar;
+	private Variable pageNameVar;
 	// Имя ссылки (для удобства)
 	private String linkName;
 	// Тип ссылки - нормальная ссылка (по умолчанию) или ссылка на сабмит формы (форма айтема (itemform) или форма набора айтемов (itemvars))
@@ -72,15 +71,17 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	// Нужно ли копировать все переменные из страницы
 	private boolean copyPageVars = false;
 	// Названия переменных - значения переменных
-	private LinkedHashMap<String, VariablePE> variables = new LinkedHashMap<String, VariablePE>();
+	private LinkedHashMap<String, VariablePE> variables = new LinkedHashMap<>();
 	// счетчик для создания фиктивных названий переменных в случае если у переменной нет имени
 	private int counter = 0;
 	/**
 	 * Ссылка в модели страницы с неизвестными параметрами
 	 * @param linkName
-	 * @param pageName
+	 * @param pageNameVar
+	 * @param type
+	 * @param copyPageVars
 	 */
-	private LinkPE(String linkName, VariablePE pageNameVar, Type type, boolean copyPageVars) {
+	private LinkPE(String linkName, Variable pageNameVar, Type type, boolean copyPageVars) {
 		this.linkName = linkName;
 		this.pageNameVar = pageNameVar;
 		this.type = type;
@@ -88,8 +89,8 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	}
 	/**
 	 * Создание ссылки из строки. пришедшей от клиента в виде URL
-	 * @param serializedString
-	 * @throws UnsupportedEncodingException 
+	 * @param urlString
+	 * @throws UnsupportedEncodingException
 	 */
 	private LinkPE(String urlString) throws UnsupportedEncodingException {
 		if (urlString.length() == 0) {
@@ -107,23 +108,24 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		String[] units = StringUtils.split(path, VariablePE.COMMON_DELIMITER);
 		// Название страницы
 		String pageName = units[0];
-		this.pageNameVar = new StaticVariablePE("", pageName);
+		this.pageNameVar = new StaticVariable("pageName", pageName);
 		PagePE page = PageModelRegistry.getRegistry().getPageModel(pageName);
 		if (units.length > 1) {
 			// Получаются все переменные по отдельности
 			// Первая часть уже взята, поэтому i = 1
-			Iterator<VariablePE> initVariablesIter = null;
+			Iterator<RequestVariablePE> initVariablesIter;
 			if (page != null)
 				initVariablesIter = page.getInitVariablesList().iterator();
 			else
-				initVariablesIter = Collections.<VariablePE>emptyList().iterator();
+				initVariablesIter = Collections.<RequestVariablePE>emptyList().iterator();
 			for (int i = 1; i < units.length; i++) {
 				String varName = units[i];
 				// Если переменная, объявленная в странице, является style="translit", значит надо использовать только одно значение, а не пару
-				VariablePE initVar = initVariablesIter.hasNext() ? initVariablesIter.next() : null;
+				RequestVariablePE initVar = initVariablesIter.hasNext() ? initVariablesIter.next() : null;
 				if (initVar != null && initVar.isStyleTranslit()) {
-					VariablePE var = new StaticVariablePE(initVar.getName(), varName);
-					var.setStyle(VariablePE.Style.translit);
+					String value = varName;
+					RequestVariablePE var = new RequestVariablePE(initVar.getName(), initVar.getScope(), initVar.getStyle());
+					var.setValue(value);
 					addVariable(var);
 				} else {
 					i++; // Берем следующее значение после /
@@ -135,13 +137,17 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 					String varValue = URLDecoder.decode(units[i], "UTF-8");
 					VariablePE var = getVariable(varName);
 					if (var == null) {
-						StaticVariablePE newVar = new StaticVariablePE(varName, varValue);
 						initVar = page == null ? null : page.getInitVariable(varName);
-						if (initVar != null)
-							newVar.setStyle(initVar.getStyle());
+						RequestVariablePE newVar;
+						if (initVar != null) {
+							newVar = new RequestVariablePE(varName, initVar.getScope(), initVar.getStyle());
+							newVar.setValue(varValue);
+						} else {
+							newVar = new RequestVariablePE(varName, varValue);
+						}
 						addVariable(newVar);
 					} else {
-						((StaticVariablePE)var).addValue(varValue);
+						var.
 					}
 				}
 			}

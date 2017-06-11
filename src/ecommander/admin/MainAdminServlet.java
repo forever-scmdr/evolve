@@ -6,11 +6,12 @@ import ecommander.controllers.SessionContext;
 import ecommander.filesystem.DeleteItemFileUnit;
 import ecommander.filesystem.SaveItemFileUnit;
 import ecommander.filesystem.SaveItemFilesUnit;
-import ecommander.fwk.*;
+import ecommander.fwk.MysqlConnector;
+import ecommander.fwk.ResizeImagesFactory;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.pages.MultipleHttpPostForm;
-import ecommander.pages.SingleItemHttpPostFormDeprecated;
-import ecommander.pages.UrlParameterFormatConverter;
 import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -669,7 +670,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		Item item = ItemQuery.loadById(in.itemId);
 		for (String itemInput : in.mount.keySet()) {
-			String[] parts = UrlParameterFormatConverter.splitInputName(itemInput);
+			String[] parts = MainAdminPageCreator.splitInputName(itemInput);
 			transaction.addCommandUnit(new CreateAssocDBUnit(item, Long.parseLong(parts[2]), in.assocId, false));
 		}
 		transaction.execute();
@@ -694,7 +695,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		Item parent = ItemQuery.loadById(in.itemId);
 		for (String itemInput : in.mount.keySet()) {
-			String[] parts = UrlParameterFormatConverter.splitInputName(itemInput);
+			String[] parts = MainAdminPageCreator.splitInputName(itemInput);
 			Item child = ItemQuery.loadById(Long.parseLong(parts[2]));
 			transaction.addCommandUnit(new CreateAssocDBUnit(child, parent, in.assocId, false));
 		}
@@ -717,7 +718,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 */
 	private AdminPage moveTo(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
-		String[] parts = UrlParameterFormatConverter.splitInputName(in.movingItem);
+		String[] parts = MainAdminPageCreator.splitInputName(in.movingItem);
 		long newParentId = Long.parseLong(parts[2]);
 		transaction.addCommandUnit(new MoveItemDBUnit(in.itemId, newParentId));
 		transaction.execute();
@@ -739,7 +740,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 */
 	protected AdminPage move(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
-		String[] parts = UrlParameterFormatConverter.splitInputName(in.movingItem);
+		String[] parts = MainAdminPageCreator.splitInputName(in.movingItem);
 		long itemToMoveId = Long.parseLong(parts[2]);
 		transaction.addCommandUnit(new MoveItemDBUnit(itemToMoveId, in.itemId));
 		transaction.execute();
@@ -866,7 +867,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		Item baseItem = AdminLoader.loadItem(in.itemId, getCurrentAdmin());
 		for (String itemInput : in.mount.keySet()) {
-			String[] parts = UrlParameterFormatConverter.splitInputName(itemInput);
+			String[] parts = MainAdminPageCreator.splitInputName(itemInput);
 			Item child = AdminLoader.loadItem(Long.parseLong(parts[2]), getCurrentAdmin());
 			transaction.addCommandUnit(new DeleteAssocDBUnit(child, baseItem, in.assocId));
 		}

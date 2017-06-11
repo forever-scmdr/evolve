@@ -2,6 +2,7 @@ package ecommander.pages.var;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import ecommander.pages.PageElement;
 import ecommander.pages.ValidationResults;
@@ -51,10 +52,11 @@ public abstract class VariablePE implements PageElement {
 	// Когда эта переменная добавляется к ссылке , принадлежащей уже ExecutablePageModel, pageModel становится не null
 	protected ExecutablePagePE pageModel;
 	protected String name = DEFAULT_NAME;
-	protected Style style = Style.query; // Стиль передачи переменной в URL
+	protected Style style; // Стиль передачи переменной в URL
 	
-	public VariablePE(String varName) {
+	protected VariablePE(String varName, Style style) {
 		this.name = varName;
+		this.style = style;
 	}
 	/**
 	 * Конструктор для клонирования
@@ -79,11 +81,6 @@ public abstract class VariablePE implements PageElement {
 		return style == Style.translit;
 	}
 	
-	public void setStyle(Style style) {
-		if (style != null)
-			this.style = style;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -95,11 +92,6 @@ public abstract class VariablePE implements PageElement {
 	protected abstract Variable getVariable();
 
 	public abstract boolean isEmpty();
-	/**
-	 * Может ли переменная хранить множество значений
-	 * @return
-	 */
-	public abstract boolean isMultiple();
 	/**
 	 * Создать клон переменной определенного типа
 	 * @return
@@ -118,53 +110,33 @@ public abstract class VariablePE implements PageElement {
 	}
 	/**
 	 * Создание куска URL, который отвечает за эту переменную, например
- 		/device_field/Маркировка шита
+	 * /device_field/Маркировка шита
+	 * Значения выводятся в виде  имя=значение_1&имя=значение_2&имя=значение_3  т.е. одно имя - много значений (для стиля query)
 	 * в случае транслита
 	 * /markirovka_shita
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
 	public String writeInAnUrlFormat() throws UnsupportedEncodingException {
-		if (isMultiple()) {
-			 return writeMultipleVariableInAnUrlFormat(this);
-		} else {
-			String output = getVariable().getSingleLocalValue();
-			if (style == Style.path)
-				return getName() + COMMON_DELIMITER + URLEncoder.encode(output, Strings.SYSTEM_ENCODING);
-			if (style == Style.query)
-				return getName() + EQ_SIGN + URLEncoder.encode(output, Strings.SYSTEM_ENCODING);
-			// В случае транслита
-			return URLEncoder.encode(output, Strings.SYSTEM_ENCODING);
-		}
-	}
-
-	/**
-	 * Метод, который выводит значения некоторой СТАТИЧЕСКОЙ (неитерируемой) переменной.
-	 * Значения выводятся в виде  имя=значение_1&имя=значение_2&имя=значение_3  т.е. одно имя - много значений (для стиля query)
-	 * @param var
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 */
-	private static String writeMultipleVariableInAnUrlFormat(VariablePE var) throws UnsupportedEncodingException {
-		String result = "";
-		if (var.getStyle() == Style.path) {
-			for (String value : var.getVariable().getLocalValues()) {
-				result += COMMON_DELIMITER + var.getName() + COMMON_DELIMITER + URLEncoder.encode(value, Strings.SYSTEM_ENCODING);
+		StringBuilder result = new StringBuilder();
+		if (style == Style.path) {
+			for (String value : getVariable().getLocalValues()) {
+				result.append(COMMON_DELIMITER).append(name).append(COMMON_DELIMITER).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING));
 			}
-		} else if (var.getStyle() == Style.query) {
-			for (String value : var.getVariable().getLocalValues()) {
-				result += AMP_SIGN + var.getName() + EQ_SIGN + URLEncoder.encode(value, Strings.SYSTEM_ENCODING);
+		} else if (style == Style.query) {
+			for (String value : getVariable().getLocalValues()) {
+				result.append(AMP_SIGN).append(name).append(EQ_SIGN).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING));
 			}
-		} else if (var.getStyle() == Style.translit) {
-			for (String value : var.getVariable().getLocalValues()) {
-				result += COMMON_DELIMITER + URLEncoder.encode(value, Strings.SYSTEM_ENCODING);
+		} else if (style == Style.translit) {
+			for (String value : getVariable().getLocalValues()) {
+				result.append(COMMON_DELIMITER).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING));
 			}
 		}
 		if (StringUtils.isBlank(result))
-			return result;
+			return result.toString();
 		return result.substring(1);
 	}
-	
+
 	public String getKey() {
 		return "Variable '" + getName() + "'";
 	}

@@ -17,41 +17,55 @@ public class RequestVariablePE extends VariablePE {
 	private String defaultValue = null;
 	private Scope scope;
 
-	public RequestVariablePE(String varName, Scope scope, String defaultValue) {
-		super(varName);
+	public RequestVariablePE(String varName, Scope scope, Style style, String... defaultValue) {
+		super(varName, style);
 		this.scope = scope;
-		if (StringUtils.isNotBlank(defaultValue))
-			this.defaultValue = defaultValue;
+		if (defaultValue.length > 0) {
+			this.defaultValue = defaultValue[0];
+		}
 	}
 
-	public void update(Variable var) {
-		this.var.update(var);
+	public RequestVariablePE(String varName, String varValue) {
+		this(varName, Scope.request, Style.query);
+		setValue(varValue);
+	}
+
+	/**
+	 * Установить новое значение
+	 * @param value
+	 */
+	public void setValue(String value) {
+		if (var == null) {
+			var = new StaticVariable(name, value);
+		} else {
+			var.clean();
+			var.addValue(value);
+		}
+	}
+
+	public Scope getScope() {
+		return scope;
 	}
 
 	@Override
 	protected Variable getVariable() {
-		return null;
+		return var;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return false;
-	}
-
-	@Override
-	public boolean isMultiple() {
-		return false;
+		return var.isEmpty();
 	}
 
 	@Override
 	protected VariablePE createVarClone(ExecutablePagePE parentPage) {
-		RequestVariablePE clone = new RequestVariablePE(name, scope, defaultValue);
+		RequestVariablePE clone = new RequestVariablePE(name, scope, style, defaultValue);
 		if (scope == Scope.cookie) {
 			clone.var = new CookieStaticVariable(parentPage, name);
 		} else if (scope == Scope.session) {
 			clone.var = new SessionStaticVariable(parentPage, name);
 		} else {
-			clone.var = new StaticVariable(parentPage, name);
+			clone.var = new StaticVariable(name);
 		}
 		return clone;
 	}

@@ -3,6 +3,7 @@ package ecommander.pages;
 import ecommander.controllers.SessionContext;
 import ecommander.model.User;
 import ecommander.pages.CommandPE.CommandContainer;
+import ecommander.pages.var.RequestVariablePE;
 import ecommander.pages.variables.SessionStaticVariablePE;
 import ecommander.pages.variables.StaticVariablePE;
 import ecommander.pages.var.VariablePE;
@@ -58,9 +59,12 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 			user = sessionContext.getUser();
 		else
 			user = User.getDefaultUser();
-		addVariable(new StaticVariablePE(NOW_VALUE, System.currentTimeMillis() + ""));
-		addVariable(new StaticVariablePE(USERNAME_VALUE, user.getName()));
-		addVariable(new StaticVariablePE(PAGENAME_VALUE, this.name));
+		addVariable(new RequestVariablePE(NOW_VALUE, RequestVariablePE.Scope.request,
+				VariablePE.Style.path, System.currentTimeMillis() + ""));
+		addVariable(new RequestVariablePE(USERNAME_VALUE, RequestVariablePE.Scope.request,
+				VariablePE.Style.path, user.getName()));
+		addVariable(new RequestVariablePE(PAGENAME_VALUE, RequestVariablePE.Scope.request,
+				VariablePE.Style.path, this.name));
 	}
 	/**
 	 * Получить ранее зарегистрированный элемент

@@ -4,8 +4,6 @@ import ecommander.model.*;
 import ecommander.model.datatypes.DataType.Type;
 import ecommander.model.datatypes.FileDataType;
 import ecommander.output.*;
-import ecommander.pages.SingleItemHttpPostFormDeprecated;
-import ecommander.pages.UrlParameterFormatConverter;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 
@@ -145,6 +143,8 @@ import java.util.*;
  *
  */
 public class MainAdminPageCreator implements AdminXML {
+
+	private static final char ID_INUT_NAME_DELIMITER = '~';
 	private static final String DOT_ACTION = ".action";
 	/**
 	 * Разные экшены
@@ -548,7 +548,7 @@ public class MainAdminPageCreator implements AdminXML {
 		for (ItemAccessor item : mountToList) {
 			Set<Assoc> assocs = ItemTypeRegistry.getDirectContainerAssocs(item.getTypeId(), baseItem.getTypeId());
 			for (Assoc assoc : assocs) {
-				String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), MOUNT_INPUT_PREFIX);
+				String inputName = createInputName(item.getTypeId(), item.getId(), MOUNT_INPUT_PREFIX);
 				item.addSubwriter(new LeafMDWriter(INPUT_ELEMENT, ADD_VALUE, NAME_ATTRIBUTE, inputName));
 			}
 			String setMountParentUrl = createAdminUrl(SET_MOUNT_TO_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType,
@@ -573,7 +573,7 @@ public class MainAdminPageCreator implements AdminXML {
 		currentAssocId = -1;
 		assocWriter = new AggregateMDWriter("empty");
 		for (ItemAccessor item : mountedList) {
-			String inputName = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), UNMOUNT_INPUT_PREFIX);
+			String inputName = createInputName(item.getTypeId(), item.getId(), UNMOUNT_INPUT_PREFIX);
 			item.addSubwriter(new LeafMDWriter(INPUT_ELEMENT, DELETE_VALUE, NAME_ATTRIBUTE, inputName));
 			// Создать новую группу по ассоциации, если у текущего айтема ассоциацйия не совпадает с ассоциацией предыдущего айтема
 			if (item.getContextAssoc() != currentAssocId) {
@@ -630,9 +630,9 @@ public class MainAdminPageCreator implements AdminXML {
 		AggregateMDWriter assocWriter = new AggregateMDWriter("empty");
 		for (ItemAccessor item : toAssoc) {
 			if (ItemTypeRegistry.isDirectContainer(item.getTypeId(), baseAcc.getTypeId(), assocId)) {
-				String newAssocInput = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), MOUNT_INPUT_PREFIX);
+				String newAssocInput = createInputName(item.getTypeId(), item.getId(), MOUNT_INPUT_PREFIX);
 				item.addSubwriter(new LeafMDWriter(INPUT_ELEMENT, ADD_VALUE, NAME_ATTRIBUTE, newAssocInput));
-				String moveInput = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), MOVE_VALUE);
+				String moveInput = createInputName(item.getTypeId(), item.getId(), MOVE_VALUE);
 				item.addSubwriter(new LeafMDWriter(INPUT_ELEMENT, moveInput, NAME_ATTRIBUTE, MOVING_ITEM_INPUT));
 			}
 			String setAssocParentUrl = createAdminUrl(SET_ASSOCIATE_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, item.getTypeId(),
@@ -691,7 +691,7 @@ public class MainAdminPageCreator implements AdminXML {
 		String submitMoveFormUrl = createAdminUrl(MOVE_TO_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType,	PARENT_ID_INPUT, moveToParent);
 		moveTo.addSubwriter(new LeafMDWriter(LINK_ELEMENT, submitMoveFormUrl));
 		for (ItemAccessor item : moveToList) {
-			String inputValue = UrlParameterFormatConverter.createInputName(item.getTypeId(), item.getId(), MOVE_VALUE);
+			String inputValue = createInputName(item.getTypeId(), item.getId(), MOVE_VALUE);
 			item.addSubwriter(new LeafMDWriter(INPUT_ELEMENT, inputValue, NAME_ATTRIBUTE, MOVING_ITEM_INPUT));
 			String setMoveParentUrl = createAdminUrl(SET_MOVE_TO_PARENT_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType,
 					PARENT_ID_INPUT, item.getId());
@@ -818,5 +818,26 @@ public class MainAdminPageCreator implements AdminXML {
 	
 	public static void main(String[] args) {
 		System.out.print(createAdminUrl("cool", "item_id", 10, "name", "mega", "pid", 55));
+	}
+	/**
+	 * Создает полное название поля ввода, с которым ассоциирован айтем
+	 *
+	 * @param itemId
+	 * @param inputName
+	 * @return
+	 */
+	public static String createInputName(int itemTypeId, long itemId, String inputName) {
+		return inputName + ID_INUT_NAME_DELIMITER + itemTypeId + ID_INUT_NAME_DELIMITER + itemId;
+	}
+	/**
+	 * Возвращает массив из строк, который содержит название инпута, название айтема и ID айтема
+	 * - название инпута
+	 * - название айтема
+	 * - id айтема
+	 * @param fullInputName
+	 * @return
+	 */
+	public static String[] splitInputName(String fullInputName) {
+		return StringUtils.split(fullInputName, ID_INUT_NAME_DELIMITER);
 	}
 }
