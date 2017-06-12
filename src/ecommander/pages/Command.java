@@ -1,24 +1,19 @@
 package ecommander.pages;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import ecommander.pages.variables.StaticVariablePE;
-import ecommander.pages.var.VariablePE;
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.PageNotFoundException;
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
+import ecommander.model.User;
+import ecommander.pages.var.StaticVariable;
+import ecommander.pages.var.Variable;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.mappers.SessionItemMapper;
-import ecommander.model.User;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 /**
  * Базовый класс для всех команд
  * @author EEEE
@@ -79,11 +74,11 @@ public abstract class Command implements AutoCloseable {
 		if (StringUtils.isBlank(value)) {
 			page.removeVariable(name);
 		} else {
-			VariablePE var = page.getVariable(name);
+			Variable var = page.getVariable(name);
 			if (var == null)
-				page.addVariable(new StaticVariablePE(name, value));
+				page.addVariable(new StaticVariable(name, value));
 			else
-				((StaticVariablePE) var).addValue(value);
+				((StaticVariable) var).addValue(value);
 		}
 	}
 	/**
@@ -147,21 +142,21 @@ public abstract class Command implements AutoCloseable {
 	 * @return
 	 */
 	protected final String getVarSingleValueDefault(String varName, String defaultValue) {
-		VariablePE var = page.getVariable(varName);
+		Variable var = page.getVariable(varName);
 		if (var == null || var.isEmpty())
 			return defaultValue;
-		return var.outputArray().get(0);
+		return var.writeSingleValue();
 	}
 	/**
 	 * Вернуть несколько значений страничной переменной
 	 * @param varName
 	 * @return
 	 */
-	protected final List<String> getVarValues(String varName) {
-		VariablePE var = page.getVariable(varName);
+	protected final List<Object> getVarValues(String varName) {
+		Variable var = page.getVariable(varName);
 		if (var == null || var.isEmpty())
-			return new ArrayList<String>();
-		return var.outputArray();
+			return new ArrayList<>();
+		return var.getAllValues();
 	}
 	/**
 	 * Вернуть форму айтема

@@ -241,7 +241,7 @@ public class PageController {
 						if (var.isEmpty())
 							baseLink.removeVariable(var.getName());
 						else
-							baseLink.addVariable(var);
+							baseLink.addVariablePE(var);
 					}
 				}
 				// Это надо для того, чтобы все переменные в ссылке сделать статическими

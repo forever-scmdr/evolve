@@ -48,7 +48,7 @@ public class FilterPEWriter implements PageElementWriter {
 					LinkPE linkBase = item.getPageModel().getRequestLink();
 					VariablePE filterPageVar = filter.getPageVariable();
 					// Найти переменную, которая обозначает номер страницы
-					VariablePE pageVarBase = linkBase.getVariable(filterPageVar.getName());
+					VariablePE pageVarBase = linkBase.getVariablePE(filterPageVar.getName());
 					// Если страница не указана, то считать что она первая.
 					if (pageVarBase == null) {
 						pageVarBase = new StaticVariablePE(filter.getPageVariable().getName(), "1");
@@ -61,7 +61,7 @@ public class FilterPEWriter implements PageElementWriter {
 						LinkPE link = (LinkPE)linkBase.createExecutableClone(null, null);
 						VariablePE pageNumberVar = new StaticVariablePE(pageVarBase.getName(), new Integer(i).toString());
 						pageNumberVar.setStyle(filterPageVar.getStyle());
-						link.addVariable(pageNumberVar);
+						link.addVariablePE(pageNumberVar);
 						// Номер страницы
 						String pageNumber = new Integer(i).toString();
 						// Элемент типа <page> или <current_page>
@@ -82,7 +82,7 @@ public class FilterPEWriter implements PageElementWriter {
 						LinkPE link = (LinkPE)linkBase.createExecutableClone(null, null);
 						VariablePE nextNumberVar = new StaticVariablePE(pageVarBase.getName(), new Integer(filter.getPage() - 1).toString());
 						nextNumberVar.setStyle(filterPageVar.getStyle());
-						link.addVariable(nextNumberVar);
+						link.addVariablePE(nextNumberVar);
 						xml
 							.startElement(PAGE_PREVIOUS_ELEMENT)
 							.startElement(PAGE_LINK_ELEMENT)
@@ -95,7 +95,7 @@ public class FilterPEWriter implements PageElementWriter {
 						LinkPE link = (LinkPE)linkBase.createExecutableClone(null, null);
 						VariablePE prevNumberVar = new StaticVariablePE(pageVarBase.getName(), new Integer(filter.getPage() + 1).toString());
 						prevNumberVar.setStyle(filterPageVar.getStyle());
-						link.addVariable(prevNumberVar);
+						link.addVariablePE(prevNumberVar);
 						xml
 							.startElement(PAGE_NEXT_ELEMENT)
 							.startElement(PAGE_LINK_ELEMENT)

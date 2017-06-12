@@ -17,7 +17,7 @@ public interface PageElement {
 	/**
 	 * Проверить элемент на правильность (отсутствие ошибок)
 	 * @param elementPath - путь к текущему элементу от корневого
-	 * @param errorMessages
+	 * @param results
 	 */
 	void validate(String elementPath, ValidationResults results);
 	/**

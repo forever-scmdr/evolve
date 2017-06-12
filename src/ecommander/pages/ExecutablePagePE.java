@@ -4,8 +4,8 @@ import ecommander.controllers.SessionContext;
 import ecommander.model.User;
 import ecommander.pages.CommandPE.CommandContainer;
 import ecommander.pages.var.RequestVariablePE;
-import ecommander.pages.variables.SessionStaticVariablePE;
-import ecommander.pages.variables.StaticVariablePE;
+import ecommander.pages.var.SessionStaticVariable;
+import ecommander.pages.var.Variable;
 import ecommander.pages.var.VariablePE;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	// сабайтемы вместе с командами (одни айтемы могут загружаться перед командами, другие - после)
 	private ArrayList<ExecutablePE> executables;
 	// Переменные, переданные при вызове страницы (взяты из Link или из форм)
-	private LinkedHashMap<String, VariablePE> variables;
+	private LinkedHashMap<String, Variable> variables;
 	// Контекст сеанса
 	private SessionContext sessionContext;
 	// Ссылки для перехода в результате выполнения команд
@@ -59,11 +59,11 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 			user = sessionContext.getUser();
 		else
 			user = User.getDefaultUser();
-		addVariable(new RequestVariablePE(NOW_VALUE, RequestVariablePE.Scope.request,
+		addVariablePE(new RequestVariablePE(NOW_VALUE, RequestVariablePE.Scope.request,
 				VariablePE.Style.path, System.currentTimeMillis() + ""));
-		addVariable(new RequestVariablePE(USERNAME_VALUE, RequestVariablePE.Scope.request,
+		addVariablePE(new RequestVariablePE(USERNAME_VALUE, RequestVariablePE.Scope.request,
 				VariablePE.Style.path, user.getName()));
-		addVariable(new RequestVariablePE(PAGENAME_VALUE, RequestVariablePE.Scope.request,
+		addVariablePE(new RequestVariablePE(PAGENAME_VALUE, RequestVariablePE.Scope.request,
 				VariablePE.Style.path, this.name));
 	}
 	/**
@@ -94,14 +94,14 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	 * @param varName
 	 * @return
 	 */
-	public final VariablePE getVariable(String varName) {
+	public final Variable getVariable(String varName) {
 		return variables.get(varName);
 	}
 	/**
 	 * Вернуть все переменные страницы в правлиьном порядке
 	 * @return
 	 */
-	public final Collection<VariablePE> getAllVariables() {
+	public final Collection<Variable> getAllVariables() {
 		return variables.values();
 	}
 	/**
@@ -115,13 +115,14 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 		this.requestLink = link;
 		this.urlBase = baseLink;
 		for (VariablePE variable : requestLink.getAllVariables()) {
-			if (variables.containsKey(variable.getName()) && variables.get(variable.getName()) instanceof SessionStaticVariablePE)
-				((SessionStaticVariablePE) variables.get(variable.getName())).update(variable);
+			Variable initialVar = variables.get(variable.getName());
+			if (initialVar != null && initialVar instanceof SessionStaticVariable)
+				((SessionStaticVariable)initialVar).update(variable.getVariable());
 			else {
-				addVariable(variable);
+				addVariablePE(variable);
 			}
 		}
-		addVariable(new StaticVariablePE(PAGEURL_VALUE, linkUrl));
+		addVariablePE(new RequestVariablePE(PAGEURL_VALUE, linkUrl));
 	}
 	/**
 	 * Установить формы, переданные через POST - переменные разный айтемов и форму на базе определенного типа айтема
@@ -179,10 +180,9 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	 * Не использовать напрямую.
 	 * Вызывается автоматически при клонировании (поддержка интерфейса)
 	 */
-	@Override
-	public final void addVariable(VariablePE variablePE) {
+	public final void addVariable(Variable variable) {
 		// Заменить элемент в переменных страницы и добавить его
-		variables.put(variablePE.getName(), variablePE);
+		variables.put(variable.getName(), variable);
 	}
 	/**
 	 * Удаляет переменную из страницы
@@ -221,7 +221,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 		if (!cacheable)
 			return false;
 		if (cacheVars != null) {
-			for(VariablePE pageVar : variables.values()) {
+			for(Variable pageVar : variables.values()) {
 				if (pageVar != null && !pageVar.isEmpty() && !cacheVars.contains(pageVar.getName()))
 					return false;
 			}

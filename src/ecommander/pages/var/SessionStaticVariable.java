@@ -8,7 +8,8 @@ import ecommander.pages.ExecutablePagePE;
  */
 public class SessionStaticVariable extends StaticVariable {
 	public SessionStaticVariable(ExecutablePagePE parentPage, String name, Object... values) {
-		super(parentPage, name, values);
+		super(name, values);
+		this.parentPage = parentPage;
 	}
 
 	@Override

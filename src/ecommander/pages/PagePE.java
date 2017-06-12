@@ -28,7 +28,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	protected final boolean cacheable; // Можно ли кешировать эту страницу
 	protected LinkedHashSet<String> cacheVars = null; 		// переменные, которые используются для уникального кеширования. Если страница содержит переменные, 
 															// не содержащиеся в этом списке, то если эти переменные установлены, страница не кешируется
-	private LinkedHashMap<String, RequestVariablePE> varDefs = null; // важен порядок следования переменных. Когда используенся уникальный текстовый ключ айтема,
+	private LinkedHashMap<String, RequestVariablePE> varPEDefs = null; // важен порядок следования переменных. Когда используенся уникальный текстовый ключ айтема,
 															  // имя переменной не передается через ссылку. В этом случае для определения имени переменной
 															  // используется ее порядковый номер в списке переменных.
 
@@ -40,10 +40,10 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 		this.name = pageName;
 		this.template = pageTemplateName;
 		this.cacheable = cacheable;
-		userGroups = new HashSet<String>(5);
-		headers = new HashMap<String, String>(5);
+		userGroups = new HashSet<>(5);
+		headers = new HashMap<>(5);
 		if (cacheVars != null && !cacheVars.isEmpty()) {
-			this.cacheVars = new LinkedHashSet<String>(5);
+			this.cacheVars = new LinkedHashSet<>(5);
 			this.cacheVars.addAll(cacheVars);
 		}
 	}
@@ -94,10 +94,10 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 				clone.addHeader(header.getKey(), header.getValue());
 			}
 		}
-		//clone.varDefs.addAll(varDefs);
-		if (varDefs != null) {
-			for (VariablePE var : varDefs.values()) {
-				clone.addVariable((VariablePE) var.createExecutableClone(null, clone));
+		//clone.varPEDefs.addAll(varPEDefs);
+		if (varPEDefs != null) {
+			for (VariablePE var : varPEDefs.values()) {
+				clone.addVariablePE((VariablePE) var.createExecutableClone(null, clone));
 			}
 		}
 		for (PageElement element : getAllNested())
@@ -142,10 +142,10 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	/**
 	 * Добавить название переменной в список (для сохранения порядка следования переменных)
 	 */
-	public void addVariable(VariablePE variablePE) {
-		if (varDefs == null)
-			varDefs = new LinkedHashMap<>(5);
-		varDefs.put(variablePE.getName(), (RequestVariablePE) variablePE);
+	public final void addVariablePE(VariablePE variablePE) {
+		if (varPEDefs == null)
+			varPEDefs = new LinkedHashMap<>(5);
+		varPEDefs.put(variablePE.getName(), (RequestVariablePE) variablePE);
 	}
 
 	public String getKey() {
@@ -155,9 +155,9 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	 * Получить список переменных, которые были перечислены в разделе <variables> страницы
 	 * @return
 	 */
-	public Collection<RequestVariablePE> getInitVariablesList() {
-		if (varDefs != null)
-			return varDefs.values();
+	public Collection<RequestVariablePE> getInitVariablesPEList() {
+		if (varPEDefs != null)
+			return varPEDefs.values();
 		return new ArrayList<>(0);
 	}
 	/**
@@ -166,9 +166,9 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	 * @param name
 	 * @return
 	 */
-	public RequestVariablePE getInitVariable(String name) {
-		if (varDefs != null)
-			return varDefs.get(name);
+	public RequestVariablePE getInitVariablePE(String name) {
+		if (varPEDefs != null)
+			return varPEDefs.get(name);
 		return null;
 	}
 	/**

@@ -16,7 +16,7 @@ class IdVariableParameterCriteriaPE extends VariableParameterCriteriaPE {
 
 	@Override
 	public ParameterDescription getParam(ItemType itemDesc) {
-		int paramId = Integer.parseInt(pageModel.getVariable(paramNameVar).output());
+		int paramId = Integer.parseInt(pageModel.getVariable(paramNameVar).writeSingleValue());
 		return itemDesc.getParameter(paramId);
 	}
 

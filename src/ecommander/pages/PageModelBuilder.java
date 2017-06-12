@@ -1301,7 +1301,7 @@ public class PageModelBuilder {
 			Node linkSubnode = linkNode.getChildNodes().item(j);
 			// Переменные
 			if (linkSubnode.getNodeType() == Node.ELEMENT_NODE && linkSubnode.getNodeName().equalsIgnoreCase(VAR_ELEMENT)) {
-				link.addVariable(readVariable((Element) linkSubnode));
+				link.addVariablePE(readVariable((Element) linkSubnode));
 			} else if (linkSubnode.getNodeType() == Node.ELEMENT_NODE && linkSubnode.getNodeName().equalsIgnoreCase(INCLUDE_ELEMENT)) {
 				appendInclude(linkNode, (Element) linkSubnode, includes);
 			// Не допускать другие тэги
@@ -1421,7 +1421,7 @@ public class PageModelBuilder {
 					variablePE = new StaticVariablePE(name, value);
 				}
 				variablePE.setStyle(style);
-				model.addVariable(variablePE);
+				model.addVariablePE(variablePE);
 			} else if (variablesSubnode.getNodeType() == Node.ELEMENT_NODE && variablesSubnode.getNodeName().equalsIgnoreCase(INCLUDE_ELEMENT)) {
 				appendInclude(variablesNode, (Element) variablesSubnode, includes);
 			}

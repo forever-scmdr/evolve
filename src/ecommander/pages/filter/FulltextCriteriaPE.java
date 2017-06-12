@@ -2,6 +2,7 @@ package ecommander.pages.filter;
 
 import ecommander.pages.PageElement;
 import ecommander.pages.ValidationResults;
+import ecommander.pages.var.ValueOrRef;
 import ecommander.pages.var.VariablePE;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,7 +21,7 @@ public class FulltextCriteriaPE implements PageElement {
 
 	public static final String ELEMENT_NAME = "fulltext";
 	
-	private VariablePE query;
+	private ValueOrRef query;
 	private String paramName;
 	private int maxResultCount;
 	private String typesStr = FulltextQueryCreatorRegistry.DEFAULT;
@@ -28,7 +29,7 @@ public class FulltextCriteriaPE implements PageElement {
 	private Compare compType = Compare.ANY;
 	private float threshold = -1;
 	
-	public FulltextCriteriaPE(String types, VariablePE queryVar, int maxResultCount, String paramName, Compare compType, float threshold) {
+	public FulltextCriteriaPE(String types, ValueOrRef queryVar, int maxResultCount, String paramName, Compare compType, float threshold) {
 		this.query = queryVar;
 		this.paramName = paramName;
 		this.maxResultCount = maxResultCount;
@@ -43,7 +44,7 @@ public class FulltextCriteriaPE implements PageElement {
 	}
 	
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		return new FulltextCriteriaPE(typesStr, (VariablePE) query.createExecutableClone(null, parentPage), maxResultCount, paramName,
+		return new FulltextCriteriaPE(typesStr, query.createExecutableClone(parentPage), maxResultCount, paramName,
 				compType, threshold);
 	}
 
@@ -92,7 +93,7 @@ public class FulltextCriteriaPE implements PageElement {
 //	}
 	
 	public String[] getQueries() {
-		return query.outputArray().toArray(new String[0]);
+		return query.getLocalValues().toArray(new String[0]);
 	}
 	
 	public String[] getTypes() {

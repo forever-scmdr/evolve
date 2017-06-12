@@ -16,7 +16,7 @@ public class LinkVariablePE extends VariablePE {
 
 	private Variable var;
 
-	public LinkVariablePE(String varName, Style style, String refItem, String refParam, String refVar, String value) {
+	private LinkVariablePE(String varName, Style style, String refItem, String refParam, String refVar, String value) {
 		super(varName, style);
 		this.refItem = refItem;
 		this.refParam = refParam;
@@ -24,8 +24,24 @@ public class LinkVariablePE extends VariablePE {
 		this.value = value;
 	}
 
+	public static LinkVariablePE createItemVar(String varName, Style style, String refItem) {
+		return new LinkVariablePE(varName, style, refItem, null, null, null);
+	}
+
+	public static LinkVariablePE createParamVar(String varName, Style style, String refItem, String refParam) {
+		return new LinkVariablePE(varName, style, refItem, refParam, null, null);
+	}
+
+	public static LinkVariablePE createVarVar(String varName, Style style, String refVar) {
+		return new LinkVariablePE(varName, style, null, null, refVar, null);
+	}
+
+	public static LinkVariablePE createPlain(String varName, String style, String refItem, String refParam, String refVar, String value) {
+		return new LinkVariablePE(varName, Style.getValue(style), refItem, refParam, refVar, value);
+	}
+
 	@Override
-	protected Variable getVariable() {
+	public Variable getVariable() {
 		return var;
 	}
 
@@ -39,7 +55,7 @@ public class LinkVariablePE extends VariablePE {
 		LinkVariablePE clone = new LinkVariablePE(name, style, refItem, refParam, refVar, value);
 		// Ссылка на другую переменную
 		if (StringUtils.isNotBlank(refVar)) {
-			clone.var = parentPage.getVariable(refVar).getVariable();
+			clone.var = parentPage.getVariable(refVar);
 		}
 		// Ссылка на айтем
 		else if (StringUtils.isNotBlank(refItem)) {

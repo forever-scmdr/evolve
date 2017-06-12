@@ -44,7 +44,7 @@ class VariableParameterCriteriaPE extends FilterCriteriaPE {
 
 	@Override
 	public ParameterDescription getParam(ItemType itemDesc) {
-		return itemDesc.getParameter(pageModel.getVariable(paramNameVar).output());
+		return itemDesc.getParameter(pageModel.getVariable(paramNameVar).writeSingleValue());
 	}
 
 	@Override

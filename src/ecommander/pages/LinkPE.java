@@ -1,20 +1,12 @@
 package ecommander.pages;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-
+import ecommander.fwk.ServerLogger;
 import ecommander.pages.var.*;
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.fwk.ServerLogger;
-import ecommander.pages.variables.ReferenceVariablePE;
-import ecommander.pages.variables.SessionStaticVariablePE;
-import ecommander.pages.variables.StaticVariablePE;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.*;
 
 /**
  * Для каждого айтема, который можно передавать и принимать по ссылке, должно быть спец имя (ID).
@@ -58,12 +50,12 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	 * Интерфейс, который должны реализовывать контейнеры, обрабатывающие добавление ExecutableItemPE особым образом
 	 * @author EEEE
 	 */
-	public static interface LinkContainer {
+	public interface LinkContainer {
 		void addLink(LinkPE linkPE);
 	}
 	
 	// URL страницы
-	private Variable pageNameVar;
+	private ValueOrRef pageName;
 	// Имя ссылки (для удобства)
 	private String linkName;
 	// Тип ссылки - нормальная ссылка (по умолчанию) или ссылка на сабмит формы (форма айтема (itemform) или форма набора айтемов (itemvars))
@@ -81,9 +73,9 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	 * @param type
 	 * @param copyPageVars
 	 */
-	private LinkPE(String linkName, Variable pageNameVar, Type type, boolean copyPageVars) {
+	private LinkPE(String linkName, ValueOrRef pageNameVar, Type type, boolean copyPageVars) {
 		this.linkName = linkName;
-		this.pageNameVar = pageNameVar;
+		this.pageName = pageNameVar;
 		this.type = type;
 		this.copyPageVars = copyPageVars;
 	}
@@ -108,14 +100,14 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		String[] units = StringUtils.split(path, VariablePE.COMMON_DELIMITER);
 		// Название страницы
 		String pageName = units[0];
-		this.pageNameVar = new StaticVariable("pageName", pageName);
+		this.pageName = ValueOrRef.newValue(pageName);
 		PagePE page = PageModelRegistry.getRegistry().getPageModel(pageName);
 		if (units.length > 1) {
 			// Получаются все переменные по отдельности
 			// Первая часть уже взята, поэтому i = 1
 			Iterator<RequestVariablePE> initVariablesIter;
 			if (page != null)
-				initVariablesIter = page.getInitVariablesList().iterator();
+				initVariablesIter = page.getInitVariablesPEList().iterator();
 			else
 				initVariablesIter = Collections.<RequestVariablePE>emptyList().iterator();
 			for (int i = 1; i < units.length; i++) {
@@ -123,10 +115,9 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 				// Если переменная, объявленная в странице, является style="translit", значит надо использовать только одно значение, а не пару
 				RequestVariablePE initVar = initVariablesIter.hasNext() ? initVariablesIter.next() : null;
 				if (initVar != null && initVar.isStyleTranslit()) {
-					String value = varName;
 					RequestVariablePE var = new RequestVariablePE(initVar.getName(), initVar.getScope(), initVar.getStyle());
-					var.setValue(value);
-					addVariable(var);
+					var.resetValue(varName);
+					addVariablePE(var);
 				} else {
 					i++; // Берем следующее значение после /
 					// Если выход за пределы массива, значит неправильный формат URL
@@ -135,19 +126,18 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 						break;
 					}
 					String varValue = URLDecoder.decode(units[i], "UTF-8");
-					VariablePE var = getVariable(varName);
-					if (var == null) {
-						initVar = page == null ? null : page.getInitVariable(varName);
-						RequestVariablePE newVar;
+					RequestVariablePE varPE = (RequestVariablePE) getVariablePE(varName);
+					if (varPE == null) {
+						initVar = page == null ? null : page.getInitVariablePE(varName);
 						if (initVar != null) {
-							newVar = new RequestVariablePE(varName, initVar.getScope(), initVar.getStyle());
-							newVar.setValue(varValue);
+							varPE = new RequestVariablePE(varName, initVar.getScope(), initVar.getStyle());
+							varPE.resetValue(varValue);
 						} else {
-							newVar = new RequestVariablePE(varName, varValue);
+							varPE = new RequestVariablePE(varName, varValue);
 						}
-						addVariable(newVar);
+						addVariablePE(varPE);
 					} else {
-						var.
+						varPE.addValue(varValue);
 					}
 				}
 			}
@@ -160,15 +150,18 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 				if (eqIdx > 0) {
 					String varName = varStr.substring(0, eqIdx);
 					String varValue = URLDecoder.decode(varStr.substring(eqIdx + 1), "UTF-8");
-					VariablePE initVar = page == null ? null : page.getInitVariable(varName);
-					VariablePE var = getVariable(varName);
-					if (var == null) {
-						StaticVariablePE newVar = new StaticVariablePE(varName, varValue);
-						if (initVar != null)
-							newVar.setStyle(initVar.getStyle());
-						addVariable(newVar);
+					RequestVariablePE initVar = page == null ? null : page.getInitVariablePE(varName);
+					RequestVariablePE varPE = (RequestVariablePE) getVariablePE(varName);
+					if (varPE == null) {
+						if (initVar != null) {
+							varPE = new RequestVariablePE(varName, initVar.getScope(), initVar.getStyle());
+							varPE.resetValue(varValue);
+						} else {
+							varPE = new RequestVariablePE(varName, varValue);
+						}
+						addVariablePE(varPE);
 					} else {
-						((StaticVariablePE)var).addValue(varValue);
+						varPE.addValue(varValue);
 					}
 				}
 			}
@@ -188,7 +181,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	 * @return
 	 */
 	public String getPageName() {
-		return pageNameVar.output();
+		return pageName.writeSingleValue();
 	}
 
 	public String getLinkName() {
@@ -217,8 +210,6 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 				path.append(FILTER_PREFIX);
 			else if (type == Type.itemform)
 				path.append(ITEM_FORM_PREFIX);
-			else if (type == Type.itemvars)
-				path.append(ITEM_VARS_PREFIX);
 		}
 		// Название страницы (device/)
 		path.append(getPageName());
@@ -249,11 +240,23 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	}
 	/**
 	 * Находит переменную по ее названию
-	 * @param name
+	 * @param varName
 	 * @return
 	 */
-	public VariablePE getVariable(String varName) {
+	public VariablePE getVariablePE(String varName) {
 		return variables.get(varName);
+	}
+
+	/**
+	 * Получить переменную (не PE) по ее названию
+	 * @param varName
+	 * @return
+	 */
+	public Variable getVariable(String varName) {
+		VariablePE varPE = variables.get(varName);
+		if (varPE != null)
+			return varPE.getVariable();
+		return null;
 	}
 	/**
 	 * Удалить переменную из ссылки
@@ -270,7 +273,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		return variables.values();
 	}
 	
-	public final void addVariable(VariablePE variable) {
+	public final void addVariablePE(VariablePE variable) {
 		if (StringUtils.isBlank(variable.getName()))
 			variables.put("var_" + counter++, variable);
 		else
@@ -282,34 +285,35 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	 * @param value
 	 */
 	public final void addStaticVariable(String name, String value) {
-		StaticVariablePE var = (StaticVariablePE) getVariable(name);
+		RequestVariablePE var = (RequestVariablePE) getVariablePE(name);
 		if (var == null) {
-			StaticVariablePE staticVar = new StaticVariablePE(name, value);
-			staticVar.setStyle(VariablePE.Style.query);
-			addVariable(staticVar);
+			RequestVariablePE staticVar = new RequestVariablePE(name, value);
+			addVariablePE(staticVar);
 		} else
 			var.addValue(value);
 	}
 	
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		LinkPE clone = new LinkPE(linkName, (VariablePE) pageNameVar.createExecutableClone(null, parentPage), type, copyPageVars);
+		LinkPE clone = new LinkPE(linkName, pageName.createExecutableClone(parentPage), type, copyPageVars);
 		if (container != null && container instanceof LinkContainer)
 			((LinkContainer)container).addLink(clone);
 		// Копировать переменные из страницы, если это надо
 		if (copyPageVars) {
-			for (VariablePE pageVar : parentPage.getAllVariables()) {
+			for (Variable pageVar : parentPage.getAllVariables()) {
 				if (!variables.containsKey(pageVar.getName()) && !StringUtils.startsWith(pageVar.getName(), "$")
-						&& !(pageVar instanceof SessionStaticVariablePE)) {
-					VariablePE refVar = new ReferenceVariablePE(pageVar.getName(), pageVar.getName());
-					refVar.setStyle(pageVar.getStyle());
-					clone.addVariable((VariablePE) refVar.createExecutableClone(null, parentPage));
+						&& !(pageVar instanceof SessionStaticVariable)) {
+					VariablePE.Style style = VariablePE.Style.query;
+					if (parentPage.getInitVariablePE(pageVar.getName()) != null)
+						style = parentPage.getInitVariablePE(pageVar.getName()).getStyle();
+					LinkVariablePE refVar = LinkVariablePE.createVarVar(pageVar.getName(), style, pageVar.getName());
+					clone.addVariablePE((VariablePE) refVar.createExecutableClone(null, parentPage));
 				}
 			}
 		}
 		// Все переменные по порядку
 		for (PageElement variable : variables.values()) {
 			VariablePE varClone = (VariablePE)variable.createExecutableClone(null, parentPage);
-			clone.addVariable(varClone);
+			clone.addVariablePE(varClone);
 		}
 		return clone;
 	}
@@ -326,10 +330,10 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		if (StringUtils.isBlank(linkName))
 			results.addError(elementPath + " > " + getKey(), "link name is not set");
 		// Есть ли страница, на которую ссылается ссылка
-		if (pageNameVar instanceof StaticVariablePE) {
-			String pageName = pageNameVar.output();
-			if (StringUtils.isBlank(pageName) || !PageModelRegistry.pageExists(pageName))
-				results.addError(elementPath + " > " + getKey(), "there is no '" + pageName + "' page in this site");
+		if (pageName.isValue()) {
+			String name = pageName.writeSingleValue();
+			if (StringUtils.isBlank(name) || !PageModelRegistry.pageExists(name))
+				results.addError(elementPath + " > " + getKey(), "there is no '" + name + "' page in this site");
 		}
 		String path = elementPath + " > " + getKey();
 		for (PageElement variable : variables.values()) {
@@ -346,7 +350,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	 * @return
 	 */
 	public static LinkPE newDirectLink(String linkName, String pageName, boolean copyPageVars) {
-		return new LinkPE(linkName, new StaticVariablePE("", pageName), Type.normal, copyPageVars);
+		return new LinkPE(linkName, ValueOrRef.newValue(pageName), Type.normal, copyPageVars);
 	}
 	/**
 	 * Создать ссылку на страницу, название которой передается через переменную
@@ -355,7 +359,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	 * @return
 	 */
 	public static LinkPE newVarLink(String linkName, String pageVarName, boolean copyPageVars) {
-		return new LinkPE(linkName, new ReferenceVariablePE(pageVarName, pageVarName), Type.normal, copyPageVars);
+		return new LinkPE(linkName, ValueOrRef.newRef(pageVarName), Type.normal, copyPageVars);
 	}
 	
 	public String getElementName() {

@@ -1,6 +1,7 @@
 package ecommander.pages.var;
 
 import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.ValidationResults;
 
 import java.util.ArrayList;
 
@@ -21,13 +22,12 @@ import java.util.ArrayList;
 public abstract class Variable {
 	protected ExecutablePagePE parentPage;
 	protected String name = "unnamed";
-	private ArrayList<Object> valuesCache = null;
 
-	protected Variable(ExecutablePagePE parentPage) {
+	Variable(ExecutablePagePE parentPage) {
 		this.parentPage = parentPage;
 	}
 
-	protected Variable(ExecutablePagePE parentPage, String name) {
+	Variable(ExecutablePagePE parentPage, String name) {
 		this.parentPage = parentPage;
 		this.name = name;
 	}
@@ -49,6 +49,17 @@ public abstract class Variable {
 	public abstract Object getSingleValue();
 
 	/**
+	 * Вернуть едниственное значение в виде строки
+	 * Если переменная не имеет значения - возвращаетс япустая строка
+	 * @return
+	 */
+	public final String writeSingleValue() {
+		if (isEmpty())
+			return "";
+		return getSingleValue().toString();
+	}
+
+	/**
 	 * Вернуть локальные значения. Т.е. значения, относящиеся только к одному айтему в процессе итерации.
 	 * Если переменная не итериуемая, то возвращаются все значения
 	 * @return
@@ -67,4 +78,13 @@ public abstract class Variable {
 	 * @return
 	 */
 	public abstract boolean isEmpty();
+
+	/**
+	 * Валидация
+	 * @param elementPath
+	 * @param results
+	 */
+	public void validate(String elementPath, ValidationResults results) {
+		// по умолчанию ничего не делать
+	}
 }

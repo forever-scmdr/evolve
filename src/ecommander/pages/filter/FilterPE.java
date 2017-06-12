@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ecommander.model.Compare;
+import ecommander.pages.var.StaticVariable;
+import ecommander.pages.var.Variable;
 import ecommander.pages.var.VariablePE;
 import org.apache.commons.lang3.StringUtils;
 
@@ -116,8 +118,8 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	}
 	
 	private static class SortingCriteria {
-		private VariablePE sortingParameter = null;
-		private VariablePE sortingDirection = new StaticVariablePE("dir", "ASC");
+		private Variable sortingParameter = null;
+		private Variable sortingDirection = new StaticVariable("dir", "ASC");
 		
 		private SortingCriteria(VariablePE sortingParameter, VariablePE sortingDirection, ExecutablePagePE parentPage) {
 			this.sortingParameter = (VariablePE)sortingParameter.createExecutableClone(null, parentPage);
@@ -132,12 +134,10 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		}
 	}
 	
-//	private VariablePE sortingParameter = null;
-//	private VariablePE sortingDirection = new StaticVariablePE("dir", "ASC");
 	private ArrayList<SortingCriteria> sorting = null; // Массив параметров сортировки
 	private LOGICAL_SIGN operation = LOGICAL_SIGN.AND;
-	private VariablePE limit = null;
-	private VariablePE page = null;
+	private Variable limit = null;
+	private Variable page = null;
 	private ArrayList<ParentalCriteria> predecessors = null; // Массив страничных ID предшественников айтема
 	private ArrayList<ParentalCriteria> successors = null; // Массив страничных ID потомков айтема
 	private String userFilterItemId; // При использовании пользовательского фильтра - ID страничного айтема

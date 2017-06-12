@@ -1,7 +1,6 @@
 package ecommander.pages.var;
 
 import ecommander.pages.ExecutablePagePE;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Переменная, которая поступила как параметр запроса (находится в элементе <variables></variables>)
@@ -27,18 +26,30 @@ public class RequestVariablePE extends VariablePE {
 
 	public RequestVariablePE(String varName, String varValue) {
 		this(varName, Scope.request, Style.query);
-		setValue(varValue);
+		resetValue(varValue);
 	}
 
 	/**
 	 * Установить новое значение
 	 * @param value
 	 */
-	public void setValue(String value) {
+	public void resetValue(String value) {
 		if (var == null) {
 			var = new StaticVariable(name, value);
 		} else {
 			var.clean();
+			var.addValue(value);
+		}
+	}
+
+	/**
+	 * Добавить значение к переменной
+	 * @param value
+	 */
+	public void addValue(String value) {
+		if (var == null) {
+			var = new StaticVariable(name, value);
+		} else {
 			var.addValue(value);
 		}
 	}
@@ -48,7 +59,7 @@ public class RequestVariablePE extends VariablePE {
 	}
 
 	@Override
-	protected Variable getVariable() {
+	public Variable getVariable() {
 		return var;
 	}
 

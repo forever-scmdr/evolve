@@ -1,8 +1,12 @@
 package ecommander.pages.var;
 
 import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.pages.ExecutableItemPE;
 import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.ItemPE;
+import ecommander.pages.ValidationResults;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -96,6 +100,18 @@ public class ItemVariable extends Variable {
 			if (isTranslit)
 				return "none";
 			return "0";
+		}
+	}
+
+	@Override
+	public void validate(String elementPath, ValidationResults results) {
+		ItemPE pageItem = parentPage.getItemPEById(itemPageId);
+		if (pageItem == null) {
+			results.addError(elementPath, "there is no '" + itemPageId + "' page item on current page");
+		} else if (StringUtils.isNotBlank(paramName)) {
+			ItemType itemDesc = ItemTypeRegistry.getItemType(pageItem.getItemName());
+			if (itemDesc.getParameter(paramName) == null)
+				results.addError(elementPath, "there is no '" + paramName + "' parameter in '" + itemDesc.getName() + "' item");
 		}
 	}
 }

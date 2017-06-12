@@ -1,18 +1,15 @@
 package ecommander.pages.filter;
 
-import ecommander.pages.PageElement;
-import ecommander.pages.ValidationResults;
-import ecommander.pages.var.VariablePE;
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.fwk.EcommanderException;
 import ecommander.model.Compare;
 import ecommander.model.LOGICAL_SIGN;
 import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.PageElement;
 import ecommander.pages.PageElementContainer;
-import ecommander.pages.variables.ReferenceVariablePE;
-import ecommander.pages.variables.StaticVariablePE;
+import ecommander.pages.ValidationResults;
+import ecommander.pages.var.ValueOrRef;
 import ecommander.persistence.itemquery.ItemQuery;
+import org.apache.commons.lang3.StringUtils;
 /**
 	***********************   ГРУППИРОВКА   ***********************
 	
@@ -45,31 +42,31 @@ public class AggregationPE extends PageElementContainer {
 	 * Интерфейс, который должны реализовывать контейнеры, обрабатывающие добавление ExecutableItemPE особым образом
 	 * @author EEEE
 	 */
-	public static interface AggregationContainer {
+	public interface AggregationContainer {
 		void addAggregate(AggregationPE aggregate);
 	}
 	
-	private VariablePE groupParameter; // к этому параметру применяется агрегирующия функция
+	private ValueOrRef groupParameter; // к этому параметру применяется агрегирующия функция
 	private String function; // Функция группировки
-	private VariablePE sortingParameter = null;
-	private VariablePE sortingDirection = null;
+	private ValueOrRef sortingParameter = null;
+	private ValueOrRef sortingDirection = null;
 	private LOGICAL_SIGN operation = LOGICAL_SIGN.AND;
 	
-	public AggregationPE(VariablePE parameter) {
+	public AggregationPE(ValueOrRef parameter) {
 		super();
 		this.groupParameter = parameter;
 	}
 
 	@Override
 	protected PageElementContainer createExecutableShallowClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		AggregationPE clone = new AggregationPE((VariablePE)groupParameter.createExecutableClone(null, parentPage));
+		AggregationPE clone = new AggregationPE(groupParameter.createExecutableClone(parentPage));
 		clone.setFunction(function);
 		if (container != null)
 			((AggregationContainer)container).addAggregate(clone);
 		if (sortingParameter != null)
-			clone.sortingParameter = (VariablePE)sortingParameter.createExecutableClone(null, parentPage);
+			clone.sortingParameter = sortingParameter.createExecutableClone(parentPage);
 		if (sortingDirection != null)
-			clone.sortingDirection = (VariablePE)sortingDirection.createExecutableClone(null, parentPage);
+			clone.sortingDirection = sortingDirection.createExecutableClone(parentPage);
 		return clone;
 	}
 
@@ -86,7 +83,7 @@ public class AggregationPE extends PageElementContainer {
 	}
 	
 	public boolean hasSorting() {
-		return sortingParameter != null && !StringUtils.isBlank(sortingParameter.output());
+		return sortingParameter != null && !StringUtils.isBlank(sortingParameter.writeSingleValue());
 	}
 	/**
 	 * Есть ли параметры, по которым происходит группировка
@@ -104,7 +101,7 @@ public class AggregationPE extends PageElementContainer {
 	}
 	
 	public String getParameter() {
-		return groupParameter.output();
+		return groupParameter.writeSingleValue();
 	}
 
 	public String getFunction() {
@@ -118,20 +115,20 @@ public class AggregationPE extends PageElementContainer {
 	private String getSortingDirection() {
 		if (sortingDirection == null)
 			return null;
-		return sortingDirection.output();
+		return sortingDirection.writeSingleValue();
 	}
 	
-	public void addSorting(VariablePE sortingVar, String sortingDirection, String directionVarName) {
+	public void addSorting(ValueOrRef sortingVar, String sortingDirection, String directionVarName) {
 		this.sortingParameter = sortingVar;
 		if (!StringUtils.isBlank(sortingDirection))
-			this.sortingDirection = new StaticVariablePE("dir", sortingDirection);
+			this.sortingDirection = ValueOrRef.newValue(sortingDirection);
 		else if (!StringUtils.isBlank(directionVarName))
-			this.sortingDirection = new ReferenceVariablePE("dir", directionVarName);
+			this.sortingDirection = ValueOrRef.newRef(directionVarName);
 			
 	}
 	/**
 	 * Создать билдер для конструирования SQL запроса, содержащего критерии фильтрации данного фильтра
-	 * @param itemToGroup - описание айтема, загрузка которого требует применения данного фильтра
+	 * @param dbQuery
 	 * @return
 	 * @throws EcommanderException
 	 */

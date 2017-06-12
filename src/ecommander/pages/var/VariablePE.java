@@ -2,15 +2,11 @@ package ecommander.pages.var;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 
-import ecommander.pages.PageElement;
-import ecommander.pages.ValidationResults;
+import ecommander.pages.*;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.Strings;
-import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.PageElementContainer;
 import org.apache.xerces.util.XMLChar;
 
 /**
@@ -37,7 +33,16 @@ public abstract class VariablePE implements PageElement {
 	 *
 	 */
 	public enum Style {
-		path, query, translit
+		path, query, translit;
+		public static Style getValue(String val) {
+			if (StringUtils.equalsIgnoreCase("path", val))
+				return path;
+			if (StringUtils.equalsIgnoreCase("query", val))
+				return query;
+			if (StringUtils.equalsIgnoreCase("translit", val))
+				return translit;
+			throw new IllegalArgumentException("there is no Link Style value for '" + val + "' string");
+		}
 	}
 	
 	/**
@@ -45,7 +50,7 @@ public abstract class VariablePE implements PageElement {
 	 * @author EEEE
 	 */
 	public interface VariableContainer {
-		void addVariable(VariablePE variablePE);
+		void addVariablePE(VariablePE variablePE);
 	}
 	
 	// Когда эта переменная присутствует в модели страницы не для загрузки, pageModel == null
@@ -89,7 +94,7 @@ public abstract class VariablePE implements PageElement {
 	 * Получить переменную, которая
 	 * @return
 	 */
-	protected abstract Variable getVariable();
+	public abstract Variable getVariable();
 
 	public abstract boolean isEmpty();
 	/**
@@ -106,7 +111,7 @@ public abstract class VariablePE implements PageElement {
 	
 	protected void addToContainer(PageElementContainer container) {
 		if (container != null)
-			((VariableContainer)container).addVariable(this);
+			((VariableContainer)container).addVariablePE(this);
 	}
 	/**
 	 * Создание куска URL, который отвечает за эту переменную, например

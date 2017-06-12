@@ -1,21 +1,19 @@
 package ecommander.controllers;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.pages.LinkPE;
-import ecommander.pages.variables.FilterStaticVariablePE;
+import ecommander.pages.var.FilterStaticVariable;
 import ecommander.pages.var.VariablePE;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 /**
  * Подразумевается, что этот сервлет обрабатывает только 
  * @author EEEE
@@ -33,22 +31,21 @@ public class FilterFormServlet extends BasicServlet {
 		targetUrl = targetUrl.substring(FILTER_PREFIX_LENGTH);
 		String sortingStr = Strings.EMPTY;
 		String pageStr = Strings.EMPTY;
-		String varName = Strings.EMPTY;
 		req.getQueryString();
 		try {
 			LinkPE targetLink = LinkPE.parseLink(targetUrl);
-			varName = targetLink.getVariable(LinkPE.VAR_VARIABLE).output(); // Название переменной для пользовательского фильтра
+			String varName = targetLink.getVariable(LinkPE.VAR_VARIABLE).writeSingleValue(); // Название переменной для пользовательского фильтра
 			targetLink.removeVariable(LinkPE.VAR_VARIABLE); // чтобы не выводить лишнюю переменную, которая все равно добавится потом
-			Map<String, String[]> params = new HashMap<String, String[]>(req.getParameterMap());
+			Map<String, String[]> params = new HashMap<>(req.getParameterMap());
 			// Удалить все лишние пеерменные, которые содержатся в targetUrl
 			params.remove(LinkPE.VAR_VARIABLE); // на всякий случай
 			for(VariablePE targetPageVar : targetLink.getAllVariables()) {
 				params.remove(targetPageVar.getName());
 			}
-			if (params.containsKey(FilterStaticVariablePE.SORTING))
-				sortingStr = params.remove(FilterStaticVariablePE.SORTING)[0];
-			if (params.containsKey(FilterStaticVariablePE.PAGE))
-				pageStr = params.remove(FilterStaticVariablePE.PAGE)[0];
+			if (params.containsKey(FilterStaticVariable.SORTING))
+				sortingStr = params.remove(FilterStaticVariable.SORTING)[0];
+			if (params.containsKey(FilterStaticVariable.PAGE))
+				pageStr = params.remove(FilterStaticVariable.PAGE)[0];
 			StringBuilder filterStr = new StringBuilder();
 			// Все переданные через POST параметры.
 			// Имена параметров фильтра представляют собой число, имена обычных параметров не могут быть числом
@@ -58,8 +55,8 @@ public class FilterFormServlet extends BasicServlet {
 					for (String value : values) {
 						if (!StringUtils.isBlank(value)) {
 							if (filterStr.length() > 0)
-								filterStr.append(FilterStaticVariablePE.TOKEN_DELIM);
-							filterStr.append(paramName).append(FilterStaticVariablePE.VALUE_DELIM).append(value);
+								filterStr.append(FilterStaticVariable.TOKEN_DELIM);
+							filterStr.append(paramName).append(FilterStaticVariable.VALUE_DELIM).append(value);
 						}
 					}
 				} else {
@@ -71,12 +68,11 @@ public class FilterFormServlet extends BasicServlet {
 				}
 			}
 			if (!StringUtils.isBlank(sortingStr))
-				filterStr.append(FilterStaticVariablePE.TOKEN_DELIM).append(FilterStaticVariablePE.SORTING).append(sortingStr);
+				filterStr.append(FilterStaticVariable.TOKEN_DELIM).append(FilterStaticVariable.SORTING).append(sortingStr);
 			if (!StringUtils.isBlank(pageStr))
-				filterStr.append(FilterStaticVariablePE.TOKEN_DELIM).append(FilterStaticVariablePE.PAGE).append(pageStr);
-			
-			FilterStaticVariablePE filterVar = new FilterStaticVariablePE(varName, filterStr.toString());
-			targetLink.addVariable(filterVar);
+				filterStr.append(FilterStaticVariable.TOKEN_DELIM).append(FilterStaticVariable.PAGE).append(pageStr);
+
+			targetLink.addStaticVariable(varName, filterStr.toString());
 			
 			MainExecutionController mainController = new MainExecutionController(req, resp, targetLink.serialize());
 			mainController.execute(getBaseUrl(req), getServletContext());
