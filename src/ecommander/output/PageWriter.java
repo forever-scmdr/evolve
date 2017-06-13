@@ -141,6 +141,7 @@ public class PageWriter {
 		// <variables>
 		xml.startElement(VARIABLES_ELEMENT);
 		// Выводятся переменные
+		// TODO !!! НЕ ЗАБЫТЬ вывести переменную FilterStaticVariable отдельно
 		for (VariablePE var : page.getAllVariables()) {
 			if (!var.getName().startsWith("$")) {
 				PageElementWriter writer = PageElementWriterRegistry.getWriter(var);

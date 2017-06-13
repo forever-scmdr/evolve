@@ -1,16 +1,15 @@
 package ecommander.pages.filter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ecommander.model.Compare;
-import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.PageElement;
-import ecommander.pages.var.VariablePE;
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.model.ItemType;
 import ecommander.model.ParameterDescription;
+import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.PageElement;
+import ecommander.pages.var.Variable;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Критерий фильтра
@@ -30,54 +29,74 @@ import ecommander.model.ParameterDescription;
  *    
  * Множественные критерии фильтра
  * Критерий может содержать несколько переменных, тогда значение критерия берется из всех этих переменных
+ *
+ *
+ * ДОПОЛНИТЕЛЬНО
+ *
+ *
+ * Критерий, определяющий значение параметра некоторого потомка айтема.
+ * Например, Вывести разделы, которые содержат товары с ценой, меньшей определенного значения.
+ * Подразумевается, что сами товары выводить не нужно.
+ *
  * @author EEEE
  *
  */
-public abstract class FilterCriteriaPE implements PageElement {
+public abstract class ParameterCriteriaPE implements FilterCriteria {
 	
 	public static final String ELEMENT_NAME = "parameter";
 	
-	protected ArrayList<VariablePE> values = new ArrayList<VariablePE>(3);
+	protected ArrayList<Variable> values = new ArrayList<>(3);
 	protected String sign;
 	protected String pattern; // Для строковых критериев со знаком like. Формат: %v% - сначала символ %, потом значение параметра, потом опять %
 	protected Compare compareType = Compare.ANY;
+
+	private String assoc; // Для критериев параметра потомка (ассоциация)
+	private String itemName; // Для критериев параметра потомка (имя айетма потомка)
+	private boolean isTransitive = true; // Для критериев параметра потомка (транзитивна ли ассоциация)
+	boolean isDescendant = false;
 	/**
 	 * Конструктор создания исполяемой копии
 	 * @param template
-	 * @param container
 	 * @param parentPage
 	 */
-	protected FilterCriteriaPE(FilterCriteriaPE template, ExecutablePagePE parentPage) {
+	protected ParameterCriteriaPE(ParameterCriteriaPE template, ExecutablePagePE parentPage) {
 		sign = template.sign;
 		pattern = template.pattern;
 		compareType = template.compareType;
-		for (VariablePE var : template.values) {
-			addValue((VariablePE) var.createExecutableClone(null, parentPage));
+		for (Variable var : template.values) {
+			addValue(var.getInited(parentPage));
 		}
 	}
 	
-	protected FilterCriteriaPE(String sign, String pattern, Compare compType) {
+	protected ParameterCriteriaPE(String sign, String pattern, Compare compType) {
 		this.sign = sign;
 		this.pattern = pattern;
 		this.compareType = compType;
 	}
-	
+
+	private void setDescendantAttributes(String assocName, String itemName, boolean isTransitive) {
+		this.assoc = assocName;
+		this.itemName = itemName;
+		this.isTransitive = isTransitive;
+		isDescendant = true;
+	}
+
 	public final List<String> getValueArray() {
-		ArrayList<String> result = new ArrayList<String>();
-		for (VariablePE var : values) {
-			for (String varVal : var.outputArray()) {
+		ArrayList<String> result = new ArrayList<>();
+		for (Variable var : values) {
+			for (String varVal : var.writeAllValues()) {
 				result.add(varVal);
 			}
 		}
 		return result;
 	}
 	
-	public void addValue(VariablePE value) {
+	public void addValue(Variable value) {
 		values.add(value);
 	}
 	
 	public boolean isValid() {
-		for (VariablePE var : values) {
+		for (Variable var : values) {
 			if (!var.isEmpty())
 				return true;
 		}
@@ -101,20 +120,42 @@ public abstract class FilterCriteriaPE implements PageElement {
 	public final Compare getCompareType() {
 		return compareType;
 	}
-	
-	public static FilterCriteriaPE create(String paramName, String paramNameVar, String paramIdVar, String sign,
-			String pattern, Compare compType) {
+
+	public final boolean isDescendant() {
+		return isDescendant;
+	}
+
+	public final String getDescendantName() {
+		return itemName;
+	}
+
+	public final String getDescendantAssoc() {
+		return assoc;
+	}
+
+	public final boolean isDescendantTransitive() {
+		return isTransitive;
+	}
+
+	public static ParameterCriteriaPE create(String paramName, String paramNameVar, String paramIdVar, String sign,
+	                                         String pattern, Compare compType, String child, String assoc,
+	                                         boolean isTransitive) {
+		ParameterCriteriaPE instance;
 		if (compType == null)
 			compType = Compare.ANY;
 		if (!StringUtils.isBlank(paramName)) {
-			return new HardParameterCriteriaPE(paramName, sign, pattern, compType);
+			instance = new HardParameterCriteriaPE(paramName, sign, pattern, compType);
 		} else if (!StringUtils.isBlank(paramNameVar)) {
-			return new VariableParameterCriteriaPE(paramNameVar, sign, pattern, compType);
+			instance = new VariableParameterCriteriaPE(paramNameVar, sign, pattern, compType);
 		} else if (!StringUtils.isBlank(paramIdVar)) {
-			return new IdVariableParameterCriteriaPE(paramIdVar, sign, pattern, compType);
+			instance = new IdVariableParameterCriteriaPE(paramIdVar, sign, pattern, compType);
 		} else {
 			throw new IllegalArgumentException("Neither paramName nor paramNameVar supplied for filter criteria parameter");
 		}
+		if (StringUtils.isNotBlank(child)) {
+			instance.setDescendantAttributes(assoc, child, isTransitive);
+		}
+		return instance;
 	}
 	
 	public final String getKey() {
@@ -123,5 +164,13 @@ public abstract class FilterCriteriaPE implements PageElement {
 
 	public String getElementName() {
 		return ELEMENT_NAME;
+	}
+
+	@Override
+	public void process(FilterCriteriaContainer cont) {
+		if (isDescendant)
+			cont.processDescendantParameterCriteria(this);
+		else
+			cont.processParameterCriteria(this);
 	}
 }

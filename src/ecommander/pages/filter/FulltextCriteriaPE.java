@@ -17,7 +17,7 @@ import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
  * @author E
  *
  */
-public class FulltextCriteriaPE implements PageElement {
+public class FulltextCriteriaPE implements FilterCriteria {
 
 	public static final String ELEMENT_NAME = "fulltext";
 	
@@ -44,7 +44,7 @@ public class FulltextCriteriaPE implements PageElement {
 	}
 	
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		return new FulltextCriteriaPE(typesStr, query.createExecutableClone(parentPage), maxResultCount, paramName,
+		return new FulltextCriteriaPE(typesStr, (ValueOrRef) query.getInited(parentPage), maxResultCount, paramName,
 				compType, threshold);
 	}
 
@@ -110,5 +110,10 @@ public class FulltextCriteriaPE implements PageElement {
 	
 	public float getThreshold() {
 		return threshold;
+	}
+
+	@Override
+	public void process(FilterCriteriaContainer cont) {
+		cont.processFulltextCriteriaPE(this);
 	}
 }

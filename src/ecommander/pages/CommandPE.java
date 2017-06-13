@@ -1,14 +1,11 @@
 package ecommander.pages;
 
-import java.lang.reflect.Method;
-
-import ecommander.pages.var.VariablePE;
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.fwk.ServerLogger;
 import ecommander.output.XmlDocumentBuilder;
-import ecommander.pages.variables.ReferenceVariablePE;
-import ecommander.pages.variables.StaticVariablePE;
+import ecommander.pages.var.ValueOrRef;
+import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.Method;
 
 /**
  * Элемент - команда
@@ -40,7 +37,7 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 	
 	private Class<Command> commandClass;
 	private boolean cacheClearNeeded = false; // Нужно ли проводить очистку кеша после выполнения этой команды
-	private VariablePE methodVar = null; // Переменная, которая хранит названия методов, которые должны быть в команде и котороые выполняют разные действия
+	private ValueOrRef methodVar = null; // Переменная, которая хранит названия методов, которые должны быть в команде и котороые выполняют разные действия
 	private ExecutablePagePE parentPage;
 
 	@SuppressWarnings("unchecked")
@@ -57,19 +54,19 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 	
 	public final void setMethodVar(String varName) {
 		if (!StringUtils.isBlank(varName))
-			methodVar = new ReferenceVariablePE("method", varName);
+			methodVar = ValueOrRef.newRef(varName);
 	}
 	
 	public final void setMethod(String methodName) {
 		if (!StringUtils.isBlank(methodName))
-			methodVar = new StaticVariablePE("method", methodName);
+			methodVar = ValueOrRef.newValue(methodName);
 	}
 
 	@Override
 	protected PageElementContainer createExecutableShallowClone(PageElementContainer container, ExecutablePagePE parentPage) {
 		CommandPE clone = new CommandPE(this, parentPage);
 		if (methodVar != null)
-			clone.methodVar = (VariablePE) methodVar.createExecutableClone(null, parentPage);
+			clone.methodVar = (ValueOrRef) methodVar.getInited(parentPage);
 		if (container != null)
 			((CommandContainer)container).addCommand(clone);
 		return clone;
@@ -89,7 +86,7 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 				}
 			}
 			if (methodVar != null) {
-				String methodName = methodVar.output();
+				String methodName = methodVar.writeSingleValue();
 				if (!StringUtils.isBlank(methodName)) {
 					Method method = null;
 					try {

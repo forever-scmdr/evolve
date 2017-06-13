@@ -24,7 +24,7 @@ import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.model.LOGICAL_SIGN;
 import ecommander.pages.filter.AggregationPE;
-import ecommander.pages.filter.FilterCriteriaPE;
+import ecommander.pages.filter.ParameterCriteriaPE;
 import ecommander.pages.filter.FilterPE;
 import ecommander.pages.filter.FulltextCriteriaPE;
 import ecommander.pages.variables.CookieStaticVariablePE;
@@ -1123,7 +1123,7 @@ public class PageModelBuilder {
 	 * @return
 	 * @throws PrimaryValidationException 
 	 */
-	private FilterCriteriaPE readFilterCriteria(Element criteriaNode) throws PrimaryValidationException {
+	private ParameterCriteriaPE readFilterCriteria(Element criteriaNode) throws PrimaryValidationException {
 		String paramName = criteriaNode.getAttribute(NAME_ATTRIBUTE);
 		String paramNameVar = criteriaNode.getAttribute(NAME_VAR_ATTRIBUTE);
 		String paramIdVar = criteriaNode.getAttribute(ID_VAR_ATTRIBUTE);
@@ -1140,7 +1140,7 @@ public class PageModelBuilder {
 			}
 		}
 		// Критерий фильтра
-		FilterCriteriaPE crit = FilterCriteriaPE.create(paramName, paramNameVar, paramIdVar, paramSign, paramPattern, compare);
+		ParameterCriteriaPE crit = ParameterCriteriaPE.create(paramName, paramNameVar, paramIdVar, paramSign, paramPattern, compare);
 		// Значение параметра (переменная)
 		for (Node filterSubnode = criteriaNode.getFirstChild(); filterSubnode != null; filterSubnode = filterSubnode.getNextSibling()) {
 			if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(VAR_ELEMENT)) {

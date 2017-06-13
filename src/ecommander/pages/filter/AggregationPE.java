@@ -59,14 +59,14 @@ public class AggregationPE extends PageElementContainer {
 
 	@Override
 	protected PageElementContainer createExecutableShallowClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		AggregationPE clone = new AggregationPE(groupParameter.createExecutableClone(parentPage));
+		AggregationPE clone = new AggregationPE((ValueOrRef) groupParameter.getInited(parentPage));
 		clone.setFunction(function);
 		if (container != null)
 			((AggregationContainer)container).addAggregate(clone);
 		if (sortingParameter != null)
-			clone.sortingParameter = sortingParameter.createExecutableClone(parentPage);
+			clone.sortingParameter = (ValueOrRef) sortingParameter.getInited(parentPage);
 		if (sortingDirection != null)
-			clone.sortingDirection = sortingDirection.createExecutableClone(parentPage);
+			clone.sortingDirection = (ValueOrRef) sortingDirection.getInited(parentPage);
 		return clone;
 	}
 
@@ -96,7 +96,7 @@ public class AggregationPE extends PageElementContainer {
 	 * Добавить параметр группировки
 	 * @param grouping
 	 */
-	public void addGroupBy(FilterCriteriaPE grouping) {
+	public void addGroupBy(ParameterCriteriaPE grouping) {
 		addElement(grouping);
 	}
 	
@@ -138,7 +138,7 @@ public class AggregationPE extends PageElementContainer {
 		
 		// Добавление параметров группировки (по которым происходит группировка)
 		for (PageElement criteriaPE : getAllNested()) {
-			FilterCriteriaPE crit = (FilterCriteriaPE)criteriaPE;
+			ParameterCriteriaPE crit = (ParameterCriteriaPE)criteriaPE;
 			// Переменная-значение критерия может хранить как один параметр, так и массив параметров
 			if (crit.isValid())
 				dbQuery.addAggregationGroupBy(crit.getParam(dbQuery.getItemToFilter()), crit.getValueArray(), crit.getSign(),

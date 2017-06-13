@@ -7,13 +7,13 @@ import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElement;
 import ecommander.pages.PageElementContainer;
 import ecommander.pages.ValidationResults;
-import ecommander.pages.var.VariablePE;
+import ecommander.pages.var.Variable;
 /**
  * Критерий фильтра, в котором название параметра жестко задано в коде страницы
  * @author EEEE
  *
  */
-class HardParameterCriteriaPE extends FilterCriteriaPE {
+class HardParameterCriteriaPE extends ParameterCriteriaPE {
 	protected String paramName;
 	
 	HardParameterCriteriaPE(String paramName, String sign, String pattern, Compare compType) {
@@ -31,10 +31,10 @@ class HardParameterCriteriaPE extends FilterCriteriaPE {
 	}
 
 	public void validate(String elementPath, ValidationResults results) {
-		for (VariablePE var : values) {
+		for (Variable var : values) {
 			var.validate(elementPath, results);
 		}
-		ItemType desc = (ItemType)results.getBufferData();
+		ItemType desc = (ItemType) results.getBufferData();
 		if (desc.getParameter(paramName) == null) {
 			results.addError(elementPath + " > " + getKey(), "'" + desc.getName() + "' item does not contain '" + paramName + "'");
 		}

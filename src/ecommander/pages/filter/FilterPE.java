@@ -1,32 +1,21 @@
 package ecommander.pages.filter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ecommander.model.Compare;
-import ecommander.pages.var.StaticVariable;
-import ecommander.pages.var.Variable;
-import ecommander.pages.var.VariablePE;
-import org.apache.commons.lang3.StringUtils;
-
+import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
-import ecommander.fwk.EcommanderException;
+import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.LOGICAL_SIGN;
 import ecommander.model.filter.FilterDefinition;
-import ecommander.pages.CacheablePE;
-import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.ItemPE;
-import ecommander.pages.LinkPE;
-import ecommander.pages.PageElement;
-import ecommander.pages.PageElementContainer;
-import ecommander.pages.ValidationResults;
-import ecommander.pages.variables.FilterStaticVariablePE;
-import ecommander.pages.variables.ReferenceVariablePE;
-import ecommander.pages.variables.StaticVariablePE;
+import ecommander.pages.*;
+import ecommander.pages.var.FilterStaticVariable;
+import ecommander.pages.var.ValueOrRef;
+import ecommander.pages.var.Variable;
 import ecommander.persistence.itemquery.ItemQuery;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 /**
  * Используется для хранения параметров (не Parameter, а просто парамтеров), 
  * которые нужны для загрузки нужных айтемов
@@ -90,90 +79,41 @@ import ecommander.persistence.itemquery.ItemQuery;
  * @author EEEE
  * TODO <usability> сделать проверку наличия параметров фильтра на наличие в айтеме, который фильтруется
  */
-public class FilterPE extends PageElementContainer implements CacheablePE, LinkPE.LinkContainer {
+public class FilterPE extends PageElementContainer implements CacheablePE, LinkPE.LinkContainer, FilterCriteriaContainer {
 	public static final String ELEMENT_NAME = "filter";
-	
+
 	/**
 	 * Интерфейс, который должны реализовывать контейнеры, обрабатывающие добавление ExecutableItemPE особым образом
 	 * @author EEEE
 	 */
-	public static interface FilterContainer {
+	public interface FilterContainer {
 		void addFilter(FilterPE filterPE);
 	}
-	/**
-	 * Класс для критериев predecessor и successor
-	 * @author EEEE
-	 *
-	 */
-	private static class ParentalCriteria {
-		private final String pageItemId; // страничный ID предшественников или потомков айтема
-		private final String sign; // IN или NOT IN
-		private final Compare compType; // строгий критерий или нет
 
-		private ParentalCriteria(String pageItemId, String sign, Compare compType) {
-			this.pageItemId = pageItemId;
-			this.sign = " " + sign + " ";
-			this.compType = compType;
-		}
-	}
-	
-	private static class SortingCriteria {
-		private Variable sortingParameter = null;
-		private Variable sortingDirection = new StaticVariable("dir", "ASC");
-		
-		private SortingCriteria(VariablePE sortingParameter, VariablePE sortingDirection, ExecutablePagePE parentPage) {
-			this.sortingParameter = (VariablePE)sortingParameter.createExecutableClone(null, parentPage);
-			if (sortingDirection != null)
-				this.sortingDirection = (VariablePE)sortingDirection.createExecutableClone(null, parentPage);
-		}
-		
-		private SortingCriteria(VariablePE sortingParameter, VariablePE sortingDirection) {
-			this.sortingParameter = sortingParameter;
-			if (sortingDirection != null)
-				this.sortingDirection = sortingDirection;
-		}
-	}
-	
-	private ArrayList<SortingCriteria> sorting = null; // Массив параметров сортировки
 	private LOGICAL_SIGN operation = LOGICAL_SIGN.AND;
 	private Variable limit = null;
 	private Variable page = null;
-	private ArrayList<ParentalCriteria> predecessors = null; // Массив страничных ID предшественников айтема
-	private ArrayList<ParentalCriteria> successors = null; // Массив страничных ID потомков айтема
 	private String userFilterItemId; // При использовании пользовательского фильтра - ID страничного айтема
 	private String userFilterParamName; // При использовании пользовательского фильтра - название параметра
 	private String userFilterVarName; // При использовании пользовательского фильтра - имя страничной переменной, 
 									  // которая хранит ввод пользователя сайта (критерии фильтрации)
 	private boolean needPreloadDomains; // нужно ли подгружать возможные значения списочных полей ввода для пользовательского фильтра
 	private FilterDefinition filterDef; // Объект Фильтр, который является значением параметра userFilterParamName айтема userFilterItemId
-	private FulltextCriteriaPE fulltext; // Запрос полнотекстового поиска
 	private ExecutablePagePE parentPage;
-	
+
+	private ItemQuery dbQuery;
+	private Boolean isValid = null;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected PageElementContainer createExecutableShallowClone(PageElementContainer container, ExecutablePagePE parentPage) {
 		FilterPE clone = new FilterPE();
 		if (container != null)
 			((FilterContainer)container).addFilter(clone);
-		if (sorting != null) {
-			clone.sorting = new ArrayList<SortingCriteria>();
-			for (SortingCriteria sort : sorting) {
-				clone.sorting.add(new SortingCriteria(sort.sortingParameter, sort.sortingDirection, parentPage));
-			}
-		}
-//		if (sortingParameter != null)
-//			clone.sortingParameter = (VariablePE)sortingParameter.createExecutableClone(null, parentPage);
-//		clone.sortingDirection = (VariablePE)sortingDirection.createExecutableClone(null, parentPage);
 		if (limit != null)
-			clone.limit = (VariablePE)limit.createExecutableClone(null, parentPage);
+			clone.limit = limit.getInited(parentPage);
 		if (page != null)
-			clone.page = (VariablePE)page.createExecutableClone(null, parentPage);
-		if (predecessors != null)
-			clone.predecessors = (ArrayList<ParentalCriteria>)predecessors.clone();
-		if (successors != null)
-			clone.successors = (ArrayList<ParentalCriteria>)successors.clone();
-		if (fulltext != null)
-			clone.fulltext = (FulltextCriteriaPE)fulltext.createExecutableClone(null, parentPage);
+			clone.page = page.getInited(parentPage);
 		if (!StringUtils.isBlank(userFilterItemId) && !StringUtils.isBlank(userFilterParamName) && !StringUtils.isBlank(userFilterVarName)) {
 			clone.userFilterItemId = userFilterItemId;
 			clone.userFilterParamName = userFilterParamName;
@@ -185,15 +125,13 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		return clone;
 	}
 
-	public void addSorting(VariablePE sortingVar, String sortingDirection, String directionVarName) {
-		if (sorting == null)
-			sorting = new ArrayList<SortingCriteria>();
-		VariablePE sortingDir = null;
+	public void addSorting(Variable sortingVar, String sortingDirection, String directionVarName) {
+		Variable sortingDir = null;
 		if (!StringUtils.isBlank(sortingDirection))
-			sortingDir = new StaticVariablePE("dir", sortingDirection);
+			sortingDir = ValueOrRef.newValue(sortingDirection);
 		else if (!StringUtils.isBlank(directionVarName))
-			sortingDir = new ReferenceVariablePE("dir", directionVarName);
-		sorting.add(new SortingCriteria(sortingVar, sortingDir));
+			sortingDir = ValueOrRef.newRef(directionVarName);
+		addElement(new SortingCriteriaPE(sortingVar, sortingDir));
 	}
 	/**
 	 * Установить операцию (применяется для всего фильтра, т.к. для отдельных критериев не имеет смысла)
@@ -216,61 +154,54 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		this.needPreloadDomains = needPreloadDomains;
 	}
 	
-	public void addLimit(VariablePE limitVar) {
+	public void addLimit(Variable limitVar) {
 		this.limit = limitVar;
 	}
 	
-	public void addPage(VariablePE pageVar) {
+	public void addPage(Variable pageVar) {
 		this.page = pageVar;
 	}
 
-	public void addCriteria(FilterCriteriaPE criteria) {
+	public void addCriteria(ParameterCriteriaPE criteria) {
 		addElement(criteria);
 	}
 
 	public void setFulltext(FulltextCriteriaPE fulltext) {
-		this.fulltext = fulltext;
+		addElement(fulltext);
 	}
-	
+
 	public void addPredecessor(String predecessorId, String sign, Compare compType) {
-		if (predecessors == null)
-			predecessors = new ArrayList<ParentalCriteria>();
 		if (StringUtils.isBlank(sign))
 			sign = " IN ";
-		predecessors.add(new ParentalCriteria(predecessorId, sign, compType));
+		addElement(new ParentalCriteriaPE(predecessorId, sign, compType, true));
 	}
 	
 	public void addSuccessors(String successorId, String sign, Compare compType) {
-		if (successors == null)
-			successors = new ArrayList<ParentalCriteria>();
 		if (StringUtils.isBlank(sign))
 			sign = " IN ";
-		successors.add(new ParentalCriteria(successorId, sign, compType));
+		addElement(new ParentalCriteriaPE(successorId, sign, compType, false));
 	}
 
 	public boolean hasPage() {
-		return page != null && !StringUtils.isBlank(page.output());
+		return page != null && !page.isEmpty();
 	}
 	
 	public boolean hasLimit() {
-		return limit != null && !StringUtils.isBlank(limit.output());
+		return limit != null && !limit.isEmpty();
 	}
 	
 	public int getPage() {
-		return Integer.parseInt(page.output());
+		return Integer.parseInt(page.writeSingleValue());
 	}
 	
-	public VariablePE getPageVariable() {
+	public Variable getPageVariable() {
 		return page;
 	}
 	
 	public int getLimit() {
-		return Integer.parseInt(limit.output());
+		return Integer.parseInt(limit.writeSingleValue());
 	}
-	
-	public FulltextCriteriaPE getFulltext() {
-		return fulltext;
-	}
+
 	/**
 	 * Получить пользовательский фильтр
 	 * @return если есть фильтр, то вернуть его, если нету, вернуть null
@@ -307,12 +238,14 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean appendCriteriasToQuery(ItemQuery dbQuery) throws EcommanderException {
-		
+
+		this.dbQuery = dbQuery;
+
 		/* *** Добавление пользовательского фильтра ****/ 
 		
 		if (hasUserFilter()) {
-			VariablePE var = parentPage.getVariable(userFilterVarName);
-			FilterStaticVariablePE filterVar = new FilterStaticVariablePE(userFilterVarName, var.output());
+			Variable var = parentPage.getVariable(userFilterVarName);
+			FilterStaticVariable filterVar = new FilterStaticVariable(userFilterVarName, var.writeSingleValue());
 			parentPage.addVariable(filterVar); // добавить переменную для последующего вывода при выводе XML страницы
 			dbQuery.createFilter(filterDef, filterVar);
 			// Заменить значение параметра фильтра новым значением, для того, чтобы фильтр выводился в виде XML,
@@ -325,63 +258,14 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 
 		if (!dbQuery.hasFilter())
 			dbQuery.createFilter(operation);
-		// Параметры
+
+		// Все вложенные элементы - критерии
 		Boolean isValid = null;
 		for (PageElement element : getAllNested()) {
-			if (element instanceof FilterCriteriaPE) {
-				FilterCriteriaPE crit = (FilterCriteriaPE) element;
-				if (crit.isValid()) {
-					// Переменная-значение критерия может хранить как один параметр, так и массив параметров
-					dbQuery.addParameterCriteria(crit.getParam(dbQuery.getItemToFilter()), crit.getValueArray(), crit.getSign(),
-							crit.getPattern(), crit.getCompareType());
-					isValid = true;
-				}
-				// Если критерий имеет тип сравнения SOME или EVERY и не является валидным (не содержит образец для сравнения),
-				// то фильтр должен вернуть пустое множество, при условии что критерии фильтра соединяются логическим знаком И,
-				// (т. е. в большинстве случаев)
-				else if ((crit.getCompareType() == Compare.SOME || crit.getCompareType() == Compare.EVERY)) {
-					if (operation == LOGICAL_SIGN.AND)
-						return false;
-					else
-						isValid = isValid == null ? false : isValid || false;
-				}
-			}
+			((FilterCriteria) element).process(this);
 		}
 		if (isValid != null && !isValid)
 			return false;
-		
-		// Полнотекстовый поиск
-		if (fulltext != null) {
-			dbQuery.setFulltextCriteria(fulltext.getTypes(), fulltext.getQueries(), fulltext.getMaxResultCount(), fulltext.getParamName(),
-					fulltext.getCompareType(), fulltext.getThreshold());
-		}
-		
-		// Предшественники
-		if (predecessors != null && predecessors.size() > 0) {
-			for (ParentalCriteria pred : predecessors) {
-				dbQuery.addPredecessors(pred.sign, parentPage.getItemPEById(pred.pageItemId).getFoundItemRefIds(), pred.compType);
-			}
-		}
-		
-		// Потомки
-		if (successors != null && successors.size() > 0) {
-			for (ParentalCriteria succ : successors) {
-				dbQuery.addSuccessors(succ.sign, parentPage.getItemPEById(succ.pageItemId).getFoundItemRefIds(), succ.compType);
-			}
-		}
-		
-		// Сортировка
-		if (sorting != null) {
-			for (SortingCriteria sort : sorting) {
-				List<String> values = sort.sortingParameter.outputArray();
-				String varName = sort.sortingParameter.getName();
-				// Если значений много и у переменной есть название, то нужна сортировка по заданным значениям
-				if (values.size() > 1 || StringUtils.isNotBlank(varName))
-					dbQuery.addSorting(varName, sort.sortingDirection.output(), values);
-				else if (StringUtils.isNotBlank(sort.sortingParameter.output()))
-					dbQuery.addSorting(sort.sortingParameter.output(), sort.sortingDirection.output());
-			}
-		}
 		
 		// Лимит
 		if (hasLimit()) {
@@ -407,8 +291,10 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		if (userFilter) {
 			// Сущетвование айтемов и параметров
 			ItemPE pageItem = parentPage.getItemPEById(userFilterItemId);
-			if (pageItem == null)
+			if (pageItem == null) {
 				results.addError(elementPath + " > " + getKey(), "there is no '" + userFilterItemId + "' page item on current page");
+				return false;
+			}
 			ItemType itemDesc = ItemTypeRegistry.getItemType(pageItem.getItemName());
 			if (itemDesc.getParameter(userFilterParamName) == null)
 				results.addError(elementPath + " > " + getKey(), "there is no '" + userFilterParamName 
@@ -421,46 +307,13 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 						+ " must have attribute cache-vars set in order to operate filter cache correctly");
 			}
 		}
-		
-		// Предшественники и последователи
-		ArrayList<ParentalCriteria> pred_succ = new ArrayList<ParentalCriteria>();
-		if (predecessors != null)
-			pred_succ.addAll(predecessors);
-		if (successors != null)
-			pred_succ.addAll(successors);
-		for (ParentalCriteria crit : pred_succ) {
-			if (parentPage.getItemPEById(crit.pageItemId) == null)
-				results.addError(elementPath + " > " + getKey(), "there is no '" + crit.pageItemId + "' page item on current page");
-		}
-		
-		// Сортировка
-		if (sorting != null) {
-			for (SortingCriteria s : sorting) {
-				s.sortingParameter.validate(elementPath + " > " + getKey(), results);
-				if (results.isSuccessful()) {
-					if (s.sortingParameter instanceof StaticVariablePE
-							&& ((ItemType) results.getBufferData()).getParameter(s.sortingParameter.output()) == null) {
-						results.addError(elementPath + " > " + getKey(), "There is no '" + s.sortingParameter.output() + "' parameter in '"
-								+ ((ItemType) results.getBufferData()).getName() + "' item");
-					}
-					s.sortingParameter.validate(elementPath + " > " + getKey(), results);
-					if (!"ASC".equals(s.sortingDirection.output()) && !"DESC".equals(s.sortingDirection.output()))
-						results.addError(elementPath + " > " + getKey(),
-								"'" + s.sortingDirection.output() + "' is not valid sorting direction");
-				}
-			}
-		}
-		
+
 		// Ограничения количества и страницы
 		if (limit != null)
 			limit.validate(elementPath + " > " + getKey(), results);
 		if (page != null)
 			page.validate(elementPath + " > " + getKey(), results);
-		
-		// Полнотекстовый поиск
-		if (fulltext != null)
-			fulltext.validate(elementPath + " > " + getKey(), results);
-		
+
 		return results.isSuccessful();
 	}
 
@@ -497,5 +350,56 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 
 	public String getElementName() {
 		return ELEMENT_NAME;
+	}
+
+	@Override
+	public void processParameterCriteria(ParameterCriteriaPE crit) {
+		if (crit.isValid()) {
+			// Переменная-значение критерия может хранить как один параметр, так и массив параметров
+			dbQuery.addParameterCriteria(crit.getParam(dbQuery.getItemToFilter()), crit.getValueArray(), crit.getSign(),
+					crit.getPattern(), crit.getCompareType());
+			isValid = true;
+		}
+		// Если критерий имеет тип сравнения SOME или EVERY и не является валидным (не содержит образец для сравнения),
+		// то фильтр должен вернуть пустое множество, при условии что критерии фильтра соединяются логическим знаком И,
+		// (т. е. в большинстве случаев)
+		else if ((crit.getCompareType() == Compare.SOME || crit.getCompareType() == Compare.EVERY)) {
+			if (operation == LOGICAL_SIGN.AND) {
+				isValid = false;
+				return;
+			} else {
+				isValid = isValid == null ? false : isValid || false;
+			}
+		}
+	}
+
+	@Override
+	public void processDescendantParameterCriteria(ParameterCriteriaPE crit) {
+
+	}
+
+	@Override
+	public void processParentalCriteria(ParentalCriteriaPE crit) {
+		if (crit.isPredecessor())
+			dbQuery.addPredecessors(crit.getSign(), crit.getLoadedItemIds(), crit.getCompType());
+		else
+			dbQuery.addSuccessors(crit.getSign(), crit.getLoadedItemIds(), crit.getCompType());
+	}
+
+	@Override
+	public void processSortingCriteriaPE(SortingCriteriaPE crit) {
+		List<String> values = crit.getSortingParameter().writeAllValues();
+		String varName = crit.getSortingParameter().getName();
+		// Если значений много и у переменной есть название, то нужна сортировка по заданным значениям
+		if (values.size() > 1 || StringUtils.isNotBlank(varName))
+			dbQuery.addSorting(varName, crit.getSortingDirection().writeSingleValue(), values);
+		else if (StringUtils.isNotBlank(crit.getSortingParameter().writeSingleValue()))
+			dbQuery.addSorting(crit.getSortingParameter().writeSingleValue(), crit.getSortingDirection().writeSingleValue());
+	}
+
+	@Override
+	public void processFulltextCriteriaPE(FulltextCriteriaPE crit) throws EcommanderException {
+		dbQuery.setFulltextCriteria(crit.getTypes(), crit.getQueries(), crit.getMaxResultCount(), crit.getParamName(),
+				crit.getCompareType(), crit.getThreshold());
 	}
 }

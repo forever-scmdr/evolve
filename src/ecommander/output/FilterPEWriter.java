@@ -1,13 +1,12 @@
 package ecommander.output;
 
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.pages.ExecutableItemPE;
 import ecommander.pages.LinkPE;
 import ecommander.pages.PageElement;
 import ecommander.pages.filter.FilterPE;
-import ecommander.pages.variables.StaticVariablePE;
-import ecommander.pages.var.VariablePE;
+import ecommander.pages.var.StaticVariable;
+import ecommander.pages.var.Variable;
+import org.apache.commons.lang3.StringUtils;
 /**
  * Метод write работает не на базе фильтра, а на базе страничного айтема
  * @author EEEE
@@ -46,24 +45,21 @@ public class FilterPEWriter implements PageElementWriter {
 					xml.startElement(tagName + PAGES_ELEMENT_SUFFIX);
 					
 					LinkPE linkBase = item.getPageModel().getRequestLink();
-					VariablePE filterPageVar = filter.getPageVariable();
+					Variable filterPageVar = filter.getPageVariable();
 					// Найти переменную, которая обозначает номер страницы
-					VariablePE pageVarBase = linkBase.getVariablePE(filterPageVar.getName());
+					Variable pageVarBase = linkBase.getVariable(filterPageVar.getName());
 					// Если страница не указана, то считать что она первая.
 					if (pageVarBase == null) {
-						pageVarBase = new StaticVariablePE(filter.getPageVariable().getName(), "1");
-						pageVarBase.setStyle(filterPageVar.getStyle());
+						pageVarBase = new StaticVariable(filter.getPageVariable().getName(), "1");
 						filter.addPage(pageVarBase);
 					}
 					int currentPage = filter.getPage();
 					for (int i = 1; i <= totalPages; i++) {
 						// Создать ссылку (клонированием) и параметр ссылки для номера страницы
 						LinkPE link = (LinkPE)linkBase.createExecutableClone(null, null);
-						VariablePE pageNumberVar = new StaticVariablePE(pageVarBase.getName(), new Integer(i).toString());
-						pageNumberVar.setStyle(filterPageVar.getStyle());
-						link.addVariablePE(pageNumberVar);
+						link.addStaticVariable(pageVarBase.getName(), i + "");
 						// Номер страницы
-						String pageNumber = new Integer(i).toString();
+						String pageNumber = Integer.toString(i);
 						// Элемент типа <page> или <current_page>
 						if (i == currentPage) {
 							xml.startElement(CURRENT_PAGE_ELEMENT);
@@ -79,10 +75,8 @@ public class FilterPEWriter implements PageElementWriter {
 					}
 					// Назад
 					if (currentPage > 1) {
-						LinkPE link = (LinkPE)linkBase.createExecutableClone(null, null);
-						VariablePE nextNumberVar = new StaticVariablePE(pageVarBase.getName(), new Integer(filter.getPage() - 1).toString());
-						nextNumberVar.setStyle(filterPageVar.getStyle());
-						link.addVariablePE(nextNumberVar);
+						LinkPE link = (LinkPE) linkBase.createExecutableClone(null, null);
+						link.addStaticVariable(pageVarBase.getName(), (filter.getPage() - 1) + "");
 						xml
 							.startElement(PAGE_PREVIOUS_ELEMENT)
 							.startElement(PAGE_LINK_ELEMENT)
@@ -93,9 +87,7 @@ public class FilterPEWriter implements PageElementWriter {
 					// Вперед
 					if (currentPage < totalPages) {
 						LinkPE link = (LinkPE)linkBase.createExecutableClone(null, null);
-						VariablePE prevNumberVar = new StaticVariablePE(pageVarBase.getName(), new Integer(filter.getPage() + 1).toString());
-						prevNumberVar.setStyle(filterPageVar.getStyle());
-						link.addVariablePE(prevNumberVar);
+						link.addStaticVariable(pageVarBase.getName(), (filter.getPage() + 1) + "");
 						xml
 							.startElement(PAGE_NEXT_ELEMENT)
 							.startElement(PAGE_LINK_ELEMENT)

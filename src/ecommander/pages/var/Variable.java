@@ -23,12 +23,12 @@ public abstract class Variable {
 	protected ExecutablePagePE parentPage;
 	protected String name = "unnamed";
 
-	Variable(ExecutablePagePE parentPage) {
-		this.parentPage = parentPage;
-	}
-
 	Variable(ExecutablePagePE parentPage, String name) {
 		this.parentPage = parentPage;
+		this.name = name;
+	}
+
+	Variable(String name) {
 		this.name = name;
 	}
 
@@ -58,6 +58,22 @@ public abstract class Variable {
 			return "";
 		return getSingleValue().toString();
 	}
+
+	/**
+	 * Вернуть все значения в виде строки
+	 * @return
+	 */
+	public final ArrayList<String> writeAllValues() {
+		ArrayList<String> result = new ArrayList<>();
+		if (isEmpty())
+			return result;
+		for (Object val : getAllValues()) {
+			result.add(val.toString());
+		}
+		return result;
+	}
+
+	public abstract Variable getInited(ExecutablePagePE parentPage);
 
 	/**
 	 * Вернуть локальные значения. Т.е. значения, относящиеся только к одному айтему в процессе итерации.

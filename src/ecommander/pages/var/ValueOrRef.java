@@ -39,18 +39,6 @@ public class ValueOrRef extends Variable {
 		return new ValueOrRef(refName, true);
 	}
 
-	/**
-	 * Создать клон объекта с установленной родительской моделью страниц
-	 * @param parentPage
-	 */
-	public ValueOrRef createExecutableClone(ExecutablePagePE parentPage) {
-		ValueOrRef clone = new ValueOrRef(name, isRef);
-		clone.parentPage = parentPage;
-		if (isRef)
-			clone.var = parentPage.getVariable(name);
-		return clone;
-	}
-
 	public boolean isRef() {
 		return isRef;
 	}
@@ -67,6 +55,15 @@ public class ValueOrRef extends Variable {
 	@Override
 	public Object getSingleValue() {
 		return var.getSingleValue();
+	}
+
+	@Override
+	public Variable getInited(ExecutablePagePE parentPage) {
+		ValueOrRef clone = new ValueOrRef(name, isRef);
+		clone.parentPage = parentPage;
+		if (isRef)
+			clone.var = parentPage.getVariable(name);
+		return clone;
 	}
 
 	@Override

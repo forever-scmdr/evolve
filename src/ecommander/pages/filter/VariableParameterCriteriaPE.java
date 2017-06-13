@@ -3,18 +3,18 @@ package ecommander.pages.filter;
 import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.model.ParameterDescription;
-import ecommander.pages.PageElement;
-import ecommander.pages.ValidationResults;
 import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.PageElement;
 import ecommander.pages.PageElementContainer;
-import ecommander.pages.var.VariablePE;
+import ecommander.pages.ValidationResults;
+import ecommander.pages.var.Variable;
 
 /**
  * Критерий фильтра, в котором название параметра хранится в переменной страницы
  * @author EEEE
  *
  */
-class VariableParameterCriteriaPE extends FilterCriteriaPE {
+class VariableParameterCriteriaPE extends ParameterCriteriaPE {
 	protected String paramNameVar;
 	protected ExecutablePagePE pageModel;
 
@@ -34,7 +34,7 @@ class VariableParameterCriteriaPE extends FilterCriteriaPE {
 	}
 
 	public void validate(String elementPath, ValidationResults results) {
-		for (VariablePE var : values) {
+		for (Variable var : values) {
 			var.validate(elementPath, results);
 		}
 		if (pageModel.getVariable(paramNameVar) == null) {

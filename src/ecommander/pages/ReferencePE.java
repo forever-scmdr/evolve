@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ecommander.pages.var.Variable;
 import ecommander.pages.var.VariablePE;
 import org.apache.commons.lang3.StringUtils;
 
@@ -77,7 +78,7 @@ public class ReferencePE implements PageElement {
 	}
 	
 	public boolean isUrlKeyUnique() {
-		return pageVarName != null && paramName == null && pageModel.getVariable(pageVarName).isStyleTranslit();
+		return pageVarName != null && paramName == null && pageModel.getInitVariablePE(pageVarName).isStyleTranslit();
 	}
 	
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
@@ -95,17 +96,15 @@ public class ReferencePE implements PageElement {
 		// Получить значение переменной, в которой хранится ID айтема (или значение параметра), нужного для загрузки
 		if (isAssociatedReference()) {
 			ExecutableItemPE.AllFoundIterator iter = pageModel.getItemPEById(pageItemId).getAllFoundItemIterator();
-			ArrayList<String> result = new ArrayList<String>();
+			ArrayList<String> result = new ArrayList<>();
 			while (iter.next())
 				result.addAll(iter.getCurrentItem().outputValues(paramName));
 			return result;
 		} else {
-			VariablePE variable = pageModel.getVariable(pageVarName);
+			Variable variable = pageModel.getVariable(pageVarName);
 			if (variable == null || variable.isEmpty())
-				return new ArrayList<String>(0);
-			if (variable.isMultiple())
-				return variable.outputArray();
-			return Arrays.asList(StringUtils.split(variable.output(), ','));
+				return new ArrayList<>(0);
+			return variable.writeAllValues();
 		}
 	}
 	/**

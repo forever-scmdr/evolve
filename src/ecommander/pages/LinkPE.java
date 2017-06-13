@@ -294,7 +294,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	}
 	
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		LinkPE clone = new LinkPE(linkName, pageName.createExecutableClone(parentPage), type, copyPageVars);
+		LinkPE clone = new LinkPE(linkName, (ValueOrRef) pageName.getInited(parentPage), type, copyPageVars);
 		if (container != null && container instanceof LinkContainer)
 			((LinkContainer)container).addLink(clone);
 		// Копировать переменные из страницы, если это надо

@@ -1,10 +1,10 @@
 package ecommander.pages;
 
+import ecommander.fwk.EcommanderException;
+import ecommander.pages.var.StaticVariable;
+
 import java.util.Collection;
 import java.util.HashMap;
-
-import ecommander.fwk.EcommanderException;
-import ecommander.pages.variables.StaticVariablePE;
 
 /**
  * Результат выполнения команды
@@ -20,7 +20,7 @@ public class ResultPE implements PageElement {
 
 	private String name; // название страничной ссылки (по которой надо переходить после выполнения команды)
 	private ResultType type; // тип команды
-	private HashMap<String, StaticVariablePE> vars; // переменные, значения которых устанавливается в команде (если необходимо)
+	private HashMap<String, StaticVariable> vars; // переменные, значения которых устанавливается в команде (если необходимо)
 	private String value; // значение, которое получилось в результате выполнения команды,
 						  // может быть значением переменной с названием variable или другим произвольным текстом
 	private boolean doRollback = false; // Нужно ли производить откат транзакции после завершения выполнения всех команд страницы
@@ -40,7 +40,7 @@ public class ResultPE implements PageElement {
 		this.name = src.name;
 		this.type = src.type;
 		if (src.vars != null)
-			this.vars = new HashMap<String, StaticVariablePE>(src.vars);
+			this.vars = new HashMap<>(src.vars);
 	}
 
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
@@ -72,11 +72,11 @@ public class ResultPE implements PageElement {
 	 */
 	public ResultPE addVariable(String name, String value) throws EcommanderException {
 		if (vars == null) {
-			vars = new HashMap<String, StaticVariablePE>();
+			vars = new HashMap<>();
 		}
-		StaticVariablePE var = vars.get(name);
+		StaticVariable var = vars.get(name);
 		if (var == null) {
-			var = new StaticVariablePE(name, value);
+			var = new StaticVariable(name, value);
 			vars.put(name, var);
 		} else {
 			var.addValue(value);
@@ -92,9 +92,9 @@ public class ResultPE implements PageElement {
 	 */
 	public ResultPE setVariable(String name, String value) throws EcommanderException {
 		if (vars == null) {
-			vars = new HashMap<String, StaticVariablePE>();
+			vars = new HashMap<>();
 		}
-		vars.put(name, new StaticVariablePE(name, value));
+		vars.put(name, new StaticVariable(name, value));
 		return this;
 	}
 	/**
@@ -113,7 +113,7 @@ public class ResultPE implements PageElement {
 		return type;
 	}
 
-	public Collection<StaticVariablePE> getVariables() {
+	public Collection<StaticVariable> getVariables() {
 		return vars.values();
 	}
 

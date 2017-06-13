@@ -1,5 +1,6 @@
 package ecommander.pages.var;
 
+import ecommander.pages.ExecutablePagePE;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -53,6 +54,11 @@ public class StaticVariable extends Variable {
 	@Override
 	public Object getSingleValue() {
 		return getSingleLocalValue();
+	}
+
+	@Override
+	public Variable getInited(ExecutablePagePE parentPage) {
+		return this;
 	}
 
 	@Override

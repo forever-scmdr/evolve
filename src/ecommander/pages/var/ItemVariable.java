@@ -25,8 +25,14 @@ public class ItemVariable extends Variable {
 
 	private ArrayList<Object> valuesCache = null;
 
-	protected ItemVariable(ExecutablePagePE parentPage, String itemPageId, String paramName) {
-		super(parentPage);
+	protected ItemVariable(String itemPageId, String paramName) {
+		super("unnamed");
+		this.itemPageId = itemPageId;
+		this.paramName = paramName;
+	}
+
+	private ItemVariable(String itemPageId, String paramName, ExecutablePagePE parentPage) {
+		super(parentPage, "unnamed");
 		this.itemPageId = itemPageId;
 		this.paramName = paramName;
 	}
@@ -63,6 +69,11 @@ public class ItemVariable extends Variable {
 		if (valuesCache.size() > 0)
 			return valuesCache.get(0);
 		return null;
+	}
+
+	@Override
+	public Variable getInited(ExecutablePagePE parentPage) {
+		return new ItemVariable(itemPageId, paramName, parentPage);
 	}
 
 	@Override
