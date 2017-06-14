@@ -31,7 +31,7 @@ public class ItemVariable extends Variable {
 		this.paramName = paramName;
 	}
 
-	private ItemVariable(String itemPageId, String paramName, ExecutablePagePE parentPage) {
+	protected ItemVariable(String itemPageId, String paramName, ExecutablePagePE parentPage) {
 		super(parentPage, "unnamed");
 		this.itemPageId = itemPageId;
 		this.paramName = paramName;

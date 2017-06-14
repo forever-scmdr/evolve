@@ -1,4 +1,6 @@
-package ecommander.output;
+package ecommander.pages.output;
+
+import ecommander.fwk.XmlDocumentBuilder;
 
 /**
  * Выводит сложную стркутуру со вложенными компонентами

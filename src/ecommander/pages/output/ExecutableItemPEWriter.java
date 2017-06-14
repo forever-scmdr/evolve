@@ -1,7 +1,8 @@
-package ecommander.output;
+package ecommander.pages.output;
 
 import java.util.ArrayList;
 
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.ParameterDescription;
 import ecommander.model.datatypes.DataType;
 import org.apache.commons.lang3.StringEscapeUtils;

@@ -1,4 +1,4 @@
-package ecommander.output;
+package ecommander.pages.output;
 
 public class MetaDataWriterFacroty {
 

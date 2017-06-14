@@ -1,6 +1,7 @@
-package ecommander.output;
+package ecommander.pages.output;
 
 import ecommander.controllers.UserUrlMapper;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.LinkPE;
 import ecommander.pages.PageElement;
 /**

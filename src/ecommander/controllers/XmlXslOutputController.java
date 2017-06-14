@@ -19,7 +19,7 @@ import ecommander.fwk.ErrorCodes;
 import net.sf.saxon.TransformerFactoryImpl;
 import ecommander.fwk.Timer;
 import ecommander.fwk.EcommanderException;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.fwk.XmlDocumentBuilder;
 /**
  * Преобразует XML документ в html с помощью XSL файла
  * @author EEEE

@@ -32,18 +32,19 @@ import ecommander.pages.var.VariablePE;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.SessionItemMapper;
 import ecommander.model.DomainRegistry;
-
+import org.apache.commons.lang3.StringUtils;
 
 
 /**
  * Страничный айтем, предназанченный для загрузки
  * @author EEEE
  */
-public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer, FilterContainer, ReferenceContainer, AggregationContainer,
-		CacheablePE, ExecutablePE {
+public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer, FilterContainer, ReferenceContainer,
+		InputSetPE.InputSetContainer, AggregationContainer, CacheablePE, ExecutablePE {
 	
 	static final long NO_PARENT_ID = -1;
-	
+
+
 	/////////////////////////////////////////////////////////////////////////////////////
 	//                                  ВНУТРЕННИЕ КЛАССЫ
 	//
@@ -201,6 +202,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	private boolean loaded = false;
 	// Референс <reference>
 	private ReferencePE reference = null;
+	// Инпуты
+	private ArrayList<InputSetPE> inputs = null;
 	// Для итерации по айтемам - индекс текущего найденного айтема
 	private ParentRelatedFoundIterator iterator = null;
 	// Кеш айтема
@@ -349,6 +352,27 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	
 	public final boolean hasAggregation() {
 		return aggregation != null;
+	}
+
+	/**
+	 * Есть ли инпуты
+	 * @return
+	 */
+	public final boolean hasInputs() {
+		return inputs != null;
+	}
+
+	/**
+	 * Проверить, есть ли инпуты для определенной формы (с определенным ID)
+	 * @param formId
+	 * @return
+	 */
+	public final boolean hasInputsFrom(String formId) {
+		for (InputSetPE input : inputs) {
+			if (StringUtils.equalsIgnoreCase(input.getFormId(), formId))
+				return true;
+		}
+		return false;
 	}
 	/**
 	 * Есть ли назденные айтемы
@@ -585,6 +609,13 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 
 	public final void addReference(ReferencePE referencePE) {
 		reference = referencePE;
+	}
+
+	@Override
+	public void addInputSet(InputSetPE inputSet) {
+		if (inputs == null)
+			inputs = new ArrayList<>();
+		inputs.add(inputSet);
 	}
 
 	@Override

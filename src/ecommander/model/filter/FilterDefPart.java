@@ -1,7 +1,7 @@
 package ecommander.model.filter;
 
 import ecommander.fwk.EcommanderException;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.fwk.XmlDocumentBuilder;
 
 
 

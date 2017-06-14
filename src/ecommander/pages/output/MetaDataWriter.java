@@ -1,4 +1,6 @@
-package ecommander.output;
+package ecommander.pages.output;
+
+import ecommander.fwk.XmlDocumentBuilder;
 
 import java.util.ArrayList;
 

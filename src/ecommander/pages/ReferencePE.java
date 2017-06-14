@@ -25,7 +25,7 @@ public class ReferencePE implements PageElement {
 	 * Интерфейс, который должны реализовывать контейнеры, обрабатывающие добавление ExecutableItemPE особым образом
 	 * @author EEEE
 	 */
-	public static interface ReferenceContainer {
+	public interface ReferenceContainer {
 		void addReference(ReferencePE referencePE);
 	}
 	

@@ -1,7 +1,9 @@
 package ecommander.pages;
 
+import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
+import ecommander.pages.filter.FilterPE;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -18,7 +20,15 @@ import java.util.List;
  * Created by E on 8/6/2017.
  */
 public class InputSetPE implements PageElement {
-	private static final String ELEMENT_NAME = "input set";
+	/**
+	 * Интерфейс, который должны реализовывать контейнеры, обрабатывающие добавление InputSetPE особым образом
+	 */
+	public interface InputSetContainer {
+		void addInputSet(InputSetPE inputSet);
+	}
+
+
+	private static final String ELEMENT_NAME = "input_set";
 
 	private boolean isParameter; // представляет ли параметр айтема (true) или просто значение (false)
 	private String refId; // страничный ID айтема, к которому относится
@@ -50,7 +60,37 @@ public class InputSetPE implements PageElement {
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
 		InputSetPE clone = new InputSetPE(isParameter, refId, formId, restoreVar, new ArrayList<>(names));
 		clone.pageModel = parentPage;
+		if (container != null)
+			((InputSetContainer)container).addInputSet(clone);
 		return clone;
+	}
+
+	public ItemInputs getAllInputs() {
+		ExecutableItemPE itemPE = pageModel.getItemPEById(refId);
+		if (itemPE.hasFoundItems()) {
+			Item item = itemPE.getParentRelatedFoundItemIterator().getCurrentItem();
+			ArrayList<Long> predIds = new ArrayList<>();
+			if (item.isNew()) {
+				ExecutableItemPE predPE = itemPE.getParentItemPE();
+				while (predPE != null) {
+					if (predPE.hasInputsFrom(formId)) {
+						predIds.add(predPE.getParentRelatedFoundItemIterator().getCurrentItem().getId());
+					}
+					predPE = predPE.getParentItemPE();
+				}
+			}
+			ItemInputs inputs = new ItemInputs(item, predIds.toArray(new Long[0]));
+			if (isParameter) {
+				if (names.size() == 0)
+					inputs.addAllParameters();
+				else
+					inputs.addParameters(names.toArray(new String[0]));
+			} else {
+				inputs.addExtra(names.toArray(new String[0]));
+			}
+			return inputs;
+		}
+		return null;
 	}
 
 	@Override

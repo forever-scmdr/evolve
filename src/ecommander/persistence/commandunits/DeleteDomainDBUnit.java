@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 
-import ecommander.output.DomainMDWriter;
+import ecommander.pages.output.DomainMDWriter;
 
 /**
  * Удаление домена по названию

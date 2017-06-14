@@ -1,5 +1,6 @@
-package ecommander.output;
+package ecommander.pages.output;
 
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.PageElement;
 import ecommander.pages.filter.FilterPE;
 /**

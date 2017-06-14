@@ -9,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class LinkVariablePE extends VariablePE {
 
+	public static final String LINK_VARIABLE = "link_variable";
+
 	private String refItem;
 	private String refParam;
 	private String refVar;
@@ -59,12 +61,17 @@ public class LinkVariablePE extends VariablePE {
 		}
 		// Ссылка на айтем
 		else if (StringUtils.isNotBlank(refItem)) {
-			clone.var = new ItemVariable(parentPage, refItem, refParam);
+			clone.var = new ItemVariable(refItem, refParam, parentPage);
 		}
 		// Статическое значение
 		else if (StringUtils.isNotBlank(value)) {
 			clone.var = new StaticVariable(name, value);
 		}
 		return clone;
+	}
+
+	@Override
+	public String getElementName() {
+		return LINK_VARIABLE;
 	}
 }

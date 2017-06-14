@@ -9,9 +9,9 @@ import java.io.OutputStreamWriter;
 
 import ecommander.fwk.ServerLogger;
 import ecommander.controllers.AppContext;
-import ecommander.output.PageElementWriter;
-import ecommander.output.PageElementWriterRegistry;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.pages.output.PageElementWriter;
+import ecommander.pages.output.PageElementWriterRegistry;
+import ecommander.fwk.XmlDocumentBuilder;
 /**
  * Класс, который считывает закешированный айтем из XML файла и добавляет полученный XML фрагмент в документ для итоговой страницы
  * @author EEEE

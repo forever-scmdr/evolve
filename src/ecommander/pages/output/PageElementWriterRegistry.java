@@ -1,7 +1,8 @@
-package ecommander.output;
+package ecommander.pages.output;
 
 import java.util.HashMap;
 
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.ExecutableItemPE;
 import ecommander.pages.InputPE;
 import ecommander.pages.ItemFormPE;
@@ -51,7 +52,7 @@ public class PageElementWriterRegistry {
 		pageWriters.put(ExecutableItemPE.ELEMENT_NAME, itemPEWriter);
 		pageWriters.put(FilterStaticVariablePE.ELEMENT_NAME, new FilterStaticVariablePEWriter());
 		
-		cacheWriters = new HashMap<Class<? extends PageElement>, PageElementWriter>();
+		cacheWriters = new HashMap<>();
 		cacheWriters.put(ExecutableItemPE.class, itemPEWriter);
 		cacheWriters.put(FilterPE.class, new FilterPECacheWriter());
 	}

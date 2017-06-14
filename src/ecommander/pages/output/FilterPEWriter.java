@@ -1,5 +1,6 @@
-package ecommander.output;
+package ecommander.pages.output;
 
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.ExecutableItemPE;
 import ecommander.pages.LinkPE;
 import ecommander.pages.PageElement;

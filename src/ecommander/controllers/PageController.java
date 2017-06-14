@@ -17,8 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
-import ecommander.output.PageWriter;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.pages.output.PageWriter;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.LinkPE;
 import ecommander.pages.PageModelRegistry;

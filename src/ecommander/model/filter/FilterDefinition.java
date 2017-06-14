@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ecommander.fwk.EcommanderException;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.fwk.XmlDocumentBuilder;
 
 
 /**

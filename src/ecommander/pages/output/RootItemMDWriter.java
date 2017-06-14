@@ -1,5 +1,6 @@
-package ecommander.output;
+package ecommander.pages.output;
 
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.DataModelXmlElementNames;
 import ecommander.model.ItemTypeContainer;
 import ecommander.model.ItemTypeRegistry;

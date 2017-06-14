@@ -2,8 +2,8 @@ package ecommander.admin;
 
 import ecommander.model.Assoc;
 import ecommander.model.ItemBasics;
-import ecommander.output.MetaDataWriter;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.pages.output.MetaDataWriter;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 /**

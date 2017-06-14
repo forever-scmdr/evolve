@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.Strings;
 import ecommander.fwk.EcommanderException;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.fwk.XmlDocumentBuilder;
 
 /**
  * Один инпут

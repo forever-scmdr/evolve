@@ -12,9 +12,9 @@ import ecommander.fwk.EcommanderException;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.XmlXslOutputController;
 import ecommander.fwk.ServerLogger;
-import ecommander.output.LeafMDWriter;
-import ecommander.output.MetaDataWriter;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.pages.output.LeafMDWriter;
+import ecommander.pages.output.MetaDataWriter;
+import ecommander.fwk.XmlDocumentBuilder;
 /**
  * Страница админа (XML текст)
  * 
@@ -30,7 +30,7 @@ public class AdminPage {
 	private String userName;
 
 	public AdminPage(String name, String siteDomain, String userName) {
-		writers = new ArrayList<MetaDataWriter>();
+		writers = new ArrayList<>();
 		writers.add(new LeafMDWriter("domain", siteDomain));
 		this.name = name;
 		this.userName = userName;

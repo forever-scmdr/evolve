@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * 1) ID айтема i (item). Форма существующего или нового айтема, задан ID айтема. Новые айтемы
  *    также имеют ID, но он отрицательный
  * 2) ID родительского айтема a (ancestor). Нужна только для новых айтемов
- * 3) ID айтемов-предков атйема на странице. Несколько h+ID (hierarchy), для построения дерева
+ * 3) ID айтемов-предков айтема на странице. Несколько h+ID (hierarchy), для построения дерева
  * 4) Тип айтема (начинается с t)
  * 5) Параметр айтема (начинается с p). Возможно при отсутствии части 6. (parameter)
  * 6) Переменная айтема (начинается с v). Возможно при отсутствии части 5. (variable)
@@ -90,7 +90,7 @@ public class ItemInputName implements Serializable {
 		}
 	}
 
-	public ItemInputName(long itemId, long parentId, int itemType, int paramId, String varName, long...predecessors) {
+	public ItemInputName(long itemId, long parentId, int itemType, int paramId, String varName, Long...predecessors) {
 		this.parentId = parentId;
 		this.itemId = itemId;
 		this.itemType = itemType;

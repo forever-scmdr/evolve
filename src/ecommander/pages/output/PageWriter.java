@@ -1,8 +1,12 @@
-package ecommander.output;
+package ecommander.pages.output;
 
+import ecommander.fwk.FilterProcessException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElement;
-import ecommander.pages.var.VariablePE;
+import ecommander.pages.var.FilterStaticVariable;
+import ecommander.pages.var.Variable;
 import ecommander.model.User;
 
 /**
@@ -111,6 +115,15 @@ public class PageWriter {
 	private static final String ROLE_ATTRIBUTE = "admin";
 	private static final String GROUP_ELEMENT = "group";
 	private static final String VISUAL_ATTRIBUTE = "visual";
+
+	// Для фильтра
+	private static final String INPUT_TAG = "input";
+	private static final String SORTING_TAG = "sorting";
+	private static final String PAGE_TAG = "page";
+	//	private static final String LIMIT_TAG = "limit";
+	private static final String DIRECTION_ATTR = "direction";
+	private static final String PARAM_ATTR = "param";
+	private static final String ID_ATTR = "id";
 	
 	private ExecutablePagePE page;
 	
@@ -141,11 +154,16 @@ public class PageWriter {
 		// <variables>
 		xml.startElement(VARIABLES_ELEMENT);
 		// Выводятся переменные
-		// TODO !!! НЕ ЗАБЫТЬ вывести переменную FilterStaticVariable отдельно
-		for (VariablePE var : page.getAllVariables()) {
+		for (Variable var : page.getAllVariables()) {
 			if (!var.getName().startsWith("$")) {
-				PageElementWriter writer = PageElementWriterRegistry.getWriter(var);
-				writer.write(var, xml);
+				for (String value : var.writeAllValues()) {
+					xml.startElement(var.getName());
+					xml.addText(value);
+					xml.endElement();
+				}
+			}
+			if (var instanceof FilterStaticVariable) {
+				writeFilterVaraible(xml, (FilterStaticVariable) var);
 			}
 		}
 		// </variables>
@@ -159,6 +177,28 @@ public class PageWriter {
 		xml.endElement();
 		return xml;
 	}
-	
+
+	/**
+	 * Вывести фильтр (значения, заполненные пользователем)
+	 * @param xml
+	 * @param filterVar
+	 */
+	private void writeFilterVaraible(XmlDocumentBuilder xml, FilterStaticVariable filterVar) {
+		try {
+			xml.startElement(filterVar.getName());
+			for (Integer inputId : filterVar.getPostedInputs()) {
+				for (String value : filterVar.getValue(inputId)) {
+					xml.startElement(INPUT_TAG, ID_ATTR, inputId).addText(value).endElement();
+				}
+			}
+			if (filterVar.hasSorting())
+				xml.addEmptyElement(SORTING_TAG, DIRECTION_ATTR, filterVar.getSortingDirection(), PARAM_ATTR, filterVar.getSortingParamId());
+			xml.startElement(PAGE_TAG).addText(filterVar.getPageNumber()).endElement();
+
+			xml.endElement();
+		} catch (FilterProcessException e) {
+			ServerLogger.error("unable to process filter", e);
+		}
+	}
 	
 }

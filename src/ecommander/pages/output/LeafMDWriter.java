@@ -1,5 +1,6 @@
-package ecommander.output;
+package ecommander.pages.output;
 
+import ecommander.fwk.XmlDocumentBuilder;
 import org.apache.commons.lang3.StringUtils;
 /**
  * Выводит одну строку вида

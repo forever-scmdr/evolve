@@ -8,11 +8,13 @@ import ecommander.pages.ExecutablePagePE;
  */
 public class RequestVariablePE extends VariablePE {
 
+	public static final String REQUEST_VARIABLE = "request_variable";
+
 	public enum Scope {
 		request, session, cookie
 	}
 
-	private StaticVariable var;
+	protected StaticVariable var;
 	private String defaultValue = null;
 	private Scope scope;
 
@@ -79,5 +81,10 @@ public class RequestVariablePE extends VariablePE {
 			clone.var = new StaticVariable(name);
 		}
 		return clone;
+	}
+
+	@Override
+	public String getElementName() {
+		return REQUEST_VARIABLE;
 	}
 }

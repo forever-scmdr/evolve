@@ -13,15 +13,22 @@ import ecommander.model.ParameterDescription;
  * 3)   Добавить дополнительные поля (поля, которые не соответствуют параметрам айтема)
  * 4)   Получить список полей ввода с установленными значениями
  *
+ * Заполнение предшественников:
+ * Предшественников надо заполнять только в случае создания нового айтема
+ * Извлекаются по очереди все страничные айтемы-предшественники (от прямого родителя вверх по иерархии).
+ * Если очередной предшественник содержит элементы InputSetPE, то проверяется ID формы этого набора инпутов.
+ * Если ID формы совпадает с текущим, то к текущим инпутам добавляется предшественник - активный айтем
+ * найденного страничного айтема.
+ *
  * Created by E on 22/5/2017.
  */
 public class ItemInputs {
 	private Item item;
 
 	private InputValues inputs = new InputValues();
-	private long[] predecessors;
+	private Long[] predecessors;
 
-	ItemInputs(Item item, long... predecessors) {
+	ItemInputs(Item item, Long... predecessors) {
 		this.item = item;
 		this.predecessors = predecessors;
 	}
@@ -54,7 +61,7 @@ public class ItemInputs {
 		}
 	}
 
-	InputValues getInputs() {
+	public InputValues getInputs() {
 		return inputs;
 	}
 }

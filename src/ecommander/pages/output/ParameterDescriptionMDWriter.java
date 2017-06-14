@@ -1,10 +1,10 @@
-package ecommander.output;
+package ecommander.pages.output;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.DataModelXmlElementNames;
-import org.apache.commons.lang3.StringUtils;
 
 import ecommander.model.ParameterDescription;
 /**

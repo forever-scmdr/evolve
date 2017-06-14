@@ -23,8 +23,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
-import ecommander.output.UserParameterDescriptionMDWriter;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.pages.output.UserParameterDescriptionMDWriter;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.datatypes.DataType.Type;
 
 /**

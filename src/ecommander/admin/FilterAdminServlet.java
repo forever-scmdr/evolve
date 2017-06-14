@@ -7,6 +7,7 @@ import ecommander.model.*;
 import ecommander.model.datatypes.DataType.Type;
 import ecommander.model.filter.*;
 import ecommander.output.*;
+import ecommander.pages.output.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.InPlaceTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -14,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.util.HashSet;
 /**
  * TODO <enhance> Перенести все операции по обновлению в сами элементы фильтра. Необходимые проверки проводить там же (выдавать эксэпшен)

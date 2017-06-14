@@ -6,8 +6,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 
-import ecommander.output.DomainMDWriter;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.pages.output.DomainMDWriter;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Domain;
 
 /**

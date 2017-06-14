@@ -3,9 +3,9 @@ package ecommander.persistence.commandunits;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.Strings;
-import ecommander.output.ItemTypeMDWriter;
-import ecommander.output.ParameterDescriptionMDWriter;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.pages.output.ItemTypeMDWriter;
+import ecommander.pages.output.ParameterDescriptionMDWriter;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;

@@ -3,7 +3,7 @@ package ecommander.model.filter;
 import java.util.LinkedList;
 
 import ecommander.fwk.EcommanderException;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.fwk.XmlDocumentBuilder;
 /**
  * Контейнер для частей фильтра
  * Реализует все необходимые операции - добавление части, удаление, изменение порядка следования и возможно другие

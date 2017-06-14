@@ -1,7 +1,7 @@
 package ecommander.pages;
 
 import ecommander.fwk.ServerLogger;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.var.ValueOrRef;
 import org.apache.commons.lang3.StringUtils;
 

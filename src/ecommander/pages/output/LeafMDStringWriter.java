@@ -1,5 +1,7 @@
-package ecommander.output;
+package ecommander.pages.output;
 
+
+import ecommander.fwk.XmlDocumentBuilder;
 
 public class LeafMDStringWriter extends MetaDataWriter {
 

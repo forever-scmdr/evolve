@@ -12,7 +12,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import ecommander.fwk.ServerLogger;
-import ecommander.output.XmlDocumentBuilder;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.datatypes.DateDataType;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageModelRegistry;

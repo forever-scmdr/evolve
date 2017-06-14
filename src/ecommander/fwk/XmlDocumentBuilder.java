@@ -1,4 +1,4 @@
-package ecommander.output;
+package ecommander.fwk;
 
 import java.util.Stack;
 
