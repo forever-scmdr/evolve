@@ -3,6 +3,10 @@ package ecommander.pages;
 import ecommander.model.Item;
 import ecommander.model.ParameterDescription;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Класс для создания полей ввода на базе айтема.
  * Т.е. когда надо добавить в форму поля ввода заданного айтема (название поля + значение)
@@ -28,40 +32,71 @@ public class ItemInputs {
 	private InputValues inputs = new InputValues();
 	private Long[] predecessors;
 
-	ItemInputs(Item item, Long... predecessors) {
+	public ItemInputs(Item item, Long... predecessors) {
 		this.item = item;
 		this.predecessors = predecessors;
 	}
 
 	void addAllParameters() {
 		for (ParameterDescription paramDesc : item.getItemType().getParameterList()) {
-			Object value = item.getValue(paramDesc.getId());
+			ArrayList<String> vals = item.outputValues(paramDesc.getName());
 			ItemInputName input = new ItemInputName(item.getId(), item.getContextParentId(),
 					item.getTypeId(), paramDesc.getId(), null, predecessors);
-			inputs.add(input, value);
+			inputs.add(input, vals);
 		}
 	}
 
 	void addParameters(String... paramNames) {
 		for (String paramName : paramNames) {
 			ParameterDescription paramDesc = item.getItemType().getParameter(paramName);
-			Object value = item.getValue(paramName);
+			ArrayList<String> vals = item.outputValues(paramName);
 			ItemInputName input = new ItemInputName(item.getId(), item.getContextParentId(),
 					item.getTypeId(), paramDesc.getId(), null, predecessors);
-			inputs.add(input, value);
+			inputs.add(input, vals);
 		}
 	}
 
 	void addExtra(String... extraNames) {
 		for (String extraName : extraNames) {
-			Object value = item.getExtra(extraName);
+			ArrayList<String> vals = new ArrayList<>();
+			List<Object> objVals = item.getListExtra(extraName);
+			if (objVals != null) {
+				for (Object obj : objVals) {
+					vals.add(obj.toString());
+				}
+			}
 			ItemInputName input = new ItemInputName(item.getId(), item.getContextParentId(),
 					item.getTypeId(), 0, extraName, predecessors);
-			inputs.add(input, value);
+			inputs.add(input, vals);
 		}
 	}
 
-	public InputValues getInputs() {
-		return inputs;
+	/**
+	 * Получить список всех названий инпутов для айтема
+	 * @return
+	 */
+	public ArrayList<ItemInputName> getAllInputNames() {
+		ArrayList<ItemInputName> result = new ArrayList<>();
+		for (Object key : inputs.getKeys()) {
+			result.add((ItemInputName) key);
+		}
+		return result;
+	}
+
+	/**
+	 * Вернуть базовый айтем
+	 * @return
+	 */
+	public Item getItem() {
+		return item;
+	}
+
+	/**
+	 * Получить список
+	 * @param name
+	 * @return
+	 */
+	public ArrayList<String> getInputValues(ItemInputName name) {
+		return (ArrayList<String>) inputs.get(name);
 	}
 }

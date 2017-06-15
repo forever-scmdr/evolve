@@ -1,10 +1,8 @@
 package ecommander.pages;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+
 /**
  * Значения переданных через форму параметров.
  * Значения могут иметь тип либо String либо FileItem.
@@ -16,7 +14,7 @@ import java.util.List;
 public class InputValues implements Serializable {
 	private static final long serialVersionUID = -1721171544301221441L;
 
-	private HashMap<Object, Object> map = new HashMap<>();
+	private LinkedHashMap<Object, Object> map = new LinkedHashMap<>();
 	public InputValues() {}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

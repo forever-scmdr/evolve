@@ -16,13 +16,7 @@ public class InputSetPEWriter implements PageElementWriter {
 	public void write(PageElement elementToWrite, XmlDocumentBuilder xml) throws Exception {
 		InputSetPE inputPE = (InputSetPE) elementToWrite;
 		ItemInputs inputs = inputPE.getAllInputs();
-		if (inputs != null) {
-			for (Object inputName : inputs.getInputs().getKeys()) {
-
-			}
-			xml.startElement(((LinkPE)elementToWrite).getLinkName());
-			xml.addText(UserUrlMapper.getUserUrl(cmsLinkString));
-			xml.endElement();
-		}
+		ItemInputsMDWriter writer = new ItemInputsMDWriter(inputs);
+		writer.write(xml);
 	}
 }

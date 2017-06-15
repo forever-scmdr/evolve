@@ -4,8 +4,11 @@ import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType.Type;
 import ecommander.model.datatypes.FileDataType;
-import ecommander.output.*;
-import ecommander.pages.output.*;
+import ecommander.pages.ItemInputs;
+import ecommander.pages.output.AggregateMDWriter;
+import ecommander.pages.output.ItemInputsMDWriter;
+import ecommander.pages.output.LeafMDWriter;
+import ecommander.pages.output.MetaDataWriter;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 
@@ -465,7 +468,7 @@ public class MainAdminPageCreator implements AdminXML {
 		if (itemId != ItemTypeRegistry.getPrimaryRootId())
 			item = AdminLoader.loadItem(itemId, currentUser);
 		if (item != null) {
-			ItemInputsMDWriter formWriter = new ItemInputsMDWriter(item, FORM_ELEMENT);
+			ItemInputsMDWriter formWriter = new ItemInputsMDWriter(new ItemInputs(item), FORM_ELEMENT);
 			formWriter.setActionUrl(createAdminUrl(SAVE_ITEM_ACTION));
 			basePage.addElement(formWriter);
 			basePage.addElement(new LeafMDWriter(LINK_ELEMENT, createAdminUrl(DELETE_PARAMETER_ACTION, PARAM_ID_INPUT, "")));
@@ -499,7 +502,7 @@ public class MainAdminPageCreator implements AdminXML {
 		basePage.addElement(new LeafMDWriter(VISUAL_ELEMENT, isVisual));
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemType);
 		Item newItem = Item.newItem(itemDesc, parentId, User.ANONYMOUS_ID, User.NO_GROUP_ID, Item.STATUS_NORMAL, false);
-		ItemInputsMDWriter formWriter = new ItemInputsMDWriter(newItem, FORM_ELEMENT);
+		ItemInputsMDWriter formWriter = new ItemInputsMDWriter(new ItemInputs(newItem), FORM_ELEMENT);
 		formWriter.setActionUrl(createAdminUrl(SAVE_ITEM_ACTION));
 		basePage.addElement(formWriter);
 		// Ссылки на другие виды редактирования

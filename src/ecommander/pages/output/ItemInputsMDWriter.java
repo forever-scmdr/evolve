@@ -10,6 +10,8 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import ecommander.pages.ItemInputName;
+import ecommander.pages.ItemInputs;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Создает следующую структуру
@@ -100,90 +102,104 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 	private static final String SINGLE_VALUE = "single";
 	private static final String MULTIPLE_VALUE = "multiple";
 	
-	private Item item;
+	private ItemInputs inputs;
 	private String tag;
 	private String actionUrl = "";
 	
-	public ItemInputsMDWriter(Item item, String tag) {
-		this.item = item;
+	public ItemInputsMDWriter(ItemInputs inputs, String tag) {
+		this.inputs = inputs;
 		this.tag = tag;
 	}
-	
+
+	public ItemInputsMDWriter(ItemInputs inputs) {
+		this.inputs = inputs;
+	}
+
 	public void setActionUrl(String actionUrl) {
 		this.actionUrl = actionUrl;
 	}
-	
+
+	private boolean hasActionUrl() {
+		return StringUtils.isNotBlank(actionUrl);
+	}
+
 	@Override
 	public XmlDocumentBuilder write(XmlDocumentBuilder xml) {
-		ItemType itemDesc = item.getItemType();
+		Item item = inputs.getItem();
+		ItemType itemDesc = inputs.getItem().getItemType();
 		// <item_form>
-		xml.startElement(tag, 
-				ACTION_URL_ATTRIBUTE, actionUrl,
-				FILE_PATH_ATTRIBUTE, AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath(),
-				ID_ATTRIBUTE, item.getId(),
-				CAPTION_ATTRIBUTE, itemDesc.getCaption());
-		HashSet<String> domains = new HashSet<>();
-		for (ParameterDescription paramDesc : itemDesc.getParameterList()) {
-			ItemType ownerItemType = ItemTypeRegistry.getItemType(paramDesc.getOwnerItemId());
-			if (paramDesc.isVirtual())
-				continue;
-			ItemInputName input = new ItemInputName(item.getId(), item.getContextParentId(), itemDesc.getTypeId(),
-					paramDesc.getId(), null);
-			String[] attrsArr = {
-					ID_ATTRIBUTE, paramDesc.getId() + "",
-					TYPE_ATTRIBUTE, paramDesc.getType().toString(),
-					NAME_ATTRIBUTE, paramDesc.getName(), 
-					USER_DEF_ATTRIBUTE, ownerItemType.isUserDefined() + "",
-					FORMAT_ATTRIBUTE, paramDesc.getFormat(),
-					CAPTION_ATTRIBUTE, paramDesc.getCaption(), 
-					DESCRIPTION_ATTRIBUTE, paramDesc.getDescription(), 
-					INPUT_ATTRIBUTE, input.getInputName(),
-					QUANTIFIER_ATTRIBUTE, paramDesc.isMultiple() ? MULTIPLE_VALUE : SINGLE_VALUE
-				};
-			List<String> attrs = new ArrayList<>(Arrays.asList(attrsArr));
-			if (paramDesc.hasDomain()) {
-				domains.add(paramDesc.getDomainName());
-				attrs.add(DOMAIN_ATTRIBUTE);
-				attrs.add(paramDesc.getDomainName());
-			}
-			// <field id="34" name="header" input="$param$header@article@35322" quantifier="single" type="string">
-			// Ремонт и отделка кафе, баров и ресторанов
-			// </field>
-			xml.startElement(FIELD_ELEMENT, attrs.toArray(new Object[0]));
-			if (paramDesc.isMultiple()) {
-				List<Object> values = item.getValues(paramDesc.getName());
-				for (int i = 0; i < values.size(); i++ ) {
-					xml.startElement(VALUE_ELEMENT, INDEX_ATTRIBUTE, i).addText(values.get(i)).endElement();
-				}
-			} else {
-				xml.addText(item.getValue(paramDesc.getName()));
-			}
-			xml.endElement();
-			
-			// <header input="$param$header@article@35322">Ремонт и отделка кафе, баров и ресторанов</header>
-			String elementName = Strings.createXmlElementName(paramDesc.getName());
-			if (paramDesc.isMultiple()) {
-				List<Object> values = item.getValues(paramDesc.getName());
-				for (Object val : values) {
-					xml.startElement(elementName, INPUT_ATTRIBUTE, input.getInputName()).addText(val).endElement();
-				}
-				// пустое поле, когда значений еще нет
-				xml.addEmptyElement(elementName, INPUT_ATTRIBUTE, input.getInputName());
-			} else {
-				xml
-					.startElement(elementName, INPUT_ATTRIBUTE, input.getInputName())
-					.addText(item.getValue(paramDesc.getName()))
-					.endElement();
-			}
+		if (hasActionUrl()) {
+			xml.startElement(tag,
+					ACTION_URL_ATTRIBUTE, actionUrl,
+					FILE_PATH_ATTRIBUTE, AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath(),
+					ID_ATTRIBUTE, inputs.getItem().getId(),
+					CAPTION_ATTRIBUTE, itemDesc.getCaption());
 		}
-		// <extra input="some_name">some_value</extra>
-		for (String extraName : item.getExtraKeys()) {
-			ItemInputName input = new ItemInputName(item.getId(), item.getContextParentId(), itemDesc.getTypeId(),
-					0, extraName);
-			List<Object> vals = item.getListExtra(extraName);
-			if (vals != null) {
-				for (Object val : vals) {
-					xml.startElement(EXTRA_ELEMENT, INPUT_ATTRIBUTE, input.getInputName()).addText(val).endElement();
+		HashSet<String> domains = new HashSet<>();
+		for (ItemInputName input : inputs.getAllInputNames()) {
+			if (input.isParameter()) {
+				ParameterDescription paramDesc = itemDesc.getParameter(input.getParamId());
+				ItemType ownerItemType = ItemTypeRegistry.getItemType(paramDesc.getOwnerItemId());
+				if (paramDesc.isVirtual())
+					continue;
+				String[] attrsArr = {
+						ID_ATTRIBUTE, paramDesc.getId() + "",
+						TYPE_ATTRIBUTE, paramDesc.getType().toString(),
+						NAME_ATTRIBUTE, paramDesc.getName(),
+						USER_DEF_ATTRIBUTE, ownerItemType.isUserDefined() + "",
+						FORMAT_ATTRIBUTE, paramDesc.getFormat(),
+						CAPTION_ATTRIBUTE, paramDesc.getCaption(),
+						DESCRIPTION_ATTRIBUTE, paramDesc.getDescription(),
+						INPUT_ATTRIBUTE, input.getInputName(),
+						QUANTIFIER_ATTRIBUTE, paramDesc.isMultiple() ? MULTIPLE_VALUE : SINGLE_VALUE
+				};
+				List<String> attrs = new ArrayList<>(Arrays.asList(attrsArr));
+				if (paramDesc.hasDomain()) {
+					domains.add(paramDesc.getDomainName());
+					attrs.add(DOMAIN_ATTRIBUTE);
+					attrs.add(paramDesc.getDomainName());
+				}
+				// <field id="34" name="header" input="$param$header@article@35322" quantifier="single" type="string">
+				// Ремонт и отделка кафе, баров и ресторанов
+				// </field>
+				xml.startElement(FIELD_ELEMENT, attrs.toArray(new Object[0]));
+				if (paramDesc.isMultiple()) {
+					List<Object> values = item.getValues(paramDesc.getName());
+					for (int i = 0; i < values.size(); i++) {
+						xml.startElement(VALUE_ELEMENT, INDEX_ATTRIBUTE, i).addText(values.get(i)).endElement();
+					}
+				} else {
+					xml.addText(item.getValue(paramDesc.getName()));
+				}
+				xml.endElement();
+
+				// <header input="$param$header@article@35322">Ремонт и отделка кафе, баров и ресторанов</header>
+				String elementName = Strings.createXmlElementName(paramDesc.getName());
+				if (paramDesc.isMultiple()) {
+					List<Object> values = item.getValues(paramDesc.getName());
+					for (Object val : values) {
+						xml.startElement(elementName, INPUT_ATTRIBUTE, input.getInputName()).addText(val).endElement();
+					}
+					// пустое поле, когда значений еще нет
+					xml.addEmptyElement(elementName, INPUT_ATTRIBUTE, input.getInputName());
+				} else {
+					xml
+							.startElement(elementName, INPUT_ATTRIBUTE, input.getInputName())
+							.addText(item.getValue(paramDesc.getName()))
+							.endElement();
+				}
+			} else {
+				List<String> vals = inputs.getInputValues(input);
+				if (vals != null) {
+					for (Object val : vals) {
+						if (hasActionUrl()) {
+							// <extra input="some_name">some_value</extra>
+							xml.startElement(EXTRA_ELEMENT, INPUT_ATTRIBUTE, input.getInputName()).addText(val).endElement();
+						} else {
+							// <some_name input="some_name">some_value</some_name>
+							xml.startElement(input.getVarName(), INPUT_ATTRIBUTE, input.getInputName()).addText(val).endElement();
+						}
+					}
 				}
 			}
 		}
@@ -202,7 +218,9 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 		}
 		writeSubwriters(xml);
 		// </item_form>
-		xml.endElement();
+		if (hasActionUrl()) {
+			xml.endElement();
+		}
 		return xml;
 	}
 

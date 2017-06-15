@@ -119,7 +119,7 @@ public class PageController {
 		if (useCache)
 			return processCacheablePage();
 		else
-			return processSimplePage();
+			return processSimplePage(true);
 	}
 	
 	/**
@@ -162,7 +162,7 @@ public class PageController {
 				cachedFile.getParentFile().mkdirs();
 				cachedFile.createNewFile();
 				// Выполняем страницу
-				String redirectUrl = processSimplePage();
+				String redirectUrl = processSimplePage(true);
 				Timer.getTimer().start(Timer.GENERATE_CACHE);
 				FileOutputStream fos = new FileOutputStream(cachedFile);
 				out.writeTo(fos);
@@ -176,7 +176,7 @@ public class PageController {
 				}
 			}
 		} else {
-			String redirectUrl = processSimplePage();
+			String redirectUrl = processSimplePage(true);
 			// Редирект в случае если он нужен
 			if (redirectUrl != null) {
 				return redirectUrl;
@@ -192,7 +192,7 @@ public class PageController {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	private String processSimplePage() throws Exception {
+	private String processSimplePage(boolean redo) throws Exception {
 		String xslFileName = AppContext.getStylesDirPath() + page.getTemplate() + ".xsl";
 		// Загрузка страницы и выполнение команд страницы
 		Timer.getTimer().start(Timer.LOAD_DB_ITEMS);
@@ -259,11 +259,27 @@ public class PageController {
 		}
 		// Иначе - вывести содержимое страницы
 		else {
-			XmlDocumentBuilder xml = new PageWriter(page).generateXml();
-			if (page.transformationNeeded())
-				XmlXslOutputController.outputXmlTransformed(out, xml, xslFileName);
-			else
-				XmlXslOutputController.outputXml(out, xml);
+			try {
+				XmlDocumentBuilder xml = new PageWriter(page).generateXml();
+				if (page.transformationNeeded())
+					XmlXslOutputController.outputXmlTransformed(out, xml, xslFileName);
+				else
+					XmlXslOutputController.outputXml(out, xml);
+			} catch (Exception e) {
+				if (redo) {
+					ServerLogger.error("Page transfor error", e);
+					clearCache();
+					VariablePE pageUrlVar = page.getVariable(ExecutablePagePE.PAGEURL_VALUE);
+					String pareUrl = pageUrlVar == null ? "" : pageUrlVar.output();
+					LinkPE requestLink = page.getRequestLink();
+					String urlBase = page.getUrlBase();
+					page = page.createExecutableClone(page.getSessionContext());
+					page.setRequestLink(requestLink, pareUrl, urlBase);
+					processSimplePage(false);
+				} else {
+					throw e;
+				}
+			}
 		}
 		return null;
 	}
