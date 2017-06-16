@@ -26,6 +26,7 @@ public class ItemTypeRegistry {
 	private Map<Integer, ItemType> itemsByIds = null; // Числовые ID всех айтемов (для оптимизации)
 
 	private Map<Integer, Integer[]> itemExtenders = null;    // Список всех наследников всех айтемов
+	private Map<Integer, Integer[]> basicItemExtenders = null;    // Список всех базовых наслдеников (не пользовательских) всех айтемов
 
 	private AssocRegistry assocRegistry = null; // реестр ассоциаций
 	private TypeHierarchyRegistry hierarchyRegistry = null; // реестр наследования
@@ -222,7 +223,8 @@ public class ItemTypeRegistry {
 	 *
 	 * @param parentChildPairs
 	 */
-	private void createExtendersCache(ArrayList<String[]> parentChildPairs) {
+	private void createExtendersCache(ArrayList<String[]> basicParentChildPairs, ArrayList<String[]> userParentChildPairs) {
+
 		for (String[] strings : parentChildPairs) {
 			String parent = strings[0];
 			LinkedHashSet<String> extenders = hierarchyRegistry.getItemExtenders(parent);
@@ -253,6 +255,16 @@ public class ItemTypeRegistry {
 	 * @return
 	 */
 	public static Integer[] getItemExtendersIds(int itemId) {
+		Integer[] itemExts = getSingleton().itemExtenders.get(itemId);
+		if (itemExts == null) {
+			Integer[] exts = new Integer[1];
+			exts[0] = itemId;
+			return exts;
+		}
+		return itemExts;
+	}
+
+	public static Integer[] getBasicItemExtendersIds(int itemId) {
 		Integer[] itemExts = getSingleton().itemExtenders.get(itemId);
 		if (itemExts == null) {
 			Integer[] exts = new Integer[1];

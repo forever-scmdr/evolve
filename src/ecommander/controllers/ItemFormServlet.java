@@ -1,16 +1,14 @@
 package ecommander.controllers;
 
-import java.io.IOException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.UserNotAllowedException;
+import ecommander.pages.LinkPE;
+import ecommander.pages.MultipleHttpPostForm;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.UserNotAllowedException;
-import ecommander.pages.MultipleHttpPostForm;
-import ecommander.pages.SingleItemHttpPostFormDeprecated;
-import ecommander.pages.LinkPE;
+import java.io.IOException;
 /**
  * Подразумевается, что этот сервлет обрабатывает только 
  * @author EEEE

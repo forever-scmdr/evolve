@@ -1,5 +1,6 @@
 package ecommander.pages.filter;
 
+import ecommander.fwk.EcommanderException;
 import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.model.ParameterDescription;
@@ -167,7 +168,7 @@ public abstract class ParameterCriteriaPE implements FilterCriteria {
 	}
 
 	@Override
-	public void process(FilterCriteriaContainer cont) {
+	public void process(FilterCriteriaContainer cont) throws EcommanderException {
 		if (isDescendant)
 			cont.processDescendantParameterCriteria(this);
 		else

@@ -6,7 +6,6 @@ import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType.Type;
 import ecommander.model.filter.*;
-import ecommander.output.*;
 import ecommander.pages.output.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.InPlaceTransaction;

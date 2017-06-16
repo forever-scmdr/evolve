@@ -1,5 +1,6 @@
 package ecommander.pages.filter;
 
+import ecommander.fwk.EcommanderException;
 import ecommander.pages.PageElement;
 import ecommander.pages.ValidationResults;
 import ecommander.pages.var.ValueOrRef;
@@ -113,7 +114,7 @@ public class FulltextCriteriaPE implements FilterCriteria {
 	}
 
 	@Override
-	public void process(FilterCriteriaContainer cont) {
+	public void process(FilterCriteriaContainer cont) throws EcommanderException {
 		cont.processFulltextCriteriaPE(this);
 	}
 }

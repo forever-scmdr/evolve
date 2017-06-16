@@ -20,12 +20,15 @@ import ecommander.persistence.itemquery.ItemQuery;
  *
  */
 public class ItemPE extends PageElementContainer {
+
+	public static final String ELEMENT_NAME = "item";
+
 	public enum Type {
 		SINGLE, 		// <single>
 		LIST, 			// <list>
 		TREE, 			// <tree>
-		PARENT,         // <new>
-		NEW;	        // <parent>
+		PARENT,         // <parent>
+		NEW;	        // <new>
 		public static Type getValue(String val) {
 			if (StringUtils.equalsIgnoreCase("single", val))
 				return SINGLE;
@@ -180,7 +183,7 @@ public class ItemPE extends PageElementContainer {
 	}
 
 	public final String getKey() {
-		return "Item '" + itemName + "'";
+		return type.toString() + " '" + itemName + "'";
 	}
 
 	@Override
@@ -202,7 +205,7 @@ public class ItemPE extends PageElementContainer {
 	}
 
 	public String getElementName() {
-		return type.toString();
+		return ELEMENT_NAME;
 	}
 
 }

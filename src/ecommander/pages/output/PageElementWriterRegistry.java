@@ -1,17 +1,13 @@
 package ecommander.pages.output;
 
-import java.util.HashMap;
-
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.ExecutableItemPE;
-import ecommander.pages.InputPE;
-import ecommander.pages.ItemFormPE;
+import ecommander.pages.InputSetPE;
 import ecommander.pages.LinkPE;
 import ecommander.pages.PageElement;
 import ecommander.pages.filter.FilterPE;
-import ecommander.pages.variables.FilterStaticVariablePE;
-import ecommander.pages.variables.StaticVariablePE;
-import ecommander.pages.var.VariablePE;
+
+import java.util.HashMap;
 /**
  * Хранит по одной копии райтера для каждого элемента для каждого потока
  * Flyweight
@@ -41,17 +37,11 @@ public class PageElementWriterRegistry {
 	
 	private PageElementWriterRegistry() {
 		ExecutableItemPEWriter itemPEWriter = new ExecutableItemPEWriter();
-		VariablePEWriter varWriter = new VariablePEWriter();
-		
-		pageWriters = new HashMap<String, PageElementWriter>();
+		pageWriters = new HashMap<>();
 		pageWriters.put(LinkPE.ELEMENT_NAME, new LinkPEWriter());
-		pageWriters.put(InputPE.ELEMENT_NAME, new InputPEWriter());
-		pageWriters.put(ItemFormPE.ELEMENT_NAME, new ItemFormPEWriter());
-		pageWriters.put(StaticVariablePE.ELEMENT_NAME, varWriter);
-		pageWriters.put(VariablePE.ELEMENT_NAME, varWriter);
+		pageWriters.put(InputSetPE.ELEMENT_NAME, new InputSetPEWriter());
 		pageWriters.put(ExecutableItemPE.ELEMENT_NAME, itemPEWriter);
-		pageWriters.put(FilterStaticVariablePE.ELEMENT_NAME, new FilterStaticVariablePEWriter());
-		
+
 		cacheWriters = new HashMap<>();
 		cacheWriters.put(ExecutableItemPE.class, itemPEWriter);
 		cacheWriters.put(FilterPE.class, new FilterPECacheWriter());

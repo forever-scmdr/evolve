@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import ecommander.pages.var.Variable;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -237,11 +238,11 @@ public class PageController {
 				}
 				// Если результат выполнения - динамическая ссылка - установить дополнительные переменные в ссылку
 				if (result.hasVariables()) {
-					for (VariablePE var : result.getVariables()) {
+					for (Variable var : result.getVariables()) {
 						if (var.isEmpty())
 							baseLink.removeVariable(var.getName());
 						else
-							baseLink.addVariablePE(var);
+							baseLink.addStaticVariable(var.getName(), var.writeSingleValue());
 					}
 				}
 				// Это надо для того, чтобы все переменные в ссылке сделать статическими
@@ -269,12 +270,12 @@ public class PageController {
 				if (redo) {
 					ServerLogger.error("Page transfor error", e);
 					clearCache();
-					VariablePE pageUrlVar = page.getVariable(ExecutablePagePE.PAGEURL_VALUE);
-					String pareUrl = pageUrlVar == null ? "" : pageUrlVar.output();
+					Variable pageUrlVar = page.getVariable(ExecutablePagePE.PAGEURL_VALUE);
+					String pageUrl = pageUrlVar == null ? "" : pageUrlVar.writeSingleValue();
 					LinkPE requestLink = page.getRequestLink();
 					String urlBase = page.getUrlBase();
 					page = page.createExecutableClone(page.getSessionContext());
-					page.setRequestLink(requestLink, pareUrl, urlBase);
+					page.setRequestLink(requestLink, pageUrl, urlBase);
 					processSimplePage(false);
 				} else {
 					throw e;

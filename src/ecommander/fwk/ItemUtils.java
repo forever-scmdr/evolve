@@ -24,7 +24,7 @@ public class ItemUtils {
 	public static Item ensureSingleItem(String itemName, User initiator, long parentId, byte groupId, int userId) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(initiator);
 		ItemQuery dbQuery = ItemQuery.newItemQuery(itemName);
-		dbQuery.setPredecessorId(parentId);
+		dbQuery.setParentId(parentId);
 		List<Item> items = dbQuery.loadItems();
 		Item item = null;
 		if (items.size() == 1) {

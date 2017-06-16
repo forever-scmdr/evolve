@@ -18,6 +18,7 @@ import javax.naming.NamingException;
 
 import ecommander.model.*;
 import ecommander.model.item.*;
+import ecommander.pages.var.FilterStaticVariable;
 import org.apache.commons.collections4.MultiMapUtils;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.lang3.StringUtils;
@@ -99,40 +100,14 @@ import ecommander.model.UserGroupRegistry;
 
  * 
  * Пояснения:
- * 1)	Во всех примерах критерий f1 является главным, т. е. остальные критерии приравнивают извлекаемые ими ID айтемов к ID, извлекаемому критерием f1
- * 2)	Критерий типа предка нужен для того, чтобы извлекались только записи вида <предок - непосредственный родитель>, а не <предок - айтем>, т.к.
- * 		таких записей намного меньше.
- * 3)	С той же целью, что и в пункте 2) используется критерий непосредственного родителя при поиске значения параметра. Если использовать ID родителя
- * 		вместо ID самого айтема, СУБД должна просмотреть гораздо меньше записей. В случае ID самого айтема СУБД должна просмотреть все однотипные айтемы,
- * 		а не только потомков определенных предков.
- * 4)	Критерий типа айтема используется для того, чтобы можно было использовать только таблицу параметров без соединения с таблицей айтемов.
+ * Во всех примерах критерий f1 является главным, т. е. остальные критерии приравнивают извлекаемые ими ID айтемов к ID, извлекаемому критерием f1
+ *
  * 
- * 
- * TODO <fix> Добавить сортировку по весу в случае если использовался фильтр, но в нем не было сортировки
  * @author E
  *
  */
 public class ItemQuery {
-	public enum Type {
-		ITEM, 				// <item>
-		SUCCESSOR, 			// <successor>
-		PARENT_OF, 			// <parent-of>
-		PREDECESSORS_OF;	// <baseItems-of>
-		public static Type getValue(String val) {
-			if ("item".equals(val))
-				return ITEM;
-			if ("successor".equals(val))
-				return SUCCESSOR;
-			if ("parent-of".equals(val))
-				return PARENT_OF;
-			if ("baseItems-of".equals(val))
-				return PREDECESSORS_OF;
-			throw new IllegalArgumentException("there is no ItemQuery Type value for '" + val + "' string");
-		}
-	}
-	
-	// TODO <fix> Убрать из первых 3 запросов <<WHERE_OPT>> и заменить на <<FILTER_TABLES_JOIN_OPT>> AND <<FILTER_CRITS_OPT>>
-	
+
 	// Фильтрация (загрузка ID айтемов и применение фильтра)
 	private static final String FILTER_IDS_SELECT_QUERY 
 		= "SELECT <<ITEM_ID_REQ>>, <<PARENT_ID_REQ>> AS PID<<SORT_VAL_OPT>> FROM <<FROM_OPT>> "
@@ -214,42 +189,18 @@ public class ItemQuery {
 	
 	private boolean hasParent = false; // Предок искомого айтема. Может быть null, если айтем не имеет предка
 	private ItemType itemDesc; // Искомый айтем
-	private Type queryType; // Тип запроса
-	
+
 	private FilterSQLBuilder filter = null; // Фильтр (параметры, сортировка, группировка, пользователь, группа пользователей)
 	private LimitCriteria limit = null; // Ограничение количества и страницы
 	private FulltextCriteria fulltext = null; // Полнотекстовый поиск
 	private ArrayList<Long> loadedIds = null; // Загруженные предки айтема (может быть null, если предов нет)
+	private String assocName = null; // название ассоциации для загрузки
+
 	
-	public ItemQuery(Type queryType, ItemType itemDesc, boolean hasParent) {
-		this.queryType = queryType;
+	public ItemQuery(ItemType itemDesc) {
 		this.itemDesc = itemDesc;
-		this.hasParent = hasParent;
 	}
-	
-	public ItemQuery(Type queryType, ItemType itemDesc) {
-		this(queryType, itemDesc, false);
-	}
-	
-	public ItemQuery(Type queryType, String itemName) {
-		this(queryType, ItemTypeRegistry.getItemType(itemName), false);
-	}
-	
-	public static ItemQuery newItemQuery(String itemName) {
-		return new ItemQuery(Type.ITEM, itemName);
-	}
-	
-	public static ItemQuery newSuccessorQuery(String itemName) {
-		return new ItemQuery(Type.SUCCESSOR, itemName);
-	}
-	
-	public static ItemQuery newParentOfQuery(String itemName) {
-		return new ItemQuery(Type.PARENT_OF, itemName);
-	}
-	
-	public static ItemQuery newPredecessorsOfQuery(String itemName) {
-		return new ItemQuery(Type.PREDECESSORS_OF, itemName);
-	}
+
 //	/**
 //	 * Установить новый айтем для извлечения (иногда нужно конкретизировать айтем по ходу загрузки)
 //	 * @param itemDesc
@@ -261,23 +212,29 @@ public class ItemQuery {
 	 * Загруженные предшественники
 	 * @param predIds
 	 */
-	public ItemQuery setPredecessorIds(Collection<Long> predIds) {
+	public ItemQuery setParentIds(Collection<Long> predIds, String...assocName) {
 		if (predIds != null) {
 			this.loadedIds = new ArrayList<Long>(predIds);
 			this.hasParent = true;
 		}
+		if (assocName.length > 0)
+			this.assocName = assocName[0];
 		return this;
 	}
 	/**
 	 * Загруженный предшественник (один)
-	 * @param predIds
+	 * @param predId
+	 * @param assocName
+	 * @return
 	 */
-	public ItemQuery setPredecessorId(long predId) {
+	public ItemQuery setParentId(long predId, String...assocName) {
 		if (predId != 0) {
 			this.loadedIds = new ArrayList<Long>(1);
 			this.loadedIds.add(predId);
 			this.hasParent = true;
 		}
+		if (assocName.length > 0)
+			this.assocName = assocName[0];
 		return this;
 	}
 	/**
@@ -393,7 +350,7 @@ public class ItemQuery {
 	 * @param compType
 	 */
 	public ItemQuery addParameterCriteria(String paramName, String value, String sign, String pattern, Compare compType) {
-		ArrayList<String> values = new ArrayList<String>(1);
+		ArrayList<String> values = new ArrayList<>(1);
 		values.add(value);
 		return addParameterCriteria(paramName, values, sign, pattern, compType);
 	}
@@ -538,7 +495,7 @@ public class ItemQuery {
 	 * @return
 	 * @throws EcommanderException
 	 */
-	public final FilterSQLBuilder createFilter(FilterDefinition filterDef, FilterStaticVariablePE userInput) throws EcommanderException {
+	public final FilterSQLBuilder createFilter(FilterDefinition filterDef, FilterStaticVariable userInput) throws EcommanderException {
 		ItemType userFilterItem = ItemTypeRegistry.getItemType(filterDef.getBaseItemName());
 		if (userFilterItem != null)
 			itemDesc = userFilterItem;

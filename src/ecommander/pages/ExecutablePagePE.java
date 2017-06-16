@@ -111,7 +111,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	 * @param linkUrl - передается для того, чтобы не вызывать лишний раз serialize в ссылке
 	 * @param baseLink
 	 */
-	final void setRequestLink(LinkPE link, String linkUrl, String baseLink) {
+	public final void setRequestLink(LinkPE link, String linkUrl, String baseLink) {
 		this.requestLink = link;
 		this.urlBase = baseLink;
 		for (VariablePE variable : requestLink.getAllVariables()) {

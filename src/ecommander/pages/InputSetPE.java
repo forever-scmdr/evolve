@@ -28,7 +28,7 @@ public class InputSetPE implements PageElement {
 	}
 
 
-	private static final String ELEMENT_NAME = "input_set";
+	public static final String ELEMENT_NAME = "input_set";
 
 	private boolean isParameter; // представляет ли параметр айтема (true) или просто значение (false)
 	private String refId; // страничный ID айтема, к которому относится

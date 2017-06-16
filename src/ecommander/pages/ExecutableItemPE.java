@@ -28,7 +28,7 @@ import ecommander.pages.filter.AggregationPE;
 import ecommander.pages.filter.AggregationPE.AggregationContainer;
 import ecommander.pages.filter.FilterPE;
 import ecommander.pages.filter.FilterPE.FilterContainer;
-import ecommander.pages.var.VariablePE;
+import ecommander.pages.var.Variable;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.SessionItemMapper;
 import ecommander.model.DomainRegistry;
@@ -481,7 +481,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			}
 			// Создание запроса
 			ItemQuery query = new ItemQuery(getQueryType(), itemDesc, hasParent());
-			query.setPredecessorIds(loadedIds);
+			query.setParentIds(loadedIds);
 			// Установка фильтра, если он должен быть
 			boolean needLoading = true;
 			if (hasFilter())
@@ -634,9 +634,9 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		if (hasCacheVars()) {
 			id += "/";
 			for (String varName : getCacheVars()) {
-				VariablePE var = parentPageModel.getVariable(varName);
+				Variable var = parentPageModel.getVariable(varName);
 				if (var != null && !var.isEmpty()) {
-					id += var.getName() + "_" + Strings.translit(var.output()) + "_";					
+					id += var.getName() + "_" + Strings.translit(var.writeSingleValue()) + "_";
 				} else {
 					id += "default";
 				}
