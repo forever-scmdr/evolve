@@ -52,6 +52,7 @@ public class ItemTypeRegistry {
 		itemsByIds = new HashMap<>();
 		itemNames = new ArrayList<>();
 		itemExtenders = new HashMap<>();
+		basicItemExtenders = new HashMap<>();
 
 		assocRegistry = new AssocRegistry();
 	}
@@ -208,11 +209,12 @@ public class ItemTypeRegistry {
 	 * @param parentChildPairs
 	 * @param validation
 	 */
-	static synchronized TypeHierarchyRegistry createHierarchy(ArrayList<String[]> parentChildPairs, boolean validation) {
-		TypeHierarchyRegistry object = new TypeHierarchyRegistry(parentChildPairs);
+	static synchronized TypeHierarchyRegistry createHierarchy(ArrayList<String[]> basicParentChildPairs,
+	                                                          ArrayList<String[]> userParentChildPairs, boolean validation) {
+		TypeHierarchyRegistry object = new TypeHierarchyRegistry(basicParentChildPairs, userParentChildPairs);
 		if (!validation) {
 			getSingleton().hierarchyRegistry = object;
-			getSingleton().createExtendersCache(parentChildPairs);
+			getSingleton().createExtendersCache(basicParentChildPairs, userParentChildPairs);
 		}
 		return object;
 	}
@@ -224,10 +226,19 @@ public class ItemTypeRegistry {
 	 * @param parentChildPairs
 	 */
 	private void createExtendersCache(ArrayList<String[]> basicParentChildPairs, ArrayList<String[]> userParentChildPairs) {
-
-		for (String[] strings : parentChildPairs) {
+		for (String[] strings : basicParentChildPairs) {
 			String parent = strings[0];
-			LinkedHashSet<String> extenders = hierarchyRegistry.getItemExtenders(parent);
+			LinkedHashSet<String> extenders = hierarchyRegistry.getItemExtenders(parent, true);
+			ArrayList<Integer> extIds = new ArrayList<>(extenders.size());
+			for (String item: extenders) {
+				extIds.add(getItemTypeId(item));
+			}
+			Integer parentId = getItemTypeId(parent);
+			this.basicItemExtenders.put(parentId, extIds.toArray(new Integer[0]));
+		}
+		for (String[] strings : userParentChildPairs) {
+			String parent = strings[0];
+			LinkedHashSet<String> extenders = hierarchyRegistry.getItemExtenders(parent, false);
 			ArrayList<Integer> extIds = new ArrayList<>(extenders.size());
 			for (String item: extenders) {
 				extIds.add(getItemTypeId(item));
@@ -264,8 +275,15 @@ public class ItemTypeRegistry {
 		return itemExts;
 	}
 
+	/**
+	 * Получить всех базовых (непользовательских) потомков айтема (сам айтем тоже считается потомком)
+	 * Возвращается массив ID айтемов
+
+	 * @param itemId
+	 * @return
+	 */
 	public static Integer[] getBasicItemExtendersIds(int itemId) {
-		Integer[] itemExts = getSingleton().itemExtenders.get(itemId);
+		Integer[] itemExts = getSingleton().basicItemExtenders.get(itemId);
 		if (itemExts == null) {
 			Integer[] exts = new Integer[1];
 			exts[0] = itemId;

@@ -1,0 +1,111 @@
+1. Фильтрация с сортировкой (НЕ пользовательская)
+
+	Задано:
+		тип - товар (T)
+		2 параметра фильтрации (цвет (красный), размер (большой))
+		2 парметра сортировки (вес, цена)
+		предки Pa и Pb (ассоциация A транзитивно)
+
+	SELECT
+		I.*
+		P.ip_parent_id,
+		S1.val, S2.val
+	FROM
+		item AS i
+		INNER JOIN index AS f1 ON (i.id = f1.item)
+		INNER JOIN index AS f2 ON (i.id = f2.item)
+		INNER JOIN parent AS p ON (i.id = p.child_id)
+		INNER JOIN index AS s1 ON (i.id = s1.item)
+		INNER JOIN index AS s2 ON (i.id = s2.item)
+	WHERE
+		# статус вначале, чтобы потом всегда можно было бы использовать AND
+        i.status = 0
+        # AND i.group = g AND i.user = u
+
+		# Родительский критерий
+		AND p.parent_id in (Pa, Pb) AND p.assoc_id IN (A) AND p.child_supertype IN (T)
+
+		# фильтр ( !!!!  НЕ указывается критерий типа айтема  !!!! )
+		AND f1.val = "красный" AND f1.param = "цвет"
+		AND f2.val = "большой" AND f2.param = "размер"
+
+		# сортировка (НЕ указывается тип)
+		AND s1.param = "вес"
+		AND s2.param = "цена"
+	ORDER BY
+		s1.val ASC, s2.val ASC
+
+
+
+
+2. Фильтрация с сортировкой (ПОЛЬЗОВАТЕЛЬСКАЯ)
+
+	Задано:
+		тип - товар (T)
+		2 параметра фильтрации (цвет (красный), размер (большой))
+		2 парметра сортировки (вес, цена)
+		предки Pa и Pb (ассоциация A НЕтранзитивно)
+
+	SELECT
+		I.*
+		P.ip_parent_id,
+		S1.val, S2.val
+	FROM
+		item AS i
+		INNER JOIN index AS f1 ON (i.id = f1.item)
+		INNER JOIN index AS f2 ON (i.id = f2.item)
+		INNER JOIN parent AS p ON (i.id = p.child_id)
+		INNER JOIN index AS s1 ON (i.id = s1.item)
+		INNER JOIN index AS s2 ON (i.id = s2.item)
+	WHERE
+		# статус вначале, чтобы потом всегда можно было бы использовать AND
+        i.status = 0
+        # AND i.group = g AND i.user = u
+
+		# Родительский критерий (прямой родитель = 1)
+		AND p.parent_id in (Pa, Pb) AND p.assoc_id IN (A) AND p.child_supertype IN (T) AND p.parent_direct = 1
+
+		# фильтр ( !!!!  УКАЗЫВАЕТСЯ критерий типа айтема  !!!! )
+		AND f1.val = "красный" AND f1.param = "цвет" AND f1.type = TV
+		AND f2.val = "большой" AND f2.param = "размер" AND f2.type = TV
+
+		# сортировка (УКАЗЫВАЕТСЯ тип)
+		AND s1.param = "вес" AND f1.type = TV
+		AND s2.param = "цена" AND f2.type = TV
+	ORDER BY
+		s1.val ASC, s2.val ASC
+
+
+
+
+3. Фильтрация по параметру потомка и параметру айтема
+
+	Задано:
+		тип - товар (T)
+		1 параметр фильтрации (цвет (красный))
+		1 параметр фильтрации потомка (цена - PR) (цена меньше определенной)
+		предки Pa и Pb (ассоциация A транзитивно)
+
+	SELECT
+		I.*
+		P.ip_parent_id,
+		S1.val, S2.val
+	FROM
+		item AS i
+		INNER JOIN parent AS p ON (i.id = p.child_id)
+		INNER JOIN parent AS pp ON (i.id = pp.parent_id)
+		INNER JOIN parent AS pi ON (pi.id = pp.child_id)
+		INNER JOIN parent AS pf1 ON (pf1.item = pi.id)
+		INNER JOIN index AS f1 ON (i.id = f1.item)
+	WHERE
+		# статус вначале, чтобы потом всегда можно было бы использовать AND
+		i.status = 0
+		AND pi.status = 0
+
+		# Родительский критерий
+		AND p.parent_id in (Pa, Pb) AND p.assoc_id IN (A) AND p.child_supertype IN (T)
+		AND pp.assoc_id IN (A) AND pp.child_supertype IN (PR)
+
+		# фильтр ( !!!!  НЕ указывается критерий типа айтема  !!!! )
+		AND f1.val = "красный" AND f1.param = "цвет"
+		AND pf1.val <= 100 AND pf1.param = "цена"
