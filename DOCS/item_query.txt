@@ -8,7 +8,7 @@
 
 	SELECT
 		I.*
-		P.ip_parent_id,
+		P.parent_id,
 		S1.val, S2.val
 	FROM
 		item AS i
@@ -48,7 +48,7 @@
 
 	SELECT
 		I.*
-		P.ip_parent_id,
+		P.parent_id,
 		S1.val, S2.val
 	FROM
 		item AS i
@@ -87,9 +87,8 @@
 		предки Pa и Pb (ассоциация A транзитивно)
 
 	SELECT
-		I.*
-		P.ip_parent_id,
-		S1.val, S2.val
+		i.*
+		p.parent_id
 	FROM
 		item AS i
 		INNER JOIN parent AS p ON (i.id = p.child_id)
@@ -109,3 +108,73 @@
 		# фильтр ( !!!!  НЕ указывается критерий типа айтема  !!!! )
 		AND f1.val = "красный" AND f1.param = "цвет"
 		AND pf1.val <= 100 AND pf1.param = "цена"
+	ORDER BY
+		p.weight
+
+
+
+4. Вывод айтемов без указания предков (запросы list)
+	Не могут применяться к корневым айтемам (т.к. корневый айтемы всегда должны быть одиночными)
+
+	Задано:
+		тип - раздел (S)
+
+	SELECT
+		i.*
+		p.parent_id
+	FROM
+		item AS i
+		INNER JOIN parent AS p ON (i.id = p.child_id)
+	WHERE
+		# статус вначале, чтобы потом всегда можно было бы использовать AND
+        i.status = 0
+
+		# Родительский критерий
+		AND p.child_supertype IN (S)
+	ORDER BY
+		p.weight
+
+
+
+
+5. Вывод айтемов без указания предков (запрос single)
+	применяются только к корневым айтемам
+
+	Задано:
+		тип - каталог (C)
+
+	SELECT
+		i.*
+	FROM
+		item AS i
+	WHERE
+		# статус вначале, чтобы потом всегда можно было бы использовать AND
+        i.status = 0
+		AND i.type_id IN (C)
+
+
+
+
+6. Запрос типа tree
+	Не может применятся без указания предка, который будет являться корнем (корнями) результирующего дерева (деревьев)
+
+	Задано:
+		тип - раздел (S)
+		предки Pa и Pb (ассоциация A транзитивно)
+
+	SELECT
+		i.*
+		p.parent_id
+	FROM
+		item AS i
+		INNER JOIN parent AS p ON (i.id = p.child_id)
+	WHERE
+		# статус вначале, чтобы потом всегда можно было бы использовать AND
+        i.status = 0
+
+		# Родительский критерий
+		AND p.parent_id in (Pa, Pb) AND p.assoc_id IN (A) AND p.child_supertype IN (S)
+	ORDER BY
+		p.weight
+
+
