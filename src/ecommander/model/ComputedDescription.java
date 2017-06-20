@@ -18,7 +18,7 @@ public class ComputedDescription {
 	 * Базовые айтемы для вычисляемого патаметра
 	 * Родительские или дочерние
 	 */
-	public static enum Type {
+	public enum Type {
 		parent, child;
 		public static Type get(String typeStr) {
 			if (StringUtils.equalsIgnoreCase(typeStr, "base-child"))
@@ -34,7 +34,7 @@ public class ComputedDescription {
 	 * Применяется если получено много значений (в основном так и бывает, в этом и суть)
 	 * базовых параметров
 	 */
-	public static enum Func {
+	public enum Func {
 		COUNT {
 			@Override
 			public String toString() {
@@ -105,7 +105,7 @@ public class ComputedDescription {
 		public final String param;
 		public final String assoc;
 
-		public Ref(Type type, String item, String param, String assoc) {
+		Ref(Type type, String item, String param, String assoc) {
 			this.type = type;
 			this.item = item;
 			this.param = param;
@@ -119,7 +119,7 @@ public class ComputedDescription {
 	private final Func func;
 	private ArrayList<Ref> basicParams = new ArrayList<>();
 
-	public ComputedDescription(Func func) {
+	ComputedDescription(Func func) {
 		this.func = func;
 	}
 
@@ -130,7 +130,7 @@ public class ComputedDescription {
 	 * @param paramName
 	 * @param assoc
 	 */
-	public void addBasic(Type type, String itemName, String paramName, String assoc) {
+	void addBasic(Type type, String itemName, String paramName, String assoc) {
 		basicParams.add(new Ref(type, itemName, paramName, assoc));
 	}
 
