@@ -28,7 +28,6 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
@@ -44,7 +43,6 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.*;
 
 public class LuceneIndexMapper implements DBConstants.ItemTbl {
@@ -104,7 +102,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	private int countProcessed = 0; // Количество проиндексированных айтемов
 	
 	private LuceneIndexMapper() throws IOException {
-		directory = NIOFSDirectory.open(Paths.get(AppContext.getLuceneIndexPath()));
+		directory = FSDirectory.open(Paths.get(AppContext.getLuceneIndexPath()));
 		tikaParsers.put(HTML, new HtmlParser());
 	}
 	

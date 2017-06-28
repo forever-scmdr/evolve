@@ -394,7 +394,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 			return;
 		}
 		// Проверка extends (есть ли такие айтемы)
-		ArrayList<String[]> parentChildPairs = new ArrayList<String[]>();
+		ArrayList<String[]> parentChildPairs = new ArrayList<>();
 		boolean criticalError = false;
 		for (Item item : items.values()) {
 			for (String parentName : item.baseItems) {
@@ -408,7 +408,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		if (criticalError)
 			return;
 		// Загрузка матрицы наследования
-		TypeHierarchyRegistry hierarchy = ItemTypeRegistry.createHierarchy(parentChildPairs, true);
+		TypeHierarchyRegistry hierarchy = ItemTypeRegistry.createHierarchy(parentChildPairs, new ArrayList<String[]>(), true);
 		// Проверка key (есть ли параметры, перечисленные в key)
 		for (Item item : items.values()) {
 			// Проверка key (есть ли параметры, перечисленные в key)

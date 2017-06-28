@@ -60,42 +60,44 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 * Иногда надо игнорировать это исключение, т. е. все-таки выполнять действия с айтемами, которые
 	 * не принадлежат пользователю. В таком случае можно установить атрибут ignoreUser = true
 	 * 
-	 * @param ignore
 	 * @return
 	 */
-	public DBPersistenceCommandUnit ignoreUser(boolean ignore) {
-		this.ignoreUser = ignore;
+	public DBPersistenceCommandUnit ignoreUser() {
+		this.ignoreUser = true;
 		return this;
 	}
 	/**
 	 * Можно ли ингорировать ошибки, связанные с файлами, принадлежащими айтему.
 	 * Иногда такие ошибки можно игнорировать. По умолчанию - false
-	 * @param ignore
 	 * @return
 	 */
-	public DBPersistenceCommandUnit ignoreFileErrors(boolean ignore) {
-		this.ignoreFileErrors = ignore;
+	public DBPersistenceCommandUnit ignoreFileErrors() {
+		this.ignoreFileErrors = true;
 		return this;
 	}
 	/**
 	 * Надо ли добавлять айтем в полнотекстовый индекс.
 	 * Иногда добавлять надо сразу, иногда потом.
-	 * Второй параметр - закрывать ли Writer Lucene (запись в полнотекстовый индекс) после выполнения команды.
-	 * Если выполняется блок команд, то закрывание-открывание райтера начинает занимать много времени.
-	 * @param fulltextIndex
-	 * @param closeWriter
 	 * @return
 	 */
-	public DBPersistenceCommandUnit fulltextIndex(boolean fulltextIndex, boolean... closeWriter) {
-		this.insertIntoFulltextIndex = fulltextIndex;
-		if (closeWriter.length > 0)
-			this.closeLuceneWriter = closeWriter[0];
+	public DBPersistenceCommandUnit noFulltextIndex() {
+		this.insertIntoFulltextIndex = false;
+		this.closeLuceneWriter = false;
 		return this;
 	}
-	
+
+	/**
+	 * Не закрывать райтер индекса Lucene после добавления в него результатов выполнения этой команды
+	 * @return
+	 */
+	public DBPersistenceCommandUnit dontCloseFulltextIndexWriter() {
+		this.closeLuceneWriter = false;
+		return this;
+	}
+
 	protected final void executeCommand(PersistenceCommandUnit commandUnit) throws Exception {
 		if (executedCommands == null)
-			executedCommands = new ArrayList<PersistenceCommandUnit>();
+			executedCommands = new ArrayList<>();
 		commandUnit.setTransactionContext(context);
 		commandUnit.execute();
 		executedCommands.add(commandUnit);
@@ -111,9 +113,10 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	protected final void executeCommandInherited(PersistenceCommandUnit command) throws Exception {
 		if (command != null) {
 			if (command instanceof DBPersistenceCommandUnit) {
-				((DBPersistenceCommandUnit) command).fulltextIndex(insertIntoFulltextIndex, closeLuceneWriter);
-				((DBPersistenceCommandUnit) command).ignoreUser(ignoreUser);
-				((DBPersistenceCommandUnit) command).ignoreFileErrors(ignoreFileErrors);
+				((DBPersistenceCommandUnit) command).insertIntoFulltextIndex = insertIntoFulltextIndex;
+				((DBPersistenceCommandUnit) command).closeLuceneWriter = closeLuceneWriter;
+				((DBPersistenceCommandUnit) command).ignoreUser = ignoreUser;
+				((DBPersistenceCommandUnit) command).ignoreFileErrors = ignoreFileErrors;
 			}
 			executeCommand(command);
 		}

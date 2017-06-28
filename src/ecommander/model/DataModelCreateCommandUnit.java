@@ -57,7 +57,8 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	/**
 	 * Поля класса
 	 */
-	private ArrayList<String[]> extensionParentChildPairs = new ArrayList<>();
+	private ArrayList<String[]> basicExtensionParentChildPairs = new ArrayList<>();
+	private ArrayList<String[]> userExtensionParentChildPairs = new ArrayList<>();
 	private HashMap<String, HashId> assocIds = new HashMap<>(); // Название ассоциации => ID ассоциации
 	private HashMap<String, HashId> itemIds = new HashMap<>(); // Название айтема => ID айтема
 	// Название айтема => (название параметра => ID параметра)
@@ -123,7 +124,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		}
 
 		// Создать иерархию айтемов
-		ItemTypeRegistry.createHierarchy(extensionParentChildPairs, false);
+		ItemTypeRegistry.createHierarchy(basicExtensionParentChildPairs, userExtensionParentChildPairs, false);
 		
 		// Распределить параметры и сабайтемы по айтемам
 		HashSet<String> processed = new HashSet<>(30);
@@ -302,7 +303,10 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			String[] parents = StringUtils.split(exts, ItemType.COMMON_DELIMITER + ItemType.ITEM_SELF_PARAMS);
 			for (String parent : parents) {
 				String[] pair = {parent, name};
-				extensionParentChildPairs.add(pair);
+				if (userDefined)
+					userExtensionParentChildPairs.add(pair);
+				else
+					basicExtensionParentChildPairs.add(pair);
 			}
 		}
 		// Добавить описание айтема в реестр
@@ -446,6 +450,8 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			for (Element base : baseParams) {
 				param.getComputed().addBasic(ComputedDescription.Type.get(base.tagName()), base.attr(ITEM),
 						base.attr(PARAMETER), base.attr(ASSOC));
+				// Зарегистрировать базовый тип айтема, как имеющий computed параметр
+				ItemTypeRegistry.addComputedSupertype(item.getTypeId());
 			}
 		}
 

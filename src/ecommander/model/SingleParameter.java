@@ -19,23 +19,26 @@ public class SingleParameter extends Parameter {
 	 * Установить готовое (уже правильное) значение
 	 * @param value
 	 */
-	public final void setValue(Object value) {
+	public final boolean setValue(Object value) {
 		if (containsValue(value))
-			return;
+			return false;
 		storeOldValue();
 		this.value = value;
+		return true;
 	}
 	/**
 	 * Установить значение, полученное из интерфейса пользователя в форме строки
 	 * @param value
 	 */
-	public final void createAndSetValue(String value, boolean isConsistent) {
+	public final boolean createAndSetValue(String value, boolean isConsistent) {
+		Object val = createTypeDependentValue(value);
 		if (!isConsistent) {
-			if (containsValue(value))
-				return;
+			if (containsValue(val))
+				return false;
 			storeOldValue();
 		}
-		this.value = createTypeDependentValue(value);
+		this.value = val;
+		return true;
 	}
 	/**
 	 * Вернуть старые значения параметра.

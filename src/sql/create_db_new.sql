@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `param_ids` (
 
 CREATE TABLE IF NOT EXISTS `item` (
   `i_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `i_supertype` int(10) unsigned NOT NULL,
   `i_type_id` int(10) unsigned NOT NULL,
   `i_key` varchar(100) NOT NULL,
   `i_t_key` varchar(100) NOT NULL,
@@ -54,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `item` (
   `i_params` longtext,
   PRIMARY KEY (`i_id`),
   KEY `MAIN` (`i_id`,`i_status`,`i_group`,`i_user`) USING BTREE,
-  KEY `USER_AND_TYPE` (`i_group`,`i_user`,`i_type_id`,`i_status`) USING BTREE
+  KEY `USER_AND_TYPE` (`i_group`,`i_user`,`i_supertype`,`i_status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -162,4 +163,15 @@ CREATE TABLE IF NOT EXISTS `user_group` (
   `ug_group_name` varchar(100) NOT NULL,
   `ug_role` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`ug_user_id`,`ug_group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- ************************************************************
+-- ***   Лог изменений для айтемов с computed параметрами   ***
+-- ************************************************************
+
+
+CREATE TABLE IF NOT EXISTS `computed_log` (
+  `l_item` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`l_item`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

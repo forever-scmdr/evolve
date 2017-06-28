@@ -245,7 +245,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 				if (item == null)
 					continue;
 				item.forceInitialInconsistent();
-				tr.addCommandUnit(SaveItemDBUnit.get(item).ignoreUser(true).fulltextIndex(true, false));
+				tr.addCommandUnit(SaveItemDBUnit.get(item).ignoreUser().dontCloseFulltextIndexWriter());
 				if (tr.getCommandCount() >= 10) {
 					tr.execute();
 				}
@@ -369,7 +369,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		else {
 			item = AdminLoader.loadItem(formItem.getId(), getCurrentAdmin());
 			Item.updateParamValues(formItem, item);
-			transaction.addCommandUnit(SaveItemDBUnit.get(item).fulltextIndex(true, true));
+			transaction.addCommandUnit(SaveItemDBUnit.get(item));
 		}
 		transaction.execute();
 		// Очистить кеш страниц

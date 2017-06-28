@@ -38,7 +38,8 @@ public interface DBConstants
 	{
 		String I_TABLE = "item";
 		String I_ID = "i_id"; // ID айтема (не типа айтема, а конкретного айтема)
-		String I_TYPE_ID = "i_type_id"; // уникальный ID типа айтема (PK)
+		String I_SUPERTYPE = "i_supertype"; // уникальный ID супертипа (непользовательского типа) айтема (PK)
+		String I_TYPE_ID = "i_type_id"; // уникальный ID типа айтема
 		String I_KEY = "i_key"; // Название айтема, которое юзер видит в CMS
 		String I_T_KEY = "i_t_key"; // Уникальный ключ айтема, который можно испльзовать для поиска вместо ID
 		String I_PROTECTED = "i_protected"; // время последнего обновления айтема
@@ -184,5 +185,14 @@ public interface DBConstants
 		String UG_GROUP_ID = "ug_group_id";
 		String UG_GROUP_NAME = "ug_group_name";
 		String UG_ROLE = "ug_role";
+	}
+
+	/**************************************************************************************************
+	 **                         ЛОГ ИЗМЕНЕНИЯ АЙЕТМОВ С COMPUTED ПАРАМТЕРАМИ
+	 **************************************************************************************************/
+
+	interface ComputedLog {
+		String L_TABLE = "computed_log";
+		String L_ITEM = "l_item";
 	}
 }

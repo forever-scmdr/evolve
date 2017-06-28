@@ -1,6 +1,7 @@
 package ecommander.model;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Created by E on 19/2/2017.
@@ -37,5 +38,13 @@ class AssocRegistry {
 
 	Byte[] getAllAssocIds() {
 		return assocById.keySet().toArray(new Byte[0]);
+	}
+
+	Byte[] getAllOtherAssocIds(byte... excludedAssoc) {
+		HashSet<Byte> allIds = new HashSet<>(assocById.keySet());
+		for (byte assocId : excludedAssoc) {
+			allIds.remove(assocId);
+		}
+		return allIds.toArray(new Byte[0]);
 	}
 }

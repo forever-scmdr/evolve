@@ -24,26 +24,28 @@ public final class MultipleParameter extends Parameter {
 	 * Добавление значения
 	 * @param value
 	 */
-	public void setValue(Object value) {
+	public boolean setValue(Object value) {
 		if (value == null || containsValue(value))
-			return;
+			return false;
 		backup();
 		values.add(createSP(value));
+		return true;
 	}
 	/**
 	 * Добавление значения
 	 * @param value
 	 */
-	public void createAndSetValue(String value, boolean isConsistent) {
+	public boolean createAndSetValue(String value, boolean isConsistent) {
 		if (StringUtils.isBlank(value))
-			return;
+			return false;
 		SingleParameter param = desc.createSingleParameter();
 		param.createAndSetValue(value, true);
 		if (values.contains(param))
-			return;
+			return false;
 		if (!isConsistent)
 			backup();
 		values.add(param);
+		return true;
 	}
 	/**
 	 * Удаление значения по индексу

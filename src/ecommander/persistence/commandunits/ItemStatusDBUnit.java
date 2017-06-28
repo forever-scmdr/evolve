@@ -1,7 +1,9 @@
 package ecommander.persistence.commandunits;
 
+import ecommander.model.Assoc;
 import ecommander.model.Item;
 import ecommander.model.ItemBasics;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
@@ -62,7 +64,8 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 		// Потом обновить все сабайтемы
 		updateItemStatus.UPDATE(I_TABLE).INNER_JOIN(IP_TABLE, I_ID, IP_CHILD_ID)
 				.SET().col(I_STATUS).setByte(newStatus)
-				.WHERE().col(IP_PARENT_ID).setLong(item.getId());
+				.WHERE().col(IP_PARENT_ID).setLong(item.getId())
+				.AND().col(IP_ASSOC_ID).setByte(ItemTypeRegistry.getPrimaryAssoc().getId());
 		try(PreparedStatement pstmt = updateItemStatus.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}

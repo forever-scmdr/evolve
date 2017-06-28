@@ -401,7 +401,7 @@ public class FilterAdminServlet extends BasicAdminServlet {
 		new InPlaceTransaction(getCurrentAdmin()) {
 			@Override
 			public void performTransaction() throws Exception {
-				executeCommandUnit(SaveItemDBUnit.get(item).fulltextIndex(false));
+				executeCommandUnit(SaveItemDBUnit.get(item).noFulltextIndex());
 				PageController.clearCache();
 			}
 		}.execute();

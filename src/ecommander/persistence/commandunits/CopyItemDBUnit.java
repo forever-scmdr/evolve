@@ -126,7 +126,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 			}
 		}
 		if (corrections)
-			executeCommand(new UpdateItemParamsDBUnit(item, false).fulltextIndex(false));
+			executeCommand(new UpdateItemParamsDBUnit(item, false).noFulltextIndex());
 
 		// Шаг 5. - Выполнить команду копирования для всех сабайтемов копируемого айтема
 		TemplateQuery allSubitems = new TemplateQuery("Load item primary subitems");

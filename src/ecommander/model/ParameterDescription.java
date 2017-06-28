@@ -188,7 +188,7 @@ public final class ParameterDescription {
 	 * Проверить, есть ли вычисляемое значение
 	 * @return
 	 */
-	public boolean hasComputed() {
+	public boolean isComputed() {
 		return computed != null;
 	}
 	/**

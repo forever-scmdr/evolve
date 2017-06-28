@@ -24,6 +24,8 @@ public class ItemTypeRegistry {
 	private Map<String, ItemTypeContainer> itemsByNames = null; // Все возможные айтемы и корни по именам (имя айтема => объект ItemTypeContainer)
 	private ArrayList<String> itemNames = null; // Именя всех айтемов
 	private Map<Integer, ItemType> itemsByIds = null; // Числовые ID всех айтемов (для оптимизации)
+	private HashSet<Integer> computedSupertypeIds = null; // ID айтемов с computed параметрами
+	private HashMap<Integer, HashSet<Integer>> computedParamSuperytpes = null; // ID всех айтемов, которые базируются на ключевом параметре (ID параметра)
 
 	private Map<Integer, Integer[]> itemExtenders = null;    // Список всех наследников всех айтемов
 	private Map<Integer, Integer[]> basicItemExtenders = null;    // Список всех базовых наслдеников (не пользовательских) всех айтемов
@@ -53,6 +55,8 @@ public class ItemTypeRegistry {
 		itemNames = new ArrayList<>();
 		itemExtenders = new HashMap<>();
 		basicItemExtenders = new HashMap<>();
+		computedSupertypeIds = new HashSet<>();
+		computedParamSuperytpes = new HashMap<>();
 
 		assocRegistry = new AssocRegistry();
 	}
@@ -105,6 +109,14 @@ public class ItemTypeRegistry {
 	}
 
 	/**
+	 * Добавить базовый айтем с computed параметрами
+	 * @param itemTypeId
+	 */
+	static void addComputedSupertype(int itemTypeId) {
+		getSingleton().computedSupertypeIds.add(itemTypeId);
+	}
+
+	/**
 	 * Получение синглтона
 	 * Если реестр заблокирован (производится модификация), доступ к нему может получить только модифицирующий его поток
 	 *
@@ -143,6 +155,7 @@ public class ItemTypeRegistry {
 	static synchronized void unlockSumbit() {
 		if (modifyThread != Thread.currentThread())
 			throw new IllegalStateException("Illegal attempt to unlock item type registry by nonmodifying thread");
+		singleton.createComputedParamsCache();
 		modifyThread = null;
 		tempCopy = null;
 	}
@@ -206,8 +219,10 @@ public class ItemTypeRegistry {
 	 * Можно запускать в обычном режиме и режиме валидации.
 	 * В режиме валидации не заполняется кеш наследников
 	 *
-	 * @param parentChildPairs
+	 * @param basicParentChildPairs
+	 * @param userParentChildPairs
 	 * @param validation
+	 * @return
 	 */
 	static synchronized TypeHierarchyRegistry createHierarchy(ArrayList<String[]> basicParentChildPairs,
 	                                                          ArrayList<String[]> userParentChildPairs, boolean validation) {
@@ -223,7 +238,8 @@ public class ItemTypeRegistry {
 	 * Заполнить буфер для наследников айтемов
 	 * В этом буфере хранятся массивы айтемов, которые расширяют базовый айтем
 	 *
-	 * @param parentChildPairs
+	 * @param basicParentChildPairs
+	 * @param userParentChildPairs
 	 */
 	private void createExtendersCache(ArrayList<String[]> basicParentChildPairs, ArrayList<String[]> userParentChildPairs) {
 		for (String[] strings : basicParentChildPairs) {
@@ -234,7 +250,7 @@ public class ItemTypeRegistry {
 				extIds.add(getItemTypeId(item));
 			}
 			Integer parentId = getItemTypeId(parent);
-			this.basicItemExtenders.put(parentId, extIds.toArray(new Integer[0]));
+			basicItemExtenders.put(parentId, extIds.toArray(new Integer[0]));
 		}
 		for (String[] strings : userParentChildPairs) {
 			String parent = strings[0];
@@ -244,7 +260,43 @@ public class ItemTypeRegistry {
 				extIds.add(getItemTypeId(item));
 			}
 			Integer parentId = getItemTypeId(parent);
-			this.itemExtenders.put(parentId, extIds.toArray(new Integer[0]));
+			itemExtenders.put(parentId, extIds.toArray(new Integer[0]));
+		}
+		// Кеш всех айтемов с computed параметрами
+		HashSet<Integer> allComputedItemIds = new HashSet<>();
+		for (Integer itemId : computedSupertypeIds) {
+			allComputedItemIds.add(itemId);
+			Integer[] basicExtender = basicItemExtenders.get(itemId);
+			if (basicExtender != null) {
+				for (Integer extender : basicExtender) {
+					allComputedItemIds.add(extender);
+				}
+			}
+		}
+		computedSupertypeIds = allComputedItemIds;
+	}
+
+	/**
+	 * Создать кеш отобразения параметр => айтемы с вычистяемыми параметрами, для которых он является базовым
+	 * Этот метод нужно вызывать когда уже готовы иерархии в во все айтемы добавлены все параметры
+	 */
+	private void createComputedParamsCache() {
+		for (Integer computedSupertypeId : computedSupertypeIds) {
+			ItemType item = itemsByIds.get(computedSupertypeId);
+			for (ParameterDescription param : item.getParameterList()) {
+				if (param.isComputed()) {
+					for (ComputedDescription.Ref baseRef : param.getComputed().getBasicParams()) {
+						ItemType baseItem = (ItemType) itemsByNames.get(baseRef.item);
+						ParameterDescription baseParam = baseItem.getParameter(baseRef.param);
+						HashSet<Integer> computedItemIds = computedParamSuperytpes.get(baseParam.getId());
+						if (computedItemIds == null) {
+							computedItemIds = new HashSet<>();
+							computedParamSuperytpes.put(baseParam.getId(), computedItemIds);
+						}
+						computedItemIds.add(computedSupertypeId);
+					}
+				}
+			}
 		}
 	}
 
@@ -435,4 +487,51 @@ public class ItemTypeRegistry {
 		return getSingleton().assocRegistry.getAllAssocIds();
 	}
 
+	/**
+	 * Получить ID всех ассоциаций, кроме заданных.
+	 * Эта операция нужна в частности для записи в лог изменений computed параметров
+	 * @param exlcudedAssocId
+	 * @return
+	 */
+	public static Byte[] getAllOtherAssocIds(byte... exlcudedAssocId) {
+		return getSingleton().assocRegistry.getAllOtherAssocIds(exlcudedAssocId);
+	}
+
+	/**
+	 * Есть ли айтемы с computed-параметрами в модели данных
+	 * @return
+	 */
+	public static boolean hasComputedItems() {
+		return getSingleton().computedSupertypeIds.size() > 0;
+	}
+
+	/**
+	 * Получить список всех базовых типов айтемов, которые имеют computed-парамтеры
+	 * @return
+	 */
+	public static Integer[] getAllComputedSupertypes() {
+		return getSingleton().computedSupertypeIds.toArray(new Integer[0]);
+	}
+
+	/**
+	 * Получить список всех базовых типов айтемов, которые содержат параметры, которые в свою очередь
+	 * базируются на переданных в качестве аргумента параметрах.
+	 * Например, после изменения айтема, нужно получить список типов айтемов, которые должны быть подвергнуты
+	 * модификации в связи с изменением этих параметров
+	 * @param modifiedParamIds
+	 * @return
+	 */
+	public static Integer[] getAffectedComputedSupertypes(Collection<Integer> modifiedParamIds) {
+		HashSet<Integer> supertypeIds = new HashSet<>();
+		for (Integer paramId : modifiedParamIds) {
+			HashSet<Integer> paramBasedSypertypeIds = getSingleton().computedParamSuperytpes.get(paramId);
+			if (paramBasedSypertypeIds != null)
+				supertypeIds.addAll(paramBasedSypertypeIds);
+		}
+		return supertypeIds.toArray(new Integer[0]);
+	}
+
+	public static boolean hasAffectedComputedSupertypes(Collection<Integer> modifiedParamIds) {
+		return getSingleton().computedParamSuperytpes.keySet();
+	}
 }

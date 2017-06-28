@@ -131,7 +131,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		}
 		TemplateQuery base = new TemplateQuery("Load root subitems part");
 		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED).FROM(I_TABLE)
-				.WHERE().col(I_TYPE_ID, " IN(").setIntArray(allTypes.toArray(new Integer[0])).sql(")").AND()
+				.WHERE().col(I_SUPERTYPE, " IN(").setIntArray(allTypes.toArray(new Integer[0])).sql(")").AND()
 				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")").AND();
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();

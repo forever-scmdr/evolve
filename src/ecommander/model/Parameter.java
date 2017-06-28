@@ -61,13 +61,13 @@ public abstract class Parameter {
 	 * @param value
 	 * @param isConsistent - при загрузке из БД - true, при изменении в процессе работы приложения - false
 	 */
-	abstract void createAndSetValue(String value, boolean isConsistent);
+	abstract boolean createAndSetValue(String value, boolean isConsistent);
 
 	/**
 	 * Установить значение напрямую без создания
 	 * @param value
 	 */
-	abstract void setValue(Object value);
+	abstract boolean setValue(Object value);
 	public abstract boolean isEmpty();
 	public abstract boolean containsValue(Object value);
 	/**

@@ -438,7 +438,7 @@ public class TemplateQuery implements QueryPart {
 		String QUERY_SKELETON 
 			= "SELECT CHILD.*<<PREDECESSOR_ID>>"
 			+ " FROM " + DBConstants.ItemTbl.I_TABLE + " AS CHILD <<JOIN>>"
-			+ " WHERE CHILD." + DBConstants.ItemTbl.I_TYPE_ID + " IN <<POLYMORPHIC_TYPE_IDS>>"
+			+ " WHERE CHILD." + DBConstants.ItemTbl.I_SUPERTYPE + " IN <<POLYMORPHIC_TYPE_IDS>>"
 			+ " <<PARENT_CONDITION>> <<USER_CONDITION>> <<FILTER_CONDITION>> "
 			+ " ORDER BY <<SORTING>> CHILD." + DBConstants.ItemTbl.I_KEY
 			+ " <<LIMIT>>";

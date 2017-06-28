@@ -82,16 +82,52 @@ computed-предшественник - айтем, который содерж�
 Возможные типы вложенных айтемов можно вычислять исходя из типа объекта операции. Таким образом можно оценить,
 нужно ли вообще начинать процедуру обновления computed-параметров.
 
-Удаление:   # 101 - удаляемый айтем, 1 - первичная ассоциация
+
+									УДАЛЕНИЕ
+
+
+# 101 - удаляемый айтем, 1 - первичная ассоциация
 1)	UPDATE item SET status = 3 WHERE id = 101;
 2)	UPDATE item INNER JOIN item_parent ON p_id = id SET status = 3 WHERE parent = 101 AND assoc = 1;
 
-1)	INSERT INTO log (item) SELECT parent FROM item_parent WHERE child = 101 AND assoc = 1
+1)	INSERT INTO log (item)
+	SELECT id
+	FROM item INNER JOIN item_parent ON parent = id
+	WHERE child = 101 AND assoc = 1 AND supertype IN (типы айтемов с computed параметрами)
+
 2)	Поиск предшественников      # P1.parent - предки потомков 101
 	INSERT INTO log (item)
-	SELECT parent
-	FROM item_parent AS P1
+	SELECT I.id
+	FROM item AS I INNER JOIN item_parent AS P1 ON (I.id = P1.parent)
 	INNER JOIN item_parent AS P2 ON P2.child = P1.child
 	WHERE P2.parent = 101
 	AND P1.assoc IN (все, кроме 1)      # ассоциации помимо первичной
-	AND P1.child_supertype IN (типы айтемов с computed параметрами)
+	AND I.supertype IN (типы айтемов с computed параметрами)
+
+
+									СОЗДАНИЕ, УДАЛЕНИЕ АССОЦИАЦИЙ
+
+
+# 101 - удаляемый айтем, А - ассоциация (первичная, если создание или копирование, другая, если создание ассоциации)
+	INSERT INTO log (item)
+	SELECT id
+	FROM item INNER JOIN item_parent ON parent = id
+	WHERE child = 101 AND assoc = A AND supertype IN (типы айтемов с computed параметрами)
+
+
+									ПЕРЕМЕЩЕНИЕ
+
+
+# 101 - перемещаемый айтем, 1 - первичная ассоциация
+
+1) Запрос до фактического перемещения (до соответствующих запросов)
+	INSERT INTO log (item)
+	SELECT id
+	FROM item INNER JOIN item_parent ON parent = id
+	WHERE child = 101 AND assoc = 1 AND supertype IN (типы айтемов с computed параметрами)
+
+2) Запрос (такой же) после фактического перемещения (после соответствующих запросов)
+	INSERT INTO log (item)
+	SELECT id
+	FROM item INNER JOIN item_parent ON parent = id
+	WHERE child = 101 AND assoc = 1 AND supertype IN (типы айтемов с computed параметрами)

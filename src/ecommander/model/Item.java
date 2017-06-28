@@ -667,6 +667,14 @@ public class Item implements ItemBasics {
 	public final int getTypeId() {
 		return itemType.getTypeId();
 	}
+
+	/**
+	 * Получить базовый супертип (последний непользовательский тип в иерархии)
+	 * @return
+	 */
+	public final int getBasicSupertypeId() {
+		return itemType.getSuperType().getTypeId();
+	}
 	/**
 	 * @return
 	 */

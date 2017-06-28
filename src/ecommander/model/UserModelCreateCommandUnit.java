@@ -109,7 +109,7 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 			user.addGroup(groupName, UserGroupRegistry.getGroup(groupName),
 					StringUtils.equalsIgnoreCase(ADMIN_VALUE, roleName) ? (byte)1 : (byte)0);
 		}
-		executeCommand(new SaveNewUserDBUnit(user).ignoreUser(true));
+		executeCommand(new SaveNewUserDBUnit(user).ignoreUser());
 	}
 
 

@@ -126,7 +126,6 @@
 		INNER JOIN parent AS p ON (i.id = p.child_id)
 	WHERE
         i.status = 0
-        AND i.type_id IN (S)
 
 		# Родительский критерий
 		AND p.child_supertype IN (S) AND p.parent_direct = 1

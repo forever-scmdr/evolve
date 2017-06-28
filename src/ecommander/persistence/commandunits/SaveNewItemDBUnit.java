@@ -69,7 +69,8 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		//
 		TemplateQuery itemInsert = new TemplateQuery("New item insert");
 		itemInsert.INSERT_INTO(I_TABLE).SET()
-				.col(I_TYPE_ID).setInt(item.getTypeId())
+				.col(I_SUPERTYPE).setInt(item.getBasicSupertypeId())
+				._col(I_TYPE_ID).setInt(item.getTypeId())
 				._col(I_KEY).setString(item.getKey())
 				._col(I_T_KEY).setString(item.getKeyUnique())
 				._col(I_PROTECTED).setByte(item.isFileProtected() ? (byte)1 : (byte)0)
