@@ -68,7 +68,7 @@
 				<filter>
 					<!--Загрузить товары, которые содержат вложенный айтем цены со скидкой-->
 					<!--по идее не обязательно указывать оба атрибута assoc и child, иногда достаточно одного-->
-					<parameter name="discount" assoc="seller_price" child="price" sign="&gt;" value="2"><var value="2"/></parameter>
+					<parameter name="discount" assoc="seller_price" child="price" sign="&gt;"><var value="2"/></parameter>
 					<parameter name="price" sign="&lt;=" ><var value="{price_to}"/></parameter>
 				</filter>
 			</list>

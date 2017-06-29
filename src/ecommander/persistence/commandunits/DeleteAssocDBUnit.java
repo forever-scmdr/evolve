@@ -1,7 +1,5 @@
 package ecommander.persistence.commandunits;
 
-import ecommander.fwk.EcommanderException;
-import ecommander.fwk.ErrorCodes;
 import ecommander.model.Assoc;
 import ecommander.model.Item;
 import ecommander.model.ItemBasics;
@@ -11,8 +9,6 @@ import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.HashSet;
 
 /**
  * Команда для создания новой ассоциации между двумя айтемами. Один айтем - родитель, второй атйем - потомок
@@ -55,7 +51,7 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		long childId = item.getId();
 		TemplateQuery delete = new TemplateQuery("Delete assoc");
 
-		delete.DELETE_FROM_WHERE(IP_TABLE).WHERE()
+		delete.DELETE_FROM_WHERE(ITEM_PARENT).WHERE()
 				.col(IP_PARENT_ID).setLong(parent.getId()).AND()
 				.col(IP_CHILD_ID).setLong(item.getId())
 				.col(IP_ASSOC_ID).setByte(assocId).sql(" \r\n");
@@ -65,7 +61,7 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		if (assoc.isTransitive()) {
 			delete
 					.DELETE("PRED, SUCC")
-					.FROM(IP_TABLE + " AS PRED", IP_TABLE + " AS SUCC")
+					.FROM(ITEM_PARENT + " AS PRED", ITEM_PARENT + " AS SUCC")
 					.WHERE()
 					.col("PRED." + IP_CHILD_ID).setLong(parent.getId()).AND().col("PRED." + IP_ASSOC_ID).setByte(assocId)
 					.AND()
@@ -74,5 +70,11 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 				pstmt.executeUpdate();
 			}
 		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+		//         Включить в список обновления предшественников айтема (и его сабайтемов)      //
+		//////////////////////////////////////////////////////////////////////////////////////////
+
+		addItemPredecessorsToComputedLog(item.getId(), assocId);
 	}
 }

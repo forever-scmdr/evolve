@@ -15,7 +15,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -69,7 +68,7 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 		String name = group.attr(NAME);
 		if (!UserGroupRegistry.groupExists(name)) {
 			TemplateQuery insertGroup = new TemplateQuery("Save new group");
-			insertGroup.INSERT_INTO(Group.G_TABLE, Group.G_NAME).sql(" VALUES (").setString(name).sql(")");
+			insertGroup.INSERT_INTO(Group.GROUPS, Group.G_NAME).sql(" VALUES (").setString(name).sql(")");
 			try (PreparedStatement pstmt = insertGroup.prepareQuery(getTransactionContext().getConnection(), true)) {
 				pstmt.executeUpdate();
 				ResultSet rs = pstmt.getGeneratedKeys();

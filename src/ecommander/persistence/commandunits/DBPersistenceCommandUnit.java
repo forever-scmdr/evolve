@@ -1,16 +1,16 @@
 package ecommander.persistence.commandunits;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import ecommander.fwk.UserNotAllowedException;
-import ecommander.model.ItemBasics;
-import ecommander.model.Security;
-import ecommander.model.UserMapper;
+import ecommander.model.*;
 import ecommander.persistence.common.PersistenceCommandUnit;
+import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.common.TransactionContext;
-import ecommander.model.User;
+import ecommander.persistence.mappers.DBConstants;
 
 import javax.naming.NamingException;
 
@@ -19,13 +19,14 @@ import javax.naming.NamingException;
  * @author EEEE
  *
  */
-public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit {
+public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit, DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants.ComputedLog {
 	
 	protected TransactionContext context;
 	boolean ignoreUser = false;
 	boolean ignoreFileErrors = false;
 	boolean insertIntoFulltextIndex = true;
 	boolean closeLuceneWriter = true;
+	boolean processComputed = true;
 	private ArrayList<PersistenceCommandUnit> executedCommands;
 	
 	public TransactionContext getTransactionContext() {
@@ -73,6 +74,16 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 */
 	public DBPersistenceCommandUnit ignoreFileErrors() {
 		this.ignoreFileErrors = true;
+		return this;
+	}
+
+	/**
+	 * Не включать в список обновления computed параметров айтемы, computed-параметры которых должны быть
+	 * обновлены в связи с действиями команды
+	 * @return
+	 */
+	public DBPersistenceCommandUnit ingoreComputed() {
+		this.processComputed = false;
 		return this;
 	}
 	/**
@@ -176,6 +187,30 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 		} else {
 			if (!adminGroups.containsAll(newUserGroups) || !adminGroups.containsAll(oldUserGroups)) {
 				throw new UserNotAllowedException("Action is not allowed to user " + admin.getName());
+			}
+		}
+	}
+
+	/**
+	 * Добавить в очередь обновления computed-айтемов всех предшественников заданного айтема с заданными
+	 * ассоциациями
+	 * @param itemId
+	 * @param assocId
+	 * @throws SQLException
+	 */
+	protected final void addItemPredecessorsToComputedLog(long itemId, Byte... assocId) throws SQLException {
+		if (processComputed && ItemTypeRegistry.hasComputedItems()) {
+			TemplateQuery logInsert = new TemplateQuery("Insert into update log");
+			logInsert
+					.INSERT_INTO(COMPUTED_LOG, L_ITEM)
+					.SELECT(I_ID).FROM(ITEM).INNER_JOIN(ITEM_PARENT, I_ID, IP_PARENT_ID)
+					.WHERE().col(IP_CHILD_ID).setLong(itemId)
+					.AND().col(IP_ASSOC_ID, " IN").byteArrayIN(assocId)
+					.AND().col(I_SUPERTYPE, " IN").intArrayIN(ItemTypeRegistry.getAllComputedSupertypes())
+					.ON_DUPLICATE_KEY_UPDATE(L_ITEM).sql(L_ITEM);
+
+			try(PreparedStatement pstmt = logInsert.prepareQuery(getTransactionContext().getConnection())) {
+				pstmt.executeUpdate();
 			}
 		}
 	}

@@ -804,6 +804,23 @@ public class Item implements ItemBasics {
 	}
 
 	/**
+	 * Вернуть все параметры, которые были изменены в результате редактирования айтема
+	 * Это нужно в первую очередь для того, чтобы определить, нужно ли пересчитывать computed параметры
+	 * айтемов, для которых данный айтем является базовым
+	 * @return
+	 */
+	public final HashSet<Integer> getModifiedParams() {
+		if (state == State.consistent_NO_map || state == State.consistent_WITH_map)
+			return new HashSet<>(0);
+		HashSet<Integer> modified = new HashSet<>();
+		for (Parameter param : paramMap.values()) {
+			if (param.hasChanged())
+				modified.add(param.getParamId());
+		}
+		return modified;
+	}
+
+	/**
 	 * @see Object#toString()
 	 */
 	public final String toString() {

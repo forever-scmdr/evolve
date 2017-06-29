@@ -36,7 +36,7 @@ public interface DBConstants
 	 */
 	interface ItemTbl
 	{
-		String I_TABLE = "item";
+		String ITEM = "item";
 		String I_ID = "i_id"; // ID айтема (не типа айтема, а конкретного айтема)
 		String I_SUPERTYPE = "i_supertype"; // уникальный ID супертипа (непользовательского типа) айтема (PK)
 		String I_TYPE_ID = "i_type_id"; // уникальный ID типа айтема
@@ -54,7 +54,7 @@ public interface DBConstants
 	 * Таблица, в которой хранится описание модели данных в виде XML
 	 */
 	interface ModelXML {
-		String XML_TABLE = "model_xml";
+		String MODEL_XML = "model_xml";
 		String XML_NAME = "xml_name";
 		String XML_XML = "xml_xml";
 	}
@@ -64,7 +64,7 @@ public interface DBConstants
 	 *
 	 */
 	interface UniqueItemKeys {
-		String UK_TABLE = "unique_key";
+		String UNIQUE_KEY = "unique_key";
 		String UK_ID = "uk_item_id"; // ID айтема
 		String UK_KEY = "uk_key"; // Уникальный текстовый ключ
 	}
@@ -74,7 +74,7 @@ public interface DBConstants
 	 *
 	 */
 	interface ItemParent {
-		String IP_TABLE = "item_parent";
+		String ITEM_PARENT = "item_parent";
 		String IP_ASSOC_ID = "ip_assoc_id"; // ID ассоциации
 		String IP_PARENT_ID = "ip_parent_id"; // ID предка
 		String IP_CHILD_ID = "ip_child_id"; // ID потомка
@@ -94,10 +94,10 @@ public interface DBConstants
 	 * @author EEEE
 	 */
 	interface ItemIndexes {
-		String INT_TABLE_NAME = "int_index";
-		String DECIMAL_TABLE_NAME = "decimal_index";
-		String DOUBLE_TABLE_NAME = "double_index";
-		String STRING_TABLE_NAME = "string_index";
+		String INT_INDEX = "int_index";
+		String DECIMAL_INDEX = "decimal_index";
+		String DOUBLE_INDEX = "double_index";
+		String STRING_INDEX = "string_index";
 		String II_ITEM_ID = "ii_item"; // ID айтема (не типа айтема, а конкретного айтема)
 		String II_ITEM_TYPE = "ii_type"; // ID типа айтема
 		String II_PARAM = "ii_param"; // ID параметра айтема (каждый параметр имеет уникальный ID вне зависимости от уникальности его названия)
@@ -110,7 +110,7 @@ public interface DBConstants
 	 *
 	 */
 	interface AssocIds {
-		String AID_TABLE = "assoc_ids";
+		String ASSOC_IDS = "assoc_ids";
 		String AID_ASSOC_NAME = "aid_name";
 		String AID_ASSOC_ID = "aid_id";
 	}
@@ -121,7 +121,7 @@ public interface DBConstants
 	 *
 	 */
 	interface ItemIds {
-		String IID_TABLE = "item_ids";
+		String ITEM_IDS = "item_ids";
 		String IID_ITEM_NAME = "iid_name";
 		String IID_ITEM_ID = "iid_id";
 	}
@@ -132,7 +132,7 @@ public interface DBConstants
 	 *
 	 */
 	interface ParamIds {
-		String PID_TABLE = "param_ids";
+		String PARAM_IDS = "param_ids";
 		String PID_ITEM_ID = "pid_item_id";
 		String PID_PARAM_NAME = "pid_param_name";
 		String PID_PARAM_ID = "pid_param_id";
@@ -158,7 +158,7 @@ public interface DBConstants
 	 * @author E
 	 */
 	interface Group {
-		String G_TABLE = "groups";
+		String GROUPS = "groups";
 		String G_ID = "g_id";
 		String G_NAME = "g_name";
 	}
@@ -168,7 +168,7 @@ public interface DBConstants
 	 * @author E
 	 */
 	interface UsersTbl {
-		String U_TABLE = "user";
+		String USER = "user";
 		String U_ID = "u_id";
 		String U_LOGIN = "u_login";
 		String U_PASSWORD = "u_password";
@@ -180,7 +180,7 @@ public interface DBConstants
 	 * и роли пользователей в этих группах (простой пользователь или админ)
 	 */
 	interface UserGroups {
-		String UG_TABLE = "user_group";
+		String USER_GROUP = "user_group";
 		String UG_USER_ID = "ug_user_id";
 		String UG_GROUP_ID = "ug_group_id";
 		String UG_GROUP_NAME = "ug_group_name";
@@ -192,7 +192,7 @@ public interface DBConstants
 	 **************************************************************************************************/
 
 	interface ComputedLog {
-		String L_TABLE = "computed_log";
+		String COMPUTED_LOG = "computed_log";
 		String L_ITEM = "l_item";
 	}
 }

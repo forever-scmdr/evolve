@@ -5,6 +5,7 @@ import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
@@ -44,7 +45,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 		if (item.getItemType().isKeyUnique() && !StringUtils.equals(item.getKeyUnique(), item.getOldKeyUnique())) {
 			long itemId = 0;
 			// Запрос на получение значения
-			String selectSql = "SELECT " + UK_ID + " FROM " + UK_TABLE + " WHERE " + UK_KEY + "=?";
+			String selectSql = "SELECT " + UK_ID + " FROM " + UNIQUE_KEY + " WHERE " + UK_KEY + "=?";
 			try (PreparedStatement pstmt = conn.prepareStatement(selectSql)) {
 				pstmt.setString(1, item.getKeyUnique());
 				ResultSet rs = pstmt.executeQuery();
@@ -58,12 +59,12 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 				item.setKeyUnique(item.getKeyUnique() + item.getId());
 			// Айтем имел значение уникального ключа
 			if (StringUtils.isNotBlank(item.getOldKeyUnique())) {
-				query.UPDATE(UK_TABLE).SET().col(UK_KEY).setString(item.getKeyUnique())
+				query.UPDATE(UNIQUE_KEY).SET().col(UK_KEY).setString(item.getKeyUnique())
 						.WHERE().col(UK_KEY).setString(item.getOldKeyUnique()).AND().col(UK_ID).setLong(item.getId());
 			}
 			// Айтем раньше не имел уникального ключа
 			else {
-				query.INSERT_INTO(UK_TABLE).SET().col(UK_ID).setLong(item.getId())._col(UK_KEY).setString(item.getKeyUnique());
+				query.INSERT_INTO(UNIQUE_KEY).SET().col(UK_ID).setLong(item.getId())._col(UK_KEY).setString(item.getKeyUnique());
 			}
 
 			try (PreparedStatement pstmt = query.prepareQuery(conn)) {
@@ -73,7 +74,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 
 		// Обновление параметров в таблице айтема
 		TemplateQuery updateItem = new TemplateQuery("Update item");
-		updateItem.UPDATE(ItemTbl.I_TABLE).SET()
+		updateItem.UPDATE(ItemTbl.ITEM).SET()
 				.col(ItemTbl.I_KEY).setString(item.getKey())
 				._col(ItemTbl.I_T_KEY).setString(item.getKeyUnique())
 				._col(ItemTbl.I_PARAMS).setString(item.outputValues())
@@ -103,6 +104,14 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 				PersistenceCommandUnit command = fac.createCommand(item);
 				executeCommandInherited(command);
 			}
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+		//         Включить в список обновления предшественников айтема (и его сабайтемов)      //
+		//////////////////////////////////////////////////////////////////////////////////////////
+
+		if (ItemTypeRegistry.hasAffectedComputedSupertypes(item.getModifiedParams())) {
+			addItemPredecessorsToComputedLog(item.getId(), ItemTypeRegistry.getAllAssocIds());
 		}
 	}
 

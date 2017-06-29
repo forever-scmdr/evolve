@@ -27,7 +27,7 @@ import java.util.HashSet;
  * @author EEEE
  *
  */
-public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemParent, DBConstants.ItemTbl {
+public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemParent, DBConstants.ItemTbl, DBConstants.ComputedLog {
 	
 	private static final HashSet<Type> TEXT_PARAM_TYPES = new HashSet<>();
 	static {
@@ -73,7 +73,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 
 		// Проверка, можно ли копировать
 		TemplateQuery check = new TemplateQuery("Check if copying possible");
-		check.SELECT(IP_CHILD_ID).FROM(IP_TABLE).WHERE()
+		check.SELECT(IP_CHILD_ID).FROM(ITEM_PARENT).WHERE()
 				.col(IP_PARENT_ID).setLong(baseItem.getId()).AND()
 				.col(IP_CHILD_ID).setLong(newParent.getId());
 		try (PreparedStatement pstmt = check.prepareQuery(getTransactionContext().getConnection())) {
@@ -130,7 +130,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 
 		// Шаг 5. - Выполнить команду копирования для всех сабайтемов копируемого айтема
 		TemplateQuery allSubitems = new TemplateQuery("Load item primary subitems");
-		allSubitems.SELECT("*").FROM(I_TABLE).INNER_JOIN(IP_TABLE, I_ID, IP_CHILD_ID).WHERE()
+		allSubitems.SELECT("*").FROM(ITEM).INNER_JOIN(ITEM_PARENT, I_ID, IP_CHILD_ID).WHERE()
 				.col(IP_ASSOC_ID).setByte(ItemTypeRegistry.getPrimaryAssoc().getId()).AND()
 				.col(IP_PARENT_ID).setLong(baseItem.getId()).AND()
 				.col(IP_PARENT_DIRECT).setByte((byte) 1);
@@ -144,6 +144,12 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 		for (Item subitem : subitems) {
 			executeCommand(new CopyItemDBUnit(subitem, item));
 		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+		//         Включить в список обновления предшественников айтема (и его сабайтемов)      //
+		//////////////////////////////////////////////////////////////////////////////////////////
+
+		addItemPredecessorsToComputedLog(item.getId(), ItemTypeRegistry.getPrimaryAssoc().getId());
 	}
 
 }

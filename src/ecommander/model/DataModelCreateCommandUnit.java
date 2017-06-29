@@ -93,7 +93,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		// Если модель не найдена в БД, поменять режим на загрузку из файлов
 		if (mode == Mode.load) {
 			Statement stmt = getTransactionContext().getConnection().createStatement();
-			String selectXML = "SELECT * FROM " + ModelXML.XML_TABLE;
+			String selectXML = "SELECT * FROM " + ModelXML.MODEL_XML;
 			ServerLogger.debug(selectXML);
 			ResultSet rs = stmt.executeQuery(selectXML);
 			ArrayList<String> xmls = new ArrayList<>();
@@ -197,7 +197,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			if (mode == Mode.force_update) {
 				try (Statement stmt = getTransactionContext().getConnection().createStatement()) {
 					String sql
-							= "UPDATE " + AssocIds.AID_TABLE
+							= "UPDATE " + AssocIds.ASSOC_IDS
 							+ " SET " + AssocIds.AID_ASSOC_NAME + "='" + name
 							+ "' WHERE " + AssocIds.AID_ASSOC_ID + "=" + savedId;
 					ServerLogger.debug(sql);
@@ -214,7 +214,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			byte newId = ++maxAssocId;
 			if (mode == Mode.force_update) {
 				try (Statement stmt = getTransactionContext().getConnection().createStatement()) {
-					String sql = "INSERT " + AssocIds.AID_TABLE + " (" + AssocIds.AID_ASSOC_NAME + ") VALUES ('" + name + "')";
+					String sql = "INSERT " + AssocIds.ASSOC_IDS + " (" + AssocIds.AID_ASSOC_NAME + ") VALUES ('" + name + "')";
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 					ResultSet keys = stmt.getGeneratedKeys();
@@ -266,7 +266,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			if (mode == Mode.force_update) {
 				try (Statement stmt = getTransactionContext().getConnection().createStatement()) {
 					String sql
-							= "UPDATE " + ItemIds.IID_TABLE
+							= "UPDATE " + ItemIds.ITEM_IDS
 							+ " SET " + ItemIds.IID_ITEM_NAME + "='" + name
 							+ "' WHERE " + ItemIds.IID_ITEM_ID + "=" + savedId;
 					ServerLogger.debug(sql);
@@ -284,7 +284,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			if (mode == Mode.force_update) {
 				Statement stmt = getTransactionContext().getConnection().createStatement();
 				try {
-					String sql = "INSERT " + ItemIds.IID_TABLE + " (" + ItemIds.IID_ITEM_NAME + ") VALUES ('" + name + "')";
+					String sql = "INSERT " + ItemIds.ITEM_IDS + " (" + ItemIds.IID_ITEM_NAME + ") VALUES ('" + name + "')";
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 					ResultSet keys = stmt.getGeneratedKeys();
@@ -404,7 +404,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			if (mode == Mode.force_update) {
 				try (Statement stmt = getTransactionContext().getConnection().createStatement()) {
 					String sql
-							= "UPDATE " + ParamIds.PID_TABLE
+							= "UPDATE " + ParamIds.PARAM_IDS
 							+ " SET " + ParamIds.PID_PARAM_NAME + "='" + name
 							+ "' WHERE " + ParamIds.PID_PARAM_ID + "=" + savedId;
 					ServerLogger.debug(sql);
@@ -422,7 +422,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			if (mode == Mode.force_update) {
 				try (Statement stmt = getTransactionContext().getConnection().createStatement()) {
 					String sql
-							= "INSERT " + ParamIds.PID_TABLE + " ("
+							= "INSERT " + ParamIds.PARAM_IDS + " ("
 							+ ParamIds.PID_ITEM_ID + ", " + ParamIds.PID_PARAM_NAME
 							+ ") VALUES (" + item.getTypeId() + ", '" + name + "')";
 					ServerLogger.debug(sql);
@@ -551,12 +551,12 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			// Удаление из табилцы ассоциаций
 			// Удаление из таблицы родтиелей и потомков по ассоциации
 			if (assocsById.size() > 0) {
-				sql = "DELETE FROM " + AssocIds.AID_TABLE
+				sql = "DELETE FROM " + AssocIds.ASSOC_IDS
 						+ " WHERE " + AssocIds.AID_ASSOC_ID + " IN " + createInByte(assocsById.keySet());
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 
-				sql = "DELETE FROM " + ItemParent.IP_TABLE
+				sql = "DELETE FROM " + ItemParent.ITEM_PARENT
 						+ " WHERE " + ItemParent.IP_ASSOC_ID + " IN " + createInByte(assocsById.keySet());
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
@@ -566,7 +566,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 
 			// Удаление из таблицы ID айтемов
 			if (itemsById.size() > 0) {
-				sql = "DELETE FROM " + ItemIds.IID_TABLE
+				sql = "DELETE FROM " + ItemIds.ITEM_IDS
 						+ " WHERE " + ItemIds.IID_ITEM_ID + " IN " + createIn(itemsById.keySet());
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
@@ -591,7 +591,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 						paramsToDeleteFromIndex.add(pid);
 					}
 					// Обновить таблицу параметров - установить нового предка параметра
-					sql = "UPDATE " + ParamIds.PID_TABLE + " SET " + ParamIds.PID_ITEM_ID + "=" +
+					sql = "UPDATE " + ParamIds.PARAM_IDS + " SET " + ParamIds.PID_ITEM_ID + "=" +
 							newParentItemId + " WHERE " + ParamIds.PID_PARAM_ID + "=" + pid;
 					ServerLogger.debug(sql);
 					stmt.executeUpdate(sql);
@@ -600,7 +600,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			}
 			// Удаление из таблиц индексов параметров
 			if (paramsToDeleteFromIndex.size() > 0) {
-				String[] tables = {ItemIndexes.INT_TABLE_NAME, ItemIndexes.DOUBLE_TABLE_NAME, ItemIndexes.STRING_TABLE_NAME};
+				String[] tables = {ItemIndexes.INT_INDEX, ItemIndexes.DOUBLE_INDEX, ItemIndexes.STRING_INDEX};
 				for (String table : tables) {
 					sql = "DELETE FROM " + table + " WHERE " + ItemIndexes.II_PARAM + " IN " + createIn(paramsToDeleteFromIndex);
 					ServerLogger.debug(sql);
@@ -610,7 +610,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			}
 			// Удаление из главной таблицы айтемов
 			if (itemsById.size() > 0) {
-				sql = "DELETE FROM " + ItemTbl.I_TABLE + " WHERE " + ItemTbl.I_TYPE_ID + " IN " + createIn(itemsById.keySet());
+				sql = "DELETE FROM " + ItemTbl.ITEM + " WHERE " + ItemTbl.I_TYPE_ID + " IN " + createIn(itemsById.keySet());
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;
@@ -619,7 +619,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			for (Map.Entry<File, String> file : xmlFileContents.entrySet()) {
 				try {
 					sql
-							= "INSERT " + ModelXML.XML_TABLE + " ("
+							= "INSERT " + ModelXML.MODEL_XML + " ("
 							+ ModelXML.XML_NAME + ", " + ModelXML.XML_XML
 							+ ") VALUES ('" + file.getKey().getName() + "', '" + file.getValue() + "') ON DUPLICATE KEY UPDATE "
 							+ ModelXML.XML_XML + "='" + file.getValue() + "'";
@@ -637,7 +637,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	private void loadIds() throws SQLException {
 		Statement stmt = getTransactionContext().getConnection().createStatement();
 
-		String selectAssocIds = "SELECT * FROM " + AssocIds.AID_TABLE;
+		String selectAssocIds = "SELECT * FROM " + AssocIds.ASSOC_IDS;
 		ServerLogger.debug(selectAssocIds);
 		ResultSet rs = stmt.executeQuery(selectAssocIds);
 		while (rs.next()) {
@@ -650,7 +650,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		}
 		rs.close();
 
-		String selectItemIds = "SELECT * FROM " + ItemIds.IID_TABLE;
+		String selectItemIds = "SELECT * FROM " + ItemIds.ITEM_IDS;
 		ServerLogger.debug(selectItemIds);
 		rs = stmt.executeQuery(selectItemIds);
 		while (rs.next()) {
@@ -665,12 +665,12 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		rs.close();
 		// удаление ненужных но почему-то присутствующих параметров
 		String deleteParamIds 
-			= "DELETE FROM " + ParamIds.PID_TABLE + " WHERE " + ParamIds.PID_ITEM_ID
-			+ " NOT IN (SELECT " + ItemIds.IID_ITEM_ID + " FROM " + ItemIds.IID_TABLE + ")";
+			= "DELETE FROM " + ParamIds.PARAM_IDS + " WHERE " + ParamIds.PID_ITEM_ID
+			+ " NOT IN (SELECT " + ItemIds.IID_ITEM_ID + " FROM " + ItemIds.ITEM_IDS + ")";
 		ServerLogger.debug(deleteParamIds);
 		stmt.executeUpdate(deleteParamIds);
 
-		String selectParamIds = "SELECT * FROM " + ParamIds.PID_TABLE;
+		String selectParamIds = "SELECT * FROM " + ParamIds.PARAM_IDS;
 		ServerLogger.debug(selectParamIds);
 		rs = stmt.executeQuery(selectParamIds);
 		while (rs.next()) {

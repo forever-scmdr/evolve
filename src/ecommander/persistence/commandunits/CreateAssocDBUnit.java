@@ -17,7 +17,7 @@ import java.util.HashSet;
  * его загрузка для проверки прав
  * Created by User on 20.03.2017.
  */
-public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemParent {
+public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemParent, DBConstants.ItemTbl, DBConstants.ComputedLog {
 
 	private Item item;
 	private long parentId;
@@ -75,10 +75,10 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			if (assoc.isTransitive()) {
 				// У ассоциируемых айтемов не должно быть общих предков
 				TemplateQuery checkQuery = new TemplateQuery("check assoc validity transitive");
-				checkQuery.SELECT(IP_PARENT_ID).FROM(IP_TABLE).WHERE()
+				checkQuery.SELECT(IP_PARENT_ID).FROM(ITEM_PARENT).WHERE()
 						.col(IP_CHILD_ID).setLong(item.getId()).AND().col(IP_ASSOC_ID).setByte(assocId)
 						.UNION_ALL()
-						.SELECT(IP_PARENT_ID).FROM(IP_TABLE).WHERE()
+						.SELECT(IP_PARENT_ID).FROM(ITEM_PARENT).WHERE()
 						.col(IP_CHILD_ID).setLong(parent.getId()).AND().col(IP_ASSOC_ID).setByte(assocId);
 				try (PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection())) {
 					HashSet<Long> nodesParents = new HashSet<>();
@@ -94,7 +94,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			} else {
 				// Предок не должен содержать потомка по этой ассоциации
 				TemplateQuery checkQuery = new TemplateQuery("check assoc validity non transitive");
-				checkQuery.SELECT(IP_PARENT_ID).FROM(IP_TABLE).WHERE()
+				checkQuery.SELECT(IP_PARENT_ID).FROM(ITEM_PARENT).WHERE()
 						.col(IP_PARENT_ID).setLong(parent.getId()).AND()
 						.col(IP_CHILD_ID).setLong(item.getId()).AND()
 						.col(IP_ASSOC_ID).setByte(assocId);
@@ -115,11 +115,11 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		long childId = item.getId();
 		int superTypeId = item.getItemType().getSuperType().getTypeId();
 		TemplateQuery insert = new TemplateQuery("New assoc insert");
-		insert.INSERT_INTO(IP_TABLE, IP_PARENT_ID, IP_CHILD_ID, IP_ASSOC_ID, IP_CHILD_SUPERTYPE, IP_PARENT_DIRECT, IP_WEIGHT);
+		insert.INSERT_INTO(ITEM_PARENT, IP_PARENT_ID, IP_CHILD_ID, IP_ASSOC_ID, IP_CHILD_SUPERTYPE, IP_PARENT_DIRECT, IP_WEIGHT);
 
 		// Шаг 1. Вставить запись непосредственного предка и потомка
 		insert.SELECT(parent.getId(), childId, assocId, superTypeId, 1, "COALESCE(MAX(" + IP_WEIGHT + "), 0) + 64")
-				.FROM(IP_TABLE).WHERE().col(IP_PARENT_ID).setLong(parent.getId()).AND().col(IP_ASSOC_ID).setByte(assocId).sql(" \r\n");
+				.FROM(ITEM_PARENT).WHERE().col(IP_PARENT_ID).setLong(parent.getId()).AND().col(IP_ASSOC_ID).setByte(assocId).sql(" \r\n");
 
 		// Остальные шаги только для транзитивных ассоциаций
 		if (assoc.isTransitive()) {
@@ -128,14 +128,14 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			// Шаг 2. Добавить для нового потомка в качестве новых предков всех предков нового непосредственного родителя
 			insert.UNION_ALL()
 					.SELECT(IP_PARENT_ID, childId, assocId, superTypeId, 0, 0)
-					.FROM(IP_TABLE).WHERE()
+					.FROM(ITEM_PARENT).WHERE()
 					.col(IP_CHILD_ID).setLong(parent.getId()).AND().col(IP_ASSOC_ID).setByte(primaryAssocId).sql(" \r\n");
 
 			// Шаг 3. Повторить предыдущий шаг для каждого потомка ассоциируемого айтема ("нового потомка" из шага 2)
 			if (!isItemNew) {
 				insert.UNION_ALL()
 						.SELECT("PRED." + IP_PARENT_ID, "SUCC." + IP_CHILD_ID, assocId, "SUCC." + IP_CHILD_SUPERTYPE, 0, 0)
-						.FROM(IP_TABLE + " AS PRED", IP_TABLE + " AS SUCC")
+						.FROM(ITEM_PARENT + " AS PRED", ITEM_PARENT + " AS SUCC")
 						.WHERE()
 						.col("PRED." + IP_CHILD_ID).setLong(parent.getId()).AND().col("PRED." + IP_ASSOC_ID).setByte(primaryAssocId)
 						.AND()
@@ -145,5 +145,11 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 				pstmt.executeUpdate();
 			}
 		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+		//         Включить в список обновления предшественников айтема (и его сабайтемов)      //
+		//////////////////////////////////////////////////////////////////////////////////////////
+
+		addItemPredecessorsToComputedLog(item.getId(), assocId);
 	}
 }

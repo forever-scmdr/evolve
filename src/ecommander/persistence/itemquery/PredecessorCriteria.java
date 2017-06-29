@@ -49,7 +49,7 @@ class PredecessorCriteria implements FilterCriteria, PossibleMainCriteria {
 		TemplateQuery fromPart = query.getSubquery(ItemQuery.FROM_OPT);
 		if (!fromPart.isEmpty())
 			fromPart.sql(", ");
-		fromPart.sql(DBConstants.ItemParent.IP_TABLE + " AS " + tableName);
+		fromPart.sql(DBConstants.ItemParent.ITEM_PARENT + " AS " + tableName);
 		
 		TemplateQuery wherePart = query.getSubquery(ItemQuery.WHERE_OPT);
 		
@@ -80,7 +80,7 @@ class PredecessorCriteria implements FilterCriteria, PossibleMainCriteria {
 			
 			// Добавление критерия родительского айтема (производится централизованно другом месте)
 			String parentCritTableName = tableName + "P";
-			fromPart.sql(", " + DBConstants.ItemParent.IP_TABLE + " AS " + parentCritTableName);
+			fromPart.sql(", " + DBConstants.ItemParent.ITEM_PARENT + " AS " + parentCritTableName);
 			joinPart.sql(parentCritTableName + '.' + DBConstants.ItemParent.REF_ID + " = ").subquery(ItemQuery.COMMON_COL_OPT).sql(" AND ");
 			critPart.sql(" AND " + parentCritTableName + '.' + DBConstants.ItemParent.IP_PARENT_ID + " IN (")
 				.setLongArray(itemIds.toArray(new Long[itemIds.size()]))

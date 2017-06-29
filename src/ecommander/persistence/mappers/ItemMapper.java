@@ -7,7 +7,6 @@ import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.common.TemplateQuery;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 /**
  * Выполняет различные операции с Item и БД
@@ -119,7 +118,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 	public static ItemBasics loadItemBasics(long itemId, Connection conn) throws SQLException {
 		TemplateQuery query = new TemplateQuery("Select item basics");
 		query.SELECT(I_ID, I_TYPE_ID, I_KEY, I_GROUP, I_USER, I_STATUS, I_PROTECTED)
-				.FROM(I_TABLE).WHERE().col(I_ID).setLong(itemId);
+				.FROM(ITEM).WHERE().col(I_ID).setLong(itemId);
 		try (PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {

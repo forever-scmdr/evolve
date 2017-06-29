@@ -3,14 +3,9 @@
  */
 package ecommander.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.*;
 
 /**
  * Создает в памяти полную модель данных
@@ -25,7 +20,7 @@ public class ItemTypeRegistry {
 	private ArrayList<String> itemNames = null; // Именя всех айтемов
 	private Map<Integer, ItemType> itemsByIds = null; // Числовые ID всех айтемов (для оптимизации)
 	private HashSet<Integer> computedSupertypeIds = null; // ID айтемов с computed параметрами
-	private HashMap<Integer, HashSet<Integer>> computedParamSuperytpes = null; // ID всех айтемов, которые базируются на ключевом параметре (ID параметра)
+	private HashMap<Integer, HashSet<Integer>> paramComputedSuperytpes = null; // ID всех айтемов, которые базируются на ключевом параметре (ID параметра)
 
 	private Map<Integer, Integer[]> itemExtenders = null;    // Список всех наследников всех айтемов
 	private Map<Integer, Integer[]> basicItemExtenders = null;    // Список всех базовых наслдеников (не пользовательских) всех айтемов
@@ -56,7 +51,7 @@ public class ItemTypeRegistry {
 		itemExtenders = new HashMap<>();
 		basicItemExtenders = new HashMap<>();
 		computedSupertypeIds = new HashSet<>();
-		computedParamSuperytpes = new HashMap<>();
+		paramComputedSuperytpes = new HashMap<>();
 
 		assocRegistry = new AssocRegistry();
 	}
@@ -109,7 +104,7 @@ public class ItemTypeRegistry {
 	}
 
 	/**
-	 * Добавить базовый айтем с computed параметрами
+	 * Добавить айтем с computed параметрами
 	 * @param itemTypeId
 	 */
 	static void addComputedSupertype(int itemTypeId) {
@@ -262,6 +257,7 @@ public class ItemTypeRegistry {
 			Integer parentId = getItemTypeId(parent);
 			itemExtenders.put(parentId, extIds.toArray(new Integer[0]));
 		}
+
 		// Кеш всех айтемов с computed параметрами
 		HashSet<Integer> allComputedItemIds = new HashSet<>();
 		for (Integer itemId : computedSupertypeIds) {
@@ -288,10 +284,10 @@ public class ItemTypeRegistry {
 					for (ComputedDescription.Ref baseRef : param.getComputed().getBasicParams()) {
 						ItemType baseItem = (ItemType) itemsByNames.get(baseRef.item);
 						ParameterDescription baseParam = baseItem.getParameter(baseRef.param);
-						HashSet<Integer> computedItemIds = computedParamSuperytpes.get(baseParam.getId());
+						HashSet<Integer> computedItemIds = paramComputedSuperytpes.get(baseParam.getId());
 						if (computedItemIds == null) {
 							computedItemIds = new HashSet<>();
-							computedParamSuperytpes.put(baseParam.getId(), computedItemIds);
+							paramComputedSuperytpes.put(baseParam.getId(), computedItemIds);
 						}
 						computedItemIds.add(computedSupertypeId);
 					}
@@ -524,14 +520,20 @@ public class ItemTypeRegistry {
 	public static Integer[] getAffectedComputedSupertypes(Collection<Integer> modifiedParamIds) {
 		HashSet<Integer> supertypeIds = new HashSet<>();
 		for (Integer paramId : modifiedParamIds) {
-			HashSet<Integer> paramBasedSypertypeIds = getSingleton().computedParamSuperytpes.get(paramId);
+			HashSet<Integer> paramBasedSypertypeIds = getSingleton().paramComputedSuperytpes.get(paramId);
 			if (paramBasedSypertypeIds != null)
 				supertypeIds.addAll(paramBasedSypertypeIds);
 		}
 		return supertypeIds.toArray(new Integer[0]);
 	}
 
+	/**
+	 * Проверяет, есть ли среди подифицированных параметров айтема те, которые являются базовыми для computed
+	 * параметров других айтемов
+	 * @param modifiedParamIds
+	 * @return
+	 */
 	public static boolean hasAffectedComputedSupertypes(Collection<Integer> modifiedParamIds) {
-		return getSingleton().computedParamSuperytpes.keySet();
+		return CollectionUtils.containsAny(getSingleton().paramComputedSuperytpes.keySet(), modifiedParamIds);
 	}
 }

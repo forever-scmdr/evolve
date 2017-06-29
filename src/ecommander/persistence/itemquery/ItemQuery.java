@@ -143,7 +143,7 @@ public class ItemQuery {
 		+ "WHERE <<PARAM_CRIT_REQ>>";
 	// Загрузка ID айтема по уникальному текстовому ключу
 	private static final String ID_BY_UNIQUE_KEY_SELECT_QUERY 
-		= "SELECT " + DBConstants.UniqueItemKeys.UK_ID + " FROM " + DBConstants.UniqueItemKeys.UK_TABLE
+		= "SELECT " + DBConstants.UniqueItemKeys.UK_ID + " FROM " + DBConstants.UniqueItemKeys.UNIQUE_KEY
 		+ " WHERE " + DBConstants.UniqueItemKeys.UK_KEY + " IN (<<ID_CRIT_REQ>>)";
 	// Загрузка всех прямых потомков заданного айтема
 	private static final String ALL_DIRECT_SUBITEMS_SELECT_QUERY 
@@ -566,7 +566,7 @@ public class ItemQuery {
 			TemplateQuery fromPart = dbQuery.getSubquery(FROM_OPT);
 			if (!fromPart.isEmpty())
 				fromPart.sql(", ");
-			fromPart.sql(DBConstants.ItemParent.IP_TABLE + " AS " + PARENT_TABLE);
+			fromPart.sql(DBConstants.ItemParent.ITEM_PARENT + " AS " + PARENT_TABLE);
 			// Подстановка критерия ID предков и типа предков
 			TemplateQuery wherePart = dbQuery.getSubquery(WHERE_OPT);
 			wherePart.getSubquery(FILTER_JOIN_OPT)
@@ -653,7 +653,7 @@ public class ItemQuery {
 		}
 		else if (queryType == Type.SUCCESSOR) {
 			query.getSubquery(PARENT_ID_REQ).sql(DBConstants.ItemParent.IP_PARENT_ID);
-			query.getSubquery(FROM_OPT).sql(", " + DBConstants.ItemParent.IP_TABLE);
+			query.getSubquery(FROM_OPT).sql(", " + DBConstants.ItemParent.ITEM_PARENT);
 			query.getSubquery(WHERE_OPT)
 					.sql(" AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.REF_ID + " AND "
 							+ DBConstants.ItemParent.IP_PARENT_ID + " IN (")
@@ -661,7 +661,7 @@ public class ItemQuery {
 		}
 		else if (queryType == Type.PARENT_OF) {
 			query.getSubquery(PARENT_ID_REQ).sql(DBConstants.ItemParent.REF_ID);
-			query.getSubquery(FROM_OPT).sql(", " + DBConstants.ItemParent.IP_TABLE);
+			query.getSubquery(FROM_OPT).sql(", " + DBConstants.ItemParent.ITEM_PARENT);
 			query.getSubquery(WHERE_OPT)
 					.sql(" AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.IP_PARENT_ID + " AND "
 							+ DBConstants.ItemParent.REF_ID + " IN (")
@@ -670,7 +670,7 @@ public class ItemQuery {
 		}
 		else if (queryType == Type.PREDECESSORS_OF) {
 			query.getSubquery(PARENT_ID_REQ).sql(DBConstants.ItemParent.REF_ID);
-			query.getSubquery(FROM_OPT).sql(", " + DBConstants.ItemParent.IP_TABLE);
+			query.getSubquery(FROM_OPT).sql(", " + DBConstants.ItemParent.ITEM_PARENT);
 			query.getSubquery(WHERE_OPT)
 					.sql(" AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.IP_PARENT_ID + " AND "
 							+ DBConstants.ItemParent.REF_ID + " IN (")

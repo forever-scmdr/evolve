@@ -24,8 +24,8 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 
 	private static TemplateQuery createAccessorQueryBase(String queryName, boolean joinByChild) {
 		TemplateQuery base = new TemplateQuery(queryName);
-		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED, IP_TABLE + ".*")
-				.FROM(I_TABLE).INNER_JOIN(IP_TABLE, I_ID, joinByChild ? IP_CHILD_ID : IP_PARENT_ID).WHERE();
+		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED, ITEM_PARENT + ".*")
+				.FROM(ITEM).INNER_JOIN(ITEM_PARENT, I_ID, joinByChild ? IP_CHILD_ID : IP_PARENT_ID).WHERE();
 		return base;
 	}
 
@@ -88,13 +88,13 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		TemplateQuery base = createAccessorQueryBase("Load closest subitems part", true);
 		base.col(IP_PARENT_ID).setLong(parentId).AND()
 				.col(IP_PARENT_DIRECT).setByte((byte) 1).AND()
-				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")").AND()
-				.col(IP_ASSOC_ID, " IN(").setByteArray(allAssocs).sql(")").AND();
+				.col(I_STATUS, " IN").byteArrayIN(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).AND()
+				.col(IP_ASSOC_ID, " IN").byteArrayIN (allAssocs).AND();
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
 		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
-		adminQuery.col(I_GROUP, " IN(").setByteArray(adminGroups.toArray(new Byte[0])).sql(")");
-		simpleQuery.col(I_GROUP, " IN(").setByteArray(simpleGroups.toArray(new Byte[0])).sql(")").AND()
+		adminQuery.col(I_GROUP, " IN").byteArrayIN(adminGroups.toArray(new Byte[0]));
+		simpleQuery.col(I_GROUP, " IN").byteArrayIN(simpleGroups.toArray(new Byte[0])).AND()
 				.col(I_USER).setInt(user.getUserId());
 
 		TemplateQuery select = new TemplateQuery("Load closest subitems union");
@@ -130,14 +130,14 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 				simpleGroups.add(group.id);
 		}
 		TemplateQuery base = new TemplateQuery("Load root subitems part");
-		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED).FROM(I_TABLE)
-				.WHERE().col(I_SUPERTYPE, " IN(").setIntArray(allTypes.toArray(new Integer[0])).sql(")").AND()
-				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")").AND();
+		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED).FROM(ITEM)
+				.WHERE().col(I_SUPERTYPE, " IN").intArrayIN(allTypes.toArray(new Integer[0])).AND()
+				.col(I_STATUS, " IN").byteArrayIN(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).AND();
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
 		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
-		adminQuery.col(I_GROUP, " IN(").setByteArray(adminGroups.toArray(new Byte[0])).sql(")");
-		simpleQuery.col(I_GROUP, " IN(").setByteArray(simpleGroups.toArray(new Byte[0])).sql(")").AND()
+		adminQuery.col(I_GROUP, " IN").byteArrayIN(adminGroups.toArray(new Byte[0]));
+		simpleQuery.col(I_GROUP, " IN").byteArrayIN(simpleGroups.toArray(new Byte[0])).AND()
 				.col(I_USER).setInt(user.getUserId());
 
 		TemplateQuery select = new TemplateQuery("Load root subitems union");
@@ -179,7 +179,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	static ArrayList<ItemAccessor> loadWholeBranch(long baseId, byte assocId) throws Exception {
 		TemplateQuery query = createAccessorQueryBase("Load item branch", false);
 		query.col(IP_CHILD_ID).setLong(baseId).AND().col(IP_ASSOC_ID).setByte(assocId).AND()
-				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")")
+				.col(I_STATUS, " IN").byteArrayIN(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN})
 				.ORDER_BY(IP_PARENT_DIRECT, IP_PARENT_ID);
 		return loadAccessorsByQuery(query, true);
 	}
@@ -193,7 +193,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			return new ArrayList<>(0);
 		TemplateQuery query = new TemplateQuery("Load accessors by ids");
 		query.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED)
-				.FROM(I_TABLE).WHERE().col(I_ID, " IN(").setLongArray(itemId).sql(")");
+				.FROM(ITEM).WHERE().col(I_ID, " IN").longArrayIN(itemId);
 		return loadAccessorsByQuery(query, false);
 	}
 
@@ -208,7 +208,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			return new ArrayList<>(0);
 		TemplateQuery query = new TemplateQuery("Load accessors by ids");
 		query.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED)
-				.FROM(I_TABLE).WHERE().col(I_KEY, " LIKE ").setString("%" + key + "%");
+				.FROM(ITEM).WHERE().col(I_KEY, " LIKE ").setString("%" + key + "%");
 		return loadAccessorsByQuery(query, false);
 	}
 	/**
@@ -233,7 +233,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 */
 	static Item loadItem(long itemId, User user) throws Exception {
 		TemplateQuery query = new TemplateQuery("Admin load item");
-		query.SELECT("*").FROM(I_TABLE).WHERE().col(I_ID).setLong(itemId);
+		query.SELECT("*").FROM(ITEM).WHERE().col(I_ID).setLong(itemId);
 		Item item = null;
 		try (Connection conn = MysqlConnector.getConnection();
 			PreparedStatement pstmt = query.prepareQuery(conn)) {
@@ -264,13 +264,13 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		TemplateQuery base = createAccessorQueryBase("Load direct parents part", false);
 		base.col(IP_CHILD_ID).setLong(itemId).AND()
 				.col(IP_PARENT_DIRECT).setByte((byte) 1).AND()
-				.col(I_STATUS, " IN(").setByteArray(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).sql(")").AND()
-				.col(IP_ASSOC_ID, " IN(").setByteArray(ItemTypeRegistry.getAllAssocIds()).sql(")").AND();
+				.col(I_STATUS, " IN").byteArrayIN(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).AND()
+				.col(IP_ASSOC_ID, " IN").byteArrayIN(ItemTypeRegistry.getAllAssocIds()).AND();
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
 		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
-		adminQuery.col(I_GROUP, " IN(").setByteArray(adminGroups.toArray(new Byte[0])).sql(")");
-		simpleQuery.col(I_GROUP, " IN(").setByteArray(simpleGroups.toArray(new Byte[0])).sql(")").AND()
+		adminQuery.col(I_GROUP, " IN").byteArrayIN(adminGroups.toArray(new Byte[0]));
+		simpleQuery.col(I_GROUP, " IN").byteArrayIN(simpleGroups.toArray(new Byte[0])).AND()
 				.col(I_USER).setInt(user.getUserId());
 
 		TemplateQuery select = new TemplateQuery("Load direct parents union");

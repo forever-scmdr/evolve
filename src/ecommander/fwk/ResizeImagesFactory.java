@@ -206,7 +206,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 				try {
 					Connection conn = getTransactionContext().getConnection();
 					// Сохранить новое ключевое значение и параметры в основную таблицу
-					String sql = "UPDATE " + I_TABLE + " SET " + I_KEY + "=?, " + I_T_KEY + "=?, " + I_PARAMS + "=?, "
+					String sql = "UPDATE " + ITEM + " SET " + I_KEY + "=?, " + I_T_KEY + "=?, " + I_PARAMS + "=?, "
 							+ I_UPDATED + "=NULL WHERE " + I_ID + "=" + item.getId();
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setString(1, item.getKey());
