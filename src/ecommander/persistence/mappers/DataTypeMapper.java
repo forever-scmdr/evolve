@@ -64,7 +64,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected final String getTableName() {
-			return DBConstants.ItemIndexes.STRING_INDEX;
+			return DBConstants.ItemIndexes.STRING_INDEX_TBL;
 		}
 
 		@Override
@@ -126,7 +126,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected String getTableName() {
-			return DBConstants.ItemIndexes.INT_INDEX;
+			return DBConstants.ItemIndexes.INT_INDEX_TBL;
 		}
 
 		@Override
@@ -280,7 +280,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected final String getTableName() {
-			return DBConstants.ItemIndexes.DOUBLE_INDEX;
+			return DBConstants.ItemIndexes.DOUBLE_INDEX_TBL;
 		}
 
 		@Override
@@ -338,7 +338,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected final String getTableName() {
-			return DBConstants.ItemIndexes.DECIMAL_INDEX;
+			return DBConstants.ItemIndexes.DECIMAL_INDEX_TBL;
 		}
 
 		@Override

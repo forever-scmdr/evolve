@@ -30,7 +30,7 @@ public class SetNewItemWeightByPositionDBUnit extends DBPersistenceCommandUnit i
 	public void execute() throws Exception {
 		testPrivileges(item);
 		TemplateQuery select = new TemplateQuery("Select weight by position");
-		select.SELECT(IP_WEIGHT).FROM(ITEM_PARENT).WHERE()
+		select.SELECT(IP_WEIGHT).FROM(ITEM_PARENT_TBL).WHERE()
 				.col(IP_ASSOC_ID).setByte(assocId).AND()
 				.col(IP_PARENT_ID).setLong(parentId).AND()
 				.col(IP_PARENT_DIRECT).setByte((byte) 1)
@@ -65,7 +65,7 @@ public class SetNewItemWeightByPositionDBUnit extends DBPersistenceCommandUnit i
 			newItemWeight = newPosition * Item.WEIGHT_STEP + Item.WEIGHT_STEP / 2;
 		}
 		TemplateQuery update = new TemplateQuery("Update item weight");
-		update.UPDATE(ITEM_PARENT).SET().col(IP_WEIGHT).setInt(newItemWeight).WHERE()
+		update.UPDATE(ITEM_PARENT_TBL).SET().col(IP_WEIGHT).setInt(newItemWeight).WHERE()
 				.col(IP_ASSOC_ID).setByte(assocId).AND()
 				.col(IP_PARENT_ID).setLong(parentId).AND()
 				.col(IP_PARENT_DIRECT).setByte((byte) 1).AND()

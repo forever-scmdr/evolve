@@ -36,16 +36,16 @@ public class DeleteUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 		}
 		TemplateQuery delete = new TemplateQuery("Delete user and groups");
 		delete
-				.DELETE_FROM_WHERE(USER_GROUP).col(UG_USER_ID).setInt(user.getUserId()).AND()
+				.DELETE_FROM_WHERE(USER_GROUP_TBL).col(UG_USER_ID).setInt(user.getUserId()).AND()
 				.col(UG_GROUP_ID, " IN").byteArrayIN(groupIds.toArray(new Byte[groupIds.size()])).sql(";\r\n")
-				.DELETE_FROM_WHERE(USER).col(U_ID).setInt(user.getUserId());
+				.DELETE_FROM_WHERE(USER_TBL).col(U_ID).setInt(user.getUserId());
 		try (PreparedStatement pstmt = delete.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}
 
 		// Удаление айтемов пользователя, либо установка им нулевого владельца (сделать общими)
 		TemplateQuery modifyUserItems = new TemplateQuery("Modify or delete user items");
-		modifyUserItems.UPDATE(ITEM).SET();
+		modifyUserItems.UPDATE(ITEM_TBL).SET();
 		if (deleteItems) {
 			modifyUserItems.col(I_STATUS).setByte(Item.STATUS_DELETED);
 		} else {
@@ -69,10 +69,10 @@ public class DeleteUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 			final String I1 = "I1.";
 			final String I2 = "I2.";
 			logInsert
-					.INSERT_INTO(COMPUTED_LOG, L_ITEM)
+					.INSERT_INTO(COMPUTED_LOG_TBL, L_ITEM)
 					.SELECT(I1 + I_ID)
-					.FROM(ITEM + " AS I1").INNER_JOIN(ITEM_PARENT + " AS P", I1 + I_ID, P + IP_PARENT_ID)
-					.INNER_JOIN(ITEM + " AS I2", P + IP_CHILD_ID, I2 + I_ID)
+					.FROM(ITEM_TBL + " AS I1").INNER_JOIN(ITEM_PARENT_TBL + " AS P", I1 + I_ID, P + IP_PARENT_ID)
+					.INNER_JOIN(ITEM_TBL + " AS I2", P + IP_CHILD_ID, I2 + I_ID)
 					.WHERE().col(I2 + I_GROUP, " IN").byteArrayIN(groupIds.toArray(new Byte[groupIds.size()]))
 					.AND().col(I2 + I_USER).setInt(user.getUserId())
 					.AND().col(I1 + I_SUPERTYPE, " IN").setIntArray(ItemTypeRegistry.getAllComputedSupertypes())

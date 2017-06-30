@@ -56,10 +56,10 @@ public class ChangeItemOwnerDBUnit extends DBPersistenceCommandUnit implements D
 		// Установить владельца на айтем и сабайтемы
 		// Сначала установить владельца на сам айтем
 		TemplateQuery updateItemOwner = new TemplateQuery("Update item owner");
-		updateItemOwner.UPDATE(ITEM).SET().col(I_GROUP).setByte(newGroup)._col(I_USER).setInt(newUser)
+		updateItemOwner.UPDATE(ITEM_TBL).SET().col(I_GROUP).setByte(newGroup)._col(I_USER).setInt(newUser)
 				.WHERE().col(I_ID).setLong(item.getId()).sql(";\r\n");
 		// Потом обновить все сабайтемы
-		updateItemOwner.UPDATE(ITEM).INNER_JOIN(ITEM_PARENT, I_ID, IP_CHILD_ID)
+		updateItemOwner.UPDATE(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID)
 				.SET().col(I_GROUP).setByte(newGroup)._col(I_USER).setInt(newUser)
 				.WHERE().col(IP_PARENT_ID).setLong(item.getId());
 		try(PreparedStatement pstmt = updateItemOwner.prepareQuery(getTransactionContext().getConnection())) {

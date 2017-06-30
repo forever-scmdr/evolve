@@ -50,7 +50,7 @@ class SetNewItemWeightDBUnit extends DBPersistenceCommandUnit implements DBConst
 					+ indexBefore + ", " + indexAfter + ", " + newIndex);
 		}
 		// Изменение индекса самого айтема
-		newWeight.UPDATE(ITEM_PARENT).SET().col(IP_WEIGHT).setInt(newIndex)
+		newWeight.UPDATE(ITEM_PARENT_TBL).SET().col(IP_WEIGHT).setInt(newIndex)
 				.WHERE().col(IP_CHILD_ID).setLong(itemId)
 				.AND().col(IP_ASSOC_ID).setByte(assocId)
 				.AND().col(IP_PARENT_DIRECT).setByte((byte)1)
@@ -85,7 +85,7 @@ class SetNewItemWeightDBUnit extends DBPersistenceCommandUnit implements DBConst
 	static void normalizeWeights(byte assocId, long parentId, Connection conn) throws SQLException {
 		TemplateQuery normalize = new TemplateQuery("Noramlize child weight");
 		normalize.sql("SET @index = 0;")
-				.UPDATE(ITEM_PARENT).SET().col(IP_WEIGHT).sql("(SELECT @index := @index + 1) * " + Item.WEIGHT_STEP)
+				.UPDATE(ITEM_PARENT_TBL).SET().col(IP_WEIGHT).sql("(SELECT @index := @index + 1) * " + Item.WEIGHT_STEP)
 				.WHERE().col(IP_ASSOC_ID).setByte(assocId)
 				.AND().col(IP_PARENT_DIRECT).setByte((byte)1)
 				.AND().col(IP_PARENT_ID).setLong(parentId)

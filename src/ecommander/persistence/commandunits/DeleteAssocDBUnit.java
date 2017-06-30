@@ -51,7 +51,7 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		long childId = item.getId();
 		TemplateQuery delete = new TemplateQuery("Delete assoc");
 
-		delete.DELETE_FROM_WHERE(ITEM_PARENT).WHERE()
+		delete.DELETE_FROM_WHERE(ITEM_PARENT_TBL).WHERE()
 				.col(IP_PARENT_ID).setLong(parent.getId()).AND()
 				.col(IP_CHILD_ID).setLong(item.getId())
 				.col(IP_ASSOC_ID).setByte(assocId).sql(" \r\n");
@@ -61,7 +61,7 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		if (assoc.isTransitive()) {
 			delete
 					.DELETE("PRED, SUCC")
-					.FROM(ITEM_PARENT + " AS PRED", ITEM_PARENT + " AS SUCC")
+					.FROM(ITEM_PARENT_TBL + " AS PRED", ITEM_PARENT_TBL + " AS SUCC")
 					.WHERE()
 					.col("PRED." + IP_CHILD_ID).setLong(parent.getId()).AND().col("PRED." + IP_ASSOC_ID).setByte(assocId)
 					.AND()

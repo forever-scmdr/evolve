@@ -202,8 +202,8 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 		if (processComputed && ItemTypeRegistry.hasComputedItems()) {
 			TemplateQuery logInsert = new TemplateQuery("Insert into update log");
 			logInsert
-					.INSERT_INTO(COMPUTED_LOG, L_ITEM)
-					.SELECT(I_ID).FROM(ITEM).INNER_JOIN(ITEM_PARENT, I_ID, IP_PARENT_ID)
+					.INSERT_INTO(COMPUTED_LOG_TBL, L_ITEM)
+					.SELECT(I_ID).FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_PARENT_ID)
 					.WHERE().col(IP_CHILD_ID).setLong(itemId)
 					.AND().col(IP_ASSOC_ID, " IN").byteArrayIN(assocId)
 					.AND().col(I_SUPERTYPE, " IN").intArrayIN(ItemTypeRegistry.getAllComputedSupertypes())

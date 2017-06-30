@@ -60,10 +60,10 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 		byte primaryAssoc = ItemTypeRegistry.getPrimaryAssoc().getId();
 		// Сначала обновить сам айтем
 		TemplateQuery updateItemStatus = new TemplateQuery("Update item status");
-		updateItemStatus.UPDATE(ITEM).SET().col(I_STATUS).setByte(newStatus)
+		updateItemStatus.UPDATE(ITEM_TBL).SET().col(I_STATUS).setByte(newStatus)
 				.WHERE().col(I_ID).setLong(item.getId()).sql(";\r\n");
 		// Потом обновить все сабайтемы
-		updateItemStatus.UPDATE(ITEM).INNER_JOIN(ITEM_PARENT, I_ID, IP_CHILD_ID)
+		updateItemStatus.UPDATE(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID)
 				.SET().col(I_STATUS).setByte(newStatus)
 				.WHERE().col(IP_PARENT_ID).setLong(item.getId())
 				.AND().col(IP_ASSOC_ID).setByte(primaryAssoc);
@@ -85,17 +85,17 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 			final String P1 = "P1.";
 			final String P2 = "P2.";
 			logInsert
-					.INSERT_INTO(COMPUTED_LOG, L_ITEM)
-					.SELECT(I_ID).FROM(ITEM).INNER_JOIN(ITEM_PARENT, I_ID, IP_PARENT_ID)
+					.INSERT_INTO(COMPUTED_LOG_TBL, L_ITEM)
+					.SELECT(I_ID).FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_PARENT_ID)
 					.WHERE().col(IP_CHILD_ID).setLong(item.getId())
 					.AND().col(IP_ASSOC_ID).setByte(primaryAssoc)
 					.AND().col(I_SUPERTYPE, " IN").intArrayIN(ItemTypeRegistry.getAllComputedSupertypes())
 					.ON_DUPLICATE_KEY_UPDATE(L_ITEM).sql(L_ITEM + ";\r\n")
 
-					.INSERT_INTO(COMPUTED_LOG, L_ITEM)
+					.INSERT_INTO(COMPUTED_LOG_TBL, L_ITEM)
 					.SELECT(I + I_ID)
-					.FROM(ITEM + " AS I").INNER_JOIN(ITEM_PARENT + " AS P1", I + I_ID, P1 + IP_PARENT_ID)
-					.INNER_JOIN(ITEM_PARENT + " AS P2", P2 + IP_CHILD_ID, P1 + IP_CHILD_ID)
+					.FROM(ITEM_TBL + " AS I").INNER_JOIN(ITEM_PARENT_TBL + " AS P1", I + I_ID, P1 + IP_PARENT_ID)
+					.INNER_JOIN(ITEM_PARENT_TBL + " AS P2", P2 + IP_CHILD_ID, P1 + IP_CHILD_ID)
 					.WHERE().col(P2 + IP_PARENT_ID).setLong(item.getId())
 					.AND().col(P1 + IP_ASSOC_ID, " IN").byteArrayIN(ItemTypeRegistry.getAllOtherAssocIds(primaryAssoc))
 					.AND().col(I + I_SUPERTYPE, " IN").setIntArray(ItemTypeRegistry.getAllComputedSupertypes())

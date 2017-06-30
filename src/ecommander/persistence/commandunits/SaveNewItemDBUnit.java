@@ -68,7 +68,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		//          (для этого не нужно выполнять команду сохранения файлов)
 		//
 		TemplateQuery itemInsert = new TemplateQuery("New item insert");
-		itemInsert.INSERT_INTO(ITEM).SET()
+		itemInsert.INSERT_INTO(ITEM_TBL).SET()
 				.col(I_SUPERTYPE).setInt(item.getBasicSupertypeId())
 				._col(I_TYPE_ID).setInt(item.getTypeId())
 				._col(I_KEY).setString(item.getKey())
@@ -104,7 +104,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		if (item.getItemType().isKeyUnique()) {
 			TemplateQuery uniqueKeyInsert = new TemplateQuery("Unique key insert");
 			uniqueKeyInsert
-					.INSERT_INTO(UNIQUE_KEY).SET()
+					.INSERT_INTO(UNIQUE_KEY_TBL).SET()
 					.col(UK_ID).setLong(item.getId())
 					._col(UK_KEY).setString(item.getKeyUnique());
 			PreparedStatement keyUniqueStmt = uniqueKeyInsert.prepareQuery(conn);
@@ -124,7 +124,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 			// Обновление уникального ключа айтема (если это нужно)
 			if (needItemUpdate) {
 				TemplateQuery keyUpdate = new TemplateQuery("Item unique key update");
-				keyUpdate.UPDATE(ITEM)
+				keyUpdate.UPDATE(ITEM_TBL)
 						.SET().col(I_T_KEY).setString(item.getKeyUnique())
 						.WHERE().col(I_ID).setLong(item.getId());
 				try (PreparedStatement pstmt = keyUpdate.prepareQuery(conn)) {

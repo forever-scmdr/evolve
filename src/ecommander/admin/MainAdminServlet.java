@@ -237,7 +237,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		try {
 			conn = MysqlConnector.getConnection();
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT " + DBConstants.ItemTbl.I_ID + " FROM " + DBConstants.ItemTbl.ITEM
+			ResultSet rs = stmt.executeQuery("SELECT " + DBConstants.ItemTbl.I_ID + " FROM " + DBConstants.ItemTbl.ITEM_TBL
 					+ " WHERE " + DBConstants.ItemTbl.I_TYPE_ID + " > 0");
 			DelayedTransaction tr = new DelayedTransaction(getCurrentAdmin());
 			while (rs.next()) {

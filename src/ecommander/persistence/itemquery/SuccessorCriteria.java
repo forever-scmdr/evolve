@@ -46,7 +46,7 @@ class SuccessorCriteria implements FilterCriteria, PossibleMainCriteria {
 		TemplateQuery fromPart = query.getSubquery(ItemQuery.FROM_OPT);
 		if (!fromPart.isEmpty())
 			fromPart.sql(", ");
-		fromPart.sql(DBConstants.ItemParent.ITEM_PARENT + " AS " + tableName);
+		fromPart.sql(DBConstants.ItemParent.ITEM_PARENT_TBL + " AS " + tableName);
 		
 		TemplateQuery wherePart = query.getSubquery(ItemQuery.WHERE_OPT);
 		
@@ -71,7 +71,7 @@ class SuccessorCriteria implements FilterCriteria, PossibleMainCriteria {
 			
 			// Добавление критерия родительского айтема (производится централизованно другом месте)
 			String parentCritTableName = tableName + "P";
-			fromPart.sql(", " + DBConstants.ItemParent.ITEM_PARENT + " AS " + parentCritTableName);
+			fromPart.sql(", " + DBConstants.ItemParent.ITEM_PARENT_TBL + " AS " + parentCritTableName);
 			joinPart.sql(parentCritTableName + '.' + DBConstants.ItemParent.REF_ID + " = ").subquery(ItemQuery.COMMON_COL_OPT).sql(" AND ");
 			critPart.sql(parentCritTableName + '.' + DBConstants.ItemParent.IP_PARENT_ID).subquery(ItemQuery.PARENT_CRIT_OPT).sql(" AND ");
 			
