@@ -46,147 +46,61 @@ import ecommander.model.UserGroupRegistry;
  * 
  * 
  * Именование частей запроса (значения вида <<...>>)
- * 
- * постфиксы
- * 		_REQ - обязательная часть, без нее запрос выполняться не может
- * 		_OPT - необязательная часть, запрос может выполняться, даже если эта часть не задана
- * 
- * Примеры запросов:
- * 
-   
-	1. Фильтрация с сортировкой
-
-	SELECT f1.ITEM_ID, P.PARENT_ID, S.val FROM idx AS f1, idx AS f2, parents AS P, idx AS S
-	WHERE 
-	P.PARENT_ID in (14, 18) AND P.TYPE_ID IN (2)
-	AND f1.val = "красный" AND f1.pname = "цвет" AND f1.TYPE_ID IN (1) AND f1.PARENT_ID = P.ITEM_ID
-	AND f2.val = "большой" AND f2.pname = "размер" AND f1.TYPE_ID IN (1) AND f2.PARENT_ID = P.ITEM_ID AND f2.ITEM_ID = f1.ITEM_ID
-	AND S.pname = "вес" AND S.TYPE_ID IN (1) AND S.PARENT_ID = P.ITEM_ID AND S.ITEM_ID = f1.ITEM_ID
-	ORDER BY S.val
-	
-	
-	2. Группировка по независимому параметру (с дополнительной фильтрацией)
-	
-	SELECT GROUP_CONCAT(G.val), P.PARENT_ID, G2.val FROM idx AS f1, idx AS G, idx AS G2, parents AS P
-	WHERE 
-	P.PARENT_ID in (14, 18) AND P.TYPE_ID IN (2)
-	AND (f1.val = "красный" AND f1.pname = "цвет" AND f1.TYPE_ID IN (1) AND f1.PARENT_ID = P.ITEM_ID)
-	AND (G2.pname = "размер" AND G2.TYPE_ID IN (1) AND G2.PARENT_ID = P.ITEM_ID AND G2.ITEM_ID = f1.ITEM_ID)
-	AND (G.pname = "вес" AND G.TYPE_ID IN (1) AND G.PARENT_ID = P.ITEM_ID AND G.ITEM_ID = f1.ITEM_ID)
-	GROUP BY P.PARENT_ID, G2.val
-	
-	
-	3. Группировка по значению группируемого параметра (с дополнительной фильтрацией)
-	
-	SELECT G.val, P.PARENT_ID FROM idx AS f1, idx AS f2, parents AS P, idx AS G
-	WHERE 
-	P.PARENT_ID IN (14, 18) AND P.TYPE_ID IN (2)
-	AND f1.val = "красный" AND f1.pname = "цвет" AND f1.TYPE_ID IN (1) AND f1.PARENT_ID = P.ITEM_ID
-	AND f2.val = "большой" AND f2.pname = "размер" AND f1.TYPE_ID IN (1) AND f2.PARENT_ID = P.ITEM_ID AND f2.ITEM_ID = f1.ITEM_ID
-	AND G.pname = "вес" AND G.TYPE_ID IN (1) AND G.PARENT_ID = P.ITEM_ID AND G.ITEM_ID = f1.ITEM_ID
-	GROUP BY G.val, P.PARENT_ID ORDER BY G.val DESC
-	
-	
-	4. Фильтрация с критерием предшественника и с сортировкой
-	
-	SELECT f1.ITEM_ID, P.PARENT_ID, S.val FROM idx AS f1, idx AS f2, parents AS P, idx AS S, parents AS R1
-	WHERE 
-	P.PARENT_ID in (14, 18) AND P.TYPE_ID IN (2)
-	AND f1.val = "красный" AND f1.pname = "цвет" AND f1.TYPE_ID IN (1) AND f1.PARENT_ID = P.ITEM_ID
-	AND f2.val = "большой" AND f2.pname = "размер" AND f1.TYPE_ID IN (1) AND f2.PARENT_ID = P.ITEM_ID AND f2.ITEM_ID = f1.ITEM_ID
-	AND S.pname = "вес" AND S.TYPE_ID IN (1) AND S.PARENT_ID = P.ITEM_ID AND S.ITEM_ID = f1.ITEM_ID
-	AND R1.PARENT_ID IN (16) AND R1.TYPE_ID IN (1) AND R1.ITEM_ID = f1.ITEM_ID AND R1.PARENT_ID = P.ITEM_ID
-	ORDER BY S.val
-
- * 
- * Пояснения:
- * Во всех примерах критерий f1 является главным, т. е. остальные критерии приравнивают извлекаемые ими ID айтемов к ID, извлекаемому критерием f1
+ *
+ * Описание всех запросов в текстовом файле item_query.txt
+ *
  *
  * 
  * @author E
  *
  */
-public class ItemQuery {
+public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 
-	// Фильтрация (загрузка ID айтемов и применение фильтра)
-	private static final String FILTER_IDS_SELECT_QUERY 
-		= "SELECT <<ITEM_ID_REQ>>, <<PARENT_ID_REQ>> AS PID<<SORT_VAL_OPT>> FROM <<FROM_OPT>> "
-		+ "WHERE <<WHERE_OPT>> <<SORT_BY_OPT>> <<LIMIT_OPT>>";
-	// Количество при наличии LIMIT
-	private static final String QUANTITY_SELECT_QUERY 
-		= "SELECT COUNT(<<ITEM_ID_REQ>>) AS C, <<PARENT_ID_REQ>> AS PID FROM <<FROM_OPT>> "
-		+ "WHERE <<WHERE_OPT>>";
-	// Группировка (с фильтрацией)
-	private static final String GROUP_VALS_SELECT_QUERY 
-		= "SELECT <<GROUP_PARAM_VALS_REQ>>, <<PARENT_ID_REQ>> AS PID<<AGG_PARAMS_OPT>> FROM <<FROM_OPT>> "
-		+ "WHERE <<WHERE_OPT>> GROUP BY <<GROUP_PARAM_REQ>> <<SORT_BY_OPT>>";
-	
-	// Загрузка айтемов по ID
-	private static final String ITEMS_BY_IDS_SELECT_QUERY 
-		= "SELECT " + DBConstants.Item.TABLE + ".* FROM " + DBConstants.Item.TABLE 
-		+ " WHERE " + DBConstants.Item.ID + " IN (<<ID_CRIT_REQ>>) <<SORT_BY_OPT>>";
+	private static final String COMMON_QUERY
+			= "SELECT DISTINCT I.*, P." + IP_PARENT_ID + " AS PID "
+			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
+			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
+			+ "<<WHERE_PART>> <<OPTION_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
 
-	// Загрузка айтемов по ID (ассоциации)
-	private static final String ITEMS_BY_IDS_ASSOCIATED_SELECT_QUERY 
-		= "SELECT " + DBConstants.Item.TABLE + ".*, " + DBConstants.ItemIndexes.REF_ID + " AS PID FROM " 
-		+ DBConstants.Item.TABLE + ", " + DBConstants.ItemIndexes.ASSOCIATED_TABLE_NAME
-		+ " WHERE " + DBConstants.Item.ID + "=" + DBConstants.ItemIndexes.II_VALUE
-		+ " AND " + DBConstants.ItemIndexes.II_VALUE + " IN (<<ID_CRIT_REQ>>) <<SORT_BY_OPT>>";
-	
-	// Простая загрузка без фильтра и без группировки
-	private static final String COMMON_SELECT_QUERY 
-		= "SELECT " + DBConstants.Item.TABLE + ".*, <<PARENT_ID_REQ>> AS PID FROM " + DBConstants.Item.TABLE + "<<FROM_OPT>> "
-		+ "WHERE <<WHERE_OPT>> ORDER BY " + DBConstants.Item.INDEX_WEIGHT + "<<LIMIT_OPT>>";
-	// Загрузка одного айтема
-	private static final String UNIQUE_VAL_SELECT_QUERY 
-		= "SELECT " + DBConstants.Item.TABLE + ".* FROM " + DBConstants.Item.TABLE + ", <<PARAM_TABLE_REQ>> "
-		+ "WHERE <<PARAM_CRIT_REQ>>";
-	// Загрузка ID айтема по уникальному текстовому ключу
-	private static final String ID_BY_UNIQUE_KEY_SELECT_QUERY 
-		= "SELECT " + DBConstants.UniqueItemKeys.UK_ID + " FROM " + DBConstants.UniqueItemKeys.UNIQUE_KEY_TBL
-		+ " WHERE " + DBConstants.UniqueItemKeys.UK_KEY + " IN (<<ID_CRIT_REQ>>)";
-	// Загрузка всех прямых потомков заданного айтема
-	private static final String ALL_DIRECT_SUBITEMS_SELECT_QUERY 
-		= "SELECT " + DBConstants.Item.TABLE + ".* FROM " + DBConstants.Item.TABLE 
-		+ " WHERE " + DBConstants.Item.DIRECT_PARENT_ID + " IN (<<ID_CRIT_REQ>>)"
-		+ " ORDER BY " + DBConstants.Item.INDEX_WEIGHT;
-	
-	static String ITEM_ID_REQ = "<<ITEM_ID_REQ>>";
-	static String PARENT_ID_REQ = "<<PARENT_ID_REQ>>";
-	static String GROUP_PARAM_VALS_REQ = "<<GROUP_PARAM_VALS_REQ>>";
-	static String GROUP_PARAM_REQ = "<<GROUP_PARAM_REQ>>";
-	static String ID_CRIT_REQ = "<<ID_CRIT_REQ>>";
-	static String PARAM_TABLE_REQ = "<<PARAM_TABLE_REQ>>";
-	static String PARAM_CRIT_REQ = "<<PARAM_CRIT_REQ>>";
-	
-	static String FROM_OPT = "<<FROM_OPT>>";
-	static String WHERE_OPT = "<<WHERE_OPT>>";
-	static String SORT_VAL_OPT = "<<SORT_VAL_OPT>>";
-	static String SORT_BY_OPT = "<<SORT_BY_OPT>>";
-	static String LIMIT_OPT = "<<LIMIT_OPT>>";
-	static String AGG_PARAMS_OPT = "<<AGG_PARAMS_OPT>>"; // выбор параметров группировки в SELECT
-	
-	// Подзапросы для части <<WHERE_OPT>>
-	static String FILTER_JOIN_OPT = "<<FILTER_TABLES_JOIN_OPT>>";
-	static String FILTER_CRITS_OPT = "<<FILTER_CRITS_OPT>>";
-	
-	// Подзапросы для части <<FILTER_CRITS_OPT>>
-	static String PARENT_CRIT_OPT = "<<PARENT_CRIT_OPT>>";	// Устанавливается централизованно в одном месте
-	static String TYPE_CRIT_OPT = "<<TYPE_CRIT_OPT>>";		// Устанавливается централизованно в одном месте
-	static String COMMON_COL_OPT = "<<COMMON_COL_OPT>>";	// Название колонки таблицы, которая объединяет отдельные критерии фильтра 
-															// (можно брать таблицу самого первого критерия)
-	
+	private static final String ROOT_QUERY
+			= "SELECT DISTINCT I.*, 0 AS PID "
+			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
+			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
+			+ "<<WHERE_PART>> <<OPTION_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
+
+	private static final String PARENT_QUERY
+			= "SELECT DISTINCT I.*, P." + IP_PARENT_ID + " AS PID "
+			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
+			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) <<WHERE_PART>>";
+
+
+	private static final String GROUP_COMMON_QUERY
+			= "SELECT DISTINCT P." + IP_PARENT_ID + " AS PID <<GROUP_PARAMS_PART>> "
+			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
+			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
+			+ "<<WHERE_PART>> <<OPTION_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
+
+	private static final String GROUP_ROOT_QUERY
+			= "SELECT DISTINCT 0 AS PID <<GROUP_PARAMS_PART>> "
+			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
+			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
+			+ "<<WHERE_PART>> <<OPTION_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
+
+
+	static String JOIN = "<<JOIN_PART>>";
+	static String STATUS = "<<STATUS_PART>>";
+	static String WHERE = "<<WHERE_PART>>";
+	static String OPTIONS = "<<OPTION_PART>>";
+	static String ORDER = "<<ORDER_PART>>";
+	static String LIMIT = "<<LIMIT_PART>>";
+	static String GROUP_PARAMS = "<<GROUP_PARAMS_PART>>";
+	static String GROUP = "<<GROUP_PART>>";
+
 	static String GROUP_PARAM_COL = "GV";
-//	@Deprecated
-//	static String SORT_PARAM_COL = "SV";
 	static String GROUP_MAIN_TABLE = "G";
 	static String PARENT_ID_COL = "PID";
 	static String PARENT_TABLE = "P";
-	
-	static int MAIN_COL = 1;
-	static int PARENT_COL = 2;
-	static int ADDITIONAL_COL = 3;
-	
+
 	private boolean hasParent = false; // Предок искомого айтема. Может быть null, если айтем не имеет предка
 	private ItemType itemDesc; // Искомый айтем
 

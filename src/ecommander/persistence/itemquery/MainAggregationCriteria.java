@@ -14,14 +14,14 @@ import ecommander.persistence.mappers.DBConstants;
 class MainAggregationCriteria extends AggregationCriteria {
 
 	private String function = null;
-	private String sorting = null;
+	private String sortingDirection = null;
 	private boolean isSelfGrouping = true; // группировка происходит по значению данного параметра (не по значениям других параметров)
 	
-	MainAggregationCriteria(ParameterDescription param, ItemType item, String tableName, String function, String sorting) {
+	MainAggregationCriteria(ParameterDescription param, ItemType item, String tableName, String function, String sortingDirection) {
 		super(new GroupOnlyParamCriteria(param, item, tableName));
 		if (!StringUtils.isBlank(function))
 			this.function = function;
-		this.sorting = sorting;
+		this.sortingDirection = sortingDirection;
 	}
 
 	@Override
@@ -49,8 +49,8 @@ class MainAggregationCriteria extends AggregationCriteria {
 				groupPart.sql(baseCriteria.tableName + '.' + DBConstants.ItemIndexes.II_PARAM);
 		}
 		// Добавление в блок ORDER BY параметра группировки
-		if (!StringUtils.isEmpty(sorting))
-			query.getSubquery(ItemQuery.SORT_BY_OPT).sql(" ORDER BY ").sql(ItemQuery.GROUP_PARAM_COL + " " + sorting);
+		if (!StringUtils.isEmpty(sortingDirection))
+			query.getSubquery(ItemQuery.SORT_BY_OPT).sql(" ORDER BY ").sql(ItemQuery.GROUP_PARAM_COL + " " + sortingDirection);
 		// Добавление базового критерия
 		baseCriteria.appendQuery(query);
 	}

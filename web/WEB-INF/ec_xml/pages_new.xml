@@ -25,6 +25,9 @@
 			Загрузить вложеные айтемы (с ассоциацией hierarchy) в виде одного массива,
 			а затем выстроить результат в виде дерева.
 			Для дерева по умолчанию предполагается, что атрибут transitive неявно задан true.
+
+			Ссылка на элемент, имеющий атрибут id всегда обозначается атрибутом ref (в частности в переменных link)
+			Ссылка же на другую переменную обозначается атрибутом var
 			  -->
 			<tree item="section_abstract" assoc="hierarchy" id="section">
 				<link name="show_section" target="section">
@@ -40,8 +43,8 @@
 		<request>
 			<var name="sec" style="translit"/>
 		</request>
-		<!--Если в записи используются фигурные скобки, значит это переменная (значение переменно страницы)-->
-		<single item="section_abstract" ref="{sec}" tag="current_section">
+		<!--Ссылка на переменную в атрибутах любых тэгов обозначается как атрибут var-->
+		<single item="section_abstract" var="sec" tag="current_section">
 			<!-- Загрузить всех потомков (прямых и непрямых) айтема в виде одного списка -->
 			<list item="product" assoc="hierarchy" transitive="true" id="product">
 				<!-- Блок инпутов, которые относястя к айтему ref. Названия инпутов перечисляются в тэге name -->
@@ -63,7 +66,7 @@
 			<var name="sec" style="translit"/>
 			<var name="price_to" style="query"/>
 		</request>
-		<single item="section_abstract" reference="{sec}" tag="current_section">
+		<single item="section_abstract" var="sec" tag="current_section">
 			<list item="product" assoc="hierarchy" transitive="true" id="product">
 				<filter>
 					<!--Загрузить товары, которые содержат вложенный айтем цены со скидкой-->
@@ -76,11 +79,32 @@
 	</page>
 
 
+	<page name="special" template="section">
+		<request>
+			<var name="sec"/>
+			<var name="price_to" style="query"/>
+		</request>
+		<list item="product" assoc="hierarchy" transitive="true" id="product">
+			<!-- Найти товары, которые либо принадлежат определенным разделам, либо имеют скидку больше 2 процентов -->
+			<!-- В фильтре также есть и общее для обоих случаев условие - цена должна быть меньше указанной -->
+			<filter>
+				<parameter name="price" sign="&lt;=" ><var value="{price_to}"/></parameter>
+				<option>
+					<parameter name="discount" assoc="seller_price" child="price" sign="&gt;"><var value="2"/></parameter>
+				</option>
+				<option>
+					<predecessor sign="NOT IN"><var var="sec"/></predecessor>
+				</option>
+			</filter>
+		</list>
+	</page>
+
+
 	<page name="product" template="product">
 		<variables>
 			<var name="prod" style="translit"/>
 		</variables>
-		<single item="product" reference="{prod}">
+		<single item="product" var="prod">
 
 		</single>
 	</page>

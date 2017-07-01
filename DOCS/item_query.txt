@@ -7,9 +7,8 @@
 		предки Pa и Pb (ассоциация A транзитивно)
 
 	SELECT
-		i.*
-		p.parent_id,
-		s1.val, s2.val
+		i.*,
+		p.parent_id
 	FROM
 		item AS i
 		INNER JOIN index AS f1 ON (i.id = f1.item)
@@ -47,9 +46,8 @@
 		предки Pa и Pb (ассоциация A НЕтранзитивно)
 
 	SELECT
-		i.*
-		p.parent_id,
-		s1.val, s2.val
+		i.*,
+		p.parent_id
 	FROM
 		item AS i
 		INNER JOIN index AS f1 ON (i.id = f1.item)
@@ -87,15 +85,15 @@
 		предки Pa и Pb (ассоциация A транзитивно)
 
 	SELECT
-		i.*
+		i.*,
 		p.parent_id
 	FROM
 		item AS i
-		INNER JOIN parent AS p ON (i.id = p.child_id)
-		INNER JOIN parent AS pp ON (i.id = pp.parent_id)
-		INNER JOIN parent AS pi ON (pi.id = pp.child_id)
-		INNER JOIN parent AS pf1 ON (pf1.item = pi.id)
-		INNER JOIN index AS f1 ON (i.id = f1.item)
+		INNER JOIN parent AS p ON (i.id = p.child_id)       # простой критерий предка
+		INNER JOIN parent AS pp ON (i.id = pp.parent_id)    # связь искомого айтема и айтема-потомка для фильтрации
+		INNER JOIN item AS pi ON (pi.id = pp.child_id)      # айтем-потомок для фильтрации (его статус долен быть 0)
+		INNER JOIN index AS pf1 ON (pf1.item = pi.id)       # фильтр по айтему-потомку для фильтрации
+		INNER JOIN index AS f1 ON (i.id = f1.item)          # фильтр по основному искомому айтему
 	WHERE
 		i.status = 0
 		AND pi.status = 0
@@ -119,7 +117,7 @@
 		тип - раздел (S)
 
 	SELECT
-		i.*
+		i.*,
 		p.parent_id
 	FROM
 		item AS i
@@ -142,12 +140,14 @@
 		тип - каталог (C)
 
 	SELECT
-		i.*
+		i.*, 0
 	FROM
 		item AS i
 	WHERE
         i.status = 0
-		AND i.type_id IN (C)
+		AND i.supertype IN (C)
+	ORDER BY
+		i.id
 
 
 
@@ -160,7 +160,7 @@
 		предки Pa и Pb (ассоциация A транзитивно)
 
 	SELECT
-		i.*
+		i.*,
 		p.parent_id
 	FROM
 		item AS i
@@ -184,7 +184,7 @@
 		предки Pk...Pm (ассоциация B транзитивно) - фильтр
 
 	SELECT
-		i.*
+		i.*,
 		p.parent_id
 	FROM
 		item AS i
@@ -212,7 +212,7 @@
 		потомки Sk...Sm (ассоциация B транзитивно) - фильтр
 
 	SELECT
-		i.*
+		i.*,
 		p.parent_id
 	FROM
 		item AS i
@@ -241,8 +241,8 @@
 		предки Pa и Pb (ассоциация A НЕтранзитивно)
 
 	SELECT
-		g.val,
-		p.parent_id
+		p.parent_id,
+		g.val AS GV
 	FROM
 		item AS i
 		INNER JOIN index AS f1 ON (i.id = f1.item)
@@ -280,8 +280,8 @@
 		предки Pa и Pb (ассоциация A транзитивно)
 
 	SELECT
-		MAX(g.val)
 		p.parent_id,
+		MAX(g.val) AS GV,
 		g1.val  # значение параметра, для которого определяется групповое значение параметра группировки (например, красный)
 	FROM
 		item AS i
@@ -303,3 +303,64 @@
 		AND g.param = "вес"
 	GROUP BY
 		p.parent_id, g1.val     # parent_id нужен, чтобы группировались айтемы по предкам (а не все вместе, независимо от предка)
+
+
+
+
+11. Запрос типа parent
+
+	Задано:
+		тип - раздел (S)
+		потомок - товар (T)
+
+	SELECT
+		i.*,
+		p.child_id
+	FROM
+		item AS i
+		INNER JOIN parent AS p ON (i.id = p.parent_id)
+	WHERE
+        i.status = 0
+
+		# Используется колонка supertype из таблицы item для определения типа
+		AND p.child_id in (T) AND p.assoc_id IN (A) AND i.supertype IN (S)
+
+
+
+
+12. Фильтрация с двумя группами (опциями) фильтров (объединенных знаком OR - опции всегда объединяются знаком OR)
+
+	Задано:
+		тип - товар (T)
+		предки Pa и Pb (ассоциация A НЕтранзитивно)
+		предки Pk...Pm (ассоциация B транзитивно) - фильтр (первая группа ИЛИ)
+		параметр фильтрации потомка (цена - PR) (цена меньше определенной) - фильтр (вторая группа ИЛИ)
+
+	SELECT
+		i.*,
+		p.parent_id
+	FROM
+		item AS i
+		INNER JOIN parent AS p ON (i.id = p.child_id)       # простой предок
+
+		INNER JOIN parent AS p1 ON (i.id = p1.child_id)     # критерий предка (фильтр)
+
+		INNER JOIN parent AS pp ON (i.id = pp.parent_id)    # связь искомого айтема и айтема-потомка для фильтрации
+		INNER JOIN item AS pi ON (pi.id = pp.child_id)      # айтем-потомок для фильтрации (его статус долен быть 0)
+		INNER JOIN index AS pf1 ON (pf1.item = pi.id)       # фильтр по айтему-потомку для фильтрации
+
+	WHERE
+        i.status = 0
+
+		# Родительский критерий (прямой родитель = 1)
+		AND p.parent_id in (Pa, Pb) AND p.assoc_id IN (A) AND p.child_supertype IN (T) AND p.parent_direct = 1
+
+		AND (
+			# Фильтрация по предку
+			(p1.parent_id in (Pk...Pm) AND p1.assoc_id IN (B) AND p1.child_supertype IN (T))
+			OR
+			# Фильтр по параметру потомка
+			(pi.status = 0 AND pp.assoc_id IN (A) AND pp.child_supertype IN (PR) AND pf1.val <= 100 AND pf1.param = "цена")
+		)
+	ORDER BY
+		p.weight ASC

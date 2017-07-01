@@ -13,25 +13,20 @@ import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
 
 /**
- * Группа критериев, объединенная одним логическим знаком
- * Можно считать, что группа критериев это логическое выражение в скобках в SQL запросе, например 
- * ... WHERE ... (some_size > 0 AND some_size <= 10 AND quantity > 0)
- * 
- * TODO <fix> сделать так, чтобы sorting всегда использовал логический знак AND при добавлении к списку притериев вне зависимости от
- * знака, установленного в группе критериев
+ * Группа критериев, которая является одной из нескольких, каждая из которых является достаточной для удовлетворения
+ * криетриев фильтра.
+ * Каждая такая группа объединяется с другими такими группами логическим знаком OR в общем SQL запросе
  * @author EEEE
  *
  */
-class CriteriaGroup implements FilterCriteria {
+class Option implements FilterCriteria {
 
 	protected final List<FilterCriteria> criterias;
-	protected final LOGICAL_SIGN sign;
 	protected final String groupId; // ID группы, нужен для названия таблиц параметров
 	
-	CriteriaGroup(LOGICAL_SIGN sign, String groupId) {
-		this.sign = sign;
+	Option(String groupId) {
 		this.groupId = groupId;
-		criterias = new ArrayList<FilterCriteria>();
+		criterias = new ArrayList<>();
 	}
 
 	public void appendQuery(TemplateQuery query) {
@@ -83,15 +78,6 @@ class CriteriaGroup implements FilterCriteria {
 		} else 
 			criterias.add(new SingleParamCriteria(param, item, "", sign, pattern, tableName, compType));
 	}
-	/**
-	 * Добавить группу критериев
-	 * @param sign
-	 */
-	final CriteriaGroup addGroup(LOGICAL_SIGN sign) {
-		CriteriaGroup group = new CriteriaGroup(sign, "G" + criterias.size());
-		criterias.add(group);
-		return group;
-	}
 
 	public boolean isNotBlank() {
 		for (FilterCriteria criteria : criterias) {
@@ -102,32 +88,13 @@ class CriteriaGroup implements FilterCriteria {
 	}
 	
 	public boolean isEmptySet() {
-		if (sign == LOGICAL_SIGN.AND) {
-			for (FilterCriteria criteria : criterias) {
-				if (criteria.isEmptySet())
-					return true;
-			}
-		} else {
-			for (FilterCriteria criteria : criterias) {
-				if (!criteria.isEmptySet())
-					return false;
-			}
+		for (FilterCriteria criteria : criterias) {
+			if (criteria.isEmptySet())
+				return true;
 		}
 		return false;
 	}
 
-	public void useParentCriteria() {
-		for (FilterCriteria crit : criterias) {
-			crit.useParentCriteria();
-		}
-	}
-
-	protected Occur getOccur() {
-		if (sign == LOGICAL_SIGN.OR)
-			return Occur.SHOULD;
-		return Occur.MUST;
-	}
-	
 	public BooleanQuery appendLuceneQuery(BooleanQuery query, Occur occur) {
 		if (!isNotBlank())
 			return query;

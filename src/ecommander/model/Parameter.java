@@ -60,12 +60,14 @@ public abstract class Parameter {
 	 * Создать значение из строки и установить
 	 * @param value
 	 * @param isConsistent - при загрузке из БД - true, при изменении в процессе работы приложения - false
+	 * @return - если значение параметра изменилось - true, если нет, то false
 	 */
 	abstract boolean createAndSetValue(String value, boolean isConsistent);
 
 	/**
 	 * Установить значение напрямую без создания
 	 * @param value
+	 * @return - если значение параметра изменилось - true, если нет, то false
 	 */
 	abstract boolean setValue(Object value);
 	public abstract boolean isEmpty();

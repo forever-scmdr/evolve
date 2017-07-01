@@ -118,6 +118,7 @@ public class ComputedDescription {
 	// Функция агрегации
 	private final Func func;
 	private ArrayList<Ref> basicParams = new ArrayList<>();
+	//private Ref basicParam;
 
 	ComputedDescription(Func func) {
 		this.func = func;
@@ -139,7 +140,7 @@ public class ComputedDescription {
 	 * @return
 	 */
 	public ArrayList<Ref> getBasicParams() {
-		return new ArrayList<>(basicParams);
+		return basicParams;
 	}
 
 	/**

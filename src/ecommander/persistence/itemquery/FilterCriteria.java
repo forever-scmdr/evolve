@@ -27,10 +27,6 @@ interface FilterCriteria {
 	 */
 	boolean isEmptySet();
 	/**
-	 * Установить, что надо использовать критерий поиска по родительскому элементу
-	 */
-	void useParentCriteria();
-	/**
 	 * Создать часть Lucene запроса, за которую отвечает данный критерий
 	 * @param query
 	 */
