@@ -18,13 +18,13 @@ import ecommander.pages.variables.FilterStaticVariablePE;
 class FilterSQLBuilderBuilder implements FilterDefinitionVisitor {
 	private FilterSQLBuilder builder;
 	private Stack<CriteriaGroupDef> sourceStack;
-	private Stack<Option> destStack;
+	private Stack<CriteriaGroup> destStack;
 	private ItemQuery query;
 	private FilterStaticVariablePE userInput;
 	
 	FilterSQLBuilderBuilder(ItemQuery query, FilterStaticVariablePE userInput) {
 		this.sourceStack = new Stack<CriteriaGroupDef>();
-		this.destStack = new Stack<Option>();
+		this.destStack = new Stack<CriteriaGroup>();
 		this.query = query;
 		this.userInput = userInput;
 	}

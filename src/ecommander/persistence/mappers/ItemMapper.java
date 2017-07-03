@@ -64,8 +64,8 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 					continue;
 				// Удалить старое значение
 				query.DELETE_FROM_WHERE(DataTypeMapper.getTableName(param.getType()))
-						.col(ItemIndexes.II_ITEM_ID).setLong(item.getId()).AND()
-						.col(ItemIndexes.II_PARAM).setInt(param.getParamId()).sql("; ");
+						.col(ItemIndexes.II_ITEM_ID).long_(item.getId()).AND()
+						.col(ItemIndexes.II_PARAM).int_(param.getParamId()).sql("; ");
 				// Непустые параметры (одиночные и множественные)
 				if (!param.isEmpty()) {
 					if (param.isMultiple()) {
@@ -95,9 +95,9 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 	private static void createSingleValueInsert(TemplateQuery query, Item item, SingleParameter param, boolean needUpdate) throws SQLException {
 		query.INSERT_INTO(DataTypeMapper.getTableName(param.getType())).sql(PARAM_INSERT_PREPARED_START);
 		query
-				.setLong(item.getId()).sql(",")
-				.setInt(param.getParamId()).sql(",")
-				.setInt(item.getTypeId()).sql(",");
+				.long_(item.getId()).sql(",")
+				.int_(param.getParamId()).sql(",")
+				.int_(item.getTypeId()).sql(",");
 		DataTypeMapper.appendPreparedStatementInsertValue(param.getType(), query, param.getValue());
 		if (needUpdate) {
 			query.sql(ON_DUPLICATE_KEY_UPDATE);
@@ -118,7 +118,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 	public static ItemBasics loadItemBasics(long itemId, Connection conn) throws SQLException {
 		TemplateQuery query = new TemplateQuery("Select item basics");
 		query.SELECT(I_ID, I_TYPE_ID, I_KEY, I_GROUP, I_USER, I_STATUS, I_PROTECTED)
-				.FROM(ITEM_TBL).WHERE().col(I_ID).setLong(itemId);
+				.FROM(ITEM_TBL).WHERE().col(I_ID).long_(itemId);
 		try (PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {

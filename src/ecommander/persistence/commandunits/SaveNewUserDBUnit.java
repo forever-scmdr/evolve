@@ -36,9 +36,9 @@ public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBCon
 		TemplateQuery insertUser = new TemplateQuery("Create new User");
 		insertUser.INSERT_INTO(USER_TBL, U_LOGIN, U_PASSWORD, U_DESCRIPTION)
 				.sql(" VALUES (")
-				.setString(user.getName()).com()
-				.setString(user.getPassword()).com()
-				.setString(user.getDescription()).sql(");\r\n");
+				.string(user.getName()).com()
+				.string(user.getPassword()).com()
+				.string(user.getDescription()).sql(");\r\n");
 		HashSet<User.Group> groups = user.getGroups();
 		if (groups.size() > 0)
 			insertUser.INSERT_INTO(USER_GROUP_TBL, UG_GROUP_ID, UG_GROUP_NAME, UG_ROLE, UG_USER_ID)
@@ -47,9 +47,9 @@ public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBCon
 		for (User.Group group : groups) {
 			if (notFirst)
 				insertUser.com();
-			insertUser.sql(" (").setByte(group.id).com()
-					.setString(group.name).com()
-					.setByte(group.role)
+			insertUser.sql(" (").byte_(group.id).com()
+					.string(group.name).com()
+					.byte_(group.role)
 					.sql(", LAST_INSERT_ID())");
 			notFirst = true;
 		}

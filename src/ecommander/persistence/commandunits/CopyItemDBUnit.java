@@ -74,8 +74,8 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 		// Проверка, можно ли копировать
 		TemplateQuery check = new TemplateQuery("Check if copying possible");
 		check.SELECT(IP_CHILD_ID).FROM(ITEM_PARENT_TBL).WHERE()
-				.col(IP_PARENT_ID).setLong(baseItem.getId()).AND()
-				.col(IP_CHILD_ID).setLong(newParent.getId());
+				.col(IP_PARENT_ID).long_(baseItem.getId()).AND()
+				.col(IP_CHILD_ID).long_(newParent.getId());
 		try (PreparedStatement pstmt = check.prepareQuery(getTransactionContext().getConnection())) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next() || newParent.getId() == baseItem.getId())
@@ -131,9 +131,9 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 		// Шаг 5. - Выполнить команду копирования для всех сабайтемов копируемого айтема
 		TemplateQuery allSubitems = new TemplateQuery("Load item primary subitems");
 		allSubitems.SELECT("*").FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID).WHERE()
-				.col(IP_ASSOC_ID).setByte(ItemTypeRegistry.getPrimaryAssoc().getId()).AND()
-				.col(IP_PARENT_ID).setLong(baseItem.getId()).AND()
-				.col(IP_PARENT_DIRECT).setByte((byte) 1);
+				.col(IP_ASSOC_ID).byte_(ItemTypeRegistry.getPrimaryAssoc().getId()).AND()
+				.col(IP_PARENT_ID).long_(baseItem.getId()).AND()
+				.col(IP_PARENT_DIRECT).byte_((byte) 1);
 		ArrayList<Item> subitems = new ArrayList<>();
 		try (PreparedStatement pstmt = allSubitems.prepareQuery(getTransactionContext().getConnection())) {
 			ResultSet rs = pstmt.executeQuery();

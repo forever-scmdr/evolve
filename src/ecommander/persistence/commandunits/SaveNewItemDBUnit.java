@@ -69,19 +69,19 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		//
 		TemplateQuery itemInsert = new TemplateQuery("New item insert");
 		itemInsert.INSERT_INTO(ITEM_TBL).SET()
-				.col(I_SUPERTYPE).setInt(item.getBasicSupertypeId())
-				._col(I_TYPE_ID).setInt(item.getTypeId())
-				._col(I_KEY).setString(item.getKey())
-				._col(I_T_KEY).setString(item.getKeyUnique())
-				._col(I_PROTECTED).setByte(item.isFileProtected() ? (byte)1 : (byte)0)
-				._col(I_GROUP).setByte(item.getOwnerGroupId())
-				._col(I_USER).setInt(item.getOwnerUserId())
-				._col(I_STATUS).setByte(item.getStatus())
-				._col(I_PARAMS).setString(item.outputValues());
+				.col(I_SUPERTYPE).int_(item.getBasicSupertypeId())
+				._col(I_TYPE_ID).int_(item.getTypeId())
+				._col(I_KEY).string(item.getKey())
+				._col(I_T_KEY).string(item.getKeyUnique())
+				._col(I_PROTECTED).byte_(item.isFileProtected() ? (byte)1 : (byte)0)
+				._col(I_GROUP).byte_(item.getOwnerGroupId())
+				._col(I_USER).int_(item.getOwnerUserId())
+				._col(I_STATUS).byte_(item.getStatus())
+				._col(I_PARAMS).string(item.outputValues());
 		// Иногда (например, при переносе со старой версии CMS) ID айтема уже задан (не равняется 0)
 		boolean hasId = item.getId() > 0;
 		if (hasId)
-			itemInsert._col(I_ID).setLong(item.getId());
+			itemInsert._col(I_ID).long_(item.getId());
 
 		if (!hasId) {
 			try (PreparedStatement pstmt = itemInsert.prepareQuery(conn, true)) {
@@ -105,8 +105,8 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 			TemplateQuery uniqueKeyInsert = new TemplateQuery("Unique key insert");
 			uniqueKeyInsert
 					.INSERT_INTO(UNIQUE_KEY_TBL).SET()
-					.col(UK_ID).setLong(item.getId())
-					._col(UK_KEY).setString(item.getKeyUnique());
+					.col(UK_ID).long_(item.getId())
+					._col(UK_KEY).string(item.getKeyUnique());
 			PreparedStatement keyUniqueStmt = uniqueKeyInsert.prepareQuery(conn);
 			boolean needItemUpdate = false;
 			try {
@@ -125,8 +125,8 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 			if (needItemUpdate) {
 				TemplateQuery keyUpdate = new TemplateQuery("Item unique key update");
 				keyUpdate.UPDATE(ITEM_TBL)
-						.SET().col(I_T_KEY).setString(item.getKeyUnique())
-						.WHERE().col(I_ID).setLong(item.getId());
+						.SET().col(I_T_KEY).string(item.getKeyUnique())
+						.WHERE().col(I_ID).long_(item.getId());
 				try (PreparedStatement pstmt = keyUpdate.prepareQuery(conn)) {
 					pstmt.executeUpdate();
 				}

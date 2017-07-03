@@ -59,12 +59,12 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 				item.setKeyUnique(item.getKeyUnique() + item.getId());
 			// Айтем имел значение уникального ключа
 			if (StringUtils.isNotBlank(item.getOldKeyUnique())) {
-				query.UPDATE(UNIQUE_KEY_TBL).SET().col(UK_KEY).setString(item.getKeyUnique())
-						.WHERE().col(UK_KEY).setString(item.getOldKeyUnique()).AND().col(UK_ID).setLong(item.getId());
+				query.UPDATE(UNIQUE_KEY_TBL).SET().col(UK_KEY).string(item.getKeyUnique())
+						.WHERE().col(UK_KEY).string(item.getOldKeyUnique()).AND().col(UK_ID).long_(item.getId());
 			}
 			// Айтем раньше не имел уникального ключа
 			else {
-				query.INSERT_INTO(UNIQUE_KEY_TBL).SET().col(UK_ID).setLong(item.getId())._col(UK_KEY).setString(item.getKeyUnique());
+				query.INSERT_INTO(UNIQUE_KEY_TBL).SET().col(UK_ID).long_(item.getId())._col(UK_KEY).string(item.getKeyUnique());
 			}
 
 			try (PreparedStatement pstmt = query.prepareQuery(conn)) {
@@ -75,10 +75,10 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 		// Обновление параметров в таблице айтема
 		TemplateQuery updateItem = new TemplateQuery("Update item");
 		updateItem.UPDATE(ItemTbl.ITEM_TBL).SET()
-				.col(ItemTbl.I_KEY).setString(item.getKey())
-				._col(ItemTbl.I_T_KEY).setString(item.getKeyUnique())
-				._col(ItemTbl.I_PARAMS).setString(item.outputValues())
-				.WHERE().col(ItemTbl.I_ID).setLong(item.getId());
+				.col(ItemTbl.I_KEY).string(item.getKey())
+				._col(ItemTbl.I_T_KEY).string(item.getKeyUnique())
+				._col(ItemTbl.I_PARAMS).string(item.outputValues())
+				.WHERE().col(ItemTbl.I_ID).long_(item.getId());
 		try (PreparedStatement pstmt = updateItem.prepareQuery(conn)) {
 			pstmt.executeUpdate();
 		}

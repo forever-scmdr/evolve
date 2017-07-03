@@ -28,7 +28,7 @@ public class CleanDeletedItemsDBUnit extends DBPersistenceCommandUnit implements
 
 		// Загрузка ID для удаления
 		TemplateQuery selectToDeleteIds = new TemplateQuery("Select " + toDeleteQty + " items to delete");
-		selectToDeleteIds.SELECT(I_ID).FROM(ITEM_TBL).WHERE().col(I_STATUS).setByte(Item.STATUS_DELETED).
+		selectToDeleteIds.SELECT(I_ID).FROM(ITEM_TBL).WHERE().col(I_STATUS).byte_(Item.STATUS_DELETED).
 				ORDER_BY(I_ID).LIMIT(toDeleteQty);
 		ArrayList<Long> deletedIds = new ArrayList<>();
 		try (PreparedStatement pstmt = selectToDeleteIds.prepareQuery(getTransactionContext().getConnection())) {
@@ -43,8 +43,8 @@ public class CleanDeletedItemsDBUnit extends DBPersistenceCommandUnit implements
 
 		// Удаление из таблиц айтемов и предков (из предков удаляются записи только где удаляемый айтем - child)
 		TemplateQuery delete = new TemplateQuery("Delete items");
-		delete.DELETE(ITEM_TBL).WHERE().col(I_ID, " IN").longArrayIN(deletedArray).sql(";\r\n")
-				.DELETE(ITEM_PARENT_TBL).WHERE().col(IP_CHILD_ID, " IN").longArrayIN(deletedArray);
+		delete.DELETE(ITEM_TBL).WHERE().col(I_ID, " IN").longIN(deletedArray).sql(";\r\n")
+				.DELETE(ITEM_PARENT_TBL).WHERE().col(IP_CHILD_ID, " IN").longIN(deletedArray);
 		try (PreparedStatement pstmt = delete.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}

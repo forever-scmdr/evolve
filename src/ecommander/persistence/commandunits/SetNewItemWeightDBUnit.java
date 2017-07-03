@@ -50,11 +50,11 @@ class SetNewItemWeightDBUnit extends DBPersistenceCommandUnit implements DBConst
 					+ indexBefore + ", " + indexAfter + ", " + newIndex);
 		}
 		// Изменение индекса самого айтема
-		newWeight.UPDATE(ITEM_PARENT_TBL).SET().col(IP_WEIGHT).setInt(newIndex)
-				.WHERE().col(IP_CHILD_ID).setLong(itemId)
-				.AND().col(IP_ASSOC_ID).setByte(assocId)
-				.AND().col(IP_PARENT_DIRECT).setByte((byte)1)
-				.AND().col(IP_PARENT_ID).setLong(itemParentId);
+		newWeight.UPDATE(ITEM_PARENT_TBL).SET().col(IP_WEIGHT).int_(newIndex)
+				.WHERE().col(IP_CHILD_ID).long_(itemId)
+				.AND().col(IP_ASSOC_ID).byte_(assocId)
+				.AND().col(IP_PARENT_DIRECT).byte_((byte)1)
+				.AND().col(IP_PARENT_ID).long_(itemParentId);
 		try (PreparedStatement pstmt = newWeight.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}
@@ -86,9 +86,9 @@ class SetNewItemWeightDBUnit extends DBPersistenceCommandUnit implements DBConst
 		TemplateQuery normalize = new TemplateQuery("Noramlize child weight");
 		normalize.sql("SET @index = 0;")
 				.UPDATE(ITEM_PARENT_TBL).SET().col(IP_WEIGHT).sql("(SELECT @index := @index + 1) * " + Item.WEIGHT_STEP)
-				.WHERE().col(IP_ASSOC_ID).setByte(assocId)
-				.AND().col(IP_PARENT_DIRECT).setByte((byte)1)
-				.AND().col(IP_PARENT_ID).setLong(parentId)
+				.WHERE().col(IP_ASSOC_ID).byte_(assocId)
+				.AND().col(IP_PARENT_DIRECT).byte_((byte)1)
+				.AND().col(IP_PARENT_ID).long_(parentId)
 				.ORDER_BY(IP_WEIGHT);
 //			String sql
 //				= "SET @index = 0;"

@@ -7,7 +7,6 @@ import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.DataTypeMapper;
-import ecommander.persistence.mappers.ItemMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -49,10 +48,10 @@ public class UpdateComputedDBUnit extends DBPersistenceCommandUnit implements DB
 							.INNER_JOIN(indexTableName, IP_CHILD_ID, II_ITEM_ID)
 							.INNER_JOIN(ITEM_TBL, IP_CHILD_ID, I_ID)
 							.WHERE()
-							.col(IP_PARENT_ID).setLong(itemId).AND()
-							.col(IP_ASSOC_ID).setByte(assocId)
-							.col(II_PARAM).setInt(refParam.getId())
-							.col(I_STATUS).setByte(Item.STATUS_NORMAL);
+							.col(IP_PARENT_ID).long_(itemId).AND()
+							.col(IP_ASSOC_ID).byte_(assocId)
+							.col(II_PARAM).int_(refParam.getId())
+							.col(I_STATUS).byte_(Item.STATUS_NORMAL);
 					Object value = null;
 					try(PreparedStatement pstmt = query.prepareQuery(getTransactionContext().getConnection())) {
 						ResultSet rs = pstmt.executeQuery();
@@ -67,7 +66,7 @@ public class UpdateComputedDBUnit extends DBPersistenceCommandUnit implements DB
 		}
 		// Удалить из очереди на обновление
 		TemplateQuery query = new TemplateQuery("Delete item from computed update log");
-		query.DELETE_FROM_WHERE(COMPUTED_LOG_TBL).col(L_ITEM).setLong(itemId);
+		query.DELETE_FROM_WHERE(COMPUTED_LOG_TBL).col(L_ITEM).long_(itemId);
 		try(PreparedStatement pstmt = query.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}

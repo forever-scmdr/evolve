@@ -52,9 +52,9 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		TemplateQuery delete = new TemplateQuery("Delete assoc");
 
 		delete.DELETE_FROM_WHERE(ITEM_PARENT_TBL).WHERE()
-				.col(IP_PARENT_ID).setLong(parent.getId()).AND()
-				.col(IP_CHILD_ID).setLong(item.getId())
-				.col(IP_ASSOC_ID).setByte(assocId).sql(" \r\n");
+				.col(IP_PARENT_ID).long_(parent.getId()).AND()
+				.col(IP_CHILD_ID).long_(item.getId())
+				.col(IP_ASSOC_ID).byte_(assocId).sql(" \r\n");
 
 		Assoc assoc = ItemTypeRegistry.getAssoc(assocId);
 
@@ -63,9 +63,9 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 					.DELETE("PRED, SUCC")
 					.FROM(ITEM_PARENT_TBL + " AS PRED", ITEM_PARENT_TBL + " AS SUCC")
 					.WHERE()
-					.col("PRED." + IP_CHILD_ID).setLong(parent.getId()).AND().col("PRED." + IP_ASSOC_ID).setByte(assocId)
+					.col("PRED." + IP_CHILD_ID).long_(parent.getId()).AND().col("PRED." + IP_ASSOC_ID).byte_(assocId)
 					.AND()
-					.col("SUCC." + IP_PARENT_ID).setLong(childId).AND().col("SUCC." + IP_ASSOC_ID).setByte(assocId);
+					.col("SUCC." + IP_PARENT_ID).long_(childId).AND().col("SUCC." + IP_ASSOC_ID).byte_(assocId);
 			try (PreparedStatement pstmt = delete.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();
 			}

@@ -36,7 +36,7 @@ class AggregationCriteria implements FilterCriteria, PossibleMainCriteria {
 	}
 
 	String getResultColumnName() {
-		return baseCriteria.tableName + '.' + DBConstants.ItemIndexes.II_VALUE;
+		return baseCriteria.INDEX_TABLE + '.' + DBConstants.ItemIndexes.II_VALUE;
 	}
 	
 	ParameterDescription getParam() {

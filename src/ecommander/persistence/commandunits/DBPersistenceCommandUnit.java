@@ -204,9 +204,9 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 			logInsert
 					.INSERT_INTO(COMPUTED_LOG_TBL, L_ITEM)
 					.SELECT(I_ID).FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_PARENT_ID)
-					.WHERE().col(IP_CHILD_ID).setLong(itemId)
+					.WHERE().col(IP_CHILD_ID).long_(itemId)
 					.AND().col(IP_ASSOC_ID, " IN").byteArrayIN(assocId)
-					.AND().col(I_SUPERTYPE, " IN").intArrayIN(ItemTypeRegistry.getAllComputedSupertypes())
+					.AND().col(I_SUPERTYPE, " IN").intIN(ItemTypeRegistry.getAllComputedSupertypes())
 					.ON_DUPLICATE_KEY_UPDATE(L_ITEM).sql(L_ITEM);
 
 			try(PreparedStatement pstmt = logInsert.prepareQuery(getTransactionContext().getConnection())) {

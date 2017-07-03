@@ -62,7 +62,7 @@ class SuccessorCriteria implements FilterCriteria, PossibleMainCriteria {
 			joinPart.sql(tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID + " = ").subquery(ItemQuery.COMMON_COL_OPT).sql(" AND ");
 		}
 //		// Чтобы ссылки не попадали - дополнительное условие что ITEM_ID = REF_ID
-//		joinPart.sql(tableName + '.' + DBConstants.ItemParent.REF_ID + " = " + tableName + '.' + DBConstants.ItemParent.ITEM_ID + " AND ");
+//		joinPart.sql(INDEX_TABLE + '.' + DBConstants.ItemParent.REF_ID + " = " + INDEX_TABLE + '.' + DBConstants.ItemParent.ITEM_ID + " AND ");
 		
 		// -- НАЧАЛО --  Добавление критерия потомков
 		TemplateQuery critPart = wherePart.getSubquery(ItemQuery.FILTER_CRITS_OPT);
@@ -81,7 +81,7 @@ class SuccessorCriteria implements FilterCriteria, PossibleMainCriteria {
 		if (itemIds.size() > 0) {
 			critPart
 				.sql(tableName + '.' + DBConstants.ItemParent.ITEM_ID + " " + sign + " (")
-				.setLongArray(itemIds.toArray(new Long[itemIds.size()]))
+				.longArray(itemIds.toArray(new Long[itemIds.size()]))
 				.sql(")");
 		} else {
 			critPart.sql(tableName + '.' + DBConstants.ItemParent.ITEM_ID + " " + sign + " (-1)");

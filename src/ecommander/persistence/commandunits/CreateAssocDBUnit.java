@@ -76,10 +76,10 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 				// У ассоциируемых айтемов не должно быть общих предков
 				TemplateQuery checkQuery = new TemplateQuery("check assoc validity transitive");
 				checkQuery.SELECT(IP_PARENT_ID).FROM(ITEM_PARENT_TBL).WHERE()
-						.col(IP_CHILD_ID).setLong(item.getId()).AND().col(IP_ASSOC_ID).setByte(assocId)
+						.col(IP_CHILD_ID).long_(item.getId()).AND().col(IP_ASSOC_ID).byte_(assocId)
 						.UNION_ALL()
 						.SELECT(IP_PARENT_ID).FROM(ITEM_PARENT_TBL).WHERE()
-						.col(IP_CHILD_ID).setLong(parent.getId()).AND().col(IP_ASSOC_ID).setByte(assocId);
+						.col(IP_CHILD_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(assocId);
 				try (PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection())) {
 					HashSet<Long> nodesParents = new HashSet<>();
 					ResultSet rs = pstmt.executeQuery();
@@ -95,9 +95,9 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 				// Предок не должен содержать потомка по этой ассоциации
 				TemplateQuery checkQuery = new TemplateQuery("check assoc validity non transitive");
 				checkQuery.SELECT(IP_PARENT_ID).FROM(ITEM_PARENT_TBL).WHERE()
-						.col(IP_PARENT_ID).setLong(parent.getId()).AND()
-						.col(IP_CHILD_ID).setLong(item.getId()).AND()
-						.col(IP_ASSOC_ID).setByte(assocId);
+						.col(IP_PARENT_ID).long_(parent.getId()).AND()
+						.col(IP_CHILD_ID).long_(item.getId()).AND()
+						.col(IP_ASSOC_ID).byte_(assocId);
 				try (PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection())) {
 					ResultSet rs = pstmt.executeQuery();
 					if (rs.next())
@@ -119,7 +119,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 
 		// Шаг 1. Вставить запись непосредственного предка и потомка
 		insert.SELECT(parent.getId(), childId, assocId, superTypeId, 1, "COALESCE(MAX(" + IP_WEIGHT + "), 0) + 64")
-				.FROM(ITEM_PARENT_TBL).WHERE().col(IP_PARENT_ID).setLong(parent.getId()).AND().col(IP_ASSOC_ID).setByte(assocId).sql(" \r\n");
+				.FROM(ITEM_PARENT_TBL).WHERE().col(IP_PARENT_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(assocId).sql(" \r\n");
 
 		// Остальные шаги только для транзитивных ассоциаций
 		if (assoc.isTransitive()) {
@@ -129,7 +129,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			insert.UNION_ALL()
 					.SELECT(IP_PARENT_ID, childId, assocId, superTypeId, 0, 0)
 					.FROM(ITEM_PARENT_TBL).WHERE()
-					.col(IP_CHILD_ID).setLong(parent.getId()).AND().col(IP_ASSOC_ID).setByte(primaryAssocId).sql(" \r\n");
+					.col(IP_CHILD_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(primaryAssocId).sql(" \r\n");
 
 			// Шаг 3. Повторить предыдущий шаг для каждого потомка ассоциируемого айтема ("нового потомка" из шага 2)
 			if (!isItemNew) {
@@ -137,9 +137,9 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						.SELECT("PRED." + IP_PARENT_ID, "SUCC." + IP_CHILD_ID, assocId, "SUCC." + IP_CHILD_SUPERTYPE, 0, 0)
 						.FROM(ITEM_PARENT_TBL + " AS PRED", ITEM_PARENT_TBL + " AS SUCC")
 						.WHERE()
-						.col("PRED." + IP_CHILD_ID).setLong(parent.getId()).AND().col("PRED." + IP_ASSOC_ID).setByte(primaryAssocId)
+						.col("PRED." + IP_CHILD_ID).long_(parent.getId()).AND().col("PRED." + IP_ASSOC_ID).byte_(primaryAssocId)
 						.AND()
-						.col("SUCC." + IP_PARENT_ID).setLong(childId).AND().col("SUCC." + IP_ASSOC_ID).setByte(primaryAssocId);
+						.col("SUCC." + IP_PARENT_ID).long_(childId).AND().col("SUCC." + IP_ASSOC_ID).byte_(primaryAssocId);
 			}
 			try (PreparedStatement pstmt = insert.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();

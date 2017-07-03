@@ -1,19 +1,19 @@
 package ecommander.persistence.itemquery;
 
-import java.util.Collection;
-
 import ecommander.model.Compare;
+import ecommander.model.ItemType;
+import ecommander.model.ParameterDescription;
+import ecommander.persistence.common.TemplateQuery;
+import ecommander.persistence.mappers.DataTypeMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
 
-import ecommander.model.ItemType;
-import ecommander.model.ParameterDescription;
-import ecommander.persistence.common.TemplateQuery;
-import ecommander.persistence.mappers.DBConstants;
-import ecommander.persistence.mappers.DataTypeMapper;
+import java.util.Collection;
+
 /**
  * Множественный критерий - Один параметр, много подходящий значений
  * @author EEEE
@@ -40,14 +40,13 @@ class MultipleParamCriteria extends FilterParameterCriteria {
 		else
 			this.sign = NOT_IN;
 		isBlank = (values == null || values.size() == 0);
-		if ((type == Compare.SOME || type == Compare.EVERY) && isBlank)
+		if ((type == Compare.SOME || type == Compare.EVERY) && isBlank && StringUtils.equals(this.sign, IN))
 			isEmptySet = true;
 	}
 
 	@Override
 	protected void appendParameterValue(TemplateQuery query) {
-		query = query.getSubquery(ItemQuery.WHERE_OPT).getSubquery(ItemQuery.FILTER_CRITS_OPT);
-		query.sql(" AND " + tableName + "." + DBConstants.ItemIndexes.II_VALUE + " " + sign + " ");
+		query.getSubquery(WHERE).AND().col(INDEX_TABLE + "." + II_VALUE, " " + sign + " ");
 		if (values.size() > 0) {
 			query.sql("(");
 			DataTypeMapper.appendPreparedStatementRequestValues(param.getType(), query, values);
@@ -57,24 +56,20 @@ class MultipleParamCriteria extends FilterParameterCriteria {
 		}
 	}
 
-	public BooleanQuery appendLuceneQuery(BooleanQuery query, Occur occur) {
+	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
 		if (param.isFulltextFilterable()) {
 			if (!sign.equals(IN) && !sign.equals(NOT_IN))
-				return query;
-			BooleanQuery innerQuery = new BooleanQuery();
+				return queryBuilder;
+			BooleanQuery.Builder innerQuery = new BooleanQuery.Builder();
 			Occur innerOccur = Occur.SHOULD;
 			if (sign.equals(NOT_IN))
 				innerOccur = Occur.MUST_NOT;
 			for (String value : values) {
 				innerQuery.add(new TermQuery(new Term(param.getName(), value)), innerOccur);
 			}
-			query.add(innerQuery, occur);
+			queryBuilder.add(innerQuery.build(), occur);
 		}
-		return query;
-	}
-
-	public String getParentColumnName() {
-		return tableName + '.' + DBConstants.ItemIndexes.ITEM_PARENT;
+		return queryBuilder;
 	}
 
 	@Override

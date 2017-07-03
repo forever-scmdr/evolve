@@ -31,9 +31,9 @@ public class SetNewItemWeightByPositionDBUnit extends DBPersistenceCommandUnit i
 		testPrivileges(item);
 		TemplateQuery select = new TemplateQuery("Select weight by position");
 		select.SELECT(IP_WEIGHT).FROM(ITEM_PARENT_TBL).WHERE()
-				.col(IP_ASSOC_ID).setByte(assocId).AND()
-				.col(IP_PARENT_ID).setLong(parentId).AND()
-				.col(IP_PARENT_DIRECT).setByte((byte) 1)
+				.col(IP_ASSOC_ID).byte_(assocId).AND()
+				.col(IP_PARENT_ID).long_(parentId).AND()
+				.col(IP_PARENT_DIRECT).byte_((byte) 1)
 				.ORDER_BY(IP_WEIGHT);
 		if (newPosition == 0) {
 			select.LIMIT(1);
@@ -65,11 +65,11 @@ public class SetNewItemWeightByPositionDBUnit extends DBPersistenceCommandUnit i
 			newItemWeight = newPosition * Item.WEIGHT_STEP + Item.WEIGHT_STEP / 2;
 		}
 		TemplateQuery update = new TemplateQuery("Update item weight");
-		update.UPDATE(ITEM_PARENT_TBL).SET().col(IP_WEIGHT).setInt(newItemWeight).WHERE()
-				.col(IP_ASSOC_ID).setByte(assocId).AND()
-				.col(IP_PARENT_ID).setLong(parentId).AND()
-				.col(IP_PARENT_DIRECT).setByte((byte) 1).AND()
-				.col(IP_CHILD_ID).setLong(item.getId());
+		update.UPDATE(ITEM_PARENT_TBL).SET().col(IP_WEIGHT).int_(newItemWeight).WHERE()
+				.col(IP_ASSOC_ID).byte_(assocId).AND()
+				.col(IP_PARENT_ID).long_(parentId).AND()
+				.col(IP_PARENT_DIRECT).byte_((byte) 1).AND()
+				.col(IP_CHILD_ID).long_(item.getId());
 		try (PreparedStatement pstmt = update.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}

@@ -17,8 +17,9 @@ import ecommander.persistence.common.TemplateQuery;
  * @author EEEE
  *
  */
-public final class FilterSQLBuilder implements FilterCriteria {
+public final class FilterSQLBuilder extends CriteriaGroup {
 
+	private ArrayList<CriteriaGroup> options = null; // Опции фильтра (блоки критериев, объединенные логическим знаком OR)
 	private ArrayList<AggregationCriteria> aggCriterias = null;
 	private MainAggregationCriteria mainAggCriteria = null;
 	private boolean isSelfGrouping = true;
@@ -115,7 +116,7 @@ public final class FilterSQLBuilder implements FilterCriteria {
 		super.appendQuery(query);
 	}
 
-	private boolean findAndSetMainCriteria(Option group) {
+	private boolean findAndSetMainCriteria(CriteriaGroup group) {
 		for (FilterCriteria crit : group.criterias) {
 			if (crit.isNotBlank()) {
 				if (crit instanceof PossibleMainCriteria) {
@@ -123,8 +124,8 @@ public final class FilterSQLBuilder implements FilterCriteria {
 					itemIdColoumn = ((PossibleMainCriteria) crit).getSelectedColumnName();
 					itemParentColoumn = ((PossibleMainCriteria) crit).getParentColumnName();
 					return true;
-				} else if (crit instanceof Option) {
-					if (findAndSetMainCriteria((Option) crit))
+				} else if (crit instanceof CriteriaGroup) {
+					if (findAndSetMainCriteria((CriteriaGroup) crit))
 						return true;
 				}
 			}

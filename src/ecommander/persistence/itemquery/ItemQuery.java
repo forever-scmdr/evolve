@@ -56,17 +56,33 @@ import ecommander.model.UserGroupRegistry;
  */
 public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 
+	interface Const {
+		static String JOIN = "<<JOIN_PART>>";
+		static String STATUS = "<<STATUS_PART>>";
+		static String WHERE = "<<WHERE_PART>>";
+		static String ORDER = "<<ORDER_PART>>";
+		static String LIMIT = "<<LIMIT_PART>>";
+		static String GROUP_PARAMS = "<<GROUP_PARAMS_PART>>";
+		static String GROUP = "<<GROUP_PART>>";
+
+		static String GROUP_PARAM_COL = "GV";
+		static String GROUP_MAIN_TABLE = "G.";
+		static String PARENT_ID_COL = "PID";
+		static String PARENT_TABLE = "P.";
+		static String ITEM_TABLE = "I.";
+	}
+
 	private static final String COMMON_QUERY
 			= "SELECT DISTINCT I.*, P." + IP_PARENT_ID + " AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> <<OPTION_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
+			+ "<<WHERE_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
 
 	private static final String ROOT_QUERY
 			= "SELECT DISTINCT I.*, 0 AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> <<OPTION_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
+			+ "<<WHERE_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
 
 	private static final String PARENT_QUERY
 			= "SELECT DISTINCT I.*, P." + IP_PARENT_ID + " AS PID "
@@ -78,28 +94,14 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			= "SELECT DISTINCT P." + IP_PARENT_ID + " AS PID <<GROUP_PARAMS_PART>> "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> <<OPTION_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
+			+ "<<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
 
 	private static final String GROUP_ROOT_QUERY
 			= "SELECT DISTINCT 0 AS PID <<GROUP_PARAMS_PART>> "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> <<OPTION_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
+			+ "<<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
 
-
-	static String JOIN = "<<JOIN_PART>>";
-	static String STATUS = "<<STATUS_PART>>";
-	static String WHERE = "<<WHERE_PART>>";
-	static String OPTIONS = "<<OPTION_PART>>";
-	static String ORDER = "<<ORDER_PART>>";
-	static String LIMIT = "<<LIMIT_PART>>";
-	static String GROUP_PARAMS = "<<GROUP_PARAMS_PART>>";
-	static String GROUP = "<<GROUP_PART>>";
-
-	static String GROUP_PARAM_COL = "GV";
-	static String GROUP_MAIN_TABLE = "G";
-	static String PARENT_ID_COL = "PID";
-	static String PARENT_TABLE = "P";
 
 	private boolean hasParent = false; // Предок искомого айтема. Может быть null, если айтем не имеет предка
 	private ItemType itemDesc; // Искомый айтем
@@ -472,7 +474,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			dbQuery.getSubquery(PARENT_ID_REQ).sql(filter.getParentColoumnName());
 			if (hasParent)
 				dbQuery.getSubquery(WHERE_OPT).getSubquery(FILTER_CRITS_OPT)
-					.getSubquery(PARENT_CRIT_OPT).sql(" IN (").setLongArray(parentIds.toArray(new Long[parentIds.size()])).sql(")");
+					.getSubquery(PARENT_CRIT_OPT).sql(" IN (").longArray(parentIds.toArray(new Long[parentIds.size()])).sql(")");
 		} else if (queryType == Type.SUCCESSOR) {
 			// Извлечение ID предка
 			dbQuery.getSubquery(PARENT_ID_REQ).sql(PARENT_TABLE + '.' + DBConstants.ItemParent.IP_PARENT_ID);
@@ -485,7 +487,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			TemplateQuery wherePart = dbQuery.getSubquery(WHERE_OPT);
 			wherePart.getSubquery(FILTER_JOIN_OPT)
 				.sql(PARENT_TABLE + '.' + DBConstants.ItemParent.IP_PARENT_ID + " IN (")
-				.setLongArray(parentIds.toArray(new Long[parentIds.size()]))
+				.longArray(parentIds.toArray(new Long[parentIds.size()]))
 				.sql(")")
 				
 				// Временно закоментирован критерий типа предка.
@@ -493,9 +495,9 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 				// при фильтрации должен быть критерий по параметру.
 				
 //				.sql(" AND " + PARENT_TABLE  + '.' + DBConstants.ItemParent.ITEM_TYPE + " IN (")
-//				.setIntArray(ItemTypeRegistry.getItemContainers(itemDesc.getTypeId()))	// Тип предка потому что в таблицах индекса хранятся ID предков,
+//				.intArray(ItemTypeRegistry.getItemContainers(itemDesc.getTypeId()))	// Тип предка потому что в таблицах индекса хранятся ID предков,
 //																						// и тип у них тоже должен быть типом предка
-				//.setIntArray(ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId()))
+				//.intArray(ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId()))
 				.sql(" AND "); // Удалена закрывающая скобка перед AND в связи с коментированием критерия типа предка
 			// Связь таблицы предков с таблицами параметров фильтра
 			TemplateQuery parentCrit = wherePart.getSubquery(FILTER_CRITS_OPT).getSubquery(PARENT_CRIT_OPT);
@@ -562,7 +564,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			query.getSubquery(PARENT_ID_REQ).sql(DBConstants.Item.DIRECT_PARENT_ID);
 			if (hasParent) {
 				query.getSubquery(WHERE_OPT).sql(" AND " + DBConstants.Item.DIRECT_PARENT_ID + " IN (")
-						.setLongArray(parentIds.toArray(new Long[parentIds.size()])).sql(")");
+						.longArray(parentIds.toArray(new Long[parentIds.size()])).sql(")");
 			}
 		}
 		else if (queryType == Type.SUCCESSOR) {
@@ -571,7 +573,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			query.getSubquery(WHERE_OPT)
 					.sql(" AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.REF_ID + " AND "
 							+ DBConstants.ItemParent.IP_PARENT_ID + " IN (")
-					.setLongArray(parentIds.toArray(new Long[parentIds.size()])).sql(")");
+					.longArray(parentIds.toArray(new Long[parentIds.size()])).sql(")");
 		}
 		else if (queryType == Type.PARENT_OF) {
 			query.getSubquery(PARENT_ID_REQ).sql(DBConstants.ItemParent.REF_ID);
@@ -579,7 +581,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			query.getSubquery(WHERE_OPT)
 					.sql(" AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.IP_PARENT_ID + " AND "
 							+ DBConstants.ItemParent.REF_ID + " IN (")
-					.setLongArray(parentIds.toArray(new Long[parentIds.size()])).sql(")")
+					.longArray(parentIds.toArray(new Long[parentIds.size()])).sql(")")
 					.sql(" AND " + DBConstants.ItemParent.IP_PARENT_DIRECT + "=1");
 		}
 		else if (queryType == Type.PREDECESSORS_OF) {
@@ -588,7 +590,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			query.getSubquery(WHERE_OPT)
 					.sql(" AND " + DBConstants.Item.ID + " = " + DBConstants.ItemParent.IP_PARENT_ID + " AND "
 							+ DBConstants.ItemParent.REF_ID + " IN (")
-					.setLongArray(parentIds.toArray(new Long[parentIds.size()])).sql(")");
+					.longArray(parentIds.toArray(new Long[parentIds.size()])).sql(")");
 		}
 	}
 	/**
@@ -651,7 +653,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			TemplateQuery dbQuery = TemplateQuery.createFromString(COMMON_SELECT_QUERY, queryType.toString() + " SIMPLE " + itemDesc.getName());
 			// Установка критерия типа айтема
 			dbQuery.getSubquery(WHERE_OPT).sql(DBConstants.Item.TYPE_ID + " IN (")
-				.setIntArray(ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId())).sql(")");
+				.intArray(ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId())).sql(")");
 			
 			// Если есть полнотекстовый поиск
 			// Загрузка ID айтемов из Lucene индекса, добавление критерия ID найденных айтемов в основной запрос
@@ -661,7 +663,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 				// Если результат не найден, сразу вернуть пустое множество
 				if (ids.length == 0 && (fulltext.getCompareType() == Compare.SOME || fulltext.getCompareType() == Compare.EVERY))
 					return new ArrayList<Item>();
-				dbQuery.getSubquery(WHERE_OPT).sql(" AND " + DBConstants.Item.ID + " IN (").setLongArray(ids).sql(")");
+				dbQuery.getSubquery(WHERE_OPT).sql(" AND " + DBConstants.Item.ID + " IN (").longArray(ids).sql(")");
 				order = ids;
 // TODO <fix> удалить
 //				ArrayList<Item> result = loadByIdsLong(idsToLoad, idsToLoad.toArray(new Long[0]), conn);
@@ -735,7 +737,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 */
 	public static Item loadById(long id, Connection... conn) throws Exception {
 		TemplateQuery dbQuery = TemplateQuery.createFromString(ITEMS_BY_IDS_SELECT_QUERY, " ID_LIST ");
-		dbQuery.getSubquery(ID_CRIT_REQ).setLong(id);
+		dbQuery.getSubquery(ID_CRIT_REQ).long_(id);
 		ArrayList<Item> result = loadByQuery(dbQuery, DBConstants.Item.DIRECT_PARENT_ID, null, conn);
 		if (result.size() > 0)
 			return result.get(0);
@@ -750,7 +752,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 */
 	public static ArrayList<Item> loadByParentId(long id, Connection... conn) throws Exception {
 		TemplateQuery dbQuery = TemplateQuery.createFromString(ALL_DIRECT_SUBITEMS_SELECT_QUERY, " PARENT_ID_LIST ");
-		dbQuery.getSubquery(ID_CRIT_REQ).setLong(id);
+		dbQuery.getSubquery(ID_CRIT_REQ).long_(id);
 		return loadByQuery(dbQuery, DBConstants.Item.DIRECT_PARENT_ID, null, conn);
 	}
 	/**
@@ -774,7 +776,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		if (ids.size() == 0)
 			return new ArrayList<Item>();
 		TemplateQuery dbQuery = TemplateQuery.createFromString(ITEMS_BY_IDS_SELECT_QUERY, " ID_LIST ");
-		dbQuery.getSubquery(ID_CRIT_REQ).setLongArray(ids.toArray(new Long[ids.size()]));
+		dbQuery.getSubquery(ID_CRIT_REQ).longArray(ids.toArray(new Long[ids.size()]));
 		if (order == null)
 			dbQuery.getSubquery(SORT_BY_OPT).sql(" ORDER BY " + DBConstants.Item.INDEX_WEIGHT);
 		return loadByQuery(dbQuery, DBConstants.Item.DIRECT_PARENT_ID, order, conn);
@@ -847,7 +849,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		if (keys.size() == 0)
 			return new ArrayList<Item>(0);
 		TemplateQuery dbQuery = TemplateQuery.createFromString(ID_BY_UNIQUE_KEY_SELECT_QUERY, " ID_LIST ");
-		dbQuery.getSubquery(ID_CRIT_REQ).setStringArray(keys.toArray(new String[0]));
+		dbQuery.getSubquery(ID_CRIT_REQ).stringArray(keys.toArray(new String[0]));
 		boolean isOwnConnection = false;
 		Connection connection = null;
 		if (conn == null || conn.length == 0) {
@@ -889,7 +891,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		dbQuery.getSubquery(PARAM_TABLE_REQ).sql(DataTypeMapper.getTableName(param.getType()));
 		dbQuery.getSubquery(PARAM_CRIT_REQ)
 			.sql(DBConstants.ItemIndexes.REF_ID + " = " + DBConstants.Item.ID)
-			.sql(" AND " + DBConstants.ItemIndexes.II_PARAM + " = ").setInt(param.getId())
+			.sql(" AND " + DBConstants.ItemIndexes.II_PARAM + " = ").int_(param.getId())
 			.sql(" AND " + DBConstants.ItemIndexes.II_VALUE + " IN (");
 		DataTypeMapper.appendPreparedStatementRequestValues(param.getType(), dbQuery, paramValue);
 		dbQuery.sql(")");
@@ -898,7 +900,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		// Если параметр принадлежит предку айтема, то в случае неиспользования критерия типа айтема
 		// могут вернуться лишние айтемы (тип которых является предком искомого типа)
 		if (param.getOwnerItemId() != item.getTypeId()) {
-			dbQuery.sql(" AND " + DBConstants.ItemIndexes.II_ITEM_TYPE + " IN (").setIntArray(extenders).sql(")");
+			dbQuery.sql(" AND " + DBConstants.ItemIndexes.II_ITEM_TYPE + " IN (").intArray(extenders).sql(")");
 		}
 		return loadByQuery(dbQuery, DBConstants.Item.DIRECT_PARENT_ID, null, conn);		
 	}
@@ -1021,14 +1023,14 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		// Установка критерия типа айтема (иногда может не понадобиться, когда параметры фильтрации уникальны для типа айтема)
 		TemplateQuery typeCrit = dbQuery.getSubquery(WHERE_OPT).getSubquery(FILTER_CRITS_OPT).getSubquery(TYPE_CRIT_OPT);
 		if (typeCrit != null)
-			typeCrit.sql(" IN (").setIntArray(ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId())).sql(")");
+			typeCrit.sql(" IN (").intArray(ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId())).sql(")");
 		// Подстановка нужной колонки для извлечения ID айтема
 		dbQuery.getSubquery(ITEM_ID_REQ).sql(filter.getIdColoumnName());
 		// Установка полнотекстового критерия, если он есть
 		if (hasFulltext()) {
 			loadFulltextIds();
 			dbQuery.getSubquery(WHERE_OPT).getSubquery(FILTER_CRITS_OPT).sql(" AND ").sql(filter.getIdColoumnName())
-				.sql(" IN (").setLongArray(fulltext.getLoadedIds()).sql(")");
+				.sql(" IN (").longArray(fulltext.getLoadedIds()).sql(")");
 		}
 		// Применение количественных ограничений (если несколько предков - для каждого предка в отдельности)
 		createFilterParentCriteria(dbQuery, loadedIds);
@@ -1118,7 +1120,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			// Установка критерия типа айтема (иногда может не понадобиться, когда параметры фильтрации уникальны для типа айтема)
 			TemplateQuery typeCrit = dbQuery.getSubquery(WHERE_OPT).getSubquery(FILTER_CRITS_OPT).getSubquery(TYPE_CRIT_OPT);
 			if (typeCrit != null)
-				typeCrit.sql(" IN (").setIntArray(ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId())).sql(")");
+				typeCrit.sql(" IN (").intArray(ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId())).sql(")");
 			// Подстановка нужной колонки для извлечения ID айтема
 			dbQuery.getSubquery(ITEM_ID_REQ).sql(filter.getIdColoumnName());
 			// Установка критерия предка
@@ -1127,14 +1129,14 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			if (hasFulltext()) {
 				loadFulltextIds();
 				dbQuery.getSubquery(WHERE_OPT).getSubquery(FILTER_CRITS_OPT)
-					.sql(" AND " + filter.getIdColoumnName() + " IN (").setLongArray(fulltext.getLoadedIds()).sql(")");
+					.sql(" AND " + filter.getIdColoumnName() + " IN (").longArray(fulltext.getLoadedIds()).sql(")");
 			}
 		} else {
 			// Подстановка главной таблицы айтема
 			dbQuery.getSubquery(FROM_OPT).sql(DBConstants.Item.TABLE);
 			// Установка критерия типа айтема
 			dbQuery.getSubquery(WHERE_OPT).sql(DBConstants.Item.TYPE_ID + " IN (")
-				.setIntArray(ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId())).sql(")");
+				.intArray(ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId())).sql(")");
 			// Подстановка нужной колонки для извлечения ID айтема
 			dbQuery.getSubquery(ITEM_ID_REQ).sql(DBConstants.Item.ID);
 			// Установка критерия предка
@@ -1143,7 +1145,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			if (hasFulltext()) {
 				loadFulltextIds();
 				dbQuery.getSubquery(WHERE_OPT)
-					.sql(" AND " + DBConstants.Item.ID + " IN (").setLongArray(fulltext.getLoadedIds()).sql(")");
+					.sql(" AND " + DBConstants.Item.ID + " IN (").longArray(fulltext.getLoadedIds()).sql(")");
 			}
 		}
 		// Использовать группировку по родительскому ID только в случае, если есть родитель
@@ -1193,7 +1195,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		// Установка критерия типа айтема (иногда может не понадобиться, когда параметры фильтрации уникальны для типа айтема)
 		TemplateQuery typeCrit = dbQuery.getSubquery(WHERE_OPT).getSubquery(FILTER_CRITS_OPT).getSubquery(TYPE_CRIT_OPT);
 		if (typeCrit != null)
-			typeCrit.sql(" IN (").setIntArray(ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId())).sql(")");
+			typeCrit.sql(" IN (").intArray(ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId())).sql(")");
 		// Установка критерия предка
 		createFilterParentCriteria(dbQuery, loadedIds);
 		// Если был полнотекстовый поиск - установка списка найденных ID айтемов
@@ -1201,7 +1203,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			loadFulltextIds();
 			dbQuery.getSubquery(WHERE_OPT).getSubquery(FILTER_CRITS_OPT).sql(" AND ")
 					.sql(GROUP_MAIN_TABLE + "." + DBConstants.ItemIndexes.REF_ID)
-					.sql(" IN (").setLongArray(fulltext.getLoadedIds()).sql(")");
+					.sql(" IN (").longArray(fulltext.getLoadedIds()).sql(")");
 		}
 		// Выполнение запроса к БД
 		ArrayList<Item> result = new ArrayList<Item>();

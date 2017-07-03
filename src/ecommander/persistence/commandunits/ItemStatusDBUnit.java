@@ -60,13 +60,13 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 		byte primaryAssoc = ItemTypeRegistry.getPrimaryAssoc().getId();
 		// Сначала обновить сам айтем
 		TemplateQuery updateItemStatus = new TemplateQuery("Update item status");
-		updateItemStatus.UPDATE(ITEM_TBL).SET().col(I_STATUS).setByte(newStatus)
-				.WHERE().col(I_ID).setLong(item.getId()).sql(";\r\n");
+		updateItemStatus.UPDATE(ITEM_TBL).SET().col(I_STATUS).byte_(newStatus)
+				.WHERE().col(I_ID).long_(item.getId()).sql(";\r\n");
 		// Потом обновить все сабайтемы
 		updateItemStatus.UPDATE(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID)
-				.SET().col(I_STATUS).setByte(newStatus)
-				.WHERE().col(IP_PARENT_ID).setLong(item.getId())
-				.AND().col(IP_ASSOC_ID).setByte(primaryAssoc);
+				.SET().col(I_STATUS).byte_(newStatus)
+				.WHERE().col(IP_PARENT_ID).long_(item.getId())
+				.AND().col(IP_ASSOC_ID).byte_(primaryAssoc);
 		try(PreparedStatement pstmt = updateItemStatus.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}
@@ -87,18 +87,18 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 			logInsert
 					.INSERT_INTO(COMPUTED_LOG_TBL, L_ITEM)
 					.SELECT(I_ID).FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_PARENT_ID)
-					.WHERE().col(IP_CHILD_ID).setLong(item.getId())
-					.AND().col(IP_ASSOC_ID).setByte(primaryAssoc)
-					.AND().col(I_SUPERTYPE, " IN").intArrayIN(ItemTypeRegistry.getAllComputedSupertypes())
+					.WHERE().col(IP_CHILD_ID).long_(item.getId())
+					.AND().col(IP_ASSOC_ID).byte_(primaryAssoc)
+					.AND().col(I_SUPERTYPE, " IN").intIN(ItemTypeRegistry.getAllComputedSupertypes())
 					.ON_DUPLICATE_KEY_UPDATE(L_ITEM).sql(L_ITEM + ";\r\n")
 
 					.INSERT_INTO(COMPUTED_LOG_TBL, L_ITEM)
 					.SELECT(I + I_ID)
 					.FROM(ITEM_TBL + " AS I").INNER_JOIN(ITEM_PARENT_TBL + " AS P1", I + I_ID, P1 + IP_PARENT_ID)
 					.INNER_JOIN(ITEM_PARENT_TBL + " AS P2", P2 + IP_CHILD_ID, P1 + IP_CHILD_ID)
-					.WHERE().col(P2 + IP_PARENT_ID).setLong(item.getId())
+					.WHERE().col(P2 + IP_PARENT_ID).long_(item.getId())
 					.AND().col(P1 + IP_ASSOC_ID, " IN").byteArrayIN(ItemTypeRegistry.getAllOtherAssocIds(primaryAssoc))
-					.AND().col(I + I_SUPERTYPE, " IN").setIntArray(ItemTypeRegistry.getAllComputedSupertypes())
+					.AND().col(I + I_SUPERTYPE, " IN").intArray(ItemTypeRegistry.getAllComputedSupertypes())
 					.ON_DUPLICATE_KEY_UPDATE(L_ITEM).sql(L_ITEM);
 			try(PreparedStatement pstmt = logInsert.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();

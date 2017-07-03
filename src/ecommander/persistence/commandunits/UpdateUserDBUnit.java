@@ -58,10 +58,10 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 			boolean isNotFirst = false;
 			for (String newGroup : newGroups) {
 				String sqlStart = isNotFirst ? ", (" : "(";
-				insertGroups.sql(sqlStart).setInt(user.getUserId()).com()
-						.setByte(UserGroupRegistry.getGroup(newGroup)).com()
-						.setString(newGroup).com()
-						.setByte(user.getRole(newGroup)).sql(")");
+				insertGroups.sql(sqlStart).int_(user.getUserId()).com()
+						.byte_(UserGroupRegistry.getGroup(newGroup)).com()
+						.string(newGroup).com()
+						.byte_(user.getRole(newGroup)).sql(")");
 				isNotFirst = true;
 			}
 			try (PreparedStatement pstmt = insertGroups.prepareQuery(getTransactionContext().getConnection())) {
@@ -78,7 +78,7 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 			}
 			TemplateQuery deleteGroups = new TemplateQuery("Delete user groups");
 			deleteGroups
-					.DELETE_FROM_WHERE(USER_GROUP_TBL).col(UG_USER_ID).setInt(user.getUserId()).AND()
+					.DELETE_FROM_WHERE(USER_GROUP_TBL).col(UG_USER_ID).int_(user.getUserId()).AND()
 					.col(UG_GROUP_ID, " IN").byteArrayIN(groupIds.toArray(new Byte[groupIds.size()]));
 			try (PreparedStatement pstmt = deleteGroups.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();
@@ -92,9 +92,9 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 			TemplateQuery updateRoles = new TemplateQuery("Update user group roles");
 			for (String commonGroup : commonGroups) {
 				if (user.getRole(commonGroup) != oldUser.getRole(commonGroup)) {
-					updateRoles.UPDATE(USER_GROUP_TBL).SET().col(UG_ROLE).setByte(user.getRole(commonGroup))
-							.WHERE().col(UG_USER_ID).setInt(user.getUserId())
-							.AND().col(UG_GROUP_ID).setByte(UserGroupRegistry.getGroup(commonGroup)).sql(";\r\n");
+					updateRoles.UPDATE(USER_GROUP_TBL).SET().col(UG_ROLE).byte_(user.getRole(commonGroup))
+							.WHERE().col(UG_USER_ID).int_(user.getUserId())
+							.AND().col(UG_GROUP_ID).byte_(UserGroupRegistry.getGroup(commonGroup)).sql(";\r\n");
 					hasChanged = true;
 				}
 			}
@@ -114,13 +114,13 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 			TemplateQuery modifyUserItems = new TemplateQuery("Modify or delete user items");
 			modifyUserItems.UPDATE(ITEM_TBL).SET();
 			if (deleteItems) {
-				modifyUserItems.col(I_STATUS).setByte(Item.STATUS_DELETED);
+				modifyUserItems.col(I_STATUS).byte_(Item.STATUS_DELETED);
 			} else {
-				modifyUserItems.col(I_USER).setInt(User.ANONYMOUS_ID);
+				modifyUserItems.col(I_USER).int_(User.ANONYMOUS_ID);
 			}
 			modifyUserItems
 					.WHERE().col(I_GROUP, " IN").byteArrayIN(groupIds.toArray(new Byte[groupIds.size()]))
-					.AND().col(I_USER).setInt(user.getUserId());
+					.AND().col(I_USER).int_(user.getUserId());
 			try(PreparedStatement pstmt = modifyUserItems.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();
 			}
@@ -131,9 +131,9 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 			TemplateQuery updateUser = new TemplateQuery("Update user attributes");
 			updateUser
 					.UPDATE(USER_TBL).SET()
-					.col(U_LOGIN).setString(user.getName())
-					._col(U_PASSWORD).setString(user.getPassword())
-					._col(U_DESCRIPTION).setString(user.getDescription());
+					.col(U_LOGIN).string(user.getName())
+					._col(U_PASSWORD).string(user.getPassword())
+					._col(U_DESCRIPTION).string(user.getDescription());
 			try (PreparedStatement pstmt = updateUser.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();
 			}
@@ -158,8 +158,8 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 					.FROM(ITEM_TBL + " AS I1").INNER_JOIN(ITEM_PARENT_TBL + " AS P", I1 + I_ID, P + IP_PARENT_ID)
 					.INNER_JOIN(ITEM_TBL + " AS I2", P + IP_CHILD_ID, I2 + I_ID)
 					.WHERE().col(I2 + I_GROUP, " IN").byteArrayIN(groupIds.toArray(new Byte[groupIds.size()]))
-					.AND().col(I2 + I_USER).setInt(user.getUserId())
-					.AND().col(I1 + I_SUPERTYPE, " IN").setIntArray(ItemTypeRegistry.getAllComputedSupertypes())
+					.AND().col(I2 + I_USER).int_(user.getUserId())
+					.AND().col(I1 + I_SUPERTYPE, " IN").intArray(ItemTypeRegistry.getAllComputedSupertypes())
 					.ON_DUPLICATE_KEY_UPDATE(L_ITEM).sql(L_ITEM);
 			try(PreparedStatement pstmt = logInsert.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();

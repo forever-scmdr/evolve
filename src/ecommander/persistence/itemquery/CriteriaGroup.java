@@ -1,16 +1,15 @@
 package ecommander.persistence.itemquery;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ecommander.model.Compare;
+import ecommander.model.ItemType;
+import ecommander.model.ParameterDescription;
+import ecommander.persistence.common.TemplateQuery;
+import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 
-import ecommander.model.ItemType;
-import ecommander.model.LOGICAL_SIGN;
-import ecommander.model.ParameterDescription;
-import ecommander.persistence.common.TemplateQuery;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Группа критериев, которая является одной из нескольких, каждая из которых является достаточной для удовлетворения
@@ -19,38 +18,31 @@ import ecommander.persistence.common.TemplateQuery;
  * @author EEEE
  *
  */
-class Option implements FilterCriteria {
+class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 
 	protected final List<FilterCriteria> criterias;
-	protected final String groupId; // ID группы, нужен для названия таблиц параметров
+	protected final String optionId; // ID группы, нужен для названия таблиц параметров
 	
-	Option(String groupId) {
-		this.groupId = groupId;
+	CriteriaGroup(String optionId) {
+		this.optionId = optionId;
 		criterias = new ArrayList<>();
 	}
 
 	public void appendQuery(TemplateQuery query) {
 		if (!isNotBlank())
 			return;
-		TemplateQuery wherePart = query.getSubquery(ItemQuery.WHERE_OPT);
-		if (wherePart.getSubquery(ItemQuery.FILTER_JOIN_OPT) == null) {
-			if (!wherePart.isEmpty())
-				wherePart.sql(" AND ");
-			wherePart.subquery(ItemQuery.FILTER_JOIN_OPT).subquery(ItemQuery.FILTER_CRITS_OPT);
-		}
-		TemplateQuery filterCondition = wherePart.getSubquery(ItemQuery.FILTER_CRITS_OPT);
-		filterCondition.sql("(");
+		TemplateQuery wherePart = query.getSubquery(WHERE);
+		wherePart.sql(" (");
 		boolean notFirst = false;
 		for (FilterCriteria criteria : criterias) {
-			if (notFirst && criteria.isNotBlank()) {
-				filterCondition.sql(sign.toString());
-			}
 			if (criteria.isNotBlank()) {
+				if (notFirst)
+					wherePart.AND();
+				criteria.appendQuery(query);
 				notFirst = true;
-				criteria.appendQuery(query); // !!! Передается изначальный запрос query, а не filterCondition !!!
 			}
 		}
-		filterCondition.sql(")");
+		wherePart.sql(") ");
 	}
 	/**
 	 * Добавить критерий, одиночный или множественный
@@ -62,7 +54,7 @@ class Option implements FilterCriteria {
 	 */
 	public void addParameterCriteria(ParameterDescription param, ItemType item, List<String> values, String sign, String pattern,
 			Compare compType) {
-		String tableName = groupId + 'F' + criterias.size();
+		String tableName = optionId + 'F' + criterias.size();
 		// Одно значение
 		if (values.size() == 1)
 			criterias.add(new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, compType));
@@ -73,7 +65,7 @@ class Option implements FilterCriteria {
 		else if (values.size() > 0) {
 			for (String value : values) {
 				criterias.add(new SingleParamCriteria(param, item, value, sign, pattern, tableName, compType));
-				tableName = groupId + 'F' + criterias.size();
+				tableName = optionId + 'F' + criterias.size();
 			}
 		} else 
 			criterias.add(new SingleParamCriteria(param, item, "", sign, pattern, tableName, compType));
@@ -95,18 +87,18 @@ class Option implements FilterCriteria {
 		return false;
 	}
 
-	public BooleanQuery appendLuceneQuery(BooleanQuery query, Occur occur) {
+	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
 		if (!isNotBlank())
-			return query;
-		BooleanQuery innerQuery = new BooleanQuery();
-		Occur innerOccur = getOccur();
+			return queryBuilder;
+		BooleanQuery.Builder innerBuilder = new BooleanQuery.Builder();
+		Occur innerOccur = Occur.MUST;
 		for (FilterCriteria criteria : criterias) {
 			if (criteria.isNotBlank())
-				criteria.appendLuceneQuery(innerQuery, innerOccur);
+				appendLuceneQuery(innerBuilder, innerOccur);
 		}
-		if (query == null)
-			return innerQuery;
-		query.add(innerQuery, occur);
-		return query;
+		if (queryBuilder == null)
+			return innerBuilder;
+		queryBuilder.add(innerBuilder.build(), occur);
+		return queryBuilder;
 	}
 }

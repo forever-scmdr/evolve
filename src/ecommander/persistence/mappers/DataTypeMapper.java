@@ -59,7 +59,7 @@ public class DataTypeMapper {
 		protected void setPreparedStatementRequestValueFine(TemplateQuery pstmt, String value, String pattern) {
 			if (!StringUtils.isBlank(pattern))
 				value = pattern.replaceAll("v", value);
-			pstmt.setString(value);
+			pstmt.string(value);
 		}
 
 		@Override
@@ -74,7 +74,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
-			pstmt.setString(StringUtils.substring((String)value, 0, 100));
+			pstmt.string(StringUtils.substring((String)value, 0, 100));
 		}
 
 		@Override
@@ -89,7 +89,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setPreparedStatementRequestValues(TemplateQuery pstmt, Collection<String> values) {
-			pstmt.setStringArray(values.toArray(new String[0]));
+			pstmt.stringArray(values.toArray(new String[0]));
 		}
 
 		@Override
@@ -102,13 +102,13 @@ public class DataTypeMapper {
 		@Override
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
 			if (value instanceof String)
-				pstmt.setString(StringUtils.substring((String)value, 0, 49));
+				pstmt.string(StringUtils.substring((String)value, 0, 49));
 			else if (value instanceof FileItem) {
 				// Если название файла содержит путь - удалить этот путь
 				String fileName = FileDataType.getFileName((FileItem)value);
-				pstmt.setString(StringUtils.substring(fileName, 0, 49));
+				pstmt.string(StringUtils.substring(fileName, 0, 49));
 			} else if (value instanceof File) {
-				pstmt.setString(StringUtils.substring(((File) value).getName(), 0, 49));
+				pstmt.string(StringUtils.substring(((File) value).getName(), 0, 49));
 			}
 		}
 	}
@@ -121,7 +121,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setPreparedStatementRequestValueFine(TemplateQuery pstmt, String value, String pattern) {
-			pstmt.setInt(createValue(value));
+			pstmt.int_(createValue(value));
 		}
 
 		@Override
@@ -136,7 +136,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
-			pstmt.setLong(((Integer)value).longValue());
+			pstmt.long_(((Integer)value).longValue());
 		}
 
 		@Override
@@ -156,7 +156,7 @@ public class DataTypeMapper {
 			for (String val : values) {
 				array[i++] = createValue(val);
 			}
-			pstmt.setIntArray(array);
+			pstmt.intArray(array);
 		}
 
 		@Override
@@ -173,7 +173,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setPreparedStatementRequestValue(TemplateQuery pstmt, String value, String pattern) {
-			pstmt.setByte(createValue(value));
+			pstmt.byte_(createValue(value));
 		}
 		
 		@Override
@@ -188,7 +188,7 @@ public class DataTypeMapper {
 		
 		@Override
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
-			pstmt.setLong(((Byte)value).longValue());
+			pstmt.long_(((Byte)value).longValue());
 		}
 		
 		@Override
@@ -205,7 +205,7 @@ public class DataTypeMapper {
 		
 		@Override
 		protected void setPreparedStatementRequestValue(TemplateQuery pstmt, String value, String pattern) {
-			pstmt.setLong(createValue(value));
+			pstmt.long_(createValue(value));
 		}
 		
 		@Override
@@ -220,7 +220,7 @@ public class DataTypeMapper {
 		
 		@Override
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
-			pstmt.setLong(((Long)value).longValue());
+			pstmt.long_(((Long)value).longValue());
 		}
 		
 		@Override
@@ -235,7 +235,7 @@ public class DataTypeMapper {
 			for (String val : values) {
 				array[i++] = createValue(val);
 			}
-			pstmt.setLongArray(array);
+			pstmt.longArray(array);
 		}
 
 		@Override
@@ -263,7 +263,7 @@ public class DataTypeMapper {
 		
 		@Override
 		protected void setPreparedStatementRequestValue(TemplateQuery pstmt, String value, String pattern) {
-			pstmt.setLong(createValue(value, pattern));
+			pstmt.long_(createValue(value, pattern));
 		}
 	}
 	
@@ -275,7 +275,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setPreparedStatementRequestValueFine(TemplateQuery pstmt, String value, String pattern) {
-			pstmt.setDouble(createValue(value));
+			pstmt.double_(createValue(value));
 		}
 
 		@Override
@@ -290,7 +290,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
-			pstmt.setDouble((Double)value);
+			pstmt.double_((Double)value);
 		}
 
 		@Override
@@ -310,7 +310,7 @@ public class DataTypeMapper {
 			for (String val : values) {
 				array[i++] = createValue(val);
 			}
-			pstmt.setDoubleArray(array);
+			pstmt.doubleArray(array);
 		}
 
 		@Override
@@ -333,7 +333,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setPreparedStatementRequestValueFine(TemplateQuery pstmt, String value, String pattern) {
-			pstmt.setDecimal(createValue(value));
+			pstmt.decimal(createValue(value));
 		}
 
 		@Override
@@ -348,7 +348,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
-			pstmt.setDecimal((BigDecimal) value);
+			pstmt.decimal((BigDecimal) value);
 		}
 
 		@Override
@@ -368,7 +368,7 @@ public class DataTypeMapper {
 			for (String val : values) {
 				array[i++] = createValue(val);
 			}
-			pstmt.setDecimalArray(array);
+			pstmt.decimalArray(array);
 		}
 
 		@Override

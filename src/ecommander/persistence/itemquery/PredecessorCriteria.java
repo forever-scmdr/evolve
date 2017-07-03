@@ -83,7 +83,7 @@ class PredecessorCriteria implements FilterCriteria, PossibleMainCriteria {
 			fromPart.sql(", " + DBConstants.ItemParent.ITEM_PARENT_TBL + " AS " + parentCritTableName);
 			joinPart.sql(parentCritTableName + '.' + DBConstants.ItemParent.REF_ID + " = ").subquery(ItemQuery.COMMON_COL_OPT).sql(" AND ");
 			critPart.sql(" AND " + parentCritTableName + '.' + DBConstants.ItemParent.IP_PARENT_ID + " IN (")
-				.setLongArray(itemIds.toArray(new Long[itemIds.size()]))
+				.longArray(itemIds.toArray(new Long[itemIds.size()]))
 				.sql(")");
 			
 		} else {
@@ -92,7 +92,7 @@ class PredecessorCriteria implements FilterCriteria, PossibleMainCriteria {
 			if (itemIds.size() > 0) {
 				critPart
 					.sql(tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID + " " + sign + " (")
-					.setLongArray(itemIds.toArray(new Long[itemIds.size()]))
+					.longArray(itemIds.toArray(new Long[itemIds.size()]))
 					.sql(")");
 			} else {
 				critPart.sql(tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID + " " + sign + " (-1)");

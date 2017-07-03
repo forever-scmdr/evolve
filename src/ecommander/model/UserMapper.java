@@ -52,7 +52,7 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 	public static User getUser(String login, String pass, Connection conn) throws SQLException, NamingException {
 		TemplateQuery selectUser = new TemplateQuery("Select user by login and password");
 		selectUser.SELECT("*").FROM(USER_TBL).INNER_JOIN(USER_GROUP_TBL, U_ID, UG_USER_ID)
-				.WHERE().col(U_LOGIN).setString(login).AND().col(U_PASSWORD).setString(pass);
+				.WHERE().col(U_LOGIN).string(login).AND().col(U_PASSWORD).string(pass);
 		return createUser(selectUser, conn);
 	}
 	/**
@@ -65,7 +65,7 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 	public static User getUser(int userId, Connection conn) throws SQLException, NamingException {
 		TemplateQuery selectUser = new TemplateQuery("Select user by ID");
 		selectUser.SELECT("*").FROM(USER_TBL).INNER_JOIN(USER_GROUP_TBL, U_ID, UG_USER_ID)
-				.WHERE().col(U_ID).setInt(userId);
+				.WHERE().col(U_ID).int_(userId);
 		return createUser(selectUser, conn);
 	}
 	/**
@@ -101,7 +101,7 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 	 */
 	public static boolean userNameExists(String userName, Connection conn) throws NamingException, SQLException {
 		TemplateQuery checkUserName = new TemplateQuery("Check user name");
-		checkUserName.SELECT("*").FROM(USER_TBL).WHERE().col(U_LOGIN).setString(userName);
+		checkUserName.SELECT("*").FROM(USER_TBL).WHERE().col(U_LOGIN).string(userName);
 		try (PreparedStatement pstmt = checkUserName.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -121,7 +121,7 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 	 */
 	public static int getUserId(String userName, Connection conn) throws NamingException, SQLException {
 		TemplateQuery checkUserName = new TemplateQuery("Check user name");
-		checkUserName.SELECT(U_ID).FROM(USER_TBL).WHERE().col(U_LOGIN).setString(userName);
+		checkUserName.SELECT(U_ID).FROM(USER_TBL).WHERE().col(U_LOGIN).string(userName);
 		try (PreparedStatement pstmt = checkUserName.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {

@@ -1,15 +1,14 @@
 package ecommander.persistence.itemquery;
 
-import java.util.List;
-
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-
 import ecommander.model.ItemType;
 import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.DataTypeMapper;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+
+import java.util.List;
 /**
  * При использовании сортировки нужно учитывать и вес айтема, поэтому происходит еще и соединение
  * с таблицей айтемов
@@ -31,43 +30,31 @@ class SortingCriteria extends FilterParameterCriteria {
 	@Override
 	protected void appendParameterValue(TemplateQuery query) {
 		// Добавление в SELECT
-		String colName = tableName + '.' + DBConstants.ItemIndexes.II_VALUE;
+		String colName = INDEX_TABLE + '.' + DBConstants.ItemIndexes.II_VALUE;
 		// Нужна такая проверка, потому что при подсчете количества сортировка не применяется и 
 		// частей для нее в запросе нет
-		boolean needSorting = query.getSubquery(ItemQuery.SORT_VAL_OPT) != null;
+		boolean needSorting = query.getSubquery(ORDER) != null;
 		if (needSorting) {
-//			// Добавление во FROM соединения с таблицей айтема для учета веса айтема при сортировке
-//			query.getSubquery(ItemQuery.FROM_OPT).sql(", " + DBConstants.Item.TABLE + " AS I");
-//			query.getSubquery(ItemQuery.WHERE_OPT).getSubquery(ItemQuery.FILTER_JOIN_OPT)
-//				.sql("I." + DBConstants.Item.REF_ID + " = ").subquery(ItemQuery.COMMON_COL_OPT).sql(" AND ");
-//			// Выбор колонки параметра сортировки
-//			query.getSubquery(ItemQuery.SORT_VAL_OPT).sql(", " + colName + " AS " + ItemQuery.SORT_PARAM_COL);
 			// Добавление S.II_STRING asc, в ORDER BY
-			TemplateQuery sortByPart = query.getSubquery(ItemQuery.SORT_BY_OPT);
-			if (sortByPart.isEmpty())
-				sortByPart.sql(" ORDER BY ");
+			TemplateQuery orderByPart = query.getSubquery(ORDER);
+			if (orderByPart.isEmpty())
+				orderByPart.sql(" ORDER BY ");
 			else
-				sortByPart.sql(", ");
+				orderByPart.sql(", ");
 			if (values != null) {
-				sortByPart.sql("FIELD (" + colName + ", ");
-				DataTypeMapper.appendPreparedStatementRequestValues(param.getType(), sortByPart, values);
-				sortByPart.sql(") ");
+				orderByPart.sql("FIELD (" + colName + ", ");
+				DataTypeMapper.appendPreparedStatementRequestValues(param.getType(), orderByPart, values);
+				orderByPart.sql(") ");
 			} else {
-				sortByPart.sql(colName + " ");
+				orderByPart.sql(colName + " ");
 			}
-			sortByPart.sql(direction);
-			
-			//query.getSubquery(ItemQuery.SORT_BY_OPT).sql(" ORDER BY " + colName + " " + direction + ", I." + DBConstants.Item.INDEX_WEIGHT + " ASC");
+			orderByPart.sql(direction);
 		}
 	}
 
-	public BooleanQuery appendLuceneQuery(BooleanQuery query, Occur occur) {
+	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
 		// Ничего не добавляется
-		return query;
-	}
-
-	public String getParentColumnName() {
-		return tableName + '.' + DBConstants.ItemIndexes.ITEM_PARENT;
+		return queryBuilder;
 	}
 
 	public boolean isNotBlank() {

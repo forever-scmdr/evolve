@@ -402,8 +402,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		ArrayList<Item> result = new ArrayList<>();
 		// Полиморфная загрузка
 		TemplateQuery select = new TemplateQuery("Select items for indexing");
-		select.SELECT("*").FROM(ITEM_TBL).WHERE().col(I_TYPE_ID).setInt(itemId).AND()
-				.col(I_ID, ">=").setLong(startFromId).ORDER_BY(I_ID).LIMIT(limit);
+		select.SELECT("*").FROM(ITEM_TBL).WHERE().col(I_TYPE_ID).int_(itemId).AND()
+				.col(I_ID, ">=").long_(startFromId).ORDER_BY(I_ID).LIMIT(limit);
 		try (Connection conn = MysqlConnector.getConnection();
 		     PreparedStatement pstmt = select.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();

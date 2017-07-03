@@ -17,8 +17,8 @@ import ecommander.persistence.itemquery.fulltext.LuceneQueryCreator;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 /**
  * Полнотекстовый критерий
- * Метод createLuceneQuery требует реализации.
- * Класс предусматирвает алгоритм поиска по умолчанию - результат запроса, созданного в методе createLuceneQuery
+ * Метод appendLuceneQuery требует реализации.
+ * Класс предусматирвает алгоритм поиска по умолчанию - результат запроса, созданного в методе appendLuceneQuery
  * Для реализации других алгоритмов поиска требудется переопределить метод loadItems
  * (например, если первоначальный запрос не вернул результатов, применить более мягкие критерии)
  * 

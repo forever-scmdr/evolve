@@ -278,95 +278,95 @@ public class TemplateQuery implements QueryPart {
 		return queryParts.size() == 0;
 	}
 	
-	public final TemplateQuery setByte(byte value) {
+	public final TemplateQuery byte_(byte value) {
 		queryParts.add(new ValueQueryPart(value));
 		return this;
 	}
 	
-	public final TemplateQuery setInt(int value) {
+	public final TemplateQuery int_(int value) {
 		queryParts.add(new ValueQueryPart(value));
 		return this;
 	}
 	
-	public final TemplateQuery setLong(long value) {
+	public final TemplateQuery long_(long value) {
 		queryParts.add(new ValueQueryPart(value));
 		return this;
 	}
 	
-	public final TemplateQuery setDouble(double value) {
+	public final TemplateQuery double_(double value) {
 		queryParts.add(new ValueQueryPart(value));
 		return this;
 	}
 
-	public final TemplateQuery setDecimal(BigDecimal value) {
+	public final TemplateQuery decimal(BigDecimal value) {
 		queryParts.add(new ValueQueryPart(value));
 		return this;
 	}
 	
-	public final TemplateQuery setString(String value) {
+	public final TemplateQuery string(String value) {
 		queryParts.add(new ValueQueryPart(value));
 		return this;
 	}
 	
-	public final TemplateQuery setStringArray(String[] array) {
+	public final TemplateQuery stringArray(String[] array) {
 		queryParts.add(new ValueArrayQueryPart(array));
 		return this;
 	}
 	
-	public final TemplateQuery setLongArray(Long[] array) {
+	public final TemplateQuery longArray(Long[] array) {
 		queryParts.add(new ValueArrayQueryPart(array));
 		return this;
 	}
 	
-	public final TemplateQuery setDoubleArray(Double[] array) {
+	public final TemplateQuery doubleArray(Double[] array) {
 		queryParts.add(new ValueArrayQueryPart(array));
 		return this;
 	}
 
-	public final TemplateQuery setDecimalArray(BigDecimal[] array) {
+	public final TemplateQuery decimalArray(BigDecimal[] array) {
 		queryParts.add(new ValueArrayQueryPart(array));
 		return this;
 	}
 
-	public final TemplateQuery setIntArray(Integer[] array) {
+	public final TemplateQuery intArray(Integer[] array) {
 		queryParts.add(new ValueArrayQueryPart(array));
 		return this;
 	}
 
-	public final TemplateQuery setByteArray(Byte[] array) {
+	public final TemplateQuery byteArray(Byte[] array) {
 		queryParts.add(new ValueArrayQueryPart(array));
 		return this;
 	}
 
-	public final TemplateQuery stringArrayIN(String... values) {
+	public final TemplateQuery stringIN(String... values) {
 		queryParts.add(new SqlQueryPart("("));
 		queryParts.add(new ValueArrayQueryPart(values));
 		queryParts.add(new SqlQueryPart(")"));
 		return this;
 	}
 
-	public final TemplateQuery longArrayIN(Long... values) {
+	public final TemplateQuery longIN(Long... values) {
 		queryParts.add(new SqlQueryPart("("));
 		queryParts.add(new ValueArrayQueryPart(values));
 		queryParts.add(new SqlQueryPart(")"));
 		return this;
 	}
 
-	public final TemplateQuery doubleArrayIN(Double... values) {
+	public final TemplateQuery doubleIN(Double... values) {
 		queryParts.add(new SqlQueryPart("("));
 		queryParts.add(new ValueArrayQueryPart(values));
 		queryParts.add(new SqlQueryPart(")"));
 		return this;
 	}
 
-	public final TemplateQuery decimalArrayIN(BigDecimal... values) {
+	public final TemplateQuery decimalIN(BigDecimal... values) {
 		queryParts.add(new SqlQueryPart("("));
 		queryParts.add(new ValueArrayQueryPart(values));
 		queryParts.add(new SqlQueryPart(")"));
 		return this;
 	}
 
-	public final TemplateQuery intArrayIN(Integer... values) {
+	public final TemplateQuery intIN(Integer... values) {
 		queryParts.add(new SqlQueryPart("("));
 		queryParts.add(new ValueArrayQueryPart(values));
 		queryParts.add(new SqlQueryPart(")"));
@@ -462,12 +462,12 @@ public class TemplateQuery implements QueryPart {
 		// Тест 1
 		
 //		TemplateQuery query = new TemplateQuery("<MAIN>");
-//		query.sql("SELECT * FROM ").subquery("<PARENT>").sql(" WHERE ").setInt(10).subquery("<CRIT>").sql(" LIMIT ").setLong(1000);
-//		query.getSubquery("<PARENT>").sql(" inner select ").subquery("<TABLE>").sql(" inner sort ").setString("STR_VAL").subquery("<SUBLIMIT>");
+//		query.sql("SELECT * FROM ").subquery("<PARENT>").sql(" WHERE ").int_(10).subquery("<CRIT>").sql(" LIMIT ").long_(1000);
+//		query.getSubquery("<PARENT>").sql(" inner select ").subquery("<TABLE>").sql(" inner sort ").string("STR_VAL").subquery("<SUBLIMIT>");
 //		TemplateQuery sub = query.getSubquery("<PARENT>").getSubquery("<TABLE>");
 //		sub.sql(" INNER INNER SELECT ");
 //		sub = query.getSubquery("<PARENT>").getSubquery("<SUBLIMIT>");
-//		sub.sql(" SUB SUBLIMIT ").setLongArray(new Long []{(long)5, (long)6, (long)7});
+//		sub.sql(" SUB SUBLIMIT ").longArray(new Long []{(long)5, (long)6, (long)7});
 //		System.out.println(query);
 //		System.out.println();
 //		System.out.println();

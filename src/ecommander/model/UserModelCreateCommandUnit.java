@@ -68,7 +68,7 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 		String name = group.attr(NAME);
 		if (!UserGroupRegistry.groupExists(name)) {
 			TemplateQuery insertGroup = new TemplateQuery("Save new group");
-			insertGroup.INSERT_INTO(Group.GROUPS_TBL, Group.G_NAME).sql(" VALUES (").setString(name).sql(")");
+			insertGroup.INSERT_INTO(Group.GROUPS_TBL, Group.G_NAME).sql(" VALUES (").string(name).sql(")");
 			try (PreparedStatement pstmt = insertGroup.prepareQuery(getTransactionContext().getConnection(), true)) {
 				pstmt.executeUpdate();
 				ResultSet rs = pstmt.getGeneratedKeys();

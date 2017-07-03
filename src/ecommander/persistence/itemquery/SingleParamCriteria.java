@@ -1,17 +1,15 @@
 package ecommander.persistence.itemquery;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.TermQuery;
-
 import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DataTypeMapper;
-import ecommander.persistence.mappers.DBConstants;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.TermQuery;
 /**
  * Одиночный критерий - Один параметр, одно значение
  * @author EEEE
@@ -38,23 +36,18 @@ class SingleParamCriteria extends FilterParameterCriteria {
 
 	@Override
 	protected final void appendParameterValue(TemplateQuery query) {
-		query = query.getSubquery(ItemQuery.WHERE_OPT).getSubquery(ItemQuery.FILTER_CRITS_OPT);
-		query.sql(" AND " + tableName + "." + DBConstants.ItemIndexes.II_VALUE + " " + sign + " ");
+		query.getSubquery(WHERE).AND().col(INDEX_TABLE + "." + II_VALUE, " " + sign + " ");
 		DataTypeMapper.appendPreparedStatementRequestValue(param.getType(), query, value, pattern);
 	}
 
-	public BooleanQuery appendLuceneQuery(BooleanQuery query, Occur occur) {
+	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
 		if (param.isFulltextFilterable()) {
 			if (!sign.equals("=") && !sign.equals("!="))
-				return query;
+				return queryBuilder;
 			Term term = new Term(param.getName(), value);
-			query.add(new TermQuery(term), occur);
+			queryBuilder.add(new TermQuery(term), occur);
 		}
-		return query;
-	}
-
-	public String getParentColumnName() {
-		return tableName + '.' + DBConstants.ItemIndexes.ITEM_PARENT;
+		return queryBuilder;
 	}
 
 	@Override

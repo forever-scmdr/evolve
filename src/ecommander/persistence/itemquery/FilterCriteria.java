@@ -1,9 +1,8 @@
 package ecommander.persistence.itemquery;
 
+import ecommander.persistence.common.TemplateQuery;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
-
-import ecommander.persistence.common.TemplateQuery;
 /**
  * Базовый интерфейс для одного критерия фильтра
  * @author EEEE
@@ -28,7 +27,9 @@ interface FilterCriteria {
 	boolean isEmptySet();
 	/**
 	 * Создать часть Lucene запроса, за которую отвечает данный критерий
-	 * @param query
+	 * @param queryBuilder
+	 * @param occur
+	 * @return
 	 */
-	BooleanQuery appendLuceneQuery(BooleanQuery query, BooleanClause.Occur occur);
+	BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur);
 }
