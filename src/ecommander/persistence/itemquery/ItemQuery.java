@@ -1,24 +1,16 @@
 package ecommander.persistence.itemquery;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.naming.NamingException;
-
+import ecommander.fwk.EcommanderException;
+import ecommander.fwk.MysqlConnector;
+import ecommander.fwk.MysqlConnector.ConnectionCount;
 import ecommander.model.*;
+import ecommander.model.filter.FilterDefinition;
 import ecommander.model.item.*;
 import ecommander.pages.var.FilterStaticVariable;
+import ecommander.persistence.common.TemplateQuery;
+import ecommander.persistence.mappers.DBConstants;
+import ecommander.persistence.mappers.DataTypeMapper;
+import ecommander.persistence.mappers.ItemMapper;
 import org.apache.commons.collections4.MultiMapUtils;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.lang3.StringUtils;
@@ -29,17 +21,14 @@ import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.QueryWrapperFilter;
 import org.apache.lucene.search.TermQuery;
 
-import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.MysqlConnector.ConnectionCount;
-import ecommander.fwk.EcommanderException;
-import ecommander.model.filter.FilterDefinition;
-import ecommander.pages.variables.FilterStaticVariablePE;
-import ecommander.persistence.common.TemplateQuery;
-import ecommander.persistence.mappers.DBConstants;
-import ecommander.persistence.mappers.DataTypeMapper;
-import ecommander.persistence.mappers.ItemMapper;
-import ecommander.model.User;
-import ecommander.model.UserGroupRegistry;
+import javax.naming.NamingException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Этот класс строит и выволняет запрос на извлечение айтемов
@@ -57,29 +46,24 @@ import ecommander.model.UserGroupRegistry;
 public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 
 	interface Const {
-		static String JOIN = "<<JOIN_PART>>";
-		static String STATUS = "<<STATUS_PART>>";
-		static String WHERE = "<<WHERE_PART>>";
-		static String ORDER = "<<ORDER_PART>>";
-		static String LIMIT = "<<LIMIT_PART>>";
-		static String GROUP_PARAMS = "<<GROUP_PARAMS_PART>>";
-		static String GROUP = "<<GROUP_PART>>";
+		String JOIN = "<<JOIN_PART>>";
+		String STATUS = "<<STATUS_PART>>";
+		String WHERE = "<<WHERE_PART>>";
+		String ORDER = "<<ORDER_PART>>";
+		String LIMIT = "<<LIMIT_PART>>";
+		String GROUP_PARAMS = "<<GROUP_PARAMS_PART>>";
+		String GROUP = "<<GROUP_PART>>";
+		String PARENT_ID = "<<PARENT_ID_PART>>";
 
-		static String GROUP_PARAM_COL = "GV";
-		static String GROUP_MAIN_TABLE = "G.";
-		static String PARENT_ID_COL = "PID";
-		static String PARENT_TABLE = "P.";
-		static String ITEM_TABLE = "I.";
+		String GROUP_PARAM_COL = "GV";
+		String GROUP_MAIN_TABLE = "G.";
+		String PARENT_ID_COL = "PID";
+		String PARENT_TABLE = "P.";
+		String ITEM_TABLE = "I.";
 	}
 
 	private static final String COMMON_QUERY
-			= "SELECT DISTINCT I.*, P." + IP_PARENT_ID + " AS PID "
-			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
-
-	private static final String ROOT_QUERY
-			= "SELECT DISTINCT I.*, 0 AS PID "
+			= "SELECT DISTINCT I.*, <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
@@ -91,13 +75,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 
 
 	private static final String GROUP_COMMON_QUERY
-			= "SELECT DISTINCT P." + IP_PARENT_ID + " AS PID <<GROUP_PARAMS_PART>> "
-			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
-
-	private static final String GROUP_ROOT_QUERY
-			= "SELECT DISTINCT 0 AS PID <<GROUP_PARAMS_PART>> "
+			= "SELECT DISTINCT <<PARENT_ID_PART>> AS PID <<GROUP_PARAMS_PART>> "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";

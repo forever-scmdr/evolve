@@ -104,6 +104,20 @@ public class TemplateQuery implements QueryPart {
 		return query;
 	}
 
+	/**
+	 *
+	 * @param name
+	 * @return
+	 */
+	public final TemplateQuery removeSubquery(String name) {
+		TemplateQuery toRemove = subqueries.get(name);
+		if (toRemove != null) {
+			subqueries.remove(name);
+			queryParts.remove(toRemove);
+		}
+		return this;
+	}
+
 	public final TemplateQuery sql(String sql) {
 		queryParts.add(new SqlQueryPart(sql));
 		return this;
