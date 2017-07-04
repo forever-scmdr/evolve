@@ -51,7 +51,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		String WHERE = "<<WHERE_PART>>";
 		String ORDER = "<<ORDER_PART>>";
 		String LIMIT = "<<LIMIT_PART>>";
-		String GROUP_PARAMS = "<<GROUP_PARAMS_PART>>";
+		String GROUP_PARAMS_SELECT = "<<GROUP_PARAMS_PART>>";
 		String GROUP = "<<GROUP_PART>>";
 		String PARENT_ID = "<<PARENT_ID_PART>>";
 
@@ -84,7 +84,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	private boolean hasParent = false; // Предок искомого айтема. Может быть null, если айтем не имеет предка
 	private ItemType itemDesc; // Искомый айтем
 
-	private FilterSQLBuilder filter = null; // Фильтр (параметры, сортировка, группировка, пользователь, группа пользователей)
+	private FilterSQLCreator filter = null; // Фильтр (параметры, сортировка, группировка, пользователь, группа пользователей)
 	private LimitCriteria limit = null; // Ограничение количества и страницы
 	private FulltextCriteria fulltext = null; // Полнотекстовый поиск
 	private ArrayList<Long> loadedIds = null; // Загруженные предки айтема (может быть null, если предов нет)
@@ -389,7 +389,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @return
 	 * @throws EcommanderException
 	 */
-	public final FilterSQLBuilder createFilter(FilterDefinition filterDef, FilterStaticVariable userInput) throws EcommanderException {
+	public final FilterSQLCreator createFilter(FilterDefinition filterDef, FilterStaticVariable userInput) throws EcommanderException {
 		ItemType userFilterItem = ItemTypeRegistry.getItemType(filterDef.getBaseItemName());
 		if (userFilterItem != null)
 			itemDesc = userFilterItem;
@@ -402,8 +402,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @param sign
 	 * @return
 	 */
-	public final FilterSQLBuilder createFilter(LOGICAL_SIGN sign) {
-		return filter = new FilterSQLBuilder(itemDesc, sign);
+	public final FilterSQLCreator createFilter(LOGICAL_SIGN sign) {
+		return filter = new FilterSQLCreator(itemDesc, sign);
 	}
 	/**
 	 * Обеспечить наличие фильтра

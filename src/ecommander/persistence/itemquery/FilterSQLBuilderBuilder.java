@@ -16,7 +16,7 @@ import ecommander.model.filter.InputDef;
 import ecommander.pages.variables.FilterStaticVariablePE;
 
 class FilterSQLBuilderBuilder implements FilterDefinitionVisitor {
-	private FilterSQLBuilder builder;
+	private FilterSQLCreator builder;
 	private Stack<CriteriaGroupDef> sourceStack;
 	private Stack<CriteriaGroup> destStack;
 	private ItemQuery query;
@@ -66,7 +66,7 @@ class FilterSQLBuilderBuilder implements FilterDefinitionVisitor {
 			throw new FilterProcessException("Filter format is incorrect. No parent match for id=" + part.getParentId());
 	}
 	
-	public FilterSQLBuilder getBuilder() {
+	public FilterSQLCreator getBuilder() {
 		return builder;
 	}
 }

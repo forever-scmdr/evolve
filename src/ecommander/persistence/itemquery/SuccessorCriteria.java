@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ecommander.model.Compare;
-import org.apache.lucene.search.BooleanClause.Occur;
+import ecommander.model.ItemTypeRegistry;
+import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 
 import ecommander.persistence.common.TemplateQuery;
@@ -16,121 +17,52 @@ import ecommander.persistence.mappers.DBConstants;
  * @author E
  *
  */
-class SuccessorCriteria implements FilterCriteria, PossibleMainCriteria {
+class SuccessorCriteria implements FilterCriteria, ItemQuery.Const, DBConstants.ItemParent, DBConstants.ItemTbl {
 
 	private static final String IN = "IN";
 	
-	protected final String tableName; // Псевдоним таблицы с параметрами (ItemIndex) для данного параметра
+	protected final String OTHER_PARENT_TABLE; // Псевдоним таблицы с параметрами (ItemIndex) для данного параметра
 	protected final ArrayList<Long> itemIds;
 	protected final String sign;
 	// Если критерий является главным, то все остальные критерии приравнивают извлекаемый ID айтема к ID, извлекаемому этим критерием
-	private boolean isMainCriteria = false;
-	private boolean useParentCriteria = false; // нужно ли использовать критерий поиска по родителю (предку)
 	private final boolean isEmptySet;
+	private final byte assocId;
 	
 	
-	SuccessorCriteria(String sign, Collection<Long> predItemIds, String tableName, Compare type) {
-		this.itemIds = new ArrayList<Long>();
+	SuccessorCriteria(String sign, Collection<Long> predItemIds, byte assocId, String tableName, Compare type) {
+		this.itemIds = new ArrayList<>();
 		if (predItemIds != null)
 			this.itemIds.addAll(predItemIds);
-		this.tableName = tableName;
+		this.OTHER_PARENT_TABLE = tableName;
 		this.sign = sign.trim();
-		if (itemIds.size() == 0 && sign.trim().equals(IN) && (type == Compare.EVERY || type == Compare.SOME))
-			isEmptySet = true;
-		else
-			isEmptySet = false;
+		this.assocId = assocId;
+		isEmptySet = itemIds.size() == 0 && sign.trim().equals(IN) && (type == Compare.EVERY || type == Compare.SOME);
 	}
 	
 	public final void appendQuery(TemplateQuery query) {
-		// Добавление таблицы во FROM
-		TemplateQuery fromPart = query.getSubquery(ItemQuery.FROM_OPT);
-		if (!fromPart.isEmpty())
-			fromPart.sql(", ");
-		fromPart.sql(DBConstants.ItemParent.ITEM_PARENT_TBL + " AS " + tableName);
-		
-		TemplateQuery wherePart = query.getSubquery(ItemQuery.WHERE_OPT);
-		
-		// Добавление связи между таблицей этого критерия и общей таблицей
-		//     !!!     для того, чтобы в результат не попали ссылки (только нормальные айтемы)  DBConstants.ItemParent.ITEM_ID а не REF_ID
-		// сейчас REF_ID, потому что по нему построен индекс, а по ITEM_ID индекса нет
-		TemplateQuery joinPart = wherePart.getSubquery(ItemQuery.FILTER_JOIN_OPT);
-		if (isMainCriteria) {
-			joinPart.getOrCreateSubquery(ItemQuery.COMMON_COL_OPT).sql(tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID);
-		} else {
-			if (!joinPart.isEmpty())
-				joinPart.sql(" AND ");
-			joinPart.sql(tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID + " = ").subquery(ItemQuery.COMMON_COL_OPT).sql(" AND ");
-		}
-//		// Чтобы ссылки не попадали - дополнительное условие что ITEM_ID = REF_ID
-//		joinPart.sql(INDEX_TABLE + '.' + DBConstants.ItemParent.REF_ID + " = " + INDEX_TABLE + '.' + DBConstants.ItemParent.ITEM_ID + " AND ");
-		
-		// -- НАЧАЛО --  Добавление критерия потомков
-		TemplateQuery critPart = wherePart.getSubquery(ItemQuery.FILTER_CRITS_OPT);
-		
-		if (useParentCriteria) {
-			
-			// Добавление критерия родительского айтема (производится централизованно другом месте)
-			String parentCritTableName = tableName + "P";
-			fromPart.sql(", " + DBConstants.ItemParent.ITEM_PARENT_TBL + " AS " + parentCritTableName);
-			joinPart.sql(parentCritTableName + '.' + DBConstants.ItemParent.REF_ID + " = ").subquery(ItemQuery.COMMON_COL_OPT).sql(" AND ");
-			critPart.sql(parentCritTableName + '.' + DBConstants.ItemParent.IP_PARENT_ID).subquery(ItemQuery.PARENT_CRIT_OPT).sql(" AND ");
-			
-		}
-			
-		// Добавление списка ID потомков
+		final String PARENT_DOT = OTHER_PARENT_TABLE + ".";
+
+		// Добавление таблицы в INNER JOIN
+		TemplateQuery join = query.getSubquery(JOIN);
+		join.INNER_JOIN(ITEM_PARENT_TBL + " AS " + OTHER_PARENT_TABLE, ITEM_TABLE + I_ID, PARENT_DOT + IP_PARENT_ID);
+
+		TemplateQuery wherePart = query.getSubquery(WHERE);
+
+		// Добавление списка ID потоков
 		if (itemIds.size() > 0) {
-			critPart
-				.sql(tableName + '.' + DBConstants.ItemParent.ITEM_ID + " " + sign + " (")
-				.longArray(itemIds.toArray(new Long[itemIds.size()]))
-				.sql(")");
+			wherePart.col(PARENT_DOT + IP_CHILD_ID, " " + sign + " ").longIN(itemIds.toArray(new Long[itemIds.size()]));
 		} else {
-			critPart.sql(tableName + '.' + DBConstants.ItemParent.ITEM_ID + " " + sign + " (-1)");
+			wherePart.col(PARENT_DOT + IP_CHILD_ID, " " + sign + " (-1)");
 		}
-
-		// Добавление связи с таблицей айтемов для того, чтобы можно было подставить тип айтема 
-		// (который не хранится в таблице родителей)
-		if (isMain()) {
-			String typeCritTableName = tableName + "IT";
-			fromPart.sql(", " + DBConstants.Item.TABLE + " AS " + typeCritTableName);
-			joinPart.sql(typeCritTableName + '.' + DBConstants.Item.ID + " = ").subquery(ItemQuery.COMMON_COL_OPT).sql(" AND ");
-			critPart.sql(" AND " + typeCritTableName + '.' + DBConstants.Item.TYPE_ID).subquery(ItemQuery.TYPE_CRIT_OPT);
-		}
-		
-		// -- КОНЕЦ -- Добавление критерия предшественника
+		wherePart.col(PARENT_DOT + IP_ASSOC_ID).byte_(assocId);
 	}
 
-	public void setMain() {
-		this.isMainCriteria = true;
-	}
-	
 	public boolean isNotBlank() {
 		return itemIds.size() > 0;
 	}
 
-	public boolean isMain() {
-		return isMainCriteria;
-	}
-
-	public String getTableName() {
-		return tableName;
-	}
-
-	public void useParentCriteria() {
-		this.useParentCriteria = true;
-	}
-
-	public String getSelectedColumnName() {
-		return tableName + '.' + DBConstants.ItemParent.IP_PARENT_ID;
-	}
-
-	public BooleanQuery appendLuceneQuery(BooleanQuery query, Occur occur) {
-		return query;
-	}
-
-	public String getParentColumnName() {
-		if (useParentCriteria)
-			return tableName + "P." + DBConstants.ItemParent.IP_PARENT_ID;
-		return "0";
+	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
+		return queryBuilder;
 	}
 
 	public boolean isEmptySet() {

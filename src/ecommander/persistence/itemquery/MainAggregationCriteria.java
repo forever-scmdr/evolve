@@ -1,27 +1,27 @@
 package ecommander.persistence.itemquery;
 
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.model.ItemType;
 import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+
 /**
  * Параметр, значение которого подвергается группировке
  * @author E
  *
  */
-class MainAggregationCriteria extends AggregationCriteria {
+class MainAggregationCriteria extends AggregationCriteria implements ItemQuery.Const {
 
 	private String function = null;
-	private String sortingDirection = null;
-	private boolean isSelfGrouping = true; // группировка происходит по значению данного параметра (не по значениям других параметров)
-	
-	MainAggregationCriteria(ParameterDescription param, ItemType item, String tableName, String function, String sortingDirection) {
+	private ArrayList<AggregationCriteria> groupByExtra = new ArrayList<>(3);
+
+	MainAggregationCriteria(ParameterDescription param, ItemType item, String tableName, String function) {
 		super(new GroupOnlyParamCriteria(param, item, tableName));
 		if (!StringUtils.isBlank(function))
 			this.function = function;
-		this.sortingDirection = sortingDirection;
 	}
 
 	@Override
@@ -32,11 +32,13 @@ class MainAggregationCriteria extends AggregationCriteria {
 		if (!StringUtils.isEmpty(function)) {
 			selectPart = function + "(" + valCol + ")";
 		}
-		query.getSubquery(ItemQuery.GROUP_PARAM_VALS_REQ).sql(selectPart + " AS " + ItemQuery.GROUP_PARAM_COL);
+		query.getSubquery(GROUP_PARAMS_SELECT).sql(selectPart + " AS " + GROUP_PARAM_COL);
+		// группировка происходит по значению данного параметра (не по значениям других параметров)
+		boolean isSelfGrouping = groupByExtra.size() == 0;
 		// Если не заданы параметры группировки...
 		if (isSelfGrouping) {
 			// Добавление в блок GROUP BY параметра группировки
-			TemplateQuery groupPart = query.getSubquery(ItemQuery.GROUP_PARAM_REQ);
+			TemplateQuery groupPart = query.getSubquery(GROUP);
 			if (!groupPart.isEmpty())
 				groupPart.sql(", ");
 			// ... и не задана функция - в их качестве задается значение самого параметра 
@@ -47,22 +49,21 @@ class MainAggregationCriteria extends AggregationCriteria {
 			// в GROUP BY Подставляется ID параметра, который агрегируется
 			else
 				groupPart.sql(baseCriteria.INDEX_TABLE + '.' + DBConstants.ItemIndexes.II_PARAM);
+			// Добавление базового критерия
+			baseCriteria.appendQuery(query);
+		} else {
+			// Добавление базового критерия
+			baseCriteria.appendQuery(query);
+			for (AggregationCriteria aggregationCriteria : groupByExtra) {
+				aggregationCriteria.appendQuery(query);
+			}
 		}
-		// Добавление в блок ORDER BY параметра группировки
-		if (!StringUtils.isEmpty(sortingDirection))
-			query.getSubquery(ItemQuery.SORT_BY_OPT).sql(" ORDER BY ").sql(ItemQuery.GROUP_PARAM_COL + " " + sortingDirection);
-		// Добавление базового критерия
-		baseCriteria.appendQuery(query);
 	}
 
-	void setSelfGrouping(boolean isSelfGrouping) {
-		this.isSelfGrouping = isSelfGrouping;
+	public void addAggregationParameterCriteria(AggregationCriteria extra) {
+		groupByExtra.add(extra);
 	}
 
-	@Override
-	String getResultColumnName() {
-		return ItemQuery.GROUP_PARAM_COL;
-	}
-	
-	
+	// TODO ORDER BY в фильтре
+
 }

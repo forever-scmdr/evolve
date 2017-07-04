@@ -44,10 +44,15 @@ abstract class FilterParameterCriteria implements FilterCriteria, ItemQuery.Cons
 		}
 		
 		// Добавление значения параметра
-		appendParameterValue(query);
+		if (isNotBlank())
+			appendParameterValue(query);
 	}
 
 	protected abstract void appendParameterValue(TemplateQuery query);
+
+	String getParameterColumnName() {
+		return INDEX_TABLE + "." + II_VALUE;
+	}
 
 	public boolean isEmptySet() {
 		return false;

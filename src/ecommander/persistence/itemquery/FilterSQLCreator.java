@@ -17,7 +17,7 @@ import ecommander.persistence.common.TemplateQuery;
  * @author EEEE
  *
  */
-public final class FilterSQLBuilder extends CriteriaGroup {
+public final class FilterSQLCreator extends CriteriaGroup {
 
 	private ArrayList<CriteriaGroup> options = null; // Опции фильтра (блоки критериев, объединенные логическим знаком OR)
 	private ArrayList<AggregationCriteria> aggCriterias = null;
@@ -28,7 +28,7 @@ public final class FilterSQLBuilder extends CriteriaGroup {
 	private boolean hasSorting = false;
 	private ItemType item;
 	
-	FilterSQLBuilder(ItemType item, LOGICAL_SIGN sign) {
+	FilterSQLCreator(ItemType item, LOGICAL_SIGN sign) {
 		super(sign, "");
 		this.item = item;
 	}
