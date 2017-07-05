@@ -1,5 +1,6 @@
 package ecommander.persistence.itemquery;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 
@@ -9,7 +10,7 @@ import ecommander.persistence.common.TemplateQuery;
 /**
  * 
  * Используестя в aggregation. По нему происходит группировка парамтера группировки.
- * Делает все аналогично FilterParameterCriteria, только добавляет еще 2 дополнительный куска SQL - в SELECT и в GROUP BY
+ * Делает все аналогично ParameterCriteria, только добавляет еще 2 дополнительный куска SQL - в SELECT и в GROUP BY
  * Может быть много таких критериев.
  *
  * Нахождение минимальной цены для телевизоров по группам размера экрана (не менее 42 дюймов) и
@@ -24,21 +25,26 @@ import ecommander.persistence.common.TemplateQuery;
  *  - 46 OLED - 2000
  *  ...
  *
- *  <item name="tv">
+ *  <list item="tv">
  *      <aggragation function="MIN" parameter="price">
  *          <parameter name="size" sign="&gt;="><var var="42"/></parameter>
  *          <parameter name="technology"/>
  *      </aggragation>
- *  </item>
+ *  </list>
  * @author EEEE
  *
  */
 class AggregationCriteria implements FilterCriteria, ItemQuery.Const {
 	
-	protected final FilterParameterCriteria baseCriteria;
+	protected final ParameterCriteria baseCriteria;
+	protected final String sort;
 	
-	AggregationCriteria(FilterParameterCriteria baseCriteria) {
+	AggregationCriteria(ParameterCriteria baseCriteria, String sortDirection) {
 		this.baseCriteria = baseCriteria;
+		if (StringUtils.isBlank(sortDirection))
+			this.sort = null;
+		else
+			this.sort = sortDirection;
 	}
 
 	public void appendQuery(TemplateQuery query) {
@@ -76,5 +82,13 @@ class AggregationCriteria implements FilterCriteria, ItemQuery.Const {
 
 	public boolean isEmptySet() {
 		return baseCriteria.isEmptySet();
+	}
+
+	public boolean hasSorting() {
+		return sort != null;
+	}
+
+	public String getSortingDirection() {
+		return sort;
 	}
 }

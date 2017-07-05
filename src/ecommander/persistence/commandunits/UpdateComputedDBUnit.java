@@ -39,7 +39,6 @@ public class UpdateComputedDBUnit extends DBPersistenceCommandUnit implements DB
 					ComputedDescription.Ref ref = refs.get(0);
 					ItemType refItem = ItemTypeRegistry.getItemType(ref.item);
 					ParameterDescription refParam = refItem.getParameter(ref.param);
-					byte assocId = ItemTypeRegistry.getAssoc(ref.assoc).getId();
 					String indexTableName = DataTypeMapper.getTableName(refParam.getType());
 					TemplateQuery query = new TemplateQuery("Select computed parameter value");
 					query
@@ -49,7 +48,7 @@ public class UpdateComputedDBUnit extends DBPersistenceCommandUnit implements DB
 							.INNER_JOIN(ITEM_TBL, IP_CHILD_ID, I_ID)
 							.WHERE()
 							.col(IP_PARENT_ID).long_(itemId).AND()
-							.col(IP_ASSOC_ID).byte_(assocId)
+							.col(IP_ASSOC_ID).byte_(ItemTypeRegistry.getAssocId(ref.assoc))
 							.col(II_PARAM).int_(refParam.getId())
 							.col(I_STATUS).byte_(Item.STATUS_NORMAL);
 					Object value = null;

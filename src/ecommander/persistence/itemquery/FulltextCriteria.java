@@ -1,20 +1,17 @@
 package ecommander.persistence.itemquery;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import ecommander.model.Compare;
+import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
+import ecommander.persistence.itemquery.fulltext.LuceneQueryCreator;
+import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
 
-import ecommander.fwk.EcommanderException;
-import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
-import ecommander.persistence.itemquery.fulltext.LuceneQueryCreator;
-import ecommander.persistence.mappers.LuceneIndexMapper;
+import java.io.IOException;
+import java.util.ArrayList;
 /**
  * Полнотекстовый критерий
  * Метод appendLuceneQuery требует реализации.
@@ -25,7 +22,7 @@ import ecommander.persistence.mappers.LuceneIndexMapper;
  * @author E
  *
  */
-public class FulltextCriteria {
+class FulltextCriteria {
 	
 	private final String[] paramNames;
 	private final String[] queryVals;
@@ -33,10 +30,10 @@ public class FulltextCriteria {
 	private final float threshold;
 	private Long[] loadedIds = null;
 	private final Compare compType;
-	private ArrayList<LuceneQueryCreator> queryCreators = new ArrayList<LuceneQueryCreator>();
+	private ArrayList<LuceneQueryCreator> queryCreators = new ArrayList<>();
 	
-	public FulltextCriteria(String[] queryTypes, String[] queryStr, int maxResultCount, String[] paramNames, Compare compType,
-			float threshold) throws EcommanderException {
+	FulltextCriteria(String[] queryTypes, String[] queryStr, int maxResultCount, String[] paramNames, Compare compType,
+			float threshold) throws Exception {
 		this.queryVals = queryStr;
 		this.paramNames = paramNames;
 		this.maxResultCount = maxResultCount;
@@ -58,14 +55,11 @@ public class FulltextCriteria {
 	 * Загрузить ID всех айтемов, которые подходят по полнотекстовому запросу
 	 * Этот метод может быть переопределен в подклассах для реализации других алгоритмов поиска
 	 * 
-	 * @param filter - фильтр по параметрам айтемов, а также предкам и типу айтема
-	 * @param filter
-	 * @param parents
 	 * @throws IOException
 	 */
-	public void loadItems(Filter filter) throws IOException {
+	void loadItems() throws IOException {
 		if (isValid()) {
-			ArrayList<Query> queries = new ArrayList<Query>();
+			ArrayList<Query> queries = new ArrayList<>();
 			Occur occur = Occur.SHOULD;
 			if (compType == Compare.EVERY || compType == Compare.ALL)
 				occur = Occur.MUST;
@@ -77,21 +71,21 @@ public class FulltextCriteria {
 				}
 			} else {
 				for (LuceneQueryCreator creator : queryCreators) {
-					Query boolQuery = new BooleanQuery(true);
+					BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
 					boolean isEmpty = true;
 					for (String term : queryVals) {
 						Query part = creator.createLuceneQuery(term, paramNames, occur);
 						if (part != null) {
-							((BooleanQuery) boolQuery).add(part, occur);
+							boolQuery.add(part, occur);
 							isEmpty = false;
 						}
 					}
 					if (!isEmpty)
-						queries.add(boolQuery);
+						queries.add(boolQuery.build());
 				}
 			}
 			if (!queries.isEmpty()) {
-				loadedIds = LuceneIndexMapper.getItems(queries, filter, maxResultCount, threshold);
+				loadedIds = LuceneIndexMapper.getItems(queries, maxResultCount, threshold);
 				return;
 			}
 		}
@@ -101,7 +95,6 @@ public class FulltextCriteria {
 	 * Получить часть массива найденных ID
 	 * Если нужны все найденные ID, то передавать в качестве первого аргумента (limit) 0
 	 * @param limit - количество найденных элементов
-	 * @param page - страница (смещение он начала массива в количествах limit)
 	 * @return
 	 */
 	Long[] getLoadedIds(LimitCriteria limit) {

@@ -65,14 +65,23 @@
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="price_to" style="query"/>
+			<var name="diag" style="query"/>
+			<var name="region" style="query"/>
+			<var name="updated" style="query"/>
 		</request>
 		<single item="section_abstract" var="sec" tag="current_section">
 			<list item="product" assoc="hierarchy" transitive="true" id="product">
 				<filter>
-					<!--Загрузить товары, которые содержат вложенный айтем цены со скидкой-->
-					<!--по идее не обязательно указывать оба атрибута assoc и child, иногда достаточно одного-->
-					<parameter name="discount" assoc="seller_price" child="price" sign="&gt;"><var value="2"/></parameter>
-					<parameter name="price" sign="&lt;=" ><var value="{price_to}"/></parameter>
+					<!--Загрузить товары, которые содержат вложенный айтем цены с ценой не более заданной -->
+					<!--В свою очередь этот айтем цены должен принадлежать продавцу с определенным регионом-->
+					<child item="price" assoc="seller_price">
+						<parameter name="price" sign="&lt;"><var var="price_to"/></parameter>
+						<parameter name="time_updated" sign="&gt;"><var var="updated"/></parameter>
+						<parent item="seller">
+							<parameter name="region"><var var="region"/></parameter>
+						</parent>
+					</child>
+					<parameter name="display_size" sign="&gt;=" ><var var="diag"/></parameter>
 				</filter>
 			</list>
 		</single>
@@ -96,6 +105,18 @@
 					<predecessor sign="NOT IN"><var var="sec"/></predecessor>
 				</option>
 			</filter>
+		</list>
+	</page>
+
+
+	<page name="tv_groups" template="product_groups">
+		<list item="tv">
+			<!--Если указано направление сортировки, то параметр группировки добавляется в сортировку-->
+			<!--Если нет дополнительных параметров группировки (только главный), то сортировки происходит по нему-->
+			<aggragation function="MIN" parameter="price">
+				<parameter name="size" sign="&gt;=" sort="ASC"><var var="42"/></parameter>
+				<parameter name="technology" sort="ASC"/>
+			</aggragation>
 		</list>
 	</page>
 

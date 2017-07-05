@@ -12,13 +12,13 @@ import ecommander.persistence.mappers.DataTypeMapper;
  * @author E
  *
  */
-abstract class FilterParameterCriteria implements FilterCriteria, ItemQuery.Const, DBConstants.ItemIndexes, DBConstants.ItemTbl {
+abstract class ParameterCriteria implements FilterCriteria, ItemQuery.Const, DBConstants.ItemIndexes, DBConstants.ItemTbl {
 
 	protected final ParameterDescription param; // параметр айтема, по которому происходит сравнение
 	private final ItemType item; // тип айтемов, которые подвергаются фильтрации
 	protected final String INDEX_TABLE; // Псевдоним таблицы с параметрами (ItemIndex) для данного параметра
 
-	FilterParameterCriteria(ParameterDescription param, ItemType item, String tableName) {
+	ParameterCriteria(ParameterDescription param, ItemType item, String tableName) {
 		this.param = param;
 		this.INDEX_TABLE = tableName;
 		this.item = item;

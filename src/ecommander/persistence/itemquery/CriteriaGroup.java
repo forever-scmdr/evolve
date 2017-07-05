@@ -2,6 +2,7 @@ package ecommander.persistence.itemquery;
 
 import ecommander.model.Compare;
 import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
 import org.apache.lucene.search.BooleanClause;
@@ -9,6 +10,7 @@ import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,11 +23,15 @@ import java.util.List;
 class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 
 	protected final List<FilterCriteria> criterias;
-	protected final String optionId; // ID группы, нужен для названия таблиц параметров
-	
-	CriteriaGroup(String optionId) {
-		this.optionId = optionId;
+	protected final ArrayList<AssociatedItemParameterCriteria> assocCriterias;
+	protected final String groupId; // ID группы, нужен для названия таблиц параметров
+	protected final ItemType item;
+
+	CriteriaGroup(String optionId, ItemType item) {
+		this.groupId = optionId;
+		this.item = item;
 		criterias = new ArrayList<>();
+		assocCriterias = new ArrayList<>();
 	}
 
 	public void appendQuery(TemplateQuery query) {
@@ -54,7 +60,7 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	 */
 	public void addParameterCriteria(ParameterDescription param, ItemType item, List<String> values, String sign, String pattern,
 			Compare compType) {
-		String tableName = optionId + 'F' + criterias.size();
+		String tableName = groupId + 'F' + criterias.size();
 		// Одно значение
 		if (values.size() == 1)
 			criterias.add(new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, compType));
@@ -65,14 +71,56 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 		else if (values.size() > 0) {
 			for (String value : values) {
 				criterias.add(new SingleParamCriteria(param, item, value, sign, pattern, tableName, compType));
-				tableName = optionId + 'F' + criterias.size();
+				tableName = groupId + 'F' + criterias.size();
 			}
 		} else 
 			criterias.add(new SingleParamCriteria(param, item, "", sign, pattern, tableName, compType));
 	}
 
+	/**
+	 * Добавить критерий по параметру потомка
+	 * @param item
+	 * @param assocId
+	 * @param type
+	 * @return
+	 */
+	public AssociatedItemParameterCriteria addAssociatedCriteria(ItemType item, byte assocId, AssociatedItemParameterCriteria.Type type) {
+		String critId = (type == AssociatedItemParameterCriteria.Type.CHILD ? 'C' : 'P') + assocCriterias.size() + groupId;
+		AssociatedItemParameterCriteria newCrit = new AssociatedItemParameterCriteria(critId, item, assocId, type, null, this.item);
+		assocCriterias.add(newCrit);
+		return newCrit;
+	}
+
+	/**
+	 * Добавить критерий предшественника
+	 * @param assocName
+	 * @param sign
+	 * @param itemIds
+	 * @param compType
+	 */
+	public void addPredecessors(String assocName, String sign, Collection<Long> itemIds, Compare compType) {
+		criterias.add(new PredecessorCriteria(item, sign, itemIds, ItemTypeRegistry.getAssocId(assocName),
+				groupId + 'R' + criterias.size(), compType));
+	}
+
+	/**
+	 * Добавить критерий потомка
+	 * @param assocName
+	 * @param sign
+	 * @param itemIds
+	 * @param compType
+	 */
+	public void addSuccessors(String assocName, String sign, Collection<Long> itemIds, Compare compType) {
+		criterias.add(new SuccessorCriteria(sign, itemIds, ItemTypeRegistry.getAssocId(assocName),
+				groupId + 'R' + criterias.size(), compType));
+	}
+
 	public boolean isNotBlank() {
 		for (FilterCriteria criteria : criterias) {
+			if (criteria.isNotBlank())
+				return true;
+		}
+		for (AssociatedItemParameterCriteria criteria : assocCriterias) {
 			if (criteria.isNotBlank())
 				return true;
 		}
@@ -81,6 +129,10 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	
 	public boolean isEmptySet() {
 		for (FilterCriteria criteria : criterias) {
+			if (criteria.isEmptySet())
+				return true;
+		}
+		for (AssociatedItemParameterCriteria criteria : assocCriterias) {
 			if (criteria.isEmptySet())
 				return true;
 		}

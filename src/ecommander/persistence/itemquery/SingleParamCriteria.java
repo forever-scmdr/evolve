@@ -15,7 +15,7 @@ import org.apache.lucene.search.TermQuery;
  * @author EEEE
  *
  */
-class SingleParamCriteria extends FilterParameterCriteria {
+class SingleParamCriteria extends ParameterCriteria {
 
 	private String value; // строковое значение параметра, с которым он будет сравниваться, передается пользователем или берется из страничной переменной
 	private String sign; // знак для сравнения (<, >, like, rlike, =, ...)

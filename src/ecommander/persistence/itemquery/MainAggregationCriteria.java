@@ -18,8 +18,8 @@ class MainAggregationCriteria extends AggregationCriteria implements ItemQuery.C
 	private String function = null;
 	private ArrayList<AggregationCriteria> groupByExtra = new ArrayList<>(3);
 
-	MainAggregationCriteria(ParameterDescription param, ItemType item, String tableName, String function) {
-		super(new GroupOnlyParamCriteria(param, item, tableName));
+	MainAggregationCriteria(ParameterDescription param, ItemType item, String tableName, String function, String sortDirection) {
+		super(new GroupOnlyParamCriteria(param, item, tableName), sortDirection);
 		if (!StringUtils.isBlank(function))
 			this.function = function;
 	}
@@ -62,6 +62,10 @@ class MainAggregationCriteria extends AggregationCriteria implements ItemQuery.C
 
 	public void addAggregationParameterCriteria(AggregationCriteria extra) {
 		groupByExtra.add(extra);
+	}
+
+	ArrayList<AggregationCriteria> getGroupByExtra() {
+		return groupByExtra;
 	}
 
 	// TODO ORDER BY в фильтре

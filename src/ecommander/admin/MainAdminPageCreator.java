@@ -771,7 +771,7 @@ public class MainAdminPageCreator implements AdminXML {
 	private void processItemForParent(long parentId, ItemTypeContainer.ChildDesc childDesc, ItemTypeContainer parentDesc,
 	                                  ArrayList<ItemToAdd> itemsToAdd, ArrayList<ItemAccessor> existingSubitems) throws SQLException {
 		boolean addItemToAdd = true;
-		byte assocId = ItemTypeRegistry.getAssoc(childDesc.assocName).getId();
+		byte assocId = ItemTypeRegistry.getAssocId(childDesc.assocName);
 		if (!parentDesc.isChildMultiple(childDesc.assocName, childDesc.itemName)) {
 			for (ItemAccessor subitem : existingSubitems) {
 				if (subitem.getContextAssoc() == assocId

@@ -90,21 +90,21 @@
 	FROM
 		item AS i
 		INNER JOIN parent AS p ON (i.id = p.child_id)       # простой критерий предка
-		INNER JOIN parent AS pp ON (i.id = pp.parent_id)    # связь искомого айтема и айтема-потомка для фильтрации
-		INNER JOIN item AS pi ON (pi.id = pp.child_id)      # айтем-потомок для фильтрации (его статус долен быть 0)
-		INNER JOIN index AS pf1 ON (pf1.item = pi.id)       # фильтр по айтему-потомку для фильтрации
+		INNER JOIN parent AS с1p ON (i.id = с1p.parent_id)  # связь искомого айтема и айтема-потомка для фильтрации
+		INNER JOIN item AS с1i ON (c1i.id = с1p.child_id)   # айтем-потомок для фильтрации (его статус долен быть 0)
+		INNER JOIN index AS с1f1 ON (с1f1.item = с1i.id)    # фильтр по айтему-потомку для фильтрации
 		INNER JOIN index AS f1 ON (i.id = f1.item)          # фильтр по основному искомому айтему
 	WHERE
 		i.status = 0
-		AND pi.status = 0
+		AND c1i.status = 0
 
 		# Родительский критерий
 		AND p.parent_id in (Pa, Pb) AND p.assoc_id IN (A) AND p.child_supertype IN (T)
-		AND pp.assoc_id IN (A) AND pp.child_supertype IN (PR)
+		AND c1p.assoc_id IN (A) AND c1p.child_supertype IN (PR)
 
 		# фильтр ( !!!!  НЕ указывается критерий типа айтема  !!!! )
 		AND f1.val = "красный" AND f1.param = "цвет"
-		AND pf1.val <= 100 AND pf1.param = "цена"
+		AND c1f1.val <= 100 AND c1f1.param = "цена"
 	ORDER BY
 		p.weight
 
@@ -364,3 +364,43 @@
 		)
 	ORDER BY
 		p.weight ASC
+
+
+
+13. Фильтрация по параметру потомка и параметру предка потомка
+
+	Задано:
+		тип - товар (T)
+		1 параметр фильтрации потомка (цена - PR) (цена меньше определенной) (ассоциация S (seller) транзитивно)
+		1 параметр фильтрации предка потомка (регион - REG) (принадлежность к определенному региону) (ассоциация 1 транзитивно)
+		предки Pa и Pb (ассоциация 1 транзитивно)
+
+		(c - child: c1...   p - parent: p1...   )
+
+	SELECT
+		i.*,
+		p.parent_id
+	FROM
+		item AS i
+		INNER JOIN parent AS p ON (i.id = p.child_id)               # простой критерий предка
+		INNER JOIN parent AS с1p ON (i.id = с1p.parent_id)          # связь искомого айтема и айтема-потомка для фильтрации
+		INNER JOIN item AS с1i ON (c1i.id = с1p.child_id)           # айтем-потомок для фильтрации (его статус долен быть 0)
+		INNER JOIN index AS с1f1 ON (с1f1.item = с1i.id)            # фильтр по айтему-потомку для фильтрации
+		INNER JOIN parent AS p1c1p ON (c1i.id = p1c1p.child_id)     # связь айтема-потомка и его айтема-предка для фильтрации
+		INNER JOIN item AS p1c1i ON (p1c1i.id = p1c1p.parent_id)    # айтем-предок потомка для фильтрации (его статус долен быть 0)
+		INNER JOIN index AS p1c1f1 ON (p1c1f1.item = p1c1i.id)      # фильтр по айтему-предку потомка для фильтрации
+	WHERE
+		i.status = 0
+		AND c1i.status = 0
+		AND p1c1i.status = 0
+
+		# Родительский критерий
+		AND p.parent_id in (Pa, Pb) AND p.assoc_id IN (A) AND p.child_supertype IN (T)
+		AND c1p.assoc_id IN (S) AND c1p.child_supertype IN (PR)
+		AND p1c1p.assoc_id IN (1) AND p1c1p.child_supertype IN (PR)     # супертип потомка, потомок - цена (price)
+
+		# фильтр
+		AND c1f1.val <= 100 AND c1f1.param = "цена"
+		AND p1c1f1.val = REG AND p1c1f1.param = "регион"
+	ORDER BY
+		p.weight

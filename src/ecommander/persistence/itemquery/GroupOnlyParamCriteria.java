@@ -10,7 +10,7 @@ import org.apache.lucene.search.BooleanQuery;
  * @author EEEE
  *
  */
-class GroupOnlyParamCriteria extends FilterParameterCriteria {
+class GroupOnlyParamCriteria extends ParameterCriteria {
 
 	GroupOnlyParamCriteria(ParameterDescription param, ItemType item, String tableName) {
 		super(param, item, tableName);

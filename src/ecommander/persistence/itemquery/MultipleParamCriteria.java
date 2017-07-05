@@ -19,7 +19,7 @@ import java.util.Collection;
  * @author EEEE
  *
  */
-class MultipleParamCriteria extends FilterParameterCriteria {
+class MultipleParamCriteria extends ParameterCriteria {
 
 	private Collection<String> values;	// массив строковых значений параметра, с которым он будет сравниваться, передается пользователем 
 								// или берется из страничной переменной

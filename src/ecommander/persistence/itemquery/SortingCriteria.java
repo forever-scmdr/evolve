@@ -15,7 +15,7 @@ import java.util.List;
  * @author E
  *
  */
-class SortingCriteria extends FilterParameterCriteria {
+class SortingCriteria extends ParameterCriteria {
 
 	private String direction;
 	private List<String> values; // для сортировки по значениям параметра (когда есть определенный порядок значений)

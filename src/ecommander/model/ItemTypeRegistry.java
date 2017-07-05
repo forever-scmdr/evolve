@@ -459,6 +459,15 @@ public class ItemTypeRegistry {
 	}
 
 	/**
+	 * Получить ID ассоциации по ее названию
+	 * @param name
+	 * @return
+	 */
+	public static byte getAssocId(String name) {
+		return getSingleton().assocRegistry.getAssoc(name).getId();
+	}
+
+	/**
 	 * Получить ассоциацию
 	 * @param id
 	 * @return
