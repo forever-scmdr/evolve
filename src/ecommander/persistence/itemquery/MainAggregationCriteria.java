@@ -5,6 +5,7 @@ import ecommander.model.ItemType;
 import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
+import ecommander.persistence.mappers.DataTypeMapper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ class MainAggregationCriteria extends AggregationCriteria implements ItemQuery.C
 		String valCol = baseCriteria.INDEX_TABLE + '.' + DBConstants.ItemIndexes.II_VALUE;
 		String selectPart = valCol;
 		// Добавление в блок SELECT параметра группировки
-		if (!StringUtils.isEmpty(function)) {
+		if (StringUtils.isNotBlank(function)) {
 			selectPart = function + "(" + valCol + ")";
 		}
 		query.getSubquery(GROUP_PARAMS_SELECT).sql(selectPart + " AS " + GROUP_PARAM_COL);
@@ -62,6 +63,25 @@ class MainAggregationCriteria extends AggregationCriteria implements ItemQuery.C
 			baseCriteria.appendQuery(query);
 			for (AggregationCriteria aggregationCriteria : groupByExtra) {
 				aggregationCriteria.appendQuery(query);
+			}
+		}
+		// Добавление сортировки
+		if (hasSorting()) {
+			boolean needSorting = query.getSubquery(ORDER) != null;
+			if (needSorting) {
+				TemplateQuery orderByPart = query.getSubquery(ORDER);
+				orderByPart.sql(" ORDER BY ");
+				if (isSelfGrouping) {
+					orderByPart.sql(getParameterColumnName()).sql(" " + sort);
+				} else {
+					boolean isNotFirst = false;
+					for (AggregationCriteria extra : groupByExtra) {
+						if (isNotFirst)
+							orderByPart.sql(", ");
+						orderByPart.sql(extra.getParameterColumnName()).sql(" " + extra.getSortingDirection());
+						isNotFirst = true;
+					}
+				}
 			}
 		}
 	}
@@ -105,6 +125,6 @@ class MainAggregationCriteria extends AggregationCriteria implements ItemQuery.C
 
 	@Override
 	String getParameterColumnName() {
-		return ItemQuery.Const.GROUP_PARAM_COL;
+		return GROUP_PARAM_COL;
 	}
 }

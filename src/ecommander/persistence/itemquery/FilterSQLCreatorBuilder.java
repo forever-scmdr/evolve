@@ -13,28 +13,29 @@ import ecommander.model.filter.FilterDefPart;
 import ecommander.model.filter.FilterDefinitionVisitor;
 import ecommander.model.filter.FilterRootDef;
 import ecommander.model.filter.InputDef;
+import ecommander.pages.var.FilterStaticVariable;
 import ecommander.pages.variables.FilterStaticVariablePE;
 
-class FilterSQLBuilderBuilder implements FilterDefinitionVisitor {
-	private FilterSQLCreator builder;
+class FilterSQLCreatorBuilder implements FilterDefinitionVisitor {
+	private FilterSQLCreator sqlCreator;
 	private Stack<CriteriaGroupDef> sourceStack;
 	private Stack<CriteriaGroup> destStack;
 	private ItemQuery query;
-	private FilterStaticVariablePE userInput;
+	private FilterStaticVariable userInput;
 	
-	FilterSQLBuilderBuilder(ItemQuery query, FilterStaticVariablePE userInput) {
-		this.sourceStack = new Stack<CriteriaGroupDef>();
-		this.destStack = new Stack<CriteriaGroup>();
+	FilterSQLCreatorBuilder(ItemQuery query, FilterStaticVariable userInput) {
+		this.sourceStack = new Stack<>();
+		this.destStack = new Stack<>();
 		this.query = query;
 		this.userInput = userInput;
 	}
 	
 	public void visitGroup(CriteriaGroupDef group) throws FilterProcessException {
-		if (builder == null) {
+		if (sqlCreator == null) {
 			FilterRootDef filterRoot = (FilterRootDef) group;
-			builder = query.createFilter(filterRoot.getSign());
+			sqlCreator = query.createFilter(filterRoot.getSign());
 			sourceStack.push(filterRoot);
-			destStack.push(builder);
+			destStack.push(sqlCreator);
 		} else {
 			checkParents(group);
 			sourceStack.push(group);
@@ -66,7 +67,7 @@ class FilterSQLBuilderBuilder implements FilterDefinitionVisitor {
 			throw new FilterProcessException("Filter format is incorrect. No parent match for id=" + part.getParentId());
 	}
 	
-	public FilterSQLCreator getBuilder() {
-		return builder;
+	public FilterSQLCreator getSqlCreator() {
+		return sqlCreator;
 	}
 }

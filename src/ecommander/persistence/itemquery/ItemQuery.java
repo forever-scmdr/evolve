@@ -393,9 +393,9 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		ItemType userFilterItem = ItemTypeRegistry.getItemType(filterDef.getBaseItemName());
 		if (userFilterItem != null)
 			itemDesc = userFilterItem;
-		FilterSQLBuilderBuilder builderBuilder = new FilterSQLBuilderBuilder(this, userInput);
+		FilterSQLCreatorBuilder builderBuilder = new FilterSQLCreatorBuilder(this, userInput);
 		filterDef.iterate(builderBuilder);
-		return filter = builderBuilder.getBuilder();
+		return filter = builderBuilder.getSqlCreator();
 	}
 	/**
 	 * Создать новый фильтр и вернуть его

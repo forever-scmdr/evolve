@@ -1,3 +1,2 @@
-Элементы страниц (классы PE)
-		- ItemQuery
-			- TypeHierarchyRegistry
+Сначала переделать класс ItemQuery
+Потом переделать FilterSQLCreatorBuilder

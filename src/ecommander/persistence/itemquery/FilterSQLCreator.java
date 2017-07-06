@@ -1,14 +1,12 @@
 package ecommander.persistence.itemquery;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import ecommander.model.*;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
-
+import ecommander.model.Compare;
+import ecommander.model.ItemType;
+import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Класс, который создает SQL запрос для поиска по фильтру
@@ -87,21 +85,13 @@ public final class FilterSQLCreator extends CriteriaGroup {
 		}
 		// Добавляется группировка
 		if (hasAggregation()) {
-
-			// Добавляется сортировка в группировке
-			ArrayList<String> sorting = new ArrayList<>();
-			if (!mainAggCriteria.hasGroupByExtra() && mainAggCriteria.hasSorting())
-				sorting.add(mainAggCriteria.getParameterColumnName());
-
+			mainAggCriteria.appendQuery(query);
 		} else {
 			// Добавляется обычная сортировка
-
+			for (SortingCriteria sorting : sortings) {
+				sorting.appendQuery(query);
+			}
 		}
-
-
-		if (mainAggCriteria != null)
-			mainAggCriteria.setSelfGrouping(isSelfGrouping);
-		super.appendQuery(query);
 	}
 
 	boolean hasAggregation() {
