@@ -1,5 +1,6 @@
 package ecommander.persistence.itemquery;
 
+import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
@@ -7,6 +8,7 @@ import ecommander.persistence.mappers.DBConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Параметр, значение которого подвергается группировке
@@ -15,13 +17,17 @@ import java.util.ArrayList;
  */
 class MainAggregationCriteria extends AggregationCriteria implements ItemQuery.Const {
 
-	private String function = null;
-	private ArrayList<AggregationCriteria> groupByExtra = new ArrayList<>(3);
+	private final String function;
+	private final ArrayList<AggregationCriteria> groupByExtra = new ArrayList<>(3);
+	private final ItemType item;
 
 	MainAggregationCriteria(ParameterDescription param, ItemType item, String tableName, String function, String sortDirection) {
 		super(new GroupOnlyParamCriteria(param, item, tableName), sortDirection);
 		if (!StringUtils.isBlank(function))
 			this.function = function;
+		else
+			this.function = null;
+		this.item = item;
 	}
 
 	@Override
@@ -60,14 +66,45 @@ class MainAggregationCriteria extends AggregationCriteria implements ItemQuery.C
 		}
 	}
 
-	public void addAggregationParameterCriteria(AggregationCriteria extra) {
-		groupByExtra.add(extra);
+	/**
+	 * Добавить независимый притерий группировки
+	 * @param param
+	 * @param values
+	 * @param sign
+	 * @param pattern
+	 * @param compType
+	 * @param sortDirection
+	 */
+	public void addAggregationParameterCriteria(ParameterDescription param, List<String> values, String sign,
+	                                            String pattern, Compare compType, String sortDirection) {
+		ParameterCriteria baseCrit;
+		String tableName = baseCriteria.INDEX_TABLE + 'G' + groupByExtra.size();
+		// Нет значений
+		if (values == null || values.size() == 0)
+			baseCrit = new GroupOnlyParamCriteria(param, item, tableName);
+			// Одно значение
+		else if (values.size() == 1)
+			baseCrit = new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, compType);
+			// Множество значений с выбором любого варианта (параметр соответствует любому из значений)
+		else if (values.size() > 0 && (compType == Compare.ANY || compType == Compare.SOME))
+			baseCrit = new MultipleParamCriteria(param, item, values, sign, tableName, compType);
+			// Множество значений с выбором каждого варианта (параметр соответствует всем значениям)
+		else
+			throw new IllegalArgumentException("Unsupported filter grouping format");
+		AggregationCriteria crit = new AggregationCriteria(baseCrit, sortDirection);
+		groupByExtra.add(crit);
 	}
 
 	ArrayList<AggregationCriteria> getGroupByExtra() {
 		return groupByExtra;
 	}
 
-	// TODO ORDER BY в фильтре
+	boolean hasGroupByExtra() {
+		return groupByExtra.size() > 0;
+	}
 
+	@Override
+	String getParameterColumnName() {
+		return ItemQuery.Const.GROUP_PARAM_COL;
+	}
 }

@@ -38,7 +38,6 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 		if (!isNotBlank())
 			return;
 		TemplateQuery wherePart = query.getSubquery(WHERE);
-		wherePart.sql(" (");
 		boolean notFirst = false;
 		for (FilterCriteria criteria : criterias) {
 			if (criteria.isNotBlank()) {
@@ -48,7 +47,6 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 				notFirst = true;
 			}
 		}
-		wherePart.sql(") ");
 	}
 	/**
 	 * Добавить критерий, одиночный или множественный
@@ -150,6 +148,8 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 		}
 		if (queryBuilder == null)
 			return innerBuilder;
+		if (occur == null)
+			occur = Occur.MUST;
 		queryBuilder.add(innerBuilder.build(), occur);
 		return queryBuilder;
 	}
