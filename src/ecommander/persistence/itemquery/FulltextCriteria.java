@@ -57,7 +57,7 @@ class FulltextCriteria {
 	 * 
 	 * @throws IOException
 	 */
-	void loadItems() throws IOException {
+	void loadItems(Query filter) throws IOException {
 		if (isValid()) {
 			ArrayList<Query> queries = new ArrayList<>();
 			Occur occur = Occur.SHOULD;
@@ -85,7 +85,7 @@ class FulltextCriteria {
 				}
 			}
 			if (!queries.isEmpty()) {
-				loadedIds = LuceneIndexMapper.getItems(queries, maxResultCount, threshold);
+				loadedIds = LuceneIndexMapper.getItems(queries, filter, maxResultCount, threshold);
 				return;
 			}
 		}

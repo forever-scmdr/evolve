@@ -1,5 +1,6 @@
 package ecommander.persistence.mappers;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
@@ -308,12 +309,13 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * строгим и результаты по нему самыми релевантными, второй менее строгий, третий - еще менее и т. д.
 	 * Максимальный score документов второго и последующих запросов равны минимальному score предыдущего запроса
 	 * @param queries
+	 * @param filter
 	 * @param maxResults
 	 * @param threshold - часть рейтинга первого места поиска, результаты с рейтингом ниже которой считаются нерелевантными
 	 * @return
 	 * @throws IOException
 	 */
-	private synchronized Long[] getItemsInt(List<Query> queries, int maxResults, float threshold)
+	private synchronized Long[] getItemsInt(List<Query> queries, Query filter, int maxResults, float threshold)
 			throws IOException {
 		SearcherManager reader = getReader();
 		if (reader == null)
@@ -332,6 +334,12 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		// Все запросы в порядке появления в массиве
 		for (Query query : queries) {
 			TopDocs td;
+			if (filter != null) {
+				BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
+				boolQuery.add(query, BooleanClause.Occur.MUST);
+				boolQuery.add(filter, BooleanClause.Occur.FILTER);
+				query = boolQuery.build();
+			}
 			td = search.search(query, maxResults);
 			float scoreQuotient = 1f;
 			// Инициализация максиального количества очков и коэффициента пересчета
@@ -492,8 +500,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws IOException
 	 */
-	public static Long[] getItems(Query query, int maxResults, float threshold) throws IOException {
-		return getSingleton().getItemsInt(Collections.singletonList(query), maxResults, threshold);
+	public static Long[] getItems(Query query, Query filter, int maxResults, float threshold) throws IOException {
+		return getSingleton().getItemsInt(Collections.singletonList(query), filter, maxResults, threshold);
 	}
 	/**
 	 * Найти ID айтемов, которые соответствуют нескольким запросам Lucene
@@ -503,8 +511,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws IOException
 	 */
-	public static Long[] getItems(List<Query> queries, int maxResults, float threshold) throws IOException {
-		return getSingleton().getItemsInt(queries, maxResults, threshold);
+	public static Long[] getItems(List<Query> queries, Query filter, int maxResults, float threshold) throws IOException {
+		return getSingleton().getItemsInt(queries, filter, maxResults, threshold);
 	}
 	/**
 	 * Найти ID айтемов, которые соответствуют запросу Lucene
@@ -513,8 +521,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws IOException
 	 */
-	public static Long[] getItems(Query query, int maxResults) throws IOException {
-		return getItems(query, maxResults, -1);
+	public static Long[] getItems(Query query, Query filter, int maxResults) throws IOException {
+		return getItems(query, filter, maxResults, -1);
 	}
 	/**
 	 * Произвести переиндексацию всех айтемов

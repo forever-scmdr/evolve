@@ -476,11 +476,11 @@ public class TemplateQuery implements QueryPart {
 		// Тест 1
 		
 //		TemplateQuery query = new TemplateQuery("<MAIN>");
-//		query.sql("SELECT * FROM ").subquery("<PARENT>").sql(" WHERE ").int_(10).subquery("<CRIT>").sql(" LIMIT ").long_(1000);
-//		query.getSubquery("<PARENT>").sql(" inner select ").subquery("<TABLE>").sql(" inner sort ").string("STR_VAL").subquery("<SUBLIMIT>");
-//		TemplateQuery sub = query.getSubquery("<PARENT>").getSubquery("<TABLE>");
+//		query.sql("SELECT * FROM ").subquery("<ANCESTOR>").sql(" WHERE ").int_(10).subquery("<CRIT>").sql(" LIMIT ").long_(1000);
+//		query.getSubquery("<ANCESTOR>").sql(" inner select ").subquery("<TABLE>").sql(" inner sort ").string("STR_VAL").subquery("<SUBLIMIT>");
+//		TemplateQuery sub = query.getSubquery("<ANCESTOR>").getSubquery("<TABLE>");
 //		sub.sql(" INNER INNER SELECT ");
-//		sub = query.getSubquery("<PARENT>").getSubquery("<SUBLIMIT>");
+//		sub = query.getSubquery("<ANCESTOR>").getSubquery("<SUBLIMIT>");
 //		sub.sql(" SUB SUBLIMIT ").longArray(new Long []{(long)5, (long)6, (long)7});
 //		System.out.println(query);
 //		System.out.println();

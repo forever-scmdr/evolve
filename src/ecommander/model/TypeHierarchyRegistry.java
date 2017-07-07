@@ -26,7 +26,7 @@ class TypeHierarchyRegistry {
 	private HashMap<String, ArrayList<String>> basicIncedenceList = new HashMap<>();
 	// Расширенная матрица смежности (транзитивное замыкание) графа наследования
 	// Если два айетма связаны через наследоввание каким-либо образом (непосредсвенно или нет), то соответсвующая
-	// ячейка матрицы будет содержать значение PARENT или CHILD
+	// ячейка матрицы будет содержать значение ANCESTOR или CHILD
 	private byte[][] extendedIncedenceMatrix = null; // i - родитель, j - потомок
 	private int matrixDimension = 0;
 	private int basicMatrixDimension = 0;   // Максимальный индекс непользовательских (базовых) айтемов.
