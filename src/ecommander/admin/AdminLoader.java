@@ -88,13 +88,13 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		TemplateQuery base = createAccessorQueryBase("Load closest subitems part", true);
 		base.col(IP_PARENT_ID).long_(parentId).AND()
 				.col(IP_PARENT_DIRECT).byte_((byte) 1).AND()
-				.col(I_STATUS, " IN").byteArrayIN(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).AND()
-				.col(IP_ASSOC_ID, " IN").byteArrayIN (allAssocs).AND();
+				.col(I_STATUS, " IN").byteIN(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).AND()
+				.col(IP_ASSOC_ID, " IN").byteIN(allAssocs).AND();
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
 		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
-		adminQuery.col(I_GROUP, " IN").byteArrayIN(adminGroups.toArray(new Byte[0]));
-		simpleQuery.col(I_GROUP, " IN").byteArrayIN(simpleGroups.toArray(new Byte[0])).AND()
+		adminQuery.col(I_GROUP, " IN").byteIN(adminGroups.toArray(new Byte[0]));
+		simpleQuery.col(I_GROUP, " IN").byteIN(simpleGroups.toArray(new Byte[0])).AND()
 				.col(I_USER).int_(user.getUserId());
 
 		TemplateQuery select = new TemplateQuery("Load closest subitems union");
@@ -132,12 +132,12 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		TemplateQuery base = new TemplateQuery("Load root subitems part");
 		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED).FROM(ITEM_TBL)
 				.WHERE().col(I_SUPERTYPE, " IN").intIN(allTypes.toArray(new Integer[0])).AND()
-				.col(I_STATUS, " IN").byteArrayIN(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).AND();
+				.col(I_STATUS, " IN").byteIN(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).AND();
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
 		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
-		adminQuery.col(I_GROUP, " IN").byteArrayIN(adminGroups.toArray(new Byte[0]));
-		simpleQuery.col(I_GROUP, " IN").byteArrayIN(simpleGroups.toArray(new Byte[0])).AND()
+		adminQuery.col(I_GROUP, " IN").byteIN(adminGroups.toArray(new Byte[0]));
+		simpleQuery.col(I_GROUP, " IN").byteIN(simpleGroups.toArray(new Byte[0])).AND()
 				.col(I_USER).int_(user.getUserId());
 
 		TemplateQuery select = new TemplateQuery("Load root subitems union");
@@ -179,7 +179,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	static ArrayList<ItemAccessor> loadWholeBranch(long baseId, byte assocId) throws Exception {
 		TemplateQuery query = createAccessorQueryBase("Load item branch", false);
 		query.col(IP_CHILD_ID).long_(baseId).AND().col(IP_ASSOC_ID).byte_(assocId).AND()
-				.col(I_STATUS, " IN").byteArrayIN(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN})
+				.col(I_STATUS, " IN").byteIN(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN})
 				.ORDER_BY(IP_PARENT_DIRECT, IP_PARENT_ID);
 		return loadAccessorsByQuery(query, true);
 	}
@@ -264,13 +264,13 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 		TemplateQuery base = createAccessorQueryBase("Load direct parents part", false);
 		base.col(IP_CHILD_ID).long_(itemId).AND()
 				.col(IP_PARENT_DIRECT).byte_((byte) 1).AND()
-				.col(I_STATUS, " IN").byteArrayIN(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).AND()
-				.col(IP_ASSOC_ID, " IN").byteArrayIN(ItemTypeRegistry.getAllAssocIds()).AND();
+				.col(I_STATUS, " IN").byteIN(new Byte[] {Item.STATUS_NORMAL, Item.STATUS_NIDDEN}).AND()
+				.col(IP_ASSOC_ID, " IN").byteIN(ItemTypeRegistry.getAllAssocIds()).AND();
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
 		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
-		adminQuery.col(I_GROUP, " IN").byteArrayIN(adminGroups.toArray(new Byte[0]));
-		simpleQuery.col(I_GROUP, " IN").byteArrayIN(simpleGroups.toArray(new Byte[0])).AND()
+		adminQuery.col(I_GROUP, " IN").byteIN(adminGroups.toArray(new Byte[0]));
+		simpleQuery.col(I_GROUP, " IN").byteIN(simpleGroups.toArray(new Byte[0])).AND()
 				.col(I_USER).int_(user.getUserId());
 
 		TemplateQuery select = new TemplateQuery("Load direct parents union");

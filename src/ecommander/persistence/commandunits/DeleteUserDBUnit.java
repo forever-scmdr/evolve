@@ -37,7 +37,7 @@ public class DeleteUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 		TemplateQuery delete = new TemplateQuery("Delete user and groups");
 		delete
 				.DELETE_FROM_WHERE(USER_GROUP_TBL).col(UG_USER_ID).int_(user.getUserId()).AND()
-				.col(UG_GROUP_ID, " IN").byteArrayIN(groupIds.toArray(new Byte[groupIds.size()])).sql(";\r\n")
+				.col(UG_GROUP_ID, " IN").byteIN(groupIds.toArray(new Byte[groupIds.size()])).sql(";\r\n")
 				.DELETE_FROM_WHERE(USER_TBL).col(U_ID).int_(user.getUserId());
 		try (PreparedStatement pstmt = delete.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
@@ -52,7 +52,7 @@ public class DeleteUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 			modifyUserItems.col(I_USER).int_(User.ANONYMOUS_ID);
 		}
 		modifyUserItems
-				.WHERE().col(I_GROUP, " IN").byteArrayIN(groupIds.toArray(new Byte[groupIds.size()]))
+				.WHERE().col(I_GROUP, " IN").byteIN(groupIds.toArray(new Byte[groupIds.size()]))
 				.AND().col(I_USER).int_(user.getUserId());
 		try(PreparedStatement pstmt = modifyUserItems.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
@@ -73,7 +73,7 @@ public class DeleteUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 					.SELECT(I1 + I_ID)
 					.FROM(ITEM_TBL + " AS I1").INNER_JOIN(ITEM_PARENT_TBL + " AS P", I1 + I_ID, P + IP_PARENT_ID)
 					.INNER_JOIN(ITEM_TBL + " AS I2", P + IP_CHILD_ID, I2 + I_ID)
-					.WHERE().col(I2 + I_GROUP, " IN").byteArrayIN(groupIds.toArray(new Byte[groupIds.size()]))
+					.WHERE().col(I2 + I_GROUP, " IN").byteIN(groupIds.toArray(new Byte[groupIds.size()]))
 					.AND().col(I2 + I_USER).int_(user.getUserId())
 					.AND().col(I1 + I_SUPERTYPE, " IN").intArray(ItemTypeRegistry.getAllComputedSupertypes())
 					.ON_DUPLICATE_KEY_UPDATE(L_ITEM).sql(L_ITEM);

@@ -387,7 +387,7 @@ public class TemplateQuery implements QueryPart {
 		return this;
 	}
 
-	public final TemplateQuery byteArrayIN(Byte... values) {
+	public final TemplateQuery byteIN(Byte... values) {
 		queryParts.add(new SqlQueryPart("("));
 		queryParts.add(new ValueArrayQueryPart(values));
 		queryParts.add(new SqlQueryPart(")"));

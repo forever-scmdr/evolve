@@ -485,6 +485,14 @@ public class ItemTypeRegistry {
 	}
 
 	/**
+	 * Получить ID первичной ассоциации
+	 * @return
+	 */
+	public static byte getPrimaryAssocId() {
+		return getSingleton().assocRegistry.getPrimary().getId();
+	}
+
+	/**
 	 * Получить ID всех ассоциаций из модели данных (включая базовую)
 	 * @return
 	 */

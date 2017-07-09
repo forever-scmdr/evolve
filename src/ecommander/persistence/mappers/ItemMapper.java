@@ -156,4 +156,16 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 		return Item.existingItem(itemDesc, itemId, ItemTypeRegistry.getAssoc(contextAssocId), contextParentId, userId, groupId, status,
 				key, params, keyUnique, timeUpdated.getTime(), filesProtected);
 	}
+
+	/**
+	 * Создать айтем из резалт сета
+	 * @param rs
+	 * @param contextAssocId
+	 * @param contextParentIdColName
+	 * @return
+	 * @throws Exception
+	 */
+	public static Item buildItem(ResultSet rs, byte contextAssocId, String contextParentIdColName) throws Exception {
+		return buildItem(rs, contextAssocId, rs.getLong(contextParentIdColName));
+	}
 }

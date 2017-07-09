@@ -97,7 +97,7 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 					.FROM(ITEM_TBL + " AS I").INNER_JOIN(ITEM_PARENT_TBL + " AS P1", I + I_ID, P1 + IP_PARENT_ID)
 					.INNER_JOIN(ITEM_PARENT_TBL + " AS P2", P2 + IP_CHILD_ID, P1 + IP_CHILD_ID)
 					.WHERE().col(P2 + IP_PARENT_ID).long_(item.getId())
-					.AND().col(P1 + IP_ASSOC_ID, " IN").byteArrayIN(ItemTypeRegistry.getAllOtherAssocIds(primaryAssoc))
+					.AND().col(P1 + IP_ASSOC_ID, " IN").byteIN(ItemTypeRegistry.getAllOtherAssocIds(primaryAssoc))
 					.AND().col(I + I_SUPERTYPE, " IN").intArray(ItemTypeRegistry.getAllComputedSupertypes())
 					.ON_DUPLICATE_KEY_UPDATE(L_ITEM).sql(L_ITEM);
 			try(PreparedStatement pstmt = logInsert.prepareQuery(getTransactionContext().getConnection())) {
