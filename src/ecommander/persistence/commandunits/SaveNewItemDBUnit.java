@@ -138,6 +138,13 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		//
 		if (item.hasParent()) {
 			executeCommand(new CreateAssocDBUnit(item, parent, item.getContextAssoc().getId(), true));
+		} else {
+			TemplateQuery rootQuery = new TemplateQuery("Insert pseudoroot assoc with self");
+			rootQuery
+					.INSERT_INTO(ITEM_PARENT_TBL).SET()
+					.col(IP_CHILD_ID).long_(item.getId())
+					.col()
+
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
+ * Сведения об ассоциациях
  * Created by E on 19/2/2017.
  */
 class AssocRegistry {
@@ -12,7 +13,13 @@ class AssocRegistry {
 
 	static final String PRIMARY_NAME = "_default_";
 	static final byte PRIMARY_ID = (byte)0;
+	static final String ROOT_NAME = "_default_";
+	static final byte ROOT_ID = Byte.MAX_VALUE;
+	// Первичная ассоциация. Все айтемы связаны друг с другом этой ассоциацией по умолчанию.
 	static final Assoc PRIMARY = new Assoc(PRIMARY_ID, PRIMARY_NAME, "Первичная иерархия", "", true);
+	// Связь корневых айтемов с виртуальным корнем (которого физически нет).
+	// Она нужна чтобы можно было извлекать корневые и не корневые айтемы единообразно, в том числе одним списком
+	static final Assoc ROOT = new Assoc(ROOT_ID, ROOT_NAME, "Связь с пседвокорнем", "", false);
 
 	AssocRegistry() {
 		assocByName.put(PRIMARY_NAME, PRIMARY);
@@ -26,6 +33,10 @@ class AssocRegistry {
 
 	Assoc getPrimary() {
 		return PRIMARY;
+	}
+
+	Assoc getRoot() {
+		return ROOT;
 	}
 
 	Assoc getAssoc(String name) {

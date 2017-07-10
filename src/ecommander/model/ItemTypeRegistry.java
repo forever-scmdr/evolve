@@ -493,6 +493,13 @@ public class ItemTypeRegistry {
 	}
 
 	/**
+	 * Получить ID ассоциации для свзяи корневых айтемов с псевдокорнем
+	 * @return
+	 */
+	public static byte getRootAssocId() {
+		return getSingleton().assocRegistry.getRoot().getId();
+	}
+	/**
 	 * Получить ID всех ассоциаций из модели данных (включая базовую)
 	 * @return
 	 */
