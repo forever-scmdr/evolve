@@ -90,7 +90,6 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		void addFilter(FilterPE filterPE);
 	}
 
-	private LOGICAL_SIGN operation = LOGICAL_SIGN.AND;
 	private Variable limit = null;
 	private Variable page = null;
 	private String userFilterItemId; // При использовании пользовательского фильтра - ID страничного айтема
@@ -119,7 +118,6 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 			clone.userFilterParamName = userFilterParamName;
 			clone.userFilterVarName = userFilterVarName;
 		}
-		clone.operation = operation;
 		clone.parentPage = parentPage;
 		clone.needPreloadDomains = needPreloadDomains;
 		return clone;
@@ -132,13 +130,6 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		else if (!StringUtils.isBlank(directionVarName))
 			sortingDir = ValueOrRef.newRef(directionVarName);
 		addElement(new SortingCriteriaPE(sortingVar, sortingDir));
-	}
-	/**
-	 * Установить операцию (применяется для всего фильтра, т.к. для отдельных критериев не имеет смысла)
-	 * @param operation
-	 */
-	public void setOperation(LOGICAL_SIGN operation) {
-		this.operation = operation;
 	}
 	/**
 	 * Если используется пользовательский фильтр
@@ -170,16 +161,16 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		addElement(fulltext);
 	}
 
-	public void addPredecessor(String predecessorId, String sign, Compare compType) {
+	public void addPredecessor(String assocName, String predecessorId, String sign, Compare compType) {
 		if (StringUtils.isBlank(sign))
 			sign = " IN ";
-		addElement(new ParentalCriteriaPE(predecessorId, sign, compType, true));
+		addElement(new ParentalCriteriaPE(assocName, predecessorId, sign, compType, true));
 	}
 	
-	public void addSuccessors(String successorId, String sign, Compare compType) {
+	public void addSuccessors(String assocName, String successorId, String sign, Compare compType) {
 		if (StringUtils.isBlank(sign))
 			sign = " IN ";
-		addElement(new ParentalCriteriaPE(successorId, sign, compType, false));
+		addElement(new ParentalCriteriaPE(assocName, successorId, sign, compType, false));
 	}
 
 	public boolean hasPage() {
@@ -257,10 +248,9 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		/* *** Добавление статического фильтра из определения страницы ****/
 
 		if (!dbQuery.hasFilter())
-			dbQuery.createFilter(operation);
+			dbQuery.createFilter();
 
 		// Все вложенные элементы - критерии
-		Boolean isValid = null;
 		for (PageElement element : getAllNested()) {
 			((FilterCriteria) element).process(this);
 		}
@@ -364,12 +354,7 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		// то фильтр должен вернуть пустое множество, при условии что критерии фильтра соединяются логическим знаком И,
 		// (т. е. в большинстве случаев)
 		else if ((crit.getCompareType() == Compare.SOME || crit.getCompareType() == Compare.EVERY)) {
-			if (operation == LOGICAL_SIGN.AND) {
-				isValid = false;
-				return;
-			} else {
-				isValid = isValid == null ? false : isValid || false;
-			}
+			isValid = false;
 		}
 	}
 
@@ -381,9 +366,9 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	@Override
 	public void processParentalCriteria(ParentalCriteriaPE crit) {
 		if (crit.isPredecessor())
-			dbQuery.addPredecessors(crit.getSign(), crit.getLoadedItemIds(), crit.getCompType());
+			dbQuery.addPredecessors(crit.getAssocName(), crit.getSign(), crit.getLoadedItemIds(), crit.getCompType());
 		else
-			dbQuery.addSuccessors(crit.getSign(), crit.getLoadedItemIds(), crit.getCompType());
+			dbQuery.addSuccessors(crit.getAssocName(), crit.getSign(), crit.getLoadedItemIds(), crit.getCompType());
 	}
 
 	@Override
@@ -398,7 +383,7 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	}
 
 	@Override
-	public void processFulltextCriteriaPE(FulltextCriteriaPE crit) throws EcommanderException {
+	public void processFulltextCriteriaPE(FulltextCriteriaPE crit) throws Exception {
 		dbQuery.setFulltextCriteria(crit.getTypes(), crit.getQueries(), crit.getMaxResultCount(), crit.getParamName(),
 				crit.getCompareType(), crit.getThreshold());
 	}

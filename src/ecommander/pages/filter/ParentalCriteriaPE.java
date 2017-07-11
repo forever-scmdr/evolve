@@ -2,10 +2,12 @@ package ecommander.pages.filter;
 
 import ecommander.fwk.EcommanderException;
 import ecommander.model.Compare;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElement;
 import ecommander.pages.PageElementContainer;
 import ecommander.pages.ValidationResults;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -18,14 +20,19 @@ public class ParentalCriteriaPE implements FilterCriteria {
 	private final String pageItemId; // страничный ID предшественников или потомков айтема
 	private final String sign; // IN или NOT IN
 	private final Compare compType; // строгий критерий или нет
-	private boolean isPredecessor;
+	private final String assocName;
+	private final boolean isPredecessor;
 	private ExecutablePagePE parentPage;
 
-	public ParentalCriteriaPE(String pageItemId, String sign, Compare compType, boolean isPredecessor) {
+	public ParentalCriteriaPE(String assocName, String pageItemId, String sign, Compare compType, boolean isPredecessor) {
 		this.pageItemId = pageItemId;
 		this.sign = " " + sign + " ";
 		this.compType = compType;
 		this.isPredecessor = isPredecessor;
+		if (StringUtils.isBlank(assocName))
+			this.assocName = ItemTypeRegistry.getPrimaryAssoc().getName();
+		else
+			this.assocName = assocName;
 	}
 
 	@Override
@@ -35,7 +42,7 @@ public class ParentalCriteriaPE implements FilterCriteria {
 
 	@Override
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		ParentalCriteriaPE clone = new ParentalCriteriaPE(pageItemId, sign, compType, isPredecessor);
+		ParentalCriteriaPE clone = new ParentalCriteriaPE(assocName, pageItemId, sign, compType, isPredecessor);
 		clone.parentPage = parentPage;
 		return clone;
 	}
@@ -78,5 +85,9 @@ public class ParentalCriteriaPE implements FilterCriteria {
 
 	public boolean isSuccessor() {
 		return !isPredecessor;
+	}
+
+	public String getAssocName() {
+		return assocName;
 	}
 }

@@ -12,5 +12,5 @@ public interface FilterCriteriaContainer {
 	void processDescendantParameterCriteria(ParameterCriteriaPE crit) throws EcommanderException;
 	void processParentalCriteria(ParentalCriteriaPE crit) throws EcommanderException;
 	void processSortingCriteriaPE(SortingCriteriaPE crit) throws EcommanderException;
-	void processFulltextCriteriaPE(FulltextCriteriaPE crit) throws EcommanderException;
+	void processFulltextCriteriaPE(FulltextCriteriaPE crit) throws Exception;
 }

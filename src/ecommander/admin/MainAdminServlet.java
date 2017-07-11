@@ -403,6 +403,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 		transaction.addCommandUnit(ItemStatusDBUnit.delete(in.itemId));
 		transaction.execute();
 		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.searchQuery);
+		// Очистить корзину
+		transaction.addCommandUnit(new CleanAllDeletedItemsDBUnit(20, null));
 		// Удалить айтем из индекса Lucene
 		LuceneIndexMapper.commit();
 		// Очистить кеш страниц

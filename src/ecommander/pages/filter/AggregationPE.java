@@ -2,7 +2,6 @@ package ecommander.pages.filter;
 
 import ecommander.fwk.EcommanderException;
 import ecommander.model.Compare;
-import ecommander.model.LOGICAL_SIGN;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElement;
 import ecommander.pages.PageElementContainer;
@@ -50,8 +49,7 @@ public class AggregationPE extends PageElementContainer {
 	private String function; // Функция группировки
 	private ValueOrRef sortingParameter = null;
 	private ValueOrRef sortingDirection = null;
-	private LOGICAL_SIGN operation = LOGICAL_SIGN.AND;
-	
+
 	public AggregationPE(ValueOrRef parameter) {
 		super();
 		this.groupParameter = parameter;
@@ -73,11 +71,7 @@ public class AggregationPE extends PageElementContainer {
 	public void setFunction(String function) {
 		this.function = function;
 	}
-	
-	public void setOperation(LOGICAL_SIGN operation) {
-		this.operation = operation;
-	}
-	
+
 	public boolean hasFunction() {
 		return !StringUtils.isBlank(function);
 	}
@@ -134,7 +128,7 @@ public class AggregationPE extends PageElementContainer {
 	 */
 	public boolean appendCriteriasToQuery(ItemQuery dbQuery) throws EcommanderException {
 		if (!dbQuery.hasFilter())
-			dbQuery.createFilter(operation);
+			dbQuery.createFilter();
 		
 		// Добавление параметров группировки (по которым происходит группировка)
 		for (PageElement criteriaPE : getAllNested()) {
@@ -147,8 +141,7 @@ public class AggregationPE extends PageElementContainer {
 				// Если критерий имеет тип сравнения SOME или EVERY и не является валидным (не содержит образец для сравнения),
 				// то фильтр должен вернуть пустое множество, при условии что критерии фильтра соединяются логическим знаком И,
 				// (т. е. в большинстве случаев)
-				if ((crit.getCompareType() == Compare.SOME || crit.getCompareType() == Compare.EVERY)
-						&& operation == LOGICAL_SIGN.AND) {
+				if ((crit.getCompareType() == Compare.SOME || crit.getCompareType() == Compare.EVERY)) {
 					return false;
 				}
 				// Этот случай происходит, когда нужна группировка по значениям этого параметра 

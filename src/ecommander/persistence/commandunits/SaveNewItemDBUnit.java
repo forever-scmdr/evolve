@@ -6,6 +6,7 @@ import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.model.ItemBasics;
 import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
@@ -143,8 +144,14 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 			rootQuery
 					.INSERT_INTO(ITEM_PARENT_TBL).SET()
 					.col(IP_CHILD_ID).long_(item.getId())
-					.col()
-
+					._col(IP_PARENT_ID).long_(item.getId())
+					._col(IP_ASSOC_ID).byte_(ItemTypeRegistry.getRootAssocId())
+					._col(IP_PARENT_DIRECT).byte_((byte)1)
+					._col(IP_CHILD_SUPERTYPE).int_(item.getBasicSupertypeId())
+					._col(IP_WEIGHT).int_(0);
+			try (PreparedStatement pstmt = rootQuery.prepareQuery(conn)) {
+				pstmt.executeUpdate();
+			}
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
