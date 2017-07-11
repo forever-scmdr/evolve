@@ -114,7 +114,7 @@ public class FulltextCriteriaPE implements FilterCriteria {
 	}
 
 	@Override
-	public void process(FilterCriteriaContainer cont) throws EcommanderException {
+	public void process(FilterCriteriaContainer cont) throws Exception {
 		cont.processFulltextCriteriaPE(this);
 	}
 }

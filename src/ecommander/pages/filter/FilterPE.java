@@ -228,7 +228,7 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	 * @throws EcommanderException
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean appendCriteriasToQuery(ItemQuery dbQuery) throws EcommanderException {
+	public boolean appendCriteriasToQuery(ItemQuery dbQuery) throws Exception {
 
 		this.dbQuery = dbQuery;
 
