@@ -468,7 +468,9 @@ public class MainAdminPageCreator implements AdminXML {
 		if (itemId != ItemTypeRegistry.getPrimaryRootId())
 			item = AdminLoader.loadItem(itemId, currentUser);
 		if (item != null) {
-			ItemInputsMDWriter formWriter = new ItemInputsMDWriter(new ItemInputs(item), FORM_ELEMENT);
+			ItemInputs form = new ItemInputs(item);
+			form.addAllParameters();
+			ItemInputsMDWriter formWriter = new ItemInputsMDWriter(form, FORM_ELEMENT);
 			formWriter.setActionUrl(createAdminUrl(SAVE_ITEM_ACTION));
 			basePage.addElement(formWriter);
 			basePage.addElement(new LeafMDWriter(LINK_ELEMENT, createAdminUrl(DELETE_PARAMETER_ACTION, PARAM_ID_INPUT, "")));
@@ -502,7 +504,9 @@ public class MainAdminPageCreator implements AdminXML {
 		basePage.addElement(new LeafMDWriter(VISUAL_ELEMENT, isVisual));
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemType);
 		Item newItem = Item.newItem(itemDesc, parentId, User.ANONYMOUS_ID, User.NO_GROUP_ID, Item.STATUS_NORMAL, false);
-		ItemInputsMDWriter formWriter = new ItemInputsMDWriter(new ItemInputs(newItem), FORM_ELEMENT);
+		ItemInputs form = new ItemInputs(newItem);
+		form.addAllParameters();
+		ItemInputsMDWriter formWriter = new ItemInputsMDWriter(form, FORM_ELEMENT);
 		formWriter.setActionUrl(createAdminUrl(SAVE_ITEM_ACTION));
 		basePage.addElement(formWriter);
 		// Ссылки на другие виды редактирования

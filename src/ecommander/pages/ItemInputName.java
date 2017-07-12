@@ -91,6 +91,8 @@ public class ItemInputName implements Serializable {
 	}
 
 	public ItemInputName(long itemId, long parentId, int itemType, int paramId, String varName, Long...predecessors) {
+		if (StringUtils.contains(varName, SEPARATOR))
+			throw new IllegalArgumentException("Item variable name must not contain _ character: " + varName);
 		this.parentId = parentId;
 		this.itemId = itemId;
 		this.itemType = itemType;

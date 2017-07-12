@@ -1,2 +1,2 @@
-Сначала переделать класс ItemQuery
-Потом переделать FilterSQLCreatorBuilder
+Дальше делать ItemQuery
+Теперь есть псевдокорень - надо переделать запросы в файле item_query.txt и доделать ItemQuery

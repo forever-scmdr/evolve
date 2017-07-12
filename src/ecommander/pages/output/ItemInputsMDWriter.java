@@ -190,7 +190,7 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 				}
 			} else {
 				List<String> vals = inputs.getInputValues(input);
-				if (vals != null) {
+				if (vals != null && vals.size() > 0) {
 					for (Object val : vals) {
 						if (hasActionUrl()) {
 							// <extra input="some_name">some_value</extra>
@@ -199,6 +199,14 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 							// <some_name input="some_name">some_value</some_name>
 							xml.startElement(input.getVarName(), INPUT_ATTRIBUTE, input.getInputName()).addText(val).endElement();
 						}
+					}
+				} else {
+					if (hasActionUrl()) {
+						// <extra input="some_name">some_value</extra>
+						xml.startElement(EXTRA_ELEMENT, INPUT_ATTRIBUTE, input.getInputName()).endElement();
+					} else {
+						// <some_name input="some_name">some_value</some_name>
+						xml.startElement(input.getVarName(), INPUT_ATTRIBUTE, input.getInputName()).endElement();
 					}
 				}
 			}

@@ -36,7 +36,7 @@ public class CleanDeletedItemsDBUnit extends DBPersistenceCommandUnit implements
 			while (rs.next())
 				deletedIds.add(rs.getLong(1));
 		}
-		Long[] deletedArray = new Long[deletedIds.size()];
+		Long[] deletedArray = deletedIds.toArray(new Long[deletedIds.size()]);
 
 		// Удаление файлов
 		executeCommand(new DeleteItemsDirectoriesUnit(deletedArray));
