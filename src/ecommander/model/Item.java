@@ -731,7 +731,7 @@ public class Item implements ItemBasics {
 	 * @param filesProtected
 	 */
 	public void setFilesProtected(boolean filesProtected) {
-		this.areFilesProtected = areFilesProtected;
+		this.areFilesProtected = filesProtected;
 	}
 
 	/**
