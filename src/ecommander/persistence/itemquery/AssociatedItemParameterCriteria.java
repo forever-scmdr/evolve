@@ -90,7 +90,7 @@ public class AssociatedItemParameterCriteria extends CriteriaGroup implements DB
 		Integer[] superTypes = ItemTypeRegistry.getBasicItemExtendersIds(baseItem.getTypeId());
 		where.AND().col(ITEM_TABLE + '.' + I_STATUS, "=0")
 				.AND().col(PARENT_TABLE + '.' + IP_ASSOC_ID).byte_(assocId)
-				.AND().col(PARENT_TABLE + '.' + IP_CHILD_SUPERTYPE, " IN").intIN(superTypes);
+				.AND().col_IN(PARENT_TABLE + '.' + IP_CHILD_SUPERTYPE).intIN(superTypes);
 		// связь с третьей (и последующими) таблицей и добавление критерия осуществляется в ParameterCriteria
 		for (FilterCriteria criteria : criterias) {
 			criteria.appendQuery(query);

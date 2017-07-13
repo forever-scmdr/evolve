@@ -110,8 +110,7 @@
 
 
 
-4. Вывод айтемов без указания предков (запросы list)
-	Не могут применяться к корневым айтемам (т.к. корневый айтемы всегда должны быть одиночными)
+4. Вывод айтемов без указания предков (запросы list). Айтемы выводятся без сортировки (точнее сортировка по ID)
 
 	Задано:
 		тип - раздел (S)
@@ -121,14 +120,12 @@
 		p.parent_id
 	FROM
 		item AS i
-		INNER JOIN parent AS p ON (i.id = p.child_id)
 	WHERE
         i.status = 0
-
-		# Родительский критерий
-		AND p.child_supertype IN (S) AND p.parent_direct = 1
+        AND i.user = 0 AND i.group = 0      # для того, чтобы работал индекс
+        AND i.supertype in (S)
 	ORDER BY
-		p.weight
+		i.id
 
 
 
@@ -145,9 +142,11 @@
 		item AS i
 	WHERE
         i.status = 0
+        AND i.user = 0 AND i.group = 0      # для того, чтобы работал индекс
 		AND i.supertype IN (C)
 	ORDER BY
 		i.id
+	LIMIT 1
 
 
 

@@ -43,8 +43,8 @@ public class CleanDeletedItemsDBUnit extends DBPersistenceCommandUnit implements
 
 		// Удаление из таблиц айтемов и предков (из предков удаляются записи только где удаляемый айтем - child)
 		TemplateQuery delete = new TemplateQuery("Delete items");
-		delete.DELETE(ITEM_TBL).WHERE().col(I_ID, " IN").longIN(deletedArray).sql(";\r\n")
-				.DELETE(ITEM_PARENT_TBL).WHERE().col(IP_CHILD_ID, " IN").longIN(deletedArray);
+		delete.DELETE(ITEM_TBL).WHERE().col_IN(I_ID).longIN(deletedArray).sql(";\r\n")
+				.DELETE(ITEM_PARENT_TBL).WHERE().col_IN(IP_CHILD_ID).longIN(deletedArray);
 		try (PreparedStatement pstmt = delete.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}

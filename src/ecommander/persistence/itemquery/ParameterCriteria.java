@@ -40,7 +40,7 @@ abstract class ParameterCriteria implements FilterCriteria, ItemQuery.Const, DBC
 		// Добавление критерия типа айтема
 		// Только для пользовательских фильтров
 		if (item.isUserDefined()) {
-			wherePart.AND().col(INDEX_DOT + II_ITEM_TYPE, " IN").intIN(ItemTypeRegistry.getItemExtendersIds(item.getTypeId()));
+			wherePart.AND().col_IN(INDEX_DOT + II_ITEM_TYPE).intIN(ItemTypeRegistry.getItemExtendersIds(item.getTypeId()));
 		}
 		
 		// Добавление значения параметра

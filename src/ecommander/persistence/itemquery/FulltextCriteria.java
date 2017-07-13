@@ -102,10 +102,6 @@ class FulltextCriteria {
 			int start = (limit.getPage() - 1) * limit.getLimit();
 			int end = limit.getPage() * limit.getLimit();
 			return ArrayUtils.subarray(loadedIds, start, end);
-//			if (start >= loadedIds.length) // TODO <fix> delete
-//				return new ArrayList<Long>(0);
-//			else
-//				return ArrayUtils.subarray(loadedIds, start, end);
 		}
 		return loadedIds;
 	}

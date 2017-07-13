@@ -179,6 +179,11 @@ public class TemplateQuery implements QueryPart {
 		return this;
 	}
 
+	public final TemplateQuery col_IN(String column) {
+		queryParts.add(new SqlQueryPart(" " + column + " IN"));
+		return this;
+	}
+
 	/**
 	 * Аналогично col только с идущей спереди запятой (для второго и последующих значений в списке колонок)
 	 * @param column

@@ -67,7 +67,7 @@ class PredecessorCriteria implements FilterCriteria, ItemQuery.Const, DBConstant
 		}
 		wherePart
 				.col(PARENT_DOT + IP_ASSOC_ID).byte_(assocId)
-				.col(PARENT_DOT + IP_CHILD_SUPERTYPE, " IN").intIN(ItemTypeRegistry.getBasicItemExtendersIds(item.getTypeId()));
+				.col_IN(PARENT_DOT + IP_CHILD_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(item.getTypeId()));
 	}
 
 	public boolean isNotBlank() {

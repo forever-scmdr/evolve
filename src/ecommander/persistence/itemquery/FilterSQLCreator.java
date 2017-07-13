@@ -88,8 +88,10 @@ public final class FilterSQLCreator extends CriteriaGroup {
 			mainAggCriteria.appendQuery(query);
 		} else {
 			// Добавляется обычная сортировка
-			for (SortingCriteria sorting : sortings) {
-				sorting.appendQuery(query);
+			if (hasSorting()) {
+				for (SortingCriteria sorting : sortings) {
+					sorting.appendQuery(query);
+				}
 			}
 		}
 	}
