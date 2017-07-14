@@ -55,6 +55,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		String GROUP_MAIN_TABLE = "G.";
 		String PARENT_ID_COL = "PID";
 		String PARENT_TABLE = "P.";
+		String TREE_PARENT_TABLE = "TP.";
 		String ITEM_TABLE = "I.";
 	}
 
@@ -63,6 +64,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private final String PID = Const.PARENT_ID_COL;
 	private final String P_DOT = Const.PARENT_TABLE;
 	private final String I_DOT = Const.ITEM_TABLE;
+	private final String TP_DOT = Const.TREE_PARENT_TABLE;
 
 	private static final String COMMON_QUERY
 			= "SELECT DISTINCT I.*, <<PARENT_ID_PART>> AS PID "
@@ -101,6 +103,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private User user = null; // критерий пользователя-владельца айтема (для персональных айтемов)
 	private String userGroupName = null; // критерий группы, которой принадлежит айтем
 	private Byte[] status = null; // саттус айтема (нормальный, скрытый, удаленный)
+	private boolean isTree = false; // результат загрузки должен быть деревом (true) или списком (false)
 
 	
 	public ItemQuery(ItemType itemDesc, Byte... status) {
@@ -175,6 +178,15 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 */
 	public ItemQuery setAggregation(String paramName, String function, String sorting) {
 		return setAggregation(itemDesc.getParameter(paramName), function, sorting);
+	}
+
+	/**
+	 * Должен ли результат загрузки быть деревом
+	 * Для дерева нужно дополнительно извлекать прямого родителя для каждого айтема
+	 * @param tree
+	 */
+	public void setNeedTree(boolean tree) {
+		this.isTree = tree;
 	}
 	/**
 	 * Установить группировку (параметр, значение которого извлекается)
@@ -495,7 +507,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				query.getSubquery(Const.WHERE).AND().col_IN(P_DOT + IP_PARENT_ID).longIN(parentIds)
 						.AND().col(P_DOT + IP_ASSOC_ID).byte_(assocId)
 						.AND().col_IN(P_DOT + IP_CHILD_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(itemDesc.getTypeId()));
-				query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_PARENT_ID);
+				// Для деревьев нужно дополнительно извлечь ID непосредственного предка
+				if (isTree) {
+					query.getSubquery(Const.JOIN).INNER_JOIN(ITEM_PARENT_TBL + " AS TP", TP_DOT + IP_CHILD_ID, I_DOT + I_ID);
+					query.getSubquery(Const.WHERE).AND().AND().col(TP_DOT + IP_ASSOC_ID).byte_(assocId)
+							.AND().col_IN(TP_DOT + IP_CHILD_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(itemDesc.getTypeId()))
+							.AND().col(TP_DOT + IP_PARENT_DIRECT).byte_((byte)1);
+					query.getSubquery(Const.PARENT_ID).sql(TP_DOT + IP_PARENT_ID);
+				} else {
+					query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_PARENT_ID);
+				}
 			}
 			if (!isTransitive)
 				query.getSubquery(Const.WHERE).AND().col(P_DOT + IP_PARENT_DIRECT).byte_((byte)1);

@@ -1,7 +1,15 @@
 package ecommander.fwk;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
+import ecommander.controllers.PageController;
+import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.ParameterDescription;
+import ecommander.pages.*;
+import ecommander.pages.var.StaticVariable;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -9,16 +17,8 @@ import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
-
-import ecommander.model.*;
-import ecommander.pages.*;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.controllers.PageController;
-import ecommander.pages.SingleItemHttpPostFormDeprecated;
-import ecommander.pages.variables.StaticVariablePE;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 /**
  * Отправка сообщения на email с валидацией (проверка заполненности определенных полей).
  * В случае если не все обязательные поля заполнены, возвращается ошибка и отсылка не осуществляется
@@ -49,6 +49,8 @@ import ecommander.pages.variables.StaticVariablePE;
  */
 public class NonemptyEmailCommand extends Command {
 
+	private static final String EMAIL_FORM = "email_form";
+
 	@Override
 	public ResultPE execute() throws Exception {
 		String topic = getVarSingleValue("topic");
@@ -60,17 +62,18 @@ public class NonemptyEmailCommand extends Command {
 		MultipleHttpPostForm postForm = getItemForm();
 		String templatePageName = getVarSingleValue("template");
 		// Сообщение об ошибке в случае если не все поля заполнены
-		String validationResult = validateInput(requiredStr, postForm);
+		Item message = postForm.getItemTree().getItem();
+		String validationResult = validateInput(requiredStr, message);
 		if (!StringUtils.isBlank(validationResult)) {
-			saveSessionForm();
+			saveSessionForm(EMAIL_FORM);
 			return getRollbackResult("error_not_set");
 		}
 		// Если обнаружен спам - просто вернуть успешный результат без отправки письма
-		if (isSpam(spamStr, postForm)) {
+		if (isSpam(spamStr, message)) {
 			return getResult("success");
 		}
 		try {
-			ItemType postDesc = ItemTypeRegistry.getItemType(postForm.getItemTypeId());
+			ItemType postDesc = ItemTypeRegistry.getItemType(message.getTypeId());
 			// Если есть шаблон письма
 			ExecutablePagePE emailPage = null;
 			if (!StringUtils.isBlank(templatePageName)) {
@@ -91,7 +94,7 @@ public class NonemptyEmailCommand extends Command {
 				if (ArrayUtils.contains(spam, paramDesc.getName()))
 					continue;
 				if (paramDesc.getDataType().isFile()) {
-					Object value = postForm.getValue(param.getName());
+					Object value = message.getValue(param.getName());
 					if (value != null && value instanceof FileItem) {
 						FileItem file = (FileItem) value;
 						DataSource dataSource = new ByteArrayDataSource(file.getInputStream(), file.getContentType());
@@ -103,11 +106,11 @@ public class NonemptyEmailCommand extends Command {
 				} else {
 					if (hasTemplate) {
 						String varName = param.getName();
-						String varValue = postForm.getValue(param.getId()).toString();
-						emailPage.addVariable(new StaticVariablePE(varName, varValue));
-					} else if (StringUtils.isNotBlank(postForm.getValueStr(param.getId()))) {
+						String varValue = message.getValue(param.getId()).toString();
+						emailPage.addVariable(new StaticVariable(varName, varValue));
+					} else if (StringUtils.isNotBlank(message.getStringValue(param.getName()))) {
 						mailMessage += postDesc.getParameter(param.getName()).getCaption() + ": "
-								+ postForm.getValue(param.getId()) + "\r\n";
+								+ message.getValue(param.getId()) + "\r\n";
 					}
 				}
 			}
@@ -127,49 +130,49 @@ public class NonemptyEmailCommand extends Command {
 			EmailUtils.sendGmailDefault(emailTo, topic, mp);
 		} catch (Exception e) {
 			try {
-				saveSessionForm();
+				saveSessionForm(EMAIL_FORM);
 				ServerLogger.error("Error sending email message", e);
-				return sendError("Email sending error", postForm);
+				return sendError("Email sending error", message);
 			} catch (Exception e1) {
 				ServerLogger.error("Error", e);
 			}
 		}
 		// Удалить форму из сеанса
-		removeSessionForm();
+		removeSessionForm(EMAIL_FORM);
 		return getResult("success");
 	}
 
-	private String validateInput(String requiredStr, SingleItemHttpPostFormDeprecated form) {
-		ArrayList<String> notSetParams = new ArrayList<String>();
+	private String validateInput(String requiredStr, Item message) {
+		ArrayList<String> notSetParams = new ArrayList<>();
 		requiredStr = StringUtils.replace(requiredStr, " ", "");
 		String[] required = StringUtils.split(requiredStr, ',');
 		for (String reqParam : required) {
-			boolean isValid = false;
+			boolean isValid;
 			if (reqParam.indexOf('|') > 0)
-				isValid = validateInputOr(reqParam, form);
+				isValid = validateInputOr(reqParam, message);
 			else
-				isValid = !StringUtils.isBlank((String)form.getValue(reqParam));
+				isValid = !StringUtils.isBlank((String)message.getValue(reqParam));
 			if (!isValid)
 				notSetParams.add(reqParam);
 		}
 		return StringUtils.join(notSetParams, ',');
 	}
 	
-	private boolean isSpam(String spamStr, SingleItemHttpPostFormDeprecated form) {
+	private boolean isSpam(String spamStr, Item message) {
 		spamStr = StringUtils.replace(spamStr, " ", "");
 		String[] spam = StringUtils.split(spamStr, ',');
 		for (String spamParam : spam) {
-			if (!StringUtils.isBlank(form.getValueStr(spamParam)) || !StringUtils.isBlank(form.getSingleExtra(spamParam)))
+			if (!StringUtils.isBlank(message.getStringValue(spamParam)) || !StringUtils.isBlank(message.getStringExtra(spamParam)))
 				return true;
 		}
 		return false;
 	}
 
-	private boolean validateInputOr(String requiredStr, SingleItemHttpPostFormDeprecated form) {
+	private boolean validateInputOr(String requiredStr, Item message) {
 		String[] required = StringUtils.split(requiredStr, '|');
 		boolean isValid = false;
 		for (String reqParam : required) {
-			Object value = form.getValue(reqParam);
+			Object value = message.getValue(reqParam);
 			if (value instanceof String)
 				isValid |= !StringUtils.isBlank((String)value);
 			else
@@ -178,11 +181,10 @@ public class NonemptyEmailCommand extends Command {
 		return isValid;
 	}
 
-	private ResultPE sendError(String message, SingleItemHttpPostFormDeprecated postForm) throws Exception {
-		Item userPost = postForm.createItem(User.ANONYMOUS_ID, User.NO_GROUP_ID);
-		getSessionMapper().saveTemporaryItem(userPost);
+	private ResultPE sendError(String error, Item message) throws Exception {
+		getSessionMapper().saveTemporaryItem(message);
 		ResultPE result = getRollbackResult("general_error");
-		result.addVariable("message", message);
+		result.addVariable("message", error);
 		return result;
 	}
 }

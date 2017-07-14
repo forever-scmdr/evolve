@@ -1,26 +1,17 @@
 package ecommander.fwk;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import ecommander.model.Item;
+import ecommander.persistence.itemquery.ItemQuery;
+import org.apache.commons.lang3.StringUtils;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.model.Item;
-import ecommander.persistence.itemquery.ItemQuery;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Properties;
 
 public class EmailUtils {
 	private static final HashMap<String, String> PORTS = new HashMap<String, String>() {
@@ -85,11 +76,9 @@ public class EmailUtils {
 	 * @throws Exception
 	 */
 	public static void sendGmailDefault(String to, String topic, Multipart mp) throws Exception {
-		ItemQuery query = new ItemQuery(ItemQuery.Type.ITEM, "feedback_params");
-		List<Item> items = query.loadItems();
-		if (items.size() != 1)
+		Item feedbackParams = ItemQuery.loadSingleItemByName("feedback_params");
+		if (feedbackParams == null)
 			throw new EcommanderException(ErrorCodes.EMAIL_IS_NOT_CONFIGURED, "Feedback parameters are not set correctly");
-		Item feedbackParams = items.get(0);
 		String emailFrom = (String) feedbackParams.getValue("email_from");
 		String serverFrom = (String) feedbackParams.getValue("server_from");
 		String emailFromPassword = (String) feedbackParams.getValue("email_from_password");

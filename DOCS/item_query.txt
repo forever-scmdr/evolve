@@ -160,15 +160,18 @@
 
 	SELECT
 		i.*,
-		p.parent_id
+		tp.parent_id
 	FROM
 		item AS i
 		INNER JOIN parent AS p ON (i.id = p.child_id)
+		INNER JOIN parent AS tp ON (i.id = tp.child_id)
 	WHERE
         i.status = 0
 
 		# Родительский критерий
 		AND p.parent_id in (Pa, Pb) AND p.assoc_id IN (A) AND p.child_supertype IN (S)
+		# Извлечение ID прямого предка для построения дерева
+		AND tp.assoc_id IN (A) AND tp.child_supertype IN (S) AND tp.parent_direct = 1
 	ORDER BY
 		p.weight
 

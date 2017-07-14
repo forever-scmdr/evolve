@@ -10,7 +10,6 @@ import ecommander.pages.ValidationResults;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Критерий приндалежности к определенному предку, или наличию определенного потомка
@@ -64,7 +63,7 @@ public class ParentalCriteriaPE implements FilterCriteria {
 	}
 
 	public ArrayList<Long> getLoadedItemIds() {
-		return parentPage.getItemPEById(pageItemId).getFoundItemRefIds();
+		return parentPage.getItemPEById(pageItemId).getFoundItemIds();
 	}
 
 	public String getPageItemId() {

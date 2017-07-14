@@ -56,7 +56,7 @@ public class ItemPE extends PageElementContainer {
 	private String assocName = null;
 	// Название айтема, уникальное для него на странице
 	private String pageId = null;
-	// ID родительского айтема для новый айтемов (айтемов типа new)
+	// ID родительского айтема для новых айтемов (айтемов типа new)
 	private String parentPageId = null;
 	// Какой это айтем - personal, session или обычный
 	private ItemRootType rootType;
@@ -72,9 +72,7 @@ public class ItemPE extends PageElementContainer {
 	private boolean cacheable = false;
 	// Список названий переменных страницы для идентификации айтема при кешировании
 	private ArrayList<String> cacheVars = null;
-	// Особый класс айтема (когда нужна нестандартная загрузка)
-	private Constructor<ExecutableItemPE> specialLoaderConstructor = null;
-	
+
 	ItemPE(Type type, String itemName, String assocName, String pageId, String parentPageId, String tag, ItemRootType rootType,
 	       String rootGroupName, boolean isTransitive, boolean isCacheable, boolean isVirtual, ArrayList<String> cacheVarNames) {
 		super();
@@ -93,16 +91,7 @@ public class ItemPE extends PageElementContainer {
 		if (StringUtils.isBlank(this.assocName))
 			this.assocName = ItemTypeRegistry.getPrimaryAssoc().getName();
 	}
-	
-	@SuppressWarnings("unchecked")
-	final void setSpecialLoader(String className) throws ClassNotFoundException, NoSuchMethodException, SecurityException {
-		if (!StringUtils.isBlank(className)) {
-			Class<ExecutableItemPE> specialLoader = (Class<ExecutableItemPE>) Class.forName(className);
-			specialLoaderConstructor = specialLoader.getConstructor(ItemQuery.Type.class, String.class, String.class, String.class,
-					ItemRootType.class, String.class, Boolean.TYPE, Boolean.TYPE, ArrayList.class, ExecutablePagePE.class);
-		}
-	}
-	
+
 	public final String getItemName() {
 		return itemName;
 	}
@@ -125,18 +114,8 @@ public class ItemPE extends PageElementContainer {
 
 	@Override
 	protected final PageElementContainer createExecutableShallowClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		ExecutableItemPE clone;
-		if (specialLoaderConstructor != null) {
-			try {
-				clone = specialLoaderConstructor.newInstance(type, itemName, pageId, parentPageId, tag, rootType,
-						rootGroupName, isTransitive, cacheable, cacheVars, parentPage);
-			} catch (Exception e) {
-				throw new RuntimeException("Can not create special loader", e);
-			}
-		} else {
-			clone = new ExecutableItemPE(type, itemName, assocName, pageId, parentPageId, tag, rootType,
-					rootGroupName, isTransitive, cacheable, virtual, cacheVars, parentPage);
-		}
+		ExecutableItemPE clone = new ExecutableItemPE(type, itemName, assocName, pageId, parentPageId, tag, rootType,
+				rootGroupName, isTransitive, cacheable, virtual, cacheVars, parentPage);
 		if (container != null)
 			((ExecutableItemContainer)container).addExecutableItem(clone);
 		return clone;
@@ -164,6 +143,10 @@ public class ItemPE extends PageElementContainer {
 	
 	public final boolean isTransitive() {
 		return isTransitive;
+	}
+
+	public final String getAssocName() {
+		return assocName;
 	}
 	
 	public final boolean isCacheable() {

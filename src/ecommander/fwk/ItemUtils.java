@@ -1,14 +1,14 @@
 package ecommander.fwk;
 
-import java.util.List;
-
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
+import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.SessionItemMapper;
-import ecommander.model.User;
+
+import java.util.List;
 
 public class ItemUtils {
 	/**
@@ -23,8 +23,8 @@ public class ItemUtils {
 	 */
 	public static Item ensureSingleItem(String itemName, User initiator, long parentId, byte groupId, int userId) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(initiator);
-		ItemQuery dbQuery = ItemQuery.newItemQuery(itemName);
-		dbQuery.setParentId(parentId);
+		ItemQuery dbQuery = new ItemQuery(itemName);
+		dbQuery.setParentId(parentId, false);
 		List<Item> items = dbQuery.loadItems();
 		Item item = null;
 		if (items.size() == 1) {

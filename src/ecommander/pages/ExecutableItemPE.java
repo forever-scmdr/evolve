@@ -1,23 +1,11 @@
 package ecommander.pages;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
-import ecommander.fwk.ErrorCodes;
-import ecommander.fwk.Strings;
-import ecommander.fwk.EcommanderException;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.SessionContext;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.LOGICAL_SIGN;
-import ecommander.model.MultipleParameter;
-import ecommander.model.Parameter;
-import ecommander.model.ParameterDescription;
-import ecommander.model.SingleParameter;
+import ecommander.fwk.EcommanderException;
+import ecommander.fwk.ErrorCodes;
+import ecommander.fwk.Strings;
+import ecommander.model.*;
 import ecommander.model.filter.CriteriaDef;
 import ecommander.model.filter.CriteriaGroupDef;
 import ecommander.model.filter.FilterDefinitionVisitor;
@@ -31,8 +19,12 @@ import ecommander.pages.filter.FilterPE.FilterContainer;
 import ecommander.pages.var.Variable;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.SessionItemMapper;
-import ecommander.model.DomainRegistry;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -75,15 +67,24 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		public boolean next() {
 			ArrayList<Item> foundItems;
 			if (itemPE.hasParent()) {
-				long parentItemId = itemPE.parentItem.iterator.currentItem.getId();
+				// Сначала проверяется, есть ли вложенные айтемы в этом же страничном айтеме
+				// такое возможно при типе запроса TREE
+				long parentItemId = currentItem.getId();
 				foundItems = itemPE.getFoundItemsByParent(parentItemId);
+				// если в текущем СТРАНИЧНОМ айтеме не найдены айтемы, вложенные в текущий айтем,
+				// то уже в этом случае ищутся айтемы во вложенном страничном айтеме
+				if (foundItems == null) {
+					parentItemId = itemPE.parentItem.iterator.currentItem.getId();
+					foundItems = itemPE.getFoundItemsByParent(parentItemId);
+				}
 				// Сбросить значение индекса, если закончились потомки одного айтема, и начались потомки другого
 				if (currentParentId != parentItemId) {
 					currentParentId = parentItemId;
 					currentItemIndex = -1;
 				}
-			} else
+			} else {
 				foundItems = itemPE.getFoundItemsByParent(currentParentId);
+			}
 			if (foundItems.size() > currentItemIndex + 1) {
 				currentItem = foundItems.get(++currentItemIndex);
 				return true;
@@ -284,7 +285,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * Вернуть все ID найденный айтемов (бывает нужно в лоадерах)
 	 * @return
 	 */
-	public final ArrayList<Long> getFoundItemRefIds() {
+	public final ArrayList<Long> getFoundItemIds() {
 		ArrayList<Long> result = new ArrayList<>();
 		if (!isLoaded() || !hasFoundItems())
 			return result;
@@ -323,7 +324,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	private void setFoundItemQuantity(long parentId, int quantity) {
 		if (!foundItemsByParent.containsKey(parentId))
 			foundItemsByParent.put(parentId, new FoundItemBundle());
-		((FoundItemBundle) foundItemsByParent.get(parentId)).totalQuantity = quantity;
+		foundItemsByParent.get(parentId).totalQuantity = quantity;
 	}
 
 	public final FilterPE getFilter() {
@@ -456,11 +457,9 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	private List<Item> loadItems(HashMap<Long, Integer> quantities) throws Exception {
 		// Список загруженных предшественников айтема
 		ArrayList<Long> loadedIds = null;
-		ItemType itemDesc = ItemTypeRegistry.getItemType(getItemName());
 		if (hasParent()) {
-			loadedIds = getParentItemPE().getFoundItemRefIds();
+			loadedIds = getParentItemPE().getFoundItemIds();
 		}
-		
 		// Загрузка из БД
 		if (!isSession()) {
 			// Если есть ссылка, то нет нужды в конструировании запроса
@@ -468,9 +467,6 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				List<String> values = getReference().getValuesArray();
 				if (getReference().isUrlKeyUnique()) {
 					return ItemQuery.loadByUniqueKey(values, getSessionContext().getDBConnection());
-				}
-				else if (getReference().isAssociatedReference()) {
-					return ItemQuery.loadAssociatedString(values, getItemName(), getSessionContext().getDBConnection());
 				} else {
 					if (getReference().isVarParamReference())
 						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), values, getSessionContext()
@@ -480,15 +476,17 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				}
 			}
 			// Создание запроса
-			ItemQuery query = new ItemQuery(getQueryType(), itemDesc, hasParent());
-			query.setParentIds(loadedIds);
+			ItemQuery query = new ItemQuery(getItemName());
+			boolean needLoading = !hasParent() || (loadedIds != null && loadedIds.size() > 0);
+			// Добавление критерия предка
+			if (needLoading && hasParent())
+				query.setParentIds(loadedIds, isTransitive(), getAssocName());
 			// Установка фильтра, если он должен быть
-			boolean needLoading = true;
-			if (hasFilter())
+			if (needLoading && hasFilter())
 				needLoading = getFilter().appendCriteriasToQuery(query);
 			// Установка группировки, если она должна быть
-			if (hasAggregation())
-				needLoading &= getAggregation().appendCriteriasToQuery(query);
+			if (needLoading && hasAggregation())
+				needLoading = getAggregation().appendCriteriasToQuery(query);
 			// Установить дополнительные параметры (пользователь и группа, если они есть)
 			if (getRootType() == ItemRootType.GROUP)
 				query.setGroup(getRootGroupName());
@@ -557,7 +555,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 						else if (input.getCriterias().size() == 1) {
 							CriteriaDef crit = (CriteriaDef) input.getCriterias().get(0);
 							ParameterDescription paramDesc = itemType.getParameter(crit.getParamName());
-							baseQuery.createFilter(LOGICAL_SIGN.AND);
+							baseQuery.createFilter();
 							baseQuery.setAggregation(paramDesc, null, "ASC");
 							List<Item> items;
 							try {

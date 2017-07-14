@@ -1,2 +1,2 @@
-Дальше делать ItemQuery
-Теперь есть псевдокорень - надо переделать запросы в файле item_query.txt и доделать ItemQuery
+Сделал ItemQuery и ExecutableItemPE
+Надо сделать PageModelBuilder

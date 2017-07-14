@@ -83,7 +83,7 @@ public abstract class Command implements AutoCloseable {
 	}
 	/**
 	 * Сохранить текущую форму в сеансе
-	 * @param formName
+	 * @param formName - произвольное название формы, нужно для того, чтобы потом правильно восстановить из сеанса
 	 */
 	protected final void saveSessionForm(String formName) {
 		if (page.getItemFrom() != null)
