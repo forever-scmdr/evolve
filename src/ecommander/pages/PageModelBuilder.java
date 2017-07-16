@@ -1,6 +1,7 @@
 package ecommander.pages;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,15 +9,10 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+import ecommander.fwk.Strings;
 import ecommander.model.Compare;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.xerces.parsers.DOMParser;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.ValidationException;
@@ -38,6 +34,10 @@ import ecommander.pages.variables.StaticVariablePE;
 import ecommander.pages.var.VariablePE;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.model.UserGroupRegistry;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
 
@@ -275,12 +275,6 @@ import ecommander.model.UserGroupRegistry;
 			<parameter id-var="pram_id_var_name" sign="<="> // id-var - переменная, хранящая ID парамтера
 				<var...>
 			</parameter>
-			
-			// TODO <low-priority> обязательно во время рефакторинга (удалить параметры name и name-var)
-			<parameter sign="<="> // name-var - переменная, хранящая имя парамтера
-				<name-var ...> // Как обычная переменная, но хранит имя параметра
-				<value-var ...> // Как обычная переменная, но хранит значение параметра
-			</parameter>
 
 			// Полнотекстовый поиск
 			// limit - максимальное количество результатов
@@ -419,7 +413,7 @@ import ecommander.model.UserGroupRegistry;
 	</usergroup>
 	это TODO <enhance>
 	<usergroup name="common_registered paid_registered"> // Можно искать среди нескольких групп пользователей (если данные в группах совместимы)
-		<item ...>                                        // Группы разделяются запятой
+		<item ...>
 			<item .../>
 		</item>
 	</usergroup>
@@ -580,7 +574,6 @@ import ecommander.model.UserGroupRegistry;
 </filter>
 TODO <enhance> добавить атрибут фильтра, в котором перечислены критерии фильтрации, которые надо учитывать при подгрузке значений доменов
 
-TODO <enhance> !!!!! удалить все атрибуты типа -var. Если надо использовать переменную в качестве значения атрибута,
 то обозначать это с помощью фигурных скобок, например
 <aggregation parameter="code"/> - простое значение
 <aggregation parameter="{agg_param}"/> - значение переменной agg_param
@@ -598,6 +591,8 @@ public class PageModelBuilder {
 	public static final String SINGLE_ELEMENT = "single";
 	public static final String LIST_ELEMENT = "list";
 	public static final String TREE_ELEMENT = "tree";
+	public static final String ANCESTOR_ELEMENT = "ancestor";
+	public static final String NEW_ELEMENT = "new";
 	public static final String PARENT_ELEMENT = "parent";
 	public static final String PARAMETER_ELEMENT = "parameter";
 	public static final String SORTING_ELEMENT = "sorting";
@@ -740,34 +735,31 @@ public class PageModelBuilder {
 		// Очистить реестр страниц
 		PageModelRegistry pageRegistry = PageModelRegistry.createInstance();
 		// Прасить документ
-		DOMParser parser = new DOMParser();
 		ArrayList<File> pageModelFiles = findPagesFiles(new File(AppContext.getPagesModelPath()), null);
-		HashMap<String, Element> includes = new HashMap<String, Element>();
-		ArrayList<Document> docs = new ArrayList<Document>();
+		HashMap<String, Element> includes = new HashMap<>();
+		ArrayList<Document> docs = new ArrayList<>();
 		for (File file : pageModelFiles) {
-			parser.parse(file.getCanonicalPath());
-			Document document = parser.getDocument();
+			Document document = Jsoup.parse(file, Strings.SYSTEM_ENCODING);
 			readIncludes(document, includes);
 			docs.add(document);
 		}
 		try {
 			for (Document document : docs) {
-				NodeList pages = document.getElementsByTagName(PAGE_ELEMENT);
-				for (int i = 0; i < pages.getLength(); i++) {
-					Element pageNode = (Element)pages.item(i);
+				Elements pages = document.getElementsByTag(PAGE_ELEMENT);
+				for (Element pageNode : pages) {
 					// Очистка списка ID айтемов
 					itemIdentifiers.clear();
 					pageVariables.clear();
-					boolean cacheable = pageNode.getAttribute(CACHEABLE_ATTRIBUTE).equalsIgnoreCase(TRUE_VALUE);
-					String schedule = pageNode.getAttribute(SCHEDULE_ATTRIBUTE);
-					String cacheVarsStr = pageNode.getAttribute(CACHE_VARS_ATTRIBUTE);
-					ArrayList<String> cacheVars = new ArrayList<String>();
+					boolean cacheable = StringUtils.equalsIgnoreCase(pageNode.attr(CACHEABLE_ATTRIBUTE), TRUE_VALUE);
+					String schedule = pageNode.attr(SCHEDULE_ATTRIBUTE);
+					String cacheVarsStr = pageNode.attr(CACHE_VARS_ATTRIBUTE);
+					ArrayList<String> cacheVars = new ArrayList<>();
 					if (!StringUtils.isBlank(cacheVarsStr)) {
-						cacheVars = new ArrayList<String>(Arrays.asList(StringUtils.split(cacheVarsStr, ' ')));				
+						cacheVars = new ArrayList<>(Arrays.asList(StringUtils.split(cacheVarsStr, ' ')));
 					}
-					page = new PagePE(pageNode.getAttribute(NAME_ATTRIBUTE), pageNode.getAttribute(TEMPLATE_ATTRIBUTE), cacheable, cacheVars);
+					page = new PagePE(pageNode.attr(NAME_ATTRIBUTE), pageNode.attr(TEMPLATE_ATTRIBUTE), cacheable, cacheVars);
 					// Группы пользователей, которым разрешен просмотр
-					String authority = pageNode.getAttribute(AUTHORITY_GROUPS_ATTRIBUTE);
+					String authority = pageNode.attr(AUTHORITY_GROUPS_ATTRIBUTE);
 					if (!StringUtils.isBlank(authority)) {
 						String[] groups = StringUtils.split(authority, ' ');
 						for (String group : groups) {
@@ -780,11 +772,12 @@ public class PageModelBuilder {
 					for (int j = 0; j < pageNode.getChildNodes().getLength(); j++) {
 						Node pageSubnode = pageNode.getChildNodes().item(j);
 						// Переменные
-						if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(VARIABLES_ELEMENT)) {
-							readVariables((Element) pageSubnode, page, includes);
+						for (Element request : pageNode.getElementsByTag(REQUEST_ELEMENT)) {
+							readVariables(request, page, includes);
 						// Айтем
-						} else if (isNodeItemPE(pageSubnode)) {
-							page.addElement(readItem((Element) pageSubnode, ItemRootType.COMMON, null, includes, page.getKey()));
+						for (Element item : pageNode.select(SINGLE_ELEMENT + ", " + LIST_ELEMENT + ", "
+								+ TREE_ELEMENT + ", " + ANCESTOR_ELEMENT + ", " + NEW_ELEMENT))
+							page.addElement(readItem(item, ItemRootType.COMMON, null, includes, page.getKey()));
 						// Ссылка
 						} else if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(LINK_ELEMENT)) {
 							page.addElement(readLink((Element) pageSubnode, includes));
@@ -901,7 +894,7 @@ public class PageModelBuilder {
 	 * @throws Exception
 	 * TODO <usability> добавить проверку на наличие названия айтема (name)
 	 */
-	private ItemPE readItem(Element itemNode, ItemRootType rootType, String groupName, HashMap<String, Element> includes, String pageName)
+	private ItemPE readItem(Element itemNode, ItemPE.ItemRootType rootType, String groupName, HashMap<String, Element> includes, String pageName)
 			throws Exception {
 		// Считвание базовых параметров страничного айтема
 		String itemNodeName = itemNode.getNodeName();

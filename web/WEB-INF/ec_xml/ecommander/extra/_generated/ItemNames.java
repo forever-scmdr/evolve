@@ -49,6 +49,7 @@ public class ItemNames {
         String _ITEM_NAME = "product";
         String ART = "art";
         String NAME = "name";
+        String PIC = "pic";
         String MIN_PRICE = "min_price";
         String MAX_PRICE = "max_price";
         String PRICE_QTY = "price_qty";

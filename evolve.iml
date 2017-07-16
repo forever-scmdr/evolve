@@ -21,6 +21,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="lib" level="project" />
     <orderEntry type="library" exported="" name="catalina" level="project" />
-    <orderEntry type="library" exported="" name="Tomcat 8.5.12" level="application_server_libraries" />
+    <orderEntry type="library" exported="" name="Tomcat 8.5.11" level="application_server_libraries" />
   </component>
 </module>

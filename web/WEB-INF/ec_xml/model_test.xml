@@ -21,25 +21,25 @@
 		</parameter>
 	</item>
 
-	<assoc name="present" caption="Подарок при покупке" transitive="false" ag-id="2" ag-hash="-318277445"/>
-	<assoc name="go_with" caption="Сопутсвующий товар" transitive="false" ag-id="3" ag-hash="192818621"/>
-	<assoc name="seller_price" caption="Цена продавца" transitive="false" ag-id="4" ag-hash="29067401"/>
+	<assoc name="present" caption="Подарок при покупке" transitive="false" ag-id="1" ag-hash="-318277445"/>
+	<assoc name="go_with" caption="Сопутсвующий товар" transitive="false" ag-id="2" ag-hash="192818621"/>
+	<assoc name="seller_price" caption="Цена продавца" transitive="false" ag-id="3" ag-hash="29067401"/>
 
 	<item name="product" caption="Товар" key="name" key-unique="true" default-page="product" ag-id="5" ag-hash="-309474065">
 		<parameter name="art" type="string" caption="Артикул" ag-id="3" ag-hash="96867"/>
 		<parameter name="name" type="string" caption="Название" ag-id="4" ag-hash="3373707"/>
-		<parameter name="pic" type="picture" caption="Изображение" ag-id="14" ag-hash="110986"/>
+		<parameter name="pic" type="picture" caption="Изображение" ag-id="5" ag-hash="110986"/>
 		<child assoc="present" item="product" single="true"/>
 		<child assoc="go_with" item="product"/>
 		<child item="gallery" single="true"/>
 		<child assoc="seller_price" item="price"/>
-		<parameter name="min_price" type="currency" caption="Минимальная цена товара" function="MIN" ag-id="5" ag-hash="535311644">
+		<parameter name="min_price" type="currency" caption="Минимальная цена товара" function="MIN" ag-id="6" ag-hash="535311644">
 			<base-child item="price" assoc="seller_price" parameter="price" transitive="false"/>
 		</parameter>
-		<parameter name="max_price" type="currency" caption="Максимальная цена товара" ag-id="6" ag-hash="-237166930">
+		<parameter name="max_price" type="currency" caption="Максимальная цена товара" ag-id="7" ag-hash="-237166930">
 			<base-child item="price" assoc="seller_price" parameter="price" transitive="false" function="MAX"/>
 		</parameter>
-		<parameter name="price_qty" type="integer" caption="Количество предложений" ag-id="7" ag-hash="-2125411648">
+		<parameter name="price_qty" type="integer" caption="Количество предложений" ag-id="8" ag-hash="-2125411648">
 			<base-child item="price" parameter="price" assoc="seller_price" transitive="false" function="COUNT"/>
 		</parameter>
 		<on-update class="ecommander.extra.UpdatePrices"/>
@@ -50,15 +50,15 @@
 	<item name="gallery" caption="Галерея" ag-id="6" ag-hash="-196315310"/>
 
 	<item name="price" caption="Цена продавца" description="цена, выставленная одним продавцом этого товара из многих" key="price" ag-id="7" ag-hash="106934601">
-		<parameter name="price" type="currency" caption="Цена" format="BYN" ag-id="8" ag-hash="106934601"/>
-		<parameter name="price_usd" type="currency" caption="Цена в долларах" format="USD" ag-id="9" ag-hash="-2125407856"/>
-		<parameter name="price_rub" type="currency" caption="Цена в рублях" format="RUB" ag-id="10" ag-hash="-2125410679"/>
-		<parameter name="discount" type="double" caption="Скидка" description="в процентах" ag-id="11" ag-hash="273184065"/>
-		<parameter name="extra" type="tiny-text" caption="Дополнительно о предложении" ag-id="12" ag-hash="96965648"/>
+		<parameter name="price" type="currency" caption="Цена" format="BYN" ag-id="9" ag-hash="106934601"/>
+		<parameter name="price_usd" type="currency" caption="Цена в долларах" format="USD" ag-id="10" ag-hash="-2125407856"/>
+		<parameter name="price_rub" type="currency" caption="Цена в рублях" format="RUB" ag-id="11" ag-hash="-2125410679"/>
+		<parameter name="discount" type="double" caption="Скидка" description="в процентах" ag-id="12" ag-hash="273184065"/>
+		<parameter name="extra" type="tiny-text" caption="Дополнительно о предложении" ag-id="13" ag-hash="96965648"/>
 	</item>
 
 	<item name="seller" caption="Продавец" key="name" ag-id="8" ag-hash="-906014849">
-		<parameter name="name" caption="Название" type="string" ag-id="13" ag-hash="3373707"/>
+		<parameter name="name" caption="Название" type="string" ag-id="14" ag-hash="3373707"/>
 		<child item="price"/>
 	</item>
 
