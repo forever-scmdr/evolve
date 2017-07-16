@@ -769,21 +769,21 @@ public class PageModelBuilder {
 					if (!StringUtils.isBlank(schedule))
 						page.setSchedule(schedule);
 					// Собрать сведения обо всех айтемах, переменых и ссылках страницы
-					for (int j = 0; j < pageNode.getChildNodes().getLength(); j++) {
-						Node pageSubnode = pageNode.getChildNodes().item(j);
+					for (Element element : pageNode.getAllElements()) {
 						// Переменные
-						for (Element request : pageNode.getElementsByTag(REQUEST_ELEMENT)) {
-							readVariables(request, page, includes);
+						if (StringUtils.equalsIgnoreCase(element.tagName(), REQUEST_ELEMENT)) {
+							readVariables(element, page, includes);
+						}
 						// Айтем
-						for (Element item : pageNode.select(SINGLE_ELEMENT + ", " + LIST_ELEMENT + ", "
-								+ TREE_ELEMENT + ", " + ANCESTOR_ELEMENT + ", " + NEW_ELEMENT))
-							page.addElement(readItem(item, ItemRootType.COMMON, null, includes, page.getKey()));
+						if (StringUtils.containsAny(element.tagName(), SINGLE_ELEMENT, LIST_ELEMENT,
+								TREE_ELEMENT, ANCESTOR_ELEMENT, NEW_ELEMENT)) {
+							page.addElement(readItem(element, ItemPE.ItemRootType.COMMON, null, includes, page.getKey()));
 						// Ссылка
-						} else if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(LINK_ELEMENT)) {
-							page.addElement(readLink((Element) pageSubnode, includes));
+						} else if (StringUtils.equalsIgnoreCase(element.tagName(), LIMIT_ELEMENT)) {
+							page.addElement(readLink(element, includes));
 						// Команда
-						} else if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(COMMAND_ELEMENT)) {
-							page.addElement(readCommand((Element)pageSubnode));
+						} else if (StringUtils.equalsIgnoreCase(element.tagName(), COMMAND_ELEMENT)) {
+							page.addElement(readCommand(element));
 						// Форма
 						} else if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(FORM_ELEMENT)) {
 							page.addElement(readForm((Element) pageSubnode, includes));
