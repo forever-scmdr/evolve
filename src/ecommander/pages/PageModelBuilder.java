@@ -35,6 +35,8 @@ import ecommander.pages.var.VariablePE;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.model.UserGroupRegistry;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -776,8 +778,7 @@ public class PageModelBuilder {
 							readVariables(element, page, includes);
 						}
 						// Айтем
-						if (StringUtils.containsAny(element.tagName(), SINGLE_ELEMENT, LIST_ELEMENT,
-								TREE_ELEMENT, ANCESTOR_ELEMENT, NEW_ELEMENT)) {
+						if (isNodeItemPE(element)) {
 							page.addElement(readItem(element, ItemPE.ItemRootType.COMMON, null, includes, page.getKey()));
 						// Ссылка
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), LIMIT_ELEMENT)) {
@@ -795,39 +796,39 @@ public class PageModelBuilder {
 									element.attr(RESTORE_VAR_ATTRIBUTE), StringUtils.split(element.attr(NAME_ATTRIBUTE), ' ')));
 						// <personal>
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), PERSONAL_ELEMENT)) {
-							for (Node persSubnode = pageSubnode.getFirstChild(); persSubnode != null; persSubnode = persSubnode.getNextSibling()) {
-								if (isNodeItemPE(persSubnode))
-									page.addElement(readItem((Element) persSubnode, ItemRootType.PERSONAL, null, includes, page.getKey()));
+							for (Element subEl : pageNode.getAllElements()) {
+								if (isNodeItemPE(subEl))
+									page.addElement(readItem(subEl, ItemPE.ItemRootType.PERSONAL, null, includes, page.getKey()));
 							}
 						// <session>
-						} else if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(SESSION_ELEMENT)) {
-							for (Node sessSubnode = pageSubnode.getFirstChild(); sessSubnode != null; sessSubnode = sessSubnode.getNextSibling()) {
-								if (isNodeItemPE(sessSubnode))
-									page.addElement(readItem((Element) sessSubnode, ItemRootType.SESSION, null, includes, page.getKey()));
+						} else if (StringUtils.equalsIgnoreCase(element.tagName(), SESSION_ELEMENT)) {
+							for (Element subEl : pageNode.getAllElements()) {
+								if (isNodeItemPE(subEl))
+									page.addElement(readItem(subEl, ItemPE.ItemRootType.SESSION, null, includes, page.getKey()));
 							}
 							// <usergroup name="some_group">
-						} else if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(USER_GROUP_ELEMENT)) {
-							String groupName = ((Element)pageSubnode).getAttribute(NAME_ATTRIBUTE);
-							for (Node groupSubnode = pageSubnode.getFirstChild(); groupSubnode != null; groupSubnode = groupSubnode.getNextSibling()) {
-								if (isNodeItemPE(groupSubnode)) {
+						} else if (StringUtils.equalsIgnoreCase(element.tagName(), USER_GROUP_ELEMENT)) {
+							String groupName = element.attr(NAME_ATTRIBUTE);
+							for (Element subEl : pageNode.getAllElements()) {
+								if (isNodeItemPE(subEl)) {
 									if (UserGroupRegistry.groupExists(groupName))
-										page.addElement(readItem((Element) groupSubnode, ItemRootType.GROUP, groupName, includes, page.getKey()));
+										page.addElement(readItem(subEl, ItemPE.ItemRootType.GROUP, groupName, includes, page.getKey()));
 									else 
-										page.addElement(readItem((Element) groupSubnode, ItemRootType.COMMON, null, includes, page.getKey()));
+										page.addElement(readItem(subEl, ItemPE.ItemRootType.COMMON, null, includes, page.getKey()));
 								}
 							}
 						// Инклюдес
-						} else if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(INCLUDE_ELEMENT)) {
-							appendInclude(pageNode, (Element) pageSubnode, includes);
+						} else if (StringUtils.equalsIgnoreCase(element.tagName(), INCLUDE_ELEMENT)) {
+							appendInclude(pageNode, element, includes);
 						// Дополнительные заголовки HEADERS
-						} else if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(HEADERS_ELEMENT)) {
-							NamedNodeMap attrs = ((Element) pageSubnode).getAttributes();
-							for (int k = 0; k < attrs.getLength(); k++) {
-								page.addHeader(attrs.item(k).getNodeName(), attrs.item(k).getNodeValue());
+						} else if (StringUtils.equalsIgnoreCase(element.tagName(), HEADERS_ELEMENT)) {
+							Attributes attrs = element.attributes();
+							for (Attribute attr : attrs) {
+								page.addHeader(attr.getKey(), attr.getValue());
 							}
 						// Не допускать другие тэги
-						} else if (pageSubnode.getNodeType() == Node.ELEMENT_NODE) {
-							throw new PrimaryValidationException(page.getKey(), "'" + pageSubnode.getNodeName()
+						} else {
+							throw new PrimaryValidationException(page.getKey(), "'" + element.getNodeName()
 									+ "' is not a valid subelement of &lt;page&gt; element");
 						}
 					}
@@ -843,14 +844,12 @@ public class PageModelBuilder {
 	}
 	/**
 	 * Является ли Node одним из тэгов айтемов (parent, item, child и т.д.)
-	 * @param node
+	 * @param element
 	 * @return
 	 */
-	private boolean isNodeItemPE(Node node) {
-		return node.getNodeType() == Node.ELEMENT_NODE
-				&& (node.getNodeName().equalsIgnoreCase(ITEM_ELEMENT) || node.getNodeName().equalsIgnoreCase(PARENT_ELEMENT)
-						|| node.getNodeName().equalsIgnoreCase(CHILD_ELEMENT) || node.getNodeName().equalsIgnoreCase(SUCCESSOR_ELEMENT) 
-						|| node.getNodeName().equalsIgnoreCase(PARENT_OF_ELEMENT) || node.getNodeName().equalsIgnoreCase(PREDECESSORS_OF_ELEMENT));
+	private boolean isNodeItemPE(Element element) {
+		return StringUtils.containsAny(element.tagName(), SINGLE_ELEMENT, LIST_ELEMENT,
+				TREE_ELEMENT, ANCESTOR_ELEMENT, NEW_ELEMENT);
 	}
 	/**
 	 * Считывает все include_definition в HashMap
@@ -871,7 +870,7 @@ public class PageModelBuilder {
 	 * @param includes
 	 * @throws PrimaryValidationException 
 	 */
-	private void appendInclude(Node parentNode, Element includeRef, HashMap<String, Element> includes) throws PrimaryValidationException {
+	private void appendInclude(Element parentNode, Element includeRef, HashMap<String, Element> includes) throws PrimaryValidationException {
 		Element include = includes.get(includeRef.getAttribute(NAME_ATTRIBUTE));
 		if (include == null)
 			throw new PrimaryValidationException(parentNode.getLocalName() + " '" + ((Element) parentNode).getAttribute(NAME_ATTRIBUTE) + "'",
