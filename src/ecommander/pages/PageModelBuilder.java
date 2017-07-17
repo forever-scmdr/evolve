@@ -660,6 +660,7 @@ public class PageModelBuilder {
 	public static final String THRESHOLD_ATTRIBUTE = "threshold";
 	public static final String RESTORE_VAR_ATTRIBUTE = "restore-var";
 	public static final String COPY_PAGE_VARS_ATTRIBUTE = "copy-page-vars";
+	public static final String FORM_ATTRIBUTE = "form";
 	
 	public static final String SINGLE_VALUE = "single";
 	public static final String MULTIPLE_VALUE = "multiple";
@@ -785,14 +786,15 @@ public class PageModelBuilder {
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), COMMAND_ELEMENT)) {
 							page.addElement(readCommand(element));
 						// Форма
-						} else if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(FORM_ELEMENT)) {
-							page.addElement(readForm((Element) pageSubnode, includes));
+						} else if (StringUtils.equalsIgnoreCase(element.tagName(), PARAMETER_INPUT_ELEMENT)) {
+							page.addElement(InputSetPE.createParams(element.attr(REF_ATTRIBUTE), element.attr(FORM_ATTRIBUTE),
+									element.attr(RESTORE_VAR_ATTRIBUTE), StringUtils.split(element.attr(NAME_ATTRIBUTE), ' ')));
 							// Инпут
-						} else if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(INPUT_ELEMENT)) {
-							Element inputNode = (Element) pageSubnode;
-							page.addElement(new InputPE(inputNode.getAttribute(NAME_ATTRIBUTE), inputNode.getAttribute(ITEM_ATTRIBUTE)));
+						} else if (StringUtils.equalsIgnoreCase(element.tagName(), EXTRA_INPUT_ELEMENT)) {
+							page.addElement(InputSetPE.createExtra(element.attr(REF_ATTRIBUTE), element.attr(FORM_ATTRIBUTE),
+									element.attr(RESTORE_VAR_ATTRIBUTE), StringUtils.split(element.attr(NAME_ATTRIBUTE), ' ')));
 						// <personal>
-						} else if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(PERSONAL_ELEMENT)) {
+						} else if (StringUtils.equalsIgnoreCase(element.tagName(), PERSONAL_ELEMENT)) {
 							for (Node persSubnode = pageSubnode.getFirstChild(); persSubnode != null; persSubnode = persSubnode.getNextSibling()) {
 								if (isNodeItemPE(persSubnode))
 									page.addElement(readItem((Element) persSubnode, ItemRootType.PERSONAL, null, includes, page.getKey()));

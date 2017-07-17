@@ -32,11 +32,10 @@ public class MultipleHttpPostForm implements Serializable {
 
 	private static final String FORM_ITEM_UNIQUE_KEY = "ukey";
 
-	private String cacheId;
 	private HashMap<Long, InputValues> inputs = new HashMap<>();
 	private InputValues extras = new InputValues();
 
-	private transient ItemTreeNode items;
+	private transient ItemTreeNode treeRoot = null;
 
 	MultipleHttpPostForm() { }
 
@@ -106,24 +105,26 @@ public class MultipleHttpPostForm implements Serializable {
 	 * @return
 	 */
 	public ItemTreeNode getItemTree() throws Exception {
-		HashSet<Long> itemsToAdd = new HashSet<>(inputs.keySet());
-		ItemTreeNode root = ItemTreeNode.createPureRoot();
-		for (InputValues input : inputs.values()) {
-			ItemInputName desc = (ItemInputName) input.getKeys().iterator().next();
-			ItemTreeNode parent = root;
-			for (Long pred : desc.getPredecessors()) {
-				if (itemsToAdd.contains(pred)) {
-					parent = insertItem(parent, inputs.get(pred));
-					itemsToAdd.remove(pred);
-				} else if (parent.find(pred) != null) {
-					parent = parent.find(pred);
+		if (treeRoot == null) {
+			HashSet<Long> itemsToAdd = new HashSet<>(inputs.keySet());
+			treeRoot = ItemTreeNode.createPureRoot();
+			for (InputValues input : inputs.values()) {
+				ItemInputName desc = (ItemInputName) input.getKeys().iterator().next();
+				ItemTreeNode parent = treeRoot;
+				for (Long pred : desc.getPredecessors()) {
+					if (itemsToAdd.contains(pred)) {
+						parent = insertItem(parent, inputs.get(pred));
+						itemsToAdd.remove(pred);
+					} else if (parent.find(pred) != null) {
+						parent = parent.find(pred);
+					}
+				}
+				if (itemsToAdd.contains(desc.getItemId())) {
+					insertItem(parent, input);
 				}
 			}
-			if (itemsToAdd.contains(desc.getItemId())) {
-				insertItem(parent, input);
-			}
 		}
-		return root;
+		return treeRoot;
 	}
 
 	/**

@@ -4,6 +4,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.pages.filter.FilterPE;
+import ecommander.pages.var.Variable;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class InputSetPE implements PageElement {
 								// восстановить форму из сеанса (форма восстанавливается, если указанная переменная
 								// имеет не пустое значение)
 	private ExecutablePagePE pageModel;
+	boolean needRestore = false; // нуждается ли этот набор инпутов в восстановлении значений (ранее сохраненных в сеансе)
 
 	private InputSetPE(boolean isParameter, String refId, String formId, String restoreVar, List<String> names) {
 		this.isParameter = isParameter;
@@ -62,10 +64,20 @@ public class InputSetPE implements PageElement {
 		clone.pageModel = parentPage;
 		if (container != null)
 			((InputSetContainer)container).addInputSet(clone);
+		if (StringUtils.isNotBlank(restoreVar)) {
+			Variable var = pageModel.getVariable(restoreVar);
+			if (var != null && !var.isEmpty()) {
+				clone.needRestore = true;
+			}
+		}
 		return clone;
 	}
 
-	public ItemInputs getAllInputs() {
+	/**
+	 * Получить инпуты для текущего айтема (в процессе итерации при выводе страинцы)
+	 * @return
+	 */
+	public ItemInputs getCurrentItemInputs() {
 		ExecutableItemPE itemPE = pageModel.getItemPEById(refId);
 		if (itemPE.hasFoundItems()) {
 			Item item = itemPE.getParentRelatedFoundItemIterator().getCurrentItem();
@@ -87,6 +99,12 @@ public class InputSetPE implements PageElement {
 					inputs.addParameters(names.toArray(new String[0]));
 			} else {
 				inputs.addExtra(names.toArray(new String[0]));
+			}
+			// Восстановить значения, ранее сохраненные в сеансе (если это надо делать)
+			if (needRestore) {
+				MultipleHttpPostForm savedForm = pageModel.getSessionContext().getForm(formId);
+				InputValues savedItemInputValues = savedForm.getItemInput(item.getId());
+				inputs.update(savedItemInputValues);
 			}
 			return inputs;
 		}

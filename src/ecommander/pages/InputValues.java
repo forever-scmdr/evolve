@@ -33,7 +33,11 @@ public class InputValues implements Serializable {
 			}
 		}
 	}
-	
+
+	public void replace(Object paramId, Object value) {
+		map.put(paramId, value);
+	}
+
 	public boolean isMultiple(Object paramId) {
 		return map.get(paramId) != null && map.get(paramId) instanceof  List<?>;
 	}

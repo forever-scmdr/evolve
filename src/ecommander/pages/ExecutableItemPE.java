@@ -209,6 +209,10 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	private ParentRelatedFoundIterator iterator = null;
 	// Кеш айтема
 	private String cache = null;
+	// Генератор ID для новых айтемов. Предполагается, что при повторной загрузке одной и той же страницы
+	// сгенерируются одни и те же ID (это нужно для восстановления ранее сохраненных введеннй пользователем значений полей)
+	private long _id_generator = -1;
+
 	/**
 	 * Конструктор
 	 * @param itemName
@@ -460,6 +464,22 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		if (hasParent()) {
 			loadedIds = getParentItemPE().getFoundItemIds();
 		}
+
+		// Создание новых айтемов (тип new)
+		if (getQueryType() == Type.NEW) {
+			ArrayList<Item> newItems = new ArrayList<>();
+			// Список загруженных предшественников айтема
+			ExecutableItemPE parentRef = parentPageModel.getItemPEById(getParentId());
+			if (parentRef != null && parentRef.hasFoundItems()) {
+				for (Long loadedId : parentRef.getFoundItemIds()) {
+					newItems.add(Item.newFormItem(ItemTypeRegistry.getItemType(getItemName()), _id_generator--, loadedId));
+				}
+			} else {
+				newItems.add(Item.newFormItem(ItemTypeRegistry.getItemType(getItemName()), _id_generator--, 0L));
+			}
+			return newItems;
+		}
+
 		// Загрузка из БД
 		if (!isSession()) {
 			// Если есть ссылка, то нет нужды в конструировании запроса
@@ -479,8 +499,11 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			ItemQuery query = new ItemQuery(getItemName());
 			boolean needLoading = !hasParent() || (loadedIds != null && loadedIds.size() > 0);
 			// Добавление критерия предка
-			if (needLoading && hasParent())
+			if (needLoading && hasParent()) {
 				query.setParentIds(loadedIds, isTransitive(), getAssocName());
+				if (getQueryType() == Type.TREE)
+					query.setNeedTree(true);
+			}
 			// Установка фильтра, если он должен быть
 			if (needLoading && hasFilter())
 				needLoading = getFilter().appendCriteriasToQuery(query);

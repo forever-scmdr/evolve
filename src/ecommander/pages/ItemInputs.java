@@ -102,4 +102,16 @@ public class ItemInputs {
 	public ArrayList<String> getInputValues(ItemInputName name) {
 		return (ArrayList<String>) inputs.get(name);
 	}
+
+	/**
+	 * Скопировать соответствюущие значения инпутов из объекта InputValues
+	 * @param values
+	 */
+	public void update(InputValues values) {
+		for (Object key : inputs.getKeys()) {
+			if (values.getKeys().contains(key)) {
+				inputs.replace(key, values.get(key));
+			}
+		}
+	}
 }
