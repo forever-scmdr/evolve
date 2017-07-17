@@ -828,7 +828,7 @@ public class PageModelBuilder {
 							}
 						// Не допускать другие тэги
 						} else {
-							throw new PrimaryValidationException(page.getKey(), "'" + element.getNodeName()
+							throw new PrimaryValidationException(page.getKey(), "'" + element.tagName()
 									+ "' is not a valid subelement of &lt;page&gt; element");
 						}
 					}
@@ -854,36 +854,31 @@ public class PageModelBuilder {
 	/**
 	 * Считывает все include_definition в HashMap
 	 * @param document
-	 * @return
+	 * @param includesMap
 	 */
 	private void readIncludes(Document document, HashMap<String, Element> includesMap) {
-		NodeList includes = document.getElementsByTagName(INCLUDE_DEFINITION_ELEMENT);
-		for (int i = 0; i < includes.getLength(); i++) {
-			Element includeNode = (Element) includes.item(i);
-			includesMap.put(includeNode.getAttribute(NAME_ATTRIBUTE), includeNode);
+		Elements includes = document.getElementsByTag(INCLUDE_DEFINITION_ELEMENT);
+		for (Element include : includes) {
+			includesMap.put(include.attr(NAME_ATTRIBUTE), include);
 		}
 	}
 	/**
 	 * Добавляет include в место вставки
 	 * @param parentNode
-	 * @param includeName
+	 * @param includeRef
 	 * @param includes
 	 * @throws PrimaryValidationException 
 	 */
 	private void appendInclude(Element parentNode, Element includeRef, HashMap<String, Element> includes) throws PrimaryValidationException {
-		Element include = includes.get(includeRef.getAttribute(NAME_ATTRIBUTE));
+		Element include = includes.get(includeRef.attr(NAME_ATTRIBUTE));
 		if (include == null)
-			throw new PrimaryValidationException(parentNode.getLocalName() + " '" + ((Element) parentNode).getAttribute(NAME_ATTRIBUTE) + "'",
-					"There is no include with name '" + includeRef.getAttribute(NAME_ATTRIBUTE) + "'");
-		for (Node includeSubnode = include.getFirstChild(); includeSubnode != null; includeSubnode = includeSubnode.getNextSibling()) {
-			Node importedNode = null;
-			if (!includeSubnode.getOwnerDocument().equals(parentNode.getOwnerDocument()))
-				importedNode = parentNode.getOwnerDocument().importNode(includeSubnode, true);
-			else
-				importedNode = includeSubnode.cloneNode(true);
-			parentNode.insertBefore(importedNode, includeRef);
+			throw new PrimaryValidationException(parentNode.tagName() + " '" + ((Element) parentNode).attr(NAME_ATTRIBUTE) + "'",
+					"There is no include with name '" + includeRef.attr(NAME_ATTRIBUTE) + "'");
+		for (Element includeSubnode : include.getAllElements()) {
+			Element importedNode = includeSubnode.clone();
+			includeRef.before(importedNode);
 		}
-		parentNode.removeChild(includeRef);
+		includeRef.remove();
 	}
 	/**
 	 * Рекурсивно считывает все айтемы и сабайтемы
@@ -1498,7 +1493,7 @@ public class PageModelBuilder {
 	 */
 	private static ArrayList<File> findPagesFiles(File startFile, ArrayList<File> files) {
 		if (files == null) {
-			files = new ArrayList<File>();
+			files = new ArrayList<>();
 			if (startFile.isFile())
 				files.add(startFile);
 			else
