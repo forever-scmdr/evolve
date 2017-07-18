@@ -56,11 +56,7 @@ public class ReferencePE implements PageElement {
 	public static ReferencePE createParameterUrlReference(String pageVarName, String paramName) {
 		return new ReferencePE(pageVarName, paramName, null);
 	}
-	
-	public static ReferencePE createAssociatedReference(String pageItemId, String paramName) {
-		return new ReferencePE(null, paramName, pageItemId);
-	}
-	
+
 	public boolean isUrlReference() {
 		return pageVarName != null;
 	}
@@ -73,10 +69,6 @@ public class ReferencePE implements PageElement {
 		return pageItemId != null && paramName == null;
 	}
 
-	public boolean isAssociatedReference() {
-		return pageItemId != null && paramName != null;
-	}
-	
 	public boolean isUrlKeyUnique() {
 		return pageVarName != null && paramName == null && pageModel.getInitVariablePE(pageVarName).isStyleTranslit();
 	}
@@ -94,18 +86,10 @@ public class ReferencePE implements PageElement {
 	 */
 	public List<String> getValuesArray() {
 		// Получить значение переменной, в которой хранится ID айтема (или значение параметра), нужного для загрузки
-		if (isAssociatedReference()) {
-			ExecutableItemPE.AllFoundIterator iter = pageModel.getItemPEById(pageItemId).getAllFoundItemIterator();
-			ArrayList<String> result = new ArrayList<>();
-			while (iter.next())
-				result.addAll(iter.getCurrentItem().outputValues(paramName));
-			return result;
-		} else {
-			Variable variable = pageModel.getVariable(pageVarName);
-			if (variable == null || variable.isEmpty())
-				return new ArrayList<>(0);
-			return variable.writeAllValues();
-		}
+		Variable variable = pageModel.getVariable(pageVarName);
+		if (variable == null || variable.isEmpty())
+			return new ArrayList<>(0);
+		return variable.writeAllValues();
 	}
 	/**
 	 * Получить название параметра

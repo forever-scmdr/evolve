@@ -1,7 +1,6 @@
 package ecommander.pages;
 
 import java.io.File;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,7 +8,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import ecommander.fwk.Strings;
 import ecommander.model.Compare;
 import org.apache.commons.lang3.StringUtils;
@@ -619,7 +617,7 @@ public class PageModelBuilder {
 
 	public static final String ASSOC_ATTRIBUTE = "assoc";
 	public static final String CHILD_ATTRIBUTE = "child";
-	public static final String TRANSITIVE_ATTRIBUTE = "name";
+	public static final String TRANSIT_ATTRIBUTE = "transit";
 	public static final String REF_ATTRIBUTE = "ref";
 	public static final String NAME_ATTRIBUTE = "name";
 	public static final String ITEM_ATTRIBUTE = "item";
@@ -636,17 +634,15 @@ public class PageModelBuilder {
 	public static final String TEMPLATE_ATTRIBUTE = "template";
 	public static final String AUTHORITY_GROUPS_ATTRIBUTE = "authority-groups";
 	public static final String OPERATION_ATTRIBUTE = "operation";
-	public static final String PARENT_ITEM_ATTRIBUTE = "parent-item";
+	public static final String PARENT_REF_ATTRIBUTE = "parent-ref";
 	public static final String CACHEABLE_ATTRIBUTE = "cacheable";
 	public static final String VIRTUAL_ATTRIBUTE = "virtual";
 	public static final String LINK_ATTRIBUTE = "link";
 	public static final String PATTERN_ATTRIBUTE = "pattern";
-	public static final String REF_PARAMETER_ATTRIBUTE = "ref-parameter";
 	public static final String NAME_VAR_ATTRIBUTE = "name-var";
 	public static final String ID_VAR_ATTRIBUTE = "id-var";
 	public static final String DIRECTION_VAR_ATTRIBUTE = "direction-var";
 	public static final String PARAMETER_VAR_ATTRIBUTE = "parameter-var";
-	public static final String REFERENCE_ITEM_ATTRIBUTE = "reference-item";
 	public static final String CLEAR_CACHE_ATTRIBUTE = "clear-cache";
 	public static final String SCOPE_ATTRIBUTE = "scope";
 	public static final String STYLE_ATTRIBUTE = "style";
@@ -663,6 +659,7 @@ public class PageModelBuilder {
 	public static final String RESTORE_VAR_ATTRIBUTE = "restore-var";
 	public static final String COPY_PAGE_VARS_ATTRIBUTE = "copy-page-vars";
 	public static final String FORM_ATTRIBUTE = "form";
+	public static final String VAR_ATTRIBUTE = "var";
 	
 	public static final String SINGLE_VALUE = "single";
 	public static final String MULTIPLE_VALUE = "multiple";
@@ -699,7 +696,7 @@ public class PageModelBuilder {
 	 * Проверяет, были ли произведены изменения в модели страниц, и если были, выполняет обновление реестра страниц
 	 * @throws Exception 
 	 */
-	public static void testActuality() throws Exception {
+	static void testActuality() throws Exception {
 		if (System.currentTimeMillis() - fileLastChecked > MODIFIED_TEST_INTERVAL) {
 			synchronized (SEMAPHORE) {
 				if (System.currentTimeMillis() - fileLastChecked > MODIFIED_TEST_INTERVAL) {
@@ -872,7 +869,7 @@ public class PageModelBuilder {
 	private void appendInclude(Element parentNode, Element includeRef, HashMap<String, Element> includes) throws PrimaryValidationException {
 		Element include = includes.get(includeRef.attr(NAME_ATTRIBUTE));
 		if (include == null)
-			throw new PrimaryValidationException(parentNode.tagName() + " '" + ((Element) parentNode).attr(NAME_ATTRIBUTE) + "'",
+			throw new PrimaryValidationException(parentNode.tagName() + " '" + (parentNode).attr(NAME_ATTRIBUTE) + "'",
 					"There is no include with name '" + includeRef.attr(NAME_ATTRIBUTE) + "'");
 		for (Element includeSubnode : include.getAllElements()) {
 			Element importedNode = includeSubnode.clone();
@@ -888,26 +885,26 @@ public class PageModelBuilder {
 	 * @param includes
 	 * @return
 	 * @throws Exception
-	 * TODO <usability> добавить проверку на наличие названия айтема (name)
 	 */
 	private ItemPE readItem(Element itemNode, ItemPE.ItemRootType rootType, String groupName, HashMap<String, Element> includes, String pageName)
 			throws Exception {
 		// Считвание базовых параметров страничного айтема
-		String itemNodeName = itemNode.getNodeName();
-		String itemName = itemNode.getAttribute(NAME_ATTRIBUTE);
-		String pageItemId = itemNode.getAttribute(ID_ATTRIBUTE);
-		String tagName = itemNode.getAttribute(TAG_ATTRIBUTE);
-		String referenceItem = itemNode.getAttribute(REFERENCE_ITEM_ATTRIBUTE);
-		String referenceVar = itemNode.getAttribute(REFERENCE_VAR_ATTRIBUTE);
-		String referenceParam = itemNode.getAttribute(REFERENCE_PARAMETER_ATTRIBUTE);
-		boolean quantifierSingle = itemNode.getAttribute(QUANTIFIER_ATTRIBUTE).equalsIgnoreCase(SINGLE_VALUE);
-		boolean cacheable = itemNode.getAttribute(CACHEABLE_ATTRIBUTE).equalsIgnoreCase(TRUE_VALUE);
-		boolean virtual = itemNode.getAttribute(VIRTUAL_ATTRIBUTE).equalsIgnoreCase(TRUE_VALUE);
-		String cacheVarsStr = itemNode.getAttribute(CACHE_VARS_ATTRIBUTE);
-		String specialLoader = itemNode.getAttribute(LOADER_ATTRIBUTE);
-		ArrayList<String> cacheVars = new ArrayList<String>();
+		String itemNodeName = itemNode.tagName();
+		String itemName = itemNode.attr(ITEM_ATTRIBUTE);
+		String assocName = itemNode.attr(ASSOC_ATTRIBUTE);
+		String pageItemId = itemNode.attr(ID_ATTRIBUTE);
+		String tagName = itemNode.attr(TAG_ATTRIBUTE);
+		String referenceVar = itemNode.attr(VAR_ATTRIBUTE);
+		String referenceItem = itemNode.attr(REF_ATTRIBUTE);
+		String referenceParam = itemNode.attr(PARAMETER_ATTRIBUTE);
+		String parentItem = itemNode.attr(PARENT_REF_ATTRIBUTE);
+		boolean isTransitive = StringUtils.equalsIgnoreCase(itemNode.attr(TRANSIT_ATTRIBUTE), TRUE_VALUE);
+		boolean cacheable = StringUtils.equalsIgnoreCase(itemNode.attr(CACHEABLE_ATTRIBUTE), TRUE_VALUE);
+		boolean virtual = StringUtils.equalsIgnoreCase(itemNode.attr(VIRTUAL_ATTRIBUTE), TRUE_VALUE);
+		String cacheVarsStr = itemNode.attr(CACHE_VARS_ATTRIBUTE);
+		ArrayList<String> cacheVars = new ArrayList<>();
 		if (!StringUtils.isBlank(cacheVarsStr)) {
-			cacheVars = new ArrayList<String>(Arrays.asList(StringUtils.split(cacheVarsStr, ' ')));				
+			cacheVars = new ArrayList<>(Arrays.asList(StringUtils.split(cacheVarsStr, ' ')));
 		}
 		// Проветка, является ли идентификатор уникальным
 		if (!StringUtils.isBlank(pageItemId)) {
@@ -918,20 +915,14 @@ public class PageModelBuilder {
 			itemIdentifiers.add(pageItemId);
 		}
 		// Создание айтема
-		ItemQuery.Type queryType = ItemQuery.Type.getValue(itemNodeName);
-		ItemPE pageItem = new ItemPE(queryType, itemName, pageItemId, tagName, rootType, groupName, quantifierSingle, cacheable, virtual,
-				cacheVars);
+		ItemPE.Type queryType = ItemPE.Type.getValue(itemNodeName);
+		ItemPE pageItem = new ItemPE(queryType, itemName, assocName, pageItemId, parentItem, tagName, rootType,
+				groupName, isTransitive, cacheable, virtual, cacheVars);
 		// Сохранение ID айтема в стеке
 		itemIdsStack.push(StringUtils.defaultString(pageItemId, "<no id>"));
-		// Особый загрузчик для айтема
-		if (!StringUtils.isBlank(specialLoader))
-			pageItem.setSpecialLoader(specialLoader);
 		// Второй способ добавления референса
 		if (!StringUtils.isBlank(referenceItem)) { 
-			if (!StringUtils.isBlank(referenceParam))
-				pageItem.addElement(ReferencePE.createAssociatedReference(referenceItem, referenceParam));
-			else
-				pageItem.addElement(ReferencePE.createPageReference(referenceItem));
+			pageItem.addElement(ReferencePE.createPageReference(referenceItem));
 		} else if (!StringUtils.isBlank(referenceVar)) {
 			if (!StringUtils.isBlank(referenceParam))
 				pageItem.addElement(ReferencePE.createParameterUrlReference(referenceVar, referenceParam));
@@ -939,61 +930,60 @@ public class PageModelBuilder {
 				pageItem.addElement(ReferencePE.createUrlReference(referenceVar));
 		}
 		// Заполнение параметров айтема
-		for (int j = 0; j < itemNode.getChildNodes().getLength(); j++) {
-			Node itemSubnode = itemNode.getChildNodes().item(j);
+		for (Element itemSubnode : itemNode.getAllElements()) {
 			// Референс
-			if (itemSubnode.getNodeType() == Node.ELEMENT_NODE && itemSubnode.getNodeName().equalsIgnoreCase(REFERENCE_ELEMENT)) {
-				Element reference = (Element) itemSubnode;
-				if (!StringUtils.isBlank(reference.getAttribute(ITEM_ATTRIBUTE)))
-					pageItem.addElement(ReferencePE.createPageReference(reference.getAttribute(ITEM_ATTRIBUTE)));
-				else if (!StringUtils.isBlank(reference.getAttribute(VAR_ATTRIBUTE)))
-					pageItem.addElement(ReferencePE.createUrlReference(reference.getAttribute(VAR_ATTRIBUTE)));
-			// Инпут
-			} else if (itemSubnode.getNodeType() == Node.ELEMENT_NODE && itemSubnode.getNodeName().equalsIgnoreCase(INPUT_ELEMENT)) {
-				Element inputNode = (Element) itemSubnode;
-				pageItem.addElement(new InputPE(inputNode.getAttribute(NAME_ATTRIBUTE), inputNode.getAttribute(ITEM_ATTRIBUTE)));
+			if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), REFERENCE_ELEMENT)) {
+				if (!StringUtils.isBlank(itemSubnode.attr(ITEM_ATTRIBUTE)))
+					pageItem.addElement(ReferencePE.createPageReference(itemSubnode.attr(ITEM_ATTRIBUTE)));
+				else if (!StringUtils.isBlank(itemSubnode.attr(VAR_ATTRIBUTE)))
+					pageItem.addElement(ReferencePE.createUrlReference(itemSubnode.attr(VAR_ATTRIBUTE)));
+			// Инпут parameter
+			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), PARAMETER_INPUT_ELEMENT)) {
+				pageItem.addElement(InputSetPE.createParams(itemSubnode.attr(REF_ATTRIBUTE), itemSubnode.attr(FORM_ATTRIBUTE),
+						itemSubnode.attr(RESTORE_VAR_ATTRIBUTE), StringUtils.split(itemSubnode.attr(NAME_ATTRIBUTE), ' ')));
+				// Инпут extra
+			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), PARAMETER_INPUT_ELEMENT)) {
+				pageItem.addElement(InputSetPE.createExtra(itemSubnode.attr(REF_ATTRIBUTE), itemSubnode.attr(FORM_ATTRIBUTE),
+						itemSubnode.attr(RESTORE_VAR_ATTRIBUTE), StringUtils.split(itemSubnode.attr(NAME_ATTRIBUTE), ' ')));
 			// Фильтр
-			} else if (itemSubnode.getNodeType() == Node.ELEMENT_NODE && itemSubnode.getNodeName().equalsIgnoreCase(FILTER_ELEMENT)) {
-				if (queryType == ItemQuery.Type.PARENT_OF || queryType == ItemQuery.Type.PREDECESSORS_OF)
+			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), FILTER_ELEMENT)) {
+				if (queryType == ItemPE.Type.ANCESTOR || queryType == ItemPE.Type.NEW)
 					throw new PrimaryValidationException(pageName + " > Item '" + itemName + "'",
 							"filters are not allowed in 'parent-of' and 'baseItems-of' elemets");
-				pageItem.addElement(readFilter((Element) itemSubnode, includes));
+				pageItem.addElement(readFilter(itemSubnode, includes));
 			// Группировка
-			} else if (itemSubnode.getNodeType() == Node.ELEMENT_NODE && itemSubnode.getNodeName().equalsIgnoreCase(AGGREGATION_ELEMENT)) {
-				pageItem.addElement(readAggregation((Element) itemSubnode, includes));
+			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), AGGREGATION_ELEMENT)) {
+				pageItem.addElement(readAggregation(itemSubnode, includes));
 			}
 			// Сабайтем
 			else if (isNodeItemPE(itemSubnode)) {
-				pageItem.addElement(readItem((Element) itemSubnode, rootType, groupName, includes, pageName));
+				pageItem.addElement(readItem(itemSubnode, rootType, groupName, includes, pageName));
 			// <personal>
-			} else if (itemSubnode.getNodeType() == Node.ELEMENT_NODE && itemSubnode.getNodeName().equalsIgnoreCase(PERSONAL_ELEMENT)) {
-				for (Node persSubnode = itemSubnode.getFirstChild(); persSubnode != null; persSubnode = persSubnode.getNextSibling()) {
+			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), PERSONAL_ELEMENT)) {
+				for (Element persSubnode : itemSubnode.getAllElements()) {
 					if (isNodeItemPE(persSubnode))
-						pageItem.addElement(readItem((Element) persSubnode, ItemRootType.PERSONAL, groupName, includes, pageName));
+						pageItem.addElement(readItem(persSubnode, ItemPE.ItemRootType.PERSONAL, groupName, includes, pageName));
 				}
 			// <usergroup>
-			} else if (itemSubnode.getNodeType() == Node.ELEMENT_NODE && itemSubnode.getNodeName().equalsIgnoreCase(USER_GROUP_ELEMENT)) {
-				groupName = ((Element)itemSubnode).getAttribute(NAME_ATTRIBUTE);
-				for (Node groupSubnode = itemSubnode.getFirstChild(); groupSubnode != null; groupSubnode = groupSubnode.getNextSibling()) {
+			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), USER_GROUP_ELEMENT)) {
+				groupName = (itemSubnode).attr(NAME_ATTRIBUTE);
+				for (Element groupSubnode : itemSubnode.getAllElements()) {
 					if (isNodeItemPE(groupSubnode)) {
 						if (UserGroupRegistry.groupExists(groupName))
-							pageItem.addElement(readItem((Element) groupSubnode, ItemRootType.GROUP, groupName, includes, pageName));
+							pageItem.addElement(readItem(groupSubnode, ItemPE.ItemRootType.GROUP, groupName, includes, pageName));
 						else 
-							pageItem.addElement(readItem((Element) groupSubnode, ItemRootType.COMMON, null, includes, pageName));
+							pageItem.addElement(readItem(groupSubnode, ItemPE.ItemRootType.COMMON, null, includes, pageName));
 					}
 				}
 			// Ссылка
-			} else if (itemSubnode.getNodeType() == Node.ELEMENT_NODE && itemSubnode.getNodeName().equalsIgnoreCase(LINK_ELEMENT)) {
-				pageItem.addElement(readLink((Element) itemSubnode, includes));
-			// Форма
-			} else if (itemSubnode.getNodeType() == Node.ELEMENT_NODE && itemSubnode.getNodeName().equalsIgnoreCase(FORM_ELEMENT)) {
-				pageItem.addElement(readForm((Element) itemSubnode, includes));
+			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), LINK_ELEMENT)) {
+				pageItem.addElement(readLink(itemSubnode, includes));
 			// Инклюдес
-			} else if (itemSubnode.getNodeType() == Node.ELEMENT_NODE && itemSubnode.getNodeName().equalsIgnoreCase(INCLUDE_ELEMENT)) {
-				appendInclude(itemNode, (Element) itemSubnode, includes);
+			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), INCLUDE_ELEMENT)) {
+				appendInclude(itemNode, itemSubnode, includes);
 			// Не допускать другие тэги
-			} else if (itemSubnode.getNodeType() == Node.ELEMENT_NODE) {
-				throw new PrimaryValidationException(pageName + " > Item '" + itemName + "'", "'" + itemSubnode.getNodeName()
+			} else {
+				throw new PrimaryValidationException(pageName + " > Item '" + itemName + "'", "'" + itemSubnode.tagName()
 						+ "' is not a valid subelement of &lt;item&gt; element");
 			}
 		}
