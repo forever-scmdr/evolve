@@ -5,7 +5,6 @@ import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.model.ParameterDescription;
 import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.PageElement;
 import ecommander.pages.var.Variable;
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,7 +41,7 @@ import java.util.List;
  * @author EEEE
  *
  */
-public abstract class ParameterCriteriaPE implements FilterCriteria {
+public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 	
 	public static final String ELEMENT_NAME = "parameter";
 	

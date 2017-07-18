@@ -8,13 +8,12 @@ import ecommander.pages.PageElementContainer;
 import ecommander.pages.ValidationResults;
 import ecommander.pages.var.StaticVariable;
 import ecommander.pages.var.Variable;
-import ecommander.pages.var.VariablePE;
 
 /**
  * Критерий сортировки
  * Created by E on 13/6/2017.
  */
-public class SortingCriteriaPE implements FilterCriteria {
+public class SortingCriteriaPE implements FilterCriteriaPE {
 
 	private Variable sortingParameter = null;
 	private Variable sortingDirection = new StaticVariable("dir", "ASC");

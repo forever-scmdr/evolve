@@ -6,7 +6,6 @@ import ecommander.fwk.Strings;
 import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.model.LOGICAL_SIGN;
 import ecommander.model.filter.FilterDefinition;
 import ecommander.pages.*;
 import ecommander.pages.var.FilterStaticVariable;
@@ -252,7 +251,7 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 
 		// Все вложенные элементы - критерии
 		for (PageElement element : getAllNested()) {
-			((FilterCriteria) element).process(this);
+			((FilterCriteriaPE) element).process(this);
 		}
 		if (isValid != null && !isValid)
 			return false;
@@ -356,11 +355,6 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		else if ((crit.getCompareType() == Compare.SOME || crit.getCompareType() == Compare.EVERY)) {
 			isValid = false;
 		}
-	}
-
-	@Override
-	public void processDescendantParameterCriteria(ParameterCriteriaPE crit) {
-
 	}
 
 	@Override

@@ -624,6 +624,7 @@ public class PageModelBuilder {
 	public static final String FUNCTION_ATTRIBUTE = "function";
 	public static final String ID_ATTRIBUTE = "id";
 	public static final String PARAMETER_ATTRIBUTE = "parameter";
+	public static final String OPTION_ATTRIBUTE = "parameter";
 	public static final String SIGN_ATTRIBUTE = "sign";
 	public static final String DIRECTION_ATTRIBUTE = "direction";
 	public static final String QUANTIFIER_ATTRIBUTE = "quantifier";
@@ -1000,25 +1001,25 @@ public class PageModelBuilder {
 	 */
 	private FilterPE readFilter(Element filterNode, HashMap<String, Element> includes) throws PrimaryValidationException {
 		FilterPE filter = new FilterPE();
-		String userFilterItemId = filterNode.getAttribute(ITEM_ATTRIBUTE);
-		String userFilterParamName = filterNode.getAttribute(PARAMETER_ATTRIBUTE);
-		String userFilterVarName = filterNode.getAttribute(VAR_ATTRIBUTE);
-		String operationString = filterNode.getAttribute(OPERATION_ATTRIBUTE);
-		String preloadString = filterNode.getAttribute(PRELOAD_DOMAINS_ATTRIBUTE);
+		String userFilterItemId = filterNode.attr(REF_ATTRIBUTE);
+		String userFilterParamName = filterNode.attr(PARAMETER_ATTRIBUTE);
+		String userFilterVarName = filterNode.attr(VAR_ATTRIBUTE);
+		String preloadString = filterNode.attr(PRELOAD_DOMAINS_ATTRIBUTE);
 		boolean preload = preloadString != null && preloadString.equals(YES_VALUE);
-		if (!StringUtils.isBlank(operationString))
-			filter.setOperation(LOGICAL_SIGN.valueOf(operationString));
 		if (!StringUtils.isBlank(userFilterItemId) && !StringUtils.isBlank(userFilterParamName) && !StringUtils.isBlank(userFilterVarName)) {
 			filter.setUserFilter(userFilterItemId, userFilterParamName, userFilterVarName, preload);
 		}
-		for (int j = 0; j < filterNode.getChildNodes().getLength(); j++) {
-			Node filterSubnode = filterNode.getChildNodes().item(j);
+		for (Element filterSubnode : filterNode.getAllElements()) {
 			// Параметр
-			if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(PARAMETER_ELEMENT)) {
+			if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PARAMETER_ATTRIBUTE)) {
+				filter.addCriteria(readFilterCriteria((Element) filterSubnode));
+			}
+			// Параметр
+			if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), OPTION_ATTRIBUTE)) {
 				filter.addCriteria(readFilterCriteria((Element) filterSubnode));
 			}
 			// Полнотекстовый критерий
-			else if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(FULLTEXT_ELEMENT)) {
+			else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), FULLTEXT_ELEMENT)) {
 				filter.setFulltext(readFulltextCriteria((Element) filterSubnode));
 			}
 			// Сортировка

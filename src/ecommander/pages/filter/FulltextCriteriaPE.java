@@ -1,24 +1,21 @@
 package ecommander.pages.filter;
 
-import ecommander.fwk.EcommanderException;
-import ecommander.pages.PageElement;
-import ecommander.pages.ValidationResults;
-import ecommander.pages.var.ValueOrRef;
-import ecommander.pages.var.VariablePE;
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.fwk.Strings;
 import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.PageElement;
 import ecommander.pages.PageElementContainer;
+import ecommander.pages.ValidationResults;
+import ecommander.pages.var.ValueOrRef;
 import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
+import org.apache.commons.lang3.StringUtils;
 /**
  * Полнотекстовый критерий поиска
  * @author E
  *
  */
-public class FulltextCriteriaPE implements FilterCriteria {
+public class FulltextCriteriaPE implements FilterCriteriaPE {
 
 	public static final String ELEMENT_NAME = "fulltext";
 	

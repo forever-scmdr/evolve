@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Критерий приндалежности к определенному предку, или наличию определенного потомка
  * Created by E on 13/6/2017.
  */
-public class ParentalCriteriaPE implements FilterCriteria {
+public class ParentalCriteriaPE implements FilterCriteriaPE {
 	private final String pageItemId; // страничный ID предшественников или потомков айтема
 	private final String sign; // IN или NOT IN
 	private final Compare compType; // строгий критерий или нет

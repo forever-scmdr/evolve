@@ -77,9 +77,9 @@
 					<child item="price" assoc="seller_price">
 						<parameter name="price" sign="&lt;"><var var="price_to"/></parameter>
 						<parameter name="time_updated" sign="&gt;"><var var="updated"/></parameter>
-						<ancestor item="seller">
+						<parent item="seller">
 							<parameter name="region"><var var="region"/></parameter>
-						</ancestor>
+						</parent>
 					</child>
 					<parameter name="display_size" sign="&gt;=" ><var var="diag"/></parameter>
 				</filter>
@@ -99,7 +99,9 @@
 			<filter>
 				<parameter name="price" sign="&lt;=" ><var value="{price_to}"/></parameter>
 				<option>
-					<parameter name="discount" assoc="seller_price" child="price" sign="&gt;"><var value="2"/></parameter>
+					<child item="price" assoc="seller_price">
+						<parameter name="discount" sign="&gt;"><var value="2"/></parameter>
+					</child>
 				</option>
 				<option>
 					<predecessor sign="NOT IN"><var var="sec"/></predecessor>

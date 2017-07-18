@@ -8,6 +8,6 @@ import ecommander.pages.PageElement;
  * Добавляет себя в контейнер, вызывая определенный метод контейнера
  * Created by E on 13/6/2017.
  */
-public interface FilterCriteria extends PageElement {
+public interface FilterCriteriaPE extends PageElement {
 	void process(FilterCriteriaContainer cont) throws Exception;
 }
