@@ -41,7 +41,7 @@ import java.util.*;
  */
 public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants.UniqueItemKeys, DBConstants.ItemIndexes {
 
-	static interface Const {
+	interface Const {
 		String JOIN = "<<JOIN_PART>>";
 		String STATUS = "<<STATUS_PART>>";
 		String WHERE = "<<WHERE_PART>>";
@@ -277,6 +277,96 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		filter.addParameterCriteria(paramDesc, itemDesc, values, sign, pattern, compType);
 		return this;
 	}
+
+	/**
+	 * Добавить опцию (группу критериев, которая обхединяется с другими опциями знаком OR)
+	 * @return
+	 */
+	public ItemQuery startOption() {
+		ensureFilter();
+		filter.startOption();
+		return this;
+	}
+
+	/**
+	 * Закрыть опцию
+	 * @return
+	 */
+	public ItemQuery endOption() {
+		ensureFilter();
+		filter.endOption();
+		return this;
+	}
+
+	/**
+	 * Начать создание группы критериев по потомку айтема с определенной ассоциацией
+	 * После создания группы и до ее закрытия все критерии будут добавляться именно в эту группу
+	 * @param item
+	 * @param assocId
+	 * @return
+	 */
+	public ItemQuery startChildCriteria(ItemType item, byte assocId) {
+		ensureFilter();
+		filter.startAssociatedGroup(item, assocId, AssociatedItemCriteriaGroup.Type.CHILD);
+		return this;
+	}
+
+	/**
+	 * Начать создание группы критериев по предку айтема с определенной ассоциацией
+	 * После создания группы и до ее закрытия все критерии будут добавляться именно в эту группу
+	 * @param item
+	 * @param assocId
+	 * @return
+	 */
+	public ItemQuery startParentCriteria(ItemType item, byte assocId) {
+		ensureFilter();
+		filter.startAssociatedGroup(item, assocId, AssociatedItemCriteriaGroup.Type.PARENT);
+		return this;
+	}
+
+	/**
+	 * Начать создание группы критериев по потомку айтема с определенной ассоциацией
+	 * После создания группы и до ее закрытия все критерии будут добавляться именно в эту группу
+	 * @param itemName
+	 * @param assocName
+	 * @return
+	 */
+	public ItemQuery startChildCriteria(String itemName, String... assocName) {
+		ensureFilter();
+		byte assocId = ItemTypeRegistry.getPrimaryAssocId();
+		if (assocName.length > 0 && StringUtils.isNotBlank(assocName[0]))
+			assocId = ItemTypeRegistry.getAssoc(assocName[0]).getId();
+		filter.startAssociatedGroup(ItemTypeRegistry.getItemType(itemName), assocId, AssociatedItemCriteriaGroup.Type.CHILD);
+		return this;
+	}
+
+	/**
+	 * Начать создание группы критериев по предку айтема с определенной ассоциацией
+	 * После создания группы и до ее закрытия все критерии будут добавляться именно в эту группу
+	 * @param itemName
+	 * @param assocName
+	 * @return
+	 */
+	public ItemQuery startParentCriteria(String itemName, String... assocName) {
+		ensureFilter();
+		byte assocId = ItemTypeRegistry.getPrimaryAssocId();
+		if (assocName.length > 0 && StringUtils.isNotBlank(assocName[0]))
+			assocId = ItemTypeRegistry.getAssoc(assocName[0]).getId();
+		filter.startAssociatedGroup(ItemTypeRegistry.getItemType(itemName), assocId, AssociatedItemCriteriaGroup.Type.PARENT);
+		return this;
+	}
+
+	/**
+	 * Завершить формирование текущей группы критериев
+	 * Если после завершения группы будут добавляться новые критерии, то они будут добавляться уже не в эту группу,
+	 * а в родительскую (или основной фильтр или опцию)
+	 * @return
+	 */
+	public ItemQuery endCurrentCriteria() {
+		ensureFilter();
+		filter.endAssociatedGroup();
+		return this;
+	}
 	/**
 	 * Добавить критерий полнотекстового поиска (запрос и список параметров, по которым происходит поиск)
 	 * @param types - типы полнотекстового критерия (например near или term, или название фактори класса)
@@ -290,7 +380,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 */
 	public ItemQuery setFulltextCriteria(String[] types, String[] queries, int maxResults, String paramName, Compare compType,
 			float threshold) throws Exception {
-		String[] paramNames = null;
+		String[] paramNames;
 		if (StringUtils.isBlank(paramName)) {
 			paramNames = itemDesc.getFulltextParams().toArray(new String[0]);
 		} else {
@@ -437,7 +527,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws EcommanderException 
 	 */
-	private boolean isEmptySet() throws EcommanderException {
+	public boolean isEmptySet() throws EcommanderException {
 		return (hasParent && (ancestorIds == null || ancestorIds.length == 0)) || (filter != null && filter.isEmptySet());
 	}
 

@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -34,7 +33,7 @@ import java.util.Collection;
  *
  * Created by E on 5/7/2017.
  */
-public class AssociatedItemParameterCriteria extends CriteriaGroup implements DBConstants.ItemParent, DBConstants.ItemTbl {
+public class AssociatedItemCriteriaGroup extends CriteriaGroup implements DBConstants.ItemParent, DBConstants.ItemTbl {
 
 	public enum Type {
 		PARENT, 		// <parent>
@@ -50,11 +49,11 @@ public class AssociatedItemParameterCriteria extends CriteriaGroup implements DB
 
 	private final byte assocId;
 	private final Type type;
-	private final AssociatedItemParameterCriteria parent;
+	private final AssociatedItemCriteriaGroup parent;
 	private final ItemType parentItem;
 
-	AssociatedItemParameterCriteria(String critId, ItemType item, byte assocId, Type type,
-	                                       AssociatedItemParameterCriteria parent, ItemType parentItem) {
+	AssociatedItemCriteriaGroup(String critId, ItemType item, byte assocId, Type type,
+	                            AssociatedItemCriteriaGroup parent, ItemType parentItem) {
 		super(critId, item);
 		this.assocId = assocId;
 		this.type = type;
@@ -63,9 +62,9 @@ public class AssociatedItemParameterCriteria extends CriteriaGroup implements DB
 	}
 
 	@Override
-	public AssociatedItemParameterCriteria addAssociatedCriteria(ItemType item, byte assocId, Type type) {
-		String critId = (type == AssociatedItemParameterCriteria.Type.CHILD ? 'C' : 'P') + assocCriterias.size() + groupId;
-		AssociatedItemParameterCriteria newCrit = new AssociatedItemParameterCriteria(critId, item, assocId, type, this, this.item);
+	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, byte assocId, Type type) {
+		String critId = (type == AssociatedItemCriteriaGroup.Type.CHILD ? 'C' : 'P') + assocCriterias.size() + groupId;
+		AssociatedItemCriteriaGroup newCrit = new AssociatedItemCriteriaGroup(critId, item, assocId, type, this, this.item);
 		assocCriterias.add(newCrit);
 		return newCrit;
 	}

@@ -10,6 +10,8 @@ import java.util.Set;
 
 import ecommander.fwk.Strings;
 import ecommander.model.Compare;
+import ecommander.pages.filter.*;
+import ecommander.pages.var.Variable;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.ServerLogger;
@@ -17,10 +19,6 @@ import ecommander.fwk.ValidationException;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.model.LOGICAL_SIGN;
-import ecommander.pages.filter.AggregationPE;
-import ecommander.pages.filter.ParameterCriteriaPE;
-import ecommander.pages.filter.FilterPE;
-import ecommander.pages.filter.FulltextCriteriaPE;
 import ecommander.pages.variables.CookieStaticVariablePE;
 import ecommander.pages.variables.ItemVariablePE;
 import ecommander.pages.variables.ParameterVariablePE;
@@ -593,11 +591,11 @@ public class PageModelBuilder {
 	public static final String TREE_ELEMENT = "tree";
 	public static final String ANCESTOR_ELEMENT = "ancestor";
 	public static final String NEW_ELEMENT = "new";
-	public static final String PARENT_ELEMENT = "parent";
 	public static final String PARAMETER_ELEMENT = "parameter";
 	public static final String SORTING_ELEMENT = "sorting";
 	public static final String LIMIT_ELEMENT = "limit";
 	public static final String PREDECESSOR_ELEMENT = "predecessor";
+	public static final String SUCCESSOR_ELEMENT = "successor";
 	public static final String FILTER_ELEMENT = "filter";
 	public static final String PAGE_ELEMENT = "page";
 	public static final String PAGES_ELEMENT = "pages";
@@ -614,6 +612,8 @@ public class PageModelBuilder {
 	public static final String AGGREGATION_ELEMENT = "aggregation";
 	public static final String FULLTEXT_ELEMENT = "fulltext";
 	public static final String HEADERS_ELEMENT = "headers";
+	public static final String CHILD_ELEMENT = "child";
+	public static final String PARENT_ELEMENT = "parent";
 
 	public static final String ASSOC_ATTRIBUTE = "assoc";
 	public static final String CHILD_ATTRIBUTE = "child";
@@ -1006,96 +1006,131 @@ public class PageModelBuilder {
 		String userFilterVarName = filterNode.attr(VAR_ATTRIBUTE);
 		String preloadString = filterNode.attr(PRELOAD_DOMAINS_ATTRIBUTE);
 		boolean preload = preloadString != null && preloadString.equals(YES_VALUE);
-		if (!StringUtils.isBlank(userFilterItemId) && !StringUtils.isBlank(userFilterParamName) && !StringUtils.isBlank(userFilterVarName)) {
+		if (!StringUtils.isBlank(userFilterItemId)
+				&& !StringUtils.isBlank(userFilterParamName)
+				&& !StringUtils.isBlank(userFilterVarName)) {
 			filter.setUserFilter(userFilterItemId, userFilterParamName, userFilterVarName, preload);
 		}
 		for (Element filterSubnode : filterNode.getAllElements()) {
-			// Параметр
-			if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PARAMETER_ATTRIBUTE)) {
-				filter.addCriteria(readFilterCriteria((Element) filterSubnode));
-			}
-			// Параметр
+			// Опция
 			if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), OPTION_ATTRIBUTE)) {
-				filter.addCriteria(readFilterCriteria((Element) filterSubnode));
+				filter.addCriteria(readFilterCriteria(filterSubnode));
+				for (Element element : filterSubnode.getAllElements()) {
+					readFilterElement(filter, filterSubnode, element, includes);
+				}
 			}
 			// Полнотекстовый критерий
 			else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), FULLTEXT_ELEMENT)) {
-				filter.setFulltext(readFulltextCriteria((Element) filterSubnode));
+				filter.setFulltext(readFulltextCriteria(filterSubnode));
 			}
 			// Сортировка
-			else if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(SORTING_ELEMENT)) {
-				Element sortingNode = (Element) filterSubnode;
-				String direction = sortingNode.getAttribute(DIRECTION_ATTRIBUTE);
-				String directionVar = sortingNode.getAttribute(DIRECTION_VAR_ATTRIBUTE);
+			else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), SORTING_ELEMENT)) {
+				String direction = filterSubnode.attr(DIRECTION_ATTRIBUTE);
+				String directionVar = filterSubnode.attr(DIRECTION_VAR_ATTRIBUTE);
 				// Значение сортировки (переменная)
-				for (Node sortSubnode = sortingNode.getFirstChild(); sortSubnode != null; sortSubnode = sortSubnode.getNextSibling()) {
-					if (sortSubnode.getNodeType() == Node.ELEMENT_NODE && sortSubnode.getNodeName().equalsIgnoreCase(VAR_ELEMENT)) {
-						filter.addSorting(readVariable((Element)sortSubnode), direction, directionVar);
+				for (Element sortSubnode : filterSubnode.getAllElements()) {
+					if (StringUtils.equalsIgnoreCase(sortSubnode.tagName(), VAR_ELEMENT)) {
+						filter.addSorting(readVariable(sortSubnode), direction, directionVar);
 					}
 				}
 			}
 			// Лимит
-			else if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(LIMIT_ELEMENT)) {
-				Element limitNode = (Element) filterSubnode;
+			else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), LIMIT_ELEMENT)) {
 				// Значение лимита (переменная)
-				for (Node limitSubnode = limitNode.getFirstChild(); limitSubnode != null; limitSubnode = limitSubnode.getNextSibling()) {
-					if (limitSubnode.getNodeType() == Node.ELEMENT_NODE && limitSubnode.getNodeName().equalsIgnoreCase(VAR_ELEMENT)) {
-						filter.addLimit(readVariable((Element)limitSubnode));
+				for (Element limitSubnode : filterSubnode.getAllElements()) {
+					if (StringUtils.equalsIgnoreCase(limitSubnode.tagName(), VAR_ELEMENT)) {
+						filter.addLimit(readVariable(limitSubnode));
 					}
 				}
 			}
 			// Ссылка (когда есть пользовательскй фильтр)
-			else if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(LINK_ELEMENT)) {
-				filter.addElement(readLink((Element) filterSubnode, includes));
-			}
-			// Предшественник
-			else if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(PREDECESSOR_ELEMENT)) {
-				Compare compare = null;
-				Element predecessor = (Element) filterSubnode;
-				if (!StringUtils.isBlank(predecessor.getAttribute(COMPARE_ATTRIBUTE))) {
-					try {
-						compare = Compare.valueOf(predecessor.getAttribute(COMPARE_ATTRIBUTE));
-					} catch (Exception e) {
-						throw new PrimaryValidationException(page.getPageName() + " > filter", " criteria '" + COMPARE_ATTRIBUTE
-								+ "' has invalid value");
-					}
-				}
-				filter.addPredecessor(predecessor.getAttribute(ITEM_ATTRIBUTE), predecessor.getAttribute(SIGN_ATTRIBUTE), compare);
-			}
-			// Последователь
-			else if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(SUCCESSOR_ELEMENT)) {
-				Compare compare = null;
-				Element successor = (Element) filterSubnode;
-				if (!StringUtils.isBlank(successor.getAttribute(COMPARE_ATTRIBUTE))) {
-					try {
-						compare = Compare.valueOf(successor.getAttribute(COMPARE_ATTRIBUTE));
-					} catch (Exception e) {
-						throw new PrimaryValidationException(page.getPageName() + " > filter", " criteria '" + COMPARE_ATTRIBUTE
-								+ "' has invalid value");
-					}
-				}
-				filter.addSuccessors(successor.getAttribute(ITEM_ATTRIBUTE), successor.getAttribute(SIGN_ATTRIBUTE), compare);
+			else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), LINK_ELEMENT)) {
+				filter.addElement(readLink(filterSubnode, includes));
 			}
 			// Номер страницы
-			else if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(PAGES_ELEMENT)) {
-				Element pageNode = (Element) filterSubnode;
+			else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PAGES_ELEMENT)) {
 				// Переменная страницы
-				for (Node pageSubnode = pageNode.getFirstChild(); pageSubnode != null; pageSubnode = pageSubnode.getNextSibling()) {
-					if (pageSubnode.getNodeType() == Node.ELEMENT_NODE && pageSubnode.getNodeName().equalsIgnoreCase(VAR_ELEMENT)) {
-						filter.addPage(readVariable((Element)pageSubnode));
+				for (Element pageSubnode : filterSubnode.getAllElements()) {
+					if (StringUtils.equalsIgnoreCase(pageSubnode.tagName(), VAR_ELEMENT)) {
+						filter.addPage(readVariable(pageSubnode));
 					}
 				}
 			}
 			// <include>
-			else if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(INCLUDE_ELEMENT)) {
-				appendInclude(filterNode, (Element) filterSubnode, includes);
-			// Не допускать другие тэги
-			} else if (filterSubnode.getNodeType() == Node.ELEMENT_NODE) {
-				throw new PrimaryValidationException(page.getPageName() + " > filter", "'" + filterSubnode.getNodeName()
+			else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), INCLUDE_ELEMENT)) {
+				appendInclude(filterNode, filterSubnode, includes);
+			// Основные критерии и не допускать другие тэги
+			} else if (!readFilterElement(filter, filterNode, filterSubnode, includes)) {
+				throw new PrimaryValidationException(page.getPageName() + " > filter", "'" + filterSubnode.tagName()
 						+ "' is not a valid subelement of &lt;filter&gt; element");
 			}
 		}
 		return filter;
+	}
+
+	/**
+	 * Прочитать подэлемент фильтра
+	 * @param filter
+	 * @param parentNode
+	 * @param filterSubnode
+	 * @param includes
+	 * @return
+	 * @throws PrimaryValidationException
+	 */
+	private boolean readFilterElement(FilterPE filter, Element parentNode, Element filterSubnode, HashMap<String, Element> includes) throws PrimaryValidationException {
+		// Параметр
+		if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PARAMETER_ATTRIBUTE)) {
+			filter.addCriteria(readFilterCriteria(filterSubnode));
+		}
+		// Критерии ассоциированного потомка айтема
+		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), CHILD_ELEMENT)) {
+			filter.addElement(new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), filterSubnode.attr(ASSOC_ATTRIBUTE), false));
+			for (Element element : filterSubnode.getAllElements()) {
+				readFilterElement(filter, filterSubnode, element, includes);
+			}
+		}
+		// Критерии ассоциированного предка айтема
+		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PARENT_ELEMENT)) {
+			filter.addElement(new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), filterSubnode.attr(ASSOC_ATTRIBUTE), true));
+			for (Element element : filterSubnode.getAllElements()) {
+				readFilterElement(filter, filterSubnode, element, includes);
+			}
+		}
+		// Предшественник
+		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PREDECESSOR_ELEMENT)) {
+			Compare compare = null;
+			if (!StringUtils.isBlank(filterSubnode.attr(COMPARE_ATTRIBUTE))) {
+				try {
+					compare = Compare.valueOf(filterSubnode.attr(COMPARE_ATTRIBUTE));
+				} catch (Exception e) {
+					throw new PrimaryValidationException(page.getPageName() + " > filter", " criteria '" + COMPARE_ATTRIBUTE
+							+ "' has invalid value");
+				}
+			}
+			filter.addPredecessor(filterSubnode.attr(ASSOC_ATTRIBUTE), filterSubnode.attr(ITEM_ATTRIBUTE),
+					filterSubnode.attr(SIGN_ATTRIBUTE), compare);
+		}
+		// Последователь
+		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), SUCCESSOR_ELEMENT)) {
+			Compare compare = null;
+			if (!StringUtils.isBlank(filterSubnode.attr(COMPARE_ATTRIBUTE))) {
+				try {
+					compare = Compare.valueOf(filterSubnode.attr(COMPARE_ATTRIBUTE));
+				} catch (Exception e) {
+					throw new PrimaryValidationException(page.getPageName() + " > filter", " criteria '" + COMPARE_ATTRIBUTE
+							+ "' has invalid value");
+				}
+			}
+			filter.addSuccessors(filterSubnode.attr(ASSOC_ATTRIBUTE), filterSubnode.attr(ITEM_ATTRIBUTE),
+					filterSubnode.attr(SIGN_ATTRIBUTE), compare);
+		}
+		// <include>
+		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), INCLUDE_ELEMENT)) {
+			appendInclude(parentNode, filterSubnode, includes);
+		} else {
+			return false;
+		}
+		return true;
 	}
 	/**
 	 * Прочитать критерий фильтра
@@ -1298,7 +1333,7 @@ public class PageModelBuilder {
 	 * @return
 	 * @throws PrimaryValidationException 
 	 */
-	private VariablePE readVariable(Element variableNode) throws PrimaryValidationException {
+	private Variable readVariable(Element variableNode) throws PrimaryValidationException {
 		String varName = variableNode.getAttribute(NAME_ATTRIBUTE);
 		String itemId = variableNode.getAttribute(ITEM_ATTRIBUTE);
 		String otherVar = variableNode.getAttribute(VAR_ATTRIBUTE);

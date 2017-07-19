@@ -23,7 +23,7 @@ import java.util.List;
 class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 
 	protected final List<FilterCriteria> criterias;
-	protected final ArrayList<AssociatedItemParameterCriteria> assocCriterias;
+	protected final ArrayList<AssociatedItemCriteriaGroup> assocCriterias;
 	protected final String groupId; // ID группы, нужен для названия таблиц параметров
 	protected final ItemType item;
 
@@ -82,9 +82,9 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	 * @param type
 	 * @return
 	 */
-	public AssociatedItemParameterCriteria addAssociatedCriteria(ItemType item, byte assocId, AssociatedItemParameterCriteria.Type type) {
-		String critId = (type == AssociatedItemParameterCriteria.Type.CHILD ? 'C' : 'P') + assocCriterias.size() + groupId;
-		AssociatedItemParameterCriteria newCrit = new AssociatedItemParameterCriteria(critId, item, assocId, type, null, this.item);
+	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, byte assocId, AssociatedItemCriteriaGroup.Type type) {
+		String critId = (type == AssociatedItemCriteriaGroup.Type.CHILD ? 'C' : 'P') + assocCriterias.size() + groupId;
+		AssociatedItemCriteriaGroup newCrit = new AssociatedItemCriteriaGroup(critId, item, assocId, type, null, this.item);
 		assocCriterias.add(newCrit);
 		return newCrit;
 	}
@@ -118,7 +118,7 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 			if (criteria.isNotBlank())
 				return true;
 		}
-		for (AssociatedItemParameterCriteria criteria : assocCriterias) {
+		for (AssociatedItemCriteriaGroup criteria : assocCriterias) {
 			if (criteria.isNotBlank())
 				return true;
 		}
@@ -130,7 +130,7 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 			if (criteria.isEmptySet())
 				return true;
 		}
-		for (AssociatedItemParameterCriteria criteria : assocCriterias) {
+		for (AssociatedItemCriteriaGroup criteria : assocCriterias) {
 			if (criteria.isEmptySet())
 				return true;
 		}

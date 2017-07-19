@@ -49,11 +49,6 @@ public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 	protected String sign;
 	protected String pattern; // Для строковых критериев со знаком like. Формат: %v% - сначала символ %, потом значение параметра, потом опять %
 	protected Compare compareType = Compare.ANY;
-
-	private String assoc; // Для критериев параметра потомка (ассоциация)
-	private String itemName; // Для критериев параметра потомка (имя айетма потомка)
-	private boolean isTransitive = true; // Для критериев параметра потомка (транзитивна ли ассоциация)
-	boolean isDescendant = false;
 	/**
 	 * Конструктор создания исполяемой копии
 	 * @param template
@@ -74,13 +69,6 @@ public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 		this.compareType = compType;
 	}
 
-	private void setDescendantAttributes(String assocName, String itemName, boolean isTransitive) {
-		this.assoc = assocName;
-		this.itemName = itemName;
-		this.isTransitive = isTransitive;
-		isDescendant = true;
-	}
-
 	public final List<String> getValueArray() {
 		ArrayList<String> result = new ArrayList<>();
 		for (Variable var : values) {
@@ -94,15 +82,7 @@ public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 	public void addValue(Variable value) {
 		values.add(value);
 	}
-	
-	public boolean isValid() {
-		for (Variable var : values) {
-			if (!var.isEmpty())
-				return true;
-		}
-		return false;
-	}
-	
+
 	public abstract ParameterDescription getParam(ItemType itemDesc);
 
 	public final String getSign() {
@@ -121,25 +101,8 @@ public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 		return compareType;
 	}
 
-	public final boolean isDescendant() {
-		return isDescendant;
-	}
-
-	public final String getDescendantName() {
-		return itemName;
-	}
-
-	public final String getDescendantAssoc() {
-		return assoc;
-	}
-
-	public final boolean isDescendantTransitive() {
-		return isTransitive;
-	}
-
 	public static ParameterCriteriaPE create(String paramName, String paramNameVar, String paramIdVar, String sign,
-	                                         String pattern, Compare compType, String child, String assoc,
-	                                         boolean isTransitive) {
+	                                         String pattern, Compare compType) {
 		ParameterCriteriaPE instance;
 		if (compType == null)
 			compType = Compare.ANY;
@@ -151,9 +114,6 @@ public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 			instance = new IdVariableParameterCriteriaPE(paramIdVar, sign, pattern, compType);
 		} else {
 			throw new IllegalArgumentException("Neither paramName nor paramNameVar supplied for filter criteria parameter");
-		}
-		if (StringUtils.isNotBlank(child)) {
-			instance.setDescendantAttributes(assoc, child, isTransitive);
 		}
 		return instance;
 	}
@@ -168,9 +128,6 @@ public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 
 	@Override
 	public void process(FilterCriteriaContainer cont) throws EcommanderException {
-		if (isDescendant)
-			cont.processDescendantParameterCriteria(this);
-		else
-			cont.processParameterCriteria(this);
+		cont.processParameterCriteria(this);
 	}
 }

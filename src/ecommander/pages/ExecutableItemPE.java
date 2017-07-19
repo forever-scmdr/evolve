@@ -505,8 +505,10 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 					query.setNeedTree(true);
 			}
 			// Установка фильтра, если он должен быть
-			if (needLoading && hasFilter())
-				needLoading = getFilter().appendCriteriasToQuery(query);
+			if (needLoading && hasFilter()) {
+				getFilter().appendCriteriasToQuery(query);
+				needLoading = query.isEmptySet();
+			}
 			// Установка группировки, если она должна быть
 			if (needLoading && hasAggregation())
 				needLoading = getAggregation().appendCriteriasToQuery(query);

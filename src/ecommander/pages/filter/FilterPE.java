@@ -100,7 +100,6 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	private ExecutablePagePE parentPage;
 
 	private ItemQuery dbQuery;
-	private Boolean isValid = null;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -227,7 +226,7 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	 * @throws EcommanderException
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean appendCriteriasToQuery(ItemQuery dbQuery) throws Exception {
+	public void appendCriteriasToQuery(ItemQuery dbQuery) throws Exception {
 
 		this.dbQuery = dbQuery;
 
@@ -253,9 +252,7 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		for (PageElement element : getAllNested()) {
 			((FilterCriteriaPE) element).process(this);
 		}
-		if (isValid != null && !isValid)
-			return false;
-		
+
 		// Лимит
 		if (hasLimit()) {
 			int page = 1;
@@ -263,8 +260,6 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 				page = getPage();
 			dbQuery.setLimit(getLimit(), page);
 		}
-		
-		return true;
 	}
 
 	public String getKey() {
@@ -343,18 +338,9 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 
 	@Override
 	public void processParameterCriteria(ParameterCriteriaPE crit) {
-		if (crit.isValid()) {
-			// Переменная-значение критерия может хранить как один параметр, так и массив параметров
-			dbQuery.addParameterCriteria(crit.getParam(dbQuery.getItemToFilter()), crit.getValueArray(), crit.getSign(),
-					crit.getPattern(), crit.getCompareType());
-			isValid = true;
-		}
-		// Если критерий имеет тип сравнения SOME или EVERY и не является валидным (не содержит образец для сравнения),
-		// то фильтр должен вернуть пустое множество, при условии что критерии фильтра соединяются логическим знаком И,
-		// (т. е. в большинстве случаев)
-		else if ((crit.getCompareType() == Compare.SOME || crit.getCompareType() == Compare.EVERY)) {
-			isValid = false;
-		}
+		// Переменная-значение критерия может хранить как один параметр, так и массив параметров
+		dbQuery.addParameterCriteria(crit.getParam(dbQuery.getItemToFilter()), crit.getValueArray(), crit.getSign(),
+				crit.getPattern(), crit.getCompareType());
 	}
 
 	@Override
@@ -380,5 +366,26 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	public void processFulltextCriteriaPE(FulltextCriteriaPE crit) throws Exception {
 		dbQuery.setFulltextCriteria(crit.getTypes(), crit.getQueries(), crit.getMaxResultCount(), crit.getParamName(),
 				crit.getCompareType(), crit.getThreshold());
+	}
+
+	@Override
+	public void processOption(FilterOptionPE option) throws Exception {
+		dbQuery.startOption();
+		for (PageElement element : option.getAllNested()) {
+			option.process(this);
+		}
+		dbQuery.endOption();
+	}
+
+	@Override
+	public void processAssociatedCriteria(AssociatedItemCriteriaPE associated) throws Exception {
+		if (associated.isParent())
+			dbQuery.startParentCriteria(associated.getItemName(), associated.getAssocName());
+		else
+			dbQuery.startChildCriteria(associated.getItemName(), associated.getAssocName());
+		for (PageElement element : associated.getAllNested()) {
+			associated.process(this);
+		}
+		dbQuery.endCurrentCriteria();
 	}
 }

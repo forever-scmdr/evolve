@@ -60,7 +60,8 @@ public abstract class PageElementContainer implements PageElement {
 	 * Проверка самого элемента, без вложенных
 	 * Метод аналогичен методу validate
 	 * @param elementPath
-	 * @param errorMessages
+	 * @param results
+	 * @return
 	 */
 	protected abstract boolean validateShallow(String elementPath, ValidationResults results);
 }

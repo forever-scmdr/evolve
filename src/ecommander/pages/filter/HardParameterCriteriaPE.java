@@ -23,7 +23,7 @@ class HardParameterCriteriaPE extends ParameterCriteriaPE {
 	
 	private HardParameterCriteriaPE(HardParameterCriteriaPE template, ExecutablePagePE parentPage) {
 		super(template, parentPage);
-		this.paramName = ((HardParameterCriteriaPE) template).paramName;
+		this.paramName = template.paramName;
 	}
 	
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
