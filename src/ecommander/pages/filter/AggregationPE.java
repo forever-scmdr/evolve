@@ -7,6 +7,7 @@ import ecommander.pages.PageElement;
 import ecommander.pages.PageElementContainer;
 import ecommander.pages.ValidationResults;
 import ecommander.pages.var.ValueOrRef;
+import ecommander.pages.var.Variable;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 /**
@@ -45,26 +46,26 @@ public class AggregationPE extends PageElementContainer {
 		void addAggregate(AggregationPE aggregate);
 	}
 	
-	private ValueOrRef groupParameter; // к этому параметру применяется агрегирующия функция
+	private Variable groupParameter; // к этому параметру применяется агрегирующия функция
 	private String function; // Функция группировки
-	private ValueOrRef sortingParameter = null;
-	private ValueOrRef sortingDirection = null;
+	private Variable sortingParameter = null;
+	private Variable sortingDirection = null;
 
-	public AggregationPE(ValueOrRef parameter) {
+	public AggregationPE(Variable parameter) {
 		super();
 		this.groupParameter = parameter;
 	}
 
 	@Override
 	protected PageElementContainer createExecutableShallowClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		AggregationPE clone = new AggregationPE((ValueOrRef) groupParameter.getInited(parentPage));
+		AggregationPE clone = new AggregationPE(groupParameter.getInited(parentPage));
 		clone.setFunction(function);
 		if (container != null)
 			((AggregationContainer)container).addAggregate(clone);
 		if (sortingParameter != null)
-			clone.sortingParameter = (ValueOrRef) sortingParameter.getInited(parentPage);
+			clone.sortingParameter = sortingParameter.getInited(parentPage);
 		if (sortingDirection != null)
-			clone.sortingDirection = (ValueOrRef) sortingDirection.getInited(parentPage);
+			clone.sortingDirection = sortingDirection.getInited(parentPage);
 		return clone;
 	}
 
@@ -112,7 +113,7 @@ public class AggregationPE extends PageElementContainer {
 		return sortingDirection.writeSingleValue();
 	}
 	
-	public void addSorting(ValueOrRef sortingVar, String sortingDirection, String directionVarName) {
+	public void addSorting(Variable sortingVar, String sortingDirection, String directionVarName) {
 		this.sortingParameter = sortingVar;
 		if (!StringUtils.isBlank(sortingDirection))
 			this.sortingDirection = ValueOrRef.newValue(sortingDirection);
@@ -134,7 +135,7 @@ public class AggregationPE extends PageElementContainer {
 		for (PageElement criteriaPE : getAllNested()) {
 			ParameterCriteriaPE crit = (ParameterCriteriaPE)criteriaPE;
 			// Переменная-значение критерия может хранить как один параметр, так и массив параметров
-			if (crit.isValid())
+			if (crit.hasValues())
 				dbQuery.addAggregationGroupBy(crit.getParam(dbQuery.getItemToFilter()), crit.getValueArray(), crit.getSign(),
 						crit.getPattern(), /*Compare.ALL ???*/ Compare.SOME);
 			else {

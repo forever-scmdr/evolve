@@ -47,9 +47,4 @@ class VariableParameterCriteriaPE extends ParameterCriteriaPE {
 		return itemDesc.getParameter(pageModel.getVariable(paramNameVar).writeSingleValue());
 	}
 
-	@Override
-	public boolean isValid() {
-		return super.isValid() && !pageModel.getVariable(paramNameVar).isEmpty();
-	}
-
 }

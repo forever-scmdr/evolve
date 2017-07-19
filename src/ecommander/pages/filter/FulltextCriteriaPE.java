@@ -8,6 +8,7 @@ import ecommander.pages.PageElement;
 import ecommander.pages.PageElementContainer;
 import ecommander.pages.ValidationResults;
 import ecommander.pages.var.ValueOrRef;
+import ecommander.pages.var.Variable;
 import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
 import org.apache.commons.lang3.StringUtils;
 /**
@@ -19,7 +20,7 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 
 	public static final String ELEMENT_NAME = "fulltext";
 	
-	private ValueOrRef query;
+	private Variable query;
 	private String paramName;
 	private int maxResultCount;
 	private String typesStr = FulltextQueryCreatorRegistry.DEFAULT;
@@ -27,7 +28,7 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 	private Compare compType = Compare.ANY;
 	private float threshold = -1;
 	
-	public FulltextCriteriaPE(String types, ValueOrRef queryVar, int maxResultCount, String paramName, Compare compType, float threshold) {
+	public FulltextCriteriaPE(String types, Variable queryVar, int maxResultCount, String paramName, Compare compType, float threshold) {
 		this.query = queryVar;
 		this.paramName = paramName;
 		this.maxResultCount = maxResultCount;

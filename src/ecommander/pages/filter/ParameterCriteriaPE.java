@@ -130,4 +130,8 @@ public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 	public void process(FilterCriteriaContainer cont) throws EcommanderException {
 		cont.processParameterCriteria(this);
 	}
+
+	final boolean hasValues() {
+		return values.size() > 0;
+	}
 }

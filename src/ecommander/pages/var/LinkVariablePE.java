@@ -26,20 +26,12 @@ public class LinkVariablePE extends VariablePE {
 		this.value = value;
 	}
 
-	public static LinkVariablePE createItemVar(String varName, Style style, String refItem) {
-		return new LinkVariablePE(varName, style, refItem, null, null, null);
-	}
-
-	public static LinkVariablePE createParamVar(String varName, Style style, String refItem, String refParam) {
-		return new LinkVariablePE(varName, style, refItem, refParam, null, null);
-	}
-
 	public static LinkVariablePE createVarVar(String varName, Style style, String refVar) {
 		return new LinkVariablePE(varName, style, null, null, refVar, null);
 	}
 
-	public static LinkVariablePE createPlain(String varName, String style, String refItem, String refParam, String refVar, String value) {
-		return new LinkVariablePE(varName, Style.getValue(style), refItem, refParam, refVar, value);
+	public static LinkVariablePE createCommon(String varName, String styleStr, String refItem, String refParam, String refVar, String value) {
+		return new LinkVariablePE(varName, Style.getValue(styleStr), refItem, refParam, refVar, value);
 	}
 
 	@Override

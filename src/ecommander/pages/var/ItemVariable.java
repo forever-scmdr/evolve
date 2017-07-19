@@ -25,13 +25,13 @@ public class ItemVariable extends Variable {
 
 	private ArrayList<Object> valuesCache = null;
 
-	protected ItemVariable(String itemPageId, String paramName) {
+	public ItemVariable(String itemPageId, String paramName) {
 		super("unnamed");
 		this.itemPageId = itemPageId;
 		this.paramName = paramName;
 	}
 
-	protected ItemVariable(String itemPageId, String paramName, ExecutablePagePE parentPage) {
+	public ItemVariable(String itemPageId, String paramName, ExecutablePagePE parentPage) {
 		super(parentPage, "unnamed");
 		this.itemPageId = itemPageId;
 		this.paramName = paramName;

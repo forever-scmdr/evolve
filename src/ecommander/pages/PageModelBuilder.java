@@ -11,7 +11,7 @@ import java.util.Set;
 import ecommander.fwk.Strings;
 import ecommander.model.Compare;
 import ecommander.pages.filter.*;
-import ecommander.pages.var.Variable;
+import ecommander.pages.var.*;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.ServerLogger;
@@ -27,7 +27,6 @@ import ecommander.pages.variables.SessionStaticVariablePE;
 import ecommander.pages.variables.StaticItemVariablePE;
 import ecommander.pages.variables.StaticParameterVariablePE;
 import ecommander.pages.variables.StaticVariablePE;
-import ecommander.pages.var.VariablePE;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.model.UserGroupRegistry;
 import org.jsoup.Jsoup;
@@ -634,7 +633,6 @@ public class PageModelBuilder {
 	public static final String TAG_ATTRIBUTE = "tag";
 	public static final String TEMPLATE_ATTRIBUTE = "template";
 	public static final String AUTHORITY_GROUPS_ATTRIBUTE = "authority-groups";
-	public static final String OPERATION_ATTRIBUTE = "operation";
 	public static final String PARENT_REF_ATTRIBUTE = "parent-ref";
 	public static final String CACHEABLE_ATTRIBUTE = "cacheable";
 	public static final String VIRTUAL_ATTRIBUTE = "virtual";
@@ -1139,12 +1137,12 @@ public class PageModelBuilder {
 	 * @throws PrimaryValidationException 
 	 */
 	private ParameterCriteriaPE readFilterCriteria(Element criteriaNode) throws PrimaryValidationException {
-		String paramName = criteriaNode.getAttribute(NAME_ATTRIBUTE);
-		String paramNameVar = criteriaNode.getAttribute(NAME_VAR_ATTRIBUTE);
-		String paramIdVar = criteriaNode.getAttribute(ID_VAR_ATTRIBUTE);
-		String paramSign = criteriaNode.getAttribute(SIGN_ATTRIBUTE);
-		String paramPattern = criteriaNode.getAttribute(PATTERN_ATTRIBUTE);
-		String compareTypeStr = criteriaNode.getAttribute(COMPARE_ATTRIBUTE);
+		String paramName = criteriaNode.attr(NAME_ATTRIBUTE);
+		String paramNameVar = criteriaNode.attr(NAME_VAR_ATTRIBUTE);
+		String paramIdVar = criteriaNode.attr(ID_VAR_ATTRIBUTE);
+		String paramSign = criteriaNode.attr(SIGN_ATTRIBUTE);
+		String paramPattern = criteriaNode.attr(PATTERN_ATTRIBUTE);
+		String compareTypeStr = criteriaNode.attr(COMPARE_ATTRIBUTE);
 		Compare compare = null;
 		if (!StringUtils.isBlank(compareTypeStr)) {
 			try {
@@ -1157,12 +1155,12 @@ public class PageModelBuilder {
 		// Критерий фильтра
 		ParameterCriteriaPE crit = ParameterCriteriaPE.create(paramName, paramNameVar, paramIdVar, paramSign, paramPattern, compare);
 		// Значение параметра (переменная)
-		for (Node filterSubnode = criteriaNode.getFirstChild(); filterSubnode != null; filterSubnode = filterSubnode.getNextSibling()) {
-			if (filterSubnode.getNodeType() == Node.ELEMENT_NODE && filterSubnode.getNodeName().equalsIgnoreCase(VAR_ELEMENT)) {
-				crit.addValue(readVariable((Element) filterSubnode));
+		for (Element filterSubnode : criteriaNode.getAllElements()) {
+			if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), VAR_ELEMENT)) {
+				crit.addValue(readVariable(filterSubnode));
 			// Не допускать другие тэги
-			} else if (filterSubnode.getNodeType() == Node.ELEMENT_NODE) {
-				throw new PrimaryValidationException(page.getPageName() + " > filter", "'" + filterSubnode.getNodeName()
+			} else {
+				throw new PrimaryValidationException(page.getPageName() + " > filter", "'" + filterSubnode.tagName()
 						+ "' is not a valid subelement of &lt;parameter&gt; element");
 			}
 		}
@@ -1170,51 +1168,46 @@ public class PageModelBuilder {
 	}
 	/**
 	 * Считывает фильтр
-	 * @param filterNode
+	 * @param aggregationNode
 	 * @param includes
 	 * @return
 	 * @throws PrimaryValidationException 
 	 */
 	private AggregationPE readAggregation(Element aggregationNode, HashMap<String, Element> includes) throws PrimaryValidationException {
-		String parameter = aggregationNode.getAttribute(PARAMETER_ATTRIBUTE);
-		String parameterVar = aggregationNode.getAttribute(PARAMETER_VAR_ATTRIBUTE);
-		String function = aggregationNode.getAttribute(FUNCTION_ATTRIBUTE);
-		String operationString = aggregationNode.getAttribute(OPERATION_ATTRIBUTE);
+		String parameter = aggregationNode.attr(PARAMETER_ATTRIBUTE);
+		String parameterVar = aggregationNode.attr(PARAMETER_VAR_ATTRIBUTE);
+		String function = aggregationNode.attr(FUNCTION_ATTRIBUTE);
 		if (StringUtils.isBlank(parameter) && StringUtils.isBlank(parameterVar))
 			throw new PrimaryValidationException("Aggregation",	"Aggregation parameter is not set");
-		VariablePE paramVar = null;
+		ValueOrRef paramVar;
 		if (!StringUtils.isBlank(parameter))
-			paramVar = new StaticVariablePE("parameter", parameter);
+			paramVar = ValueOrRef.newValue(parameter);
 		else
-			paramVar = new ReferenceVariablePE("parameter", parameterVar);
+			paramVar = ValueOrRef.newRef(parameterVar);
 		AggregationPE agg = new AggregationPE(paramVar);
-		if (!StringUtils.isBlank(operationString))
-			agg.setOperation(LOGICAL_SIGN.valueOf(operationString));
 		if (!StringUtils.isBlank(function))
 			agg.setFunction(function);
-		for (int j = 0; j < aggregationNode.getChildNodes().getLength(); j++) {
-			Node aggSubnode = aggregationNode.getChildNodes().item(j);
-			if (aggSubnode.getNodeType() == Node.ELEMENT_NODE && aggSubnode.getNodeName().equalsIgnoreCase(PARAMETER_ELEMENT)) {
-				agg.addGroupBy(readFilterCriteria((Element) aggSubnode));
-			} else if (aggSubnode.getNodeType() == Node.ELEMENT_NODE && aggSubnode.getNodeName().equalsIgnoreCase(INCLUDE_ELEMENT)) {
-				appendInclude(aggregationNode, (Element) aggSubnode, includes);
+		for (Element aggSubnode : aggregationNode.getAllElements()) {
+			if (StringUtils.equalsIgnoreCase(aggSubnode.tagName(), PARAMETER_ELEMENT)) {
+				agg.addGroupBy(readFilterCriteria(aggSubnode));
+			} else if (StringUtils.equalsIgnoreCase(aggSubnode.tagName(), INCLUDE_ELEMENT)) {
+				appendInclude(aggregationNode, aggSubnode, includes);
 			}
 			// Сортировка
-			else if (aggSubnode.getNodeType() == Node.ELEMENT_NODE && aggSubnode.getNodeName().equalsIgnoreCase(SORTING_ELEMENT)) {
-				Element sortingNode = (Element) aggSubnode;
-				String direction = sortingNode.getAttribute(DIRECTION_ATTRIBUTE);
-				String directionVar = sortingNode.getAttribute(DIRECTION_VAR_ATTRIBUTE);
-				VariablePE sortingParam = null;
+			else if (StringUtils.equalsIgnoreCase(aggSubnode.tagName(), SORTING_ELEMENT)) {
+				String direction = aggSubnode.attr(DIRECTION_ATTRIBUTE);
+				String directionVar = aggSubnode.attr(DIRECTION_VAR_ATTRIBUTE);
+				Variable sortingParam = null;
 				// Значение сортировки (переменная)
-				for (Node sortSubnode = sortingNode.getFirstChild(); sortSubnode != null; sortSubnode = sortSubnode.getNextSibling()) {
-					if (sortSubnode.getNodeType() == Node.ELEMENT_NODE && sortSubnode.getNodeName().equalsIgnoreCase(VAR_ELEMENT)) {
-						sortingParam = readVariable((Element)sortSubnode);
+				for (Element sortSubnode : aggSubnode.getAllElements()) {
+					if (StringUtils.equalsIgnoreCase(sortSubnode.tagName(), VAR_ELEMENT)) {
+						sortingParam = readVariable(sortSubnode);
 					}
 				}
 				agg.addSorting(sortingParam, direction, directionVar);
 			// Не допускать другие тэги
-			} else if (aggSubnode.getNodeType() == Node.ELEMENT_NODE) {
-				throw new PrimaryValidationException(page.getPageName() + " > aggregation", "'" + aggSubnode.getNodeName()
+			} else {
+				throw new PrimaryValidationException(page.getPageName() + " > aggregation", "'" + aggSubnode.tagName()
 						+ "' is not a valid subelement of &lt;aggregation&gt; element");
 			}
 		}
@@ -1227,10 +1220,10 @@ public class PageModelBuilder {
 	 * @throws PrimaryValidationException
 	 */
 	private FulltextCriteriaPE readFulltextCriteria(Element fulltextNode) throws PrimaryValidationException {
-		String paramName = fulltextNode.getAttribute(NAME_ATTRIBUTE);
-		String type = fulltextNode.getAttribute(TYPE_ATTRIBUTE);
-		String compareTypeStr = fulltextNode.getAttribute(COMPARE_ATTRIBUTE);
-		String thresholdStr = fulltextNode.getAttribute(THRESHOLD_ATTRIBUTE);
+		String paramName = fulltextNode.attr(NAME_ATTRIBUTE);
+		String types = fulltextNode.attr(TYPE_ATTRIBUTE);
+		String compareTypeStr = fulltextNode.attr(COMPARE_ATTRIBUTE);
+		String thresholdStr = fulltextNode.attr(THRESHOLD_ATTRIBUTE);
 		Compare compare = null;
 		if (!StringUtils.isBlank(compareTypeStr)) {
 			try {
@@ -1248,24 +1241,24 @@ public class PageModelBuilder {
 				throw new PrimaryValidationException(page.getPageName() + " > filter > fulltext", "'threshold' attribute must have a valid value");
 			}
 		}
-		int limit = 0;
+		int limit;
 		try {
-			limit = Integer.parseInt(fulltextNode.getAttribute(LIMIT_ELEMENT));
+			limit = Integer.parseInt(fulltextNode.attr(LIMIT_ELEMENT));
 		} catch (Exception e) {
 			throw new PrimaryValidationException(page.getPageName() + " > filter > fulltext", "'limit' attribute must have a valid value");
 		}
 		// Значение параметра (переменная)
-		VariablePE queryVar = null;
-		for (Node ftSubnode = fulltextNode.getFirstChild(); ftSubnode != null; ftSubnode = ftSubnode.getNextSibling()) {
-			if (ftSubnode.getNodeType() == Node.ELEMENT_NODE && ftSubnode.getNodeName().equalsIgnoreCase(VAR_ELEMENT)) {
-				queryVar = readVariable((Element) ftSubnode);
+		Variable queryVar = null;
+		for (Element ftSubnode : fulltextNode.getAllElements()) {
+			if (StringUtils.equalsIgnoreCase(ftSubnode.tagName(), VAR_ELEMENT)) {
+				queryVar = readVariable(ftSubnode);
 			// Не допускать другие тэги
-			} else if (ftSubnode.getNodeType() == Node.ELEMENT_NODE) {
-				throw new PrimaryValidationException(page.getPageName() + " > filter", "'" + ftSubnode.getNodeName()
+			} else {
+				throw new PrimaryValidationException(page.getPageName() + " > filter", "'" + ftSubnode.tagName()
 						+ "' is not a valid subelement of &lt;parameter&gt; element");
 			}
 		}
-		return new FulltextCriteriaPE(type, queryVar, limit, paramName, compare, threshold);
+		return new FulltextCriteriaPE(types, queryVar, limit, paramName, compare, threshold);
 	}
 	/**
 	 * Считывает ссылку
@@ -1275,53 +1268,59 @@ public class PageModelBuilder {
 	 * @throws PrimaryValidationException
 	 */
 	private LinkPE readLink(Element linkNode, HashMap<String, Element> includes) throws PrimaryValidationException {
-		String target = linkNode.getAttribute(TARGET_ATTRIBUTE);
-		String targetVar = linkNode.getAttribute(TARGET_VAR_ATTRIBUTE);
-		String typeStr = linkNode.getAttribute(TYPE_ATTRIBUTE);
-		boolean copyVars = StringUtils.equalsIgnoreCase(linkNode.getAttribute(COPY_PAGE_VARS_ATTRIBUTE), YES_VALUE);
+		String target = linkNode.attr(TARGET_ATTRIBUTE);
+		String targetVar = linkNode.attr(TARGET_VAR_ATTRIBUTE);
+		String typeStr = linkNode.attr(TYPE_ATTRIBUTE);
+		boolean copyVars = StringUtils.equalsIgnoreCase(linkNode.attr(COPY_PAGE_VARS_ATTRIBUTE), YES_VALUE);
 		LinkPE.Type type = null;
 		try {
 			if (!StringUtils.isBlank(typeStr))
 				type = LinkPE.Type.valueOf(typeStr);
 			// Проверка, правильно ли указан стиль переменной
 		} catch (Exception e) {
-			throw new PrimaryValidationException(page.getPageName() + " > link", "'" + linkNode.getAttribute(STYLE_ATTRIBUTE)
+			throw new PrimaryValidationException(page.getPageName() + " > link", "'" + linkNode.attr(STYLE_ATTRIBUTE)
 					+ "' is not a valid type of &lt;link&gt; element");
 		}
-		boolean isFilterLink = linkNode.getParentNode().getNodeName().equals(FILTER_ELEMENT);
-		boolean isItemFormLink = linkNode.getParentNode().getNodeName().equals(FORM_ELEMENT);
-		// Проверка, правильно ли вложена ссылка для формы
-		if (type == LinkPE.Type.itemform && !isItemFormLink) {
-			throw new PrimaryValidationException(page.getPageName() + " > link", "'itemform' link must be located inside &lt;form&gt; element");
-		} 
+		boolean isFilterLink = StringUtils.equalsAnyIgnoreCase(linkNode.parent().tagName(), FILTER_ELEMENT);
 		// Проверка, правильно ли вложена ссылка для фильтра
-		else if (type == LinkPE.Type.filter && !isFilterLink) {
+		if (type == LinkPE.Type.filter && !isFilterLink) {
 			throw new PrimaryValidationException(page.getPageName() + " > link", "'filter' link must be located inside &lt;filter&gt; element");
 		}
-		LinkPE link = null;
+		LinkPE link;
 		if (!StringUtils.isBlank(target))
-			link = LinkPE.newDirectLink(linkNode.getAttribute(NAME_ATTRIBUTE), target, copyVars);
+			link = LinkPE.newDirectLink(linkNode.attr(NAME_ATTRIBUTE), target, copyVars);
 		else if (!StringUtils.isBlank(targetVar))
-			link = LinkPE.newVarLink(linkNode.getAttribute(NAME_ATTRIBUTE), targetVar, copyVars);
+			link = LinkPE.newVarLink(linkNode.attr(NAME_ATTRIBUTE), targetVar, copyVars);
 		else
-			throw new PrimaryValidationException(page.getPageName() + " > link " + linkNode.getAttribute(NAME_ATTRIBUTE), "target is not set");
+			throw new PrimaryValidationException(page.getPageName() + " > link " + linkNode.attr(NAME_ATTRIBUTE), "target is not set");
 		// Установка типа ссылки
 		link.setType(type);
 		// Принудительная установка типа ссылки, если она находится внутри формы или внутри фильтра
 		if (isFilterLink)
 			link.setType(LinkPE.Type.filter);
-		else if (isItemFormLink)
-			link.setType(LinkPE.Type.itemform);
-		for (int j = 0; j < linkNode.getChildNodes().getLength(); j++) {
-			Node linkSubnode = linkNode.getChildNodes().item(j);
+		for (Element linkSubnode : linkNode.getAllElements()) {
 			// Переменные
-			if (linkSubnode.getNodeType() == Node.ELEMENT_NODE && linkSubnode.getNodeName().equalsIgnoreCase(VAR_ELEMENT)) {
-				link.addVariablePE(readVariable((Element) linkSubnode));
-			} else if (linkSubnode.getNodeType() == Node.ELEMENT_NODE && linkSubnode.getNodeName().equalsIgnoreCase(INCLUDE_ELEMENT)) {
-				appendInclude(linkNode, (Element) linkSubnode, includes);
+			if (StringUtils.equalsIgnoreCase(linkSubnode.tagName(), VAR_ELEMENT)) {
+				String varName = linkSubnode.attr(NAME_ATTRIBUTE);
+				String itemId = linkSubnode.attr(ITEM_ATTRIBUTE);
+				String otherVar = linkSubnode.attr(VAR_ATTRIBUTE);
+				String parameter = linkSubnode.attr(PARAMETER_ATTRIBUTE);
+				String value = linkSubnode.attr(VALUE_ATTRIBUTE);
+				String styleStr = linkSubnode.attr(STYLE_ATTRIBUTE);
+				try {
+					if (!StringUtils.isBlank(styleStr))
+						VariablePE.Style.valueOf(styleStr);
+					// Проверка, правильно ли указан стиль переменной
+				} catch (Exception e) {
+					throw new PrimaryValidationException(page.getPageName() + " > link ", "'" + styleStr
+							+ "' is not a valid style of &lt;var&gt; element");
+				}
+				link.addVariablePE(LinkVariablePE.createCommon(varName, styleStr, itemId, parameter, otherVar, value));
+			} else if (StringUtils.equalsIgnoreCase(linkSubnode.tagName(), INCLUDE_ELEMENT)) {
+				appendInclude(linkNode, linkSubnode, includes);
 			// Не допускать другие тэги
-			} else if (linkSubnode.getNodeType() == Node.ELEMENT_NODE) {
-				throw new PrimaryValidationException(page.getPageName() + " > " + link.getKey(), "'" + linkSubnode.getNodeName()
+			} else {
+				throw new PrimaryValidationException(page.getPageName() + " > " + link.getKey(), "'" + linkSubnode.tagName()
 						+ "' is not a valid subelement of &lt;link&gt; element");
 			}
 		}
@@ -1329,26 +1328,17 @@ public class PageModelBuilder {
 	}
 	/**
 	 * Считывает переменную
+	 * НЕ для элемента-ссылки
 	 * @param variableNode
 	 * @return
 	 * @throws PrimaryValidationException 
 	 */
 	private Variable readVariable(Element variableNode) throws PrimaryValidationException {
-		String varName = variableNode.getAttribute(NAME_ATTRIBUTE);
-		String itemId = variableNode.getAttribute(ITEM_ATTRIBUTE);
-		String otherVar = variableNode.getAttribute(VAR_ATTRIBUTE);
-		String parameter = variableNode.getAttribute(PARAMETER_ATTRIBUTE);
-		String value = variableNode.getAttribute(VALUE_ATTRIBUTE);
-		String styleStr = variableNode.getAttribute(STYLE_ATTRIBUTE);
-		VariablePE.Style style = null;
-		try {
-			if (!StringUtils.isBlank(styleStr))
-				style = VariablePE.Style.valueOf(styleStr);
-			// Проверка, правильно ли указан стиль переменной
-		} catch (Exception e) {
-			throw new PrimaryValidationException(page.getPageName() + " > link ", "'" + variableNode.getAttribute(STYLE_ATTRIBUTE)
-					+ "' is not a valid style of &lt;var&gt; element");
-		}
+		String varName = variableNode.attr(NAME_ATTRIBUTE);
+		String itemId = variableNode.attr(ITEM_ATTRIBUTE);
+		String otherVar = variableNode.attr(VAR_ATTRIBUTE);
+		String parameter = variableNode.attr(PARAMETER_ATTRIBUTE);
+		String value = variableNode.attr(VALUE_ATTRIBUTE);
 		// Проветка, существует ли айтем с используемым идентификатором
 		if (!StringUtils.isBlank(itemId) && !itemIdentifiers.contains(itemId))
 			ServerLogger.warn("\n\n\nThere is no item with ID '" + itemId + "'.   Maybe in includes\n\n\n\n");
@@ -1356,36 +1346,24 @@ public class PageModelBuilder {
 		if (!StringUtils.isBlank(otherVar) && !pageVariables.contains(otherVar))
 			ServerLogger.warn("\n\n\nThere is no page variable named '" + otherVar + "'.   Maybe in includes\n\n\n\n");
 		// Создание определеннной переменной
-		VariablePE variable = null;
+		Variable variable;
 		if (!StringUtils.isBlank(value)) {
-			variable = new StaticVariablePE(varName, value);
-		} else if (!StringUtils.isBlank(otherVar))
-			variable = new ReferenceVariablePE(varName, otherVar);
-		else if (!StringUtils.isBlank(itemId)) {
-			boolean isIterable = itemIdsStack.contains(itemId);
-			if (!StringUtils.isBlank(parameter)) {
-				if (isIterable)
-					variable = new ParameterVariablePE(varName, itemId, parameter);
-				else
-					variable = new StaticParameterVariablePE(varName, itemId, parameter);
-			}
-			else {
-				if (isIterable)
-					variable = new ItemVariablePE(varName, itemId);
-				else
-					variable = new StaticItemVariablePE(varName, itemId);
-			}
+			variable = new StaticVariable(varName, value);
+		} else if (!StringUtils.isBlank(otherVar)) {
+			variable = ValueOrRef.newRef(otherVar);
+		} else if (!StringUtils.isBlank(itemId)) {
+			variable = new ItemVariable(itemId, parameter);
 		} else {
 			// Если явно не задано значение переменной - пустая строка, то это ошибка в файле pages.xml
-			if (variableNode.hasAttribute(VALUE_ATTRIBUTE))
-				variable = new StaticVariablePE(varName, "");
+			if (!variableNode.hasAttr(VALUE_ATTRIBUTE))
+				variable = new StaticVariable(varName, "");
 			else
 				throw new PrimaryValidationException(page.getPageName() + " > varialbe '" + varName + "'", "variable value is not defined. "
 						+ "If this variable should have empty value it must be set explicitly");
 		}
-		variable.setStyle(style);
 		return variable;
-	}	
+	}
+
 	/**
 	 * Считывает переменные страницы
 	 * @param variablesNode
@@ -1393,35 +1371,33 @@ public class PageModelBuilder {
 	 * @throws PrimaryValidationException 
 	 */
 	private void readVariables(Element variablesNode, PagePE model, HashMap<String, Element> includes) throws PrimaryValidationException {
-		for (int j = 0; j < variablesNode.getChildNodes().getLength(); j++) {
-			Node variablesSubnode = variablesNode.getChildNodes().item(j);
+		for (Element variablesSubnode : variablesNode.getAllElements()) {
 			// Переменные
 			String name = null;
-			if (variablesSubnode.getNodeType() == Node.ELEMENT_NODE && variablesSubnode.getNodeName().equalsIgnoreCase(VAR_ELEMENT)) {
-				Element varNode = (Element) variablesSubnode;
-				name = varNode.getAttribute(NAME_ATTRIBUTE);
-				Attr valueAttr = varNode.getAttributeNode(VALUE_ATTRIBUTE);
-				String scope = varNode.getAttribute(SCOPE_ATTRIBUTE);
+			if (StringUtils.equalsIgnoreCase(variablesSubnode.tagName(), VAR_ELEMENT)) {
+				name = variablesSubnode.attr(NAME_ATTRIBUTE);
+				String scope = variablesSubnode.attr(SCOPE_ATTRIBUTE);
 				if (StringUtils.isBlank(name)) continue;
-				String styleStr = varNode.getAttribute(STYLE_ATTRIBUTE);
+				String styleStr = variablesSubnode.attr(STYLE_ATTRIBUTE);
 				VariablePE.Style style = null;
 				try {
 					if (!StringUtils.isBlank(styleStr))
 						style = VariablePE.Style.valueOf(styleStr);
 					// Проверка, правильно ли указан стиль переменной
 				} catch (Exception e) {
-					throw new PrimaryValidationException(page.getPageName() + " > variables ", "'" + varNode.getAttribute(STYLE_ATTRIBUTE)
+					throw new PrimaryValidationException(page.getPageName() + " > variables ", "'" + variablesSubnode.attr(STYLE_ATTRIBUTE)
 							+ "' is not a valid style of &lt;var&gt; element");
 				}
 				String value = null;
-				if (valueAttr != null)
-					value = valueAttr.getValue();
-				String var = varNode.getAttribute(VAR_ATTRIBUTE);
+				boolean hasValue = variablesSubnode.hasAttr(VALUE_ATTRIBUTE);
+				if (hasValue)
+					value = variablesSubnode.attr(VALUE_ATTRIBUTE);
+				String var = variablesSubnode.attr(VAR_ATTRIBUTE);
 				// Сеансовая переменная и куки переменная
-				VariablePE variablePE = null;
+				VariablePE variablePE;
 				if (scope.equalsIgnoreCase(SESSION_VALUE)) {
-					if (valueAttr != null)
-						variablePE = new SessionStaticVariablePE(name, valueAttr.getValue());
+					if (hasValue)
+						variablePE = new SessionStaticVariable(name, value);
 					else 
 						variablePE = new SessionStaticVariablePE(name, null);
 				} else if (scope.equalsIgnoreCase(COOKIE_VALUE)) {
@@ -1443,50 +1419,19 @@ public class PageModelBuilder {
 			pageVariables.add(name);
 		}
 	}
-	/**
-	 * Считывает форму
-	 * @param variablesNode
-	 * @param model
-	 * @throws PrimaryValidationException 
-	 */
-	private ItemFormPE readForm(Element formNode, HashMap<String, Element> includes) throws PrimaryValidationException {
-		String itemId = formNode.getAttribute(ITEM_ATTRIBUTE);
-		String parentId = formNode.getAttribute(PARENT_ITEM_ATTRIBUTE);
-		String itemName = formNode.getAttribute(ITEM_NAME_ATTRIBUTE);
-		String restoreVar = formNode.getAttribute(RESTORE_VAR_ATTRIBUTE);
-		ItemFormPE formElement = null;
-		formElement = new ItemFormPE(itemName, itemId, parentId, restoreVar);
-		formElement.setTag(formNode.getAttribute(TAG_ATTRIBUTE));
-		for (int j = 0; j < formNode.getChildNodes().getLength(); j++) {
-			Node formSubnode = formNode.getChildNodes().item(j);
-			// Переменные
-			if (formSubnode.getNodeType() == Node.ELEMENT_NODE && formSubnode.getNodeName().equalsIgnoreCase(PARAMETER_ELEMENT))
-				formElement.addParameter(((Element)formSubnode).getAttribute(NAME_ATTRIBUTE));
-			// Ссылка
-			else if (formSubnode.getNodeType() == Node.ELEMENT_NODE && formSubnode.getNodeName().equalsIgnoreCase(LINK_ELEMENT))
-				formElement.addElement(readLink((Element) formSubnode, includes));
-			// include
-			else if (formSubnode.getNodeType() == Node.ELEMENT_NODE && formSubnode.getNodeName().equalsIgnoreCase(INCLUDE_ELEMENT))
-				appendInclude(formSubnode, (Element) formSubnode, includes);
-			// не допускать другие тэги
-			else if (formSubnode.getNodeType() == Node.ELEMENT_NODE)
-				throw new PrimaryValidationException(page.getPageName() + " > Form '" + itemName + "':" + itemId, "'" + formSubnode.getNodeName()
-						+ "' is not a valid subelement of &lt;form&gt; element");
-		}
-		return formElement;
-	}
+
 	/**
 	 * Считывает команду
 	 * @param commandNode
-	 * @param model
-	 * @throws PrimaryValidationException 
+	 * @throws PrimaryValidationException
+	 * @return
 	 */
 	private CommandPE readCommand(Element commandNode) throws PrimaryValidationException {
-		boolean clearCache = commandNode.getAttribute(CLEAR_CACHE_ATTRIBUTE).equalsIgnoreCase(YES_VALUE);
-		String className = commandNode.getAttribute(CLASS_ATTRIBUTE);
-		String method = commandNode.getAttribute(METHOD_ATTRIBUTE);
-		String methodVar = commandNode.getAttribute(METHOD_VAR_ATTRIBUTE);
-		CommandPE command = null;
+		boolean clearCache = commandNode.attr(CLEAR_CACHE_ATTRIBUTE).equalsIgnoreCase(YES_VALUE);
+		String className = commandNode.attr(CLASS_ATTRIBUTE);
+		String method = commandNode.attr(METHOD_ATTRIBUTE);
+		String methodVar = commandNode.attr(METHOD_VAR_ATTRIBUTE);
+		CommandPE command;
 		try {
 			command = new CommandPE(className, clearCache);
 			command.setMethod(method);
@@ -1494,18 +1439,14 @@ public class PageModelBuilder {
 		} catch (ClassNotFoundException e) {
 			throw new PrimaryValidationException(page.getPageName() + " > command", "there is no '" + className + "' class in system CLASS_PATH");
 		}
-		for (Node commandSubnode = commandNode.getFirstChild(); commandSubnode != null; commandSubnode = commandSubnode.getNextSibling()) {
+		for (Element commandSubnode : commandNode.getAllElements()) {
 			// Результат
-			if (commandSubnode.getNodeType() == Node.ELEMENT_NODE && commandSubnode.getNodeName().equalsIgnoreCase(RESULT_ELEMENT)) {
+			if (StringUtils.equalsIgnoreCase(commandSubnode.tagName(), RESULT_ELEMENT)) {
 				Element resultNode = (Element) commandSubnode;
-				command.addElement(new ResultPE(resultNode.getAttribute(NAME_ATTRIBUTE), resultNode.getAttribute(TYPE_ATTRIBUTE)));
-			// Обязательные поля форм
-			} else if (commandSubnode.getNodeType() == Node.ELEMENT_NODE && commandSubnode.getNodeName().equalsIgnoreCase(REQUIRED_ELEMENT)) {
-				Element resultNode = (Element) commandSubnode;
-				command.addRequired(resultNode.getAttribute(NAME_ATTRIBUTE), resultNode.getAttribute(PARAMETER_ATTRIBUTE));
+				command.addElement(new ResultPE(resultNode.attr(NAME_ATTRIBUTE), resultNode.attr(TYPE_ATTRIBUTE)));
 			// Не допускать другие тэги
-			} else if (commandSubnode.getNodeType() == Node.ELEMENT_NODE) {
-				throw new PrimaryValidationException(page.getPageName() + " > " + command.getKey(), "'" + commandSubnode.getNodeName()
+			} else {
+				throw new PrimaryValidationException(page.getPageName() + " > " + command.getKey(), "'" + commandSubnode.tagName()
 						+ "' is not a valid subelement of &lt;command&gt; element");
 			}
 		}
