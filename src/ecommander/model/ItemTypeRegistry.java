@@ -136,7 +136,7 @@ public class ItemTypeRegistry {
 	/**
 	 * Заблокировать реестр для обновления информации
 	 */
-	static synchronized void lock() {
+	public static synchronized void lock() {
 		if (modifyThread != null)
 			throw new IllegalStateException("Illegal attempt to lock item type registry while it is already locked");
 		modifyThread = Thread.currentThread();
@@ -147,7 +147,7 @@ public class ItemTypeRegistry {
 	 * Разблокировать реестр после внесения изменений
 	 * Копия, используемая другими потоками, очищается и им начинает выдаваться измененный экземпляр
 	 */
-	static synchronized void unlockSumbit() {
+	public static synchronized void unlockSumbit() {
 		if (modifyThread != Thread.currentThread())
 			throw new IllegalStateException("Illegal attempt to unlock item type registry by nonmodifying thread");
 		singleton.createComputedParamsCache();
@@ -159,7 +159,7 @@ public class ItemTypeRegistry {
 	 * Разблокировать реестр после внесения изменений с возвратом в начальное состояние (до внесения изменений)
 	 * Копия, используемая другими потоками, заменяет измененный экземпляр
 	 */
-	static synchronized void unlockRollback() {
+	public static synchronized void unlockRollback() {
 		if (modifyThread != Thread.currentThread())
 			throw new IllegalStateException("Illegal attempt to unlock item type registry by nonmodifying thread");
 		modifyThread = null;
@@ -172,7 +172,7 @@ public class ItemTypeRegistry {
 	 *
 	 * @return
 	 */
-	static synchronized boolean isLocked() {
+	public static synchronized boolean isLocked() {
 		return modifyThread != null;
 	}
 

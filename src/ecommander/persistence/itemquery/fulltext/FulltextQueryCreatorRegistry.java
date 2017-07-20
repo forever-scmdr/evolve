@@ -1,9 +1,8 @@
 package ecommander.persistence.itemquery.fulltext;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-
 import ecommander.fwk.EcommanderException;
+
+import java.util.HashMap;
 /**
  * Различные притерии полнотекстового поиска
  * @author E

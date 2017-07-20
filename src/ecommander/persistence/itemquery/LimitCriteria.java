@@ -1,10 +1,8 @@
 package ecommander.persistence.itemquery;
 
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-
 import ecommander.persistence.common.TemplateQuery;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
 /**
  * 
  * @author E

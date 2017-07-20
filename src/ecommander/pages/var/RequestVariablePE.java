@@ -8,7 +8,7 @@ import ecommander.pages.ExecutablePagePE;
  */
 public class RequestVariablePE extends VariablePE {
 
-	public static final String REQUEST_VARIABLE = "request_variable";
+	private static final String REQUEST_VARIABLE = "request_variable";
 
 	public enum Scope {
 		request, session, cookie
@@ -21,7 +21,7 @@ public class RequestVariablePE extends VariablePE {
 	public RequestVariablePE(String varName, Scope scope, Style style, String... defaultValue) {
 		super(varName, style);
 		this.scope = scope;
-		if (defaultValue.length > 0) {
+		if (defaultValue != null && defaultValue.length > 0) {
 			this.defaultValue = defaultValue[0];
 		}
 	}

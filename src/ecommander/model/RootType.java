@@ -1,7 +1,5 @@
 package ecommander.model;
 
-import ecommander.admin.ItemAccessor;
-
 /**
  * Корневой айтем, может быть только один
  * Created by E on 12/3/2017.

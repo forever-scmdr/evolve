@@ -1,40 +1,24 @@
 package ecommander.pages;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
-
+import ecommander.controllers.AppContext;
+import ecommander.controllers.PageController;
+import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
+import ecommander.fwk.ValidationException;
 import ecommander.model.Compare;
+import ecommander.model.UserGroupRegistry;
 import ecommander.pages.filter.*;
 import ecommander.pages.var.*;
 import org.apache.commons.lang3.StringUtils;
-
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.ValidationException;
-import ecommander.controllers.AppContext;
-import ecommander.controllers.PageController;
-import ecommander.model.LOGICAL_SIGN;
-import ecommander.pages.variables.CookieStaticVariablePE;
-import ecommander.pages.variables.ItemVariablePE;
-import ecommander.pages.variables.ParameterVariablePE;
-import ecommander.pages.variables.ReferenceVariablePE;
-import ecommander.pages.variables.SessionStaticVariablePE;
-import ecommander.pages.variables.StaticItemVariablePE;
-import ecommander.pages.variables.StaticParameterVariablePE;
-import ecommander.pages.variables.StaticVariablePE;
-import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.model.UserGroupRegistry;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.io.File;
+import java.util.*;
 
 /**
 
@@ -1392,29 +1376,9 @@ public class PageModelBuilder {
 				boolean hasValue = variablesSubnode.hasAttr(VALUE_ATTRIBUTE);
 				if (hasValue)
 					value = variablesSubnode.attr(VALUE_ATTRIBUTE);
-				String var = variablesSubnode.attr(VAR_ATTRIBUTE);
-				// Сеансовая переменная и куки переменная
-				VariablePE variablePE;
-				if (scope.equalsIgnoreCase(SESSION_VALUE)) {
-					if (hasValue)
-						variablePE = new SessionStaticVariable(name, value);
-					else 
-						variablePE = new SessionStaticVariablePE(name, null);
-				} else if (scope.equalsIgnoreCase(COOKIE_VALUE)) {
-					if (valueAttr != null)
-						variablePE = new CookieStaticVariablePE(name, valueAttr.getValue());
-					else 
-						variablePE = new CookieStaticVariablePE(name, null);
-				// Переменная страницы (не сеансовая)
-				} else if (!StringUtils.isBlank(var)) {
-					variablePE = new ReferenceVariablePE(name, var);
-				} else {
-					variablePE = new StaticVariablePE(name, value);
-				}
-				variablePE.setStyle(style);
-				model.addVariablePE(variablePE);
-			} else if (variablesSubnode.getNodeType() == Node.ELEMENT_NODE && variablesSubnode.getNodeName().equalsIgnoreCase(INCLUDE_ELEMENT)) {
-				appendInclude(variablesNode, (Element) variablesSubnode, includes);
+				model.addVariablePE(new RequestVariablePE(name, RequestVariablePE.Scope.valueOf(scope), style, value));
+			} else if (StringUtils.equalsIgnoreCase(variablesSubnode.tagName(), INCLUDE_ELEMENT)) {
+				appendInclude(variablesNode, variablesSubnode, includes);
 			}
 			pageVariables.add(name);
 		}
@@ -1442,8 +1406,7 @@ public class PageModelBuilder {
 		for (Element commandSubnode : commandNode.getAllElements()) {
 			// Результат
 			if (StringUtils.equalsIgnoreCase(commandSubnode.tagName(), RESULT_ELEMENT)) {
-				Element resultNode = (Element) commandSubnode;
-				command.addElement(new ResultPE(resultNode.attr(NAME_ATTRIBUTE), resultNode.attr(TYPE_ATTRIBUTE)));
+				command.addElement(new ResultPE(commandSubnode.attr(NAME_ATTRIBUTE), commandSubnode.attr(TYPE_ATTRIBUTE)));
 			// Не допускать другие тэги
 			} else {
 				throw new PrimaryValidationException(page.getPageName() + " > " + command.getKey(), "'" + commandSubnode.tagName()
@@ -1468,11 +1431,13 @@ public class PageModelBuilder {
 		} else {
 			if (startFile.isDirectory()) {
 				File[] filesList = startFile.listFiles();
-				for (File file : filesList) {
-					if (file.isFile())
-						files.add(file);
-					else if (file.isDirectory())
-						findPagesFiles(file, files);
+				if (filesList != null) {
+					for (File file : filesList) {
+						if (file.isFile())
+							files.add(file);
+						else if (file.isDirectory())
+							findPagesFiles(file, files);
+					}
 				}
 			}
 		}

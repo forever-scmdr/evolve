@@ -1,20 +1,15 @@
 package ecommander.persistence.itemquery;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.persistence.mappers.DataTypeMapper;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.TermQuery;
-
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+
+import java.util.ArrayList;
+import java.util.Collection;
 /**
  * Часть запроса для критерия фильтрации <predecessor>
  * Критерий типа айтема добавляется только в случае если этот критерий является главным,

@@ -1,16 +1,14 @@
 package ecommander.controllers;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import ecommander.fwk.PageNotFoundException;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
-import ecommander.fwk.PageNotFoundException;
 import ecommander.fwk.UserNotAllowedException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Сервлет, который обрабатывает запросы eco/
@@ -29,7 +27,7 @@ public class TransliterationServlet extends BasicServlet {
 	private static final long serialVersionUID = 1847991927782653866L;
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 *
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Строка вида /spas/eeee/test.htm (/spas - это ContextPath)

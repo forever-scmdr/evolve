@@ -2,8 +2,6 @@ package ecommander.model;
 
 import ecommander.fwk.UserNotAllowedException;
 
-import java.util.HashSet;
-
 /**
  * Проверка привилегий пользователя доступ к айтемам и другим пользователям
  *

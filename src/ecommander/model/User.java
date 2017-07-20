@@ -1,9 +1,7 @@
 package ecommander.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 
 public class User {
 	public static class Group {

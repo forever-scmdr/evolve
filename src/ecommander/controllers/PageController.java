@@ -1,31 +1,24 @@
 package ecommander.controllers;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
-import ecommander.pages.var.Variable;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
-import ecommander.pages.output.PageWriter;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.LinkPE;
 import ecommander.pages.PageModelRegistry;
 import ecommander.pages.ResultPE;
 import ecommander.pages.ResultPE.ResultType;
-import ecommander.pages.var.VariablePE;
+import ecommander.pages.output.PageWriter;
+import ecommander.pages.var.Variable;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
 /**
  * Контроллер кэша
  * @author EEEE

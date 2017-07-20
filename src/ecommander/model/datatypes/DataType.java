@@ -10,7 +10,7 @@ import java.util.HashSet;
  */
 public abstract class DataType {
 	
-	public static enum Type {
+	public enum Type {
 		BYTE("byte"),
 		INTEGER("integer"),
 		LONG("long"),
@@ -35,8 +35,8 @@ public abstract class DataType {
 			this.text = text;
 		}
 
-		public String getText() {
-			return this.text;
+		public String getName() {
+			return text;
 		}
 
 		@Override

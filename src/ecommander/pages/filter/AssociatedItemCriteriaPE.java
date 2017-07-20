@@ -4,10 +4,8 @@ import ecommander.model.Assoc;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.ItemPE;
 import ecommander.pages.PageElementContainer;
 import ecommander.pages.ValidationResults;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Критерий параметра не самого искомого айтема, а айтема, который как-либо ассоциирован с искомым

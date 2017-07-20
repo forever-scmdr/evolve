@@ -2,8 +2,8 @@ package ecommander.fwk;
 
 import java.util.Stack;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Экземпляр этого класса передается по цепочке всем методам, которые осуществляют
@@ -29,7 +29,7 @@ public class XmlDocumentBuilder {
 	private StringBuilder xml;
 	
 	private XmlDocumentBuilder(StringBuilder docBase) {
-		openTags = new Stack<TagDesc>();
+		openTags = new Stack<>();
 		xml = docBase;
 		openTags.add(new TagDesc("root_fake"));
 	}
@@ -59,7 +59,7 @@ public class XmlDocumentBuilder {
 		if (attributes.length > 1)
 			for (int i = 0; i < attributes.length; i += 2) {
 				if (attributes[i] != null && attributes[i + 1] != null)
-					xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml(attributes[i + 1].toString()))
+					xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml10(attributes[i + 1].toString()))
 							.append("\"");
 			}
 		xml.append('>');
@@ -81,7 +81,7 @@ public class XmlDocumentBuilder {
 			if (isClosed)
 				xml.deleteCharAt(lastSymbol - 1); 
 			for (int i = 0; i < attributes.length; i += 2) {
-				xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml(attributes[i + 1].toString())).append("\"");
+				xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml10(attributes[i + 1])).append("\"");
 			}
 			if (isClosed)
 				xml.append('/');
@@ -102,7 +102,7 @@ public class XmlDocumentBuilder {
 		if (xml.length() > 0) xml.append('\n');
 		xml.append(prefix).append('<').append(tagName);
 		for (int i = 0; i < attributes.length; i += 2) {
-			xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml(attributes[i + 1].toString())).append("\"");
+			xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml10(attributes[i + 1].toString())).append("\"");
 		}
 		xml.append("/>");
 		return this;
@@ -132,7 +132,7 @@ public class XmlDocumentBuilder {
 	 * @param text
 	 */
 	public XmlDocumentBuilder addText(String text) {
-		xml.append(StringEscapeUtils.escapeXml(text));
+		xml.append(StringEscapeUtils.escapeXml10(text));
 		return this;
 	}
 	/**
@@ -141,7 +141,7 @@ public class XmlDocumentBuilder {
 	 */
 	public XmlDocumentBuilder addText(Object text) {
 		if (text != null)
-			xml.append(StringEscapeUtils.escapeXml(text.toString()));
+			xml.append(StringEscapeUtils.escapeXml10(text.toString()));
 		return this;
 	}
 	/**

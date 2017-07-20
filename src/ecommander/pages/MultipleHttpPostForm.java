@@ -30,6 +30,8 @@ import java.util.*;
  */
 public class MultipleHttpPostForm implements Serializable {
 
+	private static final long serialVersionUID = 2L;
+
 	private static final String FORM_ITEM_UNIQUE_KEY = "ukey";
 
 	private HashMap<Long, InputValues> inputs = new HashMap<>();

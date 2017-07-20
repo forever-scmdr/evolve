@@ -1,22 +1,13 @@
 package ecommander.admin;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import ecommander.fwk.Strings;
+import ecommander.model.User;
+import ecommander.model.UserGroupRegistry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.fwk.Strings;
-import ecommander.controllers.StartController;
-import ecommander.persistence.common.DelayedTransaction;
-import ecommander.persistence.commandunits.DeleteUserDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
-import ecommander.persistence.commandunits.UpdateUserDBUnit;
-import ecommander.model.User;
-import ecommander.model.UserGroupRegistry;
-import ecommander.model.UserMapper;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Контроллер Struts 2 для управления пользователями

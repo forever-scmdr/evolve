@@ -2,7 +2,6 @@ package ecommander.pages.filter;
 
 import ecommander.model.Compare;
 import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.PageElement;
 import ecommander.pages.PageElementContainer;
 import ecommander.pages.ValidationResults;
 import org.apache.commons.lang3.StringUtils;

@@ -8,6 +8,8 @@ package ecommander.fwk;
  */
 public class EcommanderException extends Exception {
 
+	private static final long serialVersionUID = 3L;
+
 	private int errorCode = 0;
 
 	public EcommanderException(int errorCode, String message, Throwable cause) {

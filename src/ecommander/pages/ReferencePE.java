@@ -1,12 +1,9 @@
 package ecommander.pages;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import ecommander.pages.var.Variable;
-import ecommander.pages.var.VariablePE;
-import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Элемент - референс <reference>

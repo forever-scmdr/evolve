@@ -87,7 +87,6 @@ public class SessionItemMapper {
 			Collection<Parameter> parameters = item.getAllParameters();
 			for (Parameter parameter : parameters) {
 				if (parameter.isDescMultiple()) {
-					@SuppressWarnings("unchecked")
 					ArrayList<Object> list = new ArrayList<>();
 					this.parameters.put(parameter.getParamId(), list);
 					for (SingleParameter sp : ((MultipleParameter) parameter).getValues()) {

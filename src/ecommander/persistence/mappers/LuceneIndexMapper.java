@@ -1,6 +1,5 @@
 package ecommander.persistence.mappers;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;

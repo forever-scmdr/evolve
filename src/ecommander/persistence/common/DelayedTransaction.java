@@ -1,13 +1,11 @@
 package ecommander.persistence.common;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.LinkedList;
-
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
-import ecommander.fwk.EcommanderException;
 import ecommander.model.User;
+
+import java.sql.Connection;
+import java.util.LinkedList;
 
 /**
  * Класс, который отвечает за выполнение одной транзакции, а также за откат всех операций, если

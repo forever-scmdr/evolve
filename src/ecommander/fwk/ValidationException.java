@@ -1,7 +1,6 @@
 package ecommander.fwk;
 
 import ecommander.pages.ValidationResults;
-import net.sf.saxon.trans.Err;
 
 public class ValidationException extends EcommanderException implements ErrorCodes {
 

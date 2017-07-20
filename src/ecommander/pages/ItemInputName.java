@@ -33,6 +33,9 @@ import java.util.ArrayList;
  * Created by E on 22/5/2017.
  */
 public class ItemInputName implements Serializable {
+
+	private static final long serialVersionUID = 200L;
+
 	private final static char ITEM = 'i';
 	private final static char ANCESTOR = 'a';
 	private final static char HIERARCHY_PARENT = 'h';

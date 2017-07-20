@@ -5,7 +5,6 @@ import ecommander.model.ItemType;
 import ecommander.model.ParameterDescription;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
-import ecommander.persistence.mappers.DataTypeMapper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

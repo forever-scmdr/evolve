@@ -1,23 +1,8 @@
 package ecommander.controllers;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import ecommander.fwk.*;
+import ecommander.pages.LinkPE;
+import ecommander.pages.var.VariablePE;
 import org.apache.catalina.connector.ClientAbortException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -25,13 +10,13 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
-import ecommander.fwk.EcommanderException;
-import ecommander.fwk.UserNotAllowedException;
-import ecommander.fwk.ValidationException;
-import ecommander.pages.LinkPE;
-import ecommander.pages.var.VariablePE;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.*;
 
 /**
  * Базовые функции всех сервлетов CMS
@@ -55,8 +40,9 @@ public abstract class BasicServlet extends HttpServlet {
 	private static final long serialVersionUID = 892605216488781362L;
 	/**
 	 * Обработать запрос
+	 * @param request
 	 * @param response
-	 * @param link
+	 * @param linkString
 	 */
 	protected void processUrl(HttpServletRequest request, HttpServletResponse response, String linkString) {
 		try {
@@ -186,13 +172,13 @@ public abstract class BasicServlet extends HttpServlet {
 		// Строка вида /spas/eeee/test.htm (/spas - это ContextPath)
 		String url = getUserUrl(request);
 		LinkPE link = LinkPE.parseLink(url);
-		Map<String, List<String>> params = new HashMap<String, List<String>>();
+		Map<String, List<String>> params = new HashMap<>();
 		if (ServletFileUpload.isMultipartContent(request)) {
 			DiskFileItemFactory filesFactory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(filesFactory);
 			String encoding = Strings.SYSTEM_ENCODING;
 			upload.setHeaderEncoding(encoding);
-			List<FileItem> values = new ArrayList<FileItem>();
+			List<FileItem> values;
 			try {
 				values = upload.parseRequest(request);
 			} catch (FileUploadException e) {

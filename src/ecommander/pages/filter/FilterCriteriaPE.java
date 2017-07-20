@@ -1,6 +1,5 @@
 package ecommander.pages.filter;
 
-import ecommander.fwk.EcommanderException;
 import ecommander.pages.PageElement;
 
 /**

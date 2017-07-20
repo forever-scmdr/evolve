@@ -101,7 +101,6 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 
 	private ItemQuery dbQuery;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected PageElementContainer createExecutableShallowClone(PageElementContainer container, ExecutablePagePE parentPage) {
 		FilterPE clone = new FilterPE();
@@ -225,7 +224,6 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	 * @return
 	 * @throws EcommanderException
 	 */
-	@SuppressWarnings("unchecked")
 	public void appendCriteriasToQuery(ItemQuery dbQuery) throws Exception {
 
 		this.dbQuery = dbQuery;
@@ -372,7 +370,7 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	public void processOption(FilterOptionPE option) throws Exception {
 		dbQuery.startOption();
 		for (PageElement element : option.getAllNested()) {
-			option.process(this);
+			((FilterCriteriaPE)element).process(this);
 		}
 		dbQuery.endOption();
 	}
@@ -384,7 +382,7 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		else
 			dbQuery.startChildCriteria(associated.getItemName(), associated.getAssocName());
 		for (PageElement element : associated.getAllNested()) {
-			associated.process(this);
+			((FilterCriteriaPE)element).process(this);
 		}
 		dbQuery.endCurrentCriteria();
 	}

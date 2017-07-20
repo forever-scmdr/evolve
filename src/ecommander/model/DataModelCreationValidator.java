@@ -1,15 +1,7 @@
 package ecommander.model;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
-
+import ecommander.fwk.ModelValidator;
+import ecommander.fwk.ServerLogger;
 import ecommander.pages.ValidationResults;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,11 +12,12 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.ModelValidator;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.*;
 
 /**
  * Проверка файла model.xml

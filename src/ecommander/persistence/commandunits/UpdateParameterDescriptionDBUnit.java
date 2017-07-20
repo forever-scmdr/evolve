@@ -1,12 +1,12 @@
 package ecommander.persistence.commandunits;
 
 import ecommander.fwk.Strings;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;
 import ecommander.pages.output.ItemTypeMDWriter;
 import ecommander.pages.output.ParameterDescriptionMDWriter;
-import ecommander.fwk.XmlDocumentBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 /**

@@ -1,18 +1,16 @@
 package ecommander.filesystem;
 
-import java.io.File;
-import java.util.ArrayList;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.fwk.ServerLogger;
 import ecommander.fwk.FileException;
-import ecommander.controllers.AppContext;
-import ecommander.model.datatypes.FileDataType;
+import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.model.MultipleParameter;
 import ecommander.model.SingleParameter;
+import ecommander.model.datatypes.FileDataType;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Временно сохраняет один из файлов множественного файлового параметра

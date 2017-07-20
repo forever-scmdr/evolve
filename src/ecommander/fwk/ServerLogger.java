@@ -6,10 +6,7 @@
  */
 package ecommander.fwk;
 
-import ecommander.controllers.AppContext;
 import org.apache.log4j.*;
-
-import java.io.File;
 
 
 /**

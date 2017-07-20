@@ -6,7 +6,6 @@ import ecommander.persistence.mappers.LuceneIndexMapper;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -34,7 +33,7 @@ public class MetaServlet extends BasicServlet {
 		+ "<td align='center' valign='middle'><h1>SUCCESS</h1></td></tr></table></body></html>";
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 *
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter(LINK_PARAMETER_NAME);
@@ -70,7 +69,7 @@ public class MetaServlet extends BasicServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 *
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

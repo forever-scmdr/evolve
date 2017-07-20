@@ -85,7 +85,7 @@ public class DataModelBuilder {
 	 * @return если апдейт произощел - true, иначе - false
 	 * @throws Exception
 	 */
-	private boolean reloadModel() throws Exception {
+	public boolean reloadModel() throws Exception {
 		// Валидация сохраненной в БД копии файла model.xml
 		if (mode == DataModelCreateCommandUnit.Mode.load) {
 			ArrayList<String> xml = new ArrayList<>();

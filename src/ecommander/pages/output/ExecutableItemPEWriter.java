@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.ParameterDescription;
 import ecommander.model.datatypes.DataType;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.controllers.AppContext;
@@ -14,6 +13,7 @@ import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.pages.ExecutableItemPE;
 import ecommander.pages.PageElement;
+import org.apache.commons.text.StringEscapeUtils;
 
 import static ecommander.admin.MainAdminPageCreator.*;
 
