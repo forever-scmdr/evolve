@@ -7,6 +7,7 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ecommander.pages.PageModelBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.ServerLogger;
@@ -455,7 +456,10 @@ public class ItemAdminServlet extends BasicAdminServlet {
 	 */
 	private void reloadModel(ItemModelFilePersistenceCommandUnit command) throws Exception {
 		try {
-			DataModelBuilder.newLoader().tryLockAndReloadModel();
+			boolean updated = DataModelBuilder.newLoader().tryLockAndReloadModel();
+			if (updated) {
+				PageModelBuilder.invalidate();
+			}
 		} catch (Exception e) {
 			ServerLogger.error("Error while updating model_custom.xml file", e);
 			command.restore();

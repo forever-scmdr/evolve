@@ -65,7 +65,6 @@ public class DataModelBuilder {
 						ItemTypeRegistry.lock();
 						PageController.clearCache();
 						updated = reloadModel();
-						PageModelBuilder.invalidate();
 						ItemTypeRegistry.unlockSumbit();
 					} catch (Exception e) {
 						ItemTypeRegistry.unlockRollback();

@@ -2,6 +2,7 @@ package ecommander.controllers;
 
 import ecommander.fwk.MessageError;
 import ecommander.model.DataModelBuilder;
+import ecommander.pages.PageModelBuilder;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 
 import javax.servlet.RequestDispatcher;
@@ -56,6 +57,7 @@ public class MetaServlet extends BasicServlet {
 				if (confirmed) {
 					DataModelBuilder modelBuilder = DataModelBuilder.newForceUpdate();
 					modelBuilder.tryLockAndReloadModel();
+					PageModelBuilder.invalidate();
 				} else {
 					throw new MessageError("Force create model not confirmed", "Not confirmed");
 				}

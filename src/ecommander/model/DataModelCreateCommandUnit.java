@@ -5,6 +5,7 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
 import ecommander.pages.ValidationResults;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
+import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -617,17 +619,14 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			}
 			// Сохранить в БД содержимое файлов модели данных
 			for (Map.Entry<File, String> file : xmlFileContents.entrySet()) {
-				try {
-					sql
-							= "INSERT " + ModelXML.MODEL_XML_TBL + " ("
-							+ ModelXML.XML_NAME + ", " + ModelXML.XML_XML
-							+ ") VALUES ('" + file.getKey().getName() + "', '" + file.getValue() + "') ON DUPLICATE KEY UPDATE "
-							+ ModelXML.XML_XML + "='" + file.getValue() + "'";
-					ServerLogger.debug(sql);
-					stmt.executeUpdate(sql);
-				} finally {
-					stmt.close();
+				TemplateQuery query = new TemplateQuery("Insert data model XML");
+				query.INSERT_INTO(ModelXML.MODEL_XML_TBL, ModelXML.XML_NAME, ModelXML.XML_XML)
+						.sql(" VALUES (").string(file.getKey().getName()).sql(", ").string(file.getValue())
+						.sql(") ON DUPLICATE KEY UPDATE ").col(ModelXML.XML_XML).string(file.getValue());
+				try (PreparedStatement pstmt = query.prepareQuery(getTransactionContext().getConnection())) {
+					pstmt.executeUpdate();
 				}
+
 			}
 		}
 		//clearSql = "SET FOREIGN_KEY_CHECKS=0";
@@ -798,8 +797,12 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		// Параметры (вначале найти айтемы, т.к. параметры уникальны только внутри одного айтема)
 		for (String itemName : paramIds.keySet()) {
 			HashMap<String, HashId> itemParams = paramIds.get(itemName);
+			/*
 			Pattern pattern = Pattern.compile(
 					"<" + ITEM + "\\s+.*?" + NAME + "\\s*?=\\s*?\"" + itemName + "\".*?>(.|\\r\\n|\\n)+?</" + ITEM + ">");
+			*/
+			Pattern pattern = Pattern.compile(
+					"<" + ITEM + "\\s+.*?" + NAME + "\\s*?=\\s*?\"" + itemName + "\".*?/?>");
 			Matcher matcher = pattern.matcher(xml);
 			if (matcher.find()) {
 				String itemPart = matcher.group(0);

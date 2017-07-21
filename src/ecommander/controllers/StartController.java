@@ -3,6 +3,7 @@ package ecommander.controllers;
 import ecommander.model.DataModelBuilder;
 import ecommander.model.DomainBuilder;
 import ecommander.model.UserModelBuilder;
+import ecommander.pages.PageModelBuilder;
 
 import javax.servlet.ServletContext;
 
@@ -37,7 +38,9 @@ public class StartController {
 					// Загружаются пользователи
 					UserModelBuilder.testActuality();
 					// Загружаются описания айтемов (из XML файла + БД)
-					DataModelBuilder.newLoader().tryLockAndReloadModel();
+					if (DataModelBuilder.newLoader().tryLockAndReloadModel()) {
+						PageModelBuilder.invalidate();
+					}
 					// Загружается модели страниц (из XML файла)
 					//PageModelBuilder.testActuality();
 					// Флаг о том, что приложение запущено
