@@ -15,6 +15,7 @@ import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
 import java.io.File;
@@ -752,13 +753,13 @@ public class PageModelBuilder {
 					if (!StringUtils.isBlank(schedule))
 						page.setSchedule(schedule);
 					// Собрать сведения обо всех айтемах, переменых и ссылках страницы
-					for (Element element : pageNode.children()) {
+					for (Element element : detachedDirectChildren(pageNode)) {
 						// Переменные
 						if (StringUtils.equalsIgnoreCase(element.tagName(), REQUEST_ELEMENT)) {
 							readVariables(element, page, includes);
 						}
 						// Айтем
-						if (isNodeItemPE(element)) {
+						else if (isNodeItemPE(element)) {
 							page.addElement(readItem(element, ItemPE.ItemRootType.COMMON, null, includes, page.getKey()));
 						// Ссылка
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), LIMIT_ELEMENT)) {
@@ -776,20 +777,20 @@ public class PageModelBuilder {
 									element.attr(RESTORE_VAR_ATTRIBUTE), StringUtils.split(element.attr(NAME_ATTRIBUTE), ' ')));
 						// <personal>
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), PERSONAL_ELEMENT)) {
-							for (Element subEl : pageNode.children()) {
+							for (Element subEl : detachedDirectChildren(element)) {
 								if (isNodeItemPE(subEl))
 									page.addElement(readItem(subEl, ItemPE.ItemRootType.PERSONAL, null, includes, page.getKey()));
 							}
 						// <session>
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), SESSION_ELEMENT)) {
-							for (Element subEl : pageNode.children()) {
+							for (Element subEl : detachedDirectChildren(element)) {
 								if (isNodeItemPE(subEl))
 									page.addElement(readItem(subEl, ItemPE.ItemRootType.SESSION, null, includes, page.getKey()));
 							}
 							// <usergroup name="some_group">
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), USER_GROUP_ELEMENT)) {
 							String groupName = element.attr(NAME_ATTRIBUTE);
-							for (Element subEl : pageNode.children()) {
+							for (Element subEl : detachedDirectChildren(element)) {
 								if (isNodeItemPE(subEl)) {
 									if (UserGroupRegistry.groupExists(groupName))
 										page.addElement(readItem(subEl, ItemPE.ItemRootType.GROUP, groupName, includes, page.getKey()));
@@ -854,7 +855,7 @@ public class PageModelBuilder {
 		if (include == null)
 			throw new PrimaryValidationException(parentNode.tagName() + " '" + (parentNode).attr(NAME_ATTRIBUTE) + "'",
 					"There is no include with name '" + includeRef.attr(NAME_ATTRIBUTE) + "'");
-		for (Element includeSubnode : include.children()) {
+		for (Element includeSubnode : detachedDirectChildren(include)) {
 			Element importedNode = includeSubnode.clone();
 			includeRef.before(importedNode);
 		}
@@ -913,7 +914,7 @@ public class PageModelBuilder {
 				pageItem.addElement(ReferencePE.createUrlReference(referenceVar));
 		}
 		// Заполнение параметров айтема
-		for (Element itemSubnode : itemNode.children()) {
+		for (Element itemSubnode : detachedDirectChildren(itemNode)) {
 			// Референс
 			if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), REFERENCE_ELEMENT)) {
 				if (!StringUtils.isBlank(itemSubnode.attr(ITEM_ATTRIBUTE)))
@@ -943,14 +944,14 @@ public class PageModelBuilder {
 				pageItem.addElement(readItem(itemSubnode, rootType, groupName, includes, pageName));
 			// <personal>
 			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), PERSONAL_ELEMENT)) {
-				for (Element persSubnode : itemSubnode.children()) {
+				for (Element persSubnode : detachedDirectChildren(itemSubnode)) {
 					if (isNodeItemPE(persSubnode))
 						pageItem.addElement(readItem(persSubnode, ItemPE.ItemRootType.PERSONAL, groupName, includes, pageName));
 				}
 			// <usergroup>
 			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), USER_GROUP_ELEMENT)) {
 				groupName = (itemSubnode).attr(NAME_ATTRIBUTE);
-				for (Element groupSubnode : itemSubnode.children()) {
+				for (Element groupSubnode : detachedDirectChildren(itemSubnode)) {
 					if (isNodeItemPE(groupSubnode)) {
 						if (UserGroupRegistry.groupExists(groupName))
 							pageItem.addElement(readItem(groupSubnode, ItemPE.ItemRootType.GROUP, groupName, includes, pageName));
@@ -993,11 +994,11 @@ public class PageModelBuilder {
 				&& !StringUtils.isBlank(userFilterVarName)) {
 			filter.setUserFilter(userFilterItemId, userFilterParamName, userFilterVarName, preload);
 		}
-		for (Element filterSubnode : filterNode.children()) {
+		for (Element filterSubnode : detachedDirectChildren(filterNode)) {
 			// Опция
 			if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), OPTION_ATTRIBUTE)) {
 				filter.addCriteria(readFilterCriteria(filterSubnode));
-				for (Element element : filterSubnode.children()) {
+				for (Element element : detachedDirectChildren(filterSubnode)) {
 					readFilterElement(filter, filterSubnode, element, includes);
 				}
 			}
@@ -1010,7 +1011,7 @@ public class PageModelBuilder {
 				String direction = filterSubnode.attr(DIRECTION_ATTRIBUTE);
 				String directionVar = filterSubnode.attr(DIRECTION_VAR_ATTRIBUTE);
 				// Значение сортировки (переменная)
-				for (Element sortSubnode : filterSubnode.children()) {
+				for (Element sortSubnode : detachedDirectChildren(filterSubnode)) {
 					if (StringUtils.equalsIgnoreCase(sortSubnode.tagName(), VAR_ELEMENT)) {
 						filter.addSorting(readVariable(sortSubnode), direction, directionVar);
 					}
@@ -1019,7 +1020,7 @@ public class PageModelBuilder {
 			// Лимит
 			else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), LIMIT_ELEMENT)) {
 				// Значение лимита (переменная)
-				for (Element limitSubnode : filterSubnode.children()) {
+				for (Element limitSubnode : detachedDirectChildren(filterSubnode)) {
 					if (StringUtils.equalsIgnoreCase(limitSubnode.tagName(), VAR_ELEMENT)) {
 						filter.addLimit(readVariable(limitSubnode));
 					}
@@ -1032,7 +1033,7 @@ public class PageModelBuilder {
 			// Номер страницы
 			else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PAGES_ELEMENT)) {
 				// Переменная страницы
-				for (Element pageSubnode : filterSubnode.children()) {
+				for (Element pageSubnode : detachedDirectChildren(filterSubnode)) {
 					if (StringUtils.equalsIgnoreCase(pageSubnode.tagName(), VAR_ELEMENT)) {
 						filter.addPage(readVariable(pageSubnode));
 					}
@@ -1067,14 +1068,14 @@ public class PageModelBuilder {
 		// Критерии ассоциированного потомка айтема
 		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), CHILD_ELEMENT)) {
 			filter.addElement(new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), filterSubnode.attr(ASSOC_ATTRIBUTE), false));
-			for (Element element : filterSubnode.children()) {
+			for (Element element : detachedDirectChildren(filterSubnode)) {
 				readFilterElement(filter, filterSubnode, element, includes);
 			}
 		}
 		// Критерии ассоциированного предка айтема
 		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PARENT_ELEMENT)) {
 			filter.addElement(new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), filterSubnode.attr(ASSOC_ATTRIBUTE), true));
-			for (Element element : filterSubnode.children()) {
+			for (Element element : detachedDirectChildren(filterSubnode)) {
 				readFilterElement(filter, filterSubnode, element, includes);
 			}
 		}
@@ -1139,7 +1140,7 @@ public class PageModelBuilder {
 		// Критерий фильтра
 		ParameterCriteriaPE crit = ParameterCriteriaPE.create(paramName, paramNameVar, paramIdVar, paramSign, paramPattern, compare);
 		// Значение параметра (переменная)
-		for (Element filterSubnode : criteriaNode.children()) {
+		for (Element filterSubnode : detachedDirectChildren(criteriaNode)) {
 			if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), VAR_ELEMENT)) {
 				crit.addValue(readVariable(filterSubnode));
 			// Не допускать другие тэги
@@ -1171,7 +1172,7 @@ public class PageModelBuilder {
 		AggregationPE agg = new AggregationPE(paramVar);
 		if (!StringUtils.isBlank(function))
 			agg.setFunction(function);
-		for (Element aggSubnode : aggregationNode.children()) {
+		for (Element aggSubnode : detachedDirectChildren(aggregationNode)) {
 			if (StringUtils.equalsIgnoreCase(aggSubnode.tagName(), PARAMETER_ELEMENT)) {
 				agg.addGroupBy(readFilterCriteria(aggSubnode));
 			} else if (StringUtils.equalsIgnoreCase(aggSubnode.tagName(), INCLUDE_ELEMENT)) {
@@ -1183,7 +1184,7 @@ public class PageModelBuilder {
 				String directionVar = aggSubnode.attr(DIRECTION_VAR_ATTRIBUTE);
 				Variable sortingParam = null;
 				// Значение сортировки (переменная)
-				for (Element sortSubnode : aggSubnode.children()) {
+				for (Element sortSubnode : detachedDirectChildren(aggSubnode)) {
 					if (StringUtils.equalsIgnoreCase(sortSubnode.tagName(), VAR_ELEMENT)) {
 						sortingParam = readVariable(sortSubnode);
 					}
@@ -1233,7 +1234,7 @@ public class PageModelBuilder {
 		}
 		// Значение параметра (переменная)
 		Variable queryVar = null;
-		for (Element ftSubnode : fulltextNode.children()) {
+		for (Element ftSubnode : detachedDirectChildren(fulltextNode)) {
 			if (StringUtils.equalsIgnoreCase(ftSubnode.tagName(), VAR_ELEMENT)) {
 				queryVar = readVariable(ftSubnode);
 			// Не допускать другие тэги
@@ -1282,7 +1283,7 @@ public class PageModelBuilder {
 		// Принудительная установка типа ссылки, если она находится внутри формы или внутри фильтра
 		if (isFilterLink)
 			link.setType(LinkPE.Type.filter);
-		for (Element linkSubnode : linkNode.children()) {
+		for (Element linkSubnode : detachedDirectChildren(linkNode)) {
 			// Переменные
 			if (StringUtils.equalsIgnoreCase(linkSubnode.tagName(), VAR_ELEMENT)) {
 				String varName = linkSubnode.attr(NAME_ATTRIBUTE);
@@ -1355,7 +1356,7 @@ public class PageModelBuilder {
 	 * @throws PrimaryValidationException 
 	 */
 	private void readVariables(Element variablesNode, PagePE model, HashMap<String, Element> includes) throws PrimaryValidationException {
-		for (Element variablesSubnode : variablesNode.children()) {
+		for (Element variablesSubnode : detachedDirectChildren(variablesNode)) {
 			// Переменные
 			String name = null;
 			if (StringUtils.equalsIgnoreCase(variablesSubnode.tagName(), VAR_ELEMENT)) {
@@ -1376,7 +1377,7 @@ public class PageModelBuilder {
 				boolean hasValue = variablesSubnode.hasAttr(VALUE_ATTRIBUTE);
 				if (hasValue)
 					value = variablesSubnode.attr(VALUE_ATTRIBUTE);
-				model.addVariablePE(new RequestVariablePE(name, RequestVariablePE.Scope.valueOf(scope), style, value));
+				model.addVariablePE(new RequestVariablePE(name, RequestVariablePE.Scope.getValue(scope), style, value));
 			} else if (StringUtils.equalsIgnoreCase(variablesSubnode.tagName(), INCLUDE_ELEMENT)) {
 				appendInclude(variablesNode, variablesSubnode, includes);
 			}
@@ -1403,7 +1404,7 @@ public class PageModelBuilder {
 		} catch (ClassNotFoundException e) {
 			throw new PrimaryValidationException(page.getPageName() + " > command", "there is no '" + className + "' class in system CLASS_PATH");
 		}
-		for (Element commandSubnode : commandNode.children()) {
+		for (Element commandSubnode : detachedDirectChildren(commandNode)) {
 			// Результат
 			if (StringUtils.equalsIgnoreCase(commandSubnode.tagName(), RESULT_ELEMENT)) {
 				command.addElement(new ResultPE(commandSubnode.attr(NAME_ATTRIBUTE), commandSubnode.attr(TYPE_ATTRIBUTE)));
@@ -1442,5 +1443,15 @@ public class PageModelBuilder {
 			}
 		}
 		return files;
+	}
+
+	private Elements detachedDirectChildren(Element parent) {
+		Elements detachedChildren = new Elements();
+		Elements children = parent.children();
+		for (Element elem : children) {
+			Element detachedChild = new Element(Tag.valueOf(elem.tagName()), elem.baseUri(), elem.attributes().clone());
+			detachedChildren.add(detachedChild);
+		}
+		return detachedChildren;
 	}
 }

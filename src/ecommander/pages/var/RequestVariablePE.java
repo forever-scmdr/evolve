@@ -1,6 +1,7 @@
 package ecommander.pages.var;
 
 import ecommander.pages.ExecutablePagePE;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Переменная, которая поступила как параметр запроса (находится в элементе <variables></variables>)
@@ -11,7 +12,16 @@ public class RequestVariablePE extends VariablePE {
 	private static final String REQUEST_VARIABLE = "request_variable";
 
 	public enum Scope {
-		request, session, cookie
+		request, session, cookie;
+		public static Scope getValue(String val) {
+			if (StringUtils.isBlank(val) || StringUtils.equalsIgnoreCase("single", val))
+				return request;
+			if (StringUtils.equalsIgnoreCase("session", val))
+				return session;
+			if (StringUtils.equalsIgnoreCase("cookie", val))
+				return cookie;
+			throw new IllegalArgumentException("there is no Request Variable Scope value for '" + val + "' string");
+		}
 	}
 
 	protected StaticVariable var;

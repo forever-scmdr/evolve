@@ -180,7 +180,7 @@ public class Integrate_2 extends Command implements CleanAllDeletedItemsDBUnit.D
 		doc.startElement("page");
 		info.output(doc);
 		doc.endElement();
-		ResultPE result = null;
+		ResultPE result;
 		try {
 		result = getResult("success");
 		}catch (EcommanderException e) {

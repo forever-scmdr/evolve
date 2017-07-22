@@ -3,7 +3,17 @@
 
 <!-- ******************************* Включение для разделов каталога ****************************** -->
 
-<page name="index">
+	<page name="index">
 
-</page>
+	</page>
+
+
+	<page name="integration" template="integration">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.Integrate_2" clear-cache="yes">
+			<result name="success" type="xml"/>
+		</command>
+	</page>
 </site>
