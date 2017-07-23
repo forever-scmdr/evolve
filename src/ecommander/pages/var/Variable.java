@@ -2,6 +2,7 @@ package ecommander.pages.var;
 
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.ValidationResults;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
@@ -102,5 +103,10 @@ public abstract class Variable {
 	 */
 	public void validate(String elementPath, ValidationResults results) {
 		// по умолчанию ничего не делать
+	}
+
+	@Override
+	public String toString() {
+		return name + ": " + StringUtils.join(writeAllValues(), ", ");
 	}
 }

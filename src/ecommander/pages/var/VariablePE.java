@@ -35,10 +35,10 @@ public abstract class VariablePE implements PageElement {
 	public enum Style {
 		path, query, translit;
 		public static Style getValue(String val) {
+			if (StringUtils.isBlank(val) || StringUtils.equalsIgnoreCase("query", val))
+				return query;
 			if (StringUtils.equalsIgnoreCase("path", val))
 				return path;
-			if (StringUtils.equalsIgnoreCase("query", val))
-				return query;
 			if (StringUtils.equalsIgnoreCase("translit", val))
 				return translit;
 			throw new IllegalArgumentException("there is no Link Style value for '" + val + "' string");
@@ -157,4 +157,8 @@ public abstract class VariablePE implements PageElement {
 			results.addError(elementPath + " > " + getKey(), "variable name is not a valid XML element name");
 	}
 
+	@Override
+	public String toString() {
+		return name + "(" + style + ") -> " + getVariable();
+	}
 }

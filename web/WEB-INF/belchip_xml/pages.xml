@@ -13,7 +13,7 @@
 			<var name="action"/>
 		</request>
 		<command class="extra.Integrate_2" clear-cache="yes">
-			<result name="success" type="xml"/>
+			<result name="success" type="xml"></result>
 		</command>
 	</page>
 </site>

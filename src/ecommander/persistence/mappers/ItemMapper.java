@@ -82,11 +82,12 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 			}
 		}
 		// Выполнения запроса
-		PreparedStatement insertStmt = query.prepareQuery(transaction.getConnection());
-		try {
-			insertStmt.executeUpdate();
-		} catch (Exception e) {
-			throw new EcommanderException(ErrorCodes.UNABLE_TO_SAVE_ITEM_INDEX, query.getSimpleSql(), e);
+		if (!query.isEmpty()) {
+			try (PreparedStatement insertStmt = query.prepareQuery(transaction.getConnection())) {
+				insertStmt.executeUpdate();
+			} catch (Exception e) {
+				throw new EcommanderException(ErrorCodes.UNABLE_TO_SAVE_ITEM_INDEX, query.getSimpleSql(), e);
+			}
 		}
 	}
 

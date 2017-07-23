@@ -13,6 +13,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.File;
@@ -151,7 +152,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	}
 
 	private Document parseFile(String xml) throws Exception {
-		Document doc = Jsoup.parse(xml);
+		Document doc = Jsoup.parse(xml, "", Parser.xmlParser());
 		Elements assocs = doc.getElementsByTag(ASSOC);
 		for (Element assoc : assocs) {
 			readAssoc(assoc);

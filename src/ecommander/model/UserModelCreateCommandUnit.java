@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.nio.file.Files;
@@ -46,7 +47,7 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 	}
 
 	private void parseFile(String xml) throws Exception {
-		Document doc = Jsoup.parse(xml);
+		Document doc = Jsoup.parse(xml, "", Parser.xmlParser());
 		Element groups = doc.getElementsByTag(GROUPS).first();
 		if (groups == null) {
 			throw createValidationException("Groups tag not found", usersFileName, "Не найден элемент с группами пользователей");

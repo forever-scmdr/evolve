@@ -115,11 +115,11 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 		this.requestLink = link;
 		this.urlBase = baseLink;
 		for (VariablePE variable : requestLink.getAllVariables()) {
-			Variable initialVar = variables.get(variable.getName());
-			if (initialVar != null && initialVar instanceof SessionStaticVariable)
-				((SessionStaticVariable)initialVar).update(variable.getVariable());
+			VariablePE initialVar = getInitVariablePE(variable.getName());
+			if (initialVar != null && initialVar.getVariable() instanceof SessionStaticVariable)
+				((SessionStaticVariable) initialVar.getVariable()).update(variable.getVariable());
 			else {
-				addVariablePE(variable);
+				addVariable(variable.getVariable());
 			}
 		}
 		addVariablePE(new RequestVariablePE(PAGEURL_VALUE, linkUrl));

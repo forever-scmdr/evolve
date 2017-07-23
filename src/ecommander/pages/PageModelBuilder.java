@@ -15,10 +15,12 @@ import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.*;
 
 /**
@@ -723,7 +725,7 @@ public class PageModelBuilder {
 		HashMap<String, Element> includes = new HashMap<>();
 		ArrayList<Document> docs = new ArrayList<>();
 		for (File file : pageModelFiles) {
-			Document document = Jsoup.parse(file, Strings.SYSTEM_ENCODING);
+			Document document = Jsoup.parse(new FileInputStream(file), Strings.SYSTEM_ENCODING, "", Parser.xmlParser());
 			readIncludes(document, includes);
 			docs.add(document);
 		}
@@ -1364,20 +1366,12 @@ public class PageModelBuilder {
 				String scope = variablesSubnode.attr(SCOPE_ATTRIBUTE);
 				if (StringUtils.isBlank(name)) continue;
 				String styleStr = variablesSubnode.attr(STYLE_ATTRIBUTE);
-				VariablePE.Style style = null;
-				try {
-					if (!StringUtils.isBlank(styleStr))
-						style = VariablePE.Style.valueOf(styleStr);
-					// Проверка, правильно ли указан стиль переменной
-				} catch (Exception e) {
-					throw new PrimaryValidationException(page.getPageName() + " > variables ", "'" + variablesSubnode.attr(STYLE_ATTRIBUTE)
-							+ "' is not a valid style of &lt;var&gt; element");
-				}
 				String value = null;
 				boolean hasValue = variablesSubnode.hasAttr(VALUE_ATTRIBUTE);
 				if (hasValue)
 					value = variablesSubnode.attr(VALUE_ATTRIBUTE);
-				model.addVariablePE(new RequestVariablePE(name, RequestVariablePE.Scope.getValue(scope), style, value));
+				model.addVariablePE(new RequestVariablePE(name, RequestVariablePE.Scope.getValue(scope),
+						VariablePE.Style.getValue(styleStr), value));
 			} else if (StringUtils.equalsIgnoreCase(variablesSubnode.tagName(), INCLUDE_ELEMENT)) {
 				appendInclude(variablesNode, variablesSubnode, includes);
 			}
@@ -1447,10 +1441,12 @@ public class PageModelBuilder {
 
 	private Elements detachedDirectChildren(Element parent) {
 		Elements detachedChildren = new Elements();
-		Elements children = parent.children();
-		for (Element elem : children) {
-			Element detachedChild = new Element(Tag.valueOf(elem.tagName()), elem.baseUri(), elem.attributes().clone());
-			detachedChildren.add(detachedChild);
+		if (parent.children().size() == 0)
+			return detachedChildren;
+		Element first = parent.children().first();
+		detachedChildren.add(first);
+		for (Element elem : first.siblingElements()) {
+			detachedChildren.add(elem);
 		}
 		return detachedChildren;
 	}
