@@ -69,25 +69,25 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private static final String COMMON_QUERY
 			= "SELECT DISTINCT I.*, <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
+			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
 
 	private static final String PARENT_QUERY
 			= "SELECT DISTINCT I.*, <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) <<WHERE_PART>>";
+			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) <<WHERE_PART>>";
 
 
 	private static final String GROUP_COMMON_QUERY
 			= "SELECT DISTINCT <<PARENT_ID_PART>> AS PID <<GROUP_PARAMS_PART>> "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
+			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
 
 	private static final String COMMON_QUANTITY_QUERY
 			= "SELECT COUNT(DISTINCT I." + I_ID + "), <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN (<<STATUS_PART>>) "
+			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> GROUP BY PID";
 
 	private boolean hasParent = false; // Есть ли критерий предка у искомого айтема (нужно ли искать потомков определенных предков)
@@ -640,11 +640,12 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		if (isEmptySet())
 			return new ArrayList<>();
 		// Если был полнотекстовый поиск - выполнить сначала его (посмотреть, вернет ли он какие-нибудь результаты)
-		if (hasFulltext())
+		if (hasFulltext()) {
 			loadFulltextIds();
-		// Если полнотекстовый поиск не выдал результатов - вернуть пустой массив
-		if (fulltext.getLoadedIds().length <= 0)
-			return new ArrayList<>();
+			// Если полнотекстовый поиск не выдал результатов - вернуть пустой массив
+			if (fulltext.getLoadedIds().length <= 0)
+				return new ArrayList<>();
+		}
 		// Выбрать нужный запрос
 		TemplateQuery query;
 		if (hasFilter() && filter.hasAggregation()) {
@@ -674,6 +675,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		if (!hasFilter() || !filter.hasSorting()) {
 			TemplateQuery orderBy = query.getSubquery(Const.ORDER);
 			if (orderBy != null) {
+				orderBy.sql(" ORDER BY ");
 				if (hasFulltext()) {
 					orderBy.sql("FIELD (" + I_DOT + I_ID + ", ").longArray(fulltext.getLoadedIds()).sql(")");
 				} else if (hasParent) {

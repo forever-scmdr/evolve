@@ -1194,7 +1194,7 @@ public class Item implements ItemBasics {
 	}
 
 	private static String getParamFileName(String basePath, long itemId, String fileName) {
-		return basePath + '/' + itemId + '/' + fileName;
+		return basePath + '/' + createItemFilesPath(itemId) + fileName;
 	}
 
 	private void setFilesPath() {

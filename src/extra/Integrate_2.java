@@ -167,6 +167,7 @@ public class Integrate_2 extends Command implements CleanAllDeletedItemsDBUnit.D
 					}, "Catalog XML-integration").start();
 					
 				} catch (Exception se) {
+					isInProgress = false;
 					ServerLogger.error("Integration error", se);
 					// errors.add(new Error(se.getMessage(), 0, 0));
 				}
