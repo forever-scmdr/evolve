@@ -8,7 +8,6 @@ public interface DataModelXmlElementNames {
 	/**
 	 * Элементы
 	 */
-	String ITEMS = "items";
 	String ASSOC = "assoc";
 	String ITEM = "item";
 	String ITEMDESC = "itemdesc";

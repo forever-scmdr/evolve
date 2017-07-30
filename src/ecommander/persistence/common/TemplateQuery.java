@@ -235,6 +235,7 @@ public class TemplateQuery implements QueryPart {
 		if (startFrom.length > 0)
 			sb.append(startFrom[0]).append(',');
 		sb.append(limit);
+		queryParts.add(new SqlQueryPart(sb));
 		return this;
 	}
 

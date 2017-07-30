@@ -17,7 +17,7 @@ public abstract class ItemModelFilePersistenceCommandUnit extends ModelFilePersi
 
 	@Override
 	protected String getRootElementName() {
-		return ITEMS;
+		return MODEL;
 	}
 
 }

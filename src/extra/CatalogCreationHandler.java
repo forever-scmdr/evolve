@@ -94,7 +94,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 						top.setValue(IConst.QTY_ELEMENT, 0d);
 					}
 					// Добавление команды сохранения продукта
-					transaction.addCommandUnit(SaveItemDBUnit.get(top).noFulltextIndex());
+					transaction.addCommandUnit(SaveItemDBUnit.new_(top, stack.peek()).noFulltextIndex());
 					if (transaction.getCommandCount() == 20) {
 						сreated += transaction.execute();
 						info.setProductsCreated(сreated);

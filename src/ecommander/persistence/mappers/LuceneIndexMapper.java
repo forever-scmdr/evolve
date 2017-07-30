@@ -485,7 +485,9 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	public static void deleteItem(long itemId, boolean... needClose) throws IOException, SAXException, TikaException {
+	public static void deleteItem(long itemId, int itemType, boolean... needClose) throws IOException, SAXException, TikaException {
+		if (!ItemTypeRegistry.getItemType(itemType).isFulltextSearchable())
+			return;
 		boolean doClose = true;
 		if (needClose.length > 0)
 			doClose = needClose[0];

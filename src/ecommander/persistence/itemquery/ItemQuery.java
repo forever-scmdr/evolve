@@ -127,9 +127,9 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		this.isTransitive = isTransitive;
 		this.hasParent = true;
 		if (predIds != null && predIds.size() > 0) {
-			this.ancestorIds = new Long[0];
-		} else {
 			this.ancestorIds = predIds.toArray(new Long[0]);
+		} else {
+			this.ancestorIds = new Long[0];
 		}
 		if (assocName.length > 0)
 			this.assocId = ItemTypeRegistry.getAssoc(assocName[0]).getId();

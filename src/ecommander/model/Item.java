@@ -587,8 +587,13 @@ public class Item implements ItemBasics {
 				key = itemType.getCaption();
 			}
 			if (key.length() > 99) key = key.substring(0, 98);
-			if (StringUtils.isBlank(keyUnique))
+			if (StringUtils.isBlank(keyUnique)) {
 				keyUnique = Strings.translit(key);
+				if (keyUnique.length() > 99) keyUnique = keyUnique.substring(0, 98);
+			}
+			// Если айтем новый - также сохранить oldKeyUnique
+			if (isNew())
+				oldKeyUnique = keyUnique;
 		}
 	}
 //	/**

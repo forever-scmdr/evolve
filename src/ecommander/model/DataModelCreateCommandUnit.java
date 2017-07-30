@@ -162,7 +162,8 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			readItem(item);
 		}
 		Element root = doc.getElementsByTag(ROOT).first();
-		readRoot(root);
+		if (root != null)
+			readRoot(root);
 		return doc;
 	}
 
@@ -748,7 +749,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 	 */
 	static ArrayList<File> findModelFiles(File startFile, ArrayList<File> files) {
 		if (files == null) {
-			files = new ArrayList<File>();
+			files = new ArrayList<>();
 			if (startFile.isFile())
 				files.add(startFile);
 			else

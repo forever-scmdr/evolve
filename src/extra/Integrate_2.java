@@ -131,6 +131,8 @@ public class Integrate_2 extends Command implements CleanAllDeletedItemsDBUnit.D
 									ItemStatusDBUnit delete = ItemStatusDBUnit.delete(section);
 									executeAndCommitCommandUnits(delete);
 								}
+								// Очистка корзины
+								executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(20, integrate));
 								// Удаление файла классов 
 								File modelFile = new File(AppContext.getUserModelPath());
 								modelFile.delete();
@@ -142,16 +144,15 @@ public class Integrate_2 extends Command implements CleanAllDeletedItemsDBUnit.D
 									ItemTypeRegistry.lock();
 									if (info.getErrorsCount() == 0)
 										parser.parse(integration, new ProductClassHandler(catalog, info));
-									DataModelBuilder.newLoader().reloadModel();
+									DataModelBuilder.newSafeUpdate().reloadModel();
 									ItemTypeRegistry.unlockSumbit();
-								} finally {
+								} catch (Exception e) {
 									ItemTypeRegistry.unlockRollback();
 								}
 								info.addMessage("Создание разделов и классов завершено. Начало создания продукции");
 								info.setOperation("Создание продукции каталога");
 								// Запись товаров в каталог
-								if (info.getErrorsCount() == 0)
-									parser.parse(integration, new CatalogCreationHandler(catalog, info));
+								parser.parse(integration, new CatalogCreationHandler(catalog, info));
 								info.addMessage("Создание продукции завершено. Начало текстовой индексации");
 								LuceneIndexMapper.reindexAll();
 								info.addMessage("Индексация завершена");
@@ -194,8 +195,8 @@ public class Integrate_2 extends Command implements CleanAllDeletedItemsDBUnit.D
 
 	public static class Info {
 		private static final Format TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
-		private ArrayList<Error> errors = new ArrayList<Error>();
-		private ArrayList<LogMessage> log = new ArrayList<LogMessage>();
+		private ArrayList<Error> errors = new ArrayList<>();
+		private ArrayList<LogMessage> log = new ArrayList<>();
 		private boolean refresh = true;
 		private String currentOperation = "инициализация";
 		private int totalLineCount;

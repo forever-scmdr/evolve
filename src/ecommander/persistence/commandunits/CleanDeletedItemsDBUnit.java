@@ -1,6 +1,7 @@
 package ecommander.persistence.commandunits;
 
 import ecommander.filesystem.DeleteItemsDirectoriesUnit;
+import ecommander.fwk.Pair;
 import ecommander.model.Item;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
@@ -28,15 +29,18 @@ public class CleanDeletedItemsDBUnit extends DBPersistenceCommandUnit implements
 
 		// Загрузка ID для удаления
 		TemplateQuery selectToDeleteIds = new TemplateQuery("Select " + toDeleteQty + " items to delete");
-		selectToDeleteIds.SELECT(I_ID).FROM(ITEM_TBL).WHERE().col(I_STATUS).byte_(Item.STATUS_DELETED).
+		selectToDeleteIds.SELECT(I_ID, I_TYPE_ID).FROM(ITEM_TBL).WHERE().col(I_STATUS).byte_(Item.STATUS_DELETED).
 				ORDER_BY(I_ID).LIMIT(toDeleteQty);
+		ArrayList<Pair<Integer, Long>> deletedItems = new ArrayList<>();
 		ArrayList<Long> deletedIds = new ArrayList<>();
 		try (PreparedStatement pstmt = selectToDeleteIds.prepareQuery(getTransactionContext().getConnection())) {
 			ResultSet rs = pstmt.executeQuery();
-			while (rs.next())
+			while (rs.next()) {
+				deletedItems.add(new Pair<>(rs.getInt(2), rs.getLong(1)));
 				deletedIds.add(rs.getLong(1));
+			}
 		}
-		Long[] deletedArray = deletedIds.toArray(new Long[deletedIds.size()]);
+		Long[] deletedArray = deletedIds.toArray(new Long[0]);
 
 		// Удаление файлов
 		executeCommand(new DeleteItemsDirectoriesUnit(deletedArray));
@@ -50,11 +54,11 @@ public class CleanDeletedItemsDBUnit extends DBPersistenceCommandUnit implements
 		}
 
 		// Удаление из полнотекстового индекса
-		for (Long deletedId : deletedIds) {
-			LuceneIndexMapper.deleteItem(deletedId, false);
+		for (Pair<Integer, Long> deletedId : deletedItems) {
+			LuceneIndexMapper.deleteItem(deletedId.getRight(), deletedId.getLeft(), false);
 		}
 
-		deletedQty = deletedIds.size();
+		deletedQty = deletedItems.size();
 	}
 
 	int getDeletedCount() {
