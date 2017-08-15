@@ -55,7 +55,7 @@ public class SessionContext implements AutoCloseable {
 		closeDBConnection();
 		if (hasSession()) {
 			storage = (SessionObjectStorage) forceGetSession().getAttribute(STORAGE_SESSION_NAME);
-			if (storage.isEmpty())
+			if (storage != null && storage.isEmpty())
 				removeSessionObject(STORAGE_SESSION_NAME);
 		}
 	}

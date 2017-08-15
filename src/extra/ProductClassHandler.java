@@ -96,7 +96,7 @@ public class ProductClassHandler extends DefaultHandler {
 		}
 	}
 	
-	private Stack<Item> stack = new Stack<Item>();
+	private Stack<Item> stack = new Stack<>();
 	private Locator locator;
 	private boolean parameterReady = false;
 	private String paramName;
@@ -173,7 +173,7 @@ public class ProductClassHandler extends DefaultHandler {
 			sectionParams = null;
 		}
 		// Установка значения параметра
-		else if (parameterReady && IConst.PARAMETER_ELEMENT.equals(qName)) {
+		else if (parameterReady && IConst.PARAMETER_ELEMENT.equals(qName) && sectionParams != null) {
 			sectionParams.addParameter(paramName, paramValue.toString().trim());
 		}
 		parameterReady = false;
@@ -238,6 +238,9 @@ public class ProductClassHandler extends DefaultHandler {
 			}
 			// Продукт
 			else if (IConst.PRODUCT_ELEMENT.equalsIgnoreCase(qName)) {
+				if (sectionParams == null)
+					info.addError("Некорректное расположение товара (вне конечного раздела)",
+							locator.getLineNumber(), locator.getColumnNumber());
 				Item parent = stack.peek();
 				Item product = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PRODUCT._ITEM_NAME), parent);
 				stack.push(product);

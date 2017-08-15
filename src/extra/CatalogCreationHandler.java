@@ -107,7 +107,8 @@ public class CatalogCreationHandler extends DefaultHandler {
 			// Установка значения параметра
 			if (parameterReady) {
 				Item product = stack.peek();
-				product.setValueUI(paramName, paramValue.toString().trim());
+				if (product.getItemType().hasParameter(paramName))
+					product.setValueUI(paramName, paramValue.toString().trim());
 			}
 			parameterReady = false;
 			// Инфо

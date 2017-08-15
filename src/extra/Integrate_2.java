@@ -1,5 +1,6 @@
 package extra;
 
+import com.mysql.fabric.Server;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ServerLogger;
@@ -147,6 +148,8 @@ public class Integrate_2 extends Command implements CleanAllDeletedItemsDBUnit.D
 									DataModelBuilder.newSafeUpdate().reloadModel();
 									ItemTypeRegistry.unlockSumbit();
 								} catch (Exception e) {
+									ServerLogger.error("Some error", e);
+									info.addError("Unknown error", "unknown");
 									ItemTypeRegistry.unlockRollback();
 								}
 								info.addMessage("Создание разделов и классов завершено. Начало создания продукции");

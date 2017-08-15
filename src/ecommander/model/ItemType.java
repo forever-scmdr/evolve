@@ -143,6 +143,15 @@ public class ItemType extends ItemTypeContainer {
 	public final boolean hasParameter(int paramId) {
 		return parameters.containsKey(paramId);
 	}
+
+	/**
+	 * Содержит ли айтем параметр с определенным названием
+	 * @param paramName
+	 * @return
+	 */
+	public final boolean hasParameter(String paramName) {
+		return paramsByName.containsKey(paramName);
+	}
 	/**
 	 * @return
 	 */
