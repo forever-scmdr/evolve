@@ -56,7 +56,6 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		}
 		
 		private void init() {
-			currentItem = itemPE.getSingleFoundItem();
 			currentItemIndex = -1;
 			currentParentId = NO_PARENT_ID;
 		}
@@ -65,15 +64,18 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		 * @return
 		 */
 		public boolean next() {
-			ArrayList<Item> foundItems;
+			ArrayList<Item> foundItems = null;
+			long parentItemId = -1L;
 			if (itemPE.hasParent()) {
 				// Сначала проверяется, есть ли вложенные айтемы в этом же страничном айтеме
 				// такое возможно при типе запроса TREE
-				long parentItemId = currentItem.getId();
-				foundItems = itemPE.getFoundItemsByParent(parentItemId);
+				if (currentItem != null) {
+					parentItemId = currentItem.getId();
+					foundItems = itemPE.getFoundItemsByParent(parentItemId);
+				}
 				// если в текущем СТРАНИЧНОМ айтеме не найдены айтемы, вложенные в текущий айтем,
 				// то уже в этом случае ищутся айтемы во вложенном страничном айтеме
-				if (foundItems.isEmpty()) {
+				if (foundItems == null || foundItems.isEmpty()) {
 					parentItemId = itemPE.parentItem.iterator.currentItem.getId();
 					foundItems = itemPE.getFoundItemsByParent(parentItemId);
 				}
@@ -98,6 +100,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		 * @return
 		 */
 		public Item getCurrentItem() {
+			if (currentItem == null)
+				next();
 			return currentItem;
 		}
 		/**

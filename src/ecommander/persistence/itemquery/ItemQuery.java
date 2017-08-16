@@ -187,6 +187,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 */
 	public void setNeedTree(boolean tree) {
 		this.isTree = tree;
+		this.isTransitive = tree;
 	}
 	/**
 	 * Установить группировку (параметр, значение которого извлекается)
@@ -600,7 +601,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				// Для деревьев нужно дополнительно извлечь ID непосредственного предка
 				if (isTree) {
 					query.getSubquery(Const.JOIN).INNER_JOIN(ITEM_PARENT_TBL + " AS TP", TP_DOT + IP_CHILD_ID, I_DOT + I_ID);
-					query.getSubquery(Const.WHERE).AND().AND().col(TP_DOT + IP_ASSOC_ID).byte_(assocId)
+					query.getSubquery(Const.WHERE).AND().col(TP_DOT + IP_ASSOC_ID).byte_(assocId)
 							.AND().col_IN(TP_DOT + IP_CHILD_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(itemDesc.getTypeId()))
 							.AND().col(TP_DOT + IP_PARENT_DIRECT).byte_((byte)1);
 					query.getSubquery(Const.PARENT_ID).sql(TP_DOT + IP_PARENT_ID);

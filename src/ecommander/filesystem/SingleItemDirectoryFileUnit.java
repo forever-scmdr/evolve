@@ -23,7 +23,7 @@ public abstract class SingleItemDirectoryFileUnit extends ItemDirectoryCommandUn
 	 * @return
 	 */
 	protected final String createParameterFileName(String paramValue) {
-		return createItemDirectoryName() + File.separator + paramValue;
+		return createItemDirectoryName() + '/' + paramValue;
 	}
 	/**
 	 * Директория хранения файлов айтема (путь начиная от директории хранения всех файлов приложения)

@@ -1,11 +1,6 @@
 package ecommander.controllers;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Transformer;
@@ -26,7 +21,7 @@ import ecommander.fwk.XmlDocumentBuilder;
  *
  */
 public class XmlXslOutputController {
-	
+
 	private XmlXslOutputController() {};
 	
 	private static class Errors implements ErrorListener {
@@ -66,7 +61,7 @@ public class XmlXslOutputController {
 		TransformerFactory factory = TransformerFactoryImpl.newInstance();
 		File xslFile = new File(xslFileName);
 		Errors errors = new Errors();
-		Transformer transformer = null;
+		Transformer transformer;
 		try {
 			factory.setErrorListener(errors);
 			transformer = factory.newTransformer(new StreamSource(xslFile));
@@ -86,8 +81,6 @@ public class XmlXslOutputController {
 	 */
 	public static void outputXml(OutputStream ostream, XmlDocumentBuilder xml) throws IOException {
 		// Настройка формата вывода документа
-		PrintWriter writer = new PrintWriter(ostream);
-		writer.append(xml.toString());
-		writer.flush();
+		ostream.write(xml.toString().getBytes("UTF-8"));
 	}
 }

@@ -5,7 +5,7 @@
 
 	<page name="index">
 		<single item="catalog">
-			<list item="section"/>
+			<tree item="section"/>
 		</single>
 	</page>
 
