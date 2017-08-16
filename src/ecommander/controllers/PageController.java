@@ -31,7 +31,7 @@ public class PageController {
 	private final boolean useCache; // надо ли использовать кеш
 	private ByteArrayOutputStream out; // куда выводится результирующий документ
 	private ExecutablePagePE page; // страница для выполнения
-	
+	private String contentType; // тип данных ответа
 	
 	private PageController(String requestUrl, String domainName, boolean useCache) {
 		this.requestUrl = requestUrl;
@@ -95,6 +95,8 @@ public class PageController {
 				resp.sendRedirect(page.getUrlBase() + result);
 			}
 		} else {
+			resp.setContentType(contentType);
+			resp.setCharacterEncoding("UTF-8");
 			out.writeTo(resp.getOutputStream());
 			resp.getOutputStream().flush();
 			resp.getOutputStream().close();
@@ -200,15 +202,19 @@ public class PageController {
 			// Результат выполнения - XML документ
 			if (result.getType() == ResultType.xml && !StringUtils.isBlank(result.getValue())) {
 				XmlDocumentBuilder xml = XmlDocumentBuilder.newDocFull(result.getValue());
-				if (page.transformationNeeded())
+				if (page.transformationNeeded()) {
 					XmlXslOutputController.outputXmlTransformed(out, xml, xslFileName);
-				else
+					contentType = "text/html";
+				} else {
 					XmlXslOutputController.outputXml(out, xml);
+					contentType = "application/xml";
+				}
 			}
 			// Результат - простой текст, не требующий преобразований
 			else if (result.getType() == ResultType.plain_text && !StringUtils.isBlank(result.getValue())) {
 				byte[] data = result.getValue().getBytes(StandardCharsets.UTF_8);
 				out.write(data);
+				contentType = "text/plain";
 			}
 			// Результат выполнения - ссылка
 			// Выполняется либо внутренний (forward) либо внешний (redirect) переход на новую страницу
@@ -255,10 +261,13 @@ public class PageController {
 		else {
 			try {
 				XmlDocumentBuilder xml = new PageWriter(page).generateXml();
-				if (page.transformationNeeded())
+				if (page.transformationNeeded()) {
 					XmlXslOutputController.outputXmlTransformed(out, xml, xslFileName);
-				else
+					contentType = "text/html";
+				} else {
 					XmlXslOutputController.outputXml(out, xml);
+					contentType = "application/xml";
+				}
 			} catch (Exception e) {
 				if (redo) {
 					ServerLogger.error("Page transfor error", e);

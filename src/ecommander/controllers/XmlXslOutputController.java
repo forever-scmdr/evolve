@@ -81,7 +81,7 @@ public class XmlXslOutputController {
 	/**
 	 * Выводит XML документ в поток вывода
 	 * @param ostream
-	 * @param document
+	 * @param xml
 	 * @throws IOException
 	 */
 	public static void outputXml(OutputStream ostream, XmlDocumentBuilder xml) throws IOException {

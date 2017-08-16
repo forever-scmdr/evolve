@@ -67,25 +67,25 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private final String TP_DOT = Const.TREE_PARENT_TABLE;
 
 	private static final String COMMON_QUERY
-			= "SELECT DISTINCT I.*, <<PARENT_ID_PART>> AS PID "
+			= "SELECT I.*, <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
 
 	private static final String PARENT_QUERY
-			= "SELECT DISTINCT I.*, <<PARENT_ID_PART>> AS PID "
+			= "SELECT I.*, <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) <<WHERE_PART>>";
 
 
 	private static final String GROUP_COMMON_QUERY
-			= "SELECT DISTINCT <<PARENT_ID_PART>> AS PID <<GROUP_PARAMS_PART>> "
+			= "SELECT <<PARENT_ID_PART>> AS PID <<GROUP_PARAMS_PART>> "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
 
 	private static final String COMMON_QUANTITY_QUERY
-			= "SELECT COUNT(DISTINCT I." + I_ID + "), <<PARENT_ID_PART>> AS PID "
+			= "SELECT COUNT(I." + I_ID + "), <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> GROUP BY PID";

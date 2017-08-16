@@ -1,6 +1,5 @@
 package extra;
 
-import com.mysql.fabric.Server;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ServerLogger;

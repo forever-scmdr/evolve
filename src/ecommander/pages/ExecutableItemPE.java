@@ -73,7 +73,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				foundItems = itemPE.getFoundItemsByParent(parentItemId);
 				// если в текущем СТРАНИЧНОМ айтеме не найдены айтемы, вложенные в текущий айтем,
 				// то уже в этом случае ищутся айтемы во вложенном страничном айтеме
-				if (foundItems == null) {
+				if (foundItems.isEmpty()) {
 					parentItemId = itemPE.parentItem.iterator.currentItem.getId();
 					foundItems = itemPE.getFoundItemsByParent(parentItemId);
 				}
