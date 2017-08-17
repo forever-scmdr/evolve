@@ -591,7 +591,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			if (isParent) {
 				query.getSubquery(Const.JOIN).INNER_JOIN(ITEM_PARENT_TBL + " AS P", P_DOT + IP_PARENT_ID, I_DOT + I_ID);
 				query.getSubquery(Const.WHERE).AND().col_IN(P_DOT + IP_CHILD_ID).longIN(parentIds)
-						.AND().col(P_DOT + IP_ASSOC_ID).byte_(assocId);
+						.AND().col(P_DOT + IP_ASSOC_ID).byte_(assocId)
+						.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(itemDesc.getTypeId()));
 				query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_CHILD_ID);
 			} else {
 				query.getSubquery(Const.JOIN).INNER_JOIN(ITEM_PARENT_TBL + " AS P", P_DOT + IP_CHILD_ID, I_DOT + I_ID);

@@ -4,9 +4,10 @@
 <!-- ******************************* Включение для разделов каталога ****************************** -->
 
 	<page name="index">
-		<single item="catalog">
-			<tree item="section"/>
-		</single>
+		<list item="section">
+			<ancestor item="catalog" transit="true"/>
+		</list>
+
 	</page>
 
 

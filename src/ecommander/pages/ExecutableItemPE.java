@@ -509,7 +509,11 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			boolean needLoading = !hasParent() || (loadedIds != null && loadedIds.size() > 0);
 			// Добавление критерия предка
 			if (needLoading && hasParent()) {
-				query.setParentIds(loadedIds, isTransitive(), getAssocName());
+				if (getQueryType() == Type.ANCESTOR) {
+					query.setChildrenIds(loadedIds, isTransitive(), getAssocName());
+				} else {
+					query.setParentIds(loadedIds, isTransitive(), getAssocName());
+				}
 				if (getQueryType() == Type.TREE)
 					query.setNeedTree(true);
 			}
