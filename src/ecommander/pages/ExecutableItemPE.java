@@ -21,10 +21,7 @@ import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.SessionItemMapper;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -47,8 +44,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	public static class ParentRelatedFoundIterator {
 		private Item currentItem = null;
 		private ExecutableItemPE itemPE = null;
-		private int currentItemIndex = -1;
-		private long currentParentId = NO_PARENT_ID;
+		private LinkedList<Iterator<Item>> iterators = null;
+		private long currentParentId = -2;
 
 		ParentRelatedFoundIterator(ExecutableItemPE pageItem) {
 			this.itemPE = pageItem;
@@ -56,40 +53,48 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		}
 		
 		private void init() {
-			currentItemIndex = -1;
-			currentParentId = NO_PARENT_ID;
+			iterators = new LinkedList<>();
+			currentParentId = -2;
 		}
 		/**
 		 * Перемещает указатель на следующий айтем
 		 * @return
 		 */
 		public boolean next() {
-			ArrayList<Item> foundItems = null;
-			long parentItemId = -1L;
 			if (itemPE.hasParent()) {
 				// Сначала проверяется, есть ли вложенные айтемы в этом же страничном айтеме
 				// такое возможно при типе запроса TREE
 				if (currentItem != null) {
-					parentItemId = currentItem.getId();
-					foundItems = itemPE.getFoundItemsByParent(parentItemId);
+					long parentId = currentItem.getId();
+					ArrayList<Item> foundItems = itemPE.getFoundItemsByParent(parentId);
+					if (!foundItems.isEmpty())
+						iterators.push(foundItems.iterator());
 				}
 				// если в текущем СТРАНИЧНОМ айтеме не найдены айтемы, вложенные в текущий айтем,
 				// то уже в этом случае ищутся айтемы во вложенном страничном айтеме
-				if (foundItems == null || foundItems.isEmpty()) {
-					parentItemId = itemPE.parentItem.iterator.currentItem.getId();
-					foundItems = itemPE.getFoundItemsByParent(parentItemId);
+				if (iterators.isEmpty()) {
+					long parentId = itemPE.parentItem.iterator.currentItem.getId();
+					if (parentId != currentParentId) {
+						currentParentId = parentId;
+						ArrayList<Item> foundItems = itemPE.getFoundItemsByParent(currentParentId);
+						iterators.push(foundItems.iterator());
+					}
 				}
-				// Сбросить значение индекса, если закончились потомки одного айтема, и начались потомки другого
-				if (currentParentId != parentItemId) {
-					currentParentId = parentItemId;
-					currentItemIndex = -1;
-				}
-			} else {
-				foundItems = itemPE.getFoundItemsByParent(currentParentId);
+			} else if (currentParentId != NO_PARENT_ID) {
+				currentParentId = NO_PARENT_ID;
+				ArrayList<Item> foundItems = itemPE.getFoundItemsByParent(NO_PARENT_ID);
+				iterators.push(foundItems.iterator());
 			}
-			if (foundItems.size() > currentItemIndex + 1) {
-				currentItem = foundItems.get(++currentItemIndex);
+			if (!iterators.isEmpty() &&  iterators.peek().hasNext()) {
+				currentItem = iterators.peek().next();
+				while (!iterators.isEmpty() && !iterators.peek().hasNext()) {
+					iterators.pop();
+				}
 				return true;
+			} else {
+				while (!iterators.isEmpty() && !iterators.peek().hasNext()) {
+					iterators.pop();
+				}
 			}
 			// переинициализация
 			init();
