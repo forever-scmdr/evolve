@@ -192,6 +192,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		ArrayList<Item> items = new ArrayList<>();
 		// общее число таких айтемов в базоне, чтобы было известно сколько всего будет страниц, например
 		int totalQuantity = 0;
+		// уровень вложенности родителя (в загрузчиках типа tree)
+		int level = -1;
 		@Override
 		public String toString() {
 			String result = "Quantity: " + totalQuantity + "  Items: ";
@@ -286,7 +288,20 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			return new ArrayList<>();
 		return foundItems.items;
 	}
-	
+
+	/**
+	 * Вернуть уровень вложенности родителя относительно корневых найденных айтемов для запросов tree
+	 * !!! ТОЛЬКО для tree
+	 * @param parentId
+	 * @return
+	 */
+	private int getFoundItemsParentLevel(long parentId) {
+		FoundItemBundle foundItems = foundItemsByParent.get(parentId);
+		if (foundItems == null)
+			return -1;
+		return foundItems.level;
+	}
+
 	/**
 	 * Возвращает единственный найденный айтем (в том случае если этот ItemPE single)
 	 * @return
@@ -443,6 +458,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				for (Item item : items) {
 					addFoundItem(item, item.getContextParentId());
 				}
+				initTreeLevels();
 			} else {
 				for (Item item : items) {
 					addFoundItem(item, NO_PARENT_ID);
