@@ -46,6 +46,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		private ExecutableItemPE itemPE = null;
 		private LinkedList<Iterator<Item>> iterators = null;
 		private long currentParentId = -2;
+		private int currentNestedLevel = 0;
 
 		ParentRelatedFoundIterator(ExecutableItemPE pageItem) {
 			this.itemPE = pageItem;
@@ -85,8 +86,9 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				ArrayList<Item> foundItems = itemPE.getFoundItemsByParent(NO_PARENT_ID);
 				iterators.push(foundItems.iterator());
 			}
-			if (!iterators.isEmpty() &&  iterators.peek().hasNext()) {
+			if (!iterators.isEmpty() && iterators.peek().hasNext()) {
 				currentItem = iterators.peek().next();
+				currentNestedLevel = iterators.size();
 				while (!iterators.isEmpty() && !iterators.peek().hasNext()) {
 					iterators.pop();
 				}
@@ -108,6 +110,15 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			if (currentItem == null)
 				next();
 			return currentItem;
+		}
+
+		/**
+		 * Текущий уровень вложенности айтема в случае tree
+		 * В другом случае всегда 1
+		 * @return
+		 */
+		public int getCurrentNestedLevel() {
+			return currentNestedLevel;
 		}
 		/**
 		 * Возвращает количество найденных айтемов для определенного (текущего) родителя

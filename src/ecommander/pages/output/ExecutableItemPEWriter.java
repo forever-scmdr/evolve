@@ -31,15 +31,19 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 	public static final String ADMIN_SIBLING_ATTRIBUTE = "adm-sibling";
 	/**
 	 * Вывести один найденный айтем (и запустить вывод сабайтемов этого айтема)
+	 * В этом методе происходит вызов next итератора. Сам метод возвращает результат этого вызова next
 	 * @param itemToWrite
 	 * @param xml
 	 * @param isVisualEditing
 	 * @throws Exception
+	 * @return
 	 */
-	private void writeItem(ExecutableItemPE itemToWrite, XmlDocumentBuilder xml, boolean isVisualEditing) throws Exception {
-		Item item = itemToWrite.getParentRelatedFoundItemIterator().getCurrentItem();
+	private boolean writeItem(ExecutableItemPE itemToWrite, XmlDocumentBuilder xml, boolean isVisualEditing, String place) throws Exception {
+		ExecutableItemPE.ParentRelatedFoundIterator iter = itemToWrite.getParentRelatedFoundItemIterator();
+		Item item = iter.getCurrentItem();
+		int nestedLevel = iter.getCurrentNestedLevel();
 		// Создать тэг для айтема и добавить его в структуру
-		String tagName = null;
+		String tagName;
 		if (!StringUtils.isBlank(itemToWrite.getTag())) {
 			tagName = itemToWrite.getTag();
 		} else {
@@ -50,7 +54,7 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 			}
 		}
 		// <item id="123" path="sitefiles/1/20/255/4055" updated="190456373"> (ID айтема, путь к файлам айтема)
-		xml.startElement(tagName, TYPE_ATTRIBUTE, item.getTypeName(), ID_ATTRIBUTE, item.getId(), PATH_ATTRIBUTE,
+		xml.startElement(tagName, "LEVEL", nestedLevel, "PLACE", place, TYPE_ATTRIBUTE, item.getTypeName(), ID_ATTRIBUTE, item.getId(), PATH_ATTRIBUTE,
 				AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath(), KEY_ATTRIBUTE, item.getKeyUnique());
 		// Если включен режим визуального редактирования
 		if (isVisualEditing)
@@ -77,8 +81,17 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 		for (PageElement element : itemToWrite.getAllNested()) {
 			PageElementWriterRegistry.getWriter(element).write(element, xml);
 		}
+		// Проверить, есть ли вложенные айтемы
+		boolean hasNext = iter.next();
+		long contextParent = iter.getCurrentItem().getContextParentId();
+		long itemId = item.getId();
+		//while (hasNext && iter.getCurrentNestedLevel() > nestedLevel) {
+		while (hasNext && (iter.getCurrentItem().getContextParentId() == item.getId())) {
+			writeItem(itemToWrite, xml, isVisualEditing, "inner");
+		}
 		// </item>
 		xml.endElement();
+		return hasNext;
 	}
 	/**
 	 * Вывести список айтемов
@@ -103,8 +116,11 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 			new FilterPEWriter().write(executableItem, xml);
 		}
 		// Выводятся все найденные айтемы
-		while (executableItem.getParentRelatedFoundItemIterator().next()) {
-			writeItem(executableItem, xml, executableItem.getSessionContext().isContentUpdateMode());
+		if (executableItem.getParentRelatedFoundItemIterator().next()) {
+			boolean hasNext;
+			do {
+				hasNext = writeItem(executableItem, xml, executableItem.getSessionContext().isContentUpdateMode(), "outer");
+			} while (hasNext);
 		}
 	}
 	/**

@@ -660,10 +660,10 @@ public class PageModelBuilder {
 	private static long fileLastModified = 0;
 	
 	// Айтемы, которые имеют идентификаторы в рамках страницы (для конторля уникальности идентификаторов)
-	private Set<String> itemIdentifiers = new HashSet<String>();
-	private Set<String> pageVariables = new HashSet<String>();
+	private Set<String> itemIdentifiers = new HashSet<>();
+	private Set<String> pageVariables = new HashSet<>();
 	private PagePE page = null; // указывает на обрабатываемую в данный момент страницу
-	private LinkedList<String> itemIdsStack = new LinkedList<String>(); // стек ID страничных айтемов. Нужен для определения, является ли 
+	private LinkedList<String> itemIdsStack = new LinkedList<>(); // стек ID страничных айтемов. Нужен для определения, является ли
 																		// переменная в ссылке итерируемой
 	private static final Object SEMAPHORE = new Object();
 	
@@ -762,6 +762,9 @@ public class PageModelBuilder {
 						}
 						// Айтем
 						else if (isNodeItemPE(element)) {
+							if (StringUtils.equalsIgnoreCase(element.tagName(), TREE_ELEMENT))
+								throw new PrimaryValidationException(page.getKey(), "'" + element.tagName()
+										+ "' is not allowed without parent");
 							page.addElement(readItem(element, ItemPE.ItemRootType.COMMON, null, includes, page.getKey()));
 						// Ссылка
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), LIMIT_ELEMENT)) {
@@ -780,8 +783,12 @@ public class PageModelBuilder {
 						// <personal>
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), PERSONAL_ELEMENT)) {
 							for (Element subEl : detachedDirectChildren(element)) {
-								if (isNodeItemPE(subEl))
+								if (isNodeItemPE(subEl)) {
+									if (StringUtils.equalsIgnoreCase(subEl.tagName(), TREE_ELEMENT))
+										throw new PrimaryValidationException(page.getKey(), "'" + subEl.tagName()
+												+ "' is not allowed without parent");
 									page.addElement(readItem(subEl, ItemPE.ItemRootType.PERSONAL, null, includes, page.getKey()));
+								}
 							}
 						// <session>
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), SESSION_ELEMENT)) {
@@ -794,6 +801,9 @@ public class PageModelBuilder {
 							String groupName = element.attr(NAME_ATTRIBUTE);
 							for (Element subEl : detachedDirectChildren(element)) {
 								if (isNodeItemPE(subEl)) {
+									if (StringUtils.equalsIgnoreCase(subEl.tagName(), TREE_ELEMENT))
+										throw new PrimaryValidationException(page.getKey(), "'" + subEl.tagName()
+												+ "' is not allowed without parent");
 									if (UserGroupRegistry.groupExists(groupName))
 										page.addElement(readItem(subEl, ItemPE.ItemRootType.GROUP, groupName, includes, page.getKey()));
 									else 
@@ -831,7 +841,7 @@ public class PageModelBuilder {
 	 * @return
 	 */
 	private boolean isNodeItemPE(Element element) {
-		return StringUtils.containsAny(element.tagName(), SINGLE_ELEMENT, LIST_ELEMENT,
+		return StringUtils.equalsAnyIgnoreCase(element.tagName(), SINGLE_ELEMENT, LIST_ELEMENT,
 				TREE_ELEMENT, ANCESTOR_ELEMENT, NEW_ELEMENT);
 	}
 	/**

@@ -831,7 +831,7 @@ public class Item implements ItemBasics {
 	 * @see Object#toString()
 	 */
 	public final String toString() {
-		return "Item - type: " + getItemType().getName() + ", id: " + getId();
+		return getKey() + " (" + getItemType().getName() + ":" + getId() + ")";
 	}
 	/**
 	 * Переписывает все параметры одного айтема в другой айтем в случае если тип айтемов совпадает
