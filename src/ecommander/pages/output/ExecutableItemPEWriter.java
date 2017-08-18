@@ -1,19 +1,18 @@
 package ecommander.pages.output;
 
-import java.util.ArrayList;
-
-import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.model.ParameterDescription;
-import ecommander.model.datatypes.DataType;
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.controllers.AppContext;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
+import ecommander.model.ParameterDescription;
+import ecommander.model.datatypes.DataType;
 import ecommander.pages.ExecutableItemPE;
 import ecommander.pages.PageElement;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
+
+import java.util.ArrayList;
 
 import static ecommander.admin.MainAdminPageCreator.*;
 
@@ -38,10 +37,9 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 	 * @throws Exception
 	 * @return
 	 */
-	private boolean writeItem(ExecutableItemPE itemToWrite, XmlDocumentBuilder xml, boolean isVisualEditing, String place) throws Exception {
+	private boolean writeItem(ExecutableItemPE itemToWrite, XmlDocumentBuilder xml, boolean isVisualEditing) throws Exception {
 		ExecutableItemPE.ParentRelatedFoundIterator iter = itemToWrite.getParentRelatedFoundItemIterator();
 		Item item = iter.getCurrentItem();
-		int nestedLevel = iter.getCurrentNestedLevel();
 		// Создать тэг для айтема и добавить его в структуру
 		String tagName;
 		if (!StringUtils.isBlank(itemToWrite.getTag())) {
@@ -54,7 +52,7 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 			}
 		}
 		// <item id="123" path="sitefiles/1/20/255/4055" updated="190456373"> (ID айтема, путь к файлам айтема)
-		xml.startElement(tagName, "LEVEL", nestedLevel, "PLACE", place, TYPE_ATTRIBUTE, item.getTypeName(), ID_ATTRIBUTE, item.getId(), PATH_ATTRIBUTE,
+		xml.startElement(tagName, TYPE_ATTRIBUTE, item.getTypeName(), ID_ATTRIBUTE, item.getId(), PATH_ATTRIBUTE,
 				AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath(), KEY_ATTRIBUTE, item.getKeyUnique());
 		// Если включен режим визуального редактирования
 		if (isVisualEditing)
@@ -83,11 +81,9 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 		}
 		// Проверить, есть ли вложенные айтемы
 		boolean hasNext = iter.next();
-		long contextParent = iter.getCurrentItem().getContextParentId();
-		long itemId = item.getId();
 		//while (hasNext && iter.getCurrentNestedLevel() > nestedLevel) {
 		while (hasNext && (iter.getCurrentItem().getContextParentId() == item.getId())) {
-			writeItem(itemToWrite, xml, isVisualEditing, "inner");
+			hasNext = writeItem(itemToWrite, xml, isVisualEditing);
 		}
 		// </item>
 		xml.endElement();
@@ -119,7 +115,7 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 		if (executableItem.getParentRelatedFoundItemIterator().next()) {
 			boolean hasNext;
 			do {
-				hasNext = writeItem(executableItem, xml, executableItem.getSessionContext().isContentUpdateMode(), "outer");
+				hasNext = writeItem(executableItem, xml, executableItem.getSessionContext().isContentUpdateMode());
 			} while (hasNext);
 		}
 	}

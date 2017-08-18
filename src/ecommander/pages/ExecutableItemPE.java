@@ -46,7 +46,6 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		private ExecutableItemPE itemPE = null;
 		private LinkedList<Iterator<Item>> iterators = null;
 		private long currentParentId = -2;
-		private int currentNestedLevel = 0;
 
 		ParentRelatedFoundIterator(ExecutableItemPE pageItem) {
 			this.itemPE = pageItem;
@@ -88,7 +87,6 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			}
 			if (!iterators.isEmpty() && iterators.peek().hasNext()) {
 				currentItem = iterators.peek().next();
-				currentNestedLevel = iterators.size();
 				while (!iterators.isEmpty() && !iterators.peek().hasNext()) {
 					iterators.pop();
 				}
@@ -112,14 +110,6 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			return currentItem;
 		}
 
-		/**
-		 * Текущий уровень вложенности айтема в случае tree
-		 * В другом случае всегда 1
-		 * @return
-		 */
-		public int getCurrentNestedLevel() {
-			return currentNestedLevel;
-		}
 		/**
 		 * Возвращает количество найденных айтемов для определенного (текущего) родителя
 		 */
@@ -192,13 +182,11 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		ArrayList<Item> items = new ArrayList<>();
 		// общее число таких айтемов в базоне, чтобы было известно сколько всего будет страниц, например
 		int totalQuantity = 0;
-		// уровень вложенности родителя (в загрузчиках типа tree)
-		int level = -1;
 		@Override
 		public String toString() {
-			String result = "Quantity: " + totalQuantity + "  Items: ";
+			String result = "Q: " + totalQuantity + "  I: ";
 			for (Item item : items) {
-				result += item.getTypeName() + "-" + item.getId() + "-" + item.getId() + ", ";
+				result += item.getTypeName() + "-" + item.getId() + "-" + item.getKey() + ", ";
 			}
 			return result;
 		}
@@ -287,19 +275,6 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		if (foundItems == null)
 			return new ArrayList<>();
 		return foundItems.items;
-	}
-
-	/**
-	 * Вернуть уровень вложенности родителя относительно корневых найденных айтемов для запросов tree
-	 * !!! ТОЛЬКО для tree
-	 * @param parentId
-	 * @return
-	 */
-	private int getFoundItemsParentLevel(long parentId) {
-		FoundItemBundle foundItems = foundItemsByParent.get(parentId);
-		if (foundItems == null)
-			return -1;
-		return foundItems.level;
 	}
 
 	/**
@@ -458,7 +433,6 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				for (Item item : items) {
 					addFoundItem(item, item.getContextParentId());
 				}
-				initTreeLevels();
 			} else {
 				for (Item item : items) {
 					addFoundItem(item, NO_PARENT_ID);

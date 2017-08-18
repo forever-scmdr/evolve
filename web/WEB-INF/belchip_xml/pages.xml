@@ -4,11 +4,11 @@
 <!-- ******************************* Включение для разделов каталога ****************************** -->
 
 	<page name="index">
-		<single item="catalog">
+		<list item="section_first">
 			<tree item="section">
-
+				<ancestor item="section" tag="ancestor"/>
 			</tree>
-		</single>
+		</list>
 	</page>
 
 
