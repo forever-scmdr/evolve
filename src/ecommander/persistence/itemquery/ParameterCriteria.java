@@ -16,8 +16,23 @@ abstract class ParameterCriteria implements FilterCriteria, ItemQuery.Const, DBC
 
 	protected final ParameterDescription param; // параметр айтема, по которому происходит сравнение
 	private final ItemType item; // тип айтемов, которые подвергаются фильтрации
-	protected final String INDEX_TABLE; // Псевдоним таблицы с параметрами (ItemIndex) для данного параметра
+	protected String INDEX_TABLE; // Псевдоним таблицы с параметрами (ItemIndex) для данного параметра
+	/**
+	 * В некоторый случаях в фильтре присутствуют несколько критериев с одним и тем же параметром.
+	 * В этом случае нет необходимости делать повторное соединение с индексной таблицей, достаточно использовать
+	 * соществующее соединение (и сущестующий псевдоним этой таблицы, который передаются параметром tableName)
+	 */
+	private boolean needJoin = true; // Нужно ли соединение
 
+	/**
+	 * Параметр needJoin:
+	 * В некоторый случаях в фильтре присутствуют несколько критериев с одним и тем же параметром.
+	 * В этом случае нет необходимости делать повторное соединение с индексной таблицей, достаточно использовать
+	 * соществующее соединение (и сущестующий псевдоним этой таблицы, который передаются параметром tableName)
+	 * @param param
+	 * @param item
+	 * @param tableName
+	 */
 	ParameterCriteria(ParameterDescription param, ItemType item, String tableName) {
 		this.param = param;
 		this.INDEX_TABLE = tableName;
@@ -25,24 +40,26 @@ abstract class ParameterCriteria implements FilterCriteria, ItemQuery.Const, DBC
 	}
 	
 	public final void appendQuery(TemplateQuery query) {
-		final String INDEX_DOT = INDEX_TABLE + ".";
+		if (needJoin) {
+			final String INDEX_DOT = INDEX_TABLE + ".";
 
-		// Добавление таблицы в INNER JOIN
-		TemplateQuery join = query.getSubquery(JOIN);
-		String indexTableName = DataTypeMapper.getTableName(param.getType());
-		join.INNER_JOIN(indexTableName + " AS " + INDEX_TABLE, ITEM_TABLE + I_ID, INDEX_DOT + II_ITEM_ID);
+			// Добавление таблицы в INNER JOIN
+			TemplateQuery join = query.getSubquery(JOIN);
+			String indexTableName = DataTypeMapper.getTableName(param.getType());
+			join.INNER_JOIN(indexTableName + " AS " + INDEX_TABLE, ITEM_TABLE + I_ID, INDEX_DOT + II_ITEM_ID);
 
-		TemplateQuery wherePart = query.getSubquery(WHERE);
+			TemplateQuery wherePart = query.getSubquery(WHERE);
 
-		// Добавление ID параметра
-		wherePart.col(INDEX_DOT + II_PARAM).int_(param.getId());
+			// Добавление критерия типа айтема
+			// Только для пользовательских фильтров
+			if (item.isUserDefined()) {
+				wherePart.AND().col_IN(INDEX_DOT + II_ITEM_TYPE).intIN(ItemTypeRegistry.getItemExtendersIds(item.getTypeId()));
+			}
 
-		// Добавление критерия типа айтема
-		// Только для пользовательских фильтров
-		if (item.isUserDefined()) {
-			wherePart.AND().col_IN(INDEX_DOT + II_ITEM_TYPE).intIN(ItemTypeRegistry.getItemExtendersIds(item.getTypeId()));
+			// Добавление ID параметра
+			wherePart.AND().col(INDEX_DOT + II_PARAM).int_(param.getId());
 		}
-		
+
 		// Добавление значения параметра
 		if (isNotBlank())
 			appendParameterValue(query);
@@ -58,4 +75,16 @@ abstract class ParameterCriteria implements FilterCriteria, ItemQuery.Const, DBC
 		return false;
 	}
 
+	public final String getIndexTableName() {
+		return INDEX_TABLE;
+	}
+
+	public final int getParameterId() {
+		return param.getId();
+	}
+
+	public final void optimizeJoins(String newTableName) {
+		this.INDEX_TABLE = newTableName;
+		needJoin = false;
+	}
 }

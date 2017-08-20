@@ -52,7 +52,7 @@ class PredecessorCriteria implements FilterCriteria, ItemQuery.Const, DBConstant
 		TemplateQuery join = query.getSubquery(JOIN);
 		join.INNER_JOIN(ITEM_PARENT_TBL + " AS " + OTHER_PARENT_TABLE, ITEM_TABLE + I_ID, PARENT_DOT + IP_CHILD_ID);
 
-		TemplateQuery wherePart = query.getSubquery(WHERE);
+		TemplateQuery wherePart = query.getSubquery(WHERE).AND();
 
 		// Добавление списка ID родителей
 		if (itemIds.size() > 0) {
@@ -60,8 +60,8 @@ class PredecessorCriteria implements FilterCriteria, ItemQuery.Const, DBConstant
 		} else {
 			wherePart.col(PARENT_DOT + IP_PARENT_ID, " " + sign + " (-1)");
 		}
-		wherePart
-				.col(PARENT_DOT + IP_ASSOC_ID).byte_(assocId)
+		wherePart.AND()
+				.col(PARENT_DOT + IP_ASSOC_ID).byte_(assocId).AND()
 				.col_IN(PARENT_DOT + IP_CHILD_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(item.getTypeId()));
 	}
 

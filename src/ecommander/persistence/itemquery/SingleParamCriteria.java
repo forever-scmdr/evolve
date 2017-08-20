@@ -31,12 +31,13 @@ class SingleParamCriteria extends ParameterCriteria {
 			this.sign = "=";
 		this.pattern = pattern;
 		if ((type == Compare.SOME || type == Compare.EVERY) && StringUtils.isBlank(value))
-			isEmptySet = true;
+		 	isEmptySet = true;
 	}
 
 	@Override
 	protected final void appendParameterValue(TemplateQuery query) {
-		query.getSubquery(WHERE).AND().col(INDEX_TABLE + "." + II_VALUE, " " + sign + " ");
+		query = query.getSubquery(WHERE);
+		query.AND().col(INDEX_TABLE + "." + II_VALUE, " " + sign + " ");
 		DataTypeMapper.appendPreparedStatementRequestValue(param.getType(), query, value, pattern);
 	}
 

@@ -44,7 +44,7 @@ class SuccessorCriteria implements FilterCriteria, ItemQuery.Const, DBConstants.
 		TemplateQuery join = query.getSubquery(JOIN);
 		join.INNER_JOIN(ITEM_PARENT_TBL + " AS " + OTHER_PARENT_TABLE, ITEM_TABLE + I_ID, PARENT_DOT + IP_PARENT_ID);
 
-		TemplateQuery wherePart = query.getSubquery(WHERE);
+		TemplateQuery wherePart = query.getSubquery(WHERE).AND();
 
 		// Добавление списка ID потоков
 		if (itemIds.size() > 0) {
@@ -52,7 +52,7 @@ class SuccessorCriteria implements FilterCriteria, ItemQuery.Const, DBConstants.
 		} else {
 			wherePart.col(PARENT_DOT + IP_CHILD_ID, " " + sign + " (-1)");
 		}
-		wherePart.col(PARENT_DOT + IP_ASSOC_ID).byte_(assocId);
+		wherePart.AND().col(PARENT_DOT + IP_ASSOC_ID).byte_(assocId);
 	}
 
 	public boolean isNotBlank() {

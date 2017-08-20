@@ -46,7 +46,9 @@ public final class FilterSQLCreator implements FilterCriteria {
 	final void addSorting(ParameterDescription param, String direction, List<String> values) {
 		if (sortings == null)
 			sortings = new ArrayList<>();
-		sortings.add(new SortingCriteria(param, mainFilter.item, "S" + sortings.size(), direction, values));
+		SortingCriteria sorting = new SortingCriteria(param, mainFilter.item, "S" + sortings.size(), direction, values);
+		mainFilter.optimizeJoin(sorting);
+		sortings.add(sorting);
 	}
 	/**
 	 * Добавить параметр, по значениям которого должна происходить групировка
@@ -162,21 +164,22 @@ public final class FilterSQLCreator implements FilterCriteria {
 	public void appendQuery(TemplateQuery query) {
 		// Добавляется простой притерий
 		if (mainFilter.isNotBlank()) {
-			query.AND();
 			mainFilter.appendQuery(query);
 		}
 		// Добавляются опции
 		boolean wereNoOptions = true;
-		for (CriteriaGroup option : options) {
-			if (!option.isEmptySet() && option.isNotBlank()) {
-				if (wereNoOptions) {
-					query.sql(" AND ((");
-					wereNoOptions = false;
-				} else {
-					query.sql(") OR (");
+		if (hasOptions()) {
+			for (CriteriaGroup option : options) {
+				if (!option.isEmptySet() && option.isNotBlank()) {
+					if (wereNoOptions) {
+						query.sql(" AND ((");
+						wereNoOptions = false;
+					} else {
+						query.sql(") OR (");
+					}
+					option.appendQuery(query);
+					query.sql(")");
 				}
-				option.appendQuery(query);
-				query.sql(")");
 			}
 		}
 		if (!wereNoOptions) {
@@ -215,9 +218,11 @@ public final class FilterSQLCreator implements FilterCriteria {
 	public boolean isNotBlank() {
 		if (mainFilter.isNotBlank())
 			return true;
-		for (CriteriaGroup option : options) {
-			if (!option.isNotBlank())
-				return false;
+		if (hasOptions()) {
+			for (CriteriaGroup option : options) {
+				if (!option.isNotBlank())
+					return false;
+			}
 		}
 		return true;
 	}
@@ -226,11 +231,14 @@ public final class FilterSQLCreator implements FilterCriteria {
 	public boolean isEmptySet() {
 		if (mainFilter.isEmptySet())
 			return true;
-		boolean isEmptySet = true;
-		for (CriteriaGroup option : options) {
-			isEmptySet &= option.isEmptySet();
+		if (hasOptions()) {
+			boolean isEmptySet = true;
+			for (CriteriaGroup option : options) {
+				isEmptySet &= option.isEmptySet();
+			}
+			return isEmptySet;
 		}
-		return isEmptySet;
+		return false;
 	}
 
 	@Override

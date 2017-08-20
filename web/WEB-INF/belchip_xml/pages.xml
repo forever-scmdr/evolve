@@ -4,11 +4,19 @@
 <!-- ******************************* Включение для разделов каталога ****************************** -->
 
 	<page name="index">
-		<list item="section_first">
-			<tree item="section">
-				<ancestor item="section" tag="ancestor"/>
-			</tree>
-		</list>
+		<request>
+			<var name="min" value="4"/>
+		</request>
+		<single item="catalog">
+			<list item="product" transit="true">
+				<filter>
+					<parameter name="price" sign="&gt;="><var value=""/></parameter>
+					<parameter name="price" sign="&lt;="><var value="5"/></parameter>
+					<parameter name="name" sign="like"><var value="К%"/></parameter>
+					<sorting><var value="name"/></sorting>
+				</filter>
+			</list>
+		</single>
 	</page>
 
 

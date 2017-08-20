@@ -46,7 +46,8 @@ class MultipleParamCriteria extends ParameterCriteria {
 
 	@Override
 	protected void appendParameterValue(TemplateQuery query) {
-		query.getSubquery(WHERE).AND().col(INDEX_TABLE + "." + II_VALUE, " " + sign + " ");
+		query = query.getSubquery(WHERE);
+		query.AND().col(INDEX_TABLE + "." + II_VALUE, " " + sign + " ");
 		if (values.size() > 0) {
 			query.sql("(");
 			DataTypeMapper.appendPreparedStatementRequestValues(param.getType(), query, values);

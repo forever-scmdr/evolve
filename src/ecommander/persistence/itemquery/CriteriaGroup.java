@@ -11,6 +11,7 @@ import org.apache.lucene.search.BooleanQuery;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	protected final ArrayList<AssociatedItemCriteriaGroup> assocCriterias;
 	protected final String groupId; // ID группы, нужен для названия таблиц параметров
 	protected final ItemType item;
+	protected final HashMap<Integer, String> paramTableNames = new HashMap<>();
 
 	CriteriaGroup(String optionId, ItemType item) {
 		this.groupId = optionId;
@@ -37,14 +39,9 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	public void appendQuery(TemplateQuery query) {
 		if (!isNotBlank())
 			return;
-		TemplateQuery wherePart = query.getSubquery(WHERE);
-		boolean notFirst = false;
 		for (FilterCriteria criteria : criterias) {
 			if (criteria.isNotBlank()) {
-				if (notFirst)
-					wherePart.AND();
 				criteria.appendQuery(query);
-				notFirst = true;
 			}
 		}
 	}
@@ -58,21 +55,41 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	 */
 	public void addParameterCriteria(ParameterDescription param, ItemType item, List<String> values, String sign, String pattern,
 			Compare compType) {
-		String tableName = groupId + 'F' + criterias.size();
+		String tableName = "F" + criterias.size();
 		// Одно значение
 		if (values.size() == 1)
-			criterias.add(new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, compType));
+			addOptimized(new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, compType));
 		// Множество значений с выбором любого варианта (параметр соответствует любому из значений)
 		else if (values.size() > 0 && (compType == Compare.ANY || compType == Compare.SOME))
-			criterias.add(new MultipleParamCriteria(param, item, values, sign, tableName, compType));
+			addOptimized(new MultipleParamCriteria(param, item, values, sign, tableName, compType));
 		// Множество значений с выбором каждого варианта (параметр соответствует всем значениям)
 		else if (values.size() > 0) {
 			for (String value : values) {
-				criterias.add(new SingleParamCriteria(param, item, value, sign, pattern, tableName, compType));
+				addOptimized(new SingleParamCriteria(param, item, value, sign, pattern, tableName, compType));
 				tableName = groupId + 'F' + criterias.size();
 			}
-		} else 
-			criterias.add(new SingleParamCriteria(param, item, "", sign, pattern, tableName, compType));
+		} else
+			addOptimized(new SingleParamCriteria(param, item, "", sign, pattern, tableName, compType));
+	}
+
+	private void addOptimized(ParameterCriteria crit) {
+		optimizeJoin(crit);
+		criterias.add(crit);
+	}
+	/**
+	 * Оптимизировать join для критерия
+	 * Если уже есть соединение с индексной таблицей такого параметра, то повторное соединение не нужно
+	 * @param crit
+	 */
+	protected void optimizeJoin(ParameterCriteria crit) {
+		if (crit.isNotBlank()) {
+			String joinedTableName = paramTableNames.get(crit.getParameterId());
+			if (joinedTableName != null) {
+				crit.optimizeJoins(joinedTableName);
+			} else {
+				paramTableNames.put(crit.getParameterId(), crit.getIndexTableName());
+			}
+		}
 	}
 
 	/**
