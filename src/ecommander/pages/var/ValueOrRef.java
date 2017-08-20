@@ -61,31 +61,37 @@ public class ValueOrRef extends Variable {
 	public Variable getInited(ExecutablePagePE parentPage) {
 		ValueOrRef clone = new ValueOrRef(name, isRef);
 		clone.parentPage = parentPage;
-		if (isRef)
-			clone.var = parentPage.getVariable(name);
 		return clone;
+	}
+
+	private void getActualVar() {
+		if (isRef && var == null)
+			var = parentPage.getVariable(name);
 	}
 
 	@Override
 	public ArrayList<String> getLocalValues() {
+		getActualVar();
 		return var.getLocalValues();
 	}
 
 	@Override
 	public String getSingleLocalValue() {
+		getActualVar();
 		return var.getSingleLocalValue();
 	}
 
 	@Override
 	public boolean isEmpty() {
+		getActualVar();
 		return var.isEmpty();
 	}
 
 	@Override
 	public void validate(String elementPath, ValidationResults results) {
-		if (isRef && var != null) {
-			if (!var.name.startsWith("$") && parentPage.getVariable(var.name) == null)
-				results.addError(elementPath, "there is no '" + var.name + "' page variable in current page");
+		if (isRef) {
+			if (!name.startsWith("$") && parentPage.getInitVariablePE(name) == null)
+				results.addError(elementPath, "there is no '" + name + "' page variable in current page");
 		}
 	}
 }

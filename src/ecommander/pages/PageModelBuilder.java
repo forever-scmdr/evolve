@@ -1352,7 +1352,7 @@ public class PageModelBuilder {
 			variable = new ItemVariable(itemId, parameter);
 		} else {
 			// Если явно не задано значение переменной - пустая строка, то это ошибка в файле pages.xml
-			if (!variableNode.hasAttr(VALUE_ATTRIBUTE))
+			if (variableNode.hasAttr(VALUE_ATTRIBUTE))
 				variable = new StaticVariable(varName, "");
 			else
 				throw new PrimaryValidationException(page.getPageName() + " > varialbe '" + varName + "'", "variable value is not defined. "

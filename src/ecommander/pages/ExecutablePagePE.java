@@ -3,15 +3,9 @@ package ecommander.pages;
 import ecommander.controllers.SessionContext;
 import ecommander.model.User;
 import ecommander.pages.CommandPE.CommandContainer;
-import ecommander.pages.var.RequestVariablePE;
-import ecommander.pages.var.SessionStaticVariable;
-import ecommander.pages.var.Variable;
-import ecommander.pages.var.VariablePE;
+import ecommander.pages.var.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 /**
  * Модель страницы, которая предназначена для загрузки.
@@ -59,12 +53,12 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 			user = sessionContext.getUser();
 		else
 			user = User.getDefaultUser();
-		addVariablePE(new RequestVariablePE(NOW_VALUE, RequestVariablePE.Scope.request,
-				VariablePE.Style.path, System.currentTimeMillis() + ""));
-		addVariablePE(new RequestVariablePE(USERNAME_VALUE, RequestVariablePE.Scope.request,
-				VariablePE.Style.path, user.getName()));
-		addVariablePE(new RequestVariablePE(PAGENAME_VALUE, RequestVariablePE.Scope.request,
-				VariablePE.Style.path, this.name));
+		new RequestVariablePE(NOW_VALUE, RequestVariablePE.Scope.request, VariablePE.Style.path, System.currentTimeMillis() + "")
+				.createExecutableClone(this,this);
+		new RequestVariablePE(USERNAME_VALUE, RequestVariablePE.Scope.request, VariablePE.Style.path, user.getName())
+				.createExecutableClone(this,this);
+		new RequestVariablePE(PAGENAME_VALUE, RequestVariablePE.Scope.request, VariablePE.Style.path, this.name)
+				.createExecutableClone(this, this);
 	}
 	/**
 	 * Получить ранее зарегистрированный элемент
@@ -114,6 +108,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	public final void setRequestLink(LinkPE link, String linkUrl, String baseLink) {
 		this.requestLink = link;
 		this.urlBase = baseLink;
+		HashSet<RequestVariablePE> initVars = new HashSet<>(getInitVariablesPEList());
 		for (VariablePE variable : requestLink.getAllVariables()) {
 			VariablePE initialVar = getInitVariablePE(variable.getName());
 			if (initialVar != null && initialVar.getVariable() instanceof SessionStaticVariable)
@@ -121,6 +116,11 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 			else {
 				addVariable(variable.getVariable());
 			}
+			initVars.remove(initialVar);
+		}
+		// Добавить все отсутствующие в ссылке начальные переменные
+		for (RequestVariablePE initVar : initVars) {
+			addVariable(new StaticVariable(initVar.getName(), initVar.getDefaultValue()));
 		}
 		addVariablePE(new RequestVariablePE(PAGEURL_VALUE, linkUrl));
 	}

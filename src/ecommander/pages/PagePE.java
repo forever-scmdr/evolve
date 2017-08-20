@@ -97,7 +97,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 		//clone.varPEDefs.addAll(varPEDefs);
 		if (varPEDefs != null) {
 			for (VariablePE var : varPEDefs.values()) {
-				clone.addVariablePE((VariablePE) var.createExecutableClone(null, clone));
+				var.createExecutableClone(clone, clone);
 			}
 		}
 		for (PageElement element : getAllNested())

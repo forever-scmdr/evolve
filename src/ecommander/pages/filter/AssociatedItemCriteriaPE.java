@@ -6,6 +6,7 @@ import ecommander.model.ItemTypeRegistry;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElementContainer;
 import ecommander.pages.ValidationResults;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Критерий параметра не самого искомого айтема, а айтема, который как-либо ассоциирован с искомым
@@ -24,6 +25,8 @@ public class AssociatedItemCriteriaPE extends PageElementContainer implements Fi
 	public AssociatedItemCriteriaPE(String itemName, String assocName, boolean isParent) {
 		this.itemName = itemName;
 		this.assocName = assocName;
+		if (StringUtils.isBlank(assocName))
+			this.assocName = ItemTypeRegistry.getPrimaryAssoc().getName();
 		this.isParent = isParent;
 	}
 
@@ -55,6 +58,8 @@ public class AssociatedItemCriteriaPE extends PageElementContainer implements Fi
 			results.addError(elementPath + " > " + getKey(), "there is no '" + itemName + "' item in site model");
 		if (assoc == null)
 			results.addError(elementPath + " > " + getKey(), "there is no '" + assocName + "' assoc in site model");
+		// Установить данные для последующей валидации (ItemDescription страничного айтема)
+		results.setBufferData(itemDesc);
 		return results.isSuccessful();
 	}
 

@@ -97,4 +97,8 @@ public class RequestVariablePE extends VariablePE {
 	public String getElementName() {
 		return REQUEST_VARIABLE;
 	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
 }

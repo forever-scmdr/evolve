@@ -161,4 +161,14 @@ public abstract class VariablePE implements PageElement {
 	public String toString() {
 		return name + "(" + style + ") -> " + getVariable();
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return ((VariablePE) obj).name.equalsIgnoreCase(this.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
 }
