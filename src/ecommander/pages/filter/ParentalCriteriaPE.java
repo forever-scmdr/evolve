@@ -25,7 +25,10 @@ public class ParentalCriteriaPE implements FilterCriteriaPE {
 
 	public ParentalCriteriaPE(String assocName, String pageItemId, String sign, Compare compType, boolean isPredecessor) {
 		this.pageItemId = pageItemId;
-		this.sign = " " + sign + " ";
+		if (StringUtils.isBlank(sign))
+			this.sign = " IN ";
+		else
+			this.sign = " " + sign + " ";
 		this.compType = compType;
 		this.isPredecessor = isPredecessor;
 		if (StringUtils.isBlank(assocName))

@@ -16,7 +16,6 @@ import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
-import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
 import java.io.File;
@@ -1009,7 +1008,7 @@ public class PageModelBuilder {
 		for (Element filterSubnode : detachedDirectChildren(filterNode)) {
 			// Опция
 			if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), OPTION_ATTRIBUTE)) {
-				filter.addCriteria(readFilterCriteria(filterSubnode));
+				filter.addElement(readFilterCriteria(filterSubnode));
 				for (Element element : detachedDirectChildren(filterSubnode)) {
 					readFilterElement(filter, filterSubnode, element, includes);
 				}
@@ -1065,30 +1064,32 @@ public class PageModelBuilder {
 
 	/**
 	 * Прочитать подэлемент фильтра
-	 * @param filter
+	 * @param container
 	 * @param parentNode
 	 * @param filterSubnode
 	 * @param includes
 	 * @return
 	 * @throws PrimaryValidationException
 	 */
-	private boolean readFilterElement(FilterPE filter, Element parentNode, Element filterSubnode, HashMap<String, Element> includes) throws PrimaryValidationException {
+	private boolean readFilterElement(PageElementContainer container, Element parentNode, Element filterSubnode, HashMap<String, Element> includes) throws PrimaryValidationException {
 		// Параметр
 		if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PARAMETER_ATTRIBUTE)) {
-			filter.addCriteria(readFilterCriteria(filterSubnode));
+			container.addElement(readFilterCriteria(filterSubnode));
 		}
 		// Критерии ассоциированного потомка айтема
 		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), CHILD_ELEMENT)) {
-			filter.addElement(new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), filterSubnode.attr(ASSOC_ATTRIBUTE), false));
+			AssociatedItemCriteriaPE assocCrit = new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), filterSubnode.attr(ASSOC_ATTRIBUTE), false);
+			container.addElement(assocCrit);
 			for (Element element : detachedDirectChildren(filterSubnode)) {
-				readFilterElement(filter, filterSubnode, element, includes);
+				readFilterElement(assocCrit, filterSubnode, element, includes);
 			}
 		}
 		// Критерии ассоциированного предка айтема
 		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PARENT_ELEMENT)) {
-			filter.addElement(new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), filterSubnode.attr(ASSOC_ATTRIBUTE), true));
+			AssociatedItemCriteriaPE assocCrit = new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), filterSubnode.attr(ASSOC_ATTRIBUTE), true);
+			container.addElement(assocCrit);
 			for (Element element : detachedDirectChildren(filterSubnode)) {
-				readFilterElement(filter, filterSubnode, element, includes);
+				readFilterElement(assocCrit, filterSubnode, element, includes);
 			}
 		}
 		// Предшественник
@@ -1102,8 +1103,8 @@ public class PageModelBuilder {
 							+ "' has invalid value");
 				}
 			}
-			filter.addPredecessor(filterSubnode.attr(ASSOC_ATTRIBUTE), filterSubnode.attr(ITEM_ATTRIBUTE),
-					filterSubnode.attr(SIGN_ATTRIBUTE), compare);
+			container.addElement(new ParentalCriteriaPE(filterSubnode.attr(ASSOC_ATTRIBUTE), filterSubnode.attr(ITEM_ATTRIBUTE),
+					filterSubnode.attr(SIGN_ATTRIBUTE), compare, true));
 		}
 		// Последователь
 		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), SUCCESSOR_ELEMENT)) {
@@ -1116,8 +1117,8 @@ public class PageModelBuilder {
 							+ "' has invalid value");
 				}
 			}
-			filter.addSuccessors(filterSubnode.attr(ASSOC_ATTRIBUTE), filterSubnode.attr(ITEM_ATTRIBUTE),
-					filterSubnode.attr(SIGN_ATTRIBUTE), compare);
+			container.addElement(new ParentalCriteriaPE(filterSubnode.attr(ASSOC_ATTRIBUTE), filterSubnode.attr(ITEM_ATTRIBUTE),
+					filterSubnode.attr(SIGN_ATTRIBUTE), compare, false));
 		}
 		// <include>
 		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), INCLUDE_ELEMENT)) {

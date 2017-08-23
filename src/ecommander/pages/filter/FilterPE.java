@@ -3,7 +3,6 @@ package ecommander.pages.filter;
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
-import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.filter.FilterDefinition;
@@ -150,24 +149,8 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		this.page = pageVar;
 	}
 
-	public void addCriteria(ParameterCriteriaPE criteria) {
-		addElement(criteria);
-	}
-
 	public void setFulltext(FulltextCriteriaPE fulltext) {
 		addElement(fulltext);
-	}
-
-	public void addPredecessor(String assocName, String predecessorId, String sign, Compare compType) {
-		if (StringUtils.isBlank(sign))
-			sign = " IN ";
-		addElement(new ParentalCriteriaPE(assocName, predecessorId, sign, compType, true));
-	}
-	
-	public void addSuccessors(String assocName, String successorId, String sign, Compare compType) {
-		if (StringUtils.isBlank(sign))
-			sign = " IN ";
-		addElement(new ParentalCriteriaPE(assocName, successorId, sign, compType, false));
 	}
 
 	public boolean hasPage() {
