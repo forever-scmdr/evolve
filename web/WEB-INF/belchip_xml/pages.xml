@@ -16,14 +16,12 @@
 					<sorting><var value="name"/></sorting>
 				</filter>
 			</list>-->
-			<list item="section">
+			<list item="section" tag="by_child">
 				<filter>
 					<child item="product">
 						<parameter name="price" sign="&gt;="><var var="min"/></parameter>
 						<parameter name="price" sign="&lt;="><var value="5"/></parameter>
 					</child>
-					<parameter name="name" sign="like"><var value="К%"/></parameter>
-					<sorting><var value="name"/></sorting>
 				</filter>
 			</list>
 		</single>

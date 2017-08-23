@@ -101,7 +101,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			+ "<<WHERE_PART>> GROUP BY PID";
 
 	private boolean hasParent = false; // Есть ли критерий предка у искомого айтема (нужно ли искать потомков определенных предков)
-	private ItemType itemDesc; // Искомый айтем
+	private LinkedList<ItemType> itemDescStack = new LinkedList<>(); // Искомый айтем (стек используется при фильтрации по ассоциированным айтемам)
 
 	private FilterSQLCreator filter = null; // Фильтр (параметры, сортировка, группировка, пользователь, группа пользователей)
 	private LimitCriteria limit = null; // Ограничение количества и страницы
@@ -117,7 +117,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 
 	
 	public ItemQuery(ItemType itemDesc, Byte... status) {
-		this.itemDesc = itemDesc;
+		this.itemDescStack.add(itemDesc);
 		if (status.length > 0)
 			this.status = status;
 		else
@@ -128,6 +128,9 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		this(ItemTypeRegistry.getItemType(itemName), status);
 	}
 
+	private ItemType getItemDesc() {
+		return itemDescStack.peek();
+	}
 
 	/**
 	 * Загруженные предшественники
@@ -187,7 +190,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param sorting
 	 */
 	public ItemQuery setAggregation(String paramName, String function, String sorting) {
-		return setAggregation(itemDesc.getParameter(paramName), function, sorting);
+		return setAggregation(getItemDesc().getParameter(paramName), function, sorting);
 	}
 
 	/**
@@ -215,7 +218,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param paramName
 	 */
 	public ItemQuery addAggregationGroupBy(String paramName, String...sorting) {
-		return addAggregationGroupBy(itemDesc.getParameter(paramName), null, null, null, null, sorting);
+		return addAggregationGroupBy(getItemDesc().getParameter(paramName), null, null, null, null, sorting);
 	}
 	/**
 	 * Добавить параметр, по которому происходит группировка
@@ -234,7 +237,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param compType
 	 */
 	public ItemQuery addAggregationGroupBy(String paramName, List<String> values, String sign, String pattern, Compare compType, String...sorting) {
-		return addAggregationGroupBy(itemDesc.getParameter(paramName), values, sign, pattern, compType, sorting);
+		return addAggregationGroupBy(getItemDesc().getParameter(paramName), values, sign, pattern, compType, sorting);
 	}
 	/**
 	 * Добавить параметр, по которому происходит группировка
@@ -261,7 +264,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 */
 	public ItemQuery addParameterCriteria(String paramName, List<String> values, String sign, String pattern, Compare compType) {
 		ensureFilter();
-		filter.addParameterCriteria(itemDesc.getParameter(paramName), itemDesc, values, sign, pattern, compType);
+		filter.addParameterCriteria(getItemDesc().getParameter(paramName), getItemDesc(), values, sign, pattern, compType);
 		return this;
 	}
 	/**
@@ -285,7 +288,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 */
 	public ItemQuery addParameterCriteria(ParameterDescription paramDesc, List<String> values, String sign, String pattern, Compare compType) {
 		ensureFilter();
-		filter.addParameterCriteria(paramDesc, itemDesc, values, sign, pattern, compType);
+		filter.addParameterCriteria(paramDesc, getItemDesc(), values, sign, pattern, compType);
 		return this;
 	}
 
@@ -393,7 +396,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			float threshold) throws Exception {
 		String[] paramNames;
 		if (StringUtils.isBlank(paramName)) {
-			paramNames = itemDesc.getFulltextParams().toArray(new String[0]);
+			paramNames = getItemDesc().getFulltextParams().toArray(new String[0]);
 		} else {
 			paramNames = new String[1];
 			paramNames[0] = paramName;
@@ -457,7 +460,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		List<String> vals = null;
 		if (values.length > 0)
 			vals = values[0];
-		filter.addSorting(itemDesc.getParameter(paramName), direction, vals);
+		filter.addSorting(getItemDesc().getParameter(paramName), direction, vals);
 		return this;
 	}
 	/**
@@ -496,8 +499,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 */
 	public final FilterSQLCreator createFilter(FilterDefinition filterDef, FilterStaticVariable userInput) throws EcommanderException {
 		ItemType userFilterItem = ItemTypeRegistry.getItemType(filterDef.getBaseItemName());
-		if (userFilterItem != null)
-			itemDesc = userFilterItem;
+		if (userFilterItem != null) {
+			itemDescStack = new LinkedList<>();
+			itemDescStack.push(userFilterItem);
+		}
 		FilterSQLCreatorBuilder builderBuilder = new FilterSQLCreatorBuilder(this, userInput);
 		filterDef.iterate(builderBuilder);
 		return filter = builderBuilder.getSqlCreator();
@@ -507,7 +512,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 */
 	public final FilterSQLCreator createFilter() {
-		return filter = new FilterSQLCreator(itemDesc);
+		return filter = new FilterSQLCreator(getItemDesc());
 	}
 	/**
 	 * Обеспечить наличие фильтра
@@ -559,17 +564,17 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		boolean needConcreteTypeCriteria = true;
 		BooleanQuery.Builder typeQuery = new BooleanQuery.Builder();
 		for (int i = 0; i < fulltext.getParamNames().length && needConcreteTypeCriteria; i++) {
-			ParameterDescription fulltextParam = itemDesc.getParameter(fulltext.getParamNames()[i]);
+			ParameterDescription fulltextParam = getItemDesc().getParameter(fulltext.getParamNames()[i]);
 			// параметр может быть равен null в случае если полнотекстовый параметр был создан не на базе параметра айтема
 			if (fulltextParam != null)
-				needConcreteTypeCriteria &= fulltextParam.getOwnerItemId() != itemDesc.getTypeId();
+				needConcreteTypeCriteria &= fulltextParam.getOwnerItemId() != getItemDesc().getTypeId();
 		}
 		if (needConcreteTypeCriteria) {
-			for (Integer typeId : ItemTypeRegistry.getItemExtendersIds(itemDesc.getTypeId())) {
+			for (Integer typeId : ItemTypeRegistry.getItemExtendersIds(getItemDesc().getTypeId())) {
 				typeQuery.add(new TermQuery(new Term(I_TYPE_ID, typeId.toString())), Occur.SHOULD);
 			}
 		} else {
-			typeQuery.add(new TermQuery(new Term(I_TYPE_ID, itemDesc.getTypeId() + "")), Occur.MUST);
+			typeQuery.add(new TermQuery(new Term(I_TYPE_ID, getItemDesc().getTypeId() + "")), Occur.MUST);
 		}
 		query.add(typeQuery.build(), Occur.MUST);
 		/*
@@ -602,18 +607,18 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				query.getSubquery(Const.JOIN).INNER_JOIN(ITEM_PARENT_TBL + " AS P", P_DOT + IP_PARENT_ID, I_DOT + I_ID);
 				query.getSubquery(Const.WHERE).AND().col_IN(P_DOT + IP_CHILD_ID).longIN(parentIds)
 						.AND().col(P_DOT + IP_ASSOC_ID).byte_(assocId)
-						.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(itemDesc.getTypeId()));
+						.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()));
 				query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_CHILD_ID);
 			} else {
 				query.getSubquery(Const.JOIN).INNER_JOIN(ITEM_PARENT_TBL + " AS P", P_DOT + IP_CHILD_ID, I_DOT + I_ID);
 				query.getSubquery(Const.WHERE).AND().col_IN(P_DOT + IP_PARENT_ID).longIN(parentIds)
 						.AND().col(P_DOT + IP_ASSOC_ID).byte_(assocId)
-						.AND().col_IN(P_DOT + IP_CHILD_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(itemDesc.getTypeId()));
+						.AND().col_IN(P_DOT + IP_CHILD_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()));
 				// Для деревьев нужно дополнительно извлечь ID непосредственного предка
 				if (isTree) {
 					query.getSubquery(Const.JOIN).INNER_JOIN(ITEM_PARENT_TBL + " AS TP", TP_DOT + IP_CHILD_ID, I_DOT + I_ID);
 					query.getSubquery(Const.WHERE).AND().col(TP_DOT + IP_ASSOC_ID).byte_(assocId)
-							.AND().col_IN(TP_DOT + IP_CHILD_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(itemDesc.getTypeId()))
+							.AND().col_IN(TP_DOT + IP_CHILD_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()))
 							.AND().col(TP_DOT + IP_PARENT_DIRECT).byte_((byte)1);
 					query.getSubquery(Const.PARENT_ID).sql(TP_DOT + IP_PARENT_ID);
 				} else {
@@ -639,7 +644,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			query.getSubquery(Const.WHERE)
 					.AND().col(I_DOT + I_USER).int_(userId)
 					.AND().col(I_DOT + I_GROUP).byte_(groupId)
-					.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(itemDesc.getTypeId()));
+					.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()));
 		}
 	}
 	/**
@@ -943,7 +948,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 */
 	public ItemType getItemToFilter() {
-		return itemDesc;
+		return getItemDesc();
 	}
 	/**
 	 * Загрузить по готовому запросу
@@ -1065,7 +1070,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		try (PreparedStatement pstmt = query.prepareQuery(connection)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Item item = Item.existingItem(itemDesc, -1, ItemTypeRegistry.getAssoc(assocId),
+				Item item = Item.existingItem(getItemDesc(), -1, ItemTypeRegistry.getAssoc(assocId),
 						rs.getLong(PARENT_COL), 0, (byte) 0, Item.STATUS_NORMAL, "", "", "", 0, false);
 				ParameterDescription aggParam = filter.getMainAggregationCriteria().getParam();
 				item.setValue(aggParam.getId(), DataTypeMapper.createValue(aggParam.getType(), rs, MAIN_COL));
