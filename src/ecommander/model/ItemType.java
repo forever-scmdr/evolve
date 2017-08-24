@@ -263,7 +263,7 @@ public class ItemType extends ItemTypeContainer {
 	 * @see Object#toString()
 	 */
 	public String toString() {
-		return "GeneralItem: " + getName();
+		return getName();
 	}
 	/**
 	 * Есть ли ключевой параметр

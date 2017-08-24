@@ -119,4 +119,9 @@ public abstract class DataType {
 	public boolean isBigText() {
 		return BIG_TEXT_TYPES.contains(type);
 	}
+
+	@Override
+	public String toString() {
+		return type.toString();
+	}
 }

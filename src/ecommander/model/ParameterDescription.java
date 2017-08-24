@@ -272,6 +272,6 @@ public final class ParameterDescription {
 	 * @see Object#toString()
 	 */
 	public String toString() {
-		return "ParameterDescription - name: " + getName() + ", type: " + type + ", isMultiple:" + isMultiple();
+		return getName() + ": " + type;
 	}
 }

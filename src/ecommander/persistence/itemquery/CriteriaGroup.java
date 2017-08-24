@@ -44,6 +44,11 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 				criteria.appendQuery(query);
 			}
 		}
+		for (FilterCriteria assocCriteria : assocCriterias) {
+			if (assocCriteria.isNotBlank()) {
+				assocCriteria.appendQuery(query);
+			}
+		}
 	}
 	/**
 	 * Добавить критерий, одиночный или множественный
@@ -58,18 +63,18 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 		String tableName = "F" + criterias.size();
 		// Одно значение
 		if (values.size() == 1)
-			addOptimized(new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, compType));
+			addOptimized(new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, groupId, compType));
 		// Множество значений с выбором любого варианта (параметр соответствует любому из значений)
 		else if (values.size() > 0 && (compType == Compare.ANY || compType == Compare.SOME))
-			addOptimized(new MultipleParamCriteria(param, item, values, sign, tableName, compType));
+			addOptimized(new MultipleParamCriteria(param, item, values, sign, tableName, groupId, compType));
 		// Множество значений с выбором каждого варианта (параметр соответствует всем значениям)
 		else if (values.size() > 0) {
 			for (String value : values) {
-				addOptimized(new SingleParamCriteria(param, item, value, sign, pattern, tableName, compType));
-				tableName = groupId + 'F' + criterias.size();
+				addOptimized(new SingleParamCriteria(param, item, value, sign, pattern, tableName, groupId, compType));
+				tableName = groupId + "F" + criterias.size();
 			}
 		} else
-			addOptimized(new SingleParamCriteria(param, item, "", sign, pattern, tableName, compType));
+			addOptimized(new SingleParamCriteria(param, item, "", sign, pattern, tableName, groupId, compType));
 	}
 
 	private void addOptimized(ParameterCriteria crit) {
@@ -100,7 +105,7 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	 * @return
 	 */
 	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, byte assocId, AssociatedItemCriteriaGroup.Type type) {
-		String critId = (type == AssociatedItemCriteriaGroup.Type.CHILD ? 'C' : 'P') + assocCriterias.size() + groupId;
+		String critId = (type == AssociatedItemCriteriaGroup.Type.CHILD ? "C" : "P") + assocCriterias.size() + groupId;
 		AssociatedItemCriteriaGroup newCrit = new AssociatedItemCriteriaGroup(critId, item, assocId, type, null, this.item);
 		assocCriterias.add(newCrit);
 		return newCrit;
@@ -115,7 +120,7 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	 */
 	public void addPredecessors(String assocName, String sign, Collection<Long> itemIds, Compare compType) {
 		criterias.add(new PredecessorCriteria(item, sign, itemIds, ItemTypeRegistry.getAssocId(assocName),
-				groupId + 'R' + criterias.size(), compType));
+				groupId + "R" + criterias.size(), compType));
 	}
 
 	/**
@@ -127,7 +132,7 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	 */
 	public void addSuccessors(String assocName, String sign, Collection<Long> itemIds, Compare compType) {
 		criterias.add(new SuccessorCriteria(sign, itemIds, ItemTypeRegistry.getAssocId(assocName),
-				groupId + 'R' + criterias.size(), compType));
+				groupId + "R" + criterias.size(), compType));
 	}
 
 	public boolean isNotBlank() {

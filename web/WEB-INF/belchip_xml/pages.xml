@@ -8,21 +8,61 @@
 			<var name="min" value="4"/>
 		</request>
 		<single item="catalog">
-<!--			<list item="product" transit="true">
-				<filter>
-					<parameter name="price" sign="&gt;="><var var="min"/></parameter>
-					<parameter name="price" sign="&lt;="><var value="5"/></parameter>
-					<parameter name="name" sign="like"><var value="К%"/></parameter>
-					<sorting><var value="name"/></sorting>
-				</filter>
-			</list>-->
 			<list item="section" tag="by_child">
 				<filter>
 					<child item="product">
 						<parameter name="price" sign="&gt;="><var var="min"/></parameter>
 						<parameter name="price" sign="&lt;="><var value="5"/></parameter>
 					</child>
+					<parameter name="name" sign="like"><var value="К%"/></parameter>
 				</filter>
+				<list item="product" transit="true">
+					<filter>
+						<parameter name="price" sign="&gt;="><var var="min"/></parameter>
+						<parameter name="price" sign="&lt;="><var value="5"/></parameter>
+					</filter>
+				</list>
+			</list>
+		</single>
+	</page>
+
+
+	<page name="nested_child_assoc">
+		<request>
+			<var name="min" value="4"/>
+		</request>
+		<single item="catalog">
+			<list item="section" tag="by_child">
+				<filter>
+					<child item="section">
+						<child item="product">
+							<parameter name="price" sign="&gt;="><var var="min"/></parameter>
+							<parameter name="price" sign="&lt;="><var value="5"/></parameter>
+						</child>
+						<parameter name="name" sign="like"><var value="К%"/></parameter>
+					</child>
+					<parameter name="name" sign="like"><var value="К%"/></parameter>
+				</filter>
+			</list>
+		</single>
+	</page>
+
+
+	<page name="parent_assoc">
+		<request>
+			<var name="min" value="4"/>
+		</request>
+		<single item="catalog">
+			<list item="product" tag="by_child" transit="true">
+				<filter>
+					<parent item="section">
+						<parameter name="name" sign="like"><var value="К%"/></parameter>
+					</parent>
+					<parameter name="price" sign="&gt;="><var var="min"/></parameter>
+					<parameter name="price" sign="&lt;="><var value="5"/></parameter>
+					<sorting><var value="name"/></sorting>
+				</filter>
+				<ancestor item="section" tag="parent"/>
 			</list>
 		</single>
 	</page>

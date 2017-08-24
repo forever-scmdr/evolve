@@ -63,7 +63,7 @@ public class AssociatedItemCriteriaGroup extends CriteriaGroup implements DBCons
 
 	@Override
 	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, byte assocId, Type type) {
-		String critId = (type == AssociatedItemCriteriaGroup.Type.CHILD ? 'C' : 'P') + assocCriterias.size() + groupId;
+		String critId = (type == AssociatedItemCriteriaGroup.Type.CHILD ? "C" : "P") + assocCriterias.size() + groupId;
 		AssociatedItemCriteriaGroup newCrit = new AssociatedItemCriteriaGroup(critId, item, assocId, type, this, this.item);
 		assocCriterias.add(newCrit);
 		return newCrit;
@@ -71,28 +71,36 @@ public class AssociatedItemCriteriaGroup extends CriteriaGroup implements DBCons
 
 	@Override
 	public void appendQuery(TemplateQuery query) {
+		// Добавить DISTINCT
+		TemplateQuery distinct = query.getSubquery(DISTINCT);
+		if (distinct.isEmpty())
+			distinct.sql("DISTINCT");
+		// Связи и критерии
 		TemplateQuery join = query.getSubquery(JOIN);
 		TemplateQuery where = query.getSubquery(WHERE);
 		// Добавить связь с двумя таблицами - таблицей предка для критерия предка
 		// и таблицей айтема для того, чтобы статус айтема был 0
-		final String PARENT_TABLE = groupId + "p";
-		final String ITEM_TABLE = groupId + "i";
+		final String GROUP_PARENT_TABLE = groupId + "P";
+		final String GROUP_ITEM_TABLE = groupId + "I";
 		// INNER JOIN parent AS с1p ON (i.id = с1p.parent_id)
-		String joinWithColumn = parent == null ? ITEM_TABLE + I_ID : parent.groupId + "i." + I_ID;
+		String joinWithColumn = parent == null ? ITEM_TABLE + I_ID : parent.groupId + "I." + I_ID;
 		String joinColumn = type == Type.CHILD ? IP_PARENT_ID : IP_CHILD_ID;
-		join.INNER_JOIN(ITEM_PARENT_TBL + " AS " + PARENT_TABLE, joinWithColumn, PARENT_TABLE + "." + joinColumn);
+		join.INNER_JOIN(ITEM_PARENT_TBL + " AS " + GROUP_PARENT_TABLE, joinWithColumn, GROUP_PARENT_TABLE + "." + joinColumn);
 		// INNER JOIN item AS с1i ON (c1i.id = с1p.child_id)
 		joinColumn = type == Type.CHILD ? IP_CHILD_ID : IP_PARENT_ID;
-		join.INNER_JOIN(ITEM_TBL + " AS " + ITEM_TABLE, ITEM_TABLE + "." + I_ID, PARENT_TABLE + "." + joinColumn);
+		join.INNER_JOIN(ITEM_TBL + " AS " + GROUP_ITEM_TABLE, GROUP_ITEM_TABLE + "." + I_ID, GROUP_PARENT_TABLE + "." + joinColumn);
 		// Добавляется критерий предка во WHERE
 		ItemType baseItem = type == Type.CHILD ? item : parentItem;
 		Integer[] superTypes = ItemTypeRegistry.getBasicItemExtendersIds(baseItem.getTypeId());
-		where.AND().col(ITEM_TABLE + '.' + I_STATUS, "=0")
-				.AND().col(PARENT_TABLE + '.' + IP_ASSOC_ID).byte_(assocId)
-				.AND().col_IN(PARENT_TABLE + '.' + IP_CHILD_SUPERTYPE).intIN(superTypes);
+		where.AND().col(GROUP_ITEM_TABLE + '.' + I_STATUS, "=0")
+				.AND().col(GROUP_PARENT_TABLE + '.' + IP_ASSOC_ID).byte_(assocId)
+				.AND().col_IN(GROUP_PARENT_TABLE + '.' + IP_CHILD_SUPERTYPE).intIN(superTypes);
 		// связь с третьей (и последующими) таблицей и добавление критерия осуществляется в ParameterCriteria
 		for (FilterCriteria criteria : criterias) {
 			criteria.appendQuery(query);
+		}
+		for (FilterCriteria assocCriteria : assocCriterias) {
+			assocCriteria.appendQuery(query);
 		}
 	}
 

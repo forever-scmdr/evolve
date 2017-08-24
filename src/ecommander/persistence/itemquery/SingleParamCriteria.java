@@ -23,8 +23,8 @@ class SingleParamCriteria extends ParameterCriteria {
 	private boolean isEmptySet = false;
 	
 	SingleParamCriteria(ParameterDescription param, ItemType item, String value, String sign, String pattern, String tableName,
-			Compare type) {
-		super(param, item, tableName);
+	                    String groupName, Compare type) {
+		super(param, item, tableName, groupName);
 		this.value = value;
 		this.sign = sign.trim();
 		if (StringUtils.isBlank(this.sign))

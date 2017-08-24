@@ -52,6 +52,7 @@ import java.util.*;
 public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants.UniqueItemKeys, DBConstants.ItemIndexes {
 
 	interface Const {
+		String DISTINCT = "<<DISTINCT>>";
 		String JOIN = "<<JOIN_PART>>";
 		String STATUS = "<<STATUS_PART>>";
 		String WHERE = "<<WHERE_PART>>";
@@ -77,13 +78,13 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private final String TP_DOT = Const.TREE_PARENT_TABLE;
 
 	private static final String COMMON_QUERY
-			= "SELECT I.*, <<PARENT_ID_PART>> AS PID "
+			= "SELECT <<DISTINCT>> I.*, <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
 
 	private static final String PARENT_QUERY
-			= "SELECT I.*, <<PARENT_ID_PART>> AS PID "
+			= "SELECT <<DISTINCT>> I.*, <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) <<WHERE_PART>>";
 
@@ -95,7 +96,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			+ "<<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
 
 	private static final String COMMON_QUANTITY_QUERY
-			= "SELECT COUNT(I." + I_ID + "), <<PARENT_ID_PART>> AS PID "
+			= "SELECT <<DISTINCT>> COUNT(I." + I_ID + "), <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> GROUP BY PID";
@@ -117,7 +118,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 
 	
 	public ItemQuery(ItemType itemDesc, Byte... status) {
-		this.itemDescStack.add(itemDesc);
+		this.itemDescStack.push(itemDesc);
 		if (status.length > 0)
 			this.status = status;
 		else
@@ -321,6 +322,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 */
 	public ItemQuery startChildCriteria(ItemType item, byte assocId) {
 		ensureFilter();
+		itemDescStack.push(item);
 		filter.startAssociatedGroup(item, assocId, AssociatedItemCriteriaGroup.Type.CHILD);
 		return this;
 	}
@@ -334,6 +336,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 */
 	public ItemQuery startParentCriteria(ItemType item, byte assocId) {
 		ensureFilter();
+		itemDescStack.push(item);
 		filter.startAssociatedGroup(item, assocId, AssociatedItemCriteriaGroup.Type.PARENT);
 		return this;
 	}
@@ -350,7 +353,9 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		byte assocId = ItemTypeRegistry.getPrimaryAssocId();
 		if (assocName.length > 0 && StringUtils.isNotBlank(assocName[0]))
 			assocId = ItemTypeRegistry.getAssoc(assocName[0]).getId();
-		filter.startAssociatedGroup(ItemTypeRegistry.getItemType(itemName), assocId, AssociatedItemCriteriaGroup.Type.CHILD);
+		ItemType item = ItemTypeRegistry.getItemType(itemName);
+		itemDescStack.push(item);
+		filter.startAssociatedGroup(item, assocId, AssociatedItemCriteriaGroup.Type.CHILD);
 		return this;
 	}
 
@@ -366,7 +371,9 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		byte assocId = ItemTypeRegistry.getPrimaryAssocId();
 		if (assocName.length > 0 && StringUtils.isNotBlank(assocName[0]))
 			assocId = ItemTypeRegistry.getAssoc(assocName[0]).getId();
-		filter.startAssociatedGroup(ItemTypeRegistry.getItemType(itemName), assocId, AssociatedItemCriteriaGroup.Type.PARENT);
+		ItemType item = ItemTypeRegistry.getItemType(itemName);
+		itemDescStack.push(item);
+		filter.startAssociatedGroup(item, assocId, AssociatedItemCriteriaGroup.Type.PARENT);
 		return this;
 	}
 
@@ -378,6 +385,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 */
 	public ItemQuery endCurrentCriteria() {
 		ensureFilter();
+		itemDescStack.pop();
 		filter.endAssociatedGroup();
 		return this;
 	}

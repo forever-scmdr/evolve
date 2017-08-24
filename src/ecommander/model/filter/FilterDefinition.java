@@ -82,7 +82,7 @@ public class FilterDefinition {
 	 *
 	 */
 	private static class FilterXMLHandler extends DefaultHandler {
-		private LinkedList<FilterDefPart> elementStack = new LinkedList<FilterDefPart>();
+		private LinkedList<FilterDefPart> elementStack = new LinkedList<>();
 		private FilterDefinition def;
 		private static final FilterDefPart fakeElement = new FilterDefPart() {
 			@Override
