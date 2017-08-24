@@ -96,7 +96,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			+ "<<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
 
 	private static final String COMMON_QUANTITY_QUERY
-			= "SELECT <<DISTINCT>> COUNT(I." + I_ID + "), <<PARENT_ID_PART>> AS PID "
+			= "SELECT COUNT(<<DISTINCT>> I." + I_ID + "), <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> GROUP BY PID";
@@ -1021,7 +1021,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		if (hasFulltext())
 			loadFulltextIds();
 		// Выбрать нужный запрос
-		TemplateQuery query = TemplateQuery.createFromString(COMMON_QUERY, "Common query");
+		TemplateQuery query = TemplateQuery.createFromString(COMMON_QUANTITY_QUERY, "Common qty query");
 		// Установить критерий статуса айтема
 		query.getSubquery(Const.STATUS).byteArray(status);
 		// Если был полнотекстовый поиск, выполнить его и добавить критерий найденных ID

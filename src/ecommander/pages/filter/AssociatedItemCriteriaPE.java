@@ -59,7 +59,7 @@ public class AssociatedItemCriteriaPE extends PageElementContainer implements Fi
 		if (assoc == null)
 			results.addError(elementPath + " > " + getKey(), "there is no '" + assocName + "' assoc in site model");
 		// Установить данные для последующей валидации (ItemDescription страничного айтема)
-		results.setBufferData(itemDesc);
+		results.pushBufferData(itemDesc);
 		return results.isSuccessful();
 	}
 
@@ -73,5 +73,10 @@ public class AssociatedItemCriteriaPE extends PageElementContainer implements Fi
 
 	public boolean isParent() {
 		return isParent;
+	}
+
+	@Override
+	protected void postValidate(ValidationResults results) {
+		results.popBufferData();
 	}
 }

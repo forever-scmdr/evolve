@@ -7,7 +7,7 @@ public abstract class PageElementContainer implements PageElement {
 	private ArrayList<PageElement> nested;
 	
 	public PageElementContainer() {
-		this.nested = new ArrayList<PageElement>();
+		this.nested = new ArrayList<>();
 	}
 	
 	public final PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
@@ -25,13 +25,6 @@ public abstract class PageElementContainer implements PageElement {
 		nested.add(element);
 	}
 	/**
-	 * Удалить элемент
-	 * @param element
-	 */
-	public void removeElement(PageElement element) {
-		nested.remove(element);
-	}
-	/**
 	 * writeElement(Link), writeElement(PageItem), writeElement(Input)
 	 * @return
 	 */
@@ -39,7 +32,7 @@ public abstract class PageElementContainer implements PageElement {
 		return nested;
 	}
 	
-	public boolean hasNested() {
+	protected boolean hasNested() {
 		return nested.size() > 0;
 	}
 	/**
@@ -55,6 +48,7 @@ public abstract class PageElementContainer implements PageElement {
 				successor.validate(path, results);
 			}
 		}
+		postValidate(results);
 	}
 	/**
 	 * Проверка самого элемента, без вложенных
@@ -64,4 +58,8 @@ public abstract class PageElementContainer implements PageElement {
 	 * @return
 	 */
 	protected abstract boolean validateShallow(String elementPath, ValidationResults results);
+
+	protected void postValidate(ValidationResults results) {
+		// ничего не делать по умолчанию
+	}
 }

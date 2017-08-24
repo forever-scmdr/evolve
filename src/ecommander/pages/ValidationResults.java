@@ -1,6 +1,7 @@
 package ecommander.pages;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Результаты валидации элементов страницы
@@ -43,7 +44,7 @@ public class ValidationResults {
 	private ArrayList<LineMessage> lineMessages = new ArrayList<LineMessage>();
 	private Throwable exception;
 	
-	private Object bufferData; // данные, которые необходимы для валидации (передаются с верхних уровней на нижние)
+	private LinkedList<Object> bufferData = new LinkedList<>(); // данные, которые необходимы для валидации (передаются с верхних уровней на нижние)
 	
 	public void addError(String originator, String message) {
 		structureMessages.add(new StructureMessage(originator, message));
@@ -73,11 +74,15 @@ public class ValidationResults {
 		return structureMessages.size() == 0 && lineMessages.size() == 0 && exception == null;
 	}
 	
-	public void setBufferData(Object data) {
-		bufferData = data;
+	public void pushBufferData(Object data) {
+		bufferData.push(data);
 	}
-	
+
+	public void popBufferData() {
+		bufferData.pop();
+	}
+
 	public Object getBufferData() {
-		return bufferData;
+		return bufferData.peek();
 	}
 }

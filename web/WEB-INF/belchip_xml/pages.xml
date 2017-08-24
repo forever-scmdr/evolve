@@ -30,6 +30,7 @@
 	<page name="nested_child_assoc">
 		<request>
 			<var name="min" value="4"/>
+			<var name="page" value="3"/>
 		</request>
 		<single item="catalog">
 			<list item="section" tag="by_child">
@@ -51,9 +52,10 @@
 	<page name="parent_assoc">
 		<request>
 			<var name="min" value="4"/>
+			<var name="page" value="10"/>
 		</request>
 		<single item="catalog">
-			<list item="product" tag="by_child" transit="true">
+			<list item="product" tag="by_parent" transit="true">
 				<filter>
 					<parent item="section">
 						<parameter name="name" sign="like"><var value="К%"/></parameter>
@@ -61,8 +63,10 @@
 					<parameter name="price" sign="&gt;="><var var="min"/></parameter>
 					<parameter name="price" sign="&lt;="><var value="5"/></parameter>
 					<sorting><var value="name"/></sorting>
+					<limit><var value="10"/></limit>
+					<pages><var name="page" var="page" /></pages>
 				</filter>
-				<ancestor item="section" tag="parent"/>
+				<ancestor item="section" tag="parent" transit="true"/>
 			</list>
 		</single>
 	</page>

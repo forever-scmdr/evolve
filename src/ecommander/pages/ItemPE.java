@@ -180,7 +180,7 @@ public class ItemPE extends PageElementContainer {
 			return false;
 		}
 		// Установить данные для последующей валидации (ItemDescription страничного айтема)
-		results.setBufferData(itemDesc);
+		results.pushBufferData(itemDesc);
 		return true;
 	}
 
