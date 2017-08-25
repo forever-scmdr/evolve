@@ -118,4 +118,9 @@ public class AssociatedItemCriteriaGroup extends CriteriaGroup implements DBCons
 	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
 		return queryBuilder;
 	}
+
+	@Override
+	protected boolean isOption() {
+		return false;
+	}
 }

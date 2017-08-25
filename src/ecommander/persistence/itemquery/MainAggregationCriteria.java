@@ -103,10 +103,10 @@ class MainAggregationCriteria extends AggregationCriteria implements ItemQuery.C
 			baseCrit = new GroupOnlyParamCriteria(param, item, tableName);
 			// Одно значение
 		else if (values.size() == 1)
-			baseCrit = new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, "", compType);
+			baseCrit = new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, "", false, compType);
 			// Множество значений с выбором любого варианта (параметр соответствует любому из значений)
 		else if (values.size() > 0 && (compType == Compare.ANY || compType == Compare.SOME))
-			baseCrit = new MultipleParamCriteria(param, item, values, sign, tableName, "", compType);
+			baseCrit = new MultipleParamCriteria(param, item, values, sign, tableName, "", false, compType);
 			// Множество значений с выбором каждого варианта (параметр соответствует всем значениям)
 		else
 			throw new IllegalArgumentException("Unsupported filter grouping format");

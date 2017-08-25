@@ -13,7 +13,7 @@ import org.apache.lucene.search.BooleanQuery;
 class GroupOnlyParamCriteria extends ParameterCriteria {
 
 	GroupOnlyParamCriteria(ParameterDescription param, ItemType item, String tableName) {
-		super(param, item, tableName, "");
+		super(param, item, tableName, "", false);
 	}
 
 	@Override

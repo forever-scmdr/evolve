@@ -130,7 +130,10 @@ public class AggregationPE extends PageElementContainer {
 	public boolean appendCriteriasToQuery(ItemQuery dbQuery) throws EcommanderException {
 		if (!dbQuery.hasFilter())
 			dbQuery.createFilter();
-		
+
+		// Добавление агрегируемого параметра (значения которого подвергаются группировке)
+		dbQuery.setAggregation(getParameter(), function, getSortingDirection());
+
 		// Добавление параметров группировки (по которым происходит группировка)
 		for (PageElement criteriaPE : getAllNested()) {
 			ParameterCriteriaPE crit = (ParameterCriteriaPE)criteriaPE;
@@ -150,9 +153,7 @@ public class AggregationPE extends PageElementContainer {
 				dbQuery.addAggregationGroupBy(crit.getParam(dbQuery.getItemToFilter()));
 			}
 		}
-		
-		// Добавление агрегируемого параметра (значения которого подвергаются группировке)
-		dbQuery.setAggregation(getParameter(), function, getSortingDirection());
+
 		return true;		
 //		// Сортировка
 //		if (hasSorting())

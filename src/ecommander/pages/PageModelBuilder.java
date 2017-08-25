@@ -1087,14 +1087,12 @@ public class PageModelBuilder {
 		}
 		// Опция
 		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), OPTION_ELEMENT)) {
-			/*
 			FilterOptionPE option = new FilterOptionPE();
 			container.addElement(option);
 			for (Element element : detachedDirectChildren(filterSubnode)) {
 				readFilterElement(option, filterSubnode, element, includes);
 			}
-			*/
-			throw new PrimaryValidationException(page.getPageName() + " > filter", "'option' in not supported yet");
+			//throw new PrimaryValidationException(page.getPageName() + " > filter", "'option' in not supported yet");
 		}
 		// Предшественник
 		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PREDECESSOR_ELEMENT)) {

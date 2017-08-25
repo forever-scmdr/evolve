@@ -63,18 +63,18 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 		String tableName = "F" + criterias.size();
 		// Одно значение
 		if (values.size() == 1)
-			addOptimized(new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, groupId, compType));
+			addOptimized(new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, groupId, isOption(), compType));
 		// Множество значений с выбором любого варианта (параметр соответствует любому из значений)
 		else if (values.size() > 0 && (compType == Compare.ANY || compType == Compare.SOME))
-			addOptimized(new MultipleParamCriteria(param, item, values, sign, tableName, groupId, compType));
+			addOptimized(new MultipleParamCriteria(param, item, values, sign, tableName, groupId, isOption(), compType));
 		// Множество значений с выбором каждого варианта (параметр соответствует всем значениям)
 		else if (values.size() > 0) {
 			for (String value : values) {
-				addOptimized(new SingleParamCriteria(param, item, value, sign, pattern, tableName, groupId, compType));
+				addOptimized(new SingleParamCriteria(param, item, value, sign, pattern, tableName, groupId, isOption(), compType));
 				tableName = groupId + "F" + criterias.size();
 			}
 		} else
-			addOptimized(new SingleParamCriteria(param, item, "", sign, pattern, tableName, groupId, compType));
+			addOptimized(new SingleParamCriteria(param, item, "", sign, pattern, tableName, groupId, isOption(), compType));
 	}
 
 	private void addOptimized(ParameterCriteria crit) {
@@ -174,5 +174,9 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 			occur = Occur.MUST;
 		queryBuilder.add(innerBuilder.build(), occur);
 		return queryBuilder;
+	}
+
+	protected boolean isOption() {
+		return true;
 	}
 }

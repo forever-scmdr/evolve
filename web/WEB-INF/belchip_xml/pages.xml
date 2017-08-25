@@ -95,6 +95,34 @@
 	</page>
 
 
+	<page name="option">
+		<request>
+			<var name="min" value="4"/>
+			<var name="page" value="1"/>
+		</request>
+		<single item="catalog">
+			<list item="section">
+				<filter>
+					<parameter name="name" sign="like"><var value="К%"/></parameter>
+				</filter>
+				<list item="product" transit="true">
+					<filter>
+						<option>
+							<parameter name="price" sign="="><var value="5"/></parameter>
+						</option>
+						<option>
+							<parent item="section">
+								<parameter name="name" sign="like"><var value="Ка%"/></parameter>
+							</parent>
+						</option>
+					</filter>
+					<ancestor item="section" tag="parent" transit="true"/>
+				</list>
+			</list>
+		</single>
+	</page>
+
+
 	<page name="group">
 		<request>
 			<var name="min" value="4"/>
@@ -102,12 +130,38 @@
 		</request>
 		<single item="catalog">
 			<list item="section" tag="main_sec">
-				<list item="product" transit="true">
-					<aggregation parameter="producer"/>
-					<!--<aggregation function="MIN" parameter="price">-->
-						<!--<parameter name="size" sign="&gt;=" sort="ASC"><var var="42"/></parameter>-->
-						<!--<parameter name="technology" sort="ASC"/>-->
-					<!--</aggregation>-->
+				<filter>
+					<parameter name="name" sign="like"><var value="К%"/></parameter>
+				</filter>
+				<list item="product" transit="true" tag="min">
+					<aggregation function="MIN" parameter="price">
+						<parameter name="country" sort="ASC"/>
+						<parameter name="producer" sort="ASC"/>
+					</aggregation>
+					<filter>
+						<parameter name="price" sign="&gt;="><var var="min"/></parameter>
+						<parameter name="price" sign="&lt;="><var value="5"/></parameter>
+					</filter>
+				</list>
+				<list item="product" transit="true" tag="max">
+					<aggregation function="MAX" parameter="price">
+						<parameter name="country" sort="ASC"/>
+						<parameter name="producer" sort="ASC"/>
+					</aggregation>
+					<filter>
+						<parameter name="price" sign="&gt;="><var var="min"/></parameter>
+						<parameter name="price" sign="&lt;="><var value="5"/></parameter>
+					</filter>
+				</list>
+				<list item="product" transit="true" tag="count">
+					<aggregation function="COUNT" parameter="price">
+						<parameter name="country" sort="ASC"/>
+						<parameter name="producer" sort="ASC"/>
+					</aggregation>
+					<filter>
+						<parameter name="price" sign="&gt;="><var var="min"/></parameter>
+						<parameter name="price" sign="&lt;="><var value="5"/></parameter>
+					</filter>
 				</list>
 			</list>
 		</single>

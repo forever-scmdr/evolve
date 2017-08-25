@@ -34,12 +34,16 @@ abstract class ParameterCriteria implements FilterCriteria, ItemQuery.Const, DBC
 	 * @param item
 	 * @param tableName - псевдоним индексной таблицы
 	 * @param groupName - название группы (главный флиьтр - "", опция или ассоциированный айтем)
+	 * @param isParentOption - является контейнер этого критерия оцией (тогда нужна связь с глобальной таблией айтема I)
 	 */
-	ParameterCriteria(ParameterDescription param, ItemType item, String tableName, String groupName) {
+	ParameterCriteria(ParameterDescription param, ItemType item, String tableName, String groupName, boolean isParentOption) {
 		this.param = param;
 		this.INDEX_TABLE = groupName + tableName;
 		this.item = item;
-		this.groupId = groupName;
+		if (isParentOption)
+			this.groupId = "";
+		else
+			this.groupId = groupName;
 	}
 	
 	public final void appendQuery(TemplateQuery query) {

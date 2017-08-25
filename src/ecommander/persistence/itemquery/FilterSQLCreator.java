@@ -172,10 +172,10 @@ public final class FilterSQLCreator implements FilterCriteria, ItemQuery.Const {
 			for (CriteriaGroup option : options) {
 				if (!option.isEmptySet() && option.isNotBlank()) {
 					if (wereNoOptions) {
-						query.getSubquery(WHERE).sql(" AND ((");
+						query.getSubquery(WHERE).sql(" AND ((1");
 						wereNoOptions = false;
 					} else {
-						query.getSubquery(WHERE).sql(" OR (");
+						query.getSubquery(WHERE).sql(" OR (1");
 					}
 					option.appendQuery(query);
 					query.getSubquery(WHERE).sql(")");

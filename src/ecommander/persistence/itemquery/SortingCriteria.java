@@ -21,7 +21,7 @@ class SortingCriteria extends ParameterCriteria {
 	private List<String> values; // для сортировки по значениям параметра (когда есть определенный порядок значений)
 	
 	SortingCriteria(ParameterDescription param, ItemType item, String tableName, String direction, List<String> values) {
-		super(param, item, tableName, "");
+		super(param, item, tableName, "", false);
 		this.direction = direction;
 		if (values != null && values.size() > 0)
 			this.values = values;

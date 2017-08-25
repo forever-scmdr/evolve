@@ -31,8 +31,8 @@ class MultipleParamCriteria extends ParameterCriteria {
 	private static final String NOT_IN = " NOT IN ";
 	
 	MultipleParamCriteria(ParameterDescription param, ItemType item, Collection<String> values, String sign, String tableName,
-	                     String groupName, Compare type) {
-		super(param, item, tableName, groupName);
+	                     String groupName, boolean isParentOption, Compare type) {
+		super(param, item, tableName, groupName, isParentOption);
 		this.values = values;
 		sign = sign.trim();
 		if (StringUtils.isBlank(sign) || sign.equals("="))
