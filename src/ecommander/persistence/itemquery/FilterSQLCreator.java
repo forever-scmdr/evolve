@@ -17,7 +17,7 @@ import java.util.List;
  * @author EEEE
  *
  */
-public final class FilterSQLCreator implements FilterCriteria {
+public final class FilterSQLCreator implements FilterCriteria, ItemQuery.Const {
 	// Опции фильтра (блоки критериев, объединенные логическим знаком OR)
 	// обычно в фильтре нет опций, их спользование - редкий случай
 	private ArrayList<CriteriaGroup> options = null;
@@ -172,18 +172,18 @@ public final class FilterSQLCreator implements FilterCriteria {
 			for (CriteriaGroup option : options) {
 				if (!option.isEmptySet() && option.isNotBlank()) {
 					if (wereNoOptions) {
-						query.sql(" AND ((");
+						query.getSubquery(WHERE).sql(" AND ((");
 						wereNoOptions = false;
 					} else {
-						query.sql(") OR (");
+						query.getSubquery(WHERE).sql(" OR (");
 					}
 					option.appendQuery(query);
-					query.sql(")");
+					query.getSubquery(WHERE).sql(")");
 				}
 			}
 		}
 		if (!wereNoOptions) {
-			query.sql(")");
+			query.getSubquery(WHERE).sql(")");
 		}
 		// Добавляется группировка
 		if (hasAggregation()) {

@@ -63,7 +63,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		String PARENT_ID = "<<PARENT_ID_PART>>";
 
 		String GROUP_PARAM_COL = "GV";
-		String GROUP_MAIN_TABLE = "G.";
+		String GROUP_MAIN_TABLE = "G";
 		String PARENT_ID_COL = "PID";
 		String PARENT_TABLE = "P.";
 		String TREE_PARENT_TABLE = "TP.";
@@ -90,7 +90,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 
 
 	private static final String GROUP_COMMON_QUERY
-			= "SELECT <<PARENT_ID_PART>> AS PID <<GROUP_PARAMS_PART>> "
+			= "SELECT <<PARENT_ID_PART>> AS PID, <<GROUP_PARAMS_PART>> "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
 			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
@@ -526,7 +526,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * Обеспечить наличие фильтра
 	 */
 	private void ensureFilter() {
-		if (!hasFilter())
+		if (filter == null)
 			createFilter();
 	}
 	

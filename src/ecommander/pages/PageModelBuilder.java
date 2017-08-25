@@ -599,6 +599,7 @@ public class PageModelBuilder {
 	public static final String HEADERS_ELEMENT = "headers";
 	public static final String CHILD_ELEMENT = "child";
 	public static final String PARENT_ELEMENT = "parent";
+	public static final String OPTION_ELEMENT = "option";
 
 	public static final String ASSOC_ATTRIBUTE = "assoc";
 	public static final String CHILD_ATTRIBUTE = "child";
@@ -609,7 +610,6 @@ public class PageModelBuilder {
 	public static final String FUNCTION_ATTRIBUTE = "function";
 	public static final String ID_ATTRIBUTE = "id";
 	public static final String PARAMETER_ATTRIBUTE = "parameter";
-	public static final String OPTION_ATTRIBUTE = "parameter";
 	public static final String SIGN_ATTRIBUTE = "sign";
 	public static final String DIRECTION_ATTRIBUTE = "direction";
 	public static final String QUANTIFIER_ATTRIBUTE = "quantifier";
@@ -1006,15 +1006,8 @@ public class PageModelBuilder {
 			filter.setUserFilter(userFilterItemId, userFilterParamName, userFilterVarName, preload);
 		}
 		for (Element filterSubnode : detachedDirectChildren(filterNode)) {
-			// Опция
-			if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), OPTION_ATTRIBUTE)) {
-				filter.addElement(readFilterCriteria(filterSubnode));
-				for (Element element : detachedDirectChildren(filterSubnode)) {
-					readFilterElement(filter, filterSubnode, element, includes);
-				}
-			}
 			// Полнотекстовый критерий
-			else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), FULLTEXT_ELEMENT)) {
+			if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), FULLTEXT_ELEMENT)) {
 				filter.setFulltext(readFulltextCriteria(filterSubnode));
 			}
 			// Сортировка
@@ -1091,6 +1084,17 @@ public class PageModelBuilder {
 			for (Element element : detachedDirectChildren(filterSubnode)) {
 				readFilterElement(assocCrit, filterSubnode, element, includes);
 			}
+		}
+		// Опция
+		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), OPTION_ELEMENT)) {
+			/*
+			FilterOptionPE option = new FilterOptionPE();
+			container.addElement(option);
+			for (Element element : detachedDirectChildren(filterSubnode)) {
+				readFilterElement(option, filterSubnode, element, includes);
+			}
+			*/
+			throw new PrimaryValidationException(page.getPageName() + " > filter", "'option' in not supported yet");
 		}
 		// Предшественник
 		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PREDECESSOR_ELEMENT)) {

@@ -72,6 +72,47 @@
 	</page>
 
 
+	<page name="limit">
+		<request>
+			<var name="min" value="4"/>
+			<var name="page" value="1"/>
+		</request>
+		<single item="catalog">
+			<list item="section">
+				<filter>
+					<parameter name="name" sign="like"><var value="К%"/></parameter>
+				</filter>
+				<list item="product" transit="true">
+					<filter>
+						<parameter name="price" sign="&gt;="><var var="min"/></parameter>
+						<parameter name="price" sign="&lt;="><var value="5"/></parameter>
+						<limit><var value="10"/></limit>
+						<pages><var name="page" var="page"/></pages>
+					</filter>
+				</list>
+			</list>
+		</single>
+	</page>
+
+
+	<page name="group">
+		<request>
+			<var name="min" value="4"/>
+			<var name="page" value="10"/>
+		</request>
+		<single item="catalog">
+			<list item="section" tag="main_sec">
+				<list item="product" transit="true">
+					<aggregation parameter="producer"/>
+					<!--<aggregation function="MIN" parameter="price">-->
+						<!--<parameter name="size" sign="&gt;=" sort="ASC"><var var="42"/></parameter>-->
+						<!--<parameter name="technology" sort="ASC"/>-->
+					<!--</aggregation>-->
+				</list>
+			</list>
+		</single>
+	</page>
+
 	<page name="integration" template="integration">
 		<request>
 			<var name="action"/>
