@@ -167,6 +167,26 @@
 		</single>
 	</page>
 
+
+	<page name="new">
+		<single item="catalog">
+			<list item="section" id="section">
+				<filter>
+					<parameter name="name" sign="like"><var value="К%"/></parameter>
+				</filter>
+				<new item="section" parent-ref="section" id="new_section" tag="new">
+					<parameter-input ref="new_section" restore-var="message" form="big_form"/>
+					<extra-input ref="new_section" name="popular" restore-var="message" form="big_form"/>
+					<new item="product" parent-ref="new_section" id="new_product">
+						<parameter-input ref="new_product" restore-var="message" form="big_form"/>
+						<extra-input ref="new_product" name="popular" restore-var="message" form="big_form"/>
+					</new>
+				</new>
+			</list>
+		</single>
+	</page>
+
+
 	<page name="integration" template="integration">
 		<request>
 			<var name="action"/>

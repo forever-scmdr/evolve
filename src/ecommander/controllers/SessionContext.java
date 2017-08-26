@@ -84,6 +84,9 @@ public class SessionContext implements AutoCloseable {
 	private SessionObjectStorage storage = null;
 	private User user = null;
 	private HashMap<String, String> cookies = null;
+	// Генератор ID для новых айтемов. Предполагается, что при повторной загрузке одной и той же страницы
+	// сгенерируются одни и те же ID (это нужно для восстановления ранее сохраненных введеннй пользователем значений полей)
+	private long _id_generator = -100L;
 
 	private SessionContext(HttpServletRequest request) {
 		this.request = request;
@@ -373,6 +376,14 @@ public class SessionContext implements AutoCloseable {
 	 */
 	public final boolean isContentUpdateMode() {
 		return Boolean.parseBoolean(getVariableValue(CONTENT_UPDATE_VAR_NAME));
+	}
+
+	/**
+	 * Сгенерировать новый ID для новых айтемов данного запроса
+	 * @return
+	 */
+	public final long getNewId() {
+		return _id_generator--;
 	}
 	
 }

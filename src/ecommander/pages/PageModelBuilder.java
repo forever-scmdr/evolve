@@ -937,7 +937,7 @@ public class PageModelBuilder {
 				pageItem.addElement(InputSetPE.createParams(itemSubnode.attr(REF_ATTRIBUTE), itemSubnode.attr(FORM_ATTRIBUTE),
 						itemSubnode.attr(RESTORE_VAR_ATTRIBUTE), StringUtils.split(itemSubnode.attr(NAME_ATTRIBUTE), ' ')));
 				// Инпут extra
-			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), PARAMETER_INPUT_ELEMENT)) {
+			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), EXTRA_INPUT_ELEMENT)) {
 				pageItem.addElement(InputSetPE.createExtra(itemSubnode.attr(REF_ATTRIBUTE), itemSubnode.attr(FORM_ATTRIBUTE),
 						itemSubnode.attr(RESTORE_VAR_ATTRIBUTE), StringUtils.split(itemSubnode.attr(NAME_ATTRIBUTE), ' ')));
 			// Фильтр

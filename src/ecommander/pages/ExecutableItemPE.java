@@ -31,7 +31,8 @@ import java.util.*;
 public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer, FilterContainer, ReferenceContainer,
 		InputSetPE.InputSetContainer, AggregationContainer, CacheablePE, ExecutablePE {
 	
-	static final long NO_PARENT_ID = -1;
+	static final long NO_PARENT_ID = -1L;
+	static final long DEFAULT_PARENT_ID = -200000L;
 
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -45,7 +46,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		private Item currentItem = null;
 		private ExecutableItemPE itemPE = null;
 		private LinkedList<Iterator<Item>> iterators = null;
-		private long currentParentId = -2;
+		private long currentParentId = DEFAULT_PARENT_ID;
 
 		ParentRelatedFoundIterator(ExecutableItemPE pageItem) {
 			this.itemPE = pageItem;
@@ -54,7 +55,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		
 		private void init() {
 			iterators = new LinkedList<>();
-			currentParentId = -2;
+			currentParentId = DEFAULT_PARENT_ID;
 		}
 		/**
 		 * Перемещает указатель на следующий айтем
@@ -105,8 +106,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		 * @return
 		 */
 		public Item getCurrentItem() {
-			if (currentItem == null)
-				next();
+//			if (currentItem == null)
+//				next();
 			return currentItem;
 		}
 
@@ -219,9 +220,6 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	private ParentRelatedFoundIterator iterator = null;
 	// Кеш айтема
 	private String cache = null;
-	// Генератор ID для новых айтемов. Предполагается, что при повторной загрузке одной и той же страницы
-	// сгенерируются одни и те же ID (это нужно для восстановления ранее сохраненных введеннй пользователем значений полей)
-	private long _id_generator = -1;
 
 	/**
 	 * Конструктор
@@ -383,6 +381,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * @return
 	 */
 	public final boolean hasInputsFrom(String formId) {
+		if (!hasInputs())
+			return false;
 		for (InputSetPE input : inputs) {
 			if (StringUtils.equalsIgnoreCase(input.getFormId(), formId))
 				return true;
@@ -482,10 +482,10 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			ExecutableItemPE parentRef = parentPageModel.getItemPEById(getParentId());
 			if (parentRef != null && parentRef.hasFoundItems()) {
 				for (Long loadedId : parentRef.getFoundItemIds()) {
-					newItems.add(Item.newFormItem(ItemTypeRegistry.getItemType(getItemName()), _id_generator--, loadedId));
+					newItems.add(Item.newFormItem(ItemTypeRegistry.getItemType(getItemName()), getSessionContext().getNewId(), loadedId));
 				}
 			} else {
-				newItems.add(Item.newFormItem(ItemTypeRegistry.getItemType(getItemName()), _id_generator--, 0L));
+				newItems.add(Item.newFormItem(ItemTypeRegistry.getItemType(getItemName()), getSessionContext().getNewId(), 0L));
 			}
 			return newItems;
 		}

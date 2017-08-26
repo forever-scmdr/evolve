@@ -3,7 +3,6 @@ package ecommander.pages;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.pages.filter.FilterPE;
 import ecommander.pages.var.Variable;
 import org.apache.commons.lang3.StringUtils;
 
@@ -65,7 +64,7 @@ public class InputSetPE implements PageElement {
 		if (container != null)
 			((InputSetContainer)container).addInputSet(clone);
 		if (StringUtils.isNotBlank(restoreVar)) {
-			Variable var = pageModel.getVariable(restoreVar);
+			Variable var = parentPage.getVariable(restoreVar);
 			if (var != null && !var.isEmpty()) {
 				clone.needRestore = true;
 			}
