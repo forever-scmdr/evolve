@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <link rel="stylesheet" type="text/css" href="admin/css/reset.css">
+    <link href="admin/css/main_admin.css" rel="stylesheet" type="text/css">
+    <title>CMS - Items</title>
+    <script type="text/javascript" src="admin/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="admin/js/admin.js"></script>
+    <link rel="stylesheet" type="text/css" href="admin/css/style.css">
+</head>
+<body>
+    <div class="list position-relative" style="margin-top: 40px; width: 300px;">
+        <form id="search-form" class="ajax-form" action="get_view.action" method="POST"><input type="text" id="key_search" name="key_search" placeholder="поиск по названию"><a onclick="">искать</a></form><a onclick="">Очистить поиск</a>
+    </div>
+    <div class="deleted_items">
+        <div class="item">
+            <a class="delete" title="удалить навсегда">удалить</a>
+            <a class="restore" title="восстановить">восстановить</a>
+            <a class="move" title="переместить">переместить</a>
+            <div class="main">
+                <a class="name" title="открыть">Извещатель пожарный дымовой оптико-электронный точечный автономный ИП 212-50М2</a>
+                <span>Subitems: 1239</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

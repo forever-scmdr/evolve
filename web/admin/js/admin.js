@@ -131,3 +131,6 @@ $(document).on("click", ".toggle-hidden", function (e) {
 	t = $(this);
 	$(t.attr("href")).toggle();
 });
+$(document).on("click", ".drag", function (e) {
+	$(this).toggleClass("active");
+});

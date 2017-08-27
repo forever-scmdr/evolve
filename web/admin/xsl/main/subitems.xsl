@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 	<xsl:import href="_inc_message.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/html" indent="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -8,24 +8,26 @@
 
 	<!-- Выбор создаваемого айтема из списка -->
 	<xsl:template match="item-to-add[item]">
-		<li class="dragable visible" style="position: relative; padding-right: 27px;">
+		<xsl:param name="ass" />
+		<li class="dragable visible {$ass}" style="position: relative; padding-right: 27px;">
 			<select id="is_{@id}">
 				<xsl:apply-templates select="item" mode="select"/>
 			</select>
 			<a class="create-button" onclick="mainView($('#is_{@id}').find(':selected').val());return false;"></a>
 		</li>
-		<li class="drop-zone"></li>
+		<li class="drop-zone {$ass}"></li>
 	</xsl:template>
 	
 
 	<!-- Ссылка на создание айтема -->
 	<xsl:template match="item-to-add[not(item)]">
-		<li class="dragable visible">
+		<xsl:param name="ass" />
+		<li class="dragable visible {$ass}">
 			<a href="javascript:mainView('{create-link}')" >
 				<span class="name"><xsl:value-of select="@caption"/></span>
 			</a>
 		</li>
-		<li class="drop-zone"></li>
+		<li class="drop-zone {$ass}"></li>
 	</xsl:template>
 
 	<!-- Не выводить виртуальные айтемы -->
@@ -51,14 +53,19 @@
 		<!-- Создание новых айтемов -->
 		<xsl:if test="admin-page/assoc/item-to-add">
 			<div class="list">
-				<h4>Созадать</h4>
-				<xsl:for-each select="admin-page/assoc">
-					<h5><xsl:value-of select="@caption"/></h5>
-					<ul class="create">
+				<h4>Создать</h4>
+				<ul class="create">
+					<xsl:for-each select="admin-page/assoc">
 						<li class="drop-zone"></li>
-						<xsl:apply-templates select="item-to-add"/>
-					</ul>
-				</xsl:for-each>
+						<li class="assoc-name">
+							<a href=".ass_{@id}" class="toggle-hidden"><xsl:value-of select="@caption"/></a>
+						</li>
+						<li class="drop-zone"></li>
+						<xsl:apply-templates select="item-to-add">
+							<xsl:with-param name="ass" select="concat('ass_', @id)"/>
+						</xsl:apply-templates>
+					</xsl:for-each>
+				</ul>
 			</div>
 		</xsl:if>
 
