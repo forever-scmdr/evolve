@@ -9,7 +9,7 @@
 	<!-- Выбор создаваемого айтема из списка -->
 	<xsl:template match="item-to-add[item]">
 		<xsl:param name="ass" />
-		<li class="dragable visible {$ass}" style="position: relative; padding-right: 27px;">
+		<li class="visible {$ass}" style="position: relative; padding-right: 27px;">
 			<select id="is_{@id}">
 				<xsl:apply-templates select="item" mode="select"/>
 			</select>
@@ -22,7 +22,7 @@
 	<!-- Ссылка на создание айтема -->
 	<xsl:template match="item-to-add[not(item)]">
 		<xsl:param name="ass" />
-		<li class="dragable visible {$ass}">
+		<li class="visible {$ass}">
 			<a href="javascript:mainView('{create-link}')" >
 				<span class="name"><xsl:value-of select="@caption"/></span>
 			</a>
@@ -79,6 +79,7 @@
 			<div class="list">
 				<h4>Редактировать</h4>
 				<xsl:for-each select="admin-page/assoc">
+					<xsl:variable name="ass" select="concat('ass_', @id)"/>
 					<ul class="edit drag_area">
 						<li class="assoc-name">
 							<a href=".ass_{@id}" class="toggle-hidden"><xsl:value-of select="@caption"/></a>
@@ -86,8 +87,8 @@
 						<xsl:for-each select="item">
 							<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
 							<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />
-							<li class="drop-zone"></li>
-							<li class="dragable11 visible multiple call-context-menu default" data-link="{edit-link}" data-del="{delete-link}" id="{$itemId}">
+							<li class="drop-zone {$ass}"></li>
+							<li class="dragable visible multiple call-context-menu default {$ass}" data-link="{edit-link}" data-del="{delete-link}" id="{$itemId}">
 								<div class="drag" title="нажмите, чтобы перемещать элемент"></div>
 								<a href="{edit-link}" class="name" title="редактировать">
 									<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">

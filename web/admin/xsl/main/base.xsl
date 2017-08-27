@@ -133,9 +133,6 @@
 								<xsl:value-of select="@caption" />
 							</a>
 						</xsl:for-each>
-						<b>
-							<xsl:value-of select="/admin-page/path/item[position() = last()]/@caption" />
-						</b>
 					</div>
 					<div class="mid">
 						<div class="left-col">
