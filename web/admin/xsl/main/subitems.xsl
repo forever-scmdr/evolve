@@ -79,25 +79,54 @@
 			<div class="list">
 				<h4>Редактировать</h4>
 				<xsl:for-each select="admin-page/assoc">
-					<xsl:value-of select="@caption"/>
 					<ul class="edit drag_area">
-						<div style="padding-top: 14px; padding-bottom: 14px">
-							<xsl:for-each select="item">
-								<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
-								<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />
-								<li class="drop-zone"></li>
-								<li class="dragable visible multiple" id="{$itemId}">
-									<a href="{edit-link}" class="name" title="редактировать">
-										<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
-											<span class="description">[<xsl:value-of select="@type-caption"/>]</span><br/>
-										</xsl:if>
-										<xsl:value-of select="$caption"/>
-									</a>
-									<a onclick="insertAjaxView('{copy-link}', 'pasteBuffer'); return false;" class="copy" title="копировать">копировать</a>
-									<a href="javascript:defaultView('{delete-link}','subitems',true, refreshMain)" class="delete" title="удалить">удалить</a>
-								</li>
-							</xsl:for-each>
+						<li class="assoc-name">
+							<a href=".ass_{@id}" class="toggle-hidden"><xsl:value-of select="@caption"/></a>
+						</li>
+						<xsl:for-each select="item">
+							<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
+							<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />
 							<li class="drop-zone"></li>
+							<li class="dragable11 visible multiple call-context-menu default" data-link="{edit-link}" data-del="{delete-link}" id="{$itemId}">
+								<div class="drag" title="нажмите, чтобы перемещать элемент"></div>
+								<a href="{edit-link}" class="name" title="редактировать">
+									<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
+										<span class="description">[<xsl:value-of select="@type-caption"/>]</span><br/>
+									</xsl:if>
+									<xsl:value-of select="$caption"/>
+								</a>
+								<div class="controls">
+									<a class="hide_item" title="скрыть">скрыть</a>
+									<a onclick="insertAjaxView('{copy-link}', 'pasteBuffer'); return false;" class="copy" title="копировать">копировать</a>
+									<a href="javascript:defaultView('{delete-link}', 'subitems', true, refreshMain)" class="delete" title="удалить">удалить</a>
+								</div>
+							</li>
+						</xsl:for-each>
+						<li class="drop-zone"></li>
+						<div class="pages">
+							Старница:
+							<div class="links-container big">
+								<a href="#">1</a>
+								<a href="#">2</a>
+								<a href="#">3</a>
+								<a href="#">4</a>
+								<a href="#">5</a>
+								<a href="#">6</a>
+								<a href="#">7</a>
+								<a href="#" class="active">8</a>
+								<a href="#">9</a>
+								<a href="#">10</a>
+								<a href="#">11</a>
+								<a href="#">12</a>
+								<a href="#">13</a>
+								<a href="#">14</a>
+								<a href="#">15</a>
+								<a href="#">16</a>
+								<a href="#">17</a>
+								<a href="#">18</a>
+								<a href="#">19</a>
+								<a href="#">20</a>
+							</div>
 						</div>
 					</ul>
 				</xsl:for-each>
@@ -110,6 +139,8 @@
 		<script type="text/javascript">
 			insertAjaxView('<xsl:value-of select="admin-page/get-paste"/>', 'pasteBuffer');
 		</script>
+		<!-- CONTEXT MENU -->
+		<script type="text/javascript" src="admin/js/context-menu.js"></script>
 	</xsl:template>
 		
 </xsl:stylesheet>
