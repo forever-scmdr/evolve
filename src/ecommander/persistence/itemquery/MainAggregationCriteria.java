@@ -123,6 +123,17 @@ class MainAggregationCriteria extends AggregationCriteria implements ItemQuery.C
 	}
 
 	@Override
+	public boolean hasSorting() {
+		if (super.hasSorting())
+			return true;
+		for (AggregationCriteria extra : groupByExtra) {
+			if (extra.hasSorting())
+				return true;
+		}
+		return false;
+	}
+
+	@Override
 	String getParameterColumnName() {
 		return GROUP_PARAM_COL;
 	}

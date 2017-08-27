@@ -18,8 +18,8 @@ class VariableParameterCriteriaPE extends ParameterCriteriaPE {
 	protected String paramNameVar;
 	protected ExecutablePagePE pageModel;
 
-	VariableParameterCriteriaPE(String paramNameVar, String sign, String pattern, Compare compType) {
-		super(sign, pattern, compType);
+	VariableParameterCriteriaPE(String paramNameVar, String sign, String pattern, Compare compType, String sort) {
+		super(sign, pattern, compType, sort);
 		this.paramNameVar = paramNameVar;
 	}
 	

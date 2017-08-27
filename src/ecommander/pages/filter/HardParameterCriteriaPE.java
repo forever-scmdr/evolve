@@ -16,8 +16,8 @@ import ecommander.pages.var.Variable;
 class HardParameterCriteriaPE extends ParameterCriteriaPE {
 	protected String paramName;
 	
-	HardParameterCriteriaPE(String paramName, String sign, String pattern, Compare compType) {
-		super(sign, pattern, compType);
+	HardParameterCriteriaPE(String paramName, String sign, String pattern, Compare compType, String sort) {
+		super(sign, pattern, compType, sort);
 		this.paramName = paramName;
 	}
 	

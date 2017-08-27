@@ -150,7 +150,7 @@ public class AggregationPE extends PageElementContainer {
 				}
 				// Этот случай происходит, когда нужна группировка по значениям этого параметра 
 				// (всем значениям, без каких-либо критериев)
-				dbQuery.addAggregationGroupBy(crit.getParam(dbQuery.getItemToFilter()));
+				dbQuery.addAggregationGroupBy(crit.getParam(dbQuery.getItemToFilter()), crit.getSort());
 			}
 		}
 

@@ -10,8 +10,8 @@ import ecommander.model.ParameterDescription;
  */
 class IdVariableParameterCriteriaPE extends VariableParameterCriteriaPE {
 	
-	IdVariableParameterCriteriaPE(String paramIdVar, String sign, String pattern, Compare compType) {
-		super(paramIdVar, sign, pattern, compType);
+	IdVariableParameterCriteriaPE(String paramIdVar, String sign, String pattern, Compare compType, String sort) {
+		super(paramIdVar, sign, pattern, compType, sort);
 	}
 
 	@Override

@@ -49,6 +49,7 @@ public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 	protected String sign;
 	protected String pattern; // Для строковых критериев со знаком like. Формат: %v% - сначала символ %, потом значение параметра, потом опять %
 	protected Compare compareType = Compare.ANY;
+	protected String sort; // Направление сортировки при группировке
 	/**
 	 * Конструктор создания исполяемой копии
 	 * @param template
@@ -58,15 +59,17 @@ public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 		sign = template.sign;
 		pattern = template.pattern;
 		compareType = template.compareType;
+		sort = template.sort;
 		for (Variable var : template.values) {
 			addValue(var.getInited(parentPage));
 		}
 	}
 	
-	protected ParameterCriteriaPE(String sign, String pattern, Compare compType) {
+	protected ParameterCriteriaPE(String sign, String pattern, Compare compType, String sort) {
 		this.sign = sign;
 		this.pattern = pattern;
 		this.compareType = compType;
+		this.sort = sort;
 	}
 
 	public final List<String> getValueArray() {
@@ -101,17 +104,21 @@ public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 		return compareType;
 	}
 
+	public String getSort() {
+		return sort;
+	}
+
 	public static ParameterCriteriaPE create(String paramName, String paramNameVar, String paramIdVar, String sign,
-	                                         String pattern, Compare compType) {
+	                                         String pattern, Compare compType, String sort) {
 		ParameterCriteriaPE instance;
 		if (compType == null)
 			compType = Compare.ANY;
 		if (!StringUtils.isBlank(paramName)) {
-			instance = new HardParameterCriteriaPE(paramName, sign, pattern, compType);
+			instance = new HardParameterCriteriaPE(paramName, sign, pattern, compType, sort);
 		} else if (!StringUtils.isBlank(paramNameVar)) {
-			instance = new VariableParameterCriteriaPE(paramNameVar, sign, pattern, compType);
+			instance = new VariableParameterCriteriaPE(paramNameVar, sign, pattern, compType, sort);
 		} else if (!StringUtils.isBlank(paramIdVar)) {
-			instance = new IdVariableParameterCriteriaPE(paramIdVar, sign, pattern, compType);
+			instance = new IdVariableParameterCriteriaPE(paramIdVar, sign, pattern, compType, sort);
 		} else {
 			throw new IllegalArgumentException("Neither paramName nor paramNameVar supplied for filter criteria parameter");
 		}

@@ -135,8 +135,8 @@
 				</filter>
 				<list item="product" transit="true" tag="min">
 					<aggregation function="MIN" parameter="price">
-						<parameter name="country" sort="ASC"/>
-						<parameter name="producer" sort="ASC"/>
+						<parameter name="country" sort="DESC"/>
+						<parameter name="producer" sort="DESC"/>
 					</aggregation>
 					<filter>
 						<parameter name="price" sign="&gt;="><var var="min"/></parameter>
@@ -145,8 +145,8 @@
 				</list>
 				<list item="product" transit="true" tag="max">
 					<aggregation function="MAX" parameter="price">
-						<parameter name="country" sort="ASC"/>
-						<parameter name="producer" sort="ASC"/>
+						<parameter name="country" sort="DESC"/>
+						<parameter name="producer" sort="DESC"/>
 					</aggregation>
 					<filter>
 						<parameter name="price" sign="&gt;="><var var="min"/></parameter>
@@ -155,8 +155,8 @@
 				</list>
 				<list item="product" transit="true" tag="count">
 					<aggregation function="COUNT" parameter="price">
-						<parameter name="country" sort="ASC"/>
-						<parameter name="producer" sort="ASC"/>
+						<parameter name="country" sort="DESC"/>
+						<parameter name="producer" sort="DESC"/>
 					</aggregation>
 					<filter>
 						<parameter name="price" sign="&gt;="><var var="min"/></parameter>

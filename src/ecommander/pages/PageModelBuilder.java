@@ -635,6 +635,7 @@ public class PageModelBuilder {
 	public static final String CLASS_ATTRIBUTE = "class";
 	public static final String TYPE_ATTRIBUTE = "type";
 	public static final String COMPARE_ATTRIBUTE = "compare";
+	public static final String SORT_ATTRIBUTE = "sort";
 	public static final String SCHEDULE_ATTRIBUTE = "schedule";
 	public static final String PRELOAD_DOMAINS_ATTRIBUTE = "preload-domains";
 	public static final String LOADER_ATTRIBUTE = "loader";
@@ -1143,6 +1144,7 @@ public class PageModelBuilder {
 		String paramSign = criteriaNode.attr(SIGN_ATTRIBUTE);
 		String paramPattern = criteriaNode.attr(PATTERN_ATTRIBUTE);
 		String compareTypeStr = criteriaNode.attr(COMPARE_ATTRIBUTE);
+		String sort = criteriaNode.attr(SORT_ATTRIBUTE);
 		Compare compare = null;
 		if (!StringUtils.isBlank(compareTypeStr)) {
 			try {
@@ -1153,7 +1155,7 @@ public class PageModelBuilder {
 			}
 		}
 		// Критерий фильтра
-		ParameterCriteriaPE crit = ParameterCriteriaPE.create(paramName, paramNameVar, paramIdVar, paramSign, paramPattern, compare);
+		ParameterCriteriaPE crit = ParameterCriteriaPE.create(paramName, paramNameVar, paramIdVar, paramSign, paramPattern, compare, sort);
 		// Значение параметра (переменная)
 		for (Element filterSubnode : detachedDirectChildren(criteriaNode)) {
 			if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), VAR_ELEMENT)) {
