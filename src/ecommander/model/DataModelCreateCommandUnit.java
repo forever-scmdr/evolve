@@ -818,7 +818,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		}
 
 		String absPath = file.getAbsolutePath();
-		String filePath = absPath.substring(0, absPath.lastIndexOf('/'));
+		String filePath = absPath.substring(0, absPath.lastIndexOf(File.separatorChar));
 		String newName = "~" + file.getName();
 		File backupFile = new File(filePath + '/' + newName);
 		FileUtils.writeStringToFile(backupFile, oldXML, "UTF-8");
