@@ -84,10 +84,17 @@
 						<li class="assoc-name">
 							<a href=".ass_{@id}" class="toggle-hidden"><xsl:value-of select="@caption"/></a>
 						</li>
+
+						<xsl:variable name="items" select="item" />
+
 						<xsl:for-each select="item">
+
+							<xsl:variable name="prev" select="position() - 1"/>
+							<xsl:variable name="spaceId" select="if(position() = 1) then concat('0',':',@weight) else concat($items[$prev]/@weight, ':', @weight)" />
+
 							<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
 							<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />
-							<li class="drop-zone {$ass}"></li>
+							<li class="drop-zone {$ass}" id="space{$spaceId}"></li>
 							<li class="dragable visible multiple call-context-menu default {$ass}" data-link="{edit-link}" data-del="{delete-link}" id="{$itemId}">
 								<div class="drag" title="нажмите, чтобы перемещать элемент"></div>
 								<a href="{edit-link}" class="name" title="редактировать">
@@ -103,7 +110,9 @@
 								</div>
 							</li>
 						</xsl:for-each>
-						<li class="drop-zone"></li>
+						<xsl:variable name="itemsCount" select="count($items)"/>
+						<xsl:variable name="spaceId" select="concat('space', $items[$itemsCount]/@weight, ':', ($itemsCount + 1) * 64)"/>
+						<li class="drop-zone" id="{$spaceId}"></li>
 						<div class="pages">
 							Старница:
 							<div class="links-container big">

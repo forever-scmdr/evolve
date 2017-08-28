@@ -45,7 +45,7 @@
 					</td>
 					<xsl:if test=". != ''">
 						<td style="padding-left: 20px; vertical-align: top;">
-							<div style="position: relative;">
+							<div style="position: relative; padding-right: 20px;">
 								<a class="delete" href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={@id}&amp;itemId={$form/@id}', 'main_view', true)"></a>
 								<a href="{$form/@file-path}{.}" style="display: block;" target="blank">Открыть файл</a>
 							</div>

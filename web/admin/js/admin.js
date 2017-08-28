@@ -85,37 +85,43 @@ function prepareForm(formId, pagePartId, messageId, insertMessageId, additionalH
 		}
 	});
 }
-if(typeof $.draggable != 'undefined'){
-	$(".dragable").draggable({
-		axis: "y",
-		containment: ".drag_area",
-		cursor: "e-resize",
-		revert: true,
-		revertDuration: 200,
-		zIndex: 100
-	});
-	
-	$(".drop-zone").droppable({
-		tolerance: "touch",
-		accept: ".dragable",
-		hoverClass: "spacer_selected",
-		drop: function(event, ui) {
-			var itemNums = ui.draggable.attr('id').substring(4).split(':');
-			var posNums = $(this).attr('id').substring(5).split(':');
-			var itemId = itemNums[0];
-			var itemWeight = itemNums[1];
-			var weightBefore = posNums[0];
-			var weightAfter = posNums[1]; 
-			 if (weightBefore != itemWeight && weightAfter != itemWeight) {
-			 	reorderLink = reorderLink.replace(":id:", itemId);
-			 	reorderLink = reorderLink.replace(":wb:", weightBefore);
-			 	reorderLink = reorderLink.replace(":wa:", weightAfter);
-			 	defaultView(reorderLink, 'subitems');
-			 	//alert(reorderLink);
-			 }
-		}
-	});
-}
+// if(typeof $.draggable != 'undefined'){
+// 	$(document).on("click", ".drag", function (e) {
+//         $(this).toggleClass("active");
+//         $(this).toggleClass("handle");
+//     });
+//
+//     // $(".dragable").draggable({
+//     //     axis: "y",
+//     //     containment: ".drag_area",
+//     //     cursor: "e-resize",
+//     //     revert: true,
+//     //     revertDuration: 200,
+//     //     zIndex: 100,
+//     //     handle: ".handle"
+//     // });
+//
+// 	$(".drop-zone").droppable({
+// 		tolerance: "touch",
+// 		accept: ".dragable",
+// 		hoverClass: "spacer_selected",
+// 		drop: function(event, ui) {
+// 			var itemNums = ui.draggable.attr('id').substring(4).split(':');
+// 			var posNums = $(this).attr('id').substring(5).split(':');
+// 			var itemId = itemNums[0];
+// 			var itemWeight = itemNums[1];
+// 			var weightBefore = posNums[0];
+// 			var weightAfter = posNums[1];
+// 			 if (weightBefore != itemWeight && weightAfter != itemWeight) {
+// 			 	reorderLink = reorderLink.replace(":id:", itemId);
+// 			 	reorderLink = reorderLink.replace(":wb:", weightBefore);
+// 			 	reorderLink = reorderLink.replace(":wa:", weightAfter);
+// 			 	defaultView(reorderLink, 'subitems');
+// 			 	//alert(reorderLink);
+// 			 }
+// 		}
+// 	});
+// }
 
 
 $(document).on("keypress", "body", function(e){
@@ -130,7 +136,4 @@ $(document).on("click", ".toggle-hidden", function (e) {
 	e.preventDefault();
 	t = $(this);
 	$(t.attr("href")).toggle();
-});
-$(document).on("click", ".drag", function (e) {
-	$(this).toggleClass("active");
 });

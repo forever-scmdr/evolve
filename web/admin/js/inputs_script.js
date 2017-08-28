@@ -55,8 +55,12 @@ function isValidUrl(url)
 		
 			var dv = $(targ).val();
 			var tls = (dv == "")? now : dv;
+			if(tls.indexOf(".") == -1){
+				nd =  new Date(tls*1);
+				tls = $.datepicker.formatDate("dd.mm.yy",nd);
+				time.val(nd.getHours()+":"+nd.getMinutes());
+			}
 			date.val(tls.substring(0,10));
-			time.val(tls.substring(11));
 			if(dv == "") {
 				targ.val(tls);
 			}
