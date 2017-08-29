@@ -61,7 +61,7 @@ var mceSettings = {
 		language : 'ru',
 	//	theme : "modern",
 		skin : "lightgray"
-		,content_css : ["ccss/text-style.css",
+		,content_css : ["css/text-style.css",
 				"font-awesome-4.6.3/css/font-awesome.min.css" ]
 		,plugins : [
 				'advlist autolink lists link image charmap print preview anchor textcolor',
@@ -116,7 +116,7 @@ var mceSettings = {
 		language : 'ru',
 	//	theme : "modern",
 		skin : "lightgray"
-		,content_css : [ "ccss/text-style.css",
+		,content_css : [ "css/text-style.css",
 				"font-awesome-4.6.3/css/font-awesome.min.css" ]
 		,plugins : [
 				'advlist autolink lists link charmap print preview anchor textcolor',

@@ -70,14 +70,6 @@
 			$('#inline_view').html('');
 			}
 			/**
-			* Отправка AJAX запроса для обновления указанной части страницы
-			* Отдельно выводится сообщение для
-			пользователя
-			*/
-			function defaultView(link, viewId, confirm, postProcess) {
-			insertAjaxView(link, viewId, confirm, "hidden_mes", "message_main", postProcess);
-			}
-			/**
 			* Отправка AJAX POST запроса для
 			обновления основной (центральной) части страницы
 			* Отдельно выводится сообщение для пользователя
@@ -89,6 +81,7 @@
 			$(document).ready(function() {
 			insertAjaxView("<xsl:value-of select="admin-page/link[@name='subitems']" />", "subitems");
 			insertAjaxView("<xsl:value-of select="admin-page/link[@name='parameters']" />", "main_view");
+
 			});
 		</script>
 	</xsl:template>
@@ -194,9 +187,9 @@
 									<xsl:if test="admin-page/item">
 										<div class="wide">
 											<div class="margin context-duplicate">
-												<a class="hide-link icon" href="javascript:alert('hidden!')">Скрыть</a>
-												<a class="secure-link icon" href="javascript:alert('hidden!')">Запретить доступ к файлам</a>
-												<label>
+												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?')">Скрыть</a>
+												<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'А оно вообще Вам надо?')">Запретить доступ к файлам</a>
+												<label class="call-function" data-message="А старый владелец вкурсе?">
 													Назначить владельца:&#160;
 													<select>
 														<option>All</option>
@@ -205,9 +198,9 @@
 														<option>User 3</option>
 													</select>
 												</label>
-												<label>
+												<label class="call-function" data-message="А оно вообще Вам надо?">
 													Назначить группу:&#160;
-													<select>
+													<select >
 														<option>All</option>
 														<option>Group 1</option>
 														<option>Group 2</option>
@@ -276,6 +269,9 @@
 			<a href="#" data-action="toggle" rel="Показать" class="context-menu__link">Скрыть</a>
 		</li>
 		<li class="context-menu__item">
+			<a href="#" data-action="modify_access" class="context-menu__link">Запретить доступ к файлам</a>
+		</li>
+		<li class="context-menu__item">
 			<form method="post" action="set_user" id="chown">
 				<xsl:variable name="curr" select="''" />
 				<input type="hidden" name="id" value="" />
@@ -303,9 +299,6 @@
 					</select>
 				</label>
 			</form>
-		</li>
-		<li class="context-menu__item">
-			<a href="#" data-action="modify_access" class="context-menu__link">Запретить доступ к файлам</a>
 		</li>
 	</xsl:template>
 

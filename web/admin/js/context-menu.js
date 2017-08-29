@@ -1,7 +1,7 @@
 /**
  * Created by Anton on 22.05.2017.
  */
-(function() {
+(function () {
 
     "use strict";
 
@@ -33,69 +33,84 @@
     init();
 
     //-- Вызов контекстного меню
-    function contextListener(){
-        document.addEventListener( "contextmenu", function(e) {
+    function contextListener() {
+        document.addEventListener("contextmenu", function (e) {
             el = false;
-            el = clickInsideElement( e, taskItemClassName );
+            el = clickInsideElement(e, taskItemClassName);
             if (el) {
                 e.preventDefault();
                 menu = null;
                 var classList = el.classList;
-                if(classList.contains("default")){
+
+                if (classList.contains("default")) {
                     menu = document.querySelector("#context_menu-default");
+
+                    if(typeof menu == "undefined") return;
+
+                    hideMenu();
                     toggleMenu();
                     positionMenu(e);
                     addInfoDefault();
+                }
+                if (classList.contains("active")) {
+                    classList.remove("active");
+                } else {
+                    classList.add("active");
                 }
             }
         });
     }
 
     function addInfoDefault() {
-       var editLink = el.getAttribute("data-link");
-       var links = $(menu).find(".link");
-       links.attr("href", editLink);
+        var editLink = el.getAttribute("data-link");
+        var links = $(menu).find(".link");
+        links.attr("href", editLink);
     }
 
     //-- Скрыть по клику
     function clickListener() {
-        document.addEventListener( "click", function(e) {
+        document.addEventListener("click", function (e) {
             var button = e.which || e.button;
-            if ( button === 1 && !clickInsideElement( e, "context-menu")) {
+            if (button === 1 && !clickInsideElement(e, "context-menu")) {
                 hideMenu();
             }
         });
     }
 
     function escListener() {
-        window.onkeyup = function(e) {
-            if ( e.keyCode === 27 ) {
+        window.onkeyup = function (e) {
+            if (e.keyCode === 27) {
                 hideMenu();
             }
         }
     }
 
     //-- Показать контекстное меню
-    function toggleMenu(){
-        if ( menuState !== 1 ) {
+    function toggleMenu() {
+        if (menuState !== 1) {
             menuState = 1;
             menu.classList.add(activeClassName);
-        }else if( menuState !== 0 ) {
+        } else if (menuState !== 0) {
             menuState = 0;
             menu.classList.remove(activeClassName);
         }
     }
 
     function resizeListener() {
-        window.onresize = function(e) {
+        window.onresize = function (e) {
             hideMenu();
         };
     }
 
     //-- Скрыть
     function hideMenu() {
+        if(typeof menu == "undefined") return;
         menuState = 0;
         menu.classList.remove(activeClassName);
+        var menuParents = document.querySelector(".call-context-menu.active");
+        if (menuParents != null) {
+            menuParents.classList.remove("active");
+        }
     }
 
     function positionMenu(e) {
@@ -104,7 +119,7 @@
         clickCoordsY = clickCoords.y;
 
         var doc = document.documentElement;
-       // var scrollTop = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+        // var scrollTop = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
 
         menuWidth = menu.offsetWidth + 4;
         menuHeight = menu.offsetHeight + 4;
@@ -112,7 +127,7 @@
         windowWidth = window.innerWidth;
         windowHeight = window.innerHeight;
 
-        if ( (windowWidth - clickCoordsX) < menuWidth ) {
+        if ((windowWidth - clickCoordsX) < menuWidth) {
             menu.style.left = windowWidth - menuWidth + "px";
         } else {
             menu.style.left = clickCoordsX + "px";
@@ -135,14 +150,14 @@
     ///////////////////////////////////////
 
     //--
-    function clickInsideElement( e, className ) {
+    function clickInsideElement(e, className) {
         var el = e.srcElement || e.target;
 
-        if ( el.classList.contains(className) ) {
+        if (el.classList.contains(className)) {
             return el;
         } else {
-            while ( el = el.parentNode ) {
-                if ( el.classList && el.classList.contains(className) ) {
+            while (el = el.parentNode) {
+                if (el.classList && el.classList.contains(className)) {
                     return el;
                 }
             }
@@ -178,7 +193,7 @@
 })();
 
 //-- context menu onclick assigments
-$(document).on("click", "a[data-action=copy]",function (e) {
+$(document).on("click", "a[data-action=copy]", function (e) {
     e.preventDefault();
     copyToClipboard($(this).attr("href"));
 });
@@ -190,8 +205,8 @@ $(document).on("click", "a[data-action=new_window]", function (e) {
 });
 
 function copyToClipboard(txt) {
-    id = "div-"+new Date().getTime();
-    div = $("<div>", {text : txt, id : id});
+    id = "div-" + new Date().getTime();
+    div = $("<div>", {text: txt, id: id});
     $("body").append(div);
     if (document.selection) {
         var range = document.body.createTextRange();

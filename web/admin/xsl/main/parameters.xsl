@@ -64,7 +64,7 @@
 	<xsl:template match="value[../@type='picture']">
 		<div class="pic">
 			<img src="{$form/@file-path}{.}" alt="{.}"/>
-			<a href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', true)" class="delete">Удалить</a>
+			<a id="param-{../@id}-{@index}" href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', true, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
 			<input type="text" name="" value="{$form/@file-path}{.}" title="{.}" onclick="$(this).select()" />
 		</div>
 	</xsl:template>
@@ -73,7 +73,7 @@
 	<xsl:template match="value[../@type='file']">
 		<div class="pic file">
 			<a href="{$form/@file-path}{.}" target="blank" >Открыть файл</a>
-			<a href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', true)" class="delete">Удалить</a>
+			<a id="param-{../@id}-{@index}" href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', true, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
 			<input class="special" name="" value="{$form/@file-path}{.}" type="text" onclick="$(this).select()"/>
 		</div>
 		
@@ -86,7 +86,7 @@
 			<a href="admin_set_item.action?itemId={$current/@id}&amp;itemType={$current/@type-id}" target="blank" title="Редактировать элемент">
 				<xsl:value-of select="$current/@caption"/>
 			</a>
-			<a href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', true)" class="delete">Удалить</a>
+			<a id="param-{../@id}-{@index}" href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', true, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
 		</div>
 	</xsl:template>
 
@@ -94,7 +94,7 @@
 	<xsl:template match="value">
 		<div class="pic">
 			<span><xsl:value-of select="."/></span>
-			<a href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', true)" class="delete">Удалить</a>
+			<a id="param-{../@id}-{@index}" href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', true, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
 		</div>
 	</xsl:template>
 

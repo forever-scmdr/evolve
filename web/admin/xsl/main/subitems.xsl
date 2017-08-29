@@ -106,7 +106,7 @@
 								<div class="controls">
 									<a class="hide_item" title="скрыть">скрыть</a>
 									<a onclick="insertAjaxView('{copy-link}', 'pasteBuffer'); return false;" class="copy" title="копировать">копировать</a>
-									<a href="javascript:defaultView('{delete-link}', 'subitems', true, refreshMain)" class="delete" title="удалить">удалить</a>
+									<a id="dl-{@id}" href="javascript:defaultView('{delete-link}', 'subitems', true, refreshMain, '#dl-{@id}')" class="delete" title="удалить">удалить</a>
 								</div>
 							</li>
 						</xsl:for-each>

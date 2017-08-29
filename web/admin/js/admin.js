@@ -1,8 +1,107 @@
-function confirmLink(href) {
-	if (confirm("Для подтверждения нажмите 'Ok'") && confirm("Для подтверждения нажмите 'Ok'")) {
-		window.location.href = href;
-	}
+function confirmLink(href , el) {
+	destroyDialog();
+	buildDialog("Вы уверены?");
+	positionDialog(el);
+	$("#dialog-yes-button").click(function (e) {
+		e.preventDefault();
+		destroyDialog();
+        window.location.href = href;
+    });
+	$("#dialog-no-button").click(function (e) {
+		e.preventDefault();
+		$("#dialog-yes-button, #dialog-no-button").unbind("click");
+		destroyDialog();
+    });
 }
+
+$(document).on("click","body", function (e) {
+	var trg = $(e.target);
+	if(!trg.is("#confirm-dialog") && trg.closest("#confirm-dialog").length == 0 && !trg.is(".call-function") && trg.closest(".call-function").length == 0){
+        destroyDialog();
+	}
+});
+
+function destroyDialog() {
+	$("#confirm-dialog").remove();
+	$(".left-col").find(".controls").css({display : ""});
+}
+
+function buildDialog(message) {
+	var dialog = $("<div>", {"class" : "dialog-tip", id : "confirm-dialog"});
+	var content = $("<div>", {"class": "dialog-message"});
+	var yes = $("<span>", {"class" : "button yes", id : "dialog-yes-button", text : "Да"});
+    var no = $("<span>", {"class" : "button no", id : "dialog-no-button", text : "Нет"});
+
+    content.html(message);
+	dialog.append(content);
+	dialog.append(yes);
+	dialog.append(no);
+	dialog.appendTo("body");
+}
+
+function positionDialog(el) {
+	el = $(el);
+	var ctrls = el.closest(".controls");
+	ctrls.css({display : "block"});
+
+	var dialog = $("#confirm-dialog");
+
+	var top = el.offset()["top"];
+	var left = el.offset()["left"];
+
+	var h = dialog.outerHeight();
+	var w = dialog.outerWidth();
+	var elW = el.outerWidth();
+
+	dialog.css({
+		 top: top - h - 10
+		,left: left - (0.5*w) + (0.5*elW)
+	});
+}
+
+/**
+ * Отправка AJAX запроса для обновления указанной части страницы
+ * Отдельно выводится сообщение для
+ пользователя
+ */
+function defaultView(link, viewId, confirm, postProcess, el) {
+	destroyDialog();
+	buildDialog("Вы уверены?");
+	positionDialog(el);
+    $("#dialog-yes-button").click(function (e) {
+        e.preventDefault();
+        destroyDialog();
+        insertAjaxView(link, viewId, false, "hidden_mes", "message_main", postProcess);
+    });
+
+	$("#dialog-no-button").click(function (e) {
+        e.preventDefault();
+        $("#dialog-yes-button, #dialog-no-button").unbind("click");
+        destroyDialog();
+    });
+}
+
+function positionOnly(el, message){
+    destroyDialog();
+    buildDialog(message);
+    positionDialog(el);
+    $("#dialog-yes-button").click(function (e) {
+        e.preventDefault();
+        destroyDialog();
+        alert("Вы нажали кнопку \""+$(this).text()+"\".");
+    });
+    $("#dialog-no-button").click(function (e) {
+        e.preventDefault();
+        $("#dialog-yes-button, #dialog-no-button").unbind("click");
+        destroyDialog();
+        alert("Вы нажали кнопку \""+$(this).text()+"\".");
+    });
+}
+
+$(document).on("change", ".call-function", function (e) {
+	positionOnly(this, $(this).attr("data-message"));
+});
+
 /************************************************
  * Состояние страницы
  * ID части страницы => URL, содержимое которого сейчас отображается в данной части страницы
@@ -89,6 +188,7 @@ function prepareForm(formId, pagePartId, messageId, insertMessageId, additionalH
 $(document).on("keypress", "body", function(e){
 	key = e.key
 	if(key == "F9" || key == "F8"){
+        e.preventDefault();
 		t = (key == "F8")? $("#save") : $("#save-and-exit");
 		t.trigger("click");
 	}
