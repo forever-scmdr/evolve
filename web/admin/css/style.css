@@ -331,7 +331,7 @@ a, button, *[type="submit"], label.file, input[type="file"] {
 h1 {
 	font-size: 24px;
 	color: #363636;
-	margin-bottom: 40px;
+	margin-bottom: 20px;
 }
 
 .edit-arena .wide, .edit-arena .narrow {
@@ -1134,4 +1134,38 @@ h2.title {
 	color: #fff;
 	text-decoration: none;
 
+}
+.context-duplicate{
+	margin-bottom: 20px;
+	font-size: 12px;
+	margin-top: 5px;
+	margin-left: -40px;
+}
+.context-duplicate a, .context-duplicate label{
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 40px;
+	min-height: 20px;
+}
+.context-duplicate .icon{
+	padding-left: 25px;
+	background-size: auto 20px;
+	background-position: left;
+	background-repeat: no-repeat;
+}
+.context-duplicate .hide-link{
+	background-image: url("../img/eye-blocked.png");
+}
+.context-duplicate .show-link{
+	background-image: url("../img/eye-plus.png");
+}
+.context-duplicate .secure-link{
+	background-image: url("../img/lock.png");
+}
+.context-duplicate .unlock-link{
+	background-image: url("../img/unlock.png");
+}
+.context-duplicate select{
+	border: 1px solid #ccc;
+	border-right: 0;
 }

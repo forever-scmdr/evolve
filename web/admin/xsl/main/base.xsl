@@ -193,6 +193,28 @@
 								<div class="edit-arena">
 									<xsl:if test="admin-page/item">
 										<div class="wide">
+											<div class="margin context-duplicate">
+												<a class="hide-link icon" href="javascript:alert('hidden!')">Скрыть</a>
+												<a class="secure-link icon" href="javascript:alert('hidden!')">Запретить доступ к файлам</a>
+												<label>
+													Назначить владельца:&#160;
+													<select>
+														<option>All</option>
+														<option>User 1</option>
+														<option>User 2</option>
+														<option>User 3</option>
+													</select>
+												</label>
+												<label>
+													Назначить группу:&#160;
+													<select>
+														<option>All</option>
+														<option>Group 1</option>
+														<option>Group 2</option>
+														<option>Group 3</option>
+													</select>
+												</label>
+											</div>
 											<div class="margin">
 												<table class="wtf-list">
 													<tr>

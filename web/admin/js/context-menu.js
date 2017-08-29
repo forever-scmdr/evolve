@@ -103,6 +103,9 @@
         clickCoordsX = clickCoords.x;
         clickCoordsY = clickCoords.y;
 
+        var doc = document.documentElement;
+       // var scrollTop = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+
         menuWidth = menu.offsetWidth + 4;
         menuHeight = menu.offsetHeight + 4;
 
@@ -115,11 +118,12 @@
             menu.style.left = clickCoordsX + "px";
         }
 
-        if ( (windowHeight - clickCoordsY) < menuHeight ) {
-            menu.style.top = windowHeight - menuHeight + "px";
-        } else {
-            menu.style.top = clickCoordsY + "px";
-        }
+        // if ( (windowHeight - clickCoordsY) < menuHeight ) {
+        //     menu.style.top = windowHeight - menuHeight + "px";
+        // } else {
+        //     menu.style.top = clickCoordsY + "px";
+        // }
+        menu.style.top = clickCoordsY + "px";
     }
 
     ///////////////////////////////////////

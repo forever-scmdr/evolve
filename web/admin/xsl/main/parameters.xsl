@@ -111,7 +111,6 @@
 	</xsl:if>
 	<xsl:call-template name="MESSAGE"/>
 
-
 		<xsl:if test="$form/@id = 0">
 			<script>
 				$('h1.title').html('Создать:<xsl:value-of select="$form/@caption" />');
