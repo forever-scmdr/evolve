@@ -2,7 +2,6 @@
   <library name="lib">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/web/WEB-INF/lib" />
-      <root url="jar://C:/Program Files/Apache Software Foundation/Tomcat 8.5/lib/catalina.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
