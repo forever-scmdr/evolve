@@ -141,6 +141,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 			result = deletePaste(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.PASTE_ACTION))
 			result = paste(input, pageCreator);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.STATUS_ACTION))
+			result = toggleItem(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(ENABLE_VISUAL_EDITING_ACTION)) {
 			SessionContext.createSessionContext(req).setContentUpdateMode(true);
 			String target = req.getParameter(TARGET_PARAM);
@@ -411,6 +413,27 @@ public class MainAdminServlet extends BasicAdminServlet {
 		// Очистить кеш страниц
 		PageController.clearCache();
 		page.addMessage("Элемент успешно удален", false);
+		return page;
+	}
+	/**
+	 * Сделать элемент видимым или скрытым
+	 *
+	 * Параметры:
+	 * itemId - ID айтема
+	 * parentId - ID родительского айтема
+	 * itemTypeId - ID типа родительского айтема
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	private AdminPage toggleItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
+		transaction.addCommandUnit(ItemStatusDBUnit.toggle(in.itemId));
+		transaction.execute();
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.searchQuery);
+		// Очистить кеш страниц
+		PageController.clearCache();
+		page.addMessage("Видимость элемента успешно изменена", false);
 		return page;
 	}
 	/**

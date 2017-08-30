@@ -81,6 +81,13 @@ function defaultView(link, viewId, confirm, postProcess, el) {
     });
 }
 
+/**
+ * Отправка AJAX запроса для обновления указанной части страницы
+ */
+function simpleAjaxView(link, viewId, postProcess) {
+	insertAjaxView(link, viewId, false, "hidden_mes", "message_main", postProcess);
+}
+
 function positionOnly(el, message){
     destroyDialog();
     buildDialog(message);

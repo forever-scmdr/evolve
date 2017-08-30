@@ -114,11 +114,11 @@
 	<page name="tv_groups" template="product_groups">
 		<list item="tv">
 			<!--Если указано направление сортировки, то параметр группировки добавляется в сортировку-->
-			<!--Если нет дополнительных параметров группировки (только главный), то сортировки происходит по нему-->
-			<aggragation function="MIN" parameter="price">
+			<!--Если нет дополнительных параметров группировки (только главный), то сортировка происходит по нему-->
+			<aggregation function="MIN" parameter="price">
 				<parameter name="size" sign="&gt;=" sort="ASC"><var var="42"/></parameter>
 				<parameter name="technology" sort="ASC"/>
-			</aggragation>
+			</aggregation>
 		</list>
 	</page>
 

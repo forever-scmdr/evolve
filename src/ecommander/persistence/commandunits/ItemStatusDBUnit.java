@@ -13,6 +13,8 @@ import java.sql.PreparedStatement;
  */
 public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants.ComputedLog {
 
+	private static final byte STATUS_TOGGLE = 100;
+
 	private byte newStatus;
 	private long itemId;
 	private ItemBasics item;
@@ -47,6 +49,14 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 		return new ItemStatusDBUnit(Item.STATUS_NORMAL, -1, item);
 	}
 
+	public static ItemStatusDBUnit toggle(long itemId) {
+		return new ItemStatusDBUnit(STATUS_TOGGLE, itemId, null);
+	}
+
+	public static ItemStatusDBUnit toggle(ItemBasics item) {
+		return new ItemStatusDBUnit(STATUS_TOGGLE, -1, item);
+	}
+
 	@Override
 	public void execute() throws Exception {
 		if (item == null)
@@ -56,6 +66,12 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 		if (item.getStatus() == newStatus)
 			return;
 		testPrivileges(item);
+
+		if (newStatus == STATUS_TOGGLE) {
+			if (item.getStatus() == Item.STATUS_DELETED)
+				return;
+			newStatus = item.getStatus() == Item.STATUS_NORMAL ? Item.STATUS_NIDDEN : Item.STATUS_NORMAL;
+		}
 
 		byte primaryAssoc = ItemTypeRegistry.getPrimaryAssoc().getId();
 		// Сначала обновить сам айтем

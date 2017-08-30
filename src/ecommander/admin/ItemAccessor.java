@@ -144,6 +144,7 @@ public class ItemAccessor extends MetaDataWriter implements ItemBasics, Comparab
 				AdminXML.ASSOC_CAPTION_ATTRIBUTE, assocCaption,
 				AdminXML.ID_ATTRIBUTE, itemId,
 				AdminXML.CAPTION_ATTRIBUTE, key,
+				AdminXML.STATUS_ATTRIBUTE, status,
 				AdminXML.WEIGHT_ATTRIBUTE, childWeight,
 				AdminXML.COMPATIBLE_ATTRIBUTE, isParentCompatible);
 		writeSubwriters(xml);

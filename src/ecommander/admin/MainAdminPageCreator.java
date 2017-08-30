@@ -194,6 +194,7 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String COPY_ACTION = "admin_copy";
 	public static final String PASTE_ACTION = "admin_paste";
 	public static final String DELETE_PASTE_ACTION = "admin_delete_paste";
+	public static final String STATUS_ACTION = "admin_status";
 	/**
 	 * Инпуты
 	 */
@@ -407,9 +408,10 @@ public class MainAdminPageCreator implements AdminXML {
 			String delUrl = createAdminUrl(DELETE_ITEM_ACTION, ITEM_ID_INPUT, subitem.getId(), ITEM_TYPE_INPUT, itemType, PARENT_ID_INPUT, baseId);
 			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, subitem.getId(), ITEM_TYPE_INPUT, subitem.getTypeId());
 			String copyUrl = createAdminUrl(COPY_ACTION, ITEM_ID_INPUT, subitem.getId(), PARENT_ID_INPUT, baseId, ITEM_TYPE_INPUT, itemType);
+			String statusUrl = createAdminUrl(STATUS_ACTION, ITEM_ID_INPUT, subitem.getId(), PARENT_ID_INPUT, baseId, ITEM_TYPE_INPUT, itemType);
 			subitem.addSubwriter(new LeafMDWriter(DELETE_LINK_ELEMENT, delUrl));
 			subitem.addSubwriter(new LeafMDWriter(EDIT_LINK_ELEMENT, editUrl));
-			subitem.addSubwriter(new LeafMDWriter(COPY_LINK_ELEMENT, copyUrl));
+			subitem.addSubwriter(new LeafMDWriter(STATUS_LINK_ELEMENT, statusUrl));
 			assocWriter.addSubwriter(subitem);
 		}
 		String reorderUrl = createAdminUrl(REORDER_ACTION, 

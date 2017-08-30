@@ -94,8 +94,10 @@
 
 							<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
 							<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />
+							<xsl:variable name="hidden" select="@status = '1'"/>
 							<li class="drop-zone {$ass}" id="space{$spaceId}"></li>
 							<li class="dragable visible multiple call-context-menu default {$ass}" data-link="{edit-link}" data-del="{delete-link}" id="{$itemId}">
+								<xsl:if test="$hidden"><xsl:attribute name="style" select="'background-color: #c8c8c8'"/></xsl:if>
 								<div class="drag" title="нажмите, чтобы перемещать элемент"></div>
 								<a href="{edit-link}" class="name" title="редактировать">
 									<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
@@ -104,7 +106,12 @@
 									<xsl:value-of select="$caption"/>
 								</a>
 								<div class="controls">
-									<a class="hide_item" title="скрыть">скрыть</a>
+									<xsl:if test="$hidden">
+										<a href="javascript:simpleAjaxView('{status-link}', 'subitems')" class="show_item" title="показать">показать</a>
+									</xsl:if>
+									<xsl:if test="not($hidden)">
+										<a href="javascript:simpleAjaxView('{status-link}', 'subitems')" class="hide_item" title="скрыть">скрыть</a>
+									</xsl:if>
 									<a onclick="insertAjaxView('{copy-link}', 'pasteBuffer'); return false;" class="copy" title="копировать">копировать</a>
 									<a id="dl-{@id}" href="javascript:defaultView('{delete-link}', 'subitems', true, refreshMain, '#dl-{@id}')" class="delete" title="удалить">удалить</a>
 								</div>

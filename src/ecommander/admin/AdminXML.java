@@ -24,6 +24,7 @@ public interface AdminXML {
 	String LINK_ELEMENT = "link";
 	String TYPE_ELEMENT = "type";
 	String OPEN_ASSOC_LINK_ELEMENT = "open-associated-link";
+	String STATUS_LINK_ELEMENT = "status-link";
 	String COPY_LINK_ELEMENT = "copy-link";
 	String PASTE_LINK_ELEMENT = "paste-link";
 	String GET_PASTE_LINK_ELEMENT = "get-paste";
@@ -42,6 +43,7 @@ public interface AdminXML {
 	String ASSOC_CAPTION_ATTRIBUTE = "assoc-caption";
 	String ID_ATTRIBUTE = "id";
 	String TYPE_ID_ATTRIBUTE = "type-id";
+	String STATUS_ATTRIBUTE = "status";
 	String DEFAULT_ATTRIBUTE = "default";
 	String COMPATIBLE_ATTRIBUTE = "compatible";
 	String WEIGHT_ATTRIBUTE = "weight";
