@@ -64,7 +64,7 @@ function positionDialog(el) {
  * Отдельно выводится сообщение для
  пользователя
  */
-function defaultView(link, viewId, confirm, postProcess, el) {
+function confirmAjaxView(link, viewId, postProcess, el) {
 	destroyDialog();
 	buildDialog("Вы уверены?");
 	positionDialog(el);
@@ -132,13 +132,16 @@ function insertAjaxView(url, pagePartId, confirm, messageId, insertMessageId, ad
 	if (typeof confirm == 'undefined')
 		confirm = false;
 	if (!confirm || (window.confirm("Для подтверждения нажмите 'Ok'") && window.confirm("Для подтверждения нажмите 'Ok'"))) {
+		lock(pagePartId);
 		$.ajax({
 			url: url,
 			dataType: "html",
 			error: function(arg1, errorType, arg3) {
+				unlock(pagePartId);
 				$('#' + insertMessageId).html('Ошибка выполнения AJAX запроса: ' + errorType);
 			},
 			success: function(data, status, arg3) {
+				unlock(pagePartId);
 				// Вставка результата
 				$('#' + pagePartId).html(data);
 				// Вставка сообщения
@@ -172,11 +175,14 @@ function refreshView(pagePartId) {
  * @param additionalHandling - функция, которая выполняет какие-то дополнительные действия
  */
 function prepareForm(formId, pagePartId, messageId, insertMessageId, additionalHandling) {
+	lock(pagePartId);
 	$('#' + formId).ajaxForm({
 		error: function() {
+			unlock(pagePartId);
 			alert('Ошибка отправки формы');
 		},
 		success: function(data) {
+			unlock(pagePartId);
 			// Вставка результата
 			$('#' + pagePartId).html(data);
 			// Вставка сообщения

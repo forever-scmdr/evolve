@@ -107,13 +107,13 @@
 								</a>
 								<div class="controls">
 									<xsl:if test="$hidden">
-										<a href="javascript:simpleAjaxView('{status-link}', 'subitems')" class="show_item" title="показать">показать</a>
+										<a id="shl-{@id}" href="javascript:confirmAjaxView('{status-link}', 'subitems', null, '#shl-{@id}')" class="show_item" title="показать">показать</a>
 									</xsl:if>
 									<xsl:if test="not($hidden)">
-										<a href="javascript:simpleAjaxView('{status-link}', 'subitems')" class="hide_item" title="скрыть">скрыть</a>
+										<a id="shl-{@id}" href="javascript:confirmAjaxView('{status-link}', 'subitems', null, '#shl-{@id}')" class="hide_item" title="скрыть">скрыть</a>
 									</xsl:if>
 									<a onclick="insertAjaxView('{copy-link}', 'pasteBuffer'); return false;" class="copy" title="копировать">копировать</a>
-									<a id="dl-{@id}" href="javascript:defaultView('{delete-link}', 'subitems', true, refreshMain, '#dl-{@id}')" class="delete" title="удалить">удалить</a>
+									<a id="dl-{@id}" href="javascript:confirmAjaxView('{delete-link}', 'subitems', refreshMain, '#dl-{@id}')" class="delete" title="удалить">удалить</a>
 								</div>
 							</li>
 						</xsl:for-each>

@@ -179,7 +179,7 @@ function addVariableToUrl(url, name, value) {
 		return url + '?' + name + '=' + value;
 }
 /**
- * Для работы этой функции нужна картинка images/loader.gif
+ * Для работы этой функции нужна картинка admin/js/loader.gif
  * @param lockElementIds
  */
 function lock(lockElementIds) {
@@ -189,7 +189,7 @@ function lock(lockElementIds) {
 				coverWithLoader($('#' + lockElementIds[i]));
 		}
 	} else {
-		if ($('#' + lockElementIds).length == 1) 
+		if ($('#' + lockElementIds).length == 1)
 			coverWithLoader($('#' + lockElementIds));
 	}
 }
@@ -201,65 +201,23 @@ function unlock(lockElementIds) {
 				destroyLoader($('#' + lockElementIds[i]));
 		}
 	} else {
-		if ($('#' + lockElementIds).length == 1) 
+		if ($('#' + lockElementIds).length == 1)
 			destroyLoader($('#' + lockElementIds));
 	}
 }
 
 function coverWithLoader (el){
 	el = $(el);
-	//el.each(function(i){
-		//console.log("w="+width);
-		var height = el.outerHeight();
-		var width = el.outerWidth();
-		var br1 = el.css("border-top-left-radius");
-		var br2 = el.css("border-top-right-radius");
-		var br3 = el.css("border-bottom-left-radius");
-		var br4 = el.css("border-bottom-right-radius");
-		var mt = -1*el.css("padding-top");
-		var ml = -1*el.css("padding-bottom");
-		var imgMT = el.outerHeight()*0.5; 
-		loader = $('<div>',{
-			style:"background: white center no-repeat; position:absolute; z-index: 200;"
-		});
-		//console.log('imgMt='+imgMt);
-		img = $('<img>', {
-			 src:'js/loader.gif'
-			,alt: 'loading...'
-			,style: 'display:inline-block; vertical-align: middle; margin-left:auto; margin-right:auto; max-height: 90%; max-width: 90%;'
-		});
-		
-		loader.addClass('coverLoader');
-		loader.append(img);
-		$(el).prepend(loader);
-		loader = $(el).children('.coverLoader');
-		mli = 86;
-		if(!$(el).is(".vote_button")){
-			loader.css({
-				 width: width
-				,height:height
-				,backgroundColor: "#fff"
-				,textAlign:'center'
-				,marginTop:mt
-				,marginLeft:ml
-				,borderTopLeftRadius: br1
-				,borderTopRightRadius: br2
-				,borderBottomLeftRadius: br3
-				,borderBottomRightRadius: br4
-			});
-			mli = 16
-		}
-		else{
-			loader.css({
-				minWidth: 180, marginRight: -40, minHeight: 30, height: 34, marginTop: -1			
-			});
-			loader.find("img").height(30);
-		}
-		loader.find("img").css({marginTop: 0.5*(loader.height()-loader.find("img").height()), marginLeft: mli});
+	el.find('*').css('visibility', 'hidden');
+	el.css('background', 'rgba(255, 255, 255, 0.5) url("admin/js/loader.svg") center no-repeat');
+	el.css('background-size', 'cover');
 }
+
 function destroyLoader(el){
 	el = $(el);
-	el.children('.coverLoader').remove();
+	el.find('*').css('visibility', '');
+	el.css('background', '');
+	el.css('background-size', '');
 }
 
 $(".ajax-form").submit(function(e){

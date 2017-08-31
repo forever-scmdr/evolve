@@ -69,7 +69,7 @@ public class AdminPage {
 	}
 	
 	public void addMessage(String message, boolean isError) {
-		writers.add(new LeafMDWriter("message", message, "error", isError));
+		writers.add(new LeafMDWriter(MainAdminPageCreator.MESSAGE_ELEMENT, message, "error", isError));
 		isNotPrepared = true;
 	}
 	

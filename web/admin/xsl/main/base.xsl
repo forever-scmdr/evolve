@@ -65,9 +65,8 @@
 			* Отдельно выводится сообщение для пользователя
 			*/
 			function mainView(link, postProcess) {
-			insertAjaxView(link,
-			"main_view", false, "hidden_mes", "message_main", postProcess);
-			$('#inline_view').html('');
+				insertAjaxView(link, "main_view", false, "hidden_mes", "message_main", postProcess);
+				$('#inline_view').html('');
 			}
 			/**
 			* Отправка AJAX POST запроса для
@@ -75,8 +74,7 @@
 			* Отдельно выводится сообщение для пользователя
 			*/
 			function mainForm(formId, additionalHandling) {
-			prepareForm(formId, "main_view", "hidden_mes",
-			"message_main", additionalHandling);
+				prepareForm(formId, "main_view", "hidden_mes", "message_main", additionalHandling);
 			}
 			$(document).ready(function() {
 			insertAjaxView("<xsl:value-of select="admin-page/link[@name='subitems']" />", "subitems");
@@ -186,6 +184,9 @@
 								<div class="edit-arena">
 									<xsl:if test="admin-page/item">
 										<div class="wide">
+											<div style="border: 2px solid #56C493; padding: 8px 12px; background: #D7F3E6; margin-bottom: 20px; color: #164F35">
+												<xsl:value-of select="admin-page/message"/>
+											</div>
 											<div class="margin context-duplicate">
 												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?')">Скрыть</a>
 												<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'А оно вообще Вам надо?')">Запретить доступ к файлам</a>

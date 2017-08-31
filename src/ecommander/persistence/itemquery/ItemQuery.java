@@ -607,7 +607,11 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * Вызывать после добавления критериев самого фильтра
 	 * @param query
 	 */
-	private void createParentAndTypeCriteria(TemplateQuery query, Long... parentIds) {
+	private void createParentTypeUserCriteria(TemplateQuery query, Long... parentIds) {
+
+		//////////////////////////////////////////
+		// Критерий предка и типа (супертипа)
+		//
 		if (hasParent) {
 			// В частности кроме собственно родителя также указывается критерий типа айтема, т.к. супертип хранится в
 			// таблице parent
@@ -639,20 +643,34 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			query.getSubquery(Const.PARENT_ID).sql("0");
 			// Если нет родителя, то критерий типа айтема нужно указывать в табилце Item
 			// Для того, чтобы работал индекс, нужно указывать также пользователя и группу
-			int userId;
-			if (user == null)
-				userId = User.ANONYMOUS_ID;
-			else
-				userId = user.getUserId();
-			byte groupId;
-			if (userGroupName == null)
-				groupId = UserGroupRegistry.getDefaultGroup();
-			else
-				groupId = UserGroupRegistry.getGroup(userGroupName);
-			query.getSubquery(Const.WHERE)
-					.AND().col(I_DOT + I_USER).int_(userId)
-					.AND().col(I_DOT + I_GROUP).byte_(groupId)
-					.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()));
+			// Пользователь и группа при их наличии добавляются в конце метода, здесь указываются
+			// только нули если пользователь и группа не заданы
+			TemplateQuery where = query.getSubquery(Const.WHERE);
+			where.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()));
+			if (user == null) {
+				where.AND().col(I_DOT + I_USER).int_(User.ANONYMOUS_ID);
+				if (userGroupName == null)
+					where.AND().col(I_DOT + I_GROUP).byte_(UserGroupRegistry.getDefaultGroup());
+			}
+		}
+
+		//////////////////////////////////////////
+		// Критерий пользователя и группы
+		//
+		if (user != null || userGroupName != null) {
+			HashSet<Byte> groupIds = new HashSet<>();
+			if (userGroupName != null) {
+				groupIds.add(UserGroupRegistry.getGroup(userGroupName));
+			} else if (user != null) {
+				HashSet<User.Group> userGroups = user.getGroups();
+				for (User.Group userGroup : userGroups) {
+					groupIds.add(userGroup.id);
+				}
+			}
+			if (user != null)
+				query.getSubquery(Const.WHERE).AND().col(I_DOT + I_USER).int_(user.getUserId());
+			if (groupIds.size() > 0)
+				query.getSubquery(Const.WHERE).AND().col(I_DOT + I_GROUP).byteIN(groupIds.toArray(new Byte[0]));
 		}
 	}
 	/**
@@ -691,7 +709,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			filter.appendQuery(query);
 		// Теперь можно загружать группировку (если она есть), предварительно добавив критерий типа айтема и предка
 		if (hasAggregation()) {
-			createParentAndTypeCriteria(query, ancestorIds);
+			createParentTypeUserCriteria(query, ancestorIds);
 			return loadGroupedItems(query, conn);
 		}
 		// Если в фильтре нет своей сортировки, можно установить сортировку по умолчанию
@@ -718,7 +736,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			for (int i = 0; i < ancestorIds.length; i++) {
 				TemplateQuery baseClone = (TemplateQuery) query.createClone();
 				// Заполнение критериев родительского элемента
-				createParentAndTypeCriteria(baseClone, ancestorIds[i]);
+				createParentTypeUserCriteria(baseClone, ancestorIds[i]);
 				// Установка критерия ограничения количества
 				limit.appendQuery(baseClone);
 				// Добавляется очередная часть UNIONа и замещается сгенерированным запросом
@@ -731,7 +749,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			union.sql(")");
 			query.replace(union);
 		} else {
-			createParentAndTypeCriteria(query, ancestorIds);
+			createParentTypeUserCriteria(query, ancestorIds);
 			// Установка критерия ограничения количества
 			if (hasLimit())
 				limit.appendQuery(query);
@@ -1031,7 +1049,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		if (hasFilter())
 			filter.appendQuery(query);
 		// Критерий родителя и типа айтема
-		createParentAndTypeCriteria(query, ancestorIds);
+		createParentTypeUserCriteria(query, ancestorIds);
 		// Выполнение запроса к БД
 		HashMap<Long, Integer> result = new HashMap<>();
 		boolean isOwnConnection = false;
