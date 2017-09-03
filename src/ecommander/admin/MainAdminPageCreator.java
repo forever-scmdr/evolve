@@ -412,12 +412,13 @@ public class MainAdminPageCreator implements AdminXML {
 			subitem.addSubwriter(new LeafMDWriter(DELETE_LINK_ELEMENT, delUrl));
 			subitem.addSubwriter(new LeafMDWriter(EDIT_LINK_ELEMENT, editUrl));
 			subitem.addSubwriter(new LeafMDWriter(STATUS_LINK_ELEMENT, statusUrl));
+			subitem.addSubwriter(new LeafMDWriter(COPY_LINK_ELEMENT, copyUrl));
 			assocWriter.addSubwriter(subitem);
 		}
 		String reorderUrl = createAdminUrl(REORDER_ACTION, 
 				ITEM_ID_INPUT, ":id:", 
 				NEW_ITEM_POSITION, ":pos:",
-				ITEM_TYPE_INPUT, itemType,
+				ASSOC_ID_INPUT, ":assoc:",
 				PARENT_ID_INPUT, baseId);
 		String getPasteBufferUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, PASTE_VIEW_TYPE, PARENT_ID_INPUT, baseId, ITEM_TYPE_INPUT,
 				itemType);

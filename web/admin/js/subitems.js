@@ -44,8 +44,9 @@ function getInlineEditForm(itemId, formUrl) {
         accept: ".dragable",
         hoverClass: "spacer_selected",
         drop: function (event, ui) {
-            alert("Тыдыщ!");
             ui.draggable.find(".handle").trigger("click");
+	        var link = $(this).attr('href').replace(':id:', ui.draggable.attr('id'));
+            simpleAjaxView(link, 'subitems');
         }
         ,over: function(event, ui){
         	ui.draggable.addClass("active");

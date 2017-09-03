@@ -172,12 +172,12 @@ public class MainAdminServlet extends BasicAdminServlet {
 				input.itemTypeId = Integer.parseInt(req.getParameter(MainAdminPageCreator.ITEM_TYPE_INPUT));
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PARENT_ID_INPUT)))
 				input.parentId = Long.parseLong(req.getParameter(MainAdminPageCreator.PARENT_ID_INPUT));
+			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT)))
+				input.assocId = Byte.parseByte(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT));
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.INDEX_INPUT)))
 				input.index = Integer.parseInt(req.getParameter(MainAdminPageCreator.INDEX_INPUT));
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.NEW_ITEM_POSITION)))
 				input.newItemPosition = Integer.parseInt(req.getParameter(MainAdminPageCreator.NEW_ITEM_POSITION));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT)))
-				input.paramId = Integer.parseInt(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT));
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PARAM_ID_INPUT)))
 				input.paramId = Integer.parseInt(req.getParameter(MainAdminPageCreator.PARAM_ID_INPUT));
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.VIEW_TYPE_INPUT)))

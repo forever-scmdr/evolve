@@ -73,6 +73,7 @@
 		<div id="pasteBuffer"></div>
 		
 		<!-- Редактирование существующих айтемов -->
+		<xsl:variable name="reorder_link" select="admin-page/link[@name='reorder']"/>
 		<xsl:if test="admin-page/assoc/item">
 
 			<xsl:variable name="differentSubitems" select="count(admin-page/assoc/item-to-add) &gt; 1 or admin-page/assoc/item-to-add/item or admin-page/assoc/item/@type-id != admin-page/assoc/item/@type-id"/>
@@ -80,6 +81,7 @@
 				<h4>Редактировать</h4>
 				<xsl:for-each select="admin-page/assoc">
 					<xsl:variable name="ass" select="concat('ass_', @id)"/>
+					<xsl:variable name="ass_id" select="@id"/>
 					<ul class="edit drag_area">
 						<li class="assoc-name">
 							<a href=".ass_{@id}" class="toggle-hidden"><xsl:value-of select="@caption"/></a>
@@ -88,15 +90,11 @@
 						<xsl:variable name="items" select="item" />
 
 						<xsl:for-each select="item">
-
-							<xsl:variable name="prev" select="position() - 1"/>
-							<xsl:variable name="spaceId" select="if(position() = 1) then concat('0',':',@weight) else concat($items[$prev]/@weight, ':', @weight)" />
-
 							<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
-							<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />
+							<!--<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />-->
 							<xsl:variable name="hidden" select="@status = '1'"/>
-							<li class="drop-zone {$ass}" id="space{$spaceId}"></li>
-							<li class="dragable visible multiple call-context-menu default {$ass}" data-link="{edit-link}" data-del="{delete-link}" id="{$itemId}">
+							<li class="drop-zone {$ass}" href="{replace(replace($reorder_link, ':pos:', string(position() - 1)), ':assoc:', $ass_id)}"></li>
+							<li class="dragable visible multiple call-context-menu default {$ass}" data-link="{edit-link}" data-del="{delete-link}" id="{@id}">
 								<xsl:if test="$hidden"><xsl:attribute name="style" select="'background-color: #c8c8c8'"/></xsl:if>
 								<div class="drag" title="нажмите, чтобы перемещать элемент"></div>
 								<a href="{edit-link}" class="name" title="редактировать">
@@ -117,9 +115,8 @@
 								</div>
 							</li>
 						</xsl:for-each>
-						<xsl:variable name="itemsCount" select="count($items)"/>
-						<xsl:variable name="spaceId" select="concat('space', $items[$itemsCount]/@weight, ':', ($itemsCount + 1) * 64)"/>
-						<li class="drop-zone" id="{$spaceId}"></li>
+						<li class="drop-zone" href="{replace(replace($reorder_link, ':pos:', string(count(item))), ':assoc:', $ass_id)}"></li>
+						<!--
 						<div class="pages">
 							Старница:
 							<div class="links-container big">
@@ -145,6 +142,7 @@
 								<a href="#">20</a>
 							</div>
 						</div>
+						-->
 					</ul>
 				</xsl:for-each>
 			</div>
