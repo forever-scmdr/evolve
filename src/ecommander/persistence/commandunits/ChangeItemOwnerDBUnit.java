@@ -1,10 +1,7 @@
 package ecommander.persistence.commandunits;
 
 import ecommander.fwk.UserNotAllowedException;
-import ecommander.model.Item;
-import ecommander.model.User;
-import ecommander.model.UserGroupRegistry;
-import ecommander.model.UserMapper;
+import ecommander.model.*;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 
@@ -17,14 +14,22 @@ import java.sql.PreparedStatement;
  */
 public class ChangeItemOwnerDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemParent, DBConstants.ItemTbl {
 
-	private Item item;
+	private ItemBasics item;
 	private int newUser;
 	private byte newGroup;
 
-	public ChangeItemOwnerDBUnit(Item item, int newUser, byte newGroup) {
+	private ChangeItemOwnerDBUnit(ItemBasics item, int newUser, byte newGroup) {
 		this.item = item;
 		this.newUser = newUser;
 		this.newGroup = newGroup;
+	}
+
+	public static ChangeItemOwnerDBUnit newGroup(ItemBasics item, byte newGroup) {
+		return new ChangeItemOwnerDBUnit(item, User.ANONYMOUS_ID, newGroup);
+	}
+
+	public static ChangeItemOwnerDBUnit newUser(ItemBasics item, int newUser, byte newGroup) {
+		return new ChangeItemOwnerDBUnit(item, newUser, newGroup);
 	}
 
 	@Override

@@ -184,7 +184,7 @@
 								<div class="edit-arena">
 									<xsl:if test="admin-page/item">
 										<div class="wide">
-											<div style="border: 2px solid #56C493; padding: 8px 12px; background: #D7F3E6; margin-bottom: 20px; color: #164F35">
+											<div id="message_main" style="border: 2px solid #56C493; padding: 8px 12px; background: #D7F3E6; margin-bottom: 20px; color: #164F35">
 												<xsl:value-of select="admin-page/message"/>
 											</div>
 											<div class="margin context-duplicate">

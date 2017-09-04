@@ -827,7 +827,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		} catch (Exception e) {
 			ServerLogger.error("Unable to copy item", e);
 			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.searchQuery);
-			page.addMessage("Невозможно вставить скопированный элемент", false);
+			page.addMessage("Невозможно вставить скопированный элемент", true);
 			return page;
 		}
 		// Очистить кеш страниц

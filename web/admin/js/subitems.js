@@ -56,5 +56,4 @@ function getInlineEditForm(itemId, formUrl) {
             ui.draggable.removeClass("active");
         }
     });
-
 //}

@@ -145,7 +145,7 @@ function insertAjaxView(url, pagePartId, confirm, messageId, insertMessageId, ad
 				// Вставка результата
 				$('#' + pagePartId).html(data);
 				// Вставка сообщения
-				if (typeof insertMessageId != 'undefined' && insertMessageId != null) {
+				if (typeof messageId != 'undefined' && messageId != null) {
 					var dom = $.parseHTML(data);
 					$('#' + insertMessageId).html($(dom[0]).html());
 				}
