@@ -18,7 +18,8 @@ function getInlineEditForm(itemId, formUrl) {
 	});
 }
 //if(typeof $.draggable != 'undefined') {
-    $(document).on("click", ".drag", function (e) {
+
+    $(document).one("click", ".drag", function (e) {
         $(this).toggleClass("active");
         $(this).toggleClass("handle");
         if(!$(this).is(".handle")){
@@ -55,4 +56,5 @@ function getInlineEditForm(itemId, formUrl) {
             ui.draggable.removeClass("active");
         }
     });
+
 //}
