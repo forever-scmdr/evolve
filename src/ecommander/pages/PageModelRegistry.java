@@ -111,7 +111,7 @@ public class PageModelRegistry {
 	 * @return
 	 * @throws PageNotFoundException
 	 */
-	public synchronized PagePE getPageModel(String pageName) {
+	public PagePE getPageModel(String pageName) {
 		return pageModels.get(pageName);
 	}
 	/**
@@ -124,7 +124,7 @@ public class PageModelRegistry {
 	 * @throws UserNotAllowedException 
 	 * @throws UnsupportedEncodingException 
 	 */
-	public synchronized ExecutablePagePE getExecutablePage(String linkUrl, String urlBase, SessionContext context)
+	public ExecutablePagePE getExecutablePage(String linkUrl, String urlBase, SessionContext context)
 			throws PageNotFoundException, UserNotAllowedException, UnsupportedEncodingException {
 		LinkPE link = LinkPE.parseLink(linkUrl);
 		PagePE pageModel = getPageModel(link.getPageName());

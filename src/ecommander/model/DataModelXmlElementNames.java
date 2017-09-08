@@ -36,6 +36,9 @@ public interface DataModelXmlElementNames {
 	String FORMAT = "format";
 	String CLASS = "class";
 	String VIRTUAL = "virtual";
+	String INLINE = "inline";
+	String SORTING = "sorting";
+	String LIMIT = "limit";
 	String DOMAIN = "domain";
 	String KEY = "key";
 	String DEFAULT_PAGE = "default-page";

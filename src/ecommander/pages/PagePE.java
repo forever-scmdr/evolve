@@ -34,7 +34,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 
 	private String schedule; // Расписание запусков страницы (Cron)
 	private HashMap<String, String> headers = null;
-	
+
 	public PagePE(String pageName, String pageTemplateName, boolean cacheable, Collection<String> cacheVars) {
 		super();
 		this.name = pageName;
@@ -209,5 +209,5 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	public String getElementName() {
 		return ELEMENT_NAME;
 	}
-	
+
 }

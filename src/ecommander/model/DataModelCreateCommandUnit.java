@@ -527,7 +527,10 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		String assocName = childEl.attr(ASSOC);
 		boolean isSingle = StringUtils.equalsIgnoreCase(childEl.attr(SINGLE), TRUE_VALUE);
 		boolean isVitrual = StringUtils.equalsIgnoreCase(childEl.attr(VIRTUAL), TRUE_VALUE);
-		parent.addOwnChild(assocName, childName, isSingle, isVitrual);
+		boolean isInline = StringUtils.equalsIgnoreCase(childEl.attr(INLINE), TRUE_VALUE);
+		String sorting = childEl.attr(SORTING);
+		int limit = NumberUtils.toInt(childEl.attr(LIMIT), 0);
+		parent.addOwnChild(assocName, childName, isSingle, isVitrual, isInline, sorting, limit);
 	}
 
 	/**

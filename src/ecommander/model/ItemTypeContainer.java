@@ -18,13 +18,24 @@ public abstract class ItemTypeContainer {
 		public final boolean isSingle;
 		public final boolean isVirtual;
 		public final boolean isOwn; // Является ли базовым владельцем сабайтема (не путем наследования)
+		public final boolean isInline;
+		public final String sorting; // направление сортировки (ASC или DESC)
+		public final int limit;
 
-		ChildDesc(String assocName, String itemName, boolean isSingle, boolean isVirtual, boolean isOwn) {
+		ChildDesc(String assocName, String itemName, boolean isSingle, boolean isVirtual, boolean isOwn,
+		          boolean isInline, String sorting, int limit) {
 			this.assocName = assocName;
 			this.itemName = itemName;
 			this.isSingle = isSingle;
 			this.isVirtual = isVirtual;
 			this.isOwn = isOwn;
+			this.isInline = isInline;
+			this.sorting = StringUtils.equalsIgnoreCase(sorting, "DESC") ? "DESC" : "ASC";
+			this.limit = limit;
+		}
+
+		public boolean hasLimit() {
+			return limit > 0;
 		}
 	}
 
@@ -48,10 +59,11 @@ public abstract class ItemTypeContainer {
 	 * @param single
 	 * @param virtual
 	 */
-	void addOwnChild(String assocName, String childName, boolean single, boolean virtual) {
+	void addOwnChild(String assocName, String childName, boolean single, boolean virtual, boolean isInline, String sorting, int limit) {
 		if (StringUtils.isBlank(assocName))
 			assocName = AssocRegistry.PRIMARY_NAME;
-		childDescriptions.put(createMapKey(assocName, childName), new ChildDesc(assocName, childName, single, virtual, true));
+		childDescriptions.put(createMapKey(assocName, childName),
+				new ChildDesc(assocName, childName, single, virtual, true, isInline, sorting, limit));
 	}
 
 	/**
@@ -99,7 +111,7 @@ public abstract class ItemTypeContainer {
 	void addAllChildren(ItemTypeContainer container) {
 		for (ChildDesc sub : container.childDescriptions.values()) {
 			childDescriptions.put(createMapKey(sub.assocName, sub.itemName),
-					new ChildDesc(sub.assocName, sub.itemName, sub.isSingle, sub.isVirtual, false));
+					new ChildDesc(sub.assocName, sub.itemName, sub.isSingle, sub.isVirtual, false, sub.isInline, sub.sorting, sub.limit));
 		}
 	}
 
