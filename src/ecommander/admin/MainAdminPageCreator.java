@@ -216,6 +216,7 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String PARAM_INPUT = "param";
 	public static final String VISUAL_INPUT = "vis";
 	public static final String SEARCH_INPUT = "key_search";
+	public static final String PAGE_INPUT = "page";
 	/**
 	 * Значения
 	 */
@@ -364,10 +365,12 @@ public class MainAdminPageCreator implements AdminXML {
 	 * определенного айтема (или корня)
 	 * @param baseId - ID базового айтема (родителя) В случае корня - любое число меньше 0, например, -1
 	 * @param itemType - ID типа айтема, в случае корня - не требуется
+	 * @param page - номер страницы при постраничном выводе
+	 * @param searchQuery - пользовательский запрос
 	 * @return
 	 * @throws Exception 
 	 */
-	AdminPage createSubitemsPage(long baseId, int itemType, String searchQuery) throws Exception {
+	AdminPage createSubitemsPage(long baseId, int itemType, int page, String searchQuery) throws Exception {
 		AdminPage basePage = new AdminPage(SUBITEMS_PAGE, domain, currentUser.getName());
 		ArrayList<ItemToAdd> itemsToAdd = new ArrayList<>();
 		if (baseId <= 0) {
@@ -381,9 +384,8 @@ public class MainAdminPageCreator implements AdminXML {
 		if (StringUtils.isNotBlank(searchQuery)) {
 			subitems = AdminLoader.loadItemAccessorsByKey(searchQuery);
 		} else {
-			subitems = createSubitemsInfo(baseId, itemType, itemsToAdd);
+			subitems = createSubitemsInfo(baseId, itemType, page, itemsToAdd);
 		}
-		Collections.sort(subitems);
 		HashMap<Byte, AggregateMDWriter> assocWriters = new HashMap<>();
 		for (ItemToAdd itemToAdd : itemsToAdd) {
 			AggregateMDWriter assocWriter = assocWriters.get(itemToAdd.assocId);
@@ -415,6 +417,21 @@ public class MainAdminPageCreator implements AdminXML {
 			subitem.addSubwriter(new LeafMDWriter(COPY_LINK_ELEMENT, copyUrl));
 			assocWriter.addSubwriter(subitem);
 		}
+		// Страницы (номера страниц при постраничном выводе)
+		ItemType baseType = ItemTypeRegistry.getItemType(itemType);
+		if (baseType != null && baseType.hasChildrenLimit()) {
+			int subitemsCount = AdminLoader.loadClosestSubitemsCount(baseId, currentUser);
+			int totalPages = (int) Math.ceil(((double) subitemsCount) / baseType.getChildrenLimit());
+			if (totalPages > 1) {
+				basePage.addElement(new LeafMDWriter(CURRENT_PAGE_ELEMENT, page));
+				for (int i = 1; i <= totalPages; i++) {
+					String subitemsUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT,
+							SUBITEMS_VIEW_TYPE, ITEM_ID_INPUT, baseId, ITEM_TYPE_INPUT, itemType, PAGE_INPUT, i);
+					basePage.addElement(new LeafMDWriter(PAGE_ELEMENT, i, HREF_ATTRIBUTE, subitemsUrl));
+				}
+			}
+		}
+		// Подготовленные ссылки
 		String reorderUrl = createAdminUrl(REORDER_ACTION, 
 				ITEM_ID_INPUT, ":id:", 
 				NEW_ITEM_POSITION, ":pos:",
@@ -535,7 +552,7 @@ public class MainAdminPageCreator implements AdminXML {
 		ItemAccessor baseItem = AdminLoader.loadItemAccessor(itemId);
 		int itemType = baseItem.getTypeId();
 		ArrayList<ItemAccessor> mountToParentPathItems = AdminLoader.loadWholeBranch(mountToParent, ItemTypeRegistry.getPrimaryAssoc().getId());
-		ArrayList<ItemAccessor> mountToList = AdminLoader.loadClosestSubitems(mountToParent, currentUser);
+		ArrayList<ItemAccessor> mountToList = AdminLoader.loadClosestSubitems(mountToParent, currentUser, 1);
 		ArrayList<ItemAccessor> mountedList = AdminLoader.loadDirectParents(itemId, currentUser);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemType);
 		// Базовый айтем
@@ -619,7 +636,7 @@ public class MainAdminPageCreator implements AdminXML {
 			return page;
 		ItemAccessor baseAcc = AdminLoader.loadItemAccessor(itemId);
 		ArrayList<ItemAccessor> mountToParentPathItems = AdminLoader.loadWholeBranch(associateParent, ItemTypeRegistry.getPrimaryAssoc().getId());
-		ArrayList<ItemAccessor> toAssoc = AdminLoader.loadClosestSubitems(associateParent, currentUser);
+		ArrayList<ItemAccessor> toAssoc = AdminLoader.loadClosestSubitems(associateParent, currentUser, 1);
 
 		// Базовый айтем
 		page.addElement(baseAcc);
@@ -685,7 +702,7 @@ public class MainAdminPageCreator implements AdminXML {
 		ItemAccessor baseItem = AdminLoader.loadItemAccessor(itemId);
 		int itemType = baseItem.getTypeId();
 		ArrayList<ItemAccessor> moveToParentPathItems = AdminLoader.loadWholeBranch(moveToParent, ItemTypeRegistry.getPrimaryAssoc().getId());
-		ArrayList<ItemAccessor> moveToList = AdminLoader.loadClosestSubitems(moveToParent, currentUser);
+		ArrayList<ItemAccessor> moveToList = AdminLoader.loadClosestSubitems(moveToParent, currentUser, 1);
 		// Базовый айтем
 		page.addElement(baseItem);
 		// Путь к айтемам, к которым можно прикреплять выбранный
@@ -744,11 +761,12 @@ public class MainAdminPageCreator implements AdminXML {
 	 * Заполнение существующих (созданных) айтемов и айтемов для создания
 	 * @param parentId - ID родительского айтема
 	 * @param baseType - ID типа родительского айтема
+	 * @param page - номер страницы при постраничном выводе
 	 * @param itemsToAdd - список сабайтемов для добавления (пустой)
 	 * @throws Exception
 	 * @return
 	 */
-	private ArrayList<ItemAccessor> createSubitemsInfo(long parentId, int baseType, ArrayList<ItemToAdd> itemsToAdd)
+	private ArrayList<ItemAccessor> createSubitemsInfo(long parentId, int baseType, int page, ArrayList<ItemToAdd> itemsToAdd)
 			throws Exception {
 		// Для корневого айтема
 		long rootId = ItemTypeRegistry.getPrimaryRootId();
@@ -762,7 +780,7 @@ public class MainAdminPageCreator implements AdminXML {
 		// Для обычных айтемов
 		else {
 			ItemType parentDesc = ItemTypeRegistry.getItemType(baseType);
-			existingSubitems = AdminLoader.loadClosestSubitems(parentId, currentUser);
+			existingSubitems = AdminLoader.loadClosestSubitems(parentId, currentUser, page);
 			for (ItemTypeContainer.ChildDesc childDesc : parentDesc.getAllChildren()) {
 				processItemForParent(parentId, childDesc, parentDesc, itemsToAdd, existingSubitems);
 			}

@@ -160,7 +160,8 @@
 <!--END_product_container-->
 
 <!--START_catalog-->
-	<item name="catalog" caption="Каталог продукции" super="product_container" ag-id="232" ag-hash="555704345">
+	<item name="catalog" caption="Каталог продукции" super="product_container" children-per-page="10"
+	      children-sorting="DESC" ag-id="232" ag-hash="555704345">
 		<child item="section_first" />
 		<parameter name="integration" type="file" caption="XML файл интеграции" description="используемые классы и параметры должны быть созданы до начала разбора файла" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>

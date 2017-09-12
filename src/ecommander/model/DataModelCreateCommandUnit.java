@@ -259,6 +259,8 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		boolean isExt = Boolean.parseBoolean(itemEl.attr(EXTENDABLE));
 		boolean isKeyUnique = Boolean.parseBoolean(itemEl.attr(KEY_UNIQUE));
 		boolean nameUpdate = !itemIds.containsKey(name) && itemsById.containsKey(savedId);
+		String sorting = itemEl.attr(CHILDREN_SORTING);
+		int limit = NumberUtils.toInt(itemEl.attr(CHILDREN_PER_PAGE), -1);
 		// Если надо обновить название айтема
 		if (nameUpdate) {
 			if (savedHash != itemsById.get(savedId).hashCode()) {
@@ -315,7 +317,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		}
 		// Добавить описание айтема в реестр
 		ItemType item = new ItemType(name, itemIds.get(name).id, caption, description, key,
-				exts, defaultPage, virtual, userDefined, isExt, isKeyUnique);
+				exts, defaultPage, virtual, userDefined, isExt, isKeyUnique, limit, sorting);
 		ItemTypeRegistry.addItemDescription(item);
 
 		// Прочитать вложенные элементы (параметры, дочерние, обработчики)
@@ -530,7 +532,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		boolean isInline = StringUtils.equalsIgnoreCase(childEl.attr(INLINE), TRUE_VALUE);
 		String sorting = childEl.attr(SORTING);
 		int limit = NumberUtils.toInt(childEl.attr(LIMIT), 0);
-		parent.addOwnChild(assocName, childName, isSingle, isVitrual, isInline, sorting, limit);
+		parent.addOwnChild(assocName, childName, isSingle, isVitrual, isInline);
 	}
 
 	/**

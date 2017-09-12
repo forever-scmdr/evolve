@@ -53,6 +53,10 @@ public class ItemType extends ItemTypeContainer {
 										// при передаче этого имени через URL
 	private final boolean userDefined;	// является ли данный айтем пользовательским, т. е. был ли он создан пользователем 
 										// (не присутствовал в базовой модели данных)
+	private int childrenLimit;   // Количество вложенных айтемов, выводимых на одной странице в системе управления
+	private String childrenSorting;  // В какую сторону сортировать вложенные айтемы - по возрастанию (ASC) или убыванию (DESC)
+
+
 	private boolean hasXML = false;	// айтем содержит параметры типа XML, которые надо выводить без эскейпинга (в отличие от HTML параметров)
 	
 	private HashMap<Integer, ParameterDescription> parameters = null; // Параметры. Также хранится порядок следования параметров
@@ -91,6 +95,17 @@ public class ItemType extends ItemTypeContainer {
 		if (!isUserDefined) {
 			superType = this;
 		}
+		this.childrenLimit = -1; // Без ограничений
+		this.childrenSorting = "ASC"; // по возрастанию
+	}
+
+	public ItemType(String typeName, int typeId, String caption, String description, String key, String extendsStr, String defaultPage, boolean virtual,
+	                boolean isUserDefined, boolean isExtendable, boolean isKeyUnique, int childrenPerPage, String sorting) {
+		this(typeName, typeId, caption, description, key, extendsStr, defaultPage, virtual, isUserDefined, isExtendable, isKeyUnique);
+		if (StringUtils.equalsIgnoreCase(StringUtils.trim(sorting), "desc")) {
+			this.childrenSorting = "DESC";
+		}
+		this.childrenLimit = childrenPerPage;
 	}
 	/**
 	 * Установить дополнительный обработчик сохранения айтейма
@@ -398,5 +413,17 @@ public class ItemType extends ItemTypeContainer {
 	 */
 	public boolean hasDefaultPage() {
 		return defaultPage != null;
+	}
+
+	public String getChildrenSorting() {
+		return childrenSorting;
+	}
+
+	public int getChildrenLimit() {
+		return childrenLimit;
+	}
+
+	public boolean hasChildrenLimit() {
+		return childrenLimit > 0;
 	}
 }

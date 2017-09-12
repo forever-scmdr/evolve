@@ -31,6 +31,8 @@ public interface AdminXML {
 	String MESSAGE_ELEMENT = "message";
 	String VISUAL_ELEMENT = "visual";
 	String ROOT_LINK_ELEMENT = "root-link";
+	String PAGE_ELEMENT = "page";
+	String CURRENT_PAGE_ELEMENT = "current-page";
 	/**
 	 * Атрибут XML
 	 */
@@ -48,4 +50,5 @@ public interface AdminXML {
 	String COMPATIBLE_ATTRIBUTE = "compatible";
 	String WEIGHT_ATTRIBUTE = "weight";
 	String ALT_ATTRIBUTE = "alt";
+	String HREF_ATTRIBUTE = "href";
 }

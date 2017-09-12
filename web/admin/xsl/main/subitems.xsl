@@ -82,18 +82,19 @@
 				<xsl:for-each select="admin-page/assoc">
 					<xsl:variable name="ass" select="concat('ass_', @id)"/>
 					<xsl:variable name="ass_id" select="@id"/>
+					<xsl:variable name="asc" select="if (count(item) &gt; 1 and number(item[1]/@weight) &gt; number(item[2]/@weight)) then false() else true()"/>
 					<ul class="edit drag_area">
 						<li class="assoc-name">
 							<a href=".ass_{@id}" class="toggle-hidden"><xsl:value-of select="@caption"/></a>
 						</li>
 
-						<xsl:variable name="items" select="item" />
+						<xsl:variable name="itemCount" select="count(item)" />
 
 						<xsl:for-each select="item">
 							<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
-							<!--<xsl:variable name="itemId" select="concat('item', @id, ':', @weight)" />-->
 							<xsl:variable name="hidden" select="@status = '1'"/>
-							<li class="drop-zone {$ass}" href="{replace(replace($reorder_link, ':pos:', string(position() - 1)), ':assoc:', $ass_id)}"></li>
+							<xsl:variable name="dropPos" select="if ($asc) then position() - 1 else $itemCount - position() + 1"/>
+							<li class="drop-zone {$ass}" href="{replace(replace($reorder_link, ':pos:', string($dropPos)), ':assoc:', $ass_id)}"></li>
 							<li class="dragable visible multiple call-context-menu default {$ass}" data-link="{edit-link}" data-del="{delete-link}" id="{@id}">
 								<xsl:if test="$hidden"><xsl:attribute name="style" select="'background-color: #c8c8c8'"/></xsl:if>
 								<div class="drag" title="нажмите, чтобы перемещать элемент"></div>
@@ -115,36 +116,22 @@
 								</div>
 							</li>
 						</xsl:for-each>
-						<li class="drop-zone" href="{replace(replace($reorder_link, ':pos:', string(count(item))), ':assoc:', $ass_id)}"></li>
-						<!--
-						<div class="pages">
-							Старница:
-							<div class="links-container big">
-								<a href="#">1</a>
-								<a href="#">2</a>
-								<a href="#">3</a>
-								<a href="#">4</a>
-								<a href="#">5</a>
-								<a href="#">6</a>
-								<a href="#">7</a>
-								<a href="#" class="active">8</a>
-								<a href="#">9</a>
-								<a href="#">10</a>
-								<a href="#">11</a>
-								<a href="#">12</a>
-								<a href="#">13</a>
-								<a href="#">14</a>
-								<a href="#">15</a>
-								<a href="#">16</a>
-								<a href="#">17</a>
-								<a href="#">18</a>
-								<a href="#">19</a>
-								<a href="#">20</a>
-							</div>
-						</div>
-						-->
+						<xsl:variable name="lastPos" select="if ($asc) then $itemCount else 0"/>
+						<li class="drop-zone" href="{replace(replace($reorder_link, ':pos:', string($lastPos)), ':assoc:', $ass_id)}"></li>
 					</ul>
 				</xsl:for-each>
+				<xsl:if test="admin-page/page">
+					<div class="pages">
+						Страница:
+						<div class="links-container big">
+							<xsl:variable name="current" select="admin-page/current-page"/>
+							<xsl:for-each select="admin-page/page">
+								<a href="#" onclick="simpleAjaxView('{@href}', 'subitems'); return false;"
+								   class="{'active'[current() = $current]}"><xsl:value-of select="."/></a>
+							</xsl:for-each>
+						</div>
+					</div>
+				</xsl:if>
 			</div>
 		</xsl:if>
 		<script type="text/javascript">

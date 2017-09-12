@@ -22,6 +22,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,6 +67,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 		private byte assocId = -1;
 		private int index = -1;
 		private int newItemPosition = -1;
+		// Страница, в случае если есть ограничение по выводу айтемов
+		private int page = 1;
 		// Айтемы для операций по стозданию ссылок
 		private HashMap<String, String> mount = new HashMap<>();
 		// Запрашиваемый вид страницы для вывода
@@ -186,6 +189,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 				input.isVisual = Boolean.parseBoolean(req.getParameter(MainAdminPageCreator.VISUAL_INPUT));
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.SEARCH_INPUT)))
 				input.searchQuery = req.getParameter(MainAdminPageCreator.SEARCH_INPUT);
+			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PAGE_INPUT)))
+				input.page = NumberUtils.toInt(req.getParameter(MainAdminPageCreator.PAGE_INPUT), 1);
 			// Создание ссылок
 			Enumeration<String> paramNames = req.getParameterNames();
 			while (paramNames.hasMoreElements()) {
@@ -283,7 +288,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	private AdminPage getView(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = null;
 		if (MainAdminPageCreator.SUBITEMS_VIEW_TYPE.equals(in.viewType)) {
-			page = pageCreator.createSubitemsPage(in.itemId, in.itemTypeId, in.searchQuery);
+			page = pageCreator.createSubitemsPage(in.itemId, in.itemTypeId, in.page, in.searchQuery);
 		} else if (MainAdminPageCreator.PARAMS_VIEW_TYPE.equals(in.viewType)) {
 			page = pageCreator.createParamsPage(in.itemId, in.isVisual);
 			page.addMessage("Включен режим редактирования параметров выбранного элемента", false);
@@ -407,7 +412,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		// Очистить корзину
 		transaction.addCommandUnit(new CleanAllDeletedItemsDBUnit(20, null));
 		transaction.execute();
-		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.searchQuery);
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
 		// Удалить айтем из индекса Lucene
 		LuceneIndexMapper.commit();
 		// Очистить кеш страниц
@@ -430,7 +435,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		transaction.addCommandUnit(ItemStatusDBUnit.toggle(in.itemId));
 		transaction.execute();
-		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.searchQuery);
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
 		// Очистить кеш страниц
 		PageController.clearCache();
 		page.addMessage("Видимость элемента успешно изменена", false);
@@ -456,7 +461,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		transaction.execute();
 		// Очистить кеш страниц
 		PageController.clearCache();
-		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.searchQuery);
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
 		page.addMessage("Порядок следования элементов изменен", false);
 		return page;
 	}
@@ -826,13 +831,13 @@ public class MainAdminServlet extends BasicAdminServlet {
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Unable to copy item", e);
-			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.searchQuery);
+			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
 			page.addMessage("Невозможно вставить скопированный элемент", true);
 			return page;
 		}
 		// Очистить кеш страниц
 		PageController.clearCache();
-		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.searchQuery);
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
 		page.addMessage("Элемент успешно копирован", false);
 		return page;
 	}

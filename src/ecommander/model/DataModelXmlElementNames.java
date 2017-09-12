@@ -39,6 +39,8 @@ public interface DataModelXmlElementNames {
 	String INLINE = "inline";
 	String SORTING = "sorting";
 	String LIMIT = "limit";
+	String CHILDREN_PER_PAGE = "children-per-page";
+	String CHILDREN_SORTING = "children-sorting";
 	String DOMAIN = "domain";
 	String KEY = "key";
 	String DEFAULT_PAGE = "default-page";

@@ -6,6 +6,7 @@ import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -68,15 +69,56 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @return
 	 * @throws Exception
 	 */
-	static ArrayList<ItemAccessor> loadClosestSubitems(long parentId, User user) throws Exception {
+	static ArrayList<ItemAccessor> loadClosestSubitems(long parentId, User user, int page) throws Exception {
+		TemplateQuery query = createSubitemsQuery(parentId, user, page, false);
+		if (query == null)
+			return new ArrayList<>(0);
+		return loadAccessorsByQuery(query, true);
+	}
+
+	/**
+	 * Загружает общее количество всех сабайтемов определенного айтема
+	 * Аналогично loadClosestSubitems, только загружаются не айтемы, а их количество
+	 * @param parentId
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	static int loadClosestSubitemsCount(long parentId, User user) throws Exception {
+		TemplateQuery query = createSubitemsQuery(parentId, user, 0, true);
+		if (query == null)
+			return 0;
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = query.prepareQuery(conn);
+		) {
+			ResultSet rs = pstmt.executeQuery();
+			int count = 0;
+			while (rs.next()) {
+				count += rs.getInt(1);
+			}
+			return count;
+		}
+	}
+
+	/**
+	 * Подготовка запроса на загружку сабайтемов айтема или количества сабайтемов айтема
+	 * @param parentId
+	 * @param user
+	 * @param page
+	 * @param needJustCount
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	private static TemplateQuery createSubitemsQuery(long parentId, User user, int page, boolean needJustCount) throws SQLException, NamingException {
 		ItemBasics parent;
 		try (Connection conn = MysqlConnector.getConnection()) {
 			parent = ItemMapper.loadItemBasics(parentId, conn);
 		}
 		if (parent == null)
-			return new ArrayList<>(0);
-		ItemType itemDesc = ItemTypeRegistry.getItemType(parent.getTypeId());
-		Byte[] allAssocs = ItemTypeRegistry.getItemOwnAssocIds(itemDesc.getName()).toArray(new Byte[0]);
+			return null;
+		ItemType parentType = ItemTypeRegistry.getItemType(parent.getTypeId());
+		Byte[] allAssocs = ItemTypeRegistry.getItemOwnAssocIds(parentType.getName()).toArray(new Byte[0]);
 		HashSet<Byte> adminGroups = new HashSet<>();
 		HashSet<Byte> simpleGroups = new HashSet<>();
 		for (User.Group group : user.getGroups()) {
@@ -85,16 +127,35 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			else
 				simpleGroups.add(group.id);
 		}
-		TemplateQuery base = createAccessorQueryBase("Load closest subitems part", true);
+		TemplateQuery base;
+		if (needJustCount) {
+			base = new TemplateQuery("Subitems count");
+			base.SELECT("count(" + I_ID + ")").FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID).WHERE();
+		} else {
+			base = createAccessorQueryBase("Load closest subitems part", true);
+		}
+
 		base.col(IP_PARENT_ID).long_(parentId).AND()
 				.col(IP_PARENT_DIRECT).byte_((byte) 1).AND()
 				.col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_NIDDEN).AND()
-				.col_IN(IP_ASSOC_ID).byteIN(allAssocs).AND();
+				.col_IN(IP_ASSOC_ID).byteIN(allAssocs).AND().subquery("<<USER>>");
+		if (!needJustCount) {
+			base.ORDER_BY(IP_ASSOC_ID + " ASC", IP_WEIGHT + " " + parentType.getChildrenSorting());
+			if (parentType.hasChildrenLimit()) {
+				page = NumberUtils.max(page, 1);
+				if (page > 1) {
+					int rowsToSkip = (page - 1) * parentType.getChildrenLimit();
+					base.LIMIT(parentType.getChildrenLimit(), rowsToSkip);
+				} else {
+					base.LIMIT(parentType.getChildrenLimit());
+				}
+			}
+		}
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
 		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
-		adminQuery.col_IN(I_GROUP).byteIN(adminGroups.toArray(new Byte[0]));
-		simpleQuery.col_IN(I_GROUP).byteIN(simpleGroups.toArray(new Byte[0])).AND()
+		adminQuery.getSubquery("<<USER>>").col_IN(I_GROUP).byteIN(adminGroups.toArray(new Byte[0]));
+		simpleQuery.getSubquery("<<USER>>").col_IN(I_GROUP).byteIN(simpleGroups.toArray(new Byte[0])).AND()
 				.col(I_USER).int_(user.getUserId());
 
 		TemplateQuery select = new TemplateQuery("Load closest subitems union");
@@ -105,7 +166,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 				select.UNION_ALL();
 			select.subquery("COMMON").replace(simpleQuery);
 		}
-		return loadAccessorsByQuery(select, true);
+		return select;
 	}
 
 	/**
