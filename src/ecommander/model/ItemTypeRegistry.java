@@ -28,6 +28,8 @@ public class ItemTypeRegistry {
 	private AssocRegistry assocRegistry = null; // реестр ассоциаций
 	private TypeHierarchyRegistry hierarchyRegistry = null; // реестр наследования
 
+	private Map<String, ArrayList<String>> groupRootItems = null; // Корневые айтемы для разных групп пользователей
+
 	private static ItemTypeRegistry singleton = new ItemTypeRegistry();
 	private static ItemTypeRegistry tempCopy = null;    // копия реестра, которая возвращается всем потокам кроме обновляющего (modifyThread) во время обновления,
 	// т.е. во время, когда реестр заблокирован (locked). Копия создается в момент блокировки и
@@ -52,6 +54,7 @@ public class ItemTypeRegistry {
 		basicItemExtenders = new HashMap<>();
 		computedSupertypeIds = new HashSet<>();
 		paramComputedSuperytpes = new HashMap<>();
+		groupRootItems = new HashMap<>();
 
 		assocRegistry = new AssocRegistry();
 	}
@@ -533,6 +536,35 @@ public class ItemTypeRegistry {
 		return getSingleton().assocRegistry.getAllOtherAssocIds(exlcudedAssocId);
 	}
 
+	/**
+	 * Добавить корневой айтем для определенной группы пользователей
+	 * @param groupName
+	 * @param itemName
+	 */
+	public static void addGroupRootItem(String groupName, String itemName) {
+		ArrayList<String> groupItems = getSingleton().groupRootItems.get(groupName);
+		if (groupItems == null) {
+			groupItems = new ArrayList();
+			getSingleton().groupRootItems.put(groupName, groupItems);
+		}
+		groupItems.add(itemName);
+	}
+
+	/**
+	 * Получить все корневые айтемы определенной группы пользователей
+	 * @param groupName
+	 * @return
+	 */
+	public static HashSet<Integer> getGroupRootItems(String groupName) {
+		ArrayList<String> groupItems = getSingleton().groupRootItems.get(groupName);
+		if (groupItems == null)
+			return new HashSet<>(0);
+		HashSet<Integer> itemIds = new HashSet<>(groupItems.size());
+		for (String itemName : groupItems) {
+			itemIds.add(getSingleton().getItemTypeId(itemName));
+		}
+		return itemIds;
+	}
 	/**
 	 * Есть ли айтемы с computed-параметрами в модели данных
 	 * @return

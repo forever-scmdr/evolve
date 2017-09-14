@@ -115,8 +115,10 @@
 	</item>
 <!--END_cart_contacts-->
 
+	<item name="register" caption="Регистрация"/>
+
 <!--START_register_jur-->
-	<item name="register_jur" virtual="true" caption="Регистрация юридического лица" ag-id="229" ag-hash="-1707413269" >
+	<item name="register_jur" super="register" virtual="true" caption="Регистрация юридического лица" ag-id="229" ag-hash="-1707413269" >
 		<parameter name="organization" type="string" caption="Наименование организации" />
 		<parameter name="phone" type="string" caption="Телефон/факс" />
 		<parameter name="email" type="string" caption="E-mail" />
@@ -141,7 +143,7 @@
 <!--END_register_jur-->
 
 <!--START_register_phys-->
-	<item name="register_phys" virtual="true" caption="Регистрация физического лица" ag-id="230" ag-hash="-1390037202" >
+	<item name="register_phys" super="ergister" virtual="true" caption="Регистрация физического лица" ag-id="230" ag-hash="-1390037202" >
 		<parameter name="second_name" type="string" caption="Фамилия"/>
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="s_name" type="string" caption="Отчество" />
@@ -269,6 +271,11 @@
 		<parameter name="count" type="integer" caption="Счетчик" />
 	</item>
 <!--END_counter-->
+
+	<item name="users">
+		<child item="register"/>
+	</item>
+
 	<root>
 		<child item="page" single="false" />
 		<child item="news" single="true" />
@@ -276,6 +283,16 @@
 		<child item="catalog" single="true" />
 		<child item="counter" single="true" />
 		<child item="feedback_params" single="true" />
+		<child item="users" single="true"/>
 	</root>
+
+	<group name="registered">
+		<child item="register"/>
+	</group>
+
+	<group name="editor">
+		<child item="news"/>
+	</group>
+
 <!--EXP-->
 </model>
