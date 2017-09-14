@@ -70,7 +70,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @throws Exception
 	 */
 	static ArrayList<ItemAccessor> loadClosestSubitems(long parentId, User user, int page) throws Exception {
-		TemplateQuery query = createSubitemsQuery(parentId, user, page, false);
+		TemplateQuery query = createSubitemsQuery(parentId, user, page, false, false);
 		if (query == null)
 			return new ArrayList<>(0);
 		return loadAccessorsByQuery(query, true);
@@ -85,7 +85,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	 * @throws Exception
 	 */
 	static int loadClosestSubitemsCount(long parentId, User user) throws Exception {
-		TemplateQuery query = createSubitemsQuery(parentId, user, 0, true);
+		TemplateQuery query = createSubitemsQuery(parentId, user, 0, true, false);
 		if (query == null)
 			return 0;
 		try (Connection conn = MysqlConnector.getConnection();
@@ -101,16 +101,40 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	}
 
 	/**
-	 * Подготовка запроса на загружку сабайтемов айтема или количества сабайтемов айтема
+	 * Загрузить все инлайновые прямые потомки айтема для редактирования
 	 * @param parentId
 	 * @param user
 	 * @param page
-	 * @param needJustCount
+	 * @return
+	 * @throws Exception
+	 */
+	static ArrayList<Item> loadInlineSubitems(long parentId, User user, int page) throws Exception {
+		TemplateQuery query = createSubitemsQuery(parentId, user, page, false, true);
+		if (query == null)
+			return new ArrayList<>(0);
+		ArrayList<Item> result = new ArrayList<>();
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = query.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next())
+				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), Item.DEFAULT_ID));
+		}
+		return result;
+	}
+
+	/**
+	 * Подготовка запроса на загружку сабайтемов айтема или количества сабайтемов айтема
+	 * @param parentId      базовый айтем (родитель потомков)
+	 * @param user          пользователь (текущий администратор)
+	 * @param page          номер страницы при постраничном выводе
+	 * @param justCount     нужно ли загружить только количество сабайетмов
+	 * @param justInline    нужно ли загружить только инлайновые сабайтемы
 	 * @return
 	 * @throws SQLException
 	 * @throws NamingException
 	 */
-	private static TemplateQuery createSubitemsQuery(long parentId, User user, int page, boolean needJustCount) throws SQLException, NamingException {
+	private static TemplateQuery createSubitemsQuery(long parentId, User user, int page, boolean justCount,
+	                                                 boolean justInline) throws SQLException, NamingException {
 		ItemBasics parent;
 		try (Connection conn = MysqlConnector.getConnection()) {
 			parent = ItemMapper.loadItemBasics(parentId, conn);
@@ -128,18 +152,27 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 				simpleGroups.add(group.id);
 		}
 		TemplateQuery base;
-		if (needJustCount) {
+		if (justCount) {
 			base = new TemplateQuery("Subitems count");
 			base.SELECT("count(" + I_ID + ")").FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID).WHERE();
 		} else {
-			base = createAccessorQueryBase("Load closest subitems part", true);
+			if (justInline) {
+				base = new TemplateQuery("Inline subitems");
+				base.SELECT(ITEM_TBL + ".*").FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID).WHERE();
+			} else {
+				base = createAccessorQueryBase("Load closest subitems part", true);
+			}
 		}
 
 		base.col(IP_PARENT_ID).long_(parentId).AND()
 				.col(IP_PARENT_DIRECT).byte_((byte) 1).AND()
 				.col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_NIDDEN).AND()
 				.col_IN(IP_ASSOC_ID).byteIN(allAssocs).AND().subquery("<<USER>>");
-		if (!needJustCount) {
+		if (!justCount) {
+			if (justInline) {
+				Integer[] ids = ItemTypeRegistry.getItemInlineChildrenIds(parentType.getName()).toArray(new Integer[0]);
+				base.AND().col_IN(IP_CHILD_SUPERTYPE).intIN(ids);
+			}
 			base.ORDER_BY(IP_ASSOC_ID + " ASC", IP_WEIGHT + " " + parentType.getChildrenSorting());
 			if (parentType.hasChildrenLimit()) {
 				page = NumberUtils.max(page, 1);

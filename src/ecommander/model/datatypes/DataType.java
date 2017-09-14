@@ -55,6 +55,9 @@ public abstract class DataType {
 			throw new IllegalArgumentException("No constant with text " + text + " found");
 		}
 
+		public boolean isFile() {
+			return this == PICTURE || this == FILE;
+		}
 	}
 	
 	private static HashSet<Type> BIG_TEXT_TYPES = new HashSet<Type>();

@@ -222,9 +222,17 @@
 
 <!--START_news-->
 	<item name="news" caption="Новости" ag-id="236" ag-hash="3377875" >
-		<child item="news_item" />
+		<child item="news_item" inline="true"/>
 	</item>
 <!--END_news-->
+
+	<item name="picture_pair" caption="Пара картинок" key="name" ag-id="1039" ag-hash="-785961605">
+		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
+		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
+		<parameter name="name" type="string" caption="Подпись" description="к картинке"/>
+		<parameter name="big" type="picture" caption="Большое изображение"/>
+		<parameter name="small" format="src:big;width:100" type="picture" caption="Маленькое изображение"/>
+	</item>
 
 <!--START_news_item-->
 	<item name="news_item" key="header" caption="Новость или акция" key-unique="true" ag-id="237" ag-hash="300774655">
@@ -233,6 +241,7 @@
 		<parameter name="short" type="tiny-text" caption="Краткое содержание" />
 		<parameter name="text" type="text" caption="Текст" description="основной текст" />
 		<parameter name="picture" type="picture" quantifier="multiple" caption="Изображение" description="для прикрепления к тексту" />
+		<child item="picture_pair" inline="true"/>
 	</item>
 <!--END_news_item-->
 

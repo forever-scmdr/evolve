@@ -3,8 +3,6 @@
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br/&gt;</xsl:text></xsl:template>
 
-	<xsl:variable name="form" select="admin-page/form"/>
-
 
 	<!--********************************************************************************** 
 							 ОДИНОЧНЫЕ ПАРАМЕТРЫ (ПОЛЯ ВВОДА)
@@ -13,15 +11,17 @@
 
 	<!-- Фильтр -->
 	<xsl:template match="field[ @type='filter' ]" mode="single">
-	<xsl:if test="$form/@id &gt; 0">
-		<a href="#" onclick="openFilter('fil_{@id}', {$form/@id}, '{@name}');return false;">Редактировать фильтр</a>
-		<textarea id="fil_{@id}" style="display:none" name="{@input}"><xsl:value-of select="."/></textarea>
-		<xsl:call-template name="BR"/>
-	</xsl:if>
+		<xsl:variable name="form" select=".."/>
+		<xsl:if test="$form/@id &gt; 0">
+			<a href="#" onclick="openFilter('fil_{@id}', {$form/@id}, '{@name}');return false;">Редактировать фильтр</a>
+			<textarea id="fil_{@id}" style="display:none" name="{@input}"><xsl:value-of select="."/></textarea>
+			<xsl:call-template name="BR"/>
+		</xsl:if>
 	</xsl:template>
 
 	<!-- Одиночный файл -->
 	<xsl:template match="field[ @type='file' ]" mode="single">
+		<xsl:variable name="form" select=".."/>
 		<p class="form_title">
 			<xsl:value-of select="@caption" />
 		</p>
@@ -58,6 +58,7 @@
 
 	<!-- Одиночная картинка -->
 	<xsl:template match="field[ @type='picture' ]" mode="single">
+		<xsl:variable name="form" select=".."/>
 		<p class="form_title">
 			<xsl:value-of select="@caption" />
 		</p>
@@ -239,24 +240,25 @@
 	</xsl:template>
 
 	<!-- TINY_MCE -->
-	<xsl:template name="TINY_MCE">	
-	<script type="text/javascript">
-		var startUploadUrl = "<xsl:value-of select="admin-page/upload-link"/>";
-		var openAssocUrl = "<xsl:value-of select="admin-page/open-associated-link"/>";
-		//-- mce image upload settings for tinyMCE
-		window.uploadPath = "<xsl:value-of select="$form/@file-path"/>";
-	<xsl:if test="$form/@id != '0'">
-		window.itemId = <xsl:value-of select="$form/@id" />;
-		<xsl:if test="$form/field[ @type='picture' and @quantifier = 'multiple']">
-			window.imgId =	<xsl:value-of select="$form/field[ @type='picture' and @quantifier = 'multiple']/@id" />;
-		</xsl:if>
-		<xsl:if test="$form/field[ @type='file' and @quantifier = 'multiple']">
-			window.fileId = <xsl:value-of select="$form/field[ @type='file' and @quantifier = 'multiple']/@id" />;
-		</xsl:if>
-	</xsl:if>
-	</script>
-	<script type="text/javascript" src="admin/js/mce-setup.js"></script>
-	<script type="text/javascript" src="admin/js/inputs_script.js"></script>
+	<xsl:template name="TINY_MCE">
+		<xsl:variable name="form" select=".."/>
+		<script type="text/javascript">
+			var startUploadUrl = "<xsl:value-of select="admin-page/upload-link"/>";
+			var openAssocUrl = "<xsl:value-of select="admin-page/open-associated-link"/>";
+			//-- mce image upload settings for tinyMCE
+			window.uploadPath = "<xsl:value-of select="$form/@file-path"/>";
+			<xsl:if test="$form/@id != '0'">
+				window.itemId = <xsl:value-of select="$form/@id" />;
+				<xsl:if test="$form/field[ @type='picture' and @quantifier = 'multiple']">
+					window.imgId =	<xsl:value-of select="$form/field[ @type='picture' and @quantifier = 'multiple']/@id" />;
+				</xsl:if>
+				<xsl:if test="$form/field[ @type='file' and @quantifier = 'multiple']">
+					window.fileId = <xsl:value-of select="$form/field[ @type='file' and @quantifier = 'multiple']/@id" />;
+				</xsl:if>
+			</xsl:if>
+		</script>
+		<script type="text/javascript" src="admin/js/mce-setup.js"></script>
+		<script type="text/javascript" src="admin/js/inputs_script.js"></script>
 	</xsl:template>
 		
 </xsl:stylesheet>

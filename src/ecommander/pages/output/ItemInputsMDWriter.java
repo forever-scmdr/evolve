@@ -93,6 +93,7 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 	private static final String USER_DEF_ATTRIBUTE = "user-def";
 	private static final String FORMAT_ATTRIBUTE = "format";
 	private static final String ID_ATTRIBUTE = "id";
+	private static final String KEY_ATTRIBUTE = "key";
 	private static final String CAPTION_ATTRIBUTE = "caption";
 	private static final String DESCRIPTION_ATTRIBUTE = "description";
 	private static final String INDEX_ATTRIBUTE = "index";
@@ -132,8 +133,9 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 			xml.startElement(tag,
 					ACTION_URL_ATTRIBUTE, actionUrl,
 					FILE_PATH_ATTRIBUTE, AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath(),
-					ID_ATTRIBUTE, inputs.getItem().getId(),
-					CAPTION_ATTRIBUTE, itemDesc.getCaption());
+					ID_ATTRIBUTE, item.getId(),
+					CAPTION_ATTRIBUTE, itemDesc.getCaption(),
+					KEY_ATTRIBUTE, item.getKey());
 		}
 		HashSet<String> domains = new HashSet<>();
 		for (ItemInputName input : inputs.getAllInputNames()) {

@@ -488,11 +488,24 @@ public class MainAdminPageCreator implements AdminXML {
 		if (itemId != ItemTypeRegistry.getPrimaryRootId())
 			item = AdminLoader.loadItem(itemId, currentUser);
 		if (item != null) {
+			// Форма основного айтема (который выбран для редактирования в CMS)
 			ItemInputs form = new ItemInputs(item);
 			form.addAllParameters();
 			ItemInputsMDWriter formWriter = new ItemInputsMDWriter(form, FORM_ELEMENT);
 			formWriter.setActionUrl(createAdminUrl(SAVE_ITEM_ACTION));
 			basePage.addElement(formWriter);
+			// Формы для инлайновых айтемов
+			if (item.getItemType().hasInlineChildren()) {
+				ArrayList<Item> inline = AdminLoader.loadInlineSubitems(itemId, currentUser, 1);
+				for (Item inl : inline) {
+					ItemInputs inlFrom = new ItemInputs(inl, itemId);
+					inlFrom.addAllParameters();
+					ItemInputsMDWriter inlWriter = new ItemInputsMDWriter(inlFrom, INLINE_FORM_ELEMENT);
+					inlWriter.setActionUrl(createAdminUrl(SAVE_ITEM_ACTION));
+					basePage.addElement(inlWriter);
+				}
+			}
+			// Ссылки
 			basePage.addElement(new LeafMDWriter(LINK_ELEMENT, createAdminUrl(DELETE_PARAMETER_ACTION, PARAM_ID_INPUT, "")));
 			basePage.addElement(new LeafMDWriter(OPEN_ASSOC_LINK_ELEMENT, createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT,
 					ASSOCIATE_VIEW_TYPE, ITEM_ID_INPUT, itemId, PARENT_ID_INPUT, 0, PARAM_ID_INPUT, "")));

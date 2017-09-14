@@ -121,15 +121,20 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 					
 					// Одиночный параметр - более сложная логика (нужна проверка, если файл существует)
 					if (!srcParam.isMultiple())	{
+						// Ничего не делать если параметр-источник не поменялся, а у изменяемого параметра уже есть занчение
+						if (!item.getParameter(srcParam.getId()).hasChanged() && !item.getParameter(param.getId()).isEmpty())
+							continue;
 						try {
 							boolean selfResize = srcParam.getId() == param.getId();
-							File destFile = new File(createItemDirectoryName() + "/" + item.getValue(param.getId()));
+							File destFile = null;
+							if (!item.getParameter(param.getId()).isEmpty())
+								destFile = new File(createItemDirectoryName() + "/" + item.getValue(param.getId()));
 							File srcFile = new File(createItemDirectoryName() + "/" + item.getValue(srcParam.getId()));
 							// ничего не делать в случае если исходной картинки нет
 							if (!srcFile.exists())
 								continue;
 							// не производить ресайз, если картинка уже есть (т.к. она может быть намеренно другой)
-							if (destFile.exists() && srcParam.getId() != param.getId())
+							if (destFile != null && destFile.exists() && srcParam.getId() != param.getId())
 								continue;
 							if (height <= 0 && width <= 0)
 								continue;
@@ -162,6 +167,10 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 						// Ничего не делать, если параметр назначения не множественный
 						if (!param.isMultiple())
 							continue;
+						// Ничего не делать если меняется размер одного и того же параметра, но он сам не был изменен
+						if (selfResize && !item.getParameter(srcParam.getId()).hasChanged())
+							continue;
+
 						// Удалить все файлы и значения параметра в случае если параметр назначения не совпадает с параметром источника
 						MultipleParameter destVals = (MultipleParameter) item.getParameter(param.getId());
 						if (!selfResize) {
@@ -216,7 +225,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 					pstmt.close();
 					
 					// Выполнить запросы для сохранения параметров
-					ItemMapper.insertItemParametersToIndex(item, true, getTransactionContext());
+					ItemMapper.insertItemParametersToIndex(item, false, getTransactionContext());
 				} finally {
 					MysqlConnector.closeStatement(pstmt);
 				}

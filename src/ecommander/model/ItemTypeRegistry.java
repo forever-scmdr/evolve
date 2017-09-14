@@ -442,6 +442,22 @@ public class ItemTypeRegistry {
 	}
 
 	/**
+	 * Получить все инлайновые сабайтемы-потомки
+	 * @param itemName
+	 * @return
+	 */
+	public static Set<Integer> getItemInlineChildrenIds(String itemName) {
+		HashSet<Integer> ids = new HashSet<>();
+		ItemTypeContainer item = getSingleton().itemsByNames.get(itemName);
+		for (ItemTypeContainer.ChildDesc childDesc : item.getAllChildren()) {
+			if (childDesc.isInline) {
+				int itemId = ((ItemType) getSingleton().itemsByNames.get(childDesc.itemName)).getTypeId();
+				CollectionUtils.addAll(ids, getBasicItemExtendersIds(itemId));
+			}
+		}
+		return ids;
+	}
+	/**
 	 * Добавить ассоциацию
 	 * @param assoc
 	 */

@@ -353,7 +353,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 		MultipleHttpPostForm itemForm = new MultipleHttpPostForm(req);
 		Item formItem = itemForm.getItemTree().getFirstChild().getItem();
 		Item item;
-		boolean needBasePage = true;
 		// Сохраняется новый айтем
 		if (formItem.isNew()) {
 			int userId;
@@ -369,14 +368,22 @@ public class MainAdminServlet extends BasicAdminServlet {
 			// Создание айтема
 			item = Item.newItem(formItem.getItemType(), formItem.getContextParentId(), userId,
 					groupId, Item.STATUS_NORMAL, false);
-			Item.updateParamValues(formItem, item);
+			Item.updateParamValuesKeepFiles(formItem, item);
 			transaction.addCommandUnit(SaveItemDBUnit.get(item));
 		}
 		// Сохраняется существующий айтем
 		else {
 			item = AdminLoader.loadItem(formItem.getId(), getCurrentAdmin());
-			Item.updateParamValues(formItem, item);
+			Item.updateParamValuesKeepFiles(formItem, item);
 			transaction.addCommandUnit(SaveItemDBUnit.get(item));
+			if (itemForm.getItemTree().getFirstChild().hasChildren()) {
+				for (ItemTreeNode node : itemForm.getItemTree().getFirstChild().getChildren()) {
+					Item postedItem = node.getItem();
+					Item originalItem = AdminLoader.loadItem(postedItem.getId(), getCurrentAdmin());
+					Item.updateParamValuesKeepFiles(postedItem, originalItem);
+					transaction.addCommandUnit(SaveItemDBUnit.get(originalItem));
+				}
+			}
 		}
 		transaction.execute();
 		// Очистить кеш страниц

@@ -840,7 +840,7 @@ public class Item implements ItemBasics {
 	 * @param destination
 	 * @throws SQLException 
 	 */
-	public static void updateParamValues(Item source, Item destination, String...paramNamesToUpdate) {
+	private static void updateParamValuesInner(Item source, Item destination, boolean keepFiles, String...paramNamesToUpdate) {
 		// Если тип айтемов не совпадает - ничего не делать
 		try {
 			Collection<ParameterDescription> paramsToCopy;
@@ -863,6 +863,11 @@ public class Item implements ItemBasics {
 					continue;
 				Parameter param = source.paramMap.get(paramDesc.getId());
 				if (param != null) {
+					// Пропустить пустые файловые парамтеры, если это нужно
+					if (keepFiles) {
+						if (param.getType().isFile() && param.isEmpty())
+							continue;
+					}
 					// Одиночные параметры
 					if (param instanceof SingleParameter) {
 						destination.setValue(paramDesc.getId(), param.getValue());
@@ -877,6 +882,29 @@ public class Item implements ItemBasics {
 		} catch (Exception e) {
 			// Ничего не делать
 		}
+	}
+
+	/**
+	 * Обновить все параметры айтема (если задан список, то параметры из списка)
+	 * При этом, если в источнике значения параметров-файлов пустые, то значения этих файловых
+	 * параметров также удаляются и из редактируемого айтема
+	 * @param source
+	 * @param destination
+	 * @param paramNamesToUpdate
+	 */
+	public static void updateParamValues(Item source, Item destination, String...paramNamesToUpdate) {
+		updateParamValuesInner(source, destination, false, paramNamesToUpdate);
+	}
+
+	/**
+	 * Обновить все параметры айтема
+	 * При этом значения файловых параметров редактируемого айтема сохраняются при условии что в
+	 * айтеме-источнике эти параметры имеют пустое значение
+	 * @param source
+	 * @param destination
+	 */
+	public static void updateParamValuesKeepFiles(Item source, Item destination) {
+		updateParamValuesInner(source, destination, true);
 	}
 	/**
 	 * Установить дополнительное значение в айтем (не параметр)

@@ -21,7 +21,8 @@
 
 	<!--  Редактирование ассоциаций -->
 	<xsl:template match="field[ @type='associated' ]" mode="multiple">
-		<xsl:if test="$form/@id &gt; 0">	
+		<xsl:variable name="form" select=".."/>
+		<xsl:if test="$form/@id &gt; 0">
 			<input class="button" type="submit" onclick="openAssoc({@id});return false;" value="Редактировать ассоциации" />
 		</xsl:if>
 	</xsl:template>
@@ -62,6 +63,7 @@
 
 	<!-- Значение множественной картинки -->
 	<xsl:template match="value[../@type='picture']">
+		<xsl:variable name="form" select="../.."/>
 		<div class="pic">
 			<img src="{$form/@file-path}{.}" alt="{.}"/>
 			<a id="param-{../@id}-{@index}" href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', '#param-{../@id}-{@index}')" class="delete">Удалить</a>
@@ -71,6 +73,7 @@
 	
 	<!-- Значение множественного файла -->
 	<xsl:template match="value[../@type='file']">
+		<xsl:variable name="form" select="../.."/>
 		<div class="pic file">
 			<a href="{$form/@file-path}{.}" target="blank" >Открыть файл</a>
 			<a id="param-{../@id}-{@index}" href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', '#param-{../@id}-{@index}')" class="delete">Удалить</a>
@@ -82,6 +85,7 @@
 	<!-- Значение ассоциации -->
 	<xsl:template match="value[../@type='associated']">
 		<xsl:variable name="current" select="//admin-page/mount/item[@id = current()]" />
+		<xsl:variable name="form" select="../.."/>
 		<div class="pic assoc">
 			<a href="admin_set_item.action?itemId={$current/@id}&amp;itemType={$current/@type-id}" target="blank" title="Редактировать элемент">
 				<xsl:value-of select="$current/@caption"/>
@@ -92,6 +96,7 @@
 
 	<!-- Значение множественной строки -->
 	<xsl:template match="value">
+		<xsl:variable name="form" select="../.."/>
 		<div class="pic">
 			<span><xsl:value-of select="."/></span>
 			<a id="param-{../@id}-{@index}" href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', '#param-{../@id}-{@index}')" class="delete">Удалить</a>
@@ -106,7 +111,8 @@
 
 
 	<xsl:template match="/">
-	<xsl:if test="not($form)">
+	<xsl:variable name="form" select="admin-page/form"/>
+	<xsl:if test="not(admin-page/form)">
 		<xsl:call-template name="DOCUMENTATION"/>	
 	</xsl:if>
 	<xsl:call-template name="MESSAGE"/>
@@ -122,7 +128,8 @@
 
 					<xsl:if test="$form/field[@quantifier='single']">
 						<div class="single-params">
-							<h2>Одиночные параметры</h2>
+							<!--<h2>Одиночные параметры</h2>-->
+							<br/>
 							<xsl:for-each select="$form/field[@quantifier='single']">
 								<div class="form-item {@type}">
 									<xsl:apply-templates select="." mode="single" />
@@ -140,7 +147,21 @@
 						</div>
 					</xsl:if>
 					<input type="hidden" name="parent-url" id="parent-url"/>
-					
+					<xsl:if test="admin-page/inline-form">
+						<hr style="display:block; border: 2px solid black;"/>
+						<xsl:for-each select="admin-page/inline-form">
+							<h2><xsl:value-of select="@key"/></h2>
+							<xsl:for-each select="field[@quantifier='single']">
+								<div class="form-item {@type}">
+									<xsl:apply-templates select="." mode="single" />
+								</div>
+							</xsl:for-each>
+							<xsl:if test="position() != last()">
+								<hr style="display:block; border: 1px solid #cccccc;"/>
+							</xsl:if>
+						</xsl:for-each>
+					</xsl:if>
+
 					<xsl:if test="$form">
 						<div class="footer">
 							<div class="save-links save">

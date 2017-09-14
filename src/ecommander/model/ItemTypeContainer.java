@@ -117,6 +117,17 @@ public abstract class ItemTypeContainer {
 	}
 
 	/**
+	 * Есть ли среди потомков инлайновые
+	 * @return
+	 */
+	public boolean hasInlineChildren() {
+		for (ChildDesc desc : childDescriptions.values()) {
+			if (desc.isInline)
+				return true;
+		}
+		return false;
+	}
+	/**
 	 * Вернуть название контейнера
 	 *
 	 * @return

@@ -18,6 +18,7 @@ public interface AdminXML {
 	String DOMAIN_ELEMENT = "domain";
 	String PATH_ELEMENT = "path";
 	String FORM_ELEMENT = "form";
+	String INLINE_FORM_ELEMENT = "inline-form";
 	String MOUNT_ELEMENT = "mount";
 	String MOUNTED_ELEMENT = "mounted";
 	String INPUT_ELEMENT = "input";

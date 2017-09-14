@@ -123,6 +123,7 @@ public class MultipleHttpPostForm implements Serializable {
 				}
 				if (itemsToAdd.contains(desc.getItemId())) {
 					insertItem(parent, input);
+					itemsToAdd.remove(desc.getItemId());
 				}
 			}
 		}
