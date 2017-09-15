@@ -44,6 +44,10 @@ public interface AdminXML {
 	String VIRTUAL_ATTRIBUTE = "virtual";
 	String TYPE_CAPTION_ATTRIBUTE = "type-caption";
 	String ASSOC_CAPTION_ATTRIBUTE = "assoc-caption";
+	String USER_GROUP_ID_ATTRIBUTE = "user-group-id";
+	String USER_GROUP_NAME_ATTRIBUTE = "user-group-name";
+	String USER_ID_ATTRIBUTE = "user-id";
+	String PERSONAL_ATTRIBUTE = "personal";
 	String ID_ATTRIBUTE = "id";
 	String TYPE_ID_ATTRIBUTE = "type-id";
 	String STATUS_ATTRIBUTE = "status";

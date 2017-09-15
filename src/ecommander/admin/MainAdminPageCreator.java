@@ -785,9 +785,12 @@ public class MainAdminPageCreator implements AdminXML {
 		long rootId = ItemTypeRegistry.getPrimaryRootId();
 		ArrayList<ItemAccessor> existingSubitems;
 		if (parentId == rootId) {
-			existingSubitems = AdminLoader.loadSuperUserRootItems(currentUser);
-			for (ItemTypeContainer.ChildDesc childDesc : ItemTypeRegistry.getPrimaryRoot().getAllChildren()) {
-				processItemForParent(rootId, childDesc, ItemTypeRegistry.getPrimaryRoot(), itemsToAdd, existingSubitems);
+			existingSubitems = AdminLoader.loadUserRootItems(currentUser);
+			// Новые корневые айтемы может создавать только суперпользователь (заполнение айтемов для создания)
+			if (currentUser.isSuperUser()) {
+				for (ItemTypeContainer.ChildDesc childDesc : ItemTypeRegistry.getPrimaryRoot().getAllChildren()) {
+					processItemForParent(rootId, childDesc, ItemTypeRegistry.getPrimaryRoot(), itemsToAdd, existingSubitems);
+				}
 			}
 		}
 		// Для обычных айтемов

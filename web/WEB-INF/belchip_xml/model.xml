@@ -286,13 +286,13 @@
 		<child item="users" single="true"/>
 	</root>
 
-	<group name="registered">
+	<user-group name="registered">
 		<child item="register"/>
-	</group>
+	</user-group>
 
-	<group name="editor">
+	<user-group name="editor">
 		<child item="news"/>
-	</group>
+	</user-group>
 
 <!--EXP-->
 </model>

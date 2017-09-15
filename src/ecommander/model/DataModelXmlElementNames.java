@@ -12,6 +12,7 @@ public interface DataModelXmlElementNames {
 	String ITEM = "item";
 	String ITEMDESC = "itemdesc";
 	String ROOT = "root";
+	String USER_GROUP = "user-group";
 	String PARAMETER = "parameter";
 	String CHILD = "child";
 	String BASE_CHILD = "base-child";

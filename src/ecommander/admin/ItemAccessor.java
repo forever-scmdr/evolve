@@ -1,11 +1,9 @@
 package ecommander.admin;
 
-import ecommander.model.Assoc;
-import ecommander.model.ItemBasics;
+import ecommander.model.*;
 import ecommander.pages.output.MetaDataWriter;
 import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
+
 /**
  * Упрощенный айтем без параметров для упрощенного представления в админской части
  * Он также может выводиться в виде XML в следующем формате
@@ -136,12 +134,16 @@ public class ItemAccessor extends MetaDataWriter implements ItemBasics, Comparab
 
 	@Override
 	public XmlDocumentBuilder write(XmlDocumentBuilder xml) {
-		xml.startElement(AdminXML.ITEM_ELEMENT, 
+		xml.startElement(AdminXML.ITEM_ELEMENT,
 				AdminXML.TYPE_NAME_ATTRIBUTE, typeName, 
 				AdminXML.TYPE_ID_ATTRIBUTE, itemType, 
 				AdminXML.TYPE_CAPTION_ATTRIBUTE, typeCaption,
 				AdminXML.ASSOC_NAME_ATTRIBUTE, assocName,
 				AdminXML.ASSOC_CAPTION_ATTRIBUTE, assocCaption,
+				AdminXML.USER_ID_ATTRIBUTE, userId,
+				AdminXML.PERSONAL_ATTRIBUTE, userId != User.ANONYMOUS_ID,
+				AdminXML.USER_GROUP_ID_ATTRIBUTE, groupId,
+				AdminXML.USER_GROUP_NAME_ATTRIBUTE, UserGroupRegistry.getGroup(groupId),
 				AdminXML.ID_ATTRIBUTE, itemId,
 				AdminXML.CAPTION_ATTRIBUTE, key,
 				AdminXML.STATUS_ATTRIBUTE, status,

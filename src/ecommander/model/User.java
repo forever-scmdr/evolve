@@ -90,6 +90,15 @@ public class User {
 	}
 
 	/**
+	 * Является ли пользователь суперпользователем - галвным админом.
+	 * Суперпользователь является администратором главной группы (группы по умолчанию) - common
+	 * @return
+	 */
+	public boolean isSuperUser() {
+		return isAdmin(USER_DEFAULT_GROUP);
+	}
+
+	/**
 	 * Проверить, является ли пользователь админом заданной группы
 	 * @param group
 	 * @return
@@ -113,6 +122,32 @@ public class User {
 	 */
 	public HashSet<Group> getGroups() {
 		return new HashSet<>(groupRoles.values());
+	}
+
+	/**
+	 * Все ID групп, в которых пользователь является администратором
+	 * @return
+	 */
+	public Byte[] getAdminGroupIds() {
+		HashSet<Byte> adminGoups = new HashSet<>();
+		for (Group group : groupRoles.values()) {
+			if (group.role == ADMIN)
+				adminGoups.add(group.id);
+		}
+		return adminGoups.toArray(new Byte[0]);
+	}
+
+	/**
+	 * Все ID групп, в которых пользователь НЕ является администратором
+	 * @return
+	 */
+	public Byte[] getNotAdminGroupIds() {
+		HashSet<Byte> simpleGoups = new HashSet<>();
+		for (Group group : groupRoles.values()) {
+			if (group.role == SIMPLE)
+				simpleGoups.add(group.id);
+		}
+		return simpleGoups.toArray(new Byte[0]);
 	}
 
 	/**

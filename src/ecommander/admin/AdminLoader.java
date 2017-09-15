@@ -21,7 +21,7 @@ import java.util.HashSet;
  * @author EEEE
  *
  */
-class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
+class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants.UsersTbl, DBConstants.UserGroups {
 
 	private static TemplateQuery createAccessorQueryBase(String queryName, boolean joinByChild) {
 		TemplateQuery base = new TemplateQuery(queryName);
@@ -203,26 +203,37 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 	}
 
 	/**
-	 * Загрузить корневые айтемы для главного админа
+	 * Загрузить корневые айтемы для админа (главного и любого другого)
 	 * @param user
 	 * @return
 	 * @throws SQLException
 	 * @throws NamingException
 	 */
-	static ArrayList<ItemAccessor> loadSuperUserRootItems(User user) throws SQLException, NamingException {
-		Collection<ItemTypeContainer.ChildDesc> rootChildren = ItemTypeRegistry.getPrimaryRoot().getAllChildren();
-		HashSet<Integer> allTypes = new HashSet<>();
-		for (ItemTypeContainer.ChildDesc rootChild : rootChildren) {
-			allTypes.add(ItemTypeRegistry.getItemTypeId(rootChild.itemName));
-		}
+	static ArrayList<ItemAccessor> loadUserRootItems(User user) throws SQLException, NamingException {
+		// Все группы пользователей
 		HashSet<Byte> adminGroups = new HashSet<>();
 		HashSet<Byte> simpleGroups = new HashSet<>();
+		HashSet<String> allGroupNames = new HashSet<>();
 		for (User.Group group : user.getGroups()) {
 			if (group.role == User.ADMIN)
 				adminGroups.add(group.id);
 			else
 				simpleGroups.add(group.id);
+			allGroupNames.add(group.name);
 		}
+		// Все типы айтемов, которые должны загружаться
+		HashSet<Integer> allTypes = new HashSet<>();
+		if (user.isSuperUser()) {
+			Collection<ItemTypeContainer.ChildDesc> rootChildren = ItemTypeRegistry.getPrimaryRoot().getAllChildren();
+			for (ItemTypeContainer.ChildDesc rootChild : rootChildren) {
+				allTypes.add(ItemTypeRegistry.getItemTypeId(rootChild.itemName));
+			}
+		} else {
+			for (String groupName : allGroupNames) {
+				allTypes.addAll(ItemTypeRegistry.getGroupRootItems(groupName));
+			}
+		}
+		// Конструирование запроса
 		TemplateQuery base = new TemplateQuery("Load root subitems part");
 		base.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED).FROM(ITEM_TBL)
 				.WHERE().col_IN(I_SUPERTYPE).intIN(allTypes.toArray(new Integer[0])).AND()
@@ -376,5 +387,26 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent {
 			select.getOrCreateSubquery("COMMON").replace(simpleQuery);
 		}
 		return loadAccessorsByQuery(select, true);
+	}
+
+	/**
+	 * Загрузить всех пользователей, которыми может управлять другой определенный пользователь
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	static ArrayList<User> loadAllUsers(User user) throws Exception {
+		TemplateQuery query = new TemplateQuery("user select");
+		query.SELECT(USER_TBL + ".*", USER_GROUP_TBL + ".*").FROM(USER_TBL)
+				.INNER_JOIN(USER_GROUP_TBL, U_ID, UG_USER_ID)
+				.WHERE().col_IN(UG_GROUP_ID).byteIN(user.getAdminGroupIds());
+		ArrayList<User> users = new ArrayList<>();
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = query.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next())
+				users.add(new User(rs.getString(U_LOGIN), null, rs.getString(U_DESCRIPTION), rs.getInt(U_ID)));
+		}
+		return users;
 	}
 }

@@ -164,6 +164,10 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		Element root = doc.getElementsByTag(ROOT).first();
 		if (root != null)
 			readRoot(root);
+		Elements groups = doc.getElementsByTag(USER_GROUP);
+		for (Element group : groups) {
+			readUserGroup(group);
+		}
 		return doc;
 	}
 
@@ -178,6 +182,20 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		Elements children = rootEl.getElementsByTag(CHILD);
 		for (Element child : children) {
 			readChild(ItemTypeRegistry.getPrimaryRoot(), child);
+		}
+	}
+
+	/**
+	 * Читает корневые айтемы группы пользователей
+	 * @param groupEl
+	 * @throws Exception
+	 */
+	private void readUserGroup(Element groupEl) throws Exception {
+		// Вложенные айтемы
+		String userGroupName = groupEl.attr(NAME);
+		Elements children = groupEl.getElementsByTag(CHILD);
+		for (Element child : children) {
+			ItemTypeRegistry.addGroupRootItem(userGroupName, child.attr(NAME));
 		}
 	}
 
