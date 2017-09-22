@@ -34,7 +34,7 @@
 				Система управления сайтом
 				<xsl:value-of select="/admin-page/domain" />
 			</title>
-			<script src="admin/js/jquery-2.2.4.min.js" ></script>		
+			<script src="admin/js/jquery-3.2.1.min.js" ></script>
 		</head>
 	</xsl:template>
 
@@ -255,7 +255,7 @@
 
 		<nav id="context_menu-{$actions}" class="context-menu">
 			<ul class="context-menu__items">
-				<xsl:call-template name="DEAFAULT_CONTEXT_LINKS" />
+				<xsl:call-template name="DEFAULT_CONTEXT_LINKS" />
 				<xsl:choose>
 					<xsl:when test="'default' = $actions">
 						<xsl:call-template name="ITEM_CONTEXT_ACTIONS" />
@@ -272,6 +272,7 @@
 		<li class="context-menu__item">
 			<a href="#" data-action="modify_access" class="context-menu__link">Запретить доступ к файлам</a>
 		</li>
+		<!--
 		<li class="context-menu__item">
 			<form method="post" action="set_user" id="chown">
 				<xsl:variable name="curr" select="''" />
@@ -301,9 +302,10 @@
 				</label>
 			</form>
 		</li>
+		-->
 	</xsl:template>
 
-	<xsl:template name="DEAFAULT_CONTEXT_LINKS" >
+	<xsl:template name="DEFAULT_CONTEXT_LINKS" >
 		<li class="context-menu__item">
 			<a href="#" target="blank" class="context-menu__link link">Открыть в новой вкладке</a>
 		</li>

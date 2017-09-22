@@ -195,6 +195,8 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String PASTE_ACTION = "admin_paste";
 	public static final String DELETE_PASTE_ACTION = "admin_delete_paste";
 	public static final String STATUS_ACTION = "admin_status";
+	public static final String NEW_GROUP_ACTION = "new_group";
+	public static final String NEW_USER_ACTION = "new_user";
 	/**
 	 * Инпуты
 	 */
@@ -358,6 +360,13 @@ public class MainAdminPageCreator implements AdminXML {
 		String subitemsUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, SUBITEMS_VIEW_TYPE, ITEM_ID_INPUT, baseId, ITEM_TYPE_INPUT, itemType);
 		basePage.addElement(new LeafMDWriter(LINK_ELEMENT, subitemsUrl, NAME_ATTRIBUTE, SUBITEMS_VIEW_TYPE));
 		addViewLinks(basePage, baseId);
+		// Новые владельцы и группы
+		for (Byte groupId : currentUser.getAdminGroupIds()) {
+			basePage.addElement(new LeafMDWriter(GROUP_ELEMENT, "",
+					NAME_ATTRIBUTE, UserGroupRegistry.getGroup(groupId),
+					ID_ATTRIBUTE, groupId,
+					HREF_ATTRIBUTE, createAdminUrl(NEW_GROUP_ACTION, ITEM_ID_INPUT, baseId, PARAM_ID_INPUT, groupId)));
+		}
 		return basePage;
 	}
 	/**

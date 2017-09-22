@@ -58,7 +58,7 @@
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 				<meta http-equiv="Pragma" content="no-cache" />
 				<link rel="stylesheet" type="text/css" href="admin/css/reset.css" />
-				<link rel="stylesheet" href="admin/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+				<link rel="stylesheet" href="admin/js/jquery.fancybox.min.css" type="text/css" media="screen" />
 				<link rel="stylesheet" type="text/css" href="admin/css/style.css" />
 
 				<link href="admin/jquery_css/ui-lightness/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" media="screen" />
@@ -67,7 +67,7 @@
 					Система управления сайтом
 					<xsl:value-of select="/admin-page/domain" />
 				</title>
-				<script src="admin/js/jquery-2.2.4.min.js"></script>
+				<script src="admin/js/jquery-3.2.1.min.js"></script>
 				<script type="text/javascript" src="admin/js/admin.js"></script>
 			</head>
 			<body>
@@ -150,7 +150,7 @@
 					</div>
 				</div>
 			</body>
-			<script type="text/javascript" src="admin/fancybox/jquery.fancybox.pack.js"></script>
+			<script type="text/javascript" src="admin/js/jquery.fancybox.min.js"></script>
 			<script type="text/javascript">
 				$(document).ready(function() {
 					$(".fancybox").fancybox({

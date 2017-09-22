@@ -146,6 +146,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 			result = paste(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.STATUS_ACTION))
 			result = toggleItem(input, pageCreator);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.NEW_GROUP_ACTION))
+			result = setNewUserGroup(input, pageCreator, false);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.NEW_USER_ACTION))
+			result = setNewUserGroup(input, pageCreator, true);
 		else if (actionName.equalsIgnoreCase(ENABLE_VISUAL_EDITING_ACTION)) {
 			SessionContext.createSessionContext(req).setContentUpdateMode(true);
 			String target = req.getParameter(TARGET_PARAM);
@@ -914,6 +918,33 @@ public class MainAdminServlet extends BasicAdminServlet {
 		PageController.clearCache();
 		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId);
 		page.addMessage("Ассоциации успешно удалены", false);
+		return page;
+	}
+
+	/**
+	 * Поменять пользователя-владельца или группу-владельца айтема
+	 *
+	 * Параметры:
+	 * itemId - ID базового (выбранного) айтема
+	 * paramId - ID группы или пользователя
+	 *
+	 * @param in
+	 * @param pageCreator
+	 * @param isUser
+	 * @return
+	 * @throws Exception
+	 */
+	private AdminPage setNewUserGroup(UserInput in, MainAdminPageCreator pageCreator, boolean isUser) throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
+		Item baseItem = AdminLoader.loadItem(in.itemId, getCurrentAdmin());
+		if (isUser)
+			transaction.addCommandUnit(ChangeItemOwnerDBUnit.newGroup(baseItem, (byte) in.paramId));
+		else
+			transaction.addCommandUnit(ChangeItemOwnerDBUnit.newUser(baseItem, in.paramId, baseItem.getOwnerGroupId()));
+		transaction.execute();
+		PageController.clearCache();
+		AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, baseItem.getId(), baseItem.getTypeId());
+		page.addMessage("Элементу назначена новая группа пользователей", false);
 		return page;
 	}
 }

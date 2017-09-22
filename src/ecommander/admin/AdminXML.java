@@ -34,6 +34,7 @@ public interface AdminXML {
 	String ROOT_LINK_ELEMENT = "root-link";
 	String PAGE_ELEMENT = "page";
 	String CURRENT_PAGE_ELEMENT = "current-page";
+	String GROUP_ELEMENT = "group";
 	/**
 	 * Атрибут XML
 	 */
