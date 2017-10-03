@@ -219,6 +219,7 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String VISUAL_INPUT = "vis";
 	public static final String SEARCH_INPUT = "key_search";
 	public static final String PAGE_INPUT = "page";
+	public static final String USER_ID_INPUT = "userId";
 	/**
 	 * Значения
 	 */
@@ -237,6 +238,7 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String TO_MOVE_VIEW_TYPE = "toMove";
 	public static final String ASSOCIATE_VIEW_TYPE = "associate";
 	public static final String PASTE_VIEW_TYPE = "paste";
+	public static final String USERS_VIEW_TYPE = "users";
 	/**
 	 * Названия страниц
 	 */
@@ -252,6 +254,7 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String IMG_UPLOAD_PAGE = "main/image_upload";
 	public static final String IMG_UPLOADED_PAGE = "main/image_uploaded";
 	public static final String PASTE_PAGE = "main/paste";
+	public static final String USERS_PAGE = "main/users";
 	/**
 	 * Параметры сеанса
 	 */
@@ -356,11 +359,15 @@ public class MainAdminPageCreator implements AdminXML {
 			path.addSubwriter(pred);
 		}
 		basePage.addElement(path);
-		// Ссылка на сабайтемы и на другие части страницы
+		// Ссылка на сабайтемы
 		String subitemsUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, SUBITEMS_VIEW_TYPE, ITEM_ID_INPUT, baseId, ITEM_TYPE_INPUT, itemType);
 		basePage.addElement(new LeafMDWriter(LINK_ELEMENT, subitemsUrl, NAME_ATTRIBUTE, SUBITEMS_VIEW_TYPE));
+		// Ссылка на получение списка пользователей
+		String getUserListUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, USERS_VIEW_TYPE, ITEM_ID_INPUT, baseId);
+		basePage.addElement(new LeafMDWriter(GET_USERS_LINK_ELEMENT, getUserListUrl));
+		// Ссылка на другие части страницы
 		addViewLinks(basePage, baseId);
-		// Новые владельцы и группы
+		// Новые группы владельцев
 		for (Byte groupId : currentUser.getAdminGroupIds()) {
 			basePage.addElement(new LeafMDWriter(GROUP_ELEMENT, "",
 					NAME_ATTRIBUTE, UserGroupRegistry.getGroup(groupId),
@@ -835,6 +842,38 @@ public class MainAdminPageCreator implements AdminXML {
 			boolean isVirtual = parentDesc.isChildVirtual(childDesc.assocName, childDesc.itemName);
 			itemsToAdd.add(new ItemToAdd(childDesc.itemName, parentId, assocId, isVirtual));
 		}
+	}
+
+	/**
+	 * Создать страницу со списком пользователей
+	 * @param keyword
+	 * @param itemId
+	 * @return
+	 * @throws Exception
+	 */
+	AdminPage createUsersPage(String keyword, long itemId) throws Exception {
+		AdminPage basePage = new AdminPage(USERS_PAGE, domain, currentUser.getName());
+		Collection<User> users = AdminLoader.loadAllUsers(currentUser, keyword);
+		for (User user : users) {
+			AggregateMDWriter userWriter = new AggregateMDWriter(USER_ELEMENT, NAME_ATTRIBUTE, user.getName(),
+					ID_ATTRIBUTE, user.getUserId(), PASSWORD_ATTRIBUTE, user.getPassword());
+			userWriter.addSubwriter(new LeafMDWriter(DESCRIPTION_ELEMENT, user.getDescription()));
+			for (User.Group group : user.getGroups()) {
+				userWriter.addSubwriter(new LeafMDWriter(GROUP_ELEMENT, null, NAME_ATTRIBUTE, group.name,
+						IS_ADMIN_ATTRIBUTE, group.role));
+			}
+			String delUrl = createAdminUrl(DELETE_USER_ACTION, USER_ID_INPUT, user.getUserId());
+			String setUrl = createAdminUrl(SET_USER_ACTION, USER_ID_INPUT, user.getUserId());
+			String setOwnerUrl = createAdminUrl(NEW_USER_ACTION, PARAM_ID_INPUT, user.getUserId(), ITEM_ID_INPUT, itemId);
+			userWriter.addSubwriter(new LeafMDWriter(DELETE_LINK_ELEMENT, delUrl));
+			userWriter.addSubwriter(new LeafMDWriter(SET_LINK_ELEMENT, setUrl));
+			userWriter.addSubwriter(new LeafMDWriter(UPDATE_LINK_ELEMENT, setOwnerUrl));
+			basePage.addElement(userWriter);
+		}
+		// Базовая ссылка для формы поиска
+		String searchBaseUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, USERS_VIEW_TYPE);
+		basePage.addElement(new LeafMDWriter(SEARCH_LINK_ELEMENT, searchBaseUrl));
+		return basePage;
 	}
 	/**
 	 * Создать админский урл с параметрами

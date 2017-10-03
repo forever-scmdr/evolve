@@ -26,15 +26,21 @@ public interface AdminXML {
 	String TYPE_ELEMENT = "type";
 	String OPEN_ASSOC_LINK_ELEMENT = "open-associated-link";
 	String STATUS_LINK_ELEMENT = "status-link";
+	String SET_LINK_ELEMENT = "set-link";
+	String UPDATE_LINK_ELEMENT = "update-link";
 	String COPY_LINK_ELEMENT = "copy-link";
 	String PASTE_LINK_ELEMENT = "paste-link";
 	String GET_PASTE_LINK_ELEMENT = "get-paste";
+	String GET_USERS_LINK_ELEMENT = "get-users";
 	String MESSAGE_ELEMENT = "message";
 	String VISUAL_ELEMENT = "visual";
 	String ROOT_LINK_ELEMENT = "root-link";
+	String SEARCH_LINK_ELEMENT = "search-link";
 	String PAGE_ELEMENT = "page";
 	String CURRENT_PAGE_ELEMENT = "current-page";
 	String GROUP_ELEMENT = "group";
+	String USER_ELEMENT = "user";
+	String DESCRIPTION_ELEMENT = "description";
 	/**
 	 * Атрибут XML
 	 */
@@ -57,4 +63,6 @@ public interface AdminXML {
 	String WEIGHT_ATTRIBUTE = "weight";
 	String ALT_ATTRIBUTE = "alt";
 	String HREF_ATTRIBUTE = "href";
+	String PASSWORD_ATTRIBUTE = "password";
+	String IS_ADMIN_ATTRIBUTE = "is-admin";
 }

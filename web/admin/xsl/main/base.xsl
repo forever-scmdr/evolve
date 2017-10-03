@@ -29,29 +29,30 @@
 			<link rel="stylesheet" type="text/css" href="admin/css/reset.css" />
 			<link rel="stylesheet" type="text/css" href="admin/css/style.css" />
 			<link rel="stylesheet" type="text/css" href="admin/css/context.css" />
-			<link href="admin/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css" media="screen" />
+			<link rel="stylesheet" type="text/css" href="admin/jquery-ui/jquery-ui.css" media="screen" />
+			<link rel="stylesheet" type="text/css" href="admin/js/jquery.fancybox.min.css" media="screen" />
 			<title>
 				Система управления сайтом
 				<xsl:value-of select="/admin-page/domain" />
 			</title>
-			<script src="admin/js/jquery-3.2.1.min.js" ></script>
 		</head>
 	</xsl:template>
 
 	<xsl:template name="JS">
+		<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js" />
 		<!-- UI -->
-		<script type="text/javascript" src="admin/jquery-ui/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="admin/jquery-ui/jquery-ui.min.js"/>
 		<!-- FORM -->
-		<script type="text/javascript" src="admin/js/jquery.form.min.js"></script>
+		<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 		<!-- MCE -->
-		<script type="text/javascript" src="admin/tinymce/tinymce.min.js"></script>
-		<script type="text/javascript" src="admin/js/regional-ru.js"></script>
-		<!-- FILE UPLOAD -->
-	
+		<script type="text/javascript" src="admin/tinymce/tinymce.min.js"/>
+		<script type="text/javascript" src="admin/js/regional-ru.js"/>
+		<!-- FANCYBOX -->
+		<script type="text/javascript" src="admin/js/jquery.fancybox.min.js"/>
 		<!-- AJAX -->
-		<script type="text/javascript" src="admin/js/ajax.js"></script>
+		<script type="text/javascript" src="admin/js/ajax.js"/>
 		<!-- ADMIN -->
-		<script type="text/javascript" src="admin/js/admin.js"></script>
+		<script type="text/javascript" src="admin/js/admin.js"/>
 		<script type="text/javascript">
 
 			function selectTab(tabId, url) {
@@ -158,16 +159,18 @@
 											Упарвление пользователями
 										</a>
 									</li>
-									<li class="visible" title="???">
+									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
 										<a href="admin_types_init.type">
 											Упарвление классами объектов
 										</a>
 									</li>
+									<!--
 									<li class="visible" title="Функция в разработке">
 										<a href="#" onclick="alert('Функция в разработке'); return false;">
 											Управление миром
 										</a>
 									</li>
+									-->
 								</ul>
 							</div>
 						</div>
@@ -190,6 +193,7 @@
 											<div class="margin context-duplicate">
 												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?')">Скрыть</a>
 												<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'А оно вообще Вам надо?')">Запретить доступ к файлам</a>
+												<!--
 												<label class="call-function" data-message="А старый владелец вкурсе?">
 													Назначить владельца:&#160;
 													<select>
@@ -199,9 +203,11 @@
 														<option>User 3</option>
 													</select>
 												</label>
+												-->
+												<a id="new-owner" class="secure-link icon" href="javascript:positionOnly('#new-owner', 'Назначить нового владельца?', '{admin-page/get-users}', 'iframe')">Владелец</a>
 												<label class="call-function" data-message="А оно вообще Вам надо?">
 													Назначить группу:&#160;
-													<select >
+													<select>
 														<option>All</option>
 														<option>Group 1</option>
 														<option>Group 2</option>

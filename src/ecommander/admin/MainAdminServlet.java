@@ -306,6 +306,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 			page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId);
 		} else if (MainAdminPageCreator.PASTE_VIEW_TYPE.equals(in.viewType)) {
 			page = pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId);
+		} else if (MainAdminPageCreator.USERS_VIEW_TYPE.equals(in.viewType)) {
+			page = pageCreator.createUsersPage(in.searchQuery, in.itemId);
 		}
 		return page;
 	}

@@ -10,11 +10,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import ecommander.fwk.ErrorCodes;
+import ecommander.fwk.*;
 import net.sf.saxon.TransformerFactoryImpl;
-import ecommander.fwk.Timer;
-import ecommander.fwk.EcommanderException;
-import ecommander.fwk.XmlDocumentBuilder;
+
 /**
  * Преобразует XML документ в html с помощью XSL файла
  * @author EEEE
@@ -52,25 +50,24 @@ public class XmlXslOutputController {
 	public static void outputXmlTransformed(OutputStream ostream, XmlDocumentBuilder xml, String xslFileName)
 			throws TransformerException, IOException, EcommanderException {
 		// Если режим отладки, то вывести содержимое XML документа
-//		if (ServerLogger.isDebugMode()) {
-//			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//			outputXml(bos, xml);
-//			ServerLogger.debug(new String(bos.toByteArray()));
-//		}
-		Timer.getTimer().start(Timer.XSL_TRANSFORM);
-		TransformerFactory factory = TransformerFactoryImpl.newInstance();
 		File xslFile = new File(xslFileName);
-		Errors errors = new Errors();
-		Transformer transformer;
-		try {
-			factory.setErrorListener(errors);
-			transformer = factory.newTransformer(new StreamSource(xslFile));
-			Reader reader = new StringReader(xml.toString());
-			transformer.transform(new StreamSource(reader), new StreamResult(ostream));
-		} catch (TransformerConfigurationException e) {
-			throw new EcommanderException(ErrorCodes.NO_SPECIAL_ERROR, errors.errors);
-		} finally {
-			Timer.getTimer().stop(Timer.XSL_TRANSFORM);
+		if (!xslFile.exists()/* || ServerLogger.isDebugMode()*/) {
+			outputXml(ostream, xml);
+		} else {
+			Timer.getTimer().start(Timer.XSL_TRANSFORM);
+			TransformerFactory factory = TransformerFactoryImpl.newInstance();
+			Errors errors = new Errors();
+			Transformer transformer;
+			try {
+				factory.setErrorListener(errors);
+				transformer = factory.newTransformer(new StreamSource(xslFile));
+				Reader reader = new StringReader(xml.toString());
+				transformer.transform(new StreamSource(reader), new StreamResult(ostream));
+			} catch (TransformerConfigurationException e) {
+				throw new EcommanderException(ErrorCodes.NO_SPECIAL_ERROR, errors.errors);
+			} finally {
+				Timer.getTimer().stop(Timer.XSL_TRANSFORM);
+			}
 		}
 	}
 	/**

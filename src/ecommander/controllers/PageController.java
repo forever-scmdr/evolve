@@ -276,7 +276,7 @@ public class PageController {
 					String pageUrl = pageUrlVar == null ? "" : pageUrlVar.writeSingleValue();
 					LinkPE requestLink = page.getRequestLink();
 					String urlBase = page.getUrlBase();
-					page = page.createExecutableClone(page.getSessionContext());
+					page = PageModelRegistry.testAndGetRegistry().getExecutablePage(requestUrl, urlBase, page.getSessionContext());
 					page.setRequestLink(requestLink, pageUrl, urlBase);
 					processSimplePage(false);
 				} else {

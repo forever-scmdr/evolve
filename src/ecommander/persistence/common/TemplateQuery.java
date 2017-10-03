@@ -164,6 +164,11 @@ public class TemplateQuery implements QueryPart {
 		return this;
 	}
 
+	public final TemplateQuery OR() {
+		queryParts.add(new SqlQueryPart(" OR "));
+		return this;
+	}
+
 	public final TemplateQuery UNION_ALL() {
 		queryParts.add(new SqlQueryPart(" UNION ALL "));
 		return this;

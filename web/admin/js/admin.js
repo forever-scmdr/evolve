@@ -87,21 +87,47 @@ function confirmAjaxView(link, viewId, postProcess, el) {
 function simpleAjaxView(link, viewId, postProcess) {
 	insertAjaxView(link, viewId, false, "hidden_mes", "message_main", postProcess);
 }
-
-function positionOnly(el, message){
+/**
+ *
+ * @param el
+ * @param message
+ * @param href
+ * @param type - fancybox (ajax fancybox), iframe (iframe fancybox), ajax (insertAjax), simple or no value (redirect)
+ */
+function positionOnly(el, message, href, type){
     destroyDialog();
     buildDialog(message);
     positionDialog(el);
     $("#dialog-yes-button").click(function (e) {
         e.preventDefault();
         destroyDialog();
-        alert("Вы нажали кнопку \""+$(this).text()+"\".");
+	    if (typeof href == 'string') {
+	    	if (!(typeof type == 'string') || type == 'simple') {
+			    window.location.replace(href);
+		    } else if (type == 'fancybox') {
+	    		$.fancybox.open({
+	    			src: href,
+				    type: 'ajax'
+			    });
+		    } else if (type == 'iframe') {
+			    $.fancybox.open({
+				    src: href,
+				    type: 'iframe'
+			    });
+		    } else if (type == 'ajax') {
+			    insertAjax(href);
+		    } else {
+			    alert("Вы нажали кнопку \"" + $(this).text() + "\".");
+		    }
+	    } else {
+		    alert("Вы нажали кнопку \"" + $(this).text() + "\".");
+	    }
     });
     $("#dialog-no-button").click(function (e) {
         e.preventDefault();
         $("#dialog-yes-button, #dialog-no-button").unbind("click");
         destroyDialog();
-        alert("Вы нажали кнопку \""+$(this).text()+"\".");
+        //alert("Вы нажали кнопку \""+$(this).text()+"\".");
     });
 }
 

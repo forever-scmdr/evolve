@@ -8,14 +8,13 @@ import ecommander.persistence.mappers.ItemMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import javax.jws.soap.SOAPBinding;
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * @author EEEE
@@ -391,22 +390,32 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 
 	/**
 	 * Загрузить всех пользователей, которыми может управлять другой определенный пользователь
-	 * @param user
+	 * @param admin
 	 * @return
 	 * @throws Exception
 	 */
-	static ArrayList<User> loadAllUsers(User user) throws Exception {
+	static Collection<User> loadAllUsers(User admin, String keyword) throws Exception {
 		TemplateQuery query = new TemplateQuery("user select");
 		query.SELECT(USER_TBL + ".*", USER_GROUP_TBL + ".*").FROM(USER_TBL)
 				.INNER_JOIN(USER_GROUP_TBL, U_ID, UG_USER_ID)
-				.WHERE().col_IN(UG_GROUP_ID).byteIN(user.getAdminGroupIds());
-		ArrayList<User> users = new ArrayList<>();
+				.WHERE().col_IN(UG_GROUP_ID).byteIN(admin.getAdminGroupIds());
+		if (StringUtils.isNotBlank(keyword)) {
+			query.AND().sql("(").col(U_LOGIN, "like").string('%' + keyword + '%')
+					.OR().col(U_DESCRIPTION, "like").string('%' + keyword + '%').sql(")");
+		}
+		LinkedHashMap<Integer, User> users = new LinkedHashMap<>();
 		try (Connection conn = MysqlConnector.getConnection();
 		     PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
-			if (rs.next())
-				users.add(new User(rs.getString(U_LOGIN), null, rs.getString(U_DESCRIPTION), rs.getInt(U_ID)));
+			while(rs.next()) {
+				int id = rs.getInt(U_ID);
+				User user = users.get(id);
+				if (user == null) {
+					user = new User(rs.getString(U_LOGIN), null, rs.getString(U_DESCRIPTION), rs.getInt(U_ID));
+					users.put(id, user);				}
+				user.addGroup(rs.getString(UG_GROUP_NAME), rs.getByte(UG_GROUP_ID), rs.getByte(UG_ROLE));
+			}
 		}
-		return users;
+		return users.values();
 	}
 }
