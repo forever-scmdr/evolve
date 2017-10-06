@@ -447,6 +447,18 @@ public class MainAdminPageCreator implements AdminXML {
 				}
 			}
 		}
+		// Пользователи - владельцы айтемов
+		Collection<User> users = AdminLoader.loadItemOwners(currentUser, subitems.toArray(new ItemAccessor[0]));
+		for (User user : users) {
+			AggregateMDWriter userWriter = new AggregateMDWriter(USER_ELEMENT, NAME_ATTRIBUTE, user.getName(),
+					ID_ATTRIBUTE, user.getUserId());
+			userWriter.addSubwriter(new LeafMDWriter(DESCRIPTION_ELEMENT, user.getDescription()));
+			for (User.Group group : user.getGroups()) {
+				userWriter.addSubwriter(new LeafMDWriter(GROUP_ELEMENT, null, NAME_ATTRIBUTE, group.name,
+						IS_ADMIN_ATTRIBUTE, group.role));
+			}
+			basePage.addElement(userWriter);
+		}
 		// Подготовленные ссылки
 		String reorderUrl = createAdminUrl(REORDER_ACTION, 
 				ITEM_ID_INPUT, ":id:", 
@@ -853,7 +865,13 @@ public class MainAdminPageCreator implements AdminXML {
 	 */
 	AdminPage createUsersPage(String keyword, long itemId) throws Exception {
 		AdminPage basePage = new AdminPage(USERS_PAGE, domain, currentUser.getName());
+		basePage.addElement(new LeafMDWriter("key_search", keyword));
 		Collection<User> users = AdminLoader.loadAllUsers(currentUser, keyword);
+		AggregateMDWriter noUserWriter = new AggregateMDWriter(NO_USER_ELEMENT, NAME_ATTRIBUTE, "Нет владельца",
+				ID_ATTRIBUTE, User.ANONYMOUS_ID, PASSWORD_ATTRIBUTE, "");
+		String setNoOwnerUrl = createAdminUrl(NEW_USER_ACTION, PARAM_ID_INPUT, User.ANONYMOUS_ID, ITEM_ID_INPUT, itemId);
+		noUserWriter.addSubwriter(new LeafMDWriter(UPDATE_LINK_ELEMENT, setNoOwnerUrl));
+		basePage.addElement(noUserWriter);
 		for (User user : users) {
 			AggregateMDWriter userWriter = new AggregateMDWriter(USER_ELEMENT, NAME_ATTRIBUTE, user.getName(),
 					ID_ATTRIBUTE, user.getUserId(), PASSWORD_ATTRIBUTE, user.getPassword());

@@ -940,9 +940,9 @@ public class MainAdminServlet extends BasicAdminServlet {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		Item baseItem = AdminLoader.loadItem(in.itemId, getCurrentAdmin());
 		if (isUser)
-			transaction.addCommandUnit(ChangeItemOwnerDBUnit.newGroup(baseItem, (byte) in.paramId));
-		else
 			transaction.addCommandUnit(ChangeItemOwnerDBUnit.newUser(baseItem, in.paramId, baseItem.getOwnerGroupId()));
+		else
+			transaction.addCommandUnit(ChangeItemOwnerDBUnit.newGroup(baseItem, (byte) in.paramId));
 		transaction.execute();
 		PageController.clearCache();
 		AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, baseItem.getId(), baseItem.getTypeId());

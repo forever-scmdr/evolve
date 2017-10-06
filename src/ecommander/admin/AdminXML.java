@@ -40,6 +40,7 @@ public interface AdminXML {
 	String CURRENT_PAGE_ELEMENT = "current-page";
 	String GROUP_ELEMENT = "group";
 	String USER_ELEMENT = "user";
+	String NO_USER_ELEMENT = "no-user";
 	String DESCRIPTION_ELEMENT = "description";
 	/**
 	 * Атрибут XML

@@ -55,13 +55,23 @@
 			<xsl:call-template name="HEAD" />
 			<body>
 				<div class="list position-relative" style="margin-top: 40px; width: 300px;">
-					<form id="search-form" class="ajax-form" action="{admin-page/search-link}" method="POST">
-						<input type="text" id="key_search" name="key_search" placeholder="поиск"/>
+					<form id="search-form" action="{admin-page/search-link}" method="POST"><!-- class="ajax-form"-->
+						<input type="text" id="key_search" name="key_search" value="{admin-page/key_search}" placeholder="поиск"/>
 						<a onclick="$(this).closest('form').submit()">искать</a>
 					</form>
 					<a onclick="">Очистить поиск</a>
 				</div>
 				<div class="deleted_items">
+					<div class="item">
+						<div style="clear: both"></div>
+						<div class="main">
+							<span>
+								[нет групп]
+							</span>
+							<a class="name" title="открыть" href="{admin-page/no-user/update-link}">Нет владельца</a>
+							<span>доступ только для суперюзера</span>
+						</div>
+					</div>
 					<xsl:for-each select="admin-page/user">
 						<div class="item">
 							<!--
@@ -87,6 +97,7 @@
 						</div>
 					</xsl:for-each>
 				</div>
+				<xsl:call-template name="JS"/>
 			</body>
 		</html>
 	</xsl:template>

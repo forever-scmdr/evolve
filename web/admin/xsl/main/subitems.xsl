@@ -5,6 +5,8 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br/&gt;</xsl:text></xsl:template>
+	<xsl:variable name="admin_name" select="admin-page/@username"/>
+	<xsl:variable name="users" select="admin-page/user"/>
 
 	<!-- Выбор создаваемого айтема из списка -->
 	<xsl:template match="item-to-add[item]">
@@ -94,14 +96,19 @@
 							<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
 							<xsl:variable name="hidden" select="@status = '1'"/>
 							<xsl:variable name="dropPos" select="if ($asc) then position() - 1 else $itemCount - position() + 1"/>
+							<xsl:variable name="owner" select="$users[@id = current()/@user-id and @name != $admin_name]"/>
 							<li class="drop-zone {$ass}" href="{replace(replace($reorder_link, ':pos:', string($dropPos)), ':assoc:', $ass_id)}"></li>
 							<li class="dragable visible multiple call-context-menu default {$ass}" data-link="{edit-link}" data-del="{delete-link}" id="{@id}">
 								<xsl:if test="$hidden"><xsl:attribute name="style" select="'background-color: #c8c8c8'"/></xsl:if>
 								<div class="drag" title="нажмите, чтобы перемещать элемент"></div>
 								<a href="{edit-link}" class="name" title="редактировать">
 									<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
-										<span class="description">[<xsl:value-of select="@type-caption"/>]</span><br/>
+										<span class="description">[<xsl:value-of select="@type-caption"/>] </span>
 									</xsl:if>
+									<xsl:if test="$owner">
+										<span class="description" style="color: #bb7777">[<xsl:value-of select="$owner/@name"/>] </span>
+									</xsl:if>
+									<xsl:if test="($differentSubitems and @type-caption != @caption and @caption != '') or $owner"><br/></xsl:if>
 									<xsl:value-of select="$caption"/>
 								</a>
 								<div class="controls">

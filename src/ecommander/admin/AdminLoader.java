@@ -400,9 +400,34 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 				.INNER_JOIN(USER_GROUP_TBL, U_ID, UG_USER_ID)
 				.WHERE().col_IN(UG_GROUP_ID).byteIN(admin.getAdminGroupIds());
 		if (StringUtils.isNotBlank(keyword)) {
-			query.AND().sql("(").col(U_LOGIN, "like").string('%' + keyword + '%')
-					.OR().col(U_DESCRIPTION, "like").string('%' + keyword + '%').sql(")");
+			query.AND().sql("(").col(U_LOGIN, " like ").string('%' + keyword + '%')
+					.OR().col(U_DESCRIPTION, " like ").string('%' + keyword + '%').sql(")");
 		}
+		return loadUsersByQuery(query);
+	}
+
+	/**
+	 * Загрузить всех пользователей владельцев айтемов, список которых предоставляется
+	 * Загружаюются только те пользователи, в группе которых текущий админ является также админом
+	 * @param admin
+	 * @param items
+	 * @return
+	 * @throws Exception
+	 */
+	static Collection<User> loadItemOwners(User admin, ItemBasics...items) throws Exception {
+		HashSet<Integer> userIds = new HashSet<>();
+		for (ItemBasics item : items) {
+			userIds.add(item.getOwnerUserId());
+		}
+		TemplateQuery query = new TemplateQuery("user select");
+		query.SELECT(USER_TBL + ".*", USER_GROUP_TBL + ".*").FROM(USER_TBL)
+				.INNER_JOIN(USER_GROUP_TBL, U_ID, UG_USER_ID)
+				.WHERE().col_IN(UG_GROUP_ID).byteIN(admin.getAdminGroupIds())
+				.AND().col_IN(U_ID).intIN(userIds.toArray(new Integer[0]));
+		return loadUsersByQuery(query);
+	}
+
+	private static Collection<User> loadUsersByQuery(TemplateQuery query) throws SQLException, NamingException {
 		LinkedHashMap<Integer, User> users = new LinkedHashMap<>();
 		try (Connection conn = MysqlConnector.getConnection();
 		     PreparedStatement pstmt = query.prepareQuery(conn)) {

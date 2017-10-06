@@ -35,6 +35,8 @@ public class ItemAccessor extends MetaDataWriter implements ItemBasics, Comparab
 	private int userId;
 	private byte status;
 	private boolean isFileProtected;
+	private String ownerName;
+	private String groupName;
 
 	public ItemAccessor(int itemType, long itemId, String key, byte groupId, int userId, byte status,
 	                    boolean isFileProtected, int childWeight, byte contextAssoc, boolean isParentCompatible) {
