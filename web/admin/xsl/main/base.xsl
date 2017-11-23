@@ -71,16 +71,16 @@
 			}
 			/**
 			* Отправка AJAX POST запроса для
-			обновления основной (центральной) части страницы
+			  обновления основной (центральной) части страницы
 			* Отдельно выводится сообщение для пользователя
 			*/
 			function mainForm(formId, additionalHandling) {
 				prepareForm(formId, "main_view", "hidden_mes", "message_main", additionalHandling);
 			}
 			$(document).ready(function() {
-			insertAjaxView("<xsl:value-of select="admin-page/link[@name='subitems']" />", "subitems");
-			insertAjaxView("<xsl:value-of select="admin-page/link[@name='parameters']" />", "main_view");
-
+				insertAjaxView("<xsl:value-of select="admin-page/link[@name='subitems']" />", "subitems");
+				insertAjaxView("<xsl:value-of select="admin-page/link[@name='parameters']" />", "main_view");
+				$("#message_main").effect("highlight", 1000);
 			});
 		</script>
 	</xsl:template>
@@ -139,7 +139,9 @@
 								</form>
 								<a onclick="insertAjaxView('{admin-page/link[@name='subitems']}', 'subitems'); $('#key_search').val('');" style="text-decoration: underline;">Очистить поиск</a>
 							</div>
-							<div id="subitems"></div>
+							<div id="subitems">
+								<div style="min-height: 100px; margin-bottom: 10px;"/>
+							</div>
 							<div class="list additional">
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
@@ -193,25 +195,17 @@
 											<div class="margin context-duplicate">
 												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?')">Скрыть</a>
 												<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'А оно вообще Вам надо?')">Запретить доступ к файлам</a>
-												<!--
-												<label class="call-function" data-message="А старый владелец вкурсе?">
-													Назначить владельца:&#160;
-													<select>
-														<option>All</option>
-														<option>User 1</option>
-														<option>User 2</option>
-														<option>User 3</option>
-													</select>
-												</label>
-												-->
-												<a id="new-owner" class="secure-link icon" href="javascript:positionOnly('#new-owner', 'Назначить нового владельца?', '{admin-page/get-users}', 'iframe')">Владелец</a>
-												<label class="call-function" data-message="А оно вообще Вам надо?">
-													Назначить группу:&#160;
-													<select>
-														<option>All</option>
-														<option>Group 1</option>
-														<option>Group 2</option>
-														<option>Group 3</option>
+												<a id="new-owner" class="secure-link icon" href="javascript:positionOnly('#new-owner', 'Назначить нового владельца?', '{admin-page/get-users}', 'iframe')">
+													Владелец (<xsl:value-of select="if (admin-page/owner-user) then admin-page/owner-user else 'не назначен'" />
+													<xsl:if test="admin-page/owner-user = admin-page/@username"> - Я</xsl:if>)
+												</a>
+												<label>
+													Назначить группу: (<xsl:value-of select="admin-page/item/@user-group-name"/>)&#160;
+													<select class="confirm-select" id="new-owner-group" onchange="positionOnly('#new-owner-group', 'Изменить группу?', $(this).val(), 'simple')">
+														<option value="{@href}"><xsl:value-of select="@name"/></option>
+														<xsl:for-each select="admin-page/group">
+															<option value="{@href}"><xsl:value-of select="@name"/></option>
+														</xsl:for-each>
 													</select>
 												</label>
 											</div>
@@ -239,7 +233,7 @@
 										</div>
 									</xsl:if>
 									<div id="main_view">
-										
+										<!--<div style="min-height: 50px; margin-bottom: 10px;"/>-->
 									</div>
 									
 								</div>

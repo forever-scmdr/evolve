@@ -16,7 +16,8 @@ function confirmLink(href , el) {
 
 $(document).on("click","body", function (e) {
 	var trg = $(e.target);
-	if(!trg.is("#confirm-dialog") && trg.closest("#confirm-dialog").length == 0 && !trg.is(".call-function") && trg.closest(".call-function").length == 0){
+	if(!trg.is("#confirm-dialog") && trg.closest("#confirm-dialog").length == 0 && !trg.is(".call-function") && trg.closest(".call-function").length == 0
+		&& !trg.is(".confirm-select") && trg.closest(".confirm-select").length == 0) {
         destroyDialog();
 	}
 });
@@ -31,7 +32,6 @@ function buildDialog(message) {
 	var content = $("<div>", {"class": "dialog-message"});
 	var yes = $("<span>", {"class" : "button yes", id : "dialog-yes-button", text : "Да"});
     var no = $("<span>", {"class" : "button no", id : "dialog-no-button", text : "Нет"});
-
     content.html(message);
 	dialog.append(content);
 	dialog.append(yes);
@@ -175,7 +175,7 @@ function insertAjaxView(url, pagePartId, confirm, messageId, insertMessageId, ad
 					var dom = $.parseHTML(data);
 					var message = $(dom[0]).html();
 					if (message != null && !(message == '')) {
-						$('#' + insertMessageId).html(message);
+						$('#' + insertMessageId).html(message).effect("highlight", 1000);
 					}
 				}
 				// Обновить текущее состояние

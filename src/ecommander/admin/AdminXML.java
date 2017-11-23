@@ -15,6 +15,7 @@ public interface AdminXML {
 	String VIEW_TYPE_ELEMENT = "view-type";
 	String BASE_ID_ELEMENT = "base-id";
 	String BASE_TYPE_ELEMENT = "base-type";
+	String OWNER_USER_ELEMENT = "owner-user";
 	String DOMAIN_ELEMENT = "domain";
 	String PATH_ELEMENT = "path";
 	String FORM_ELEMENT = "form";
@@ -66,4 +67,5 @@ public interface AdminXML {
 	String HREF_ATTRIBUTE = "href";
 	String PASSWORD_ATTRIBUTE = "password";
 	String IS_ADMIN_ATTRIBUTE = "is-admin";
+	String FILES_PROTECTED_ATTRIBUTE = "files-protected";
 }

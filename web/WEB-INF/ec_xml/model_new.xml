@@ -32,8 +32,11 @@
 			этого объекта в соответствующую таблицу. Он нужен для отслеживания переименования айтемав
 	ag-hash (auto generated hash) - хеш-код названия айтема. Он нужен для предотвращения ситуации, когда был случайно
 			изменен атрибут ag-id айтема
+	children-per-page   количесвто сабайтемов, выводимых на одной странице в админке
+	children-sorting    сортировка сабайтемов (ASC или DESC) по их весу (сортировка по умолчанию)
 	-->
-	<item name="section_abstract" caption="Абстрактный раздел каталога" ag-id="15" ag-hash="25cc560"/>
+	<item name="section_abstract" children-per-page="10" children-sorting="DESC"
+	      caption="Абстрактный раздел каталога" ag-id="15" ag-hash="25cc560"/>
 
 	<item name="main_section" caption="Основной раздел" super="section_abstract">
 		<!-- Явное задание названия ассоциации -->
@@ -124,6 +127,13 @@
 
 	<item name="seller_catalog" caption="Каталог продавцов">
 		<child item="seller"/>
+	</item>
+
+	<!-- Виртуальный айтем. Игнорируестя при валидации наличия ссылок на этот айтем из корня или других айтемов -->
+	<item name="feedback_form" virtual="true" caption="Форма обратной связи" ag-id="221" ag-hash="-1950071490" >
+		<parameter name="name" type="string" caption="Имя" />
+		<parameter name="phone" type="string" caption="Телефон или эл. почта" />
+		<parameter name="message" type="text" caption="Сообщение" />
 	</item>
 
 	<root>

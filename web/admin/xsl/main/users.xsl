@@ -59,16 +59,16 @@
 						<input type="text" id="key_search" name="key_search" value="{admin-page/key_search}" placeholder="поиск"/>
 						<a onclick="$(this).closest('form').submit()">искать</a>
 					</form>
-					<a onclick="">Очистить поиск</a>
+					<a href="{admin-page/search-link}">Очистить поиск</a>
 				</div>
 				<div class="deleted_items">
 					<div class="item">
 						<div style="clear: both"></div>
 						<div class="main">
 							<span>
-								[нет групп]
+								[группа не меняется]
 							</span>
-							<a class="name" title="открыть" href="{admin-page/no-user/update-link}">Нет владельца</a>
+							<a class="name" title="открыть" href="{admin-page/no-user/update-link}" target="_parent">Нет владельца</a>
 							<span>доступ только для суперюзера</span>
 						</div>
 					</div>
@@ -91,7 +91,7 @@
 									</xsl:if>
 									]
 								</span>
-								<a class="name" title="открыть" href="{update-link}"><xsl:value-of select="@name"/></a>
+								<a class="name" title="открыть" href="{update-link}" target="_parent"><xsl:value-of select="@name"/></a>
 								<span><xsl:if test="description"><xsl:value-of select="description"/></xsl:if></span>
 							</div>
 						</div>

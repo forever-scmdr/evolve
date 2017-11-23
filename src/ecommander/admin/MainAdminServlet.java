@@ -6,10 +6,7 @@ import ecommander.controllers.SessionContext;
 import ecommander.filesystem.DeleteItemFileUnit;
 import ecommander.filesystem.SaveItemFileUnit;
 import ecommander.filesystem.SaveItemFilesUnit;
-import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.ResizeImagesFactory;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
+import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.pages.MultipleHttpPostForm;
 import ecommander.persistence.commandunits.*;
@@ -939,14 +936,23 @@ public class MainAdminServlet extends BasicAdminServlet {
 	private AdminPage setNewUserGroup(UserInput in, MainAdminPageCreator pageCreator, boolean isUser) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		Item baseItem = AdminLoader.loadItem(in.itemId, getCurrentAdmin());
-		if (isUser)
+		AdminPage page;
+		String message = "Элементу назначена новая группа пользователей";
+		if (isUser) {
 			transaction.addCommandUnit(ChangeItemOwnerDBUnit.newUser(baseItem, in.paramId, baseItem.getOwnerGroupId()));
-		else
+			message = "Элементу присвоен новый владелец";
+		} else {
 			transaction.addCommandUnit(ChangeItemOwnerDBUnit.newGroup(baseItem, (byte) in.paramId));
-		transaction.execute();
-		PageController.clearCache();
-		AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, baseItem.getId(), baseItem.getTypeId());
-		page.addMessage("Элементу назначена новая группа пользователей", false);
+		}
+		try {
+			transaction.execute();
+			PageController.clearCache();
+			page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, baseItem.getId(), baseItem.getTypeId());
+			page.addMessage(message, false);
+		} catch (UserNotAllowedException ue) {
+			page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, baseItem.getId(), baseItem.getTypeId());
+			page.addMessage("Ошибка правил безопасности. " + ue.getMessage(), false);
+		}
 		return page;
 	}
 }

@@ -1,5 +1,6 @@
 package ecommander.admin;
 
+import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType.Type;
@@ -351,6 +352,10 @@ public class MainAdminPageCreator implements AdminXML {
 			ItemAccessor item = AdminLoader.loadItemAccessor(baseId);
 			if (item != null) {
 				basePage.addElement(item);
+				if (item.isPersonal()) {
+					User user = UserMapper.getUser(item.getOwnerUserId(), MysqlConnector.getConnection());
+					basePage.addElement(new LeafMDWriter(OWNER_USER_ELEMENT, user.getName()));
+				}
 			}
 		}
 		for (ItemAccessor pred : pathItems) {

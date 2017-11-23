@@ -65,6 +65,9 @@ $(document).ready(function(){
 		y = ($("#popup").height() - $(".popup-window").outerHeight())*0.5;
 		$(".popup-window").css({marginTop : y});
 	});
+	$("select[value]").each(function() {
+		$(this).val($(this).attr("value"));
+	});
 });
 $(document).on('click', '.close-popup', function(e){
 	e.preventDefault();
