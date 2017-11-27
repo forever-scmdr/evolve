@@ -1,20 +1,21 @@
 package ecommander.admin;
 
+import ecommander.controllers.AppContext;
+import ecommander.controllers.XmlXslOutputController;
+import ecommander.fwk.EcommanderException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.pages.output.LeafMDWriter;
+import ecommander.pages.output.MetaDataWriter;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.TransformerException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.TransformerException;
-
-import ecommander.fwk.EcommanderException;
-import ecommander.controllers.AppContext;
-import ecommander.controllers.XmlXslOutputController;
-import ecommander.fwk.ServerLogger;
-import ecommander.pages.output.LeafMDWriter;
-import ecommander.pages.output.MetaDataWriter;
-import ecommander.fwk.XmlDocumentBuilder;
 /**
  * Страница админа (XML текст)
  * 
@@ -28,6 +29,7 @@ public class AdminPage {
 	private ArrayList<MetaDataWriter> writers;
 	private String name;
 	private String userName;
+	private String redirectUrl;
 
 	public AdminPage(String name, String siteDomain, String userName) {
 		writers = new ArrayList<>();
@@ -75,5 +77,28 @@ public class AdminPage {
 	
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * Является ли страница простой страницей или редиректом на другую базовую страницу
+	 * @return
+	 */
+	public boolean isRedirect() {
+		return StringUtils.isNotBlank(redirectUrl);
+	}
+
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	/**
+	 * Создать страницу, являющуюся редиректом
+	 * @param url
+	 * @return
+	 */
+	public static AdminPage createRedurect(String url) {
+		AdminPage redirect = new AdminPage("none");
+		redirect.redirectUrl = url;
+		return redirect;
 	}
 }

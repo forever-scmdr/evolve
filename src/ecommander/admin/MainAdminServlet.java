@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -72,6 +73,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 		private String viewType = "base";
 		// Сеанс пользователя
 		private HttpSession session = null;
+		// Сообщение
+		private String message = null;
 	}
 	
 	/**
@@ -88,7 +91,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		String actionName = getAction(req);
 		MainAdminPageCreator pageCreator = new MainAdminPageCreator(getCurrentAdmin(), getContextPath(req));
 		if (actionName.equalsIgnoreCase(MainAdminPageCreator.INITIALIZE_ACTION))
-			result = initialize(pageCreator);
+			result = initialize(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.SET_ITEM_ACTION))
 			result = setItem(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.CREATE_ITEM_ACTION))
@@ -144,18 +147,24 @@ public class MainAdminServlet extends BasicAdminServlet {
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.STATUS_ACTION))
 			result = toggleItem(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.NEW_GROUP_ACTION))
-			result = setNewUserGroup(input, pageCreator, false);
+			result = setNewUserGroup(input, false);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.NEW_USER_ACTION))
-			result = setNewUserGroup(input, pageCreator, true);
+			result = setNewUserGroup(input, true);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.TOGGLE_FILE_PROTECTION_ACTION))
+			result = toggleFileProtection(input);
 		else if (actionName.equalsIgnoreCase(ENABLE_VISUAL_EDITING_ACTION)) {
 			SessionContext.createSessionContext(req).setContentUpdateMode(true);
 			String target = req.getParameter(TARGET_PARAM);
 			resp.sendRedirect(target);
 			return;
 		}
-		// Форвард
 		if (result != null) {
-			result.output(resp);
+			// Редирект
+			if (result.isRedirect()) {
+				resp.sendRedirect(result.getRedirectUrl());
+			} else {
+				result.output(resp);
+			}
 		}
 	}
 	/**
@@ -192,6 +201,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 				input.searchQuery = req.getParameter(MainAdminPageCreator.SEARCH_INPUT);
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PAGE_INPUT)))
 				input.page = NumberUtils.toInt(req.getParameter(MainAdminPageCreator.PAGE_INPUT), 1);
+			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.MESSAGE_INPUT)))
+				input.message = URLDecoder.decode(req.getParameter(MainAdminPageCreator.MESSAGE_INPUT), "utf-8");
 			// Создание ссылок
 			Enumeration<String> paramNames = req.getParameterNames();
 			while (paramNames.hasMoreElements()) {
@@ -212,9 +223,12 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * @return
 	 * @throws Exception 
 	 */
-	private AdminPage initialize(MainAdminPageCreator pageCreator) throws Exception {
+	private AdminPage initialize(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
-		page.addMessage("Приложение готово к работе, выбран корневой элемент", false);
+		if (in.message != null)
+			page.addMessage(in.message, false);
+		else
+			page.addMessage("Приложение готово к работе, выбран корневой элемент", false);
 		return page;
 	}
 	/**
@@ -225,8 +239,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 */
 	private AdminPage reindex(MainAdminPageCreator pageCreator) throws Exception {
 		LuceneIndexMapper.reindexAll();
-		AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
-		page.addMessage("Переиндексация завершена успешно", false);
+		//AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
+		//page.addMessage("Переиндексация завершена успешно", false);
+		AdminPage page = pageCreator.createRedirectPage(MainAdminPageCreator.INITIALIZE_ACTION,
+				"Переиндексация завершена успешно");
 		return page;
 	}
 	/**
@@ -270,8 +286,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 			MysqlConnector.closeStatement(stmt); // TODO !!!!!!!!!!!!!!
 			MysqlConnector.closeConnection(conn);			
 		}
-		AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
-		page.addMessage("Все кеши очищены успешно", false);
+		//AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
+		//page.addMessage("Все кеши очищены успешно", false);
+		AdminPage page = pageCreator.createRedirectPage(MainAdminPageCreator.INITIALIZE_ACTION,
+				"Все кеши очищены успешно");
 		return page;
 	}
 	/**
@@ -321,7 +339,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 */
 	private AdminPage setItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, in.itemId, in.itemTypeId);
-		page.addMessage("Выбран элемент для редактирования. После редактирования нажмите кнопку 'Сохранить'", false);
+		if (in.message != null)
+			page.addMessage(in.message, false);
+		else
+			page.addMessage("Выбран элемент для редактирования. После редактирования нажмите кнопку 'Сохранить'", false);
 		return page;
 	}
 	/**
@@ -391,7 +412,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 		transaction.execute();
 		// Очистить кеш страниц
 		PageController.clearCache();
-		AdminPage page = null;
 		// Антоновские изменения
 		//page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, item.getId(), item.getTypeId());
 		boolean toParent = StringUtils.equalsIgnoreCase(itemForm.getSingleStringExtra("parent-url"), "yes");
@@ -400,8 +420,9 @@ public class MainAdminServlet extends BasicAdminServlet {
 			return setItem(in, pageCreator);
 		}
 		int type = (toParent) ? AdminLoader.loadItem(id, getCurrentAdmin()).getTypeId() : item.getTypeId();
-		page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, id, type);
-		page.addMessage("Изменения успешно сохранены", false);
+		//AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, id, type);
+		//page.addMessage("Изменения успешно сохранены", false);
+		AdminPage page = MainAdminPageCreator.createSetItemRedirectPage(id, type, "Изменения успешно сохранены");
 		return page;
 	}
 	/**
@@ -928,12 +949,11 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * paramId - ID группы или пользователя
 	 *
 	 * @param in
-	 * @param pageCreator
 	 * @param isUser
 	 * @return
 	 * @throws Exception
 	 */
-	private AdminPage setNewUserGroup(UserInput in, MainAdminPageCreator pageCreator, boolean isUser) throws Exception {
+	private AdminPage setNewUserGroup(UserInput in, boolean isUser) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		Item baseItem = AdminLoader.loadItem(in.itemId, getCurrentAdmin());
 		AdminPage page;
@@ -947,11 +967,39 @@ public class MainAdminServlet extends BasicAdminServlet {
 		try {
 			transaction.execute();
 			PageController.clearCache();
-			page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, baseItem.getId(), baseItem.getTypeId());
-			page.addMessage(message, false);
+			//page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, baseItem.getId(), baseItem.getTypeId());
+			//page.addMessage(message, false);
+			page = MainAdminPageCreator.createSetItemRedirectPage(baseItem.getId(), baseItem.getTypeId(), message);
 		} catch (UserNotAllowedException ue) {
-			page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, baseItem.getId(), baseItem.getTypeId());
-			page.addMessage("Ошибка правил безопасности. " + ue.getMessage(), false);
+			//page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, baseItem.getId(), baseItem.getTypeId());
+			//page.addMessage("Ошибка правил безопасности. " + ue.getMessage(), false);
+			page = MainAdminPageCreator.createSetItemRedirectPage(baseItem.getId(), baseItem.getTypeId(),
+					"Ошибка правил безопасности. " + ue.getMessage());
+		}
+		return page;
+	}
+
+	/**
+	 * Включить или выключить защиту файлов айтема
+	 *
+	 * Параметры
+	 * itemId - ID защищаемого айтема
+	 *
+	 * @param in
+	 * @return
+	 */
+	private AdminPage toggleFileProtection(UserInput in) throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
+		Item baseItem = AdminLoader.loadItem(in.itemId, getCurrentAdmin());
+		transaction.addCommandUnit(new ProtectItemFilesDBUnit(baseItem, !baseItem.isFileProtected()));
+		AdminPage page;
+		String message = baseItem.isFileProtected() ? "Защита файлов отключена" : "Защита файлов включена";
+		try {
+			transaction.execute();
+			page = MainAdminPageCreator.createSetItemRedirectPage(baseItem.getId(), baseItem.getTypeId(), message);
+		} catch (UserNotAllowedException ue) {
+			page = MainAdminPageCreator.createSetItemRedirectPage(baseItem.getId(), baseItem.getTypeId(),
+					"Ошибка правил безопасности. " + ue.getMessage());
 		}
 		return page;
 	}

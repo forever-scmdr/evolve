@@ -14,6 +14,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -198,6 +200,7 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String STATUS_ACTION = "admin_status";
 	public static final String NEW_GROUP_ACTION = "new_group";
 	public static final String NEW_USER_ACTION = "new_user";
+	public static final String TOGGLE_FILE_PROTECTION_ACTION = "file_protection";
 	/**
 	 * Инпуты
 	 */
@@ -221,6 +224,7 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String SEARCH_INPUT = "key_search";
 	public static final String PAGE_INPUT = "page";
 	public static final String USER_ID_INPUT = "userId";
+	public static final String MESSAGE_INPUT = "msg";
 	/**
 	 * Значения
 	 */
@@ -331,7 +335,7 @@ public class MainAdminPageCreator implements AdminXML {
 	/**
 	 * Создает базовую часть страницы, которая сама при помощи клиентских скриптов должна вызывать остальные части страницы, в зависимости
 	 * от выбранного пользователем режима редактирования
-	 * @param defaultViewType - резим редактирования по умолчанию
+	 * @param defaultViewType - режим редактирования по умолчанию
 	 * @param baseId
 	 * @param itemType
 	 * @return
@@ -370,6 +374,9 @@ public class MainAdminPageCreator implements AdminXML {
 		// Ссылка на получение списка пользователей
 		String getUserListUrl = createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT, USERS_VIEW_TYPE, ITEM_ID_INPUT, baseId);
 		basePage.addElement(new LeafMDWriter(GET_USERS_LINK_ELEMENT, getUserListUrl));
+		// Ссылка на включение/выключение защиты файлов
+		String protectFilesUrl = createAdminUrl(TOGGLE_FILE_PROTECTION_ACTION, ITEM_ID_INPUT, baseId, ITEM_TYPE_INPUT, itemType);
+		basePage.addElement(new LeafMDWriter(PROTECT_FILES_LINK_ELEMENT, protectFilesUrl));
 		// Ссылка на другие части страницы
 		addViewLinks(basePage, baseId);
 		// Новые группы владельцев
@@ -957,4 +964,33 @@ public class MainAdminPageCreator implements AdminXML {
 	public static String[] splitInputName(String fullInputName) {
 		return StringUtils.split(fullInputName, ID_INUT_NAME_DELIMITER);
 	}
+
+	/**
+	 * Создать редирект на другую страницу
+	 * @param action
+	 * @param message
+	 * @param parameters
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	public static AdminPage createRedirectPage(String action, String message, Object... parameters) throws UnsupportedEncodingException {
+		Object[] paramsWithMessage = Arrays.copyOf(parameters, parameters.length + 2);
+		paramsWithMessage[parameters.length + 1] = MESSAGE_INPUT;
+		paramsWithMessage[parameters.length + 2] = URLEncoder.encode(message, "utf-8");
+		return AdminPage.createRedurect(createAdminUrl(action, paramsWithMessage));
+	}
+
+	/**
+	 * Создать редирект на базовую страницу айтема
+	 * @param itemId
+	 * @param itemType
+	 * @param message
+	 * @return
+	 */
+	public static AdminPage createSetItemRedirectPage(long itemId, int itemType, String message) {
+		String url = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType, MESSAGE_INPUT, message);
+		return AdminPage.createRedurect(url);
+	}
+
+
 }

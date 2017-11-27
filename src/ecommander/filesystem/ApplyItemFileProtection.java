@@ -27,18 +27,6 @@ public class ApplyItemFileProtection extends ItemDirectoryCommandUnit implements
 			moveItemDirectory(AppContext.getCommonFilesDirPath(), AppContext.getProtectedFilesDirPath(), itemIds);
 		else
 			moveItemDirectory(AppContext.getProtectedFilesDirPath(), AppContext.getCommonFilesDirPath(), itemIds);
-		TemplateQuery query = new TemplateQuery("protect files");
-		query.UPDATE(ITEM_TBL).SET().col(I_PROTECTED).byte_(makeProtected ? (byte) 1 : (byte) 0)
-				.WHERE().col_IN(I_PROTECTED).longIN(ArrayUtils.toObject(itemIds));
-		try (PreparedStatement pstmt = query.prepareQuery(getTransactionContext().getConnection())) {
-			pstmt.executeUpdate();
-		} catch (Exception e) {
-			ServerLogger.error("Unable to protect/unprotect files", e);
-			if (makeProtected)
-				moveItemDirectory(AppContext.getProtectedFilesDirPath(), AppContext.getCommonFilesDirPath(), itemIds);
-			else
-				moveItemDirectory(AppContext.getCommonFilesDirPath(), AppContext.getProtectedFilesDirPath(), itemIds);
-		}
 	}
 
 	public void rollback() throws Exception {

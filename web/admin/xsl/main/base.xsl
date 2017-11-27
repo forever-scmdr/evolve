@@ -194,7 +194,12 @@
 											</div>
 											<div class="margin context-duplicate">
 												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?')">Скрыть</a>
-												<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'А оно вообще Вам надо?')">Запретить доступ к файлам</a>
+												<xsl:if test="@files-protected = 'true'">
+													<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'Снять защиту с файлов', '{admin-page/protect-files}')">Разрешить доступ к файлам</a>
+												</xsl:if>
+												<xsl:if test="not(@files-protected = 'true')">
+													<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'Защитить файлы', '{admin-page/protect-files}')">Запретить доступ к файлам</a>
+												</xsl:if>
 												<a id="new-owner" class="secure-link icon" href="javascript:positionOnly('#new-owner', 'Назначить нового владельца?', '{admin-page/get-users}', 'iframe')">
 													Владелец (<xsl:value-of select="if (admin-page/owner-user) then admin-page/owner-user else 'не назначен'" />
 													<xsl:if test="admin-page/owner-user = admin-page/@username"> - Я</xsl:if>)

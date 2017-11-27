@@ -33,6 +33,7 @@ public interface AdminXML {
 	String PASTE_LINK_ELEMENT = "paste-link";
 	String GET_PASTE_LINK_ELEMENT = "get-paste";
 	String GET_USERS_LINK_ELEMENT = "get-users";
+	String PROTECT_FILES_LINK_ELEMENT = "protect-files";
 	String MESSAGE_ELEMENT = "message";
 	String VISUAL_ELEMENT = "visual";
 	String ROOT_LINK_ELEMENT = "root-link";
