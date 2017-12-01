@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
+	<assoc name="go_with" caption="Сопутсвующий товар" transitive="false" ag-id="1" ag-hash="192818621"/>
+
 <!--START_feedback_form-->
 	<item name="feedback_form" virtual="true" caption="Форма обратной связи" ag-id="221" ag-hash="-1950071490" >
 		<parameter name="name" type="string" caption="Имя" />
@@ -115,7 +117,7 @@
 	</item>
 <!--END_cart_contacts-->
 
-	<item name="register" caption="Регистрация"/>
+	<item name="register" caption="Регистрация" virtual="true" ag-id="1040" ag-hash="-690213213"/>
 
 <!--START_register_jur-->
 	<item name="register_jur" super="register" virtual="true" caption="Регистрация юридического лица" ag-id="229" ag-hash="-1707413269" >
@@ -143,7 +145,7 @@
 <!--END_register_jur-->
 
 <!--START_register_phys-->
-	<item name="register_phys" super="ergister" virtual="true" caption="Регистрация физического лица" ag-id="230" ag-hash="-1390037202" >
+	<item name="register_phys" super="register" virtual="true" caption="Регистрация физического лица" ag-id="230" ag-hash="-1390037202" >
 		<parameter name="second_name" type="string" caption="Фамилия"/>
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="s_name" type="string" caption="Отчество" />
@@ -219,6 +221,8 @@
 		<parameter name="search" quantifier="multiple" type="plain-text" caption="Ключевые слова для поиска" description="все ключевые слова" text-index="fulltext" text-index-boost="2"/>
 		<parameter name="analog_search" quantifier="multiple" type="plain-text" caption="Аналоги для поиска" description="только аналоги" text-index="fulltext"/>
 		<parameter name="analog_code" type="string" quantifier="multiple" caption="Коды аналогов" description="других товаров из каталога"/>
+
+		<child item="product" assoc="go_with"/>
 	</item>
 <!--END_product-->
 
@@ -272,7 +276,7 @@
 	</item>
 <!--END_counter-->
 
-	<item name="users">
+	<item name="users" caption="Пользователи" ag-id="1041" ag-hash="111578632">
 		<child item="register"/>
 	</item>
 
@@ -287,11 +291,11 @@
 	</root>
 
 	<user-group name="registered">
-		<child item="register"/>
+		<child item="register" single="true"/>
 	</user-group>
 
 	<user-group name="editor">
-		<child item="news"/>
+		<child item="news" single="true"/>
 	</user-group>
 
 <!--EXP-->

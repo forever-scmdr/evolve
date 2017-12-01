@@ -187,25 +187,26 @@
 									</xsl:if>
 								</h1>
 								<div class="edit-arena">
-									<xsl:if test="admin-page/item">
+									<xsl:variable name="item" select="admin-page/item"/>
+									<xsl:if test="$item">
 										<div class="wide">
 											<div id="message_main" style="border: 2px solid #56C493; padding: 8px 12px; background: #D7F3E6; margin-bottom: 20px; color: #164F35">
 												<xsl:value-of select="admin-page/message"/>
 											</div>
 											<div class="margin context-duplicate">
-												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?')">Скрыть</a>
-												<xsl:if test="@files-protected = 'true'">
-													<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'Снять защиту с файлов', '{admin-page/protect-files}')">Разрешить доступ к файлам</a>
+												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?', 'simple')">Скрыть</a>
+												<xsl:if test="$item/@files-protected = 'true'">
+													<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'Снять защиту с файлов', '{admin-page/protect-files}', 'simple')">Разрешить доступ к файлам</a>
 												</xsl:if>
-												<xsl:if test="not(@files-protected = 'true')">
-													<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'Защитить файлы', '{admin-page/protect-files}')">Запретить доступ к файлам</a>
+												<xsl:if test="not($item/@files-protected = 'true')">
+													<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'Защитить файлы', '{admin-page/protect-files}', 'simple')">Запретить доступ к файлам</a>
 												</xsl:if>
 												<a id="new-owner" class="secure-link icon" href="javascript:positionOnly('#new-owner', 'Назначить нового владельца?', '{admin-page/get-users}', 'iframe')">
 													Владелец (<xsl:value-of select="if (admin-page/owner-user) then admin-page/owner-user else 'не назначен'" />
 													<xsl:if test="admin-page/owner-user = admin-page/@username"> - Я</xsl:if>)
 												</a>
 												<label>
-													Назначить группу: (<xsl:value-of select="admin-page/item/@user-group-name"/>)&#160;
+													Назначить группу: (<xsl:value-of select="$item/@user-group-name"/>)&#160;
 													<select class="confirm-select" id="new-owner-group" onchange="positionOnly('#new-owner-group', 'Изменить группу?', $(this).val(), 'simple')">
 														<option value="{@href}"><xsl:value-of select="@name"/></option>
 														<xsl:for-each select="admin-page/group">

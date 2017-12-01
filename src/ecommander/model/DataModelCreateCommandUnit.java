@@ -195,7 +195,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		String userGroupName = groupEl.attr(NAME);
 		Elements children = groupEl.getElementsByTag(CHILD);
 		for (Element child : children) {
-			ItemTypeRegistry.addGroupRootItem(userGroupName, child.attr(NAME));
+			ItemTypeRegistry.addGroupRootItem(userGroupName, child.attr(ITEM));
 		}
 	}
 

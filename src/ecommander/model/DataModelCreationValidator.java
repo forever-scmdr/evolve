@@ -146,7 +146,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		private int errorCounter = 0;
 		private boolean criticalError = false; // ошибка, после которой дальнейший анализ не возможен
 		
-		private Stack<Element> stack = new Stack<Element>();
+		private Stack<Element> stack = new Stack<>();
 		
 		@Override
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -325,6 +325,14 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				// Сохранение
 				stack.push(root);
 			}
+			else if (USER_GROUP.equalsIgnoreCase(qName)) {
+				if (stack.size() > 0) {
+					addError("User-group element is in wrong place. 'user-group' most not be a child of any other node", locator.getLineNumber());
+					return;
+				}
+				// Сохранение
+				stack.push(new Root(locator.getLineNumber()));
+			}
 			else if (!MODEL.equalsIgnoreCase(qName) && ItemType.Event.get(qName) == null) {
 				addError("Invalid '" + qName + "' element", locator.getLineNumber());
 			}
@@ -339,7 +347,8 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 					ITEM.equalsIgnoreCase(qName) ||
 					CHILD.equalsIgnoreCase(qName) ||
 					PARAMETER.equalsIgnoreCase(qName) ||
-					BASE_CHILD.equalsIgnoreCase(qName))
+					BASE_CHILD.equalsIgnoreCase(qName) ||
+					USER_GROUP.equalsIgnoreCase(qName))
 				stack.pop();
 		}
 
@@ -440,7 +449,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		for (Child child : children) {
 			if (!child.isSingle) {
 				Item item = items.get(child.name);
-				if (item.isVirtual)
+				if (child.isVirtual || item.isVirtual)
 					continue;
 				boolean hasKey = false;
 				for (String predName : hierarchy.getItemPredecessorsExt(child.name)) {

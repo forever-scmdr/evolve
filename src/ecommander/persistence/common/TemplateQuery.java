@@ -271,11 +271,12 @@ public class TemplateQuery implements QueryPart {
 	/**
 	 * Добавляет пустой плейсхолдер для подзапроса
 	 * @param name
-	 * @return
+	 * @return Созданный подзапрос!!! (НЕ родительский запрос!!!)
 	 */
 	public final TemplateQuery subquery(String name) {
-		queryParts.add(getOrCreateSubquery(name));
-		return this;
+		TemplateQuery subquery = getOrCreateSubquery(name);
+		queryParts.add(subquery);
+		return subquery;
 	}
 	/**
 	 * Создает значение подзапроса на базе переданного шаблона

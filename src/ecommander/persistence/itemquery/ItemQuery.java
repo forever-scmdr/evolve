@@ -741,7 +741,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				limit.appendQuery(baseClone);
 				// Добавляется очередная часть UNIONа и замещается сгенерированным запросом
 				String subqueryName = "U" + i;
-				union.subquery(subqueryName).getSubquery(subqueryName).replace(baseClone);
+				union.subquery(subqueryName).replace(baseClone);
 				if (i < ancestorIds.length - 1)
 					union.sql(") UNION ALL (");
 			}

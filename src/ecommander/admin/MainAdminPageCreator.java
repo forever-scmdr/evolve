@@ -975,8 +975,8 @@ public class MainAdminPageCreator implements AdminXML {
 	 */
 	public static AdminPage createRedirectPage(String action, String message, Object... parameters) throws UnsupportedEncodingException {
 		Object[] paramsWithMessage = Arrays.copyOf(parameters, parameters.length + 2);
-		paramsWithMessage[parameters.length + 1] = MESSAGE_INPUT;
-		paramsWithMessage[parameters.length + 2] = URLEncoder.encode(message, "utf-8");
+		paramsWithMessage[parameters.length] = MESSAGE_INPUT;
+		paramsWithMessage[parameters.length + 1] = URLEncoder.encode(message, "utf-8");
 		return AdminPage.createRedurect(createAdminUrl(action, paramsWithMessage));
 	}
 
@@ -987,8 +987,9 @@ public class MainAdminPageCreator implements AdminXML {
 	 * @param message
 	 * @return
 	 */
-	public static AdminPage createSetItemRedirectPage(long itemId, int itemType, String message) {
-		String url = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType, MESSAGE_INPUT, message);
+	public static AdminPage createSetItemRedirectPage(long itemId, int itemType, String message) throws UnsupportedEncodingException {
+		String url = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, itemId, ITEM_TYPE_INPUT, itemType,
+				MESSAGE_INPUT, URLEncoder.encode(message, "utf-8"));
 		return AdminPage.createRedurect(url);
 	}
 

@@ -8,13 +8,15 @@ import ecommander.persistence.mappers.ItemMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import javax.jws.soap.SOAPBinding;
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 
 /**
  * @author EEEE
@@ -157,7 +159,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 		} else {
 			if (justInline) {
 				base = new TemplateQuery("Inline subitems");
-				base.SELECT(ITEM_TBL + ".*").FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID).WHERE();
+				base.SELECT(ITEM_TBL + ".*", ITEM_PARENT_TBL + ".*").FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID).WHERE();
 			} else {
 				base = createAccessorQueryBase("Load closest subitems part", true);
 			}
@@ -172,21 +174,12 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 				Integer[] ids = ItemTypeRegistry.getItemInlineChildrenIds(parentType.getName()).toArray(new Integer[0]);
 				base.AND().col_IN(IP_CHILD_SUPERTYPE).intIN(ids);
 			}
-			base.ORDER_BY(IP_ASSOC_ID + " ASC", IP_WEIGHT + " " + parentType.getChildrenSorting());
-			if (parentType.hasChildrenLimit()) {
-				page = NumberUtils.max(page, 1);
-				if (page > 1) {
-					int rowsToSkip = (page - 1) * parentType.getChildrenLimit();
-					base.LIMIT(parentType.getChildrenLimit(), rowsToSkip);
-				} else {
-					base.LIMIT(parentType.getChildrenLimit());
-				}
-			}
 		}
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
 		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
-		adminQuery.getSubquery("<<USER>>").col_IN(I_GROUP).byteIN(adminGroups.toArray(new Byte[0]));
+		adminQuery.getSubquery("<<USER>>").col_IN(I_GROUP).byteIN(adminGroups.toArray(new Byte[0])).AND()
+				.col(I_USER).int_(User.ANONYMOUS_ID);
 		simpleQuery.getSubquery("<<USER>>").col_IN(I_GROUP).byteIN(simpleGroups.toArray(new Byte[0])).AND()
 				.col(I_USER).int_(user.getUserId());
 
@@ -197,6 +190,19 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 			if (adminGroups.size() > 0)
 				select.UNION_ALL();
 			select.subquery("COMMON").replace(simpleQuery);
+		}
+		// Добавить ORDER BY в конце, т.к. дял UNION нужно добавление ORDER BY в самом конце
+		if (!justCount) {
+			select.ORDER_BY(IP_ASSOC_ID + " ASC", IP_WEIGHT + " " + parentType.getChildrenSorting());
+			if (parentType.hasChildrenLimit()) {
+				page = NumberUtils.max(page, 1);
+				if (page > 1) {
+					int rowsToSkip = (page - 1) * parentType.getChildrenLimit();
+					select.LIMIT(parentType.getChildrenLimit(), rowsToSkip);
+				} else {
+					select.LIMIT(parentType.getChildrenLimit());
+				}
+			}
 		}
 		return select;
 	}
@@ -242,7 +248,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
 		adminQuery.col_IN(I_GROUP).byteIN(adminGroups.toArray(new Byte[0]));
 		simpleQuery.col_IN(I_GROUP).byteIN(simpleGroups.toArray(new Byte[0])).AND()
-				.col_IN(I_USER).int_(user.getUserId());
+				.col(I_USER).int_(user.getUserId());
 
 		TemplateQuery select = new TemplateQuery("Load root subitems union");
 		if (adminGroups.size() > 0)
@@ -379,11 +385,11 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 
 		TemplateQuery select = new TemplateQuery("Load direct parents union");
 		if (adminGroups.size() > 0)
-			select.getOrCreateSubquery("ADMIN").replace(adminQuery);
+			select.subquery("ADMIN").replace(adminQuery);
 		if (simpleGroups.size() > 0) {
 			if (adminGroups.size() > 0)
 				select.UNION_ALL();
-			select.getOrCreateSubquery("COMMON").replace(simpleQuery);
+			select.subquery("COMMON").replace(simpleQuery);
 		}
 		return loadAccessorsByQuery(select, true);
 	}
