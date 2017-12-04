@@ -1261,4 +1261,21 @@ public class Item implements ItemBasics {
 		sb.append('/');
 		return sb.toString();
 	}
+
+	/**
+	 * Получает ID айтема по путь к его файлам
+	 * @param path
+	 * @param filesDirName
+	 * @return
+	 */
+	public static Long getItemIdFromPath(String path, String filesDirName) {
+		try {
+			String idStr = StringUtils.substringAfter(path, filesDirName);
+			idStr = StringUtils.remove(idStr, '/');
+			idStr = StringUtils.remove(idStr, FINAL_DIR_CHAR);
+			return Long.parseLong(idStr);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

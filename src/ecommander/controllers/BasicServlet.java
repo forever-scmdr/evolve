@@ -117,8 +117,8 @@ public abstract class BasicServlet extends HttpServlet {
 	 * @throws IOException
 	 * @throws EcommanderException 
 	 */
-	protected void sendFile(HttpServletResponse response, String fileUrl) throws IOException {
-		File requestedFile = new File(AppContext.getRealPath(fileUrl));
+	protected void sendFile(HttpServletResponse response, String fileUrl, boolean isProtected) throws IOException {
+		File requestedFile = new File(AppContext.getFilePathByUrlPath(fileUrl, isProtected));
 		if (requestedFile.exists() && requestedFile.isFile()) {
 			FileInputStream fis = new FileInputStream(requestedFile);
 			byte[] buffer = new byte[4096];

@@ -42,7 +42,7 @@ public class TransliterationServlet extends BasicServlet {
 		} catch (UserNotAllowedException e) {
 			processUserNotAllowed(request, response, userUrl);
 		} catch (PageNotFoundException e) {
-			sendFile(response, userUrl);
+			sendFile(response, userUrl, false);
 		} catch (Exception e) {
 			handleError(request, response, e);
 		} finally {

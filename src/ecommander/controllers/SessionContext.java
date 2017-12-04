@@ -196,6 +196,28 @@ public class SessionContext implements AutoCloseable {
 		return null;
 	}
 	/**
+	 * Установить или удалить значение переменной (значение переменной - объект)
+	 * @param varName
+	 * @param varValue
+	 */
+	public void setVariableObject(String varName, Object varValue) {
+		if (!StringUtils.isBlank(varName) && varValue != null)
+			setSessionObject(VARIABLE_SESSION_NAME_PREFIX + varName, varValue);
+		else
+			removeSessionObject(VARIABLE_SESSION_NAME_PREFIX + varName);
+	}
+	/**
+	 * Вернуть значение переменной-объекта.
+	 * Если сеанс не существует (не начат), то он не создается, а значение переменной возвращается равной null
+	 * @param varName
+	 * @return
+	 */
+	public Object getVariableObject(String varName) {
+		if (hasSession())
+			return forceGetSession().getAttribute(VARIABLE_SESSION_NAME_PREFIX + varName);
+		return null;
+	}
+	/**
 	 * Установить текущий прогресс по длительной операции
 	 * @param progressName
 	 * @param size

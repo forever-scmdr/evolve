@@ -131,6 +131,14 @@ public class AppContext {
 		return getCommonFilesUrlPath();
 	}
 
+	public static String getFilePathByUrlPath(String fileUrl, boolean isProtected) {
+		if (isProtected) {
+			return getProtectedFilesDirPath() + StringUtils.substringAfter(fileUrl, getProtectedFilesUrlPath());
+		} else {
+			return getCommonFilesDirPath() + StringUtils.substringAfter(fileUrl, getCommonFilesUrlPath());
+		}
+	}
+
 	public static String getPagesModelPath() {
 		return getRealPath(MAIN_XML_MODELS_DIR + PAGESMODEL_FILE);
 	}
