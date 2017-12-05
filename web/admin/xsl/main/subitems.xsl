@@ -15,7 +15,13 @@
 			<select id="is_{@id}">
 				<xsl:apply-templates select="item" mode="select"/>
 			</select>
-			<a class="create-button" onclick="mainView($('#is_{@id}').find(':selected').val());return false;"></a>
+			<xsl:variable name="link">
+				<xsl:choose>
+					<xsl:when test="@assocId = '0'">mainView($('#is_<xsl:value-of select="@id"/>').find(':selected').val());return false;</xsl:when>
+					<xsl:otherwise>openAssoc('<xsl:value-of select="open-associated-link"/>');return false;</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<a class="create-button" onclick="{$link}"></a>
 		</li>
 		<li class="drop-zone {$ass}"></li>
 	</xsl:template>
@@ -25,7 +31,13 @@
 	<xsl:template match="item-to-add[not(item)]">
 		<xsl:param name="ass" />
 		<li class="visible {$ass}">
-			<a href="javascript:mainView('{create-link}')" >
+			<xsl:variable name="link">
+				<xsl:choose>
+					<xsl:when test="@assocId = '0'">mainView('<xsl:value-of select="create-link"/>')</xsl:when>
+					<xsl:otherwise>openAssoc('<xsl:value-of select="open-associated-link"/>')</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<a href="#" onclick="{$link}" >
 				<span class="name"><xsl:value-of select="@caption"/></span>
 			</a>
 		</li>

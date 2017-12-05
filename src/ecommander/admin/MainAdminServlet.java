@@ -749,8 +749,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
 	 * mount - значения монтирования
-	 * paramId - ID параметра, в котором хранятся ассоциированные айтемы
-	 * 
+	 *
 	 * @throws Exception 
 	 */
 	private AdminPage createAssociations(UserInput in, MainAdminPageCreator pageCreator) throws Exception {

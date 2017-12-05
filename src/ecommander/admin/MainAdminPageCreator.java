@@ -291,7 +291,7 @@ public class MainAdminPageCreator implements AdminXML {
 		public XmlDocumentBuilder write(XmlDocumentBuilder xml) {
 			ItemType itemDesc = ItemTypeRegistry.getItemType(baseItem);
 			xml.startElement(ITEM_TO_ADD_ELEMENT, NAME_ATTRIBUTE, itemDesc.getName(), ID_ATTRIBUTE,
-					itemDesc.getTypeId(), CAPTION_ATTRIBUTE, itemDesc.getCaption(), VIRTUAL_ATTRIBUTE, isVirtual);
+					itemDesc.getTypeId(), CAPTION_ATTRIBUTE, itemDesc.getCaption(), ASSOC_ID_INPUT, assocId, VIRTUAL_ATTRIBUTE, isVirtual);
 			for (String ext : extenders) {
 				ItemType extender = ItemTypeRegistry.getItemType(ext);
 				String createExtUrl = createAdminUrl(CREATE_ITEM_ACTION, PARENT_ID_INPUT, parentId, ITEM_TYPE_INPUT, extender.getTypeId());
@@ -302,6 +302,7 @@ public class MainAdminPageCreator implements AdminXML {
 			}
 			String createBaseUrl = createAdminUrl(CREATE_ITEM_ACTION, PARENT_ID_INPUT, parentId, ITEM_TYPE_INPUT, itemDesc.getTypeId());
 			xml.startElement(CREATE_LINK_ELEMENT).addText(createBaseUrl).endElement();
+			writeSubwriters(xml);
 			xml.endElement();
 			return xml;
 		}
@@ -424,6 +425,8 @@ public class MainAdminPageCreator implements AdminXML {
 				basePage.addElement(assocWriter);
 				assocWriters.put(itemToAdd.assocId, assocWriter);
 			}
+			itemToAdd.addSubwriter(new LeafMDWriter(OPEN_ASSOC_LINK_ELEMENT, createAdminUrl(GET_VIEW_ACTION,
+					VIEW_TYPE_INPUT, ASSOCIATE_VIEW_TYPE, ITEM_ID_INPUT, baseId, PARENT_ID_INPUT, 0)));
 			assocWriter.addSubwriter(itemToAdd);
 		}
 		for (ItemAccessor subitem : subitems) {
@@ -547,8 +550,6 @@ public class MainAdminPageCreator implements AdminXML {
 			}
 			// Ссылки
 			basePage.addElement(new LeafMDWriter(LINK_ELEMENT, createAdminUrl(DELETE_PARAMETER_ACTION, PARAM_ID_INPUT, "")));
-			basePage.addElement(new LeafMDWriter(OPEN_ASSOC_LINK_ELEMENT, createAdminUrl(GET_VIEW_ACTION, VIEW_TYPE_INPUT,
-					ASSOCIATE_VIEW_TYPE, ITEM_ID_INPUT, itemId, PARENT_ID_INPUT, 0, PARAM_ID_INPUT, "")));
 			// Ссылка на загрузку картинки
 			// Надо найти параметр, в котором должна храниться подгружаемая картинка
 			// Также надо найти все ассоциированные айтемы и загрузить их. Они хранястя в параметрах типа associated
@@ -689,7 +690,15 @@ public class MainAdminPageCreator implements AdminXML {
 			return page;
 		ItemAccessor baseAcc = AdminLoader.loadItemAccessor(itemId);
 		ArrayList<ItemAccessor> mountToParentPathItems = AdminLoader.loadWholeBranch(associateParent, ItemTypeRegistry.getPrimaryAssoc().getId());
-		ArrayList<ItemAccessor> toAssoc = AdminLoader.loadClosestSubitems(associateParent, currentUser, 1);
+
+
+		long rootId = ItemTypeRegistry.getPrimaryRootId();
+		ArrayList<ItemAccessor> toAssoc;
+		if (associateParent == rootId) {
+			toAssoc = AdminLoader.loadUserRootItems(currentUser);
+		} else {
+			toAssoc = AdminLoader.loadClosestSubitems(associateParent, currentUser, 1);
+		}
 
 		// Базовый айтем
 		page.addElement(baseAcc);

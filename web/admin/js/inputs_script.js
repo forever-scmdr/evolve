@@ -119,8 +119,7 @@ function isValidUrl(url)
 		}
 		
 		// Открытие окна редактирования ассоциированных элементов
-		function openAssoc(paramId) {
-			var url = openAssocUrl + paramId;
+		function openAssoc(url) {
 			var winW = 630, winH = 460;
 			if (document.body && document.body.offsetWidth) {
 				winW = document.body.offsetWidth;
