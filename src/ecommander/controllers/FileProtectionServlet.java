@@ -39,7 +39,7 @@ public class FileProtectionServlet extends BasicServlet {
 		SessionContext sess = SessionContext.createSessionContext(req);
 		try {
 			String url = getUserUrl(req);
-			Long itemId = Item.getItemIdFromPath(url, AppContext.getFilesUrlPath(true));
+			Long itemId = Item.getItemIdFromPath(url, AppContext.getFilesUrlPath(true), true);
 			if (itemId != null) {
 				HashSet<Long> checkedIds = (HashSet<Long>) sess.getVariableObject(SECURITY_CHECKED_ITEM_IDS);
 				ItemBasics item;

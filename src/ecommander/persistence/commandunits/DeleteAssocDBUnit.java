@@ -51,9 +51,9 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		long childId = item.getId();
 		TemplateQuery delete = new TemplateQuery("Delete assoc");
 
-		delete.DELETE_FROM_WHERE(ITEM_PARENT_TBL).WHERE()
+		delete.DELETE_FROM_WHERE(ITEM_PARENT_TBL)
 				.col(IP_PARENT_ID).long_(parent.getId()).AND()
-				.col(IP_CHILD_ID).long_(item.getId())
+				.col(IP_CHILD_ID).long_(item.getId()).AND()
 				.col(IP_ASSOC_ID).byte_(assocId).sql(" \r\n");
 
 		Assoc assoc = ItemTypeRegistry.getAssoc(assocId);
@@ -66,9 +66,9 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 					.col("PRED." + IP_CHILD_ID).long_(parent.getId()).AND().col("PRED." + IP_ASSOC_ID).byte_(assocId)
 					.AND()
 					.col("SUCC." + IP_PARENT_ID).long_(childId).AND().col("SUCC." + IP_ASSOC_ID).byte_(assocId);
-			try (PreparedStatement pstmt = delete.prepareQuery(getTransactionContext().getConnection())) {
-				pstmt.executeUpdate();
-			}
+		}
+		try (PreparedStatement pstmt = delete.prepareQuery(getTransactionContext().getConnection())) {
+			pstmt.executeUpdate();
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////

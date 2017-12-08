@@ -67,11 +67,13 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 	 * 	    - загружаются потомки по всем ассоциациям
 	 * @param parentId
 	 * @param user
+	 * @param page
+	 * @param assocIds - если нет параметра - все ассоциации
 	 * @return
 	 * @throws Exception
 	 */
-	static ArrayList<ItemAccessor> loadClosestSubitems(long parentId, User user, int page) throws Exception {
-		TemplateQuery query = createSubitemsQuery(parentId, user, page, false, false);
+	static ArrayList<ItemAccessor> loadClosestSubitems(long parentId, User user, int page, Byte... assocIds) throws Exception {
+		TemplateQuery query = createSubitemsQuery(parentId, user, page, false, false, assocIds);
 		if (query == null)
 			return new ArrayList<>(0);
 		return loadAccessorsByQuery(query, true);
@@ -82,11 +84,12 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 	 * Аналогично loadClosestSubitems, только загружаются не айтемы, а их количество
 	 * @param parentId
 	 * @param user
+	 * @param assocIds - если нет параметра - все ассоциации
 	 * @return
 	 * @throws Exception
 	 */
-	static int loadClosestSubitemsCount(long parentId, User user) throws Exception {
-		TemplateQuery query = createSubitemsQuery(parentId, user, 0, true, false);
+	static int loadClosestSubitemsCount(long parentId, User user, Byte... assocIds) throws Exception {
+		TemplateQuery query = createSubitemsQuery(parentId, user, 0, true, false, assocIds);
 		if (query == null)
 			return 0;
 		try (Connection conn = MysqlConnector.getConnection();
@@ -106,11 +109,12 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 	 * @param parentId
 	 * @param user
 	 * @param page
+	 * @param assocIds - если нет параметра - все ассоциации
 	 * @return
 	 * @throws Exception
 	 */
-	static ArrayList<Item> loadInlineSubitems(long parentId, User user, int page) throws Exception {
-		TemplateQuery query = createSubitemsQuery(parentId, user, page, false, true);
+	static ArrayList<Item> loadInlineSubitems(long parentId, User user, int page, Byte... assocIds) throws Exception {
+		TemplateQuery query = createSubitemsQuery(parentId, user, page, false, true, assocIds);
 		if (query == null)
 			return new ArrayList<>(0);
 		ArrayList<Item> result = new ArrayList<>();
@@ -130,12 +134,13 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 	 * @param page          номер страницы при постраничном выводе
 	 * @param justCount     нужно ли загружить только количество сабайетмов
 	 * @param justInline    нужно ли загружить только инлайновые сабайтемы
+	 * @param assocIds      массив (или однин) ID ассоциаций
 	 * @return
 	 * @throws SQLException
 	 * @throws NamingException
 	 */
 	private static TemplateQuery createSubitemsQuery(long parentId, User user, int page, boolean justCount,
-	                                                 boolean justInline) throws SQLException, NamingException {
+	                                                 boolean justInline, Byte... assocIds) throws SQLException, NamingException {
 		ItemBasics parent;
 		try (Connection conn = MysqlConnector.getConnection()) {
 			parent = ItemMapper.loadItemBasics(parentId, conn);
@@ -143,7 +148,9 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 		if (parent == null)
 			return null;
 		ItemType parentType = ItemTypeRegistry.getItemType(parent.getTypeId());
-		Byte[] allAssocs = ItemTypeRegistry.getItemOwnAssocIds(parentType.getName()).toArray(new Byte[0]);
+		if (assocIds == null || assocIds.length == 0) {
+			assocIds = ItemTypeRegistry.getItemOwnAssocIds(parentType.getName()).toArray(new Byte[0]);
+		}
 		HashSet<Byte> adminGroups = new HashSet<>();
 		HashSet<Byte> simpleGroups = new HashSet<>();
 		for (User.Group group : user.getGroups()) {
@@ -168,7 +175,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 		base.col(IP_PARENT_ID).long_(parentId).AND()
 				.col(IP_PARENT_DIRECT).byte_((byte) 1).AND()
 				.col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_NIDDEN).AND()
-				.col_IN(IP_ASSOC_ID).byteIN(allAssocs).AND().subquery("<<USER>>");
+				.col_IN(IP_ASSOC_ID).byteIN(assocIds).AND().subquery("<<USER>>");
 		if (!justCount) {
 			if (justInline) {
 				Integer[] ids = ItemTypeRegistry.getItemInlineChildrenIds(parentType.getName()).toArray(new Integer[0]);
@@ -309,6 +316,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 
 	/**
 	 * Загружает айетмы по их ключу (Антоновский фикс)
+	 * TODO добавить проверку пользователя, чтобы не загружать недоступные айтемы
 	 * @param key
 	 * @return
 	 * @throws Exception

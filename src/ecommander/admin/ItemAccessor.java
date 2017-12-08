@@ -130,6 +130,11 @@ public class ItemAccessor extends MetaDataWriter implements ItemBasics, Comparab
 	}
 
 	@Override
+	public int hashCode() {
+		return (int)(itemId ^ (itemId >>> 32));
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		return itemId == ((ItemAccessor) obj).itemId;
 	}

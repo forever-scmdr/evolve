@@ -123,6 +123,9 @@
 									<xsl:if test="$owner">
 										<span class="description" style="color: #bb7777">[<xsl:value-of select="$owner/@name"/>] </span>
 									</xsl:if>
+									<xsl:if test="@files-protected = 'true'">
+										<span class="description" style="color: #aa9922">🔒 </span>
+									</xsl:if>
 									<xsl:if test="($differentSubitems and @type-caption != @caption and @caption != '') or $owner"><br/></xsl:if>
 									<xsl:value-of select="$caption"/>
 								</a>

@@ -145,7 +145,10 @@ public abstract class BasicServlet extends HttpServlet {
 		}
 		if (userUrl.equals("/"))
 			return AppContext.getWelcomePageName();
-		userUrl = userUrl.substring(PREFIX_LENGTH);
+		if (userUrl.charAt(0) == '/')
+			userUrl = userUrl.substring(1);
+		if (StringUtils.startsWith(userUrl, PREFIX))
+			userUrl = userUrl.substring(PREFIX_LENGTH);
 		// Удалить переменную _ которая добавляется jQuery при отправке ajax запросов
 		String queryString = request.getQueryString();
 		int jqueryVarIndex = StringUtils.indexOf(queryString, "_=");
@@ -157,8 +160,12 @@ public abstract class BasicServlet extends HttpServlet {
 		if (queryString != null) {
 			userUrl += '?' + queryString;
 		}
+		while (userUrl.length() > 0 && userUrl.charAt(0) == '/') {
+			userUrl = userUrl.substring(1);
+		}
+		return userUrl;
 		// Убирается идущий спереди слэш (/)
-		return userUrl.substring(1);
+		//return userUrl.substring(1);
 	}
 	/**
 	 * Добавляет дополнительные параметры к базовому УРЛ в формате CMS

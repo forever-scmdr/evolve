@@ -24,11 +24,7 @@
 	<xsl:variable name="item" select="/admin-page/item"/>
 	<xsl:variable name="parent" select="/admin-page/path/item[position() = last()]"/>
 
-	<xsl:template match="type[count(item) = 1]">
-		<xsl:apply-templates select="item" mode="extended"/>
-	</xsl:template>
-
-	<xsl:template match="type">
+	<xsl:template match="assoc">
 		<h2 class="type"><xsl:value-of select="@caption"/></h2>
 		<xsl:apply-templates select="item" mode="normal"/>
 	</xsl:template>
@@ -68,9 +64,9 @@
 	<xsl:template name="SEARCH_FORM">
 		<div class="list position-relative" style="margin-top: 40px; width: 300px;">
 			<xsl:value-of select="$item" />
-			<form id="search-form" class="ajax-form" action="get_view.action" method="POST">
+			<form id="search-form" class="ajax-form" action="{admin-page/path/root-link}" method="POST">
 				<input type="text" id="key_search" name="key_search" placeholder="поиск по названию" />
-				<a onclick="" >искать</a>
+				<a onclick="$(this).closest('form').submit()" >искать</a>
 			</form>
 			<a onclick="">Очистить поиск</a>
 		</div>
@@ -87,22 +83,22 @@
 		<xsl:call-template name="DOCTYPE"/>
 		<html>
 			<head>
-			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-			<meta http-equiv="Pragma" content="no-cache"/>
-			<link rel="stylesheet" type="text/css" href="admin/css/reset.css" />
-			<link href="admin/css/main_admin.css" rel="stylesheet" type="text/css"/>
-			<xsl:text disable-output-escaping="yes">
-				&lt;!--[if IE 7]&gt;
-				&lt;link href="css/ie.css" rel="stylesheet" type="text/css" /&gt;
-				&lt;![endif]--&gt;
-			</xsl:text>
-			<title><xsl:call-template name="TITLE"/></title><!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO LOCAL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-			<script type="text/javascript" src="admin/js/jquery-1.10.2.min.js"></script>
+				<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+				<meta http-equiv="Pragma" content="no-cache"/>
+				<link rel="stylesheet" type="text/css" href="admin/css/reset.css" />
+				<link href="admin/css/main_admin.css" rel="stylesheet" type="text/css"/>
+				<xsl:text disable-output-escaping="yes">
+					&lt;!--[if IE 7]&gt;
+					&lt;link href="css/ie.css" rel="stylesheet" type="text/css" /&gt;
+					&lt;![endif]--&gt;
+				</xsl:text>
+				<title>Создание связей</title><!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO LOCAL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js" />
 		
-			<link rel="stylesheet" type="text/css" href="admin/css/style.css" />
+				<link rel="stylesheet" type="text/css" href="admin/css/style.css" />
 			</head>
 			<body>
-			<script language="javascript" type="text/javascript" src="admin/js/admin.js"></script>
+			<script language="javascript" type="text/javascript" src="admin/js/admin.js"/>
 			<!-- ************************ Основная форма **************************** -->
 			<!-- ******************************************************************** -->
 			<div class="mainwrap">
@@ -117,11 +113,13 @@
 								<!-- Путь -->
 								<tr>
 									<td class="p_1" colspan="2">
-									<xsl:for-each select="/admin-page/path/item[position() != last()]">
-										<a href="{link}"><xsl:value-of select="@caption"/></a>
+										<a href="{admin-page/path/root-link}">Корень</a>
 										<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-									</xsl:for-each>
-									<strong><xsl:value-of select="$parent/@caption"/></strong>
+										<xsl:for-each select="/admin-page/path/item[position() != last()]">
+											<a href="{link}"><xsl:value-of select="@caption"/></a>
+											<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
+										</xsl:for-each>
+										<strong><xsl:value-of select="$parent/@caption"/></strong>
 									</td>
 								</tr>
 								<tr>
@@ -130,7 +128,7 @@
 										<h3><xsl:value-of select="$mount_text"/></h3>
 										<!-- ************************ Айтемы, в которых можно создавать ссылку на текущий **************************** -->
 										<form id="addForm" action="{admin-page/mount/link}" method="post">
-											<xsl:apply-templates select="admin-page/mount/type"/>
+											<xsl:apply-templates select="admin-page/mount/assoc"/>
 											<xsl:if test="admin-page/mount//input">
 											<div class="add_link_button">
 												<a href="#" class="button" onclick="$('#addForm').submit(); return false;">
@@ -147,7 +145,7 @@
 										<h3><xsl:value-of select="$mounted_text"/></h3>
 										<!-- ************************ Айтемы, которые содержат ссылку на текущий **************************** -->
 										<form id="deleteForm" action="{admin-page/mounted/link}" method="post">
-											<xsl:apply-templates select="admin-page/mounted/type"/>
+											<xsl:apply-templates select="admin-page/mounted/assoc"/>
 											<xsl:if test="admin-page/mounted//input">
 											<div class="add_link_button">
 												<a href="#" class="button delete" onclick="$('#deleteForm').submit(); return false;">

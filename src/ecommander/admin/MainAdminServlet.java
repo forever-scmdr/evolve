@@ -130,6 +130,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 			result = deleteReference(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.DELETE_ASSOCIATED_ACTION))
 			result = deleteAssociated(input, pageCreator);
+		else if (actionName.equals(MainAdminPageCreator.DELETE_ASSOCIATED_SUBITEM_ACTION))
+			result = deleteAssociatedSubitem(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.GET_VIEW_ACTION))
 			result = getView(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.REINDEX_ACTION))
@@ -318,7 +320,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			page = pageCreator.createMoveToPage(in.itemId, 0);
 			page.addMessage("Включен режим перемещения текущего элемента в другой элемент", false);
 		} else if (MainAdminPageCreator.ASSOCIATE_VIEW_TYPE.equals(in.viewType)) {
-			page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId);
+			page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId, in.searchQuery);
 		} else if (MainAdminPageCreator.PASTE_VIEW_TYPE.equals(in.viewType)) {
 			page = pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId);
 		} else if (MainAdminPageCreator.USERS_VIEW_TYPE.equals(in.viewType)) {
@@ -664,7 +666,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * @throws Exception 
 	 */
 	private AdminPage setToMountParentItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
-		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId);
+		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId, in.searchQuery);
 		page.addMessage("Чтобы создать связь, нужно отметить элементы для создания связи с текущим нажать 'Добавить связи'." +
 				" Чтобы удалить связи, нужно отмеить элементы, связь с которыми должна быть удалена, и нажать 'Удалить связи'", false);
 		return page;
@@ -681,7 +683,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * @throws Exception 
 	 */
 	private AdminPage setAssociatedParentItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
-		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId);
+		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId, in.searchQuery);
 		page.addMessage("Чтобы создать связь, нужно отметить элементы для создания связи с текущим нажать 'Добавить связи'." +
 				" Чтобы удалить связи, нужно отмеить элементы, связь с которыми должна быть удалена, и нажать 'Удалить связи'", false);
 		return page;
@@ -714,7 +716,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * @throws Exception 
 	 */
 	private AdminPage setToMoveParentItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
-		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId);
+		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId, in.searchQuery);
 		page.addMessage("Чтобы переместить элемент, нужно отметить элемент для перемещения и нажать 'Переместить'", false);
 		return page;
 	}
@@ -763,7 +765,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		transaction.execute();
 		// Очистить кеш страниц
 		PageController.clearCache();
-		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId);
+		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId, in.searchQuery);
 		page.addMessage("Новые ассоциации успешно созданы", false);
 		return page;
 	}
@@ -807,7 +809,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		transaction.execute();
 		// Очистить кеш страниц
 		PageController.clearCache();
-		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, ItemTypeRegistry.getPrimaryAssoc().getId());
+		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, ItemTypeRegistry.getPrimaryAssoc().getId(), in.searchQuery);
 		page.addMessage("Элемент успешно перемещен", false);
 		return page;
 	}
@@ -909,7 +911,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		if (MainAdminPageCreator.MOUNT_TO_VIEW_TYPE.equals(in.viewType))
 			page = pageCreator.createMountToPage(in.itemId, in.parentId);
 		else if (MainAdminPageCreator.TO_MOUNT_VIEW_TYPE.equals(in.viewType))
-			page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId);
+			page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId, in.searchQuery);
 		page.addMessage("Связи успешно удалены", false);
 		return page;
 	}
@@ -935,7 +937,33 @@ public class MainAdminServlet extends BasicAdminServlet {
 		transaction.execute();
 		// Очистить кеш страниц
 		PageController.clearCache();
-		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId);
+		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId, in.searchQuery);
+		page.addMessage("Ассоциации успешно удалены", false);
+		return page;
+	}
+
+	/**
+	 * Удалить ссылку из списка сабайтемов
+	 *
+	 * Параметры:
+	 * itemId - ID удаляемого айтема
+	 * parentId - ID родительского айтема (сабайтем которого удаляется)
+	 * assocId - ID ассоциации, связвывающей два айтема
+	 *
+	 * @param in
+	 * @param pageCreator
+	 * @return
+	 * @throws Exception
+	 */
+	private AdminPage deleteAssociatedSubitem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
+		Item baseItem = AdminLoader.loadItem(in.parentId, getCurrentAdmin());
+		Item associated = AdminLoader.loadItem(in.itemId, getCurrentAdmin());
+		transaction.addCommandUnit(new DeleteAssocDBUnit(associated, baseItem, in.assocId));
+		transaction.execute();
+		// Очистить кеш страниц
+		PageController.clearCache();
+		AdminPage page = pageCreator.createSubitemsPage(baseItem.getId(), baseItem.getTypeId(), 1, in.searchQuery);
 		page.addMessage("Ассоциации успешно удалены", false);
 		return page;
 	}

@@ -105,7 +105,7 @@ public class ReferencePE implements PageElement {
 
 	public void validate(String elementPath, ValidationResults results) {
 		// Есть ли айтем с заданным ID
-		boolean hasVariable = pageVarName != null && pageModel.getVariable(pageVarName) != null;
+		boolean hasVariable = pageVarName != null && pageModel.getInitVariablePE(pageVarName) != null;
 		boolean hasItem = pageItemId != null && pageModel.getItemPEById(pageItemId) != null;
 		if (!hasVariable && !hasItem)
 			results.addError(elementPath + " > " + getKey(), "There is neither variable '" + pageVarName + "' nor page item '"

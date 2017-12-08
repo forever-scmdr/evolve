@@ -1263,13 +1263,16 @@ public class Item implements ItemBasics {
 	}
 
 	/**
-	 * Получает ID айтема по путь к его файлам
+	 * Получает ID айтема по пути к его файлам
 	 * @param path
 	 * @param filesDirName
+	 * @param pathHasFile - в пути присутствует название файла, не только сам путь
 	 * @return
 	 */
-	public static Long getItemIdFromPath(String path, String filesDirName) {
+	public static Long getItemIdFromPath(String path, String filesDirName, boolean pathHasFile) {
 		try {
+			if (pathHasFile)
+				path = StringUtils.substringBeforeLast(path, "/");
 			String idStr = StringUtils.substringAfter(path, filesDirName);
 			idStr = StringUtils.remove(idStr, '/');
 			idStr = StringUtils.remove(idStr, FINAL_DIR_CHAR);

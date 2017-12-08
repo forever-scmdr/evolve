@@ -152,7 +152,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 		return "Page '" + name + "'";
 	}
 	/**
-	 * Получить список переменных, которые были перечислены в разделе <variables> страницы
+	 * Получить список переменных, которые были перечислены в разделе <request> страницы
 	 * @return
 	 */
 	public Collection<RequestVariablePE> getInitVariablesPEList() {
@@ -161,7 +161,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 		return new ArrayList<>(0);
 	}
 	/**
-	 * Получить переменную страницы, которая была указана в списке <variables>
+	 * Получить переменную страницы, которая была указана в списке <request>
 	 * Если переменной не было, возвращается null
 	 * @param name
 	 * @return

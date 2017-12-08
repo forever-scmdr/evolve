@@ -26,8 +26,9 @@ public class AppContext {
 	private static String CACHE_HTML_FOLDER;
 	private static String CACHE_XML_FOLDER;
 	private static String LUCENE_INDEX_FOLDER;
-	private static String FILES_FOLDER_NAME;
-	private static String PROTECTED_FILES_FOLDER_NAME;
+	private static String FILES_DIR;
+	private static String PROTECTED_FILES_DIR;
+	private static String PROTECTED_FILES_URL;
 	private static String PAGESMODEL_FILE;
 	private static String XSL_ROOT;
 	private static String DOMAINS_FILE;
@@ -48,8 +49,9 @@ public class AppContext {
 			CACHE_HTML_FOLDER = props.getProperty("paths.cache_folder");
 			CACHE_XML_FOLDER = props.getProperty("paths.cache_xml_folder");
 			LUCENE_INDEX_FOLDER = props.getProperty("paths.lucene_index_folder");
-			FILES_FOLDER_NAME = props.getProperty("paths.files_folder");
-			PROTECTED_FILES_FOLDER_NAME = "restrict_files/";
+			FILES_DIR = props.getProperty("paths.files_folder");
+			PROTECTED_FILES_DIR = "restrict_files/";
+			PROTECTED_FILES_URL = "protected/";
 			PAGESMODEL_FILE = props.getProperty("paths.pages_model");
 			XSL_ROOT = props.getProperty("paths.styles_folder");
 			DOMAINS_FILE = props.getProperty("paths.domains");
@@ -104,11 +106,11 @@ public class AppContext {
 	}
 	
 	public static String getCommonFilesDirPath() {
-		return getRealPath(FILES_FOLDER_NAME);
+		return getRealPath(FILES_DIR);
 	}
 
 	public static String getProtectedFilesDirPath() {
-		return getRealPath(PROTECTED_FILES_FOLDER_NAME);
+		return getRealPath(PROTECTED_FILES_DIR);
 	}
 
 	public static String getFilesDirPath(boolean isProtected) {
@@ -118,11 +120,11 @@ public class AppContext {
 	}
 
 	public static String getCommonFilesUrlPath() {
-		return FILES_FOLDER_NAME;
+		return FILES_DIR;
 	}
 
 	public static String getProtectedFilesUrlPath() {
-		return PROTECTED_FILES_FOLDER_NAME;
+		return PROTECTED_FILES_URL;
 	}
 
 	public static String getFilesUrlPath(boolean isProtected) {

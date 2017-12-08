@@ -129,10 +129,17 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			insert.UNION_ALL()
 					.SELECT(IP_PARENT_ID, childId, assocId, superTypeId, 0, 0)
 					.FROM(ITEM_PARENT_TBL).WHERE()
-					.col(IP_CHILD_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(primaryAssocId).sql(" \r\n");
+					.col(IP_CHILD_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(assocId).sql(" \r\n");
 
-			// Шаг 3. Повторить предыдущий шаг для каждого потомка ассоциируемого айтема ("нового потомка" из шага 2)
+			// Только для айтемов с сабайтемами (не новых)
 			if (!isItemNew) {
+				// Шаг 3. Добавить для нового непосредственного предка в качестве потомков всех потомков ассоциируемого айтема
+				insert.UNION_ALL()
+						.SELECT(parent.getId(), IP_CHILD_ID, assocId, IP_CHILD_SUPERTYPE, 0, 0)
+						.FROM(ITEM_PARENT_TBL).WHERE()
+						.col(IP_PARENT_ID).long_(childId).AND().col(IP_ASSOC_ID).byte_(primaryAssocId).sql(" \r\n");
+
+				// Шаг 4. Повторить шаг 2 для каждого потомка ассоциируемого айтема ("нового потомка" из шага 2)
 				insert.UNION_ALL()
 						.SELECT("PRED." + IP_PARENT_ID, "SUCC." + IP_CHILD_ID, assocId, "SUCC." + IP_CHILD_SUPERTYPE, 0, 0)
 						.FROM(ITEM_PARENT_TBL + " AS PRED", ITEM_PARENT_TBL + " AS SUCC")
@@ -141,9 +148,9 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						.AND()
 						.col("SUCC." + IP_PARENT_ID).long_(childId).AND().col("SUCC." + IP_ASSOC_ID).byte_(primaryAssocId);
 			}
-			try (PreparedStatement pstmt = insert.prepareQuery(getTransactionContext().getConnection())) {
-				pstmt.executeUpdate();
-			}
+		}
+		try (PreparedStatement pstmt = insert.prepareQuery(getTransactionContext().getConnection())) {
+			pstmt.executeUpdate();
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////

@@ -3,6 +3,8 @@
 
 	<assoc name="go_with" caption="Сопутсвующий товар" transitive="false" ag-id="1" ag-hash="192818621"/>
 
+	<assoc name="anti" caption="Антитовар" transitive="true" ag-id="2" ag-hash="2999138"/>
+
 <!--START_feedback_form-->
 	<item name="feedback_form" virtual="true" caption="Форма обратной связи" ag-id="221" ag-hash="-1950071490" >
 		<parameter name="name" type="string" caption="Имя" />
@@ -179,6 +181,7 @@
 		<child item="product" />
 		<child item="section" />
 		<child item="section" assoc="go_with"/>
+		<child item="section" assoc="anti"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="product_filter" type="filter" caption="Фильтр" description="для продукции" />
 		<parameter name="limit_1" type="double" caption="Лимит для маленьких скидок" description="сколько единиц надо заказать чтобы получить маленькую скидку" />

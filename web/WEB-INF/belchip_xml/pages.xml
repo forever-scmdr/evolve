@@ -174,6 +174,7 @@
 				<filter>
 					<parameter name="name" sign="like"><var value="К%"/></parameter>
 				</filter>
+				<parameter-input ref="section" name="code" restore-var="message" form="big_form"/>
 				<new item="section" parent-ref="section" id="new_section" tag="new">
 					<parameter-input ref="new_section" restore-var="message" form="big_form"/>
 					<extra-input ref="new_section" name="popular" restore-var="message" form="big_form"/>
@@ -184,6 +185,48 @@
 				</new>
 			</list>
 		</single>
+	</page>
+
+
+	<page name="assoc_basic">
+		<list item="section_first">
+			<filter>
+				<parameter name="name" sign="like"><var value="Ш%"/></parameter>
+			</filter>
+			<list item="section" assoc="anti" tag="section_anti"/>
+			<list item="section" assoc="go_with" tag="section_go_with"/>
+			<list item="product" transit="true" assoc="anti" tag="all_anti"/>
+			<list item="product" transit="true" assoc="go_with" tag="all_go_with"/>
+			<list item="product" transit="true" assoc="anti" tag="anti_less_3">
+				<filter>
+					<parameter name="price" sign="&lt;="><var value="3"/></parameter>
+				</filter>
+			</list>
+		</list>
+	</page>
+
+
+	<page name="reference_translit">
+		<request>
+			<var name="sec" style="translit"/>
+		</request>
+		<single item="section" var="sec"/>
+	</page>
+
+
+	<page name="reference_id">
+		<request>
+			<var name="sec"/>
+		</request>
+		<single item="section" var="sec"/>
+	</page>
+
+
+	<page name="reference_param">
+		<request>
+			<var name="sec"/>
+		</request>
+		<single item="product" var="sec" parameter="code"/>
 	</page>
 
 
