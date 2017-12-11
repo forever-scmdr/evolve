@@ -230,6 +230,52 @@
 	</page>
 
 
+	<page name="user_group">
+		<request>
+			<var name="name" value="Шнуры"/>
+		</request>
+		<usergroup name="registered">
+			<single item="section_first" var="name" parameter="name">
+				<list item="section">
+					<filter>
+						<child item="product">
+							<parameter name="price" sign="&gt;="><var value="10"/></parameter>
+						</child>
+					</filter>
+					<list item="product" transit="true">
+						<filter>
+							<parameter name="price" sign="&gt;="><var value="10"/></parameter>
+						</filter>
+					</list>
+				</list>
+			</single>
+		</usergroup>
+	</page>
+
+
+	<page name="user_personal">
+		<request>
+			<var name="name" value="Шнуры"/>
+		</request>
+		<single item="section_first" var="name" parameter="name">
+			<personal>
+				<list item="section">
+					<filter>
+						<child item="product">
+							<parameter name="price" sign="&gt;="><var value="10"/></parameter>
+						</child>
+					</filter>
+					<list item="product" transit="true">
+						<filter>
+							<parameter name="price" sign="&gt;="><var value="10"/></parameter>
+						</filter>
+					</list>
+				</list>
+			</personal>
+		</single>
+	</page>
+
+
 	<page name="integration" template="integration">
 		<request>
 			<var name="action"/>

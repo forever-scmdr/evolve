@@ -670,7 +670,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			if (user != null)
 				query.getSubquery(Const.WHERE).AND().col(I_DOT + I_USER).int_(user.getUserId());
 			if (groupIds.size() > 0)
-				query.getSubquery(Const.WHERE).AND().col(I_DOT + I_GROUP).byteIN(groupIds.toArray(new Byte[0]));
+				query.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_GROUP).byteIN(groupIds.toArray(new Byte[0]));
 		}
 	}
 	/**

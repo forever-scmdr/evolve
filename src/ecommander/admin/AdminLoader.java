@@ -185,8 +185,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 
 		TemplateQuery adminQuery = (TemplateQuery) base.createClone();
 		TemplateQuery simpleQuery = (TemplateQuery) base.createClone();
-		adminQuery.getSubquery("<<USER>>").col_IN(I_GROUP).byteIN(adminGroups.toArray(new Byte[0])).AND()
-				.col(I_USER).int_(User.ANONYMOUS_ID);
+		adminQuery.getSubquery("<<USER>>").col_IN(I_GROUP).byteIN(adminGroups.toArray(new Byte[0]));
 		simpleQuery.getSubquery("<<USER>>").col_IN(I_GROUP).byteIN(simpleGroups.toArray(new Byte[0])).AND()
 				.col(I_USER).int_(user.getUserId());
 
