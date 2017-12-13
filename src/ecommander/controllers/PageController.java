@@ -82,6 +82,13 @@ public class PageController {
 		}
 		// Переменные, хранящиеся в куки
 		page.getSessionContext().flushCookies(resp);
+		// Проверить, найден ли критический айтем. Если нет - вернуть ошибку 404
+		if (page.hasCriticalItem()) {
+			if (!page.getItemPEById(page.getCriticalItem()).hasFoundItems()) {
+				resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
+		}
 		// Редирект, т.к. форвард уже был выполнен в методе processPageInt
 		if (result != null) {
 			// Внешняя ссылка

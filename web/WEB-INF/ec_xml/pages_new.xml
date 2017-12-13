@@ -164,13 +164,15 @@
 	</page>
 
 
-	<page name="product">
+	<!-- Критический айтем. Если список айтемов с указанным в атрибуте critical-item страничным ID пуст,
+		то нужно вернуть 404 ошибку -->
+	<page name="product" critical-item="prod">
 		<request>
 			<var name="prod"/>
 		</request>
 		<!-- Ссылка на айтем из переменной - var Если var это не ID айетма, а значение параметра, -->
 		<!-- то добавляется атрибут parameter с названием параметра -->
-		<single item="product" var="prod" parameter="art">
+		<single item="product" id="prod" var="prod" parameter="art">
 
 		</single>
 	</page>

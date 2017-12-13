@@ -67,8 +67,8 @@
 					Система управления сайтом
 					<xsl:value-of select="/admin-page/domain" />
 				</title>
-				<script src="admin/js/jquery-3.2.1.min.js"></script>
-				<script type="text/javascript" src="admin/js/admin.js"></script>
+				<script src="admin/js/jquery-3.2.1.min.js"/>
+				<script type="text/javascript" src="admin/js/admin.js"/>
 			</head>
 			<body>
 

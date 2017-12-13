@@ -276,6 +276,20 @@
 	</page>
 
 
+	<page name="key_unique_default">
+		<request>
+			<var name="sec" style="translit"/>
+		</request>
+		<single item="section" var="sec"/>
+	</page>
+
+	<page name="critical_item" critical-item="sec">
+		<request>
+			<var name="code"/>
+		</request>
+		<single item="section" var="code" parameter="code" id="sec"/>
+	</page>
+
 	<page name="integration" template="integration">
 		<request>
 			<var name="action"/>

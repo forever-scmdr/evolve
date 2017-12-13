@@ -26,6 +26,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	protected final String name; // Если название страницы пустое, то выводить XML страницы без XSL преобразования
 	protected final String template;
 	protected final boolean cacheable; // Можно ли кешировать эту страницу
+	protected final String criticalItem; // Айтем, при отсутствии (не нахождении) которого вместо страницы должна выводиться 404 ошибка
 	protected LinkedHashSet<String> cacheVars = null; 		// переменные, которые используются для уникального кеширования. Если страница содержит переменные, 
 															// не содержащиеся в этом списке, то если эти переменные установлены, страница не кешируется
 	private LinkedHashMap<String, RequestVariablePE> varPEDefs = null; // важен порядок следования переменных. Когда используенся уникальный текстовый ключ айтема,
@@ -35,7 +36,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	private String schedule; // Расписание запусков страницы (Cron)
 	private HashMap<String, String> headers = null;
 
-	public PagePE(String pageName, String pageTemplateName, boolean cacheable, Collection<String> cacheVars) {
+	public PagePE(String pageName, String pageTemplateName, boolean cacheable, Collection<String> cacheVars, String criticalItem) {
 		super();
 		this.name = pageName;
 		this.template = pageTemplateName;
@@ -46,6 +47,10 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 			this.cacheVars = new LinkedHashSet<>(5);
 			this.cacheVars.addAll(cacheVars);
 		}
+		if (StringUtils.isNotBlank(criticalItem))
+			this.criticalItem = criticalItem;
+		else
+			this.criticalItem = null;
 	}
 	
 	public boolean isCacheable() {
@@ -87,7 +92,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	 * @return
 	 */
 	public ExecutablePagePE createExecutableClone(SessionContext sessionContext) {
-		ExecutablePagePE clone = new ExecutablePagePE(name, template, cacheable, sessionContext, cacheVars);
+		ExecutablePagePE clone = new ExecutablePagePE(name, template, cacheable, sessionContext, cacheVars, criticalItem);
 		clone.userGroups.addAll(userGroups);
 		if (headers.size() > 0) {
 			for (Entry<String, String> header : headers.entrySet()) {
@@ -192,7 +197,23 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	public String getSchedule() {
 		return schedule;
 	}
-	
+
+	/**
+	 * Есть ли у страницы критический айтем
+	 * @return
+	 */
+	public boolean hasCriticalItem() {
+		return criticalItem != null;
+	}
+
+	/**
+	 * Получить страничный ID критического айтема
+	 * @return
+	 */
+	public String getCriticalItem() {
+		return criticalItem;
+	}
+
 	@Override
 	protected boolean validateShallow(String elementPath, ValidationResults results) {
 		// Есть ли название у страницы

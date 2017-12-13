@@ -177,7 +177,8 @@
 <!--END_catalog-->
 
 <!--START_section-->
-	<item name="section" key="name" caption="Раздел" super="product_container" key-unique="true" ag-id="233" ag-hash="1970241253">
+	<item name="section" default-page="key_unique_default" key="name" caption="Раздел"
+	      super="product_container" key-unique="true" ag-id="233" ag-hash="1970241253">
 		<child item="product" />
 		<child item="section" />
 		<child item="section" assoc="go_with"/>

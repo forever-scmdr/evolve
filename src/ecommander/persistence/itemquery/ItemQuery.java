@@ -894,6 +894,20 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			if (isOwnConnection) MysqlConnector.closeConnection(connection);
 		}
 	}
+
+	/**
+	 * Загрузить один айтем по уникальному ключу
+	 * @param key
+	 * @param conn
+	 * @return
+	 * @throws Exception
+	 */
+	public static Item loadByUniqueKey(String key, Connection... conn) throws Exception {
+		ArrayList<Item> items = loadByUniqueKey(Arrays.asList(key), conn);
+		if (items.size() > 0)
+			return items.get(0);
+		return null;
+	}
 	/**
 	 * Загрузить айтем по значению одного параметра
 	 * @param itemName

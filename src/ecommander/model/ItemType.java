@@ -415,6 +415,14 @@ public class ItemType extends ItemTypeContainer {
 		return defaultPage != null;
 	}
 
+	/**
+	 * Установить страницу по умолчанию
+	 * @param pageName
+	 */
+	void setDefaultPage(String pageName) {
+		this.defaultPage = pageName;
+	}
+
 	public String getChildrenSorting() {
 		return childrenSorting;
 	}

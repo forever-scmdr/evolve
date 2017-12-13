@@ -632,6 +632,7 @@ public class PageModelBuilder {
 	public static final String SCOPE_ATTRIBUTE = "scope";
 	public static final String STYLE_ATTRIBUTE = "style";
 	public static final String CACHE_VARS_ATTRIBUTE = "cache-vars";
+	public static final String CRITICAL_ITEM_ATTRIBUTE = "critical-item";
 	public static final String CLASS_ATTRIBUTE = "class";
 	public static final String TYPE_ATTRIBUTE = "type";
 	public static final String COMPARE_ATTRIBUTE = "compare";
@@ -739,11 +740,12 @@ public class PageModelBuilder {
 					boolean cacheable = StringUtils.equalsIgnoreCase(pageNode.attr(CACHEABLE_ATTRIBUTE), TRUE_VALUE);
 					String schedule = pageNode.attr(SCHEDULE_ATTRIBUTE);
 					String cacheVarsStr = pageNode.attr(CACHE_VARS_ATTRIBUTE);
+					String criticalItem = pageNode.attr(CRITICAL_ITEM_ATTRIBUTE);
 					ArrayList<String> cacheVars = new ArrayList<>();
 					if (!StringUtils.isBlank(cacheVarsStr)) {
 						cacheVars = new ArrayList<>(Arrays.asList(StringUtils.split(cacheVarsStr, ' ')));
 					}
-					page = new PagePE(pageNode.attr(NAME_ATTRIBUTE), pageNode.attr(TEMPLATE_ATTRIBUTE), cacheable, cacheVars);
+					page = new PagePE(pageNode.attr(NAME_ATTRIBUTE), pageNode.attr(TEMPLATE_ATTRIBUTE), cacheable, cacheVars, criticalItem);
 					// Группы пользователей, которым разрешен просмотр
 					String authority = pageNode.attr(AUTHORITY_GROUPS_ATTRIBUTE);
 					if (!StringUtils.isBlank(authority)) {

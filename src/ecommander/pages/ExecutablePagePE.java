@@ -42,8 +42,8 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	private boolean cacheClearNeeded = false;
 	
 	ExecutablePagePE(String pageName, String pageTemplateName, boolean cacheable, SessionContext sessionContext,
-			Collection<String> cacheVars) {
-		super(pageName, pageTemplateName, cacheable, cacheVars);
+			Collection<String> cacheVars, String criticalItem) {
+		super(pageName, pageTemplateName, cacheable, cacheVars, criticalItem);
 		this.identifiedElements = new HashMap<>();
 		this.executables = new ArrayList<>();
 		this.variables = new LinkedHashMap<>();
@@ -228,7 +228,17 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 		}
 		return true;
 	}
-	
-	
 
+	@Override
+	protected boolean validateShallow(String elementPath, ValidationResults results) {
+		boolean success = super.validateShallow(elementPath, results);
+		// Проверить наличие критического айтема
+		if (hasCriticalItem()) {
+			if (getItemPEById(criticalItem) == null) {
+				results.addError(elementPath + " > " + getKey(),
+						"There is no item '" + criticalItem + "' on this page which is marked as Critical Item");
+			}
+		}
+		return success;
+	}
 }

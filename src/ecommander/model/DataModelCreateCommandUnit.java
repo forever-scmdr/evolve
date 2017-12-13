@@ -530,6 +530,10 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 				if (predecessor.hasExtraHandlers()) {
 					predecessor.addExtraHandlersToItem(item);
 				}
+				// Если нет своей страницы по умолчанию - добавить ее из предка
+				if (!item.hasDefaultPage() && predecessor.hasDefaultPage()) {
+					item.setDefaultPage(predecessor.getDefaultPage());
+				}
 			}
 		}
 		// Айтем обработан - добавить в список обработанных

@@ -1,24 +1,21 @@
 package ecommander.pages;
 
+import ecommander.controllers.ScheduledJob;
+import ecommander.controllers.SessionContext;
+import ecommander.fwk.PageNotFoundException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.UserNotAllowedException;
+import ecommander.fwk.ValidationException;
+import ecommander.model.DomainBuilder;
+import ecommander.model.Item;
+import ecommander.pages.var.VariablePE;
+import ecommander.persistence.itemquery.ItemQuery;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
+
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Properties;
-
-import org.quartz.CronScheduleBuilder;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
-
-import ecommander.fwk.PageNotFoundException;
-import ecommander.fwk.UserNotAllowedException;
-import ecommander.fwk.ValidationException;
-import ecommander.controllers.ScheduledJob;
-import ecommander.controllers.SessionContext;
-import ecommander.model.DomainBuilder;
 
 /**
  * Хранит все модели страниц (PagePE)
@@ -128,8 +125,24 @@ public class PageModelRegistry {
 			throws PageNotFoundException, UserNotAllowedException, UnsupportedEncodingException {
 		LinkPE link = LinkPE.parseLink(linkUrl);
 		PagePE pageModel = getPageModel(link.getPageName());
-		if (pageModel == null)
+		// Если не найдена страница, возможно название старинцы - это уникальный текстовый ключ айтема
+		// со страницей по умолчанию.
+		// Загрузить айтем по уникальному ключу, узнать страницу по умолчанию и добавить ее к урлу
+		if (pageModel == null) {
+			try {
+				Item keyItem = ItemQuery.loadByUniqueKey(link.getPageName());
+				if (keyItem != null && keyItem.getItemType().hasDefaultPage()) {
+					link = LinkPE.parseLink(keyItem.getItemType().getDefaultPage() + VariablePE.COMMON_DELIMITER + linkUrl);
+					pageModel = getPageModel(link.getPageName());
+				}
+			} catch (Exception e) {
+				ServerLogger.error("Unable to load item by unique key", e);
+			}
+		}
+		// Если не найдена страница - выбросить исключение
+		if (pageModel == null) {
 			throw new PageNotFoundException("The page '" + link.getPageName() + "' is not found");
+		}
 		ExecutablePagePE execPageModel = pageModel.createExecutableClone(context);
 		if (context != null && !execPageModel.isUserAuthorized(context.getUser()))
 			throw new UserNotAllowedException("Requested page is not allowed for current user");
