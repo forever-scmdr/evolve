@@ -136,8 +136,12 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		AllFoundIterator(ExecutableItemPE pageItem) {
 			if (pageItem.hasFoundItems()) {
 				mapIterator = pageItem.foundItemsByParent.values().iterator();
-				if (mapIterator.hasNext()) {
-					listIterator = mapIterator.next().items.iterator();
+				while (mapIterator.hasNext()) {
+					FoundItemBundle bundle = mapIterator.next();
+					if (bundle != null) {
+						listIterator = bundle.items.iterator();
+						break;
+					}
 				}
 			}
 		}
@@ -151,7 +155,14 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				return true;
 			}
 			if (listIterator != null && mapIterator.hasNext()) {
-				listIterator = mapIterator.next().items.iterator();
+				//listIterator = mapIterator.next().items.iterator();
+				while (mapIterator.hasNext()) {
+					FoundItemBundle bundle = mapIterator.next();
+					if (bundle != null) {
+						listIterator = bundle.items.iterator();
+						break;
+					}
+				}
 				return next();
 			}
 			return false;
@@ -327,6 +338,13 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		parentSubitems.totalQuantity++;
 		// Установить последний найденный айтем
 		lastFoundItem = item;
+
+		// Зарезервировать порядок следования для вложенных айтемов, если они есть
+		if (subitems != null) {
+			for (ExecutableItemPE subitem : subitems) {
+				subitem.foundItemsByParent.put(item.getId(), null);
+			}
+		}
 	}
 	/**
 	 * Устанавливает общее количество айтемов (не найденных, а потенциально существующих в БД)
