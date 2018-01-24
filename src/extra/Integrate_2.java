@@ -156,7 +156,7 @@ public class Integrate_2 extends Command implements CleanAllDeletedItemsDBUnit.D
 								// Запись товаров в каталог
 								parser.parse(integration, new CatalogCreationHandler(catalog, info));
 								info.addMessage("Создание продукции завершено. Начало текстовой индексации");
-								LuceneIndexMapper.reindexAll();
+								LuceneIndexMapper.getSingleton().reindexAll();
 								info.addMessage("Индексация завершена");
 								// Установление даты обновления каталога
 								catalog.setValue(ItemNames.CATALOG.DATE, System.currentTimeMillis());
@@ -215,7 +215,7 @@ public class Integrate_2 extends Command implements CleanAllDeletedItemsDBUnit.D
 			doc.startElement("total-line-number").addText(totalLineCount).endElement();
 			doc.startElement("sections-created").addText(sectionsCreated).endElement();
 			doc.startElement("products-created").addText(productsCreated).endElement();
-			doc.startElement("items-indexed").addText(LuceneIndexMapper.getCountProcessed()).endElement();
+			doc.startElement("items-indexed").addText(LuceneIndexMapper.getSingleton().getCountProcessed()).endElement();
 			
 			for (LogMessage msg : log) {
 				doc.startElement("message", "time", TIME_FORMAT.format(msg.date)).addText(msg.message).endElement();

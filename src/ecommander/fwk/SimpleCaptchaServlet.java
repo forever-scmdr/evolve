@@ -1,24 +1,21 @@
 package ecommander.fwk;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import nl.captcha.Captcha;
+import nl.captcha.gimpy.BlockGimpyRenderer;
+import nl.captcha.servlet.CaptchaServletUtil;
+import nl.captcha.text.producer.TextProducer;
+import nl.captcha.text.renderer.DefaultWordRenderer;
+import org.apache.commons.text.RandomStringGenerator;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.RandomStringUtils;
-
-import nl.captcha.Captcha;
-import nl.captcha.gimpy.BlockGimpyRenderer;
-import nl.captcha.servlet.CaptchaServletUtil;
-import nl.captcha.text.producer.TextProducer;
-import nl.captcha.text.renderer.DefaultWordRenderer;
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * http://simplecaptcha.git.sourceforge.net/git/gitweb.cgi?p=simplecaptcha/
@@ -31,7 +28,8 @@ public class SimpleCaptchaServlet extends HttpServlet {
 	private static class NumericTextProducer implements TextProducer {
 		//private static final String _RUSSIAN = "1234567890абвгдеёжзиыйклмнопрстуфхцчшщэюя";
 		public String getText() {
-			return RandomStringUtils.random(5, false, true);
+			RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').build();
+			return generator.generate(5);
 		}
 	}
 	public static final String NAME = "capt";

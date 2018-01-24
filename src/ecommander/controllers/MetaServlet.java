@@ -41,7 +41,7 @@ public class MetaServlet extends BasicServlet {
 		try {
 			if (action.equalsIgnoreCase(REINDEX)) {
 				StartController.getSingleton().start(getServletContext());
-				LuceneIndexMapper.reindexAll();
+				LuceneIndexMapper.getSingleton().reindexAll();
 			} else if (action.equalsIgnoreCase(ACTION_UPDATE_MODEL)) {
 				DataModelBuilder modelBuilder = DataModelBuilder.newSafeUpdate();
 				boolean hasDeletions = !modelBuilder.tryLockAndReloadModel();

@@ -240,7 +240,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * @throws Exception
 	 */
 	private AdminPage reindex(MainAdminPageCreator pageCreator) throws Exception {
-		LuceneIndexMapper.reindexAll();
+		LuceneIndexMapper.getSingleton().reindexAll();
 		//AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
 		//page.addMessage("Переиндексация завершена успешно", false);
 		AdminPage page = pageCreator.createRedirectPage(MainAdminPageCreator.INITIALIZE_ACTION,
@@ -266,12 +266,13 @@ public class MainAdminServlet extends BasicAdminServlet {
 			ResultSet rs = stmt.executeQuery("SELECT " + DBConstants.ItemTbl.I_ID + " FROM " + DBConstants.ItemTbl.ITEM_TBL
 					+ " WHERE " + DBConstants.ItemTbl.I_TYPE_ID + " > 0");
 			DelayedTransaction tr = new DelayedTransaction(getCurrentAdmin());
+			LuceneIndexMapper.getSingleton().startUpdate();
 			while (rs.next()) {
 				Item item = AdminLoader.loadItem(rs.getLong(1), getCurrentAdmin());
 				if (item == null)
 					continue;
 				item.forceInitialInconsistent();
-				tr.addCommandUnit(SaveItemDBUnit.get(item).ignoreUser().dontCloseFulltextIndexWriter());
+				tr.addCommandUnit(SaveItemDBUnit.get(item).ignoreUser());
 				if (tr.getCommandCount() >= 10) {
 					tr.execute();
 				}
@@ -280,13 +281,13 @@ public class MainAdminServlet extends BasicAdminServlet {
 					ServerLogger.warn("Updated " + count + " items");
 			}
 			tr.execute();
-			LuceneIndexMapper.commit();
-			LuceneIndexMapper.closeWriter();
+			LuceneIndexMapper.getSingleton().commit();
 		} catch (Exception e) {
 			ServerLogger.error(e);
 		} finally {
 			MysqlConnector.closeStatement(stmt); // TODO !!!!!!!!!!!!!!
-			MysqlConnector.closeConnection(conn);			
+			MysqlConnector.closeConnection(conn);
+			LuceneIndexMapper.getSingleton().finishUpdate();
 		}
 		//AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
 		//page.addMessage("Все кеши очищены успешно", false);
@@ -447,7 +448,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		transaction.execute();
 		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
 		// Удалить айтем из индекса Lucene
-		LuceneIndexMapper.commit();
+		LuceneIndexMapper.getSingleton().commit();
 		// Очистить кеш страниц
 		PageController.clearCache();
 		page.addMessage("Элемент успешно удален", false);
@@ -544,8 +545,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 		}
 		transaction.addCommandUnit(SaveItemDBUnit.get(item));
 		transaction.execute();
-		// Обновить индекс Lucene
-		LuceneIndexMapper.commit();
 		// Очистить кеш страниц
 		PageController.clearCache();
 		AdminPage page = pageCreator.createParamsPage(in.itemId, in.isVisual);
@@ -629,8 +628,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 			item.removeMultipleParamValue(in.paramId, in.index);
 		transaction.addCommandUnit(SaveItemDBUnit.get(item));
 		transaction.execute();
-		// Обновить индекс Lucene
-		LuceneIndexMapper.commit();
 		// Очистить кеш страниц
 		PageController.clearCache();
 		AdminPage page = pageCreator.createParamsPage(in.itemId, in.isVisual);

@@ -183,7 +183,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 
 		// Добавление в полнотекстовый индекс
 		if (insertIntoFulltextIndex)
-			LuceneIndexMapper.insertItem(item, closeLuceneWriter);
+			LuceneIndexMapper.getSingleton().insertItem(item);
 	}
 
 }

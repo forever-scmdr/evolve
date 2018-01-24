@@ -1,5 +1,7 @@
 package ecommander.persistence.commandunits;
 
+import ecommander.persistence.mappers.LuceneIndexMapper;
+
 /**
  * Удаление записей всех ранее удаленных айтемов. Происходит пакетами с заданным размером.
  * Также возмжно инофрмирование о количестве удаленных айтемов с помощью специального интерфейса
@@ -21,14 +23,19 @@ public class CleanAllDeletedItemsDBUnit extends DBPersistenceCommandUnit {
 
 	public void execute() throws Exception {
 		int deletedCount;
-		do {
-			CleanDeletedItemsDBUnit cleanBatch = new CleanDeletedItemsDBUnit(deleteBatchQty);
-			executeCommand(cleanBatch);
-			deletedCount = cleanBatch.getDeletedCount();
-			if (informer != null) {
-				informer.receiveDeletedCount(deletedCount);
-			}
-		} while (deletedCount > 0);
+		try {
+			LuceneIndexMapper.getSingleton().startUpdate();
+			do {
+				CleanDeletedItemsDBUnit cleanBatch = new CleanDeletedItemsDBUnit(deleteBatchQty);
+				executeCommand(cleanBatch);
+				deletedCount = cleanBatch.getDeletedCount();
+				if (informer != null) {
+					informer.receiveDeletedCount(deletedCount);
+				}
+			} while (deletedCount > 0);
+		} finally {
+			LuceneIndexMapper.getSingleton().finishUpdate();
+		}
 	}
 
 }

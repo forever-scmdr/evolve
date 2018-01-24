@@ -25,7 +25,6 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	boolean ignoreUser = false;
 	boolean ignoreFileErrors = false;
 	boolean insertIntoFulltextIndex = true;
-	boolean closeLuceneWriter = true;
 	boolean processComputed = true;
 	private ArrayList<PersistenceCommandUnit> executedCommands;
 	
@@ -93,16 +92,6 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 */
 	public DBPersistenceCommandUnit noFulltextIndex() {
 		this.insertIntoFulltextIndex = false;
-		this.closeLuceneWriter = false;
-		return this;
-	}
-
-	/**
-	 * Не закрывать райтер индекса Lucene после добавления в него результатов выполнения этой команды
-	 * @return
-	 */
-	public DBPersistenceCommandUnit dontCloseFulltextIndexWriter() {
-		this.closeLuceneWriter = false;
 		return this;
 	}
 
@@ -125,7 +114,6 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 		if (command != null) {
 			if (command instanceof DBPersistenceCommandUnit) {
 				((DBPersistenceCommandUnit) command).insertIntoFulltextIndex = insertIntoFulltextIndex;
-				((DBPersistenceCommandUnit) command).closeLuceneWriter = closeLuceneWriter;
 				((DBPersistenceCommandUnit) command).ignoreUser = ignoreUser;
 				((DBPersistenceCommandUnit) command).ignoreFileErrors = ignoreFileErrors;
 			}

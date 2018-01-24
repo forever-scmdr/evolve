@@ -85,7 +85,7 @@ class FulltextCriteria {
 				}
 			}
 			if (!queries.isEmpty()) {
-				loadedIds = LuceneIndexMapper.getItems(queries, filter, maxResultCount, threshold);
+				loadedIds = LuceneIndexMapper.getSingleton().getItems(queries, filter, maxResultCount, threshold);
 				return;
 			}
 		}

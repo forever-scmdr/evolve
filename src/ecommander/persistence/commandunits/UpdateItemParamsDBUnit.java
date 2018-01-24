@@ -96,7 +96,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 
 		// Вставка в Lucene индекс
 		if (insertIntoFulltextIndex)
-			LuceneIndexMapper.updateItem(item, closeLuceneWriter);
+			LuceneIndexMapper.getSingleton().updateItem(item);
 
 		// Дополнительная обработка
 		if (triggerExtra && item.getItemType().hasExtraHandlers()) {

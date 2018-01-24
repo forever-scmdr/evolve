@@ -1,15 +1,15 @@
 package ecommander.fwk;
 
+import ecommander.pages.Command;
+import ecommander.pages.ResultPE;
+import ecommander.persistence.mappers.LuceneIndexMapper;
+
 import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
-
-import ecommander.pages.Command;
-import ecommander.pages.ResultPE;
-import ecommander.persistence.mappers.LuceneIndexMapper;
 
 /**
  * Интеграция файла XML Результаты валидации и выполнения в след. виде
@@ -121,7 +121,7 @@ public abstract class IntegrateBase extends Command {
 			doc.startElement("operation").addText(operation).endElement();
 			doc.startElement("line").addText(lineNumber).endElement();
 			if (operation.equals(_indexation))
-				doc.startElement("processed").addText(LuceneIndexMapper.getCountProcessed()).endElement();
+				doc.startElement("processed").addText(LuceneIndexMapper.getSingleton().getCountProcessed()).endElement();
 			else
 				doc.startElement("processed").addText(processed).endElement();
 			if (inProgress) {
@@ -158,7 +158,7 @@ public abstract class IntegrateBase extends Command {
 	}
 	/**
 	 * Установить текущую операцию
-	 * @param op
+	 * @param opName
 	 */
 	protected static void setOperation(String opName) {
 		getInfo().setOperation(opName);
@@ -246,18 +246,8 @@ public abstract class IntegrateBase extends Command {
 							ServerLogger.error("Integration error", se);
 							info.addError(se.getMessage(), 0, 0);
 						} finally {
-							try {
-								LuceneIndexMapper.closeWriter();
-							} catch (IOException e) {
-								try {
-									throw e;
-								} catch (IOException e1) {
-									e1.printStackTrace();
-								}
-							} finally {
-								isInProgress = false;
-								getInfo().setInProgress(false);
-							}
+							isInProgress = false;
+							getInfo().setInProgress(false);
 						}
 					}
 				});

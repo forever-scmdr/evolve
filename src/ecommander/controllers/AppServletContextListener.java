@@ -13,9 +13,9 @@ public class AppServletContextListener implements ServletContextListener {
 
 	public void contextDestroyed(ServletContextEvent event) {
 		try {
-			LuceneIndexMapper.closeWriter();
+			LuceneIndexMapper.getSingleton().close();
 		} catch (IOException e) {
-			ServerLogger.error("Can't close lucene index writer on servlet context shutdown", e);
+			ServerLogger.error("Can't close lucene index on servlet context shutdown", e);
 		}
 	}
 

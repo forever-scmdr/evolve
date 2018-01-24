@@ -20,11 +20,8 @@ import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.*;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.FSDirectory;
@@ -45,6 +42,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
 
+/**
+ * Перед добавлением айтема в индекс нужно открывать writer методом startUpdate, после обновления нужно закрывать
+ * writer методом finishUdate
+ *
+ * Методы вставки, обновления и удаления айтемов в индекс сами вызывают startUpdate и finishUdate.
+ * Таким образом, если внешний метод (из которого вызываются эти методы данного класса) не вызывает
+ * startUpdate и finishUdate, закрытие райтера а обновление ридера происходит автоматически, никаких других
+ * действий для этого не требуется.
+ * Если закрытие райтера и обновление ридера нежелательно, т.к. обновляется множество айтемов (например, во время
+ * интеграции), внешний метод, который вызывает методы обновления LuceneIndexMapper, должен сам вызывать
+ * startUpdate и finishUdate. При этом счетчик одновременных обновлений будет больше 0, до последнего вызова
+ * finishUdate в родительском методе закрытия райтера не произойдет, как не произойдет и обновления ридера.
+ *
+ * startUpdate и finishUdate должны вызываться в конструкции try - finally чтобы гарантировать корректный подсчет
+ * одновременных обновлений и соответственно корректное закрытие райтера.
+ */
 public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	/**
 	 * Класс для увеличения позиции токена в случае если он принадлежит другому значению множественого параметра
@@ -96,9 +109,10 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	private static LuceneIndexMapper singleton;
 	
 	private FSDirectory directory;
-	private IndexWriter writer;
-	private SearcherManager sm;
+	private IndexWriter writer = null;
+	private IndexReader reader = null;
 	private HashMap<String, Parser> tikaParsers = new HashMap<>();
+	private int concurrentWritersCount = 0;
 	private int countProcessed = 0; // Количество проиндексированных айтемов
 	
 	private LuceneIndexMapper() throws IOException {
@@ -106,12 +120,93 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		tikaParsers.put(HTML, new HtmlParser());
 	}
 	
-	private static LuceneIndexMapper getSingleton() throws IOException {
+	public static LuceneIndexMapper getSingleton() throws IOException {
 		if (singleton == null)
 			singleton = new LuceneIndexMapper();
 		return singleton;
 	}
-	
+
+	/**
+	 * Должен вызываться перед процессом добавления айтемов в индекс (или удаления)
+	 * @throws IOException
+	 */
+	public synchronized void startUpdate() throws IOException {
+		if (concurrentWritersCount == 0) {
+			if (writer != null)
+				writer.close();
+			IndexWriterConfig config = new IndexWriterConfig(getAnalyzer())
+					.setOpenMode(OpenMode.CREATE_OR_APPEND)
+					.setRAMBufferSizeMB(5)
+					.setMaxBufferedDocs(200)
+					.setRAMPerThreadHardLimitMB(2);
+			writer = new IndexWriter(directory, config);
+		}
+		concurrentWritersCount++;
+	}
+
+	/**
+	 * Подтвердить изменения. Изменения из буфера записываются в файлы индекса
+	 * @throws IOException
+	 */
+	public synchronized void commit() throws IOException {
+		if (concurrentWritersCount > 0 && writer != null)
+			writer.commit();
+		else
+			throw new IllegalStateException("can not commit unopened index writer");
+	}
+
+	/**
+	 * Отменить изменения. Изменения не подтверждаются и writer закрывается
+	 * @throws IOException
+	 */
+	public synchronized void rollback() throws IOException {
+		if (concurrentWritersCount > 0 && writer != null)
+			writer.rollback();
+		else
+			throw new IllegalStateException("can not rollback unopened index writer");
+	}
+
+	/**
+	 * Завершить обновление индекса.
+	 * IndexWriter закрывается в случае если нет параллельно идущих незавершенных записей
+	 */
+	public synchronized void finishUpdate() throws IOException {
+		if (concurrentWritersCount <= 0 || writer == null) {
+			throw new IllegalStateException("can not finish updating unopened writer");
+		}
+		concurrentWritersCount--;
+		if (concurrentWritersCount < 0)
+			concurrentWritersCount = 0;
+		if (concurrentWritersCount == 0) {
+			writer.commit();
+			writer.close();
+			writer = null;
+		}
+		refreshReader();
+	}
+
+	/**
+	 * Принудительно закрывает writer. Это аварийный метод, должен использоваться только
+	 * в нештатных ситуациях.
+	 * @throws IOException
+	 */
+	public synchronized void forceCloseWriter() throws IOException {
+		concurrentWritersCount = 0;
+		if (writer != null)
+			writer.close();
+		writer = null;
+		refreshReader();
+	}
+
+	public synchronized void close() throws IOException {
+		if (writer != null)
+			writer.close();
+		if (reader != null)
+			reader.close();
+		if (directory != null)
+			directory.close();
+	}
+
 	private static Analyzer getAnalyzer() {
 		if (currentAnalyzer == null) {
 			currentAnalyzer = analyzers.get(AppContext.getCurrentLocale().getLanguage());
@@ -120,137 +215,114 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			}
 		return currentAnalyzer;
 	}
-	
-	private synchronized void commitWriterInt() throws IOException {
-		if (writer != null) {
-			writer.commit();
-			if (sm != null)
-				sm.maybeRefreshBlocking();
-		}
-	}
-	
-	private synchronized void rollbackWriterInt() throws IOException {
-		if (writer != null) {
-			writer.rollback();
-			if (sm != null)
-				sm.close();
-			sm = null;
-		}
-	}
+
 	/**
-	 * Получить writer для записи в файл индекса
+	 * Создать или обновить reader после завершения записи в индекс
+	 * @throws IOException
+	 */
+	private void refreshReader() throws IOException {
+		if (reader ==  null) {
+			reader = DirectoryReader.open(directory);
+		} else {
+			DirectoryReader newReader = DirectoryReader.openIfChanged((DirectoryReader) reader);
+			if (newReader != null)
+				reader = newReader;
+		}
+	}
+
+	/**
+	 * Получить reader
 	 * @return
 	 * @throws IOException
 	 */
-	private synchronized void ensureWriter() throws IOException {
-		if (writer == null) {
-			IndexWriterConfig config = new IndexWriterConfig(getAnalyzer())
-				.setOpenMode(OpenMode.CREATE_OR_APPEND)
-				.setRAMBufferSizeMB(2)
-				.setMaxBufferedDocs(200)
-				.setRAMPerThreadHardLimitMB(1);
-//			if (IndexWriter.isLocked(directory)) {
-//		        IndexWriter.unlock(directory);
-//		    }
-			writer = new IndexWriter(directory, config);
-		}
+	private IndexReader getReader() throws IOException {
+		if (reader == null)
+			refreshReader();
+		return reader;
 	}
-	
-	private synchronized void closeWriterInt() throws IOException {
-		if (writer != null)
-			writer.close();
-		writer = null;
-		if (sm != null)
-			sm.maybeRefreshBlocking();
-	}
-	/**
-	 * Получить менеджер для чтения индекса
-	 * @return
-	 * @throws IOException
-	 */
-	private SearcherManager getReader() throws IOException {
-		if (sm == null) {
-			if (DirectoryReader.indexExists(directory)) {
-				sm = new SearcherManager(directory, null);
-			} else {
-				return null;
-			}
-		}
-		return sm;
-	}
-	
+
 	private void closeReader() throws IOException {
-		if (sm != null) {
-			sm.close();
-			sm = null;
+		if (reader != null) {
+			reader.close();
+			reader = null;
 		}
 	}
 	
 	private synchronized void createNewIndex() throws IOException {
-		ensureWriter();
-		writer.deleteAll();
-		writer.commit();
-		writer.close();
-		writer = null;
+		try {
+			startUpdate();
+			writer.deleteAll();
+		} finally {
+			finishUpdate();
+		}
 		closeReader();
 	}
-	
-	private synchronized void insertItemInt(Item item, boolean needClose) throws IOException, SAXException, TikaException {
+
+	/**
+	 * Добавить новый айтем в индекс
+	 * @param item
+	 * @throws IOException
+	 * @throws SAXException
+	 * @throws TikaException
+	 */
+	public synchronized void insertItem(Item item) throws IOException, SAXException, TikaException {
 		// Ссылки не добавлять в индекс
 		if (!item.getItemType().isFulltextSearchable())
 			return;
-		ensureWriter();
-		Document itemDoc = new Document();
-		// Устанавливается ID айтема. Строковое значение, т.к. для удаления и обновления нужно исиользовать Term,
-		// который поддерживает только строковые значения
-		itemDoc.add(new StringField(I_ID, item.getId() + "", Store.YES));
-		// Заполняются все типы айтема (иерархия типов айтема)
-		Set<String> itemPreds = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName());
-		for (String pred : itemPreds) {
-			itemDoc.add(new IntPoint(I_TYPE_ID, ItemTypeRegistry.getItemTypeId(pred)));
-		}
-//		// Заполняются все предшественники (в которые айтем вложен)
-//		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');
-//		for (String contId : containerIds) {
-//			itemDoc.add(new StringField(DBConstants.Item.DIRECT_PARENT_ID, contId, Store.YES));
-//		}
-		// Заполняются все индексируемые параметры
-		// Заполнение полнотекстовых параметров
-		for (String ftParam : item.getItemType().getFulltextParams()) {
-			boolean needIncrement = false;
-			for (ParameterDescription param : item.getItemType().getFulltextParameterList(ftParam)) {
-				if (param.isMultiple()) {
-					for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
-						createParameterField(param, sp.outputValue(), itemDoc, ftParam, needIncrement);
+		try {
+			startUpdate();
+			Document itemDoc = new Document();
+			// Устанавливается ID айтема. Строковое значение, т.к. для удаления и обновления нужно исиользовать Term,
+			// который поддерживает только строковые значения
+			itemDoc.add(new StringField(I_ID, item.getId() + "", Store.YES));
+			// Заполняются все типы айтема (иерархия типов айтема)
+			Set<String> itemPreds = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName());
+			for (String pred : itemPreds) {
+				itemDoc.add(new IntPoint(I_TYPE_ID, ItemTypeRegistry.getItemTypeId(pred)));
+			}
+			//		// Заполняются все предшественники (в которые айтем вложен)
+			//		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');
+			//		for (String contId : containerIds) {
+			//			itemDoc.add(new StringField(DBConstants.Item.DIRECT_PARENT_ID, contId, Store.YES));
+			//		}
+			// Заполняются все индексируемые параметры
+			// Заполнение полнотекстовых параметров
+			for (String ftParam : item.getItemType().getFulltextParams()) {
+				boolean needIncrement = false;
+				for (ParameterDescription param : item.getItemType().getFulltextParameterList(ftParam)) {
+					if (param.isMultiple()) {
+						for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
+							createParameterField(param, sp.outputValue(), itemDoc, ftParam, needIncrement);
+							needIncrement = true;
+						}
+					} else {
+						createParameterField(param, ((SingleParameter) item.getParameter(param.getId())).outputValue(), itemDoc, ftParam,
+								needIncrement);
 						needIncrement = true;
 					}
-				} else {
-					createParameterField(param, ((SingleParameter) item.getParameter(param.getId())).outputValue(), itemDoc, ftParam,
-							needIncrement);
-					needIncrement = true;
 				}
 			}
-		}
-		// Заполнение параметров для фильтрации
-		for (ParameterDescription param : item.getItemType().getParameterList()) {
-			if (param.isFulltextFilterable()) {
-				if (param.isMultiple()) {
-					for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
-						DataTypeMapper.setLuceneItemDocField(param.getType(), itemDoc, param.getName(), sp.getValue());
+			// Заполнение параметров для фильтрации
+			for (ParameterDescription param : item.getItemType().getParameterList()) {
+				if (param.isFulltextFilterable()) {
+					if (param.isMultiple()) {
+						for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
+							DataTypeMapper.setLuceneItemDocField(param.getType(), itemDoc, param.getName(), sp.getValue());
+						}
+					} else {
+						DataTypeMapper.setLuceneItemDocField(param.getType(), itemDoc, param.getName(),
+								item.getParameter(param.getId()).getValue());
 					}
-				} else {
-					DataTypeMapper.setLuceneItemDocField(param.getType(), itemDoc, param.getName(),
-							item.getParameter(param.getId()).getValue());
 				}
 			}
+			// Добавление айтема в индекс
+			//		writer.deleteDocuments(new TermQuery(new Term(DBConstants.Item.ID, item.getId() + "")));
+			//		ServerLogger.debug(item.getId());
+			writer.updateDocument(new Term(I_ID, item.getId() + ""), itemDoc);
+			//		writer.addDocument(itemDoc);
+		} finally {
+			finishUpdate();
 		}
-		// Добавление айтема в индекс
-//		writer.deleteDocuments(new TermQuery(new Term(DBConstants.Item.ID, item.getId() + "")));
-//		ServerLogger.debug(item.getId());
-		writer.updateDocument(new Term(I_ID, item.getId() + ""), itemDoc);
-		if (needClose)
-			closeWriter();
-//		writer.addDocument(itemDoc);
 	}
 	/**
 	 * Добавить параметр в виде поля для документа Lucene.
@@ -281,25 +353,45 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		}
 		luceneDoc.add(field);
 	}
-	
-	private synchronized void updateItemInt(Item item, boolean needClose) throws IOException, SAXException, TikaException {
+
+	/**
+	 * Обновить айтем, который уже присутствует в индеске.
+	 * Если айтема еще нет в индексе, он добавляется
+	 * @param item
+	 * @throws IOException
+	 * @throws SAXException
+	 * @throws TikaException
+	 */
+	public synchronized void updateItem(Item item) throws IOException, SAXException, TikaException {
 		// Ссылки не добавлять в индекс (и не дуалять соответственно)
 		if (!item.getItemType().isFulltextSearchable())
 			return;
-		ensureWriter();
-		writer.deleteDocuments(new Term(I_ID, item.getId() + ""));
-		insertItemInt(item, needClose);
-	}
-	
-	private synchronized void deleteItemInt(long[] itemIds, boolean needClose) throws IOException {
-		ensureWriter();
-		Term[] deleteTerms = new Term[itemIds.length];
-		for (int i = 0; i < itemIds.length; i++) {
-			deleteTerms[i] = new Term(I_ID, itemIds[i] + "");
+		try {
+			startUpdate();
+			writer.deleteDocuments(new Term(I_ID, item.getId() + ""));
+			insertItem(item);
+		} finally {
+			finishUpdate();
 		}
-		writer.deleteDocuments(deleteTerms);
-		if (needClose)
-			closeWriter();
+	}
+
+	/**
+	 * Удалить айтем и все вложенные в него айтемы из индекса
+	 * Сабмит не вызывается. Его надо вызывать отдельно
+	 * @param itemIds
+	 * @throws IOException
+	 */
+	public synchronized void deleteItem(Long... itemIds) throws IOException {
+		try {
+			startUpdate();
+			Term[] deleteTerms = new Term[itemIds.length];
+			for (int i = 0; i < itemIds.length; i++) {
+				deleteTerms[i] = new Term(I_ID, itemIds[i] + "");
+			}
+			writer.deleteDocuments(deleteTerms);
+		} finally {
+			finishUpdate();
+		}
 	}
 
 	/**
@@ -314,13 +406,12 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws IOException
 	 */
-	private synchronized Long[] getItemsInt(List<Query> queries, Query filter, int maxResults, float threshold)
+	public synchronized Long[] getItems(List<Query> queries, Query filter, int maxResults, float threshold)
 			throws IOException {
-		SearcherManager reader = getReader();
-		if (reader == null)
+		if (getReader() == null)
 			return new Long[0];
 		Timer.getTimer().start(Timer.LOAD_LUCENE_ITEMS);
-		IndexSearcher search = reader.acquire();
+		IndexSearcher search = new IndexSearcher(getReader());
 		LinkedHashSet<Long> result = new LinkedHashSet<>();
 		float globalMaxScore = -1f;
 		float minScore = -1f;
@@ -367,34 +458,43 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			
 			if (isFinished) break;
 		}
-		reader.release(search);
 		Timer.getTimer().stop(Timer.LOAD_LUCENE_ITEMS);
 		return result.toArray(new Long[result.size()]);
 	}
-	
-	private synchronized boolean reindexInt() throws Exception {
+
+	/**
+	 * Произвести переиндексацию всех айтемов
+	 * @return
+	 * @throws Exception
+	 */
+	public synchronized boolean reindexAll() throws Exception {
 		final int LIMIT = 500;
 		createNewIndex();
-		countProcessed = 0;
-		for (String itemName : ItemTypeRegistry.getItemNames()) {
-			ItemType itemDesc = ItemTypeRegistry.getItemType(itemName);
-			if (itemDesc.isFulltextSearchable()) {
-				ArrayList<Item> items;
-				long startFrom = 0;
-				do {
-					items = loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom);
-					for (Item item : items) {
-						updateItemInt(item, false);
-					}
-					if (items.size() > 0)
-						startFrom = items.get(items.size() - 1).getId() + 1;
-					countProcessed += items.size();
-					ServerLogger.debug("Indexed: " + countProcessed + " items");
-					commitWriterInt();
-				} while (items.size() == LIMIT);
+		try {
+			startUpdate();
+			countProcessed = 0;
+			for (String itemName : ItemTypeRegistry.getItemNames()) {
+				ItemType itemDesc = ItemTypeRegistry.getItemType(itemName);
+				if (itemDesc.isFulltextSearchable()) {
+					ArrayList<Item> items;
+					long startFrom = 0;
+					do {
+						items = loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom);
+						for (Item item : items) {
+							updateItem(item);
+						}
+						if (items.size() > 0)
+							startFrom = items.get(items.size() - 1).getId() + 1;
+						countProcessed += items.size();
+						ServerLogger.debug("Indexed: " + countProcessed + " items");
+						commit();
+					} while (items.size() == LIMIT);
+				}
 			}
+			commit();
+		} finally {
+			finishUpdate();
 		}
-		closeWriterInt();
 		return true;
 	}
 	/**
@@ -405,7 +505,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws Exception
 	 */
-	private static ArrayList<Item> loadByTypeId(int itemId, int limit, long startFromId) throws Exception {
+	private ArrayList<Item> loadByTypeId(int itemId, int limit, long startFromId) throws Exception {
 		ArrayList<Item> result = new ArrayList<>();
 		// Полиморфная загрузка
 		TemplateQuery select = new TemplateQuery("Select items for indexing");
@@ -422,77 +522,13 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		return result;
 	}
 	/**
-	 * Подтвердить изменения. Изменения из буфера записываются в файлы индекса
-	 * @throws IOException
-	 */
-	public static void commit() throws IOException {
-		getSingleton().commitWriterInt();
-	}
-	/**
-	 * Отменить изменения. Изменения не подтверждаются и writer закрывается
-	 * @throws IOException
-	 */
-	public static void rollback() throws IOException {
-		getSingleton().rollbackWriterInt();
-	}
-	/**
-	 * writer закрывается, а открывается только после следующего запроса.
-	 * @throws IOException
-	 */
-	public static void closeWriter() throws IOException {
-		getSingleton().closeWriterInt();
-	}
-	/**
 	 * Удалить все документы из индекса
 	 * @throws IOException
 	 */
-	public static void deleteIndex() throws IOException {
-		getSingleton().createNewIndex();
+	public void deleteIndex() throws IOException {
+		createNewIndex();
 	}
-	/**
-	 * Добавить новый айтем в индекс
-	 * @param item
-	 * @throws IOException
-	 * @throws TikaException 
-	 * @throws SAXException 
-	 */
-	public static void insertItem(Item item, boolean... needClose) throws IOException, SAXException, TikaException {
-		boolean doClose = true;
-		if (needClose.length > 0)
-			doClose = needClose[0];
-		getSingleton().insertItemInt(item, doClose);
-	}
-	/**
-	 * Обновить айтем, который уже присутствует в индеске.
-	 * Если айтема еще нет в индексе, он добавляется
-	 * @param item
-	 * @throws IOException
-	 * @throws TikaException 
-	 * @throws SAXException 
-	 */
-	public static void updateItem(Item item, boolean... needClose) throws IOException, SAXException, TikaException {
-		boolean doClose = true;
-		if (needClose.length > 0)
-			doClose = needClose[0];
-		getSingleton().updateItemInt(item, doClose);
-	}
-	/**
-	 * Удалить айтем и все вложенные в него айтемы из индекса
-	 * Сабмит не вызывается. Его надо вызывать отдельно
-	 * @param itemId
-	 * @param needClose
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws TikaException
-	 */
-	public static void deleteItem(long itemId, int itemType, boolean... needClose) throws IOException, SAXException, TikaException {
-		if (!ItemTypeRegistry.getItemType(itemType).isFulltextSearchable())
-			return;
-		boolean doClose = true;
-		if (needClose.length > 0)
-			doClose = needClose[0];
-		getSingleton().deleteItemInt(new long[] {itemId}, doClose);
-	}
+
 	/**
 	 * Найти ID айтемов, которые соответствуют запросу Lucene
 	 * @param query - запрос
@@ -501,20 +537,10 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws IOException
 	 */
-	public static Long[] getItems(Query query, Query filter, int maxResults, float threshold) throws IOException {
-		return getSingleton().getItemsInt(Collections.singletonList(query), filter, maxResults, threshold);
+	public Long[] getItems(Query query, Query filter, int maxResults, float threshold) throws IOException {
+		return getItems(Collections.singletonList(query), filter, maxResults, threshold);
 	}
-	/**
-	 * Найти ID айтемов, которые соответствуют нескольким запросам Lucene
-	 * @param queries
-	 * @param maxResults - максимальное число возвращаемых результатов
-	 * @param threshold - часть (дробь меньше 1) от рейтинга первого места поиска, ниже которой результаты поиска начинают отбрасыватся (для релевантности)
-	 * @return
-	 * @throws IOException
-	 */
-	public static Long[] getItems(List<Query> queries, Query filter, int maxResults, float threshold) throws IOException {
-		return getSingleton().getItemsInt(queries, filter, maxResults, threshold);
-	}
+
 	/**
 	 * Найти ID айтемов, которые соответствуют запросу Lucene
 	 * @param query - запрос
@@ -522,18 +548,10 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws IOException
 	 */
-	public static Long[] getItems(Query query, Query filter, int maxResults) throws IOException {
+	public Long[] getItems(Query query, Query filter, int maxResults) throws IOException {
 		return getItems(query, filter, maxResults, -1);
 	}
-	/**
-	 * Произвести переиндексацию всех айтемов
-	 * @return
-	 * @throws IOException
-	 * @throws Exception
-	 */
-	public static boolean reindexAll() throws Exception {
-		return getSingleton().reindexInt();
-	}
+
 	/**
 	 * Создать парсер запросов
 	 * @param field
@@ -568,7 +586,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws IOException
 	 */
-	public static int getCountProcessed() throws IOException {
-		return getSingleton().countProcessed;
+	public int getCountProcessed() {
+		return countProcessed;
 	}
 }
