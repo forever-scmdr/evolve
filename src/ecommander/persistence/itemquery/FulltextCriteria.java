@@ -4,7 +4,6 @@ import ecommander.model.Compare;
 import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
 import ecommander.persistence.itemquery.fulltext.LuceneQueryCreator;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -12,6 +11,9 @@ import org.apache.lucene.search.Query;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+
 /**
  * Полнотекстовый критерий
  * Метод appendLuceneQuery требует реализации.
@@ -23,12 +25,14 @@ import java.util.ArrayList;
  *
  */
 class FulltextCriteria {
-	
+
+	public static final String HIGHLIGHT_EXTRA_NAME = "highlight";
+
 	private final String[] paramNames;
 	private final String[] queryVals;
 	private final int maxResultCount;
 	private final float threshold;
-	private Long[] loadedIds = null;
+	private LinkedHashMap<Long, String> loadedIds = null;
 	private final Compare compType;
 	private ArrayList<LuceneQueryCreator> queryCreators = new ArrayList<>();
 	
@@ -85,11 +89,11 @@ class FulltextCriteria {
 				}
 			}
 			if (!queries.isEmpty()) {
-				loadedIds = LuceneIndexMapper.getSingleton().getItems(queries, filter, maxResultCount, threshold);
+				loadedIds = LuceneIndexMapper.getSingleton().getItems(queries, filter, paramNames, maxResultCount, threshold);
 				return;
 			}
 		}
-		loadedIds = new Long[0];
+		loadedIds = new LinkedHashMap<>(0);
 	}
 	/**
 	 * Получить часть массива найденных ID
@@ -101,15 +105,40 @@ class FulltextCriteria {
 		if (limit != null && limit.getLimit() > 0) {
 			int start = (limit.getPage() - 1) * limit.getLimit();
 			int end = limit.getPage() * limit.getLimit();
-			return ArrayUtils.subarray(loadedIds, start, end);
+			ArrayList<Long> ids = new ArrayList<>();
+			Iterator<Long> loadedIter = loadedIds.keySet().iterator();
+			for (int i = 0; i < start; i++) {
+				if (loadedIter.hasNext())
+					loadedIter.next();
+			}
+			for (int i = start; i <= end; i++) {
+				if (loadedIter.hasNext()) {
+					Long itemId = loadedIter.next();
+					ids.add(itemId);
+				}
+			}
+			return ids.toArray(new Long[0]);
 		}
-		return loadedIds;
+		return loadedIds.keySet().toArray(new Long[0]);
 	}
-	
+
+	/**
+	 * Вернуть только ID найденных айтемов (без подсвеченного текста)
+	 * @return
+	 */
 	Long[] getLoadedIds() {
-		return loadedIds;
+		return loadedIds.keySet().toArray(new Long[0]);
 	}
-	
+
+	/**
+	 * Вернуть текст с подсветкой совпадающих с запросом фрагментов для заданного айтема
+	 * @param itemId - ID найденного полнотекстовым поиском айтема
+	 * @return
+	 */
+	String getHighlightedText(Long itemId) {
+		return loadedIds.get(itemId);
+	}
+
 	boolean isLoaded() {
 		return loadedIds != null;
 	}

@@ -24,6 +24,7 @@ import org.apache.lucene.index.*;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
+import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -347,9 +348,9 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			ContentHandler handler = new BodyContentHandler();
 			Metadata metadata = new Metadata();
 			tikaParsers.get(param.getFulltextParser()).parse(input, handler, metadata, new ParseContext());
-			field = new TextField(luceneParamName, handler.toString(), Store.NO);
+			field = new TextField(luceneParamName, handler.toString(), Store.YES);
 		} else {
-			field = new TextField(luceneParamName, value, Store.NO);
+			field = new TextField(luceneParamName, value, Store.YES);
 		}
 		luceneDoc.add(field);
 	}
@@ -401,46 +402,57 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * Максимальный score документов второго и последующих запросов равны минимальному score предыдущего запроса
 	 * @param queries
 	 * @param filter
+	 * @param paramNames - массив названий параметров, которые могут содержать искомый текст
 	 * @param maxResults
 	 * @param threshold - часть рейтинга первого места поиска, результаты с рейтингом ниже которой считаются нерелевантными
 	 * @return
 	 * @throws IOException
 	 */
-	public synchronized Long[] getItems(List<Query> queries, Query filter, int maxResults, float threshold)
+	public synchronized LinkedHashMap<Long, String> getItems(List<Query> queries, Query filter, String[] paramNames, int maxResults, float threshold)
 			throws IOException {
 		if (getReader() == null)
-			return new Long[0];
+			return new LinkedHashMap<>(0);
 		Timer.getTimer().start(Timer.LOAD_LUCENE_ITEMS);
 		IndexSearcher search = new IndexSearcher(getReader());
-		LinkedHashSet<Long> result = new LinkedHashSet<>();
+		LinkedHashMap<Long, String> result = new LinkedHashMap<>();
 		float globalMaxScore = -1f;
 		float minScore = -1f;
 		boolean isFinished = false;
 		// Ограничение выдачи по релевантности:
 		// документы, которые набрали менее 33% очков лучшего результата отбрасываются
 		if (threshold < 0f) 
-			threshold = 0.33f;
+			threshold = 0.05f;
 		
 		// Все запросы в порядке появления в массиве
 		for (Query query : queries) {
-			TopDocs td;
+			TopDocs foundDocs;
 			if (filter != null) {
 				BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
 				boolQuery.add(query, BooleanClause.Occur.MUST);
 				boolQuery.add(filter, BooleanClause.Occur.FILTER);
 				query = boolQuery.build();
 			}
-			td = search.search(query, maxResults);
+			foundDocs = search.search(query, maxResults);
 			float scoreQuotient = 1f;
+
 			// Инициализация максиального количества очков и коэффициента пересчета
-			if (td.scoreDocs.length > 0) {
+			if (foundDocs.scoreDocs.length > 0) {
 				if (globalMaxScore <= 0)
-					globalMaxScore = td.scoreDocs[0].score;
+					globalMaxScore = foundDocs.scoreDocs[0].score;
 				if (minScore > 0)
-					scoreQuotient = minScore / td.scoreDocs[0].score;
+					scoreQuotient = minScore / foundDocs.scoreDocs[0].score;
 			}
+
+			// Подготовка подсветки найденных результатов
+			SimpleHTMLFormatter formatter = new SimpleHTMLFormatter(); //Uses HTML &lt;B&gt;&lt;/B&gt; tag to highlight the searched terms
+			QueryScorer scorer = new QueryScorer(query); //It scores text fragments by the number of unique query terms found
+			Highlighter highlighter = new Highlighter(formatter, scorer); //used to markup highlighted terms found in the best sections of a text
+			Fragmenter fragmenter = new SimpleSpanFragmenter(scorer, 10); //It breaks text up into same-size texts but does not split up spans
+			highlighter.setTextFragmenter(fragmenter); //set fragmenter to highlighter
+
 			// Итерация по результатам поиска
-			for (ScoreDoc scoreDoc : td.scoreDocs) {
+			for (ScoreDoc scoreDoc : foundDocs.scoreDocs) {
+
 				// нормализованный счет (score)
 				float normalScore = scoreDoc.score * scoreQuotient;
 				if (globalMaxScore * threshold > normalScore) {
@@ -448,18 +460,35 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 					break;
 				}
 				Document doc = search.doc(scoreDoc.doc);
+
+				// Подсветка найденных фрагментов
+				Fields docFields = getReader().getTermVectors(scoreDoc.doc);
+				StringBuilder highlighted = new StringBuilder();
+				for (String paramName : paramNames) {
+					TokenStream stream = TokenSources.getTermVectorTokenStreamOrNull(paramName, docFields, -1);
+					String text = doc.get(paramName);
+					String[] bestFragments = new String[0];
+					try {
+						bestFragments = highlighter.getBestFragments(stream, text, 3);
+					} catch (Exception e) {
+						ServerLogger.warn("Lucene highlighter error", e);
+					}
+					for (String bestFragment : bestFragments) {
+						highlighted.append("<p>").append(bestFragment).append("</p>");
+					}
+				}
 				Long itemId = Long.parseLong(doc.get(I_ID));
-				result.add(itemId);
+				result.put(itemId, highlighted.toString());
 				ServerLogger.debug("\t\t---------\n" + search.explain(query, scoreDoc.doc));
 			}
 			
-			if (td.scoreDocs.length > 0)
-				minScore = td.scoreDocs[td.scoreDocs.length - 1].score * scoreQuotient;
+			if (foundDocs.scoreDocs.length > 0)
+				minScore = foundDocs.scoreDocs[foundDocs.scoreDocs.length - 1].score * scoreQuotient;
 			
 			if (isFinished) break;
 		}
 		Timer.getTimer().stop(Timer.LOAD_LUCENE_ITEMS);
-		return result.toArray(new Long[result.size()]);
+		return result;
 	}
 
 	/**
@@ -532,24 +561,28 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	/**
 	 * Найти ID айтемов, которые соответствуют запросу Lucene
 	 * @param query - запрос
+	 * @param filter
+	 * @param paramNames - массив названий параметров, которые могут содержать искомый текст
 	 * @param maxResults - максимальное число возвращаемых результатов
 	 * @param threshold - часть (дробь меньше 1) от рейтинга первого места поиска, ниже которой результаты поиска начинают отбрасыватся (для релевантности)
 	 * @return
 	 * @throws IOException
 	 */
-	public Long[] getItems(Query query, Query filter, int maxResults, float threshold) throws IOException {
-		return getItems(Collections.singletonList(query), filter, maxResults, threshold);
+	public LinkedHashMap<Long, String> getItems(Query query, Query filter, String[] paramNames, int maxResults, float threshold) throws IOException {
+		return getItems(Collections.singletonList(query), filter, paramNames, maxResults, threshold);
 	}
 
 	/**
 	 * Найти ID айтемов, которые соответствуют запросу Lucene
 	 * @param query - запрос
+	 * @param filter
+	 * @param paramNames - массив названий параметров, которые могут содержать искомый текст
 	 * @param maxResults - максимальное число возвращаемых результатов
 	 * @return
 	 * @throws IOException
 	 */
-	public Long[] getItems(Query query, Query filter, int maxResults) throws IOException {
-		return getItems(query, filter, maxResults, -1);
+	public LinkedHashMap<Long, String> getItems(Query query, Query filter, String[] paramNames, int maxResults) throws IOException {
+		return getItems(query, filter, paramNames, maxResults, -1);
 	}
 
 	/**

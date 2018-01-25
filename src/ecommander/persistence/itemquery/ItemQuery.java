@@ -754,7 +754,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			if (hasLimit())
 				limit.appendQuery(query);
 		}
-		return loadByQuery(query, PID, assocId, null, conn);
+		return loadByQuery(query, PID, assocId, null, fulltext, conn);
 	}
 	/**
 	 * Загрузить первый из айтемов, соответствующих установленным критериям запроса
@@ -777,7 +777,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	public static Item loadById(long id, Connection... conn) throws Exception {
 		TemplateQuery query = new TemplateQuery("load by id");
 		query.SELECT(ITEM_TBL + ".*", "0 AS PID").FROM(ITEM_TBL).WHERE().col(I_ID).long_(id);
-		ArrayList<Item> result = loadByQuery(query, "PID", ItemTypeRegistry.getPrimaryAssocId(), null, conn);
+		ArrayList<Item> result = loadByQuery(query, "PID", ItemTypeRegistry.getPrimaryAssocId(), null, null, conn);
 		if (result.size() > 0)
 			return result.get(0);
 		return null;
@@ -795,7 +795,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		query.SELECT(ITEM_TBL + ".*", IP_PARENT_ID).FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID)
 				.WHERE().col(IP_PARENT_ID).long_(id).AND().col(IP_PARENT_DIRECT).byte_((byte)1)
 				.AND().col(IP_ASSOC_ID).byte_(assocId);
-		return loadByQuery(query, IP_PARENT_ID, assocId, null, conn);
+		return loadByQuery(query, IP_PARENT_ID, assocId, null, null, conn);
 	}
 	/**
 	 * Загрузить айтемы по их ID
@@ -820,7 +820,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		TemplateQuery query = new TemplateQuery("load by ids");
 		query.SELECT(ITEM_TBL + ".*", "0 AS PID")
 				.FROM(ITEM_TBL).WHERE().col_IN(I_ID).longIN(ids.toArray(new Long[ids.size()]));
-		return loadByQuery(query, "PID", ItemTypeRegistry.getPrimaryAssocId(), order, conn);
+		return loadByQuery(query, "PID", ItemTypeRegistry.getPrimaryAssocId(), order, null, conn);
 	}
 	/**
 	 * Загрузить айтемы по их ID
@@ -937,7 +937,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		if (param.getOwnerItemId() != item.getTypeId()) {
 			query.AND().col_IN(II_ITEM_TYPE).intIN(extenders);
 		}
-		return loadByQuery(query, "PID", ItemTypeRegistry.getPrimaryAssocId(), null, conn);
+		return loadByQuery(query, "PID", ItemTypeRegistry.getPrimaryAssocId(), null, null, conn);
 	}
 	/**
 	 * Загрузить айтем по значению одного параметра
@@ -994,12 +994,15 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * Загрузить по готовому запросу
 	 * @param query
 	 * @param parentIdCol
-	 * @param conn
+	 * @param assocId
 	 * @param order - опциональный параметр, который хранит порядок следования айтемов в результате
+	 * @param fulltext - опциональный параметр, нужный для вывода фрагментов с подсвеченным текстом при полнотекстовом поиске
+	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	private static ArrayList<Item> loadByQuery(TemplateQuery query, String parentIdCol, byte assocId, Long[] order, Connection... conn) throws Exception {
+	private static ArrayList<Item> loadByQuery(TemplateQuery query, String parentIdCol, byte assocId, Long[] order,
+	                                           FulltextCriteria fulltext, Connection... conn) throws Exception {
 		boolean isOwnConnection = false;
 		Connection connection;
 		if (conn == null || conn.length == 0) {
@@ -1034,6 +1037,14 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		} finally {
 			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection) MysqlConnector.closeConnection(connection);
+		}
+		// Установка фрагментов подсвеченного текста в айтемы
+		if (fulltext != null) {
+			for (Item item : result) {
+				String highlightedText = fulltext.getHighlightedText(item.getId());
+				if (StringUtils.isNotBlank(highlightedText))
+					item.setExtra(FulltextCriteria.HIGHLIGHT_EXTRA_NAME, highlightedText);
+			}
 		}
 		return result;
 	}

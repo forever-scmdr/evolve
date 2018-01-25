@@ -1,6 +1,7 @@
 package ecommander.pages.output;
 
 import ecommander.controllers.AppContext;
+import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
@@ -28,6 +29,8 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 	public static final String ADMIN_FULL_ATTRIBUTE = "adm-full";
 	public static final String ADMIN_DELETE_ATTRIBUTE = "adm-delete";
 	public static final String ADMIN_SIBLING_ATTRIBUTE = "adm-sibling";
+
+	public static final String OWN_EXTRAS_ELEMENT = "item_own_extras";
 	/**
 	 * Вывести один найденный айтем (и запустить вывод сабайтемов этого айтема)
 	 * В этом методе происходит вызов next итератора. Сам метод возвращает результат этого вызова next
@@ -74,6 +77,14 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 			xml.addElements(values);
 		} else {
 			xml.addElements(item.outputValues());
+		}
+		// Вывести поля extra (нужны в частности при полнотекстовом поиске для подсветки результатов
+		if (item.hasExtras()) {
+			xml.startElement(OWN_EXTRAS_ELEMENT);
+			for (String key : item.getExtraKeys()) {
+				xml.startElement(Strings.createXmlElementName(key)).addText(item.getStringExtra(key)).endElement();
+			}
+			xml.endElement();
 		}
 		// Вывести остальные вложенные элементы айтема и вложенные сабайтемы
 		for (PageElement element : itemToWrite.getAllNested()) {
