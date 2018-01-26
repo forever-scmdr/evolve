@@ -290,6 +290,19 @@
 		<single item="section" var="code" parameter="code" id="sec"/>
 	</page>
 
+
+	<page name="search_basic">
+		<request>
+			<var name="q" value="напряжение"/>
+		</request>
+		<list item="product">
+			<filter>
+				<fulltext name="name" limit="100"><var var="q"/></fulltext>
+			</filter>
+		</list>
+	</page>
+
+
 	<page name="integration" template="integration">
 		<request>
 			<var name="action"/>

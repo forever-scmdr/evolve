@@ -17,7 +17,6 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.*;
@@ -133,6 +132,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 */
 	public synchronized void startUpdate() throws IOException {
 		if (concurrentWritersCount == 0) {
+			closeReader();
 			if (writer != null)
 				writer.close();
 			IndexWriterConfig config = new IndexWriterConfig(getAnalyzer())
@@ -253,6 +253,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		try {
 			startUpdate();
 			writer.deleteAll();
+		} catch (Exception e) {
+			ServerLogger.error("Unable to create new Lucene index", e);
 		} finally {
 			finishUpdate();
 		}
@@ -279,7 +281,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			// Заполняются все типы айтема (иерархия типов айтема)
 			Set<String> itemPreds = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName());
 			for (String pred : itemPreds) {
-				itemDoc.add(new IntPoint(I_TYPE_ID, ItemTypeRegistry.getItemTypeId(pred)));
+				itemDoc.add(new StringField(I_TYPE_ID, ItemTypeRegistry.getItemTypeId(pred) + "", Store.YES));
 			}
 			//		// Заполняются все предшественники (в которые айтем вложен)
 			//		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');

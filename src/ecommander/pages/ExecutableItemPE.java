@@ -324,10 +324,11 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		if (item == null)
 			return;
 		// Добавить в отображение по ID родителям
-		FoundItemBundle parentSubitems;
+		FoundItemBundle parentSubitems = null;
 		if (foundItemsByParent.containsKey(parentId)) {
 			parentSubitems = foundItemsByParent.get(parentId);
-		} else {
+		}
+		if (parentSubitems == null) {
 			parentSubitems = new FoundItemBundle();
 			foundItemsByParent.put(parentId, parentSubitems);
 		}

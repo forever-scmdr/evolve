@@ -121,24 +121,26 @@
 									</li>
 									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">
 										<a href="admin_domains_initialize.domain">
-											Упарвление доменами
+											Управление доменами
 										</a>
 									</li>
 									<li class="visible" title="Измениение паролей, создание и удаление пользователей">
 										<a href="admin_users_initialize.user">
-											Упарвление пользователями
+											Управление пользователями
 										</a>
 									</li>
 									<li class="visible" title="???">
 										<a href="admin_types_init.type">
-											Упарвление классами объектов
+											Управление классами объектов
 										</a>
 									</li>
+									<!--
 									<li class="visible" title="Функция в разработке">
 										<a href="#" onclick="alert('Функция в разработке'); return false;">
-											Упарвление миром
+											Управление миром
 										</a>
 									</li>
+									-->
 								</ul>
 							</div>
 						</div>

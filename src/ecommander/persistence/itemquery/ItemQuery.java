@@ -570,7 +570,6 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// индексируемый полнотекстовый параметр (т.е. является базовым типом для искомого типа)
 		// Проверка принадлежности полнотекстовых параметров к айтему
 		boolean needConcreteTypeCriteria = true;
-		BooleanQuery.Builder typeQuery = new BooleanQuery.Builder();
 		for (int i = 0; i < fulltext.getParamNames().length && needConcreteTypeCriteria; i++) {
 			ParameterDescription fulltextParam = getItemDesc().getParameter(fulltext.getParamNames()[i]);
 			// параметр может быть равен null в случае если полнотекстовый параметр был создан не на базе параметра айтема
@@ -579,12 +578,11 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		}
 		if (needConcreteTypeCriteria) {
 			for (Integer typeId : ItemTypeRegistry.getItemExtendersIds(getItemDesc().getTypeId())) {
-				typeQuery.add(new TermQuery(new Term(I_TYPE_ID, typeId.toString())), Occur.SHOULD);
+				query.add(new TermQuery(new Term(I_TYPE_ID, typeId.toString())), Occur.SHOULD);
 			}
 		} else {
-			typeQuery.add(new TermQuery(new Term(I_TYPE_ID, getItemDesc().getTypeId() + "")), Occur.MUST);
+			query.add(new TermQuery(new Term(I_TYPE_ID, getItemDesc().getTypeId() + "")), Occur.MUST);
 		}
-		query.add(typeQuery.build(), Occur.MUST);
 		/*
 		// Родительский критерий (только для обычных айтемов и successor айтемов)
 		if (hasParent && (queryType != Type.PARENT_OF && queryType != Type.PREDECESSORS_OF)) {
@@ -597,8 +595,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		*/
 		// Добавить другие (неполнотектовые) критерии фильтра, если они есть
 		if (hasFilter()) {
-			BooleanQuery.Builder luceneFilterQuery = filter.appendLuceneQuery(null, null);
-			query.add(luceneFilterQuery.build(), Occur.MUST);
+			filter.appendLuceneQuery(query, Occur.MUST);
 		}
 		fulltext.loadItems(query.build());
 	}

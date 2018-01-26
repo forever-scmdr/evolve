@@ -201,9 +201,9 @@
 
 <!--START_product-->
 	<item name="product" key="name mark" caption="Продукт" extendable="true" key-unique="true" ag-id="235" ag-hash="-309474065">
-		<parameter name="name" type="string" caption="Наименование" description="продукта" />
-		<parameter name="mark" type="string" caption="Маркировка" description="продукта" />
-		<parameter name="producer" type="string" caption="Производитель" description="продукта" />
+		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
+		<parameter name="mark" type="string" caption="Маркировка" description="продукта" text-index="fulltext" text-index-parameter="name" />
+		<parameter name="producer" type="string" caption="Производитель" description="продукта" text-index="fulltext" text-index-parameter="name" />
 		<parameter name="code" type="string" caption="Номенклатурный номер" description="уникальный код" />
 		<parameter name="price" type="double" caption="Цена" description="в бел. рублях" format="###,##0.00" />
 		<parameter name="description" type="text" caption="Описание" description="текст с картинками" />
