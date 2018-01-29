@@ -302,6 +302,16 @@
 		</list>
 	</page>
 
+	<page name="search_multiple">
+		<request>
+			<var name="q" value="напряжение"/>
+		</request>
+		<list item="product">
+			<filter>
+				<fulltext limit="50"><var var="q"/></fulltext>
+			</filter>
+		</list>
+	</page>
 
 	<page name="integration" template="integration">
 		<request>

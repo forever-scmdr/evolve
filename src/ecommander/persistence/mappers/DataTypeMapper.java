@@ -1,25 +1,23 @@
 package ecommander.persistence.mappers;
 
+import ecommander.fwk.Strings;
+import ecommander.model.datatypes.DataType.Type;
+import ecommander.model.datatypes.DateDataType;
+import ecommander.model.datatypes.DecimalDataType;
+import ecommander.model.datatypes.DoubleDataType;
+import ecommander.model.datatypes.FileDataType;
+import ecommander.persistence.common.TemplateQuery;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.document.*;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
-
-import ecommander.model.datatypes.DecimalDataType;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.document.*;
-import org.apache.lucene.index.IndexOptions;
-import org.joda.time.format.DateTimeFormatter;
-
-import ecommander.fwk.Strings;
-import ecommander.model.datatypes.DataType.Type;
-import ecommander.model.datatypes.DateDataType;
-import ecommander.model.datatypes.DoubleDataType;
-import ecommander.model.datatypes.FileDataType;
-import ecommander.persistence.common.TemplateQuery;
 
 /**
  * Класс, который делает различные зависимые от типа данных операции

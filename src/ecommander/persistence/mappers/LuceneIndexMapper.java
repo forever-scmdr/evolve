@@ -60,7 +60,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	/**
 	 * Класс для увеличения позиции токена в случае если он принадлежит другому значению множественого параметра
 	 * По умолчанию множественные значения полей объединяются в одну строку с обычным увеличением позиции (на 1)
-	 * В этом случае запросы, которые учитывают позицию, могут получать совпадения, когда разные слова запроса 
+	 * В этом случае запросы, которые учитывают позицию, могут получать совпадения, когда разные слова запроса
 	 * встречаются в разных значениях множественного параметра.
 	 * @author E
 	 *
@@ -93,7 +93,30 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			first = true;
 		}
 	}
-	
+
+	private static final FieldType FULLTEXT_STORE_FIELD_TYPE = new FieldType();
+	private static final FieldType POSITION_INCREMENT_FIELD_TYPE = new FieldType();
+	static {
+		FULLTEXT_STORE_FIELD_TYPE.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
+		FULLTEXT_STORE_FIELD_TYPE.setStored(true);
+		FULLTEXT_STORE_FIELD_TYPE.setTokenized(true);
+		FULLTEXT_STORE_FIELD_TYPE.setStoreTermVectors(false);
+		//FULLTEXT_STORE_FIELD_TYPE.setStoreTermVectorOffsets(true);
+		//FULLTEXT_STORE_FIELD_TYPE.setStoreTermVectorPayloads(true);
+		//FULLTEXT_STORE_FIELD_TYPE.setStoreTermVectorPositions(true);
+
+		POSITION_INCREMENT_FIELD_TYPE.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
+		POSITION_INCREMENT_FIELD_TYPE.setStored(false);
+		POSITION_INCREMENT_FIELD_TYPE.setTokenized(true);
+		POSITION_INCREMENT_FIELD_TYPE.setStoreTermVectors(false);
+		//POSITION_INCREMENT_FIELD_TYPE.setStoreTermVectorOffsets(true);
+		//POSITION_INCREMENT_FIELD_TYPE.setStoreTermVectorPayloads(true);
+		//POSITION_INCREMENT_FIELD_TYPE.setStoreTermVectorPositions(true);
+	}
+	private static final PositionIncrementTokenStream TEN_SPACES_STREAM = new PositionIncrementTokenStream(10);
+	private static final String TEN_SPACES_STRING = "          ";
+
+
 	private static HashMap<String, Analyzer> analyzers = new HashMap<>();
 	static {
 		analyzers.put("default", new StandardAnalyzer());
@@ -292,6 +315,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			//		}
 			// Заполняются все индексируемые параметры
 			// Заполнение полнотекстовых параметров
+
 			for (String ftParam : item.getItemType().getFulltextParams()) {
 				boolean needIncrement = false;
 				for (ParameterDescription param : item.getItemType().getFulltextParameterList(ftParam)) {
@@ -301,8 +325,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 							needIncrement = true;
 						}
 					} else {
-						createParameterField(param, ((SingleParameter) item.getParameter(param.getId())).outputValue(), itemDoc, ftParam,
-								needIncrement);
+						createParameterField(param, ((SingleParameter) item.getParameter(param.getId())).outputValue(),
+								itemDoc, ftParam, needIncrement);
 						needIncrement = true;
 					}
 				}
@@ -340,20 +364,13 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	private void createParameterField(ParameterDescription param, String value, Document luceneDoc, String luceneParamName,
-			boolean needIncrement) throws IOException, SAXException, TikaException {
+	private void createParameterField(ParameterDescription param, String value, Document luceneDoc, String luceneParamName
+			, boolean needIncrement) throws IOException, SAXException, TikaException {
 		if (StringUtils.isBlank(value))
 			return;
 		if (needIncrement)
-			luceneDoc.add(new TextField(luceneParamName, new PositionIncrementTokenStream(10)));
-		FieldType fieldType = new FieldType();
-		fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
-		fieldType.setStored(true);
-		fieldType.setTokenized(true);
-		fieldType.setStoreTermVectors(true);
-		fieldType.setStoreTermVectorOffsets(true);
-		fieldType.setStoreTermVectorPayloads(true);
-		fieldType.setStoreTermVectorPositions(true);
+			//luceneDoc.add(new TextField(luceneParamName, new PositionIncrementTokenStream(10)));
+			luceneDoc.add(new Field(luceneParamName, TEN_SPACES_STREAM, POSITION_INCREMENT_FIELD_TYPE));
 		Field field;
 		if (param.needFulltextParsing() && tikaParsers.containsKey(param.getFulltextParser())) {
 			InputStream input = IOUtils.toInputStream(value, "UTF-8");
@@ -361,10 +378,10 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			Metadata metadata = new Metadata();
 			tikaParsers.get(param.getFulltextParser()).parse(input, handler, metadata, new ParseContext());
 			//field = new TextField(luceneParamName, handler.toString(), Store.YES);
-			field = new Field(luceneParamName, handler.toString(), fieldType);
+			field = new Field(luceneParamName, handler.toString(), FULLTEXT_STORE_FIELD_TYPE);
 		} else {
 			//field = new TextField(luceneParamName, value, Store.YES);
-			field = new Field(luceneParamName, value, fieldType);
+			field = new Field(luceneParamName, value, FULLTEXT_STORE_FIELD_TYPE);
 		}
 		luceneDoc.add(field);
 	}
@@ -461,7 +478,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			SimpleHTMLFormatter formatter = new SimpleHTMLFormatter(); //Uses HTML &lt;B&gt;&lt;/B&gt; tag to highlight the searched terms
 			QueryScorer scorer = new QueryScorer(query); //It scores text fragments by the number of unique query terms found
 			Highlighter highlighter = new Highlighter(formatter, scorer); //used to markup highlighted terms found in the best sections of a text
-			Fragmenter fragmenter = new SimpleSpanFragmenter(scorer, 10); //It breaks text up into same-size texts but does not split up spans
+			Fragmenter fragmenter = new SimpleSpanFragmenter(scorer, 40); //It breaks text up into same-size texts but does not split up spans
 			highlighter.setTextFragmenter(fragmenter); //set fragmenter to highlighter
 
 			// Итерация по результатам поиска
@@ -476,14 +493,15 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 				Document doc = search.doc(scoreDoc.doc);
 
 				// Подсветка найденных фрагментов
-				Fields docFields = getReader().getTermVectors(scoreDoc.doc);
+				//Fields docFields = getReader().getTermVectors(scoreDoc.doc);
 				StringBuilder highlighted = new StringBuilder();
 				for (String paramName : paramNames) {
-					TokenStream stream = TokenSources.getTermVectorTokenStreamOrNull(paramName, docFields, -1);
-					String text = doc.get(paramName);
+					//TokenStream stream = TokenSources.getTermVectorTokenStreamOrNull(paramName, docFields, -1);
+					String text = StringUtils.join(doc.getValues(paramName), TEN_SPACES_STRING);
 					String[] bestFragments = new String[0];
 					try {
-						bestFragments = highlighter.getBestFragments(stream, text, 3);
+						//bestFragments = highlighter.getBestFragments(stream, text, 3);
+						bestFragments = highlighter.getBestFragments(getAnalyzer(), paramName, text, 3);
 					} catch (Exception e) {
 						ServerLogger.warn("Lucene highlighter error", e);
 					}
