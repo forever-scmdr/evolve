@@ -15,10 +15,8 @@ import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
-import org.apache.lucene.document.Document;
+import org.apache.lucene.document.*;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.*;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.queryparser.classic.QueryParser;
@@ -222,6 +220,10 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws IOException
 	 */
 	private void refreshReader() throws IOException {
+		if (!DirectoryReader.indexExists(directory)) {
+			reader = null;
+			return;
+		}
 		if (reader ==  null) {
 			reader = DirectoryReader.open(directory);
 		} else {
@@ -344,15 +346,25 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			return;
 		if (needIncrement)
 			luceneDoc.add(new TextField(luceneParamName, new PositionIncrementTokenStream(10)));
-		TextField field;
+		FieldType fieldType = new FieldType();
+		fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
+		fieldType.setStored(true);
+		fieldType.setTokenized(true);
+		fieldType.setStoreTermVectors(true);
+		fieldType.setStoreTermVectorOffsets(true);
+		fieldType.setStoreTermVectorPayloads(true);
+		fieldType.setStoreTermVectorPositions(true);
+		Field field;
 		if (param.needFulltextParsing() && tikaParsers.containsKey(param.getFulltextParser())) {
 			InputStream input = IOUtils.toInputStream(value, "UTF-8");
 			ContentHandler handler = new BodyContentHandler();
 			Metadata metadata = new Metadata();
 			tikaParsers.get(param.getFulltextParser()).parse(input, handler, metadata, new ParseContext());
-			field = new TextField(luceneParamName, handler.toString(), Store.YES);
+			//field = new TextField(luceneParamName, handler.toString(), Store.YES);
+			field = new Field(luceneParamName, handler.toString(), fieldType);
 		} else {
-			field = new TextField(luceneParamName, value, Store.YES);
+			//field = new TextField(luceneParamName, value, Store.YES);
+			field = new Field(luceneParamName, value, fieldType);
 		}
 		luceneDoc.add(field);
 	}

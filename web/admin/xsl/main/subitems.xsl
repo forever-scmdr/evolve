@@ -37,7 +37,7 @@
 					<xsl:otherwise>openAssoc('<xsl:value-of select="open-associated-link"/>')</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			<a href="#" onclick="{$link}" >
+			<a href="#" onclick="{$link}; return false;" >
 				<span class="name"><xsl:value-of select="@caption"/></span>
 			</a>
 		</li>

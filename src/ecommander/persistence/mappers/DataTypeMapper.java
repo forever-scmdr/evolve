@@ -11,6 +11,7 @@ import ecommander.model.datatypes.DecimalDataType;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.*;
+import org.apache.lucene.index.IndexOptions;
 import org.joda.time.format.DateTimeFormatter;
 
 import ecommander.fwk.Strings;
