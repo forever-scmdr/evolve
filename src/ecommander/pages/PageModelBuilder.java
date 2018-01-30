@@ -1224,7 +1224,7 @@ public class PageModelBuilder {
 	 * @throws PrimaryValidationException
 	 */
 	private FulltextCriteriaPE readFulltextCriteria(Element fulltextNode) throws PrimaryValidationException {
-		String paramName = fulltextNode.attr(NAME_ATTRIBUTE);
+		String paramNames = fulltextNode.attr(NAME_ATTRIBUTE);
 		String types = fulltextNode.attr(TYPE_ATTRIBUTE);
 		String compareTypeStr = fulltextNode.attr(COMPARE_ATTRIBUTE);
 		String thresholdStr = fulltextNode.attr(THRESHOLD_ATTRIBUTE);
@@ -1262,7 +1262,8 @@ public class PageModelBuilder {
 						+ "' is not a valid subelement of &lt;parameter&gt; element");
 			}
 		}
-		return new FulltextCriteriaPE(types, queryVar, limit, paramName, compare, threshold);
+		String[] paramNameArray = StringUtils.split(paramNames, Strings.SPACE);
+		return new FulltextCriteriaPE(types, queryVar, limit, paramNameArray, compare, threshold);
 	}
 	/**
 	 * Считывает ссылку

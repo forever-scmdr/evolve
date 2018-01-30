@@ -21,16 +21,19 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 	public static final String ELEMENT_NAME = "fulltext";
 	
 	private Variable query;
-	private String paramName;
+	private String[] paramNames;
 	private int maxResultCount;
 	private String typesStr = FulltextQueryCreatorRegistry.DEFAULT;
 	private String[] types = new String[] {FulltextQueryCreatorRegistry.DEFAULT};
 	private Compare compType = Compare.ANY;
 	private float threshold = -1;
 	
-	public FulltextCriteriaPE(String types, Variable queryVar, int maxResultCount, String paramName, Compare compType, float threshold) {
+	public FulltextCriteriaPE(String types, Variable queryVar, int maxResultCount, String[] paramNames, Compare compType, float threshold) {
 		this.query = queryVar;
-		this.paramName = paramName;
+		if (paramNames == null)
+			this.paramNames = new String[0];
+		else
+			this.paramNames = paramNames;
 		this.maxResultCount = maxResultCount;
 		if (!StringUtils.isBlank(types)) {
 			this.typesStr = types;
@@ -43,7 +46,7 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 	}
 	
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		return new FulltextCriteriaPE(typesStr, (ValueOrRef) query.getInited(parentPage), maxResultCount, paramName,
+		return new FulltextCriteriaPE(typesStr, (ValueOrRef) query.getInited(parentPage), maxResultCount, paramNames,
 				compType, threshold);
 	}
 
@@ -51,8 +54,12 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 		if (query != null)
 			query.validate(elementPath, results);
 		ItemType desc = (ItemType)results.getBufferData();
-		if (!StringUtils.isBlank(paramName) && desc.getFulltextParameterList(paramName) == null) {
-			results.addError(elementPath + " > " + getKey(), "'" + desc.getName() + "' item does not contain fulltext '" + paramName + "'");
+		if (paramNames.length > 0) {
+			for (String paramName : paramNames) {
+				if (desc.getFulltextParameterList(paramName) == null)
+					results.addError(elementPath + " > " + getKey(), "'" + desc.getName()
+							+ "' item does not contain fulltext '" + paramName + "'");
+			}
 		}
 		for (String type : types) {
 			try {
@@ -68,7 +75,7 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 	}
 
 	public boolean isAllFields() {
-		return StringUtils.isBlank(paramName);
+		return paramNames.length == 0;
 	}
 	
 	public boolean isValid() {
@@ -79,8 +86,8 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 		return maxResultCount;
 	}
 	
-	public String getParamName() {
-		return paramName;
+	public String[] getParamNames() {
+		return paramNames;
 	}
 	
 //	public String getQuery() {

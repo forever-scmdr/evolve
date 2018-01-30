@@ -4,6 +4,7 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import ecommander.persistence.common.TemplateQuery;
 import org.apache.commons.io.IOUtils;
@@ -494,7 +495,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 
 				// Подсветка найденных фрагментов
 				//Fields docFields = getReader().getTermVectors(scoreDoc.doc);
-				StringBuilder highlighted = new StringBuilder();
+				XmlDocumentBuilder highlighted = XmlDocumentBuilder.newDocPart();
 				for (String paramName : paramNames) {
 					//TokenStream stream = TokenSources.getTermVectorTokenStreamOrNull(paramName, docFields, -1);
 					String text = StringUtils.join(doc.getValues(paramName), TEN_SPACES_STRING);
@@ -506,7 +507,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 						ServerLogger.warn("Lucene highlighter error", e);
 					}
 					for (String bestFragment : bestFragments) {
-						highlighted.append("<p>").append(bestFragment).append("</p>");
+						highlighted.startElement("p", "name", paramName).addText(bestFragment).endElement();
 					}
 				}
 				Long itemId = Long.parseLong(doc.get(I_ID));

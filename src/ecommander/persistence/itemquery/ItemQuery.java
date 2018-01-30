@@ -394,20 +394,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param types - типы полнотекстового критерия (например near или term, или название фактори класса)
 	 * @param queries - список запросов (обрабатываются отдельно)
 	 * @param maxResults - максимальное количество результатов
-	 * @param paramName - название параметра, по которому происходит поиск
+	 * @param paramNames - названия параметров, по которым происходит поиск
 	 * @param compType - тип стравнения (в том числе определяет что делать, если задан пустой запрос)
 	 * @param threshold - Рубеж релевантности. Часть (от 0 до 1) от рейтинга первого результата, результаты с рейтингом меньше которой считаются нерелевантными
 	 * @return
 	 * @throws EcommanderException
 	 */
-	public ItemQuery setFulltextCriteria(String[] types, String[] queries, int maxResults, String paramName, Compare compType,
+	public ItemQuery setFulltextCriteria(String[] types, String[] queries, int maxResults, String[] paramNames, Compare compType,
 			float threshold) throws Exception {
-		String[] paramNames;
-		if (StringUtils.isBlank(paramName)) {
+		if (paramNames == null || paramNames.length == 0) {
 			paramNames = getItemDesc().getFulltextParams().toArray(new String[0]);
-		} else {
-			paramNames = new String[1];
-			paramNames[0] = paramName;
 		}
 		fulltext = new FulltextCriteria(types, queries, maxResults, paramNames, compType, threshold);
 		if ((compType == Compare.ANY || compType == Compare.ALL) && !fulltext.isValid())
@@ -419,11 +415,11 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param type
 	 * @param query
 	 * @param maxResults
-	 * @param paramName
+	 * @param paramNames
 	 * @throws EcommanderException
 	 */
-	public ItemQuery setFulltextCriteria(String type, String query, int maxResults, String paramName, Compare compType) throws Exception {
-		return setFulltextCriteria(new String[] {type}, new String[] {query}, maxResults, paramName, compType, -1);
+	public ItemQuery setFulltextCriteria(String type, String query, int maxResults, String[] paramNames, Compare compType) throws Exception {
+		return setFulltextCriteria(new String[] {type}, new String[] {query}, maxResults, paramNames, compType, -1);
  	}
 	/**
 	 * Доабвить критерий поиска по предшественнику

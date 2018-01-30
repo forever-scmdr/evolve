@@ -18,10 +18,10 @@ import com.ibm.icu.text.RuleBasedNumberFormat;
  */
 public class Strings
 {
-	public static String SYSTEM_ENCODING = "UTF-8";
-	public static String EMPTY = "";
-	public static String SPACE = " ";
-	public static String SLASH = "/";
+	public static final String SYSTEM_ENCODING = "UTF-8";
+	public static final String EMPTY = "";
+	public static final char SPACE = ' ';
+	public static final String SLASH = "/";
 	/**
 	 * This method ensures that the output String has only valid XML unicode characters as specified by the XML 1.0 standard. For reference,
 	 * please see <a href="http://www.w3.org/TR/2000/REC-xml-20001006#NT-Char">the standard</a>. This method will return an empty String if the

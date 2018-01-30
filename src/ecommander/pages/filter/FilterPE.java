@@ -345,7 +345,7 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 
 	@Override
 	public void processFulltextCriteriaPE(FulltextCriteriaPE crit) throws Exception {
-		dbQuery.setFulltextCriteria(crit.getTypes(), crit.getQueries(), crit.getMaxResultCount(), crit.getParamName(),
+		dbQuery.setFulltextCriteria(crit.getTypes(), crit.getQueries(), crit.getMaxResultCount(), crit.getParamNames(),
 				crit.getCompareType(), crit.getThreshold());
 	}
 
