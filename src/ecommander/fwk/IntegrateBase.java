@@ -3,6 +3,7 @@ package ecommander.fwk;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import org.slf4j.helpers.MessageFormatter;
 
 import java.io.IOException;
 import java.text.Format;
@@ -43,12 +44,12 @@ public abstract class IntegrateBase extends Command {
 		private Date date;
 		private String message;
 
-		private LogMessage(String message) {
+		private LogMessage(String message, Object...params) {
 			this.date = new Date();
-			this.message = message;
+			this.message = MessageFormatter.arrayFormat(message, params);
 		}
 	}
-	
+
 	private static class Error {
 		public final String message;
 		public final int lineNumber;
@@ -75,55 +76,71 @@ public abstract class IntegrateBase extends Command {
 		}
 	}
 
-	protected static class Info {
+	public static class Info {
 		private static final String _indexation = "Индексация названий товаров";
 
 		private String operation = "Инициализация";
 		private int lineNumber = 0;
 		private int processed = 0;
+		private int toProcess = 0;
 		private ArrayDeque<LogMessage> log = new ArrayDeque<LogMessage>();
-		private ArrayList<Error> errors = new ArrayList<Error>();
+		private ArrayList<Error> errors = new ArrayList<IntegrateBase.Error>();
 		private boolean inProgress = false;
+		private int logSize = Integer.MAX_VALUE;
 
-		private synchronized void setOperation(String opName) {
+		public synchronized void setOperation(String opName) {
 			operation = opName;
 		}
 
-		private synchronized void setLineNumber(int lineNumber) {
+		public synchronized void setLineNumber(int lineNumber) {
 			this.lineNumber = lineNumber;
 		}
 
-		private synchronized void setProcessed(int processed) {
+		public synchronized void setProcessed(int processed) {
 			this.processed = processed;
 		}
 
-		private synchronized void addLog(String message) {
-			log.addLast(new LogMessage(message));
+		public synchronized void setToProcess(int toProcess) {
+			this.toProcess = toProcess;
 		}
 
-		private synchronized void pushLog(String message) {
-			log.addFirst(new LogMessage(message));
+		public synchronized void addLog(String message, Object...params) {
+			if (log.size() >= logSize)
+				log.removeFirst();
+			log.addLast(new LogMessage(message, params));
 		}
-		
-		private synchronized void addError(String message, int lineNumber, int position) {
+
+		public synchronized void pushLog(String message, Object...params) {
+			if (log.size() >= logSize)
+				log.removeLast();
+			log.addFirst(new LogMessage(message, params));
+		}
+
+		public synchronized void limitLog(int size) {
+			logSize = size;
+		}
+
+		public synchronized void addError(String message, int lineNumber, int position) {
 			errors.add(new Error(message, lineNumber, position));
 		}
 
-		private synchronized void addError(String message, String originator) {
+		public synchronized void addError(String message, String originator) {
 			errors.add(new Error(message, originator));
 		}
-		
-		private synchronized void setInProgress(boolean inProgress) {
+
+		public synchronized void setInProgress(boolean inProgress) {
 			this.inProgress = inProgress;
 		}
-		
-		private synchronized void output(XmlDocumentBuilder doc) throws IOException {
+
+		public synchronized void output(XmlDocumentBuilder doc) throws IOException {
 			doc.startElement("operation").addText(operation).endElement();
 			doc.startElement("line").addText(lineNumber).endElement();
 			if (operation.equals(_indexation))
 				doc.startElement("processed").addText(LuceneIndexMapper.getSingleton().getCountProcessed()).endElement();
-			else
+			else {
+				doc.startElement("to_process").addText(toProcess).endElement();
 				doc.startElement("processed").addText(processed).endElement();
+			}
 			if (inProgress) {
 				if (errors.size() == 0) {
 					doc.startElement("message").addText("Ошибки (пока) не обнаружены").endElement();
@@ -187,7 +204,7 @@ public abstract class IntegrateBase extends Command {
 	/**
 	 * Добавить запись в начало лога
 	 * @param message
-	 */	
+	 */
 	protected static void pushLog(String message) {
 		getInfo().pushLog(message);
 	}	

@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items>
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////                    СПЕЦИАЛЬНЫЕ АЙТЕМЫ                          ////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<!-- Параметры электронной почты -->
+<item name="feedback_params" caption="Параметры обратной связи">
+	<parameter name="server_from" type="string" quantifier="single" caption="Адрес сервера" 
+		description="с которого отправлять обратную связь"/>
+	<parameter name="email_from" type="string" quantifier="single" caption="Откуда" 
+		description="Адрес почтового ящика, с которого отправлять обратную связь"/>
+	<parameter name="email_from_login" type="string" quantifier="single" caption="Логин" 
+		description="Для почтового ящика, с которого отправлять обратную связь"/>
+	<parameter name="email_from_password" type="string" quantifier="single" caption="Пароль" 
+		description="Для почтового ящика, с которого отправлять обратную связь"/>
+	<parameter name="encoding" type="string" quantifier="single" caption="Кодировка" 
+		description="В большинстве случаев подходит UTF-8"/>
+</item>
+
+<item name="feedback_form" caption="Форма обратной связи" virtual="true">
+	<parameter name="name" type="string" quantifier="single" caption="Имя"/>
+	<parameter name="phone" type="string" quantifier="single" caption="Телефон или e-mail"/>
+	<parameter name="message" type="text" quantifier="single" caption="Сообщение"/>
+</item>
+
+<item name="pic_header" virtual="true" key="header" key-unique="true">
+	<parameter name="header" caption="Заголовок" type="string" description="строковый заголовок (используется если не указан заголовок-картинка)"/>
+	<parameter name="header_pic" caption="Заголовок-картинка" type="picture" description="заголовок в форме картинки (нестандартный шрифт)"/>
+</item>
+
+
+<item name="picture_pair" caption="Пара картинок" key="name">
+	<parameter name="name" type="string" caption="Название" description="для наглядности"/>
+	<parameter name="small" caption="Уменьшенное изображение" type="picture" format="src: big; width: 800;"/>
+	<parameter name="big" caption="Большое изображение" type="picture" format="width: 1980;"/>
+</item>
+
+<item name="page_part" caption="Часть страницы" key="name" virtual="true">
+	<parameter name="name" type="string" caption="Название" description="для наглядности"/>
+</item>
+
+<item name="text_part" caption="Текстовый блок" extends="page_part">
+	<parameter name="text" caption="Текст" type="text"/>
+	<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту"/>
+	<parameter name="file" type="file" quantifier="multiple" caption="Файл" description="для прикрепления к тексту"/>
+</item>
+
+<item name="gallery_part" caption="Галерея" extends="page_part">
+	<subitem name="picture_pair" quantifier="multiple"/>
+</item>
+
+<item name="abstract_page" caption="Страница" extends="pic_header">
+	<subitem name="page_part" quantifier="multiple"/>
+</item>
+
+<item name="file_list" caption="документация" description="прейскуранты, буклеты и.т.п">
+	<subitem name="file"  quantifier="multiple"/>
+</item>
+
+<item name="file" caption="Файл" key="name">
+	<parameter name="name" type="string" caption="Название" description="текст ссылки на скачивание"/>
+	<parameter name="file" type="file" caption="Файл"/>
+</item>
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////                        РАЗДЕЛЫ САЙТА                           ////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+<item name="common" caption="Общая информация">
+	<parameter name="phone" caption="Основной телефон" description="на всех страницах вверху (все время показан)" type="string"/>
+	<parameter name="phone_hidden" caption="Дополнительные телефоны" description="на всех страницах вверху (показываются по нажанию)" type="short-text"/>
+	<parameter name="copy" caption="Копирайт" description="на всех страницах внизу" type="tiny-text"/>
+	<parameter name="eur" caption="курс евро" type="double"/>
+</item>
+
+<item name="frame" caption="Кадр" key="name">
+	<parameter name="name" type="string" caption="Название" description="для наглядности"/>
+	<parameter name="text" type="short-text" caption="Текст слайда" description="в свободной форме"/>
+	<parameter name="link" type="string" caption="Ссылка" description="в формате http://..."/>
+	<parameter name="img" type="picture" caption="Изображение слайда" description=""/>
+	<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту"/>
+</item>
+
+<item name="main" caption="Главная страница">
+	<parameter name="pic_1" type="picture" caption="Картинка слева" description="одна из 3 на главной"/>
+	<parameter name="link_1" type="string" caption="Ссылка слева" description="переход по нажатию картинки 1 (в формате http://...)"/>
+	<parameter name="pic_2" type="picture" caption="Картинка по центру" description="одна из 3 на главной"/>
+	<parameter name="link_2" type="string" caption="Ссылка по центру" description="переход по нажатию картинки 2 (в формате http://...)"/>
+	<parameter name="pic_3" type="picture" caption="Картинка справа" description="одна из 3 на главной"/>
+	<parameter name="link_3" type="string" caption="Ссылка справа" description="переход по нажатию картинки 3 (в формате http://...)"/>
+	<parameter name="banner" type="plain-text" caption="Код баннера" description="под картинками"/>
+	<parameter name="file" type="file" quantifier="multiple" caption="Файл баннера" description="для прикрепления элементов баннера"/>
+	<subitem name="frame" quantifier="multiple"/>
+</item>
+
+<item name="news_item" caption="Новость" key="header" key-unique="true">
+	<parameter name="header" type="string" caption="Заголовок"/>
+	<parameter name="date" type="date" caption="Дата публикации"/>
+	<parameter name="short" type="tiny-text" caption="Краткое описание"/>
+	<parameter name="text" type="text" caption="Полный текст"/>
+	<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту"/>
+</item>
+
+<item name="news" caption="Новости" extends="pic_header">
+	<subitem name="news_item" quantifier="multiple"/>
+</item>
+
+<item name="about" caption="О санатории">
+	<subitem name="abstract_page" quantifier="multiple"/>
+</item>
+
+<item name="feedbacks" caption="Отзывы" extends="abstract_page">
+	<subitem name="feedback" quantifier="multiple"/>
+</item>
+
+<item name="feedback" caption="Отзыв" key="live_date fio">
+	<parameter name="date" type="date" caption="дата публикации" description="для сортироваки"/>
+	<parameter name="fio" type="string" caption="Как вас зовут"/>
+	<parameter name="country" type="string" caption="Страна"/>
+	<parameter name="live_date" type="string" caption="Месяц и год отдыха"/>
+	<parameter name="room_feedback" type="tiny-text" caption="Мнение о номере"/>
+	<parameter name="service_feedback" type="tiny-text" caption="Мнение об отдыхе и лечении"/>
+	<parameter name="birth" type="string" caption="Год рождения"/>	
+	<parameter name="email" type="string" caption="Адрес эл. почты"/>
+	<parameter name="phone" type="string" caption="Контактный телефон"/>
+	<parameter name="room_type" type="string" caption="тип номера"/>
+	<parameter name="show" type="byte" caption="показать на сайте?" domain="0-1"/>
+	<parameter name="answer" type="tiny-text" caption="Ответ"/>
+</item>
+
+<item name="rooms" caption="Номера" extends="abstract_page">
+	<parameter name="text" caption="Текст" type="text"/>
+	<parameter name="extra_quotient" type="double" caption="Коэффициент для дополнительного места" description="0.8"/>
+	<parameter name="first_start" type="date" caption="Дата начала первого интервала для цен" format="dd.MM.yyyy" description="08.01.2016"/>
+	<parameter name="first_end" type="date" caption="Дата окончания первого интервала для цен" format="dd.MM.yyyy" description="18.03.2016"/>
+	<parameter name="second_start" type="date" caption="Дата начала второго интервала для цен" format="dd.MM.yyyy" description="19.03.2016"/>
+	<parameter name="second_end" type="date" caption="Дата окончания второго интервала для цен" format="dd.MM.yyyy" description="14.06.2016"/>
+	<parameter name="third_start" type="date" caption="Дата начала третьего интервала для цен" format="dd.MM.yyyy" description="15.06.2016"/>
+<!-- 	<parameter name="third_end" type="date" caption="Дата окончания третьего интервала для цен" format="dd.MM.yyyy" description="-"/> -->
+	<subitem name="room" quantifier="multiple"/>
+</item>
+
+<item name="room" caption="Номер" key="name" key-unique="true">
+	<parameter name="name" type="string" caption="Название" description="номера"/>
+	<parameter name="base_beds" type="integer" caption="Количество основных мест"/>
+	<parameter name="extra_beds" type="integer" caption="Количество дополнительных мест"/>
+	<parameter name="top_text" type="short-text" caption="Текст вверху" description="над галереей"/>
+<!-- 	<parameter name="side_text" type="short-text" caption="Текст сбоку" description="справа от галереи"/> -->
+	<parameter name="side_table" type="text" caption="Таблица сбоку" description="справа от галереи"/>
+	
+	<parameter name="price_san_bel_first" type="double" caption="Санаторно-курортная путевка первого интервала для граждан РБ (бел. рубли)" description="за 1 день (8 января — 18 марта)"/>
+	<parameter name="price_san_bel_second" type="double" caption="Санаторно-курортная путевка второго интервала для граждан РБ (бел. рубли)" description="за 1 день (19 марта — 14 июня)"/>
+	<parameter name="price_san_bel_third" type="double" caption="Санаторно-курортная путевка третьего интервала для граждан РБ (бел. рубли)" description="за 1 день (с 15 июня)"/>
+	
+	<parameter name="price_ozd_bel_first" type="double" caption="Оздоровительная путевка первого интервала для граждан РБ (бел. рубли)" description="за 1 день (8 января — 18 марта)"/>
+	<parameter name="price_ozd_bel_second" type="double" caption="Оздоровительная путевка второго интервала для граждан РБ (бел. рубли)" description="за 1 день (19 марта — 14 июня)"/>
+	<parameter name="price_ozd_bel_third" type="double" caption="Оздоровительная путевка третьего интервала для граждан РБ (бел. рубли)" description="за 1 день (с 15 июня)"/>
+	
+	<parameter name="price_ozd_rus_first" type="double" caption="Оздоровительная путевка первого интервала для иностранцев (рос. рубли)" description="за 1 день (8 января — 18 марта)"/>
+	<parameter name="price_ozd_rus_second" type="double" caption="Оздоровительная путевка второго интервала для иностранцев (рос. рубли)" description="за 1 день (19 марта — 14 июня)"/>
+	<parameter name="price_ozd_rus_third" type="double" caption="Оздоровительная путевка третьего интервала для иностранцев (рос. рубли)" description="за 1 день (с 15 июня)"/>
+	
+	<parameter name="price_san_rus_first" type="double" caption="Санаторно-курортная путевка первого интервала для иностранцев (рос. рубли)" description="за 1 день (8 января — 18 марта)"/>
+	<parameter name="price_san_rus_second" type="double" caption="Санаторно-курортная путевка второго интервала для иностранцев (рос. рубли)" description="за 1 день (19 марта — 14 июня)"/>
+	<parameter name="price_san_rus_third" type="double" caption="Санаторно-курортная путевка третьего интервала для иностранцев (рос. рубли)" description="за 1 день (с 15 июня)"/>
+	
+	<parameter name="price_ozd_eur_first" type="double" caption="Оздоровительная путевка первого интервала для иностранцев (евро)" description="за 1 день (8 января — 18 марта)"/>
+	<parameter name="price_ozd_eur_second" type="double" caption="Оздоровительная путевка второго интервала для иностранцев (евро)" description="за 1 день (19 марта — 14 июня)"/>
+	<parameter name="price_ozd_eur_third" type="double" caption="Оздоровительная путевка третьего интервала для иностранцев (евро)" description="за 1 день (с 15 июня)"/>
+	
+	<parameter name="price_san_eur_first" type="double" caption="Санаторно-курортная путевка первого интервала для иностранцев (евро)" description="за 1 день (8 января — 18 марта)"/>
+	<parameter name="price_san_eur_second" type="double" caption="Санаторно-курортная путевка второго интервала для иностранцев (евро)" description="за 1 день (19 марта — 14 июня)"/>
+	<parameter name="price_san_eur_third" type="double" caption="Санаторно-курортная путевка третьего интервала для иностранцев (евро)" description="за 1 день (с 15 июня)"/>
+	
+	<subitem name="picture_pair" quantifier="multiple"/>
+	<subitem name="feedback" quantifier="multiple"/>
+</item>
+
+<item name="service" caption="Услуга" key="name" key-unique="true">
+	<parameter name="name" type="string" caption="Название"/>
+	<parameter name="text" type="text" caption="Полное описание"/>
+	<parameter name="tag" quantifier="multiple" type="string" caption="Метка" description="к примеру 'входит в путевку' или 'новинка'"/>
+	<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту"/>
+	<subitem name="page_part" quantifier="multiple"/>
+	<subitem name="service" quantifier="multiple"/><!-- -->
+</item>
+
+<item name="services" caption="Услуги (или лечение)" key="header" key-unique="true" extends="abstract_page" description="Услуги или лечение">
+	<subitem name="service" quantifier="multiple"/>
+	<subitem name="file_list" quantifier="single"/>
+</item>
+
+
+<item name="book" caption="Бронирование" extends="abstract_page">
+	<parameter name="price" type="file" quantifier="single" caption="Прайс-лист" description="документ"/>
+	<subitem name="book_general_rb" quantifier="single"/>
+	<subitem name="book_med_rb" quantifier="single"/>
+	<subitem name="book_general_foreign" quantifier="single"/>
+	<subitem name="book_med_foreign" quantifier="single"/>
+</item>
+
+<item name="book_type" virtual="true">
+	<parameter name="text" type="text" caption="Таблица с ценами"/>
+	<parameter name="side_text" type="tiny-text" caption="Текст сбоку" description="пояснение про способ связи с менеджерами санатория"/>
+	<parameter name="contract" type="file" caption="Договор" description="документ Word"/>
+</item>
+
+<item name="book_general_rb" caption="Санаторно-курортная путевка для граждан Беларуси" extends="book_type"/>
+<item name="book_med_rb" caption="Оздоровительная путевка для граждан Беларуси" extends="book_type"/>
+<item name="book_general_foreign" caption="Санаторно-курортная путевка для иностранных граждан" extends="book_type"/>
+<item name="book_med_foreign" caption="Оздоровительная путевка для иностранных граждан" extends="book_type"/>
+
+<item name="contacts" caption="Контактная информация" extends="pic_header">
+	<parameter name="text" caption="Текст" type="text"/>
+	<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту"/>
+</item>
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////                     БРОНИРОВАНИЕ НОМЕРОВ                       ////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+<item name="booking" caption="Бронирование (заявки)">
+	<parameter name="contract_template" type="file" caption="Шаблон договора"/>
+	<parameter name="bill_bel" type="file" caption="Шаблон счет-фактуры для граждан РБ"/>
+	<parameter name="bill_rus" type="file" caption="Шаблон счет-фактуры для граждан АЕЭС"/>
+	<parameter name="bill_eur" type="file" caption="Шаблон счет-фактуры для граждан других стран"/>
+	<parameter name="contract" type="file" caption="Договор для скачивания при бронировании"/>
+	<parameter name="restrictions" type="tiny-text" caption="Текст об ограничениях при боронировании" 
+		description="выводится на странице бронирования над формой поиска в рамке"/>
+	<parameter name="booking" type="text" caption="Описание бронирования" 
+		description="выводится при первом заходе на страницу бронирования до того как появились результаты поиска"/>
+	<subitem name="free_rooms" quantifier="single"/>
+	<subitem name="orders" quantifier="single"/>
+</item>
+
+<item name="free_rooms" caption="Свободные номера">
+	<subitem name="free_room" quantifier="multiple"/>
+</item>
+
+<item name="orders" caption="Заявки">
+	<subitem name="order" quantifier="multiple"/>
+</item>
+
+<item name="free_room" caption="Свободный номер" key="num from to">
+	<parameter name="num" type="string" caption="Номер комнаты"/>
+	<parameter name="from" type="long" caption="Свободен ОТ"/>
+	<parameter name="to" type="long" caption="Свободен ДО"/>
+	<parameter name="show" type="byte" caption="Показывать или не показывать" description="0 - не показывать, 1 - показывать"/>
+	<parameter name="type_name" type="string" caption="Название типа номера"/>
+	<parameter name="type" type="associated" quantifier="single" caption="Тип номера"/>
+	<parameter name="order_form_base" type="associated" quantifier="multiple" caption="Кто размещен на основных местах" description="анкеты отдыхающих в этой комнате"/>
+	<parameter name="order_form_extra" type="associated" quantifier="multiple" caption="Кто размещен на дополнительных местах" description="анкеты отдыхающих в этой комнате"/>
+</item>
+
+<item name="order" caption="Заказ номеров" key="num received_date">
+	<parameter name="num" type="string" caption="Номер договора" description="присваивается админом в случае подтверждения заявки"/>
+	<parameter name="pin" type="string" caption="PIN код" description="для бронирования напрямую"/>
+	<parameter name="received_date" type="date" caption="Дата и время получения заказа"/>
+	<parameter name="pay_until_date" type="date" format="dd.MM.yyyy" caption="Оплатить до"/>
+	<parameter name="contract_date" type="date" format="dd.MM.yyyy" caption="Дата заключения договора"/>
+	<parameter name="extra" type="short-text" caption="Дополнительно" description="примечание"/>
+	<parameter name="sum" type="double" caption="Сумма к оплате"/>
+	<parameter name="cur" type="string" caption="Название валюты оплаты" description="например бел. руб."/>
+	<parameter name="cur_code" type="string" caption="Код валюты оплаты" description="например BYN"/>
+	<parameter name="citizen" type="string" caption="Гражданство контрагента"/>
+	<parameter name="citizen_name" type="string" caption="Гражданство как оно написано на сайте" description="включая Россию, Армению и Казахстан"/>
+	<parameter name="main_form" type="associated" quantifier="single" caption="С кем заключается договор" 
+		description="анкета контрагента, он также может быть прикреплен к комнате, если сам отдыхает"/>
+	<parameter name="status" type="byte" caption="Статус заказа" description="0 - новый, 1 - не подтвержден, 2 - подтвержден, 3 - оплачен"/>
+	<parameter name="contract_agreed" type="byte" caption="С положениями договора ознакомлен" description="0 - не ознакомлен, 1 - ознакомлен"/>
+	<parameter name="contract" type="file" caption="Договор"/>
+	<parameter name="bill" type="file" caption="Счет-фактура"/>
+	<subitem name="free_room" quantifier="multiple"/>
+	<subitem name="order_form" quantifier="multiple"/>
+</item>
+
+<item name="order_form" caption="Анкета отдыхающего" key="first_name last_name voucher_type">
+	<parameter name="person_type" type="string" caption="Взрослый или ребенок" domain="возраст" description="Значения: Взрослый, Ребенок"/>
+	<parameter name="voucher_type" type="string" caption="Тип путевки" domain="путевка" description="Значения: Санаторно-курортная, Оздоровительная"/>
+	<parameter name="first_name" type="string" caption="Имя"/>
+	<parameter name="second_name" type="string" caption="Отчество"/>
+	<parameter name="last_name" type="string" caption="Фамилия"/>
+	<parameter name="is_contractor" type="byte" caption="С кем заключается договор" description="если с этим человеком, то 1, если это сопровождающий, то 0"/>
+	<parameter name="citizen" type="string" caption="Гражданство" domain="гражданство"/>
+	<parameter name="citizen_name" type="string" caption="Гражданство как оно написано на сайте" domain="включая Россию, Армению и Казахстан"/>
+	<parameter name="birth_date" type="date" caption="Дата рождения" format="dd.MM.yyyy"/>
+	<parameter name="phone" type="string" caption="Телефон"/>
+	<parameter name="address" type="string" caption="Адрес"/>
+	<parameter name="email" type="string" caption="E-mail"/>
+	<parameter name="passport" type="string" caption="Серия и номер паспорта"/>
+<!-- 	<parameter name="id" type="string" caption="Идентификационный номер"/> -->
+	<parameter name="passport_issued" type="string" caption="Кем выдан паспорт"/>
+	<parameter name="passport_issued_date" type="date" caption="Дата выдачи паспорта" format="dd.MM.yyyy"/>
+	<parameter name="pay_only" type="byte" caption="Только оплата" description="если человке не едет, а только платит, то 1, иначе 0 или ничего"/>
+</item>
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////                        КОРНЕВЫЕ АЙТЕМЫ                         ////////////////////////////// -->
+<!-- ////////////////////                                                                ////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+<!-- ********************************* Основной корень ********************************* -->
+<root group="common">
+	<subitem name="main" quantifier="single"/>
+	<subitem name="news" quantifier="single"/>
+	<subitem name="common" quantifier="single"/>
+	<subitem name="feedback_params" quantifier="single"/>
+	<subitem name="about" quantifier="single"/>
+	<subitem name="rooms" quantifier="single"/>
+	<subitem name="services" quantifier="multiple"/>
+	<subitem name="book" quantifier="single"/>
+	<subitem name="contacts" quantifier="single"/>
+	<subitem name="feedbacks" quantifier="single"/>
+	<subitem name="booking" quantifier="single"/>
+</root>
+
+</items>
