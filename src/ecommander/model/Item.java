@@ -487,7 +487,7 @@ public class Item implements ItemBasics {
 		populateMap();
 		Parameter param = paramMap.get(paramId);
 		if (param.isMultiple()) {
-			((MultipleParameter) param).deleteValue(paramIndex);
+			((MultipleParameter) param).deleteValueByIndex(paramIndex);
 		} else {
 			throw new IllegalArgumentException("Unable to delete multiple value from single parameter " + param.getName());
 		}

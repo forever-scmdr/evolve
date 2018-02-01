@@ -88,6 +88,12 @@ function simpleAjaxView(link, viewId, postProcess) {
 	insertAjaxView(link, viewId, false, "hidden_mes", "message_main", postProcess);
 }
 /**
+ * Отправка формы через AJAX запрос с обновлением указанной части страницы
+ */
+function prepareSimpleFormView(formId, postProcess) {
+	prepareForm(formId, "main_view", "hidden_mes", "message_main", postProcess);
+}
+/**
  *
  * @param el
  * @param message
@@ -204,8 +210,10 @@ function refreshView(pagePartId) {
  * @param additionalHandling - функция, которая выполняет какие-то дополнительные действия
  */
 function prepareForm(formId, pagePartId, messageId, insertMessageId, additionalHandling) {
-	lock(pagePartId);
 	$('#' + formId).ajaxForm({
+		beforeSubmit: function() {
+			lock(pagePartId);
+		},
 		error: function() {
 			unlock(pagePartId);
 			alert('Ошибка отправки формы');
@@ -215,7 +223,7 @@ function prepareForm(formId, pagePartId, messageId, insertMessageId, additionalH
 			// Вставка результата
 			$('#' + pagePartId).html(data);
 			// Вставка сообщения
-			if (typeof insertMessageId != 'undefined' && insertMessageId != null) {
+			if (typeof messageId != 'undefined' && messageId != null) {
 				//$('#' + insertMessageId).html($('#' + messageId).html());
 				var dom = $.parseHTML(data);
 				$('#' + insertMessageId).html($(dom[0]).html());

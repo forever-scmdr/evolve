@@ -46,7 +46,7 @@ public abstract class IntegrateBase extends Command {
 
 		private LogMessage(String message, Object...params) {
 			this.date = new Date();
-			this.message = MessageFormatter.arrayFormat(message, params);
+			this.message = MessageFormatter.arrayFormat(message, params).getMessage();
 		}
 	}
 

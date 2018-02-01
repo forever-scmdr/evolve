@@ -353,6 +353,11 @@ public class MainAdminPageCreator implements AdminXML {
 		// Путь к текущему элементу
 		AggregateMDWriter path = new AggregateMDWriter(PATH_ELEMENT);
 		ArrayList<ItemAccessor> pathItems = AdminLoader.loadWholeBranch(baseId, ItemTypeRegistry.getPrimaryAssoc().getId());
+		for (ItemAccessor pred : pathItems) {
+			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, pred.getId(), ITEM_TYPE_INPUT, pred.getTypeId());
+			pred.addSubwriter(new LeafMDWriter(EDIT_LINK_ELEMENT, editUrl));
+			path.addSubwriter(pred);
+		}
 		// Текущий элемент
 		if (baseId > 0 && baseId != ItemTypeRegistry.getPrimaryRootId()) {
 			ItemAccessor item = AdminLoader.loadItemAccessor(baseId);
@@ -363,11 +368,9 @@ public class MainAdminPageCreator implements AdminXML {
 					basePage.addElement(new LeafMDWriter(OWNER_USER_ELEMENT, user.getName()));
 				}
 			}
-		}
-		for (ItemAccessor pred : pathItems) {
-			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, pred.getId(), ITEM_TYPE_INPUT, pred.getTypeId());
-			pred.addSubwriter(new LeafMDWriter(EDIT_LINK_ELEMENT, editUrl));
-			path.addSubwriter(pred);
+			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, item.getId(), ITEM_TYPE_INPUT, item.getTypeId());
+			item.addSubwriter(new LeafMDWriter(EDIT_LINK_ELEMENT, editUrl));
+			path.addSubwriter(item);
 		}
 		basePage.addElement(path);
 		// Ссылка на сабайтемы

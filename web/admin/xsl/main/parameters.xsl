@@ -64,9 +64,9 @@
 	<!-- Значение множественной картинки -->
 	<xsl:template match="value[../@type='picture']">
 		<xsl:variable name="form" select="../.."/>
-		<div class="pic">
+		<div class="pic" id="param-{../@id}-{@index}">
 			<img src="{$form/@file-path}{.}" alt="{.}"/>
-			<a id="param-{../@id}-{@index}" href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', '#param-{../@id}-{@index}')" class="delete">Удалить</a>
+			<a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
 			<input type="text" name="" value="{$form/@file-path}{.}" title="{.}" onclick="$(this).select()" />
 		</div>
 	</xsl:template>
@@ -74,9 +74,9 @@
 	<!-- Значение множественного файла -->
 	<xsl:template match="value[../@type='file']">
 		<xsl:variable name="form" select="../.."/>
-		<div class="pic file">
+		<div class="pic file" id="param-{../@id}-{@index}">
 			<a href="{$form/@file-path}{.}" target="blank" >Открыть файл</a>
-			<a id="param-{../@id}-{@index}" href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', '#param-{../@id}-{@index}')" class="delete">Удалить</a>
+			<a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
 			<input class="special" name="" value="{$form/@file-path}{.}" type="text" onclick="$(this).select()"/>
 		</div>
 		
@@ -86,20 +86,20 @@
 	<xsl:template match="value[../@type='associated']">
 		<xsl:variable name="current" select="//admin-page/mount/item[@id = current()]" />
 		<xsl:variable name="form" select="../.."/>
-		<div class="pic assoc">
+		<div class="pic assoc" id="param-{../@id}-{@index}">
 			<a href="admin_set_item.action?itemId={$current/@id}&amp;itemType={$current/@type-id}" target="blank" title="Редактировать элемент">
 				<xsl:value-of select="$current/@caption"/>
 			</a>
-			<a id="param-{../@id}-{@index}" href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', '#param-{../@id}-{@index}')" class="delete">Удалить</a>
+			<a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
 		</div>
 	</xsl:template>
 
 	<!-- Значение множественной строки -->
 	<xsl:template match="value">
 		<xsl:variable name="form" select="../.."/>
-		<div class="pic">
+		<div class="pic" id="param-{../@id}-{@index}">
 			<span><xsl:value-of select="."/></span>
-			<a id="param-{../@id}-{@index}" href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', '#param-{../@id}-{@index}')" class="delete">Удалить</a>
+			<a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
 		</div>
 	</xsl:template>
 
@@ -209,8 +209,8 @@
 	<xsl:call-template name="TINY_MCE"/>
 	<script>
 	<xsl:for-each select="$form/field[@quantifier='multiple']">
-		mainForm('addParameter<xsl:value-of select="@id"/>');
-	</xsl:for-each>	
+		prepareSimpleFormView('addParameter<xsl:value-of select="@id"/>');
+	</xsl:for-each>
 	</script>
 	</xsl:template>
 		

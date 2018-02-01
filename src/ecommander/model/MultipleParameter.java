@@ -51,11 +51,13 @@ public final class MultipleParameter extends Parameter {
 	 * Удаление значения по индексу
 	 * @param index
 	 */
-	public void deleteValue(int index) {
+	public void deleteValueByIndex(int index) {
 		if (index >= values.size())
 			return;
 		backup();
-		values.remove(index);
+		Iterator<SingleParameter> valuesIter = values.iterator();
+		for (int i = 0; valuesIter.next() != null && i < index; i++);
+		valuesIter.remove();
 	}
 	/**
 	 * Удалить все включения заданного значения из значений параметра

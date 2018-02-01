@@ -547,7 +547,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		transaction.execute();
 		// Очистить кеш страниц
 		PageController.clearCache();
-		AdminPage page = pageCreator.createParamsPage(in.itemId, in.isVisual);
+		AdminPage page = pageCreator.createParamsPage(itemId, false);
 		page.addMessage("Дополнительный параметр добавлен и отображается в колонке справа", false);
 		return page;
 	}
@@ -631,7 +631,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		// Очистить кеш страниц
 		PageController.clearCache();
 		AdminPage page = pageCreator.createParamsPage(in.itemId, in.isVisual);
-		page.addMessage("Дополниельный параметр удален", false);
+		page.addMessage("Дополнительный параметр удален", false);
 		return page;
 	}
 	/**
