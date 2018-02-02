@@ -104,7 +104,7 @@ public class SingleItemCrawlerController {
 	private int filesToAppend = 0;
 
 	private String nodeCacheFileName = null;
-	private HashMap<String, Element> nodeCache = new HashMap<String, Element>();
+	private HashMap<String, Element> nodeCache = new HashMap<>();
 
 	private static IntegrateBase.Info info = null;
 
