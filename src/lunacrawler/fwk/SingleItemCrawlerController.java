@@ -64,44 +64,27 @@ public class SingleItemCrawlerController {
 
 	public static final String PROPS_RESOURCE = "lunacrawler/props/settings.properties"; // файл с настройками
 
-	public static final String MODE = "mode"; // режим работы: только скачивание (get), только парсинг (parse), и то и другое (all)
-	public static final String STORAGE_DIR = "storage_dir"; // директория для хранения временных файлов программой crawler4j
 	public static final String NUMBER_OF_CRAWLERS = "number_of_crawlers"; // количество параллельных потоков запросов
 	public static final String POLITENESS = "politeness"; // количество миллисекунд между запросами
-	public static final String MAX_PAGES = "max_pages"; // максимальное количество разобранных страниц
-	public static final String MAX_DEPTH = "max_depth"; // максимальная глубина вложенности урлов начиная с начальных страниц (seed)
 	public static final String PROXIES = "proxies_file"; // файл со списком прокси серверов
 	public static final String URLS_PER_PROXY = "urls_per_proxy"; // количество запрошенных урлов перед переключением на следующий прокси
 	public static final String URLS = "urls"; // начальный урл, маски урлов и соответствующие им файлы стилей
 	public static final String STYLES_DIR = "styles_dir"; // директория, в которой лежат файлы со стилями
-	public static final String RESULT_DIR = "result_dir"; // директория, в которой лежат файлы со стилями
-	public static final String RESULT_FILE = "result_file"; // файл с результатом парсинга
 
 	public static final String NO_TEMPLATE = "-";
 	public static final String UTF_8 = "UTF-8";
 
 	private static SingleItemCrawlerController singleton = null;
 
-	private CrawlConfig CONFIG = null;
-	private CrawlController CONTROLLER = null;
-	private Properties props = null;
-	private LinkedList<String> proxies = null;
-	private LinkedHashMap<String, String> urlStyles = null;
-	private LinkedHashSet<String> seedUrls = null;
-	private int urlsPerProxy = 0;
+	private Properties props;
+	private LinkedList<String> proxies;
+	private LinkedHashMap<String, String> urlStyles;
+	private int urlsPerProxy;
 	private int numberOfCrawlers = 1;
-	private int maxPages = -1;
-	private int maxDepth = -1;
-	private String stylesDir = null;
-	private String resultDir = null;
-	private String resultTempSrcDir = null;
-	private String resultTempTransformedDir = null;
-	private String resultTempFilesDir = null;
-	private String resultFile = null;
+	private String stylesDir;
 
 	private int filesToTransform = 0;
 	private int filesToDownload = 0;
-	private int filesToAppend = 0;
 
 	private String nodeCacheFileName = null;
 	private HashMap<String, Element> nodeCache = new HashMap<>();
@@ -131,6 +114,39 @@ public class SingleItemCrawlerController {
 		}
 	}
 
+	private static class DownloadThread<T> implements Runnable {
+
+		private final LinkedList<String> proxies;
+		private final int urlsPerProxy;
+
+		private String currentProxy = null;
+		private int perProxyCount = 0;
+
+		public DownloadThread(LinkedList<String> proxies, int urlsPerProxy) {
+			this.proxies = proxies;
+			this.urlsPerProxy = urlsPerProxy;
+			this.perProxyCount = 0;
+		}
+
+		private void switchProxy() {
+			if (proxies != null && proxies.size() > 0 && urlsPerProxy > 0) {
+				perProxyCount++;
+				if (perProxyCount >= urlsPerProxy) {
+					currentProxy = proxies.pop();
+					proxies.add(currentProxy);
+					perProxyCount = 0;
+				}
+			}
+		}
+
+		protected void processResult()
+
+		@Override
+		public void run() {
+
+		}
+	}
+
 	private SingleItemCrawlerController() throws Exception {
 
 		// Загрузка настроек
@@ -157,8 +173,7 @@ public class SingleItemCrawlerController {
 		}
 
 		// Начальные урлы и список стилей для урлов
-		urlStyles = new LinkedHashMap<String, String>();
-		seedUrls = new LinkedHashSet<String>();
+		urlStyles = new LinkedHashMap<>();
 		String urlFileName = AppContext.getRealPath(props.getProperty(URLS, null));
 		if (new File(urlFileName).exists()) {
 			try(BufferedReader br = new BufferedReader(new FileReader(new File(urlFileName)))) {
@@ -169,7 +184,6 @@ public class SingleItemCrawlerController {
 			        	String[] parts = StringUtils.split(line, ' ');
 			        	if (parts.length == 1) {
 			        		String seed = URLCanonicalizer.getCanonicalURL(parts[0]);
-			        		seedUrls.add(seed);
 			        		urlStyles.put(seed, NO_TEMPLATE);
 			        	} else {
 					        // Проверка правильности регулярного выражения
@@ -193,20 +207,9 @@ public class SingleItemCrawlerController {
 		info.pushLog("Start creating output directories");
 		urlsPerProxy = Integer.parseInt(props.getProperty(URLS_PER_PROXY, "0"));
 		numberOfCrawlers = Integer.parseInt(props.getProperty(NUMBER_OF_CRAWLERS, "1"));
-		maxPages = Integer.parseInt(props.getProperty(MAX_PAGES, "-1"));
-		maxDepth = Integer.parseInt(props.getProperty(MAX_DEPTH, "-1"));
 		stylesDir = AppContext.getRealPath(props.getProperty(STYLES_DIR, null));
 		if (stylesDir != null && !stylesDir.endsWith("/"))
 			stylesDir += "/";
-		resultDir = AppContext.getRealPath(props.getProperty(RESULT_DIR, null));
-		if (resultDir != null && !resultDir.endsWith("/"))
-			resultDir += "/";
-		if (resultDir != null) {
-			resultTempSrcDir = resultDir + "_src/";
-			resultTempTransformedDir = resultDir + "_transformed/";
-			resultTempFilesDir = resultDir + "_files/";
-		}
-		resultFile = AppContext.getRealPath(props.getProperty(RESULT_FILE, null));
 		info.pushLog("Output directories created");
 	}
 	/**
@@ -216,63 +219,13 @@ public class SingleItemCrawlerController {
 	 */
 	private void start(Class<? extends BasicCrawler> crawlerClass,  Mode mode) throws Exception {
 		info.pushLog("Current mode : {}", mode);
-		if (mode == Mode.get || mode == Mode.all)
-			initAndStartCrawler(crawlerClass);
-		if (mode == Mode.parse || mode == Mode.all)
-			buildFinalResult();
-		if (mode == Mode.files || mode == Mode.all)
-			downloadFiles();
-		if (mode == Mode.append)
-			buildRresult();
+
 	}
 	
 	private void terminateInt() {
 		CONTROLLER.shutdown();
 	}
-	/**
-	 * Создать объект crawler4j и начать скачку страниц
-	 * @param crawlerClass
-	 * @throws Exception
-	 */
-	private void initAndStartCrawler(Class<? extends BasicCrawler> crawlerClass) throws Exception {
-		// ������������ crawler4j
-		int politeness = Integer.parseInt(props.getProperty(POLITENESS, "50"));
-		String storageDir = AppContext.getRealPath(props.getProperty(STORAGE_DIR, ""));
-		CONFIG = new CrawlConfig();
-		CONFIG.setCrawlStorageFolder(storageDir);
-		CONFIG.setPolitenessDelay(politeness);
-		CONFIG.setIncludeBinaryContentInCrawling(false);
-		CONFIG.setResumableCrawling(true);
-		CONFIG.setMaxPagesToFetch(maxPages);
-		CONFIG.setMaxDepthOfCrawling(maxDepth);
 
-		/*
-		 * Instantiate the controller for this crawl.
-		 */
-		PageFetcher pageFetcher = new PageFetcher(CONFIG);
-		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
-		robotstxtConfig.setEnabled(false);
-		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
-		CONTROLLER = new CrawlController(CONFIG, pageFetcher, robotstxtServer);
-
-		for (String seed : seedUrls) {
-			CONTROLLER.addSeed(seed);
-		}
-
-		startTime = System.currentTimeMillis();
-		CONTROLLER.start(crawlerClass, numberOfCrawlers);
-		
-		info.pushLog("\n\n\n\n------------------  Finished crawling  -----------------------\n\n\n\n");
-	}
-	/**
-	 * Выполнить проход по всем доступным урлам согласно настройкам из файлов
-	 * @param crawlerClass
-	 * @throws Exception
-	 */
-	public static void startCrawling(Class<? extends BasicCrawler> crawlerClass, IntegrateBase.Info info, Mode mode) throws Exception {
-		SingleItemCrawlerController.info = info;
-		getSingleton().start(crawlerClass, mode);
-	}
 	
 	public static void terminate() {
 		getSingleton().terminateInt();
