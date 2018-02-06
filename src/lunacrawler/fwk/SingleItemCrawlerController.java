@@ -2,17 +2,26 @@ package lunacrawler.fwk;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
-import edu.uci.ics.crawler4j.crawler.CrawlController;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.WebClient;
+import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.User;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.common.DelayedTransaction;
+import ecommander.persistence.common.InPlaceTransaction;
+import ecommander.persistence.itemquery.ItemQuery;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
+import extra._generated.ItemNames;
+import extra._generated.Parse_item;
 import net.sf.saxon.TransformerFactoryImpl;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.http.client.HttpResponseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
@@ -37,6 +46,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Контроллер парсинга айтемов, заданных урлом в системе управления. Не берется в расчет иерархия каталога
@@ -46,52 +56,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  */
 public class SingleItemCrawlerController {
-
-	public static final String PARSE_ITEM = "parse_item"; // Название айтема, который подразумевает парсинг
-
-	public static final String ID = "id";
-	public static final String H_PARENT = "h_parent"; // hierarchy parent
-	public static final String PARENT = "parent";
-	public static final String ELEMENT = "element";
-	public static final String ACTION = "action";
-	public static final String ATTR_ACTION = "attr-action";
-	public static final String IGNORE = "ignore";
-	public static final String APPEND = "append";
-	public static final String APPEND_IF_DIFFERS = "append-if-differs";
-	public static final String DOWNLOAD = "download";
-
-	public enum Mode { get, parse, append, files, all};
-
-	public static final String PROPS_RESOURCE = "lunacrawler/props/settings.properties"; // файл с настройками
-
-	public static final String NUMBER_OF_CRAWLERS = "number_of_crawlers"; // количество параллельных потоков запросов
-	public static final String POLITENESS = "politeness"; // количество миллисекунд между запросами
-	public static final String PROXIES = "proxies_file"; // файл со списком прокси серверов
-	public static final String URLS_PER_PROXY = "urls_per_proxy"; // количество запрошенных урлов перед переключением на следующий прокси
-	public static final String URLS = "urls"; // начальный урл, маски урлов и соответствующие им файлы стилей
-	public static final String STYLES_DIR = "styles_dir"; // директория, в которой лежат файлы со стилями
-
-	public static final String NO_TEMPLATE = "-";
-	public static final String UTF_8 = "UTF-8";
-
-	private static SingleItemCrawlerController singleton = null;
-
-	private Properties props;
-	private LinkedList<String> proxies;
-	private LinkedHashMap<String, String> urlStyles;
-	private int urlsPerProxy;
-	private int numberOfCrawlers = 1;
-	private String stylesDir;
-
-	private int filesToTransform = 0;
-	private int filesToDownload = 0;
-
-	private String nodeCacheFileName = null;
-	private HashMap<String, Element> nodeCache = new HashMap<>();
-
-	private static IntegrateBase.Info info = null;
-
-	private volatile long startTime = 0;
 
 	private static class Errors implements ErrorListener {
 
@@ -114,18 +78,21 @@ public class SingleItemCrawlerController {
 		}
 	}
 
-	private static class DownloadThread<T> implements Runnable {
+	private abstract static class DownloadThread implements Runnable {
 
 		private final LinkedList<String> proxies;
 		private final int urlsPerProxy;
+		private final LinkedBlockingDeque<Parse_item> items; // Список должен быть синхронизирован (потокобезопасен)
 
 		private String currentProxy = null;
 		private int perProxyCount = 0;
+		private volatile boolean terminate = false;
 
-		public DownloadThread(LinkedList<String> proxies, int urlsPerProxy) {
+		public DownloadThread(LinkedList<String> proxies, int urlsPerProxy, LinkedBlockingDeque<Parse_item> itemsToProcess) {
 			this.proxies = proxies;
 			this.urlsPerProxy = urlsPerProxy;
 			this.perProxyCount = 0;
+			this.items = itemsToProcess;
 		}
 
 		private void switchProxy() {
@@ -139,13 +106,96 @@ public class SingleItemCrawlerController {
 			}
 		}
 
-		protected void processResult()
+		protected abstract void processItem(Parse_item item, String proxy) throws Exception;
+
+		protected abstract void afterFinished();
 
 		@Override
 		public void run() {
+			while (items.size() > 0) {
+				if (terminate)
+					return;
+				Parse_item item;
+				try {
+					item = items.pop();
+				} catch (NoSuchElementException e) {
+					break;
+				}
+				switchProxy();
+				try {
+					processItem(item, currentProxy);
+				} catch (Exception e) {
+					ServerLogger.error("Error while processing parsed item", e);
+				}
+			}
+			afterFinished();
+		}
 
+		private void terminate() {
+			this.terminate = true;
 		}
 	}
+
+	public enum State {
+		INIT("Инициализация"), HTML("Получение HTML"), TRANSFORM("XSL преобразование"),
+		FILES("Загрузка файлов"), FINISHED("Работа закончена");
+
+		private String desc;
+		State(String desc) {
+			this.desc = desc;
+		}
+
+		public String getDesc() {
+			return desc;
+		}
+	}
+
+	public static final String PARSE_ITEM = "parse_item"; // Название айтема, который подразумевает парсинг
+
+	public static final String ID = "id";
+	public static final String H_PARENT = "h_parent"; // hierarchy parent
+	public static final String PARENT = "parent";
+	public static final String ELEMENT = "element";
+	public static final String ACTION = "action";
+	public static final String ATTR_ACTION = "attr-action";
+	public static final String IGNORE = "ignore";
+	public static final String APPEND = "append";
+	public static final String APPEND_IF_DIFFERS = "append-if-differs";
+	public static final String DOWNLOAD = "download";
+
+	public static final String PROPS_RESOURCE = "lunacrawler/props/settings.properties"; // файл с настройками
+
+	public static final String NUMBER_OF_CRAWLERS = "number_of_crawlers"; // количество параллельных потоков запросов
+	public static final String POLITENESS = "politeness"; // количество миллисекунд между запросами
+	public static final String PROXIES = "proxies_file"; // файл со списком прокси серверов
+	public static final String URLS_PER_PROXY = "urls_per_proxy"; // количество запрошенных урлов перед переключением на следующий прокси
+	public static final String URLS = "urls"; // начальный урл, маски урлов и соответствующие им файлы стилей
+	public static final String STYLES_DIR = "styles_dir"; // директория, в которой лежат файлы со стилями
+
+	public static final String NO_TEMPLATE = "-";
+	public static final String UTF_8 = "UTF-8";
+
+	private static SingleItemCrawlerController singleton = null;
+
+	private State state = State.INIT;
+	private Properties props;
+	private LinkedList<String> proxies;
+	private LinkedHashMap<String, String> urlStyles;
+	private LinkedBlockingDeque<Parse_item> itemsToProcess;
+	private HashSet<DownloadThread> workers;
+	private int urlsPerProxy;
+	private int numberOfCrawlers = 1;
+	private String stylesDir;
+
+	private volatile int toProcessCount = 0;
+	private volatile int processedCount = 0;
+
+	private String nodeCacheFileName = null;
+	private HashMap<String, Element> nodeCache = new HashMap<>();
+
+	private static IntegrateBase.Info info = null;
+
+	private volatile long startTime = 0;
 
 	private SingleItemCrawlerController() throws Exception {
 
@@ -211,22 +261,95 @@ public class SingleItemCrawlerController {
 		if (stylesDir != null && !stylesDir.endsWith("/"))
 			stylesDir += "/";
 		info.pushLog("Output directories created");
+
+		// Коллекция для айтемов
+		itemsToProcess = new LinkedBlockingDeque<>();
+		workers = new HashSet<>();
 	}
 	/**
-	 * Выполнить проход по всем доступным урлам согласно настройкам из файлов
-	 * @param crawlerClass
+	 * Загрузить все айтемы для обработки и запустить обработку
 	 * @throws Exception
 	 */
-	private void start(Class<? extends BasicCrawler> crawlerClass,  Mode mode) throws Exception {
-		info.pushLog("Current mode : {}", mode);
-
+	private void startNextStage(State...initState) {
+		info.pushLog("Начало работы");
+		if (initState.length > 0) {
+			this.state = initState[0];
+		}
+		if (state == State.FINISHED) {
+			return;
+		}
+		if (state == State.INIT) {
+			state = State.HTML;
+		} else if (state == State.HTML) {
+			state = State.TRANSFORM;
+		} else if (state == State.TRANSFORM) {
+			state = State.FILES;
+		} else if (state == State.FILES) {
+			state = State.FINISHED;
+		}
 	}
-	
+
 	private void terminateInt() {
-		CONTROLLER.shutdown();
+		synchronized (workers) {
+			for (DownloadThread worker : workers) {
+				worker.terminate();
+			}
+		}
 	}
 
-	
+	private void workerFinished(DownloadThread thread) {
+		synchronized (workers) {
+			workers.remove(thread);
+			if (workers.size() == 0)
+				startNextStage();
+		}
+	}
+
+	private void downloadHtml() throws Exception {
+		itemsToProcess = new LinkedBlockingDeque<>();
+		ArrayList<Item> items = ItemQuery.loadByParamValue(ItemNames.PARSE_ITEM, ItemNames.parse_item.DOWNLOADED, "0");
+		for (Item item : items) {
+			itemsToProcess.add(Parse_item.get(item));
+		}
+		toProcessCount = itemsToProcess.size();
+		processedCount = 0;
+		for (int i = 0; i < numberOfCrawlers; i++) {
+			DownloadThread worker = new DownloadThread(proxies, urlsPerProxy, itemsToProcess) {
+				@Override
+				protected void processItem(Parse_item item, String proxy) throws Exception {
+					String html;
+					try {
+						html = WebClient.getString(item.get_url(), proxy);
+					} catch (HttpResponseException re) {
+						info.addError("Url status code " + re.getStatusCode(), item.get_url());
+						return;
+					} catch (Exception e) {
+						info.addError("Unknown download problem: " + e.getMessage(), item.get_url());
+						return;
+					}
+					if (StringUtils.isEmpty(html)) {
+						info.addError("Empty response", item.get_url());
+						return;
+					}
+					item.set_html(html);
+					item.set_downloaded((byte) 1);
+					DelayedTransaction transaction = new DelayedTransaction(User.getDefaultUser());
+					transaction.addCommandUnit(SaveItemDBUnit.get(item));
+					transaction.execute();
+					info.pushLog("URL {} downloaded", item.get_url());
+					info.setProcessed(++processedCount);
+				}
+
+				@Override
+				protected void afterFinished() {
+					workerFinished(this);
+				}
+			};
+			workers.add(worker);
+			new Thread(worker).start();
+		}
+	}
+
 	public static void terminate() {
 		getSingleton().terminateInt();
 	}
