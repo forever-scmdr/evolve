@@ -239,7 +239,10 @@ public abstract class IntegrateBase extends Command {
 		String operation = getVarSingleValue("action");
 		boolean async = getVarSingleValueDefault("mode", "async").equalsIgnoreCase("async");
 		// Если команда находитя в стадии выполнения - вернуть результат сразу (не запускать команду по новой)
-		if (isInProgress || !"start".equals(operation)) {
+		if (isInProgress && "terminate".equals(operation)) {
+			terminate();
+			return buildResult();
+		} else if (isInProgress || !"start".equals(operation)) {
 			return buildResult();
 		} else {
 			synchronized (MUTEX) {
@@ -263,8 +266,18 @@ public abstract class IntegrateBase extends Command {
 							ServerLogger.error("Integration error", se);
 							info.addError(se.getMessage(), 0, 0);
 						} finally {
-							isInProgress = false;
-							getInfo().setInProgress(false);
+							try {
+								LuceneIndexMapper.getSingleton().close();
+							} catch (IOException e) {
+								try {
+									throw e;
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
+							} finally {
+								isInProgress = false;
+								getInfo().setInProgress(false);
+							}
 						}
 					}
 				});
@@ -284,6 +297,11 @@ public abstract class IntegrateBase extends Command {
 	 * Сам процесс интеграции
 	 */
 	protected abstract void integrate() throws Exception;
+	/**
+	 * Прервать процесс интеграции
+	 * @throws Exception
+	 */
+	protected abstract void terminate() throws Exception;
 	/**
 	 * Создать результат выполнения команды (xml документ)
 	 * 

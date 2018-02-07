@@ -2,6 +2,7 @@ package ecommander.filesystem;
 
 import ecommander.fwk.FileException;
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.WebClient;
 import ecommander.model.Item;
 import ecommander.model.ParameterDescription;
 import ecommander.model.SingleParameter;
@@ -71,14 +72,17 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 //						continue;
 					boolean isUploaded = value instanceof FileItem;
 					boolean isDirect = value instanceof File;
+					boolean isUrl = value instanceof URL;
 					// Если файл прикреплен, то он должен быть типа FileItem или типа File
-					if (isUploaded || isDirect) {
+					if (isUploaded || isDirect || isUrl) {
 						// Если название файла содержит путь - удалить этот путь
-						String fileName;
+						String fileName = null;
 						if (isUploaded)
 							fileName = FileDataType.getFileName((FileItem) value);
-						else
+						else if (isDirect)
 							fileName = ((File) value).getName();
+						else if (isUrl)
+							fileName = FileDataType.getFileName(((URL) value).getFile());
 						// Создание новой директории
 						File dir = new File(fileDirectoryName);
 						dir.mkdirs();
@@ -93,8 +97,10 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 						try {
 							if (isUploaded)
 								((FileItem) value).write(newFile);
-							else
+							else if (isDirect)
 								Files.copy(((File) value).toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+							else if (isUrl)
+								WebClient.saveFile(value.toString(), fileDirectoryName);
 						} catch (Exception e) {
 							throw new FileException("File '" + newFile.getName() + "' has not been moved successfully");
 						}

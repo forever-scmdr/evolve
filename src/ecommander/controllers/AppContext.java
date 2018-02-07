@@ -37,11 +37,12 @@ public class AppContext {
 	private static String LOG_FILE;
 	
 	private static String _REAL_BASE_PATH;
+	private static Properties props = new Properties();
 	
 	static void init(ServletContext servletContext) {
 		String contextRoot = "";
 		try {
-			Properties props = new Properties();
+			props.clear();
 			props.load(servletContext.getResourceAsStream("/WEB-INF/settings.properties"));
 			MAIN_XML_MODELS_DIR = props.getProperty("paths.rel_base_folder");
 			MAIN_DATA_MODEL_FILE = props.getProperty("paths.data_model");
@@ -183,5 +184,9 @@ public class AppContext {
 	
 	public static String getWelcomePageName() {
 		return WELCOME_PAGE;
+	}
+
+	public static String getProperty(String propertyName, String defaultValue) {
+		return props.getProperty(propertyName, defaultValue);
 	}
 }

@@ -3,6 +3,7 @@ package ecommander.persistence.common;
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.User;
+import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 
 import java.sql.Connection;
 import java.util.LinkedList;
@@ -117,5 +118,17 @@ public class DelayedTransaction {
 		} catch (Exception e) {
 			ServerLogger.error("Transaction command rollback error", e);
 		}
+	}
+
+	/**
+	 * Выполнить одну команду и завершить транзакцию
+	 * @param initiator
+	 * @param commandUnit
+	 * @throws Exception
+	 */
+	public static void executeSingle(User initiator, DBPersistenceCommandUnit commandUnit) throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(initiator);
+		transaction.addCommandUnit(commandUnit);
+		transaction.execute();
 	}
 }

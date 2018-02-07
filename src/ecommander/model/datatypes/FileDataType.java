@@ -88,7 +88,7 @@ public class FileDataType extends StringDataType {
 	 * @param fileName
 	 * @return
 	 */
-	private static String getFileName(String fileName) {
+	public static String getFileName(String fileName) {
 		return Strings.translit(fileName.replaceFirst(".*[\\/]", ""));
 	}
 }
