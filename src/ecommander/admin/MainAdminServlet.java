@@ -13,6 +13,7 @@ import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
+import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -417,12 +418,17 @@ public class MainAdminServlet extends BasicAdminServlet {
 		PageController.clearCache();
 		// Антоновские изменения
 		//page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, item.getId(), item.getTypeId());
-		boolean toParent = StringUtils.equalsIgnoreCase(itemForm.getSingleStringExtra("parent-url"), "yes");
-		long id = (toParent) ? item.getContextParentId() : item.getId();
-		if (id == ItemTypeRegistry.getPrimaryRootId()){
+		boolean toParent = StringUtils.equalsIgnoreCase(itemForm.getSingleStringExtra("goToParent"), "true");
+		long id = item.getId();
+		int type = item.getTypeId();
+		if (toParent) {
+			id = AdminLoader.loadItemDirectParentId(id, ItemTypeRegistry.getPrimaryAssocId());
+			type = AdminLoader.loadItem(id, getCurrentAdmin()).getTypeId();
+		}
+		//boolean toParent = in.goToParent;
+		if (id == ItemTypeRegistry.getPrimaryRootId()) {
 			return setItem(in, pageCreator);
 		}
-		int type = (toParent) ? AdminLoader.loadItem(id, getCurrentAdmin()).getTypeId() : item.getTypeId();
 		//AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, id, type);
 		//page.addMessage("Изменения успешно сохранены", false);
 		AdminPage page = MainAdminPageCreator.createSetItemRedirectPage(id, type, "Изменения успешно сохранены");

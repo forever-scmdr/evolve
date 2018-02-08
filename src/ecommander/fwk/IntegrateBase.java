@@ -264,7 +264,7 @@ public abstract class IntegrateBase extends Command {
 						} catch (Exception se) {
 							setOperation("Интеграция завершена с ошибками");
 							ServerLogger.error("Integration error", se);
-							info.addError(se.getMessage(), 0, 0);
+							getInfo().addError(se.getMessage(), 0, 0);
 						} finally {
 							try {
 								LuceneIndexMapper.getSingleton().close();
@@ -311,7 +311,7 @@ public abstract class IntegrateBase extends Command {
 	private ResultPE buildResult() throws IOException {
 		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
 		doc.startElement("page");
-		info.output(doc);
+		getInfo().output(doc);
 		doc.endElement();
 		ResultPE result = null;
 		try {

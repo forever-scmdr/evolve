@@ -364,6 +364,29 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 	}
 
 	/**
+	 * Загрузить ID родительского айтема по ассоциации
+	 * @param itemId
+	 * @param assocId
+	 * @return
+	 * @throws SQLException
+	 */
+	static long loadItemDirectParentId(long itemId, byte assocId) throws SQLException, NamingException {
+		TemplateQuery query = new TemplateQuery("Select item direct parent");
+		query.SELECT(DBConstants.ItemParent.IP_PARENT_ID).FROM(DBConstants.ItemParent.ITEM_PARENT_TBL)
+				.WHERE().col(DBConstants.ItemParent.IP_CHILD_ID).long_(itemId)
+				.AND().col(DBConstants.ItemParent.IP_ASSOC_ID).byte_(assocId)
+				.AND().col(DBConstants.ItemParent.IP_PARENT_DIRECT).byte_((byte) 1);
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = query.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return rs.getLong(1);
+			} else {
+				return -1;
+			}
+		}
+	}
+	/**
 	 * Загрузить все айтемы, которые хранят ссылки на данный айтем (все айтемы, к которым прицеплен данный айтем)
 	 * @param itemId
 	 * @return

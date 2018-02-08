@@ -7,5 +7,12 @@
 
 	</page>
 
-
+	<page name="get_site" template="get_site" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="lunacrawler.SingleCrawlerCommand" clear-cache="no">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 </site>

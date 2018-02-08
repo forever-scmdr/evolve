@@ -226,6 +226,7 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String PAGE_INPUT = "page";
 	public static final String USER_ID_INPUT = "userId";
 	public static final String MESSAGE_INPUT = "msg";
+	public static final String GO_TO_PARENT_INPUT = "goToParent";
 	/**
 	 * Значения
 	 */
