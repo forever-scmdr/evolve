@@ -1,18 +1,18 @@
 #############################################
-# 				tinko.ru
+# 				testo.ru
 #############################################
 
 #
 # Initial urls
 #
 
-http://www.tinko.ru/
-http://www.tinko.ru/ index.xsl http://www.tinko.ru/
+#http://www.tinko.ru/
+#http://www.tinko.ru/ index.xsl http://www.tinko.ru/
 
 #
 # Pages to parse
 #
 
-.*tinko\.ru/c-.*\d{1,7}\.html section.xsl http://www.tinko.ru/c-1923.html
-.*tinko\.ru/c-.*\d{1,7}\.html.p=\d{1,3} section.xsl http://www.tinko.ru/c-1923.html?p=2
-.*tinko\.ru/p-.*\d{1,8}\.html product.xsl http://www.tinko.ru/p-247022.html
+.*testo\.ru/.* product.xsl https://www.testo.ru/ru-RU/testo-103/p/0560-0103
+#.*tinko\.ru/c-.*\d{1,7}\.html.p=\d{1,3} section.xsl http://www.tinko.ru/c-1923.html?p=2
+#.*tinko\.ru/p-.*\d{1,8}\.html product.xsl http://www.tinko.ru/p-247022.html

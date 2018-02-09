@@ -248,6 +248,31 @@ public class SingleItemCrawlerController {
 		info.pushLog("Работа завершена");
 	}
 
+	/**
+	 * Сбросить результаты заданной стадии парсинга (и последующих стадий)
+	 * @param state
+	 * @throws Exception
+	 */
+	public void resetToStage(State state) throws Exception {
+		if (state == State.HTML || state == State.TRANSFORM || state == State.FILES) {
+			List<Item> items = new ItemQuery(ItemNames.PARSE_ITEM).loadItems();
+			for (Item item : items) {
+				Parse_item pitem = Parse_item.get(item);
+				if (state == State.HTML) {
+					pitem.set_downloaded((byte) 0);
+					pitem.set_parsed((byte) 0);
+					pitem.set_got_files((byte) 0);
+				} else if (state == State.TRANSFORM) {
+					pitem.set_parsed((byte) 0);
+					pitem.set_got_files((byte) 0);
+				} else if (state == State.FILES) {
+					pitem.set_got_files((byte) 0);
+				}
+				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pitem));
+			}
+		}
+	}
+
 	private void terminateInt() {
 		synchronized (workers) {
 			for (DownloadThread worker : workers) {

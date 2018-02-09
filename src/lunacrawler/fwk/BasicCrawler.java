@@ -33,9 +33,13 @@ public abstract class BasicCrawler extends WebCrawler {
 		double minutes = (System.currentTimeMillis() - CrawlerController.getSingleton().getStartTime()) / MINUTE_MILLIS;
 		long perMinute = Math.round(visited / minutes);
 		CrawlerController.getInfo().pushLog("Visiting: {}\t{} to visit\t{} minutes\t{} visited\t{} VPM", href, urlsToProcess, Math.round(minutes), visited, perMinute);
-		if (!templateFileName.equals(CrawlerController.NO_TEMPLATE)) {
-			CrawlerController.getInfo().pushLog("Saving contents: {}", href);
-			CrawlerController.getSingleton().pageProcessed(page, processUrl(page), this);
+		try {
+			if (!templateFileName.equals(CrawlerController.NO_TEMPLATE)) {
+				CrawlerController.getInfo().pushLog("Saving contents: {}", href);
+				CrawlerController.getSingleton().pageProcessed(page, processUrl(page), this);
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to switch proxy and reinit crawler");
 		}
 		urlsToProcess--;
 	}

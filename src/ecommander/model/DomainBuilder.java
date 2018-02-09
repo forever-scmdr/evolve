@@ -1,16 +1,13 @@
 package ecommander.model;
 
-import java.io.File;
-
-import org.apache.xerces.parsers.DOMParser;
+import com.sun.org.apache.xerces.internal.parsers.DOMParser;
+import ecommander.controllers.AppContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import ecommander.controllers.AppContext;
-import ecommander.model.Domain;
-import ecommander.model.DomainRegistry;
+import java.io.File;
 
 /**
  * 

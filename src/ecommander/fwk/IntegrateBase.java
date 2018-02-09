@@ -83,8 +83,8 @@ public abstract class IntegrateBase extends Command {
 		private int lineNumber = 0;
 		private int processed = 0;
 		private int toProcess = 0;
-		private ArrayDeque<LogMessage> log = new ArrayDeque<LogMessage>();
-		private ArrayList<Error> errors = new ArrayList<IntegrateBase.Error>();
+		private ArrayDeque<LogMessage> log = new ArrayDeque<>();
+		private ArrayList<Error> errors = new ArrayList<>();
 		private boolean inProgress = false;
 		private int logSize = Integer.MAX_VALUE;
 

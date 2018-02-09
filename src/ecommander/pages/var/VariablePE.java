@@ -1,13 +1,15 @@
 package ecommander.pages.var;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
-import ecommander.pages.*;
+import com.sun.org.apache.xerces.internal.util.XMLChar;
+import ecommander.fwk.Strings;
+import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.PageElement;
+import ecommander.pages.PageElementContainer;
+import ecommander.pages.ValidationResults;
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.fwk.Strings;
-import org.apache.xerces.util.XMLChar;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * Страничная переменная

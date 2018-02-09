@@ -403,7 +403,7 @@ public class CrawlerController {
 	 * @param crawler - кролер, который вернул результат
 	 * @param result - результат парсинга
 	 */
-	void pageProcessed(Page page, String result, BasicCrawler crawler) {
+	void pageProcessed(Page page, String result, BasicCrawler crawler) throws IllegalAccessException, InstantiationException {
 		// Записать в файл изначальный полученный html
 		try {
 			String fileName = URLEncoder.encode(page.getWebURL().getURL().toLowerCase(), UTF_8);
