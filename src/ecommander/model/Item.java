@@ -144,7 +144,7 @@ public class Item implements ItemBasics {
 		// Добавить все параметры, которые содержатся в типа айтема.
 		// Все параметры (даже пустые) нужны для отслеживания изменений параметров.
 		for (ParameterDescription paramDesc : itemType.getParameterList()) {
-			paramMap.put(paramDesc.getId(), paramDesc.createParameter());
+			paramMap.put(paramDesc.getId(), paramDesc.createParameter(this));
 		}
 	}
 
@@ -169,7 +169,7 @@ public class Item implements ItemBasics {
 		// Добавить все параметры, которые содержатся в типа айтема.
 		// Все параметры (даже пустые) нужны для отслеживания изменений параметров.
 		for (ParameterDescription paramDesc : itemType.getParameterList()) {
-			paramMap.put(paramDesc.getId(), paramDesc.createParameter());
+			paramMap.put(paramDesc.getId(), paramDesc.createParameter(this));
 		}
 		setFilesPath();
 	}
@@ -293,7 +293,7 @@ public class Item implements ItemBasics {
 			// Удалить параметр, если значение равно null
 			clearParameter(paramId);
 		} else {
-			getParameter(paramId).setValue(value);
+			getParameter(paramId).setValue(value, false);
 		}
 		state = State.modified_NO_xml;
 	}
@@ -400,7 +400,14 @@ public class Item implements ItemBasics {
 							}
 							paramValue = new StringBuilder();
 							metas = new ArrayList<>();
-							attributes.
+							for (int i = 0; i < attributes.getLength(); i++) {
+								String attName = attributes.getLocalName(i);
+								String attValue = attributes.getValue(i);
+								if (!StringUtils.equalsIgnoreCase(attName, ID_ATTRIBUTE)) {
+									metas.add(attName);
+									metas.add(attValue);
+								}
+							}
 						}
 						level++;
 					}
@@ -414,7 +421,12 @@ public class Item implements ItemBasics {
 									Parameter param = getParameterFromMap(paramId);
 									if (currentParamDesc.getType() == Type.XML)
 										strValue = StringEscapeUtils.unescapeXml(strValue);
-									param.createAndSetValue(strValue, true);
+									SingleParameter sp = param.createAndSetValue(strValue, true);
+									if (metas.size() > 0 && sp != null) {
+										for (int i = 0; i < metas.size(); i += 2) {
+											sp.setMeta(metas.get(i), metas.get(i + 1));
+										}
+									}
 								} catch (Exception e) {
 									throw new RuntimeException("ITEM params population from XML failed", e);
 								}
@@ -471,14 +483,8 @@ public class Item implements ItemBasics {
 	private void createParamXML(SingleParameter param, XmlDocumentBuilder xml, boolean isUserDefined) throws SQLException {
 		if (!isUserDefined) {
 			xml.startElement(param.getName());
-			if (param.getDesc().getDataType().hasMeta()) {
-				HashMap<String, String> meta = param.getDesc().getDataType().getMeta(param.getValue(), getRelativeFilesPath());
-				ArrayList<String> attrs = new ArrayList<>();
-				for (String attr : meta.keySet()) {
-					attrs.add(attr);
-					attrs.add(meta.get(attr));
-				}
-				xml.insertAttributes(attrs.toArray(new String[0]));
+			if (param.hasMetas()) {
+				xml.insertAttributes(param.getAllMetas().toArray(new String[0]));
 			}
 			xml.addText(param.outputValue()).endElement();
 		} else {

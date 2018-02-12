@@ -8,6 +8,7 @@ import ecommander.filesystem.SaveItemFileUnit;
 import ecommander.filesystem.SaveItemFilesUnit;
 import ecommander.fwk.*;
 import ecommander.model.*;
+import ecommander.model.datatypes.FileDataType;
 import ecommander.pages.MultipleHttpPostForm;
 import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.DelayedTransaction;
@@ -610,7 +611,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			transaction.addCommandUnit(SaveItemDBUnit.get(item));
 		}
 		transaction.execute();
-		String itemPath = AppContext.getFilesDirPath(item.isFileProtected()) + item.getRelativeFilesPath();
+		String itemPath = FileDataType.getItemFilePath(item);
 		return pageCreator.createImageUploadedPage(in.itemId, in.paramId, uploadedFiles, itemPath, alt);
 	}
 	/**

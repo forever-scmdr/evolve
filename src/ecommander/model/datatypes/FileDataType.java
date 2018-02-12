@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 
+import ecommander.model.Item;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -45,8 +46,8 @@ public class FileDataType extends StringDataType {
 	}
 
 	@Override
-	public HashMap<String, String> getMeta(Object value, Object... extraParams) {
-		String parentPath = (String) extraParams[0];
+	public HashMap<String, String> createMeta(Object value, Object... extraParams) {
+		Item item = (Item) extraParams[0];
 		HashMap<String, String> meta = new HashMap<>(3);
 		if (value instanceof FileItem) {
 			FileItem file = (FileItem) value;
@@ -59,9 +60,7 @@ public class FileDataType extends StringDataType {
 				if (value instanceof File)
 					file = ((File) value).toPath();
 				else
-					file = new File(AppContext.getCommonFilesDirPath() + parentPath + value).toPath();
-				if (!Files.exists(file))
-					file = new File(AppContext.getProtectedFilesDirPath() + parentPath + value).toPath();
+					file = new File(getItemFilePath(item) + value).toPath();
 				if (!Files.exists(file))
 					return meta;
 				BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
@@ -90,5 +89,14 @@ public class FileDataType extends StringDataType {
 	 */
 	public static String getFileName(String fileName) {
 		return Strings.translit(fileName.replaceFirst(".*[\\/]", ""));
+	}
+
+	/**
+	 * Вернуть путь к текущей директории айтема
+	 * @param item
+	 * @return
+	 */
+	public static String getItemFilePath(Item item) {
+		return AppContext.getFilesDirPath(item.isFileProtected()) + item.getRelativeFilesPath();
 	}
 }

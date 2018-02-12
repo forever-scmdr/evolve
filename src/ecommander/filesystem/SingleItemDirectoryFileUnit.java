@@ -4,6 +4,7 @@ import java.io.File;
 
 import ecommander.controllers.AppContext;
 import ecommander.model.Item;
+import ecommander.model.datatypes.FileDataType;
 
 /**
  * Базовый класс для всех команд, которые работают с айтемом и его файлами
@@ -30,7 +31,7 @@ public abstract class SingleItemDirectoryFileUnit extends ItemDirectoryCommandUn
 	 * @return
 	 */
 	protected String createItemDirectoryName() {
-		return AppContext.getFilesDirPath(item.isFileProtected()) + item.getRelativeFilesPath();
+		return FileDataType.getItemFilePath(item);
 	}
 
 

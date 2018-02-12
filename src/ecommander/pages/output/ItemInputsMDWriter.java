@@ -9,6 +9,7 @@ import ecommander.fwk.Strings;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
+import ecommander.model.datatypes.FileDataType;
 import ecommander.pages.ItemInputName;
 import ecommander.pages.ItemInputs;
 import org.apache.commons.lang3.StringUtils;
@@ -132,7 +133,7 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 		if (hasActionUrl()) {
 			xml.startElement(tag,
 					ACTION_URL_ATTRIBUTE, actionUrl,
-					FILE_PATH_ATTRIBUTE, AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath(),
+					FILE_PATH_ATTRIBUTE, FileDataType.getItemFilePath(item),
 					ID_ATTRIBUTE, item.getId(),
 					CAPTION_ATTRIBUTE, itemDesc.getCaption(),
 					KEY_ATTRIBUTE, item.getKey());

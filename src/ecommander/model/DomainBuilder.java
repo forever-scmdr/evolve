@@ -96,7 +96,7 @@ public class DomainBuilder {
 		// Парсить документ
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
-		final Document document = db.parse(new InputSource( new StringReader(AppContext.getDomainsModelPath()) ));
+		final Document document = db.parse(domainsFile);
 		NodeList domains = document.getElementsByTagName(DOMAIN_ELEMENT);
 		for (int i = 0; i < domains.getLength(); i++) {
 			Element domainNode = (Element)domains.item(i);

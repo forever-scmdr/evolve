@@ -8,15 +8,13 @@ import ecommander.model.datatypes.DataType.Type;
  * @author EEEE
  */
 public abstract class Parameter {
-	
-	public static final String NO_VALUE = Strings.EMPTY;
-	
-	protected ParameterDescription desc = null;
-	
-	protected Parameter() {}
-	
-	public Parameter(ParameterDescription desc) {
+
+	protected ParameterDescription desc;
+	protected Item item;
+
+	protected Parameter(ParameterDescription desc, Item item) {
 		this.desc = desc;
+		this.item = item;
 	}
 	
 	public final String getName() {
@@ -67,9 +65,10 @@ public abstract class Parameter {
 	/**
 	 * Установить значение напрямую без создания
 	 * @param value
+	 * @param isConsistent - при загрузке из БД - true, при изменении в процессе работы приложения - false
 	 * @return - если значение параметра изменилось - true, если нет, то false
 	 */
-	abstract boolean setValue(Object value);
+	abstract boolean setValue(Object value, boolean isConsistent);
 	public abstract boolean isEmpty();
 	public abstract boolean containsValue(Object value);
 	/**

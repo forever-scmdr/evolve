@@ -107,7 +107,7 @@ public abstract class DataType {
 	 * @param extraParams
 	 * @return
 	 */
-	public abstract HashMap<String, String> getMeta(Object value, Object... extraParams);
+	public abstract HashMap<String, String> createMeta(Object value, Object... extraParams);
 	/**
 	 * Файловый ли тип данных
 	 * @return

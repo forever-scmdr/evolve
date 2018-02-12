@@ -17,6 +17,8 @@ import org.apache.http.client.HttpResponseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Entities;
+import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
 import javax.xml.transform.*;
@@ -24,6 +26,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -372,7 +375,18 @@ public class SingleItemCrawlerController {
 				info.pushLog("Transforming: {}\tTo transform: {}", item.get_url(), toProcessCount);
 				factory.setErrorListener(errors);
 				transformer = factory.newTransformer(new StreamSource(xslFile));
-				Reader reader = new StringReader(item.get_html());
+
+				// Подготовка HTML (убирание необъявленных сущностей и т.д.)
+				Document jsoupDoc = Jsoup.parse(item.get_html());
+				Document.OutputSettings settings = new Document.OutputSettings();
+				settings.charset(Charset.forName("UTF-8"));
+				settings.syntax(Document.OutputSettings.Syntax.xml);
+				settings.escapeMode(Entities.EscapeMode.xhtml);
+				jsoupDoc.outputSettings(settings);
+				String body = jsoupDoc.body().outerHtml();
+
+				// Преборазование очищенного HTML
+				Reader reader = new StringReader(body);
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				transformer.transform(new StreamSource(reader), new StreamResult(bos));
 				item.set_xml(bos.toString(UTF_8));
@@ -380,14 +394,15 @@ public class SingleItemCrawlerController {
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item));
 				info.pushLog("URL {} transformed", item.get_url());
 				info.setProcessed(++processedCount);
+				toProcessCount--;
 			} catch (TransformerConfigurationException e) {
-				info.pushLog(errors.errors, e);
+				info.pushLog(errors.errors, e.getMessageAndLocation());
 			} catch (TransformerException e) {
-				info.pushLog("Error while transforming html input. Url: " + item.get_url(), e);
+				info.pushLog("Transforming error: {} message: {}", item.get_url(), e.getMessageAndLocation());
 			} catch (UnsupportedEncodingException e) {
-				info.pushLog("Unsupported charset", e);
+				info.pushLog("Unsupported charset {}", e);
 			} catch (Exception e) {
-				info.pushLog("Error saving XML of an url: " + item.get_url(), e);
+				info.pushLog("Error saving XML of an url: {} message {}", item.get_url(), e);
 			}
 			if (errors.hasErrors()) {
 				info.pushLog("There were errors while transforming source html file {}", item.get_url());

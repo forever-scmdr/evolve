@@ -1,7 +1,10 @@
 package ecommander.model;
 
+import ecommander.model.datatypes.FileDataType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Одиночный параметр
@@ -14,18 +17,18 @@ public class SingleParameter extends Parameter {
 	private ArrayList<Object> oldValues = null;
 	private HashMap<String, String> metas = null;
 	
-	public SingleParameter(ParameterDescription desc) {
-		super(desc);
+	public SingleParameter(ParameterDescription desc, Item item) {
+		super(desc, item);
 	}
 	/**
 	 * Установить готовое (уже правильное) значение
 	 * @param value
 	 */
-	public final boolean setValue(Object value) {
+	final boolean setValue(Object value, boolean isConsistent) {
 		if (containsValue(value))
 			return false;
 		storeOldValue();
-		this.value = value;
+		performSetValue(value, isConsistent);
 		return true;
 	}
 	/**
@@ -39,8 +42,20 @@ public class SingleParameter extends Parameter {
 				return this;
 			storeOldValue();
 		}
-		this.value = val;
+		performSetValue(val, isConsistent);
 		return this;
+	}
+
+	/**
+	 * Установить значение и если нужно сгенерировать метаданные
+	 * @param val
+	 * @param isConsistent
+	 */
+	private void performSetValue(Object val, boolean isConsistent) {
+		this.value = val;
+		if (desc.getDataType().hasMeta() && !isConsistent) {
+			metas = desc.getDataType().createMeta(val, item);
+		}
 	}
 	/**
 	 * Вернуть старые значения параметра.
@@ -71,7 +86,7 @@ public class SingleParameter extends Parameter {
 
 	@Override
 	public void clear() {
-		setValue(null);
+		setValue(null, true);
 	}
 
 	public String outputValue() {
@@ -96,6 +111,15 @@ public class SingleParameter extends Parameter {
 
 	public boolean hasMetas() {
 		return metas != null;
+	}
+
+	ArrayList<String> getAllMetas() {
+		ArrayList<String> allMetas = new ArrayList<>();
+		for (Map.Entry<String, String> entry : metas.entrySet()) {
+			allMetas.add(entry.getKey());
+			allMetas.add(entry.getValue());
+		}
+		return allMetas;
 	}
 
 	@Override

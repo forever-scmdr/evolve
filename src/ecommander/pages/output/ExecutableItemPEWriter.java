@@ -8,6 +8,7 @@ import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;
 import ecommander.model.datatypes.DataType;
+import ecommander.model.datatypes.FileDataType;
 import ecommander.pages.ExecutableItemPE;
 import ecommander.pages.PageElement;
 import org.apache.commons.lang3.StringUtils;
@@ -56,7 +57,7 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 		}
 		// <item id="123" path="sitefiles/1/20/255/4055" updated="190456373"> (ID айтема, путь к файлам айтема)
 		xml.startElement(tagName, TYPE_ATTRIBUTE, item.getTypeName(), ID_ATTRIBUTE, item.getId(), PATH_ATTRIBUTE,
-				AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath(), KEY_ATTRIBUTE, item.getKeyUnique());
+				FileDataType.getItemFilePath(item), KEY_ATTRIBUTE, item.getKeyUnique());
 		// Если включен режим визуального редактирования
 		if (isVisualEditing)
 			addConentUpdateAttrs(xml, item);

@@ -2,6 +2,7 @@ package ecommander.model.datatypes;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.Strings;
+import ecommander.model.Item;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 
-public class PictureDataType extends StringDataType {
+public class PictureDataType extends FileDataType {
 
 	private static final String WIDTH_META = "width"; // размер файла
 	private static final String HEIGHT_META = "height"; // размер файла
@@ -36,27 +37,8 @@ public class PictureDataType extends StringDataType {
 	}
 
 	@Override
-	public boolean isFile() {
-		return true;
-	}
-
-	@Override
-	public String outputValue(Object value, Object formatter) {
-		if (value instanceof FileItem)
-			return ((FileItem)value).getName();
-		else if (value instanceof File)
-			return ((File) value).getName();
-		return super.outputValue(value, formatter);
-	}
-
-	@Override
-	public boolean hasMeta() {
-		return true;
-	}
-
-	@Override
-	public HashMap<String, String> getMeta(Object value, Object... extraParams) {
-		String parentPath = (String) extraParams[0];
+	public HashMap<String, String> createMeta(Object value, Object... extraParams) {
+		Item item = (Item) extraParams[0];
 		HashMap<String, String> meta = new HashMap<>(3);
 		if (value instanceof FileItem) {
 			try {
@@ -76,9 +58,7 @@ public class PictureDataType extends StringDataType {
 				if (value instanceof File)
 					file = ((File) value).toPath();
 				else
-					file = new File(AppContext.getCommonFilesDirPath() + parentPath + value).toPath();
-				if (!Files.exists(file))
-					file = new File(AppContext.getProtectedFilesDirPath() + parentPath + value).toPath();
+					file = new File(getItemFilePath(item) + value).toPath();
 				if (!Files.exists(file))
 					return meta;
 				FileInputStream is = new FileInputStream(file.toFile());
@@ -119,22 +99,5 @@ public class PictureDataType extends StringDataType {
 			}
 		}
 		throw new IOException("Not a known image file: " + fileName);
-	}
-
-	/**
-	 * Получить название файла из объекта FileItem
-	 * @param fileItem
-	 * @return
-	 */
-	public static String getFileName(FileItem fileItem) {
-		return getFileName(fileItem.getName());
-	}
-	/**
-	 * Получить название файла из пути к файлу
-	 * @param fileName
-	 * @return
-	 */
-	public static String getFileName(String fileName) {
-		return Strings.translit(fileName.replaceFirst(".*[\\/]", ""));
 	}
 }

@@ -8,7 +8,7 @@ import ecommander.fwk.Strings;
 
 public final class ParameterDescription {
 
-	public static enum TextIndex {
+	public enum TextIndex {
 		fulltext, // Параметр индексируется и подвергается анализу
 		filter, // Параметр индексируется, но анализу не подвергается
 		none // Параметр не индексируется
@@ -86,16 +86,16 @@ public final class ParameterDescription {
 	 * Создает параметр используя собственный тип (себя)
 	 * @return
 	 */
-	public Parameter createParameter() {
-		if (isMultiple()) return new MultipleParameter(this);
-		return new SingleParameter(this);
+	Parameter createParameter(Item item) {
+		if (isMultiple()) return new MultipleParameter(this, item);
+		return new SingleParameter(this, item);
 	}
 	/**
 	 * Создает одиночный параметр (нужно для множественных параметров
 	 * @return
 	 */
-	public SingleParameter createSingleParameter() {
-		return new SingleParameter(this);
+	SingleParameter createSingleParameter(Item item) {
+		return new SingleParameter(this, item);
 	}
 
 	public String getCaption() {

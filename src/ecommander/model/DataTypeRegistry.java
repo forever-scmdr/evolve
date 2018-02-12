@@ -33,7 +33,7 @@ public class DataTypeRegistry {
 		dataTypes.put(Type.TEXT, new StringDataType(Type.TEXT));
 		dataTypes.put(Type.PLAIN_TEXT, new StringDataType(Type.PLAIN_TEXT));
 		dataTypes.put(Type.FILE, new FileDataType(Type.FILE));
-		dataTypes.put(Type.PICTURE, new FileDataType(Type.PICTURE));
+		dataTypes.put(Type.PICTURE, new PictureDataType(Type.PICTURE));
 		dataTypes.put(Type.FILTER, new StringDataType(Type.FILTER));
 		dataTypes.put(Type.XML, new StringDataType(Type.XML));
 	}

@@ -16,19 +16,19 @@ public final class MultipleParameter extends Parameter {
 	private LinkedHashSet<SingleParameter> values;
 	private HashSet<SingleParameter> backupValues;
 	
-	public MultipleParameter(ParameterDescription desc) {
-		super(desc);
+	public MultipleParameter(ParameterDescription desc, Item item) {
+		super(desc, item);
 		values = new LinkedHashSet<>();
 	}
 	/**
 	 * Добавление значения
 	 * @param value
 	 */
-	public boolean setValue(Object value) {
+	boolean setValue(Object value, boolean isConsistent) {
 		if (value == null || containsValue(value))
 			return false;
 		backup();
-		values.add(createSP(value));
+		values.add(createSP(value, isConsistent));
 		return true;
 	}
 	/**
@@ -38,7 +38,7 @@ public final class MultipleParameter extends Parameter {
 	public SingleParameter createAndSetValue(String value, boolean isConsistent) {
 		if (StringUtils.isBlank(value))
 			return null;
-		SingleParameter param = desc.createSingleParameter();
+		SingleParameter param = desc.createSingleParameter(item);
 		param.createAndSetValue(value, true);
 		if (values.contains(param)) {
 			for (SingleParameter sp : values) {
@@ -68,7 +68,7 @@ public final class MultipleParameter extends Parameter {
 	 * @param value
 	 */
 	public void deleteValue(Object value) {
-		values.remove(createSP(value));
+		values.remove(createSP(value, true));
 	}
 
 	public Collection<SingleParameter> getValues() {
@@ -105,12 +105,12 @@ public final class MultipleParameter extends Parameter {
 	
 	@Override
 	public boolean containsValue(Object value) {
-		return values.contains(createSP(value));
+		return values.contains(createSP(value, true));
 	}
 
-	private SingleParameter createSP(Object value) {
-		SingleParameter param = desc.createSingleParameter();
-		param.setValue(value);
+	private SingleParameter createSP(Object value, boolean isConsistent) {
+		SingleParameter param = desc.createSingleParameter(item);
+		param.setValue(value, isConsistent);
 		return param;
 	}
 
