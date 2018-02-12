@@ -1,6 +1,7 @@
 package ecommander.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Одиночный параметр
@@ -11,6 +12,7 @@ public class SingleParameter extends Parameter {
 	
 	private Object value = null;
 	private ArrayList<Object> oldValues = null;
+	private HashMap<String, String> metas = null;
 	
 	public SingleParameter(ParameterDescription desc) {
 		super(desc);
@@ -30,15 +32,15 @@ public class SingleParameter extends Parameter {
 	 * Установить значение, полученное из интерфейса пользователя в форме строки
 	 * @param value
 	 */
-	public final boolean createAndSetValue(String value, boolean isConsistent) {
+	public final SingleParameter createAndSetValue(String value, boolean isConsistent) {
 		Object val = createTypeDependentValue(value);
 		if (!isConsistent) {
 			if (containsValue(val))
-				return false;
+				return this;
 			storeOldValue();
 		}
 		this.value = val;
-		return true;
+		return this;
 	}
 	/**
 	 * Вернуть старые значения параметра.
@@ -84,6 +86,16 @@ public class SingleParameter extends Parameter {
 		if (oldValues == null)
 			oldValues = new ArrayList<>();
 		oldValues.add(value);
+	}
+
+	public void setMeta(String key, String value) {
+		if (metas == null)
+			metas = new HashMap<>();
+		metas.put(key, value);
+	}
+
+	public boolean hasMetas() {
+		return metas != null;
 	}
 
 	@Override

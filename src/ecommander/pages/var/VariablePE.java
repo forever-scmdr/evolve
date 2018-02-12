@@ -1,6 +1,5 @@
 package ecommander.pages.var;
 
-import com.sun.org.apache.xerces.internal.util.XMLChar;
 import ecommander.fwk.Strings;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElement;
@@ -155,7 +154,7 @@ public abstract class VariablePE implements PageElement {
 	public void validate(String elementPath, ValidationResults results) {
 		if (StringUtils.isBlank(name) && name.startsWith("$"))
 			results.addError(elementPath + " > " + getKey(), "user defined variable can not start with $ sign. $ is reserved for predefined variables");
-		if (!XMLChar.isValidName(name))
+		if (!StringUtils.equals(Strings.createXmlElementName(name), name))
 			results.addError(elementPath + " > " + getKey(), "variable name is not a valid XML element name");
 	}
 

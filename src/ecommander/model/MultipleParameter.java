@@ -35,17 +35,21 @@ public final class MultipleParameter extends Parameter {
 	 * Добавление значения
 	 * @param value
 	 */
-	public boolean createAndSetValue(String value, boolean isConsistent) {
+	public SingleParameter createAndSetValue(String value, boolean isConsistent) {
 		if (StringUtils.isBlank(value))
-			return false;
+			return null;
 		SingleParameter param = desc.createSingleParameter();
 		param.createAndSetValue(value, true);
-		if (values.contains(param))
-			return false;
+		if (values.contains(param)) {
+			for (SingleParameter sp : values) {
+				if (sp.equals(param))
+					return sp;
+			}
+		}
 		if (!isConsistent)
 			backup();
 		values.add(param);
-		return true;
+		return param;
 	}
 	/**
 	 * Удаление значения по индексу

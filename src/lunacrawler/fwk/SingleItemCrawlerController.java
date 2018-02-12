@@ -9,7 +9,6 @@ import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
-import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import extra._generated.ItemNames;
 import extra._generated.Parse_item;
 import net.sf.saxon.TransformerFactoryImpl;
@@ -188,8 +187,9 @@ public class SingleItemCrawlerController {
 			    	if (!StringUtils.isBlank(line) && !line.startsWith("#")) {
 			        	String[] parts = StringUtils.split(line, ' ');
 			        	if (parts.length == 1) {
-			        		String seed = URLCanonicalizer.getCanonicalURL(parts[0]);
-			        		urlStyles.put(seed, NO_TEMPLATE);
+			        		URL url = new URL(parts[0]);
+			        		//String seed = URLCanonicalizer.getCanonicalURL(parts[0]);
+			        		urlStyles.put(url.toString(), NO_TEMPLATE);
 			        	} else {
 					        // Проверка правильности регулярного выражения
 					        // Для этого используются все части, после второй (третяя и далее)

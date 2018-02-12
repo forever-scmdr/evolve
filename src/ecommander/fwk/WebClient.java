@@ -9,12 +9,10 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
-import sun.net.util.URLUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.nio.charset.Charset;
 
 /**

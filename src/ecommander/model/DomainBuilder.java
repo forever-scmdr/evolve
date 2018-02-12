@@ -1,13 +1,16 @@
 package ecommander.model;
 
-import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 import ecommander.controllers.AppContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.StringReader;
 
 /**
  * 
@@ -91,10 +94,9 @@ public class DomainBuilder {
 		if (!domainsFile.exists())
 			return;
 		// Парсить документ
-		DOMParser parser = new DOMParser();
-		parser.parse(AppContext.getDomainsModelPath());
-		final Document document = parser.getDocument();
-
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		final Document document = db.parse(new InputSource( new StringReader(AppContext.getDomainsModelPath()) ));
 		NodeList domains = document.getElementsByTagName(DOMAIN_ELEMENT);
 		for (int i = 0; i < domains.getLength(); i++) {
 			Element domainNode = (Element)domains.item(i);

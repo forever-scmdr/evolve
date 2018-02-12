@@ -375,6 +375,7 @@ public class Item implements ItemBasics {
 					String paramName = "";
 					ParameterDescription currentParamDesc = null;
 					StringBuilder paramValue = new StringBuilder();
+					ArrayList<String> metas;
 					
 					@Override
 					public void characters(char[] ch, int start, int length) throws SAXException {
@@ -398,6 +399,8 @@ public class Item implements ItemBasics {
 								}
 							}
 							paramValue = new StringBuilder();
+							metas = new ArrayList<>();
+							attributes.
 						}
 						level++;
 					}

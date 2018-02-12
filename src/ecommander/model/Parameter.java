@@ -62,7 +62,7 @@ public abstract class Parameter {
 	 * @param isConsistent - при загрузке из БД - true, при изменении в процессе работы приложения - false
 	 * @return - если значение параметра изменилось - true, если нет, то false
 	 */
-	abstract boolean createAndSetValue(String value, boolean isConsistent);
+	abstract SingleParameter createAndSetValue(String value, boolean isConsistent);
 
 	/**
 	 * Установить значение напрямую без создания

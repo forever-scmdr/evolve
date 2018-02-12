@@ -33,6 +33,8 @@ import java.util.regex.Pattern;
 public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 
 	private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://[-\\wА-Яа-я+&@#/%?=~|!:,.;]*[-\\wА-Яа-я+&@#/%=~|]");
+	//Matcher m = URL_PATTERN.matcher((CharSequence) value);
+	//if (m.matches()) {
 
 	private ArrayList<File> files;
 	
@@ -109,32 +111,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 						item.removeEqualValue(paramDesc.getName(), fileName);
 						item.setValueUI(paramDesc.getId(), fileName);
 					} else {
-						Matcher m = URL_PATTERN.matcher((CharSequence) value);
-						ReadableByteChannel rbc = null;
-						FileOutputStream fos = null;
-						if (m.matches()) {
-							try {
-								URL webImg = new URL((String) value);
-								String fName = URLDecoder.decode(webImg.getPath(), "UTF-8");
-								fName = StringUtils.substringAfterLast(fName, "/");
-								URLConnection conn = webImg.openConnection();
-								conn.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
-								rbc = Channels.newChannel(conn.getInputStream());
-								File folder = new File(fileDirectoryName);
-								folder.mkdirs();
-								File newFile = new File(fileDirectoryName + fName);
-								fos = new FileOutputStream(newFile);
-								fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-								newValues.add(fName);
-							} catch (Exception e) {
-								e.printStackTrace();
-							} finally{
-								if(fos != null){fos.close();}
-								if(rbc != null){rbc.close();}
-							}
-						} else {
-							newValues.add((String) value);
-						}
+						newValues.add((String) value);
 					}
 				}
 				// Замена объектов на имена файлов
