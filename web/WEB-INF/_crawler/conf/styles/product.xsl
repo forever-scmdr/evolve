@@ -2,48 +2,54 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:f="f:f"
 	version="2.0"
-	exclude-result-prefixes="xsl">
+	exclude-result-prefixes="xsl f">
 	<xsl:import href="../styles_fwk/utils.xsl"/>
 	<xsl:output method="xml" encoding="UTF-8" media-type="text/xml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template match="/">
-		<xsl:variable name="code" select="normalize-space(substring-after(//p[@itemprop = 'mpn'][1]/text(), ';'))"/><!--//p[@itemprop = 'mpn'][1]/text()-->
+		<xsl:variable name="code" select="replace(substring-after(//p[@itemprop = 'mpn'][1], '.'), '\D', '')"/><!--//p[@itemprop = 'mpn'][1]/text()-->
 		<product id="{$code}">
 			<code><xsl:value-of select="$code"/></code>
 			<name><xsl:value-of select="normalize-space(//h1[1])"/></name><!-- //div[contains(@class, 'breadcrumbs')]//h1 -->
-			<!--
-			<type><xsl:value-of select="//p[contains(@class, 'product-shop__fn')]"/></type>
-			<producer><xsl:value-of select="//p[contains(@class, 'product-shop__mnf')]/a/span/text()"/></producer>
-			-->
-			<short><xsl:value-of select="//div[contains(@class, 'short-description')]/div"/></short>
-			<!--
-			<price><xsl:value-of select="normalize-space(//div[contains(@class, 'product-shop')]//div[contains(@class, 'price-box')]/div[contains(@class, 'min')]/p/text())"/></price>
-			<desc><xsl:value-of select="//div[@id='description']/div[last()]"/></desc>
-			<xsl:variable name="pic" select="//div[contains(@class, 'product-image')]//img"/>
-			<medium_pic download="{$pic/@src}" name="{$pic/@alt}">med_<xsl:value-of select="tokenize($pic/@src, '/')[last()]"/></medium_pic>
-			<xsl:variable name="large_pic" select="//div[contains(@class, 'product-image')]/a"/>
-			<large_pic download="{$large_pic/@href}" name="{$large_pic/@title}">large_<xsl:value-of select="tokenize($large_pic/@href, '/')[last()]"/></large_pic>
-			<tech>
-				<xsl:for-each select="//div[@id='techdata']/ul/li">
-					<par>
-						<name><xsl:value-of select="span[1]"/></name>
-						<value><xsl:value-of select="span[2]"/></value>
-					</par>
+			<short><xsl:copy-of select="//section[@class, 'm-pdp-txt-position']/article[1]/*"/></short>
+			<gallery>
+				<xsl:for-each select="//div[@id = 'slider']//li/a[not(starts-with(@href, 'https://youtube.com'))]">
+					<xsl:variable name="parts" select="tokenize(@href, '/')"/>
+					<picture download="{@href}"><xsl:value-of select="$parts[count($parts)]"/></picture>
 				</xsl:for-each>
-			</tech>
-			<docs>
-				<xsl:for-each select="//div[@id='docs']/ul/li">
-					<doc download="http://www.tinko.ru{a/@href}" name="{normalize-space(a/text())}"><xsl:value-of select="tokenize(a/@href, '/')[last()]"/></doc>
+				<xsl:for-each select="//div[@id = 'slider']//li/a[starts-with(@href, 'https://youtube.com')]">
+					<video><xsl:value-of select="@href"/></video>
 				</xsl:for-each>
-			</docs>
-			<h_parent parent="{$parentId}" element="section"/>
-			<related>
-				<xsl:for-each select="//div[@id = 'slider-related-products']//h2/a">
-					<code><xsl:value-of select="substring-before(substring-after(@href, '-'), '.')"/></code>
+			</gallery>
+			<xsl:variable name="text" select="//div[@id = 'tab-details']/*"/>
+			<xsl:variable name="apply" select="//div[@id = 'tab-applications']/*"/>
+			<text>
+				<xsl:copy-of select="$text"/>
+			</text>
+			<apply>
+				<xsl:copy-of select="$apply"/>
+			</apply>
+			<textpics>
+				<xsl:for-each select="$text//img | $apply//img">
+					<xsl:variable name="parts" select="tokenize(@src, '/')"/>
+					<img download="{@src}"><xsl:value-of select="$parts[count($parts)]"/></img>
 				</xsl:for-each>
-			</related>
-			-->
+			</textpics>
+			<associated>
+				<xsl:variable name="accessiories" select="//div[@id = 'tab-accessories']//p[@class = 'order-number']"/>
+				<xsl:variable name="sets" select="//div[@id = 'tab-sets']//p[@class = 'order-number']"/>
+				<xsl:variable name="probes" select="//div[@id = 'tab-probes']//p[@class = 'order-number']"/>
+				<xsl:for-each select="$accessiories">
+					<accessory><xsl:value-of select="replace(substring-after(., ':'), '\D', '')"/></accessory>
+				</xsl:for-each>
+				<xsl:for-each select="$sets">
+					<set><xsl:value-of select="replace(substring-after(., ':'), '\D', '')"/></set>
+				</xsl:for-each>
+				<xsl:for-each select="$probes">
+					<probe><xsl:value-of select="replace(substring-after(., ':'), '\D', '')"/></probe>
+				</xsl:for-each>
+			</associated>
 		</product>
 	</xsl:template>
 

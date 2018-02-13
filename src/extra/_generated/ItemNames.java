@@ -44,6 +44,7 @@ public class ItemNames {
         String GOT_FILES = "got_files";
         String HTML = "html";
         String XML = "xml";
+        String TEST_URL = "test_url";
         String FILE = "file";
 
     }

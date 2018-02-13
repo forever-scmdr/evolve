@@ -127,6 +127,7 @@ public class Item implements ItemBasics {
 		this.timeUpdated = src.timeUpdated;
 		this.paramMap.putAll(src.paramMap);
 		this.state = src.state;
+		setFilesPath();
 	}
 	
 	private Item(ItemType itemDesc, Assoc contextAssoc, long parentId, int userId, byte groupId, byte status,
@@ -264,7 +265,7 @@ public class Item implements ItemBasics {
 	 * @throws Exception
 	 */
 	public final void setValueUI(int paramId, String value) throws Exception {
-		getParameter(paramId).createAndSetValue(value, isNew());
+		getParameter(paramId).createAndSetValue(value, false);
 		state = State.modified_NO_xml;
 	}
 	/**

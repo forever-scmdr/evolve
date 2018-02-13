@@ -256,28 +256,26 @@ public abstract class IntegrateBase extends Command {
 				}
 				setOperation("Выполнение интеграции");
 				// Поток выполнения интеграции
-				Thread thread = new Thread(new Runnable() {
-					public void run() {
+				Thread thread = new Thread(() -> {
+					try {
+						integrate();
+						setOperation("Интеграция завершена успешно");
+					} catch (Exception se) {
+						setOperation("Интеграция завершена с ошибками");
+						ServerLogger.error("Integration error", se);
+						getInfo().addError(se.getMessage(), 0, 0);
+					} finally {
 						try {
-							integrate();
-							setOperation("Интеграция завершена успешно");
-						} catch (Exception se) {
-							setOperation("Интеграция завершена с ошибками");
-							ServerLogger.error("Integration error", se);
-							getInfo().addError(se.getMessage(), 0, 0);
-						} finally {
+							LuceneIndexMapper.getSingleton().close();
+						} catch (IOException e) {
 							try {
-								LuceneIndexMapper.getSingleton().close();
-							} catch (IOException e) {
-								try {
-									throw e;
-								} catch (IOException e1) {
-									e1.printStackTrace();
-								}
-							} finally {
-								isInProgress = false;
-								getInfo().setInProgress(false);
+								throw e;
+							} catch (IOException e1) {
+								e1.printStackTrace();
 							}
+						} finally {
+							isInProgress = false;
+							getInfo().setInProgress(false);
 						}
 					}
 				});

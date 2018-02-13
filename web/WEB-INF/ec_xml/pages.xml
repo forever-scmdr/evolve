@@ -16,4 +16,14 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
+
+	<page name="test_parse_item" authority-groups="common">
+		<request>
+			<var name="pi"/>
+		</request>
+		<single item="parse_item" var="pi" id="pi"/>
+		<command class="lunacrawler.TestParseItemCommand" clear-cache="no">
+			<result name="test" type="xml"/>
+		</command>
+	</page>
 </site>

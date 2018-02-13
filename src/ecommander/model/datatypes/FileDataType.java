@@ -2,6 +2,7 @@ package ecommander.model.datatypes;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -37,6 +38,8 @@ public class FileDataType extends StringDataType {
 			return ((FileItem)value).getName();
 		else if (value instanceof File)
 			return ((File) value).getName();
+		else if (value instanceof URL)
+			return getFileName(((URL) value).getFile());
 		return super.outputValue(value, formatter);
 	}
 
@@ -56,12 +59,12 @@ public class FileDataType extends StringDataType {
 			meta.put(EXTENSION_META, StringUtils.substringAfterLast(file.getName(), "."));
 		} else {
 			try {
-				Path file;
+				Path file = null;
 				if (value instanceof File)
 					file = ((File) value).toPath();
-				else
+				else if (value instanceof String)
 					file = new File(getItemFilePath(item) + value).toPath();
-				if (!Files.exists(file))
+				if (file == null || !Files.exists(file))
 					return meta;
 				BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
 				meta.put(SIZE_META, attr.size() + "");

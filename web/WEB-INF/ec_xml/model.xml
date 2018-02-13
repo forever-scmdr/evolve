@@ -61,6 +61,8 @@
 		<parameter name="got_files" type="byte" caption="Files downloaded" default="0"/>
 		<parameter name="html" type="plain-text" caption="HTML" description="полученный с сервера"/>
 		<parameter name="xml" type="plain-text" caption="XML" description="после обработки xsl"/>
+		<parameter name="test_url" type="string" caption="Ссылка для тестирования XSL преобразования"
+		           description="должна быть соответствующая страница в pages.xml (test_parse_item)"/>
 		<parameter name="file" type="file" caption="Файл" description="скачанный файл" multiple="true"/>
 	</item>
 

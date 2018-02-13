@@ -143,6 +143,22 @@ public class Parse_item
         return containsValue("xml", value);
     }
 
+    public void set_test_url(String value) {
+        setValue("test_url", value);
+    }
+
+    public String get_test_url() {
+        return getStringValue("test_url");
+    }
+
+    public String getDefault_test_url(String defaultVal) {
+        return getStringValue("test_url", defaultVal);
+    }
+
+    public boolean contains_test_url(String value) {
+        return containsValue("test_url", value);
+    }
+
     public void add_file(File value) {
         setValue("file", value);
     }

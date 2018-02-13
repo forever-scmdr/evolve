@@ -146,8 +146,6 @@ public class SingleItemCrawlerController {
 	public static final String NO_TEMPLATE = "-";
 	public static final String UTF_8 = "UTF-8";
 
-	private static SingleItemCrawlerController singleton = null;
-
 	private State state = State.INIT;
 	private LinkedList<String> proxies;
 	private LinkedHashMap<String, String> urlStyles;
@@ -162,7 +160,7 @@ public class SingleItemCrawlerController {
 
 	private IntegrateBase.Info info = null;
 
-	private SingleItemCrawlerController(IntegrateBase.Info outerInfo) throws Exception {
+	public SingleItemCrawlerController(IntegrateBase.Info outerInfo) throws Exception {
 		this.info = outerInfo;
 
 		// Список прокси серверов
@@ -242,6 +240,7 @@ public class SingleItemCrawlerController {
 		} else if (state == State.HTML) {
 			state = State.TRANSFORM;
 			parseHtml();
+			startStage();
 		} else if (state == State.TRANSFORM) {
 			state = State.FILES;
 			downloadFiles();
@@ -256,27 +255,36 @@ public class SingleItemCrawlerController {
 	 * @param state
 	 * @throws Exception
 	 */
-	public void resetToStage(State state) throws Exception {
+	public State resetToStage(State state) throws Exception {
+		info.setOperation("Сброс состояния до " + state);
+		State nextState = State.INIT;
 		if (state == State.HTML || state == State.TRANSFORM || state == State.FILES) {
 			List<Item> items = new ItemQuery(ItemNames.PARSE_ITEM).loadItems();
+			info.setToProcess(items.size());
+			int i = 0;
 			for (Item item : items) {
 				Parse_item pitem = Parse_item.get(item);
 				if (state == State.HTML) {
 					pitem.set_downloaded((byte) 0);
 					pitem.set_parsed((byte) 0);
 					pitem.set_got_files((byte) 0);
+					nextState = State.INIT;
 				} else if (state == State.TRANSFORM) {
 					pitem.set_parsed((byte) 0);
-					pitem.set_got_files((byte) 0);
+					//pitem.set_got_files((byte) 0);
+					nextState = State.HTML;
 				} else if (state == State.FILES) {
 					pitem.set_got_files((byte) 0);
+					nextState = State.TRANSFORM;
 				}
-				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pitem));
+				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pitem).noFulltextIndex());
+				info.setProcessed(++i);
 			}
 		}
+		return nextState;
 	}
 
-	private void terminateInt() {
+	public void terminate() {
 		synchronized (workers) {
 			for (DownloadThread worker : workers) {
 				worker.terminate();
@@ -309,6 +317,7 @@ public class SingleItemCrawlerController {
 			itemsToProcess.add(Parse_item.get(item));
 		}
 		toProcessCount = itemsToProcess.size();
+		info.setToProcess(toProcessCount);
 		processedCount = 0;
 		for (int i = 0; i < numberOfCrawlers; i++) {
 			DownloadThread worker = new DownloadThread(proxies, urlsPerProxy, itemsToProcess) {
@@ -317,6 +326,16 @@ public class SingleItemCrawlerController {
 					String html;
 					try {
 						html = WebClient.getString(item.get_url(), proxy);
+
+						// Подготовка HTML (убирание необъявленных сущностей и т.д.)
+						Document jsoupDoc = Jsoup.parse(html);
+						Document.OutputSettings settings = new Document.OutputSettings();
+						settings.charset(Charset.forName("UTF-8"));
+						settings.syntax(Document.OutputSettings.Syntax.xml);
+						settings.escapeMode(Entities.EscapeMode.xhtml);
+						jsoupDoc.outputSettings(settings);
+						html = jsoupDoc.body().outerHtml();
+
 					} catch (HttpResponseException re) {
 						info.addError("Url status code " + re.getStatusCode(), item.get_url());
 						return;
@@ -330,7 +349,8 @@ public class SingleItemCrawlerController {
 					}
 					item.set_html(html);
 					item.set_downloaded((byte) 1);
-					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item));
+					setTestXSLLink(item);
+					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item).noFulltextIndex());
 					info.pushLog("URL {} downloaded", item.get_url());
 					info.setProcessed(++processedCount);
 				}
@@ -357,6 +377,7 @@ public class SingleItemCrawlerController {
 			parseItems.add(Parse_item.get(item));
 		}
 		toProcessCount = parseItems.size();
+		info.setToProcess(toProcessCount);
 		processedCount = 0;
 		for (Parse_item item : parseItems) {
 			File xslFile = new File(stylesDir + getStyleForUrl(item.get_url()));
@@ -376,22 +397,14 @@ public class SingleItemCrawlerController {
 				factory.setErrorListener(errors);
 				transformer = factory.newTransformer(new StreamSource(xslFile));
 
-				// Подготовка HTML (убирание необъявленных сущностей и т.д.)
-				Document jsoupDoc = Jsoup.parse(item.get_html());
-				Document.OutputSettings settings = new Document.OutputSettings();
-				settings.charset(Charset.forName("UTF-8"));
-				settings.syntax(Document.OutputSettings.Syntax.xml);
-				settings.escapeMode(Entities.EscapeMode.xhtml);
-				jsoupDoc.outputSettings(settings);
-				String body = jsoupDoc.body().outerHtml();
-
 				// Преборазование очищенного HTML
-				Reader reader = new StringReader(body);
+				Reader reader = new StringReader(item.get_html());
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				transformer.transform(new StreamSource(reader), new StreamResult(bos));
 				item.set_xml(bos.toString(UTF_8));
 				item.set_parsed((byte) 1);
-				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item));
+				setTestXSLLink(item);
+				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item).noFulltextIndex());
 				info.pushLog("URL {} transformed", item.get_url());
 				info.setProcessed(++processedCount);
 				toProcessCount--;
@@ -419,6 +432,7 @@ public class SingleItemCrawlerController {
 			itemsToProcess.add(Parse_item.get(item));
 		}
 		toProcessCount = itemsToProcess.size();
+		info.setToProcess(toProcessCount);
 		processedCount = 0;
 		for (int i = 0; i < numberOfCrawlers; i++) {
 			DownloadThread worker = new DownloadThread(proxies, urlsPerProxy, itemsToProcess) {
@@ -432,7 +446,7 @@ public class SingleItemCrawlerController {
 					}
 					try {
 						item.set_got_files((byte) 1);
-						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item));
+						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item).noFulltextIndex());
 						info.pushLog("URL {} got files", item.get_url());
 						info.setProcessed(++processedCount);
 					} catch (Exception e) {
@@ -450,36 +464,20 @@ public class SingleItemCrawlerController {
 		}
 	}
 
-	public static void terminate() {
-		if (singleton != null)
-			singleton.terminateInt();
-	}
-
-	/**
-	 * Вернуть контроллер
-	 * @return
-	 */
-	public static SingleItemCrawlerController getSingleton(IntegrateBase.Info info) {
-		try {
-			if (singleton == null)
-				singleton = new SingleItemCrawlerController(info);
-			return singleton;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-
 	/**
 	 * Выбирает нужный XSL файл для преобразования HTML, полученного с заданного урла
 	 * @param url
 	 * @return
 	 */
-	private String getStyleForUrl(String url) {
+	public String getStyleForUrl(String url) {
 		for (Entry<String, String> entry : urlStyles.entrySet()) {
 			if (StringUtils.equals(url, entry.getKey()) || url.matches(entry.getKey()))
 				return entry.getValue();
 		}
 		return null;
+	}
+
+	private void setTestXSLLink(Parse_item pi) {
+		pi.set_test_url("test_parse_item?pi=" + pi.getId());
 	}
 }

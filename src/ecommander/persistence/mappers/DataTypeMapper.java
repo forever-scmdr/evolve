@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -100,14 +101,16 @@ public class DataTypeMapper {
 	private class FileMapper extends StringMapper {
 		@Override
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
-			if (value instanceof String)
-				pstmt.string(StringUtils.substring((String)value, 0, 49));
-			else if (value instanceof FileItem) {
+			if (value instanceof String) {
+				pstmt.string(StringUtils.substring((String) value, 0, 49));
+			} else if (value instanceof FileItem) {
 				// Если название файла содержит путь - удалить этот путь
 				String fileName = FileDataType.getFileName((FileItem)value);
 				pstmt.string(StringUtils.substring(fileName, 0, 49));
 			} else if (value instanceof File) {
 				pstmt.string(StringUtils.substring(((File) value).getName(), 0, 49));
+			} else if (value instanceof URL) {
+				pstmt.string(StringUtils.substring(FileDataType.getFileName(((URL) value).getFile()), 0, 49));
 			}
 		}
 	}
