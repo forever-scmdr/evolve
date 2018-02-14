@@ -39,7 +39,7 @@ public final class MultipleParameter extends Parameter {
 		if (StringUtils.isBlank(value))
 			return null;
 		SingleParameter param = desc.createSingleParameter(item);
-		param.createAndSetValue(value, true);
+		param.createAndSetValue(value, isConsistent);
 		if (values.contains(param)) {
 			for (SingleParameter sp : values) {
 				if (sp.equals(param))
