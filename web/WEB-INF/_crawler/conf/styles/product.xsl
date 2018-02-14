@@ -50,6 +50,20 @@
 					<probe><xsl:value-of select="replace(substring-after(., ':'), '\D', '')"/></probe>
 				</xsl:for-each>
 			</associated>
+			<tech>
+				<xsl:for-each select="//div[@id = 'tab-data']//table">
+					<tag name="{thead//th}">
+						<xsl:for-each select="tbody/tr">
+							<parameter>
+								<name><xsl:value-of select="td[1]/p"/></name>
+								<xsl:for-each select="td[2]/p">
+									<value><xsl:value-of select="."/></value>
+								</xsl:for-each>
+							</parameter>
+						</xsl:for-each>
+					</tag>
+				</xsl:for-each>
+			</tech>
 		</product>
 	</xsl:template>
 

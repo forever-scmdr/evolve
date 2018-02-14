@@ -326,16 +326,6 @@ public class SingleItemCrawlerController {
 					String html;
 					try {
 						html = WebClient.getString(item.get_url(), proxy);
-
-						// Подготовка HTML (убирание необъявленных сущностей и т.д.)
-						Document jsoupDoc = Jsoup.parse(html);
-						Document.OutputSettings settings = new Document.OutputSettings();
-						settings.charset(Charset.forName("UTF-8"));
-						settings.syntax(Document.OutputSettings.Syntax.xml);
-						settings.escapeMode(Entities.EscapeMode.xhtml);
-						jsoupDoc.outputSettings(settings);
-						html = jsoupDoc.body().outerHtml();
-
 					} catch (HttpResponseException re) {
 						info.addError("Url status code " + re.getStatusCode(), item.get_url());
 						return;
@@ -397,8 +387,17 @@ public class SingleItemCrawlerController {
 				factory.setErrorListener(errors);
 				transformer = factory.newTransformer(new StreamSource(xslFile));
 
+				// Подготовка HTML (убирание необъявленных сущностей и т.д.)
+				Document jsoupDoc = Jsoup.parse(item.get_html());
+				Document.OutputSettings settings = new Document.OutputSettings();
+				settings.charset(Charset.forName("UTF-8"));
+				settings.syntax(Document.OutputSettings.Syntax.xml);
+				settings.escapeMode(Entities.EscapeMode.xhtml);
+				jsoupDoc.outputSettings(settings);
+				String html = jsoupDoc.body().outerHtml();
+
 				// Преборазование очищенного HTML
-				Reader reader = new StringReader(item.get_html());
+				Reader reader = new StringReader(html);
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				transformer.transform(new StreamSource(reader), new StreamResult(bos));
 				item.set_xml(bos.toString(UTF_8));
@@ -438,6 +437,7 @@ public class SingleItemCrawlerController {
 			DownloadThread worker = new DownloadThread(proxies, urlsPerProxy, itemsToProcess) {
 				@Override
 				protected void processItem(Parse_item item, String proxy) throws Exception {
+					item.clearParameter(ItemNames.parse_item.FILE);
 					Document result = Jsoup.parse(item.get_xml());
 					Elements downloads = result.getElementsByAttribute(DOWNLOAD);
 					for (Element download : downloads) {

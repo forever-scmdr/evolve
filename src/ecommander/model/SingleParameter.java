@@ -1,7 +1,5 @@
 package ecommander.model;
 
-import ecommander.model.datatypes.FileDataType;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +14,7 @@ public class SingleParameter extends Parameter {
 	private Object value = null;
 	private ArrayList<Object> oldValues = null;
 	private HashMap<String, String> metas = null;
+	private int hash = 0;
 	
 	public SingleParameter(ParameterDescription desc, Item item) {
 		super(desc, item);
@@ -53,6 +52,7 @@ public class SingleParameter extends Parameter {
 	 */
 	private void performSetValue(Object val, boolean isConsistent) {
 		this.value = val;
+		this.hash = desc.getDataType().getHashCode(val);
 		if (desc.getDataType().hasMeta() && !isConsistent) {
 			metas = desc.getDataType().createMeta(val, item);
 		}
@@ -137,12 +137,11 @@ public class SingleParameter extends Parameter {
 	}
 	@Override
 	public final boolean equals(Object obj) {
-		return (value == null && ((SingleParameter)obj).value == null) ||
-				value != null && value.equals(((SingleParameter)obj).value);
+		return desc.getDataType().getEquals(value, ((SingleParameter)obj).value);
 	}
 	@Override
-	public int hashCode() {
-		return value == null ? 0 : value.hashCode();
+	public final int hashCode() {
+		return hash;
 	}
 
 }

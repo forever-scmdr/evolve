@@ -163,7 +163,16 @@ public class Strings
 		RuleBasedNumberFormat nf = new RuleBasedNumberFormat(Locale.forLanguageTag("ru"), RuleBasedNumberFormat.SPELLOUT);
 		return nf.format(number);
     }
-    
+
+	/**
+	 * Получить название файла из пути к файлу
+	 * @param fileName
+	 * @return
+	 */
+	public static String getFileName(String fileName) {
+		return StringUtils.lowerCase(translit(fileName.replaceFirst(".*[\\/]", "")));
+	}
+
     public static void main(String[] args) {
     	System.out.println(translit("подъёмник?"));
     }

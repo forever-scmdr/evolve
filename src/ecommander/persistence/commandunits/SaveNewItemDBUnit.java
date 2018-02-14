@@ -155,12 +155,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 4.   Сохранить параметры айтема в таблицах индексов
-		//
-		ItemMapper.insertItemParametersToIndex(item, true, getTransactionContext());
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 5.   Сохранение файлов айтема
+		// Шаг 4.   Сохранение файлов айтема
 		//
 		try {
 			executeCommand(new SaveItemFilesUnit(item));
@@ -170,6 +165,22 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 			else
 				ServerLogger.warn("Ignoring file error while saving new item", e);
 		}
+		// Если сохранение файлов привело к обновлению айтема (например, скачались файлы по заданному URL),
+		// надо обновить параметры айтема
+		if (item.hasChanged()) {
+			TemplateQuery updateItem = new TemplateQuery("Update item");
+			updateItem.UPDATE(DBConstants.ItemTbl.ITEM_TBL).SET()
+					.col(DBConstants.ItemTbl.I_PARAMS).string(item.outputValues())
+					.WHERE().col(DBConstants.ItemTbl.I_ID).long_(item.getId());
+			try (PreparedStatement pstmt = updateItem.prepareQuery(conn)) {
+				pstmt.executeUpdate();
+			}
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		// Шаг 5.   Сохранить параметры айтема в таблицах индексов
+		//
+		ItemMapper.insertItemParametersToIndex(item, true, getTransactionContext());
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 6.   Дополнительная обработка

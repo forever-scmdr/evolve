@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
+	<assoc name="contains" caption="Раздел содержит" transitive="true"/>
 
 	<item name="product_container" virtual="true" caption="Контейнер для продуктов" ag-id="1" ag-hash="-268176079" />
 
@@ -15,6 +16,7 @@
 	<item name="section" default-page="section" key="name" caption="Раздел" super="product_container" key-unique="true" ag-id="3" ag-hash="1970241253">
 		<child item="parse_item" />
 		<child item="section" />
+		<child assoc="contains" item="product"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="code" type="string" caption="Уникальный код" description="можно часть урла" />
 		<parameter name="short" type="short-text" caption="Краткое описание" />

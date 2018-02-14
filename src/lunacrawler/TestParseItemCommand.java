@@ -7,6 +7,9 @@ import ecommander.pages.ResultPE;
 import extra._generated.Parse_item;
 import lunacrawler.fwk.SingleItemCrawlerController;
 import net.sf.saxon.TransformerFactoryImpl;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Entities;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -16,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.charset.Charset;
 
 /**
  * Команда тестирования XSLT преобразования для одного айтема parse_item
@@ -36,7 +40,16 @@ public class TestParseItemCommand extends Command {
 			}
 			TransformerFactory factory = TransformerFactoryImpl.newInstance();
 			Transformer transformer = factory.newTransformer(new StreamSource(xslFile));
-			Reader reader = new StringReader(pi.get_html());
+
+			Document jsoupDoc = Jsoup.parse(pi.get_html());
+			Document.OutputSettings settings = new Document.OutputSettings();
+			settings.charset(Charset.forName("UTF-8"));
+			settings.syntax(Document.OutputSettings.Syntax.xml);
+			settings.escapeMode(Entities.EscapeMode.xhtml);
+			jsoupDoc.outputSettings(settings);
+			String html = jsoupDoc.body().outerHtml();
+
+			Reader reader = new StringReader(html);
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			transformer.transform(new StreamSource(reader), new StreamResult(bos));
 			return getResult("test").setValue(bos.toString(SingleItemCrawlerController.UTF_8));

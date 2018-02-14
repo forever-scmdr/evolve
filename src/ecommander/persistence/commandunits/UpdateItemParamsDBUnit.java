@@ -41,6 +41,17 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 		testPrivileges(item);
 		Connection conn = getTransactionContext().getConnection();
 
+		// Сначала сохраняются файлы, это надо делать вначале, чтобы сгенерировалась метаинформация по файлам
+		// Фактическое сохранение файлов происходит в этой команде
+		try {
+			executeCommand(new SaveItemFilesUnit(item));
+		} catch (Exception e) {
+			if (!ignoreFileErrors)
+				throw e;
+			else
+				ServerLogger.warn("Ignoring file error while updating item", e);
+		}
+
 		// Сохранть новое уникальное ключевое значение, если это надо делать (если оно было изменено)
 		if (item.getItemType().isKeyUnique() && !StringUtils.equals(item.getKeyUnique(), item.getOldKeyUnique())) {
 			long itemId = 0;
@@ -83,16 +94,8 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 			pstmt.executeUpdate();
 		}
 
-		// Теперь сохраняются параметры в таблицах индексов и файлы
+		// Теперь сохраняются параметры в таблицах индексов
 		ItemMapper.insertItemParametersToIndex(item, false, getTransactionContext());
-		try {
-			executeCommand(new SaveItemFilesUnit(item));
-		} catch (Exception e) {
-			if (!ignoreFileErrors)
-				throw e;
-			else
-				ServerLogger.warn("Ignoring file error while updating item", e);
-		}
 
 		// Вставка в Lucene индекс
 		if (insertIntoFulltextIndex)

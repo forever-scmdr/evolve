@@ -129,7 +129,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			insert.UNION_ALL()
 					.SELECT(IP_PARENT_ID, childId, assocId, superTypeId, 0, 0)
 					.FROM(ITEM_PARENT_TBL).WHERE()
-					.col(IP_CHILD_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(assocId).sql(" \r\n");
+					.col(IP_CHILD_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(primaryAssocId).sql(" \r\n");
 
 			// Только для айтемов с сабайтемами (не новых)
 			if (!isItemNew) {

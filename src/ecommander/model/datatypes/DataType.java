@@ -98,6 +98,31 @@ public abstract class DataType {
 	 * @return
 	 */
 	public abstract boolean hasMeta();
+
+	/**
+	 * Получить хеш код значения
+	 * @param value
+	 * @return
+	 */
+	public int getHashCode(Object value) {
+		if (value != null)
+			return value.hashCode();
+		return 0;
+	}
+
+	/**
+	 * Сравнивает два объекта
+	 * @param o1
+	 * @param o2
+	 * @return
+	 */
+	public boolean getEquals(Object o1, Object o2) {
+		if (o1 != null && o2 != null)
+			return o1.equals(o2);
+		if (o1 == null && o2 == null)
+			return true;
+		return false;
+	}
 	/**
 	 * Получить дополнительные сведения о переданном значении в зависимости от его типа.
 	 * Например, это могут быть размер и тип файла для значения типа файл

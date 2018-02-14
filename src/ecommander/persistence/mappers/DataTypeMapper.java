@@ -110,7 +110,7 @@ public class DataTypeMapper {
 			} else if (value instanceof File) {
 				pstmt.string(StringUtils.substring(((File) value).getName(), 0, 49));
 			} else if (value instanceof URL) {
-				pstmt.string(StringUtils.substring(FileDataType.getFileName(((URL) value).getFile()), 0, 49));
+				pstmt.string(StringUtils.substring(Strings.getFileName(((URL) value).getFile()), 0, 49));
 			}
 		}
 	}

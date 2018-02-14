@@ -35,12 +35,17 @@ public class FileDataType extends StringDataType {
 	@Override
 	public String outputValue(Object value, Object formatter) {
 		if (value instanceof FileItem)
-			return ((FileItem)value).getName();
+			return StringUtils.lowerCase(((FileItem)value).getName());
 		else if (value instanceof File)
-			return ((File) value).getName();
+			return StringUtils.lowerCase(((File) value).getName());
 		else if (value instanceof URL)
-			return getFileName(((URL) value).getFile());
-		return super.outputValue(value, formatter);
+			return Strings.getFileName(((URL) value).getFile());
+		return StringUtils.lowerCase(super.outputValue(value, formatter));
+	}
+
+	@Override
+	public Object createValue(String stringValue, Object formatter) {
+		return StringUtils.lowerCase(stringValue);
 	}
 
 	@Override
@@ -83,15 +88,7 @@ public class FileDataType extends StringDataType {
 	 * @return
 	 */
 	public static String getFileName(FileItem fileItem) {
-		return getFileName(fileItem.getName());
-	}
-	/**
-	 * Получить название файла из пути к файлу
-	 * @param fileName
-	 * @return
-	 */
-	public static String getFileName(String fileName) {
-		return Strings.translit(fileName.replaceFirst(".*[\\/]", ""));
+		return Strings.getFileName(fileItem.getName());
 	}
 
 	/**
@@ -101,5 +98,15 @@ public class FileDataType extends StringDataType {
 	 */
 	public static String getItemFilePath(Item item) {
 		return AppContext.getFilesDirPath(item.isFileProtected()) + item.getRelativeFilesPath();
+	}
+
+	@Override
+	public int getHashCode(Object value) {
+		return outputValue(value, null).hashCode();
+	}
+
+	@Override
+	public boolean getEquals(Object o1, Object o2) {
+		return StringUtils.equalsIgnoreCase(outputValue(o1, null), outputValue(o2, null));
 	}
 }

@@ -67,7 +67,7 @@ public class WebClient {
 					if (!StringUtils.endsWith(fileDirName, "/"))
 						fileDirName += "/";
 					URL urlUrl = new URL(url);
-					File file = new File(fileDirName + FilenameUtils.getName(urlUrl.getPath()));
+					File file = new File(fileDirName + Strings.getFileName(urlUrl.getPath()));
 					FileUtils.copyInputStreamToFile(entity.getContent(), file);
 					return true;
 				});

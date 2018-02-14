@@ -2,6 +2,7 @@ package ecommander.filesystem;
 
 import ecommander.fwk.FileException;
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
 import ecommander.fwk.WebClient;
 import ecommander.model.Item;
 import ecommander.model.ParameterDescription;
@@ -37,7 +38,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 	//if (m.matches()) {
 
 	private ArrayList<File> files;
-	
+
 	public SaveItemFilesUnit(Item item) {
 		super(item);
 		files = new ArrayList<>();
@@ -84,7 +85,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 						else if (isDirect)
 							fileName = ((File) value).getName();
 						else if (isUrl)
-							fileName = FileDataType.getFileName(((URL) value).getFile());
+							fileName = Strings.getFileName(((URL) value).getFile());
 						// Создание новой директории
 						File dir = new File(fileDirectoryName);
 						dir.mkdirs();
