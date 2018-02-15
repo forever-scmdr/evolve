@@ -36,6 +36,16 @@ public class ItemUtils {
 		}
 		return item;
 	}
+
+	/**
+	 * Создать айтем с заданным родительским и владельцем, взятым от родительского
+	 * @param itemName
+	 * @param parent
+	 * @return
+	 */
+	public static Item newChildItem(String itemName, Item parent) {
+		return Item.newChildItem(ItemTypeRegistry.getItemType(itemName), parent);
+	}
 	/**
 	 * Загрузить определенный одиночный корневой айтем по его названию. Если айтем не найден, то создать его.
 	 * @param itemName - название айтема

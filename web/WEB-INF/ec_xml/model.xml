@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
-	<assoc name="contains" caption="Раздел содержит" transitive="true"/>
+	<assoc name="contains" caption="Раздел содержит" transitive="true" ag-id="1" ag-hash="-567445985"/>
 
 	<item name="product_container" virtual="true" caption="Контейнер для продуктов" ag-id="1" ag-hash="-268176079" />
 
@@ -25,6 +25,7 @@
 
 	<item name="back_section" key="name" caption="Невидимый раздел" ag-id="4" ag-hash="-810986611">
 		<parameter name="name" type="string" caption="Название" description="раздела" />
+		<parameter name="code" type="string" caption="Уникальный код" description="т.к. название может повторяться" />
 		<child item="product" />
 	</item>
 
@@ -39,9 +40,14 @@
 		<parameter name="price" type="double" caption="Цена"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
-		<parameter name="tech" type="text" caption="Технические характеристики" description="в виде таблицы для вывода" />
+		<parameter name="tech" type="xml" caption="Технические характеристики" description="в виде таблицы для вывода" />
 		<parameter name="apply" type="text" caption="Применение" description="текст" />
-		<parameter name="go_with" type="string" caption="Сопутствующий товар" description="список артикулов" multiple="true"/>
+		<parameter name="accessiories" type="string" caption="Сопутствующий товар" description="список артикулов" multiple="true"/>
+		<parameter name="sets" type="string" caption="Наборы" description="список артикулов" multiple="true"/>
+		<parameter name="probes" type="string" caption="Зонды" description="список артикулов" multiple="true"/>
+		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
+		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
+		<parameter name="video" type="string" caption="Ссылка на видео" multiple="true"/>
 		<child item="tag_first"/>
 	</item>
 

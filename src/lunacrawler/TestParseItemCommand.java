@@ -2,6 +2,7 @@ package lunacrawler;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.JsoupUtils;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import extra._generated.Parse_item;
@@ -42,12 +43,7 @@ public class TestParseItemCommand extends Command {
 			Transformer transformer = factory.newTransformer(new StreamSource(xslFile));
 
 			Document jsoupDoc = Jsoup.parse(pi.get_html());
-			Document.OutputSettings settings = new Document.OutputSettings();
-			settings.charset(Charset.forName("UTF-8"));
-			settings.syntax(Document.OutputSettings.Syntax.xml);
-			settings.escapeMode(Entities.EscapeMode.xhtml);
-			jsoupDoc.outputSettings(settings);
-			String html = jsoupDoc.body().outerHtml();
+			String html = JsoupUtils.outputDoc(jsoupDoc);
 
 			Reader reader = new StringReader(html);
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();

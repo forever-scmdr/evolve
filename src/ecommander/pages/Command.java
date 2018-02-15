@@ -180,6 +180,24 @@ public abstract class Command implements AutoCloseable {
 		}
 		return items;
 	}
+
+	/**
+	 * Вернуть все айтемы, загруженные заданным страничным айтемом (с заданным ID)
+	 * Айтемы возвращаются в виде упорядоченного отображения (в порядке сортировки)
+	 * ID => айтем
+	 * Возвращаются только айтемы, вложенные в заданный родительский айтем
+	 * @param itemPageId
+	 * @param parentId
+	 * @return
+	 */
+	protected final LinkedHashMap<Long, Item> getLoadedChildItems(String itemPageId, Long parentId) {
+		LinkedHashMap<Long, Item> items = new LinkedHashMap<>();
+		ArrayList<Item> children = page.getItemPEById(itemPageId).getFoundItemsByParent(parentId);
+		for (Item child : children) {
+			items.put(child.getId(), child);
+		}
+		return items;
+	}
 	/**
 	 * Вернуть единственный найденный айтем страничного айтема
 	 * @param itemPageId

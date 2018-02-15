@@ -24,6 +24,7 @@ public class ItemNames {
 
         String _ITEM_NAME = "back_section";
         String NAME = "name";
+        String CODE = "code";
 
     }
 
@@ -59,7 +60,12 @@ public class ItemNames {
         String TEXT = "text";
         String TECH = "tech";
         String APPLY = "apply";
-        String GO_WITH = "go_with";
+        String ACCESSIORIES = "accessiories";
+        String SETS = "sets";
+        String PROBES = "probes";
+        String GALLERY = "gallery";
+        String TEXT_PICS = "text_pics";
+        String VIDEO = "video";
 
     }
 

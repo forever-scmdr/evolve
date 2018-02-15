@@ -24,7 +24,7 @@
 		</style>
 		<script>
 			setTimeout(function(){
-				document.location.replace("/get_site");
+				document.location.replace("/deploy_parsed");
 			}, 5000);
 		</script>
 		</head>

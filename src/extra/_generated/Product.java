@@ -1,7 +1,9 @@
 
 package extra._generated;
 
+import java.io.File;
 import java.util.List;
+import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -145,20 +147,100 @@ public class Product
         return containsValue("apply", value);
     }
 
-    public void add_go_with(String value) {
-        setValue("go_with", value);
+    public void add_accessiories(String value) {
+        setValue("accessiories", value);
     }
 
-    public List<String> getAll_go_with() {
-        return getStringValues("go_with");
+    public List<String> getAll_accessiories() {
+        return getStringValues("accessiories");
     }
 
-    public void remove_go_with(String value) {
-        removeEqualValue("go_with", value);
+    public void remove_accessiories(String value) {
+        removeEqualValue("accessiories", value);
     }
 
-    public boolean contains_go_with(String value) {
-        return containsValue("go_with", value);
+    public boolean contains_accessiories(String value) {
+        return containsValue("accessiories", value);
+    }
+
+    public void add_sets(String value) {
+        setValue("sets", value);
+    }
+
+    public List<String> getAll_sets() {
+        return getStringValues("sets");
+    }
+
+    public void remove_sets(String value) {
+        removeEqualValue("sets", value);
+    }
+
+    public boolean contains_sets(String value) {
+        return containsValue("sets", value);
+    }
+
+    public void add_probes(String value) {
+        setValue("probes", value);
+    }
+
+    public List<String> getAll_probes() {
+        return getStringValues("probes");
+    }
+
+    public void remove_probes(String value) {
+        removeEqualValue("probes", value);
+    }
+
+    public boolean contains_probes(String value) {
+        return containsValue("probes", value);
+    }
+
+    public void add_gallery(File value) {
+        setValue("gallery", value);
+    }
+
+    public List<File> getAll_gallery() {
+        return getFileValues("gallery", AppContext.getCommonFilesDirPath());
+    }
+
+    public void remove_gallery(File value) {
+        removeEqualValue("gallery", value);
+    }
+
+    public boolean contains_gallery(File value) {
+        return containsValue("gallery", value);
+    }
+
+    public void add_text_pics(File value) {
+        setValue("text_pics", value);
+    }
+
+    public List<File> getAll_text_pics() {
+        return getFileValues("text_pics", AppContext.getCommonFilesDirPath());
+    }
+
+    public void remove_text_pics(File value) {
+        removeEqualValue("text_pics", value);
+    }
+
+    public boolean contains_text_pics(File value) {
+        return containsValue("text_pics", value);
+    }
+
+    public void add_video(String value) {
+        setValue("video", value);
+    }
+
+    public List<String> getAll_video() {
+        return getStringValues("video");
+    }
+
+    public void remove_video(String value) {
+        removeEqualValue("video", value);
+    }
+
+    public boolean contains_video(String value) {
+        return containsValue("video", value);
     }
 
 }

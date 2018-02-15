@@ -42,4 +42,20 @@ public class Back_section
         return containsValue("name", value);
     }
 
+    public void set_code(String value) {
+        setValue("code", value);
+    }
+
+    public String get_code() {
+        return getStringValue("code");
+    }
+
+    public String getDefault_code(String defaultVal) {
+        return getStringValue("code", defaultVal);
+    }
+
+    public boolean contains_code(String value) {
+        return containsValue("code", value);
+    }
+
 }
