@@ -4,7 +4,11 @@
 <!-- ******************************* Включение для разделов каталога ****************************** -->
 
 	<page name="index">
-
+		<single item="catalog">
+			<tree item="section">
+				<list item="product" assoc="contains"/>
+			</tree>
+		</single>
 	</page>
 
 

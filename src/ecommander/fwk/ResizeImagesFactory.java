@@ -1,7 +1,9 @@
 package ecommander.fwk;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
@@ -276,6 +278,19 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 	@Override
 	public PersistenceCommandUnit createCommand(Item item) throws Exception {
 		return new ResizeImages(item);
+	}
+
+	public static ByteArrayOutputStream rezize(File src, int width, int height) throws IOException {
+		String format = StringUtils.substringAfterLast(src.getName(), ".");
+		BufferedImage srcImg = ImageIO.read(src);
+		Thumbnails.Builder<BufferedImage> thumbnailer = Thumbnails.of(srcImg);
+		if (width > 0)
+			thumbnailer.width(width);
+		if (height > 0)
+			thumbnailer.height(height);
+		ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+		thumbnailer.outputFormat(format).toOutputStream(ostream);
+		return ostream;
 	}
 
 }

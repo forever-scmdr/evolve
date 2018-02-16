@@ -1,6 +1,5 @@
 package ecommander.pages.output;
 
-import ecommander.controllers.AppContext;
 import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;
@@ -57,7 +56,7 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 		}
 		// <item id="123" path="sitefiles/1/20/255/4055" updated="190456373"> (ID айтема, путь к файлам айтема)
 		xml.startElement(tagName, TYPE_ATTRIBUTE, item.getTypeName(), ID_ATTRIBUTE, item.getId(), PATH_ATTRIBUTE,
-				FileDataType.getItemFilePath(item), KEY_ATTRIBUTE, item.getKeyUnique());
+				FileDataType.getItemFileUrl(item), KEY_ATTRIBUTE, item.getKeyUnique());
 		// Если включен режим визуального редактирования
 		if (isVisualEditing)
 			addConentUpdateAttrs(xml, item);

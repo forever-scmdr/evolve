@@ -790,6 +790,32 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				.AND().col(IP_ASSOC_ID).byte_(assocId);
 		return loadByQuery(query, IP_PARENT_ID, assocId, null, null, conn);
 	}
+
+	/**
+	 * Загрузить корневой айтем (в таблице родителей родитель равен потомку)
+	 * @param itemName
+	 * @param userId
+	 * @param userGroupId
+	 * @param conn
+	 * @return
+	 * @throws Exception
+	 */
+	public static Item loadRootItem(String itemName, int userId, byte userGroupId, Connection... conn) throws Exception {
+		ItemType type = ItemTypeRegistry.getItemType(itemName);
+		if (type == null)
+			return null;
+		TemplateQuery query = new TemplateQuery("load root item");
+		query.SELECT(ITEM_TBL + ".*", "0 AS PID")
+				.FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID)
+				.WHERE().col(I_GROUP).byte_(userGroupId)
+				.AND().col(I_USER).int_(userId)
+				.AND().col(I_TYPE_ID).int_(type.getTypeId())
+				.AND().col(IP_CHILD_ID).sql(IP_PARENT_ID);
+		ArrayList<Item> result = loadByQuery(query, "PID", ItemTypeRegistry.getPrimaryAssocId(), null, null, conn);
+		if (result.size() > 0)
+			return result.get(0);
+		return null;
+	}
 	/**
 	 * Загрузить айтемы по их ID
 	 * @param ids

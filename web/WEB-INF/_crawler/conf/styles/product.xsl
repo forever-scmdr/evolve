@@ -52,12 +52,12 @@
 			</associated>
 			<tech>
 				<xsl:for-each select="//div[@id = 'tab-data']//table">
-					<tag name="{thead//th}">
+					<tag name="{normalize-space(replace(thead//th, '\p{Z}+?', ' '))}">
 						<xsl:for-each select="tbody/tr">
 							<parameter>
-								<name><xsl:value-of select="td[1]/p"/></name>
+								<name><xsl:value-of select="normalize-space(replace(td[1]/p, '\p{Z}+?', ' '))"/></name>
 								<xsl:for-each select="td[2]/p">
-									<value><xsl:value-of select="."/></value>
+									<value><xsl:value-of select="normalize-space(replace(., '\p{Z}+?', ' '))"/></value>
 								</xsl:for-each>
 							</parameter>
 						</xsl:for-each>

@@ -266,7 +266,7 @@ public abstract class IntegrateBase extends Command {
 						getInfo().addError(se.getMessage(), 0, 0);
 					} finally {
 						try {
-							LuceneIndexMapper.getSingleton().close();
+							LuceneIndexMapper.getSingleton().finishUpdate();
 						} catch (IOException e) {
 							try {
 								throw e;

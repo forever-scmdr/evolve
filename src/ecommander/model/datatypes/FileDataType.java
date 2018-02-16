@@ -100,6 +100,10 @@ public class FileDataType extends StringDataType {
 		return AppContext.getFilesDirPath(item.isFileProtected()) + item.getRelativeFilesPath();
 	}
 
+	public static String getItemFileUrl(Item item) {
+		return AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath();
+	}
+
 	@Override
 	public int getHashCode(Object value) {
 		return outputValue(value, null).hashCode();

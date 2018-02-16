@@ -105,6 +105,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 							else if (isUrl)
 								WebClient.saveFile(value.toString(), fileDirectoryName);
 						} catch (Exception e) {
+							ServerLogger.error("File error", e);
 							throw new FileException("File '" + newFile.getName() + "' has not been moved successfully");
 						}
 						files.add(newFile);

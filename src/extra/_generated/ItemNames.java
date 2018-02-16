@@ -55,6 +55,7 @@ public class ItemNames {
         String _ITEM_NAME = "product";
         String NAME = "name";
         String CODE = "code";
+        String MAIN_PIC = "main_pic";
         String PRICE = "price";
         String SHORT = "short";
         String TEXT = "text";

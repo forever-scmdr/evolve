@@ -56,7 +56,12 @@ public class ItemUtils {
 	 * @throws Exception
 	 */
 	public static Item ensureSingleRootItem(String itemName, User initiator, byte groupId, int userId) throws Exception {
-		return ensureSingleItem(itemName, initiator, ItemTypeRegistry.getPrimaryRootId(), groupId, userId);
+		Item item = ItemQuery.loadRootItem(itemName, userId, groupId);
+		if (item == null) {
+			item = Item.newItem(ItemTypeRegistry.getItemType(itemName),	ItemTypeRegistry.getPrimaryRootId(), userId, groupId, Item.STATUS_NORMAL, false);
+			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(item));
+		}
+		return item;
 	}
 	/**
 	 * Загрузить определенный одиночный айтем по его названию из сеанса. Если айтем не найден, то создать его и сохранить в сеансе.

@@ -133,7 +133,7 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 		if (hasActionUrl()) {
 			xml.startElement(tag,
 					ACTION_URL_ATTRIBUTE, actionUrl,
-					FILE_PATH_ATTRIBUTE, FileDataType.getItemFilePath(item),
+					FILE_PATH_ATTRIBUTE, FileDataType.getItemFileUrl(item),
 					ID_ATTRIBUTE, item.getId(),
 					CAPTION_ATTRIBUTE, itemDesc.getCaption(),
 					KEY_ATTRIBUTE, item.getKey());

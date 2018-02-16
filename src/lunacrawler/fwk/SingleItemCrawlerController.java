@@ -276,6 +276,7 @@ public class SingleItemCrawlerController {
 					nextState = State.HTML;
 				} else if (state == State.FILES) {
 					pitem.set_got_files((byte) 0);
+					pitem.clearParameter(ItemNames.parse_item.FILE);
 					nextState = State.TRANSFORM;
 				}
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pitem).noFulltextIndex());
@@ -433,14 +434,13 @@ public class SingleItemCrawlerController {
 			DownloadThread worker = new DownloadThread(proxies, urlsPerProxy, itemsToProcess) {
 				@Override
 				protected void processItem(Parse_item item, String proxy) throws Exception {
-					item.clearParameter(ItemNames.parse_item.FILE);
 					Document result = Jsoup.parse(item.get_xml());
 					Elements downloads = result.getElementsByAttribute(DOWNLOAD);
-					for (Element download : downloads) {
-						URL url = new URL(download.attr(DOWNLOAD));
-						item.setValue(ItemNames.parse_item.FILE, url);
-					}
 					try {
+						for (Element download : downloads) {
+							URL url = new URL(download.attr(DOWNLOAD));
+							item.setValue(ItemNames.parse_item.FILE, url);
+						}
 						item.set_got_files((byte) 1);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item).noFulltextIndex());
 						info.pushLog("URL {} got files", item.get_url());

@@ -1,10 +1,7 @@
 package extra;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ItemUtils;
-import ecommander.fwk.JsoupUtils;
-import ecommander.fwk.Strings;
+import ecommander.fwk.*;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
@@ -12,12 +9,15 @@ import ecommander.model.UserGroupRegistry;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.*;
+import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -68,6 +68,7 @@ public class DeployParsed extends IntegrateBase {
 		Item backCatalog = ItemUtils.ensureSingleRootItem(ItemNames.BACK_CATALOG, getInitiator(), USER_GROUP_ID, USER_ID);
 		HashMap<String, Item> backSections = new HashMap<>();
 		LinkedHashMap<Long, Item> sections = getLoadedItems("sec");
+		LuceneIndexMapper.getSingleton().startUpdate();
 		for (Item sec : sections.values()) {
 			info.pushLog("Обработка раздела {}", sec.getStringValue(NAME));
 			LinkedHashMap<Long, Item> secPIs = getLoadedChildItems("pi", sec.getId());
@@ -98,6 +99,7 @@ public class DeployParsed extends IntegrateBase {
 				info.setProcessed(++processed);
 			}
 		}
+		LuceneIndexMapper.getSingleton().finishUpdate();
 	}
 
 	private Product deployParsed(Parse_item pi, Item parentSection) throws Exception {
@@ -139,12 +141,20 @@ public class DeployParsed extends IntegrateBase {
 			picFiles.put(file.getName(), file);
 		}
 		Element gallery = doc.getElementsByTag(GALLERY).first();
+		boolean noMainPic = true;
 		for (Element picEl : gallery.getElementsByTag(PICTURE)) {
 			String fileName = Strings.getFileName(picEl.ownText());
 			File pic = picFiles.get(fileName);
 			if (pic != null) {
 				prod.setValue(ItemNames.product.GALLERY, pic);
 				picFiles.remove(fileName);
+				if (noMainPic) {
+					ByteArrayOutputStream os = ResizeImagesFactory.rezize(pic, -1, 300);
+					File mainFile = new File(pic.getParentFile().getCanonicalPath() + "/main_" + pic.getName());
+					FileUtils.writeByteArrayToFile(mainFile, os.toByteArray());
+					prod.setValue(ItemNames.product.MAIN_PIC, mainFile);
+					noMainPic = false;
+				}
 			}
 		}
 		for (File picFile : picFiles.values()) {
@@ -171,7 +181,7 @@ public class DeployParsed extends IntegrateBase {
 					Tag_second tagSecond = Tag_second.get(ItemUtils.newChildItem(ItemNames.TAG_SECOND, tagFirst));
 					tagSecond.set_name(name);
 					tagSecond.set_value(valStr);
-					tagSecond.set_name_value(name + ":" + value);
+					tagSecond.set_name_value(name + ":" + valStr);
 					executeCommandUnit(SaveItemDBUnit.get(tagSecond));
 				}
 
@@ -190,6 +200,9 @@ public class DeployParsed extends IntegrateBase {
 		HashSet<String> picNames = new HashSet<>();
 		picNames.addAll(item.outputValues(picParamName));
 		Document doc = Jsoup.parse(item.getStringValue(textParamName));
+		// Элементы img src
+		updateDocTagAttributeWithPic(doc, "img", "src", item, picNames);
+		/*
 		for (Element img : doc.getElementsByTag("img")) {
 			String src = img.attr("src");
 			String fileName = Strings.getFileName(src);
@@ -197,8 +210,21 @@ public class DeployParsed extends IntegrateBase {
 				String newSrc = AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath() + fileName;
 				img.attr("src", newSrc);
 			}
-		}
+		} */
+		// Элементы a href
+		updateDocTagAttributeWithPic(doc, "a", "href", item, picNames);
 		item.setValue(textParamName, JsoupUtils.outputDoc(doc));
+	}
+
+	private void updateDocTagAttributeWithPic(Element parentEl, String tag, String attr, Item item, HashSet<String> pics) {
+		for (Element el : parentEl.getElementsByTag(tag)) {
+			String attrOldFileName = el.attr(attr);
+			String correctFileName = Strings.getFileName(attrOldFileName);
+			if (pics.contains(correctFileName)) {
+				String newAttrFileName = AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath() + correctFileName;
+				el.attr(attr, newAttrFileName);
+			}
+		}
 	}
 
 	@Override
