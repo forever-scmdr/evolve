@@ -4,6 +4,8 @@ package extra._generated;
 
 public class ItemNames {
 
+    public final static String PARSE_SECTION = "parse_section";
+    public final static String PARSE_ITEM = "parse_item";
     public final static String PRODUCT_CONTAINER = "product_container";
     public final static String CATALOG = "catalog";
     public final static String SECTION = "section";
@@ -12,7 +14,6 @@ public class ItemNames {
     public final static String PRODUCT = "product";
     public final static String TAG_FIRST = "tag_first";
     public final static String TAG_SECOND = "tag_second";
-    public final static String PARSE_ITEM = "parse_item";
 
     public interface back_catalog {
 
@@ -43,10 +44,19 @@ public class ItemNames {
         String DOWNLOADED = "downloaded";
         String PARSED = "parsed";
         String GOT_FILES = "got_files";
+        String DUPLICATED = "duplicated";
         String HTML = "html";
         String XML = "xml";
         String TEST_URL = "test_url";
         String FILE = "file";
+
+    }
+
+    public interface parse_section {
+
+        String _ITEM_NAME = "parse_section";
+        String NAME = "name";
+        String ITEM_URLS = "item_urls";
 
     }
 
@@ -82,6 +92,7 @@ public class ItemNames {
         String NAME = "name";
         String CODE = "code";
         String SHORT = "short";
+        String ITEM_URLS = "item_urls";
 
     }
 

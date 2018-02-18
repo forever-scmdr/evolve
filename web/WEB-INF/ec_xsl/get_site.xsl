@@ -33,11 +33,11 @@
 			<h2>Процесс выполнения</h2>
 			<table>
 				<tr>
-					<td>Строка файла:</td>
+					<td>Осталось разделов:</td>
 					<td class="error">
 						<span id="prcnt"></span>
 						<span id="progressBar"></span>
-						<xsl:value-of select="/page/line"/> / <xsl:value-of select="/page/total-line-number"/>
+						<xsl:value-of select="/page/line"/>
 					</td>
 				</tr>
 				<tr>
@@ -62,7 +62,7 @@
 					<xsl:for-each select="/page/log">
 						<tr>
 							<td class="string-no">
-							Время: <span class="no"><xsl:value-of select="@time"/></span> 
+							Время: <span class="no"><xsl:value-of select="@time"/></span>
 							</td>
 							<td class="error"><xsl:value-of select="." disable-output-escaping="yes"/></td>
 						</tr>

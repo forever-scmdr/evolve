@@ -61,16 +61,12 @@ public class Product
         return containsValue("code", value);
     }
 
-    public void add_main_pic(File value) {
+    public void set_main_pic(File value) {
         setValue("main_pic", value);
     }
 
-    public List<File> getAll_main_pic() {
-        return getFileValues("main_pic", AppContext.getCommonFilesDirPath());
-    }
-
-    public void remove_main_pic(File value) {
-        removeEqualValue("main_pic", value);
+    public File get_main_pic() {
+        return getFileValue("main_pic", AppContext.getCommonFilesDirPath());
     }
 
     public boolean contains_main_pic(File value) {

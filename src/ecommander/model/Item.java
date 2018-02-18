@@ -58,7 +58,7 @@ public class Item implements ItemBasics {
 	private static final int DIR_NAME_LENGTH = 3;
 	private static final char FINAL_DIR_CHAR = 'f';
 
-	public static final long DEFAULT_ID = 0l;
+	public static final long DEFAULT_ID = 0L;
 	public static final int WEIGHT_STEP = 64;
 
 	public static final byte STATUS_NORMAL = (byte) 0;

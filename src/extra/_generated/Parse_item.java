@@ -111,6 +111,28 @@ public class Parse_item
         return containsValue("got_files", value);
     }
 
+    public void set_duplicated(Byte value) {
+        setValue("duplicated", value);
+    }
+
+    public void setUI_duplicated(String value)
+        throws Exception
+    {
+        setValueUI("duplicated", value);
+    }
+
+    public Byte get_duplicated() {
+        return getByteValue("duplicated");
+    }
+
+    public Byte getDefault_duplicated(Byte defaultVal) {
+        return getByteValue("duplicated", defaultVal);
+    }
+
+    public boolean contains_duplicated(Byte value) {
+        return containsValue("duplicated", value);
+    }
+
     public void set_html(String value) {
         setValue("html", value);
     }

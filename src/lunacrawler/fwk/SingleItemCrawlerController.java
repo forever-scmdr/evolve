@@ -5,6 +5,7 @@ import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.JsoupUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.WebClient;
+import ecommander.model.Compare;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -12,14 +13,13 @@ import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Parse_item;
+import extra._generated.Parse_section;
 import net.sf.saxon.TransformerFactoryImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.HttpResponseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Entities;
-import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
 import javax.xml.transform.*;
@@ -27,7 +27,6 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -45,15 +44,15 @@ public class SingleItemCrawlerController {
 
 		private String errors = "";
 
-		public void error(TransformerException exception) throws TransformerException {
+		public void error(TransformerException exception) {
 			errors += "\nERROR " + exception.getMessageAndLocation();
 		}
 
-		public void fatalError(TransformerException exception) throws TransformerException {
+		public void fatalError(TransformerException exception) {
 			errors += "\nFATAL ERROR " + exception.getMessageAndLocation();
 		}
 
-		public void warning(TransformerException exception) throws TransformerException {
+		public void warning(TransformerException exception) {
 			errors += "\nWARNING " + exception.getMessageAndLocation();
 		}
 
@@ -150,7 +149,8 @@ public class SingleItemCrawlerController {
 	private State state = State.INIT;
 	private LinkedList<String> proxies;
 	private LinkedHashMap<String, String> urlStyles;
-	private LinkedBlockingDeque<Parse_item> itemsToProcess;
+	private LinkedBlockingDeque<Parse_section> sectionsToProcess; // все разделы с айтемами для парскнга
+	private LinkedBlockingDeque<Parse_item> itemsToProcess; // Айтемы, которые нужно парсить
 	private final HashSet<DownloadThread> workers;
 	private int urlsPerProxy;
 	private int numberOfCrawlers = 1;
@@ -215,7 +215,7 @@ public class SingleItemCrawlerController {
 		urlsPerProxy = Integer.parseInt(AppContext.getProperty(URLS_PER_PROXY, "0"));
 		numberOfCrawlers = Integer.parseInt(AppContext.getProperty(NUMBER_OF_CRAWLERS, "1"));
 		stylesDir = AppContext.getRealPath(AppContext.getProperty(STYLES_DIR, null));
-		if (stylesDir != null && !stylesDir.endsWith("/"))
+		if (!stylesDir.endsWith("/"))
 			stylesDir += "/";
 		info.pushLog("Output directories created");
 
@@ -294,17 +294,42 @@ public class SingleItemCrawlerController {
 		}
 	}
 
-	private void workerFinished(DownloadThread thread) {
+	private void workerFinished(DownloadThread thread, String paramName) {
 		synchronized (workers) {
 			workers.remove(thread);
 			if (workers.size() == 0) {
 				try {
-					startStage();
+					if (!nextSection(paramName, thread))
+						startStage();
 				} catch (Exception e) {
 					info.addError("Some exception " + e.getMessage(), "shown previously");
 				}
 			}
 		}
+	}
+
+	private synchronized boolean nextSection(String paramName, DownloadThread worker) throws Exception {
+		info.setLineNumber(sectionsToProcess.size());
+		itemsToProcess = new LinkedBlockingDeque<>();
+		while (itemsToProcess.size() == 0 && sectionsToProcess.size() > 0) {
+			Parse_section currentSection = sectionsToProcess.poll();
+			List<Item> items = new ItemQuery(ItemNames.PARSE_ITEM)
+					.addParameterCriteria(paramName, "0", "=", null, Compare.ANY)
+					.setParentId(currentSection.getId(), false)
+					.loadItems();
+			for (Item item : items) {
+				itemsToProcess.add(Parse_item.get(item));
+			}
+		}
+		if (itemsToProcess.size() > 0) {
+			toProcessCount = itemsToProcess.size();
+			info.setToProcess(toProcessCount);
+			processedCount = 0;
+			if (worker != null)
+				new Thread(worker).start();
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -313,14 +338,8 @@ public class SingleItemCrawlerController {
 	 */
 	private void downloadHtml() throws Exception {
 		info.setOperation("Скачивание HTML файлов");
-		itemsToProcess = new LinkedBlockingDeque<>();
-		ArrayList<Item> items = ItemQuery.loadByParamValue(ItemNames.PARSE_ITEM, ItemNames.parse_item.DOWNLOADED, "0");
-		for (Item item : items) {
-			itemsToProcess.add(Parse_item.get(item));
-		}
-		toProcessCount = itemsToProcess.size();
-		info.setToProcess(toProcessCount);
-		processedCount = 0;
+		workers.clear();
+		nextSection(ItemNames.parse_item.DOWNLOADED, null);
 		for (int i = 0; i < numberOfCrawlers; i++) {
 			DownloadThread worker = new DownloadThread(proxies, urlsPerProxy, itemsToProcess) {
 				@Override
@@ -349,7 +368,7 @@ public class SingleItemCrawlerController {
 
 				@Override
 				protected void afterFinished() {
-					workerFinished(this);
+					workerFinished(this, ItemNames.parse_item.DOWNLOADED);
 				}
 			};
 			workers.add(worker);
@@ -363,73 +382,71 @@ public class SingleItemCrawlerController {
 	 */
 	private void parseHtml() throws Exception {
 		info.setOperation("Преобразование HTML в XML");
-		ArrayList<Item> items = ItemQuery.loadByParamValue(ItemNames.PARSE_ITEM, ItemNames.parse_item.PARSED, "0");
-		ArrayList<Parse_item> parseItems = new ArrayList<>();
-		for (Item item : items) {
-			parseItems.add(Parse_item.get(item));
-		}
-		toProcessCount = parseItems.size();
-		info.setToProcess(toProcessCount);
-		processedCount = 0;
-		for (Parse_item item : parseItems) {
-			File xslFile = new File(stylesDir + getStyleForUrl(item.get_url()));
-			if (!xslFile.exists()) {
-				info.pushLog("No xsl file '{}' found", stylesDir + getStyleForUrl(item.get_url()));
-				continue;
-			}
-			if (StringUtils.isBlank(item.get_html())) {
-				info.pushLog("Item with url '{}' has no content", item.get_url());
-				continue;
-			}
-			Errors errors = new Errors();
-			TransformerFactory factory = TransformerFactoryImpl.newInstance();
-			Transformer transformer;
-			try {
-				info.pushLog("Transforming: {}\tTo transform: {}", item.get_url(), toProcessCount);
-				factory.setErrorListener(errors);
-				transformer = factory.newTransformer(new StreamSource(xslFile));
+		workers.clear();
+		nextSection(ItemNames.parse_item.PARSED, null);
+		for (int i = 0; i < numberOfCrawlers; i++) {
+			DownloadThread worker = new DownloadThread(proxies, urlsPerProxy, itemsToProcess) {
+				@Override
+				protected void processItem(Parse_item item, String proxy) throws Exception {
+					File xslFile = new File(stylesDir + getStyleForUrl(item.get_url()));
+					if (!xslFile.exists()) {
+						info.pushLog("No xsl file '{}' found", stylesDir + getStyleForUrl(item.get_url()));
+						return;
+					}
+					if (StringUtils.isBlank(item.get_html())) {
+						info.pushLog("Item with url '{}' has no content", item.get_url());
+						return;
+					}
+					Errors errors = new Errors();
+					TransformerFactory factory = TransformerFactoryImpl.newInstance();
+					Transformer transformer;
+					try {
+						factory.setErrorListener(errors);
+						transformer = factory.newTransformer(new StreamSource(xslFile));
 
-				// Подготовка HTML (убирание необъявленных сущностей и т.д.)
-				Document jsoupDoc = Jsoup.parse(item.get_html());
-				String html = JsoupUtils.outputDoc(jsoupDoc);
+						// Подготовка HTML (убирание необъявленных сущностей и т.д.)
+						Document jsoupDoc = Jsoup.parse(item.get_html());
+						String html = JsoupUtils.outputDoc(jsoupDoc);
 
-				// Преборазование очищенного HTML
-				Reader reader = new StringReader(html);
-				ByteArrayOutputStream bos = new ByteArrayOutputStream();
-				transformer.transform(new StreamSource(reader), new StreamResult(bos));
-				item.set_xml(bos.toString(UTF_8));
-				item.set_parsed((byte) 1);
-				setTestXSLLink(item);
-				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item).noFulltextIndex());
-				info.pushLog("URL {} transformed", item.get_url());
-				info.setProcessed(++processedCount);
-				toProcessCount--;
-			} catch (TransformerConfigurationException e) {
-				info.pushLog(errors.errors, e.getMessageAndLocation());
-			} catch (TransformerException e) {
-				info.pushLog("Transforming error: {} message: {}", item.get_url(), e.getMessageAndLocation());
-			} catch (UnsupportedEncodingException e) {
-				info.pushLog("Unsupported charset {}", e);
-			} catch (Exception e) {
-				info.pushLog("Error saving XML of an url: {} message {}", item.get_url(), e);
-			}
-			if (errors.hasErrors()) {
-				info.pushLog("There were errors while transforming source html file {}", item.get_url());
-				info.pushLog(errors.errors);
-			}
+						// Преборазование очищенного HTML
+						Reader reader = new StringReader(html);
+						ByteArrayOutputStream bos = new ByteArrayOutputStream();
+						transformer.transform(new StreamSource(reader), new StreamResult(bos));
+						item.set_xml(bos.toString(UTF_8));
+						item.set_parsed((byte) 1);
+						setTestXSLLink(item);
+						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item).noFulltextIndex());
+						info.pushLog("URL {} transformed", item.get_url());
+						info.setProcessed(++processedCount);
+					} catch (TransformerConfigurationException e) {
+						info.pushLog(errors.errors, e.getMessageAndLocation());
+					} catch (TransformerException e) {
+						info.pushLog("Transforming error: {} message: {}", item.get_url(), e.getMessageAndLocation());
+					} catch (UnsupportedEncodingException e) {
+						info.pushLog("Unsupported charset {}", e);
+					} catch (Exception e) {
+						info.pushLog("Error saving XML of an url: {} message {}", item.get_url(), e);
+					}
+					if (errors.hasErrors()) {
+						info.pushLog("There were errors while transforming source html file {}", item.get_url());
+						info.pushLog(errors.errors);
+					}
+				}
+
+				@Override
+				protected void afterFinished() {
+					workerFinished(this, ItemNames.parse_item.DOWNLOADED);
+				}
+			};
+			workers.add(worker);
+			new Thread(worker).start();
 		}
 	}
 
 	private void downloadFiles() throws Exception {
 		info.setOperation("Скачивание файлов");
-		ArrayList<Item> items = ItemQuery.loadByParamValue(ItemNames.PARSE_ITEM, ItemNames.parse_item.GOT_FILES, "0");
-		itemsToProcess = new LinkedBlockingDeque<>();
-		for (Item item : items) {
-			itemsToProcess.add(Parse_item.get(item));
-		}
-		toProcessCount = itemsToProcess.size();
-		info.setToProcess(toProcessCount);
-		processedCount = 0;
+		workers.clear();
+		nextSection(ItemNames.parse_item.GOT_FILES, null);
 		for (int i = 0; i < numberOfCrawlers; i++) {
 			DownloadThread worker = new DownloadThread(proxies, urlsPerProxy, itemsToProcess) {
 				@Override
@@ -452,7 +469,7 @@ public class SingleItemCrawlerController {
 
 				@Override
 				protected void afterFinished() {
-					workerFinished(this);
+					workerFinished(this, ItemNames.parse_item.GOT_FILES);
 				}
 			};
 			workers.add(worker);
