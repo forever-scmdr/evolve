@@ -16,10 +16,12 @@ import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
-import org.apache.lucene.document.*;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.FieldType;
+import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.*;
-import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.highlight.*;
@@ -161,12 +163,18 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 				if (writer != null)
 					writer.close();
 				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> START UPDATE 3 >>>>>>>>>>>>>>>>>>>>>>>>>>>" + writer + " >> " + concurrentWritersCount);
-				IndexWriterConfig config = new IndexWriterConfig(getAnalyzer())
-						.setOpenMode(OpenMode.CREATE_OR_APPEND)
-						.setRAMBufferSizeMB(5)
-						.setMaxBufferedDocs(200)
-						.setRAMPerThreadHardLimitMB(2);
-				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> START UPDATE 4 >>>>>>>>>>>>>>>>>>>>>>>>>>>" + writer + " >> " + concurrentWritersCount);
+				Analyzer analyzer = getAnalyzer();
+				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> AFTER ANALYZER >>>>>>>>>>>>>>>>>>>>>>>>>>>" + analyzer);
+				IndexWriterConfig config = new IndexWriterConfig(analyzer);
+				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> AFTER IndexWriterConfig >>>>>>>>>>>>>>>>>>>>>>>>>>>");
+				config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
+				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> AFTER CREATE_OR_APPEND >>>>>>>>>>>>>>>>>>>>>>>>>>>");
+				config.setRAMBufferSizeMB(5);
+				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> AFTER 5 >>>>>>>>>>>>>>>>>>>>>>>>>>>");
+				config.setMaxBufferedDocs(200);
+				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> AFTER 200 >>>>>>>>>>>>>>>>>>>>>>>>>>>");
+				config.setRAMPerThreadHardLimitMB(2);
+				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> START 2 >>>>>>>>>>>>>>>>>>>>>>>>>>>");
 				writer = new IndexWriter(directory, config);
 				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> START UPDATE 5 >>>>>>>>>>>>>>>>>>>>>>>>>>>" + writer + " >> " + concurrentWritersCount);
 			} catch (Exception e) {
