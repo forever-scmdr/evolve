@@ -20,7 +20,7 @@ public class SingleCrawlerCommand extends IntegrateBase {
 
 	@Override
 	protected void integrate() throws Exception {
-		String stage = getVarSingleValueDefault(STAGE_PARAM, "INIT");
+		String stage = getVarSingleValueDefault(STAGE_PARAM, "PREPARE_URLS");
 		String resetToStage = getVarSingleValueDefault(RESET_TO_STAGE_PARAM, "INIT");
 		info.limitLog(30);
 		info.setOperation("Парсинг сайта");
@@ -28,7 +28,7 @@ public class SingleCrawlerCommand extends IntegrateBase {
 		try {
 			state = SingleItemCrawlerController.State.valueOf(stage);
 		} catch (IllegalArgumentException e) {
-			state = SingleItemCrawlerController.State.INIT;
+			state = SingleItemCrawlerController.State.PREPARE_URLS;
 		}
 		SingleItemCrawlerController.State resetToState;
 		try {

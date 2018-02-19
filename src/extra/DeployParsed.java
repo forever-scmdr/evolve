@@ -2,10 +2,7 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
-import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.User;
-import ecommander.model.UserGroupRegistry;
+import ecommander.model.*;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -103,14 +100,25 @@ public class DeployParsed extends IntegrateBase {
 	}
 
 	private Product deployParsed(Parse_item pi, Item parentSection) throws Exception {
+		// Если айтем для парсинга - дублированный, найти оригинальный айтем
+		if (pi.get_duplicated() == (byte) 1) {
+			Item original = new ItemQuery(ItemNames.PARSE_ITEM)
+					.addParameterCriteria(ItemNames.parse_item.DUPLICATED, "0", "=", null, Compare.ANY)
+					.addParameterCriteria(ItemNames.parse_item.URL, pi.get_url(), "=", null, Compare.SOME)
+					.loadFirstItem();
+			if (original != null)
+				pi = Parse_item.get(original);
+		}
+
 		// Разобрать XML, чтобы можно было найти код
 		Document doc = Jsoup.parse(pi.get_xml(), "localhost", Parser.xmlParser());
 		String code = JsoupUtils.nodeText(doc, CODE);
 
 		// Проверка, если айтем существует - ничего не делать
+		// (Просто создать ссылку на этот продукт в вызывающем методе)
 		Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code);
 		if (product != null)
-			return null;
+			return Product.get(product);
 
 		// Создать сам продукт и все вложенные айтемы в одной транзакции
 		//

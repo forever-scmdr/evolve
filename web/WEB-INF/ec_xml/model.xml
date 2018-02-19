@@ -6,8 +6,7 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             ПАРСИНГ                                  ////////////-->
 
-	<item name="parse_section" caption="Раздел для разбора" key="name" virtual="true" ag-id="10" ag-hash="-814293671">
-		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
+	<item name="parse_section" caption="Раздел для разбора" virtual="true" ag-id="10" ag-hash="-814293671">
 		<parameter name="item_urls" type="plain-text" caption="Урлы вложенных товаров" />
 		<child item="parse_item"/>
 	</item>

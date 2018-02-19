@@ -5,9 +5,9 @@ import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.JsoupUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.WebClient;
-import ecommander.model.Compare;
-import ecommander.model.Item;
-import ecommander.model.User;
+import ecommander.model.*;
+import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -29,6 +29,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
@@ -120,8 +121,8 @@ public class SingleItemCrawlerController {
 	}
 
 	public enum State {
-		INIT("Инициализация"), HTML("Получение HTML"), TRANSFORM("XSL преобразование"),
-		FILES("Загрузка файлов"), FINISHED("Работа закончена");
+		INIT("Инициализация"), PREPARE_URLS("Подготовка урлов"), HTML("Получение HTML"),
+		TRANSFORM("XSL преобразование"), FILES("Загрузка файлов"), FINISHED("Работа закончена");
 
 		private String desc;
 		State(String desc) {
@@ -150,7 +151,11 @@ public class SingleItemCrawlerController {
 	private LinkedList<String> proxies;
 	private LinkedHashMap<String, String> urlStyles;
 	private LinkedBlockingDeque<Parse_section> sectionsToProcess; // все разделы с айтемами для парскнга
+	private Parse_section currentSection;
 	private LinkedBlockingDeque<Parse_item> itemsToProcess; // Айтемы, которые нужно парсить
+	private ConcurrentHashMap<String, String> sectionUniqueUrls; // Уникальные ULRы в рамках одного раздела
+	// Уникальность нужно отслеживать в рамках раздела, а не вообще, т.к. в разных разделах могут быть
+	// одинаковые товары
 	private final HashSet<DownloadThread> workers;
 	private int urlsPerProxy;
 	private int numberOfCrawlers = 1;
@@ -222,6 +227,8 @@ public class SingleItemCrawlerController {
 		// Коллекция для айтемов
 		itemsToProcess = new LinkedBlockingDeque<>();
 		workers = new HashSet<>();
+		sectionsToProcess = new LinkedBlockingDeque<>();
+		sectionUniqueUrls = new ConcurrentHashMap<>();
 	}
 	/**
 	 * Загрузить все айтемы для обработки и запустить обработку
@@ -229,6 +236,12 @@ public class SingleItemCrawlerController {
 	 */
 	public void startStage(State...initState) throws Exception {
 		info.pushLog("Начало работы");
+		if (sectionsToProcess.size() == 0) {
+			List<Item> items = new ItemQuery(ItemNames.PARSE_SECTION).loadItems();
+			for (Item item : items) {
+				sectionsToProcess.add(Parse_section.get(item));
+			}
+		}
 		if (initState.length > 0) {
 			this.state = initState[0];
 		}
@@ -236,12 +249,15 @@ public class SingleItemCrawlerController {
 			return;
 		}
 		if (state == State.INIT) {
+			state = State.PREPARE_URLS;
+			prepareUrls();
+			startStage();
+		} else if (state == State.PREPARE_URLS) {
 			state = State.HTML;
 			downloadHtml();
 		} else if (state == State.HTML) {
 			state = State.TRANSFORM;
 			parseHtml();
-			startStage();
 		} else if (state == State.TRANSFORM) {
 			state = State.FILES;
 			downloadFiles();
@@ -260,27 +276,41 @@ public class SingleItemCrawlerController {
 		info.setOperation("Сброс состояния до " + state);
 		State nextState = State.INIT;
 		if (state == State.HTML || state == State.TRANSFORM || state == State.FILES) {
-			List<Item> items = new ItemQuery(ItemNames.PARSE_ITEM).loadItems();
-			info.setToProcess(items.size());
-			int i = 0;
-			for (Item item : items) {
-				Parse_item pitem = Parse_item.get(item);
-				if (state == State.HTML) {
-					pitem.set_downloaded((byte) 0);
-					pitem.set_parsed((byte) 0);
-					pitem.set_got_files((byte) 0);
-					nextState = State.INIT;
-				} else if (state == State.TRANSFORM) {
-					pitem.set_parsed((byte) 0);
-					//pitem.set_got_files((byte) 0);
-					nextState = State.HTML;
-				} else if (state == State.FILES) {
-					pitem.set_got_files((byte) 0);
-					pitem.clearParameter(ItemNames.parse_item.FILE);
-					nextState = State.TRANSFORM;
+			List<Item> sections = new ItemQuery(ItemNames.PARSE_SECTION).loadItems();
+			int secCount = sections.size();
+			info.setLineNumber(secCount);
+			for (Item section : sections) {
+				List<Item> items = new ItemQuery(ItemNames.PARSE_ITEM).setParentId(section.getId(), false).loadItems();
+				info.setToProcess(items.size());
+				int i = 0;
+				for (Item item : items) {
+					Parse_item pitem = Parse_item.get(item);
+					if (state == State.PREPARE_URLS) {
+						DelayedTransaction.executeSingle(User.getDefaultUser(), ItemStatusDBUnit.delete(pitem));
+						nextState = State.INIT;
+						info.setProcessed(++i);
+						continue;
+					} else if (state == State.HTML) {
+						pitem.set_downloaded((byte) 0);
+						pitem.set_parsed((byte) 0);
+						pitem.set_got_files((byte) 0);
+						nextState = State.PREPARE_URLS;
+					} else if (state == State.TRANSFORM) {
+						pitem.set_parsed((byte) 0);
+						//pitem.set_got_files((byte) 0);
+						nextState = State.HTML;
+					} else if (state == State.FILES) {
+						pitem.set_got_files((byte) 0);
+						pitem.clearParameter(ItemNames.parse_item.FILE);
+						nextState = State.TRANSFORM;
+					}
+					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pitem).noFulltextIndex());
+					info.setProcessed(++i);
 				}
-				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pitem).noFulltextIndex());
-				info.setProcessed(++i);
+				if (state == State.PREPARE_URLS) {
+					DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(10, null));
+				}
+				info.setLineNumber(--secCount);
 			}
 		}
 		return nextState;
@@ -308,17 +338,39 @@ public class SingleItemCrawlerController {
 		}
 	}
 
+	/**
+	 * Перейти к рассмотрению следующего раздела каталога для парсинга.
+	 * Это значит загрузить айтемы для парсинга, которые соответствуют некоторому критерию (не скачаны,
+	 * не разобраны, файлы не скачаны). Критерий может быть не задан, тогда загружаются все айтемы для
+	 * парсинга.
+	 * Также в этом методе перезапускается поток, который выполняет действия с айетмами для парсинга.
+	 * Этот поток завершается для одного раздела и стартует новый поток для следующего раздела.
+	 * Поток может быть равным null, тогда он не стартует.
+	 * @param paramName
+	 * @param worker
+	 * @return
+	 * @throws Exception
+	 */
 	private synchronized boolean nextSection(String paramName, DownloadThread worker) throws Exception {
 		info.setLineNumber(sectionsToProcess.size());
 		itemsToProcess = new LinkedBlockingDeque<>();
+		sectionUniqueUrls = new ConcurrentHashMap<>();
 		while (itemsToProcess.size() == 0 && sectionsToProcess.size() > 0) {
-			Parse_section currentSection = sectionsToProcess.poll();
-			List<Item> items = new ItemQuery(ItemNames.PARSE_ITEM)
-					.addParameterCriteria(paramName, "0", "=", null, Compare.ANY)
-					.setParentId(currentSection.getId(), false)
-					.loadItems();
+			currentSection = sectionsToProcess.poll();
+			ItemQuery query = new ItemQuery(ItemNames.PARSE_ITEM).setParentId(currentSection.getId(), false);
+			if (StringUtils.isNotBlank(paramName)) {
+				query
+						.addParameterCriteria(paramName, "0", "=", null, Compare.ANY)
+						.addParameterCriteria(ItemNames.parse_item.DUPLICATED, "0", "=", null, Compare.ANY);
+			}
+			List<Item> items = query.loadItems();
 			for (Item item : items) {
-				itemsToProcess.add(Parse_item.get(item));
+				Parse_item pi = Parse_item.get(item);
+				String url = StringUtils.trim(pi.get_url());
+				if (!sectionUniqueUrls.containsKey(url)) {
+					sectionUniqueUrls.put(url, url);
+					itemsToProcess.add(pi);
+				}
 			}
 		}
 		if (itemsToProcess.size() > 0) {
@@ -329,7 +381,55 @@ public class SingleItemCrawlerController {
 				new Thread(worker).start();
 			return true;
 		}
+		currentSection = null;
 		return false;
+	}
+
+	private void prepareUrls() throws Exception {
+		info.setOperation("Удаление старых результатов. Подготовка нового списка урлов");
+		workers.clear();
+		int secCount = sectionsToProcess.size();
+		ItemType piType = ItemTypeRegistry.getItemType(ItemNames.PARSE_ITEM);
+		for (Parse_section section : sectionsToProcess) {
+			currentSection = section;
+			List<Item> pis = new ItemQuery(ItemNames.PARSE_ITEM).setParentId(currentSection.getId(), false).loadItems();
+			// Удалить все айтемы для разбора, вложенные в раздел
+			for (Item pi : pis) {
+				DelayedTransaction.executeSingle(User.getDefaultUser(), ItemStatusDBUnit.delete(pi));
+			}
+			DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(10, null));
+
+			// Новый список урлов (параметр раздела)
+			String urlsStr = currentSection.get_item_urls();
+			LinkedHashSet<String> urls = new LinkedHashSet<>();
+			String[] split = StringUtils.split(urlsStr, '\n');
+			if (split == null || split.length == 0) {
+				info.setLineNumber(secCount--);
+				continue;
+			}
+			for (String str : split) {
+				urls.add(StringUtils.trim(str));
+			}
+			info.setToProcess(urls.size());
+
+			int processed = 0;
+			info.setProcessed(processed);
+
+			// Создание новых айтемов для разбора из урлов с проверкой на уникальность
+			for (String url : urls) {
+				Parse_item pi = Parse_item.get(Item.newChildItem(piType, currentSection));
+				Item original = new ItemQuery(ItemNames.PARSE_ITEM)
+						.addParameterCriteria(ItemNames.parse_item.URL, url, "=", null, Compare.SOME)
+						.loadFirstItem();
+				pi.set_duplicated(original == null ? (byte) 0 : (byte) 1);
+				pi.set_url(url);
+				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pi));
+				info.setProcessed(++processed);
+			}
+
+			info.setLineNumber(secCount--);
+		}
+
 	}
 
 	/**

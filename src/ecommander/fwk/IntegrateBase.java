@@ -265,18 +265,8 @@ public abstract class IntegrateBase extends Command {
 						ServerLogger.error("Integration error", se);
 						getInfo().addError(se.getMessage(), 0, 0);
 					} finally {
-						try {
-							LuceneIndexMapper.getSingleton().finishUpdate();
-						} catch (IOException e) {
-							try {
-								throw e;
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						} finally {
-							isInProgress = false;
-							getInfo().setInProgress(false);
-						}
+						isInProgress = false;
+						getInfo().setInProgress(false);
 					}
 				});
 				if (async)

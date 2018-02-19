@@ -153,18 +153,30 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws IOException
 	 */
 	public synchronized void startUpdate() throws IOException {
+		ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> START UPDATE 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>" + writer + " >> " + concurrentWritersCount);
 		if (concurrentWritersCount == 0) {
-			closeReader();
-			if (writer != null)
-				writer.close();
-			IndexWriterConfig config = new IndexWriterConfig(getAnalyzer())
-					.setOpenMode(OpenMode.CREATE_OR_APPEND)
-					.setRAMBufferSizeMB(5)
-					.setMaxBufferedDocs(200)
-					.setRAMPerThreadHardLimitMB(2);
-			writer = new IndexWriter(directory, config);
+			try {
+				closeReader();
+				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> START UPDATE 2 >>>>>>>>>>>>>>>>>>>>>>>>>>>" + writer + " >> " + concurrentWritersCount);
+				if (writer != null)
+					writer.close();
+				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> START UPDATE 3 >>>>>>>>>>>>>>>>>>>>>>>>>>>" + writer + " >> " + concurrentWritersCount);
+				IndexWriterConfig config = new IndexWriterConfig(getAnalyzer())
+						.setOpenMode(OpenMode.CREATE_OR_APPEND)
+						.setRAMBufferSizeMB(5)
+						.setMaxBufferedDocs(200)
+						.setRAMPerThreadHardLimitMB(2);
+				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> START UPDATE 4 >>>>>>>>>>>>>>>>>>>>>>>>>>>" + writer + " >> " + concurrentWritersCount);
+				writer = new IndexWriter(directory, config);
+				ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> START UPDATE 5 >>>>>>>>>>>>>>>>>>>>>>>>>>>" + writer + " >> " + concurrentWritersCount);
+			} catch (Exception e) {
+				ServerLogger.error("LUCENE WRITER INIT", e);
+				throw e;
+			}
 		}
+		ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> START UPDATE 6 >>>>>>>>>>>>>>>>>>>>>>>>>>>" + writer + " >> " + concurrentWritersCount);
 		concurrentWritersCount++;
+		ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> START UPDATE 7 >>>>>>>>>>>>>>>>>>>>>>>>>>>" + writer + " >> " + concurrentWritersCount);
 	}
 
 	/**
@@ -194,6 +206,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * IndexWriter закрывается в случае если нет параллельно идущих незавершенных записей
 	 */
 	public synchronized void finishUpdate() throws IOException {
+		ServerLogger.error(">>>>>>>>>>>>>>>>>>>>>>>>>> FINISH UPDATE >>>>>>>>>>>>>>>>>>>>>>>>>>>" + writer + " >> " + concurrentWritersCount);
+
 		if (concurrentWritersCount <= 0 || writer == null) {
 			throw new IllegalStateException("can not finish updating unopened writer");
 		}
