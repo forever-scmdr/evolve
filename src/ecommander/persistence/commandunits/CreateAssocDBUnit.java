@@ -147,6 +147,8 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						.col("PRED." + IP_CHILD_ID).long_(parent.getId()).AND().col("PRED." + IP_ASSOC_ID).byte_(primaryAssocId)
 						.AND()
 						.col("SUCC." + IP_PARENT_ID).long_(childId).AND().col("SUCC." + IP_ASSOC_ID).byte_(primaryAssocId);
+				// Иногда
+				insert.ON_DUPLICATE_KEY_UPDATE(IP_CHILD_ID).sql(IP_CHILD_ID);
 			}
 		}
 		try (PreparedStatement pstmt = insert.prepareQuery(getTransactionContext().getConnection())) {

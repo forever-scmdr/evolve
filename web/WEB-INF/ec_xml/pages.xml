@@ -12,6 +12,20 @@
 	</page>
 
 
+	<page name="downloaded">
+		<list item="parse_item" tag="NEW">
+			<filter>
+				<parameter name="duplicated"><var value="0"/></parameter>
+				<limit><var value="0"/></limit>
+			</filter>
+		</list>
+		<list item="parse_item" tag="DUPLICATED">
+			<filter>
+				<parameter name="duplicated"><var value="1"/></parameter>
+			</filter>
+		</list>
+	</page>
+
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->

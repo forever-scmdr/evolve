@@ -769,7 +769,7 @@ public class PageModelBuilder {
 										+ "' is not allowed without parent");
 							page.addElement(readItem(element, ItemPE.ItemRootType.COMMON, null, includes, page.getKey()));
 						// Ссылка
-						} else if (StringUtils.equalsIgnoreCase(element.tagName(), LIMIT_ELEMENT)) {
+						} else if (StringUtils.equalsIgnoreCase(element.tagName(), LINK_ELEMENT)) {
 							page.addElement(readLink(element, includes));
 						// Команда
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), COMMAND_ELEMENT)) {

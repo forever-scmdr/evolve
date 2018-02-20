@@ -62,6 +62,8 @@ public class DeployParsed extends IntegrateBase {
 	@Override
 	protected void integrate() throws Exception {
 		int processed = 0;
+		info.limitLog(5000);
+		final byte CONTAINS_ASSOC = ItemTypeRegistry.getAssoc(CONTAINS).getId();
 		Item backCatalog = ItemUtils.ensureSingleRootItem(ItemNames.BACK_CATALOG, getInitiator(), USER_GROUP_ID, USER_ID);
 		HashMap<String, Item> backSections = new HashMap<>();
 		LinkedHashMap<Long, Item> sections = getLoadedItems("sec");
@@ -91,8 +93,14 @@ public class DeployParsed extends IntegrateBase {
 			for (Item item : secPIs.values()) {
 				Parse_item pi = Parse_item.get(item);
 				Product prod = deployParsed(pi, backSection);
-				executeCommandUnit(new CreateAssocDBUnit(prod, sec, ItemTypeRegistry.getAssoc(CONTAINS).getId()));
-				commitCommandUnits();
+				if (!ItemQuery.isAncestor(prod.getId(), sec.getId(), CONTAINS_ASSOC)) {
+					executeCommandUnit(new CreateAssocDBUnit(prod, sec, CONTAINS_ASSOC));
+					commitCommandUnits();
+					info.pushLog("Товар {} добавлен в раздел {}", prod.get_name(), sec.getStringValue(ItemNames.section.NAME));
+				} else {
+					rollbackCommandUnits();
+					info.pushLog("ДУБЛЬ! Товар {}, раздел {}", prod.get_name(), sec.getStringValue(ItemNames.section.NAME));
+				}
 				info.setProcessed(++processed);
 			}
 		}
@@ -157,11 +165,16 @@ public class DeployParsed extends IntegrateBase {
 				prod.setValue(ItemNames.product.GALLERY, pic);
 				picFiles.remove(fileName);
 				if (noMainPic) {
-					ByteArrayOutputStream os = ResizeImagesFactory.rezize(pic, -1, 300);
-					File mainFile = new File(pic.getParentFile().getCanonicalPath() + "/main_" + pic.getName());
-					FileUtils.writeByteArrayToFile(mainFile, os.toByteArray());
-					prod.setValue(ItemNames.product.MAIN_PIC, mainFile);
-					noMainPic = false;
+					try {
+						ByteArrayOutputStream os = ResizeImagesFactory.rezize(pic, -1, 300);
+						File mainFile = new File(pic.getParentFile().getCanonicalPath() + "/main_" + pic.getName());
+						FileUtils.writeByteArrayToFile(mainFile, os.toByteArray());
+						prod.setValue(ItemNames.product.MAIN_PIC, mainFile);
+						noMainPic = false;
+					} catch (Exception e) {
+						ServerLogger.error("resize error", e);
+						info.pushLog("ОШИБКА! {}", e.getLocalizedMessage());
+					}
 				}
 			}
 		}

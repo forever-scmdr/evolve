@@ -1166,4 +1166,36 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		if (conn instanceof ConnectionCount)
 			((ConnectionCount) conn).queryFinished();
 	}
+
+	/**
+	 * Проверяет, является ли айтем наследником другого айтема (проверяемого предка)
+	 * @param childId
+	 * @param parentId
+	 * @param assocId
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public static boolean isAncestor(long childId, long parentId, byte assocId, Connection... conn) throws SQLException, NamingException {
+		TemplateQuery query = new TemplateQuery("Parent Check");
+		query.SELECT("*").FROM(ITEM_PARENT_TBL).WHERE().col(IP_CHILD_ID).long_(childId)
+				.AND().col(IP_PARENT_ID).long_(parentId)
+				.AND().col(IP_ASSOC_ID).byte_(assocId);
+		boolean isOwnConnection = false;
+		Connection connection;
+		if (conn == null || conn.length == 0) {
+			isOwnConnection = true;
+			connection = MysqlConnector.getConnection();
+		} else {
+			connection = conn[0];
+		}
+		try (PreparedStatement pstmt = query.prepareQuery(connection)) {
+			ResultSet rs = pstmt.executeQuery();
+			return rs.next();
+		} finally {
+			if (isOwnConnection)
+				MysqlConnector.closeConnection(connection);
+		}
+	}
 }

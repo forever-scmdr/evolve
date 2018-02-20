@@ -66,7 +66,7 @@ public class SingleItemCrawlerController {
 
 		private final LinkedList<String> proxies;
 		private final int urlsPerProxy;
-		private final LinkedBlockingDeque<Parse_item> items; // Список должен быть синхронизирован (потокобезопасен)
+		private LinkedBlockingDeque<Parse_item> items; // Список должен быть синхронизирован (потокобезопасен)
 
 		private String currentProxy = null;
 		private int perProxyCount = 0;
@@ -113,6 +113,10 @@ public class SingleItemCrawlerController {
 				}
 			}
 			afterFinished();
+		}
+
+		public void reinit(LinkedBlockingDeque<Parse_item> itemsToProcess) {
+			this.items = itemsToProcess;
 		}
 
 		private void terminate() {
@@ -377,8 +381,10 @@ public class SingleItemCrawlerController {
 			toProcessCount = itemsToProcess.size();
 			info.setToProcess(toProcessCount);
 			processedCount = 0;
-			if (worker != null)
+			if (worker != null) {
+				worker.reinit(itemsToProcess);
 				new Thread(worker).start();
+			}
 			return true;
 		}
 		currentSection = null;
@@ -386,34 +392,40 @@ public class SingleItemCrawlerController {
 	}
 
 	private void prepareUrls() throws Exception {
-		info.setOperation("Удаление старых результатов. Подготовка нового списка урлов");
+		info.setOperation("Удаление старых результатов");
 		workers.clear();
 		int secCount = sectionsToProcess.size();
-		ItemType piType = ItemTypeRegistry.getItemType(ItemNames.PARSE_ITEM);
+		int processedCount = 0;
+
+		// Сначала удаление ранее созданных айтемов для разбора
+		info.setToProcess(secCount);
 		for (Parse_section section : sectionsToProcess) {
-			currentSection = section;
-			List<Item> pis = new ItemQuery(ItemNames.PARSE_ITEM).setParentId(currentSection.getId(), false).loadItems();
-			// Удалить все айтемы для разбора, вложенные в раздел
+			List<Item> pis = new ItemQuery(ItemNames.PARSE_ITEM).setParentId(section.getId(), false).loadItems();
 			for (Item pi : pis) {
 				DelayedTransaction.executeSingle(User.getDefaultUser(), ItemStatusDBUnit.delete(pi));
 			}
-			DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(10, null));
+			info.setProcessed(++processedCount);
+		}
+		DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(10, null));
 
+		// Создание новых айтемов для разбора
+		info.setOperation("Подготовка нового списка урлов");
+		processedCount = 0;
+		info.setProcessed(processedCount);
+		ItemType piType = ItemTypeRegistry.getItemType(ItemNames.PARSE_ITEM);
+		for (Parse_section section : sectionsToProcess) {
+			currentSection = section;
 			// Новый список урлов (параметр раздела)
 			String urlsStr = currentSection.get_item_urls();
 			LinkedHashSet<String> urls = new LinkedHashSet<>();
 			String[] split = StringUtils.split(urlsStr, '\n');
 			if (split == null || split.length == 0) {
-				info.setLineNumber(secCount--);
+				info.setProcessed(++processedCount);
 				continue;
 			}
 			for (String str : split) {
 				urls.add(StringUtils.trim(str));
 			}
-			info.setToProcess(urls.size());
-
-			int processed = 0;
-			info.setProcessed(processed);
 
 			// Создание новых айтемов для разбора из урлов с проверкой на уникальность
 			for (String url : urls) {
@@ -424,10 +436,13 @@ public class SingleItemCrawlerController {
 				pi.set_duplicated(original == null ? (byte) 0 : (byte) 1);
 				pi.set_url(url);
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pi));
-				info.setProcessed(++processed);
+				if (original == null) {
+					info.pushLog("NEW - {} - {}", currentSection.get_name(), url);
+				} else {
+					info.pushLog("DUPLICATED - {} - {}", currentSection.get_name(), url);
+				}
 			}
-
-			info.setLineNumber(secCount--);
+			info.setProcessed(++processedCount);
 		}
 
 	}
@@ -535,7 +550,7 @@ public class SingleItemCrawlerController {
 
 				@Override
 				protected void afterFinished() {
-					workerFinished(this, ItemNames.parse_item.DOWNLOADED);
+					workerFinished(this, ItemNames.parse_item.PARSED);
 				}
 			};
 			workers.add(worker);
