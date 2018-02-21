@@ -105,8 +105,10 @@ public final class SynchronousTransaction implements AutoCloseable {
 		try {
 			if (conn != null)
 				conn.rollback();
-			for (PersistenceCommandUnit command : executedCommands) {
-				command.rollback();
+			if (executedCommands != null) {
+				for (PersistenceCommandUnit command : executedCommands) {
+					command.rollback();
+				}
 			}
 		} finally {
 			close();

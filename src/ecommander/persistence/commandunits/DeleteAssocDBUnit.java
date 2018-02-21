@@ -56,6 +56,7 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		Assoc assoc = ItemTypeRegistry.getAssoc(assocId);
 		if (assoc.isTransitive()) {
 			HashSet<Long> toUnlink = new HashSet<>();
+			// Добавляется сам отсоединяемый предок
 			toUnlink.add(parentId);
 
 			// Загрузить всех предков родтельского айтема (который перестает быть родительским)
@@ -71,25 +72,42 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 
 			// Загрузить всех предков айтема, являющихся другими непосредсвенными родителями (кроме отсоединяемого)
 			// и предками этих родителей
-			TemplateQuery loadKeepParents = new TemplateQuery("Keep parents");
-			loadKeepParents.SELECT("PAR." + IP_PARENT_ID).FROM(ITEM_PARENT_TBL + " AS PAR")
-					.INNER_JOIN(ITEM_PARENT_TBL + " AS CH", "PAR." + IP_CHILD_ID, "CH." + IP_PARENT_ID)
-					.WHERE().col("CH." + IP_CHILD_ID).long_(childId)
-					.AND().col("CH." + IP_PARENT_ID, "<>").long_(parentId)
-					.AND().col("CH." + IP_ASSOC_ID).byte_(assocId)
-					.AND().col("CH." + IP_PARENT_DIRECT).byte_((byte) 1)
-					.AND().col("PAR." + IP_ASSOC_ID).byte_(assocId);
-			try (PreparedStatement pstmt = loadUnlinkParents.prepareQuery(getTransactionContext().getConnection())) {
+
+			// Другие прямые предки
+			HashSet<Long> otherDirectParents = new HashSet<>();
+			TemplateQuery loadKeepParentsParents = new TemplateQuery("Keep parents parents");
+			loadKeepParentsParents.SELECT(IP_PARENT_ID).FROM(ITEM_PARENT_TBL)
+					.WHERE().col(IP_CHILD_ID).long_(childId)
+					.AND().col(IP_PARENT_ID, "<>").long_(parentId)
+					.AND().col(IP_ASSOC_ID).byte_(assocId)
+					.AND().col(IP_PARENT_DIRECT).byte_((byte) 1);
+			try (PreparedStatement pstmt = loadKeepParentsParents.prepareQuery(getTransactionContext().getConnection())) {
 				ResultSet rs = pstmt.executeQuery();
-				while (rs.next())
-					toUnlink.remove(rs.getLong(1));
+				while (rs.next()) {
+					long parentId = rs.getLong(1);
+					toUnlink.remove(parentId);
+					otherDirectParents.add(parentId);
+				}
+			}
+
+			// Предки других прямых предков
+			if (otherDirectParents.size() > 0) {
+				TemplateQuery loadKeepParentsAncestors = new TemplateQuery("Keep parents ancestors");
+				loadKeepParentsAncestors.SELECT(IP_PARENT_ID).FROM(ITEM_PARENT_TBL)
+						.WHERE().col_IN(IP_CHILD_ID).longIN(otherDirectParents.toArray(new Long[0]))
+						.AND().col(IP_ASSOC_ID).byte_(ItemTypeRegistry.getPrimaryAssocId());
+				try (PreparedStatement pstmt = loadUnlinkParents.prepareQuery(getTransactionContext().getConnection())) {
+					ResultSet rs = pstmt.executeQuery();
+					while (rs.next())
+						toUnlink.remove(rs.getLong(1));
+				}
 			}
 
 			// Удалить связи с вычисленными предками
 			TemplateQuery delete = new TemplateQuery("Delete assoc by list");
 			delete.DELETE_FROM_WHERE(ITEM_PARENT_TBL)
 					.col_IN(IP_PARENT_ID).longIN(toUnlink.toArray(new Long[0])).AND()
-					--.col(IP_CHILD_ID).long_(childId).AND() // TODO связь не только с самим айтемом, но и с его потомками
+					.col(IP_CHILD_ID).long_(childId).AND()
 					.col(IP_ASSOC_ID).byte_(assocId);
 			try (PreparedStatement pstmt = delete.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();

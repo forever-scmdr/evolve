@@ -9,6 +9,7 @@ import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.*;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -93,6 +94,10 @@ public class DeployParsed extends IntegrateBase {
 			for (Item item : secPIs.values()) {
 				Parse_item pi = Parse_item.get(item);
 				Product prod = deployParsed(pi, backSection);
+				if (prod == null) {
+					info.pushLog("ОШИБКА ! Товар {} НЕ ДОБАВЛЕН в раздел {}", pi.get_url(), sec.getStringValue(ItemNames.section.NAME));
+					continue;
+				}
 				if (!ItemQuery.isAncestor(prod.getId(), sec.getId(), CONTAINS_ASSOC)) {
 					executeCommandUnit(new CreateAssocDBUnit(prod, sec, CONTAINS_ASSOC));
 					commitCommandUnits();
@@ -119,6 +124,8 @@ public class DeployParsed extends IntegrateBase {
 		}
 
 		// Разобрать XML, чтобы можно было найти код
+		if (StringUtils.isBlank(pi.get_xml()))
+			return null;
 		Document doc = Jsoup.parse(pi.get_xml(), "localhost", Parser.xmlParser());
 		String code = JsoupUtils.nodeText(doc, CODE);
 

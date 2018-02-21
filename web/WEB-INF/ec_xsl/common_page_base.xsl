@@ -115,6 +115,109 @@
 	</xsl:template>
 
 
+	<xsl:template name="INC_FOOTER">
+		<!-- FOOTER BEGIN -->
+		<div class="footer-placeholder"></div><!-- ружен скрипт, задающий блоку высоту футера -->
+		<div class="footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="footer-container">
+							<div class="block">
+								<p><strong>© Белтесто, 2017</strong></p>
+								<div class="forever"><a href="http://forever.by">Разработка сайта -<br/>студия веб-дизайна Forever</a></div>
+							</div>
+							<div class="block">
+								<p>Принимаем к оплате<br/> пластиковые карточки</p>
+								<img src="http://mobileplus.by/images/2/icon_card_mc.png" alt=""/>
+								<img src="http://mobileplus.by/images/2/icon_card_visa.png" alt=""/>
+							</div>
+							<div class="block contacts">
+								<p>Заказ и консультация</p>
+								<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - городской;</p>
+								<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - велком;</p>
+							</div>
+							<div class="block address">
+								<p>Адрес: г. Минск, 220070, пр-т Партизанский 14, к. 514A</p>
+								<p>
+									Режим работы:<br/>
+									Пн-Пт 10.00-18.00<br/>
+									Сб-Вс 10.00-17.00 (прием заказов)
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- FOOTER END -->
+
+		<!-- MODALS BEGIN -->
+		<!-- modal login -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-login">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
+						<h4 class="modal-title">Вход</h4>
+					</div>
+					<div class="modal-body">
+						<form action="" method="post">
+							<div class="form-group">
+								<label for="">Электронная почта:</label>
+								<input type="text" class="form-control" id=""/>
+							</div>
+							<div class="form-group">
+								<label for="">Пароль:</label>
+								<input type="password" class="form-control" id=""/>
+							</div>
+							<input type="submit" name="" value="Отправить заказ"/>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- modal feedback -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-feedback">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
+						<h4 class="modal-title">Напишите нам сообщение</h4>
+					</div>
+					<div class="modal-body">
+						<form action="" method="post">
+							<div class="form-group">
+								<label for="">Ваше имя:</label>
+								<input type="text" class="form-control" id=""/>
+							</div>
+							<div class="form-group">
+								<label for="">Адрес:</label>
+								<input type="text" class="form-control" id=""/>
+							</div>
+							<div class="form-group">
+								<label for="">Телефон:</label>
+								<input type="text" class="form-control" id=""/>
+							</div>
+							<div class="form-group">
+								<label for="">Электронная почта:</label>
+								<input type="text" class="form-control" id=""/>
+							</div>
+							<div class="form-group">
+								<label for="">Сообщение:</label>
+								<textarea class="form-control" rows="3"></textarea>
+							</div>
+							<input type="submit" name="" value="Отправить сообщение"/>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MODALS END -->
+	</xsl:template>
+
+
 
 	<!-- ****************************    ПУСТЫЕ ЧАСТИ ДЛЯ ПЕРЕОПРЕДЕЛЕНИЯ    ******************************** -->
 
@@ -168,16 +271,7 @@
 
 				<xsl:call-template name="BANNERS"/>
 
-				<div w3-include-html="inc_footer.html"></div>
-
-
-
-
-
-
-
-
-
+				<xsl:call-template name="INC_FOOTER"/>
 
 			</div>
 			<!-- ALL CONTENT END -->

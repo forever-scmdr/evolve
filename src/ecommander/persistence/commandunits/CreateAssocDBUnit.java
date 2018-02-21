@@ -15,6 +15,16 @@ import java.util.HashSet;
  * Команда для создания новой ассоциации между двумя айтемами. Один айтем - родитель, второй атйем - потомок
  * При передаче в команду загруженного айтема предка, а не его ID, команда будет работать быстрее, т.к. не потребуется
  * его загрузка для проверки прав
+ *
+ * Пояснение по ассоциациям:
+ *
+ * Связь предков предка с потомками потомка (ассоциация ТТ - транзитивная транизивная)
+ * создается только в случае первичной ассоциации.
+ * Если ассоциация не первичная, то создаются только связи предков предка с самим айтемом, но не его потомками.
+ * Если бы в этом случае использовалась связь ТТ, то не понятно что делать при создании и удалении потомков потомка
+ * уже после создания связи ТТ. Т.е. при добавлении потомка потомка пришлось бы выявлять все связи, которые есть у всех
+ * его предков по всем ассоциациям и дублировать их для этого нового потомка. Аналогичная ситуация с удалением.
+ *
  * Created by User on 20.03.2017.
  */
 public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemParent, DBConstants.ItemTbl, DBConstants.ComputedLog {
@@ -132,7 +142,8 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 					.col(IP_CHILD_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(primaryAssocId).sql(" \r\n");
 
 			// Только для айтемов с сабайтемами (не новых)
-			if (!isItemNew) {
+			// и только для первичной ассоциации (пояснение в описании класса)
+			if (!isItemNew && assocId == primaryAssocId) {
 				// Шаг 3. Добавить для нового непосредственного предка в качестве потомков всех потомков ассоциируемого айтема
 				insert.UNION_ALL()
 						.SELECT(parent.getId(), IP_CHILD_ID, assocId, IP_CHILD_SUPERTYPE, 0, 0)
@@ -147,9 +158,11 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						.col("PRED." + IP_CHILD_ID).long_(parent.getId()).AND().col("PRED." + IP_ASSOC_ID).byte_(primaryAssocId)
 						.AND()
 						.col("SUCC." + IP_PARENT_ID).long_(childId).AND().col("SUCC." + IP_ASSOC_ID).byte_(primaryAssocId);
-				// Иногда
-				insert.ON_DUPLICATE_KEY_UPDATE(IP_CHILD_ID).sql(IP_CHILD_ID);
 			}
+
+			// Иногда связь с новым предком уже существует через другого прямого родителя, тогда возникает
+			// duplicate key. Просто установить parent_direct = 0
+			insert.ON_DUPLICATE_KEY_UPDATE(IP_PARENT_DIRECT).byte_((byte) 0);
 		}
 		try (PreparedStatement pstmt = insert.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();

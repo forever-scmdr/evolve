@@ -64,7 +64,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 						continue;
 					// Удаляется старый файл - старое значение параметра, если оно было
 					for (Object oldVal : param.getOldValues()) {
-						if (oldVal instanceof String) {
+						if (oldVal instanceof String && !StringUtils.equalsIgnoreCase(value.toString(), (String) oldVal)) {
 							File oldFile = new File(fileDirectoryName + oldVal);
 							if (oldFile.exists())
 								oldFile.delete();
@@ -110,7 +110,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 						}
 						files.add(newFile);
 						newValues.add(fileName);
-						item.removeEqualValue(paramDesc.getName(), fileName);
+						item.removeEqualValue(paramDesc.getName(), value);
 						item.setValueUI(paramDesc.getId(), fileName);
 					} else {
 						newValues.add((String) value);
