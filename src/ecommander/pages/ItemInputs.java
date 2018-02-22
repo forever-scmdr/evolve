@@ -26,6 +26,8 @@ import java.util.List;
  * Created by E on 22/5/2017.
  */
 public class ItemInputs {
+	private static final String FORM_ITEM_UNIQUE_KEY = "ukey";
+
 	private Item item;
 
 	private InputValues inputs = new InputValues();
@@ -42,6 +44,11 @@ public class ItemInputs {
 			ItemInputName input = new ItemInputName(item.getId(), item.getContextParentId(),
 					item.getTypeId(), paramDesc.getId(), null, predecessors);
 			inputs.add(input, vals);
+		}
+		// Если айтем должен иметь уникальный текстовый ключ - создать поле для этого ключа
+		if (item.getItemType().isKeyUnique()) {
+			item.setExtra(FORM_ITEM_UNIQUE_KEY, item.getKeyUnique());
+			addExtra(FORM_ITEM_UNIQUE_KEY);
 		}
 		// Если айтем не имеет ни одного параметра - создать один псевдопараметр, чтобы было хотя-бы одно поле ввода
 		// Это нужно для создания айетмов, которые не имеют параметров, например, каталог продукции

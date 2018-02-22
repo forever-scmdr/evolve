@@ -895,6 +895,10 @@ public class Item implements ItemBasics {
 					}
 				}
 			}
+			// Уникальный текстовый ключ
+			if (source.getItemType().isKeyUnique() && StringUtils.isNotBlank(source.getKeyUnique())) {
+				destination.setKeyUnique(source.getKeyUnique());
+			}
 		} catch (Exception e) {
 			// Ничего не делать
 		}

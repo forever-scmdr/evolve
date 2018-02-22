@@ -138,7 +138,7 @@
 						</div>
 					</xsl:if>
 					<!-- Уникальный строковый ключ айтема (в случае, если он нужен) -->
-					<xsl:variable name="ukey" select="$form/extra[@input='ukey']" />
+					<xsl:variable name="ukey" select="$form/extra[@name='ukey']" />
 					<xsl:if test="$ukey">
 						<div style="padding: 20px 0;">
 							<p class="form_title">Уникальный строковый идентификатор</p>
@@ -173,7 +173,7 @@
 					</xsl:if>
 
 					<!-- ************************ Псевдопараметр, в случае если у айтема нет параметров **************************** -->
-					<xsl:for-each select="$form/extra">
+					<xsl:for-each select="$form/extra[@name='pseudo']">
 						<input type="hidden" name="{@input}" value="blank"/>
 					</xsl:for-each>
 				</form>

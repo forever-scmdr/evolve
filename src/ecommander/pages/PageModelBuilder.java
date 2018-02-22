@@ -725,10 +725,15 @@ public class PageModelBuilder {
 		ArrayList<File> pageModelFiles = findPagesFiles(new File(AppContext.getPagesModelPath()), null);
 		HashMap<String, Element> includes = new HashMap<>();
 		ArrayList<Document> docs = new ArrayList<>();
+		// Сначала найти все includes
 		for (File file : pageModelFiles) {
 			Document document = Jsoup.parse(new FileInputStream(file), Strings.SYSTEM_ENCODING, "", Parser.xmlParser());
 			readIncludes(document, includes);
 			docs.add(document);
+		}
+		// Потом добавить все includes
+		for (Document doc : docs) {
+			appendIncludes(doc, includes);
 		}
 		try {
 			for (Document document : docs) {
@@ -812,9 +817,6 @@ public class PageModelBuilder {
 										page.addElement(readItem(subEl, ItemPE.ItemRootType.COMMON, null, includes, page.getKey()));
 								}
 							}
-						// Инклюдес
-						} else if (StringUtils.equalsIgnoreCase(element.tagName(), INCLUDE_ELEMENT)) {
-							appendInclude(pageNode, element, includes);
 						// Дополнительные заголовки HEADERS
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), HEADERS_ELEMENT)) {
 							Attributes attrs = element.attributes();
@@ -857,23 +859,26 @@ public class PageModelBuilder {
 			includesMap.put(include.attr(NAME_ATTRIBUTE), include);
 		}
 	}
+
 	/**
-	 * Добавляет include в место вставки
-	 * @param parentNode
-	 * @param includeRef
-	 * @param includes
-	 * @throws PrimaryValidationException 
+	 * Добавляет в документ все include
+	 * @param document
+	 * @param includesMap
+	 * @throws PrimaryValidationException
 	 */
-	private void appendInclude(Element parentNode, Element includeRef, HashMap<String, Element> includes) throws PrimaryValidationException {
-		Element include = includes.get(includeRef.attr(NAME_ATTRIBUTE));
-		if (include == null)
-			throw new PrimaryValidationException(parentNode.tagName() + " '" + (parentNode).attr(NAME_ATTRIBUTE) + "'",
-					"There is no include with name '" + includeRef.attr(NAME_ATTRIBUTE) + "'");
-		for (Element includeSubnode : detachedDirectChildren(include)) {
-			Element importedNode = includeSubnode.clone();
-			includeRef.before(importedNode);
+	private void appendIncludes(Document document, HashMap<String, Element> includesMap) throws PrimaryValidationException {
+		Elements includes = document.getElementsByTag(INCLUDE_ELEMENT);
+		for (Element includeRef : includes) {
+			Element include = includesMap.get(includeRef.attr(NAME_ATTRIBUTE));
+			if (include == null)
+				throw new PrimaryValidationException(include.parent().tagName() + " '" + includeRef.attr(NAME_ATTRIBUTE) + "'",
+						"There is no include with name '" + includeRef.attr(NAME_ATTRIBUTE) + "'");
+			for (Element includeSubnode : detachedDirectChildren(include)) {
+				Element importedNode = includeSubnode.clone();
+				includeRef.before(importedNode);
+			}
+			includeRef.remove();
 		}
-		includeRef.remove();
 	}
 	/**
 	 * Рекурсивно считывает все айтемы и сабайтемы
@@ -976,9 +981,6 @@ public class PageModelBuilder {
 			// Ссылка
 			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), LINK_ELEMENT)) {
 				pageItem.addElement(readLink(itemSubnode, includes));
-			// Инклюдес
-			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), INCLUDE_ELEMENT)) {
-				appendInclude(itemNode, itemSubnode, includes);
 			// Не допускать другие тэги
 			} else {
 				throw new PrimaryValidationException(pageName + " > Item '" + itemName + "'", "'" + itemSubnode.tagName()
@@ -1046,11 +1048,8 @@ public class PageModelBuilder {
 					}
 				}
 			}
-			// <include>
-			else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), INCLUDE_ELEMENT)) {
-				appendInclude(filterNode, filterSubnode, includes);
 			// Основные критерии и не допускать другие тэги
-			} else if (!readFilterElement(filter, filterNode, filterSubnode, includes)) {
+			else if (!readFilterElement(filter, filterNode, filterSubnode, includes)) {
 				throw new PrimaryValidationException(page.getPageName() + " > filter", "'" + filterSubnode.tagName()
 						+ "' is not a valid subelement of &lt;filter&gt; element");
 			}
@@ -1124,10 +1123,6 @@ public class PageModelBuilder {
 			}
 			container.addElement(new ParentalCriteriaPE(filterSubnode.attr(ASSOC_ATTRIBUTE), filterSubnode.attr(ITEM_ATTRIBUTE),
 					filterSubnode.attr(SIGN_ATTRIBUTE), compare, false));
-		}
-		// <include>
-		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), INCLUDE_ELEMENT)) {
-			appendInclude(parentNode, filterSubnode, includes);
 		} else {
 			return false;
 		}
@@ -1194,8 +1189,6 @@ public class PageModelBuilder {
 		for (Element aggSubnode : detachedDirectChildren(aggregationNode)) {
 			if (StringUtils.equalsIgnoreCase(aggSubnode.tagName(), PARAMETER_ELEMENT)) {
 				agg.addGroupBy(readFilterCriteria(aggSubnode));
-			} else if (StringUtils.equalsIgnoreCase(aggSubnode.tagName(), INCLUDE_ELEMENT)) {
-				appendInclude(aggregationNode, aggSubnode, includes);
 			}
 			// Сортировка
 			else if (StringUtils.equalsIgnoreCase(aggSubnode.tagName(), SORTING_ELEMENT)) {
@@ -1321,8 +1314,6 @@ public class PageModelBuilder {
 							+ "' is not a valid style of &lt;var&gt; element");
 				}
 				link.addVariablePE(LinkVariablePE.createCommon(varName, styleStr, itemId, parameter, otherVar, value));
-			} else if (StringUtils.equalsIgnoreCase(linkSubnode.tagName(), INCLUDE_ELEMENT)) {
-				appendInclude(linkNode, linkSubnode, includes);
 			// Не допускать другие тэги
 			} else {
 				throw new PrimaryValidationException(page.getPageName() + " > " + link.getKey(), "'" + linkSubnode.tagName()
@@ -1390,8 +1381,6 @@ public class PageModelBuilder {
 					value = variablesSubnode.attr(VALUE_ATTRIBUTE);
 				model.addVariablePE(new RequestVariablePE(name, RequestVariablePE.Scope.getValue(scope),
 						VariablePE.Style.getValue(styleStr), value));
-			} else if (StringUtils.equalsIgnoreCase(variablesSubnode.tagName(), INCLUDE_ELEMENT)) {
-				appendInclude(variablesNode, variablesSubnode, includes);
 			}
 			pageVariables.add(name);
 		}
@@ -1456,7 +1445,8 @@ public class PageModelBuilder {
 		}
 		return files;
 	}
-	// TODO заменить на итератор по связному списку, чтобы можно было добавлять includes
+
+
 	private Elements detachedDirectChildren(Element parent) {
 		Elements detachedChildren = new Elements();
 		if (parent.children().size() == 0)

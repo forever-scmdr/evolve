@@ -133,10 +133,10 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	private static LuceneIndexMapper singleton;
 	
 	private FSDirectory directory;
-	private IndexWriter writer = null;
+	private volatile IndexWriter writer = null;
 	private IndexReader reader = null;
 	private HashMap<String, Parser> tikaParsers = new HashMap<>();
-	private int concurrentWritersCount = 0;
+	private volatile int concurrentWritersCount = 0;
 	private int countProcessed = 0; // Количество проиндексированных айтемов
 	
 	private LuceneIndexMapper() throws IOException {
@@ -301,65 +301,60 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	public synchronized void insertItem(Item item) throws IOException, SAXException, TikaException {
+	private synchronized void insertItem(Item item) throws IOException, SAXException, TikaException {
 		// Ссылки не добавлять в индекс
 		if (!item.getItemType().isFulltextSearchable())
 			return;
-		try {
-			startUpdate();
-			Document itemDoc = new Document();
-			// Устанавливается ID айтема. Строковое значение, т.к. для удаления и обновления нужно исиользовать Term,
-			// который поддерживает только строковые значения
-			itemDoc.add(new StringField(I_ID, item.getId() + "", Store.YES));
-			// Заполняются все типы айтема (иерархия типов айтема)
-			Set<String> itemPreds = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName());
-			for (String pred : itemPreds) {
-				itemDoc.add(new StringField(I_TYPE_ID, ItemTypeRegistry.getItemTypeId(pred) + "", Store.YES));
-			}
-			//		// Заполняются все предшественники (в которые айтем вложен)
-			//		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');
-			//		for (String contId : containerIds) {
-			//			itemDoc.add(new StringField(DBConstants.Item.DIRECT_PARENT_ID, contId, Store.YES));
-			//		}
-			// Заполняются все индексируемые параметры
-			// Заполнение полнотекстовых параметров
+		Document itemDoc = new Document();
+		// Устанавливается ID айтема. Строковое значение, т.к. для удаления и обновления нужно исиользовать Term,
+		// который поддерживает только строковые значения
+		itemDoc.add(new StringField(I_ID, item.getId() + "", Store.YES));
+		// Заполняются все типы айтема (иерархия типов айтема)
+		Set<String> itemPreds = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName());
+		for (String pred : itemPreds) {
+			itemDoc.add(new StringField(I_TYPE_ID, ItemTypeRegistry.getItemTypeId(pred) + "", Store.YES));
+		}
+		//		// Заполняются все предшественники (в которые айтем вложен)
+		//		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');
+		//		for (String contId : containerIds) {
+		//			itemDoc.add(new StringField(DBConstants.Item.DIRECT_PARENT_ID, contId, Store.YES));
+		//		}
+		// Заполняются все индексируемые параметры
+		// Заполнение полнотекстовых параметров
 
-			for (String ftParam : item.getItemType().getFulltextParams()) {
-				boolean needIncrement = false;
-				for (ParameterDescription param : item.getItemType().getFulltextParameterList(ftParam)) {
-					if (param.isMultiple()) {
-						for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
-							createParameterField(param, sp.outputValue(), itemDoc, ftParam, needIncrement);
-							needIncrement = true;
-						}
-					} else {
-						createParameterField(param, ((SingleParameter) item.getParameter(param.getId())).outputValue(),
-								itemDoc, ftParam, needIncrement);
+		for (String ftParam : item.getItemType().getFulltextParams()) {
+			boolean needIncrement = false;
+			for (ParameterDescription param : item.getItemType().getFulltextParameterList(ftParam)) {
+				if (param.isMultiple()) {
+					for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
+						createParameterField(param, sp.outputValue(), itemDoc, ftParam, needIncrement);
 						needIncrement = true;
 					}
+				} else {
+					createParameterField(param, ((SingleParameter) item.getParameter(param.getId())).outputValue(),
+							itemDoc, ftParam, needIncrement);
+					needIncrement = true;
 				}
 			}
-			// Заполнение параметров для фильтрации
-			for (ParameterDescription param : item.getItemType().getParameterList()) {
-				if (param.isFulltextFilterable()) {
-					if (param.isMultiple()) {
-						for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
-							DataTypeMapper.setLuceneItemDocField(param.getType(), itemDoc, param.getName(), sp.getValue());
-						}
-					} else {
-						DataTypeMapper.setLuceneItemDocField(param.getType(), itemDoc, param.getName(),
-								item.getParameter(param.getId()).getValue());
-					}
-				}
-			}
-			// Добавление айтема в индекс
-			//		writer.deleteDocuments(new TermQuery(new Term(DBConstants.Item.ID, item.getId() + "")));
-			//		ServerLogger.debug(item.getId());
-			writer.updateDocument(new Term(I_ID, item.getId() + ""), itemDoc);
-			//		writer.addDocument(itemDoc);
-		} finally {
-			finishUpdate();
 		}
+		// Заполнение параметров для фильтрации
+		for (ParameterDescription param : item.getItemType().getParameterList()) {
+			if (param.isFulltextFilterable()) {
+				if (param.isMultiple()) {
+					for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
+						DataTypeMapper.setLuceneItemDocField(param.getType(), itemDoc, param.getName(), sp.getValue());
+					}
+				} else {
+					DataTypeMapper.setLuceneItemDocField(param.getType(), itemDoc, param.getName(),
+							item.getParameter(param.getId()).getValue());
+				}
+			}
+		}
+		// Добавление айтема в индекс
+		//		writer.deleteDocuments(new TermQuery(new Term(DBConstants.Item.ID, item.getId() + "")));
+		//		ServerLogger.debug(item.getId());
+		writer.updateDocument(new Term(I_ID, item.getId() + ""), itemDoc);
+		//		writer.addDocument(itemDoc);
 	}
 	/**
 	 * Добавить параметр в виде поля для документа Lucene.
