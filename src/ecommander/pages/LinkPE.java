@@ -43,7 +43,10 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	public static final String VAR_VARIABLE = "var"; // используестя в пользовательском фильтре
 	
 	public enum Type {
-		normal, itemform, filter
+		normal,     // Простая ссылка - название старницы и далее параметры
+		itemform,   // Ссылка, коротая начинается с префикса itemform
+		filter,     // Ссылка, коротая начинается с префикса fil
+		exclusive   // TODO удалить и сделать чтобы если первая переменная - translit Ссылка без названия страницы, подразумевается, что первый параметр - айтем и у него есть страница по умолчанию
 	}
 	
 	/**
@@ -212,7 +215,8 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 				path.append(ITEM_FORM_PREFIX);
 		}
 		// Название страницы (device/)
-		path.append(getPageName());
+		if (type != Type.exclusive)
+			path.append(getPageName());
 		// Все переменные по порядку
 		try {
 			for (VariablePE var : variables.values()) {

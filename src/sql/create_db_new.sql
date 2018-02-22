@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `unique_key` (
   `uk_item_id` bigint(20) unsigned NOT NULL,
   `uk_key` varchar(100) NOT NULL,
   PRIMARY KEY (`uk_item_id`),
-  KEY `MAIN` (`uk_key`),
+  UNIQUE `MAIN` (`uk_key`),
   CONSTRAINT `ITEM` FOREIGN KEY (`uk_item_id`) REFERENCES `item` (`i_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -54,6 +54,8 @@ public class LinkVariablePE extends VariablePE {
 		// Ссылка на айтем
 		else if (StringUtils.isNotBlank(refItem)) {
 			clone.var = new ItemVariable(refItem, refParam, parentPage);
+			if (style == Style.translit)
+				((ItemVariable) clone.var).setTranslit(true);
 		}
 		// Статическое значение
 		else if (StringUtils.isNotBlank(value)) {

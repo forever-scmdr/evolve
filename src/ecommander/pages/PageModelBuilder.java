@@ -1456,7 +1456,7 @@ public class PageModelBuilder {
 		}
 		return files;
 	}
-
+	// TODO заменить на итератор по связному списку, чтобы можно было добавлять includes
 	private Elements detachedDirectChildren(Element parent) {
 		Elements detachedChildren = new Elements();
 		if (parent.children().size() == 0)

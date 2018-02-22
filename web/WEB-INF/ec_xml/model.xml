@@ -51,6 +51,7 @@
 		<child assoc="contains" item="product"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="code" type="string" caption="Уникальный код" description="можно часть урла" />
+		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="short" type="short-text" caption="Краткое описание" />
 	</item>
 
@@ -66,7 +67,7 @@
 	</item>
 
 	<!--Товар. Получается в результате парсинга-->
-	<item name="product" key="name code" caption="Продукт" extendable="true" key-unique="true" ag-id="6" ag-hash="-309474065">
+	<item name="product" key="name code" caption="Продукт" extendable="true" key-unique="true" default-page="product" ag-id="6" ag-hash="-309474065">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>

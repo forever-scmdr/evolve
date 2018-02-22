@@ -3,11 +3,62 @@
 
 <!-- ******************************* Включение для разделов каталога ****************************** -->
 
-	<page name="index">
+	<include-definition name="COMMON">
 		<single item="catalog">
-			<tree item="section">
-				<list item="product" assoc="contains"/>
+			<tree item="section" id="sec">
+				<link name="show_section" target="section" type="exclusive">
+					<var name="sec" item="sec" style="translit"/>
+				</link>
 			</tree>
+		</single>
+	</include-definition>
+
+
+	<page name="index" template="index">
+		<single item="catalog">
+			<tree item="section" id="sec">
+				<link name="show_section" target="section" type="exclusive">
+					<var name="sec" item="sec" style="translit"/>
+				</link>
+			</tree>
+		</single>
+	</page>
+
+
+	<page name="section" template="">
+		<request>
+			<var name="sec" style="translit"/>
+		</request>
+		<single item="catalog">
+			<tree item="section" id="sec">
+				<link name="show_section" target="section" type="exclusive">
+					<var name="sec" item="sec" style="translit"/>
+				</link>
+			</tree>
+		</single>
+		<single item="section" var="sec" tag="current_section">
+			<list item="product" assoc="contains" id="prod">
+				<link name="show_product" target="product" type="exclusive">
+					<var name="prod" item="prod" style="translit"/>
+				</link>
+			</list>
+		</single>
+	</page>
+
+
+	<page name="product">
+		<request>
+			<var name="prod" style="translit"/>
+		</request>
+		<single item="catalog">
+			<tree item="section" id="sec">
+				<link name="show_section" target="section" type="exclusive">
+					<var name="sec" item="sec" style="translit"/>
+				</link>
+			</tree>
+		</single>
+		<single item="product" var="prod">
+			<ancestor item="section" assoc="contains" transit="false" tag="selected_section"/>
 		</single>
 	</page>
 

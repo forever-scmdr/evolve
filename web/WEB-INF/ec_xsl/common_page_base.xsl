@@ -1,50 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:f="f:f"
-	version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+
+	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
 	<!-- <TITLE> -->
 	
 	<xsl:template name="TITLE">Белтесто</xsl:template>
 
-	<xsl:template name="SCRIPTS"></xsl:template>
-
-	<!-- ****************************    HEADER    ******************************** -->
-
-	<xsl:template name="HEAD">
-	<head>
-		<title><xsl:call-template name="TITLE"/></title>
-		<base href="{page/base}"/>
-		<meta charset="utf-8"/>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<title>Главная Sputnik</title>
-		<link rel="stylesheet" href="css/app.css"/>
-		<link href="admin/jquery_css/ui-lightness/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" media="screen" />
-		<link rel="stylesheet" href="fancybox/jquery.fancybox.css" type="text/css" media="screen" />
-		<script type="text/javascript" src="admin/js/jquery-1.10.2.min.js"></script>
-		<script type="text/javascript" src="admin/js/jquery-ui-1.10.3.custom.min.js"/>
-		<script type="text/javascript" src="admin/js/regional-ru.js"/>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/tooltip.js"></script>
-		<script src="js/jquery.spincrement.min.js"></script>
-		<script type="text/javascript" src="js/jquery.form.min.js"></script>
-		<script type="text/javascript" src="js/ajax.js"></script>
-		<script type="text/javascript" src="js/utils.js"></script>
-		<script type="text/javascript" src="js/jquery.number.min.js"></script>
-		<script type="text/javascript" src="js/regional-ru.js"></script>
-		<link  href="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet"/> <!-- 3 KB -->
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script> <!-- 16 KB -->
-		<script type="text/javascript" src="fancybox/jquery.fancybox.pack.js"></script>
-		<!-- COMBOBOX JS -->
-		<script type="text/javascript" src="js/combobox.js"></script>
-		<!-- BOOKING FORM -->
-		<script type="text/javascript" src="js/booking-form.js"></script>
-	</head>
-	</xsl:template>
-
+	<xsl:variable name="sel_sec" select="page//current_section"/>
+	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
 
@@ -74,7 +38,9 @@
 								<p><a href="cart.html">Оформить заказ</a></p>
 							</div>
 							<div class="user">
-								<p><i class="fas fa-lock"/> <a href="" data-toggle="modal" data-target="#modal-login">Вход</a> / <a href="registration.html">Регистрация</a></p>
+								<p><i class="fas fa-lock"/>
+									<a href="" data-toggle="modal" data-target="#modal-login">Вход</a> / <a href="registration.html">Регистрация</a>
+								</p>
 								<p><i class="fas fa-star"/> <a href="">Избранное (2)</a></p>
 								<p><i class="fas fa-balance-scale"/> <a href="compare.html">Сравнение (3)</a></p>
 							</div>
@@ -96,6 +62,7 @@
 	</xsl:template>
 
 
+
 	<xsl:template name="INC_MOBILE_HEADER">
 		<div class="header mobile">
 			<div class="header-container">
@@ -115,6 +82,7 @@
 	</xsl:template>
 
 
+
 	<xsl:template name="INC_FOOTER">
 		<!-- FOOTER BEGIN -->
 		<div class="footer-placeholder"></div><!-- ружен скрипт, задающий блоку высоту футера -->
@@ -125,10 +93,12 @@
 						<div class="footer-container">
 							<div class="block">
 								<p><strong>© Белтесто, 2017</strong></p>
-								<div class="forever"><a href="http://forever.by">Разработка сайта -<br/>студия веб-дизайна Forever</a></div>
+								<div class="forever">
+									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
+								</div>
 							</div>
 							<div class="block">
-								<p>Принимаем к оплате<br/> пластиковые карточки</p>
+								<p>Принимаем к оплате<xsl:call-template name="BR"/> пластиковые карточки</p>
 								<img src="http://mobileplus.by/images/2/icon_card_mc.png" alt=""/>
 								<img src="http://mobileplus.by/images/2/icon_card_visa.png" alt=""/>
 							</div>
@@ -140,8 +110,8 @@
 							<div class="block address">
 								<p>Адрес: г. Минск, 220070, пр-т Партизанский 14, к. 514A</p>
 								<p>
-									Режим работы:<br/>
-									Пн-Пт 10.00-18.00<br/>
+									Режим работы:<xsl:call-template name="BR"/>
+									Пн-Пт 10.00-18.00<xsl:call-template name="BR"/>
 									Сб-Вс 10.00-17.00 (прием заказов)
 								</p>
 							</div>
@@ -219,12 +189,133 @@
 
 
 
+
+	<xsl:template name="INC_MOBILE_MENU">
+		<div class="menu-container mobile">
+			<div class="overlay"></div>
+			<div class="content">
+				<ul>
+					<li>
+						<i class="fas fa-lock"></i>
+						<a href="" data-toggle="modal" data-target="#modal-login">Вход</a> / <a href="registration.html">Регистрация</a>
+					</li>
+				</ul>
+				<ul>
+					<li><i class="fas fa-th-list"></i> <a href="">Каталог продукции</a></li>
+				</ul>
+				<ul>
+					<li><i class="fas fa-shopping-cart"></i> <a href="">Корзина (1)</a></li>
+					<li><i class="fas fa-star"></i> <a href="">Избранное (3)</a></li>
+					<li><i class="fas fa-balance-scale"></i> <a href="">Сравнение (6)</a></li>
+				</ul>
+				<ul>
+					<li><a href="">Новости</a></li>
+					<li><a href="">Статьи</a></li>
+					<li><a href="">Наши проекты</a></li>
+					<li><a href="">Дилеры</a></li>
+					<li><a href="">Документация</a></li>
+					<li><a href="">Контакты</a></li>
+					<li><a href="">Новости</a></li>
+					<li><a href="">Статьи</a></li>
+					<li><a href="">Наши проекты</a></li>
+					<li><a href="">Дилеры</a></li>
+					<li><a href="">Документация</a></li>
+					<li><a href="">Контакты</a></li>
+				</ul>
+			</div>
+		</div>
+	</xsl:template>
+
+
+
+	<xsl:template name="INC_MOBILE_NAVIGATION">
+		<div class="nav-container mobile" style="display: none;">
+			<div class="content">
+				<div class="small-nav">
+					<a href="" class="back"><i class="fas fa-chevron-left"></i></a>
+					<a href="" class="header">Электроника</a>
+					<a href="" class="close"><i class="fas fa-times"></i></a>
+				</div>
+				<ul>
+					<li><a href="">Новости</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Статьи</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Дилеры</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Документация</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Контакты</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Новости</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Статьи</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Дилеры</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Документация</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Контакты</a><i class="fas fa-chevron-right"></i></li>
+				</ul>
+			</div>
+			<div class="content next">
+				<div class="small-nav">
+					<a href="" class="back"><i class="fas fa-chevron-left"></i></a>
+					<a href="" class="header">Электроника</a>
+					<a href="" class="close"><i class="fas fa-times"></i></a>
+				</div>
+				<ul>
+					<li><a href="">Новости</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Статьи</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Дилеры</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Документация</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Контакты</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Новости</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Статьи</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Дилеры</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Документация</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="">Контакты</a><i class="fas fa-chevron-right"></i></li>
+				</ul>
+			</div>
+		</div>
+	</xsl:template>
+
+
+
+	<xsl:template name="INC_SIDE_MENU_INTERNAL">
+		<div class="side-menu">
+			<xsl:for-each select="page/catalog/section">
+				<div class="level-1">
+					<div class="capsule">
+						<a href="{show_section}"><xsl:value-of select="name"/> </a>
+					</div>
+				</div>
+				<xsl:if test=".//@id = $sel_sec_id">
+					<xsl:for-each select="section">
+						<div class="level-2"><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+						<xsl:if test=".//@id = $sel_sec_id">
+							<xsl:for-each select="section">
+								<div class="level-3"><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+								<xsl:if test=".//@id = $sel_sec_id">
+									<xsl:for-each select="section">
+										<div class="level-4"><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+									</xsl:for-each>
+								</xsl:if>
+							</xsl:for-each>
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:if>
+			</xsl:for-each>
+		</div>
+	</xsl:template>
+
+
+
+
 	<!-- ****************************    ПУСТЫЕ ЧАСТИ ДЛЯ ПЕРЕОПРЕДЕЛЕНИЯ    ******************************** -->
 
 
 	<xsl:template name="LEFT_COLOUMN"/>
 	<xsl:template name="CONTENT"/>
 	<xsl:template name="BANNERS"/>
+	<xsl:template name="EXTRA_SCRIPTS"/>
+
+
 
 
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
@@ -236,12 +327,13 @@
 	</xsl:text>
 	<html lang="en">
 		<head>
+			<base href="{page/base}"/>
 			<meta charset="utf-8"/>
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<title><xsl:call-template name="TITLE"/></title>
 			<link rel="stylesheet" href="css/app.css"/>
-			<script defer="defer" src="https://use.fontawesome.com/releases/v5.0.1/js/all.js"></script>
+			<script defer="defer" src="js/font_awesome_all.js"/>
 		</head>
 		<body>
 			<!-- ALL CONTENT BEGIN -->
@@ -277,16 +369,15 @@
 			<!-- ALL CONTENT END -->
 
 
-			<div w3-include-html="inc_mobile_menu.html"></div>
-			<div w3-include-html="inc_mobile_navigation.html"></div>
+			<xsl:call-template name="INC_MOBILE_MENU"/>
+			<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
 
 
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-			<script src="js/bootstrap.min.js"></script>
-			<script src="js/w3.js"></script>
-			<script>
-				w3.includeHTML();
-			</script>
+			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
+			<script type="text/javascript" src="js/bootstrap.min.js"/>
+			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
+			<script type="text/javascript" src="admin/js/ajax.js"/>
+			<xsl:call-template name="EXTRA_SCRIPTS"/>
 		</body>
 	</html>
 	</xsl:template>
