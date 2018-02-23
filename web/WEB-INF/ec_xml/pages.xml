@@ -11,55 +11,65 @@
 				</link>
 			</tree>
 		</single>
+		<link name="index_link" target="index"/>
 	</include-definition>
 
 
 	<page name="index" template="index">
-		<single item="catalog">
-			<tree item="section" id="sec">
-				<link name="show_section" target="section" type="exclusive">
-					<var name="sec" item="sec" style="translit"/>
-				</link>
-			</tree>
-		</single>
+		<include name="COMMON"/>
 	</page>
 
 
-	<page name="section" template="">
+	<page name="section" template="section">
 		<request>
 			<var name="sec" style="translit"/>
 		</request>
-		<single item="catalog">
-			<tree item="section" id="sec">
-				<link name="show_section" target="section" type="exclusive">
-					<var name="sec" item="sec" style="translit"/>
-				</link>
-			</tree>
-		</single>
-		<single item="section" var="sec" tag="current_section">
+		<single item="section" var="sec" id="cur_sec" tag="current_section">
 			<list item="product" assoc="contains" id="prod">
 				<link name="show_product" target="product" type="exclusive">
 					<var name="prod" item="prod" style="translit"/>
+					<var name="sec" item="cur_sec" style="translit"/>
 				</link>
 			</list>
 		</single>
+		<include name="COMMON"/>
 	</page>
 
 
-	<page name="product">
+	<page name="product" template="product">
 		<request>
 			<var name="prod" style="translit"/>
+			<var name="sec" style="translit"/>
 		</request>
-		<single item="catalog">
-			<tree item="section" id="sec">
-				<link name="show_section" target="section" type="exclusive">
-					<var name="sec" item="sec" style="translit"/>
-				</link>
-			</tree>
+		<single item="product" id="prod" var="prod">
+			<ancestor item="section" assoc="contains" transit="false" tag="product_section"/>
 		</single>
-		<single item="product" var="prod">
-			<ancestor item="section" assoc="contains" transit="false" tag="selected_section"/>
-		</single>
+		<list item="product" id="acc" tag="accessory">
+			<filter>
+				<parameter name="code" compare="SOME"><var item="prod" parameter="accessiories"/></parameter>
+			</filter>
+			<link name="show_product" target="product">
+				<var name="prod" item="acc" style="translit"/>
+			</link>
+		</list>
+		<list item="product" id="set" tag="set">
+			<filter>
+				<parameter name="code" compare="SOME"><var item="prod" parameter="sets"/></parameter>
+			</filter>
+			<link name="show_product" target="product">
+				<var name="prod" item="set" style="translit"/>
+			</link>
+		</list>
+		<list item="product" id="probe" tag="probe">
+			<filter>
+				<parameter name="code" compare="SOME"><var item="prod" parameter="probes"/></parameter>
+			</filter>
+			<link name="show_product" target="product">
+				<var name="prod" item="probe" style="translit"/>
+			</link>
+		</list>
+		<single item="section" var="sec" tag="current_section"/>
+		<include name="COMMON"/>
 	</page>
 
 

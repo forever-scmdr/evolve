@@ -54,10 +54,16 @@ public class ItemVariable extends Variable {
 			ExecutableItemPE.AllFoundIterator iter = pageItem.getAllFoundItemIterator();
 			while (iter.next()) {
 				Item item = iter.getCurrentItem();
-				if (hasParam)
-					valuesCache.add(item.getValue(paramName));
-				else
+				if (hasParam) {
+					if (item.isValueNotEmpty(paramName)) {
+						ArrayList vals = item.getValues(paramName);
+						for (Object val : vals) {
+							valuesCache.add(val);
+						}
+					}
+				} else {
 					valuesCache.add(isTranslit ? item.getKeyUnique() : item.getId());
+				}
 			}
 		}
 		return valuesCache;
@@ -99,7 +105,7 @@ public class ItemVariable extends Variable {
 
 	@Override
 	public boolean isEmpty() {
-		return !parentPage.getItemPEById(itemPageId).hasFoundItems();
+		return !parentPage.getItemPEById(itemPageId).hasFoundItems() || getAllValues().size() == 0;
 	}
 
 	private String outputSingleItem(Item item) {

@@ -267,8 +267,8 @@ public class SingleItemCrawlerController {
 			downloadFiles();
 		} else if (state == State.FILES) {
 			state = State.FINISHED;
+			info.pushLog("Работа завершена");
 		}
-		info.pushLog("Работа завершена");
 	}
 
 	/**

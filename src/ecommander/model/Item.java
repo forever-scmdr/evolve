@@ -999,6 +999,14 @@ public class Item implements ItemBasics {
 			return null;
 		return getValue(param.getId());
 	}
+
+	public final boolean isValueNotEmpty(String paramName) {
+		ParameterDescription paramDesc = itemType.getParameter(paramName);
+		if (paramDesc == null)
+			return false;
+		Parameter param = getParameter(paramDesc.getId());
+		return !param.isEmpty();
+	}
 	/**
 	 * Получить массив значений множественного параметра
 	 * @param paramName

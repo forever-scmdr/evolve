@@ -37,7 +37,7 @@
 	<item name="product_container" virtual="true" caption="Контейнер для продуктов" ag-id="1" ag-hash="-268176079" />
 
 
-	<item name="catalog" caption="Каталог продукции" super="product_container" children-per-page="10" children-sorting="DESC" ag-id="2" ag-hash="555704345">
+	<item name="catalog" caption="Каталог продукции" super="product_container" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="section" />
 		<parameter name="integration" type="file" caption="XML файл интеграции" description="используемые классы и параметры должны быть созданы до начала разбора файла" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>

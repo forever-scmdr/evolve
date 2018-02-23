@@ -7,10 +7,20 @@
 	
 	<xsl:template name="TITLE">Белтесто</xsl:template>
 
-	<xsl:variable name="sel_sec" select="page//current_section"/>
+	<xsl:variable name="cur_sec" select="page//current_section"/>
+	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
+
+
+
+
+
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
+
+
+
+
 
 
 	<xsl:template name="INC_DESKTOP_HEADER">
@@ -19,7 +29,7 @@
 				<div class="col-xs-12">
 					<div class="header-container">
 						<div class="logo">
-							<a href=""><img src="img/logo_big.svg" alt="" style="height: 6rem; max-width: 100%;"/></a>
+							<a href="{page/index_link}"><img src="img/logo_big.svg" alt="" style="height: 6rem; max-width: 100%;"/></a>
 						</div>
 						<div class="search">
 							<form action=""><input type="text" placeholder="Введите поисковый запрос"/><input type="submit" value="Найти"/></form>
@@ -280,20 +290,24 @@
 	<xsl:template name="INC_SIDE_MENU_INTERNAL">
 		<div class="side-menu">
 			<xsl:for-each select="page/catalog/section">
-				<div class="level-1">
+				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
+				<div class="level-1{' active'[$l1_active]}">
 					<div class="capsule">
 						<a href="{show_section}"><xsl:value-of select="name"/> </a>
 					</div>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
 					<xsl:for-each select="section">
-						<div class="level-2"><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
+						<div class="level-2{' active'[$l2_active]}"><a href="{show_section}"><xsl:value-of select="name"/></a></div>
 						<xsl:if test=".//@id = $sel_sec_id">
 							<xsl:for-each select="section">
-								<div class="level-3"><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
+								<div class="level-3{' active'[$l3_active]}"><a href="{show_section}"><xsl:value-of select="name"/></a></div>
 								<xsl:if test=".//@id = $sel_sec_id">
 									<xsl:for-each select="section">
-										<div class="level-4"><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
+										<div class="level-4{' active'[$l4_active]}"><a href="{show_section}"><xsl:value-of select="name"/></a></div>
 									</xsl:for-each>
 								</xsl:if>
 							</xsl:for-each>
@@ -307,7 +321,87 @@
 
 
 
+
+
+	<!-- ****************************    ЭЛЕМЕНТЫ НЕ ДЛЯ ВСЕХ СТРАНИЦ    ******************************** -->
+
+
+
+
+
+
+	<xsl:template name="CATALOG_LEFT_COLOUMN">
+		<xsl:call-template name="INC_SIDE_MENU_INTERNAL"/>
+		<div class="actions">
+			<h3>Акции</h3>
+			<div class="actions-container">
+				<a href="">Что делать, если поломалась или разбилась сенсорная панель вашего телефона</a>
+			</div>
+		</div>
+		<div class="contacts">
+			<h3>Заказ и консультация</h3>
+			<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - тел./Viber</p>
+			<p>Email <a href="">info@beltesto.by</a></p>
+			<p><a href="">Схема проезда к офису</a></p>
+		</div>
+	</xsl:template>
+
+
+
+	<xsl:template name="ACTIONS_MOBILE">
+		<div class="actions mobile">
+			<h3>Акции</h3>
+			<div class="actions-container">
+				<a href="">Что делать, если поломалась или разбилась сенсорная панель вашего телефона</a>
+			</div>
+		</div>
+	</xsl:template>
+
+
+	<xsl:template match="accessory | set | probe | product">
+		<div class="catalog-item">
+			<!--
+			<div class="tags">
+				<span>Акция</span>
+				<span>Скидка</span>
+				<span>Распродажа</span>
+				<span>Горячая цена</span>
+			</div>
+			-->
+			<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
+			<a href="{show_product}" class="image-container" style="background-image: url();">
+				<img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/>
+			</a>
+			<div>
+				<a href="{show_product}" title="{name}"><xsl:value-of select="name"/></a>
+				<p><xsl:value-of select="substring-before(substring-after(short, 'description&quot;&gt;'), '&lt;')" disable-output-escaping="yes"/></p>
+			</div>
+			<div class="price">
+				<p><span>Старая цена</span>100 р.</p>
+				<p><span>Новая цена</span>99 р.</p>
+			</div>
+			<div class="order">
+				<input type="number" value="1"/>
+				<input type="submit" value="Заказать"/>
+				<div class="quantity">Осталось 12 шт.</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox"/> cравнение
+					</label>
+				</div>
+			</div>
+		</div>
+	</xsl:template>
+
+
+
+
+
+
 	<!-- ****************************    ПУСТЫЕ ЧАСТИ ДЛЯ ПЕРЕОПРЕДЕЛЕНИЯ    ******************************** -->
+
+
+
 
 
 	<xsl:template name="LEFT_COLOUMN"/>
@@ -318,7 +412,12 @@
 
 
 
+
+
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
+
+
+
 
 
 
@@ -333,6 +432,7 @@
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<title><xsl:call-template name="TITLE"/></title>
 			<link rel="stylesheet" href="css/app.css"/>
+			<link rel="stylesheet" href="fotorama/fotorama.css"/>
 			<script defer="defer" src="js/font_awesome_all.js"/>
 		</head>
 		<body>
@@ -381,11 +481,18 @@
 		</body>
 	</html>
 	</xsl:template>
-	
-	
+
 	
 
+
+
+
 	<!-- ****************************    БЛОКИ НА СТРАНИЦЕ    ******************************** -->
+
+
+
+
+
 
 	<xsl:template match="*" mode="content">
 	<xsl:value-of select="text" disable-output-escaping="yes"/>
