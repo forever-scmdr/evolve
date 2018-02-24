@@ -89,9 +89,12 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	 * Этот метод надо использовать вместо createExecutableClone() без параметра
 	 * для клонирования модели страницы (для получения модели страницы, предназначенной для загрузки)
 	 * @param sessionContext
+	 * @param link
+	 * @param linkUrl - передается для того, чтобы не вызывать лишний раз serialize в ссылке
+	 * @param baseLink
 	 * @return
 	 */
-	public ExecutablePagePE createExecutableClone(SessionContext sessionContext) {
+	public ExecutablePagePE createExecutableClone(SessionContext sessionContext, LinkPE link, String linkUrl, String baseLink) {
 		ExecutablePagePE clone = new ExecutablePagePE(name, template, cacheable, sessionContext, cacheVars, criticalItem);
 		clone.userGroups.addAll(userGroups);
 		if (headers.size() > 0) {
@@ -105,6 +108,8 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 				var.createExecutableClone(clone, clone);
 			}
 		}
+		if (link != null)
+			clone.setRequestLink(link, linkUrl, baseLink);
 		for (PageElement element : getAllNested())
 			clone.addElement(element.createExecutableClone(clone, clone));
 		return clone;

@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -35,6 +35,51 @@
 				<a href="">Что делать, если поломалась или разбилась сенсорная панель вашего телефона</a>
 			</div>
 		</div>
+		<script>
+			var _menuShowInterval = 0;
+			var _menuHideInterval = 0;
+			var _menuCurrentItem = 0;
+			$(document).ready(function() {
+				$('.level-1').hover(
+					function(){
+						clearInterval(_menuHideInterval);
+						if (_menuMouseMovedVertically) {
+							$('.popup-menu').hide();
+							$(this).find('.popup-menu').show();
+						} else {
+							_menuCurrentItem = $(this);
+							_menuShowInterval = setInterval(function() {
+								$('.popup-menu').hide();
+								_menuCurrentItem.find('.popup-menu').show();
+							}, 500);
+						}
+					},
+					function() {
+						clearInterval(_menuShowInterval);
+						if (_menuMouseMovedVertically) {
+							$('.popup-menu').hide();
+						} else {
+							_menuHideInterval = setInterval(function() {
+								$('.popup-menu').hide();
+							}, 500);
+						}
+					}
+				);
+			<xsl:text disable-output-escaping="yes">
+				var _menuPrevX = 1000;
+				var _menuPrevY = -1000;
+				var _menuMouseMovedVertically = true;
+				$('.side-menu').mousemove(
+					function(event) {
+						_menuMouseMovedVertically = (Math.abs(event.pageY - _menuPrevY) - Math.abs(event.pageX - _menuPrevX)) &gt; 0;
+						_menuPrevX = event.pageX;
+						_menuPrevY = event.pageY;
+						console.log(_menuMouseMovedVertically);
+					}
+				);
+			</xsl:text>
+			});
+		</script>
 		<!-- <div class="contacts">
 			<h3>Заказ и консультация</h3>
 			<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - тел./Viber</p>

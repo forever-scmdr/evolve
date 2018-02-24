@@ -143,11 +143,10 @@ public class PageModelRegistry {
 		if (pageModel == null) {
 			throw new PageNotFoundException("The page '" + link.getPageName() + "' is not found");
 		}
-		ExecutablePagePE execPageModel = pageModel.createExecutableClone(context);
-		if (context != null && !execPageModel.isUserAuthorized(context.getUser()))
+		// Проверка, разрешен ли пользователю доступ к этой странице
+		if (context != null && !pageModel.isUserAuthorized(context.getUser()))
 			throw new UserNotAllowedException("Requested page is not allowed for current user");
-		execPageModel.setRequestLink(link, linkUrl, urlBase);
-		return execPageModel;
+		return pageModel.createExecutableClone(context, link, linkUrl, urlBase);
 	}
 	/**
 	 * Валидация всех страниц и возарвщение результатов валидации
@@ -157,7 +156,7 @@ public class PageModelRegistry {
 	public synchronized void validate(ValidationResults results) throws ValidationException {
 		try (SessionContext sessContext = SessionContext.createSessionContext(null)) {
 			for (PagePE page : pageModels.values()) {
-				ExecutablePagePE execPage = getPageModel(page.getPageName()).createExecutableClone(sessContext);
+				ExecutablePagePE execPage = getPageModel(page.getPageName()).createExecutableClone(sessContext, null, null, null);
 				execPage.validate("", results);
 			}
 		} catch (Exception e) {

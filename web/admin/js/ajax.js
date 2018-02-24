@@ -223,6 +223,15 @@ function destroyLoader(el){
 	el.css('background-size', '');
 }
 
+
+function _default(variable, defaultValue) {
+	if (variable === undefined) {
+		return defaultValue;
+	}
+	return variable;
+}
+
+
 $(".ajax-form").submit(function(e){
 	e.preventDefault();
 	postFormView($(this).attr("id"));

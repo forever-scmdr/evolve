@@ -1,6 +1,7 @@
 package ecommander.pages.var;
 
 import ecommander.pages.ExecutablePagePE;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Статическая переменная, которая хранится в куки
@@ -22,6 +23,12 @@ public class CookieStaticVariable extends SessionStaticVariable {
 		parentPage.getSessionContext().setCookie(name, strValue);
 	}
 
+	@Override
+	public void restore() {
+		String savedValue = parentPage.getSessionContext().getCookie(name);
+		if (StringUtils.isNotBlank(savedValue))
+			addValue(savedValue);
+	}
 
 	/**
 	 * Удалить значение из сеанса

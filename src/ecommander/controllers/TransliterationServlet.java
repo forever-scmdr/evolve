@@ -1,9 +1,7 @@
 package ecommander.controllers;
 
-import ecommander.fwk.PageNotFoundException;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Timer;
-import ecommander.fwk.UserNotAllowedException;
+import ecommander.fwk.*;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +30,16 @@ public class TransliterationServlet extends BasicServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Строка вида /spas/eeee/test.htm (/spas - это ContextPath)
 		String userUrl = getUserUrl(request);
+		// Если запрашивается индексная страница - это может быть ошибка, например в картинке не указан урл
+		// Надо проанализировать, какой заголовок Accept отправляет браузер.
+		// Для индексной страницы он должен содержать text/html
+		if (StringUtils.startsWith(userUrl, AppContext.getWelcomePageName())) {
+			if (!StringUtils.contains(request.getHeader("Accept"), "text/html")) {
+				ServerLogger.error("Maybe page html error - empty img src attribute");
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
+		}
 		Timer.getTimer().start(Timer.REQUEST_PROCESS, userUrl);
 		// Если заданного URL нет в маппинге, то считать что запрошен файл и передать его
 		try {

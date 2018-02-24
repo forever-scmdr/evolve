@@ -8,6 +8,8 @@
 	</xsl:template>
 
 
+	<xsl:variable name="view" select="page/variables/view"/>
+
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
@@ -42,8 +44,8 @@
 				<div class="view-container desktop">
 					<div class="view">
 						<span>Показывать:</span>
-						<span><i class="fas fa-th-large"></i> <a href="">Плиткой</a></span>
-						<span><i class="fas fa-th-list"></i> <a href="">Строками</a></span>
+						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
+						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
 						<div class="checkbox">
 							<label>
 								<input type="checkbox"/> в наличии
@@ -71,7 +73,7 @@
 					</div>
 				</div>
 
-				<div class="catalog-items"><!-- добавить класс lines для отображения по строкам -->
+				<div class="catalog-items{' lines'[$view = 'list']}"><!-- добавить класс lines для отображения по строкам -->
 					<xsl:apply-templates select="$sel_sec/product"/>
 				</div>
 			</div>

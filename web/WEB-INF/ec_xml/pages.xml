@@ -23,6 +23,7 @@
 	<page name="section" template="section">
 		<request>
 			<var name="sec" style="translit"/>
+			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section">
 			<list item="product" assoc="contains" id="prod">
@@ -32,6 +33,12 @@
 				</link>
 			</list>
 		</single>
+		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="view" value="table"/>
+		</link>
+		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="view" value="list"/>
+		</link>
 		<include name="COMMON"/>
 	</page>
 

@@ -284,7 +284,6 @@ public class PageController {
 					LinkPE requestLink = page.getRequestLink();
 					String urlBase = page.getUrlBase();
 					page = PageModelRegistry.testAndGetRegistry().getExecutablePage(requestUrl, urlBase, page.getSessionContext());
-					page.setRequestLink(requestLink, pageUrl, urlBase);
 					processSimplePage(false);
 				} else {
 					throw e;

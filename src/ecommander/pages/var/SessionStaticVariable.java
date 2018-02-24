@@ -1,6 +1,7 @@
 package ecommander.pages.var;
 
 import ecommander.pages.ExecutablePagePE;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Статическая переменная, которая хранится в сеансе
@@ -21,6 +22,12 @@ public class SessionStaticVariable extends StaticVariable {
 		}
 		String strValue = variable.isEmpty() ? null : variable.getSingleValue().toString();
 		parentPage.getSessionContext().setVariableValue(name, strValue);
+	}
+
+	public void restore() {
+		String savedValue = parentPage.getSessionContext().getVariableValue(name);
+		if (StringUtils.isNotBlank(savedValue))
+			addValue(savedValue);
 	}
 
 	/**

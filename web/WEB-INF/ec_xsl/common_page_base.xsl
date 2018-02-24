@@ -434,6 +434,7 @@
 			<link rel="stylesheet" href="css/app.css"/>
 			<link rel="stylesheet" href="fotorama/fotorama.css"/>
 			<script defer="defer" src="js/font_awesome_all.js"/>
+			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 		</head>
 		<body>
 			<!-- ALL CONTENT BEGIN -->
@@ -473,10 +474,9 @@
 			<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
 
 
-			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 			<script type="text/javascript" src="js/bootstrap.min.js"/>
-			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 			<script type="text/javascript" src="admin/js/ajax.js"/>
+			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>
 		</body>
 	</html>
