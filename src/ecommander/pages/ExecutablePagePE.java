@@ -105,7 +105,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	 * @param linkUrl - передается для того, чтобы не вызывать лишний раз serialize в ссылке
 	 * @param baseLink
 	 */
-	public final void setRequestLink(LinkPE link, String linkUrl, String baseLink) {
+	final void setRequestLink(LinkPE link, String linkUrl, String baseLink) {
 		this.requestLink = link;
 		this.urlBase = baseLink;
 		HashSet<RequestVariablePE> initVars = new HashSet<>(getInitVariablesPEList());
@@ -117,13 +117,20 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 			initVars.remove(initialVar);
 		}
 		// Добавить все отсутствующие в ссылке начальные переменные
-		for (RequestVariablePE initVar : initVars) {
-			if (initVar.getVariable() instanceof SessionStaticVariable) {
-				((SessionStaticVariable) initVar.getVariable()).restore();
-				if (!initVar.isEmpty())
-					addVariable(initVar.getVariable());
+		for (RequestVariablePE initialVar : initVars) {
+			if (initialVar.getVariable() instanceof SessionStaticVariable) {
+				((SessionStaticVariable) initialVar.getVariable()).restore();
+				if (initialVar.isEmpty()) {
+					if (initialVar.hasDefaultValue()) {
+						StaticVariable valVar = new StaticVariable(initialVar.getName(), initialVar.getDefaultValue());
+						((SessionStaticVariable) initialVar.getVariable()).update(valVar);
+						addVariable(initialVar.getVariable());
+					}
+				} else {
+					addVariable(initialVar.getVariable());
+				}
 			} else {
-				addVariable(new StaticVariable(initVar.getName(), initVar.getDefaultValue()));
+				addVariable(new StaticVariable(initialVar.getName(), initialVar.getDefaultValue()));
 			}
 		}
 		addVariablePE(new RequestVariablePE(PAGEURL_VALUE, linkUrl));

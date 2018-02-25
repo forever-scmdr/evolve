@@ -63,11 +63,10 @@
 					<div class="quantity">
 						<span>Кол-во на странице:</span>
 						<span>
-							<select class="form-control">
-								<option>10</option>
-								<option>20</option>
-								<option>30</option>
-								<option>40</option>
+							<select class="form-control" value="{page/variables/limit}" onchange="window.location.href = $(this).find(':selected').attr('link')">
+								<option link="{page/set_limit_12}">12</option>
+								<option link="{page/set_limit_24}">24</option>
+								<option link="{page/set_limit_all}">все</option>
 							</select>
 						</span>
 					</div>
@@ -77,6 +76,18 @@
 					<xsl:apply-templates select="$sel_sec/product"/>
 				</div>
 			</div>
+
+			<xsl:if test="$sel_sec/product_pages">
+			<div class="pagination">
+				<span>Странциы:</span>
+				<div class="pagination-container">
+					<xsl:for-each select="$sel_sec/product_pages/page">
+						<a href="{link}" class="{'active'[current()/@current]}"><xsl:value-of select="number"/></a>
+					</xsl:for-each>
+				</div>
+			</div>
+			</xsl:if>
+
 		</xsl:if>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>

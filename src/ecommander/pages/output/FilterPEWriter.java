@@ -17,7 +17,7 @@ public class FilterPEWriter implements PageElementWriter {
 
 	private static final String PAGES_ELEMENT_SUFFIX = "_pages";
 	private static final String PAGE_ELEMENT = "page";
-	private static final String CURRENT_PAGE_ELEMENT = "current_page";
+	private static final String CURRENT_ATTR = "current";
 	private static final String PAGE_NUMBER_ELEMENT = "number";
 	private static final String PAGE_LINK_ELEMENT = "link";
 	private static final String PAGE_NEXT_ELEMENT = "next";
@@ -57,13 +57,14 @@ public class FilterPEWriter implements PageElementWriter {
 					int currentPage = filter.getPage();
 					for (int i = 1; i <= totalPages; i++) {
 						// Создать ссылку (клонированием) и параметр ссылки для номера страницы
-						LinkPE link = (LinkPE)linkBase.createExecutableClone(null, null);
+						LinkPE link = (LinkPE)linkBase.createExecutableClone(null, item.getPageModel());
+						link.removeVariable(pageVarBase.getName());
 						link.addStaticVariable(pageVarBase.getName(), i + "");
 						// Номер страницы
 						String pageNumber = Integer.toString(i);
 						// Элемент типа <page> или <current_page>
 						if (i == currentPage) {
-							xml.startElement(CURRENT_PAGE_ELEMENT);
+							xml.startElement(PAGE_ELEMENT, CURRENT_ATTR, CURRENT_ATTR);
 						} else {
 							xml.startElement(PAGE_ELEMENT);
 						}

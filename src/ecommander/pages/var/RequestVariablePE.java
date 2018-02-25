@@ -77,7 +77,7 @@ public class RequestVariablePE extends VariablePE {
 
 	@Override
 	public boolean isEmpty() {
-		return var.isEmpty();
+		return var == null || var.isEmpty();
 	}
 
 	@Override
@@ -89,6 +89,11 @@ public class RequestVariablePE extends VariablePE {
 			clone.var = new SessionStaticVariable(parentPage, name);
 		} else {
 			clone.var = new StaticVariable(name);
+			if (!isEmpty()) {
+				for (Object val : var.getAllValues()) {
+					clone.var.addValue(val);
+				}
+			}
 		}
 		return clone;
 	}
@@ -100,5 +105,9 @@ public class RequestVariablePE extends VariablePE {
 
 	public String getDefaultValue() {
 		return defaultValue;
+	}
+
+	public boolean hasDefaultValue() {
+		return StringUtils.isNotBlank(defaultValue);
 	}
 }

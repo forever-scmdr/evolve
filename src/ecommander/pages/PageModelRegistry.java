@@ -133,6 +133,7 @@ public class PageModelRegistry {
 				Item keyItem = ItemQuery.loadByUniqueKey(link.getPageName());
 				if (keyItem != null && keyItem.getItemType().hasDefaultPage()) {
 					link = LinkPE.parseLink(keyItem.getItemType().getDefaultPage() + VariablePE.COMMON_DELIMITER + linkUrl);
+					link.setType(LinkPE.Type.exclusive);
 					pageModel = getPageModel(link.getPageName());
 				}
 			} catch (Exception e) {

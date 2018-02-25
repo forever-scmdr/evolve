@@ -477,6 +477,11 @@
 			<script type="text/javascript" src="js/bootstrap.min.js"/>
 			<script type="text/javascript" src="admin/js/ajax.js"/>
 			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
+			<script type="text/javascript">
+				$(document).ready(function() {
+					$('select[value]').val($(this).attr('value');
+				});
+			</script>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>
 		</body>
 	</html>

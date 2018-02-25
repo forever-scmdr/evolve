@@ -23,10 +23,16 @@
 	<page name="section" template="section">
 		<request>
 			<var name="sec" style="translit"/>
+			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
+			<var name="limit" value="12" scope="cookie"/>
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section">
 			<list item="product" assoc="contains" id="prod">
+				<filter>
+					<limit><var var="limit"/></limit>
+					<pages><var var="page"/></pages>
+				</filter>
 				<link name="show_product" target="product" type="exclusive">
 					<var name="prod" item="prod" style="translit"/>
 					<var name="sec" item="cur_sec" style="translit"/>
@@ -38,6 +44,15 @@
 		</link>
 		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="list"/>
+		</link>
+		<link name="set_limit_12" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="12"/>
+		</link>
+		<link name="set_limit_24" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="24"/>
+		</link>
+		<link name="set_limit_all" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="10000"/>
 		</link>
 		<include name="COMMON"/>
 	</page>
