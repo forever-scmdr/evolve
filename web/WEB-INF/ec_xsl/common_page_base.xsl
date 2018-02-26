@@ -56,8 +56,8 @@
 							</div>
 						</div>
 						<div class="main-menu">
-							<a href="index.html">Главная</a>
-							<a href="catalog.html">Каталог</a>
+							<a href="{page/index_link}">Главная</a>
+							<a href="{page/catalog_link}">Каталог</a>
 							<a href="">Новости</a>
 							<a href="info_section.html">Статьи</a>
 							<a href="">Наши проекты</a>
@@ -211,7 +211,7 @@
 					</li>
 				</ul>
 				<ul>
-					<li><i class="fas fa-th-list"></i> <a href="">Каталог продукции</a></li>
+					<li><i class="fas fa-th-list"></i> <a href="{page/catalog_link}">Каталог продукции</a></li>
 				</ul>
 				<ul>
 					<li><i class="fas fa-shopping-cart"></i> <a href="">Корзина (1)</a></li>

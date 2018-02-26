@@ -41,6 +41,15 @@
 		</xsl:if>
 		<xsl:if test="$sel_sec/product">
 			<div class="page-content m-t">
+				<xsl:if test="$sel_sec/tag_first">
+					<div class="tags">
+						<strong>Выберите тэг:</strong>
+						<xsl:for-each select="$sel_sec/tag_first">
+							<a href="{set_tag_1}"><span class="label label-success"><xsl:value-of select="tag"/></span></a>
+						</xsl:for-each>
+					</div>
+				</xsl:if>
+
 				<div class="view-container desktop">
 					<div class="view">
 						<span>Показывать:</span>

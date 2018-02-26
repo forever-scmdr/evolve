@@ -4,7 +4,7 @@
 <!-- ******************************* Включение для разделов каталога ****************************** -->
 
 	<include-definition name="COMMON">
-		<single item="catalog">
+		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec">
 				<link name="show_section" target="section" type="exclusive">
 					<var name="sec" item="sec" style="translit"/>
@@ -12,24 +12,38 @@
 			</tree>
 		</single>
 		<link name="index_link" target="index"/>
+		<link name="catalog_link" target="catalog"/>
 	</include-definition>
 
 
-	<page name="index" template="index">
+	<page name="index" template="index" cacheable="true">
 		<include name="COMMON"/>
 	</page>
 
 
-	<page name="section" template="section">
+	<page name="catalog" template="catalog" cacheable="true">
+		<include name="COMMON"/>
+	</page>
+
+
+	<page name="section" template="" cacheable="false">
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="12" scope="cookie"/>
+			<var name="tag1"/>
+			<var name="tag2"/>
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section">
 			<list item="product" assoc="contains" id="prod">
 				<filter>
+					<child item="tag_first">
+						<parameter name="tag" compare="ANY"><var var="tag1"/></parameter>
+						<child item="tag_second">
+							<parameter name="name_value" compare="ANY"><var var="tag2"/></parameter>
+						</child>
+					</child>
 					<limit><var var="limit"/></limit>
 					<pages><var var="page"/></pages>
 				</filter>
@@ -37,6 +51,28 @@
 					<var name="prod" item="prod" style="translit"/>
 					<var name="sec" item="cur_sec" style="translit"/>
 				</link>
+			</list>
+			<list item="tag_first" id="tag_first" assoc="contains" transit="true">
+				<aggregation parameter="tag"/>
+				<link name="set_tag_1" target="section" type="exclusive">
+					<var name="sec" var="sec" style="translit"/>
+					<var name="tag1" var="tag1"/>
+					<var name="tag1" item="tag_first" parameter="tag"/>
+				</link>
+			</list>
+			<list item="tag_second" id="tag_second" assoc="contains" transit="true">
+				<filter>
+					<parent item="tag_first">
+						<parameter name="tag" compare="SOME"><var var="tag1"/></parameter>
+					</parent>
+				</filter>
+				<link name="set_tag_2" target="section" type="exclusive">
+					<var name="sec" var="sec" style="translit"/>
+					<var name="tag1" var="tag1"/>
+					<var name="tag2" var="tag2"/>
+					<var name="tag2" item="tag_second" parameter="name_value"/>
+				</link>
+				<ancestor item="tag_first"/>
 			</list>
 		</single>
 		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
@@ -58,7 +94,7 @@
 	</page>
 
 
-	<page name="product" template="product">
+	<page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="translit"/>
 			<var name="sec" style="translit"/>

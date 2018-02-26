@@ -278,10 +278,15 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	}
 	
 	public final void addVariablePE(VariablePE variable) {
-		if (StringUtils.isBlank(variable.getName()))
+		if (StringUtils.isBlank(variable.getName())) {
 			variables.put("var_" + counter++, variable);
-		else
-			variables.put(variable.getName(), variable);
+		} else {
+			if (variables.containsKey(variable.getName())) {
+				variables.put(variable.getName() + counter++, variable);
+			} else {
+				variables.put(variable.getName(), variable);
+			}
+		}
 	}
 	/**
 	 * Установить значение статической переменной в ссылке

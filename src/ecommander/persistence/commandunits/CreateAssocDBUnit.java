@@ -2,7 +2,10 @@ package ecommander.persistence.commandunits;
 
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
-import ecommander.model.*;
+import ecommander.model.Assoc;
+import ecommander.model.Item;
+import ecommander.model.ItemBasics;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
@@ -16,9 +19,9 @@ import java.util.HashSet;
  * При передаче в команду загруженного айтема предка, а не его ID, команда будет работать быстрее, т.к. не потребуется
  * его загрузка для проверки прав
  *
- * Пояснение по ассоциациям:
+ * Пояснение по ассоциациям: - ЭТО НЕТ
  *
- * Связь предков предка с потомками потомка (ассоциация ТТ - транзитивная транизивная)
+ * Связь предков предка с потомками потомка (ассоциация ТТ - транзитивная транизивная)       - ЭТО НЕТ
  * создается только в случае первичной ассоциации.
  * Если ассоциация не первичная, то создаются только связи предков предка с самим айтемом, но не его потомками.
  * Если бы в этом случае использовалась связь ТТ, то не понятно что делать при создании и удалении потомков потомка
@@ -142,8 +145,8 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 					.col(IP_CHILD_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(primaryAssocId).sql(" \r\n");
 
 			// Только для айтемов с сабайтемами (не новых)
-			// и только для первичной ассоциации (пояснение в описании класса)
-			if (!isItemNew && assocId == primaryAssocId) {
+			// - и только для первичной ассоциации (пояснение в описании класса) - ЭТО НЕТ
+			if (!isItemNew/* && assocId == primaryAssocId*/) {
 				// Шаг 3. Добавить для нового непосредственного предка в качестве потомков всех потомков ассоциируемого айтема
 				insert.UNION_ALL()
 						.SELECT(parent.getId(), IP_CHILD_ID, assocId, IP_CHILD_SUPERTYPE, 0, 0)
@@ -158,6 +161,27 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						.col("PRED." + IP_CHILD_ID).long_(parent.getId()).AND().col("PRED." + IP_ASSOC_ID).byte_(primaryAssocId)
 						.AND()
 						.col("SUCC." + IP_PARENT_ID).long_(childId).AND().col("SUCC." + IP_ASSOC_ID).byte_(primaryAssocId);
+			}
+			// Только для новых айтемов
+			// !!! Совместно с НОВЫМИ айтемами может использоваться ТОЛЬКО ПЕРВИЧНАЯ ассоциация, т.е. assocId = первичная
+			// И у нового айтема, соответственно, нет потомков
+			else {
+				Byte[] ass = ItemTypeRegistry.getAllOtherAssocIds(primaryAssocId, ItemTypeRegistry.getRootAssocId());
+
+				if (ass.length > 0) {
+					// Шаг 3. Вставить запись непосредственного предка и потомка по непервичной ассоциации
+					insert.UNION_ALL()
+							.SELECT(parent.getId(), childId, IP_ASSOC_ID, superTypeId, 1, 0)
+							.FROM(ITEM_PARENT_TBL).WHERE()
+							.col(IP_PARENT_ID).long_(parent.getId()).AND().col_IN(IP_ASSOC_ID).byteIN(ass).sql(" \r\n");
+
+					// Шаг 4. Добавить для нового потомка в качестве новых предков всех предков нового непосредственного родителя
+					insert.UNION_ALL()
+							.SELECT(IP_PARENT_ID, childId, IP_ASSOC_ID, superTypeId, 0, 0)
+							.FROM(ITEM_PARENT_TBL).WHERE()
+							.col(IP_CHILD_ID).long_(parent.getId()).AND().col_IN(IP_ASSOC_ID).byteIN(ass).sql(" \r\n");
+				}
+
 			}
 
 			// Иногда связь с новым предком уже существует через другого прямого родителя, тогда возникает
