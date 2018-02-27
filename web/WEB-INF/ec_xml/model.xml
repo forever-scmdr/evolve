@@ -30,6 +30,15 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
+
+
+
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                             КАТАЛОГ                                  ////////////-->
+
+
 	<!--Ассоциация для товаров в разделах. Один товар может быть в нескольних разных разделах-->
 	<assoc name="contains" caption="Раздел содержит" transitive="true" ag-id="1" ag-hash="-567445985"/>
 
@@ -96,9 +105,48 @@
 		<parameter name="name_value" type="string" caption="Тэг" description="сам тэг для поиска"/>
 	</item>
 
+	<!--/////////////                            END КАТАЛОГ                               ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" default-page="news_item" ag-id="11" ag-hash="300774655">
+		<parameter name="header" type="string" caption="Заголовок"/>
+		<parameter name="date" type="date" caption="Дата публикации"/>
+		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
+		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+	</item>
+
+	<item name="news" caption="Новости" ag-id="12" ag-hash="3377875">
+		<child item="news_item"/>
+	</item>
+
+	<item name="articles" caption="Статьи" ag-id="13" ag-hash="-1228877251">
+		<child item="news_item"/>
+	</item>
+
+	<item name="main_promo_bottom" caption="Промо-блок на главной" key="text_big" ag-id="14" ag-hash="1303283745">
+		<parameter name="text_big" type="string" caption="Текст крупным шрифтом"/>
+		<parameter name="text_small" type="string" caption="Текст мелким шрифтом"/>
+		<parameter name="pic" type="picture" caption="Изображение"/>
+		<parameter name="link" type="string" caption="Ссылка" description="начиная с http://"/>
+	</item>
+
+	<item name="main_page" caption="Главная страница" ag-id="15" ag-hash="-251149995">
+		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
+		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
+		<child item="main_promo_bottom" inline="true"/>
+	</item>
+
 	<root>
 		<child item="catalog" single="true" />
 		<child item="back_catalog" single="true" />
+		<child item="main_page" single="true"/>
+		<child item="news" single="true"/>
+		<child item="articles" single="true"/>
 	</root>
 
 

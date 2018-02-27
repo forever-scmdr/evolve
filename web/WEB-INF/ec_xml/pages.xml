@@ -13,10 +13,26 @@
 		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
+		<link name="news_link" target="news"/>
+		<link name="articles_link" target="articles"/>
 	</include-definition>
 
 
 	<page name="index" template="index" cacheable="true">
+		<single item="main_page" cacheable="true">
+			<list item="main_promo_bottom"/>
+		</single>
+		<single item="news">
+			<list item="news_item" id="ni">
+				<filter>
+					<sorting direction="DESC"><var value="date"/></sorting>
+					<limit><var value="4"/></limit>
+				</filter>
+				<link name="show_news_item" target="news_item" type="exclusive">
+					<var name="ni" item="ni" style="translit"/>
+				</link>
+			</list>
+		</single>
 		<include name="COMMON"/>
 	</page>
 
@@ -26,23 +42,39 @@
 	</page>
 
 
-	<page name="section" template="" cacheable="false">
+	<page name="section" template="section" cacheable="false">
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="12" scope="cookie"/>
 			<var name="tag1"/>
-			<var name="tag2"/>
+			<var name="tag2_1"/>
+			<var name="tag2_2"/>
+			<var name="tag2_3"/>
+			<var name="tag2_4"/>
+			<var name="tag2_5"/>
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section">
 			<list item="product" assoc="contains" id="prod">
 				<filter>
 					<child item="tag_first">
 						<parameter name="tag" compare="ANY"><var var="tag1"/></parameter>
-						<child item="tag_second">
-							<parameter name="name_value" compare="ANY"><var var="tag2"/></parameter>
-						</child>
+					</child>
+					<child item="tag_second" transit="true">
+						<parameter name="name_value" compare="ANY"><var var="tag2_1"/></parameter>
+					</child>
+					<child item="tag_second" transit="true">
+						<parameter name="name_value" compare="ANY"><var var="tag2_2"/></parameter>
+					</child>
+					<child item="tag_second" transit="true">
+						<parameter name="name_value" compare="ANY"><var var="tag2_3"/></parameter>
+					</child>
+					<child item="tag_second" transit="true">
+						<parameter name="name_value" compare="ANY"><var var="tag2_4"/></parameter>
+					</child>
+					<child item="tag_second" transit="true">
+						<parameter name="name_value" compare="ANY"><var var="tag2_5"/></parameter>
 					</child>
 					<limit><var var="limit"/></limit>
 					<pages><var var="page"/></pages>
@@ -56,7 +88,7 @@
 				<aggregation parameter="tag"/>
 				<link name="set_tag_1" target="section" type="exclusive">
 					<var name="sec" var="sec" style="translit"/>
-					<var name="tag1" var="tag1"/>
+					<!--<var name="tag1" var="tag1"/> это был вторая переменная с названием tag1 -->
 					<var name="tag1" item="tag_first" parameter="tag"/>
 				</link>
 			</list>
@@ -66,12 +98,6 @@
 						<parameter name="tag" compare="SOME"><var var="tag1"/></parameter>
 					</parent>
 				</filter>
-				<link name="set_tag_2" target="section" type="exclusive">
-					<var name="sec" var="sec" style="translit"/>
-					<var name="tag1" var="tag1"/>
-					<var name="tag2" var="tag2"/>
-					<var name="tag2" item="tag_second" parameter="name_value"/>
-				</link>
 				<ancestor item="tag_first"/>
 			</list>
 		</single>
@@ -89,6 +115,10 @@
 		</link>
 		<link name="set_limit_all" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="10000"/>
+		</link>
+		<link name="filter_base_link" target="section" type="exclusive">
+			<var name="sec" var="sec" style="translit"/>
+			<var name="tag1" var="tag1"/>
 		</link>
 		<include name="COMMON"/>
 	</page>
@@ -131,6 +161,61 @@
 	</page>
 
 
+
+	<page name="news" template="news">
+		<request>
+			<var name="p" value="1"/>
+		</request>
+		<single item="news">
+			<list item="news_item" id="ni">
+				<filter>
+					<sorting direction="DESC"><var value="date"/></sorting>
+					<limit><var value="12"/></limit>
+					<pages><var var="p"/></pages>
+				</filter>
+				<link name="show_news_item" target="news_item" type="exclusive">
+					<var name="ni" item="ni" style="translit"/>
+				</link>
+			</list>
+		</single>
+		<include name="COMMON"/>
+	</page>
+
+
+	<page name="articles" template="news">
+		<request>
+			<var name="p" value="1"/>
+		</request>
+		<single item="articles">
+			<list item="news_item" id="ni">
+				<filter>
+					<sorting direction="DESC"><var value="date"/></sorting>
+					<limit><var value="12"/></limit>
+					<pages><var var="p"/></pages>
+				</filter>
+				<link name="show_news_item" target="news_item" type="exclusive">
+					<var name="ni" item="ni" style="translit"/>
+				</link>
+			</list>
+		</single>
+		<include name="COMMON"/>
+	</page>
+
+
+	<page name="news_item" template="news_item">
+		<request>
+			<var name="ni" style="translit"/>
+		</request>
+		<single item="news_item" var="ni" cacheable="true" cache-vars="ni">
+			<ancestor item="news"/>
+			<ancestor item="articles"/>
+		</single>
+		<include name="COMMON"/>
+	</page>
+
+
+
+
 	<page name="downloaded">
 		<list item="parse_item" tag="NEW">
 			<filter>
@@ -144,6 +229,10 @@
 			</filter>
 		</list>
 	</page>
+
+
+
+
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->

@@ -29,12 +29,14 @@
 				</div>
 			</xsl:for-each>
 		</div>
-		<div class="actions">
-			<h3>Акции</h3>
-			<div class="actions-container">
-				<a href="">Что делать, если поломалась или разбилась сенсорная панель вашего телефона</a>
+		<xsl:if test="page/main_page/link_text and not(page/main_page/link_text = '')">
+			<div class="actions">
+				<h3>Акции</h3>
+				<div class="actions-container">
+					<a href="{page/main_page/link_link}"><xsl:value-of select="page/main_page/link_text"/></a>
+				</div>
 			</div>
-		</div>
+		</xsl:if>
 		<script>
 			var _menuShowInterval = 0;
 			var _menuHideInterval = 0;
@@ -102,19 +104,11 @@
 		<div class="news">
 			<h3>Новости</h3>
 			<div class="news-container">
-				<div>
-					<a href="">Что делать, если поломалась или разбилась сенсорная панель вашего телефона</a>
-				</div>
-				<div>
-					<a href="">Что делать, если поломалась или разбилась сенсорная панель вашего телефона</a>
-				</div>
-				<div>
-					<a href="">Что делать, если поломалась или разбилась сенсорная панель вашего телефона</a>
-				</div>
-				<div>
-					<a href="">Что делать, если поломалась или разбилась сенсорная панель вашего телефона</a>
-				</div>
-
+				<xsl:for-each select="page/news/news_item">
+					<div>
+						<a href="{show_news_item}"><xsl:value-of select="header"/></a>
+					</div>
+				</xsl:for-each>
 			</div>
 		</div>
 	</xsl:template>
@@ -126,22 +120,12 @@
 				<div class="col-xs-12 banners">
 					<!-- <h3>Специальные предложения</h3> -->
 					<div class="banners-container">
-						<a href="">
-							<h4>Камеры для смартфонов</h4>
-							<p>Большой выбор комплектующих</p>
-						</a>
-						<a href="">
-							<h4>Камеры для смартфонов</h4>
-							<p>Большой выбор комплектующих</p>
-						</a>
-						<a href="">
-							<h4>Камеры для смартфонов</h4>
-							<p>Большой выбор комплектующих</p>
-						</a>
-						<a href="">
-							<h4>Камеры для смартфонов</h4>
-							<p>Большой выбор комплектующих</p>
-						</a>
+						<xsl:for-each select="page/main_page/main_promo_bottom">
+							<a href="{link}" style="background-image: url({@path}{pic})">
+								<h4><xsl:value-of select="text_big"/></h4>
+								<p><xsl:value-of select="text_small"/></p>
+							</a>
+						</xsl:for-each>
 					</div>
 				</div>
 			</div>

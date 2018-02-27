@@ -58,8 +58,8 @@
 						<div class="main-menu">
 							<a href="{page/index_link}">Главная</a>
 							<a href="{page/catalog_link}">Каталог</a>
-							<a href="">Новости</a>
-							<a href="info_section.html">Статьи</a>
+							<a href="{page/news_link}">Новости</a>
+							<a href="{page/articles_link}">Статьи</a>
 							<a href="">Наши проекты</a>
 							<a href="dealers.html">Дилеры</a>
 							<a href="">Документация</a>
@@ -219,8 +219,8 @@
 					<li><i class="fas fa-balance-scale"></i> <a href="">Сравнение (6)</a></li>
 				</ul>
 				<ul>
-					<li><a href="">Новости</a></li>
-					<li><a href="">Статьи</a></li>
+					<li><a href="{page/news_link}">Новости</a></li>
+					<li><a href="{page/articles_link}">Статьи</a></li>
 					<li><a href="">Наши проекты</a></li>
 					<li><a href="">Дилеры</a></li>
 					<li><a href="">Документация</a></li>
@@ -247,8 +247,8 @@
 					<a href="" class="close"><i class="fas fa-times"></i></a>
 				</div>
 				<ul>
-					<li><a href="">Новости</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Статьи</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/news_link}">Новости</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/articles_link}">Статьи</a><i class="fas fa-chevron-right"></i></li>
 					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
 					<li><a href="">Дилеры</a><i class="fas fa-chevron-right"></i></li>
 					<li><a href="">Документация</a><i class="fas fa-chevron-right"></i></li>
@@ -268,8 +268,8 @@
 					<a href="" class="close"><i class="fas fa-times"></i></a>
 				</div>
 				<ul>
-					<li><a href="">Новости</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Статьи</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/news_link}">Новости</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/articles_link}">Статьи</a><i class="fas fa-chevron-right"></i></li>
 					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
 					<li><a href="">Дилеры</a><i class="fas fa-chevron-right"></i></li>
 					<li><a href="">Документация</a><i class="fas fa-chevron-right"></i></li>
@@ -328,10 +328,7 @@
 
 
 
-
-
-	<xsl:template name="CATALOG_LEFT_COLOUMN">
-		<xsl:call-template name="INC_SIDE_MENU_INTERNAL"/>
+	<xsl:template name="COMMON_LEFT_COLOUMN">
 		<div class="actions">
 			<h3>Акции</h3>
 			<div class="actions-container">
@@ -344,6 +341,13 @@
 			<p>Email <a href="">info@beltesto.by</a></p>
 			<p><a href="">Схема проезда к офису</a></p>
 		</div>
+	</xsl:template>
+
+
+
+	<xsl:template name="CATALOG_LEFT_COLOUMN">
+		<xsl:call-template name="INC_SIDE_MENU_INTERNAL"/>
+		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
 	</xsl:template>
 
 
@@ -404,7 +408,18 @@
 
 
 
-	<xsl:template name="LEFT_COLOUMN"/>
+	<xsl:template name="LEFT_COLOUMN">
+		<div class="side-menu">
+			<xsl:for-each select="page/catalog/section">
+				<div class="level-1">
+					<div class="capsule">
+						<a href="{show_section}"><xsl:value-of select="name"/></a>
+					</div>
+				</div>
+			</xsl:for-each>
+		</div>
+		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
+	</xsl:template>
 	<xsl:template name="CONTENT"/>
 	<xsl:template name="BANNERS"/>
 	<xsl:template name="EXTRA_SCRIPTS"/>
@@ -479,7 +494,7 @@
 			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 			<script type="text/javascript">
 				$(document).ready(function() {
-					$('select[value]').val($(this).attr('value');
+					$('select[value]').val($(this).attr('value'));
 				});
 			</script>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>

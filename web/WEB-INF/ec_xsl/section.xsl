@@ -9,6 +9,10 @@
 
 
 	<xsl:variable name="view" select="page/variables/view"/>
+	<xsl:variable name="tag1" select="page/variables/tag1"/>
+	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
+	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
+	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -23,7 +27,7 @@
 			<span><i class="fas fa-print"></i> <a href="">Распечатать</a></span>
 		</div>
 		<h1><xsl:value-of select="$sel_sec/name"/></h1>
-		<xsl:if test="not($sel_sec/product)">
+		<xsl:if test="not($products)">
 			<div class="page-content m-t">
 				<div class="catalog-items"><!-- добавить класс lines для отображения по строкам -->
 					<xsl:for-each select="/page/catalog//section[@id = $sel_sec_id]/section">
@@ -39,50 +43,106 @@
 				</div>
 			</div>
 		</xsl:if>
-		<xsl:if test="$sel_sec/product">
+		<xsl:if test="$products">
 			<div class="page-content m-t">
+
 				<xsl:if test="$sel_sec/tag_first">
 					<div class="tags">
 						<strong>Выберите тэг:</strong>
 						<xsl:for-each select="$sel_sec/tag_first">
-							<a href="{set_tag_1}"><span class="label label-success"><xsl:value-of select="tag"/></span></a>
+							<a href="{set_tag_1}"><span class="label label-{if (tag = $tag1) then 'primary' else 'success'}"><xsl:value-of select="tag"/></span></a>
 						</xsl:for-each>
 					</div>
 				</xsl:if>
 
-				<div class="view-container desktop">
-					<div class="view">
-						<span>Показывать:</span>
-						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
-						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox"/> в наличии
-							</label>
+				<xsl:if test="$sel_sec/tag_second">
+					<form method="post" action="{page/filter_base_link}">
+						<div class="filters">
+							<div class="toggle-filters">
+								<i class="fas fa-cog"></i> <a href="">Подбор по параметрам</a>
+							</div>
+							<xsl:for-each-group select="$sel_sec/tag_second" group-by="name">
+								<xsl:sort select="name"/>
+								<div class="active checkgroup">
+									<strong><xsl:value-of select="current-grouping-key()"/></strong>
+									<div class="values">
+										<xsl:for-each-group select="current-group()" group-by="value">
+											<xsl:sort select="value"/>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" value="{name_value}">
+														<xsl:if test="name_value = $tag2">
+															<xsl:attribute name="checked" select="'checked'"/>
+														</xsl:if>
+													</input>&#160;<xsl:value-of select="current-grouping-key()"/>
+												</label>
+											</div>
+										</xsl:for-each-group>
+									</div>
+								</div>
+							</xsl:for-each-group>
+							<div class="buttons">
+								<input type="submit" value="Показать найденное" onclick="prepareFilterForm()"/>
+								<input type="submit" value="Сбросить" onclick="$('.checkgroup input').attr('name', '')"/>
+							</div>
 						</div>
-						<span>
-							<select class="form-control">
-								<option>Сначала дешевые</option>
-								<option>Сначала дорогие</option>
-								<option>По алфавиту А→Я</option>
-								<option>По алфавиту Я→А</option>
-							</select>
-						</span>
+					</form>
+					<script>
+						<xsl:text disable-output-escaping="yes">
+						var _finlterInputIndex = 0;
+						function prepareFilterForm() {
+							_finlterInputIndex = 0;
+							$('.checkgroup').each(function(index, element) {
+								var checkedInputs = $(element).find('input:checked');
+								if (checkedInputs.length &gt; 0) {
+									_finlterInputIndex++;
+									checkedInputs.attr('name', 'tag2_' + _finlterInputIndex);
+								}
+							});
+						}
+						</xsl:text>
+					</script>
+				</xsl:if>
+
+				<xsl:if test="not($not_found)">
+					<div class="view-container desktop">
+						<div class="view">
+							<span>Показывать:</span>
+							<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
+							<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox"/> в наличии
+								</label>
+							</div>
+							<span>
+								<select class="form-control">
+									<option>Сначала дешевые</option>
+									<option>Сначала дорогие</option>
+									<option>По алфавиту А→Я</option>
+									<option>По алфавиту Я→А</option>
+								</select>
+							</span>
+						</div>
+						<div class="quantity">
+							<span>Кол-во на странице:</span>
+							<span>
+								<select class="form-control" value="{page/variables/limit}"
+								        onchange="window.location.href = $(this).find(':selected').attr('link')">
+									<option link="{page/set_limit_12}">12</option>
+									<option link="{page/set_limit_24}">24</option>
+									<option link="{page/set_limit_all}">все</option>
+								</select>
+							</span>
+						</div>
 					</div>
-					<div class="quantity">
-						<span>Кол-во на странице:</span>
-						<span>
-							<select class="form-control" value="{page/variables/limit}" onchange="window.location.href = $(this).find(':selected').attr('link')">
-								<option link="{page/set_limit_12}">12</option>
-								<option link="{page/set_limit_24}">24</option>
-								<option link="{page/set_limit_all}">все</option>
-							</select>
-						</span>
-					</div>
-				</div>
+				</xsl:if>
 
 				<div class="catalog-items{' lines'[$view = 'list']}"><!-- добавить класс lines для отображения по строкам -->
 					<xsl:apply-templates select="$sel_sec/product"/>
+					<xsl:if test="$not_found">
+						<h4>По заданным критериям товары не найдены</h4>
+					</xsl:if>
 				</div>
 			</div>
 
