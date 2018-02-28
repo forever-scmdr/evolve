@@ -402,9 +402,9 @@ public class Item implements ItemBasics {
 							paramValue = new StringBuilder();
 							metas = new ArrayList<>();
 							for (int i = 0; i < attributes.getLength(); i++) {
-								String attName = attributes.getLocalName(i);
-								String attValue = attributes.getValue(i);
-								if (!StringUtils.equalsIgnoreCase(attName, ID_ATTRIBUTE)) {
+								String attName = attributes.getQName(i);
+								String attValue = attributes.getValue(attName);
+								if (StringUtils.isNoneBlank(attName, attValue) && !StringUtils.equalsIgnoreCase(attName, ID_ATTRIBUTE)) {
 									metas.add(attName);
 									metas.add(attValue);
 								}

@@ -80,7 +80,8 @@
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
-		<parameter name="price" type="double" caption="Цена"/>
+		<parameter name="price" type="currency" caption="Цена"/>
+		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="tech" type="xml" caption="Технические характеристики" description="в виде таблицы для вывода" />
@@ -108,6 +109,31 @@
 	<!--/////////////                            END КАТАЛОГ                               ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                             КОРЗИНА                                  ////////////-->
+
+	<item name="bought" caption="Покупка" virtual="true" ag-id="16" ag-hash="-1383211797">
+		<parameter name="code" type="string" caption="Код товара"/>
+		<parameter name="qty" type="double" caption="Количество"/>
+		<parameter name="price" type="currency" caption="Цена товара"/>
+		<parameter name="sum" type="currency" caption="Полная стоимость"/>
+		<child item="product" single="true"/>
+	</item>
+
+	<item name="cart" caption="Корзина" virtual="true" ag-id="17" ag-hash="3046176">
+		<parameter name="qty" type="double" caption="Количество товаров"/>
+		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<child item="bought"/>
+	</item>
+
+	<!--/////////////                            END КОРЗИНА                               ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
 
 
 
@@ -141,12 +167,45 @@
 		<child item="main_promo_bottom" inline="true"/>
 	</item>
 
+	<item name="dealer_coords" caption="Дилер" key="name" ag-id="18" ag-hash="-1075960572">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="address" type="string" caption="Адрес" description="начиная с названия города"/>
+		<parameter name="info" type="short-text" caption="Инофрмация" description="телефоны, ардес сайта и т.д."/>
+	</item>
+
+	<item name="dealers_page" caption="Карта дилеров" ag-id="19" ag-hash="811291188">
+		<child item="dealer_coords"/>
+	</item>
+
+	<item name="docs" caption="Документация" ag-id="20" ag-hash="3088955">
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+	</item>
+
+	<item name="contacts" caption="Контакты" ag-id="21" ag-hash="-567451565">
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="map" type="plain-text" caption="Код карты" format="height: 50px"/>
+		<parameter name="bottom_text" type="text" caption="Как добраться"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+	</item>
+
+	<item name="common" caption="На всех страницах" ag-id="22" ag-hash="-1354814997">
+		<parameter name="top" type="short-text" caption="Верх" description="телефоны"/>
+		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
+		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
+		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
+	</item>
+
 	<root>
 		<child item="catalog" single="true" />
 		<child item="back_catalog" single="true" />
 		<child item="main_page" single="true"/>
 		<child item="news" single="true"/>
 		<child item="articles" single="true"/>
+		<child item="dealers_page" single="true"/>
+		<child item="docs" single="true"/>
+		<child item="contacts" single="true"/>
+		<child item="common" single="true"/>
 	</root>
 
 

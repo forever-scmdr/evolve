@@ -58,7 +58,7 @@ public class DateDataType extends FormatDataType {
 
 	@Override
 	public HashMap<String, String> createMeta(Object value, Object... extraParams) {
-		HashMap<String, String> meta = new HashMap<String, String>();
+		HashMap<String, String> meta = new HashMap<>();
 		meta.put(MILLIS_META, value.toString());
 		return meta;
 	}

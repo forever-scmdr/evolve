@@ -45,7 +45,6 @@
 		</xsl:if>
 		<xsl:if test="$products">
 			<div class="page-content m-t">
-
 				<xsl:if test="$sel_sec/tag_first">
 					<div class="tags">
 						<strong>Выберите тэг:</strong>
@@ -129,21 +128,22 @@
 							<span>
 								<select class="form-control" value="{page/variables/limit}"
 								        onchange="window.location.href = $(this).find(':selected').attr('link')">
-									<option link="{page/set_limit_12}">12</option>
-									<option link="{page/set_limit_24}">24</option>
-									<option link="{page/set_limit_all}">все</option>
+									<option value="12" link="{page/set_limit_12}">12</option>
+									<option value="24" link="{page/set_limit_24}">24</option>
+									<option value="10000" link="{page/set_limit_all}">все</option>
 								</select>
 							</span>
 						</div>
 					</div>
 				</xsl:if>
 
-				<div class="catalog-items{' lines'[$view = 'list']}"><!-- добавить класс lines для отображения по строкам -->
+				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:apply-templates select="$sel_sec/product"/>
 					<xsl:if test="$not_found">
 						<h4>По заданным критериям товары не найдены</h4>
 					</xsl:if>
 				</div>
+
 			</div>
 
 			<xsl:if test="$sel_sec/product_pages">

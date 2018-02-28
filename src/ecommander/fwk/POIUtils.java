@@ -1,5 +1,7 @@
 package ecommander.fwk;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +15,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -32,10 +35,10 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 public class POIUtils {
-	public static class Cells {
+	public static class CellXY {
 		public int row;
 		public int column;
-		private Cells(int row, int col) {
+		private CellXY(int row, int col) {
 			this.row = row;
 			this.column = col;
 		}
@@ -283,24 +286,38 @@ public class POIUtils {
 	 * Найти строки и столбцы, содержащие заданный текст
 	 * @param sheet
 	 * @param cellContent
+	 * @param justFirst - если true, то выходить после первой найденной ячейки
 	 * @return
 	 */
-	public static ArrayList<Cells> findRowContaining(Sheet sheet, String cellContent) {
-		ArrayList<Cells> result = new ArrayList<Cells>();
+	public static ArrayList<CellXY> findRowContaining(Sheet sheet, String cellContent, boolean justFirst) {
+		ArrayList<CellXY> result = new ArrayList<POIUtils.CellXY>();
 		Iterator<Row> rowIter = sheet.iterator();
 		while (rowIter.hasNext()) {
 			Row row = rowIter.next();
 			Iterator<Cell> cellIter = row.iterator();
 			while (cellIter.hasNext()) {
-			Cell cell = cellIter.next();
-				if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-					if (StringUtils.containsIgnoreCase(cell.getRichStringCellValue().getString(), cellContent)) {
-						result.add(new Cells(row.getRowNum(), cell.getColumnIndex()));
-					}
+				Cell cell = cellIter.next();
+				String cellValue = getCellAsString(cell);
+				if (StringUtils.containsIgnoreCase(cellValue, cellContent)) {
+					result.add(new CellXY(row.getRowNum(), cell.getColumnIndex()));
+					if (justFirst)
+						return result;
 				}
 			}
 		}
 		return result;
+	}
+	/**
+	 * Найти первую ячейку с заданным текстом
+	 * @param sheet
+	 * @param cellContent
+	 * @return
+	 */
+	public static CellXY findFirstContaining(Sheet sheet, String cellContent) {
+		ArrayList<CellXY> result = findRowContaining(sheet, cellContent, true);
+		if (result.isEmpty())
+			return null;
+		return result.get(0);
 	}
 	/**
 	 * Найти столбцы в строке, содержащие заданный текст
@@ -308,15 +325,14 @@ public class POIUtils {
 	 * @param cellContent
 	 * @return
 	 */
-	public static ArrayList<Cells> findCellInRowContaining(Sheet sheet, String cellContent, Row row) {
-		ArrayList<Cells> result = new ArrayList<Cells>();
+	public static ArrayList<CellXY> findCellInRowContaining(Sheet sheet, String cellContent, Row row) {
+		ArrayList<CellXY> result = new ArrayList<POIUtils.CellXY>();
 		Iterator<Cell> cellIter = row.iterator();
 		while (cellIter.hasNext()) {
-		Cell cell = cellIter.next();
-			if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-				if (StringUtils.containsIgnoreCase(cell.getRichStringCellValue().getString(), cellContent)) {
-					result.add(new Cells(row.getRowNum(), cell.getColumnIndex()));
-				}
+			Cell cell = cellIter.next();
+			String cellValue = getCellAsString(cell);
+			if (StringUtils.containsIgnoreCase(cellValue, cellContent)) {
+				result.add(new CellXY(row.getRowNum(), cell.getColumnIndex()));
 			}
 		}
 		return result;
@@ -329,23 +345,8 @@ public class POIUtils {
 	public static String getCellAsString(Cell cell, double... roundQuotient) {
 		if (cell == null)
 			return null;
-		switch (cell.getCellType()) {
-		case Cell.CELL_TYPE_BLANK:
-			return cell.getStringCellValue();
-		case Cell.CELL_TYPE_BOOLEAN:
-			return cell.getBooleanCellValue() + "";
-		case Cell.CELL_TYPE_ERROR:
-			return cell.getErrorCellValue() + "";
-		case Cell.CELL_TYPE_FORMULA:
-			if (cell.getCachedFormulaResultType() == Cell.CELL_TYPE_NUMERIC)
-				return round(cell.getNumericCellValue(), roundQuotient) + "";
-			return cell.getRichStringCellValue().getString();
-		case Cell.CELL_TYPE_NUMERIC:
-			return round(cell.getNumericCellValue(), roundQuotient) + "";
-		case Cell.CELL_TYPE_STRING:
-			return cell.getRichStringCellValue().getString();
-		}
-		return "";
+		DataFormatter df = new DataFormatter();
+		return df.formatCellValue(cell);
 	}
 	
 	private static String round(double number, double... quotient) {
@@ -385,10 +386,10 @@ public class POIUtils {
 		return resultRuns;
 	}
 
-	
-	public static void replaceXlsTextDirect(Sheet sheet, String searchStr, String replace) {
-		ArrayList<Cells> allCoords = findRowContaining(sheet, searchStr);
-		for (Cells coords : allCoords) {
+
+	public static void replaceXlsTextDirect(Sheet sheet, String searchStr, String replace, boolean justFirst) {
+		ArrayList<CellXY> allCoords = findRowContaining(sheet, searchStr, justFirst);
+		for (CellXY coords : allCoords) {
 			Cell cell = sheet.getRow(coords.row).getCell(coords.column);
 			String newText = StringUtils.replace(cell.getStringCellValue(), searchStr, replace);
 			cell.setCellValue(newText);
@@ -402,9 +403,9 @@ public class POIUtils {
 	 * @param replace
 	 */
 	public static void replaceXlsTextDirect(Sheet sheet, int rowNum, String searchStr, String replace) {
-		ArrayList<Cells> allCoords = findCellInRowContaining(sheet, searchStr, sheet.getRow(rowNum));
+		ArrayList<CellXY> allCoords = findCellInRowContaining(sheet, searchStr, sheet.getRow(rowNum));
 		if (allCoords.size() > 0) {
-			Cells coords = allCoords.get(0);
+			CellXY coords = allCoords.get(0);
 			Cell cell = sheet.getRow(coords.row).getCell(coords.column);
 			String newText = StringUtils.replace(cell.getStringCellValue(), searchStr, replace);
 			cell.setCellValue(newText);
@@ -442,5 +443,17 @@ public class POIUtils {
 	            sheet.removeRow(removingRow);
 	        }
 	    }
+	}
+
+	public static POIExcelWrapper openExcel(String fileName) {
+		return POIExcelWrapper.create(fileName);
+	}
+
+	public static POIExcelWrapper openExcel(File file) {
+		return POIExcelWrapper.create(file);
+	}
+
+	public static POIExcelWrapper openExcel(Path path) {
+		return POIExcelWrapper.create(path);
 	}
 }

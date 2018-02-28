@@ -36,9 +36,7 @@
 						</div>
 						<div class="other-container">
 							<div class="contacts">
-								<p><i class="fas fa-phone"></i> <strong>Заказ и консультация:</strong></p>
-								<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - городской;</p>
-								<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - велком;</p>
+								<xsl:value-of select="page/common/top" disable-output-escaping="yes"/>
 								<p><a href="" data-toggle="modal" data-target="#modal-feedback">Форма обратной связи</a></p>
 							</div>
 							<div class="cart">
@@ -61,9 +59,9 @@
 							<a href="{page/news_link}">Новости</a>
 							<a href="{page/articles_link}">Статьи</a>
 							<a href="">Наши проекты</a>
-							<a href="dealers.html">Дилеры</a>
-							<a href="">Документация</a>
-							<a href="contacts.html">Контакты</a>
+							<a href="{page/dealers_link}">Дилеры</a>
+							<a href="{page/docs_link}">Документация</a>
+							<a href="{page/contacts_link}">Контакты</a>
 						</div>
 					</div>
 				</div>
@@ -113,17 +111,10 @@
 								<img src="http://mobileplus.by/images/2/icon_card_visa.png" alt=""/>
 							</div>
 							<div class="block contacts">
-								<p>Заказ и консультация</p>
-								<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - городской;</p>
-								<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - велком;</p>
+								<xsl:value-of select="page/common/bottom" disable-output-escaping="yes"/>
 							</div>
 							<div class="block address">
-								<p>Адрес: г. Минск, 220070, пр-т Партизанский 14, к. 514A</p>
-								<p>
-									Режим работы:<xsl:call-template name="BR"/>
-									Пн-Пт 10.00-18.00<xsl:call-template name="BR"/>
-									Сб-Вс 10.00-17.00 (прием заказов)
-								</p>
+								<xsl:value-of select="page/common/bottom_address" disable-output-escaping="yes"/>
 							</div>
 						</div>
 					</div>
@@ -222,15 +213,15 @@
 					<li><a href="{page/news_link}">Новости</a></li>
 					<li><a href="{page/articles_link}">Статьи</a></li>
 					<li><a href="">Наши проекты</a></li>
-					<li><a href="">Дилеры</a></li>
-					<li><a href="">Документация</a></li>
-					<li><a href="">Контакты</a></li>
-					<li><a href="">Новости</a></li>
-					<li><a href="">Статьи</a></li>
+					<li><a href="{page/dealers_link}">Дилеры</a></li>
+					<li><a href="{page/docs_link}">Документация</a></li>
+					<li><a href="{page/contacts_link}">Контакты</a></li>
+					<li><a href="{page/news_link}">Новости</a></li>
+					<li><a href="{page/articles_link}">Статьи</a></li>
 					<li><a href="">Наши проекты</a></li>
-					<li><a href="">Дилеры</a></li>
-					<li><a href="">Документация</a></li>
-					<li><a href="">Контакты</a></li>
+					<li><a href="{page/dealers_link}">Дилеры</a></li>
+					<li><a href="{page/docs_link}">Документация</a></li>
+					<li><a href="{page/contacts_link}">Контакты</a></li>
 				</ul>
 			</div>
 		</div>
@@ -250,15 +241,15 @@
 					<li><a href="{page/news_link}">Новости</a><i class="fas fa-chevron-right"></i></li>
 					<li><a href="{page/articles_link}">Статьи</a><i class="fas fa-chevron-right"></i></li>
 					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Дилеры</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Документация</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Контакты</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Новости</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Статьи</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/dealers_link}">Дилеры</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/docs_link}">Документация</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/contacts_link}">Контакты</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/news_link}">Новости</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/articles_link}">Статьи</a><i class="fas fa-chevron-right"></i></li>
 					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Дилеры</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Документация</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Контакты</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/dealers_link}">Дилеры</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/docs_link}">Документация</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/contacts_link}">Контакты</a><i class="fas fa-chevron-right"></i></li>
 				</ul>
 			</div>
 			<div class="content next">
@@ -271,15 +262,15 @@
 					<li><a href="{page/news_link}">Новости</a><i class="fas fa-chevron-right"></i></li>
 					<li><a href="{page/articles_link}">Статьи</a><i class="fas fa-chevron-right"></i></li>
 					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Дилеры</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Документация</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Контакты</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Новости</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Статьи</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/dealers_link}">Дилеры</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/docs_link}">Документация</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/contacts_link}">Контакты</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/news_link}">Новости</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/articles_link}">Статьи</a><i class="fas fa-chevron-right"></i></li>
 					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Дилеры</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Документация</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Контакты</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/dealers_link}">Дилеры</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/docs_link}">Документация</a><i class="fas fa-chevron-right"></i></li>
+					<li><a href="{page/contacts_link}">Контакты</a><i class="fas fa-chevron-right"></i></li>
 				</ul>
 			</div>
 		</div>
@@ -494,7 +485,9 @@
 			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 			<script type="text/javascript">
 				$(document).ready(function() {
-					$('select[value]').val($(this).attr('value'));
+					$('select[value]').each(function(index, element) {
+						$(element).val($(element).attr('value'));
+					});
 				});
 			</script>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>

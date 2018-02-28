@@ -93,7 +93,11 @@
 
 	<xsl:template name="CONTENT">
 		<div class="slider-container">
-			<div>СЛАЙДЕР</div>
+			<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40">
+				<img src="img/slide_1.png" />
+				<img src="img/slide_2.png" />
+				<img src="img/slide_3.png" />
+			</div>
 		</div>
 		<div class="actions mobile">
 			<h3>Акции</h3>
@@ -130,6 +134,10 @@
 				</div>
 			</div>
 		</div>
+	</xsl:template>
+
+	<xsl:template name="EXTRA_SCRIPTS">
+		<script type="text/javascript" src="fotorama/fotorama.js"/>
 	</xsl:template>
 
 </xsl:stylesheet>

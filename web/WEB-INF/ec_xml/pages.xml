@@ -11,10 +11,14 @@
 				</link>
 			</tree>
 		</single>
+		<single item="common" cacheable="false"/>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
 		<link name="news_link" target="news"/>
 		<link name="articles_link" target="articles"/>
+		<link name="dealers_link" target="dealers"/>
+		<link name="docs_link" target="docs"/>
+		<link name="contacts_link" target="contacts"/>
 	</include-definition>
 
 
@@ -42,7 +46,7 @@
 	</page>
 
 
-	<page name="section" template="section" cacheable="false">
+	<page name="section" template="section" cacheable="true">
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
@@ -162,7 +166,7 @@
 
 
 
-	<page name="news" template="news">
+	<page name="news" template="news" cacheable="true">
 		<request>
 			<var name="p" value="1"/>
 		</request>
@@ -182,7 +186,7 @@
 	</page>
 
 
-	<page name="articles" template="news">
+	<page name="articles" template="news" cacheable="true">
 		<request>
 			<var name="p" value="1"/>
 		</request>
@@ -202,7 +206,7 @@
 	</page>
 
 
-	<page name="news_item" template="news_item">
+	<page name="news_item" template="news_item" cacheable="true">
 		<request>
 			<var name="ni" style="translit"/>
 		</request>
@@ -215,24 +219,22 @@
 
 
 
-
-	<page name="downloaded">
-		<list item="parse_item" tag="NEW">
-			<filter>
-				<parameter name="duplicated"><var value="0"/></parameter>
-				<limit><var value="0"/></limit>
-			</filter>
-		</list>
-		<list item="parse_item" tag="DUPLICATED">
-			<filter>
-				<parameter name="duplicated"><var value="1"/></parameter>
-			</filter>
-		</list>
+	<page name="dealers" template="dealers" cacheable="true">
+		<list item="dealer_coords" cacheable="true"/>
+		<include name="COMMON"/>
 	</page>
 
 
+	<page name="docs" template="docs" cacheable="true">
+		<single item="docs" cacheable="true"/>
+		<include name="COMMON"/>
+	</page>
 
 
+	<page name="contacts" template="contacts" cacheable="true">
+		<single item="contacts" cacheable="true"/>
+		<include name="COMMON"/>
+	</page>
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->

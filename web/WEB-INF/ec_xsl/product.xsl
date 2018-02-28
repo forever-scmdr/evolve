@@ -36,7 +36,7 @@
 			</div>
 			-->
 			<div class="gallery">
-				<div class="fotorama" data-width="100%" data-maxwidth="100%" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40">
+				<div class="fotorama" data-width="100%" data-maxwidth="100%" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}"/>
 					</xsl:for-each>
@@ -98,6 +98,9 @@
 						<div class="table-responsive">
 						<xsl:for-each select="$p/tech/tag">
 							<table>
+								<colgroup>
+									<col style="width: 40%"/>
+								</colgroup>
 								<thead>
 									<tr>
 										<th colspan="2"><xsl:value-of select="@name"/></th>
@@ -106,7 +109,8 @@
 								<xsl:for-each select="parameter">
 									<tr>
 										<td>
-											<p><xsl:value-of select="name"/></p>
+											<p><strong>
+												<xsl:value-of select="name"/></strong></p>
 										</td>
 										<td>
 											<xsl:for-each select="value">
