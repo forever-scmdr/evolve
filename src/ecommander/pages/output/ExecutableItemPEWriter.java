@@ -62,6 +62,7 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 			addConentUpdateAttrs(xml, item);
 		// Параметры айтема
 		// Если айтем содержит XML параметры, то им надо убрать эскейпинг
+		/*
 		if (item.getItemType().hasXML()) {
 			//xml.addElements(StringEscapeUtils.unescapeXml(item.outputValues()));
 			String values = item.outputValues();
@@ -77,7 +78,8 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 			xml.addElements(values);
 		} else {
 			xml.addElements(item.outputValues());
-		}
+		}*/
+		xml.addElements(item.outputValues());
 		// Вывести поля extra (нужны в частности при полнотекстовом поиске для подсветки результатов
 		if (item.hasExtras()) {
 			xml.startElement(OWN_EXTRAS_ELEMENT);

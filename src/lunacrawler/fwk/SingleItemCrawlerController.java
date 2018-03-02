@@ -521,7 +521,7 @@ public class SingleItemCrawlerController {
 
 						// Подготовка HTML (убирание необъявленных сущностей и т.д.)
 						Document jsoupDoc = Jsoup.parse(item.get_html());
-						String html = JsoupUtils.outputDoc(jsoupDoc);
+						String html = JsoupUtils.outputHtmlDoc(jsoupDoc);
 
 						// Преборазование очищенного HTML
 						Reader reader = new StringReader(html);

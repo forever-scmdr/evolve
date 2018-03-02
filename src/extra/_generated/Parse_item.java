@@ -18,6 +18,9 @@ public class Parse_item
     }
 
     public static Parse_item get(Item item) {
+        if (item == null) {
+            return null;
+        }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'parse_item' can not be created around '"+(item.getTypeName()+"' object")));

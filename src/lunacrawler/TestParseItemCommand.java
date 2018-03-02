@@ -10,7 +10,6 @@ import lunacrawler.fwk.SingleItemCrawlerController;
 import net.sf.saxon.TransformerFactoryImpl;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Entities;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -20,7 +19,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.Reader;
 import java.io.StringReader;
-import java.nio.charset.Charset;
 
 /**
  * Команда тестирования XSLT преобразования для одного айтема parse_item
@@ -43,7 +41,7 @@ public class TestParseItemCommand extends Command {
 			Transformer transformer = factory.newTransformer(new StreamSource(xslFile));
 
 			Document jsoupDoc = Jsoup.parse(pi.get_html());
-			String html = JsoupUtils.outputDoc(jsoupDoc);
+			String html = JsoupUtils.outputHtmlDoc(jsoupDoc);
 
 			Reader reader = new StringReader(html);
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();

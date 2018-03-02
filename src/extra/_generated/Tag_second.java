@@ -15,6 +15,9 @@ public class Tag_second
     }
 
     public static Tag_second get(Item item) {
+        if (item == null) {
+            return null;
+        }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'tag_second' can not be created around '"+(item.getTypeName()+"' object")));

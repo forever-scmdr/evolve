@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -85,8 +86,13 @@ public class CodeGenerator {
 					JVar instSrc = getInstance.param(Item.class, "item");
 					JInvocation testCompat = codeModel.ref(ItemTypeRegistry.class).staticInvoke("getItemPredecessorsExt")
 							.arg(instSrc.invoke("getTypeName")).invoke("contains").arg(typeNameVar);
-					JVar isCompatible = getInstance.body().decl(codeModel.BOOLEAN, "isCompatible", testCompat);
 					String errorMessage = "Wrapper '" + itemName + "' can not be created around '";
+					getInstance
+							.body()
+							._if(instSrc.eq(JExpr._null()))
+							._then()._return(JExpr._null());
+
+					JVar isCompatible = getInstance.body().decl(codeModel.BOOLEAN, "isCompatible", testCompat);
 					getInstance
 							.body()
 							._if(isCompatible.not())
@@ -94,7 +100,9 @@ public class CodeGenerator {
 							._throw(JExpr._new(codeModel._ref(ClassCastException.class)).arg(
 									JExpr.lit(errorMessage).plus(instSrc.invoke("getTypeName").plus(JExpr.lit("' object")))));
 					
-					getInstance.body()._return(JExpr._new(itemClass).arg(instSrc));
+					getInstance
+							.body()
+							._return(JExpr._new(itemClass).arg(instSrc));
 					// Статический метод создания нового айтема с известным предком
 					JMethod newDirectChildInstance = itemClass.method(JMod.PUBLIC | JMod.STATIC, itemClass, "newChild");
 					JVar directParent = newDirectChildInstance.param(Item.class, "parent");
@@ -121,6 +129,9 @@ public class CodeGenerator {
 						} else if (param.getType() == Type.DOUBLE) {
 							type = Double.class;
 							methodName = "getDoubleValue";
+						} else if (param.getType() == Type.DECIMAL || param.getType() == Type.CURRENCY || param.getType() == Type.CURRENCY_PRECISE) {
+							type = BigDecimal.class;
+							methodName = "getDecimalValue";
 						} else if (param.getType() == Type.STRING || param.getType() == Type.PLAIN_TEXT || param.getType() == Type.SHORT_TEXT
 								|| param.getType() == Type.TEXT || param.getType() == Type.TINY_TEXT || param.getType() == Type.XML) {
 							type = String.class;

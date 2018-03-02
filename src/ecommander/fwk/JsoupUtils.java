@@ -1,9 +1,10 @@
 package ecommander.fwk;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Entities;
-import org.jsoup.select.Elements;
+import org.jsoup.parser.Parser;
 
 import java.nio.charset.Charset;
 
@@ -20,12 +21,26 @@ public class JsoupUtils {
 		return element.getElementsByTag(tag).first().html();
 	}
 
-	public static String outputDoc(Document jsoupDoc) {
+	public static String outputHtmlDoc(Document jsoupDoc) {
+		setSettings(jsoupDoc);
+		return jsoupDoc.body().outerHtml();
+	}
+
+	public static String outputXmlDoc(Document jsoupDoc) {
+		setSettings(jsoupDoc);
+		return jsoupDoc.outerHtml();
+	}
+
+	private static void setSettings(Document jsoupDoc) {
 		Document.OutputSettings settings = new Document.OutputSettings();
 		settings.charset(Charset.forName("UTF-8"));
 		settings.syntax(Document.OutputSettings.Syntax.xml);
 		settings.escapeMode(Entities.EscapeMode.xhtml);
 		jsoupDoc.outputSettings(settings);
-		return jsoupDoc.body().outerHtml();
+	}
+
+	public static String prepareValidXml(String unknownXml) {
+		Document doc = Jsoup.parse(unknownXml, "", Parser.xmlParser());
+		return JsoupUtils.outputXmlDoc(doc);
 	}
 }

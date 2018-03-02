@@ -4,28 +4,28 @@ package extra._generated;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Back_catalog
+public class News
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "back_catalog";
+    private final static String _ITEM_TYPE_NAME = "news";
 
-    private Back_catalog(Item item) {
+    private News(Item item) {
         super(item);
     }
 
-    public static Back_catalog get(Item item) {
+    public static News get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'back_catalog' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'news' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Back_catalog(item);
+        return new News(item);
     }
 
-    public static Back_catalog newChild(Item parent) {
+    public static News newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 

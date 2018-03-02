@@ -2,6 +2,7 @@ package ecommander.model;
 
 import java.io.File;
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1174,6 +1175,15 @@ public class Item implements ItemBasics {
 	public final Double getDoubleValue(String paramName) {
 		return (Double) getValue(paramName);
 	}
+
+	/**
+	 * Вернуть значение параметра типа BigDecimal
+	 * @param paramName
+	 * @return
+	 */
+	public final BigDecimal getDecimalValue(String paramName) {
+		return (BigDecimal) getValue(paramName);
+	}
 	/**
 	 * Вернуть значение целочисленного параметра
 	 * @param paramName
@@ -1242,6 +1252,16 @@ public class Item implements ItemBasics {
 	 */
 	public final double getDoubleValue(String paramName, double defaultValue) {
 		return (Double) getValue(paramName, defaultValue);
+	}
+	/**
+	 * Возвращает значение одиночного парамтера.
+	 * Если параметр не задан - возвращается значение по умолчанию
+	 * @param paramName
+	 * @param defaultValue
+	 * @return
+	 */
+	public final BigDecimal getDecimalValue(String paramName, BigDecimal defaultValue) {
+		return (BigDecimal) getValue(paramName, defaultValue);
 	}
 	/**
 	 * Возвращает значение одиночного парамтера.

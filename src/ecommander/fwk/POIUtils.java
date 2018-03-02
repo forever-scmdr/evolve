@@ -14,10 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -289,7 +286,7 @@ public class POIUtils {
 	 * @param justFirst - если true, то выходить после первой найденной ячейки
 	 * @return
 	 */
-	public static ArrayList<CellXY> findRowContaining(Sheet sheet, String cellContent, boolean justFirst) {
+	public static ArrayList<CellXY> findRowContaining(Sheet sheet, FormulaEvaluator evaluator, String cellContent, boolean justFirst) {
 		ArrayList<CellXY> result = new ArrayList<POIUtils.CellXY>();
 		Iterator<Row> rowIter = sheet.iterator();
 		while (rowIter.hasNext()) {
@@ -297,7 +294,7 @@ public class POIUtils {
 			Iterator<Cell> cellIter = row.iterator();
 			while (cellIter.hasNext()) {
 				Cell cell = cellIter.next();
-				String cellValue = getCellAsString(cell);
+				String cellValue = getCellAsString(cell, evaluator);
 				if (StringUtils.containsIgnoreCase(cellValue, cellContent)) {
 					result.add(new CellXY(row.getRowNum(), cell.getColumnIndex()));
 					if (justFirst)
@@ -313,24 +310,25 @@ public class POIUtils {
 	 * @param cellContent
 	 * @return
 	 */
-	public static CellXY findFirstContaining(Sheet sheet, String cellContent) {
-		ArrayList<CellXY> result = findRowContaining(sheet, cellContent, true);
+	public static CellXY findFirstContaining(Sheet sheet, FormulaEvaluator evaluator, String cellContent) {
+		ArrayList<CellXY> result = findRowContaining(sheet, evaluator, cellContent, true);
 		if (result.isEmpty())
 			return null;
 		return result.get(0);
 	}
 	/**
 	 * Найти столбцы в строке, содержащие заданный текст
-	 * @param sheet
+	 * @param evaluator
 	 * @param cellContent
+	 * @param row
 	 * @return
 	 */
-	public static ArrayList<CellXY> findCellInRowContaining(Sheet sheet, String cellContent, Row row) {
-		ArrayList<CellXY> result = new ArrayList<POIUtils.CellXY>();
+	public static ArrayList<CellXY> findCellInRowContaining(FormulaEvaluator evaluator, String cellContent, Row row) {
+		ArrayList<CellXY> result = new ArrayList<>();
 		Iterator<Cell> cellIter = row.iterator();
 		while (cellIter.hasNext()) {
 			Cell cell = cellIter.next();
-			String cellValue = getCellAsString(cell);
+			String cellValue = getCellAsString(cell, evaluator);
 			if (StringUtils.containsIgnoreCase(cellValue, cellContent)) {
 				result.add(new CellXY(row.getRowNum(), cell.getColumnIndex()));
 			}
@@ -340,11 +338,16 @@ public class POIUtils {
 	/**
 	 * Получить значение из ячейки в виде строки
 	 * @param cell
+	 * @param evaluator
 	 * @return
 	 */
-	public static String getCellAsString(Cell cell, double... roundQuotient) {
+	public static String getCellAsString(Cell cell, FormulaEvaluator evaluator) {
 		if (cell == null)
 			return null;
+		if (cell.getCellTypeEnum() == CellType.FORMULA) {
+			CellValue cellValue = evaluator.evaluate(cell);
+			return cellValue.formatAsString();
+		}
 		DataFormatter df = new DataFormatter();
 		return df.formatCellValue(cell);
 	}
@@ -387,8 +390,8 @@ public class POIUtils {
 	}
 
 
-	public static void replaceXlsTextDirect(Sheet sheet, String searchStr, String replace, boolean justFirst) {
-		ArrayList<CellXY> allCoords = findRowContaining(sheet, searchStr, justFirst);
+	public static void replaceXlsTextDirect(Sheet sheet, FormulaEvaluator evaluator, String searchStr, String replace, boolean justFirst) {
+		ArrayList<CellXY> allCoords = findRowContaining(sheet, evaluator, searchStr, justFirst);
 		for (CellXY coords : allCoords) {
 			Cell cell = sheet.getRow(coords.row).getCell(coords.column);
 			String newText = StringUtils.replace(cell.getStringCellValue(), searchStr, replace);
@@ -402,8 +405,8 @@ public class POIUtils {
 	 * @param searchStr
 	 * @param replace
 	 */
-	public static void replaceXlsTextDirect(Sheet sheet, int rowNum, String searchStr, String replace) {
-		ArrayList<CellXY> allCoords = findCellInRowContaining(sheet, searchStr, sheet.getRow(rowNum));
+	public static void replaceXlsTextDirect(Sheet sheet, FormulaEvaluator evaluator, int rowNum, String searchStr, String replace) {
+		ArrayList<CellXY> allCoords = findCellInRowContaining(evaluator, searchStr, sheet.getRow(rowNum));
 		if (allCoords.size() > 0) {
 			CellXY coords = allCoords.get(0);
 			Cell cell = sheet.getRow(coords.row).getCell(coords.column);

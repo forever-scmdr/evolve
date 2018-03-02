@@ -1,6 +1,8 @@
 
 package extra._generated;
 
+import java.io.File;
+import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -15,6 +17,9 @@ public class Section
     }
 
     public static Section get(Item item) {
+        if (item == null) {
+            return null;
+        }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'section' can not be created around '"+(item.getTypeName()+"' object")));
@@ -56,6 +61,18 @@ public class Section
 
     public boolean contains_code(String value) {
         return containsValue("code", value);
+    }
+
+    public void set_main_pic(File value) {
+        setValue("main_pic", value);
+    }
+
+    public File get_main_pic() {
+        return getFileValue("main_pic", AppContext.getCommonFilesDirPath());
+    }
+
+    public boolean contains_main_pic(File value) {
+        return containsValue("main_pic", value);
     }
 
     public void set_short(String value) {

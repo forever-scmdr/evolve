@@ -14,6 +14,24 @@ public class ItemNames {
     public final static String PRODUCT = "product";
     public final static String TAG_FIRST = "tag_first";
     public final static String TAG_SECOND = "tag_second";
+    public final static String BOUGHT = "bought";
+    public final static String CART = "cart";
+    public final static String NEWS_ITEM = "news_item";
+    public final static String NEWS = "news";
+    public final static String ARTICLES = "articles";
+    public final static String MAIN_PROMO_BOTTOM = "main_promo_bottom";
+    public final static String MAIN_PAGE = "main_page";
+    public final static String DEALER_COORDS = "dealer_coords";
+    public final static String DEALERS_PAGE = "dealers_page";
+    public final static String DOCS = "docs";
+    public final static String CONTACTS = "contacts";
+    public final static String COMMON = "common";
+
+    public interface articles {
+
+        String _ITEM_NAME = "articles";
+
+    }
 
     public interface back_catalog {
 
@@ -29,11 +47,108 @@ public class ItemNames {
 
     }
 
+    public interface bought {
+
+        String _ITEM_NAME = "bought";
+        String CODE = "code";
+        String QTY = "qty";
+        String PRICE = "price";
+        String SUM = "sum";
+
+    }
+
+    public interface cart {
+
+        String _ITEM_NAME = "cart";
+        String QTY = "qty";
+        String SUM = "sum";
+
+    }
+
     public interface catalog {
 
         String _ITEM_NAME = "catalog";
         String INTEGRATION = "integration";
         String DATE = "date";
+
+    }
+
+    public interface common {
+
+        String _ITEM_NAME = "common";
+        String TOP = "top";
+        String LEFT = "left";
+        String BOTTOM = "bottom";
+        String BOTTOM_ADDRESS = "bottom_address";
+
+    }
+
+    public interface contacts {
+
+        String _ITEM_NAME = "contacts";
+        String TEXT = "text";
+        String MAP = "map";
+        String BOTTOM_TEXT = "bottom_text";
+        String TEXT_PIC = "text_pic";
+
+    }
+
+    public interface dealer_coords {
+
+        String _ITEM_NAME = "dealer_coords";
+        String NAME = "name";
+        String ADDRESS = "address";
+        String INFO = "info";
+
+    }
+
+    public interface dealers_page {
+
+        String _ITEM_NAME = "dealers_page";
+
+    }
+
+    public interface docs {
+
+        String _ITEM_NAME = "docs";
+        String TEXT = "text";
+        String TEXT_PIC = "text_pic";
+
+    }
+
+    public interface main_page {
+
+        String _ITEM_NAME = "main_page";
+        String LINK_TEXT = "link_text";
+        String LINK_LINK = "link_link";
+
+    }
+
+    public interface main_promo_bottom {
+
+        String _ITEM_NAME = "main_promo_bottom";
+        String TEXT_BIG = "text_big";
+        String TEXT_SMALL = "text_small";
+        String PIC = "pic";
+        String LINK = "link";
+
+    }
+
+    public interface news {
+
+        String _ITEM_NAME = "news";
+
+    }
+
+    public interface news_item {
+
+        String _ITEM_NAME = "news_item";
+        String HEADER = "header";
+        String DATE = "date";
+        String MAIN_PIC = "main_pic";
+        String SHORT = "short";
+        String TEXT = "text";
+        String TEXT_PIC = "text_pic";
 
     }
 
@@ -67,6 +182,7 @@ public class ItemNames {
         String CODE = "code";
         String MAIN_PIC = "main_pic";
         String PRICE = "price";
+        String QTY = "qty";
         String SHORT = "short";
         String TEXT = "text";
         String TECH = "tech";
@@ -91,6 +207,7 @@ public class ItemNames {
         String _ITEM_NAME = "section";
         String NAME = "name";
         String CODE = "code";
+        String MAIN_PIC = "main_pic";
         String SHORT = "short";
         String ITEM_URLS = "item_urls";
 

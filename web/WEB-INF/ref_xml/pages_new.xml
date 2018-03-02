@@ -765,7 +765,7 @@
 		<var name="citizen_name" scope="session"/><!-- гражданство -->
 		<var name="citizen" scope="session"/><!-- гражданство -->
 	</variables>
-	<command class="ecommander.extra.CartManageCommand">
+	<command class="ecommander.ecommander.fwk.BasicCartManageCommand">
 		<result name="room_search" type="redirect" />
 		<result name="order" type="redirect"/>
 		<result name="confirm" type="redirect"/>

@@ -241,7 +241,7 @@ public class DeployParsed extends IntegrateBase {
 		} */
 		// Элементы a href
 		updateDocTagAttributeWithPic(doc, "a", "href", item, picNames);
-		item.setValue(textParamName, JsoupUtils.outputDoc(doc));
+		item.setValue(textParamName, JsoupUtils.outputHtmlDoc(doc));
 	}
 
 	private void updateDocTagAttributeWithPic(Element parentEl, String tag, String attr, Item item, HashSet<String> pics) {

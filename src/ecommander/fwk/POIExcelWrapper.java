@@ -1,5 +1,6 @@
 package ecommander.fwk;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -10,7 +11,7 @@ import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-public class POIExcelWrapper {
+public class POIExcelWrapper implements Closeable {
 	private Workbook xlsWorkbook = null;
 	private NPOIFSFileSystem npoifs = null;
 	private OPCPackage pkg = null;

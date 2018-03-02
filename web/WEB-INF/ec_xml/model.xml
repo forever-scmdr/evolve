@@ -7,6 +7,7 @@
 	<!--/////////////                             ПАРСИНГ                                  ////////////-->
 
 	<item name="parse_section" caption="Раздел для разбора" virtual="true" ag-id="10" ag-hash="-814293671">
+		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="item_urls" type="plain-text" caption="Урлы вложенных товаров" />
 		<child item="parse_item"/>
 	</item>
@@ -48,7 +49,7 @@
 
 	<item name="catalog" caption="Каталог продукции" super="product_container" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="section" />
-		<parameter name="integration" type="file" caption="XML файл интеграции" description="используемые классы и параметры должны быть созданы до начала разбора файла" />
+		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 	</item>
 

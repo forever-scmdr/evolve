@@ -34,6 +34,8 @@ public class DecimalDataType extends FormatDataType {
 			formatter = commaDelimformat;
 		else
 			((DecimalFormat) formatter).setParseBigDecimal(true);
+		if (value != null)
+			((BigDecimal)value).setScale(scale, BigDecimal.ROUND_HALF_EVEN);
 		return super.outputValue(value, formatter);
 	}
 

@@ -45,16 +45,18 @@
 			<div class="product-info">
 				<div class="price">
 					<p><span>Старая цена</span>100 р.</p>
-					<p><span>Новая цена</span>99 р.</p>
+					<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
 				</div>
 				<div class="order">
 					<input type="number" value="1"/>
 					<input type="submit" value="Заказать"/>
-					<div class="quantity">Осталось 12 шт.</div>
+					<!--<div class="quantity">Осталось 12 шт.</div>-->
 				</div>
 				<div class="links">
-					<span><i class="fas fa-balance-scale"></i> <a href="">в сравнение</a></span>
-					<span><i class="fas fa-star"></i> <a href="">в избранное</a></span>
+					<label><input type="checkbox"/> cравнение</label>
+					<label><input type="checkbox"/> избранное</label>
+					<!-- <span><i class="fas fa-balance-scale"></i> <a href="">в сравнение</a></span>
+					<span><i class="fas fa-star"></i> <a href="">в избранное</a></span> -->
 				</div>
 				<div class="info-blocks">
 					<div class="info-block">
@@ -96,7 +98,7 @@
 					<div role="tabpanel" class="tab-pane" id="tab2">
 						<h4>Технические данные</h4>
 						<div class="table-responsive">
-						<xsl:for-each select="$p/tech/tag">
+						<xsl:for-each select="parse-xml(concat('&lt;tech&gt;', $p/tech, '&lt;/tech&gt;'))/tech/tag">
 							<table>
 								<colgroup>
 									<col style="width: 40%"/>

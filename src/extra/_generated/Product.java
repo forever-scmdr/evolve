@@ -2,6 +2,7 @@
 package extra._generated;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.List;
 import ecommander.controllers.AppContext;
 import ecommander.model.Item;
@@ -18,6 +19,9 @@ public class Product
     }
 
     public static Product get(Item item) {
+        if (item == null) {
+            return null;
+        }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'product' can not be created around '"+(item.getTypeName()+"' object")));
@@ -73,7 +77,7 @@ public class Product
         return containsValue("main_pic", value);
     }
 
-    public void set_price(Double value) {
+    public void set_price(BigDecimal value) {
         setValue("price", value);
     }
 
@@ -83,16 +87,38 @@ public class Product
         setValueUI("price", value);
     }
 
-    public Double get_price() {
-        return getDoubleValue("price");
+    public BigDecimal get_price() {
+        return getDecimalValue("price");
     }
 
-    public Double getDefault_price(Double defaultVal) {
-        return getDoubleValue("price", defaultVal);
+    public BigDecimal getDefault_price(BigDecimal defaultVal) {
+        return getDecimalValue("price", defaultVal);
     }
 
-    public boolean contains_price(Double value) {
+    public boolean contains_price(BigDecimal value) {
         return containsValue("price", value);
+    }
+
+    public void set_qty(Double value) {
+        setValue("qty", value);
+    }
+
+    public void setUI_qty(String value)
+        throws Exception
+    {
+        setValueUI("qty", value);
+    }
+
+    public Double get_qty() {
+        return getDoubleValue("qty");
+    }
+
+    public Double getDefault_qty(Double defaultVal) {
+        return getDoubleValue("qty", defaultVal);
+    }
+
+    public boolean contains_qty(Double value) {
+        return containsValue("qty", value);
     }
 
     public void set_short(String value) {

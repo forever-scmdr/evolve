@@ -104,6 +104,18 @@ public abstract class IntegrateBase extends Command {
 			this.toProcess = toProcess;
 		}
 
+		public synchronized int getProcessed() {
+			return this.processed;
+		}
+
+		public synchronized void increaseProcessed() {
+			this.processed++;
+		}
+
+		public synchronized void increaseLineNumber() {
+			this.lineNumber++;
+		}
+
 		public synchronized void addLog(String message, Object...params) {
 			if (log.size() >= logSize)
 				log.removeFirst();

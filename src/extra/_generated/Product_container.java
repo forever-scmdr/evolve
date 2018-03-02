@@ -15,6 +15,9 @@ public class Product_container
     }
 
     public static Product_container get(Item item) {
+        if (item == null) {
+            return null;
+        }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'product_container' can not be created around '"+(item.getTypeName()+"' object")));

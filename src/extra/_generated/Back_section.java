@@ -15,6 +15,9 @@ public class Back_section
     }
 
     public static Back_section get(Item item) {
+        if (item == null) {
+            return null;
+        }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'back_section' can not be created around '"+(item.getTypeName()+"' object")));
