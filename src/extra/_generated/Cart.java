@@ -74,4 +74,26 @@ public class Cart
         return containsValue("sum", value);
     }
 
+    public void set_processed(Byte value) {
+        setValue("processed", value);
+    }
+
+    public void setUI_processed(String value)
+        throws Exception
+    {
+        setValueUI("processed", value);
+    }
+
+    public Byte get_processed() {
+        return getByteValue("processed");
+    }
+
+    public Byte getDefault_processed(Byte defaultVal) {
+        return getByteValue("processed", defaultVal);
+    }
+
+    public boolean contains_processed(Byte value) {
+        return containsValue("processed", value);
+    }
+
 }

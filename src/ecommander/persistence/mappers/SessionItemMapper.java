@@ -439,6 +439,21 @@ public class SessionItemMapper {
 		ArrayList<Object> mementoArray = getStorage().select(item.getParameter(paramName).getId(), paramValue);
 		return restoreItemsArray(mementoArray);
 	}
+
+	/**
+	 * Загрузить айтем определенного типа с заданным значением определенного параметра
+	 * @param itemName
+	 * @param paramName
+	 * @param paramValue
+	 * @return
+	 * @throws Exception
+	 */
+	public Item getSingleItemByParamValue(String itemName, String paramName, Object paramValue) throws Exception {
+		ArrayList<Item> found = getItemsByParamValue(itemName, paramName, paramValue);
+		if (found.size() > 0)
+			return found.get(0);
+		return null;
+	}
 	/**
 	 * Загружает массив айтемов по массиву memento
 	 * @param mementoArray

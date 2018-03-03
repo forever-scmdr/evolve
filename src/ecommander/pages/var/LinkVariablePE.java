@@ -1,6 +1,10 @@
 package ecommander.pages.var;
 
+import ecommander.fwk.Strings;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.pages.ExecutableItemPE;
 import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.ValidationResults;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -61,7 +65,25 @@ public class LinkVariablePE extends VariablePE {
 		else if (StringUtils.isNotBlank(value)) {
 			clone.var = new StaticVariable(name, value);
 		}
+		clone.pageModel = parentPage;
 		return clone;
+	}
+
+	@Override
+	public void validate(String elementPath, ValidationResults results) {
+		super.validate(elementPath, results);
+		if (StringUtils.isNotBlank(refItem)) {
+			ExecutableItemPE itemPE = pageModel.getItemPEById(refItem);
+			if (itemPE == null) {
+				results.addError(elementPath + " > " + getKey(), "there is no '" + refItem + "' page item");
+			} else if (StringUtils.isNotBlank(refParam)) {
+				if (!ItemTypeRegistry.getItemType(itemPE.getItemName()).hasParameter(refParam))
+					results.addError(elementPath + " > " + getKey(), itemPE.getItemName() + "has no '" + refParam + "' parameter");
+			}
+		} else if (StringUtils.isNotBlank(refVar)) {
+			if (pageModel.getInitVariablePE(refVar) == null)
+				results.addError(elementPath + " > " + getKey(), "there is no '" + refVar + "' page variable");
+		}
 	}
 
 	@Override

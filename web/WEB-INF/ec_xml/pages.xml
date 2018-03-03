@@ -19,6 +19,7 @@
 		<link name="dealers_link" target="dealers"/>
 		<link name="docs_link" target="docs"/>
 		<link name="contacts_link" target="contacts"/>
+		<link name="cart_ajax_link" target="cart_ajax"/>
 	</include-definition>
 
 
@@ -46,7 +47,7 @@
 	</page>
 
 
-	<page name="section" template="section" cacheable="true">
+	<page name="section" template="section" cacheable="false">
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
@@ -86,6 +87,10 @@
 				<link name="show_product" target="product" type="exclusive">
 					<var name="prod" item="prod" style="translit"/>
 					<var name="sec" item="cur_sec" style="translit"/>
+				</link>
+				<link name="to_cart" target="cart_action">
+					<var name="action" value="addToCart"/>
+					<var name="code" item="prod" parameter="code"/>
 				</link>
 			</list>
 			<list item="tag_first" id="tag_first" assoc="contains" transit="true">
@@ -135,29 +140,45 @@
 		</request>
 		<single item="product" id="prod" var="prod">
 			<ancestor item="section" assoc="contains" transit="false" tag="product_section"/>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" item="prod" parameter="code"/>
+			</link>
 		</single>
 		<list item="product" id="acc" tag="accessory">
 			<filter>
 				<parameter name="code" compare="SOME"><var item="prod" parameter="accessiories"/></parameter>
 			</filter>
-			<link name="show_product" target="product">
+			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" item="acc" style="translit"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" item="acc" parameter="code"/>
 			</link>
 		</list>
 		<list item="product" id="set" tag="set">
 			<filter>
 				<parameter name="code" compare="SOME"><var item="prod" parameter="sets"/></parameter>
 			</filter>
-			<link name="show_product" target="product">
+			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" item="set" style="translit"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" item="set" parameter="code"/>
 			</link>
 		</list>
 		<list item="product" id="probe" tag="probe">
 			<filter>
 				<parameter name="code" compare="SOME"><var item="prod" parameter="probes"/></parameter>
 			</filter>
-			<link name="show_product" target="product">
+			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" item="probe" style="translit"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" item="probe" parameter="code"/>
 			</link>
 		</list>
 		<single item="section" var="sec" tag="current_section"/>
@@ -238,7 +259,7 @@
 
 
 	<page name="update_prices" template="update_prices">
-		<command class="extra.UpdatePrices">
+		<command class="extra.UpdatePrices" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
@@ -252,8 +273,74 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
+	<page name="cart_ajax" template="cart_ajax">
+		<request>
+			<var name="cart_cookie" scope="cookie"/>
+		</request>
+		<headers Cache-Control="no-cache" Expires="-1"/>
+		<command class="ecommander.fwk.BasicCartManageCommand" method="restoreFromCookie"/>
+		<session>
+			<single item="cart">
+				<list item="bought">
+					<list item="product" id="product">
+						<link name="to_cart" target="cart_action">
+							<var name="action" value="addToCart"/>
+							<var name="code" item="product" parameter="code"/>
+						</link>
+					</list>
+				</list>
+			</single>
+		</session>
+		<link name="show_cart" target="cart"/>
+	</page>
 
 
+	<page name="cart_action">
+		<request>
+			<var name="action"/>
+			<var name="code"/>
+			<var name="qty"/>
+			<var name="cart_cookie" scope="cookie"/>
+		</request>
+		<link name="ajax" target="cart_ajax"/>
+		<link name="cart" target="cart"/>
+		<command class="ecommander.fwk.BasicCartManageCommand" method-var="action">
+			<result name="ajax" type="redirect"/>
+			<result name="cart" type="redirect"/>
+		</command>
+	</page>
+
+
+
+	<page name="cart" template="cart">
+		<request>
+			<var name="cart_cookie" scope="cookie"/>
+		</request>
+		<command class="ecommander.fwk.BasicCartManageCommand" method="restoreFromCookie"/>
+		<session>
+			<single item="cart" id="cart">
+				<list item="bought" id="bought">
+					<list item="product" id="prod" tag="product">
+						<link name="show_product" target="product" type="exclusive">
+							<var name="prod" item="prod" style="translit"/>
+						</link>
+					</list>
+					<link name="delete" target="cart_action">
+						<var name="action" value="delete"/>
+						<var name="product" item="bought"/>
+					</link>
+					<parameter-input ref="bought" name="qty"/>
+				</list>
+			</single>
+		</session>
+		<link name="recalculate_link" target="cart_action" type="itemform">
+			<var name="action" value="recalculate"/>
+		</link>
+		<link name="proceed_link" target="cart_action" type="itemform">
+			<var name="action" value="proceed"/>
+		</link>
+		<include name="COMMON"/>
+	</page>
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->

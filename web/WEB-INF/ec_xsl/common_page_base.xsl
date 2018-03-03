@@ -39,11 +39,8 @@
 								<xsl:value-of select="page/common/top" disable-output-escaping="yes"/>
 								<p><a href="" data-toggle="modal" data-target="#modal-feedback">Форма обратной связи</a></p>
 							</div>
-							<div class="cart">
-								<p><i class="fas fa-shopping-cart"></i> <strong>Ваш заказ:</strong></p>
-								<p>Сумма: 91,00 р.</p>
-								<p>Наименований: 1</p>
-								<p><a href="cart.html">Оформить заказ</a></p>
+							<div class="cart" id="cart_ajax">
+								<p><i class="fas fa-shopping-cart"></i> <strong>Корзина пуста</strong></p>
 							</div>
 							<div class="user">
 								<p><i class="fas fa-lock"/>
@@ -354,6 +351,7 @@
 
 
 	<xsl:template match="accessory | set | probe | product">
+		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<div class="catalog-item">
 			<!--
 			<div class="tags">
@@ -372,12 +370,24 @@
 				<p><xsl:value-of select="substring-before(substring-after(short, 'description&quot;&gt;'), '&lt;')" disable-output-escaping="yes"/></p>
 			</div>
 			<div class="price">
-				<p><span>Старая цена</span>100 р.</p>
-				<p><span>Новая цена</span><xsl:value-of select="if (price) then price else '0'"/> р.</p>
+				<xsl:if test="$has_price">
+					<p><span>Старая цена</span>100 р.</p>
+					<p><span>Новая цена</span><xsl:value-of select="price"/> р.</p>
+				</xsl:if>
 			</div>
 			<div class="order">
-				<input type="number" value="1"/>
-				<input type="submit" value="Заказать"/>
+				<div id="cart_list_{code}" class="product_purchase_container">
+					<form action="{to_cart}" method="post">
+						<xsl:if test="$has_price">
+							<input type="number" name="qty" value="1"/>
+							<input type="submit" value="В корзину"/>
+						</xsl:if>
+						<xsl:if test="not($has_price)">
+							<input type="number" name="qty" value="1"/>
+							<input type="submit" class="not_available" value="Под заказ"/>
+						</xsl:if>
+					</form>
+				</div>
 				<!--<div class="quantity">Осталось 12 шт.</div>-->
 				<div class="checkbox">
 					<label>
@@ -392,6 +402,19 @@
 	</xsl:template>
 
 
+
+	<xsl:template name="CART_SCRIPT">
+		<script>
+			$(document).ready(function() {
+				$('.product_purchase_container').find('input[type="submit"]').click(function(event) {
+					event.preventDefault();
+					var qtyForm = $(this).closest('form');
+					var lockId = $(this).closest('.product_purchase_container').attr('id');
+					postForm(qtyForm, lockId, null);
+				});
+			});
+		</script>
+	</xsl:template>
 
 
 
@@ -483,7 +506,7 @@
 			<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
 
 
-			<script type="text/javascript" src="js/bootstrap.min.js"/>
+			<script type="text/javascript" src="js/bootstrap.js"/>
 			<script type="text/javascript" src="admin/js/ajax.js"/>
 			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 			<script type="text/javascript">
@@ -491,6 +514,8 @@
 					$('select[value]').each(function(index, element) {
 						$(element).val($(element).attr('value'));
 					});
+
+					insertAjax('<xsl:value-of select="page/cart_ajax_link"/>');
 				});
 			</script>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>

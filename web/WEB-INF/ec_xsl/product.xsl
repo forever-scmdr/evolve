@@ -48,8 +48,19 @@
 					<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
 				</div>
 				<div class="order">
-					<input type="number" value="1"/>
-					<input type="submit" value="Заказать"/>
+					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
+					<div id="cart_list_{$p/code}" class="product_purchase_container">
+						<form action="{$p/to_cart}" method="post">
+							<xsl:if test="$has_price">
+								<input type="number" name="qty" value="1"/>
+								<input type="submit" value="В корзину"/>
+							</xsl:if>
+							<xsl:if test="not($has_price)">
+								<input type="number" name="qty" value="1"/>
+								<input type="submit" class="not_available" value="Под заказ"/>
+							</xsl:if>
+						</form>
+					</div>
 					<!--<div class="quantity">Осталось 12 шт.</div>-->
 				</div>
 				<div class="links">
@@ -155,6 +166,7 @@
 
 
 	<xsl:template name="EXTRA_SCRIPTS">
+		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript" src="fotorama/fotorama.js"/>
 	</xsl:template>
 

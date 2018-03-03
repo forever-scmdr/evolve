@@ -62,6 +62,7 @@ public class ItemNames {
         String _ITEM_NAME = "cart";
         String QTY = "qty";
         String SUM = "sum";
+        String PROCESSED = "processed";
 
     }
 

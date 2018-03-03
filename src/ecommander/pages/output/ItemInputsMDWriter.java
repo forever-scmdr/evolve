@@ -85,6 +85,7 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 	private static final String EXTRA_ELEMENT = "extra";
 	private static final String DOMAIN_ELEMENT = "domain";
 	private static final String VALUE_ELEMENT = "value";
+	private static final String INPUT_ELEMENT = "input";
 	
 	private static final String NAME_ATTRIBUTE = "name";
 	private static final String TYPE_ATTRIBUTE = "type";
@@ -177,6 +178,7 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 				xml.endElement();
 
 				// <header input="$param$header@article@35322">Ремонт и отделка кафе, баров и ресторанов</header>
+				xml.startElement(INPUT_ELEMENT);
 				String elementName = Strings.createXmlElementName(paramDesc.getName());
 				if (paramDesc.isMultiple()) {
 					List<Object> values = item.getValues(paramDesc.getName());
@@ -191,6 +193,7 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 							.addText(item.getValue(paramDesc.getName()))
 							.endElement();
 				}
+				xml.endElement();
 			} else {
 				List<String> vals = inputs.getInputValues(input);
 				if (vals != null && vals.size() > 0) {

@@ -6805,3 +6805,13 @@ table {
     margin-bottom: 0.9rem;
     padding-bottom: 0.65rem;
 }
+
+
+
+/* fixes */
+input[type="submit"].to_cart, input.submit.to_cart {
+background: linear-gradient(#ffd8b7, #f79846 49%, #f48424 51%, #b95600);
+}
+input[type="submit"].not_available, input.submit.not_available {
+background: linear-gradient(#e4e4e4, #b7b7b7 49%, #989898 51%, #808080);
+}
