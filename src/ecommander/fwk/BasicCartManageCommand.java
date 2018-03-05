@@ -1,15 +1,12 @@
 package ecommander.fwk;
 
-import ecommander.fwk.EcommanderException;
 import ecommander.model.Item;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.Command;
-import ecommander.pages.InputValues;
+import ecommander.pages.ItemInputValues;
 import ecommander.pages.MultipleHttpPostForm;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.Cart;
-import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -69,6 +66,12 @@ public class BasicCartManageCommand extends Command {
 	}
 
 
+	public ResultPE proceed() throws Exception {
+		updateQtys();
+		recalculateCart();
+		return getResult("proceed");
+	}
+
 
 	private void updateQtys() throws Exception {
 		MultipleHttpPostForm form = getItemForm();
@@ -78,11 +81,12 @@ public class BasicCartManageCommand extends Command {
 			return;
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		for (Item bought : boughts) {
-			InputValues vals = form.getItemInput(bought.getId());
-			if (vals != null && StringUtils.isNotBlank(vals.getString(QTY_PARAM))) {
+			ItemInputValues vals = form.getItemValues(bought.getId());
+			String qty = vals.getStringParam(QTY_PARAM);
+			if (StringUtils.isNotBlank(qty)) {
 				double quantity = -1;
 				try {
-					quantity = DoubleDataType.parse(vals.getString(QTY_PARAM));
+					quantity = DoubleDataType.parse(qty);
 				} catch (NumberFormatException e) { /**/ }
 				if (quantity > 0) {
 					Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
@@ -145,12 +149,11 @@ public class BasicCartManageCommand extends Command {
 	 */
 	private void ensureCart() throws Exception {
 		if (cart == null) {
-			Item cartTemp = getSessionMapper().getSingleRootItemByName(CART_ITEM);
-			if (cartTemp == null) {
-				cartTemp = getSessionMapper().createSessionRootItem(CART_ITEM);
-				getSessionMapper().saveTemporaryItem(cartTemp);
+			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
+			if (cart == null) {
+				cart = getSessionMapper().createSessionRootItem(CART_ITEM);
+				getSessionMapper().saveTemporaryItem(cart);
 			}
-			cart = Cart.get(cartTemp);
 		}
 	}
 
@@ -159,10 +162,7 @@ public class BasicCartManageCommand extends Command {
 	 */
 	private void loadCart() throws Exception {
 		if (cart == null) {
-			Item cartTemp = getSessionMapper().getSingleRootItemByName(CART_ITEM);
-			if (cartTemp != null) {
-				cart = Cart.get(cartTemp);
-			}
+			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 		}
 	}
 
@@ -214,6 +214,7 @@ public class BasicCartManageCommand extends Command {
 	 * @throws Exception
 	 */
 	private boolean recalculateCart() throws Exception {
+		loadCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal sum = new BigDecimal(0); // полная сумма
 		double zeroQuantity = 0;
@@ -230,7 +231,7 @@ public class BasicCartManageCommand extends Command {
 				result = false;
 			} else {
 				// Первоначальная сумма
-				BigDecimal productSum = product.getDecimalValue(PRICE_PARAM).multiply(new BigDecimal(quantity));
+				BigDecimal productSum = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0)).multiply(new BigDecimal(quantity));
 				if (maxQuantity <= 0) {
 					productSum = new BigDecimal(0);
 					zeroQuantity += quantity;

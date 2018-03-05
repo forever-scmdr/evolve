@@ -304,6 +304,7 @@
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>
+		<link name="proceed" target="proceed"/>
 		<command class="ecommander.fwk.BasicCartManageCommand" method-var="action">
 			<result name="ajax" type="redirect"/>
 			<result name="cart" type="redirect"/>
@@ -327,7 +328,7 @@
 					</list>
 					<link name="delete" target="cart_action">
 						<var name="action" value="delete"/>
-						<var name="product" item="bought"/>
+						<var name="bought" item="bought"/>
 					</link>
 					<parameter-input ref="bought" name="qty"/>
 				</list>
@@ -341,6 +342,26 @@
 		</link>
 		<include name="COMMON"/>
 	</page>
+
+
+
+	<page name="proceed" template="">
+		<request>
+			<var name="message"/>
+		</request>
+		<new item="user_phys" id="user_phys">
+			<parameter-input ref="user_phys" restore-var="message"/>
+		</new>
+		<new item="user_jur" id="user_jur">
+			<parameter-input ref="user_jur" restore-var="message"/>
+		</new>
+		<link name="confirm_link" target="cart_action" type="itemform">
+			<var name="action" value="confirm"/>
+		</link>
+		<include name="COMMON"/>
+	</page>
+
+
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->

@@ -57,7 +57,7 @@ public class ItemInputName implements Serializable {
 
 	private String inputName;
 
-	public ItemInputName(String inputName) {
+	ItemInputName(String inputName) {
 		if (!isItemInput(inputName))
 			throw new IllegalArgumentException("Item URL in illegal format");
 		inputName = inputName.substring(PREFIX_LENGTH);
@@ -93,7 +93,7 @@ public class ItemInputName implements Serializable {
 		}
 	}
 
-	public ItemInputName(long itemId, long parentId, int itemType, int paramId, String varName, Long...predecessors) {
+	ItemInputName(long itemId, long parentId, int itemType, int paramId, String varName, Long...predecessors) {
 		if (StringUtils.contains(varName, SEPARATOR))
 			throw new IllegalArgumentException("Item variable name must not contain _ character: " + varName);
 		this.parentId = parentId;

@@ -956,7 +956,7 @@ public class Item implements ItemBasics {
 	public final String getStringExtra(String name) {
 		if (extras == null)
 			return null;
-		return extras.getString(name);
+		return extras.getExtraString(name);
 	}
 
 	/**
@@ -967,7 +967,7 @@ public class Item implements ItemBasics {
 	public final ArrayList<Object> getListExtra(String name) {
 		if (extras == null)
 			return null;
-		return extras.getList(name);
+		return extras.getExtraList(name);
 	}
 	/**
 	 * Получить все ключи дополнительных значений

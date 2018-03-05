@@ -21,17 +21,19 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
+							<xsl:variable name="price" select="if ($p/price) then concat($p/price, ' p.') else 'под заказ'"/>
+							<xsl:variable name="sum" select="if ($p/price) then concat(sum, ' p.') else 'под заказ'"/>
 							<div class="item">
 								<a href="{$p/show_product}" class="image-container">
 									<img src="{$p/@path}{$p/main_pic}" alt=""/>
 								</a>
 								<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
-								<div class="price one"><p><span>Цена за ед.</span><xsl:value-of select="$p/price"/> р.</p></div>
+								<div class="price one"><p><span>Цена за ед.</span><xsl:value-of select="$price"/></p></div>
 								<div class="quantity">
 									<span>Кол-во</span>
-									<input type="number" value="{qty}" name="{input/qty/@input}" />
+									<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
 								</div>
-								<div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="sum"/> р.</p></div>
+								<div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div>
 								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
 							</div>
 						</xsl:for-each>

@@ -138,6 +138,8 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 					ID_ATTRIBUTE, item.getId(),
 					CAPTION_ATTRIBUTE, itemDesc.getCaption(),
 					KEY_ATTRIBUTE, item.getKey());
+		} else {
+			xml.startElement(INPUT_ELEMENT);
 		}
 		HashSet<String> domains = new HashSet<>();
 		for (ItemInputName input : inputs.getAllInputNames()) {
@@ -178,7 +180,6 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 				xml.endElement();
 
 				// <header input="$param$header@article@35322">Ремонт и отделка кафе, баров и ресторанов</header>
-				xml.startElement(INPUT_ELEMENT);
 				String elementName = Strings.createXmlElementName(paramDesc.getName());
 				if (paramDesc.isMultiple()) {
 					List<Object> values = item.getValues(paramDesc.getName());
@@ -193,7 +194,6 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 							.addText(item.getValue(paramDesc.getName()))
 							.endElement();
 				}
-				xml.endElement();
 			} else {
 				List<String> vals = inputs.getInputValues(input);
 				if (vals != null && vals.size() > 0) {
@@ -234,9 +234,7 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 		}
 		writeSubwriters(xml);
 		// </item_form>
-		if (hasActionUrl()) {
-			xml.endElement();
-		}
+		xml.endElement();
 		return xml;
 	}
 

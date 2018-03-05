@@ -50,7 +50,7 @@ public class InputValues implements Serializable {
 		map.remove(paramId);
 	}
 
-	public String getString(Object paramId) {
+	private String getString(Object paramId) {
 		Object value = map.get(paramId);
 		if (value == null)
 			return null;
@@ -60,7 +60,7 @@ public class InputValues implements Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<Object> getList(Object paramId) {
+	private ArrayList<Object> getList(Object paramId) {
 		Object value = map.get(paramId);
 		if (value == null)
 			return new ArrayList<>(0);
@@ -70,7 +70,15 @@ public class InputValues implements Serializable {
 		values.add(value);
 		return values;
 	}
-	
+
+	public ArrayList<Object> getExtraList(String extraKey) {
+		return getList(extraKey);
+	}
+
+	public String getExtraString(String extraKey) {
+		return getString(extraKey);
+	}
+
 	public boolean isNotEmpty() {
 		return !map.isEmpty();
 	}

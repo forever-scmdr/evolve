@@ -96,8 +96,18 @@ public class MultipleHttpPostForm implements Serializable {
 		return (String) extras.get(key);
 	}
 
-	public InputValues getItemInput(long itemId) {
+	InputValues getItemInput(long itemId) {
 		return inputs.get(itemId);
+	}
+
+	/**
+	 * Получить значения, переданные через запрос для определенного айтема в удобочитаемом виде
+	 * (с возможностью получить значение по названию параметра)
+	 * @param itemId
+	 * @return
+	 */
+	public ItemInputValues getItemValues(long itemId) {
+		return new ItemInputValues(inputs.get(itemId));
 	}
 
 	/**

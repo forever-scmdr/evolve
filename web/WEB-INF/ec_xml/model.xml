@@ -132,6 +132,38 @@
 		<child item="bought"/>
 	</item>
 
+	<item name="user_jur" virtual="true" caption="Юридическое лицо" ag-id="23" ag-hash="-266151405">
+		<parameter name="organization" type="string" caption="Наименование организации" />
+		<parameter name="phone" type="string" caption="Телефон/факс" />
+		<parameter name="email" type="string" caption="E-mail" />
+		<parameter name="contact_name" type="string" caption="Контактное лицо" />
+		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />
+		<parameter name="email" type="string" caption="E-mail" />
+		<parameter name="address" type="string" caption="Юридический адрес" />
+		<parameter name="ship_type" type="string" caption="Способ доставки" />
+		<parameter name="no_account" type="string" caption="Нет расчетного счета" domain="yes-no"/>
+		<parameter name="account" type="string" caption="Расчетный счет" />
+		<parameter name="bank" type="string" caption="Название банка" />
+		<parameter name="bank_address" type="string" caption="Адрес банка"/>
+		<parameter name="bank_code" type="string" caption="Код банка" />
+		<parameter name="unp" type="string" caption="УНП" />
+		<parameter name="director" type="string" caption="Ф.И.О директора" />
+		<parameter name="base" type="string" caption="Действует на основании" />
+		<parameter name="base_number" type="string" caption="Номер свиделельства/доверенности" />
+		<parameter name="base_date" type="string" caption="Дата свиделельства/доверенности" />
+		<parameter name="comment" type="string" caption="Дополнительно" />
+	</item>
+
+	<item name="user_phys" virtual="true" caption="Физическое лицо" ag-id="24" ag-hash="339407622" >
+		<parameter name="name" type="string" caption="Имя"/>
+		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="email" type="string" caption="E-mail"/>
+		<parameter name="address" type="string" caption="Юридический адрес" />
+		<parameter name="ship_type" type="string" caption="Способ доставки" />
+		<parameter name="comment" type="string" caption="Дополнительно" />
+	</item>
+
+
 	<!--/////////////                            END КОРЗИНА                               ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
