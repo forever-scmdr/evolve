@@ -60,8 +60,8 @@ public class ItemInputName implements Serializable {
 	ItemInputName(String inputName) {
 		if (!isItemInput(inputName))
 			throw new IllegalArgumentException("Item URL in illegal format");
-		inputName = inputName.substring(PREFIX_LENGTH);
 		this.inputName = inputName;
+		inputName = inputName.substring(PREFIX_LENGTH);
 		String[] parts = StringUtils.split(inputName, SEPARATOR);
 		for (String part : parts) {
 			if (part.length() > 0) {

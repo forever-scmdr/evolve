@@ -101,6 +101,7 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 	private static final String INDEX_ATTRIBUTE = "index";
 	private static final String FILE_PATH_ATTRIBUTE = "file-path";
 	private static final String DOMAIN_ATTRIBUTE = DOMAIN_ELEMENT;
+	private static final String VALIDATION_ERROR_ATTRIBUTE = "validation-error";
 	
 	private static final String SINGLE_VALUE = "single";
 	private static final String MULTIPLE_VALUE = "multiple";
@@ -128,23 +129,22 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 
 	@Override
 	public XmlDocumentBuilder write(XmlDocumentBuilder xml) {
-		Item item = inputs.getItem();
 		ItemType itemDesc = inputs.getItem().getItemType();
 		// <item_form>
 		if (hasActionUrl()) {
 			xml.startElement(tag,
 					ACTION_URL_ATTRIBUTE, actionUrl,
-					FILE_PATH_ATTRIBUTE, FileDataType.getItemFileUrl(item),
-					ID_ATTRIBUTE, item.getId(),
+					FILE_PATH_ATTRIBUTE, FileDataType.getItemFileUrl(inputs.getItem()),
+					ID_ATTRIBUTE, inputs.getItem().getId(),
 					CAPTION_ATTRIBUTE, itemDesc.getCaption(),
-					KEY_ATTRIBUTE, item.getKey());
+					KEY_ATTRIBUTE, inputs.getItem().getKey());
 		} else {
 			xml.startElement(INPUT_ELEMENT);
 		}
 		HashSet<String> domains = new HashSet<>();
-		for (ItemInputName input : inputs.getAllInputNames()) {
-			if (input.isParameter()) {
-				ParameterDescription paramDesc = itemDesc.getParameter(input.getParamId());
+		for (ItemInputName inputKey : inputs.getAllInputNames()) {
+			if (inputKey.isParameter()) {
+				ParameterDescription paramDesc = itemDesc.getParameter(inputKey.getParamId());
 				ItemType ownerItemType = ItemTypeRegistry.getItemType(paramDesc.getOwnerItemId());
 				if (paramDesc.isVirtual())
 					continue;
@@ -156,7 +156,7 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 						FORMAT_ATTRIBUTE, paramDesc.getFormat(),
 						CAPTION_ATTRIBUTE, paramDesc.getCaption(),
 						DESCRIPTION_ATTRIBUTE, paramDesc.getDescription(),
-						INPUT_ATTRIBUTE, input.getInputName(),
+						INPUT_ATTRIBUTE, inputKey.getInputName(),
 						QUANTIFIER_ATTRIBUTE, paramDesc.isMultiple() ? MULTIPLE_VALUE : SINGLE_VALUE
 				};
 				List<String> attrs = new ArrayList<>(Arrays.asList(attrsArr));
@@ -165,56 +165,59 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 					attrs.add(DOMAIN_ATTRIBUTE);
 					attrs.add(paramDesc.getDomainName());
 				}
+				if (inputs.hasNotPassedValidation(paramDesc.getName())) {
+					attrs.add(VALIDATION_ERROR_ATTRIBUTE);
+					attrs.add(inputs.getValidationErrorMessage(paramDesc.getName()));
+				}
 				// <field id="34" name="header" input="$param$header@article@35322" quantifier="single" type="string">
 				// Ремонт и отделка кафе, баров и ресторанов
 				// </field>
+				List<String> values = inputs.getInputValues(inputKey);//item.getValues(paramDesc.getName());
 				xml.startElement(FIELD_ELEMENT, attrs.toArray(new Object[0]));
 				if (paramDesc.isMultiple()) {
-					List<Object> values = item.getValues(paramDesc.getName());
 					for (int i = 0; i < values.size(); i++) {
 						xml.startElement(VALUE_ELEMENT, INDEX_ATTRIBUTE, i).addText(values.get(i)).endElement();
 					}
 				} else {
-					xml.addText(item.getValue(paramDesc.getName()));
+					for (String value : values) {
+						xml.addText(value);//xml.addText(item.getValue(paramDesc.getName()));
+					}
 				}
 				xml.endElement();
 
 				// <header input="$param$header@article@35322">Ремонт и отделка кафе, баров и ресторанов</header>
 				String elementName = Strings.createXmlElementName(paramDesc.getName());
-				if (paramDesc.isMultiple()) {
-					List<Object> values = item.getValues(paramDesc.getName());
-					for (Object val : values) {
-						xml.startElement(elementName, INPUT_ATTRIBUTE, input.getInputName()).addText(val).endElement();
-					}
+				for (String value : values) {
+					xml.startElement(elementName, INPUT_ATTRIBUTE, inputKey.getInputName());
+					if (inputs.hasNotPassedValidation(paramDesc.getName()))
+						xml.insertAttributes(VALIDATION_ERROR_ATTRIBUTE, inputs.getValidationErrorMessage(paramDesc.getName()));
+					xml.addText(value).endElement();
+				}
+				if (values.size() == 0) {
 					// пустое поле, когда значений еще нет
-					xml.addEmptyElement(elementName, INPUT_ATTRIBUTE, input.getInputName());
-				} else {
-					xml
-							.startElement(elementName, INPUT_ATTRIBUTE, input.getInputName())
-							.addText(item.getValue(paramDesc.getName()))
-							.endElement();
+					xml.addEmptyElement(elementName, INPUT_ATTRIBUTE, inputKey.getInputName());
 				}
 			} else {
-				List<String> vals = inputs.getInputValues(input);
+				List<String> vals = inputs.getInputValues(inputKey);
 				if (vals != null && vals.size() > 0) {
 					for (Object val : vals) {
 						if (hasActionUrl()) {
 							// <extra input="some_name">some_value</extra>
-							xml.startElement(EXTRA_ELEMENT, NAME_ATTRIBUTE, input.getVarName(), INPUT_ATTRIBUTE,
-									input.getInputName()).addText(val).endElement();
+							xml.startElement(EXTRA_ELEMENT, NAME_ATTRIBUTE, inputKey.getVarName(), INPUT_ATTRIBUTE,
+									inputKey.getInputName()).addText(val).endElement();
 						} else {
 							// <some_name input="some_name">some_value</some_name>
-							xml.startElement(input.getVarName(), INPUT_ATTRIBUTE, input.getInputName()).addText(val).endElement();
+							xml.startElement(inputKey.getVarName(), INPUT_ATTRIBUTE, inputKey.getInputName()).addText(val).endElement();
 						}
 					}
 				} else {
 					if (hasActionUrl()) {
 						// <extra input="some_name">some_value</extra>
-						xml.startElement(EXTRA_ELEMENT, NAME_ATTRIBUTE, input.getVarName(), INPUT_ATTRIBUTE,
-								input.getInputName()).endElement();
+						xml.startElement(EXTRA_ELEMENT, NAME_ATTRIBUTE, inputKey.getVarName(), INPUT_ATTRIBUTE,
+								inputKey.getInputName()).endElement();
 					} else {
 						// <some_name input="some_name">some_value</some_name>
-						xml.startElement(input.getVarName(), INPUT_ATTRIBUTE, input.getInputName()).endElement();
+						xml.startElement(inputKey.getVarName(), INPUT_ATTRIBUTE, inputKey.getInputName()).endElement();
 					}
 				}
 			}

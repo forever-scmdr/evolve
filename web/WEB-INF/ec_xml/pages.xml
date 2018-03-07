@@ -7,7 +7,7 @@
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec">
 				<link name="show_section" target="section" type="exclusive">
-					<var name="sec" item="sec" style="translit"/>
+					<var name="sec" ref="sec" style="translit"/>
 				</link>
 			</tree>
 		</single>
@@ -34,7 +34,7 @@
 					<limit><var value="4"/></limit>
 				</filter>
 				<link name="show_news_item" target="news_item" type="exclusive">
-					<var name="ni" item="ni" style="translit"/>
+					<var name="ni" ref="ni" style="translit"/>
 				</link>
 			</list>
 		</single>
@@ -85,12 +85,12 @@
 					<pages><var var="page"/></pages>
 				</filter>
 				<link name="show_product" target="product" type="exclusive">
-					<var name="prod" item="prod" style="translit"/>
-					<var name="sec" item="cur_sec" style="translit"/>
+					<var name="prod" ref="prod" style="translit"/>
+					<var name="sec" ref="cur_sec" style="translit"/>
 				</link>
 				<link name="to_cart" target="cart_action">
 					<var name="action" value="addToCart"/>
-					<var name="code" item="prod" parameter="code"/>
+					<var name="code" ref="prod" parameter="code"/>
 				</link>
 			</list>
 			<list item="tag_first" id="tag_first" assoc="contains" transit="true">
@@ -98,7 +98,7 @@
 				<link name="set_tag_1" target="section" type="exclusive">
 					<var name="sec" var="sec" style="translit"/>
 					<!--<var name="tag1" var="tag1"/> это был вторая переменная с названием tag1 -->
-					<var name="tag1" item="tag_first" parameter="tag"/>
+					<var name="tag1" ref="tag_first" parameter="tag"/>
 				</link>
 			</list>
 			<list item="tag_second" id="tag_second" assoc="contains" transit="true">
@@ -142,43 +142,43 @@
 			<ancestor item="section" assoc="contains" transit="false" tag="product_section"/>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
-				<var name="code" item="prod" parameter="code"/>
+				<var name="code" ref="prod" parameter="code"/>
 			</link>
 		</single>
 		<list item="product" id="acc" tag="accessory">
 			<filter>
-				<parameter name="code" compare="SOME"><var item="prod" parameter="accessiories"/></parameter>
+				<parameter name="code" compare="SOME"><var ref="prod" parameter="accessiories"/></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" item="acc" style="translit"/>
+				<var name="prod" ref="acc" style="translit"/>
 			</link>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
-				<var name="code" item="acc" parameter="code"/>
+				<var name="code" ref="acc" parameter="code"/>
 			</link>
 		</list>
 		<list item="product" id="set" tag="set">
 			<filter>
-				<parameter name="code" compare="SOME"><var item="prod" parameter="sets"/></parameter>
+				<parameter name="code" compare="SOME"><var ref="prod" parameter="sets"/></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" item="set" style="translit"/>
+				<var name="prod" ref="set" style="translit"/>
 			</link>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
-				<var name="code" item="set" parameter="code"/>
+				<var name="code" ref="set" parameter="code"/>
 			</link>
 		</list>
 		<list item="product" id="probe" tag="probe">
 			<filter>
-				<parameter name="code" compare="SOME"><var item="prod" parameter="probes"/></parameter>
+				<parameter name="code" compare="SOME"><var ref="prod" parameter="probes"/></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" item="probe" style="translit"/>
+				<var name="prod" ref="probe" style="translit"/>
 			</link>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
-				<var name="code" item="probe" parameter="code"/>
+				<var name="code" ref="probe" parameter="code"/>
 			</link>
 		</list>
 		<single item="section" var="sec" tag="current_section"/>
@@ -199,7 +199,7 @@
 					<pages><var var="p"/></pages>
 				</filter>
 				<link name="show_news_item" target="news_item" type="exclusive">
-					<var name="ni" item="ni" style="translit"/>
+					<var name="ni" ref="ni" style="translit"/>
 				</link>
 			</list>
 		</single>
@@ -219,7 +219,7 @@
 					<pages><var var="p"/></pages>
 				</filter>
 				<link name="show_news_item" target="news_item" type="exclusive">
-					<var name="ni" item="ni" style="translit"/>
+					<var name="ni" ref="ni" style="translit"/>
 				</link>
 			</list>
 		</single>
@@ -278,14 +278,14 @@
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
-		<command class="ecommander.fwk.BasicCartManageCommand" method="restoreFromCookie"/>
+		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
 			<single item="cart">
 				<list item="bought">
 					<list item="product" id="product">
 						<link name="to_cart" target="cart_action">
 							<var name="action" value="addToCart"/>
-							<var name="code" item="product" parameter="code"/>
+							<var name="code" ref="product" parameter="code"/>
 						</link>
 					</list>
 				</list>
@@ -305,9 +305,11 @@
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>
 		<link name="proceed" target="proceed"/>
-		<command class="ecommander.fwk.BasicCartManageCommand" method-var="action">
+		<link name="confirm" target="confirm"/>
+		<command class="extra.CartManageCommand" method-var="action">
 			<result name="ajax" type="redirect"/>
 			<result name="cart" type="redirect"/>
+			<result name="confirm" type="redirect"/>
 		</command>
 	</page>
 
@@ -317,18 +319,18 @@
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
-		<command class="ecommander.fwk.BasicCartManageCommand" method="restoreFromCookie"/>
+		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
 					<list item="product" id="prod" tag="product">
 						<link name="show_product" target="product" type="exclusive">
-							<var name="prod" item="prod" style="translit"/>
+							<var name="prod" ref="prod" style="translit"/>
 						</link>
 					</list>
 					<link name="delete" target="cart_action">
 						<var name="action" value="delete"/>
-						<var name="bought" item="bought"/>
+						<var name="bought" ref="bought"/>
 					</link>
 					<parameter-input ref="bought" name="qty"/>
 				</list>
@@ -345,7 +347,25 @@
 
 
 
-	<page name="proceed" template="">
+	<page name="proceed" template="proceed">
+		<request>
+			<var name="message"/>
+		</request>
+		<new item="user_phys" id="user_phys">
+			<parameter-input ref="user_phys" form="customer"/>
+		</new>
+		<new item="user_jur" id="user_jur">
+			<parameter-input ref="user_jur" form="customer"/>
+		</new>
+		<link name="confirm_link" target="cart_action" type="itemform">
+			<var name="action" value="customerForm"/>
+		</link>
+		<include name="COMMON"/>
+	</page>
+
+
+
+	<page name="confirm" template="">
 		<request>
 			<var name="message"/>
 		</request>
@@ -360,8 +380,6 @@
 		</link>
 		<include name="COMMON"/>
 	</page>
-
-
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->

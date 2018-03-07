@@ -16,6 +16,8 @@ public class ItemNames {
     public final static String TAG_SECOND = "tag_second";
     public final static String BOUGHT = "bought";
     public final static String CART = "cart";
+    public final static String USER_JUR = "user_jur";
+    public final static String USER_PHYS = "user_phys";
     public final static String NEWS_ITEM = "news_item";
     public final static String NEWS = "news";
     public final static String ARTICLES = "articles";
@@ -227,6 +229,42 @@ public class ItemNames {
         String NAME = "name";
         String VALUE = "value";
         String NAME_VALUE = "name_value";
+
+    }
+
+    public interface user_jur {
+
+        String _ITEM_NAME = "user_jur";
+        String ORGANIZATION = "organization";
+        String PHONE = "phone";
+        String EMAIL = "email";
+        String CONTACT_NAME = "contact_name";
+        String CONTACT_PHONE = "contact_phone";
+        String ADDRESS = "address";
+        String SHIP_TYPE = "ship_type";
+        String NO_ACCOUNT = "no_account";
+        String ACCOUNT = "account";
+        String BANK = "bank";
+        String BANK_ADDRESS = "bank_address";
+        String BANK_CODE = "bank_code";
+        String UNP = "unp";
+        String DIRECTOR = "director";
+        String BASE = "base";
+        String BASE_NUMBER = "base_number";
+        String BASE_DATE = "base_date";
+        String COMMENT = "comment";
+
+    }
+
+    public interface user_phys {
+
+        String _ITEM_NAME = "user_phys";
+        String NAME = "name";
+        String PHONE = "phone";
+        String EMAIL = "email";
+        String ADDRESS = "address";
+        String SHIP_TYPE = "ship_type";
+        String COMMENT = "comment";
 
     }
 

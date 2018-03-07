@@ -6,7 +6,6 @@ import ecommander.model.ParameterDescription;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Параметры, переданные через HTTP для одного айтема

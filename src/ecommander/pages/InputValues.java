@@ -1,5 +1,7 @@
 package ecommander.pages;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -15,6 +17,9 @@ public class InputValues implements Serializable {
 	private static final long serialVersionUID = -1721171544301221441L;
 
 	private LinkedHashMap<Object, Object> map = new LinkedHashMap<>();
+	private HashMap<String, String> validationErrors = new HashMap<>();
+	private String validationMessage;
+
 	public InputValues() {}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -89,5 +94,54 @@ public class InputValues implements Serializable {
 	
 	public boolean containsValue(Object paramId) {
 		return map.containsKey(paramId);
+	}
+
+	public boolean hasError(String paramName) {
+		return StringUtils.isNotBlank(validationErrors.get(paramName));
+	}
+
+	public String getError(String paramName) {
+		return validationErrors.get(paramName);
+	}
+
+	public void setError(String paramName, String errorMessage) {
+		validationErrors.put(paramName, errorMessage);
+	}
+
+	public void setMessage(String message) {
+		this.validationMessage = message;
+	}
+
+	public String getMessage() {
+		return validationMessage;
+	}
+
+	public boolean hasMessage() {
+		return StringUtils.isNotBlank(validationMessage);
+	}
+
+	public boolean hasValue(Object key) {
+		return map.get(key) != null;
+	}
+
+	/**
+	 * Скопировать соответствюущие значения инпутов из объекта InputValues
+	 * @param values
+	 */
+	void update(InputValues values) {
+		if (values == null)
+			return;
+		for (Object key : getKeys()) {
+			if (values.getKeys().contains(key)) {
+				replace(key, values.get(key));
+			}
+		}
+		if (values.hasMessage()) {
+			setMessage(values.getMessage());
+		}
+		for (String s : values.validationErrors.keySet()) {
+			validationErrors.put(s, values.validationErrors.get(s));
+		}
+		validationMessage = values.validationMessage;
 	}
 }

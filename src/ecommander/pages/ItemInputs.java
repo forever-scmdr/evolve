@@ -106,18 +106,52 @@ public class ItemInputs {
 	 * @return
 	 */
 	public ArrayList<String> getInputValues(ItemInputName name) {
-		return (ArrayList<String>) inputs.get(name);
+		Object val = inputs.get(name);
+		if (val instanceof ArrayList<?>)
+			return (ArrayList<String>) val;
+		ArrayList<String> result = new ArrayList<>();
+		if (val != null)
+			result.add((String) val);
+		return result;
 	}
 
 	/**
-	 * Скопировать соответствюущие значения инпутов из объекта InputValues
-	 * @param values
+	 * Получить сообщение об ошибке (если оно есть) для поля по названию параметра или названию extra
+	 * @param paramName
+	 * @return
 	 */
-	public void update(InputValues values) {
-		for (Object key : inputs.getKeys()) {
-			if (values.getKeys().contains(key)) {
-				inputs.replace(key, values.get(key));
-			}
-		}
+	public String getValidationErrorMessage(String paramName) {
+		return inputs.getError(paramName);
 	}
+
+	/**
+	 * Поле не прошло валидацию
+	 * @param paramName
+	 * @return
+	 */
+	public boolean hasNotPassedValidation(String paramName) {
+		return inputs.getError(paramName) != null;
+	}
+
+	/**
+	 * Установить сообщение об ошибке для поля
+	 * @param paramName
+	 * @param message
+	 */
+	public void setValidationErrorMessage(String paramName, String message) {
+		inputs.setError(paramName, message);
+	}
+
+	/**
+	 * Установить сообщение для всего айтема
+	 * @param message
+	 */
+	public void setMessage(String message) {
+		inputs.setMessage(message);
+	}
+
+	void update(InputValues values) {
+		inputs.update(values);
+	}
+
 }

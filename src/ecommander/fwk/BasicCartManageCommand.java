@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Управление корзиной
  * Created by E on 2/3/2018.
  */
-public class BasicCartManageCommand extends Command {
+public abstract class BasicCartManageCommand extends Command {
 
 	private static final String PRODUCT_ITEM = "product";
 	private static final String CART_ITEM = "cart";
@@ -73,6 +73,17 @@ public class BasicCartManageCommand extends Command {
 	}
 
 
+	public ResultPE customerForm() throws Exception {
+		if (!validate()) {
+			saveSessionForm("customer");
+			return getResult("proceed");
+		}
+		return getResult("confirm");
+	}
+
+	protected abstract boolean validate() throws Exception;
+
+
 	private void updateQtys() throws Exception {
 		MultipleHttpPostForm form = getItemForm();
 		// Обновление параметров
@@ -81,7 +92,7 @@ public class BasicCartManageCommand extends Command {
 			return;
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		for (Item bought : boughts) {
-			ItemInputValues vals = form.getItemValues(bought.getId());
+			ItemInputValues vals = form.getReadOnlyItemValues(bought.getId());
 			String qty = vals.getStringParam(QTY_PARAM);
 			if (StringUtils.isNotBlank(qty)) {
 				double quantity = -1;

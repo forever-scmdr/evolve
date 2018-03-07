@@ -612,7 +612,6 @@ public class PageModelBuilder {
 	public static final String PARAMETER_ATTRIBUTE = "parameter";
 	public static final String SIGN_ATTRIBUTE = "sign";
 	public static final String DIRECTION_ATTRIBUTE = "direction";
-	public static final String QUANTIFIER_ATTRIBUTE = "quantifier";
 	public static final String TARGET_ATTRIBUTE = "target";
 	public static final String TARGET_VAR_ATTRIBUTE = "target-var";
 	public static final String VALUE_ATTRIBUTE = "value";
@@ -643,7 +642,6 @@ public class PageModelBuilder {
 	public static final String METHOD_ATTRIBUTE = "method";
 	public static final String METHOD_VAR_ATTRIBUTE = "method-var";
 	public static final String THRESHOLD_ATTRIBUTE = "threshold";
-	public static final String RESTORE_VAR_ATTRIBUTE = "restore-var";
 	public static final String COPY_PAGE_VARS_ATTRIBUTE = "copy-page-vars";
 	public static final String FORM_ATTRIBUTE = "form";
 	public static final String VAR_ATTRIBUTE = "var";
@@ -782,11 +780,11 @@ public class PageModelBuilder {
 						// Форма
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), PARAMETER_INPUT_ELEMENT)) {
 							page.addElement(InputSetPE.createParams(element.attr(REF_ATTRIBUTE), element.attr(FORM_ATTRIBUTE),
-									element.attr(RESTORE_VAR_ATTRIBUTE), StringUtils.split(element.attr(NAME_ATTRIBUTE), ' ')));
+									StringUtils.split(element.attr(NAME_ATTRIBUTE), ' ')));
 							// Инпут
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), EXTRA_INPUT_ELEMENT)) {
 							page.addElement(InputSetPE.createExtra(element.attr(REF_ATTRIBUTE), element.attr(FORM_ATTRIBUTE),
-									element.attr(RESTORE_VAR_ATTRIBUTE), StringUtils.split(element.attr(NAME_ATTRIBUTE), ' ')));
+									StringUtils.split(element.attr(NAME_ATTRIBUTE), ' ')));
 						// <personal>
 						} else if (StringUtils.equalsIgnoreCase(element.tagName(), PERSONAL_ELEMENT)) {
 							for (Element subEl : detachedDirectChildren(element)) {
@@ -943,11 +941,11 @@ public class PageModelBuilder {
 			// Инпут parameter
 			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), PARAMETER_INPUT_ELEMENT)) {
 				pageItem.addElement(InputSetPE.createParams(itemSubnode.attr(REF_ATTRIBUTE), itemSubnode.attr(FORM_ATTRIBUTE),
-						itemSubnode.attr(RESTORE_VAR_ATTRIBUTE), StringUtils.split(itemSubnode.attr(NAME_ATTRIBUTE), ' ')));
+						StringUtils.split(itemSubnode.attr(NAME_ATTRIBUTE), ' ')));
 				// Инпут extra
 			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), EXTRA_INPUT_ELEMENT)) {
 				pageItem.addElement(InputSetPE.createExtra(itemSubnode.attr(REF_ATTRIBUTE), itemSubnode.attr(FORM_ATTRIBUTE),
-						itemSubnode.attr(RESTORE_VAR_ATTRIBUTE), StringUtils.split(itemSubnode.attr(NAME_ATTRIBUTE), ' ')));
+						StringUtils.split(itemSubnode.attr(NAME_ATTRIBUTE), ' ')));
 			// Фильтр
 			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), FILTER_ELEMENT)) {
 				if (queryType == ItemPE.Type.ANCESTOR || queryType == ItemPE.Type.NEW)
@@ -1107,7 +1105,7 @@ public class PageModelBuilder {
 							+ "' has invalid value");
 				}
 			}
-			container.addElement(new ParentalCriteriaPE(filterSubnode.attr(ASSOC_ATTRIBUTE), filterSubnode.attr(ITEM_ATTRIBUTE),
+			container.addElement(new ParentalCriteriaPE(filterSubnode.attr(ASSOC_ATTRIBUTE), filterSubnode.attr(REF_ATTRIBUTE),
 					filterSubnode.attr(SIGN_ATTRIBUTE), compare, true));
 		}
 		// Последователь
@@ -1121,7 +1119,7 @@ public class PageModelBuilder {
 							+ "' has invalid value");
 				}
 			}
-			container.addElement(new ParentalCriteriaPE(filterSubnode.attr(ASSOC_ATTRIBUTE), filterSubnode.attr(ITEM_ATTRIBUTE),
+			container.addElement(new ParentalCriteriaPE(filterSubnode.attr(ASSOC_ATTRIBUTE), filterSubnode.attr(REF_ATTRIBUTE),
 					filterSubnode.attr(SIGN_ATTRIBUTE), compare, false));
 		} else {
 			return false;
@@ -1300,7 +1298,7 @@ public class PageModelBuilder {
 			// Переменные
 			if (StringUtils.equalsIgnoreCase(linkSubnode.tagName(), VAR_ELEMENT)) {
 				String varName = linkSubnode.attr(NAME_ATTRIBUTE);
-				String itemId = linkSubnode.attr(ITEM_ATTRIBUTE);
+				String itemId = linkSubnode.attr(REF_ATTRIBUTE);
 				String otherVar = linkSubnode.attr(VAR_ATTRIBUTE);
 				String parameter = linkSubnode.attr(PARAMETER_ATTRIBUTE);
 				String value = linkSubnode.attr(VALUE_ATTRIBUTE);
@@ -1331,7 +1329,7 @@ public class PageModelBuilder {
 	 */
 	private Variable readVariable(Element variableNode) throws PrimaryValidationException {
 		String varName = variableNode.attr(NAME_ATTRIBUTE);
-		String itemId = variableNode.attr(ITEM_ATTRIBUTE);
+		String itemId = variableNode.attr(REF_ATTRIBUTE);
 		String otherVar = variableNode.attr(VAR_ATTRIBUTE);
 		String parameter = variableNode.attr(PARAMETER_ATTRIBUTE);
 		String value = variableNode.attr(VALUE_ATTRIBUTE);

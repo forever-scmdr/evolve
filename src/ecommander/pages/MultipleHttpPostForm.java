@@ -106,8 +106,12 @@ public class MultipleHttpPostForm implements Serializable {
 	 * @param itemId
 	 * @return
 	 */
-	public ItemInputValues getItemValues(long itemId) {
+	public ItemInputValues getReadOnlyItemValues(long itemId) {
 		return new ItemInputValues(inputs.get(itemId));
+	}
+
+	public void setValidationError(long itemId, String paramName, String errorMessage) {
+		inputs.get(itemId).setError(paramName, errorMessage);
 	}
 
 	/**
@@ -138,6 +142,19 @@ public class MultipleHttpPostForm implements Serializable {
 			}
 		}
 		return treeRoot;
+	}
+
+	/**
+	 * Вернуть единственный айтем на базе формы
+	 * (в том случае, когда форма существует только для одного айтема)
+	 * @return
+	 * @throws Exception
+	 */
+	public Item getSingleItem() throws Exception {
+		ItemTreeNode first = getItemTree().getFirstChild();
+		if (first == null)
+			return null;
+		return first.getItem();
 	}
 
 	/**

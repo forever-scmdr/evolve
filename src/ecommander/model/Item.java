@@ -1008,6 +1008,10 @@ public class Item implements ItemBasics {
 		Parameter param = getParameter(paramDesc.getId());
 		return !param.isEmpty();
 	}
+
+	public final boolean isValueEmpty(String paramName) {
+		return !isValueNotEmpty(paramName);
+	}
 	/**
 	 * Получить массив значений множественного параметра
 	 * @param paramName

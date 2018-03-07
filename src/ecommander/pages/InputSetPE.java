@@ -35,40 +35,29 @@ public class InputSetPE implements PageElement {
 	private List<String> names; // массив названий параметров (в случае если isParameter = true) или полей ввода
 	private String formId;  // ID формы ввода. В случае если несколько таких элементов относятся к одной форме.
 							// Используется для восстановления формы из сеанса
-	private String restoreVar;  // название переменной, которая используется в качестве отметки о том, что нужно
-								// восстановить форму из сеанса (форма восстанавливается, если указанная переменная
-								// имеет не пустое значение)
 	private ExecutablePagePE pageModel;
-	boolean needRestore = false; // нуждается ли этот набор инпутов в восстановлении значений (ранее сохраненных в сеансе)
 
-	private InputSetPE(boolean isParameter, String refId, String formId, String restoreVar, List<String> names) {
+	private InputSetPE(boolean isParameter, String refId, String formId, List<String> names) {
 		this.isParameter = isParameter;
 		this.refId = refId;
 		this.formId = formId;
-		this.restoreVar = restoreVar;
 		this.names = names;
 	}
 
-	public static InputSetPE createParams(String refId, String formId, String restoreVar, String... names) {
-		return new InputSetPE(true, refId, formId, restoreVar, Arrays.asList(names));
+	public static InputSetPE createParams(String refId, String formId, String... names) {
+		return new InputSetPE(true, refId, formId, Arrays.asList(names));
 	}
 
-	public static InputSetPE createExtra(String refId, String formId, String restoreVar, String... names) {
-		return new InputSetPE(false, refId, formId, restoreVar, Arrays.asList(names));
+	public static InputSetPE createExtra(String refId, String formId, String... names) {
+		return new InputSetPE(false, refId, formId, Arrays.asList(names));
 	}
 
 	@Override
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		InputSetPE clone = new InputSetPE(isParameter, refId, formId, restoreVar, new ArrayList<>(names));
+		InputSetPE clone = new InputSetPE(isParameter, refId, formId, new ArrayList<>(names));
 		clone.pageModel = parentPage;
 		if (container != null)
 			((InputSetContainer)container).addInputSet(clone);
-		if (StringUtils.isNotBlank(restoreVar)) {
-			Variable var = parentPage.getVariable(restoreVar);
-			if (var != null && !var.isEmpty()) {
-				clone.needRestore = true;
-			}
-		}
 		return clone;
 	}
 
@@ -100,8 +89,8 @@ public class InputSetPE implements PageElement {
 				inputs.addExtra(names.toArray(new String[0]));
 			}
 			// Восстановить значения, ранее сохраненные в сеансе (если это надо делать)
-			if (needRestore) {
-				MultipleHttpPostForm savedForm = pageModel.getSessionContext().getForm(formId);
+			MultipleHttpPostForm savedForm = pageModel.getSessionContext().getForm(formId);
+			if (savedForm != null) {
 				InputValues savedItemInputValues = savedForm.getItemInput(item.getId());
 				inputs.update(savedItemInputValues);
 			}
@@ -150,9 +139,5 @@ public class InputSetPE implements PageElement {
 
 	public String getFormId() {
 		return formId;
-	}
-
-	public String getRestoreVar() {
-		return restoreVar;
 	}
 }
