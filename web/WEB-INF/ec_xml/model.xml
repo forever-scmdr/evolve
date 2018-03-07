@@ -230,6 +230,25 @@
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
 	</item>
 
+
+	<item name="feedback_form" caption="Форма обратной связи" virtual="true">
+		<parameter name="name" type="string" caption="Имя"/>
+		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="email" type="string" caption="E-mail"/>
+		<parameter name="message" type="string" caption="Сообщение" />
+	</item>
+
+	<item name="custom_pages" caption="Одиночные страницы">
+		<child item="custom_page"/>
+	</item>
+
+	<item name="costom_page" caption="Одиночная страница" key="header" key-unique="true" default-page="page">
+		<parameter name="header" type="string" caption="Заголовок"/>
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+	</item>
+
+
 	<root>
 		<child item="catalog" single="true" />
 		<child item="back_catalog" single="true" />
@@ -240,6 +259,7 @@
 		<child item="docs" single="true"/>
 		<child item="contacts" single="true"/>
 		<child item="common" single="true"/>
+		<child item="custom_pages" single="true"/>
 	</root>
 
 

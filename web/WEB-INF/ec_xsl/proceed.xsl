@@ -4,6 +4,9 @@
 	<xsl:strip-space elements="*"/>
 
 
+	<xsl:variable name="message" select="page/variables/message"/>
+	<xsl:variable name="is_jur" select="page/user_jur//@validation-error"/>
+
 	<xsl:template name="CONTENT">
 		<xsl:call-template name="INC_MOBILE_HEADER"/>
 		<!-- CONTENT BEGIN -->
@@ -17,16 +20,20 @@
 		<h1>Анкета покупателя</h1>
 
 		<div class="page-content m-t">
-			<h4>Описание продукта</h4>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, earum cum modi labore fugiat veniam sapiente corporis est omnis debitis sit veritatis libero vero obcaecati amet, dicta quos, eos odit.</p>
+			<xsl:if test="$message">
+				<div class="alert alert-danger">
+					<h4>Ошибка</h4>
+					<p><xsl:value-of select="$message"/></p>
+				</div>
+			</xsl:if>
 			<ul class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="active"><a href="#tab_phys" role="tab" data-toggle="tab">Физическое лицо</a></li>
-				<li role="presentation"><a href="#tab_jur" role="tab" data-toggle="tab">Юридическое лицо</a></li>
+				<li role="presentation" class="{'active'[not($is_jur)]}"><a href="#tab_phys" role="tab" data-toggle="tab">Физическое лицо</a></li>
+				<li role="presentation" class="{'active'[$is_jur]}"><a href="#tab_jur" role="tab" data-toggle="tab">Юридическое лицо</a></li>
 			</ul>
 			<div class="tab-content">
 
 
-				<div role="tabpanel" class="tab-pane active" id="tab_phys">
+				<div role="tabpanel" class="tab-pane{' active'[not($is_jur)]}" id="tab_phys">
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заказа.</p>
 					<form action="{page/confirm_link}" method="post">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
@@ -72,7 +79,7 @@
 				</div>
 
 
-				<div role="tabpanel" class="tab-pane" id="tab_jur">
+				<div role="tabpanel" class="tab-pane{' active'[$is_jur]}" id="tab_jur">
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заказа.</p>
 					<form action="{page/confirm_link}" method="post">
 						<xsl:variable name="inp" select="page/user_jur/input"/>

@@ -32,7 +32,10 @@
 							<a href="{page/index_link}"><img src="img/logo_big.svg" alt="" style="height: 6rem; max-width: 100%;"/></a>
 						</div>
 						<div class="search">
-							<form action=""><input type="text" placeholder="Введите поисковый запрос"/><input type="submit" value="Найти"/></form>
+							<form action="{page/search_link}" method="post">
+								<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
+								<input type="submit" value="Найти"/>
+							</form>
 						</div>
 						<div class="other-container">
 							<div class="contacts">

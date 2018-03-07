@@ -75,8 +75,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 	public ResultPE customerForm() throws Exception {
 		if (!validate()) {
-			saveSessionForm("customer");
-			return getResult("proceed");
+			return getResult("validation_failed");
 		}
 		return getResult("confirm");
 	}

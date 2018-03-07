@@ -20,6 +20,8 @@
 		<link name="docs_link" target="docs"/>
 		<link name="contacts_link" target="contacts"/>
 		<link name="cart_ajax_link" target="cart_ajax"/>
+		<link name="cart_link" target="cart"/>
+		<link name="search_link" target="search"/>
 	</include-definition>
 
 
@@ -131,6 +133,35 @@
 		</link>
 		<include name="COMMON"/>
 	</page>
+
+
+	<page name="search" template="search">
+		<request>
+			<var name="q"/>
+			<var name="view" value="table" scope="cookie"/>
+		</request>
+		<list item="product" assoc="contains" id="prod">
+			<filter>
+				<fulltext limit="30" compare="EVERY"><var var="q"/></fulltext>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="translit"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="prod" parameter="code"/>
+			</link>
+		</list>
+		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="view" value="table"/>
+		</link>
+		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="view" value="list"/>
+		</link>
+		<include name="COMMON"/>
+	</page>
+
+
 
 
 	<page name="product" template="product" cacheable="true">
@@ -265,6 +296,59 @@
 	</page>
 
 
+	<page name="page" cacheable="true" template="page">
+		<request>
+			<var name="p" style="translit"/>
+		</request>
+		<single item="page" var="p" cacheable="true"/>
+		<include name="COMMON"/>
+	</page>
+
+
+	<page name="feedback_ajax" template="feedback">
+		<request>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<new item="feedback_form" id="form">
+			<parameter-input ref="form" form="feedback"/>
+		</new>
+		<link name="submit_link" target="feedback_command">
+			<var name="form_name" value="feedback"/>
+			<var name="source_page" value="feedback_ajax"/>
+		</link>
+	</page>
+
+
+
+	<page name="feedback_command">
+		<request>
+			<var name="topic" value="Обратная связь"/>
+			<var name="email" value="forever@forever-ds.com"/>
+			<var name="form_name"/>
+			<var name="source_page"/>
+			<var name="required" value="phone|email, message"/>
+		</request>
+		<link name="success" target-var="source_page">
+			<var name="result" value="success"/>
+			<var name="message" value="Сообщение успешно отправлено, спасибо"/>
+		</link>
+		<link name="error_not_set" target-var="source_page">
+			<var name="result" value="error"/>
+			<var name="message" value="Заполните, пожалуйста, обязательные поля"/>
+		</link>
+		<link name="general_error" target-var="source_page">
+			<var name="result" value="error"/>
+			<var name="message" value="Сообщение не может быть отправлено сейчас из-за ошибки сервера. Пожалуйста, попробуйте позже."/>
+		</link>
+		<command class="ecommander.fwk.NonemptyEmailCommand">
+			<result name="success" type="redirect"/>
+			<result name="error_not_set" type="redirect"/>
+			<result name="general_error" type="redirect"/>
+		</command>
+	</page>
+
+
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -306,10 +390,15 @@
 		<link name="cart" target="cart"/>
 		<link name="proceed" target="proceed"/>
 		<link name="confirm" target="confirm"/>
+		<link name="validation_failed" target="proceed">
+			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
+		</link>
 		<command class="extra.CartManageCommand" method-var="action">
 			<result name="ajax" type="redirect"/>
 			<result name="cart" type="redirect"/>
+			<result name="proceed" type="redirect"/>
 			<result name="confirm" type="redirect"/>
+			<result name="validation_failed" type="redirect"/>
 		</command>
 	</page>
 
@@ -352,10 +441,10 @@
 			<var name="message"/>
 		</request>
 		<new item="user_phys" id="user_phys">
-			<parameter-input ref="user_phys" form="customer"/>
+			<parameter-input ref="user_phys" form="customer_phys"/>
 		</new>
 		<new item="user_jur" id="user_jur">
-			<parameter-input ref="user_jur" form="customer"/>
+			<parameter-input ref="user_jur" form="customer_jur"/>
 		</new>
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="customerForm"/>
