@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+	<xsl:import href="feedback_ajax.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
@@ -150,41 +151,7 @@
 		</div>
 
 		<!-- modal feedback -->
-		<div class="modal fade" tabindex="-1" role="dialog" id="modal-feedback">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
-						<h4 class="modal-title">Напишите нам сообщение</h4>
-					</div>
-					<div class="modal-body">
-						<form action="" method="post">
-							<div class="form-group">
-								<label for="">Ваше имя:</label>
-								<input type="text" class="form-control" id=""/>
-							</div>
-							<div class="form-group">
-								<label for="">Адрес:</label>
-								<input type="text" class="form-control" id=""/>
-							</div>
-							<div class="form-group">
-								<label for="">Телефон:</label>
-								<input type="text" class="form-control" id=""/>
-							</div>
-							<div class="form-group">
-								<label for="">Электронная почта:</label>
-								<input type="text" class="form-control" id=""/>
-							</div>
-							<div class="form-group">
-								<label for="">Сообщение:</label>
-								<textarea class="form-control" rows="3"></textarea>
-							</div>
-							<input type="submit" name="" value="Отправить сообщение"/>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+		<xsl:call-template name="FEEDBACK_FORM"/>
 		<!-- MODALS END -->
 	</xsl:template>
 

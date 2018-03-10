@@ -22,10 +22,11 @@
 		<link name="cart_ajax_link" target="cart_ajax"/>
 		<link name="cart_link" target="cart"/>
 		<link name="search_link" target="search"/>
+		<link name="feedback_form_link" target="feedback_ajax"/>
 	</include-definition>
 
 
-	<page name="index" template="index" cacheable="true">
+	<page name="index" template="index" cacheable="false">
 		<single item="main_page" cacheable="true">
 			<list item="main_promo_bottom"/>
 		</single>
@@ -300,12 +301,12 @@
 		<request>
 			<var name="p" style="translit"/>
 		</request>
-		<single item="page" var="p" cacheable="true"/>
+		<single item="custom_page" var="p" cacheable="true"/>
 		<include name="COMMON"/>
 	</page>
 
 
-	<page name="feedback_ajax" template="feedback">
+	<page name="feedback_ajax" template="feedback_ajax">
 		<request>
 			<var name="result"/>
 			<var name="message"/>
@@ -313,7 +314,7 @@
 		<new item="feedback_form" id="form">
 			<parameter-input ref="form" form="feedback"/>
 		</new>
-		<link name="submit_link" target="feedback_command">
+		<link name="submit_link" target="feedback_command" type="itemform">
 			<var name="form_name" value="feedback"/>
 			<var name="source_page" value="feedback_ajax"/>
 		</link>

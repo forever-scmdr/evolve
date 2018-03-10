@@ -231,18 +231,18 @@
 	</item>
 
 
-	<item name="feedback_form" caption="Форма обратной связи" virtual="true">
+	<item name="feedback_form" caption="Форма обратной связи" virtual="true" ag-id="25" ag-hash="-1950071490">
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="message" type="string" caption="Сообщение" />
 	</item>
 
-	<item name="custom_pages" caption="Одиночные страницы">
+	<item name="custom_pages" caption="Одиночные страницы" ag-id="26" ag-hash="727106934">
 		<child item="custom_page"/>
 	</item>
 
-	<item name="costom_page" caption="Одиночная страница" key="header" key-unique="true" default-page="page">
+	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" default-page="page" ag-id="27" ag-hash="-1777660259">
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
