@@ -124,14 +124,20 @@ public abstract class VariablePE implements PageElement {
 	 * @throws UnsupportedEncodingException
 	 */
 	public String writeInAnUrlFormat() throws UnsupportedEncodingException {
+		if (isEmpty() && style != Style.query)
+			return Strings.EMPTY;
 		StringBuilder result = new StringBuilder();
 		if (style == Style.path) {
 			for (String value : getVariable().getLocalValues()) {
 				result.append(COMMON_DELIMITER).append(name).append(COMMON_DELIMITER).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING));
 			}
 		} else if (style == Style.query) {
-			for (String value : getVariable().getLocalValues()) {
-				result.append(AMP_SIGN).append(name).append(EQ_SIGN).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING));
+			if (isEmpty()) {
+				result.append(AMP_SIGN).append(name).append(EQ_SIGN);
+			} else {
+				for (String value : getVariable().getLocalValues()) {
+					result.append(AMP_SIGN).append(name).append(EQ_SIGN).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING));
+				}
 			}
 		} else if (style == Style.translit) {
 			for (String value : getVariable().getLocalValues()) {

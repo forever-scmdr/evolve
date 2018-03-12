@@ -196,8 +196,6 @@
 	</item>
 
 	<item name="main_page" caption="Главная страница" ag-id="15" ag-hash="-251149995">
-		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
-		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<child item="main_promo_bottom" inline="true"/>
 	</item>
 
@@ -226,6 +224,8 @@
 	<item name="common" caption="На всех страницах" ag-id="22" ag-hash="-1354814997">
 		<parameter name="top" type="short-text" caption="Верх" description="телефоны"/>
 		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
+		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
+		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
 	</item>

@@ -40,15 +40,21 @@
 						</div>
 						<div class="other-container">
 							<div class="contacts">
-								<xsl:value-of select="page/common/top" disable-output-escaping="yes"/>
+								<p>
+									<svg class="svg-inline--fa fa-phone fa-w-16" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="phone" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M493.397 24.615l-104-23.997c-11.314-2.611-22.879 3.252-27.456 13.931l-48 111.997a24 24 0 0 0 6.862 28.029l60.617 49.596c-35.973 76.675-98.938 140.508-177.249 177.248l-49.596-60.616a24 24 0 0 0-28.029-6.862l-111.997 48C3.873 366.516-1.994 378.08.618 389.397l23.997 104C27.109 504.204 36.748 512 48 512c256.087 0 464-207.532 464-464 0-11.176-7.714-20.873-18.603-23.385z"></path></svg>
+									<strong>Заказ и консультация:</strong>
+									<xsl:value-of select="page/common/top" disable-output-escaping="yes"/>
+								</p>
 								<p><a href="" data-toggle="modal" data-target="#modal-feedback">Форма обратной связи</a></p>
 							</div>
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-								<p><i class="fas fa-shopping-cart"></i> <strong>Корзина пуста</strong></p>
+								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Корзина пуста</strong></p>
 							</div>
 							<div class="user">
 								<p><i class="fas fa-lock"/>
-									<a href="" data-toggle="modal" data-target="#modal-login">Вход</a> / <a href="registration.html">Регистрация</a>
+									<!--<a href="" data-toggle="modal" data-target="#modal-login">Вход</a> / <a href="registration.html">Регистрация</a>-->
+									<a href="javascript:alert('Функция временно отключена')">Вход</a> /
+									<a href="javascript:alert('Функция временно отключена')">Регистрация</a>
 								</p>
 								<p><i class="fas fa-star"/> <a href="">Избранное (2)</a></p>
 								<p><i class="fas fa-balance-scale"/> <a href="compare.html">Сравнение (3)</a></p>
@@ -59,8 +65,11 @@
 							<a href="{page/catalog_link}">Каталог</a>
 							<a href="{page/news_link}">Новости</a>
 							<a href="{page/articles_link}">Статьи</a>
+							<!--
 							<a href="">Наши проекты</a>
 							<a href="{page/dealers_link}">Дилеры</a>
+							-->
+							<a href="/about">О компании</a>
 							<a href="{page/docs_link}">Документация</a>
 							<a href="{page/contacts_link}">Контакты</a>
 						</div>
@@ -81,13 +90,21 @@
 				<div class="icons-container">
 					<a href=""><i class="fas fa-phone"></i></a>
 					<a href=""><i class="fas fa-shopping-cart"></i></a>
-					<a href=""><i class="fas fa-bars"></i></a>
+					<a href="javascript:showMobileMainMenu()"><i class="fas fa-bars"></i></a>
 				</div>
 				<div class="search-container">
-					<form action=""><input type="text"/></form>
+					<form action="{page/search_link}" method="post">
+						<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
+					</form>
 				</div>
 			</div>
 		</div>
+		<script>
+			function showMobileMainMenu() {
+				$('.content-container').toggleClass('visible-no');
+				$('.menu-container').toggleClass('visible-yes');
+			}
+		</script>
 	</xsl:template>
 
 
@@ -160,16 +177,18 @@
 
 	<xsl:template name="INC_MOBILE_MENU">
 		<div class="menu-container mobile">
-			<div class="overlay"></div>
+			<div class="overlay" onclick="showMobileMainMenu()"></div>
 			<div class="content">
 				<ul>
 					<li>
 						<i class="fas fa-lock"></i>
-						<a href="" data-toggle="modal" data-target="#modal-login">Вход</a> / <a href="registration.html">Регистрация</a>
+						<!--<a href="" data-toggle="modal" data-target="#modal-login">Вход</a> / <a href="registration.html">Регистрация</a>-->
+						<a href="javascript:alert('Функция временно отключена')">Вход</a> /
+						<a href="javascript:alert('Функция временно отключена')">Регистрация</a>
 					</li>
 				</ul>
 				<ul>
-					<li><i class="fas fa-th-list"></i> <a href="{page/catalog_link}">Каталог продукции</a></li>
+					<li><i class="fas fa-th-list"></i> <a href="#" onclick="showMobileCatalogMenu(); return false">Каталог продукции</a></li>
 				</ul>
 				<ul>
 					<li><i class="fas fa-shopping-cart"></i> <a href="">Корзина (1)</a></li>
@@ -192,17 +211,22 @@
 				</ul>
 			</div>
 		</div>
+		<script>
+			function showMobileCatalogMenu() {
+				$('#mobile_catalog_menu').toggle();
+			}
+		</script>
 	</xsl:template>
 
 
 
 	<xsl:template name="INC_MOBILE_NAVIGATION">
-		<div class="nav-container mobile" style="display: none;">
+		<div id="mobile_catalog_menu" class="nav-container mobile" style="display: none; position:absolute; width: 100%">
 			<div class="content">
 				<div class="small-nav">
 					<a href="" class="back"><i class="fas fa-chevron-left"></i></a>
 					<a href="" class="header">Электроника</a>
-					<a href="" class="close"><i class="fas fa-times"></i></a>
+					<a href="" class="close" onclick="showMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 				</div>
 				<ul>
 					<li><a href="{page/news_link}">Новости</a><i class="fas fa-chevron-right"></i></li>
@@ -279,6 +303,11 @@
 
 
 
+	<xsl:template name="PRINT">
+		<span><i class="fas fa-print"></i> <a href="javascript:window.print()">Распечатать</a></span>
+	</xsl:template>
+
+
 
 
 	<!-- ****************************    ЭЛЕМЕНТЫ НЕ ДЛЯ ВСЕХ СТРАНИЦ    ******************************** -->
@@ -290,14 +319,11 @@
 		<div class="actions">
 			<h3>Акции</h3>
 			<div class="actions-container">
-				<a href="">Что делать, если поломалась или разбилась сенсорная панель вашего телефона</a>
+				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 			</div>
 		</div>
 		<div class="contacts">
-			<h3>Заказ и консультация</h3>
-			<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - тел./Viber</p>
-			<p>Email <a href="">info@beltesto.by</a></p>
-			<p><a href="">Схема проезда к офису</a></p>
+			<xsl:value-of select="page/common/left" disable-output-escaping="yes"/>
 		</div>
 	</xsl:template>
 
@@ -314,7 +340,7 @@
 		<div class="actions mobile">
 			<h3>Акции</h3>
 			<div class="actions-container">
-				<a href="">Что делать, если поломалась или разбилась сенсорная панель вашего телефона</a>
+				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 			</div>
 		</div>
 	</xsl:template>
@@ -358,7 +384,10 @@
 						</xsl:if>
 					</form>
 				</div>
-				<!--<div class="quantity">Осталось 12 шт.</div>-->
+				<xsl:choose>
+					<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>
+					<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>
+				</xsl:choose>
 				<div class="checkbox">
 					<label>
 						<input type="checkbox"/> cравнение

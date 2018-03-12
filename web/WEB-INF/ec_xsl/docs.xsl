@@ -5,13 +5,12 @@
 
 
 	<xsl:template name="CONTENT">
-		<xsl:call-template name="INC_MOBILE_HEADER"/>
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
 				<a href="/">Главная страница</a> &gt;
 			</div>
-			<span><i class="fas fa-print"></i> <a href="">Распечатать</a></span>
+			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1>Документация</h1>
 

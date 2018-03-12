@@ -56,6 +56,9 @@
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="12" scope="cookie"/>
+			<var name="minqty" scope="cookie"/>
+			<var name="sort" scope="cookie"/>
+			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="tag1"/>
 			<var name="tag2_1"/>
 			<var name="tag2_2"/>
@@ -66,6 +69,7 @@
 		<single item="section" var="sec" id="cur_sec" tag="current_section">
 			<list item="product" assoc="contains" id="prod">
 				<filter>
+					<parameter name="qty" compare="ANY" sign="&gt;"><var var="minqty" /></parameter>
 					<child item="tag_first">
 						<parameter name="tag" compare="ANY"><var var="tag1"/></parameter>
 					</child>
@@ -84,6 +88,7 @@
 					<child item="tag_second" transit="true">
 						<parameter name="name_value" compare="ANY"><var var="tag2_5"/></parameter>
 					</child>
+					<sorting direction-var="direction"><var var="sort"/></sorting>
 					<limit><var var="limit"/></limit>
 					<pages><var var="page"/></pages>
 				</filter>
@@ -126,11 +131,41 @@
 			<var name="limit" value="24"/>
 		</link>
 		<link name="set_limit_all" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="10000"/>
+			<var name="limit" value="300"/>
 		</link>
 		<link name="filter_base_link" target="section" type="exclusive">
 			<var name="sec" var="sec" style="translit"/>
 			<var name="tag1" var="tag1"/>
+		</link>
+		<link name="remove_tag_link" target="section" type="exclusive">
+			<var name="sec" var="sec" style="translit"/>
+		</link>
+		<link name="show_only_available" target="section" type="exclusive">
+			<var name="sec" var="sec" style="translit"/>
+			<var name="minqty" value="0"/>
+		</link>
+		<link name="show_all" target="section" type="exclusive">
+			<var name="sec" var="sec" style="translit"/>
+			<var name="minqty" value=""/>
+		</link>
+		<link name="set_sort_name_asc" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="sort" value="name"/>
+			<var name="direction" value="ASC"/>
+		</link>
+		<link name="set_sort_name_desc" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="sort" value="name"/>
+			<var name="direction" value="DESC"/>
+		</link>
+		<link name="set_sort_price_asc" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="sort" value="price"/>
+			<var name="direction" value="ASC"/>
+		</link>
+		<link name="set_sort_price_desc" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="sort" value="price"/>
+			<var name="direction" value="DESC"/>
+		</link>
+		<link name="set_sort_default" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="sort" value=""/>
 		</link>
 		<include name="COMMON"/>
 	</page>
@@ -140,10 +175,12 @@
 		<request>
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
+			<var name="minqty" scope="cookie"/>
 		</request>
 		<list item="product" assoc="contains" id="prod">
 			<filter>
 				<fulltext limit="30" compare="EVERY"><var var="q"/></fulltext>
+				<parameter name="qty" compare="ANY" sign="&gt;"><var var="minqty" /></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="translit"/>
@@ -153,11 +190,19 @@
 				<var name="code" ref="prod" parameter="code"/>
 			</link>
 		</list>
-		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_view_table" target="search" copy-page-vars="yes">
 			<var name="view" value="table"/>
 		</link>
-		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_view_list" target="search" copy-page-vars="yes">
 			<var name="view" value="list"/>
+		</link>
+		<link name="show_only_available" target="search">
+			<var name="q" var="q"/>
+			<var name="minqty" value="0"/>
+		</link>
+		<link name="show_all" target="search">
+			<var name="q" var="q"/>
+			<var name="minqty" value=""/>
 		</link>
 		<include name="COMMON"/>
 	</page>

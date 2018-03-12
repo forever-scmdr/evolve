@@ -166,13 +166,15 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 		Occur innerOccur = Occur.MUST;
 		for (FilterCriteria criteria : criterias) {
 			if (criteria.isNotBlank())
-				appendLuceneQuery(innerBuilder, innerOccur);
+				criteria.appendLuceneQuery(innerBuilder, innerOccur);
 		}
 		if (queryBuilder == null)
 			return innerBuilder;
 		if (occur == null)
 			occur = Occur.MUST;
-		queryBuilder.add(innerBuilder.build(), occur);
+		BooleanQuery innerQuery = innerBuilder.build();
+		if (innerQuery.clauses().size() > 0)
+			queryBuilder.add(innerBuilder.build(), occur);
 		return queryBuilder;
 	}
 

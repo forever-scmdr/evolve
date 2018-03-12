@@ -125,6 +125,8 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 						StaticVariable valVar = new StaticVariable(initialVar.getName(), initialVar.getDefaultValue());
 						((SessionStaticVariable) initialVar.getVariable()).update(valVar);
 						addVariable(initialVar.getVariable());
+					} else {
+						addVariable(new StaticVariable(initialVar.getName()));
 					}
 				} else {
 					addVariable(initialVar.getVariable());

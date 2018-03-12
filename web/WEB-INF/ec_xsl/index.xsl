@@ -33,7 +33,7 @@
 			<div class="actions">
 				<h3>Акции</h3>
 				<div class="actions-container">
-					<a href="{page/main_page/link_link}"><xsl:value-of select="page/main_page/link_text"/></a>
+					<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 				</div>
 			</div>
 		</xsl:if>
@@ -102,7 +102,7 @@
 		<div class="actions mobile">
 			<h3>Акции</h3>
 			<div class="actions-container">
-				<a href="">Что делать, если поломалась или разбилась сенсорная панель вашего телефона</a>
+				<a href="{page/main_page/link_link}"><xsl:value-of select="page/main_page/link_text"/></a>
 			</div>
 		</div>
 		<div class="news">

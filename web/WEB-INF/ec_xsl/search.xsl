@@ -10,6 +10,7 @@
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="products" select="page/product"/>
+	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -17,7 +18,7 @@
 			<div class="path">
 				<a href="/">Главная страница</a>
 			</div>
-			<span><i class="fas fa-print"></i> <a href="">Распечатать</a></span>
+			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1>Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
 
@@ -31,7 +32,13 @@
 						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
 						<div class="checkbox">
 							<label>
-								<input type="checkbox"/> в наличии
+								<xsl:if test="not($only_available)">
+									<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
+								</xsl:if>
+								<xsl:if test="$only_available">
+									<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
+								</xsl:if>
+								в наличии
 							</label>
 						</div>
 					</div>

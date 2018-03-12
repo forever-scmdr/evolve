@@ -53,8 +53,13 @@
  * @param lockElementIds - jQuery селектор для блокируемых элементов
  * @additionalHandling - дополнительная функция, которая вызывается после успешного завершения всех действий по обработке запроса
  */
-$(document).ready(function(){
-	$("div[ajax-href]").each(function () {
+
+function initAjax(elementId) {
+	var idPrefix = "";
+	if (elementId && !(elementId == null || elementId == '')) {
+		idPrefix = "#" + elementId + " ";
+	}
+	$(idPrefix + "div[ajax-href]").each(function () {
 		var elem = $(this);
 		var url = elem.attr("ajax-href");
 		var id = elem.attr("id");
@@ -64,7 +69,7 @@ $(document).ready(function(){
 		else
 			insertAjax(url);
 	});
-	$("form[ajax-form=yes]").submit(function(event) {
+	$(idPrefix + "form[ajax-form=true]").submit(function(event) {
 		event.preventDefault();
 		var elem = $(this);
 		var loaderId = elem.attr("ajax-loader-id");
@@ -74,10 +79,13 @@ $(document).ready(function(){
 			postForm(elem);
 		}
 	});
-	$("select[value]").each(function() {
+	$(idPrefix + "select[value]").each(function() {
 		$(this).val($(this).attr("value"));
 	});
-});
+}
+
+$(document).ready(initAjax());
+
 $(document).on('click', '.close-popup', function(e){
 	e.preventDefault();
 	$("#popup").hide();
@@ -128,13 +136,17 @@ function postForm(form, lockElementIds, additionalHandling) {
 function processResult(data, additionalHandling, lockElementIds, status, arg3) {
 	// Вставка результатов (если это возможно)
 	var possibleJsonData = null;
+	var ajaxInitIds = null;
 	if (data.indexOf('<') == 0) {
 		try {
 			var parsedData = $("<div>" + data + "</div>");
 			parsedData.find('.result').each(function() {
-				id = $(this).attr('id');
+				if (ajaxInitIds == null)
+					ajaxInitIds = [];
+				var id = $(this).attr('id');
 				//if ($('#' + id).length == 0) alert("Не найден элемент с id='" + id + "' в родительском документе");
 				$('#' + id).html($(this).html());
+				ajaxInitIds.push(id);
 			});
 			if (!parsedData.find('#JSON').length != 0)
 				possibleJsonData = parsedData.find('#JSON').html();
@@ -155,6 +167,12 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
 	}
 	// Разблокировка частей
 	unlock(lockElementIds);
+	// Инициализация функциональности AJAX для вновь вставленного контента
+	if (ajaxInitIds != null) {
+		for (var i = 0; i < ajaxInitIds.length; i++) {
+			initAjax(ajaxInitIds[i]);
+		}
+	}
 	// Вызов дополнительной обработки и передача дополнительных данных
 	if (typeof additionalHandling == 'function')
 		additionalHandling(argData);

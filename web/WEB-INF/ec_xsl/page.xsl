@@ -4,7 +4,7 @@
 	<xsl:strip-space elements="*"/>
 
 
-	<xsl:variable name="ni" select="page/news_item"/>
+	<xsl:variable name="p" select="page/custom_page"/>
 
 
 	<xsl:template name="CONTENT">
@@ -12,17 +12,13 @@
 		<div class="path-container">
 			<div class="path">
 				<a href="/">Главная страница</a> &gt;
-				<xsl:choose>
-					<xsl:when test="$ni/news"><a href="{page/news_link}">Новости</a> &gt;</xsl:when>
-					<xsl:otherwise><a href="{page/articles_link}">Статьи</a> &gt;</xsl:otherwise>
-				</xsl:choose>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$ni/header"/></h1>
+		<h1><xsl:value-of select="$p/header"/></h1>
 
 		<div class="page-content m-t">
-			<xsl:value-of select="$ni/text" disable-output-escaping="yes"/>
+			<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>

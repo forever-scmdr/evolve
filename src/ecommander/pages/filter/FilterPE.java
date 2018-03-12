@@ -335,9 +335,11 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	@Override
 	public void processSortingCriteriaPE(SortingCriteriaPE crit) {
 		List<String> values = crit.getSortingParameter().writeAllValues();
+		if (values.size() == 0)
+			return;
 		String varName = crit.getSortingParameter().getName();
 		// Если значений много и у переменной есть название, то нужна сортировка по заданным значениям
-		if (values.size() > 1 || StringUtils.isNotBlank(varName))
+		if (values.size() > 1 && StringUtils.isNotBlank(varName))
 			dbQuery.addSorting(varName, crit.getSortingDirection().writeSingleValue(), values);
 		else if (StringUtils.isNotBlank(crit.getSortingParameter().writeSingleValue()))
 			dbQuery.addSorting(crit.getSortingParameter().writeSingleValue(), crit.getSortingDirection().writeSingleValue());

@@ -13,6 +13,7 @@
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
+	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -24,7 +25,7 @@
 					<a href="{show_section}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
-			<span><i class="fas fa-print"></i> <a href="">Распечатать</a></span>
+			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1><xsl:value-of select="$sel_sec/name"/></h1>
 		<xsl:if test="not($products)">
@@ -49,7 +50,9 @@
 					<div class="tags">
 						<strong>Выберите тэг:</strong>
 						<xsl:for-each select="$sel_sec/tag_first">
-							<a href="{set_tag_1}"><span class="label label-{if (tag = $tag1) then 'primary' else 'success'}"><xsl:value-of select="tag"/></span></a>
+							<a href="{if (tag = $tag1) then //page/remove_tag_link else set_tag_1}">
+								<span class="label label-{if (tag = $tag1) then 'primary' else 'success'}"><xsl:value-of select="tag"/></span>
+							</a>
 						</xsl:for-each>
 					</div>
 				</xsl:if>
@@ -111,15 +114,23 @@
 							<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox"/> в наличии
+									<xsl:if test="not($only_available)">
+										<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
+									</xsl:if>
+									<xsl:if test="$only_available">
+										<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
+									</xsl:if>
+									в наличии
 								</label>
 							</div>
 							<span>
-								<select class="form-control">
-									<option>Сначала дешевые</option>
-									<option>Сначала дорогие</option>
-									<option>По алфавиту А→Я</option>
-									<option>По алфавиту Я→А</option>
+								<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
+								        onchange="window.location.href = $(this).find(':selected').attr('link')">
+									<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
+									<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
+									<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
+									<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
+									<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
 								</select>
 							</span>
 						</div>

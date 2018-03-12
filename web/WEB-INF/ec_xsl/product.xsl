@@ -22,7 +22,7 @@
 					<a href="{show_section}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
-			<span><i class="fas fa-print"></i> <a href="">Распечатать</a></span>
+			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1><xsl:value-of select="$p/name"/></h1>
 
@@ -43,10 +43,13 @@
 				</div>
 			</div>
 			<div class="product-info">
-				<div class="price">
-					<p><span>Старая цена</span>100 р.</p>
-					<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
-				</div>
+				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
+				<xsl:if test="$has_price">
+					<div class="price">
+						<p><span>Старая цена</span>100 р.</p>
+						<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
+					</div>
+				</xsl:if>
 				<div class="order">
 					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 					<div id="cart_list_{$p/code}" class="product_purchase_container">
@@ -61,7 +64,10 @@
 							</xsl:if>
 						</form>
 					</div>
-					<!--<div class="quantity">Осталось 12 шт.</div>-->
+					<xsl:choose>
+						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>
+						<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>
+					</xsl:choose>
 				</div>
 				<div class="links">
 					<label><input type="checkbox"/> cравнение</label>
@@ -87,8 +93,12 @@
 			</div>
 			<div class="description">
 				<ul class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab">Описание</a></li>
-					<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">Технические данные</a></li>
+					<xsl:if test="string-length($p/text) &gt; 15">
+						<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab">Описание</a></li>
+					</xsl:if>
+					<xsl:if test="$p/tech">
+						<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">Технические данные</a></li>
+					</xsl:if>
 					<xsl:if test="page/accessory">
 						<li role="presentation"><a href="#tab3" role="tab" data-toggle="tab">Принадлежности</a></li>
 					</xsl:if>
@@ -98,7 +108,7 @@
 					<xsl:if test="page/probe">
 						<li role="presentation"><a href="#tab5" role="tab" data-toggle="tab">Зонды</a></li>
 					</xsl:if>
-					<xsl:if test="$p/apply">
+					<xsl:if test="string-length($p/apply) &gt; 15">
 						<li role="presentation"><a href="#tab6" role="tab" data-toggle="tab">Применение</a></li>
 					</xsl:if>
 				</ul>

@@ -16,7 +16,7 @@
 			<div class="path">
 				<a href="/">Главная страница</a>
 			</div>
-			<span><i class="fas fa-print"></i> <a href="">Распечатать</a></span>
+			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1>Каталог продукции</h1>
 		<div class="page-content m-t">

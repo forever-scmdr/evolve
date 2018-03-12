@@ -37,7 +37,10 @@ public class UpdatePrices extends IntegrateBase {
 				if (StringUtils.isNotBlank(code)) {
 					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code));
 					if (prod != null) {
-						prod.set_qty(getDoubleValue(QTY_HEADER));
+						Double qty = getDoubleValue(QTY_HEADER);
+						if (qty == null)
+							qty = 0d;
+						prod.set_qty(qty);
 						prod.set_price(getCurrencyValue(PRICE_HEADER));
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
 						info.increaseProcessed();

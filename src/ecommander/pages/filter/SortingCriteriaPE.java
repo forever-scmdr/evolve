@@ -50,9 +50,11 @@ public class SortingCriteriaPE implements FilterCriteriaPE {
 						+ ((ItemType) results.getBufferData()).getName() + "' item");
 			}
 			sortingParameter.validate(elementPath + " > " + getKey(), results);
+			/*
 			if (!"ASC".equals(sortingDirection.writeSingleValue()) && !"DESC".equals(sortingDirection.writeSingleValue()))
 				results.addError(elementPath + " > " + getKey(),
 						"'" + sortingDirection.writeSingleValue() + "' is not valid sorting direction");
+						*/
 		}
 	}
 

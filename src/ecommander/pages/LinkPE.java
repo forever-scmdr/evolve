@@ -222,7 +222,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 			for (VariablePE var : variables.values()) {
 				if ((var.getStyle() == VariablePE.Style.path || var.getStyle() == VariablePE.Style.translit) && !var.isEmpty())
 					path.append(VariablePE.COMMON_DELIMITER).append(var.writeInAnUrlFormat());
-				else if (var.getStyle() == VariablePE.Style.query && !var.isEmpty())
+				else if (var.getStyle() == VariablePE.Style.query/* && !var.isEmpty()*/)
 					query.append(VariablePE.AMP_SIGN).append(var.writeInAnUrlFormat());
 			}
 		} catch (UnsupportedEncodingException e) {
@@ -310,7 +310,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		if (copyPageVars) {
 			for (Variable pageVar : parentPage.getAllVariables()) {
 				if (!variables.containsKey(pageVar.getName()) && !StringUtils.startsWith(pageVar.getName(), "$")
-						&& !(pageVar instanceof SessionStaticVariable)) {
+						&& !(pageVar instanceof SessionStaticVariable) && !pageVar.isEmpty()) {
 					VariablePE.Style style = VariablePE.Style.query;
 					if (parentPage.getInitVariablePE(pageVar.getName()) != null)
 						style = parentPage.getInitVariablePE(pageVar.getName()).getStyle();

@@ -142,10 +142,10 @@ public class DeployParsed extends IntegrateBase {
 		Product prod = Product.get(ItemUtils.newChildItem(ItemNames.PRODUCT, parentSection));
 		prod.set_code(code);
 		prod.set_name(JsoupUtils.nodeText(doc, NAME));
-		prod.set_short(JsoupUtils.nodeHtml(doc, SHORT));
-		prod.set_text(JsoupUtils.nodeHtml(doc, TEXT));
-		prod.set_tech(JsoupUtils.nodeHtml(doc, TECH));
-		prod.set_apply(JsoupUtils.nodeHtml(doc, APPLY));
+		prod.set_short(RF_to_RB(JsoupUtils.nodeHtml(doc, SHORT)));
+		prod.set_text(RF_to_RB(JsoupUtils.nodeHtml(doc, TEXT)));
+		prod.set_tech(RF_to_RB(JsoupUtils.nodeHtml(doc, TECH)));
+		prod.set_apply(RF_to_RB(JsoupUtils.nodeHtml(doc, APPLY)));
 		Element associated = doc.getElementsByTag(ASSOCIATED).first();
 		for (Element access : associated.getElementsByTag(ACCESSORY)) {
 			prod.add_accessiories(access.ownText());
@@ -258,5 +258,9 @@ public class DeployParsed extends IntegrateBase {
 	@Override
 	protected void terminate() throws Exception {
 
+	}
+
+	private String RF_to_RB(String rf) {
+		return StringUtils.replace(rf, " РФ", " РБ");
 	}
 }
