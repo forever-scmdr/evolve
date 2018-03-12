@@ -88,7 +88,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	 * @throws UnsupportedEncodingException
 	 */
 	private LinkPE(String urlString) throws UnsupportedEncodingException {
-		if (urlString.length() == 0) {
+		if (StringUtils.isBlank(urlString)) {
 			return;
 		}
 		// Строка разбивается на path и query
@@ -378,6 +378,23 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	public String toString() {
 		return serialize();
 	}
-	
-	
+
+	/**
+	 * Разделить PATH часть урла на составляющие по символу / и вернуть полученный массив
+	 * @param urlString
+	 * @return
+	 */
+	static String[] getPathParts(String urlString) {
+		if (StringUtils.isBlank(urlString)) {
+			return new String[0];
+		}
+		// Строка разбивается на path и query
+		String path = urlString;
+		int questionIdx = urlString.indexOf(QUESTION_SIGN);
+		if (questionIdx > 0) {
+			path = urlString.substring(0, questionIdx);
+		}
+		// Строка разбивается на структурные единицы (переменные)
+		return StringUtils.split(path, VariablePE.COMMON_DELIMITER);
+	}
 }

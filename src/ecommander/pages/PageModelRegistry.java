@@ -123,18 +123,30 @@ public class PageModelRegistry {
 	 */
 	public ExecutablePagePE getExecutablePage(String linkUrl, String urlBase, SessionContext context)
 			throws PageNotFoundException, UserNotAllowedException, UnsupportedEncodingException {
+		/*
 		LinkPE link = LinkPE.parseLink(linkUrl);
 		PagePE pageModel = getPageModel(link.getPageName());
+		*/
+		String[] path = LinkPE.getPathParts(linkUrl);
+		if (path.length == 0) {
+			throw new PageNotFoundException("Page URL is not set. Page processing is impossible");
+		}
+		PagePE pageModel = getPageModel(path[0]);
+		LinkPE link = null;
 		// Если не найдена страница, возможно название старинцы - это уникальный текстовый ключ айтема
 		// со страницей по умолчанию.
 		// Загрузить айтем по уникальному ключу, узнать страницу по умолчанию и добавить ее к урлу
+		// Загрузку начинать с последней части урла, для того чтобы можно было соблюсти иерархию
+		// (раздел/подраздел/товар - надо загрузить страницу по ID = товар)
 		if (pageModel == null) {
 			try {
-				Item keyItem = ItemQuery.loadByUniqueKey(link.getPageName());
-				if (keyItem != null && keyItem.getItemType().hasDefaultPage()) {
-					link = LinkPE.parseLink(keyItem.getItemType().getDefaultPage() + VariablePE.COMMON_DELIMITER + linkUrl);
-					link.setType(LinkPE.Type.exclusive);
-					pageModel = getPageModel(link.getPageName());
+				for (int i = path.length; i >= 0 && pageModel == null; i++) {
+					Item keyItem = ItemQuery.loadByUniqueKey(path[i]);
+					if (keyItem != null && keyItem.getItemType().hasDefaultPage()) {
+						link = LinkPE.parseLink(keyItem.getItemType().getDefaultPage() + VariablePE.COMMON_DELIMITER + linkUrl);
+						link.setType(LinkPE.Type.exclusive);
+						pageModel = getPageModel(link.getPageName());
+					}
 				}
 			} catch (Exception e) {
 				ServerLogger.error("Unable to load item by unique key", e);
@@ -142,7 +154,7 @@ public class PageModelRegistry {
 		}
 		// Если не найдена страница - выбросить исключение
 		if (pageModel == null) {
-			throw new PageNotFoundException("The page '" + link.getPageName() + "' is not found");
+			throw new PageNotFoundException("The page '" + linkUrl + "' is not found");
 		}
 		// Проверка, разрешен ли пользователю доступ к этой странице
 		if (context != null && !pageModel.isUserAuthorized(context.getUser()))
