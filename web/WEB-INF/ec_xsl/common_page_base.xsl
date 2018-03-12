@@ -43,7 +43,7 @@
 								<xsl:value-of select="page/common/top" disable-output-escaping="yes"/>
 								<p><a href="" data-toggle="modal" data-target="#modal-feedback">Форма обратной связи</a></p>
 							</div>
-							<div class="cart" id="cart_ajax">
+							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 								<p><i class="fas fa-shopping-cart"></i> <strong>Корзина пуста</strong></p>
 							</div>
 							<div class="user">
@@ -477,17 +477,8 @@
 
 
 			<script type="text/javascript" src="js/bootstrap.js"/>
-			<script type="text/javascript" src="admin/js/ajax.js"/>
+			<script type="text/javascript" src="admin/ajax/ajax.js"/>
 			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
-			<script type="text/javascript">
-				$(document).ready(function() {
-					$('select[value]').each(function(index, element) {
-						$(element).val($(element).attr('value'));
-					});
-
-					insertAjax('<xsl:value-of select="page/cart_ajax_link"/>');
-				});
-			</script>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>
 		</body>
 	</html>

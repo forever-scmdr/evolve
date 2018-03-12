@@ -31,6 +31,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 	private static final String CART_COOKIE = "cart_cookie";
 
+
 	private Item cart;
 
 	/**
