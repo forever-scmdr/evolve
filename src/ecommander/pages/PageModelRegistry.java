@@ -140,7 +140,7 @@ public class PageModelRegistry {
 		// (раздел/подраздел/товар - надо загрузить страницу по ID = товар)
 		if (pageModel == null) {
 			try {
-				for (int i = path.length; i >= 0 && pageModel == null; i++) {
+				for (int i = path.length - 1; i >= 0 && pageModel == null; i--) {
 					Item keyItem = ItemQuery.loadByUniqueKey(path[i]);
 					if (keyItem != null && keyItem.getItemType().hasDefaultPage()) {
 						link = LinkPE.parseLink(keyItem.getItemType().getDefaultPage() + VariablePE.COMMON_DELIMITER + linkUrl);
@@ -151,6 +151,8 @@ public class PageModelRegistry {
 			} catch (Exception e) {
 				ServerLogger.error("Unable to load item by unique key", e);
 			}
+		} else {
+			link = LinkPE.parseLink(linkUrl);
 		}
 		// Если не найдена страница - выбросить исключение
 		if (pageModel == null) {
