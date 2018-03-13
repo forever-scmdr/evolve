@@ -223,8 +223,8 @@ function unlock(lockElementIds) {
 function coverWithLoader (el){
 	el = $(el);
 	el.find('*').css('visibility', 'hidden');
-	el.css('background', 'rgba(255, 255, 255, 0.5) url("admin/ajax/loader.svg") center no-repeat');
-	el.css('background-size', 'cover');
+	el.css('background', 'rgba(255, 255, 255, 0.5) url("admin/ajax/loader.gif") center no-repeat');
+	el.css('background-size');
 }
 
 function destroyLoader(el){

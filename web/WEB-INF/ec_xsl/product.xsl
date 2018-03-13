@@ -40,6 +40,9 @@
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}"/>
 					</xsl:for-each>
+					<xsl:if test="not($p/gallery)">
+						<img src="img/no_image.png"/>
+					</xsl:if>
 				</div>
 			</div>
 			<div class="product-info">

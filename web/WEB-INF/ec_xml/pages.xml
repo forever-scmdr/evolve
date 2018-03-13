@@ -50,7 +50,7 @@
 	</page>
 
 
-	<page name="section" template="section" cacheable="false">
+	<page name="section" template="section" cacheable="false" critical-item="cur_sec">
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
@@ -93,8 +93,8 @@
 					<pages><var var="page"/></pages>
 				</filter>
 				<link name="show_product" target="product" type="exclusive">
-					<var name="prod" ref="prod" style="translit"/>
 					<var name="sec" ref="cur_sec" style="translit"/>
+					<var name="prod" ref="prod" style="translit"/>
 				</link>
 				<link name="to_cart" target="cart_action">
 					<var name="action" value="addToCart"/>
@@ -210,10 +210,10 @@
 
 
 
-	<page name="product" template="product" cacheable="true">
+	<page name="product" template="product" cacheable="true" critical-item="prod">
 		<request>
-			<var name="prod" style="translit"/>
 			<var name="sec" style="translit"/>
+			<var name="prod" style="translit"/>
 		</request>
 		<single item="product" id="prod" var="prod">
 			<ancestor item="section" assoc="contains" transit="false" tag="product_section"/>
@@ -430,6 +430,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
+			<var name="email" value="forever@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -439,12 +440,14 @@
 		<link name="validation_failed" target="proceed">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
 		</link>
+		<link name="email_send_failed" target="proceed"/>
 		<command class="extra.CartManageCommand" method-var="action">
 			<result name="ajax" type="redirect"/>
 			<result name="cart" type="redirect"/>
 			<result name="proceed" type="redirect"/>
 			<result name="confirm" type="redirect"/>
 			<result name="validation_failed" type="redirect"/>
+			<result name="email_send_failed" type="redirect"/>
 		</command>
 	</page>
 
@@ -505,14 +508,33 @@
 			<var name="message"/>
 		</request>
 		<new item="user_phys" id="user_phys">
-			<parameter-input ref="user_phys" restore-var="message"/>
+			<parameter-input ref="user_phys"/>
 		</new>
 		<new item="user_jur" id="user_jur">
-			<parameter-input ref="user_jur" restore-var="message"/>
+			<parameter-input ref="user_jur"/>
 		</new>
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="confirm"/>
 		</link>
+		<include name="COMMON"/>
+	</page>
+
+
+
+	<page name="order_email" template="order_email">
+		<session>
+			<single item="cart" id="cart">
+				<list item="bought" id="bought">
+					<list item="product" tag="product"/>
+				</list>
+			</single>
+			<new item="user_phys" id="user_phys">
+				<parameter-input ref="user_phys" form="customer_phys"/>
+			</new>
+			<new item="user_jur" id="user_jur">
+				<parameter-input ref="user_jur" form="customer_jur"/>
+			</new>
+		</session>
 		<include name="COMMON"/>
 	</page>
 

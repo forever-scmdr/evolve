@@ -8,14 +8,15 @@ import ecommander.fwk.UserNotAllowedException;
 import ecommander.fwk.ValidationException;
 import ecommander.model.DomainBuilder;
 import ecommander.model.Item;
+import ecommander.pages.var.RequestVariablePE;
 import ecommander.pages.var.VariablePE;
 import ecommander.persistence.itemquery.ItemQuery;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Хранит все модели страниц (PagePE)
@@ -123,37 +124,9 @@ public class PageModelRegistry {
 	 */
 	public ExecutablePagePE getExecutablePage(String linkUrl, String urlBase, SessionContext context)
 			throws PageNotFoundException, UserNotAllowedException, UnsupportedEncodingException {
-		/*
+		linkUrl = normalizeUrl(linkUrl);
 		LinkPE link = LinkPE.parseLink(linkUrl);
 		PagePE pageModel = getPageModel(link.getPageName());
-		*/
-		String[] path = LinkPE.getPathParts(linkUrl);
-		if (path.length == 0) {
-			throw new PageNotFoundException("Page URL is not set. Page processing is impossible");
-		}
-		PagePE pageModel = getPageModel(path[0]);
-		LinkPE link = null;
-		// Если не найдена страница, возможно название старинцы - это уникальный текстовый ключ айтема
-		// со страницей по умолчанию.
-		// Загрузить айтем по уникальному ключу, узнать страницу по умолчанию и добавить ее к урлу
-		// Загрузку начинать с последней части урла, для того чтобы можно было соблюсти иерархию
-		// (раздел/подраздел/товар - надо загрузить страницу по ID = товар)
-		if (pageModel == null) {
-			try {
-				for (int i = path.length - 1; i >= 0 && pageModel == null; i--) {
-					Item keyItem = ItemQuery.loadByUniqueKey(path[i]);
-					if (keyItem != null && keyItem.getItemType().hasDefaultPage()) {
-						link = LinkPE.parseLink(keyItem.getItemType().getDefaultPage() + VariablePE.COMMON_DELIMITER + linkUrl);
-						link.setType(LinkPE.Type.exclusive);
-						pageModel = getPageModel(link.getPageName());
-					}
-				}
-			} catch (Exception e) {
-				ServerLogger.error("Unable to load item by unique key", e);
-			}
-		} else {
-			link = LinkPE.parseLink(linkUrl);
-		}
 		// Если не найдена страница - выбросить исключение
 		if (pageModel == null) {
 			throw new PageNotFoundException("The page '" + linkUrl + "' is not found");
@@ -163,6 +136,63 @@ public class PageModelRegistry {
 			throw new UserNotAllowedException("Requested page is not allowed for current user");
 		return pageModel.createExecutableClone(context, link, linkUrl, urlBase);
 	}
+
+	/**
+	 * Приводит URL к нормальному виду. Т.е. добавляет название страницы, если его нет, и
+	 * добавляет названия переменных ко всем параметрам translit
+	 * @param urlString
+	 * @return
+	 */
+	public String normalizeUrl(String urlString) {
+		if (StringUtils.isBlank(urlString)) {
+			return urlString;
+		}
+		// Строка разбивается на path и query
+		String path = urlString;
+		String query = null;
+		int questionIdx = urlString.indexOf(LinkPE.QUESTION_SIGN);
+		if (questionIdx > 0) {
+			path = urlString.substring(0, questionIdx);
+			query = urlString.substring(questionIdx + 1);
+		}
+		String[] units = StringUtils.split(path, VariablePE.COMMON_DELIMITER);
+		if (units.length == 0) {
+			return urlString;
+		}
+		String pageName = units[0];
+		PagePE pageModel = PageModelRegistry.getRegistry().getPageModel(pageName);
+		int lastTranslitPartIndex = 1;
+		if (pageModel == null) {
+			try {
+				for (int i = units.length - 1; i >= 0 && pageModel == null; i--) {
+					Item keyItem = ItemQuery.loadByUniqueKey(units[i]);
+					if (keyItem != null && keyItem.getItemType().hasDefaultPage()) {
+						pageName = keyItem.getItemType().getDefaultPage();
+						pageModel = getPageModel(pageName);
+						lastTranslitPartIndex = i;
+					}
+				}
+			} catch (Exception e) {
+				ServerLogger.error("Unable to load item by unique key", e);
+			}
+		}
+		if (pageModel == null)
+			return urlString;
+		StringBuilder sb = new StringBuilder();
+		Iterator<RequestVariablePE> varReverseIter = pageModel.getPathTranslitVarsReverseOrder().iterator();
+		for (int i = lastTranslitPartIndex; i >= 0 && varReverseIter.hasNext(); i--) {
+			String varName = varReverseIter.next().getName();
+			sb.insert(0, VariablePE.COMMON_DELIMITER + varName + VariablePE.COMMON_DELIMITER + units[i]);
+		}
+		for (int i = lastTranslitPartIndex + 1; i < units.length; i++) {
+			sb.append(VariablePE.COMMON_DELIMITER + units[i]);
+		}
+		sb.insert(0, pageName);
+		if (StringUtils.isNotBlank(query))
+			sb.append(LinkPE.QUESTION_SIGN).append(query);
+		return sb.toString();
+	}
+
 	/**
 	 * Валидация всех страниц и возарвщение результатов валидации
 	 * @return

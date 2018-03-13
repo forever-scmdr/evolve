@@ -6815,3 +6815,115 @@ background: linear-gradient(#ffd8b7, #f79846 49%, #f48424 51%, #b95600);
 input[type="submit"].not_available, input.submit.not_available {
 background: linear-gradient(#e4e4e4, #b7b7b7 49%, #989898 51%, #808080);
 }
+
+
+/* fixes */
+ 
+.catalog-items.lines .image-container {
+  flex-basis: 20%;
+}
+.catalog-items.lines .catalog-item {
+  margin-right: unset;
+}
+.catalog-item-container .gallery {
+  min-width: 0;
+}
+.cart-container .item .delete {
+  width: 1rem;
+  padding-left: 1rem;
+}
+.cart-container .item .price_all {
+  width: 7rem;
+}
+.cart-container .item .quantity {
+  width: 6rem;
+}
+.cart-container .item .price.one {
+  width: 8rem;
+}
+.cart-container .item .title {
+  flex: 1;
+}
+.cart-container .item > * {
+  margin-left: 1rem;
+}
+.cart-container .item {
+  padding-bottom: 1rem;
+}
+#cart_ajax strong:before {
+    content: ' ';
+}
+.slider-container .fotorama img {
+  border-radius: 6px !important;
+}
+.slider-container:after {
+  display: none;
+}
+.banners-container {
+    height: 18rem;
+}
+@media (min-width: 992px) {
+  .banners-container a:after {
+    opacity: .3;
+  }
+}
+.banners-container > a {
+  border-radius: 6px;
+  border-color: #e4e4e4;
+}
+.desktop .main-menu a,
+input[type="submit"], input.submit {
+    background: -webkit-linear-gradient(#96d48b, #4aa744 49%, #198845 51%, #074812);
+    background: -o-linear-gradient(#96d48b, #4aa744 49%, #198845 51%, #074812);
+    background: linear-gradient(#96d48b, #4aa744 49%, #198845 51%, #074812);
+}
+.catalog-items.info .catalog-item .image-container {
+  background-position: 50% 50%;
+}
+.catalog-items.info .catalog-item .text  {
+  margin-top: 1rem;
+}
+
+/* fix compare links*/
+.product-info .links a {
+  white-space: nowrap;
+}
+.product-info .links .active svg,
+.catalog-items .catalog-item .links .active svg {
+  color: #ff6c00; 
+}
+.catalog-items .catalog-item .links {
+  margin-top: 1rem;
+}
+.catalog-items .catalog-item .links a {
+  display: inline;
+}
+.catalog-items .catalog-item .links span {
+  display: block;
+  font-size: .9em;
+}
+.catalog-items .catalog-item .quantity {
+    margin-top: unset; 
+}
+
+/* compare */
+table.compare td {
+  vertical-align: top;
+}
+table.compare td > strong {
+  display: block;
+  font-size: .8em;
+  margin-bottom: 1rem;
+  background-color: #eee;
+  padding: .5rem;
+}
+table.compare td > span {
+  font-size: .8em;
+  display: block;
+}
+table.compare td > span.param-name {
+  color: gray;
+}
+table.compare td > span.param-value {
+  margin-bottom: 1rem;
+}

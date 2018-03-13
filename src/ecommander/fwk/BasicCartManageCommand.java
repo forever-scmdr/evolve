@@ -1,16 +1,23 @@
 package ecommander.fwk;
 
+import ecommander.controllers.PageController;
 import ecommander.model.Item;
+import ecommander.model.User;
+import ecommander.model.UserGroupRegistry;
 import ecommander.model.datatypes.DoubleDataType;
-import ecommander.pages.Command;
-import ecommander.pages.ItemInputValues;
-import ecommander.pages.MultipleHttpPostForm;
-import ecommander.pages.ResultPE;
+import ecommander.pages.*;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Управление корзиной
@@ -26,10 +33,15 @@ public abstract class BasicCartManageCommand extends Command {
 	private static final String SUM_PARAM = "sum";
 	private static final String CODE_PARAM = "code";
 	private static final String PROCESSED_PARAM = "processed";
+	private static final String COUNTER_ITEM = "counter";
+	private static final String COUNT_PARAM = "count";
 
 
 
 	private static final String CART_COOKIE = "cart_cookie";
+
+
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
 
 	private Item cart;
@@ -78,7 +90,84 @@ public abstract class BasicCartManageCommand extends Command {
 		if (!validate()) {
 			return getResult("validation_failed");
 		}
-		return getResult("confirm");
+
+
+		final String IN_PROGRESS = "in_progress";
+		final String TRUE = "true";
+		final String FALSE = "false";
+		loadCart();
+		if (StringUtils.equalsIgnoreCase(cart.getStringExtra(IN_PROGRESS), TRUE)) {
+			return getResult("success");
+		}
+		cart.setExtra(IN_PROGRESS, TRUE);
+		getSessionMapper().saveTemporaryItem(cart);
+		if ((Byte)cart.getValue(PROCESSED_PARAM, (byte)0) == (byte)1) {
+			return getResult("success");
+		}
+
+		// Проверка, есть ли обычные заказы, заказы с количеством 0 и кастомные заказы
+
+
+		// Загрузка и модификация счетчика
+		Item counter = ItemUtils.ensureSingleRootItem(COUNTER_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+		int count = counter.getIntValue(COUNT_PARAM, 0) + 1;
+		if (count > 99999)
+			count = 1;
+		String orderNumber = String.format("%05d", count);
+//			String date = counter.getStringValue(DATE_PARAM);
+//			String newDate = DATE_FORMAT.format(new Date());
+//			if (!newDate.equals(date))
+//				count = 1;
+//			String orderNumber = count + "-" + newDate;
+		cart.setValue("order_num", orderNumber);
+		getSessionMapper().saveTemporaryItem(cart);
+
+		// Подготовка тела письма
+		String regularTopic
+				= "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
+		Multipart regularMP = new MimeMultipart();
+		MimeBodyPart regularTextPart = new MimeBodyPart();
+		regularMP.addBodyPart(regularTextPart);
+		LinkPE regularLink = LinkPE.newDirectLink("link", "order_email", false);
+		regularLink.addStaticVariable("order_num", orderNumber + "");
+		ExecutablePagePE regularTemplate = getExecutablePage(regularLink.serialize());
+		final String customerEmail = getItemForm().getSingleItem().getStringValue("email");
+		final String shopEmail = getVarSingleValue("email");
+
+		ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(regularTemplate, regularBos);
+		regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+				+ ";charset=UTF-8");
+
+		// Отправка на ящик заказчика
+		try {
+			EmailUtils.sendGmailDefault(customerEmail, regularTopic, regularMP);
+		} catch (Exception e) {
+			ServerLogger.error("Unable to send email", e);
+			cart.setExtra (IN_PROGRESS, null);
+			getSessionMapper().saveTemporaryItem(cart);
+			return getResult("email_send_failed").setVariable("message", "Не удалось отправить сообщение на ящик " + customerEmail);
+		}
+		// Отправка на ящик магазина
+		try {
+			EmailUtils.sendGmailDefault(shopEmail, regularTopic, regularMP);
+		} catch (Exception e) {
+			ServerLogger.error("Unable to send email", e);
+			cart.setExtra(IN_PROGRESS, null);
+			getSessionMapper().saveTemporaryItem(cart);
+			return getResult("email_send_failed").setVariable("message", "Отправка резерва временно недоступна, попробуйте позже или звоните по телефону");
+		}
+
+		// Сохранение нового значения счетчика, если все отправлено удачно
+		counter.setValue(COUNT_PARAM, count);
+		//counter.setValue(DATE_PARAM, newDate);
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(counter).ignoreUser());
+
+		cart.setValue(PROCESSED_PARAM, (byte)1);
+		cart.setExtra(IN_PROGRESS, null);
+		setCookieVariable(CART_COOKIE, null);
+		getSessionMapper().saveTemporaryItem(cart);
+		return getResult("success");
 	}
 
 	protected abstract boolean validate() throws Exception;

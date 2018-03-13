@@ -181,6 +181,23 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 			return varPEDefs.get(name);
 		return null;
 	}
+
+	/**
+	 * Получить список переменных PATH без названий (т.н. translit переменные)
+	 * в одратном порядке их следования. Это нужно для обработки урлов, в которых
+	 * не задана страница (exclusive урлов)
+	 * @return
+	 */
+	LinkedList<RequestVariablePE> getPathTranslitVarsReverseOrder() {
+		LinkedList<RequestVariablePE> pathVars = new LinkedList<>();
+		if (varPEDefs == null)
+			return pathVars;
+		for (RequestVariablePE requestVariablePE : varPEDefs.values()) {
+			if (requestVariablePE.isStyleTranslit())
+				pathVars.push(requestVariablePE);
+		}
+		return pathVars;
+	}
 	/**
 	 * Установить график автоматических запусков страницы
 	 * @param schedule

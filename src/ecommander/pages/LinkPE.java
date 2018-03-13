@@ -84,6 +84,8 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	}
 	/**
 	 * Создание ссылки из строки. пришедшей от клиента в виде URL
+	 * Подразумевается, что у страницы есть название и
+	 * у каждой переменной path (включая translit) также есть название
 	 * @param urlString
 	 * @throws UnsupportedEncodingException
 	 */
@@ -117,31 +119,25 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 				String varName = units[i];
 				// Если переменная, объявленная в странице, является style="translit", значит надо использовать только одно значение, а не пару
 				RequestVariablePE initVar = initVariablesIter.hasNext() ? initVariablesIter.next() : null;
-				if (initVar != null && initVar.isStyleTranslit()) {
-					RequestVariablePE var = new RequestVariablePE(initVar.getName(), initVar.getScope(), initVar.getStyle());
-					var.resetValue(varName);
-					addVariablePE(var);
-				} else {
-					i++; // Берем следующее значение после /
-					// Если выход за пределы массива, значит неправильный формат URL
-					if (i >= units.length) {
-						ServerLogger.warn("Incorrect URL format in: " + urlString);
-						break;
-					}
-					String varValue = URLDecoder.decode(units[i], "UTF-8");
-					RequestVariablePE varPE = (RequestVariablePE) getVariablePE(varName);
-					if (varPE == null) {
-						initVar = page == null ? null : page.getInitVariablePE(varName);
-						if (initVar != null) {
-							varPE = new RequestVariablePE(varName, initVar.getScope(), initVar.getStyle());
-							varPE.resetValue(varValue);
-						} else {
-							varPE = new RequestVariablePE(varName, varValue);
-						}
-						addVariablePE(varPE);
+				i++; // Берем следующее значение после /
+				// Если выход за пределы массива, значит неправильный формат URL
+				if (i >= units.length) {
+					ServerLogger.warn("Incorrect URL format in: " + urlString);
+					break;
+				}
+				String varValue = URLDecoder.decode(units[i], "UTF-8");
+				RequestVariablePE varPE = (RequestVariablePE) getVariablePE(varName);
+				if (varPE == null) {
+					initVar = page == null ? null : page.getInitVariablePE(varName);
+					if (initVar != null) {
+						varPE = new RequestVariablePE(varName, initVar.getScope(), initVar.getStyle());
+						varPE.resetValue(varValue);
 					} else {
-						varPE.addValue(varValue);
+						varPE = new RequestVariablePE(varName, varValue);
 					}
+					addVariablePE(varPE);
+				} else {
+					varPE.addValue(varValue);
 				}
 			}
 		}
@@ -170,6 +166,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 			}
 		}
 	}
+
 	/**
 	 * Создать ссылку на базе строки URL
 	 * @param url
@@ -379,22 +376,4 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		return serialize();
 	}
 
-	/**
-	 * Разделить PATH часть урла на составляющие по символу / и вернуть полученный массив
-	 * @param urlString
-	 * @return
-	 */
-	static String[] getPathParts(String urlString) {
-		if (StringUtils.isBlank(urlString)) {
-			return new String[0];
-		}
-		// Строка разбивается на path и query
-		String path = urlString;
-		int questionIdx = urlString.indexOf(QUESTION_SIGN);
-		if (questionIdx > 0) {
-			path = urlString.substring(0, questionIdx);
-		}
-		// Строка разбивается на структурные единицы (переменные)
-		return StringUtils.split(path, VariablePE.COMMON_DELIMITER);
-	}
 }

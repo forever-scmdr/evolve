@@ -41,7 +41,7 @@
 						<div class="other-container">
 							<div class="contacts">
 								<p>
-									<svg class="svg-inline--fa fa-phone fa-w-16" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="phone" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M493.397 24.615l-104-23.997c-11.314-2.611-22.879 3.252-27.456 13.931l-48 111.997a24 24 0 0 0 6.862 28.029l60.617 49.596c-35.973 76.675-98.938 140.508-177.249 177.248l-49.596-60.616a24 24 0 0 0-28.029-6.862l-111.997 48C3.873 366.516-1.994 378.08.618 389.397l23.997 104C27.109 504.204 36.748 512 48 512c256.087 0 464-207.532 464-464 0-11.176-7.714-20.873-18.603-23.385z"></path></svg>
+									<i class="fas fa-phone"></i>
 									<strong>Заказ и консультация:</strong>
 									<xsl:value-of select="page/common/top" disable-output-escaping="yes"/>
 								</p>
@@ -56,8 +56,8 @@
 									<a href="javascript:alert('Функция временно отключена')">Вход</a> /
 									<a href="javascript:alert('Функция временно отключена')">Регистрация</a>
 								</p>
-								<p><i class="fas fa-star"/> <a href="">Избранное (2)</a></p>
-								<p><i class="fas fa-balance-scale"/> <a href="compare.html">Сравнение (3)</a></p>
+								<p><i class="fas fa-star"/> <a href="">Избранное</a></p>
+								<p><i class="fas fa-balance-scale"/> <a href="compare.html">Сравнение</a></p>
 							</div>
 						</div>
 						<div class="main-menu">
@@ -191,9 +191,9 @@
 					<li><i class="fas fa-th-list"></i> <a href="#" onclick="showMobileCatalogMenu(); return false">Каталог продукции</a></li>
 				</ul>
 				<ul>
-					<li><i class="fas fa-shopping-cart"></i> <a href="">Корзина (1)</a></li>
-					<li><i class="fas fa-star"></i> <a href="">Избранное (3)</a></li>
-					<li><i class="fas fa-balance-scale"></i> <a href="">Сравнение (6)</a></li>
+					<li><i class="fas fa-shopping-cart"></i> <a href="">Корзина</a></li>
+					<li><i class="fas fa-star"></i> <a href="">Избранное</a></li>
+					<li><i class="fas fa-balance-scale"></i> <a href="">Сравнение</a></li>
 				</ul>
 				<ul>
 					<li><a href="{page/news_link}">Новости</a></li>

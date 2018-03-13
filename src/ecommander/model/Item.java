@@ -935,7 +935,10 @@ public class Item implements ItemBasics {
 	public final void setExtra(String name, Object value) {
 		if (extras == null)
 			extras = new InputValues();
-		extras.add(name, value);
+		if (value == null)
+			extras.remove(name);
+		else
+			extras.add(name, value);
 	}
 	/**
 	 * Извлечь дополнительное значение из айтема

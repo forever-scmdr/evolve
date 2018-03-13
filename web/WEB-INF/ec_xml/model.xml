@@ -117,6 +117,17 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             КОРЗИНА                                  ////////////-->
 
+
+	<!-- Параметры электронной почты -->
+	<item name="feedback_params" caption="Параметры обратной связи" ag-id="28" ag-hash="-1139606656">
+		<parameter name="server_from" type="string" caption="Адрес сервера" description="с которого отправлять обратную связь"/>
+		<parameter name="email_from" type="string" caption="Откуда" description="Адрес почтового ящика, с которого отправлять обратную связь"/>
+		<parameter name="email_from_password" type="string" caption="Пароль" description="Для почтового ящика, с которого отправлять обратную связь"/>
+		<parameter name="encoding" type="string" caption="Кодировка" description="В большинстве случаев подходит UTF-8"/>
+	</item>
+
+
+
 	<item name="bought" caption="Покупка" virtual="true" ag-id="16" ag-hash="-1383211797">
 		<parameter name="code" type="string" caption="Код товара"/>
 		<parameter name="qty" type="double" caption="Количество"/>
@@ -126,6 +137,7 @@
 	</item>
 
 	<item name="cart" caption="Корзина" virtual="true" ag-id="17" ag-hash="3046176">
+		<parameter name="order_num" type="string" caption="Номер заказа"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
@@ -158,11 +170,15 @@
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="email" type="string" caption="E-mail"/>
-		<parameter name="address" type="string" caption="Юридический адрес" />
+		<parameter name="address" type="string" caption="Адрес" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
+
+	<item name="counter" caption="Счетчик номера договора" ag-id="29" ag-hash="957830652">
+		<parameter name="count" type="integer" caption="Счетчик"/>
+	</item>
 
 	<!--/////////////                            END КОРЗИНА                               ////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -250,6 +266,7 @@
 
 
 	<root>
+		<child item="feedback_params" single="true" />
 		<child item="catalog" single="true" />
 		<child item="back_catalog" single="true" />
 		<child item="main_page" single="true"/>
@@ -260,6 +277,7 @@
 		<child item="contacts" single="true"/>
 		<child item="common" single="true"/>
 		<child item="custom_pages" single="true"/>
+		<child item="counter" single="true" virtual="true"/>
 	</root>
 
 
