@@ -70,10 +70,12 @@
 					</xsl:choose>
 				</div>
 				<div class="links">
-					<label><input type="checkbox"/> cравнение</label>
-					<label><input type="checkbox"/> избранное</label>
-					<!-- <span><i class="fas fa-balance-scale"></i> <a href="">в сравнение</a></span>
-					<span><i class="fas fa-star"></i> <a href="">в избранное</a></span> -->
+					<!-- <label><input type="checkbox"/> cравнение</label>
+					<label><input type="checkbox"/> избранное</label> -->
+					<span><i class="fas fa-balance-scale"></i> <a href="">в сравнение</a></span>
+					<span class="active" style="display: none;"><i class="fas fa-balance-scale"></i> <a href="">сравнение</a></span>
+					<span><i class="fas fa-star"></i> <a href="">в избранное</a></span>
+					<span class="active" style="display: none;"><i class="fas fa-star"></i> <a href="">избранное</a></span>
 				</div>
 				<div class="info-blocks">
 					<div class="info-block">

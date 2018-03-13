@@ -370,6 +370,10 @@
 					<p><span>Старая цена</span>100 р.</p>
 					<p><span>Новая цена</span><xsl:value-of select="price"/> р.</p>
 				</xsl:if>
+				<xsl:if test="not($has_price)">
+					<p><span>&#160;</span>&#160;</p>
+					<p><span>&#160;</span>&#160;</p>
+				</xsl:if>
 			</div>
 			<div class="order">
 				<div id="cart_list_{code}" class="product_purchase_container">
@@ -388,13 +392,19 @@
 					<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>
 					<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>
 				</xsl:choose>
-				<div class="checkbox">
+				<!-- <div class="checkbox">
 					<label>
 						<input type="checkbox"/> cравнение
 					</label>
 					<label>
 						<input type="checkbox"/> избранное
 					</label>
+				</div> -->
+				<div class="links">
+					<span><i class="fas fa-balance-scale"></i> <a href="">в сравнение</a></span>
+					<span class="active" style="display: none;"><i class="fas fa-balance-scale"></i> <a href="">сравнение</a></span>
+					<span><i class="fas fa-star"></i> <a href="">в избранное</a></span>
+					<span class="active" style="display: none;"><i class="fas fa-star"></i> <a href="">избранное</a></span>
 				</div>
 			</div>
 		</div>

@@ -21,7 +21,7 @@
 			<div class="catalog-items info">
 				<xsl:for-each select="page//news_item">
 					<div class="catalog-item">
-						<a href="{show_news_item}" class="image-container"><img src="{@path}{main_pic}" alt=""/></a>
+						<a href="{show_news_item}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="{@path}{main_pic}" alt=""/> --></a>
 						<div class="text">
 							<div class="date"><xsl:value-of select="date"/></div>
 							<a href="{show_news_item}"><xsl:value-of select="header"/></a>
