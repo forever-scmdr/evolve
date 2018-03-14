@@ -128,9 +128,8 @@
 								</div>
 							</div>
 							<div class="block">
-								<p>Принимаем к оплате<xsl:call-template name="BR"/> пластиковые карточки</p>
-								<img src="http://mobileplus.by/images/2/icon_card_mc.png" alt=""/>
-								<img src="http://mobileplus.by/images/2/icon_card_visa.png" alt=""/>
+								<p>Работаем только с <xsl:call-template name="BR"/>юридическими лицами <xsl:call-template name="BR"/>
+									и индивидуальными предпринимателями <xsl:call-template name="BR"/>по безналичному расчету</p>
 							</div>
 							<div class="block contacts">
 								<xsl:value-of select="page/common/bottom" disable-output-escaping="yes"/>
