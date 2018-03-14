@@ -16,9 +16,11 @@ public class StaticVariable extends Variable {
 
 	public StaticVariable(String name, Object... values) {
 		super(null, name);
-		for (Object value : values) {
-			if (value != null && StringUtils.isNotBlank(value.toString()))
-				this.values.add(value);
+		if (values != null) {
+			for (Object value : values) {
+				if (value != null && StringUtils.isNotBlank(value.toString()))
+					this.values.add(value);
+			}
 		}
 	}
 

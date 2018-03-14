@@ -49,10 +49,8 @@ public class CartManageCommand extends BasicCartManageCommand {
 					hasError = true;
 				}
 			}
-			if (hasError) {
-				removeSessionForm("customer_jur");
-				saveSessionForm("customer_phys");
-			}
+			removeSessionForm("customer_jur");
+			saveSessionForm("customer_phys");
 		} else {
 			for (String mandatory : MANDATORY_JUR) {
 				if (form.isValueEmpty(mandatory)) {
@@ -60,10 +58,8 @@ public class CartManageCommand extends BasicCartManageCommand {
 					hasError = true;
 				}
 			}
-			if (hasError) {
-				removeSessionForm("customer_phys");
-				saveSessionForm("customer_jur");
-			}
+			removeSessionForm("customer_phys");
+			saveSessionForm("customer_jur");
 		}
 		return !hasError;
 	}

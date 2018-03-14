@@ -34,7 +34,7 @@
 
 				<div role="tabpanel" class="tab-pane{' active'[not($is_jur)]}" id="tab_phys">
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заказа.</p>
-					<form action="{page/confirm_link}" method="post">
+					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
 						<div class="form-group">
 							<label>Ваше имя:</label>
@@ -80,7 +80,7 @@
 
 				<div role="tabpanel" class="tab-pane{' active'[$is_jur]}" id="tab_jur">
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заказа.</p>
-					<form action="{page/confirm_link}" method="post">
+					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
 						<xsl:variable name="inp" select="page/user_jur/input"/>
 						<div class="form-group">
 							<label>Наименование организации:</label>

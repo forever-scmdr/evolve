@@ -88,7 +88,7 @@ public class FilterPEWriter implements PageElementWriter {
 					}
 					// Вперед
 					if (currentPage < totalPages) {
-						LinkPE link = (LinkPE)linkBase.createExecutableClone(null, null);
+						LinkPE link = (LinkPE)linkBase.createExecutableClone(null, filter.getPageModel());
 						link.addStaticVariable(pageVarBase.getName(), (filter.getPage() + 1) + "");
 						xml
 							.startElement(PAGE_NEXT_ELEMENT)

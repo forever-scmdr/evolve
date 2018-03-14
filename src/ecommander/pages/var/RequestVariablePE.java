@@ -85,14 +85,16 @@ public class RequestVariablePE extends VariablePE {
 		RequestVariablePE clone = new RequestVariablePE(name, scope, style, defaultValue);
 		if (scope == Scope.cookie) {
 			clone.var = new CookieStaticVariable(parentPage, name);
+			//((CookieStaticVariable)clone.var).restore();
 		} else if (scope == Scope.session) {
 			clone.var = new SessionStaticVariable(parentPage, name);
+			//((SessionStaticVariable)clone.var).restore();
 		} else {
 			clone.var = new StaticVariable(name);
-			if (!isEmpty()) {
-				for (Object val : var.getAllValues()) {
-					clone.var.addValue(val);
-				}
+		}
+		if (!isEmpty()) {
+			for (Object val : var.getAllValues()) {
+				clone.var.addValue(val);
 			}
 		}
 		return clone;

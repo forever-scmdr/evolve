@@ -91,18 +91,17 @@ public abstract class BasicCartManageCommand extends Command {
 			return getResult("validation_failed");
 		}
 
-
 		final String IN_PROGRESS = "in_progress";
 		final String TRUE = "true";
 		final String FALSE = "false";
 		loadCart();
 		if (StringUtils.equalsIgnoreCase(cart.getStringExtra(IN_PROGRESS), TRUE)) {
-			return getResult("success");
+			return getResult("confirm");
 		}
 		cart.setExtra(IN_PROGRESS, TRUE);
 		getSessionMapper().saveTemporaryItem(cart);
 		if ((Byte)cart.getValue(PROCESSED_PARAM, (byte)0) == (byte)1) {
-			return getResult("success");
+			return getResult("confirm");
 		}
 
 		// Проверка, есть ли обычные заказы, заказы с количеством 0 и кастомные заказы
@@ -167,7 +166,7 @@ public abstract class BasicCartManageCommand extends Command {
 		cart.setExtra(IN_PROGRESS, null);
 		setCookieVariable(CART_COOKIE, null);
 		getSessionMapper().saveTemporaryItem(cart);
-		return getResult("success");
+		return getResult("confirm");
 	}
 
 	protected abstract boolean validate() throws Exception;

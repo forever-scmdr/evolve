@@ -371,4 +371,8 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		}
 		dbQuery.endCurrentCriteria();
 	}
+
+	public ExecutablePagePE getPageModel() {
+		return parentPage;
+	}
 }

@@ -56,8 +56,12 @@
 									<a href="javascript:alert('Функция временно отключена')">Вход</a> /
 									<a href="javascript:alert('Функция временно отключена')">Регистрация</a>
 								</p>
-								<p><i class="fas fa-star"/> <a href="">Избранное</a></p>
-								<p><i class="fas fa-balance-scale"/> <a href="compare.html">Сравнение</a></p>
+								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
+									<p><i class="fas fa-star"/> <a href="">Избранное</a></p>
+								</div>
+								<div id="compare_ajax" ajax-href="{page/compare_ajax_link}">
+									<p><i class="fas fa-balance-scale"/> <a href="compare.html">Сравнение</a></p>
+								</div>
 							</div>
 						</div>
 						<div class="main-menu">
@@ -401,10 +405,14 @@
 					</label>
 				</div> -->
 				<div class="links">
-					<span><i class="fas fa-balance-scale"></i> <a href="">в сравнение</a></span>
-					<span class="active" style="display: none;"><i class="fas fa-balance-scale"></i> <a href="">сравнение</a></span>
-					<span><i class="fas fa-star"></i> <a href="">в избранное</a></span>
-					<span class="active" style="display: none;"><i class="fas fa-star"></i> <a href="">избранное</a></span>
+					<div id="compare_list_{code}">
+						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
+						<span class="active" style="display: none;"><i class="fas fa-balance-scale"></i> <a href="">сравнение</a></span>
+					</div>
+					<div id="fav_list_{code}">
+						<span><i class="fas fa-star"></i> <a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
+						<span class="active" style="display: none;"><i class="fas fa-star"></i> <a href="">избранное</a></span>
+					</div>
 				</div>
 			</div>
 		</div>

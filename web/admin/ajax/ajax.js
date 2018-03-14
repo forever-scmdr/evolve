@@ -69,7 +69,7 @@ function initAjax(elementId) {
 		else
 			insertAjax(url);
 	});
-	$(idPrefix + "form[ajax-form=true]").submit(function(event) {
+	$(idPrefix + "form[ajax=true]").submit(function(event) {
 		event.preventDefault();
 		var elem = $(this);
 		var loaderId = elem.attr("ajax-loader-id");
@@ -77,6 +77,16 @@ function initAjax(elementId) {
 			postForm(elem, loaderId);
 		} else {
 			postForm(elem);
+		}
+	});
+	$(idPrefix + "a[ajax=true]").click(function(event) {
+		event.preventDefault();
+		var elem = $(this);
+		var loaderId = elem.attr("ajax-loader-id");
+		if (loaderId) {
+			insertAjax(elem, loaderId);
+		} else {
+			insertAjax(elem);
 		}
 	});
 	$(idPrefix + "select[value]").each(function() {

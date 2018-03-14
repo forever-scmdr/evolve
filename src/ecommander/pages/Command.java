@@ -5,6 +5,8 @@ import ecommander.fwk.PageNotFoundException;
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
 import ecommander.model.User;
+import ecommander.pages.var.CookieStaticVariable;
+import ecommander.pages.var.SessionStaticVariable;
 import ecommander.pages.var.StaticVariable;
 import ecommander.pages.var.Variable;
 import ecommander.persistence.common.PersistenceCommandUnit;
@@ -59,10 +61,12 @@ public abstract class Command implements AutoCloseable {
 	/**
 	 * Установить значение переменной куки
 	 * @param name
-	 * @param value
+	 * @param values
 	 */
-	protected final void setCookieVariable(String name, String value) {
-		page.getSessionContext().setCookie(name, value);
+	protected final void setCookieVariable(String name, Object...values) {
+		CookieStaticVariable cookie = new CookieStaticVariable(page, name);
+		StaticVariable staticVar = new StaticVariable(name, values);
+		cookie.update(staticVar);
 	}
 	/**
 	 * Установить страничную переменную

@@ -8,6 +8,9 @@ import org.apache.commons.lang3.StringUtils;
  * Created by E on 9/6/2017.
  */
 public class CookieStaticVariable extends SessionStaticVariable {
+
+	private static final String VALUE_SEP = "~~~";
+
 	public CookieStaticVariable(ExecutablePagePE parentPage, String name, Object... values) {
 		super(parentPage, name, values);
 	}
@@ -19,15 +22,19 @@ public class CookieStaticVariable extends SessionStaticVariable {
 		for (Object value : variable.getAllValues()) {
 			this.addValue(value);
 		}
-		String strValue = variable.isEmpty() ? null : variable.getSingleValue().toString();
+		String strValue = variable.isEmpty() ? null : StringUtils.join(variable.getAllValues(), VALUE_SEP);
 		parentPage.getSessionContext().setCookie(name, strValue);
 	}
 
 	@Override
 	public void restore() {
 		String savedValue = parentPage.getSessionContext().getCookie(name);
-		if (StringUtils.isNotBlank(savedValue))
-			addValue(savedValue);
+		if (StringUtils.isNotBlank(savedValue)) {
+			String[] values = StringUtils.split(savedValue, VALUE_SEP);
+			for (String value : values) {
+				addValue(value);
+			}
+		}
 	}
 
 	/**
