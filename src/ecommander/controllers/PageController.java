@@ -3,10 +3,7 @@ package ecommander.controllers;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
 import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.LinkPE;
-import ecommander.pages.PageModelRegistry;
-import ecommander.pages.ResultPE;
+import ecommander.pages.*;
 import ecommander.pages.ResultPE.ResultType;
 import ecommander.pages.output.PageWriter;
 import ecommander.pages.var.Variable;
@@ -16,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -32,7 +30,9 @@ public class PageController {
 	private ByteArrayOutputStream out; // куда выводится результирующий документ
 	private ExecutablePagePE page; // страница для выполнения
 	private String contentType; // тип данных ответа
-	
+
+	private boolean loadedFromCache = false; // была ли загрузка из кеша (или из БД)
+
 	private PageController(String requestUrl, String domainName, boolean useCache) {
 		this.requestUrl = requestUrl;
 		this.domainName = domainName;
@@ -83,8 +83,11 @@ public class PageController {
 		// Переменные, хранящиеся в куки
 		page.getSessionContext().flushCookies(resp);
 		// Проверить, найден ли критический айтем. Если нет - вернуть ошибку 404
-		if (page.hasCriticalItem()) {
-			if (!page.getItemPEById(page.getCriticalItem()).hasFoundItems()) {
+		// При загрузке из кеша айтем никогда не содержит найденные, поэтому исключить
+		// эту ситуацию
+		if (page.hasCriticalItem() && !loadedFromCache) {
+			ExecutableItemPE pageItem = page.getItemPEById(page.getCriticalItem());
+			if (!pageItem.hasFoundItems() && !pageItem.isLoadedFromCache()) {
 				resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 				return;
 			}
@@ -149,15 +152,11 @@ public class PageController {
 			File xslFile = new File(xslFileName);
 			if (cachedFile.exists() && xslFile.lastModified() < cachedFile.lastModified() && cachedFile.length() > 0) {
 				Timer.getTimer().start(Timer.GET_FROM_CACHE);
-				FileInputStream fis = new FileInputStream(cachedFile);
-				byte[] buffer = new byte[4096];
-				int byteCount;
-				while ((byteCount = fis.read(buffer)) >= 0) {
-					out.write(buffer, 0, byteCount);
-				}
-				fis.close();
+				Files.copy(cachedFile.toPath(), out);
+				out.flush();
 				ServerLogger.debug("CACHE: " + requestUrl + " SENT IN " + (System.currentTimeMillis() - timeStart) + " MILLIS");
 				Timer.getTimer().stop(Timer.GET_FROM_CACHE);
+				loadedFromCache = true;
 			} else {
 				if (cachedFile.exists())
 					cachedFile.delete();

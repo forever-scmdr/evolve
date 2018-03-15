@@ -84,9 +84,9 @@ function initAjax(elementId) {
 		var elem = $(this);
 		var loaderId = elem.attr("ajax-loader-id");
 		if (loaderId) {
-			insertAjax(elem, loaderId);
+			insertAjax(elem.attr("href"), loaderId);
 		} else {
-			insertAjax(elem);
+			insertAjax(elem.attr("href"));
 		}
 	});
 	$(idPrefix + "select[value]").each(function() {

@@ -57,10 +57,10 @@
 									<a href="javascript:alert('Функция временно отключена')">Регистрация</a>
 								</p>
 								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
-									<p><i class="fas fa-star"/> <a href="">Избранное</a></p>
+									<p><i class="fas fa-star"/> <a href="">&#160;</a></p>
 								</div>
 								<div id="compare_ajax" ajax-href="{page/compare_ajax_link}">
-									<p><i class="fas fa-balance-scale"/> <a href="compare.html">Сравнение</a></p>
+									<p><i class="fas fa-balance-scale"/> <a href="compare.html">&#160;</a></p>
 								</div>
 							</div>
 						</div>
@@ -194,21 +194,18 @@
 					<li><i class="fas fa-th-list"></i> <a href="#" onclick="showMobileCatalogMenu(); return false">Каталог продукции</a></li>
 				</ul>
 				<ul>
-					<li><i class="fas fa-shopping-cart"></i> <a href="">Корзина</a></li>
-					<li><i class="fas fa-star"></i> <a href="">Избранное</a></li>
-					<li><i class="fas fa-balance-scale"></i> <a href="">Сравнение</a></li>
+					<li><i class="fas fa-shopping-cart"></i> <a href="{page/cart_link}">Корзина</a></li>
+					<li><i class="fas fa-star"></i> <a href="{page/fav_link}">Избранное</a></li>
+					<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>
 				</ul>
 				<ul>
 					<li><a href="{page/news_link}">Новости</a></li>
 					<li><a href="{page/articles_link}">Статьи</a></li>
+					<!--
 					<li><a href="">Наши проекты</a></li>
 					<li><a href="{page/dealers_link}">Дилеры</a></li>
-					<li><a href="{page/docs_link}">Документация</a></li>
-					<li><a href="{page/contacts_link}">Контакты</a></li>
-					<li><a href="{page/news_link}">Новости</a></li>
-					<li><a href="{page/articles_link}">Статьи</a></li>
-					<li><a href="">Наши проекты</a></li>
-					<li><a href="{page/dealers_link}">Дилеры</a></li>
+					-->
+					<li><a href="/about">О компании</a></li>
 					<li><a href="{page/docs_link}">Документация</a></li>
 					<li><a href="{page/contacts_link}">Контакты</a></li>
 				</ul>
@@ -218,6 +215,32 @@
 			function showMobileCatalogMenu() {
 				$('#mobile_catalog_menu').toggle();
 			}
+
+			$(document).ready(function() {
+				$("#mobile_catalog_menu .content li a[rel!='']").click(function(event) {
+					event.preventDefault();
+					var menuItem = $(this);
+					var parentMenuContainer = menuItem.closest('.content');
+					parentMenuContainer.css('left', '-100%');
+					var childMenuContainer = $(menuItem.attr('rel'));
+					childMenuContainer.css('left', '0%');
+				});
+
+				$('#mobile_catalog_menu a.back').click(function(event) {
+					event.preventDefault();
+					var back = $(this);
+					var childMenuContainer = back.closest('.content');
+					childMenuContainer.css('left', '100%');
+					var parentMenuContainer = $(back.attr('rel'));
+					parentMenuContainer.css('left', '0%');
+				});
+			});
+
+			function hideMobileCatalogMenu() {
+				$("#mobile_catalog_menu .content").css('left', '100%');
+				$("#m_sub_cat").css('left', '0%');
+				$('#mobile_catalog_menu').hide();
+			}
 		</script>
 	</xsl:template>
 
@@ -225,48 +248,57 @@
 
 	<xsl:template name="INC_MOBILE_NAVIGATION">
 		<div id="mobile_catalog_menu" class="nav-container mobile" style="display: none; position:absolute; width: 100%">
-			<div class="content">
+			<div class="content" id="m_sub_cat">
 				<div class="small-nav">
-					<a href="" class="back"><i class="fas fa-chevron-left"></i></a>
-					<a href="" class="header">Электроника</a>
-					<a href="" class="close" onclick="showMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
+					<a class="header">Каталог продукции</a>
+					<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 				</div>
 				<ul>
-					<li><a href="{page/news_link}">Новости</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/articles_link}">Статьи</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/dealers_link}">Дилеры</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/docs_link}">Документация</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/contacts_link}">Контакты</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/news_link}">Новости</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/articles_link}">Статьи</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/dealers_link}">Дилеры</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/docs_link}">Документация</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/contacts_link}">Контакты</a><i class="fas fa-chevron-right"></i></li>
+					<xsl:for-each select="page/catalog/section">
+						<li>
+							<a href="{show_section}" rel="{if (section) then concat('#m_sub_', @id) else ''}"><xsl:value-of select="name"/></a>
+							<xsl:if test="section">
+								<i class="fas fa-chevron-right"></i>
+							</xsl:if>
+						</li>
+					</xsl:for-each>
 				</ul>
 			</div>
-			<div class="content next">
-				<div class="small-nav">
-					<a href="" class="back"><i class="fas fa-chevron-left"></i></a>
-					<a href="" class="header">Электроника</a>
-					<a href="" class="close"><i class="fas fa-times"></i></a>
+			<xsl:for-each select="page/catalog/section[section]">
+				<div class="content next" id="m_sub_{@id}">
+					<div class="small-nav">
+						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
+						<a href="{show_section}" class="header"><xsl:value-of select="name"/></a>
+						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
+					</div>
+					<ul>
+						<xsl:for-each select="section">
+							<li>
+								<a href="{show_section}" rel="{if (section) then concat('#m_sub_', @id) else ''}"><xsl:value-of select="name"/></a>
+								<xsl:if test="section">
+									<i class="fas fa-chevron-right"></i>
+								</xsl:if>
+							</li>
+						</xsl:for-each>
+					</ul>
 				</div>
-				<ul>
-					<li><a href="{page/news_link}">Новости</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/articles_link}">Статьи</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/dealers_link}">Дилеры</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/docs_link}">Документация</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/contacts_link}">Контакты</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/news_link}">Новости</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/articles_link}">Статьи</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="">Наши проекты</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/dealers_link}">Дилеры</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/docs_link}">Документация</a><i class="fas fa-chevron-right"></i></li>
-					<li><a href="{page/contacts_link}">Контакты</a><i class="fas fa-chevron-right"></i></li>
-				</ul>
-			</div>
+			</xsl:for-each>
+			<xsl:for-each select="page/catalog/section/section[section]">
+				<div class="content next" id="m_sub_{@id}">
+					<div class="small-nav">
+						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
+						<a href="{show_section}" class="header"><xsl:value-of select="name"/></a>
+						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
+					</div>
+					<ul>
+						<xsl:for-each select="section">
+							<li>
+								<a href="{show_section}"><xsl:value-of select="name"/></a>
+							</li>
+						</xsl:for-each>
+					</ul>
+				</div>
+			</xsl:for-each>
 		</div>
 	</xsl:template>
 
@@ -349,6 +381,8 @@
 	</xsl:template>
 
 
+	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
+
 	<xsl:template match="accessory | set | probe | product">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<div class="catalog-item">
@@ -395,23 +429,21 @@
 					<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>
 					<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>
 				</xsl:choose>
-				<!-- <div class="checkbox">
-					<label>
-						<input type="checkbox"/> cравнение
-					</label>
-					<label>
-						<input type="checkbox"/> избранное
-					</label>
-				</div> -->
 				<div class="links">
 					<div id="compare_list_{code}">
 						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
-						<span class="active" style="display: none;"><i class="fas fa-balance-scale"></i> <a href="">сравнение</a></span>
 					</div>
-					<div id="fav_list_{code}">
-						<span><i class="fas fa-star"></i> <a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
-						<span class="active" style="display: none;"><i class="fas fa-star"></i> <a href="">избранное</a></span>
-					</div>
+					<xsl:choose>
+						<xsl:when test="$is_fav">
+							<span><i class="fas fa-star"></i> <a href="{from_fav}">убрать</a></span>
+						</xsl:when>
+						<xsl:otherwise>
+							<div id="fav_list_{code}">
+								<span><i class="fas fa-star"></i> <a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
+							</div>
+						</xsl:otherwise>
+					</xsl:choose>
+
 				</div>
 			</div>
 		</div>

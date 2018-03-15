@@ -68,17 +68,19 @@
 						</form>
 					</div>
 					<xsl:choose>
-						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>
+						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>
 						<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>
 					</xsl:choose>
 				</div>
 				<div class="links">
 					<!-- <label><input type="checkbox"/> cравнение</label>
 					<label><input type="checkbox"/> избранное</label> -->
-					<span><i class="fas fa-balance-scale"></i> <a href="">в сравнение</a></span>
-					<span class="active" style="display: none;"><i class="fas fa-balance-scale"></i> <a href="">сравнение</a></span>
-					<span><i class="fas fa-star"></i> <a href="">в избранное</a></span>
-					<span class="active" style="display: none;"><i class="fas fa-star"></i> <a href="">избранное</a></span>
+					<div id="compare_list_{code}">
+						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
+					</div>
+					<div id="fav_list_{$p/code}">
+						<span><i class="fas fa-star"></i> <a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
+					</div>
 				</div>
 				<div class="info-blocks">
 					<div class="info-block">

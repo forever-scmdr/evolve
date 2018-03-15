@@ -26,7 +26,7 @@ public class CookieArrayCommand extends Command {
 		if (StringUtils.isBlank(varName))
 			return getResult("success");
 		String varValue = getVarSingleValue(VAR_VALUE_VAR);
-		List<Object> values = getVarValues(varName);
+		List<Object> values = getCookieVarValues(varName);
 		values.add(varValue);
 		setCookieVariable(varName, values.toArray(new Object[0]));
 		return getResult("success");
@@ -37,11 +37,11 @@ public class CookieArrayCommand extends Command {
 		if (StringUtils.isBlank(varName))
 			return getResult("success");
 		String varValue = getVarSingleValue(VAR_VALUE_VAR);
-		List<Object> values = getVarValues(varName);
+		List<Object> values = getCookieVarValues(varName);
 		Iterator<Object> valuesIter = values.iterator();
 		while (valuesIter.hasNext()) {
 			String value = valuesIter.next().toString();
-			if (StringUtils.equalsIgnoreCase(varValue, value.toString()))
+			if (StringUtils.equalsIgnoreCase(varValue, value))
 				valuesIter.remove();
 		}
 		setCookieVariable(varName, values.toArray(new Object[0]));

@@ -5848,6 +5848,8 @@ body {
   background-color: #fff; }
   .nav-container.mobile .content {
     height: 100%;
+    width: 100%;
+    position: absolute;
     overflow-y: scroll; }
     .nav-container.mobile .content .small-nav {
       display: flex;
@@ -5871,11 +5873,8 @@ body {
         .nav-container.mobile .content ul li:last-child {
           border-bottom: none; }
   .nav-container.mobile .next {
-    position: absolute;
     left: 100%;
-    top: 0;
-    background-color: #ccc;
-    width: 100%; }
+    top: 0;}
 
 .desktop .header-container {
   display: flex;

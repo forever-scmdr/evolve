@@ -231,6 +231,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	private ParentRelatedFoundIterator iterator = null;
 	// Кеш айтема
 	private String cache = null;
+	// Загружался ли уже этот айтем
+	private boolean loadedFromCache = false;
 
 	/**
 	 * Конструктор
@@ -422,6 +424,13 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	public final boolean isLoaded() {
 		return loaded;
 	}
+
+	/**
+	 * Загружен ли айтем из кеша (или из БД)
+	 */
+	public final boolean isLoadedFromCache() {
+		return loadedFromCache;
+	}
 	/**
 	 * Загружает айтем с помощью соответствующего загрузчика
 	 * Также загружаются все сабайтемы айтема
@@ -443,6 +452,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			while (iter.next())
 				addFoundItem(iter.getCurrentItem(), NO_PARENT_ID);
 			loaded = true;
+			loadedFromCache = true;
 		}
 		// Загрузка
 		if (!loaded) {
