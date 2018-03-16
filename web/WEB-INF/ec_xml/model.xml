@@ -40,72 +40,52 @@
 	<!--/////////////                             КАТАЛОГ                                  ////////////-->
 
 
-	<!--Ассоциация для товаров в разделах. Один товар может быть в нескольних разных разделах-->
-	<assoc name="contains" caption="Раздел содержит" transitive="true" ag-id="1" ag-hash="-567445985"/>
 
-
-	<item name="product_container" virtual="true" caption="Контейнер для продуктов" ag-id="1" ag-hash="-268176079" />
-
-
-	<item name="catalog" caption="Каталог продукции" super="product_container" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
-		<child item="section" />
+	<item name="ym_catalog" caption="Каталог продукции" super="product_container" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
+		<child item="ym_section" />
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 	</item>
 
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
-	<item name="section" default-page="section" key="name" caption="Раздел" super="* product_container parse_section" key-unique="true" ag-id="3" ag-hash="1970241253">
-		<child item="parse_item" />
-		<child item="section" />
-		<child assoc="contains" item="product"/>
+	<item name="ym_section" default-page="section" key="name" caption="Раздел" super="* product_container parse_section" key-unique="true" ag-id="3" ag-hash="1970241253">
+		<child item="ym_section" />
+		<child item="ym_product"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
-		<parameter name="code" type="string" caption="Уникальный код" description="можно часть урла" />
+		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
+		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
-		<parameter name="short" type="short-text" caption="Краткое описание" />
+		<parameter name="ym_params_filter" type="filter" caption="Фильтр" description="для продукции" />
 	</item>
 
-	<!--Тут физически лежат товары. К разделу каталога они прикрепляются специальной ассоциацией-->
-	<item name="back_section" key="name" caption="Невидимый раздел" ag-id="4" ag-hash="-810986611">
-		<parameter name="name" type="string" caption="Название" description="раздела" />
-		<parameter name="code" type="string" caption="Уникальный код" description="т.к. название может повторяться" />
-		<child item="product" />
-	</item>
 
-	<item name="back_catalog" caption="Невидимый каталог" ag-id="5" ag-hash="2069443777">
-		<child item="back_section"/>
-	</item>
 
-	<!--Товар. Получается в результате парсинга-->
-	<item name="product" key="name code" caption="Продукт" extendable="true" key-unique="true" default-page="product" ag-id="6" ag-hash="-309474065">
+
+
+	<!--Товар из магазина yandex market-->
+	<item name="ym_product" key="name vendorCode" caption="Продукт" extendable="false" key-unique="true" default-page="product">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
-		<parameter name="code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
+		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
+		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
+		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
+		<parameter name="group_id" type="string" caption="Номер группы" description="в яндекс маркете все товары одной группы выводятся на одной странице"/>
+		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
+		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
+		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
+		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
+		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
+		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
-		<parameter name="price" type="currency" caption="Цена"/>
-		<parameter name="qty" type="double" caption="Количество на складе"/>
-		<parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" />
+		<parameter name="description" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
-		<parameter name="tech" type="xml" caption="Технические характеристики" description="в виде таблицы для вывода" />
-		<parameter name="apply" type="text" caption="Применение" description="текст" />
-		<parameter name="accessiories" type="string" caption="Сопутствующий товар" description="список артикулов" multiple="true"/>
-		<parameter name="sets" type="string" caption="Наборы" description="список артикулов" multiple="true"/>
-		<parameter name="probes" type="string" caption="Зонды" description="список артикулов" multiple="true"/>
-		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
-		<parameter name="video" type="string" caption="Ссылка на видео" multiple="true"/>
-		<child item="tag_first"/>
+		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
+		<child item="ym_params" single="true"/>
 	</item>
 
-	<item name="tag_first" caption="Тэг первого уровня" key="tag" ag-id="7" ag-hash="2078366155">
-		<parameter name="tag" caption="Тэг" type="string"/>
-		<child item="tag_second"/>
-	</item>
+	<item name="ym_params" caption="Параметры товара" extendable="true"/>
 
-	<item name="tag_second" caption="Тэг второго уровня" key="name_value" ag-id="8" ag-hash="372875449">
-		<parameter name="name" caption="Название тэга" type="string"/>
-		<parameter name="value" caption="Значение тэга" type="string"/>
-		<parameter name="name_value" type="string" caption="Тэг" description="сам тэг для поиска"/>
-	</item>
 
 	<!--/////////////                            END КАТАЛОГ                               ////////////-->
 	<!--/////////////                                                                      ////////////-->

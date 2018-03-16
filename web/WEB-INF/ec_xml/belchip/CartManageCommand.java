@@ -714,10 +714,10 @@ public class CartManageCommand extends Command {
 					regularQuantity += quantity;
 				}
 //				// Применение скидок
-//				double limit1 = bought.getDoubleParameterValue(IConst.LIMIT_1_PARAM, 1000000);
-//				double limit2 = bought.getDoubleParameterValue(IConst.LIMIT_2_PARAM, 1000000);
-//				double discount1 = bought.getIntParameterValue(IConst.DISCOUNT_1_PARAM, 0);
-//				double discount2 = bought.getIntParameterValue(IConst.DISCOUNT_2_PARAM, 0);
+//				double limit1 = bought.getDoubleParameterValue(YMarketConst.LIMIT_1_PARAM, 1000000);
+//				double limit2 = bought.getDoubleParameterValue(YMarketConst.LIMIT_2_PARAM, 1000000);
+//				double discount1 = bought.getIntParameterValue(YMarketConst.DISCOUNT_1_PARAM, 0);
+//				double discount2 = bought.getIntParameterValue(YMarketConst.DISCOUNT_2_PARAM, 0);
 //				if (quantity >= limit1 && quantity < limit2) {
 //					productSum = (long)(productSum * (100 - discount1) / 100);
 //				} else if (quantity >= limit2) {
