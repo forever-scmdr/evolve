@@ -94,9 +94,10 @@
 	<xsl:template name="CONTENT">
 		<div class="slider-container">
 			<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40">
-				<img src="img/slide_1.png" />
-				<img src="img/slide_2.png" />
-				<img src="img/slide_3.png" />
+				<img src="img/slide_1.jpg" />
+				<img src="img/slide_1.jpg" />
+				<img src="img/slide_1.jpg" />
+				<img src="img/slide_1.jpg" />
 			</div>
 		</div>
 		<div class="actions mobile">
@@ -105,7 +106,194 @@
 				<a href="{page/main_page/link_link}"><xsl:value-of select="page/main_page/link_text"/></a>
 			</div>
 		</div>
-		<div class="news">
+		<div class="more-products">
+			<h4>Лидеры продаж</h4>
+			<div class="slick-slider catalog-items">
+				<div class="catalog-item">
+					<div class="tags">
+						<span>Акция</span>
+						<span>Скидка</span>
+						<span>Распродажа</span>
+						<span>Горячая цена</span>
+					</div>
+					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
+					<div>
+						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+					</div>
+					<div class="price">
+						<p><span>Старая цена</span>100 р.</p>
+						<p><span>Новая цена</span>99 р.</p>
+					</div>
+					<div class="order">
+						<input type="number" value="1" />
+						<input type="submit" value="Заказать" />
+						<div class="quantity">Осталось 12 шт.</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" /> cравнение
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="catalog-item">
+					<div class="tags">
+						<span>Акция</span>
+						<span>Скидка</span>
+						<span>Распродажа</span>
+						<span>Горячая цена</span>
+					</div>
+					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
+					<div>
+						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+					</div>
+					<div class="price">
+						<p><span>Старая цена</span>100 р.</p>
+						<p><span>Новая цена</span>99 р.</p>
+					</div>
+					<div class="order">
+						<input type="number" value="1" />
+						<input type="submit" value="Заказать" />
+						<div class="quantity">Осталось 12 шт.</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" /> cравнение
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="catalog-item">
+					<div class="tags">
+						<span>Акция</span>
+						<span>Скидка</span>
+						<span>Распродажа</span>
+						<span>Горячая цена</span>
+					</div>
+					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
+					<div>
+						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+					</div>
+					<div class="price">
+						<p><span>Старая цена</span>100 р.</p>
+						<p><span>Новая цена</span>99 р.</p>
+					</div>
+					<div class="order">
+						<input type="number" value="1" />
+						<input type="submit" value="Заказать" />
+						<div class="quantity">Осталось 12 шт.</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" /> cравнение
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="catalog-item">
+					<div class="tags">
+						<span>Акция</span>
+						<span>Скидка</span>
+						<span>Распродажа</span>
+						<span>Горячая цена</span>
+					</div>
+					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
+					<div>
+						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+					</div>
+					<div class="price">
+						<p><span>Старая цена</span>100 р.</p>
+						<p><span>Новая цена</span>99 р.</p>
+					</div>
+					<div class="order">
+						<input type="number" value="1" />
+						<input type="submit" value="Заказать" />
+						<div class="quantity">Осталось 12 шт.</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" /> cравнение
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="catalog-item">
+					<div class="tags">
+						<span>Акция</span>
+						<span>Скидка</span>
+						<span>Распродажа</span>
+						<span>Горячая цена</span>
+					</div>
+					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
+					<div>
+						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+					</div>
+					<div class="price">
+						<p><span>Старая цена</span>100 р.</p>
+						<p><span>Новая цена</span>99 р.</p>
+					</div>
+					<div class="order">
+						<input type="number" value="1" />
+						<input type="submit" value="Заказать" />
+						<div class="quantity">Осталось 12 шт.</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" /> cравнение
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="catalog-item">
+					<div class="tags">
+						<span>Акция</span>
+						<span>Скидка</span>
+						<span>Распродажа</span>
+						<span>Горячая цена</span>
+					</div>
+					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
+					<div>
+						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+					</div>
+					<div class="price">
+						<p><span>Старая цена</span>100 р.</p>
+						<p><span>Новая цена</span>99 р.</p>
+					</div>
+					<div class="order">
+						<input type="number" value="1" />
+						<input type="submit" value="Заказать" />
+						<div class="quantity">Осталось 12 шт.</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" /> cравнение
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="catalog-item">
+					<div class="tags">
+						<span>Акция</span>
+						<span>Скидка</span>
+						<span>Распродажа</span>
+						<span>Горячая цена</span>
+					</div>
+					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
+					<div>
+						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+					</div>
+					<div class="price">
+						<p><span>Старая цена</span>100 р.</p>
+						<p><span>Новая цена</span>99 р.</p>
+					</div>
+					<div class="order">
+						<input type="number" value="1" />
+						<input type="submit" value="Заказать" />
+						<div class="quantity">Осталось 12 шт.</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" /> cравнение
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <div class="news">
 			<h3>Новости</h3>
 			<div class="news-container">
 				<xsl:for-each select="page/news/news_item">
@@ -114,9 +302,26 @@
 					</div>
 				</xsl:for-each>
 			</div>
-		</div>
+		</div> -->
 	</xsl:template>
 
+	<xsl:template name="MAIN_CONTENT">
+		<!-- MAIN COLOUMNS BEGIN -->
+		<div class="container">
+			<div class="row">
+
+				<!-- RIGHT COLOUMN BEGIN -->
+				<div class="col-md-12 col-xs-12 main-content"> 
+					<div class="mc-container">
+						<xsl:call-template name="INC_MOBILE_HEADER"/>
+						<xsl:call-template name="CONTENT"/>
+					</div>
+				</div>
+				<!-- RIGHT COLOUMN END -->
+			</div>
+		</div>
+		<!-- MAIN COLOUMNS END -->
+	</xsl:template>
 
 	<xsl:template name="BANNERS">
 		<div class="container p-t">

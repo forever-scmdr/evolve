@@ -6,7 +6,7 @@
 
 	<!-- <TITLE> -->
 	
-	<xsl:template name="TITLE">Белтесто</xsl:template>
+	<xsl:template name="TITLE">ЮКС</xsl:template>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
@@ -25,12 +25,18 @@
 
 
 	<xsl:template name="INC_DESKTOP_HEADER">
+		<div class="container-fluid top-stripe desktop">
+			<div class="container">
+				<i class="fas fa-phone"></i>
+				<xsl:value-of select="page/common/top" disable-output-escaping="yes"/>
+			</div>
+		</div>
 		<div class="container header desktop">
 			<div class="row">
 				<div class="col-xs-12">
-					<div class="header-container">
+					<div class="header-container" style="position: relative;">
 						<div class="logo">
-							<a href="{page/index_link}"><img src="img/logo_big.svg" alt="" style="height: 6rem; max-width: 100%;"/></a>
+							<a href="{page/index_link}"><img src="img/logo_big.svg" alt="" /></a>
 						</div>
 						<div class="search">
 							<form action="{page/search_link}" method="post">
@@ -39,14 +45,6 @@
 							</form>
 						</div>
 						<div class="other-container">
-							<div class="contacts">
-								<p>
-									<i class="fas fa-phone"></i>
-									<strong>Заказ и консультация:</strong>
-									<xsl:value-of select="page/common/top" disable-output-escaping="yes"/>
-								</p>
-								<p><a href="" data-toggle="modal" data-target="#modal-feedback">Форма обратной связи</a></p>
-							</div>
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Корзина пуста</strong></p>
 							</div>
@@ -65,18 +63,30 @@
 							</div>
 						</div>
 						<div class="main-menu">
-							<a href="{page/index_link}">Главная</a>
-							<a href="{page/catalog_link}">Каталог</a>
+							<!-- <a href="{page/index_link}">Главная</a> -->
+							<a href="{page/catalog_link}"><i class="fas fa-bars"/>Каталог</a>
 							<a href="{page/news_link}">Новости</a>
-							<a href="{page/articles_link}">Статьи</a>
-							<!--
+							<a href="">Сотрудничестово</a>
+							<a href="">Оплата</a>
+							<a href="">Доставка</a>
+							<a href="">Покупателям</a>
+							<!-- <a href="{page/articles_link}">Статьи</a>
 							<a href="">Наши проекты</a>
 							<a href="{page/dealers_link}">Дилеры</a>
-							-->
 							<a href="/about">О компании</a>
 							<a href="{page/docs_link}">Документация</a>
-							<a href="{page/contacts_link}">Контакты</a>
+							 -->
+							 <a href="{page/contacts_link}">Контакты</a>
 						</div>
+							 <div class="popup-menu" style="position: absolute;">
+							 	<div class="sections">
+							 		<a href="">Продукты питания и напитки</a>
+							 		<a href="">Для кухни</a>
+							 		<a href="">Продукты питания и напитки</a>
+							 		<a href="">Для кухни</a>
+							 	</div>
+							 	<div class="subsections"></div>
+							 </div>
 					</div>
 				</div>
 			</div>
@@ -128,8 +138,9 @@
 								</div>
 							</div>
 							<div class="block">
-								<p>Работаем только с <xsl:call-template name="BR"/>юридическими лицами <xsl:call-template name="BR"/>
-									и индивидуальными предпринимателями <xsl:call-template name="BR"/>по безналичному расчету</p>
+								<p>Принимаем к оплате<xsl:call-template name="BR"/> пластиковые карточки</p>
+								<img src="http://mobileplus.by/images/2/icon_card_mc.png" alt=""/>
+								<img src="http://mobileplus.by/images/2/icon_card_visa.png" alt=""/>
 							</div>
 							<div class="block contacts">
 								<xsl:value-of select="page/common/bottom" disable-output-escaping="yes"/>
@@ -470,7 +481,28 @@
 	<!-- ****************************    ПУСТЫЕ ЧАСТИ ДЛЯ ПЕРЕОПРЕДЕЛЕНИЯ    ******************************** -->
 
 
+	<xsl:template name="MAIN_CONTENT">
+		<!-- MAIN COLOUMNS BEGIN -->
+		<div class="container">
+			<div class="row">
+				<!-- LEFT COLOUMN BEGIN -->
+				<div class="col-md-3 lc desktop">
+					<xsl:call-template name="LEFT_COLOUMN"/>
+				</div>
+				<!-- LEFT COLOUMN END -->
 
+				<!-- RIGHT COLOUMN BEGIN -->
+				<div class="col-md-9 col-xs-12 main-content">
+					<div class="mc-container">
+						<xsl:call-template name="INC_MOBILE_HEADER"/>
+						<xsl:call-template name="CONTENT"/>
+					</div>
+				</div>
+				<!-- RIGHT COLOUMN END -->
+			</div>
+		</div>
+		<!-- MAIN COLOUMNS END -->
+	</xsl:template>
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -511,7 +543,10 @@
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<title><xsl:call-template name="TITLE"/></title>
+			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet" />
 			<link rel="stylesheet" href="css/app.css"/>
+			<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+			<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 			<link rel="stylesheet" href="fotorama/fotorama.css"/>
 			<script defer="defer" src="js/font_awesome_all.js"/>
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
@@ -521,26 +556,7 @@
 			<div class="content-container">
 				<xsl:call-template name="INC_DESKTOP_HEADER"/>
 
-				<!-- MAIN COLOUMNS BEGIN -->
-				<div class="container">
-					<div class="row">
-						<!-- LEFT COLOUMN BEGIN -->
-						<div class="col-md-3 lc desktop">
-							<xsl:call-template name="LEFT_COLOUMN"/>
-						</div>
-						<!-- LEFT COLOUMN END -->
-
-						<!-- RIGHT COLOUMN BEGIN -->
-						<div class="col-md-9 col-xs-12 main-content">
-							<div class="mc-container">
-								<xsl:call-template name="INC_MOBILE_HEADER"/>
-								<xsl:call-template name="CONTENT"/>
-							</div>
-						</div>
-						<!-- RIGHT COLOUMN END -->
-					</div>
-				</div>
-				<!-- MAIN COLOUMNS END -->
+				<xsl:call-template name="MAIN_CONTENT"/>
 
 				<xsl:call-template name="BANNERS"/>
 
@@ -553,7 +569,29 @@
 			<xsl:call-template name="INC_MOBILE_MENU"/>
 			<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
 
-
+			<script type="text/javascript" src="slick/slick.min.js"></script>
+			<script type="text/javascript">
+				$(document).ready(function(){
+					$('.slick-slider').slick({
+						infinite: true,
+						slidesToShow: 6,
+						slidesToScroll: 6,
+						dots: true,
+						arrows: false,
+						responsive: [
+							{
+						      breakpoint: 767,
+						      settings: {
+						        slidesToShow: 2,
+						        slidesToScroll: 2,
+						        infinite: true,
+						        dots: true
+						      }
+						    }
+						]
+					});
+				});
+			</script>
 			<script type="text/javascript" src="js/bootstrap.js"/>
 			<script type="text/javascript" src="admin/ajax/ajax.js"/>
 			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
