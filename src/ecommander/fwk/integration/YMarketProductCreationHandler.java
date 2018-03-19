@@ -1,0 +1,167 @@
+package ecommander.fwk.integration;
+
+import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.User;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.common.DelayedTransaction;
+import ecommander.persistence.itemquery.ItemQuery;
+import org.apache.commons.lang3.StringUtils;
+import org.xml.sax.Attributes;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+
+public class YMarketProductCreationHandler extends DefaultHandler implements YMarketConst {
+
+	private static final HashSet<String> COMMON_PARAMS = new HashSet<>();
+	static {
+		COMMON_PARAMS.add(URL_ELEMENT);
+		COMMON_PARAMS.add(PRICE_ELEMENT);
+		COMMON_PARAMS.add(CURRENCY_ID_ELEMENT);
+		COMMON_PARAMS.add(CATEGORY_ID_ELEMENT);
+		COMMON_PARAMS.add(NAME_ELEMENT);
+		COMMON_PARAMS.add(VENDOR_CODE_ELEMENT);
+		COMMON_PARAMS.add(DESCRIPTION_ELEMENT);
+		COMMON_PARAMS.add(COUNTRY_OF_ORIGIN_ELEMENT);
+	}
+
+
+	private Locator locator;
+	private boolean parameterReady = false;
+	private String paramName;
+	private StringBuilder paramValue = new StringBuilder();
+
+	private HashMap<String, Item> sections = null;
+
+	private IntegrateBase.Info info; // информация для пользователя
+	private HashMap<String, String> commonParams;
+	private HashMap<String, String> specialParams;
+	private ItemType productType;
+	private ArrayList<String> picUrls;
+	private User initiator;
+
+	
+	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
+		this.info = info;
+		this.sections = sections;
+		this.productType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
+		this.initiator = initiator;
+	}
+
+	@Override
+	public void endElement(String uri, String localName, String qName) throws SAXException {
+		try {
+			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
+				String code = commonParams.get(ID_ATTR);
+				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
+				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
+				if (product == null) {
+					Item section = sections.get(secCode);
+					if (section != null) {
+						product = Item.newChildItem(productType, section);
+					} else {
+						info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
+						return;
+					}
+				}
+
+				product.setValue(OFFER_ID_PARAM, code);
+				product.setValue(AVAILABLE_PARAM, commonParams.get(AVAILABLE_ATTR));
+				product.setValue(GROUP_ID_PARAM, commonParams.get(GROUP_ID_ATTR));
+				product.setValue(URL_PARAM, commonParams.get(URL_ELEMENT));
+				product.setValue(CURRENCY_ID_PARAM, commonParams.get(CURRENCY_ID_ELEMENT));
+				product.setValue(CATEGORY_ID_PARAM, commonParams.get(CATEGORY_ID_ELEMENT));
+				product.setValue(NAME_PARAM, commonParams.get(NAME_ELEMENT));
+				product.setValue(VENDOR_CODE_PARAM, commonParams.get(VENDOR_CODE_ELEMENT));
+				product.setValue(DESCRIPTION_PARAM, commonParams.get(DESCRIPTION_ELEMENT));
+				product.setValue(COUNTRY_PARAM, commonParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
+
+				product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
+
+				// Качать картинки только для новых товаров
+				if (product.isNew()) {
+					for (String picUrl : picUrls) {
+						product.setValue(GALLERY_PARAM, new URL(picUrl));
+					}
+				}
+				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product));
+
+				// Создать айтем с параметрами продукта
+				String paramClassName = "p" + secCode;
+				ItemType paramType = ItemTypeRegistry.getItemType(paramClassName);
+				if (paramType != null) {
+					Item params = Item.newChildItem(paramType, product);
+					for (String paramName : specialParams.keySet()) {
+						params.setValueUI(paramName, specialParams.get(paramName));
+					}
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(params));
+				}
+
+				info.increaseProcessed();
+			}
+
+			else if (COMMON_PARAMS.contains(qName) && parameterReady) {
+				commonParams.put(paramName, StringUtils.trim(paramValue.toString()));
+			}
+
+			else if (StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
+				specialParams.put(paramName, StringUtils.trim(paramValue.toString()));
+			}
+
+			else if (StringUtils.equalsIgnoreCase(qName, PICTURE_ELEMENT)) {
+				picUrls.add(paramValue.toString());
+			}
+
+			parameterReady = false;
+		} catch (Exception e) {
+			ServerLogger.error("Integration error", e);
+			info.addError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
+		}
+	}
+
+	@Override
+	public void characters(char[] ch, int start, int length) throws SAXException {
+		if(parameterReady)
+			paramValue.append(ch, start, length);
+	}
+
+	@Override
+	public void setDocumentLocator(Locator locator) {
+		this.locator = locator;
+	}
+
+	@Override
+	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+		parameterReady = false;
+		paramValue = new StringBuilder();
+		// Продукт
+		if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
+			commonParams = new HashMap<>();
+			specialParams = new HashMap<>();
+			picUrls = new ArrayList<>();
+			commonParams.put(ID_ATTR, attributes.getValue(ID_ATTR));
+			commonParams.put(AVAILABLE_ATTR, attributes.getValue(AVAILABLE_ATTR));
+			commonParams.put(GROUP_ID_ATTR, attributes.getValue(GROUP_ID_ATTR));
+		}
+		// Параметры продуктов (общие)
+		else if (COMMON_PARAMS.contains(qName) || StringUtils.equalsIgnoreCase(qName, PICTURE_ELEMENT)) {
+			paramName = qName;
+			parameterReady = true;
+		}
+		// Пользовательские параметры продуктов
+		else if (StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName)) {
+			paramName = Strings.createXmlElementName(attributes.getValue(NAME_ATTR));
+			parameterReady = true;
+		}
+	}
+}

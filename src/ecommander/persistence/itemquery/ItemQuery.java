@@ -476,6 +476,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		this.limit = new LimitCriteria(limit, pageNumber);
 		return this;
 	}
+
+	/**
+	 * Установить лимит
+	 * @param limit
+	 * @return
+	 */
+	public ItemQuery setLimit(int limit) {
+		this.limit = new LimitCriteria(limit, 1);
+		return this;
+	}
 	/**
 	 * Установить критерий пользователя
 	 * @param user

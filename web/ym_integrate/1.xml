@@ -1,0 +1,2839 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<yml_catalog date="2018-03-01 10:15">
+  <shop>
+    <name>sima-land.ru</name>
+    <company>sima-land.ru</company>
+    <url>https://sima-land.ru</url>
+    <currencies>
+      <currency id="RUB" rate="CB" />
+    </currencies>
+    <categories>
+      <category id="2068148562">Праздники</category>
+      <category id="1826593556" parentId="2068148562">Товары для праздника</category>
+      <category id="971646141" parentId="1826593556">Сервировка стола</category>
+      <category id="1250062254" parentId="971646141">Праздничное украшение стола</category>
+      <category id="291088843" parentId="2068148562">Пасха</category>
+      <category id="1560576729" parentId="291088843">Пасхальный декор</category>
+      <category id="1182102480" parentId="1560576729">Термоплёнка и наклейки на яйца</category>
+      <category id="660813862">Сувениры</category>
+      <category id="1656240842" parentId="660813862">Магниты и значки</category>
+      <category id="1884034582" parentId="1656240842">Магниты</category>
+      <category id="246892062" parentId="1884034582">Магниты к праздникам</category>
+      <category id="1810488542" parentId="2068148562">Открытки и конверты для денег</category>
+      <category id="1705223700" parentId="1810488542">Открытки</category>
+      <category id="1662587353" parentId="1560576729">Наборы для оформления куличей и яиц</category>
+      <category id="1930680465">Канцтовары</category>
+      <category id="2004857342" parentId="1930680465">Офисные принадлежности</category>
+      <category id="1949135736" parentId="2004857342">Степлеры, скобы</category>
+      <category id="1713980741" parentId="2004857342">Мелкоофисные аксессуары</category>
+      <category id="222885709" parentId="1713980741">Зажимы для бумаг</category>
+      <category id="1053574371">Товары для детей</category>
+      <category id="2089969147" parentId="1053574371">Товары для кормления</category>
+      <category id="1352366469" parentId="2089969147">Пустышки и аксессуары</category>
+      <category id="24024825" parentId="1352366469">Аксессуары для пустышек</category>
+      <category id="735609549" parentId="660813862">Свечи</category>
+      <category id="421764660" parentId="735609549">Свечи для торта</category>
+      <category id="624132899" parentId="421764660">Наборы</category>
+      <category id="1207892070" parentId="421764660">Свечи незадуваемые</category>
+      <category id="1801002377" parentId="1713980741">Скрепки</category>
+      <category id="2023225542" parentId="1930680465">Принадлежности для рисования и лепки</category>
+      <category id="2116032321" parentId="2023225542">Краски акварельные</category>
+      <category id="1080879707" parentId="660813862">Церковные товары</category>
+      <category id="830474392" parentId="1080879707">Свечи</category>
+      <category id="559990963" parentId="830474392">Церковные свечи</category>
+      <category id="1574368874" parentId="1560576729">Ободки для куличей</category>
+      <category id="1152065118">Одежда и обувь</category>
+      <category id="1727667536" parentId="1152065118">Мужская одежда</category>
+      <category id="558795220" parentId="1727667536">Носки мужские</category>
+      <category id="880892225" parentId="1713980741">Кнопки, булавки</category>
+      <category id="533696746" parentId="2023225542">Пластилин</category>
+      <category id="674461860" parentId="533696746">Пластилин для лепки</category>
+      <category id="1637518618">Посуда</category>
+      <category id="1533709334" parentId="1637518618">Кухонные принадлежности и инструменты</category>
+      <category id="1348419441" parentId="1533709334">Кухонная утварь</category>
+      <category id="1902186295" parentId="1348419441">Шумовки</category>
+      <category id="453541286" parentId="1884034582">Магниты с христианской символикой</category>
+      <category id="1333478814" parentId="1533709334">Кондитерские принадлежности и инвентарь для выпечки</category>
+      <category id="541333291" parentId="1333478814">Венчики для взбивания</category>
+      <category id="589678579">Строительство и ремонт</category>
+      <category id="746690966" parentId="589678579">Строительная химия и смеси</category>
+      <category id="1465023868" parentId="746690966">Клей</category>
+      <category id="1506738077" parentId="1826593556">Воздушные шары</category>
+      <category id="1462084199" parentId="1506738077">Латексные шары</category>
+      <category id="1692984909" parentId="1713980741">Банковские резинки</category>
+      <category id="912752717">Авто и мото</category>
+      <category id="1597718714" parentId="912752717">Внутрисалонные аксессуары</category>
+      <category id="1953108643" parentId="1597718714">Коврики напольные</category>
+      <category id="837956216" parentId="1953108643">Влаговпитывающие коврики</category>
+      <category id="971646142" parentId="1637518618">Сервировка стола</category>
+      <category id="2074823897" parentId="971646142">Аксессуары для сервировки</category>
+      <category id="1678149961" parentId="2074823897">Подставки для яиц</category>
+      <category id="1595566019" parentId="589678579">Расходники</category>
+      <category id="1692318121" parentId="1595566019">Шпагат, верёвки</category>
+      <category id="564370644">Хозтовары</category>
+      <category id="1543018473" parentId="564370644">Товары для ванной комнаты и туалета</category>
+      <category id="704832117" parentId="1543018473">Мыльницы и дозаторы для мыла</category>
+      <category id="1331559418" parentId="2023225542">Карандаши цветные</category>
+      <category id="1264013172" parentId="564370644">Коврики</category>
+      <category id="1300472851" parentId="1264013172">Коврики для ванны и туалета</category>
+      <category id="1027911506">Творчество</category>
+      <category id="817145334" parentId="1027911506">Декор для творчества</category>
+      <category id="216812363" parentId="817145334">Ленты декоративные</category>
+      <category id="1385096741" parentId="1348419441">Наборы кухонных принадлежностей</category>
+      <category id="1625756670" parentId="1348419441">Мельницы для специй</category>
+      <category id="194215223" parentId="1543018473">Шторы для ванной и комплектующие</category>
+      <category id="1562635802">Цифровая электроника</category>
+      <category id="521295674" parentId="1562635802">Аксессуары для мобильных устройств и фототехники</category>
+      <category id="316566844" parentId="521295674">Защитная плёнка и стекло на дисплей</category>
+      <category id="1990182866">Текстиль</category>
+      <category id="1064307536" parentId="1990182866">Текстиль для кухни</category>
+      <category id="350503501" parentId="1064307536">Кухонные полотенца</category>
+      <category id="913942981" parentId="2023225542">Гуашь</category>
+      <category id="588533948">Красота и здоровье</category>
+      <category id="1400195086" parentId="588533948">Гигиена</category>
+      <category id="245797242" parentId="1400195086">Средства для бритья</category>
+      <category id="1229592582" parentId="245797242">Пены</category>
+      <category id="1693228917" parentId="1713980741">Скрепочницы магнитные</category>
+      <category id="1462649710" parentId="2004857342">Клейкая лента канцелярская</category>
+      <category id="1894726138" parentId="1348419441">Доски разделочные</category>
+      <category id="88511578" parentId="1713980741">Чистящие средства для оргтехники</category>
+      <category id="258454346" parentId="971646142">Посуда для напитков</category>
+      <category id="1223819597" parentId="258454346">Кружки пивные</category>
+      <category id="1246385495" parentId="660813862">Интерьерные сувениры</category>
+      <category id="1997869085" parentId="1246385495">Фигурки</category>
+      <category id="530001429" parentId="1997869085">Фигурки с пасхальной темой</category>
+      <category id="730056657" parentId="2023225542">Фломастеры</category>
+    </categories>
+    <offers>
+      <offer id="1448945692" available="true">
+        <url>https://www.sima-land.ru/2965072/</url>
+        <price>5.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1250062254</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2507704/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2507704/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2507704/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2507704/10/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2507704/11/700-nw.jpg</picture>
+        <name>Топпер - открытка "Светлой Пасхи" в корзинке</name>
+        <vendorCode>2965072</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Топпер - открытка "Светлой Пасхи" в корзинке — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">2120 шт</param>
+        <param name="Состав">Бумага, картон</param>
+        <param name="Материалы">бумага, картон</param>
+        <param name="Фасовка">по 10 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">19 см × 5 см × 0,3 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Разноцветный</param>
+        <param name="Формат">Мини</param>
+        <param name="Отделка">Фигурная вырубка</param>
+        <param name="Для кого">Унисекс</param>
+        <param name="Тематика праздника">Пасха</param>
+        <param name="Адресат">Без адресата</param>
+        <param name="Материал">Картон</param>
+        <param name="Особенности">В букет</param>
+        <param name="Вид декора">Топперы</param>
+        <param name="Вид">Топперы</param>
+        <param name="Высота держателя, см">25</param>
+      </offer>
+      <offer id="876653136" available="true">
+        <url>https://www.sima-land.ru/2965076/</url>
+        <price>5.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1250062254</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2507710/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2507710/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2507710/2/700-nw.jpg</picture>
+        <name>Топпер - открытка "ХВ" цыпленок</name>
+        <vendorCode>2965076</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Топпер - открытка "ХВ" цыпленок — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">2140 шт</param>
+        <param name="Состав">Бумага, картон</param>
+        <param name="Материалы">бумага, картон</param>
+        <param name="Фасовка">по 10 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">19 см × 5 см × 0,3 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Разноцветный</param>
+        <param name="Формат">Мини</param>
+        <param name="Отделка">Фигурная вырубка</param>
+        <param name="Для кого">Унисекс</param>
+        <param name="Тематика праздника">Пасха</param>
+        <param name="Адресат">Без адресата</param>
+        <param name="Материал">Картон</param>
+        <param name="Особенности">В букет</param>
+        <param name="Вид декора">Топперы</param>
+        <param name="Вид">Топперы</param>
+        <param name="Высота держателя, см">25</param>
+      </offer>
+      <offer id="1326991830" available="true">
+        <url>https://www.sima-land.ru/2965078/</url>
+        <price>5.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1250062254</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2507714/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2507714/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2507714/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2507714/10/700-nw.jpg</picture>
+        <name>Топпер - открытка "Светлой Пасхи" цыплята</name>
+        <vendorCode>2965078</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Топпер - открытка "Светлой Пасхи" цыплята — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">2030 шт</param>
+        <param name="Состав">Бумага, картон</param>
+        <param name="Материалы">бумага, картон</param>
+        <param name="Фасовка">по 10 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">19 см × 5 см × 0,3 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Разноцветный</param>
+        <param name="Формат">Мини</param>
+        <param name="Отделка">Фигурная вырубка</param>
+        <param name="Для кого">Унисекс</param>
+        <param name="Тематика праздника">Пасха</param>
+        <param name="Адресат">Без адресата</param>
+        <param name="Материал">Картон</param>
+        <param name="Особенности">В букет</param>
+        <param name="Вид декора">Топперы</param>
+        <param name="Вид">Топперы</param>
+        <param name="Высота держателя, см">25</param>
+      </offer>
+      <offer id="117138030" available="true">
+        <url>https://www.sima-land.ru/2965081/</url>
+        <price>5.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1250062254</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2507719/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2507719/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2507719/2/700-nw.jpg</picture>
+        <name>Топпер - открытка "Христос Воскрес"</name>
+        <vendorCode>2965081</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Топпер - открытка "Христос Воскрес" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">2090 шт</param>
+        <param name="Состав">Бумага, картон</param>
+        <param name="Материалы">бумага, картон</param>
+        <param name="Фасовка">по 10 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">19 см × 5 см × 0,3 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Разноцветный</param>
+        <param name="Формат">Мини</param>
+        <param name="Отделка">Фигурная вырубка</param>
+        <param name="Для кого">Унисекс</param>
+        <param name="Тематика праздника">Пасха</param>
+        <param name="Адресат">Без адресата</param>
+        <param name="Материал">Картон</param>
+        <param name="Особенности">В букет</param>
+        <param name="Вид декора">Топперы</param>
+        <param name="Вид">Топперы</param>
+        <param name="Высота держателя, см">25</param>
+      </offer>
+      <offer id="1388902119" available="true">
+        <url>https://www.sima-land.ru/3108288/</url>
+        <price>5.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2596934/0/700-nw.jpg</picture>
+        <name>Наклейки пасхальные "Палех"</name>
+        <vendorCode>3108288</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Наклейки пасхальные "Палех" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">3000 шт</param>
+        <param name="Состав">Бумага самоклеящаяся</param>
+        <param name="Материалы">бумага самоклеящаяся</param>
+        <param name="Фасовка">по 20 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">16 см × 10 см × 0,1 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="1339981236" available="true">
+        <url>https://www.sima-land.ru/3108289/</url>
+        <price>5.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2596936/0/700-nw.jpg</picture>
+        <name>Наклейки пасхальные "Сказки"</name>
+        <vendorCode>3108289</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Наклейки пасхальные "Сказки" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">3000 шт</param>
+        <param name="Состав">Бумага самоклеящаяся</param>
+        <param name="Материалы">бумага самоклеящаяся</param>
+        <param name="Фасовка">по 20 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">16 см × 10 см × 0,1 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="1745132574" available="true">
+        <url>https://www.sima-land.ru/3108290/</url>
+        <price>5.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2596939/0/700-nw.jpg</picture>
+        <name>Наклейки пасхальные "Русские сказки"</name>
+        <vendorCode>3108290</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Наклейки пасхальные "Русские сказки" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">3000 шт</param>
+        <param name="Состав">Бумага самоклеящаяся</param>
+        <param name="Материалы">бумага самоклеящаяся</param>
+        <param name="Фасовка">по 20 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">16 см × 10 см × 0,1 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="983750781" available="true">
+        <url>https://www.sima-land.ru/3108291/</url>
+        <price>5.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2596942/0/700-nw.jpg</picture>
+        <name>Наклейки пасхальные "Природа России"</name>
+        <vendorCode>3108291</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Наклейки пасхальные "Природа России" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">3000 шт</param>
+        <param name="Состав">Бумага самоклеящаяся</param>
+        <param name="Материалы">бумага самоклеящаяся</param>
+        <param name="Фасовка">по 20 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">16 см × 10 см × 0,1 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="179048633" available="true">
+        <url>https://www.sima-land.ru/3108293/</url>
+        <price>5.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2596950/0/700-nw.jpg</picture>
+        <name>Наклейки пасхальные "Русские сюжеты"</name>
+        <vendorCode>3108293</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Наклейки пасхальные "Русские сюжеты" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">3000 шт</param>
+        <param name="Состав">Бумага самоклеящаяся</param>
+        <param name="Материалы">бумага самоклеящаяся</param>
+        <param name="Фасовка">по 20 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">16 см × 10 см × 0,1 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="582333160" available="true">
+        <url>https://www.sima-land.ru/3108296/</url>
+        <price>5.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2596959/0/700-nw.jpg</picture>
+        <name>Наклейки пасхальные "Соборы"</name>
+        <vendorCode>3108296</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Наклейки пасхальные "Соборы" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">3000 шт</param>
+        <param name="Состав">Бумага самоклеящаяся</param>
+        <param name="Материалы">бумага самоклеящаяся</param>
+        <param name="Фасовка">по 20 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">16 см × 10 см × 0,1 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="2146550195" available="true">
+        <url>https://www.sima-land.ru/3108297/</url>
+        <price>5.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2596960/0/700-nw.jpg</picture>
+        <name>Наклейки пасхальные "Соборы, гжель"</name>
+        <vendorCode>3108297</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Наклейки пасхальные "Соборы, гжель" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">3000 шт</param>
+        <param name="Состав">Бумага самоклеящаяся</param>
+        <param name="Материалы">бумага самоклеящаяся</param>
+        <param name="Фасовка">по 20 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">16 см × 10 см × 0,1 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="1388902214" available="true">
+        <url>https://www.sima-land.ru/3108298/</url>
+        <price>5.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2596963/0/700-nw.jpg</picture>
+        <name>Наклейки пасхальные "Бабочки, цветы"</name>
+        <vendorCode>3108298</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Наклейки пасхальные "Бабочки, цветы" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">3000 шт</param>
+        <param name="Состав">Бумага самоклеящаяся</param>
+        <param name="Материалы">бумага самоклеящаяся</param>
+        <param name="Фасовка">по 20 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">16 см × 10 см × 0,1 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="925641184" available="true">
+        <url>https://www.sima-land.ru/881178/</url>
+        <price>9.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>246892062</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/740336/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/740336/1/700-nw.jpg</picture>
+        <name>Магнит пасхальный "Колокольчик ангел"</name>
+        <vendorCode>881178</vendorCode>
+        <description>Магнит пасхальный "Колокольчик ангел" - изготовлен из фольгированного пластика с полноцветным, насыщенным изображением. Выглядит по-настоящему ярко и торжественно, полностью соответствует празднику Пасхи. Аналогов таких пасхальных магнитов Вы больше ни у кого не найдете.
+Пасха - главный православный праздник. Христово воскресение - это чудо, прикоснуться к которому стремятся все христиане. А колокол является прекрасным символом благовестия и торжества добра над злом.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">2500 шт</param>
+        <param name="Состав">Фольга</param>
+        <param name="Материалы">фольга</param>
+        <param name="Фасовка">по 50 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">8 см × 7,5 см × 0,2 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Материал">Фольга</param>
+        <param name="ТИП">Магнит</param>
+      </offer>
+      <offer id="1026870717" available="true">
+        <url>https://www.sima-land.ru/3328066/</url>
+        <price>14.3000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1705223700</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2762494/0/700-nw.jpg</picture>
+        <name>Открытка "С праздником Светлой Пасхи!" собор</name>
+        <vendorCode>3328066</vendorCode>
+        <description>Выразить свои чувства и дополнить основной подарок тёплыми словами вам поможет Открытка "С праздником Светлой Пасхи!" собор. С ней ваше пожелание «Счастья, любви и здоровья» приобретёт трепетный и душевный подтекст. А воспоминания о праздничном дне ещё долго будут радовать адресата.
+Среди нашего ассортимента печатной поздравительной продукции вы выберете открытку для любого праздника и повода.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">200 шт</param>
+        <param name="Состав">Бумага, картон</param>
+        <param name="Материалы">бумага, картон</param>
+        <param name="Фасовка">по 10 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">0,1 см × 21 см × 19 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Формат">А5</param>
+        <param name="Отделка">Глиттер</param>
+        <param name="Для кого">Унисекс</param>
+        <param name="Тематика праздника">Пасха</param>
+        <param name="Адресат">Без адресата</param>
+        <param name="Материал">Картон</param>
+        <param name="Особенности">Без особенностей</param>
+      </offer>
+      <offer id="379705997" available="true">
+        <url>https://www.sima-land.ru/2778989/</url>
+        <price>15.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1662587353</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2747464/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2747464/1/700-nw.jpg</picture>
+        <name>Набор для декорирования яиц "Кулич"</name>
+        <vendorCode>2778989</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Набор для декорирования яиц "Кулич" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">3524 шт</param>
+        <param name="Состав">Бумага</param>
+        <param name="Материалы">бумага</param>
+        <param name="Фасовка">по 20 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">0,1 см × 12,5 см × 16 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="1589559673" available="true">
+        <url>https://www.sima-land.ru/2778990/</url>
+        <price>15.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1662587353</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2768779/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2768779/1/700-nw.jpg</picture>
+        <name>Набор для декорирования яиц "Яйца"</name>
+        <vendorCode>2778990</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Набор для декорирования яиц "Яйца" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">3516 шт</param>
+        <param name="Состав">Бумага</param>
+        <param name="Материалы">бумага</param>
+        <param name="Фасовка">по 20 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">16 см × 12,5 см × 0,1 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="1997603780" available="true">
+        <url>https://www.sima-land.ru/2530214/</url>
+        <price>17.1500</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1949135736</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2119904/0/700-nw.jpg</picture>
+        <name>Скобы для степлера №24/6, оцинкованные, 1000 штук</name>
+        <vendorCode>2530214</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Скобы для степлера №24/6, оцинкованные, 1000 штук поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="В боксе">1 набор</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Размер упаковки">7 см × 3,6 см × 1,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Фиксатор">Нет</param>
+        <param name="№ Скобы">24/6</param>
+        <param name="Материал">Металл</param>
+        <param name="Тип">Скобы</param>
+      </offer>
+      <offer id="1044482927" available="true">
+        <url>https://www.sima-land.ru/2065238/</url>
+        <price>17.3900</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1949135736</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1708021/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1708021/1/700-nw.jpg</picture>
+        <name>Антистеплер STAFF эконом, для скоб № 10 и № 24/6, чёрный</name>
+        <vendorCode>2065238</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Антистеплер STAFF эконом, для скоб № 10 и № 24/6, чёрный поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="В боксе">1 шт</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Размер упаковки">4,8 см × 5,3 см × 3,6 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Чёрный</param>
+        <param name="Фиксатор">Нет</param>
+        <param name="№ Скобы">24/6</param>
+        <param name="Тип">Антистеплер</param>
+      </offer>
+      <offer id="1215497567" available="true">
+        <url>https://www.sima-land.ru/649322/</url>
+        <price>17.4200</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1949135736</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/467928/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/467928/1/700-nw.jpg</picture>
+        <name>Степлер МИНИ №10 до 7 листов+скобы №10 в блистере МИКС HL-214-2</name>
+        <vendorCode>649322</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Степлер МИНИ №10 до 7 листов+скобы №10 в блистере МИКС HL-214-2 поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">576 шт</param>
+        <param name="Состав">Пластик, металл</param>
+        <param name="Материалы">пластик, металл</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Блистер</param>
+        <param name="Размер упаковки">4 см × 9 см × 10 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">МИКС</param>
+        <param name="Фиксатор">Нет</param>
+        <param name="№ Скобы">10</param>
+        <param name="Количество пробиваемых листов">7</param>
+        <param name="Материал">Металл, Пластик</param>
+        <param name="Тип">Степлер</param>
+        <param name="ТИП">Степлер</param>
+      </offer>
+      <offer id="997428946" available="true">
+        <url>https://www.sima-land.ru/2065297/</url>
+        <price>18.2600</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>222885709</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2330168/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2330168/1/700-nw.jpg</picture>
+        <name>Набор зажимов для бумаг 19 мм 12 штук в упаковке STAFF, эконом, на 60 листов, чёрные</name>
+        <vendorCode>2065297</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Набор зажимов для бумаг 19 мм 12 штук в упаковке STAFF, эконом, на 60 листов, чёрные поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="В боксе">24 набор</param>
+        <param name="В наборе">12 набор</param>
+        <param name="Фасовка">по 12 набор</param>
+        <param name="Размер упаковки">2 см × 6 см × 4 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Чёрный</param>
+        <param name="Ширина, мм">19</param>
+        <param name="Вид упаковки">Коробка картонная</param>
+        <param name="В упаковке, шт.">12</param>
+      </offer>
+      <offer id="499464911" available="true">
+        <url>https://www.sima-land.ru/1098035/</url>
+        <price>18.3900</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1949135736</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/820364/0/700-nw.jpg</picture>
+        <name>Скобы для степлера №24/6 KW-trio 1000шт</name>
+        <vendorCode>1098035</vendorCode>
+        <description>Тип: скобы для степлеров.
+Кол-во: 1000 шт.
+Тип скоб: 24/6.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">400 набор</param>
+        <param name="Состав">Металл</param>
+        <param name="Материалы">металл</param>
+        <param name="Фасовка">по 20 набор</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">6,7 см × 3,7 см × 1,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Серебристый</param>
+        <param name="№ Скобы">24/6</param>
+        <param name="Материал">Металл</param>
+        <param name="Тип">Скобы</param>
+      </offer>
+      <offer id="873805634" available="true">
+        <url>https://www.sima-land.ru/2300169/</url>
+        <price>18.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>24024825</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2401053/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2401053/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2401053/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2401053/3/700-nw.jpg</picture>
+        <name>Держатель для пустышки, цвет жёлтый</name>
+        <vendorCode>2300169</vendorCode>
+        <description>Прищепка для пустышки предотвратит потерю маленького предмета. Используйте специальный держатель на цепочке, и соска всегда будет под рукой!
+Изделие фиксируется на одежде ребёнка. На конце цепочки есть карабин, который зацепляется за кольцо пустышки. Надёжное крепление убережёт вещь от падения на пол, если малютка случайно выронит её изо рта.
+Товар изготовлен из качественного нетоксичного пластика. Подходит для деток с рождения.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">600 шт</param>
+        <param name="Состав">Пластик</param>
+        <param name="Материалы">пластик</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">11 см × 6 см × 1,3 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Вид">Держатель</param>
+      </offer>
+      <offer id="160395487" available="true">
+        <url>https://www.sima-land.ru/1422049/</url>
+        <price>19.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>624132899</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1310580/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1310580/1/700-nw.jpg</picture>
+        <name>Свечи в торт "С Днем Рождения", 14 шт, Медвежонок Винни и его друзья, 20,5 х 6 см</name>
+        <vendorCode>1422049</vendorCode>
+        <description>Самый любимый праздник ребёнка — день рождения. Родители стараются сделать его особенным. Чтобы помочь заботливым мамам и папам, мы подготовили коллекцию свечей с изображением любимых героев Disney на упаковке.
+Задуйте их в день рождения, и все желания обязательно исполнятся!
+Мальчишки и девчонки будут в восторге от праздника, который оформлен в стиле Disney!
+В наборе 14 свечек.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">340 набор</param>
+        <param name="Состав">Воск</param>
+        <param name="Материалы">воск</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Цветная картонная коробка</param>
+        <param name="Размер упаковки">20,5 см × 6 см × 0,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Лицензия">Да</param>
+        <param name="Цвет">Голубой, Синий</param>
+        <param name="Набор">Да</param>
+        <param name="Тематика">Праздник, Мультфильмы</param>
+        <param name="Вид упаковки">Коробка картонная</param>
+        <param name="Для кого">Для мальчика, Для девочки, Унисекс</param>
+        <param name="Тематика праздника">День рождения</param>
+        <param name="Адресат">Именинник/Именинница</param>
+        <param name="Материал">Воск</param>
+        <param name="В наборе, шт">14</param>
+        <param name="Серия">Медвежонок Винни и его друзья</param>
+        <param name="Высота свечи, см">15</param>
+        <param name="Лицензия разработки">Да</param>
+      </offer>
+      <offer id="2096885916" available="true">
+        <url>https://www.sima-land.ru/2506813/</url>
+        <price>19.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1207892070</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2400008/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2400008/1/700-nw.jpg</picture>
+        <name>Незадуваемые свечи "Волшебные свечи", (набор 8 шт), София Прекрасная, 15 х 7 см</name>
+        <vendorCode>2506813</vendorCode>
+        <description>Незадуваемые свечи "Волшебные свечи", (набор 8 шт), София Прекрасная, 15 х 7 см — непременный атрибут праздника, который бывает раз в году! Он обязательно поднимет настроение виновнику торжества.
+Ведь что может быть приятнее в день рождения, чем торт, украшенный свечами? А какие бурные эмоции возникают при их задувании знают и взрослые, и дети, потому что в любом возрасте мы все мечтаем об исполнении желаний и для всех нас это один из самых трогательных и волшебных моментов.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">576 набор</param>
+        <param name="В наборе">8 набор</param>
+        <param name="Состав">Пластик, бумага, воск</param>
+        <param name="Материалы">пластик, бумага, воск</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Блистер</param>
+        <param name="Размер упаковки">15 см × 7 см × 0,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Для кого">Для девочки</param>
+        <param name="Тематика праздника">День рождения</param>
+        <param name="В наборе, шт">8</param>
+        <param name="Серия">София Прекрасная</param>
+        <param name="Высота свечи, см">6</param>
+        <param name="Лицензия разработки">Да</param>
+      </offer>
+      <offer id="1070684030" available="true">
+        <url>https://www.sima-land.ru/1078726/</url>
+        <price>19.5000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1801002377</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/791798/0/700-nw.jpg</picture>
+        <name>Скрепки канцелярские 28 мм оцинкованные 100 штук GLOBUS, пластиковый бокс</name>
+        <vendorCode>1078726</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Скрепки канцелярские 28 мм оцинкованные 100 штук GLOBUS, пластиковый бокс поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">80 набор</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Пластиковая коробка</param>
+        <param name="Размер упаковки">9 см × 5,5 см × 2 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Количество на складе">78</param>
+        <param name="Цвет">Серебристый</param>
+        <param name="Вид упаковки">Картон</param>
+        <param name="Материал">Металл</param>
+        <param name="В упаковке, шт.">100</param>
+        <param name="Длина скрепки">28</param>
+        <param name="Покрытие скрепки">Оцинкованные</param>
+        <param name="Тип">Скрепки</param>
+        <param name="Форма">Круглые</param>
+      </offer>
+      <offer id="160144801" available="true">
+        <url>https://www.sima-land.ru/279792/</url>
+        <price>21.8600</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>2116032321</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/176940/0/700-nw.jpg</picture>
+        <name>Акварель медовая 10 цветов, без кисти</name>
+        <vendorCode>279792</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Акварель медовая 10 цветов, без кисти поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">80 шт</param>
+        <param name="Состав">Пластик, краска</param>
+        <param name="Материалы">пластик, краска</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Цветная картонная коробка</param>
+        <param name="Размер упаковки">19 см × 1 см × 7,5 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Лицензия">Нет</param>
+        <param name="Набор">Да</param>
+        <param name="Вид упаковки">Картон</param>
+        <param name="Кисть">Нет</param>
+        <param name="Вид краски">Акварельная</param>
+        <param name="Количество цветов">10</param>
+      </offer>
+      <offer id="769310325" available="true">
+        <url>https://www.sima-land.ru/1689569/</url>
+        <price>21.8900</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>624132899</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1897659/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1897659/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1897659/2/700-nw.jpg</picture>
+        <name>Свечи тонкие в торт "С Днем Рождения", София Прекрасная, (набор 10 шт), 6 х 0,5 см</name>
+        <vendorCode>1689569</vendorCode>
+        <description>Волшебные свечки с любимыми героями мультфильмов Disney — аксессуар для особенного праздника. Они станут украшением вечера и порадуют маленького именинника.
+Изделия размером 6 см крепятся на торт с помощью небольших ножек. После церемонии поздравления они легко вынимаются.
+Упаковка свечей имеет праздничную подложку с пожеланиями виновнику торжества на обороте.
+Пусть малыш загадает желание, задует огоньки, и его мечта станет реальностью!</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">480 набор</param>
+        <param name="В наборе">10 набор</param>
+        <param name="Состав">Воск</param>
+        <param name="Материалы">воск</param>
+        <param name="Фасовка">по 12 набор</param>
+        <param name="Индивидуальная упаковка">Блистер</param>
+        <param name="Размер упаковки">1,5 см × 7 см × 13 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Лицензия">Да</param>
+        <param name="Набор">Да</param>
+        <param name="Тематика">Мультфильмы, Праздник</param>
+        <param name="Для кого">Для девочки</param>
+        <param name="Тематика праздника">День рождения</param>
+        <param name="Адресат">Именинник/Именинница</param>
+        <param name="Материал">Воск</param>
+        <param name="В наборе, шт">10</param>
+        <param name="Серия">София Прекрасная</param>
+        <param name="Высота свечи, см">7</param>
+        <param name="Лицензия разработки">Да</param>
+      </offer>
+      <offer id="1451665079" available="true">
+        <url>https://www.sima-land.ru/1308439/</url>
+        <price>22.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>559990963</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1037233/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1037233/1/700-nw.jpg</picture>
+        <name>Свечи праздничные пасхальные красные</name>
+        <vendorCode>1308439</vendorCode>
+        <description>Эту свечу вы сможете использовать как в церковном, так и в домашнем обиходе для религиозных обрядов. Она содержит натуральные красители без ароматических примесей.
+Считается, что если человек смотрит на пламя церковной свечи, сжигаются все его беды и болезни.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">1250 шт</param>
+        <param name="Состав">Парафин</param>
+        <param name="Материалы">парафин</param>
+        <param name="Фасовка">по 50 шт</param>
+        <param name="Индивидуальная упаковка">Плёнка</param>
+        <param name="Размер упаковки">30 см × 0,5 см × 0,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="241811589" available="true">
+        <url>https://www.sima-land.ru/1308440/</url>
+        <price>22.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>559990963</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1037247/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1037247/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1037247/3/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1037247/1/700-nw.jpg</picture>
+        <name>Свечи праздничные пасхальные белые</name>
+        <vendorCode>1308440</vendorCode>
+        <description>Эту свечу вы сможете использовать как в церковном, так и в домашнем обиходе для религиозных обрядов. Она содержит натуральные красители без ароматических примесей.
+Считается, что если человек смотрит на пламя церковной свечи, сжигаются все его беды и болезни.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">500 шт</param>
+        <param name="Состав">Парафин</param>
+        <param name="Материалы">парафин</param>
+        <param name="Фасовка">по 50 шт</param>
+        <param name="Индивидуальная упаковка">Плёнка</param>
+        <param name="Размер упаковки">30 см × 0,5 см × 0,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Количество на складе">56</param>
+      </offer>
+      <offer id="1404611003" available="true">
+        <url>https://www.sima-land.ru/1308442/</url>
+        <price>22.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>559990963</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1037285/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1037285/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1037285/3/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1037285/1/700-nw.jpg</picture>
+        <name>Свечи праздничные пасхальные зеленые</name>
+        <vendorCode>1308442</vendorCode>
+        <description>Эту свечу вы сможете использовать как в церковном, так и в домашнем обиходе для религиозных обрядов. Она содержит натуральные красители без ароматических примесей.
+Считается, что если человек смотрит на пламя церковной свечи, сжигаются все его беды и болезни.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">650 шт</param>
+        <param name="Состав">Парафин</param>
+        <param name="Материалы">парафин</param>
+        <param name="Фасовка">по 50 шт</param>
+        <param name="Индивидуальная упаковка">Картонная коробка</param>
+        <param name="Размер упаковки">30 см × 0,5 см × 0,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="1086042021" available="true">
+        <url>https://www.sima-land.ru/2663669/</url>
+        <price>22.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1574368874</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2491569/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2491569/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2491569/2/700-nw.jpg</picture>
+        <name>Ободок для пасхального кулича "Вышивка"</name>
+        <vendorCode>2663669</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Ободок для пасхального кулича "Вышивка" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">3200 шт</param>
+        <param name="Состав">Пластик</param>
+        <param name="Материалы">пластик</param>
+        <param name="Фасовка">по 20 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">32,2 см × 0,1 см × 9 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Материал">Пластик</param>
+      </offer>
+      <offer id="729811694" available="true">
+        <url>https://www.sima-land.ru/2663671/</url>
+        <price>22.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1574368874</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2491570/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2491570/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2491570/10/700-nw.jpg</picture>
+        <name>Ободок для пасхального кулича "Орнаментальный"</name>
+        <vendorCode>2663671</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Ободок для пасхального кулича "Орнаментальный" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">3500 шт</param>
+        <param name="Состав">Пластик</param>
+        <param name="Материалы">пластик</param>
+        <param name="Фасовка">по 20 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">32,2 см × 0,1 см × 9 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Материал">Пластик</param>
+      </offer>
+      <offer id="672004231" available="true">
+        <url>https://www.sima-land.ru/175450/</url>
+        <price>23.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>558795220</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/75858/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/75858/1/700-nw.jpg</picture>
+        <name>Носки мужские 614 цвет чёрный, р-р 27-29 (р-р обуви 42-45)</name>
+        <vendorCode>175450</vendorCode>
+        <description>В вопросе выбора одежды есть три ключевых момента: внешний вид, качество и стоимость. Пренебречь каким-либо параметром — значит лишить себя удовольствия от покупки.
+Носки мужские 614 цвет чёрный, р-р 27-29 (р-р обуви 42-45) — выбор стильных людей. Вещь изготовлена из качественных и безопасных материалов, а над дизайном работала команда настоящих профессионалов.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">250 пара</param>
+        <param name="Состав">Полиамид 20%, хлопок 80%</param>
+        <param name="Материалы">полиамид, хлопок</param>
+        <param name="Фасовка">по 10 пара</param>
+        <param name="Размер упаковки">1 см × 10 см × 19 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Цвет">Чёрный</param>
+        <param name="Сезон">Всесезонный</param>
+        <param name="Особенности">Стандартные</param>
+        <param name="Материал">Хлопок</param>
+        <param name="Размер носков (длина стопы,см)">29, 27</param>
+        <param name="Размер обуви">45, 42, 44, 43</param>
+        <param name="Вид ">Тонкие</param>
+      </offer>
+      <offer id="745102977" available="true">
+        <url>https://www.sima-land.ru/545026/</url>
+        <price>24.4000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>880892225</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2488858/0/700-nw.jpg</picture>
+        <name>Кнопки 12мм с цветной пластиковой головкой в пластик коробке 100шт</name>
+        <vendorCode>545026</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Кнопки 12мм с цветной пластиковой головкой в пластик коробке 100шт поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">480 шт</param>
+        <param name="Состав">Металл</param>
+        <param name="Материалы">металл</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Пластиковая коробка</param>
+        <param name="Размер упаковки">9 см × 5,5 см × 1,8 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Разноцветный</param>
+        <param name="Вид упаковки">Коробка пластиковая</param>
+        <param name="Тип">Кнопки</param>
+        <param name="В упаковке, шт.">100</param>
+      </offer>
+      <offer id="734861727" available="true">
+        <url>https://www.sima-land.ru/2255563/</url>
+        <price>25.2600</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>674461860</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1918406/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1918406/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1918406/2/700-nw.jpg</picture>
+        <name>Пластилин флуоресцентный 50 г JOVI</name>
+        <vendorCode>2255563</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Пластилин флуоресцентный 50 г JOVI поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Испания</country_of_origin>
+        <param name="В боксе">180 шт</param>
+        <param name="Состав">Пластилин</param>
+        <param name="Материалы">пластилин</param>
+        <param name="Фасовка">по 30 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">1,5 см × 4 см × 7 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Вес, г">50</param>
+        <param name="Особенности изделия">Флуоресцентное</param>
+        <param name="Количество цветов">6</param>
+      </offer>
+      <offer id="745102973" available="true">
+        <url>https://www.sima-land.ru/545022/</url>
+        <price>25.6000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>880892225</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/373217/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/373217/1/700-nw.jpg</picture>
+        <name>Набор кнопок "Флажки" цветные, в пластиковой упаковке</name>
+        <vendorCode>545022</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Набор кнопок "Флажки" цветные, в пластиковой упаковке поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">480 набор</param>
+        <param name="Состав">Пластик, металл</param>
+        <param name="Материалы">пластик, металл</param>
+        <param name="Фасовка">по 12 набор</param>
+        <param name="Индивидуальная упаковка">пластиковая баночка</param>
+        <param name="Размер упаковки">1 см × 4 см × 5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">МИКС</param>
+        <param name="Вид упаковки">Пластик</param>
+        <param name="Материал">Пластик, Металл</param>
+        <param name="Тип">Кнопки силовые</param>
+        <param name="В упаковке, шт.">30</param>
+      </offer>
+      <offer id="1992972946" available="true">
+        <url>https://www.sima-land.ru/1384290/</url>
+        <price>25.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>2116032321</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1111397/0/700-nw.jpg</picture>
+        <name>Акварель 12 цветов ILLUSION, картонная коробка, без кисти</name>
+        <vendorCode>1384290</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Акварель 12 цветов ILLUSION, картонная коробка, без кисти поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">30 шт</param>
+        <param name="Состав">Пластик, акварель</param>
+        <param name="Материалы">пластик, акварель</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Картонная коробка/чехол</param>
+        <param name="Размер упаковки">17 см × 7 см × 0,7 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Лицензия">Нет</param>
+        <param name="Набор">Да</param>
+        <param name="Вид упаковки">Картон</param>
+        <param name="Кисть">Нет</param>
+        <param name="Вид краски">Акварельная</param>
+        <param name="Количество цветов">12</param>
+      </offer>
+      <offer id="1721784950" available="true">
+        <url>https://www.sima-land.ru/124637/</url>
+        <price>26.5000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1902186295</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/30541/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/30541/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/30541/2/700-nw.jpg</picture>
+        <name>Шумовка 30 см "Антрацитовый блеск"</name>
+        <vendorCode>124637</vendorCode>
+        <description>Выбору удобного кулинарного инструментария следует уделять не меньше внимания, чем поиску подходящей сервировочной посуды – успех блюда зависит прежде всего от функциональных возможностей кухонной утвари, а не способа его подачи к столу.
+Нейлоновый шумовка 30 см "Антрацитовый блеск" относится к числу наиболее эргономичных приборов. Изделие отличается простотой в эксплуатации, не впитывает запах, легко моется. Одним из существенных плюсов нейлоновых моделей является их "совместимость" с антипригарным покрытием. Синтетический материал идеально подходит для посуды с антипригарным покрытием.
+*	Термостойкость кухонных инструментов из нейлона достигает 210 °C.
+*	Изделия пригодны для мытья в посудомоечной машине.
+*	Подходят для приготовления пищи в посуде с антипригарным покрытием.
+*	Необходимо избегать их прямого контакта с источником нагрева.
+*	В ходе готовки не следует оставлять приборы в посуде.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">288 шт</param>
+        <param name="Состав">Металл, нейлон</param>
+        <param name="Материалы">металл, нейлон</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">1,5 см × 11 см × 31 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Цвет">Чёрный, Хромированный</param>
+        <param name="Материал ручки">Металл</param>
+        <param name="Материал">Нейлон</param>
+        <param name="ТИП">Шумовка</param>
+      </offer>
+      <offer id="1688947672" available="true">
+        <url>https://www.sima-land.ru/1999779/</url>
+        <price>26.8000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>453541286</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1670720/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1670720/1/700-nw.jpg</picture>
+        <name>Магнит «Христос Воскрес», поле, пасха</name>
+        <vendorCode>1999779</vendorCode>
+        <description>Магниты являются самыми популярными сувенирами. Это и полезная вещица, и оригинальный элемент декора, и, наконец, просто приятная мелочь, которую преподносят в качестве подарка. Такие изделия будут долго хранить память о прошедшем празднике, удачном приобретении или чудесном отпуске.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">100 шт</param>
+        <param name="Состав">Дерево</param>
+        <param name="Материалы">дерево</param>
+        <param name="Фасовка">по 10 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">8,5 см × 8 см × 0,4 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Разноцветный</param>
+        <param name="Для кого">Унисекс</param>
+        <param name="Материал">Дерево</param>
+      </offer>
+      <offer id="2045178003" available="true">
+        <url>https://www.sima-land.ru/1999781/</url>
+        <price>26.8000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>453541286</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1670722/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1670722/1/700-nw.jpg</picture>
+        <name>Магнит «Христос Воскрес», поле, цыплёнок с корзинкой</name>
+        <vendorCode>1999781</vendorCode>
+        <description>Магниты являются самыми популярными сувенирами. Это и полезная вещица, и оригинальный элемент декора, и, наконец, просто приятная мелочь, которую преподносят в качестве подарка. Такие изделия будут долго хранить память о прошедшем празднике, удачном приобретении или чудесном отпуске.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">110 шт</param>
+        <param name="Состав">Дерево</param>
+        <param name="Материалы">дерево</param>
+        <param name="Фасовка">по 10 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">8,5 см × 8 см × 0,4 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Разноцветный</param>
+        <param name="Тематика праздника">Пасха</param>
+        <param name="Материал">Дерево</param>
+        <param name="ТИП">Магнит</param>
+      </offer>
+      <offer id="538483049" available="true">
+        <url>https://www.sima-land.ru/1928749/</url>
+        <price>26.9500</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>541333291</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1628944/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1628944/2/700-nw.jpg</picture>
+        <name>Венчик для взбивания с деревянной ручкой "Классика", 27 см</name>
+        <vendorCode>1928749</vendorCode>
+        <description>Быстро взбить яйца для завтрака, перемешать ингредиенты для соуса, сделать тесто для блинов или приготовить вкуснейший кляр без комочков — с этими задачами справится незаменимый кухонный венчик.
+Это отличная альтернатива увесистому миксеру: не требует много времени и места на установку, работает без электричества, мобильная и простая в применении.
+Специальная конструкция позволяет не затрачивать много сил на взбивание продуктов. Рабочая поверхность выполнена из нержавеющей стали, а ручка — из экологичного и приятного на ощупь дерева.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="В боксе">250 шт</param>
+        <param name="Состав">Бук, металл</param>
+        <param name="Материалы">бук, металл</param>
+        <param name="Фасовка">по 10 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">27 см × 7 см × 7 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Материал ручки">Дерево</param>
+        <param name="Материал">Металл, Дерево</param>
+      </offer>
+      <offer id="632922756" available="true">
+        <url>https://www.sima-land.ru/2924035/</url>
+        <price>27.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1465023868</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2480921/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2480921/1/700-nw.jpg</picture>
+        <name>Обувной клей Aviora, "Монолит", 15 г</name>
+        <vendorCode>2924035</vendorCode>
+        <description>Ищете качественный инструмент?! Поздравляем, нашли!
+Стройте грандиозные планы, реализуйте свои идеи и не бойтесь знакомиться с новыми материалами и техниками. У вас всё получится, ведь у нас вы найдете инструмент как для бытового использования, так и для профессиональной деятельности. Может быть, Обувной клей Aviora, "Монолит", 15 г — это именно то, что вы всегда искали.
+И не бойтесь, что потратите больше запланированного бюджета, ведь мы предлагаем вам наиболее честное соотношение цены и качества.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">120 шт</param>
+        <param name="Состав">См. на упаковке</param>
+        <param name="Материалы">см. на упаковке</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Блистер</param>
+        <param name="Размер упаковки">17,5 см × 10 см × 2,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="585537245" available="true">
+        <url>https://www.sima-land.ru/1928714/</url>
+        <price>29.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1902186295</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1628909/0/700-nw.jpg</picture>
+        <name>Ложка-шумовка с деревянной ручкой "Мантышница", 30,5 см</name>
+        <vendorCode>1928714</vendorCode>
+        <description>От качества посуды зависит не только вкус еды, но и здоровье человека. Ложка-шумовка с деревянной ручкой "Мантышница", 30,5 см — товар, соответствующий российским стандартам качества. Любой хозяйке будет приятно держать его в руках. С нашей посудой и кухонной утварью приготовление еды и сервировка стола превратятся в настоящий праздник.</description>
+        <country_of_origin>Украина</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="В боксе">150 шт</param>
+        <param name="Состав">Дерево, металл</param>
+        <param name="Материалы">дерево, металл</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">31 см × 10 см × 3 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Коричневый, Бежевый</param>
+        <param name="Набор">Нет</param>
+        <param name="Материал ручки">Дерево</param>
+        <param name="Рисунок">Нет</param>
+        <param name="Тематика праздника">Без повода</param>
+        <param name="Адресат">Без адресата</param>
+        <param name="Материал">Металл, Дерево</param>
+      </offer>
+      <offer id="1062400620" available="true">
+        <url>https://www.sima-land.ru/1930110/</url>
+        <price>29.2400</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1801002377</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1638114/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1638114/1/700-nw.jpg</picture>
+        <name>Скрепки канцелярские 28мм цветные 100 штук, в пластиковой коробке</name>
+        <vendorCode>1930110</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Скрепки канцелярские 28мм цветные 100 штук, в пластиковой коробке поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="В боксе">40 набор</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Размер упаковки">9 см × 5,5 см × 2 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">МИКС</param>
+        <param name="Вид упаковки">Пластик</param>
+        <param name="В упаковке, шт.">100</param>
+        <param name="Длина скрепки">28</param>
+        <param name="Покрытие скрепки">Пластиковое</param>
+        <param name="Форма">Круглые</param>
+      </offer>
+      <offer id="1332699150" available="true">
+        <url>https://www.sima-land.ru/1175605/</url>
+        <price>30.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1462084199</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1025232/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1025232/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1025232/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1025232/3/700-nw.jpg</picture>
+        <name>Воздушные шары "Самый смелый" Человек Паук 12", 5 шт.,  картинки МИКС</name>
+        <vendorCode>1175605</vendorCode>
+        <description>Дарите радость вместе с нами
+День рождения — любимый праздник всех ребят! Чтобы сделать день особенным для юного героя, украсьте его комнату шарами с известными и любимыми героями мультфильмов, они создадут по-настоящему радостную обстановку на детский праздник и превратят его в сказку. Оформите комнату отдельными украшениями или соберите целую композицию — шары с одноцветным нанесением с двух сторон никого не оставят равнодушным. Изделия поставляются в удобной упаковке.
+Порадуйте ребёнка с коллекцией аксессуаров для праздника Marvel!</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">500 набор</param>
+        <param name="В наборе">5 набор</param>
+        <param name="Состав">Резина</param>
+        <param name="Материалы">резина</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">16,5 см × 1 см × 16 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="В наборе, шт">5</param>
+        <param name="Набор">Да</param>
+        <param name="Для кого">Для мальчика</param>
+        <param name="Тематика праздника">День рождения, Поздравляю, 23 февраля</param>
+        <param name="Тематика рисунка шара">Поздравляю, 23 Февраля</param>
+        <param name="Вид шара">Классический</param>
+        <param name="Диаметр, дюйм">12</param>
+        <param name="Серия">Человек-паук</param>
+        <param name="Лицензия разработки">Да</param>
+      </offer>
+      <offer id="1996086252" available="true">
+        <url>https://www.sima-land.ru/3332471/</url>
+        <price>31.3000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2768982/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2768982/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2768982/3/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2768982/4/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2768982/0/700-nw.jpg</picture>
+        <name>Пасхальный набор "Подарочные сувениры" цветы; для декорирования и упаковки яиц, МИКС</name>
+        <vendorCode>3332471</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Пасхальный набор "Подарочные сувениры" цветы; для декорирования и упаковки яиц, МИКС — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">42 шт</param>
+        <param name="Состав">Бумага самоклеящаяся</param>
+        <param name="Материалы">бумага самоклеящаяся</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Блистер</param>
+        <param name="Размер упаковки">15 см × 9 см × 0,4 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Количество на складе">19</param>
+      </offer>
+      <offer id="947084652" available="true">
+        <url>https://www.sima-land.ru/3343084/</url>
+        <price>35.7600</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>674461860</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2757948/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2757948/1/700-nw.jpg</picture>
+        <name>Пластилин классический BRAUBERG  8 цв., 160г, со стеком, картонная упаковка,</name>
+        <vendorCode>3343084</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Пластилин классический BRAUBERG 8 цв., 160г, со стеком, картонная упаковка, поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Размер упаковки">15 см × 11,5 см × 1,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Вес, г">160</param>
+        <param name="Особенности изделия">Со стекой</param>
+        <param name="Количество цветов">8</param>
+      </offer>
+      <offer id="1640478154" available="true">
+        <url>https://www.sima-land.ru/3262862/</url>
+        <price>36.4000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2768642/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2768642/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2768642/2/700-nw.jpg</picture>
+        <name>Наклейки для украшения яиц "Иконы" МИКС</name>
+        <vendorCode>3262862</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Наклейки для украшения яиц "Иконы" МИКС — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">65 набор</param>
+        <param name="Состав">Бумага самоклеящаяся, картон</param>
+        <param name="Материалы">бумага самоклеящаяся, картон</param>
+        <param name="Фасовка">по 10 набор</param>
+        <param name="Индивидуальная упаковка">Блистер</param>
+        <param name="Размер упаковки">15 см × 9 см × 0,1 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Количество на складе">45</param>
+      </offer>
+      <offer id="74394213" available="true">
+        <url>https://www.sima-land.ru/3262865/</url>
+        <price>36.4000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2768651/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2768651/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2768651/2/700-nw.jpg</picture>
+        <name>Наклейки для украшения яиц "Чеканка" МИКС</name>
+        <vendorCode>3262865</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Наклейки для украшения яиц "Чеканка" МИКС — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">120 набор</param>
+        <param name="Состав">Бумага самоклеящаяся, картон</param>
+        <param name="Материалы">бумага самоклеящаяся, картон</param>
+        <param name="Фасовка">по 10 набор</param>
+        <param name="Индивидуальная упаковка">Блистер</param>
+        <param name="Размер упаковки">15 см × 9 см × 0,1 см</param>
+        <param name="Сертификат">РСТ</param>
+      </offer>
+      <offer id="328890314" available="true">
+        <url>https://www.sima-land.ru/3262866/</url>
+        <price>36.4000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2768652/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2768652/1/700-nw.jpg</picture>
+        <name>Наклейки для украшения яиц "Ажурная тесьма"</name>
+        <vendorCode>3262866</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Наклейки для украшения яиц "Ажурная тесьма" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">120 набор</param>
+        <param name="Состав">Бумага самоклеящаяся, картон</param>
+        <param name="Материалы">бумага самоклеящаяся, картон</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Блистер</param>
+        <param name="Размер упаковки">15 см × 9 см × 0,1 см</param>
+        <param name="Сертификат">РСТ</param>
+      </offer>
+      <offer id="1539366252" available="true">
+        <url>https://www.sima-land.ru/3332466/</url>
+        <price>36.4000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1182102480</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2768969/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2768969/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2768969/2/700-nw.jpg</picture>
+        <name>Наклейки для украшения яиц "Иконы-Микс"</name>
+        <vendorCode>3332466</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Наклейки для украшения яиц "Иконы-Микс" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">55 шт</param>
+        <param name="Состав">Бумага самоклеящаяся</param>
+        <param name="Материалы">бумага самоклеящаяся</param>
+        <param name="Фасовка">по 10 шт</param>
+        <param name="Индивидуальная упаковка">Блистер</param>
+        <param name="Размер упаковки">15 см × 9 см × 0,1 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Количество на складе">25</param>
+      </offer>
+      <offer id="1269301151" available="true">
+        <url>https://www.sima-land.ru/3311491/</url>
+        <price>36.7800</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1692984909</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2735612/0/700-nw.jpg</picture>
+        <name>Банковская резинка, 60 мм, 100 г, цветная</name>
+        <vendorCode>3311491</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Банковская резинка, 60 мм, 100 г, цветная поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Таиланд</country_of_origin>
+        <param name="В боксе">100 набор</param>
+        <param name="Состав">Каучук</param>
+        <param name="Материалы">каучук</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">19 см × 12 см × 3 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Количество на складе">10</param>
+        <param name="Вес, г">100</param>
+      </offer>
+      <offer id="286987814" available="true">
+        <url>https://www.sima-land.ru/1071369/</url>
+        <price>37.0600</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>674461860</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/779500/0/700-nw.jpg</picture>
+        <name>Пластилин 12 цветов 168гр "Юный художник" со стеком</name>
+        <vendorCode>1071369</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Пластилин 12 цветов 168гр "Юный художник" со стеком поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">20 набор</param>
+        <param name="Состав">Пластилин</param>
+        <param name="Материалы">пластилин</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Цветная картонная коробка</param>
+        <param name="Размер упаковки">15 см × 16 см × 1,2 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Условия перевозки">при температуре не выше +25 °C</param>
+        <param name="Лицензия">Нет</param>
+        <param name="В наборе, шт">12</param>
+        <param name="Набор">Да</param>
+        <param name="Вес, г">168</param>
+        <param name="Особенности изделия">Со стекой</param>
+        <param name="Вид изделия">Пластилин</param>
+        <param name="Количество цветов">12</param>
+      </offer>
+      <offer id="566263167" available="true">
+        <url>https://www.sima-land.ru/1442470/</url>
+        <price>38.5000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1462084199</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1410632/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1410632/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1410632/2/700-nw.jpg</picture>
+        <name>Воздушные шары "С Днем Рождения" Микки Маус и его друзья 12", 5 шт.,  картинки МИКС</name>
+        <vendorCode>1442470</vendorCode>
+        <description>Незабываемый день рождения вместе с Disney!
+Ни один праздник не проходит без необходимой атрибутики! Воздушные шары — настоящий must-have для фееричного веселья!
+Изделия с изображением любимых персонажей Disney имеют яркий внешний вид и отличаются высоким качеством исполнения.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">1000 набор</param>
+        <param name="В наборе">5 набор</param>
+        <param name="Состав">Резина</param>
+        <param name="Материалы">резина</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">16 см × 0,5 см × 16,5 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="В наборе, шт">5</param>
+        <param name="Набор">Да</param>
+        <param name="Для кого">Унисекс</param>
+        <param name="Тематика праздника">День рождения</param>
+        <param name="Тематика рисунка шара">День Рождения</param>
+        <param name="Вид шара">Классический</param>
+        <param name="Диаметр, дюйм">12</param>
+        <param name="Серия">Микки Маус и друзья</param>
+        <param name="Лицензия разработки">Да</param>
+        <param name="ТИП">Набор воздушных шариков</param>
+      </offer>
+      <offer id="745279184" available="true">
+        <url>https://www.sima-land.ru/1929578/</url>
+        <price>38.9700</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>674461860</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1637610/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1637610/1/700-nw.jpg</picture>
+        <name>Набор для творчества: пластилин 12 цветов 150г, стек, заготовка фигурки Насекомое, микс</name>
+        <vendorCode>1929578</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Набор для творчества: пластилин 12 цветов 150г, стек, заготовка фигурки Насекомое, микс поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Таиланд</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="В боксе">6 набор</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Размер упаковки">2 см × 16 см × 15 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Набор">Да</param>
+        <param name="Вес, г">150</param>
+        <param name="Вид изделия">Пластилин, Инструменты</param>
+        <param name="Материал">Пластик, Пластилин</param>
+        <param name="Количество цветов">12</param>
+      </offer>
+      <offer id="1255453993" available="true">
+        <url>https://www.sima-land.ru/2732073/</url>
+        <price>39.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>624132899</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2748658/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2748658/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2748658/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2748658/3/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2748658/4/700-nw.jpg</picture>
+        <name>Набор для праздника "С днем рождения" (1 годик), свеча-цифра+5 шаров</name>
+        <vendorCode>2732073</vendorCode>
+        <description>Набор для праздника "С днем рождения" (1 годик), свеча-цифра+5 шаров — непременный атрибут праздника, который бывает раз в году! Он обязательно поднимет настроение виновнику торжества.
+Ведь что может быть приятнее в день рождения, чем торт, украшенный свечами? А какие бурные эмоции возникают при их задувании знают и взрослые, и дети, потому что в любом возрасте мы все мечтаем об исполнении желаний и для всех нас это один из самых трогательных и волшебных моментов.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">384 шт</param>
+        <param name="Состав">Воск</param>
+        <param name="Материалы">воск</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Подложка с PVS</param>
+        <param name="Размер упаковки">16,5 см × 16 см × 2 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="В наборе, шт">6</param>
+        <param name="Высота свечи, см">6</param>
+      </offer>
+      <offer id="1238172596" available="true">
+        <url>https://www.sima-land.ru/2739219/</url>
+        <price>39.9900</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>837956216</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2202916/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2202916/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2202916/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2202916/3/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2202916/4/700-nw.jpg</picture>
+        <name>Влаговпитывающий коврик ZEBRA, грязезащитный, 30 х 40 см, набор 2 шт.</name>
+        <vendorCode>2739219</vendorCode>
+        <description>Не секрет, что машина давно уже перестала восприниматься как просто средство передвижения, и водители покупают всё лучшее для своих железных коней. Влаговпитывающий коврик ZEBRA, грязезащитный, 30 х 40 см, набор 2 шт. — идеальный выбор, если вы ставите целью и улучшение технических характеристик, и поддержание внешнего вида автомобиля.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">30 набор</param>
+        <param name="Состав">Текстиль</param>
+        <param name="Материалы">текстиль</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">32 см × 22 см × 0,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Гарантийный срок">3</param>
+        <param name="В наборе, шт">2</param>
+      </offer>
+      <offer id="1808808890" available="true">
+        <url>https://www.sima-land.ru/1761484/</url>
+        <price>40.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1678149961</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1762593/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1762593/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1762593/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1762593/3/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1762593/4/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1762593/5/700-nw.jpg</picture>
+        <name>Подставка пасхальная на 4 яйца "Кулич"</name>
+        <vendorCode>1761484</vendorCode>
+        <description>От качества посуды зависит не только вкус еды, но и здоровье человека. Подставка пасхальная на 4 яйца "Кулич" — товар, соответствующий российским стандартам качества. Любой хозяйке будет приятно держать его в руках. С нашей посудой и кухонной утварью приготовление еды и сервировка стола превратятся в настоящий праздник.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">700 шт</param>
+        <param name="Состав">Картон</param>
+        <param name="Материалы">картон</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">18,4 см × 18,4 см × 0,2 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Красный, Белый</param>
+        <param name="Рисунок">Да</param>
+        <param name="Материал">Картон</param>
+      </offer>
+      <offer id="15757326" available="true">
+        <url>https://www.sima-land.ru/2259300/</url>
+        <price>40.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1692318121</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1933550/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1933550/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1933550/2/700-nw.jpg</picture>
+        <name>Нить крученая, двухпрядная полипропиленовая, d= 1,3мм, 200м.</name>
+        <vendorCode>2259300</vendorCode>
+        <description>Ищете качественный инструмент?! Поздравляем, нашли!
+Стройте грандиозные планы, реализуйте свои идеи и не бойтесь знакомиться с новыми материалами и техниками. У вас всё получится, ведь у нас вы найдете инструмент как для бытового использования, так и для профессиональной деятельности. Может быть, Нить крученая, двухпрядная полипропиленовая, d= 1,3мм, 200м. — это именно то, что вы всегда искали.
+И не бойтесь, что потратите больше запланированного бюджета, ведь мы предлагаем вам наиболее честное соотношение цены и качества.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="В боксе">150 шт</param>
+        <param name="Состав">Полипропилен</param>
+        <param name="Материалы">полипропилен</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Плёнка</param>
+        <param name="Размер упаковки">12 см × 5,5 см × 5,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Белый</param>
+        <param name="Длина, м">200</param>
+        <param name="Материал">Полипропилен</param>
+        <param name="Диаметр, мм">1,3</param>
+        <param name="ТИП">Веревка</param>
+        <param name="Вид намотки">Катушка</param>
+        <param name="Тип">Нить</param>
+      </offer>
+      <offer id="1067307054" available="true">
+        <url>https://www.sima-land.ru/2530708/</url>
+        <price>40.1700</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1801002377</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2120118/0/700-nw.jpg</picture>
+        <name>Скрепки цветные "Зебра" 28 мм, 100 штук, пластиковая упаковка, европодвес</name>
+        <vendorCode>2530708</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Скрепки цветные "Зебра" 28 мм, 100 штук, пластиковая упаковка, европодвес поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Размер упаковки">8 см × 5 см × 3 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Количество на складе">20</param>
+        <param name="Цвет">МИКС</param>
+        <param name="Вид упаковки">Пластик</param>
+        <param name="В упаковке, шт.">100</param>
+        <param name="Длина скрепки">28</param>
+        <param name="Покрытие скрепки">Пластиковое</param>
+        <param name="Форма">Круглые</param>
+      </offer>
+      <offer id="772207981" available="true">
+        <url>https://www.sima-land.ru/2813008/</url>
+        <price>40.5000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>704832117</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2538053/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2538053/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2538053/2/700-nw.jpg</picture>
+        <name>Мыльница прямоугольная на присосках</name>
+        <vendorCode>2813008</vendorCode>
+        <description>Сложно представить себе быт без хозяйственных товаров. Они нужны всегда и везде — дома, на даче, в офисе. Обратите внимание на Мыльница прямоугольная на присосках — полезное и качественное изделие с современным дизайном.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">300 шт</param>
+        <param name="Состав">Металл</param>
+        <param name="Материалы">металл</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">11,5 см × 8,5 см × 4 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Хромированный</param>
+        <param name="Материал">Металл</param>
+        <param name="Настенный">Да</param>
+      </offer>
+      <offer id="1785258200" available="true">
+        <url>https://www.sima-land.ru/622698/</url>
+        <price>41.8000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1331559418</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/443780/0/700-nw.jpg</picture>
+        <name>Восковые карандаши, набор 16 цветов, высота 1 шт - 8 см, диаметр 0,8 см</name>
+        <vendorCode>622698</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Восковые карандаши, набор 16 цветов, высота 1 шт - 8 см, диаметр 0,8 см поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">288 набор</param>
+        <param name="В наборе">16 набор</param>
+        <param name="Состав">Воск, краска</param>
+        <param name="Материалы">воск, краска</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Цветная картонная коробка</param>
+        <param name="Размер упаковки">1,4 см × 6,3 см × 8,7 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Вид упаковки">Коробка картонная, Картон</param>
+        <param name="Утолщённые">Нет</param>
+        <param name="Форма">Круглые</param>
+        <param name="Количество цветов">16</param>
+        <param name="Тип">Карандаши восковые/мелки</param>
+      </offer>
+      <offer id="771023046" available="true">
+        <url>https://www.sima-land.ru/2942402/</url>
+        <price>41.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1300472851</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2737414/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2737414/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2737414/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2737414/3/700-nw.jpg</picture>
+        <name>Мини-коврик для ванны на присосках «Собачка»</name>
+        <vendorCode>2942402</vendorCode>
+        <description>Сложно представить себе быт без хозяйственных товаров. Они нужны всегда и везде — дома, на даче, в офисе. Обратите внимание на Мини-коврик для ванны на присосках «Собачка» — полезное и качественное изделие с современным дизайном.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">100 шт</param>
+        <param name="Состав">PVC</param>
+        <param name="Материалы">PVC</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">19,5 см × 13 см × 0,3 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Размер, см">10 х 10</param>
+        <param name="Цвет">Разноцветный</param>
+        <param name="Набор">Нет</param>
+        <param name="Материал">ПВХ</param>
+        <param name="Форма">Фигурная</param>
+        <param name="Тип коврика">Противоскользящие</param>
+      </offer>
+      <offer id="2049359619O69E711F3" available="true" group_id="167970002">
+        <url>https://www.sima-land.ru/1827804/</url>
+        <price>47.3000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1692318121</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1526254/0/700-nw.jpg</picture>
+        <name>Шнур полипропиленовый, вязаный d=2 мм (длина 30 м), цвет зеленый</name>
+        <vendorCode>1827802</vendorCode>
+        <description>Ищете качественный инструмент?! Поздравляем, нашли!
+Стройте грандиозные планы, реализуйте свои идеи и не бойтесь знакомиться с новыми материалами и техниками. У вас всё получится, ведь у нас вы найдете инструмент как для бытового использования, так и для профессиональной деятельности. Может быть, Шнур полипропиленовый, вязаный d=2 мм (длина 30 м), цвет оливковый — это именно то, что вы всегда искали.
+И не бойтесь, что потратите больше запланированного бюджета, ведь мы предлагаем вам наиболее честное соотношение цены и качества.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Варианты">зеленый</param>
+        <param name="В боксе">35 шт</param>
+        <param name="Состав">Полипропилен</param>
+        <param name="Материалы">полипропилен</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">18,5 см × 17 см × 1,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Количество на складе">8</param>
+        <param name="Цвет">Зелёный</param>
+        <param name="Длина, м">30</param>
+        <param name="Материал">Полипропилен</param>
+        <param name="Диаметр, мм">2</param>
+        <param name="ТИП">Веревка</param>
+        <param name="Вид намотки">Катушка</param>
+        <param name="Тип">Верёвка</param>
+      </offer>
+      <offer id="2049359619O77AAC1E" available="true" group_id="167970002">
+        <url>https://www.sima-land.ru/1827804/</url>
+        <price>43.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1692318121</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1526255/0/700-nw.jpg</picture>
+        <name>Шнур полипропиленовый, вязаный d=2 мм (длина 30 м), цвет красный</name>
+        <vendorCode>1827803</vendorCode>
+        <description>Ищете качественный инструмент?! Поздравляем, нашли!
+Стройте грандиозные планы, реализуйте свои идеи и не бойтесь знакомиться с новыми материалами и техниками. У вас всё получится, ведь у нас вы найдете инструмент как для бытового использования, так и для профессиональной деятельности. Может быть, Шнур полипропиленовый, вязаный d=2 мм (длина 30 м), цвет оливковый — это именно то, что вы всегда искали.
+И не бойтесь, что потратите больше запланированного бюджета, ведь мы предлагаем вам наиболее честное соотношение цены и качества.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Варианты">красный</param>
+        <param name="В боксе">35 шт</param>
+        <param name="Состав">Полипропилен</param>
+        <param name="Материалы">полипропилен</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">18,5 см × 17 см × 1,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Количество на складе">8</param>
+        <param name="Цвет">Зелёный</param>
+        <param name="Длина, м">30</param>
+        <param name="Материал">Полипропилен</param>
+        <param name="Диаметр, мм">2</param>
+        <param name="ТИП">Веревка</param>
+        <param name="Вид намотки">Катушка</param>
+        <param name="Тип">Верёвка</param>
+      </offer>
+      <offer id="2049359619O265D955F" available="true" group_id="167970002">
+        <url>https://www.sima-land.ru/1827804/</url>
+        <price>42.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1692318121</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1526256/0/700-nw.jpg</picture>
+        <name>Шнур полипропиленовый, вязаный d=2 мм (длина 30 м), цвет оливковый</name>
+        <vendorCode>1827804</vendorCode>
+        <description>Ищете качественный инструмент?! Поздравляем, нашли!
+Стройте грандиозные планы, реализуйте свои идеи и не бойтесь знакомиться с новыми материалами и техниками. У вас всё получится, ведь у нас вы найдете инструмент как для бытового использования, так и для профессиональной деятельности. Может быть, Шнур полипропиленовый, вязаный d=2 мм (длина 30 м), цвет оливковый — это именно то, что вы всегда искали.
+И не бойтесь, что потратите больше запланированного бюджета, ведь мы предлагаем вам наиболее честное соотношение цены и качества.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Варианты">оливковый</param>
+        <param name="В боксе">35 шт</param>
+        <param name="Состав">Полипропилен</param>
+        <param name="Материалы">полипропилен</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">18,5 см × 17 см × 1,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Количество на складе">8</param>
+        <param name="Цвет">Зелёный</param>
+        <param name="Длина, м">30</param>
+        <param name="Материал">Полипропилен</param>
+        <param name="Диаметр, мм">2</param>
+        <param name="ТИП">Веревка</param>
+        <param name="Вид намотки">Катушка</param>
+        <param name="Тип">Верёвка</param>
+      </offer>
+      <offer id="2049359619OCDE30EC1" available="true" group_id="167970002">
+        <url>https://www.sima-land.ru/1827804/</url>
+        <price>43.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1692318121</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1526257/0/700-nw.jpg</picture>
+        <name>Шнур полипропиленовый, вязаный d=2 мм (длина 30 м), цвет черный</name>
+        <vendorCode>1827805</vendorCode>
+        <description>Ищете качественный инструмент?! Поздравляем, нашли!
+Стройте грандиозные планы, реализуйте свои идеи и не бойтесь знакомиться с новыми материалами и техниками. У вас всё получится, ведь у нас вы найдете инструмент как для бытового использования, так и для профессиональной деятельности. Может быть, Шнур полипропиленовый, вязаный d=2 мм (длина 30 м), цвет оливковый — это именно то, что вы всегда искали.
+И не бойтесь, что потратите больше запланированного бюджета, ведь мы предлагаем вам наиболее честное соотношение цены и качества.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Варианты">черный</param>
+        <param name="В боксе">35 шт</param>
+        <param name="Состав">Полипропилен</param>
+        <param name="Материалы">полипропилен</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">18,5 см × 17 см × 1,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Количество на складе">8</param>
+        <param name="Цвет">Зелёный</param>
+        <param name="Длина, м">30</param>
+        <param name="Материал">Полипропилен</param>
+        <param name="Диаметр, мм">2</param>
+        <param name="ТИП">Веревка</param>
+        <param name="Вид намотки">Катушка</param>
+        <param name="Тип">Верёвка</param>
+      </offer>
+      <offer id="1475261204OF86B1299" available="true" group_id="648078139">
+        <url>https://www.sima-land.ru/1089931/</url>
+        <price>43.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>704832117</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/812821/0/700-nw.jpg</picture>
+        <name>Мыльница Spacy, цвет апельсин</name>
+        <vendorCode>1089927</vendorCode>
+        <description>Знаете ли вы, что в средние века мыло ценилось на вес золота и было абсолютно недоступно большинству людей? Сейчас этот продукт кажется чем-то привычным, но мы все-таки предлагаем отнестись к нему с должным уважением. Мыльница будет оптимальным решением для ванной комнаты или кухни: высокие бортики не дают мылу выскальзывать, а ребра на дне предотвращают растворение.
+Яркая расцветка с элегантными белыми вставками будет поднимать настроение и радовать глаз, а надежный и безопасный белорусский пластик значительно продлит срок службы.</description>
+        <country_of_origin>Республика Беларусь</country_of_origin>
+        <param name="Варианты">апельсин</param>
+        <param name="В боксе">96 шт</param>
+        <param name="Состав">Пластик</param>
+        <param name="Материалы">пластик</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">11,5 см × 7,5 см × 2,5 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Цвет">Синий, Белый</param>
+        <param name="Набор">Нет</param>
+        <param name="Рисунок">Нет</param>
+        <param name="Материал">Пластик</param>
+        <param name="Настенный">Нет</param>
+      </offer>
+      <offer id="1475261204OAFFBF69C" available="true" group_id="648078139">
+        <url>https://www.sima-land.ru/1089931/</url>
+        <price>47.3000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>704832117</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/812783/0/700-nw.jpg</picture>
+        <name>Мыльница Spacy, цвет гранат</name>
+        <vendorCode>1089928</vendorCode>
+        <description>Знаете ли вы, что в средние века мыло ценилось на вес золота и было абсолютно недоступно большинству людей? Сейчас этот продукт кажется чем-то привычным, но мы все-таки предлагаем отнестись к нему с должным уважением. Мыльница будет оптимальным решением для ванной комнаты или кухни: высокие бортики не дают мылу выскальзывать, а ребра на дне предотвращают растворение.
+Яркая расцветка с элегантными белыми вставками будет поднимать настроение и радовать глаз, а надежный и безопасный белорусский пластик значительно продлит срок службы.</description>
+        <country_of_origin>Республика Беларусь</country_of_origin>
+        <param name="Варианты">гранатовый</param>
+        <param name="В боксе">96 шт</param>
+        <param name="Состав">Пластик</param>
+        <param name="Материалы">пластик</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">11,5 см × 7,5 см × 2,5 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Цвет">Синий, Белый</param>
+        <param name="Набор">Нет</param>
+        <param name="Рисунок">Нет</param>
+        <param name="Материал">Пластик</param>
+        <param name="Настенный">Нет</param>
+      </offer>
+      <offer id="1475261204O69E711F3" available="true" group_id="648078139">
+        <url>https://www.sima-land.ru/1089931/</url>
+        <price>47.3000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>704832117</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/812769/0/700-nw.jpg</picture>
+        <name>Мыльница Spacy, цвет зеленый полупрозрачный</name>
+        <vendorCode>1089929</vendorCode>
+        <description>Знаете ли вы, что в средние века мыло ценилось на вес золота и было абсолютно недоступно большинству людей? Сейчас этот продукт кажется чем-то привычным, но мы все-таки предлагаем отнестись к нему с должным уважением. Мыльница будет оптимальным решением для ванной комнаты или кухни: высокие бортики не дают мылу выскальзывать, а ребра на дне предотвращают растворение.
+Яркая расцветка с элегантными белыми вставками будет поднимать настроение и радовать глаз, а надежный и безопасный белорусский пластик значительно продлит срок службы.</description>
+        <country_of_origin>Республика Беларусь</country_of_origin>
+        <param name="Варианты">зеленый</param>
+        <param name="В боксе">96 шт</param>
+        <param name="Состав">Пластик</param>
+        <param name="Материалы">пластик</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">11,5 см × 7,5 см × 2,5 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Цвет">Синий, Белый</param>
+        <param name="Набор">Нет</param>
+        <param name="Рисунок">Нет</param>
+        <param name="Материал">Пластик</param>
+        <param name="Настенный">Нет</param>
+      </offer>
+      <offer id="1475261204O7800F48A" available="true" group_id="648078139">
+        <url>https://www.sima-land.ru/1089931/</url>
+        <price>42.1000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>704832117</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/812774/0/700-nw.jpg</picture>
+        <name>Мыльница Spacy, цвет синий полупрозрачный</name>
+        <vendorCode>1089931</vendorCode>
+        <description>Знаете ли вы, что в средние века мыло ценилось на вес золота и было абсолютно недоступно большинству людей? Сейчас этот продукт кажется чем-то привычным, но мы все-таки предлагаем отнестись к нему с должным уважением. Мыльница будет оптимальным решением для ванной комнаты или кухни: высокие бортики не дают мылу выскальзывать, а ребра на дне предотвращают растворение.
+Яркая расцветка с элегантными белыми вставками будет поднимать настроение и радовать глаз, а надежный и безопасный белорусский пластик значительно продлит срок службы.</description>
+        <country_of_origin>Республика Беларусь</country_of_origin>
+        <param name="Варианты">прозрачный</param>
+        <param name="В боксе">96 шт</param>
+        <param name="Состав">Пластик</param>
+        <param name="Материалы">пластик</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">11,5 см × 7,5 см × 2,5 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Цвет">Синий, Белый</param>
+        <param name="Набор">Нет</param>
+        <param name="Рисунок">Нет</param>
+        <param name="Материал">Пластик</param>
+        <param name="Настенный">Нет</param>
+      </offer>
+      <offer id="790811728" available="true">
+        <url>https://www.sima-land.ru/2259306/</url>
+        <price>43.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1692318121</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1933556/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1933556/1/700-nw.jpg</picture>
+        <name>Шпагат джутовый 100 м d=1,5 мм "Шнурком", скрученный, цвет натуральный</name>
+        <vendorCode>2259306</vendorCode>
+        <description>Ищете качественный инструмент?! Поздравляем, нашли!
+Стройте грандиозные планы, реализуйте свои идеи и не бойтесь знакомиться с новыми материалами и техниками. У вас всё получится, ведь у нас вы найдете инструмент как для бытового использования, так и для профессиональной деятельности. Может быть, Шпагат джутовый 100 м d=1,5 мм "Шнурком", скрученный, цвет натуральный — это именно то, что вы всегда искали.
+И не бойтесь, что потратите больше запланированного бюджета, ведь мы предлагаем вам наиболее честное соотношение цены и качества.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="В боксе">100 шт</param>
+        <param name="Состав">Джут</param>
+        <param name="Материалы">джут</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Плёнка</param>
+        <param name="Размер упаковки">9 см × 9 см × 8 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Длина, м">100</param>
+        <param name="Материал">Джут</param>
+        <param name="Диаметр, мм">1,5</param>
+        <param name="ТИП">Веревка</param>
+        <param name="Вид намотки">Клубок</param>
+        <param name="Тип">Верёвка</param>
+      </offer>
+      <offer id="1634109777" available="true">
+        <url>https://www.sima-land.ru/1264128/</url>
+        <price>43.3400</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>222885709</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1150576/0/700-nw.jpg</picture>
+        <name>Набор зажимов для бумаг черных 32мм 12шт в картонной коробке CALLIGRATA</name>
+        <vendorCode>1264128</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Набор зажимов для бумаг черных 32мм 12шт в картонной коробке CALLIGRATA поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">120 набор</param>
+        <param name="В наборе">12 набор</param>
+        <param name="Состав">Металл</param>
+        <param name="Материалы">металл</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Цветная картонная коробка</param>
+        <param name="Размер упаковки">5,5 см × 10,3 см × 3,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Чёрный</param>
+        <param name="Ширина, мм">32</param>
+        <param name="Вид упаковки">Картон</param>
+        <param name="Материал">Металл</param>
+        <param name="В упаковке, шт.">12</param>
+      </offer>
+      <offer id="1487398579" available="true">
+        <url>https://www.sima-land.ru/1695995/</url>
+        <price>45.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>216812363</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1731846/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1731846/1/700-nw.jpg</picture>
+        <name>Лента декоративная атласная "Христос Воскрес", 1,5 см х 5 м</name>
+        <vendorCode>1695995</vendorCode>
+        <description>Ленты — одни из самых популярных товаров для творчества. Их используют для декора открыток, альбомов, коробочек, упаковки и многого другого. Нарежьте ленточку маленькими кусочками, чтобы добавить последний штрих к изделию, сделайте бантик или цветок для украшения подарка. Ленты придадут вашей скрап-работе выразительность и красоту.
+Воплощайте любые идеи вместе с товарами АртУзор!</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">220 шт</param>
+        <param name="Состав">Текстиль</param>
+        <param name="Материалы">текстиль</param>
+        <param name="Фасовка">по 5 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">8 см × 1,5 см × 8 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Количество на складе">16</param>
+        <param name="Цвет">Розовый, Белый</param>
+        <param name="Набор">Нет</param>
+        <param name="Длина, м">5</param>
+        <param name="Ширина, мм">15</param>
+        <param name="Тематика">Праздник</param>
+        <param name="Тематика праздника">Пасха</param>
+        <param name="Материал">Текстиль</param>
+        <param name="Вид">Текстильная</param>
+      </offer>
+      <offer id="324599165" available="true">
+        <url>https://www.sima-land.ru/1695997/</url>
+        <price>45.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>216812363</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1642826/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1642826/1/700-nw.jpg</picture>
+        <name>Лента декоративная атласная "С Светлой Пасхой", 1,5 см х 5 м</name>
+        <vendorCode>1695997</vendorCode>
+        <description>Дарите счастье вместе с «Арт Узор»!
+Ленты — изящное украшение для скрапбукинга и оформления подарков. Из них получаются милые бантики и оборочки, ими украшают коробочки и завязывают мешочки.
+Изделие придаст вашей работе законченный вид и оригинальность!</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">219 шт</param>
+        <param name="Состав">Текстиль</param>
+        <param name="Материалы">текстиль</param>
+        <param name="Фасовка">по 5 шт</param>
+        <param name="Индивидуальная упаковка">Плёнка</param>
+        <param name="Размер упаковки">8 см × 1,7 см × 8 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Цвет">Голубой, Белый, Оранжевый</param>
+        <param name="Набор">Нет</param>
+        <param name="Длина, м">5</param>
+        <param name="Ширина, мм">15</param>
+        <param name="Тематика">Праздник</param>
+        <param name="Тематика праздника">Пасха</param>
+        <param name="Материал">Текстиль</param>
+        <param name="Вид">Текстильная</param>
+      </offer>
+      <offer id="330327037" available="true">
+        <url>https://www.sima-land.ru/2728324/</url>
+        <price>45.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1678149961</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2515200/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2515200/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2515200/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2515200/3/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2515200/10/700-nw.jpg</picture>
+        <name>Подставка пасхальная на 6 яиц "Жостово"</name>
+        <vendorCode>2728324</vendorCode>
+        <description>От качества посуды зависит не только вкус еды, но и здоровье человека. Подставка пасхальная на 6 яиц "Жостово" — товар, соответствующий российским стандартам качества. Любой хозяйке будет приятно держать его в руках. С нашей посудой и кухонной утварью приготовление еды и сервировка стола превратятся в настоящий праздник.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">525 шт</param>
+        <param name="Состав">Картон</param>
+        <param name="Материалы">картон</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">21 см × 0,3 см × 21 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Разноцветный</param>
+        <param name="Рисунок">Да</param>
+        <param name="Материал">Картон</param>
+      </offer>
+      <offer id="1334666261" available="true">
+        <url>https://www.sima-land.ru/613976/</url>
+        <price>45.6500</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1385096741</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/435706/0/700-nw.jpg</picture>
+        <name>Набор кулинарный 31х4 см "Русская душа", 3 предмета</name>
+        <vendorCode>613976</vendorCode>
+        <description>Традиция использования природных материалов насчитывает много лет и сегодня стала еще очевиднее. Бамбук идеально подходит для изготовления кухонных принадлежностей. Мы предлагаем продукцию из бамбука в ассортименте: ложки, вилки, лопатки, разделочные доски.
+Для получения наилучшей поверхности все изделия проходят тщательную подготовку (шлифовку или полировку), после чего их покрывают воском или маслом.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">300 набор</param>
+        <param name="Состав">Дерево</param>
+        <param name="Материалы">дерево</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">3 см × 3,8 см × 30,3 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Количество на складе">34</param>
+        <param name="В наборе, шт">3</param>
+        <param name="Набор">Да</param>
+        <param name="Материал ручки">Дерево</param>
+        <param name="Материал">Дерево</param>
+        <param name="Особенности">Без особенностей</param>
+      </offer>
+      <offer id="542591427O145E1EA9" available="true" group_id="814712400">
+        <url>https://www.sima-land.ru/1699676/</url>
+        <price>47.3000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1625756670</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1420808/0/700-nw.jpg</picture>
+        <name>Мельница многоразовая 115 мл (45-80 гр)</name>
+        <vendorCode>1699675</vendorCode>
+        <description>У того, чья любовь к готовке — всерьёз и надолго, голова всегда полна свежих идей. Разве ассортимент магазинов поспеет за фантазией повара, которому порой хочется приготовить такое, чего ещё не было ни в одной поваренной книге?
+Благодаря этой компактной мельнице вы сможете:
+*	измельчать и смешивать различные виды перцев,
+*	собственноручно создавать ароматизированную соль,
+*	добавлять в специи пряности.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Варианты">белый</param>
+        <param name="В боксе">16 шт</param>
+        <param name="Состав">Стекло</param>
+        <param name="Материалы">стекло</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">5 см × 5 см × 14 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Цвет">Прозрачный, Синий</param>
+        <param name="Набор">Нет</param>
+        <param name="Объём, мл">115</param>
+        <param name="Рисунок">Нет</param>
+        <param name="Материал">Пластик, Стекло</param>
+      </offer>
+      <offer id="542591427OEB13D8C2" available="true" group_id="814712400">
+        <url>https://www.sima-land.ru/1699676/</url>
+        <price>47.3000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1625756670</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1420806/0/700-nw.jpg</picture>
+        <name>Мельница многоразовая 115 мл (45-80 гр)</name>
+        <vendorCode>1699673</vendorCode>
+        <description>У того, чья любовь к готовке — всерьёз и надолго, голова всегда полна свежих идей. Разве ассортимент магазинов поспеет за фантазией повара, которому порой хочется приготовить такое, чего ещё не было ни в одной поваренной книге?
+Благодаря этой компактной мельнице вы сможете:
+*	измельчать и смешивать различные виды перцев,
+*	собственноручно создавать ароматизированную соль,
+*	добавлять в специи пряности.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Варианты">желтый</param>
+        <param name="В боксе">16 шт</param>
+        <param name="Состав">Стекло</param>
+        <param name="Материалы">стекло</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">5 см × 5 см × 14 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Цвет">Прозрачный, Синий</param>
+        <param name="Набор">Нет</param>
+        <param name="Объём, мл">115</param>
+        <param name="Рисунок">Нет</param>
+        <param name="Материал">Пластик, Стекло</param>
+      </offer>
+      <offer id="542591427O69E711F3" available="true" group_id="814712400">
+        <url>https://www.sima-land.ru/1699676/</url>
+        <price>47.3000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1625756670</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1420807/0/700-nw.jpg</picture>
+        <name>Мельница многоразовая 115 мл (45-80 гр)</name>
+        <vendorCode>1699674</vendorCode>
+        <description>У того, чья любовь к готовке — всерьёз и надолго, голова всегда полна свежих идей. Разве ассортимент магазинов поспеет за фантазией повара, которому порой хочется приготовить такое, чего ещё не было ни в одной поваренной книге?
+Благодаря этой компактной мельнице вы сможете:
+*	измельчать и смешивать различные виды перцев,
+*	собственноручно создавать ароматизированную соль,
+*	добавлять в специи пряности.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Варианты">зеленый</param>
+        <param name="В боксе">16 шт</param>
+        <param name="Состав">Стекло</param>
+        <param name="Материалы">стекло</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">5 см × 5 см × 14 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Цвет">Прозрачный, Синий</param>
+        <param name="Набор">Нет</param>
+        <param name="Объём, мл">115</param>
+        <param name="Рисунок">Нет</param>
+        <param name="Материал">Пластик, Стекло</param>
+      </offer>
+      <offer id="542591427O77AAC1E" available="true" group_id="814712400">
+        <url>https://www.sima-land.ru/1699676/</url>
+        <price>51.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1625756670</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1420813/0/700-nw.jpg</picture>
+        <name>Мельница многоразовая 115 мл (45-80 гр)</name>
+        <vendorCode>1720672</vendorCode>
+        <description>У того, чья любовь к готовке — всерьёз и надолго, голова всегда полна свежих идей. Разве ассортимент магазинов поспеет за фантазией повара, которому порой хочется приготовить такое, чего ещё не было ни в одной поваренной книге?
+Благодаря этой компактной мельнице вы сможете:
+*	измельчать и смешивать различные виды перцев,
+*	собственноручно создавать ароматизированную соль,
+*	добавлять в специи пряности.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Варианты">красный</param>
+        <param name="В боксе">16 шт</param>
+        <param name="Состав">Стекло</param>
+        <param name="Материалы">стекло</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">5 см × 5 см × 14 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Цвет">Прозрачный, Синий</param>
+        <param name="Набор">Нет</param>
+        <param name="Объём, мл">115</param>
+        <param name="Рисунок">Нет</param>
+        <param name="Материал">Пластик, Стекло</param>
+      </offer>
+      <offer id="542591427O3DB87015" available="true" group_id="814712400">
+        <url>https://www.sima-land.ru/1699676/</url>
+        <price>47.3000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1625756670</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1420809/0/700-nw.jpg</picture>
+        <name>Мельница многоразовая 115 мл (45-80 гр)</name>
+        <vendorCode>1699676</vendorCode>
+        <description>У того, чья любовь к готовке — всерьёз и надолго, голова всегда полна свежих идей. Разве ассортимент магазинов поспеет за фантазией повара, которому порой хочется приготовить такое, чего ещё не было ни в одной поваренной книге?
+Благодаря этой компактной мельнице вы сможете:
+*	измельчать и смешивать различные виды перцев,
+*	собственноручно создавать ароматизированную соль,
+*	добавлять в специи пряности.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Варианты">синий</param>
+        <param name="В боксе">16 шт</param>
+        <param name="Состав">Стекло</param>
+        <param name="Материалы">стекло</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">5 см × 5 см × 14 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Цвет">Прозрачный, Синий</param>
+        <param name="Набор">Нет</param>
+        <param name="Объём, мл">115</param>
+        <param name="Рисунок">Нет</param>
+        <param name="Материал">Пластик, Стекло</param>
+      </offer>
+      <offer id="542591427OCDE30EC1" available="true" group_id="814712400">
+        <url>https://www.sima-land.ru/1699676/</url>
+        <price>47.3000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1625756670</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1944817/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/1944817/1/700-nw.jpg</picture>
+        <name>Мельница многоразовая 115 мл (45-80 гр), цвет черный</name>
+        <vendorCode>2310998</vendorCode>
+        <description>У того, чья любовь к готовке — всерьёз и надолго, голова всегда полна свежих идей. Разве ассортимент магазинов поспеет за фантазией повара, которому порой хочется приготовить такое, чего ещё не было ни в одной поваренной книге?
+Благодаря этой компактной мельнице вы сможете:
+*	измельчать и смешивать различные виды перцев,
+*	собственноручно создавать ароматизированную соль,
+*	добавлять в специи пряности.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Варианты">черный</param>
+        <param name="В боксе">16 шт</param>
+        <param name="Состав">Стекло</param>
+        <param name="Материалы">стекло</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">5 см × 5 см × 14 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Цвет">Прозрачный, Синий</param>
+        <param name="Набор">Нет</param>
+        <param name="Объём, мл">115</param>
+        <param name="Рисунок">Нет</param>
+        <param name="Материал">Пластик, Стекло</param>
+      </offer>
+      <offer id="1095307618" available="true">
+        <url>https://www.sima-land.ru/3266633/</url>
+        <price>50.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1462084199</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2736547/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2736547/1/700-nw.jpg</picture>
+        <name>Шар латексный на стрип ленте 12" "С Днем Рождения", пастель+декоратор 5 шт</name>
+        <vendorCode>3266633</vendorCode>
+        <description>Шар латексный на стрип ленте 12" "С Днем Рождения", пастель+декоратор 5 шт поможет собрать воздушные шары в связку или красиво оформить любой подарок. Данный товар сделает презент ещё более ярким и принесёт массу удовольствия всем вокруг! Лента будет особенно актуальна в декабре (перед Новым годом и Рождеством), а также пригодится в течение года: к 8 Марта и 23 Февраля, ко дню рождения, Международному дню защиты детей и на профессиональные праздники.</description>
+        <country_of_origin>Мексика</country_of_origin>
+        <param name="В боксе">300 набор</param>
+        <param name="В наборе">5 набор</param>
+        <param name="Состав">Латекс</param>
+        <param name="Материалы">латекс</param>
+        <param name="Фасовка">по 12 набор</param>
+        <param name="Индивидуальная упаковка">Пакет</param>
+        <param name="Размер упаковки">77 см × 12 см × 1 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Тематика рисунка шара">День Рождения</param>
+        <param name="Вид шара">Классический</param>
+        <param name="Диаметр, дюйм">12</param>
+      </offer>
+      <offer id="416298769" available="true">
+        <url>https://www.sima-land.ru/2311050/</url>
+        <price>51.3100</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>674461860</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1945325/0/700-nw.jpg</picture>
+        <name>Пластилин 8цв Peppa Pig. Умница 32037</name>
+        <vendorCode>2311050</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Пластилин 8цв Peppa Pig. Умница 32037 поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">30 набор</param>
+        <param name="Состав">Пластилин</param>
+        <param name="Материалы">пластилин</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Размер упаковки">1,5 см × 15,5 см × 11 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Лицензия">Да</param>
+        <param name="В наборе, шт">8</param>
+        <param name="Набор">Нет</param>
+        <param name="Вес, г">120</param>
+        <param name="Вид изделия">Пластилин</param>
+        <param name="Количество цветов">8</param>
+      </offer>
+      <offer id="1149785172" available="true">
+        <url>https://www.sima-land.ru/2311051/</url>
+        <price>51.3100</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>674461860</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1945326/0/700-nw.jpg</picture>
+        <name>Пластилин 8цв Маша и Медведь 31963</name>
+        <vendorCode>2311051</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Пластилин 8цв Маша и Медведь 31963 поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">30 набор</param>
+        <param name="Состав">Пластилин</param>
+        <param name="Материалы">пластилин</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Размер упаковки">1,5 см × 15,3 см × 11 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Лицензия">Да</param>
+        <param name="В наборе, шт">8</param>
+        <param name="Набор">Нет</param>
+        <param name="Вес, г">120</param>
+        <param name="Вид изделия">Пластилин</param>
+        <param name="Количество цветов">8</param>
+      </offer>
+      <offer id="1017222724" available="true">
+        <url>https://www.sima-land.ru/2751727/</url>
+        <price>54.5700</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>194215223</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2261604/0/700-nw.jpg</picture>
+        <name>Штора для ванной 180х180 см, Жемчуг белый</name>
+        <vendorCode>2751727</vendorCode>
+        <description>Сложно представить себе быт без хозяйственных товаров. Они нужны всегда и везде — дома, на даче, в офисе. Обратите внимание на Штора для ванной 180х180 см, Жемчуг белый — полезное и качественное изделие с современным дизайном.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="В боксе">1 шт</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Размер упаковки">26 см × 18 см × 1,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Размер, см">180 х 180</param>
+        <param name="Цвет">Голубой, Белый</param>
+        <param name="Материал">Полиэтилен</param>
+        <param name="Тип">Шторы</param>
+      </offer>
+      <offer id="1085965650" available="true">
+        <url>https://www.sima-land.ru/2863659/</url>
+        <price>55.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>316566844</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2367611/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2367611/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2367611/2/700-nw.jpg</picture>
+        <name>Стекло защитное Krutoff Group 0.26mm универсальное 4,3"</name>
+        <vendorCode>2863659</vendorCode>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">40 шт</param>
+        <param name="Состав">Стекло</param>
+        <param name="Материалы">стекло</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Картонная упаковка</param>
+        <param name="Размер упаковки">17,5 см × 8,5 см × 0,1 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Количество на складе">20</param>
+        <param name="Вид">Стекло</param>
+        <param name="Модель">Универсальный</param>
+      </offer>
+      <offer id="1796240787" available="true">
+        <url>https://www.sima-land.ru/2936828/</url>
+        <price>55.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>350503501</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2595040/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2595040/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2595040/2/700-nw.jpg</picture>
+        <name>Полотенце 50х60см DomoVita Светлый праздник, хлопок 100%, 170 г/м2</name>
+        <vendorCode>2936828</vendorCode>
+        <description>Текстильные товары пользовались большой популярностью во все времена. Это беспроигрышный подарок, ведь все любят мягкие и приятные на ощупь ткани. Полотенце 50х60см DomoVita Светлый праздник, хлопок 100%, 170 г/м2 — неповторимое сочетание необычного дизайна и высокого качества.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">150 шт</param>
+        <param name="Состав">Хлопок 100%</param>
+        <param name="Материалы">хлопок</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Размер упаковки">26 см × 20 см × 0,5 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Размер, см">50 х 60</param>
+        <param name="Цвет">Голубой</param>
+        <param name="Ткань">Вафельное полотно</param>
+        <param name="Плотность, г/м²">170</param>
+        <param name="Набор">Нет</param>
+        <param name="Состав ткани">Хлопок</param>
+      </offer>
+      <offer id="980379910" available="true">
+        <url>https://www.sima-land.ru/1026743/</url>
+        <price>55.3300</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>913942981</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/726158/0/700-nw.jpg</picture>
+        <name>Гуашь 6 цветов по 15мл "ZOO"</name>
+        <vendorCode>1026743</vendorCode>
+        <description>Переоценить пользу рисования для детей просто невозможно. А какое же изобразительное искусство без использования самой благородной краски — гуашь?
+Рисовать такими красками очень удобно: гуашь легко размывается водой, хорошо наносится на бумагу, картон, холст, ткань и фанеру, просто смывается с рук и одежды. При высыхании краска приобретает матовую, бархатистую поверхность и совершенно безопасна при использовании.
+Гуашь 6 цветов по 15мл "ZOO" поможет вашему ребёнку создавать красивые яркие картинки, выдумывать невероятные сюжеты и воплощать их в реальность, развивая цветовое восприятие, зрительную память, воображение, мелкую моторику пальцев, ассоциативное, аналитическое и творческое мышление.
+Рисовать красками очень удобно: гуашь легко размывается водой, хорошо наносится на бумагу, картон, холст, ткань и фанеру, просто смывается с рук и одежды. При высыхании краска приобретает матовую, бархатистую поверхность и совершенно безопасна при использовании.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">28 набор</param>
+        <param name="Состав">Пластик, краска</param>
+        <param name="Материалы">пластик, краска</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Цветная картонная коробка</param>
+        <param name="Размер упаковки">4 см × 20 см × 5 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Лицензия">Нет</param>
+        <param name="Цвет">МИКС</param>
+        <param name="Набор">Да</param>
+        <param name="Вид упаковки">Банка</param>
+        <param name="Вид краски">Гуашевая</param>
+        <param name="Количество цветов">6</param>
+        <param name="Объём, мл">15</param>
+      </offer>
+      <offer id="69242513" available="true">
+        <url>https://www.sima-land.ru/1071371/</url>
+        <price>55.4500</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>674461860</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/779701/0/700-nw.jpg</picture>
+        <name>Пластилин 18 цветов 252гр "Юный художник" со стеком</name>
+        <vendorCode>1071371</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Пластилин 18 цветов 252гр "Юный художник" со стеком поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">12 набор</param>
+        <param name="Состав">Пластилин</param>
+        <param name="Материалы">пластилин</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">23,9 см × 14,9 см × 1,8 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Условия перевозки">при температуре не выше +25 °C</param>
+        <param name="Лицензия">Нет</param>
+        <param name="В наборе, шт">18</param>
+        <param name="Набор">Да</param>
+        <param name="Вес, г">252</param>
+        <param name="Особенности изделия">Со стекой</param>
+        <param name="Вид изделия">Пластилин</param>
+        <param name="Количество цветов">18</param>
+      </offer>
+      <offer id="377085449" available="true">
+        <url>https://www.sima-land.ru/3358128/</url>
+        <price>55.5000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1229592582</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2782624/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2782624/1/700-nw.jpg</picture>
+        <name>Пена для бритья Majix Sport Prestige, 100 мл</name>
+        <vendorCode>3358128</vendorCode>
+        <description>Пена для бритья Majix Sport Prestige, 100 мл обеспечивает лёгкое скольжение, не вызывает раздражений и не пересушивает кожу.
+Способ применения:  выдавите на руку небольшое количество средства, распределите массу между ладонями и нанесите её на влажный участок. А затем приступите к процедуре бритья.</description>
+        <country_of_origin>Турция</country_of_origin>
+        <param name="В боксе">24 шт</param>
+        <param name="Состав">См. на упаковке</param>
+        <param name="Материалы">см. на упаковке</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">5 см × 5 см × 13 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Объём, мл">100</param>
+      </offer>
+      <offer id="1943169390" available="true">
+        <url>https://www.sima-land.ru/3358129/</url>
+        <price>55.5000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1229592582</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2782626/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2782626/1/700-nw.jpg</picture>
+        <name>Пена для бритья Majix Sport Sport, 100 мл</name>
+        <vendorCode>3358129</vendorCode>
+        <description>Пена для бритья Majix Sport Sport, 100 мл обеспечивает лёгкое скольжение, не вызывает раздражений и не пересушивает кожу.
+Способ применения:  выдавите на руку небольшое количество средства, распределите массу между ладонями и нанесите её на влажный участок. А затем приступите к процедуре бритья.</description>
+        <country_of_origin>Турция</country_of_origin>
+        <param name="В боксе">24 шт</param>
+        <param name="Состав">См. на упаковке</param>
+        <param name="Материалы">см. на упаковке</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">5 см × 5 см × 13 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Объём, мл">100</param>
+      </offer>
+      <offer id="1873876013" available="true">
+        <url>https://www.sima-land.ru/2530712/</url>
+        <price>55.9500</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1693228917</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2120140/0/700-nw.jpg</picture>
+        <name>Скрепочница магнитная с крышкой без скрепок, индивидуальная упаковка</name>
+        <vendorCode>2530712</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Скрепочница магнитная с крышкой без скрепок, индивидуальная упаковка поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="Доставка">Платная</param>
+        <param name="В боксе">1 шт</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Размер упаковки">10 см × 6,7 см × 3,3 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Красный</param>
+      </offer>
+      <offer id="1843295049" available="true">
+        <url>https://www.sima-land.ru/2936837/</url>
+        <price>56.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>350503501</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2595058/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2595058/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2595058/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2595058/3/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2595058/4/700-nw.jpg</picture>
+        <name>Полотенце 50х70см DomoVita ПАСХА, рис 362-4 розовый, микс хлопок 100%, 170 г/м2</name>
+        <vendorCode>2936837</vendorCode>
+        <description>Текстильные товары пользовались большой популярностью во все времена. Это беспроигрышный подарок, ведь все любят мягкие и приятные на ощупь ткани. Полотенце 50х70см DomoVita ПАСХА, рис 362-4 розовый, микс хлопок 100%, 170 г/м2 — неповторимое сочетание необычного дизайна и высокого качества.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">150 шт</param>
+        <param name="Состав">Хлопок 100%</param>
+        <param name="Материалы">хлопок</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Размер упаковки">24 см × 20 см × 0,5 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Размер, см">50 х 70</param>
+        <param name="Цвет">Розовый</param>
+        <param name="Ткань">Вафельное полотно</param>
+        <param name="Плотность, г/м²">170</param>
+        <param name="Набор">Нет</param>
+        <param name="Состав ткани">Хлопок</param>
+      </offer>
+      <offer id="1101509358" available="true">
+        <url>https://www.sima-land.ru/1929510/</url>
+        <price>56.7000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1462649710</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1637546/0/700-nw.jpg</picture>
+        <name>Набор 12 штук Клейкая лента канцелярская 19 мм*10м BRAUBERG, 223124</name>
+        <vendorCode>1929510</vendorCode>
+        <description>Клейкая лента, вопреки расхожему мнению, была изобретена не в Шотландии, а в США в далёком 1923 году и использовалась на заводах, в аграрном хозяйстве и быту.
+Сегодня её можно найти в каждом доме и на любом рабочем месте.
+Набор 12 штук Клейкая лента канцелярская 19 мм*10м BRAUBERG, 223124 — крепкий и надёжный аксессуар, с помощью которого вам не составит труда соединить, зафиксировать и придать целостный вид окружающим вас предметам.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">50 набор</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Плёнка</param>
+        <param name="Размер упаковки">4,1 см × 4,1 см × 22,8 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Прозрачный</param>
+        <param name="В наборе, шт">12</param>
+        <param name="Набор">Да</param>
+        <param name="Длина, м">10</param>
+        <param name="Ширина, мм">19</param>
+        <param name="Основание клейкой ленты">Пластик</param>
+        <param name="Толщина, мкм">40</param>
+        <param name="Материал">Полипропилен</param>
+      </offer>
+      <offer id="772529162" available="true">
+        <url>https://www.sima-land.ru/2311048/</url>
+        <price>57.8000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>674461860</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1945323/0/700-nw.jpg</picture>
+        <name>Пластилин 12цв Peppa Pig. Умница 32036</name>
+        <vendorCode>2311048</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Пластилин 12цв Peppa Pig. Умница 32036 поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">20 набор</param>
+        <param name="Состав">Пластилин</param>
+        <param name="Материалы">пластилин</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Размер упаковки">1,5 см × 16,3 см × 15 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Лицензия">Да</param>
+        <param name="В наборе, шт">12</param>
+        <param name="Набор">Да</param>
+        <param name="Вес, г">180</param>
+        <param name="Вид изделия">Пластилин</param>
+        <param name="Из натурального дерева">Нет</param>
+        <param name="Количество цветов">12</param>
+      </offer>
+      <offer id="2144467673" available="true">
+        <url>https://www.sima-land.ru/921422/</url>
+        <price>59.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>316566844</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/796772/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/796772/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/796772/2/700-nw.jpg</picture>
+        <name>Защитное стекло для Apple iPhone 6, 4.7", 0,3 мм, прозрачное</name>
+        <vendorCode>921422</vendorCode>
+        <description>Случалось ли вам ронять свой гаджет и с замиранием сердца поднимать его с мыслью: «Хоть бы не разбился»? Теперь у него будет больше шансов остаться целым и невредимым! Мы не заявляем о его абсолютной неуязвимости, но в непредвиденной ситуации стекло возьмет удар на себя!
+Неоспоримые преимущества  стекла:
+*	Значительно увеличивает шанс "выживания" экрана при падении.
+*	Cрок cлужбы стекла — 9-12 месяцев.
+*	Абсолютно незаметно на экране. Толщина всего 0,3 мм.
+*	Не ухудшает четкость изображения, не искажает цветопередачу.
+*	Не уменьшает чувствительность экрана.
+*	Легко приклеивается к телефону без пузырей и клея.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">400 шт</param>
+        <param name="Состав">Пластик</param>
+        <param name="Материалы">пластик</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Пластиковая коробка</param>
+        <param name="Размер упаковки">17 см × 9 см × 0,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Гарантийный срок">3</param>
+        <param name="Вид">Стекло</param>
+        <param name="Модель">iPhone 6/6S</param>
+      </offer>
+      <offer id="1594468023" available="true">
+        <url>https://www.sima-land.ru/2933281/</url>
+        <price>59.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1894726138</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2650040/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2650040/1/700-nw.jpg</picture>
+        <name>Доска разделочная пасхальная "Христосъ Воскресе. Ангелочки", 27.5х19.5см</name>
+        <vendorCode>2933281</vendorCode>
+        <description>От качества посуды зависит не только вкус еды, но и здоровье человека. Доска разделочная пасхальная "Христосъ Воскресе. Ангелочки", 27.5х19.5см — товар, соответствующий российским стандартам качества. Любой хозяйке будет приятно держать его в руках. С нашей посудой и кухонной утварью приготовление еды и сервировка стола превратятся в настоящий праздник.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">100 шт</param>
+        <param name="Состав">Дерево</param>
+        <param name="Материалы">дерево</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Плёнка</param>
+        <param name="Размер упаковки">28 см × 20 см × 0,5 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Разноцветный</param>
+        <param name="Длина, см">27,5</param>
+        <param name="Набор">Нет</param>
+        <param name="Рисунок">Да</param>
+        <param name="Вид дерева">Фанера</param>
+        <param name="Материал">Дерево</param>
+        <param name="Тип доски">Стандартная</param>
+        <param name="Форма">Фигурная</param>
+        <param name="Тип нанесения рисунка">Наклейка</param>
+        <param name="Ширина, см">19,5</param>
+      </offer>
+      <offer id="530694358" available="true">
+        <url>https://www.sima-land.ru/2400872/</url>
+        <price>60.5000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1331559418</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2007284/0/700-nw.jpg</picture>
+        <name>Мелки восковые 16 цветов Sivo Colorjoy 90/8мм круглый , SV-6097C/16</name>
+        <vendorCode>2400872</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Мелки восковые 16 цветов Sivo Colorjoy 90/8мм круглый , SV-6097C/16 поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Индия</country_of_origin>
+        <param name="В боксе">10 набор</param>
+        <param name="Состав">Воск</param>
+        <param name="Материалы">воск</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Цветная картонная коробка</param>
+        <param name="Размер упаковки">7 см × 10 см × 2 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Количество на складе">39</param>
+        <param name="Цвет">МИКС</param>
+        <param name="Вид упаковки">Коробка картонная</param>
+        <param name="Утолщённые">Нет</param>
+        <param name="Форма">Круглые</param>
+        <param name="Количество цветов">16</param>
+        <param name="Тип">Карандаши восковые/мелки</param>
+      </offer>
+      <offer id="1260607609" available="true">
+        <url>https://www.sima-land.ru/2880981/</url>
+        <price>62.6400</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>88511578</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2361565/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2361565/1/700-nw.jpg</picture>
+        <name>Салфетки чистящие универсальные OfficeClean, 100 штук в тубе</name>
+        <vendorCode>2880981</vendorCode>
+        <description>Салфетки чистящие универсальные OfficeClean, 100 штук в тубе</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">12 шт</param>
+        <param name="Состав">Пластик</param>
+        <param name="Материалы">пластик</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Банка пластмассовая</param>
+        <param name="Размер упаковки">8 см × 8 см × 17 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="В упаковке, шт.">100</param>
+        <param name="Очищаемые поверхности">Все поверхности</param>
+        <param name="Тип">салфетки</param>
+      </offer>
+      <offer id="1282985931" available="true">
+        <url>https://www.sima-land.ru/1268214/</url>
+        <price>64.7000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1462649710</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/997275/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/997275/1/700-nw.jpg</picture>
+        <name>Клейкая лента-коричневая 72 мм * 66 метров * 50 мкм</name>
+        <vendorCode>1268214</vendorCode>
+        <description>Упаковочная клейкая лента изготовлена из двуосноориентированного полипропилена (ВОРР) высокой прочности с нанесением клеевого слоя с одной стороны ленты.
+Она универсальна и используется, в основном, для заклейки гофрокоробов, оклеивания различных грузов, обёрнутых в стрейч-плёнку или в полиэтиленовую плёнку.
+Не следует клеить ленту непосредственно на неупакованную продукцию, так как следы клея плохо отмываются.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">24 шт</param>
+        <param name="Состав">См. на упаковке</param>
+        <param name="Материалы">см. на упаковке</param>
+        <param name="Фасовка">по 6 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">10,5 см × 10,5 см × 7 см</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+        <param name="Цвет">Коричневый</param>
+        <param name="Набор">Нет</param>
+        <param name="Длина, м">66</param>
+        <param name="Ширина, мм">72</param>
+        <param name="Материал">Полипропилен</param>
+      </offer>
+      <offer id="1630257934O6924E9E0" available="true" group_id="217022635">
+        <url>https://www.sima-land.ru/2488106/</url>
+        <price>64.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1223819597</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2097233/0/700-nw.jpg</picture>
+        <name>Кружка для пива 500 мл</name>
+        <vendorCode>2488106</vendorCode>
+        <description>От качества посуды зависит не только вкус еды, но и здоровье человека. Кружка для пива 500 мл — товар, соответствующий российским стандартам качества. Любой хозяйке будет приятно держать его в руках. С нашей посудой и кухонной утварью приготовление еды и сервировка стола превратятся в настоящий праздник.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="Объём">0,50 л</param>
+        <param name="В боксе">16 шт</param>
+        <param name="Состав">Стекло</param>
+        <param name="Материалы">стекло</param>
+        <param name="Фасовка">по 16 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">10 см × 10 см × 15,5 см</param>
+        <param name="Сертификат">РСТ</param>
+        <param name="Цвет">Прозрачный</param>
+        <param name="Набор">Нет</param>
+        <param name="Объём, мл">500</param>
+        <param name="Рисунок">Нет</param>
+        <param name="Материал">Стекло</param>
+      </offer>
+      <offer id="1854897108" available="true">
+        <url>https://www.sima-land.ru/2704479/</url>
+        <price>65.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1662587353</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2781397/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781397/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781397/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781397/3/700-nw.jpg</picture>
+        <name>Пасхальный набор "Розетка"</name>
+        <vendorCode>2704479</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Пасхальный набор "Розетка" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">250 шт</param>
+        <param name="Состав">Картон</param>
+        <param name="Материалы">картон</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Пластиковая коробка</param>
+        <param name="Размер упаковки">9,6 см × 2,2 см × 14,8 см</param>
+        <param name="Сертификат">ЕАС</param>
+      </offer>
+      <offer id="67417284" available="true">
+        <url>https://www.sima-land.ru/2704480/</url>
+        <price>65.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1662587353</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2781398/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781398/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781398/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781398/3/700-nw.jpg</picture>
+        <name>Пасхальный набор "Кулич"</name>
+        <vendorCode>2704480</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Пасхальный набор "Кулич" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">220 шт</param>
+        <param name="Состав">Картон</param>
+        <param name="Материалы">картон</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Пластиковая коробка</param>
+        <param name="Размер упаковки">9,6 см × 2,2 см × 14,8 см</param>
+        <param name="Сертификат">ЕАС</param>
+      </offer>
+      <offer id="1498666657" available="true">
+        <url>https://www.sima-land.ru/2704481/</url>
+        <price>65.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1662587353</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2781399/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781399/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781399/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781399/3/700-nw.jpg</picture>
+        <name>Пасхальный набор "Природа"</name>
+        <vendorCode>2704481</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Пасхальный набор "Природа" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">220 шт</param>
+        <param name="Состав">Картон</param>
+        <param name="Материалы">картон</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Пластиковая коробка</param>
+        <param name="Размер упаковки">9,6 см × 2,2 см × 14,8 см</param>
+        <param name="Сертификат">ЕАС</param>
+      </offer>
+      <offer id="1095382130" available="true">
+        <url>https://www.sima-land.ru/2704482/</url>
+        <price>65.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1662587353</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2781400/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781400/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781400/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781400/3/700-nw.jpg</picture>
+        <name>Пасхальный набор "Борецкая роспись"</name>
+        <vendorCode>2704482</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Пасхальный набор "Борецкая роспись" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">220 шт</param>
+        <param name="Состав">Картон</param>
+        <param name="Материалы">картон</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Пластиковая коробка</param>
+        <param name="Размер упаковки">9,6 см × 2,2 см × 14,8 см</param>
+        <param name="Сертификат">ЕАС</param>
+      </offer>
+      <offer id="1633501225" available="true">
+        <url>https://www.sima-land.ru/2704483/</url>
+        <price>65.0000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>1662587353</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2781401/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781401/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781401/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2781401/3/700-nw.jpg</picture>
+        <name>Пасхальный набор "Городецкая роспись"</name>
+        <vendorCode>2704483</vendorCode>
+        <description>Невозможно представить нашу жизнь без праздников! Мы всегда ждём их и предвкушаем, обдумываем, как проведём памятный день, тщательно выбираем подарки и аксессуары, ведь именно они создают и поддерживают торжественный настрой. Пасхальный набор "Городецкая роспись" — это отличный выбор, который привнесёт атмосферу праздника в ваш дом!</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">220 шт</param>
+        <param name="Состав">Картон</param>
+        <param name="Материалы">картон</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Пластиковая коробка</param>
+        <param name="Размер упаковки">9,6 см × 2,2 см × 14,8 см</param>
+        <param name="Сертификат">ЕАС</param>
+      </offer>
+      <offer id="27462646" available="true">
+        <url>https://www.sima-land.ru/2512685/</url>
+        <price>66.7000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>2116032321</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/2480899/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2480899/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2480899/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/2480899/3/700-nw.jpg</picture>
+        <name>Акварель 24 цвета «Смешарики (Крош)»</name>
+        <vendorCode>2512685</vendorCode>
+        <description>Изделия данной категории необходимы любому человеку независимо от рода его деятельности. У нас представлен широкий ассортимент товаров для учеников, студентов, офисных сотрудников и руководителей, а также товары для творчества.
+Акварель 24 цвета «Смешарики (Крош)» поможет организовать ваше рабочее пространство и время. Востребованные предметы в удобной упаковке будут всегда под рукой в нужный момент.</description>
+        <country_of_origin>Россия</country_of_origin>
+        <param name="В боксе">66 шт</param>
+        <param name="Состав">Пластик, акварель</param>
+        <param name="Материалы">пластик, акварель</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Без упаковки</param>
+        <param name="Размер упаковки">1,5 см × 7,5 см × 18,5 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Вид упаковки">Без индивидуальной упаковки</param>
+        <param name="Кисть">Нет</param>
+        <param name="Количество цветов">24</param>
+        <param name="Серия">Смешарики</param>
+        <param name="Лицензия разработки">Да</param>
+      </offer>
+      <offer id="1068772452" available="true">
+        <url>https://www.sima-land.ru/906965/</url>
+        <price>69.9000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>530001429</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/672558/0/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/672558/1/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/672558/2/700-nw.jpg</picture>
+        <picture>https://cdn.sky.sima-land.ru/items/672558/3/700-nw.jpg</picture>
+        <name>Сувенир-подсвечник "Зайки с домиком", МИКС</name>
+        <vendorCode>906965</vendorCode>
+        <description>Оригинальный сувенир-подсвечник "Зайки с домиком", МИКС, который не только будет держать пламя в своих станах, но и подарит улыбку Вам и Вашим близким. Этого ушастого можно подарить на Пасху, как символ плодородия и, конечно же, не забыть про крашеные яйца – символы жизни. Он обязательно станет актуальным украшением Вашего праздничного пасхального стола и замечательным украшением интерьера.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">120 шт</param>
+        <param name="Состав">Керамика</param>
+        <param name="Материалы">керамика</param>
+        <param name="Фасовка">по 1 шт</param>
+        <param name="Индивидуальная упаковка">Картонная коробка</param>
+        <param name="Сертификат">Не подлежит сертификации</param>
+      </offer>
+      <offer id="693573132" available="true">
+        <url>https://www.sima-land.ru/2331314/</url>
+        <price>73.1000</price>
+        <currencyId>RUB</currencyId>
+        <categoryId>730056657</categoryId>
+        <picture>https://cdn.sky.sima-land.ru/items/1955591/0/700-nw.jpg</picture>
+        <name>Фломастеры 12цв Peppa Pig 32051</name>
+        <vendorCode>2331314</vendorCode>
+        <description>Почему дети так любят рисовать фломастерами? Юных художников прельщает не только бесконечная тяга к творчеству, но также практичность и эргономичность при использовании пишущих инструментов.
+В отличие от карандашей, фломастеры не нуждаются в заточке и не требуют усилий для создания ярких линий. Перед красками у них преимущество в том, что изображения сразу получаются чёткими, а насыщенность цвета нисколько не уступает гуаши.
+Простота, в мгновение ока создающая красоту, — вот что по-настоящему привлекает маленьких творцов!
+Как выбрать подходящий фломастер? Необходимо учитывать сразу несколько аспектов: тип чернил (водная или спиртовая основа), вид наконечника (пластик или синтетические волокна, толстый или тонкий), тип корпуса (полистирол или полипропилен) и даже колпачок (крупный или мелкий).
+Фломастеры 12цв Peppa Pig 32051 — это превосходный выбор для создания мини-шедевров с мини-затратами. Высококачественное изделие направит весь творческий потенциал ребёнка в нужное русло.</description>
+        <country_of_origin>Китай</country_of_origin>
+        <param name="В боксе">240 набор</param>
+        <param name="Состав">Пластик</param>
+        <param name="Материалы">пластик</param>
+        <param name="Фасовка">по 1 набор</param>
+        <param name="Индивидуальная упаковка">Картонная упаковка</param>
+        <param name="Размер упаковки">11,5 см × 16 см × 1 см</param>
+        <param name="Сертификат">ЕАС</param>
+        <param name="Лицензия">Нет</param>
+        <param name="В наборе, шт">12</param>
+        <param name="Набор">Да</param>
+        <param name="Вид упаковки">Коробка картонная</param>
+        <param name="Колпачок у фломастера">Вентилируемый</param>
+        <param name="Материал">Пластик</param>
+        <param name="Количество цветов">12</param>
+        <param name="Поверхность">Бумага</param>
+        <param name="ТИП">Набор фломастеров</param>
+      </offer>
+    </offers>
+  </shop>
+</yml_catalog>
