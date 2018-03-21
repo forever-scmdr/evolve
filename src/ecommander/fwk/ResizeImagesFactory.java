@@ -70,7 +70,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 		private ArrayList<File> files = new ArrayList<>();
 		private String format;
 		
-		private ResizeImages(Item item) {
+		public ResizeImages(Item item) {
 			super(item);
 			format = null;
 		}
@@ -280,7 +280,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 		return new ResizeImages(item);
 	}
 
-	public static ByteArrayOutputStream rezize(File src, int width, int height) throws IOException {
+	public static ByteArrayOutputStream resize(File src, int width, int height) throws IOException {
 		String format = StringUtils.substringAfterLast(src.getName(), ".");
 		BufferedImage srcImg = ImageIO.read(src);
 		Thumbnails.Builder<BufferedImage> thumbnailer = Thumbnails.of(srcImg);

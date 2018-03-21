@@ -11,6 +11,7 @@ public interface YMarketConst {
 	String INTEGRATION_PARAM = "integration";
 	String DATE_PARAM = "date";
 	String NAME_PARAM = "name";
+	String CODE_PARAM = "code";
 	String CATEGORY_ID_PARAM = "category_id";
 	String PARENT_ID_PARAM = "parent_id";
 	String MAIN_PIC_PARAM = "main_pic";
@@ -60,5 +61,5 @@ public interface YMarketConst {
 	String GROUP_ID_ATTR = "group_id";
 	String NAME_ATTR = "name";
 
-
+	String TRUE_VAL = "true";
 }

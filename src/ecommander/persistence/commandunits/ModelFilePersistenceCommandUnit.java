@@ -102,9 +102,11 @@ abstract class ModelFilePersistenceCommandUnit implements PersistenceCommandUnit
 
 	protected void executeCommand(ModelFilePersistenceCommandUnit commandUnit) throws Exception {
 		if (executedCommands == null)
-			executedCommands = new ArrayList<PersistenceCommandUnit>();
-		commandUnit.execute();
+			executedCommands = new ArrayList<>();
+		commandUnit.fileContents = fileContents;
+		commandUnit.executeInt(); // заново читать читать файл не надо
 		executedCommands.add(commandUnit);
+		fileContents = commandUnit.fileContents;
 	}
 
 	protected abstract void executeInt() throws Exception;

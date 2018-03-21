@@ -44,6 +44,9 @@ public class SaveNewItemTypeDBUnit extends ItemModelFilePersistenceCommandUnit {
 
 	@Override
 	protected void executeInt() throws Exception {
+		// На всякий случай выполнить сначала удаление айтема с таким названием
+		executeCommand(new DeleteItemTypeBDUnit(newType.getName()));
+		// Потом выполнить сохранение
 		ItemTypeMDWriter writer = new ItemTypeMDWriter(newType, ITEM);
 		for (ParameterDescription param : newType.getParameterList()) {
 			writer.addSubwriter(new ParameterDescriptionMDWriter(param));

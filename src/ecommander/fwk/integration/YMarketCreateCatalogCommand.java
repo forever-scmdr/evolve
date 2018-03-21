@@ -90,6 +90,8 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements YMarke
 			executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(ItemTypeRegistry.getItemType(typeToDelete).getTypeId()));
 		}
 
+		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+
 		// Создание новых типов айтемов
 		info.pushLog("Создание новых параметров товаров. Создание фильтров");
 		info.setToProcess(classHandler.getParams().size());

@@ -1,6 +1,7 @@
 package ecommander.fwk.integration;
 
 import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ResizeImagesFactory;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.Item;
@@ -10,12 +11,17 @@ import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.nodes.Element;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +55,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements YMa
 	private ItemType productType;
 	private ArrayList<String> picUrls;
 	private User initiator;
+	boolean isInsideOffer = false;
 
 	
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
@@ -75,8 +82,9 @@ public class YMarketProductCreationHandler extends DefaultHandler implements YMa
 					}
 				}
 
+				product.setValue(CODE_PARAM, code);
 				product.setValue(OFFER_ID_PARAM, code);
-				product.setValue(AVAILABLE_PARAM, commonParams.get(AVAILABLE_ATTR));
+				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(commonParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
 				product.setValue(GROUP_ID_PARAM, commonParams.get(GROUP_ID_ATTR));
 				product.setValue(URL_PARAM, commonParams.get(URL_ELEMENT));
 				product.setValue(CURRENCY_ID_PARAM, commonParams.get(CURRENCY_ID_ELEMENT));
@@ -94,7 +102,19 @@ public class YMarketProductCreationHandler extends DefaultHandler implements YMa
 						product.setValue(GALLERY_PARAM, new URL(picUrl));
 					}
 				}
-				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product));
+
+				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
+				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+
+				// Генерация маленького изображения
+				if (noMainPic) {
+					if (picUrls.size() > 0) {
+						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.get(0)));
+					}
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+					DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+				}
 
 				// Создать айтем с параметрами продукта
 				String paramClassName = "p" + secCode;
@@ -108,17 +128,18 @@ public class YMarketProductCreationHandler extends DefaultHandler implements YMa
 				}
 
 				info.increaseProcessed();
+				isInsideOffer = false;
 			}
 
-			else if (COMMON_PARAMS.contains(qName) && parameterReady) {
+			else if (isInsideOffer && COMMON_PARAMS.contains(qName) && parameterReady) {
 				commonParams.put(paramName, StringUtils.trim(paramValue.toString()));
 			}
 
-			else if (StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
+			else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
 				specialParams.put(paramName, StringUtils.trim(paramValue.toString()));
 			}
 
-			else if (StringUtils.equalsIgnoreCase(qName, PICTURE_ELEMENT)) {
+			else if (isInsideOffer && StringUtils.equalsIgnoreCase(qName, PICTURE_ELEMENT)) {
 				picUrls.add(paramValue.toString());
 			}
 
@@ -152,14 +173,15 @@ public class YMarketProductCreationHandler extends DefaultHandler implements YMa
 			commonParams.put(ID_ATTR, attributes.getValue(ID_ATTR));
 			commonParams.put(AVAILABLE_ATTR, attributes.getValue(AVAILABLE_ATTR));
 			commonParams.put(GROUP_ID_ATTR, attributes.getValue(GROUP_ID_ATTR));
+			isInsideOffer = true;
 		}
 		// Параметры продуктов (общие)
-		else if (COMMON_PARAMS.contains(qName) || StringUtils.equalsIgnoreCase(qName, PICTURE_ELEMENT)) {
+		else if (isInsideOffer && (COMMON_PARAMS.contains(qName) || StringUtils.equalsIgnoreCase(qName, PICTURE_ELEMENT))) {
 			paramName = qName;
 			parameterReady = true;
 		}
 		// Пользовательские параметры продуктов
-		else if (StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName)) {
+		else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName)) {
 			paramName = Strings.createXmlElementName(attributes.getValue(NAME_ATTR));
 			parameterReady = true;
 		}

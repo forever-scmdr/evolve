@@ -390,6 +390,7 @@ public class Item implements ItemBasics {
 							if (qName.equals(PARAM_TAG)) {
 								String idStr = attributes.getValue(ID_ATTRIBUTE);
 								paramId = Integer.parseInt(idStr);
+								currentParamDesc = itemType.getParameter(paramId);
 							} else {
 								ParameterDescription paramDesc = itemType.getParameter(qName);
 								if (paramDesc != null) {

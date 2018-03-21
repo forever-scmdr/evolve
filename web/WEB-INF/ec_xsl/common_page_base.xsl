@@ -64,7 +64,7 @@
 						</div>
 						<div class="main-menu">
 							<!-- <a href="{page/index_link}">Главная</a> -->
-							<a href="{page/catalog_link}"><i class="fas fa-bars"/>Каталог</a>
+							<a href="{page/catalog_link}" id="catalog_main_menu"><i class="fas fa-bars"/>Каталог</a>
 							<a href="{page/news_link}">Новости</a>
 							<a href="">Сотрудничестово</a>
 							<a href="">Оплата</a>
@@ -78,15 +78,21 @@
 							 -->
 							 <a href="{page/contacts_link}">Контакты</a>
 						</div>
-							 <div class="popup-menu" style="position: absolute;">
-							 	<div class="sections">
-							 		<a href="">Продукты питания и напитки</a>
-							 		<a href="">Для кухни</a>
-							 		<a href="">Продукты питания и напитки</a>
-							 		<a href="">Для кухни</a>
-							 	</div>
-							 	<div class="subsections"></div>
-							 </div>
+						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
+						 	<div class="sections">
+								<xsl:for-each select="page/catalog/section">
+								    <a href="{if (section) then show_section else show_products}"
+								       class="cat_menu_item_1" rel="#sub_{@id}"><xsl:value-of select="name" /></a>
+								</xsl:for-each>
+						 	</div>
+							<xsl:for-each select="page/catalog/section">
+							    <div class="subsections" style="display: none" id="sub_{@id}">
+									<xsl:for-each select="section">
+								        <a href="{show_products}"><xsl:value-of select="name" /></a>
+									</xsl:for-each>
+							    </div>
+							</xsl:for-each>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -132,7 +138,7 @@
 					<div class="col-xs-12">
 						<div class="footer-container">
 							<div class="block">
-								<p><strong>© Белтесто, 2017</strong></p>
+								<p><strong>© yuks.by, 2018</strong></p>
 								<div class="forever">
 									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
 								</div>
@@ -146,7 +152,14 @@
 								<xsl:value-of select="page/common/bottom" disable-output-escaping="yes"/>
 							</div>
 							<div class="block address">
-								<xsl:value-of select="page/common/bottom_address" disable-output-escaping="yes"/>
+								<!-- <xsl:value-of select="page/common/bottom_address" disable-output-escaping="yes"/> -->
+								<p>Мы в социальных сетях</p>
+								<div class="social">
+									<a href=""><i class="fab fa-vk" style="color: #4F73A6;" /></a>
+									<a href=""><i class="fab fa-facebook" style="color: #425796;" /></a>
+									<a href=""><i class="fab fa-youtube" style="color: #FF2000;" /></a>
+									<a href=""><i class="fab fa-odnoklassniki" style="color: #ED8410;" /></a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -321,21 +334,21 @@
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="level-1{' active'[$l1_active]}">
 					<div class="capsule">
-						<a href="{show_section}"><xsl:value-of select="name"/> </a>
+						<a href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/> </a>
 					</div>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
 					<xsl:for-each select="section">
 						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
-						<div class="level-2{' active'[$l2_active]}"><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+						<div class="level-2{' active'[$l2_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 						<xsl:if test=".//@id = $sel_sec_id">
 							<xsl:for-each select="section">
 								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
-								<div class="level-3{' active'[$l3_active]}"><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+								<div class="level-3{' active'[$l3_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 								<xsl:if test=".//@id = $sel_sec_id">
 									<xsl:for-each select="section">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
-										<div class="level-4{' active'[$l4_active]}"><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+										<div class="level-4{' active'[$l4_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 									</xsl:for-each>
 								</xsl:if>
 							</xsl:for-each>
@@ -415,8 +428,8 @@
 			</div>
 			<div class="price">
 				<xsl:if test="$has_price">
-					<p><span>Старая цена</span>100 р.</p>
-					<p><span>Новая цена</span><xsl:value-of select="price"/> р.</p>
+					<!--<p><span>Старая цена</span>100 р.</p>-->
+					<p><!--<span>Новая цена</span>--><xsl:value-of select="price"/> р.</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
 					<p><span>&#160;</span>&#160;</p>
@@ -436,10 +449,10 @@
 						</xsl:if>
 					</form>
 				</div>
-				<xsl:choose>
-					<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>
-					<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>
-				</xsl:choose>
+				<!--<xsl:choose>-->
+					<!--<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>-->
+					<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
+				<!--</xsl:choose>-->
 				<div class="links">
 					<div id="compare_list_{code}">
 						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
@@ -548,6 +561,7 @@
 			<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 			<link rel="stylesheet" href="fotorama/fotorama.css"/>
+			<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 			<script defer="defer" src="js/font_awesome_all.js"/>
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 		</head>
@@ -569,6 +583,11 @@
 			<xsl:call-template name="INC_MOBILE_MENU"/>
 			<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
 
+			<script type="text/javascript" src="js/bootstrap.js"/>
+			<script type="text/javascript" src="admin/ajax/ajax.js"/>
+			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
+			<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
+			<script type="text/javascript" src="js/fwk/common.js"/>
 			<script type="text/javascript" src="slick/slick.min.js"></script>
 			<script type="text/javascript">
 				$(document).ready(function(){
@@ -590,11 +609,11 @@
 						    }
 						]
 					});
+
+					initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
+					initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
 				});
 			</script>
-			<script type="text/javascript" src="js/bootstrap.js"/>
-			<script type="text/javascript" src="admin/ajax/ajax.js"/>
-			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>
 		</body>
 	</html>

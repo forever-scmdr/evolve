@@ -173,7 +173,7 @@ public class DeployParsed extends IntegrateBase {
 				picFiles.remove(fileName);
 				if (noMainPic) {
 					try {
-						ByteArrayOutputStream os = ResizeImagesFactory.rezize(pic, -1, 300);
+						ByteArrayOutputStream os = ResizeImagesFactory.resize(pic, -1, 300);
 						File mainFile = new File(pic.getParentFile().getCanonicalPath() + "/main_" + pic.getName());
 						FileUtils.writeByteArrayToFile(mainFile, os.toByteArray());
 						prod.setValue(ItemNames.product.MAIN_PIC, mainFile);

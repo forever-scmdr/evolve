@@ -67,10 +67,10 @@
 							</xsl:if>
 						</form>
 					</div>
-					<xsl:choose>
-						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>
-						<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>
-					</xsl:choose>
+					<!--<xsl:choose>-->
+						<!--<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>-->
+						<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
+					<!--</xsl:choose>-->
 				</div>
 				<div class="links">
 					<!-- <label><input type="checkbox"/> cравнение</label>
@@ -84,7 +84,7 @@
 				</div>
 				<div class="info-blocks">
 					<div class="info-block">
-						<xsl:value-of select="$p/short" disable-output-escaping="yes"/>
+						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 					</div>
 					<!--
 					<div class="info-block">
@@ -100,80 +100,96 @@
 			</div>
 			<div class="description">
 				<ul class="nav nav-tabs" role="tablist">
-					<xsl:if test="string-length($p/text) &gt; 15">
+					<!--<xsl:if test="string-length($p/text) &gt; 15">-->
 						<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab">Описание</a></li>
-					</xsl:if>
-					<xsl:if test="$p/tech">
-						<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">Технические данные</a></li>
-					</xsl:if>
-					<xsl:if test="page/accessory">
-						<li role="presentation"><a href="#tab3" role="tab" data-toggle="tab">Принадлежности</a></li>
-					</xsl:if>
-					<xsl:if test="page/set">
-						<li role="presentation"><a href="#tab4" role="tab" data-toggle="tab">Наборы</a></li>
-					</xsl:if>
-					<xsl:if test="page/probe">
-						<li role="presentation"><a href="#tab5" role="tab" data-toggle="tab">Зонды</a></li>
-					</xsl:if>
-					<xsl:if test="string-length($p/apply) &gt; 15">
-						<li role="presentation"><a href="#tab6" role="tab" data-toggle="tab">Применение</a></li>
-					</xsl:if>
+					<!--</xsl:if>-->
+					<!--<xsl:if test="$p/tech">-->
+						<!--<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">Технические данные</a></li>-->
+					<!--</xsl:if>-->
+					<!--<xsl:if test="page/accessory">-->
+						<!--<li role="presentation"><a href="#tab3" role="tab" data-toggle="tab">Принадлежности</a></li>-->
+					<!--</xsl:if>-->
+					<!--<xsl:if test="page/set">-->
+						<!--<li role="presentation"><a href="#tab4" role="tab" data-toggle="tab">Наборы</a></li>-->
+					<!--</xsl:if>-->
+					<!--<xsl:if test="page/probe">-->
+						<!--<li role="presentation"><a href="#tab5" role="tab" data-toggle="tab">Зонды</a></li>-->
+					<!--</xsl:if>-->
+					<!--<xsl:if test="string-length($p/apply) &gt; 15">-->
+						<!--<li role="presentation"><a href="#tab6" role="tab" data-toggle="tab">Применение</a></li>-->
+					<!--</xsl:if>-->
 				</ul>
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active" id="tab1">
-						<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+						<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
+						<table>
+							<colgroup>
+								<col style="width: 40%"/>
+							</colgroup>
+							<xsl:for-each select="$p/params/param">
+								<tr>
+									<td>
+										<p><strong><xsl:value-of select="@caption"/></strong></p>
+									</td>
+									<td>
+										<p><xsl:value-of select="."/></p>
+									</td>
+								</tr>
+							</xsl:for-each>
+						</table>
+
 					</div>
-					<div role="tabpanel" class="tab-pane" id="tab2">
-						<h4>Технические данные</h4>
-						<div class="table-responsive">
-						<xsl:for-each select="parse-xml(concat('&lt;tech&gt;', $p/tech, '&lt;/tech&gt;'))/tech/tag">
-							<table>
-								<colgroup>
-									<col style="width: 40%"/>
-								</colgroup>
-								<thead>
-									<tr>
-										<th colspan="2"><xsl:value-of select="@name"/></th>
-									</tr>
-								</thead>
-								<xsl:for-each select="parameter">
-									<tr>
-										<td>
-											<p><strong>
-												<xsl:value-of select="name"/></strong></p>
-										</td>
-										<td>
-											<xsl:for-each select="value">
-												<p><xsl:value-of select="."/></p>
-											</xsl:for-each>
-										</td>
-									</tr>
-								</xsl:for-each>
-							</table>
-						</xsl:for-each>
-						</div>
-					</div>
-					<div role="tabpanel" class="tab-pane" id="tab3">
-						<h4>Принадлежности</h4>
-						<div class="slick-slider catalog-items">
-							<xsl:apply-templates select="page/accessory"/>
-						</div>
-					</div>
-					<div role="tabpanel" class="tab-pane" id="tab4">
-						<h4>Наборы</h4>
-						<div class="slick-slider catalog-items">
-							<xsl:apply-templates select="page/set"/>
-						</div>
-					</div>
-					<div role="tabpanel" class="tab-pane" id="tab5">
-						<h4>Зонды</h4>
-						<div class="slick-slider catalog-items">
-							<xsl:apply-templates select="page/probe"/>
-						</div>
-					</div>
-					<div role="tabpanel" class="tab-pane" id="tab6">
-						<xsl:value-of select="$p/apply" disable-output-escaping="yes"/>
-					</div>
+					<!--<div role="tabpanel" class="tab-pane" id="tab2">-->
+						<!--<h4>Технические данные</h4>-->
+						<!--<div class="table-responsive">-->
+						<!--<xsl:for-each select="parse-xml(concat('&lt;tech&gt;', $p/tech, '&lt;/tech&gt;'))/tech/tag">-->
+							<!--<table>-->
+								<!--<colgroup>-->
+									<!--<col style="width: 40%"/>-->
+								<!--</colgroup>-->
+								<!--<thead>-->
+									<!--<tr>-->
+										<!--<th colspan="2"><xsl:value-of select="@name"/></th>-->
+									<!--</tr>-->
+								<!--</thead>-->
+								<!--<xsl:for-each select="parameter">-->
+									<!--<tr>-->
+										<!--<td>-->
+											<!--<p><strong>-->
+												<!--<xsl:value-of select="name"/></strong></p>-->
+										<!--</td>-->
+										<!--<td>-->
+											<!--<xsl:for-each select="value">-->
+												<!--<p><xsl:value-of select="."/></p>-->
+											<!--</xsl:for-each>-->
+										<!--</td>-->
+									<!--</tr>-->
+								<!--</xsl:for-each>-->
+							<!--</table>-->
+						<!--</xsl:for-each>-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div role="tabpanel" class="tab-pane" id="tab3">-->
+						<!--<h4>Принадлежности</h4>-->
+						<!--<div class="slick-slider catalog-items">-->
+							<!--<xsl:apply-templates select="page/accessory"/>-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div role="tabpanel" class="tab-pane" id="tab4">-->
+						<!--<h4>Наборы</h4>-->
+						<!--<div class="slick-slider catalog-items">-->
+							<!--<xsl:apply-templates select="page/set"/>-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div role="tabpanel" class="tab-pane" id="tab5">-->
+						<!--<h4>Зонды</h4>-->
+						<!--<div class="slick-slider catalog-items">-->
+							<!--<xsl:apply-templates select="page/probe"/>-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div role="tabpanel" class="tab-pane" id="tab6">-->
+						<!--<xsl:value-of select="$p/apply" disable-output-escaping="yes"/>-->
+					<!--</div>-->
 				</div>
 			</div>
 		</div>
