@@ -146,7 +146,7 @@ public class TemplateQuery implements QueryPart {
 
 	/**
 	 * Создать директиву FROM
-	 * @param tableName
+	 * @param tableNames
 	 * @return
 	 */
 	public final TemplateQuery FROM(String...tableNames) {

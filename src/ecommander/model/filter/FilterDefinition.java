@@ -185,7 +185,7 @@ public class FilterDefinition {
 	}
 	/**
 	 * Установить корень
-	 * @param root
+	 * @param itemBaseName
 	 */
 	public void setRoot(String itemBaseName) {
 		FilterRootDef root = new FilterRootDef(itemBaseName);
