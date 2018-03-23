@@ -219,8 +219,8 @@
 				</ul>
 				<ul>
 					<li><i class="fas fa-shopping-cart"></i> <a href="{page/cart_link}">Корзина</a></li>
-					<li><i class="fas fa-star"></i> <a href="{page/fav_link}">Избранное</a></li>
-					<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>
+					<!--<li><i class="fas fa-star"></i> <a href="{page/fav_link}">Избранное</a></li>-->
+					<!--<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>-->
 				</ul>
 				<ul>
 					<li><a href="{page/news_link}">Новости</a></li>
@@ -453,6 +453,7 @@
 					<!--<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>-->
 					<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
 				<!--</xsl:choose>-->
+				<!--
 				<div class="links">
 					<div id="compare_list_{code}">
 						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
@@ -467,8 +468,8 @@
 							</div>
 						</xsl:otherwise>
 					</xsl:choose>
-
 				</div>
+				-->
 			</div>
 		</div>
 	</xsl:template>

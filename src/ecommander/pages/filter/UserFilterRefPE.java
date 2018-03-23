@@ -51,7 +51,7 @@ public class UserFilterRefPE implements PageElement {
 		if (itemDesc.getParameter(paramName) == null)
 			results.addError(elementPath + " > " + getKey(), "there is no '" + paramName
 					+ "' parameter in '" + itemDesc.getName() + "' item");
-		if (!filterVarName.startsWith("$") && parentPage.getVariable(filterVarName) == null)
+		if (!filterVarName.startsWith("$") && parentPage.getInitVariablePE(filterVarName) == null)
 			results.addError(elementPath + " > " + getKey(), "there is no '" + filterVarName + "' page variable on current page");
 		// Корректность использования кеширования
 		if (needPreloadDomains && !pageItem.hasCacheVars()) {
@@ -112,7 +112,7 @@ public class UserFilterRefPE implements PageElement {
 	 * @return
 	 */
 	boolean isValid() {
-		return getFilterDef() != null;
+		return getFilterDef() != null && !getFilterDef().isEmpty();
 	}
 
 	boolean needPreloadDomains() {

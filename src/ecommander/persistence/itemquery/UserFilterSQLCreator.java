@@ -34,7 +34,8 @@ class UserFilterSQLCreator implements FilterDefinitionVisitor {
 			CriteriaDef criteria = (CriteriaDef)part;
 			ParameterDescription param = item.getParameter(criteria.getParamName());
 			List<String> values = userInput.getValue(input.getId());
-			sqlCreator.addParameterCriteria(param, item, values, criteria.getSign(), criteria.getPattern(), Compare.ANY);
+			if (values.size() > 0)
+				sqlCreator.addParameterCriteria(param, item, values, criteria.getSign(), criteria.getPattern(), Compare.ANY);
 		}
 	}
 }

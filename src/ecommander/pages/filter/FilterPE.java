@@ -177,7 +177,11 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	public final boolean hasUserFilter() {
 		return userFilter != null;
 	}
-	
+
+	public final boolean isUserFilterValid() {
+		return hasUserFilter() && userFilter.isValid();
+	}
+
 	public final String getUserFilterParamName() {
 		return userFilter.getParamName();
 	}
@@ -207,7 +211,8 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 
 		// Все вложенные элементы - критерии
 		for (PageElement element : getAllNested()) {
-			((FilterCriteriaPE) element).process(this);
+			if (element instanceof FilterCriteriaPE)
+				((FilterCriteriaPE) element).process(this);
 		}
 
 		// Лимит
@@ -323,8 +328,13 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		else
 			dbQuery.startChildCriteria(associated.getItemName(), associated.getAssocName());
 		// Если к этому критерию ассоциации применяется пользовательский фильтр - добавить его
-		if (associated.isUserFiltered())
+		if (associated.isUserFiltered() && userFilter.isValid()) {
 			userFilter.apply(dbQuery);
+			// Заменить значение параметра фильтра новым значением, для того, чтобы фильтр выводился в виде XML,
+			// а не в виде escaped XML. Это нужно для того, чтобы можно было напрямую работать с определением фильтра
+			// в XSL шаблонах, не прибегая к функции xsl:parse
+			updateItemFilterParameter();
+		}
 		for (PageElement element : associated.getAllNested()) {
 			((FilterCriteriaPE)element).process(this);
 		}

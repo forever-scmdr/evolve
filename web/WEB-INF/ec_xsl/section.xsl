@@ -15,6 +15,8 @@
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 
+	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
+
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
@@ -29,64 +31,40 @@
 		</div>
 		<h1><xsl:value-of select="$sel_sec/name"/></h1>
 		<div class="page-content m-t">
-			<xsl:if test="$sel_sec/tag_first">
-				<div class="tags">
-					<strong>Выберите тэг:</strong>
-					<xsl:for-each select="$sel_sec/tag_first">
-						<a href="{if (tag = $tag1) then //page/remove_tag_link else set_tag_1}">
-							<span class="label label-{if (tag = $tag1) then 'primary' else 'success'}"><xsl:value-of select="tag"/></span>
-						</a>
-					</xsl:for-each>
+			<xsl:if test="$sel_sec/params_filter/filter">
+				<div class="toggle-filters">
+					<i class="fas fa-cog"></i> <a href="javascript:$('#filters_container').toggle('blind', 200)">Подбор по параметрам</a>
 				</div>
 			</xsl:if>
 
-			<xsl:if test="$sel_sec/tag_second">
-				<form method="post" action="{page/filter_base_link}">
-					<div class="filters">
-						<div class="toggle-filters">
-							<i class="fas fa-cog"></i> <a href="">Подбор по параметрам</a>
-						</div>
-						<xsl:for-each-group select="$sel_sec/tag_second" group-by="name">
-							<xsl:sort select="name"/>
+			<xsl:if test="$sel_sec/params_filter/filter">
+				<form method="post" action="{$sel_sec/filter_base_link}">
+					<div class="filters" style="{'display: none'[not($user_filter)]}" id="filters_container">
+						<xsl:for-each select="$sel_sec/params_filter/filter/input">
+							<xsl:variable name="name" select="@id"/>
 							<div class="active checkgroup">
-								<strong><xsl:value-of select="current-grouping-key()"/></strong>
+								<strong><xsl:value-of select="@caption"/></strong>
 								<div class="values">
-									<xsl:for-each-group select="current-group()" group-by="value">
-										<xsl:sort select="value"/>
+									<xsl:for-each select="domain/value">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" value="{name_value}">
-													<xsl:if test="name_value = $tag2">
+												<input name="{$name}" type="checkbox" value="{.}">
+													<xsl:if test=". = $user_filter/input[@id = $name]">
 														<xsl:attribute name="checked" select="'checked'"/>
 													</xsl:if>
-												</input>&#160;<xsl:value-of select="current-grouping-key()"/>
+												</input>&#160;<xsl:value-of select="."/>
 											</label>
 										</div>
-									</xsl:for-each-group>
+									</xsl:for-each>
 								</div>
 							</div>
-						</xsl:for-each-group>
+						</xsl:for-each>
 						<div class="buttons">
-							<input type="submit" value="Показать найденное" onclick="prepareFilterForm()"/>
-							<input type="submit" value="Сбросить" onclick="$('.checkgroup input').attr('name', '')"/>
+							<input type="submit" value="Показать найденное"/>
+							<input type="submit" value="Сбросить" onclick="location.href = '{page/reset_filter_link}'; return false;"/>
 						</div>
 					</div>
 				</form>
-				<script>
-					<xsl:text disable-output-escaping="yes">
-					var _finlterInputIndex = 0;
-					function prepareFilterForm() {
-						_finlterInputIndex = 0;
-						$('.checkgroup').each(function(index, element) {
-							var checkedInputs = $(element).find('input:checked');
-							if (checkedInputs.length &gt; 0) {
-								_finlterInputIndex++;
-								checkedInputs.attr('name', 'tag2_' + _finlterInputIndex);
-							}
-						});
-					}
-					</xsl:text>
-				</script>
 			</xsl:if>
 
 			<xsl:if test="not($not_found)">

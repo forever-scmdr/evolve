@@ -55,23 +55,27 @@
 	</page>
 
 
-	<page name="section" template="section" cacheable="false" critical-item="cur_sec">
+	<page name="section" template="section" cacheable="" critical-item="cur_sec">
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="12" scope="cookie"/>
-			<var name="minqty" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
+			<var name="fil"/>
 		</request>
-		<single item="section" var="sec" id="cur_sec" tag="current_section">
+		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<list item="product" id="prod" transit="true">
 				<filter>
-					<parameter name="qty" compare="ANY" sign="&gt;"><var var="minqty" /></parameter>
+					<child item="params" transit="false"
+					       ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
 					<sorting direction-var="direction"><var var="sort"/></sorting>
 					<limit><var var="limit"/></limit>
 					<pages><var var="page"/></pages>
+					<link name="filter_base_link" target="section">
+						<var name="sec" var="sec" style="translit"/>
+					</link>
 				</filter>
 				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="translit"/>
@@ -109,7 +113,7 @@
 		<link name="set_limit_all" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="300"/>
 		</link>
-		<link name="filter_base_link" target="section" type="exclusive">
+		<link name="reset_filter_link" target="section">
 			<var name="sec" var="sec" style="translit"/>
 		</link>
 		<link name="show_only_available" target="section" type="exclusive">
