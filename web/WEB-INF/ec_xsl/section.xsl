@@ -11,9 +11,12 @@
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
-	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
+	<xsl:variable name="not_found" select="not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+
+	<xsl:variable name="subsecs" select="/page/catalog//section[@id = $sel_sec_id]/section"/>
+
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -28,7 +31,7 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1><xsl:value-of select="$sel_sec/name"/></h1>
-		<xsl:if test="not($products)">
+		<xsl:if test="$subsecs">
 			<div class="page-content m-t">
 				<div class="catalog-items"><!-- добавить класс lines для отображения по строкам -->
 					<xsl:for-each select="/page/catalog//section[@id = $sel_sec_id]/section">
@@ -44,7 +47,7 @@
 				</div>
 			</div>
 		</xsl:if>
-		<xsl:if test="$products">
+		<xsl:if test="$products or not($subsecs)">
 			<div class="page-content m-t">
 				<xsl:if test="$sel_sec/tag_first">
 					<div class="tags">
@@ -106,47 +109,45 @@
 					</script>
 				</xsl:if>
 
-				<xsl:if test="not($not_found)">
-					<div class="view-container desktop">
-						<div class="view">
-							<span>Показывать:</span>
-							<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
-							<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
-							<div class="checkbox">
-								<label>
-									<xsl:if test="not($only_available)">
-										<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
-									</xsl:if>
-									<xsl:if test="$only_available">
-										<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
-									</xsl:if>
-									в наличии
-								</label>
-							</div>
-							<span>
-								<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
-								        onchange="window.location.href = $(this).find(':selected').attr('link')">
-									<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
-									<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
-									<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
-									<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
-									<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
-								</select>
-							</span>
+				<div class="view-container desktop">
+					<div class="view">
+						<span>Показывать:</span>
+						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
+						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
+						<div class="checkbox">
+							<label>
+								<xsl:if test="not($only_available)">
+									<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
+								</xsl:if>
+								<xsl:if test="$only_available">
+									<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
+								</xsl:if>
+								в наличии
+							</label>
 						</div>
-						<div class="quantity">
-							<span>Кол-во на странице:</span>
-							<span>
-								<select class="form-control" value="{page/variables/limit}"
-								        onchange="window.location.href = $(this).find(':selected').attr('link')">
-									<option value="12" link="{page/set_limit_12}">12</option>
-									<option value="24" link="{page/set_limit_24}">24</option>
-									<option value="10000" link="{page/set_limit_all}">все</option>
-								</select>
-							</span>
-						</div>
+						<span>
+							<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
+							        onchange="window.location.href = $(this).find(':selected').attr('link')">
+								<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
+								<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
+								<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
+								<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
+								<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
+							</select>
+						</span>
 					</div>
-				</xsl:if>
+					<div class="quantity">
+						<span>Кол-во на странице:</span>
+						<span>
+							<select class="form-control" value="{page/variables/limit}"
+							        onchange="window.location.href = $(this).find(':selected').attr('link')">
+								<option value="12" link="{page/set_limit_12}">12</option>
+								<option value="24" link="{page/set_limit_24}">24</option>
+								<option value="10000" link="{page/set_limit_all}">все</option>
+							</select>
+						</span>
+					</div>
+				</div>
 
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:apply-templates select="$sel_sec/product"/>

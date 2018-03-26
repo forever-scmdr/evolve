@@ -316,8 +316,9 @@ public abstract class BasicCartManageCommand extends Command {
 		loadCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal sum = new BigDecimal(0); // полная сумма
-		double zeroQuantity = 0;
-		double regularQuantity = 0;
+		//double zeroQuantity = 0;
+		//double regularQuantity = 0;
+		double totalQty = 0;
 		boolean result = true;
 
 		// Обычные заказы и заказы с нулевым количеством на складе
@@ -331,12 +332,15 @@ public abstract class BasicCartManageCommand extends Command {
 			} else {
 				// Первоначальная сумма
 				BigDecimal productSum = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0)).multiply(new BigDecimal(quantity));
+				totalQty += quantity;
+				/*
 				if (maxQuantity <= 0) {
-					productSum = new BigDecimal(0);
+					//productSum = new BigDecimal(0);
 					zeroQuantity += quantity;
 				} else {
 					regularQuantity += quantity;
 				}
+				*/
 				bought.setValue(SUM_PARAM, productSum);
 				sum = sum.add(productSum);
 				// Сохранить bought
@@ -344,11 +348,11 @@ public abstract class BasicCartManageCommand extends Command {
 			}
 		}
 		cart.setValue(SUM_PARAM, sum);
-		cart.setValue(QTY_PARAM, regularQuantity);
+		cart.setValue(QTY_PARAM, /*regularQuantity*/totalQty);
 		// Сохранить корзину
 		getSessionMapper().saveTemporaryItem(cart);
 		saveCookie();
-		return result && regularQuantity > 0;
+		return result && /*regularQuantity*/ totalQty > 0;
 	}
 
 	@Override

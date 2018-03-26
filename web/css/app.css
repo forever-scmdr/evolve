@@ -6705,20 +6705,20 @@ img {
 
 /* fixes */
 .catalog-items .catalog-item .price {
-  margin-top: 1rem;
+  margin-top: .5rem;
 }
 .catalog-items .catalog-item .price p:first-child {
   display: none;
 }
-.catalog-items .catalog-item .price p span {
+/*.catalog-items .catalog-item .price p span {
   display: none;
-}
+}*/
 .catalog-item-container .price p:first-child {
   display: none;
 }
-.catalog-item-container .price p span {
+/*.catalog-item-container .price p span {
   display: none;
-}
+}*/
 .table-responsive tbody tr td:firsti-child {
   width: 10rem;
 }
@@ -6926,3 +6926,10 @@ table.compare td > span.param-name {
 table.compare td > span.param-value {
   margin-bottom: 1rem;
 }
+
+
+/*.capsule a {
+    font-weight: bold;
+    color: #333333;
+    font-size: 0.98em;
+}*/

@@ -94,9 +94,10 @@
 	<xsl:template name="CONTENT">
 		<div class="slider-container">
 			<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40">
-				<img src="img/slide_1.png" />
-				<img src="img/slide_2.png" />
-				<img src="img/slide_3.png" />
+				<img src="img/slide_1.jpg" />
+				<img src="img/slide_4.jpg" />
+				<img src="img/slide_2.jpg" />
+				<img src="img/slide_3.jpg" />
 			</div>
 		</div>
 		<div class="actions mobile">

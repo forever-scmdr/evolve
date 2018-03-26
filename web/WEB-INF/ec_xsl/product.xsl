@@ -50,7 +50,7 @@
 				<xsl:if test="$has_price">
 					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
-						<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
+						<p><span><xsl:value-of select="$p/code"/></span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
 					</div>
 				</xsl:if>
 				<div class="order">
@@ -75,11 +75,12 @@
 				<div class="links">
 					<!-- <label><input type="checkbox"/> cравнение</label>
 					<label><input type="checkbox"/> избранное</label> -->
-					<div id="compare_list_{code}">
-						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
+					<div id="compare_list_{$p/code}">
+						<span><i class="fas fa-balance-scale"></i><a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">в сравнение</a></span>
 					</div>
+					<xsl:text> &#160; </xsl:text>
 					<div id="fav_list_{$p/code}">
-						<span><i class="fas fa-star"></i> <a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
+						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/code}">в избранное</a></span>
 					</div>
 				</div>
 				<div class="info-blocks">

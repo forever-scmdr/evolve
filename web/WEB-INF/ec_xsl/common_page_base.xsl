@@ -385,6 +385,7 @@
 
 	<xsl:template match="accessory | set | probe | product">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="has_qty" select="qty and qty != '0'"/>
 		<div class="catalog-item">
 			<!--
 			<div class="tags">
@@ -405,7 +406,7 @@
 			<div class="price">
 				<xsl:if test="$has_price">
 					<p><span>Старая цена</span>100 р.</p>
-					<p><span>Новая цена</span><xsl:value-of select="price"/> р.</p>
+					<p><span><xsl:value-of select="code"/></span><xsl:value-of select="price"/> р.</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
 					<p><span>&#160;</span>&#160;</p>
@@ -415,18 +416,18 @@
 			<div class="order">
 				<div id="cart_list_{code}" class="product_purchase_container">
 					<form action="{to_cart}" method="post">
-						<xsl:if test="$has_price">
+						<xsl:if test="$has_price and $has_qty">
 							<input type="number" name="qty" value="1" min="0"/>
 							<input type="submit" value="В корзину"/>
 						</xsl:if>
-						<xsl:if test="not($has_price)">
+						<xsl:if test="not($has_price) or not($has_qty)">
 							<input type="number" name="qty" value="1" min="0"/>
 							<input type="submit" class="not_available" value="Под заказ"/>
 						</xsl:if>
 					</form>
 				</div>
 				<xsl:choose>
-					<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>
+					<xsl:when test="$has_qty"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>
 					<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>
 				</xsl:choose>
 				<div class="links">
