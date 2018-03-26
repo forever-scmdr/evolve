@@ -160,7 +160,7 @@
 			</div>
 		</xsl:if>
 		<script type="text/javascript">
-			var reorderLink = "<xsl:value-of select="admin-page/link[@name='reorder']"/>";	
+			var reorderLink = "<xsl:value-of select="admin-page/link[@name='reorder']"/>";
 		</script>
 		<script type="text/javascript" src="admin/js/subitems.js"></script>
 		<script type="text/javascript">

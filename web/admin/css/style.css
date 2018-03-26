@@ -209,6 +209,7 @@ a, button, *[type="submit"], label.file, input[type="file"] {
 	background: #fff;
 }
 
+
 .edit li.visible.active .name
 , .edit li.visible.active .drag
 , .edit li.visible.active .controls{
