@@ -50,6 +50,9 @@ public class UpdatePrices extends IntegrateBase {
 					}
 				}
 			}
+
+			@Override
+			protected void processSheet() throws Exception {}
 		};
 		return true;
 	}

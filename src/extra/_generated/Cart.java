@@ -30,6 +30,22 @@ public class Cart
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 
+    public void set_order_num(String value) {
+        setValue("order_num", value);
+    }
+
+    public String get_order_num() {
+        return getStringValue("order_num");
+    }
+
+    public String getDefault_order_num(String defaultVal) {
+        return getStringValue("order_num", defaultVal);
+    }
+
+    public boolean contains_order_num(String value) {
+        return containsValue("order_num", value);
+    }
+
     public void set_qty(Double value) {
         setValue("qty", value);
     }

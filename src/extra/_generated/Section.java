@@ -47,20 +47,36 @@ public class Section
         return containsValue("name", value);
     }
 
-    public void set_code(String value) {
-        setValue("code", value);
+    public void set_category_id(String value) {
+        setValue("category_id", value);
     }
 
-    public String get_code() {
-        return getStringValue("code");
+    public String get_category_id() {
+        return getStringValue("category_id");
     }
 
-    public String getDefault_code(String defaultVal) {
-        return getStringValue("code", defaultVal);
+    public String getDefault_category_id(String defaultVal) {
+        return getStringValue("category_id", defaultVal);
     }
 
-    public boolean contains_code(String value) {
-        return containsValue("code", value);
+    public boolean contains_category_id(String value) {
+        return containsValue("category_id", value);
+    }
+
+    public void set_parent_id(String value) {
+        setValue("parent_id", value);
+    }
+
+    public String get_parent_id() {
+        return getStringValue("parent_id");
+    }
+
+    public String getDefault_parent_id(String defaultVal) {
+        return getStringValue("parent_id", defaultVal);
+    }
+
+    public boolean contains_parent_id(String value) {
+        return containsValue("parent_id", value);
     }
 
     public void set_main_pic(File value) {
@@ -73,38 +89,6 @@ public class Section
 
     public boolean contains_main_pic(File value) {
         return containsValue("main_pic", value);
-    }
-
-    public void set_short(String value) {
-        setValue("short", value);
-    }
-
-    public String get_short() {
-        return getStringValue("short");
-    }
-
-    public String getDefault_short(String defaultVal) {
-        return getStringValue("short", defaultVal);
-    }
-
-    public boolean contains_short(String value) {
-        return containsValue("short", value);
-    }
-
-    public void set_item_urls(String value) {
-        setValue("item_urls", value);
-    }
-
-    public String get_item_urls() {
-        return getStringValue("item_urls");
-    }
-
-    public String getDefault_item_urls(String defaultVal) {
-        return getStringValue("item_urls", defaultVal);
-    }
-
-    public boolean contains_item_urls(String value) {
-        return containsValue("item_urls", value);
     }
 
 }

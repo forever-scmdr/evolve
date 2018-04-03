@@ -3,14 +3,13 @@ package ecommander.fwk;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Интеграция файла XML Результаты валидации и выполнения в след. виде
@@ -55,16 +54,19 @@ public abstract class IntegrateBase extends Command {
 		public final int lineNumber;
 		public final int position;
 		public final String originator;
+		public final String sheetName;
 
-		private Error(String message, int lineNumber, int position) {
+		private Error(String message, String sheetName, int lineNumber, int position) {
 			this.message = message;
 			this.lineNumber = lineNumber;
 			this.position = position;
 			this.originator = "";
+			this.sheetName = sheetName;
 		}
 
-		private Error(String message, String originator) {
+		private Error(String message, String originator, String sheetName) {
 			this.message = message;
+			this.sheetName = sheetName;
 			this.lineNumber = -1;
 			this.position = -1;
 			this.originator = originator;
@@ -83,10 +85,19 @@ public abstract class IntegrateBase extends Command {
 		private int lineNumber = 0;
 		private int processed = 0;
 		private int toProcess = 0;
+		private String sheetName;
 		private ArrayDeque<LogMessage> log = new ArrayDeque<>();
 		private ArrayList<Error> errors = new ArrayList<>();
 		private boolean inProgress = false;
 		private int logSize = Integer.MAX_VALUE;
+
+		public synchronized String getSheetName() {
+			return sheetName;
+		}
+
+		public synchronized void setSheetName(String sheetName) {
+			this.sheetName = sheetName;
+		}
 
 		public synchronized void setOperation(String opName) {
 			operation = opName;
@@ -119,7 +130,11 @@ public abstract class IntegrateBase extends Command {
 		public synchronized void addLog(String message, Object...params) {
 			if (log.size() >= logSize)
 				log.removeFirst();
-			log.addLast(new LogMessage(message, params));
+			LinkedList<Object> paramsl = new LinkedList<>(); Arrays.asList(paramsl, params);
+			if(StringUtils.isNotBlank(sheetName)) {
+				paramsl.add(0, sheetName);
+			}
+			log.addLast(new LogMessage(message, paramsl.toArray()));
 		}
 
 		public synchronized void pushLog(String message, Object...params) {
@@ -133,11 +148,11 @@ public abstract class IntegrateBase extends Command {
 		}
 
 		public synchronized void addError(String message, int lineNumber, int position) {
-			errors.add(new Error(message, lineNumber, position));
+			errors.add(new Error(message, sheetName, lineNumber, position));
 		}
 
 		public synchronized void addError(String message, String originator) {
-			errors.add(new Error(message, originator));
+			errors.add(new Error(message, originator, sheetName));
 		}
 
 		public synchronized void setInProgress(boolean inProgress) {

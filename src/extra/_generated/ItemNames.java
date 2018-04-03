@@ -4,20 +4,16 @@ package extra._generated;
 
 public class ItemNames {
 
-    public final static String PARSE_SECTION = "parse_section";
-    public final static String PARSE_ITEM = "parse_item";
-    public final static String PRODUCT_CONTAINER = "product_container";
     public final static String CATALOG = "catalog";
     public final static String SECTION = "section";
-    public final static String BACK_SECTION = "back_section";
-    public final static String BACK_CATALOG = "back_catalog";
     public final static String PRODUCT = "product";
-    public final static String TAG_FIRST = "tag_first";
-    public final static String TAG_SECOND = "tag_second";
+    public final static String PARAMS = "params";
+    public final static String FEEDBACK_PARAMS = "feedback_params";
     public final static String BOUGHT = "bought";
     public final static String CART = "cart";
     public final static String USER_JUR = "user_jur";
     public final static String USER_PHYS = "user_phys";
+    public final static String COUNTER = "counter";
     public final static String NEWS_ITEM = "news_item";
     public final static String NEWS = "news";
     public final static String ARTICLES = "articles";
@@ -28,24 +24,13 @@ public class ItemNames {
     public final static String DOCS = "docs";
     public final static String CONTACTS = "contacts";
     public final static String COMMON = "common";
+    public final static String FEEDBACK_FORM = "feedback_form";
+    public final static String CUSTOM_PAGES = "custom_pages";
+    public final static String CUSTOM_PAGE = "custom_page";
 
     public interface articles {
 
         String _ITEM_NAME = "articles";
-
-    }
-
-    public interface back_catalog {
-
-        String _ITEM_NAME = "back_catalog";
-
-    }
-
-    public interface back_section {
-
-        String _ITEM_NAME = "back_section";
-        String NAME = "name";
-        String CODE = "code";
 
     }
 
@@ -62,6 +47,7 @@ public class ItemNames {
     public interface cart {
 
         String _ITEM_NAME = "cart";
+        String ORDER_NUM = "order_num";
         String QTY = "qty";
         String SUM = "sum";
         String PROCESSED = "processed";
@@ -81,6 +67,8 @@ public class ItemNames {
         String _ITEM_NAME = "common";
         String TOP = "top";
         String LEFT = "left";
+        String LINK_TEXT = "link_text";
+        String LINK_LINK = "link_link";
         String BOTTOM = "bottom";
         String BOTTOM_ADDRESS = "bottom_address";
 
@@ -93,6 +81,28 @@ public class ItemNames {
         String MAP = "map";
         String BOTTOM_TEXT = "bottom_text";
         String TEXT_PIC = "text_pic";
+
+    }
+
+    public interface counter {
+
+        String _ITEM_NAME = "counter";
+        String COUNT = "count";
+
+    }
+
+    public interface custom_page {
+
+        String _ITEM_NAME = "custom_page";
+        String HEADER = "header";
+        String TEXT = "text";
+        String TEXT_PIC = "text_pic";
+
+    }
+
+    public interface custom_pages {
+
+        String _ITEM_NAME = "custom_pages";
 
     }
 
@@ -119,11 +129,29 @@ public class ItemNames {
 
     }
 
+    public interface feedback_form {
+
+        String _ITEM_NAME = "feedback_form";
+        String NAME = "name";
+        String PHONE = "phone";
+        String EMAIL = "email";
+        String MESSAGE = "message";
+
+    }
+
+    public interface feedback_params {
+
+        String _ITEM_NAME = "feedback_params";
+        String SERVER_FROM = "server_from";
+        String EMAIL_FROM = "email_from";
+        String EMAIL_FROM_PASSWORD = "email_from_password";
+        String ENCODING = "encoding";
+
+    }
+
     public interface main_page {
 
         String _ITEM_NAME = "main_page";
-        String LINK_TEXT = "link_text";
-        String LINK_LINK = "link_link";
 
     }
 
@@ -155,26 +183,9 @@ public class ItemNames {
 
     }
 
-    public interface parse_item {
+    public interface params {
 
-        String _ITEM_NAME = "parse_item";
-        String URL = "url";
-        String DOWNLOADED = "downloaded";
-        String PARSED = "parsed";
-        String GOT_FILES = "got_files";
-        String DUPLICATED = "duplicated";
-        String HTML = "html";
-        String XML = "xml";
-        String TEST_URL = "test_url";
-        String FILE = "file";
-
-    }
-
-    public interface parse_section {
-
-        String _ITEM_NAME = "parse_section";
-        String NAME = "name";
-        String ITEM_URLS = "item_urls";
+        String _ITEM_NAME = "params";
 
     }
 
@@ -183,25 +194,23 @@ public class ItemNames {
         String _ITEM_NAME = "product";
         String NAME = "name";
         String CODE = "code";
-        String MAIN_PIC = "main_pic";
+        String VENDOR_CODE = "vendor_code";
+        String OFFER_ID = "offer_id";
+        String AVAILABLE = "available";
+        String GROUP_ID = "group_id";
+        String URL = "url";
+        String CATEGORY_ID = "category_id";
+        String CURRENCY_ID = "currency_id";
+        String PRICE_ORIGINAL = "price_original";
         String PRICE = "price";
         String QTY = "qty";
-        String SHORT = "short";
+        String COUNTRY = "country";
+        String MAIN_PIC = "main_pic";
+        String DESCRIPTION = "description";
         String TEXT = "text";
-        String TECH = "tech";
-        String APPLY = "apply";
-        String ACCESSIORIES = "accessiories";
-        String SETS = "sets";
-        String PROBES = "probes";
-        String GALLERY = "gallery";
         String TEXT_PICS = "text_pics";
-        String VIDEO = "video";
-
-    }
-
-    public interface product_container {
-
-        String _ITEM_NAME = "product_container";
+        String GALLERY = "gallery";
+        String TAG = "tag";
 
     }
 
@@ -209,26 +218,10 @@ public class ItemNames {
 
         String _ITEM_NAME = "section";
         String NAME = "name";
-        String CODE = "code";
+        String CATEGORY_ID = "category_id";
+        String PARENT_ID = "parent_id";
         String MAIN_PIC = "main_pic";
-        String SHORT = "short";
-        String ITEM_URLS = "item_urls";
-
-    }
-
-    public interface tag_first {
-
-        String _ITEM_NAME = "tag_first";
-        String TAG = "tag";
-
-    }
-
-    public interface tag_second {
-
-        String _ITEM_NAME = "tag_second";
-        String NAME = "name";
-        String VALUE = "value";
-        String NAME_VALUE = "name_value";
+        String PARAMS_FILTER = "params_filter";
 
     }
 

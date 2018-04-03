@@ -64,6 +64,7 @@
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="fil"/>
+			<var name="tag"/>
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<list item="product" id="prod" transit="true">
@@ -76,6 +77,9 @@
 					<link name="filter_base_link" target="section">
 						<var name="sec" var="sec" style="translit"/>
 					</link>
+					<parameter name="tag" sign="=" compare="ANY">
+						<var var="tag"/>
+					</parameter>
 				</filter>
 				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="translit"/>
@@ -96,6 +100,9 @@
 					<var name="action" value="add"/>
 					<var name="src_page" value="compare_ajax"/>
 				</link>
+			</list>
+			<list item="product" tag="tag">
+				<aggregation parameter="tag"/>
 			</list>
 		</single>
 		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
@@ -653,15 +660,15 @@
 	<!--//                                                                                                  -->
 	<!--// Команда для получения HTML, его преобразования и скачивания файлов (в зависимости от параметров) -->
 	<!--//                                                                                                  -->
-	<page name="get_site" template="get_site" authority-groups="common">
-		<request>
-			<var name="action"/>
-			<var name="stage" value="INIT"/>
-		</request>
-		<command class="lunacrawler.SingleCrawlerCommand" clear-cache="no">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
+	<!--<page name="get_site" template="get_site" authority-groups="common">-->
+		<!--<request>-->
+			<!--<var name="action"/>-->
+			<!--<var name="stage" value="INIT"/>-->
+		<!--</request>-->
+		<!--<command class="lunacrawler.SingleCrawlerCommand" clear-cache="no">-->
+			<!--<result name="complete" type="xml"/>-->
+		<!--</command>-->
+	<!--</page>-->
 
 
 	<!--//                                                                          -->
@@ -672,6 +679,12 @@
 			<var name="action"/>
 		</request>
 		<command class="ecommander.fwk.integration.YMarketCreateCatalogCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<page name="create_prices" template="integration">
+		<command class="extra.IntegratePriceList" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

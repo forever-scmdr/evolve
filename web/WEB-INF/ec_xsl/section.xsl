@@ -9,6 +9,7 @@
 
 
 	<xsl:variable name="view" select="page/variables/view"/>
+	<xsl:variable name="tag" select="page/variables/tag"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
@@ -31,9 +32,16 @@
 		</div>
 		<h1><xsl:value-of select="$sel_sec/name"/></h1>
 		<div class="page-content m-t">
+
+			<div class="tags">
+				<form method="GET" action="{page/source_link}">
+					<xsl:apply-templates select="$sel_sec/tag"/>
+				</form>
+			</div>
+
 			<xsl:if test="$sel_sec/params_filter/filter">
 				<div class="toggle-filters">
-					<i class="fas fa-cog"></i> <a href="javascript:$('#filters_container').toggle('blind', 200)">Подбор по параметрам</a>
+					<i class="fas fa-cog"></i> <a onclick="$('#filters_container').toggle('blind', 200);">Подбор по параметрам</a>
 				</div>
 			</xsl:if>
 
@@ -135,6 +143,18 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
+	</xsl:template>
+
+	<xsl:template match="tag">
+		<label class="tag{if(current()/tag = $tag) then ' active' else ''}">
+			<xsl:if test="current()/tag = $tag">
+				<input type="checkbox" checked="checked" value="{tag}" name="tag" onchange="$(this).closest('form').submit();"/>
+			</xsl:if>
+			<xsl:if test="not(current()/tag = $tag)">
+				<input type="checkbox" value="{tag}"  name="tag" onchange="$(this).closest('form').submit();"/>
+			</xsl:if>
+			<xsl:value-of select="tag"/>
+		</label>
 	</xsl:template>
 
 </xsl:stylesheet>

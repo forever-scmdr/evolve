@@ -563,6 +563,7 @@
 			<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 			<link rel="stylesheet" href="fotorama/fotorama.css"/>
 			<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
+			<link rel="stylesheet" type="text/css" href="css/tag-fix.css"/>
 			<script defer="defer" src="js/font_awesome_all.js"/>
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 		</head>
@@ -592,6 +593,7 @@
 			<script type="text/javascript" src="slick/slick.min.js"></script>
 			<script type="text/javascript">
 				$(document).ready(function(){
+					$(".footer-placeholder").height($(".footer").outerHeight());
 					$('.slick-slider').slick({
 						infinite: true,
 						slidesToShow: 6,
