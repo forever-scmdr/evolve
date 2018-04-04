@@ -13,7 +13,7 @@
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
 
-
+	<xsl:variable name="active_menu_item"/>
 
 
 
@@ -64,19 +64,19 @@
 						</div>
 						<div class="main-menu">
 							<!-- <a href="{page/index_link}">Главная</a> -->
-							<a href="{page/catalog_link}" id="catalog_main_menu"><i class="fas fa-bars"/>Каталог</a>
-							<a href="{page/news_link}">Новости</a>
-							<a href="">Сотрудничестово</a>
-							<a href="">Оплата</a>
-							<a href="">Доставка</a>
-							<a href="">Покупателям</a>
+							<a href="{page/catalog_link}" id="catalog_main_menu" class="{'active'[$active_menu_item = 'catalog']}"><i class="fas fa-bars"/>Каталог</a>
+							<a href="{page/news_link}" class="{'active'[$active_menu_item = 'news']}">Новости</a>
+							<xsl:for-each select="page/menu_custom">
+								<xsl:variable name="key" select="@key"/>
+								<a href="{show_page}" class="{'active'[$active_menu_item = $key]}"><xsl:value-of select="header"/></a>
+							</xsl:for-each>
 							<!-- <a href="{page/articles_link}">Статьи</a>
 							<a href="">Наши проекты</a>
 							<a href="{page/dealers_link}">Дилеры</a>
 							<a href="/about">О компании</a>
 							<a href="{page/docs_link}">Документация</a>
 							 -->
-							 <a href="{page/contacts_link}">Контакты</a>
+							 <a href="{page/contacts_link}" class="{'active'[$active_menu_item = 'contacts']}">Контакты</a>
 						</div>
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 						 	<div class="sections">
@@ -224,14 +224,9 @@
 				</ul>
 				<ul>
 					<li><a href="{page/news_link}">Новости</a></li>
-					<li><a href="{page/articles_link}">Статьи</a></li>
-					<!--
-					<li><a href="">Наши проекты</a></li>
-					<li><a href="{page/dealers_link}">Дилеры</a></li>
-					-->
-					<li><a href="/about">О компании</a></li>
-					<li><a href="{page/docs_link}">Документация</a></li>
-					<li><a href="{page/contacts_link}">Контакты</a></li>
+					<xsl:for-each select="page/menu_custom">
+						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
+					</xsl:for-each>
 				</ul>
 			</div>
 		</div>
@@ -241,7 +236,7 @@
 			}
 
 			$(document).ready(function() {
-				$("#mobile_catalog_menu .content li a[rel!='']").click(function(event) {
+				$("#mobile_catalog_menu .content li a[rel]").click(function(event) {
 					event.preventDefault();
 					var menuItem = $(this);
 					var parentMenuContainer = menuItem.closest('.content');
@@ -298,7 +293,7 @@
 					<ul>
 						<xsl:for-each select="section">
 							<li>
-								<a href="{show_section}" rel="{if (section) then concat('#m_sub_', @id) else ''}"><xsl:value-of select="name"/></a>
+								<a href="{show_products}" rel="{if (section) then concat('#m_sub_', @id) else ''}"><xsl:value-of select="name"/></a>
 								<xsl:if test="section">
 									<i class="fas fa-chevron-right"></i>
 								</xsl:if>
@@ -311,7 +306,7 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_section}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>

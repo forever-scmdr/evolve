@@ -6,6 +6,8 @@
 
 	<xsl:variable name="p" select="page/custom_page"/>
 
+	<xsl:variable name="active_menu_item" select="$p/@key"/>
+
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
