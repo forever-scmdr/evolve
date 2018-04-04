@@ -6,7 +6,7 @@
 
 	<!-- <TITLE> -->
 	
-	<xsl:template name="TITLE">ЮКС</xsl:template>
+	<xsl:template name="TITLE">TTD.BY Спецтехника</xsl:template>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
@@ -66,10 +66,10 @@
 							<!-- <a href="{page/index_link}">Главная</a> -->
 							<a href="{page/catalog_link}" id="catalog_main_menu"><i class="fas fa-bars"/>Каталог</a>
 							<a href="{page/news_link}">Новости</a>
-							<a href="">Сотрудничестово</a>
-							<a href="">Оплата</a>
-							<a href="">Доставка</a>
-							<a href="">Покупателям</a>
+							<a href="sotrudnichestvo">Сотрудничестово</a>
+							<a href="oplata">Оплата</a>
+							<a href="dostavka">Доставка</a>
+							<a href="pokupatelyam">Покупателям</a>
 							<!-- <a href="{page/articles_link}">Статьи</a>
 							<a href="">Наши проекты</a>
 							<a href="{page/dealers_link}">Дилеры</a>
@@ -155,10 +155,10 @@
 								<!-- <xsl:value-of select="page/common/bottom_address" disable-output-escaping="yes"/> -->
 								<p>Мы в социальных сетях</p>
 								<div class="social">
-									<a href=""><i class="fab fa-vk" style="color: #4F73A6;" /></a>
-									<a href=""><i class="fab fa-facebook" style="color: #425796;" /></a>
-									<a href=""><i class="fab fa-youtube" style="color: #FF2000;" /></a>
-									<a href=""><i class="fab fa-odnoklassniki" style="color: #ED8410;" /></a>
+									<a href="https://vk.com/yuksmarket" target="_blank"><i class="fab fa-vk" style="color: #4F73A6;" /></a>
+									<!-- <a href=""><i class="fab fa-facebook" style="color: #425796;" /></a>
+									<a href=""><i class="fab fa-youtube" style="color: #FF2000;" /></a> -->
+									<a href="https://www.instagram.com/yuksmarket/" target="_blank"><i class="fab fa-instagram" style="color: #333;" /></a>
 								</div>
 							</div>
 						</div>
@@ -557,13 +557,12 @@
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<title><xsl:call-template name="TITLE"/></title>
-			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet" />
+			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 			<link rel="stylesheet" href="css/app.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 			<link rel="stylesheet" href="fotorama/fotorama.css"/>
 			<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
-			<link rel="stylesheet" type="text/css" href="css/tag-fix.css"/>
 			<script defer="defer" src="js/font_awesome_all.js"/>
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 		</head>
@@ -593,7 +592,7 @@
 			<script type="text/javascript" src="slick/slick.min.js"></script>
 			<script type="text/javascript">
 				$(document).ready(function(){
-					$(".footer-placeholder").height($(".footer").outerHeight());
+					$(".footer-placeholder").height($(".footer").outerHeight()+40);
 					$('.slick-slider').slick({
 						infinite: true,
 						slidesToShow: 6,

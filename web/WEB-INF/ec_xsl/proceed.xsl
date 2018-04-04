@@ -73,7 +73,7 @@
 							</label>
 						</div>
 						-->
-						<input type="submit" value="Отправить заказ"/>
+						<input type="submit" value="Отправить заявку"/>
 					</form>
 				</div>
 
@@ -152,7 +152,7 @@
 							</label>
 						</div>
 						-->
-						<input type="submit" value="Отправить заказ"/>
+						<input type="submit" value="Отправить заявку"/>
 					</form>
 				</div>
 			</div>

@@ -93,11 +93,10 @@
 
 	<xsl:template name="CONTENT">
 		<div class="slider-container">
-			<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40">
-				<img src="img/slide_1.jpg" />
-				<img src="img/slide_1.jpg" />
-				<img src="img/slide_1.jpg" />
-				<img src="img/slide_1.jpg" />
+			<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
+				<xsl:for-each select="page/main_page/main_slider_frame">
+					<img src="{@path}{pic}" />
+				</xsl:for-each>
 			</div>
 		</div>
 		<div class="actions mobile">
@@ -106,19 +105,17 @@
 				<a href="{page/main_page/link_link}"><xsl:value-of select="page/main_page/link_text"/></a>
 			</div>
 		</div>
+		
 		<div class="more-products">
 			<h4>Лидеры продаж</h4>
 			<div class="slick-slider catalog-items">
 				<div class="catalog-item">
 					<div class="tags">
 						<span>Акция</span>
-						<span>Скидка</span>
-						<span>Распродажа</span>
-						<span>Горячая цена</span>
 					</div>
 					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
 					<div>
-						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+						<a href="catalog_item.html">Вилочный погрузчик NISSAN NJ01M15</a>
 					</div>
 					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
@@ -138,13 +135,10 @@
 				<div class="catalog-item">
 					<div class="tags">
 						<span>Акция</span>
-						<span>Скидка</span>
-						<span>Распродажа</span>
-						<span>Горячая цена</span>
 					</div>
 					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
 					<div>
-						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+						<a href="catalog_item.html">Вилочный погрузчик NISSAN NJ01M15</a>
 					</div>
 					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
@@ -164,13 +158,10 @@
 				<div class="catalog-item">
 					<div class="tags">
 						<span>Акция</span>
-						<span>Скидка</span>
-						<span>Распродажа</span>
-						<span>Горячая цена</span>
 					</div>
 					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
 					<div>
-						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+						<a href="catalog_item.html">Вилочный погрузчик NISSAN NJ01M15</a>
 					</div>
 					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
@@ -190,13 +181,10 @@
 				<div class="catalog-item">
 					<div class="tags">
 						<span>Акция</span>
-						<span>Скидка</span>
-						<span>Распродажа</span>
-						<span>Горячая цена</span>
 					</div>
 					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
 					<div>
-						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+						<a href="catalog_item.html">Вилочный погрузчик NISSAN NJ01M15</a>
 					</div>
 					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
@@ -216,13 +204,10 @@
 				<div class="catalog-item">
 					<div class="tags">
 						<span>Акция</span>
-						<span>Скидка</span>
-						<span>Распродажа</span>
-						<span>Горячая цена</span>
 					</div>
 					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
 					<div>
-						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+						<a href="catalog_item.html">Вилочный погрузчик NISSAN NJ01M15</a>
 					</div>
 					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
@@ -242,13 +227,10 @@
 				<div class="catalog-item">
 					<div class="tags">
 						<span>Акция</span>
-						<span>Скидка</span>
-						<span>Распродажа</span>
-						<span>Горячая цена</span>
 					</div>
 					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
 					<div>
-						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+						<a href="catalog_item.html">Вилочный погрузчик NISSAN NJ01M15</a>
 					</div>
 					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
@@ -268,13 +250,10 @@
 				<div class="catalog-item">
 					<div class="tags">
 						<span>Акция</span>
-						<span>Скидка</span>
-						<span>Распродажа</span>
-						<span>Горячая цена</span>
 					</div>
 					<a href="catalog_item.html" class="image-container"><img src="img/no_image.png" alt="" /></a>
 					<div>
-						<a href="catalog_item.html">Газоанализатор testo 330-2LL</a>
+						<a href="catalog_item.html">Вилочный погрузчик NISSAN NJ01M15</a>
 					</div>
 					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
@@ -293,6 +272,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<!-- <div class="news">
 			<h3>Новости</h3>
 			<div class="news-container">
@@ -323,17 +303,41 @@
 		<!-- MAIN COLOUMNS END -->
 	</xsl:template>
 
-	<xsl:template name="BANNERS">
+	<!-- <xsl:template name="BANNERS">
 		<div class="container p-t">
 			<div class="row">
 				<div class="col-xs-12 banners">
-					<!-- <h3>Специальные предложения</h3> -->
 					<div class="banners-container">
 						<xsl:for-each select="page/main_page/main_promo_bottom">
 							<a href="{link}" style="background-image: url({@path}{pic})">
 								<h4><xsl:value-of select="text_big"/></h4>
 								<p><xsl:value-of select="text_small"/></p>
 							</a>
+						</xsl:for-each>
+					</div>
+				</div>
+			</div>
+		</div>
+	</xsl:template> -->
+
+	<xsl:template name="BANNERS">
+		<div class="container p-t">
+			<div class="row">
+				<div class="col-xs-12 banners">
+					<div class="banners-container">
+						<xsl:for-each select="page/main_page/main_promo_bottom">
+							<div style="background-image: url({@path}{pic})">
+								<div class="aspect-ratio"></div>
+								<a href="">
+									<h4><xsl:value-of select="text_big"/></h4>
+									<p><xsl:value-of select="text_small"/></p>
+								</a>
+							</div>
+
+							<!-- <a href="{link}" style="background-image: url({@path}{pic})">
+								<h4><xsl:value-of select="text_big"/></h4>
+								<p><xsl:value-of select="text_small"/></p>
+							</a> -->
 						</xsl:for-each>
 					</div>
 				</div>

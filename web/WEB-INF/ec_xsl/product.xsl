@@ -59,11 +59,11 @@
 						<form action="{$p/to_cart}" method="post">
 							<xsl:if test="$has_price">
 								<input type="number" name="qty" value="1" min="0"/>
-								<input type="submit" value="В корзину"/>
+								<input type="submit" value="Подать заявку"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
 								<input type="number" name="qty" value="1" min="0"/>
-								<input type="submit" class="not_available" value="Под заказ"/>
+								<input type="submit" class="not_available" value="Запросить цену"/>
 							</xsl:if>
 						</form>
 					</div>
