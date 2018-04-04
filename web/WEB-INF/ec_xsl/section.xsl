@@ -7,6 +7,7 @@
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
+	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
@@ -24,7 +25,7 @@
 				<a href="/">Главная страница</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{show_section}"><xsl:value-of select="name"/></a>
+					<a href="{if (position() = 1) then show_section else show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -33,7 +34,7 @@
 		<div class="page-content m-t">
 			<xsl:if test="$sel_sec/params_filter/filter">
 				<div class="toggle-filters">
-					<i class="fas fa-cog"></i> <a href="javascript:$('#filters_container').toggle('blind', 200)">Подбор по параметрам</a>
+					<i class="fas fa-cog"></i> <a href="#" onclick="$('#filters_container').toggle('blind', 200); return false;">Подбор по параметрам</a>
 				</div>
 			</xsl:if>
 

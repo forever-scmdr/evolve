@@ -8,6 +8,8 @@
 	</xsl:template>
 
 
+	<xsl:variable name="active_menu_item" select="'catalog'"/>
+
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="products" select="page/product"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
