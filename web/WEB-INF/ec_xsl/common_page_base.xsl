@@ -6,14 +6,14 @@
 
 	<!-- <TITLE> -->
 	
-	<xsl:template name="TITLE">TTD.BY Спецтехника</xsl:template>
+	<xsl:template name="TITLE">ЮКС</xsl:template>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
 
-
+	<xsl:variable name="active_menu_item"/>
 
 
 
@@ -64,19 +64,19 @@
 						</div>
 						<div class="main-menu">
 							<!-- <a href="{page/index_link}">Главная</a> -->
-							<a href="{page/catalog_link}" id="catalog_main_menu"><i class="fas fa-bars"/>Каталог</a>
-							<a href="{page/news_link}">Новости</a>
-							<a href="sotrudnichestvo">Сотрудничестово</a>
-							<a href="oplata">Оплата</a>
-							<a href="dostavka">Доставка</a>
-							<a href="pokupatelyam">Покупателям</a>
+							<a href="{page/catalog_link}" id="catalog_main_menu" class="{'active'[$active_menu_item = 'catalog']}"><i class="fas fa-bars"/>Каталог</a>
+							<a href="{page/news_link}" class="{'active'[$active_menu_item = 'news']}">Новости</a>
+							<xsl:for-each select="page/menu_custom">
+								<xsl:variable name="key" select="@key"/>
+								<a href="{show_page}" class="{'active'[$active_menu_item = $key]}"><xsl:value-of select="header"/></a>
+							</xsl:for-each>
 							<!-- <a href="{page/articles_link}">Статьи</a>
 							<a href="">Наши проекты</a>
 							<a href="{page/dealers_link}">Дилеры</a>
 							<a href="/about">О компании</a>
 							<a href="{page/docs_link}">Документация</a>
 							 -->
-							 <a href="{page/contacts_link}">Контакты</a>
+							 <a href="{page/contacts_link}" class="{'active'[$active_menu_item = 'contacts']}">Контакты</a>
 						</div>
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 						 	<div class="sections">
@@ -155,10 +155,10 @@
 								<!-- <xsl:value-of select="page/common/bottom_address" disable-output-escaping="yes"/> -->
 								<p>Мы в социальных сетях</p>
 								<div class="social">
-									<a href="https://vk.com/yuksmarket" target="_blank"><i class="fab fa-vk" style="color: #4F73A6;" /></a>
-									<!-- <a href=""><i class="fab fa-facebook" style="color: #425796;" /></a>
-									<a href=""><i class="fab fa-youtube" style="color: #FF2000;" /></a> -->
-									<a href="https://www.instagram.com/yuksmarket/" target="_blank"><i class="fab fa-instagram" style="color: #333;" /></a>
+									<a href=""><i class="fab fa-vk" style="color: #4F73A6;" /></a>
+									<a href=""><i class="fab fa-facebook" style="color: #425796;" /></a>
+									<a href=""><i class="fab fa-youtube" style="color: #FF2000;" /></a>
+									<a href=""><i class="fab fa-odnoklassniki" style="color: #ED8410;" /></a>
 								</div>
 							</div>
 						</div>
@@ -224,14 +224,9 @@
 				</ul>
 				<ul>
 					<li><a href="{page/news_link}">Новости</a></li>
-					<li><a href="{page/articles_link}">Статьи</a></li>
-					<!--
-					<li><a href="">Наши проекты</a></li>
-					<li><a href="{page/dealers_link}">Дилеры</a></li>
-					-->
-					<li><a href="/about">О компании</a></li>
-					<li><a href="{page/docs_link}">Документация</a></li>
-					<li><a href="{page/contacts_link}">Контакты</a></li>
+					<xsl:for-each select="page/menu_custom">
+						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
+					</xsl:for-each>
 				</ul>
 			</div>
 		</div>
@@ -241,7 +236,7 @@
 			}
 
 			$(document).ready(function() {
-				$("#mobile_catalog_menu .content li a[rel!='']").click(function(event) {
+				$("#mobile_catalog_menu .content li a[rel]").click(function(event) {
 					event.preventDefault();
 					var menuItem = $(this);
 					var parentMenuContainer = menuItem.closest('.content');
@@ -298,7 +293,7 @@
 					<ul>
 						<xsl:for-each select="section">
 							<li>
-								<a href="{show_section}" rel="{if (section) then concat('#m_sub_', @id) else ''}"><xsl:value-of select="name"/></a>
+								<a href="{show_products}" rel="{if (section) then concat('#m_sub_', @id) else ''}"><xsl:value-of select="name"/></a>
 								<xsl:if test="section">
 									<i class="fas fa-chevron-right"></i>
 								</xsl:if>
@@ -311,7 +306,7 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_section}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
@@ -557,12 +552,13 @@
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<title><xsl:call-template name="TITLE"/></title>
-			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
+			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet" />
 			<link rel="stylesheet" href="css/app.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 			<link rel="stylesheet" href="fotorama/fotorama.css"/>
 			<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
+			<link rel="stylesheet" type="text/css" href="css/tag-fix.css"/>
 			<script defer="defer" src="js/font_awesome_all.js"/>
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 		</head>
@@ -592,7 +588,7 @@
 			<script type="text/javascript" src="slick/slick.min.js"></script>
 			<script type="text/javascript">
 				$(document).ready(function(){
-					$(".footer-placeholder").height($(".footer").outerHeight()+40);
+					$(".footer-placeholder").height($(".footer").outerHeight());
 					$('.slick-slider').slick({
 						infinite: true,
 						slidesToShow: 6,
