@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
+	<xsl:import href="login_form_ajax.xsl"/>
+	<xsl:import href="personal_ajax.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
@@ -48,19 +50,7 @@
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Корзина пуста</strong></p>
 							</div>
-							<div class="user">
-								<p><i class="fas fa-lock"/>
-									<!--<a href="" data-toggle="modal" data-target="#modal-login">Вход</a> / <a href="registration.html">Регистрация</a>-->
-									<a href="javascript:alert('Функция временно отключена')">Вход</a> /
-									<a href="javascript:alert('Функция временно отключена')">Регистрация</a>
-								</p>
-								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
-									<p><i class="fas fa-star"/> <a href="">&#160;</a></p>
-								</div>
-								<div id="compare_ajax" ajax-href="{page/compare_ajax_link}">
-									<p><i class="fas fa-balance-scale"/> <a href="compare.html">&#160;</a></p>
-								</div>
-							</div>
+							<xsl:call-template name="PERSONAL_DESKTOP"/>
 						</div>
 						<div class="main-menu">
 							<!-- <a href="{page/index_link}">Главная</a> -->
@@ -170,29 +160,7 @@
 
 		<!-- MODALS BEGIN -->
 		<!-- modal login -->
-		<div class="modal fade" tabindex="-1" role="dialog" id="modal-login">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
-						<h4 class="modal-title">Вход</h4>
-					</div>
-					<div class="modal-body">
-						<form action="" method="post">
-							<div class="form-group">
-								<label for="">Электронная почта:</label>
-								<input type="text" class="form-control" id=""/>
-							</div>
-							<div class="form-group">
-								<label for="">Пароль:</label>
-								<input type="password" class="form-control" id=""/>
-							</div>
-							<input type="submit" name="" value="Отправить заказ"/>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+		<xsl:call-template name="LOGIN_FORM"/>
 
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
@@ -208,10 +176,7 @@
 			<div class="content">
 				<ul>
 					<li>
-						<i class="fas fa-lock"></i>
-						<!--<a href="" data-toggle="modal" data-target="#modal-login">Вход</a> / <a href="registration.html">Регистрация</a>-->
-						<a href="javascript:alert('Функция временно отключена')">Вход</a> /
-						<a href="javascript:alert('Функция временно отключена')">Регистрация</a>
+						<xsl:call-template name="PERSONAL_MOBILE"/>
 					</li>
 				</ul>
 				<ul>

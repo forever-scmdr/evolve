@@ -25,7 +25,7 @@
 		<single item="common" cacheable="false"/>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
-		<link name="news_link" target="news"/>
+		<link name="news_link"  target="news"/>
 		<link name="articles_link" target="articles"/>
 		<link name="dealers_link" target="dealers"/>
 		<link name="docs_link" target="docs"/>
@@ -36,6 +36,9 @@
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
+		<link name="register_link" target="register"/>
+		<link name="login_form_link" target="login_form_ajax"/>
+		<link name="personal_ajax_link" target="personal_ajax"/>
 	</include-definition>
 
 
@@ -651,24 +654,102 @@
 	</page>
 
 
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                            РЕГИСТРАЦИЯ                               ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+
+	<page name="register" template="register">
+		<request>
+			<var name="message"/>
+			<var name="success" />
+		</request>
+		<new item="user_phys" id="user_phys">
+			<parameter-input ref="user_phys" form="register"/>
+		</new>
+		<new item="user_jur" id="user_jur">
+			<parameter-input ref="user_jur" form="register"/>
+		</new>
+		<link name="confirm_link" target="register_action" type="itemform">
+			<var name="action" value="register"/>
+		</link>
+		<include name="COMMON"/>
+	</page>
+
+
+	<page name="register_action">
+		<request>
+			<var name="action"/>
+		</request>
+		<link name="not_set" target="register">
+			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
+		</link>
+		<link name="user_exists" target="register">
+			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
+		</link>
+		<link name="success" target="register">
+			<var name="message" value="Вы успешно зарегистрированы, спасибо"/>
+			<var name="success" value="true"/>
+		</link>
+		<link name="login" target="login_form_ajax">
+			<var name="success" value="true"/>
+		</link>
+		<link name="login_error" target="login_form_ajax">
+			<var name="message" value="Неверные логин/пароль"/>
+			<var name="success" value="false"/>
+		</link>
+		<command class="extra.RegisterCommand" method-var="action">
+			<result name="not_set" type="redirect"/>
+			<result name="user_exists" type="redirect"/>
+			<result name="success" type="redirect"/>
+		</command>
+	</page>
+
+
+	<page name="login_form_ajax" template="login_form_ajax">
+		<request>
+			<var name="message"/>
+		</request>
+		<link name="submit_form" target="register_action">
+			<var name="action" value="login"/>
+		</link>
+	</page>
+
+
+	<page name="personal_ajax" template="personal_ajax">
+		<link name="personal_link" target="personal"/>
+		<link name="purchase_history_link" target="purchase_history"/>
+		<link name="register_link" target="register"/>
+	</page>
+
+
+	<page name="personal">
+		<personal>
+			<single item="user" id="user">
+				<parameter-input ref="user"/>
+				<extra-input name="new-password" ref="user"/>
+			</single>
+		</personal>
+	</page>
+
+
+	<page name="purchase_history">
+
+	</page>
+
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             ПАРСИНГ                                  ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
-	<!--//                                                                                                  -->
-	<!--// Команда для получения HTML, его преобразования и скачивания файлов (в зависимости от параметров) -->
-	<!--//                                                                                                  -->
-	<page name="get_site" template="get_site" authority-groups="common">
-		<request>
-			<var name="action"/>
-			<var name="stage" value="INIT"/>
-		</request>
-		<command class="lunacrawler.SingleCrawlerCommand" clear-cache="no">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
 
 
 	<!--//                                                                          -->

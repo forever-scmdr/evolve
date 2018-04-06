@@ -8,28 +8,28 @@ import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Product
+public class Ym_product
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "product";
+    private final static String _ITEM_TYPE_NAME = "ym_product";
 
-    private Product(Item item) {
+    private Ym_product(Item item) {
         super(item);
     }
 
-    public static Product get(Item item) {
+    public static Ym_product get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'product' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'ym_product' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Product(item);
+        return new Ym_product(item);
     }
 
-    public static Product newChild(Item parent) {
+    public static Ym_product newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 
@@ -47,22 +47,6 @@ public class Product
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
-    }
-
-    public void set_code(String value) {
-        setValue("code", value);
-    }
-
-    public String get_code() {
-        return getStringValue("code");
-    }
-
-    public String getDefault_code(String defaultVal) {
-        return getStringValue("code", defaultVal);
-    }
-
-    public boolean contains_code(String value) {
-        return containsValue("code", value);
     }
 
     public void set_vendor_code(String value) {
@@ -225,28 +209,6 @@ public class Product
 
     public boolean contains_price(BigDecimal value) {
         return containsValue("price", value);
-    }
-
-    public void set_qty(Double value) {
-        setValue("qty", value);
-    }
-
-    public void setUI_qty(String value)
-        throws Exception
-    {
-        setValueUI("qty", value);
-    }
-
-    public Double get_qty() {
-        return getDoubleValue("qty");
-    }
-
-    public Double getDefault_qty(Double defaultVal) {
-        return getDoubleValue("qty", defaultVal);
-    }
-
-    public boolean contains_qty(Double value) {
-        return containsValue("qty", value);
     }
 
     public void set_country(String value) {

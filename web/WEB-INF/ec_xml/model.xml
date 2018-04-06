@@ -79,7 +79,8 @@
 
 
 
-	<item name="bought" caption="Покупка" virtual="true" ag-id="16" ag-hash="-1383211797">
+	<item name="bought" caption="Покупка" virtual="true" key="code" ag-id="16" ag-hash="-1383211797">
+		<parameter name="name" type="string" caption="Наименование товара" description="не обязательно. Используется только в истории заказов"/>
 		<parameter name="code" type="string" caption="Код товара"/>
 		<parameter name="qty" type="double" caption="Количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
@@ -95,10 +96,37 @@
 		<child item="bought"/>
 	</item>
 
-	<item name="user_jur" virtual="true" caption="Юридическое лицо" ag-id="23" ag-hash="-266151405">
+	<item name="counter" caption="Счетчик номера договора" ag-id="29" ag-hash="957830652">
+		<parameter name="count" type="integer" caption="Счетчик"/>
+	</item>
+
+	<!--/////////////                            END КОРЗИНА                               ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                             РЕГИСТРАЦИЯ                              ////////////-->
+
+	<item name="purchase" caption="Заказ" key="num" ag-id="1190" ag-hash="1743324417">
+		<parameter name="num" caption="Номер" type="string"/>
+		<parameter name="date" caption="Дата" type="date"/>
+		<parameter name="qty" type="double" caption="Количество товаров"/>
+		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<child item="bought"/>
+	</item>
+
+	<item name="user" caption="Зарегистрированный пользователь" key="email" ag-id="1191" ag-hash="3599307">
+		<parameter name="email" type="string" caption="E-mail"/>
+		<parameter name="password" type="string" caption="Пароль"/>
+		<child item="purchase"/>
+	</item>
+
+	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
 		<parameter name="organization" type="string" caption="Наименование организации" />
 		<parameter name="phone" type="string" caption="Телефон/факс" />
-		<parameter name="email" type="string" caption="E-mail" />
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />
 		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />
 		<parameter name="email" type="string" caption="E-mail" />
@@ -117,23 +145,24 @@
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
-	<item name="user_phys" virtual="true" caption="Физическое лицо" ag-id="24" ag-hash="339407622" >
+	<item name="user_phys" caption="Физическое лицо" super="user" ag-id="24" ag-hash="339407622" >
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
-		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="address" type="string" caption="Адрес" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
 
-	<item name="counter" caption="Счетчик номера договора" ag-id="29" ag-hash="957830652">
-		<parameter name="count" type="integer" caption="Счетчик"/>
+	<item name="registered_catalog" caption="Каталог пользователей" ag-id="1192" ag-hash="-755203236">
+		<child item="user"/>
 	</item>
 
-	<!--/////////////                            END КОРЗИНА                               ////////////-->
+
+	<!--/////////////                            END РЕГИСТРАЦИЯ                           ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
 
 
 
@@ -234,6 +263,7 @@
 		<child item="contacts" single="true"/>
 		<child item="common" single="true"/>
 		<child item="custom_pages" single="true"/>
+		<child item="registered_catalog" single="true"/>
 		<child item="counter" single="true" virtual="true"/>
 	</root>
 

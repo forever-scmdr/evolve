@@ -57,8 +57,9 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 				ArrayList<SingleParameter> params = new ArrayList<>();
 				params.addAll(item.getParamValues(paramDesc.getName()));
 				ArrayList<String> newValues = new ArrayList<>();
-				for (SingleParameter param : params) {
-					//-- Надо решить удалять файл или нет если занчение параметра null
+				for (int i = 0; i < params.size(); i++) {
+					SingleParameter param = params.get(i);
+					//-- Надо решить удалять файл или нет если значение параметра null
 					Object value = param.getValue();
 					if (value == null)
 						continue;
@@ -93,9 +94,13 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 						File newFile = new File( fileDirectoryName + fileName);
 						// Удаление файла, если он уже есть
 						if (newFile.exists()) {
+							/*
 							if (!newFile.canWrite())
 								throw new FileException("File '" + newFile.getName() + "' is write protected");
 							newFile.delete();
+							*/
+							fileName = decorateFileName(paramDesc, i, fileName);
+							newFile = new File( fileDirectoryName + fileName);
 						}
 						try {
 							if (isUploaded)
@@ -132,6 +137,17 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 		for (File file : files) {
 			ServerLogger.debug("Deleting file '" + file.getAbsolutePath() + "' - " + FileUtils.deleteQuietly(file));
 		}
+	}
+
+	private String decorateFileName(ParameterDescription param, int index, String fileName) {
+		String beforeDot = StringUtils.substringBeforeLast(fileName, ".");
+		String afterDot = StringUtils.substringAfterLast(fileName, ".");
+		String newFileName = param.getName() + "_" + beforeDot;
+		if (index > 0)
+			newFileName += "_" + index;
+		if (StringUtils.isNotBlank(afterDot))
+			newFileName += "." + afterDot;
+		return newFileName;
 	}
 
 	public static void main(String[] args) {

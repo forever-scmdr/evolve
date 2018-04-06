@@ -846,6 +846,19 @@ public class Item implements ItemBasics {
 	}
 
 	/**
+	 * Установить владельца для нового айтема
+	 * Это может понабобиться в случае если айтем был создан с помощью формы
+	 * @param groupId
+	 * @param userId
+	 */
+	public final void setOwner(byte groupId, int userId) {
+		if (!isNew())
+			throw new IllegalStateException("Impossible to set owner of an already existing item");
+		this.ownerGroupId = groupId;
+		this.ownerUserId = userId;
+	}
+
+	/**
 	 * @see Object#toString()
 	 */
 	public final String toString() {
