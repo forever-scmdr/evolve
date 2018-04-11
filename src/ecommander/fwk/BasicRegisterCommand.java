@@ -1,11 +1,12 @@
 package ecommander.fwk;
 
-import ecommander.controllers.LoginServlet;
 import ecommander.model.*;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewUserDBUnit;
+import ecommander.persistence.commandunits.UpdateUserDBUnit;
+import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Connection;
@@ -22,6 +23,7 @@ public abstract class BasicRegisterCommand extends Command {
 	public static final String PASSWORD_PARAM = "password";
 
 	public static final String REGISTERED_GROUP = "registered";
+	public static final String USER_ITEM = "user";
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -32,9 +34,12 @@ public abstract class BasicRegisterCommand extends Command {
 		if (!validate()) {
 			return getResult("not_set");
 		}
+		Item form = getItemForm().getTransientSingleItem();
+		if (form.isValueEmpty(PASSWORD_PARAM)) {
+			return getResult("not_set");
+		}
 		Item catalog = ItemUtils.ensureSingleRootItem(REGISTERED_CATALOG_ITEM, User.getDefaultUser(),
 				UserGroupRegistry.getGroup(REGISTERED_GROUP), User.ANONYMOUS_ID);
-		Item form = getItemForm().getSingleItem();
 		String userName = form.getStringValue(EMAIL_PARAM);
 		String password = form.getStringValue(PASSWORD_PARAM);
 		User newUser = new User(userName, password, "registered user", User.ANONYMOUS_ID);
@@ -62,6 +67,15 @@ public abstract class BasicRegisterCommand extends Command {
 			}
 			if (user != null) {
 				startUserSession(user);
+				Item userItem = new ItemQuery(USER_ITEM).setUser(user).loadFirstItem();
+				if (userItem != null) {
+					// Удалить старый айтем из сеанса и сохранить новый
+					Item oldUserItem = getSessionMapper().getSingleRootItemByName(USER_ITEM);
+					if (oldUserItem != null)
+						getSessionMapper().removeItems(oldUserItem.getId());
+					userItem.setContextPrimaryParentId(Item.DEFAULT_ID);
+					getSessionMapper().saveTemporaryItem(userItem);
+				}
 				return getResult("login");
 			} else {
 				return getResult("login_error");
@@ -72,6 +86,39 @@ public abstract class BasicRegisterCommand extends Command {
 		}
 	}
 
+
+	public ResultPE update() throws Exception {
+		if (!validate()) {
+			return getResult("not_set_personal");
+		}
+		Item form = getItemForm().getTransientSingleItem();
+		boolean changeUser = false;
+		User user = getInitiator();
+		String pass1 = form.getStringExtra("new-password-1");
+		String pass2 = form.getStringExtra("new-password-2");
+		if (StringUtils.isNotBlank(pass1)) {
+			if (!StringUtils.equals(pass1, pass2)) {
+				return getResult("passwords_not_match_error");
+			}
+			user.setNewPassword(pass1);
+			changeUser = true;
+		}
+		if (!StringUtils.equalsIgnoreCase(user.getName(), form.getStringValue(EMAIL_PARAM))) {
+			user.setNewName(form.getStringValue(EMAIL_PARAM));
+			changeUser = true;
+		}
+		if (changeUser) {
+			try {
+				executeAndCommitCommandUnits(new UpdateUserDBUnit(user, false));
+			} catch (UserExistsExcepion e) {
+				return getResult("user_exists_personal");
+			}
+		}
+		Item userItem = ItemQuery.loadById(form.getId());
+		Item.updateParamValues(form, userItem);
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(userItem));
+		return getResult("success_personal");
+	}
 
 	protected abstract boolean validate() throws Exception;
 }
