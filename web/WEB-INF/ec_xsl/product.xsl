@@ -22,7 +22,7 @@
 				<a href="/">Главная страница</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{if (position() = 1) then show_section else show_products}"><xsl:value-of select="name"/></a>
+					<a href="{show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -61,11 +61,11 @@
 					<div id="cart_list_{$p/code}" class="product_purchase_container">
 						<form action="{$p/to_cart}" method="post">
 							<xsl:if test="$has_price">
-								<input type="number" name="qty" value="1" min="0"/>
+								<input type="hidden" name="qty" value="1" min="0"/>
 								<input type="submit" value="Подать заявку"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
-								<input type="number" name="qty" value="1" min="0"/>
+								<input type="hidden" name="qty" value="1" min="0"/>
 								<input type="submit" class="not_available" value="Запросить цену"/>
 							</xsl:if>
 						</form>
@@ -87,7 +87,7 @@
 				-->
 				<div class="info-blocks">
 					<div class="info-block">
-						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
+						<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
 					</div>
 					<!--
 					<div class="info-block">

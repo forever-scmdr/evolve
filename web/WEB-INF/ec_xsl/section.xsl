@@ -26,7 +26,7 @@
 				<a href="/">Главная страница</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{show_section}"><xsl:value-of select="name"/></a>
+					<a href="{if(section) then show_section else show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -109,8 +109,8 @@
 						<span>
 							<select class="form-control" value="{page/variables/limit}"
 							        onchange="window.location.href = $(this).find(':selected').attr('link')">
-								<option value="12" link="{page/set_limit_12}">12</option>
 								<option value="24" link="{page/set_limit_24}">24</option>
+								<option value="48" link="{page/set_limit_48}">48</option>
 								<option value="10000" link="{page/set_limit_all}">все</option>
 							</select>
 						</span>
@@ -149,10 +149,10 @@
 	<xsl:template match="tag">
 		<label class="tag{if(current()/tag = $tag) then ' active' else ''}">
 			<xsl:if test="current()/tag = $tag">
-				<input type="checkbox" checked="checked" value="{tag}" name="tag" onchange="$(this).closest('form').submit();"/>
+				<input type="radio" checked="checked" value="{tag}" name="tag" onchange="$(this).closest('form').submit();"/>
 			</xsl:if>
 			<xsl:if test="not(current()/tag = $tag)">
-				<input type="checkbox" value="{tag}"  name="tag" onchange="$(this).closest('form').submit();"/>
+				<input type="radio" value="{tag}"  name="tag" onchange="$(this).closest('form').submit();"/>
 			</xsl:if>
 			<xsl:value-of select="tag"/>
 		</label>

@@ -102,11 +102,11 @@
 		<div class="actions mobile">
 			<h3>Акции</h3>
 			<div class="actions-container">
-				<a href="{page/main_page/link_link}"><xsl:value-of select="page/main_page/link_text"/></a>
+				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 			</div>
 		</div>
-		
-		<div class="more-products">
+
+		<!-- <div class="more-products">
 			<h4>Лидеры продаж</h4>
 			<div class="slick-slider catalog-items">
 				<div class="catalog-item">
@@ -271,8 +271,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		
+		</div> -->
+
 		<!-- <div class="news">
 			<h3>Новости</h3>
 			<div class="news-container">
@@ -291,7 +291,7 @@
 			<div class="row">
 
 				<!-- RIGHT COLOUMN BEGIN -->
-				<div class="col-md-12 col-xs-12 main-content"> 
+				<div class="col-md-12 col-xs-12 main-content">
 					<div class="mc-container">
 						<xsl:call-template name="INC_MOBILE_HEADER"/>
 						<xsl:call-template name="CONTENT"/>
@@ -321,17 +321,19 @@
 	</xsl:template> -->
 
 	<xsl:template name="BANNERS">
-		<div class="container p-t">
+		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 banners">
 					<div class="banners-container">
 						<xsl:for-each select="page/main_page/main_promo_bottom">
-							<div style="background-image: url({@path}{pic})">
-								<div class="aspect-ratio"></div>
-								<a href="">
-									<h4><xsl:value-of select="text_big"/></h4>
-									<p><xsl:value-of select="text_small"/></p>
-								</a>
+							<div>
+								<div>
+									<div class="aspect-ratio" style="background-image: url({@path}{pic})"></div>
+									<a href="{link}">
+										<h4><xsl:value-of select="text_big"/></h4>
+									</a>
+								</div>
+								<p><xsl:value-of select="text_small"/></p>
 							</div>
 
 							<!-- <a href="{link}" style="background-image: url({@path}{pic})">

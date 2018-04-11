@@ -69,7 +69,7 @@
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
-			<var name="limit" value="12" scope="cookie"/>
+			<var name="limit" value="24" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="fil"/>
@@ -109,6 +109,7 @@
 					<var name="action" value="add"/>
 					<var name="src_page" value="compare_ajax"/>
 				</link>
+				<single item="params"/>
 			</list>
 			<list item="product" tag="tag">
 				<aggregation parameter="tag"/>
@@ -125,6 +126,9 @@
 		</link>
 		<link name="set_limit_24" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="24"/>
+		</link>
+		<link name="set_limit_48" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="48"/>
 		</link>
 		<link name="set_limit_all" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="300"/>
@@ -187,7 +191,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="30" compare="EVERY"><var var="q"/></fulltext>
+				<fulltext limit="48" compare="EVERY"><var var="q"/></fulltext>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="translit"/>
@@ -208,6 +212,7 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
+			<single item="params"/>
 		</list>
 		<link name="set_view_table" target="search" copy-page-vars="yes">
 			<var name="view" value="table"/>
@@ -653,6 +658,7 @@
 				<var name="action" value="addToCart"/>
 				<var name="code" ref="prod" parameter="code"/>
 			</link>
+			<single item="params"/>
 		</list>
 		<include name="COMMON"/>
 	</page>

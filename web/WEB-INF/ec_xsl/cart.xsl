@@ -27,12 +27,12 @@
 									<img src="{$p/@path}{$p/main_pic}" alt=""/>
 								</a>
 								<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
-								<div class="price one"><p><span>Цена за ед.</span><xsl:value-of select="$price"/></p></div>
+								<div class="price one"><p><span>Цена</span><xsl:value-of select="$price"/></p></div>
 								<div class="quantity">
-									<span>Кол-во</span>
-									<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
+									<!-- <span>Кол-во</span> -->
+									<input type="hidden" value="{qty}" name="{input/qty/@input}" min="0"/>
 								</div>
-								<div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div>
+								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
 								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
 							</div>
 						</xsl:for-each>
