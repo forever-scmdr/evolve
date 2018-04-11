@@ -46,7 +46,7 @@ public class WebClient {
 				});
 	}
 
-	public static void saveFile(String url, String dirName, String...proxy) throws IOException {
+	public static void saveFile(String url, String dirName, String saveAs, String...proxy) throws IOException {
 		Request req = Request.Get(url)
 				.addHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
 		if (proxy.length > 0 && StringUtils.isNotBlank(proxy[0])) {
@@ -67,7 +67,10 @@ public class WebClient {
 					if (!StringUtils.endsWith(fileDirName, "/"))
 						fileDirName += "/";
 					URL urlUrl = new URL(url);
-					File file = new File(fileDirName + Strings.getFileName(urlUrl.getPath()));
+					String newFileName = saveAs;
+					if (StringUtils.isBlank(newFileName))
+						newFileName = Strings.getFileName(urlUrl.getPath());
+					File file = new File(fileDirName + newFileName);
 					FileUtils.copyInputStreamToFile(entity.getContent(), file);
 					return true;
 				});

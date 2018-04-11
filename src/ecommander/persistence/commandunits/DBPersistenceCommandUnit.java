@@ -166,7 +166,8 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 		for (User.Group group : user.getGroups()) {
 			newUserGroups.add(group.name);
 		}
-		if (justGroups) {
+		boolean isUpdatingSelf = admin.getUserId() == user.getUserId();
+		if (justGroups || isUpdatingSelf) {
 			HashSet<String> addedGroups = new HashSet<>(newUserGroups);
 			addedGroups.removeAll(oldUserGroups);
 			HashSet<String> removedGroups = new HashSet<>(oldUserGroups);

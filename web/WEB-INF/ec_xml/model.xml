@@ -35,7 +35,7 @@
 	<!--Товар из магазина yandex market-->
 	<item name="product" key="name vendor_code" caption="Продукт" extendable="false" key-unique="true" default-page="product" ag-id="6" ag-hash="-309474065">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
-		<parameter name="code" type="string" caption="Уникаьный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
+		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>

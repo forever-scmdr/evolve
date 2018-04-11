@@ -133,7 +133,8 @@ public class UpdateUserDBUnit extends DBPersistenceCommandUnit implements DBCons
 					.UPDATE(USER_TBL).SET()
 					.col(U_LOGIN).string(user.getName())
 					._col(U_PASSWORD).string(user.getPassword())
-					._col(U_DESCRIPTION).string(user.getDescription());
+					._col(U_DESCRIPTION).string(user.getDescription())
+					.WHERE().col(U_ID).int_(user.getUserId());
 			try (PreparedStatement pstmt = updateUser.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();
 			}

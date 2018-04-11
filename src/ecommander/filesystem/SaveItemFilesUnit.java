@@ -108,7 +108,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 							else if (isDirect)
 								Files.copy(((File) value).toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 							else if (isUrl)
-								WebClient.saveFile(value.toString(), fileDirectoryName);
+								WebClient.saveFile(value.toString(), fileDirectoryName, fileName);
 						} catch (Exception e) {
 							ServerLogger.error("File error", e);
 							throw new FileException("File '" + newFile.getName() + "' has not been moved successfully");
