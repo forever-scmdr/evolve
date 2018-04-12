@@ -223,8 +223,13 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="modules" caption="Метрики, чаты и.т.д">
+	<item name="modules" caption="Метрики, чаты и.т.д" ag-id="47" ag-hash="1227433863">
+		<child item="named_code"/>
+	</item>
 
+	<item name="named_code" key="name" caption="Модуль" ag-id="48" ag-hash="-281007309">
+		<parameter name="name" type="string" caption="Имя"/>
+		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
 	</item>
 
 
@@ -239,6 +244,7 @@
 		<child item="contacts" single="true"/>
 		<child item="common" single="true"/>
 		<child item="custom_pages" single="true"/>
+		<child item="modules" single="true"/>
 		<child item="counter" single="true" virtual="true"/>
 	</root>
 
