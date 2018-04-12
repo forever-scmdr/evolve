@@ -12,7 +12,7 @@
 		<div class="path-container">
 			<div class="path">
 				<a href="/">Главная страница</a> &gt;
-				<a href="{page/cart_link}">Изменить заказ</a> &gt;
+				<a href="{page/cart_link}">Изменить зявку</a> &gt;
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -33,7 +33,7 @@
 
 
 				<div role="tabpanel" class="tab-pane{' active'[not($is_jur)]}" id="tab_phys">
-					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заказа.</p>
+					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заявки.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
 						<div class="form-group">
@@ -44,7 +44,7 @@
 							<label for="">Адрес:</label>
 							<input type="text" class="form-control" name="{$inp/address/@input}" value="{$inp/address}" error="{$inp/address/@validation-error}"/>
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label>Способ доставки <a href="">Подробнее об условиях доставки</a></label>
 							<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">
 								<option>1</option>
@@ -53,7 +53,7 @@
 								<option>4</option>
 								<option>5</option>
 							</select>
-						</div>
+						</div> -->
 						<div class="form-group">
 							<label>Телефон:</label>
 							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}" error="{$inp/phone/@validation-error}"/>
@@ -79,7 +79,7 @@
 
 
 				<div role="tabpanel" class="tab-pane{' active'[$is_jur]}" id="tab_jur">
-					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заказа.</p>
+					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заявки.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
 						<xsl:variable name="inp" select="page/user_jur/input"/>
 						<div class="form-group">
@@ -91,7 +91,7 @@
 							<label for="">Телефон/факс:</label>
 							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}"/>
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label>Способ доставки <a href="">Подробнее об условиях доставки</a></label>
 							<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}">
 								<option>1</option>
@@ -100,7 +100,7 @@
 								<option>4</option>
 								<option>5</option>
 							</select>
-						</div>
+						</div> -->
 						<div class="form-group">
 							<label>E-mail:</label>
 							<input type="text" class="form-control" name="{$inp/email/@input}" value="{$inp/email}"/>

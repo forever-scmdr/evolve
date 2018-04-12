@@ -123,7 +123,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Подготовка тела письма
 		String regularTopic
-				= "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
+				= "Заявка №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
 		Multipart regularMP = new MimeMultipart();
 		MimeBodyPart regularTextPart = new MimeBodyPart();
 		regularMP.addBodyPart(regularTextPart);
@@ -154,7 +154,7 @@ public abstract class BasicCartManageCommand extends Command {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);
 			getSessionMapper().saveTemporaryItem(cart);
-			return getResult("email_send_failed").setVariable("message", "Отправка резерва временно недоступна, попробуйте позже или звоните по телефону");
+			return getResult("email_send_failed").setVariable("message", "Отправка заявки временно недоступна, попробуйте позже или звоните по телефону");
 		}
 
 		// Сохранение нового значения счетчика, если все отправлено удачно

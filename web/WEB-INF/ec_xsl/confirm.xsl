@@ -16,13 +16,13 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Спасибо за заказ!</h1>
+		<h1>Спасибо за заявку!</h1>
 
 
-		<h3>Заказ №<xsl:value-of select="$cart/order_num"/></h3>
+		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="item-summ" style="padding-bottom: 20px;">
 			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
-			Сумма: <span><xsl:value-of select="$cart/sum"/></span>
+			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
 		</div>
 		<div class="checkout-cont1">
 			<div class="info" style="padding-bottom: 20px;">
@@ -99,51 +99,53 @@
 				</xsl:if>
 			</div>
 
-			<table>
-				<tr>
-					<th>
-						Код
-					</th>
-					<th>
-						Наименование
-					</th>
-					<th>
-						Кол
-					</th>
-					<th>
-						Цена
-					</th>
-					<th>
-						Стоимость
-					</th>
-					<th>
-						Наличие
-					</th>
-				</tr>
-				<xsl:for-each select="$cart/bought">
-					<xsl:sort select="type"/>
+			<div class="table-responsive">
+				<table>
 					<tr>
-						<td>
-							<xsl:value-of select="product/code"/>
-						</td>
-						<td valign="top">
-							<strong><xsl:value-of select="product/name"/></strong>
-						</td>
-						<td valign="top">
-							<xsl:value-of select="qty"/>
-						</td>
-						<td>
-							<xsl:value-of select="product/price"/>
-						</td>
-						<td>
-							<xsl:value-of select="sum"/>
-						</td>
-						<td>
-							<xsl:value-of select="product/qty"/>
-						</td>
+						<th>
+							Код
+						</th>
+						<th>
+							Наименование
+						</th>
+						<th>
+							Кол
+						</th>
+						<th>
+							Цена
+						</th>
+						<th>
+							Стоимость
+						</th>
+					<!-- 	<th>
+							Наличие
+						</th> -->
 					</tr>
-				</xsl:for-each>
-			</table>
+					<xsl:for-each select="$cart/bought">
+						<xsl:sort select="type"/>
+						<tr>
+							<td>
+								<xsl:value-of select="product/code"/>
+							</td>
+							<td valign="top">
+								<strong><xsl:value-of select="product/name"/></strong>
+							</td>
+							<td valign="top">
+								<xsl:value-of select="qty"/>
+							</td>
+							<td>
+								<xsl:value-of select="product/price"/>
+							</td>
+							<td>
+								<xsl:value-of select="sum"/>
+							</td>
+							<!-- <td>
+								<xsl:value-of select="product/qty"/>
+							</td> -->
+						</tr>
+					</xsl:for-each>
+				</table>
+			</div>
 		</div>
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>

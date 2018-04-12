@@ -571,7 +571,7 @@
 	</xsl:text>
 	<html lang="en">
 		<head>
-			<base href="{page/base}"/>
+			<base href="https://ttd.by"/>
 			<meta charset="utf-8"/>
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -584,6 +584,11 @@
 			<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 			<script defer="defer" src="js/font_awesome_all.js"/>
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
+			<xsl:text disable-output-escaping="yes">
+				&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
+				&lt;meta name="yandex-verification" content="c0176b2b8d9b89a6" /&gt;
+				&lt;meta name="yandex-verification" content="8266d133dcbdf8b6" /&gt;
+			</xsl:text>
 		</head>
 		<body>
 			<!-- ALL CONTENT BEGIN -->
@@ -633,6 +638,10 @@
 
 					initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
 					initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+				});
+				
+				$(window).resize(function(){
+					$(".footer-placeholder").height($(".footer").outerHeight()+40);
 				});
 			</script>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>

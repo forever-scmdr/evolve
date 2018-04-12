@@ -149,7 +149,7 @@
 	<xsl:template match="tag">
 		<label class="tag{if(current()/tag = $tag) then ' active' else ''}">
 			<xsl:if test="current()/tag = $tag">
-				<input type="radio" checked="checked" value="{tag}" name="tag" onchange="$(this).closest('form').submit();"/>
+				<input type="radio" checked="checked" value="{tag}" name="tag" onclick="document.location.replace('{//reset_filter_link}')"/>
 			</xsl:if>
 			<xsl:if test="not(current()/tag = $tag)">
 				<input type="radio" value="{tag}"  name="tag" onchange="$(this).closest('form').submit();"/>
