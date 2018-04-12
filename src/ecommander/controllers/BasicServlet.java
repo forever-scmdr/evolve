@@ -253,8 +253,10 @@ public abstract class BasicServlet extends HttpServlet {
 	*/
 	
 	private static String getContextPath(HttpServletRequest request) {
-		return "http://" + request.getServerName() + (request.getServerPort() == 80 ? "" : ":" + request.getServerPort())
-				+ request.getContextPath();
+		return request.getScheme() + "://" + request.getServerName() +
+				("http".equals(request.getScheme()) && request.getServerPort() == 80 ||
+						"https".equals(request.getScheme()) && request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+				request.getContextPath();
 	}
 	/**
 	 * Получить базовый урл, т.е. урл, который должен быть в теге <base>
