@@ -224,7 +224,7 @@ public class CrawlerController {
 	private int filesToAppend = 0;
 
 	private String nodeCacheFileName = null;
-	private HashMap<String, Element> nodeCache = new HashMap<String, Element>();
+	private HashMap<String, Element> nodeCache = new HashMap<>();
 	
 	private static IntegrateBase.Info info = null;
 	
@@ -263,7 +263,7 @@ public class CrawlerController {
 		}
 
 		// Список прокси серверов
-		proxies = new LinkedList<String>();
+		proxies = new LinkedList<>();
 		String proxyFileName = AppContext.getRealPath(props.getProperty(PROXIES, null));
 		if (new File(proxyFileName).exists()) {
 			try(BufferedReader br = new BufferedReader(new FileReader(new File(proxyFileName)))) {
@@ -277,8 +277,8 @@ public class CrawlerController {
 		}
 
 		// Начальные урлы и список стилей для урлов
-		urlStyles = new LinkedHashMap<String, String>();
-		seedUrls = new LinkedHashSet<String>();
+		urlStyles = new LinkedHashMap<>();
+		seedUrls = new LinkedHashSet<>();
 		String urlFileName = AppContext.getRealPath(props.getProperty(URLS, null));
 		if (new File(urlFileName).exists()) {
 			try(BufferedReader br = new BufferedReader(new FileReader(new File(urlFileName)))) {
@@ -343,7 +343,7 @@ public class CrawlerController {
 		if (mode == Mode.files || mode == Mode.all)
 			downloadFiles();
 		if (mode == Mode.append)
-			buildRresult();
+			buildRresult_OLD();
 	}
 	
 	private void terminateInt() {
@@ -399,7 +399,7 @@ public class CrawlerController {
 	}
 	/**
 	 * Добавить результат парсинга одного URL (вызывается из экземпляра WebCrawler)
-	 * Результат записывается в файл с названием ,которое соответствует урлу
+	 * Результат записывается в файл с названием, которое соответствует урлу
 	 * @param crawler - кролер, который вернул результат
 	 * @param result - результат парсинга
 	 */
@@ -464,7 +464,7 @@ public class CrawlerController {
 		//
 		// Шаг 2. Собрать результаты преобразований в один файл
 		//
-		buildRresult();
+		buildRresult_OLD();
 		
 		info.pushLog("\n\n\n\n------------------  Finished transforming  -----------------------\n\n\n\n");
 	}
@@ -600,10 +600,40 @@ public class CrawlerController {
 			info.pushLog("Error while transforming source html file", e);
 		}
 	}
+
+
+	public void buildResult() {
+		// 1. Первый проход по всем файлам - создание транзитивного замыкания предков в виде
+		// хеш-отображения ID -> список родителей (с выделением непосредственных)
+
+		// 1.1. Проход по файлам и создание списка связности
+		// (в дальнейшем возможно сохранение промежуточных результатов в БД)
+
+		// 1.2. Создание транзитивного замыкания исключительно в памяти,
+		// поскольку нет необходимости файлового ввода-вывода, это по идее быстро
+
+		// 2. Второй проход по файлам и формирование итогового XML
+
+		// 2.1. Проход по транзитивному замыканию в порятке от корневых айтемов в глубь с удалением
+		// пройденных элементов и в замыкании и соответсрвующих файлов
+		// Рекурсивный проход вглубь. После посещения элемент сразу удаляется
+
+		// 2.2. По мере прохода постоянно формируется один сквозной XML файл в прямом порядке
+	}
+
+
+
+
+
+
+
+
+
+
 	/**
 	 * Собрать результаты преобразований в один файл
 	 */
-	public void buildRresult() {
+	public void buildRresult_OLD() {
 		info.pushLog("Creating output document");
 		Document resultDoc = Jsoup.parse("<result></result>"); // Результирующий документ JSoup
 		try {
@@ -628,7 +658,7 @@ public class CrawlerController {
 				String url = URLDecoder.decode(entry.getFileName().toString(), UTF_8);
 				info.pushLog("Appending: {}\t To append: {}" , url, filesToAppend);
 				Document pageDoc = Jsoup.parse(entry.toFile(), UTF_8);
-				insertPart(resultEl, pageDoc);
+				insertPart_OLD(resultEl, pageDoc);
 				filesToAppend--;
 			}
 			Files.write(Paths.get(resultFile), resultDoc.getElementsByTag("result").first().outerHtml().getBytes(UTF_8));
@@ -642,7 +672,7 @@ public class CrawlerController {
 	 * @param resultDoc
 	 * @param pageDoc
 	 */
-	private void insertPart(Element resultDoc, Document pageDoc) {
+	private void insertPart_OLD(Element resultDoc, Document pageDoc) {
 		Elements items = pageDoc.select("*[" + ID + "]");
 		initElementCache("result");
 		for (Element partItem : items) {
@@ -744,7 +774,7 @@ public class CrawlerController {
 	private void initElementCache(String fileName) {
 		if (!StringUtils.equalsIgnoreCase(nodeCacheFileName, fileName)) {
 			nodeCacheFileName = fileName;
-			nodeCache = new HashMap<String, Element>();
+			nodeCache = new HashMap<>();
 		}
 	}
 	

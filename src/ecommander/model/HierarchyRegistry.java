@@ -12,7 +12,7 @@ import ecommander.fwk.ServerLogger;
  *
  * @author EEEE
  */
-class TypeHierarchyRegistry {
+class HierarchyRegistry {
 
 	private static final byte NONE = 0;
 	private static final byte PARENT = 1;
@@ -39,7 +39,7 @@ class TypeHierarchyRegistry {
 	 *
 	 * @param basicParentChildPairs
 	 */
-	TypeHierarchyRegistry(ArrayList<String[]> basicParentChildPairs, ArrayList<String[]> userParentChildPairs) {
+	HierarchyRegistry(ArrayList<String[]> basicParentChildPairs, ArrayList<String[]> userParentChildPairs) {
 		// Заполнение индексов айтемов и определение размеров матрицы
 		basicMatrixDimension = registerPairs(basicParentChildPairs, 0);
 		matrixDimension = registerPairs(userParentChildPairs, basicMatrixDimension);
@@ -129,9 +129,9 @@ class TypeHierarchyRegistry {
 	 *
 	 * @return
 	 */
-	static TypeHierarchyRegistry createEmpty() {
-		ServerLogger.warn("TypeHierarchyRegistry - NO SINGLETON SET. CREATING EMPTY ONE");
-		return new TypeHierarchyRegistry(new ArrayList<String[]>(), new ArrayList<String[]>());
+	static HierarchyRegistry createEmpty() {
+		ServerLogger.warn("HierarchyRegistry - NO SINGLETON SET. CREATING EMPTY ONE");
+		return new HierarchyRegistry(new ArrayList<String[]>(), new ArrayList<String[]>());
 	}
 
 	/**
@@ -144,7 +144,7 @@ class TypeHierarchyRegistry {
 	 * @param justBasic
 	 * @return массив GeneralItem
 	 */
-	LinkedHashSet<String> getItemExtenders(String item, boolean justBasic) {
+	LinkedHashSet<String> getExtenders(String item, boolean justBasic) {
 		LinkedHashSet<String> extenders = new LinkedHashSet<>();
 		extenders.add(item);
 		int maxIndex = justBasic ? basicMatrixDimension : matrixDimension;
@@ -159,8 +159,8 @@ class TypeHierarchyRegistry {
 		return extenders;
 	}
 
-	LinkedHashSet<String> getItemExtenders(String item) {
-		return getItemExtenders(item, false);
+	LinkedHashSet<String> getExtenders(String item) {
+		return getExtenders(item, false);
 	}
 
 	/**
@@ -169,7 +169,7 @@ class TypeHierarchyRegistry {
 	 * @param item
 	 * @return массив GeneralItem
 	 */
-	LinkedHashSet<String> getItemPredecessors(String item) {
+	LinkedHashSet<String> getPredecessors(String item) {
 		LinkedHashSet<String> predecessors = new LinkedHashSet<>();
 		if (itemIndices.containsKey(item)) {
 			int itemIndex = itemIndices.get(item);
@@ -278,7 +278,7 @@ class TypeHierarchyRegistry {
 	 * @throws Exception
 	 */
 	Set<String> getItemPredecessorsExt(String item) {
-		Set<String> predecessors = getItemPredecessors(item);
+		Set<String> predecessors = getPredecessors(item);
 		predecessors.add(item);
 		return predecessors;
 	}

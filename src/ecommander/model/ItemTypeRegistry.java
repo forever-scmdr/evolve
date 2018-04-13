@@ -26,7 +26,7 @@ public class ItemTypeRegistry {
 	private Map<Integer, Integer[]> basicItemExtenders = null;    // Список всех базовых наслдеников (не пользовательских) всех айтемов
 
 	private AssocRegistry assocRegistry = null; // реестр ассоциаций
-	private TypeHierarchyRegistry hierarchyRegistry = null; // реестр наследования
+	private HierarchyRegistry hierarchyRegistry = null; // реестр наследования
 
 	private Map<String, ArrayList<String>> groupRootItems = null; // Корневые айтемы для разных групп пользователей
 
@@ -222,9 +222,9 @@ public class ItemTypeRegistry {
 	 * @param validation
 	 * @return
 	 */
-	static synchronized TypeHierarchyRegistry createHierarchy(ArrayList<String[]> basicParentChildPairs,
-	                                                          ArrayList<String[]> userParentChildPairs, boolean validation) {
-		TypeHierarchyRegistry object = new TypeHierarchyRegistry(basicParentChildPairs, userParentChildPairs);
+	static synchronized HierarchyRegistry createHierarchy(ArrayList<String[]> basicParentChildPairs,
+	                                                      ArrayList<String[]> userParentChildPairs, boolean validation) {
+		HierarchyRegistry object = new HierarchyRegistry(basicParentChildPairs, userParentChildPairs);
 		if (!validation) {
 			getSingleton().hierarchyRegistry = object;
 			getSingleton().createExtendersCache(basicParentChildPairs, userParentChildPairs);
@@ -242,7 +242,7 @@ public class ItemTypeRegistry {
 	private void createExtendersCache(ArrayList<String[]> basicParentChildPairs, ArrayList<String[]> userParentChildPairs) {
 		for (String[] strings : basicParentChildPairs) {
 			String parent = strings[0];
-			LinkedHashSet<String> extenders = hierarchyRegistry.getItemExtenders(parent, true);
+			LinkedHashSet<String> extenders = hierarchyRegistry.getExtenders(parent, true);
 			ArrayList<Integer> extIds = new ArrayList<>(extenders.size());
 			for (String item: extenders) {
 				extIds.add(getItemTypeId(item));
@@ -252,7 +252,7 @@ public class ItemTypeRegistry {
 		}
 		for (String[] strings : userParentChildPairs) {
 			String parent = strings[0];
-			LinkedHashSet<String> extenders = hierarchyRegistry.getItemExtenders(parent, false);
+			LinkedHashSet<String> extenders = hierarchyRegistry.getExtenders(parent, false);
 			ArrayList<Integer> extIds = new ArrayList<>(extenders.size());
 			for (String item: extenders) {
 				extIds.add(getItemTypeId(item));
@@ -306,7 +306,7 @@ public class ItemTypeRegistry {
 	 * @return массив GeneralItem
 	 */
 	public static LinkedHashSet<String> getItemExtenders(String itemName) {
-		return getSingleton().hierarchyRegistry.getItemExtenders(itemName);
+		return getSingleton().hierarchyRegistry.getExtenders(itemName);
 	}
 
 	/**
@@ -350,7 +350,7 @@ public class ItemTypeRegistry {
 	 * @return массив GeneralItem
 	 */
 	public static LinkedHashSet<String> getItemPredecessors(String itemName) {
-		return getSingleton().hierarchyRegistry.getItemPredecessors(itemName);
+		return getSingleton().hierarchyRegistry.getPredecessors(itemName);
 	}
 
 	/**
@@ -371,7 +371,7 @@ public class ItemTypeRegistry {
 //	 * @return
 //	 */
 //	public static String findItemPredecessor(Collection<String> possiblePredecessors, String itemName) {
-//		return TypeHierarchyRegistry.getSingleton().findItemPredecessor(possiblePredecessors, itemName);
+//		return HierarchyRegistry.getSingleton().findItemPredecessor(possiblePredecessors, itemName);
 //	}
 
 	/**
