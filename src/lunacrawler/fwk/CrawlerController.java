@@ -17,14 +17,8 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.xml.transform.ErrorListener;
@@ -250,7 +244,33 @@ public class CrawlerController {
 			return !StringUtils.isEmpty(errors);
 		}
 	}
-	
+
+	private static class Parent {
+		private String id;
+		private String element;
+		private boolean isPrimary;
+
+		public Parent(String id, String element, boolean isPrimary) {
+			this.id = id;
+			this.element = element;
+			this.isPrimary = isPrimary;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			Parent parent = (Parent) o;
+			return id.equals(parent.id);
+		}
+
+		@Override
+		public int hashCode() {
+			return id.hashCode();
+		}
+	}
+
+
 	private CrawlerController() throws Exception {
 
 		// Загрузка настроек
@@ -602,15 +622,48 @@ public class CrawlerController {
 	}
 
 
-	public void buildResult() {
+	public void buildResult() throws IOException {
 		// 1. Первый проход по всем файлам - создание транзитивного замыкания предков в виде
 		// хеш-отображения ID -> список родителей (с выделением непосредственных)
 
 		// 1.1. Проход по файлам и создание списка связности
 		// (в дальнейшем возможно сохранение промежуточных результатов в БД)
 
+		HashMap<String, LinkedHashSet<Parent>> predecessorIds = new HashMap<>();
+		DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempTransformedDir));
+		for (Path xmlFile : stream) {
+			Document pageDoc = Jsoup.parse(xmlFile.toFile(), UTF_8);
+			Elements items = pageDoc.select("*[" + ID + "]");
+			for (Element partItem : items) {
+				String itemId = partItem.attr(ID);
+				Element directParent = partItem.getElementsByTag(H_PARENT).first();
+				String parentId = null;
+				if (directParent != null) {
+					parentId = directParent.attr(PARENT);
+				}
+				if (predecessorIds.containsKey(itemId)) {
+					if (parentId != null) {
+						predecessorIds.get(itemId).add(new Parent(parentId, directParent.attr(ELEMENT), true));
+					}
+				} else {
+					LinkedHashSet<Parent> parents = new LinkedHashSet<>();
+					predecessorIds.put(itemId, parents);
+					if (parentId != null) {
+						parents.add(new Parent(parentId, directParent.attr(ELEMENT), true));
+					}
+				}
+			}
+		}
+
+
 		// 1.2. Создание транзитивного замыкания исключительно в памяти,
 		// поскольку нет необходимости файлового ввода-вывода, это по идее быстро
+
+		for (String itemId : predecessorIds.keySet()) {
+			LinkedHashSet<Parent> parents = predecessorIds.get(itemId);
+			parents.
+		}
+
 
 		// 2. Второй проход по файлам и формирование итогового XML
 
