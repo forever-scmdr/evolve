@@ -5,7 +5,7 @@
 	<xsl:strip-space elements="*" />
 
 	<xsl:variable name="pre-last" select="count(/admin-page/path/item) - 1"/>
-	<xsl:variable name="parent" select="/admin-page/path/item[$pre-last]" />
+	<xsl:variable name="parsedItem" select="/admin-page/path/item[$pre-last]" />
 	
 
 	<xsl:template name="DOCTYPE">

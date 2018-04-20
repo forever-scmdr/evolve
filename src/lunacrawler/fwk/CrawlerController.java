@@ -13,10 +13,7 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -30,6 +27,8 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.UniqueArrayList;
+import ecommander.fwk.XmlDocumentBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -39,6 +38,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Document.OutputSettings;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Entities.EscapeMode;
+import org.jsoup.parser.Parser;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
@@ -93,12 +93,30 @@ import net.sf.saxon.TransformerFactoryImpl;
  append - дописывать
  append-if-differs - допичвать в случае, если такого значения еще нет в родительском элементе
 
- Результирующий документ может содержать иерархическую структуту элементов, например, такую, как каталог
- товаров магазина с разделением на разделы и подразделы. Для того, чтобы обозначить место некоторого элемента
- в такой иерархии, в него включаются элементы h_parent, содежращие атрибут parent с уникальным идентификатором
- предков этого объекта (например, разделы каталога, в которые вложен товар). Количество элементов parent
- соответствует уровню вложенности элемета в иерархии. Если элемент не должен быть никуда вложен, в нем
- элементы parent отсутствуют. Также элемент h_parent содержит атрибут element, который содержит навзание
+ В результате создаются файлы - по одному на каждый созданный в результате парсинга элемент (по одному на каждый
+ раздел, товар, и т.д.) В каждом таком файле содержатся все полученные и собранные по описанным выше правилам
+ сведения в виде XML. Также создается один файл, представляющий иерархию вложенности элементов. Он назвается
+ hierarchy.xml. В нем в виде дерева представлена вложенность элементов с указанием тэга элемента в его ID. Например
+ <section id="1">
+    <section id="2">
+        <product id="3"/>
+        <product id="4"/>
+        <product id="5"/>
+    </section>
+	 <section id="6">
+		 <product id="7"/>
+		 <product id="8"/>
+		 <product id="9"/>
+	 </section>
+ </section>
+ <section id="10">
+ ...
+ </section>
+
+ Для создания такого дерева нужно чтобы каждый объект, который куда-то вложен, содержал ссылку на непосредственного
+ родителя в виде тэга h_parent. Этот тэг содержит атрибут parent с уникальным идентификатором
+ родителя этого объекта (например, разделы каталога, в которые вложен товар). Если элемент не должен быть никуда вложен,
+ в нем элемент parent отсутствует. Также элемент h_parent содержит атрибут element, который содержит навзание
  элемента, в который должет быть вложен текущий элемент.
 
  Скачка файлов
@@ -210,10 +228,13 @@ public class CrawlerController {
 	private String resultDir = null;
 	private String resultTempSrcDir = null;
 	private String resultTempTransformedDir = null;
+	private String resultTempJoinedDir = null;
+	private String resultTempCompiledDir = null;
 	private String resultTempFilesDir = null;
 	private String resultFile = null;
 
 	private int filesToTransform = 0;
+	private int filesToJoin = 0;
 	private int filesToDownload = 0;
 	private int filesToAppend = 0;
 
@@ -245,23 +266,21 @@ public class CrawlerController {
 		}
 	}
 
-	private static class Parent {
+	private static class ParsedItem {
 		private String id;
 		private String element;
-		private boolean isPrimary;
 
-		public Parent(String id, String element, boolean isPrimary) {
+		public ParsedItem(String id, String element) {
 			this.id = id;
 			this.element = element;
-			this.isPrimary = isPrimary;
 		}
 
 		@Override
 		public boolean equals(Object o) {
 			if (this == o) return true;
 			if (o == null || getClass() != o.getClass()) return false;
-			Parent parent = (Parent) o;
-			return id.equals(parent.id);
+			ParsedItem parsedItem = (ParsedItem) o;
+			return id.equals(parsedItem.id);
 		}
 
 		@Override
@@ -344,6 +363,8 @@ public class CrawlerController {
 		if (resultDir != null) {
 			resultTempSrcDir = resultDir + "_src/";
 			resultTempTransformedDir = resultDir + "_transformed/";
+			resultTempJoinedDir = resultDir + "_joined/";
+			resultTempCompiledDir = resultDir + "_compiled/";
 			resultTempFilesDir = resultDir + "_files/";
 		}
 		resultFile = AppContext.getRealPath(props.getProperty(RESULT_FILE, null));
@@ -621,60 +642,173 @@ public class CrawlerController {
 		}
 	}
 
+	/**
+	 * Объединяет данные из разных XML файлов в один файл, посвященный одному объекту
+	 */
+	public void joinData() {
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempTransformedDir))) {
+			Path joinedDir = Paths.get(resultTempJoinedDir);
+			if (Files.exists(joinedDir)) {
+				FileUtils.deleteDirectory(joinedDir.toFile());
+			}
+			Files.createDirectories(joinedDir);
+			TransformerFactory factory = TransformerFactoryImpl.newInstance();
+			filesToJoin = Paths.get(resultTempTransformedDir).toFile().list().length;
+			// Для каждого файла из временной директории
+			for (Path xmlFile : stream) {
+				Document pageDoc = Jsoup.parse(xmlFile.toFile(), UTF_8);
+				Elements items = pageDoc.select("*[" + ID + "]");
+				for (Element partItem : items) {
+					String itemId = partItem.attr(ID);
+					Path file = joinedDir.resolve(itemId + ".xml");
+					Files.write(file, partItem.outerHtml().getBytes(UTF_8), StandardOpenOption.APPEND);
+				}
+				filesToJoin--;
+			}
+		} catch (Exception e) {
+			info.pushLog("Error while joining xml files", e);
+		}
+	}
+
+
 
 	public void buildResult() throws IOException {
-		// 1. Первый проход по всем файлам - создание транзитивного замыкания предков в виде
-		// хеш-отображения ID -> список родителей (с выделением непосредственных)
+		DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempJoinedDir));
+		Path compiledDir = Paths.get(resultTempCompiledDir);
+		for (Path xmlFile : stream) {
+			// Сначала скомпилировать информацию (удалить дубли, объединить элементы)
+			// с сохранить в файл
+			String xml = "<result>" + new String(Files.readAllBytes(xmlFile)) + "</result>";
+			Document doc = Jsoup.parse(xml, "localhost", Parser.xmlParser());
+			Document newDoc = null;
+			Element newItemToAppend = null;
+			String itemId = null;
+			Elements data = doc.getElementsByTag("result").first().children();
+			for (Element item : data) {
+				if (newDoc == null) {
+					itemId = item.id();
+					String elementName = item.tagName();
+					newDoc = new Document("localhost");
+					newItemToAppend = new Element(elementName);
+					for (Attribute attribute : item.attributes()) {
+						newItemToAppend.attr(attribute.getKey(), attribute.getValue());
+					}
+					newDoc.appendChild(newItemToAppend);
+				}
+				for (Element property : item.children()) {
+					String action = StringUtils.defaultIfBlank(property.attr(ACTION), IGNORE);
+					property.removeAttr(ACTION);
+					boolean containsProperty = !newItemToAppend.select(":root > " + property.tagName()).isEmpty();
+					if (!containsProperty) {
+						newItemToAppend.appendChild(property);
+					} else {
+						// Дописываение
+						if (action.equalsIgnoreCase(APPEND) || property.tagName().equalsIgnoreCase(H_PARENT)) {
+							newItemToAppend.appendChild(property);
+						}
+						// Дописывание, если еще нет такого значения
+						else if (action.equalsIgnoreCase(APPEND_IF_DIFFERS)) {
+							boolean append = true;
+							for (Element existing : newItemToAppend.getElementsByTag(property.tagName())) {
+								if (StringUtils.equalsIgnoreCase(existing.html(), property.html())) {
+									append = false;
+									break;
+								}
+							}
+							if (append) {
+								newItemToAppend.appendChild(property);
+							}
+						}
+					}
+				}
+			}
+			if (newItemToAppend != null) {
+				Path file = compiledDir.resolve(itemId + ".xml");
+				Files.write(file, newItemToAppend.outerHtml().getBytes(UTF_8));
+			}
+		}
+		stream.close();
+
+		// Теперь построить дерево иерархии по результатам компиляции
+
+		// 1. Первый проход по всем файлам - создание списка связности в виде
+		// хеш-отображения ID родителя -> список непосредственных потомков
+		// Выделение корневых элементов - элементов, которые не содержат родителя (или он пустой)
 
 		// 1.1. Проход по файлам и создание списка связности
 		// (в дальнейшем возможно сохранение промежуточных результатов в БД)
 
-		HashMap<String, LinkedHashSet<Parent>> predecessorIds = new HashMap<>();
-		DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempTransformedDir));
+		HashMap<ParsedItem, UniqueArrayList<ParsedItem>> childrenIds = new HashMap<>();
+		LinkedHashSet<ParsedItem> rootIds = new LinkedHashSet<>();
+
+		stream = Files.newDirectoryStream(Paths.get(resultTempCompiledDir));
 		for (Path xmlFile : stream) {
 			Document pageDoc = Jsoup.parse(xmlFile.toFile(), UTF_8);
-			Elements items = pageDoc.select("*[" + ID + "]");
-			for (Element partItem : items) {
-				String itemId = partItem.attr(ID);
-				Element directParent = partItem.getElementsByTag(H_PARENT).first();
-				String parentId = null;
-				if (directParent != null) {
-					parentId = directParent.attr(PARENT);
-				}
-				if (predecessorIds.containsKey(itemId)) {
-					if (parentId != null) {
-						predecessorIds.get(itemId).add(new Parent(parentId, directParent.attr(ELEMENT), true));
+			Element fullItem = pageDoc.children().first();
+			ParsedItem item = new ParsedItem(fullItem.attr(ID), fullItem.tagName());
+			Elements directParents = fullItem.getElementsByTag(H_PARENT);
+			boolean hasValidParents = false;
+			// Добавить запись для каждого отдельного родителя (считается что он непосредственный)
+			// в список связности
+			if (directParents.size() > 0) {
+				for (Element directParent : directParents) {
+					String parentId = null;
+					if (directParent != null) {
+						parentId = directParent.attr(PARENT);
 					}
-				} else {
-					LinkedHashSet<Parent> parents = new LinkedHashSet<>();
-					predecessorIds.put(itemId, parents);
-					if (parentId != null) {
-						parents.add(new Parent(parentId, directParent.attr(ELEMENT), true));
+					hasValidParents |= StringUtils.isNotBlank(parentId);
+					if (StringUtils.isNotBlank(parentId)) {
+						ParsedItem parent = new ParsedItem(parentId, directParent.attr(ELEMENT));
+						if (childrenIds.containsKey(parent)) {
+							childrenIds.get(parent).add(item);
+						} else {
+							UniqueArrayList<ParsedItem> children = new UniqueArrayList<>();
+							childrenIds.put(parent, children);
+							children.add(item);
+						}
+						// Добавить родителя в список потенциальных корневых айтемов
+						rootIds.add(parent);
 					}
 				}
+			}
+			// Если у айтема не указаны родители - добавить его в список потенциальных корневых айтемов
+			if (!hasValidParents) {
+				rootIds.add(item);
 			}
 		}
 
 
-		// 1.2. Создание транзитивного замыкания исключительно в памяти,
-		// поскольку нет необходимости файлового ввода-вывода, это по идее быстро
+		// 1.2. Удалить из списка потенциальных корневых айтемов те айтемы, которые присутствуют в списках
+		// потомков какого-либо родителя
 
-		for (String itemId : predecessorIds.keySet()) {
-			LinkedHashSet<Parent> parents = predecessorIds.get(itemId);
-			parents.
+		for (ParsedItem parent : childrenIds.keySet()) {
+			UniqueArrayList<ParsedItem> children = childrenIds.get(parent);
+			rootIds.removeAll(children);
 		}
 
 
-		// 2. Второй проход по файлам и формирование итогового XML
+		// 2. Второй проход и формирование итогового XML
 
-		// 2.1. Проход по транзитивному замыканию в порятке от корневых айтемов в глубь с удалением
-		// пройденных элементов и в замыкании и соответсрвующих файлов
+		// 2.1. Проход по списку потомков рекурсивно вглубь начиная с корневых элементов с удалением
+		// пройденных элементов и в списке
 		// Рекурсивный проход вглубь. После посещения элемент сразу удаляется
 
 		// 2.2. По мере прохода постоянно формируется один сквозной XML файл в прямом порядке
 	}
 
 
+
+	private void insertItem(XmlDocumentBuilder xml, HashMap<ParsedItem, UniqueArrayList<ParsedItem>> childrenIds, ParsedItem idToInsert) {
+		UniqueArrayList<ParsedItem> parents = childrenIds.get(idToInsert);
+		// Сначала добавить всех родителей
+		if (parents != null && parents.size() > 0) {
+
+		}
+		// Если родителей вообще нет - добавить пустой элемент вместо родителя
+		else if (parents == null) {
+
+		}
+	}
 
 
 

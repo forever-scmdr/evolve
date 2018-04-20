@@ -146,7 +146,7 @@
 							<input class="field" type="text" name="{$ukey/@input}" value="{$ukey}" />
 						</div>
 					</xsl:if>
-					<input type="hidden" name="goToParent" id="parent-url"/>
+					<input type="hidden" name="goToParent" id="parsedItem-url"/>
 					<xsl:if test="admin-page/inline-form">
 						<hr style="display:block; border: 2px solid black;"/>
 						<xsl:for-each select="admin-page/inline-form">
@@ -166,7 +166,7 @@
 						<div class="footer">
 							<div class="save-links save">
 								<a id="save" onclick="document.mainForm.submit();" title="Сохранить и остаться на странице">Сохранить</a>
-								<a id="save-and-exit" onclick="$('#parent-url').val('true'); document.mainForm.submit();"
+								<a id="save-and-exit" onclick="$('#parsedItem-url').val('true'); document.mainForm.submit();"
 								   title='Сохранить и перейти родительский раздел"'>Сохранить и выйти</a>
 							</div>
 						</div>

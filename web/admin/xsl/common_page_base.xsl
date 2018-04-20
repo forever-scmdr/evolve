@@ -158,7 +158,7 @@
 					$(".fancybox").fancybox({
 					padding : 0
 					});
-					$(".active").parent("li").children("ul").show();
+					$(".active").parsedItem("li").children("ul").show();
 					$(".active").parents("ul").show();
 				});
 			</script>

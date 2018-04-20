@@ -39,7 +39,7 @@
 			</description>
 			<picture download="{//div[@id = 'cbimg']/a/@href}">main.jpg</picture>
 			<xsl:for-each select="//div[contains(@class, 'taxonomy')]/ul/li[position() &gt; 2]/a">
-				<h_parent parent="{substring-after(@href, '~group_id__n25=')}" element="section"/>
+				<h_parent parsedItem="{substring-after(@href, '~group_id__n25=')}" element="section"/>
 			</xsl:for-each>
 		</item>
 	</xsl:template>

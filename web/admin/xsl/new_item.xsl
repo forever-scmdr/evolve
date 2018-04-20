@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/html" indent="yes"/>
 
 	<xsl:template name="CONTENT">
-		<h1 class="title">Создать новый подкласс для класса '<xsl:value-of select="//parent-itemdesc/@caption"/>'</h1>
+		<h1 class="title">Создать новый подкласс для класса '<xsl:value-of select="//parsedItem-itemdesc/@caption"/>'</h1>
 		<!-- tabs -->
 		<div class="tabs_container">
 			<div class="tabs">

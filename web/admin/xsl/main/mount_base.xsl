@@ -12,7 +12,7 @@
 	
 	<!-- Внутренние переменные -->
 	<xsl:variable name="item" select="/admin-page/item"/>
-	<xsl:variable name="parent" select="/admin-page/path/item[position() = last()]"/>
+	<xsl:variable name="parsedItem" select="/admin-page/path/item[position() = last()]"/>
 
 	<xsl:template match="type[count(item) = 1]">
 		<xsl:apply-templates select="item" mode="extended"/>
@@ -74,7 +74,7 @@
 								<a href="javascript:mainView('{link}')"><xsl:value-of select="@caption"/></a>
 								<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
 							</xsl:for-each>
-							<strong><xsl:value-of select="$parent/@caption"/></strong>
+							<strong><xsl:value-of select="$parsedItem/@caption"/></strong>
 							</td>
 						</tr>
 						<tr>
@@ -85,7 +85,7 @@
 								<form id="addForm" action="{$form_action}" method="post">
 									<input type="hidden" name="vt" value="{$view_type}"/>
 									<input type="hidden" name="itemId" value="{$item/@id}"/>
-									<input type="hidden" name="parentId" value="{$parent/@id}"/>
+									<input type="hidden" name="parentId" value="{$parsedItem/@id}"/>
 									<xsl:apply-templates select="admin-page/mount/type"/>
 									<xsl:if test="admin-page/mount//input">
 									<div class="add_link_button">
@@ -105,7 +105,7 @@
 								<form id="deleteForm" action="admin_delete_reference.action" method="post">
 									<input type="hidden" name="vt" value="{$view_type}"/>
 									<input type="hidden" name="itemId" value="{$item/@id}"/>
-									<input type="hidden" name="parentId" value="{$parent/@id}"/>
+									<input type="hidden" name="parentId" value="{$parsedItem/@id}"/>
 									<xsl:apply-templates select="admin-page/mounted/type"/>
 									<xsl:if test="admin-page/mounted//input">
 									<div class="add_link_button">

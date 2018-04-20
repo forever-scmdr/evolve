@@ -15,16 +15,16 @@
 		<result>
 			<xsl:if test="$parent_link and count($parent_link) &gt; 0">
 				<section id="{$current_id}">
-					<h_parent parent="catalog" element="catalog"/>
+					<h_parent parsedItem="catalog" element="catalog"/>
 					<xsl:for-each select="$parent_link">
-						<h_parent parent="{f:url_id(@href)}" element="section"/>
+						<h_parent parsedItem="{f:url_id(@href)}" element="section"/>
 					</xsl:for-each>
 				</section>
 			</xsl:if>
 			<xsl:variable name="sections" select="//div[contains(@class, 'categories')]//a"/>
 			<xsl:for-each select="$sections">
 				<section id="{f:url_id(@href)}" name="{.}">
-					<h_parent parent="{$current_id}" element="section"/>
+					<h_parent parsedItem="{$current_id}" element="section"/>
 				</section>
 			</xsl:for-each>
 			<section id="{$current_id}" filter="{boolean($has_filter)}"/>
@@ -33,7 +33,7 @@
 					<product id="{f:url_id(div/a[contains(@class, 'product-image')]/@href)}">
 						<xsl:variable name="pic" select="div/a[contains(@class, 'product-image')]/img"/>
 						<small_pic download="{$pic/@src}">small_<xsl:value-of select="tokenize($pic/@src, '/')[last()]"/></small_pic>
-						<h_parent parent="{$current_id}" element="section"/>
+						<h_parent parsedItem="{$current_id}" element="section"/>
 					</product>
 				</xsl:for-each>
 				<section type="last" id="{$current_id}"/>

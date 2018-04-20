@@ -34,7 +34,7 @@
 			</description>
 			<picture download="http://sportoptovik.ru{.//div[contains(@class, 'el-preview')]/img/@src}">main.jpg</picture>
 			<xsl:for-each select="//ul[contains(@class, 'breadcrumb-navigation')]/li[position() &gt; 1]/a">
-				<h_parent parent="{@href}" element="section"/>
+				<h_parent parsedItem="{@href}" element="section"/>
 			</xsl:for-each>
 		</item>
 	</xsl:template>

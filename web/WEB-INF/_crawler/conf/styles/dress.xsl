@@ -21,7 +21,7 @@
 			<xsl:for-each select="//a[@class = 'thumb']">
 			<picture download="{//base/@href}{@href}"><xsl:value-of select="position()"/>.jpg</picture>
 			</xsl:for-each>
-			<h_parent parent="{//span[@typeof = 'v:Breadcrumb'][3]/a/@href}" element="collection"/>
+			<h_parent parsedItem="{//span[@typeof = 'v:Breadcrumb'][3]/a/@href}" element="collection"/>
 		</dress>
 	</result>
 	</xsl:template>

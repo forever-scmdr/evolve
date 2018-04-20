@@ -121,7 +121,7 @@
 			<var name="action" value="add"/>
 			<var name="product" item="hit"/>
 		</link>
-		<parent-of name="section"/>
+		<parsedItem-of name="section"/>
 	</item>
 	<item name="product" id="new" tag="new" cacheable="true">
 		<filter>
@@ -138,7 +138,7 @@
 			<var name="action" value="add"/>
 			<var name="product" item="new"/>
 		</link>
-		<parent-of name="section"/>
+		<parsedItem-of name="section"/>
 	</item>
 	<command class="ecommander.extra.LoggerFinish"/>
 </page>
@@ -206,7 +206,7 @@
 			<link name="analog_ajax_link" target="analog_ajax">
 				<var name="code" item="product" parameter="code"/>
 			</link>
-			<parent-of name="section" tag="sec"/>
+			<parsedItem-of name="section" tag="sec"/>
 		</successor>
 	</item>
 	<link name="base_limit_link" target="section">
@@ -283,12 +283,12 @@
 			<link name="analog_ajax_link" target="analog_ajax">
 				<var name="code" item="product" parameter="code"/>
 			</link>
-			<parent-of name="section" id="prod_sec" tag="sec">
+			<parsedItem-of name="section" id="prod_sec" tag="sec">
 				<link name="show_sec" target="search">
 					<var name="query" var="query"/>
 					<var name="sec" item="prod_sec" parameter="code"/>
 				</link>
-			</parent-of>
+			</parsedItem-of>
 		</successor>
 	</item>
 	<link name="base_search_link" target="search"/>
@@ -328,12 +328,12 @@
 				<var name="action" value="add"/>
 				<var name="product" item="product"/>
 			</link>
-			<parent-of name="section" id="prod_sec" tag="sec">
+			<parsedItem-of name="section" id="prod_sec" tag="sec">
 				<link name="show_sec" target="search_fuzzy">
 					<var name="query" var="query"/>
 					<var name="sec" item="prod_sec" parameter="code"/>
 				</link>
-			</parent-of>
+			</parsedItem-of>
 		</successor>
 	</item>
 	<link name="base_search_link" target="search_fuzzy"/>
@@ -370,12 +370,12 @@
 			<link name="analog_ajax_link" target="analog_ajax">
 				<var name="code" item="product" parameter="code"/>
 			</link>
-			<parent-of name="section" id="prod_sec" tag="sec">
+			<parsedItem-of name="section" id="prod_sec" tag="sec">
 				<link name="show_sec" target="search">
 					<var name="query" var="query"/>
 					<var name="sec" item="prod_sec" parameter="code"/>
 				</link>
-			</parent-of>
+			</parsedItem-of>
 		</successor>
 	</item>
 	<link name="base_search_link" target="search"/>
@@ -390,7 +390,7 @@
 	</variables>
 	<include name="COMMON_AND_LINKS"/>
 	<item name="product" quantifier="single" id="sp" tag="sp" reference-var="selected_product" reference-parameter="code">
-		<parent-of name="section" id="selected_section" tag="selected_section"/>
+		<parsedItem-of name="section" id="selected_section" tag="selected_section"/>
 		<link name="to_cart" target="cart_action">
 			<var name="action" value="ajax"/>
 			<var name="product" item="sp"/>
@@ -673,7 +673,7 @@
 		</item>
 	</session>
 	<item name="product" reference-item="product" tag="ref">
-		<parent-of name="section" tag="section"/>
+		<parsedItem-of name="section" tag="section"/>
 	</item>
 	<link name="recalculate_link" target="cart_action" type="itemvars">
 		<var name="action" value="recalculate"/>
@@ -721,7 +721,7 @@
 					<var name="product" item="product"/>
 				</link>
 				<usergroup name="common">
-					<parent-of name="section" tag="sec"/>
+					<parsedItem-of name="section" tag="sec"/>
 				</usergroup>
 			</item>
 		</item>

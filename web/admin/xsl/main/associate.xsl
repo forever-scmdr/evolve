@@ -22,7 +22,7 @@
 	
 	<!-- Внутренние переменные -->
 	<xsl:variable name="item" select="/admin-page/item"/>
-	<xsl:variable name="parent" select="/admin-page/path/item[position() = last()]"/>
+	<xsl:variable name="parsedItem" select="/admin-page/path/item[position() = last()]"/>
 
 	<xsl:template match="assoc">
 		<h2 class="type"><xsl:value-of select="@caption"/></h2>
@@ -119,7 +119,7 @@
 											<a href="{link}"><xsl:value-of select="@caption"/></a>
 											<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
 										</xsl:for-each>
-										<strong><xsl:value-of select="$parent/@caption"/></strong>
+										<strong><xsl:value-of select="$parsedItem/@caption"/></strong>
 									</td>
 								</tr>
 								<tr>
