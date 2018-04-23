@@ -45,7 +45,7 @@
 							</form>
 						</div>
 						<div class="other-container">
-							<div class="cart" id="cart_ajax" ajax-href="{/page/base}{page/cart_ajax_link}" ajax-show-loader="no">
+							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Корзина пуста</strong></p>
 							</div>
 							<div class="user">
@@ -454,7 +454,7 @@
 			</div>
 			<div class="order">
 				<div id="cart_list_{code}" class="product_purchase_container">
-					<form action="{/page/base}/{to_cart}" method="post">
+					<form action="{to_cart}" method="post">
 						<xsl:if test="$has_price">
 							<input type="hidden" name="qty" value="1" min="0"/>
 							<input type="submit" value="Заявка"/>
@@ -562,7 +562,7 @@
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
 
 
-
+	<xsl:variable name="base" select="'http://ttd.by'"/>
 
 
 
@@ -571,8 +571,8 @@
 	</xsl:text>
 	<html lang="en">
 		<head>
-			<!--<base href="https://ttd.by"/>-->
-			<base href="{page/base}"/>
+			<!--<base href="https://ttd.by"/> -->
+			<base href="{$base}"/>
 			<meta charset="utf-8"/>
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -586,9 +586,9 @@
 			<script defer="defer" src="js/font_awesome_all.js"/>
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 			<xsl:text disable-output-escaping="yes">
-			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
-			&lt;meta name="yandex-verification" content="c0176b2b8d9b89a6" &gt;
-			&lt;meta name="yandex-verification" content="8266d133dcbdf8b6" &gt;
+			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q" /&gt;
+			&lt;meta name="yandex-verification" content="c0176b2b8d9b89a6" /&gt;
+			&lt;meta name="yandex-verification" content="8266d133dcbdf8b6" /&gt;
 			</xsl:text>
 		</head>
 		<body>
