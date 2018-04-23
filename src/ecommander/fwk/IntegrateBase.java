@@ -108,6 +108,10 @@ public abstract class IntegrateBase extends Command {
 			return this.processed;
 		}
 
+		public synchronized int getToProcess() {
+			return this.toProcess;
+		}
+
 		public synchronized void increaseProcessed() {
 			this.processed++;
 		}
