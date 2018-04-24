@@ -43,6 +43,7 @@
 		<single item="main_page" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
+			<single item="seo"/>
 		</single>
 		<single item="news">
 			<list item="news_item" id="ni">
@@ -61,6 +62,9 @@
 
 	<page name="catalog" template="catalog" cacheable="true">
 		<include name="COMMON"/>
+		<single item="catalog">
+			<single item="seo"/>
+		</single>
 	</page>
 
 
@@ -76,6 +80,7 @@
 			<var name="tag"/>
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
+			<single item="seo"/>
 			<list item="product" id="prod" transit="true">
 				<filter>
 					<child item="params" transit="false"
@@ -172,6 +177,7 @@
 			<var name="sec" style="translit"/>
 		</request>
 		<single item="section" var="sec" cacheable="true" cache-vars="sec" tag="current_section">
+			<single item="seo"/>
 			<list item="section" id="subsec">
 				<list item="product" transit="true">
 
@@ -239,6 +245,7 @@
 			<var name="prod" style="translit"/>
 		</request>
 		<single item="product" id="prod" var="prod">
+			<single item="seo"/>
 			<single item="params"/>
 			<ancestor item="section" transit="false" tag="product_section"/>
 			<link name="to_cart" target="cart_action">
@@ -268,6 +275,7 @@
 			<var name="p" value="1"/>
 		</request>
 		<single item="news">
+			<single item="seo"/>
 			<list item="news_item" id="ni">
 				<filter>
 					<sorting direction="DESC"><var value="date"/></sorting>
@@ -288,6 +296,7 @@
 			<var name="p" value="1"/>
 		</request>
 		<single item="articles">
+			<single item="seo"/>
 			<list item="news_item" id="ni">
 				<filter>
 					<sorting direction="DESC"><var value="date"/></sorting>
@@ -308,6 +317,7 @@
 			<var name="ni" style="translit"/>
 		</request>
 		<single item="news_item" var="ni" cacheable="true" cache-vars="ni">
+			<single item="seo"/>
 			<ancestor item="news"/>
 			<ancestor item="articles"/>
 		</single>
@@ -317,19 +327,23 @@
 
 
 	<page name="dealers" template="dealers" cacheable="true">
+		<single item="seo"/>
 		<list item="dealer_coords" cacheable="true"/>
 		<include name="COMMON"/>
 	</page>
 
 
 	<page name="docs" template="docs" cacheable="true">
+		<single item="seo"/>
 		<single item="docs" cacheable="true"/>
 		<include name="COMMON"/>
 	</page>
 
 
 	<page name="contacts" template="contacts" cacheable="true">
-		<single item="contacts" cacheable="true"/>
+		<single item="contacts" cacheable="true">
+			<single item="seo"/>
+		</single>
 		<include name="COMMON"/>
 	</page>
 
@@ -345,7 +359,9 @@
 		<request>
 			<var name="p" style="translit"/>
 		</request>
-		<single item="custom_page" var="p" cacheable="true" cache-vars="p"/>
+		<single item="custom_page" var="p" cacheable="true" cache-vars="p">
+			<single item="seo"/>
+		</single>
 		<include name="COMMON"/>
 	</page>
 

@@ -3,6 +3,8 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="title" select="'Заявка оформлена'" />
+
 	<xsl:variable name="is_jur" select="not(page/user_jur/input/organization = '')"/>
 	<xsl:variable name="is_phys" select="not($is_jur)"/>
 	<xsl:variable name="cart" select="page/cart"/>

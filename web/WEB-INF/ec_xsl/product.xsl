@@ -3,6 +3,7 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="title" select="$p/name"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
@@ -41,10 +42,10 @@
 			<div class="gallery">
 				<div class="fotorama" data-width="100%" data-maxwidth="100%" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
 					<xsl:for-each select="$p/gallery">
-						<img src="{$p/@path}{.}"/>
+						<img src="{$p/@path}{.}" alt="{name}"/>
 					</xsl:for-each>
 					<xsl:if test="not($p/gallery)">
-						<img src="img/no_image.png"/>
+						<img src="img/no_image.png" alt="{name}"/>
 					</xsl:if>
 				</div>
 			</div>

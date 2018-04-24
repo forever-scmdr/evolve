@@ -3,6 +3,8 @@
 <xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 <xsl:strip-space elements="*"/>
 
+<xsl:variable name="title" select="'Документация'" />
+
 
 <xsl:template name="CONTENT">
 	<!-- CONTENT BEGIN -->

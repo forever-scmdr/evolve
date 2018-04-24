@@ -3,6 +3,7 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="title" select="'Список техники в заявке'" />
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -24,7 +25,7 @@
 							<xsl:variable name="sum" select="if ($p/price) then concat(sum, ' p.') else '0'"/>
 							<div class="item">
 								<a href="{$p/show_product}" class="image-container">
-									<img src="{$p/@path}{$p/main_pic}" alt=""/>
+									<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
 								</a>
 								<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
 								<div class="price one"><p><span>Цена</span><xsl:value-of select="$price"/></p></div>

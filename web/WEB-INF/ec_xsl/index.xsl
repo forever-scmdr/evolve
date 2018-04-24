@@ -95,7 +95,7 @@
 		<div class="slider-container">
 			<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
 				<xsl:for-each select="page/main_page/main_slider_frame">
-					<img src="{@path}{pic}" />
+					<img src="{@path}{pic}" alt="{name}"/>
 				</xsl:for-each>
 			</div>
 		</div>

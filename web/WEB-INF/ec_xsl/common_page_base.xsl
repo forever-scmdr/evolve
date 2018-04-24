@@ -6,7 +6,9 @@
 
 	<!-- <TITLE> -->
 
-	<xsl:template name="TITLE">Спецтехника</xsl:template>
+	<xsl:variable name="default_title" select="'Спеццехника'" />
+	<xsl:variable name="meta_description" select="''" />
+	<xsl:variable name="base" select="page/base" />
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
@@ -36,7 +38,7 @@
 				<div class="col-xs-12">
 					<div class="header-container" style="position: relative;">
 						<div class="logo">
-							<a href="{page/index_link}"><img src="img/logo_big.svg" alt="" /></a>
+							<a href="{page/index_link}"><img src="img/logo_big.svg" alt="На главную страницу" /></a>
 						</div>
 						<div class="search">
 							<form action="{page/search_link}" method="post">
@@ -105,7 +107,7 @@
 		<div class="header mobile">
 			<div class="header-container">
 				<a href="" class="logo">
-					<img src="img/logo_small.svg" alt="" style="height: 1.5em; max-width: 100%;"/>
+					<img src="img/logo_small.svg" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
 					<a href=""><i class="fas fa-phone"></i></a>
@@ -576,7 +578,7 @@
 			<meta charset="utf-8"/>
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
-			<title><xsl:call-template name="TITLE"/></title>
+			<xsl:call-template name="SEO"/>
 			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 			<link rel="stylesheet" href="css/app.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
@@ -585,11 +587,6 @@
 			<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 			<script defer="defer" src="js/font_awesome_all.js"/>
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
-			<xsl:text disable-output-escaping="yes">
-			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q" /&gt;
-			&lt;meta name="yandex-verification" content="c0176b2b8d9b89a6" /&gt;
-			&lt;meta name="yandex-verification" content="8266d133dcbdf8b6" /&gt;
-			</xsl:text>
 		</head>
 		<body>
 			<!-- ALL CONTENT BEGIN -->
@@ -702,6 +699,36 @@
 				<xsl:with-param name="current" select="number($current) + number(1)"/>
 			</xsl:call-template>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="SEO">
+		<xsl:variable name="quote">"</xsl:variable>
+
+		<link rel="canonical" href="{concat($base, tokenize(page/source_link, '?')[1])}" />
+
+		<xsl:if test="//seo != ''">
+			<xsl:apply-templates select="//seo[1]"/>
+		</xsl:if>
+		<xsl:if test="not(//seo) or //seo = ''">
+			<title>
+				<xsl:value-of select="$default_title"/>
+			</title>
+			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
+		</xsl:if>
+		<xsl:text disable-output-escaping="yes">
+			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q" /&gt;
+			&lt;meta name="yandex-verification" content="c0176b2b8d9b89a6" /&gt;
+			&lt;meta name="yandex-verification" content="8266d133dcbdf8b6" /&gt;
+		</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="seo">
+		<title>
+			<xsl:value-of select="title"/>
+		</title>
+		<meta name="description" content="{description}"/>
+		<meta name="keywords" content="{keywords}"/>
+		<xsl:value-of select="meta" disable-output-escaping="yes"/>
 	</xsl:template>
 
 </xsl:stylesheet>

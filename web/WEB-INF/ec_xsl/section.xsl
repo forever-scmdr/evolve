@@ -7,6 +7,7 @@
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
+	<xsl:variable name="title" select="$sel_sec/name"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="view" select="page/variables/view"/>
