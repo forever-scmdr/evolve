@@ -26,6 +26,7 @@ public class CreateSiteMap extends Command {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		PageController.newSimple().executePage(siteMap, bos);
 		String pageContent = bos.toString("UTF-8");
+		bos.close();
 		Pattern pattern = Pattern.compile(COMMENT_PATTERN);
 		Matcher matcher = pattern.matcher(pageContent);
 		StringBuilder sb = new StringBuilder();
@@ -37,15 +38,17 @@ public class CreateSiteMap extends Command {
 			siteMap = getExecutablePage(url);
 			PageController.newSimple().executePage(siteMap, bos);
 			pageContent = bos.toString("UTF-8");
+			bos.close();
 			pageContent = StringUtils.substringAfter(pageContent, "xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">");
 			pageContent = StringUtils.substringBefore(pageContent, "</urlset>");
 			sb.append(pageContent);
 		}
 		sb.append("\n</urlset>");
-		ResultPE res = getResult("complete");
+
 		String fullSiteMap = sb.toString();
 		String rootFolder = AppContext.getContextPath()+"sitemap.xml";
 		Files.write(Paths.get(rootFolder), fullSiteMap.getBytes("UTF-8"));
+		ResultPE res = getResult("complete");
 		res.setValue(fullSiteMap);
 		return res;
 	}

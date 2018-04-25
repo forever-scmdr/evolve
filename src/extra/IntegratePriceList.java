@@ -1,6 +1,8 @@
 package extra;
 
 import ecommander.controllers.AppContext;
+import ecommander.controllers.PageController;
+import ecommander.fwk.CreateSiteMap;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.Strings;
@@ -9,6 +11,8 @@ import ecommander.model.datatypes.DataType;
 import ecommander.model.filter.CriteriaDef;
 import ecommander.model.filter.FilterDefinition;
 import ecommander.model.filter.InputDef;
+import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.ResultPE;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
@@ -17,10 +21,15 @@ import extra._generated.ItemNames;
 import extra._generated.Product;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by user on 27.03.2018.
@@ -34,6 +43,7 @@ public class IntegratePriceList extends IntegrateBase {
 	private static final String PICS = "Галерея";
 	private static final String PRICE = "Цена";
 	private static final String TAG = "Тег";
+	private static final String COMMENT_PATTERN = "<!--(?<comment>.*)-->";
 
 	private ExcelPriceList price;
 	private Item currentSection;
@@ -181,6 +191,35 @@ public class IntegratePriceList extends IntegrateBase {
 		price.iterate();
 		info.setOperation("Скачивание и прикрепление изображений");
 		downloadPictures();
+		info.setOperation("Обновление карты сайта");
+
+		ExecutablePagePE siteMap = getExecutablePage("sitemap");
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(siteMap, bos);
+		String pageContent = bos.toString("UTF-8");
+		bos.close();
+		Pattern pattern = Pattern.compile(COMMENT_PATTERN);
+		Matcher matcher = pattern.matcher(pageContent);
+		StringBuilder sb = new StringBuilder();
+		sb.append(pageContent.replace("</urlset>", ""));
+		while(matcher.find()){
+			String keyUnique = matcher.group("comment");
+			String url = "sitemap_section/"+keyUnique;
+			bos = new ByteArrayOutputStream();
+			siteMap = getExecutablePage(url);
+			PageController.newSimple().executePage(siteMap, bos);
+			pageContent = bos.toString("UTF-8");
+			bos.close();
+			pageContent = StringUtils.substringAfter(pageContent, "xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">");
+			pageContent = StringUtils.substringBefore(pageContent, "</urlset>");
+			sb.append(pageContent);
+		}
+		sb.append("\n</urlset>");
+
+		String fullSiteMap = sb.toString();
+		String rootFolder = AppContext.getContextPath()+"sitemap.xml";
+		Files.write(Paths.get(rootFolder), fullSiteMap.getBytes("UTF-8"));
+
 		info.setOperation("Интеграция завершена");
 		price.close();
 	}
