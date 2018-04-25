@@ -4,9 +4,8 @@
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
-	<!-- <TITLE> -->
 
-	<xsl:variable name="default_title" select="'Спеццехника'" />
+	<xsl:variable name="title" select="'Спеццехника'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 
@@ -219,7 +218,7 @@
 					<li><i class="fas fa-th-list"></i> <a href="#" onclick="showMobileCatalogMenu(); return false">Каталог продукции</a></li>
 				</ul>
 				<ul>
-					<li><i class="fas fa-shopping-cart"></i> <a href="{page/cart_link}">Заявки</a></li>
+					<li><i class="fas fa-shopping-cart"></i> <a href="{page/cart_link}" rel="nofolow">Заявки</a></li>
 					<!--<li><i class="fas fa-star"></i> <a href="{page/fav_link}">Избранное</a></li>-->
 					<!--<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>-->
 				</ul>
@@ -564,10 +563,6 @@
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
 
 
-	<xsl:variable name="base" select="'http://ttd.by'"/>
-
-
-
 	<xsl:template match="/">
 	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
 	</xsl:text>
@@ -704,14 +699,14 @@
 	<xsl:template name="SEO">
 		<xsl:variable name="quote">"</xsl:variable>
 
-		<link rel="canonical" href="{concat($base, tokenize(page/source_link, '?')[1])}" />
+		<link rel="canonical" href="{concat($base, tokenize(page/source_link, '\?')[1])}" />
 
 		<xsl:if test="//seo != ''">
 			<xsl:apply-templates select="//seo[1]"/>
 		</xsl:if>
 		<xsl:if test="not(//seo) or //seo = ''">
 			<title>
-				<xsl:value-of select="$default_title"/>
+				<xsl:value-of select="$title"/>
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>

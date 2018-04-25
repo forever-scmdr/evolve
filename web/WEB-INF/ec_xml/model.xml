@@ -47,9 +47,9 @@
 	<!--Товар из магазина yandex market-->
 	<item name="product" key="name vendor_code" caption="Продукт" extendable="false" key-unique="true" default-page="product" ag-id="3" ag-hash="-309474065">
 		<child item="seo" single="true"/>
-		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
-		<parameter name="code" type="string" caption="Уникальный артикул товара" text-index="fulltext" description="в данном случае совпадает с offer_id"/>
-		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
+		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index-blocked="fulltext" />
+		<parameter name="code" type="string" caption="Уникальный артикул товара" text-index-blocked="fulltext" description="в данном случае совпадает с offer_id"/>
+		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index-blocked="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
 		<parameter name="group_id" type="string" caption="Номер группы" description="в яндекс маркете все товары одной группы выводятся на одной странице"/>
@@ -61,8 +61,8 @@
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" format="width: 300" caption="Главная картинка"/>
-		<parameter name="description" type="text" caption="Краткое описание" text-index="fulltext" />
-		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
+		<parameter name="description" type="text" caption="Краткое описание" text-index-blocked="fulltext" />
+		<parameter name="text" type="text" caption="Полное описание" text-index-blocked="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 		<parameter name="tag" type="string" caption="Тэг" multiple="true"/>
