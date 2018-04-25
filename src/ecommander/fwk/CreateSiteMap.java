@@ -8,10 +8,7 @@ import ecommander.pages.ResultPE;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileWriter;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
