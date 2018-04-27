@@ -4,7 +4,6 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="$ni/header" />
-
 	<xsl:variable name="active_menu_item" select="'news'"/>
 
 

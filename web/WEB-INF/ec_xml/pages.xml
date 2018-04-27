@@ -38,6 +38,9 @@
         <link name="feedback_form_link" target="feedback_ajax"/>
         <link name="fav_ajax_link" target="fav_ajax"/>
         <link name="compare_ajax_link" target="compare_ajax"/>
+        <single name="modules">
+            <list name="named_code"/>
+        </single>
     </include-definition>
 
 
@@ -130,6 +133,12 @@
             </list>
             <list item="product" tag="tag">
                 <aggregation parameter="tag"/>
+            </list>
+            <list item="product" tag="min">
+                <aggregation parameter="price" function="MIN"/>
+            </list>
+            <list item="product" tag="max">
+                <aggregation parameter="price" function="MAX"/>
             </list>
         </single>
         <link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">

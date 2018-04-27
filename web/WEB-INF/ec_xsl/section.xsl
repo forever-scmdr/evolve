@@ -22,6 +22,26 @@
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
+
+		<script type="application/ld+json">
+			{
+			"@context": "http://schema.org/",
+			"@type": "Product",
+			"name": '<xsl:value-of select="$sel_sec/name"/>',
+			<xsl:if test="$sel_sec/main_pic != ''">
+			"image": '<xsl:value-of select="concat($base, '/', $sel_sec/@path, $sel_sec/main_pic)"/>',
+			</xsl:if>
+			"offers": {
+			"@type": "AggregateOffer",
+			"priceCurrency": "BYN",
+			"lowPrice": '<xsl:value-of select="//min/price"/>',
+			"highPrice": '<xsl:value-of select="//max/price"/>',
+			"offerCount": '<xsl:value-of select="$sel_sec/product_count"/>'
+			}
+			}
+		</script>
+
+
 		<div class="path-container">
 			<div class="path">
 				<a href="/">Главная страница</a>

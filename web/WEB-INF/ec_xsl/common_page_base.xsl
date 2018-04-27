@@ -638,11 +638,16 @@
 				});
 			</script>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>
+			<xsl:call-template name="USER_SCRIPTS"/>
 		</body>
 	</html>
 	</xsl:template>
 
-
+	<xsl:template name="USER_SCRIPTS">
+		<xsl:for-each select="page/modules/named_code">
+			<xsl:value-of select="code" disable-output-escaping="yes"/>
+		</xsl:for-each>
+	</xsl:template>
 
 
 

@@ -17,6 +17,23 @@
 
 
 	<xsl:template name="CONTENT">
+
+		<script type="application/ld+json">
+			{
+			"@context": "http://schema.org/",
+			"@type": "Product",
+			"name": '<xsl:value-of select="$p/name" />',
+			"image": '<xsl:value-of select="concat($base, '/', $p/@path, $p/gallery[1])" />',
+			"brand": '<xsl:value-of select="$p/tag[1]" />',
+			"offers": {
+			"@type": "Offer",
+			"priceCurrency": "BYN",
+			"price": '<xsl:value-of select="$p/price" />'
+			}
+			}
+		</script>
+
+
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
@@ -42,10 +59,10 @@
 			<div class="gallery">
 				<div class="fotorama" data-width="100%" data-maxwidth="100%" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
 					<xsl:for-each select="$p/gallery">
-						<img src="{$p/@path}{.}" alt="{name}"/>
+						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
 					<xsl:if test="not($p/gallery)">
-						<img src="img/no_image.png" alt="{name}"/>
+						<img src="img/no_image.png" alt="{$p/name}"/>
 					</xsl:if>
 				</div>
 			</div>
