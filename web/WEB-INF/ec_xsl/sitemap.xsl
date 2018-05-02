@@ -28,24 +28,21 @@
                 <priority>0.70</priority>
             </url>
             <url>
-                <loc><xsl:value-of select="concat($base, '/', page/dealers_link)"/></loc>
-                <changefreq>monthly</changefreq>
-                <priority>0.70</priority>
-            </url>
-            <url>
-                <loc><xsl:value-of select="concat($base, '/', page/docs_link)"/></loc>
-                <changefreq>monthly</changefreq>
-                <priority>0.70</priority>
-            </url>
-            <url>
                 <loc><xsl:value-of select="concat($base, '/', page/articles_link)"/></loc>
                 <changefreq>monthly</changefreq>
                 <priority>0.70</priority>
             </url>
             <xsl:apply-templates select="page/catalog/section"/>
+            <xsl:for-each select="page/custom_page">
+                <url>
+                    <loc><xsl:value-of select="concat($base, show_page)"/></loc>
+                    <changefreq>monthly</changefreq>
+                    <priority>0.70</priority>
+                </url>
+            </xsl:for-each>
             <xsl:for-each select="page/news_item">
                 <url>
-                    <loc><xsl:value-of select="concat($base, '/', show_news_item)"/></loc>
+                    <loc><xsl:value-of select="concat($base, show_news_item)"/></loc>
                     <changefreq>monthly</changefreq>
                     <priority>0.70</priority>
                 </url>
@@ -69,7 +66,7 @@
 
             <url>
                 <loc>
-                    <xsl:value-of select="show_products"/>
+                    <xsl:value-of select="concat($base, show_products)"/>
                 </loc>
                 <changefreq>daily</changefreq>
                 <priority>0.80</priority>

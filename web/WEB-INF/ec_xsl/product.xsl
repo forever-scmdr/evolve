@@ -19,16 +19,17 @@
 	<xsl:template name="CONTENT">
 
 		<script type="application/ld+json">
+			<xsl:variable name="quote">"</xsl:variable>	
 			{
 			"@context": "http://schema.org/",
 			"@type": "Product",
-			"name": '<xsl:value-of select="$p/name" />',
-			"image": '<xsl:value-of select="concat($base, '/', $p/@path, $p/gallery[1])" />',
-			"brand": '<xsl:value-of select="$p/tag[1]" />',
+			"name": "<xsl:value-of select="replace($p/name, $quote, '')" />",
+			"image": "<xsl:value-of select="concat($base, '/', $p/@path, $p/gallery[1])" />",
+			"brand": "<xsl:value-of select="$p/tag[1]" />",
 			"offers": {
 			"@type": "Offer",
 			"priceCurrency": "BYN",
-			"price": '<xsl:value-of select="$p/price" />'
+			"price": "<xsl:value-of select="$p/price" />"
 			}
 			}
 		</script>

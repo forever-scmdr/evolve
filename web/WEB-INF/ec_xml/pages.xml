@@ -38,8 +38,8 @@
         <link name="feedback_form_link" target="feedback_ajax"/>
         <link name="fav_ajax_link" target="fav_ajax"/>
         <link name="compare_ajax_link" target="compare_ajax"/>
-        <single name="modules">
-            <list name="named_code"/>
+        <single item="modules">
+            <list item="named_code"/>
         </single>
     </include-definition>
 

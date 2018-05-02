@@ -24,19 +24,22 @@
 		<!-- CONTENT BEGIN -->
 
 		<script type="application/ld+json">
+
+			<xsl:variable name="quote">"</xsl:variable>	
+
 			{
 			"@context": "http://schema.org/",
 			"@type": "Product",
-			"name": '<xsl:value-of select="$sel_sec/name"/>',
+			"name": "<xsl:value-of select="replace($sel_sec/name, $quote, '')"/>",
 			<xsl:if test="$sel_sec/main_pic != ''">
-			"image": '<xsl:value-of select="concat($base, '/', $sel_sec/@path, $sel_sec/main_pic)"/>',
+			"image": "<xsl:value-of select="concat($base, '/', $sel_sec/@path, $sel_sec/main_pic)"/>",
 			</xsl:if>
 			"offers": {
 			"@type": "AggregateOffer",
 			"priceCurrency": "BYN",
-			"lowPrice": '<xsl:value-of select="//min/price"/>',
-			"highPrice": '<xsl:value-of select="//max/price"/>',
-			"offerCount": '<xsl:value-of select="$sel_sec/product_count"/>'
+			"lowPrice": "<xsl:value-of select="//min/price"/>",
+			"highPrice": "<xsl:value-of select="//max/price"/>",
+			"offerCount": "<xsl:value-of select="$sel_sec/product_count"/>"
 			}
 			}
 		</script>
@@ -116,7 +119,7 @@
 						<!--</div>-->
 						<span>
 							<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
-							        onchange="window.location.href = $(this).find(':selected').attr('link')">
+									onchange="window.location.href = $(this).find(':selected').attr('link')">
 								<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
 								<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
 								<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
@@ -129,7 +132,7 @@
 						<span>Кол-во на странице:</span>
 						<span>
 							<select class="form-control" value="{page/variables/limit}"
-							        onchange="window.location.href = $(this).find(':selected').attr('link')">
+									onchange="window.location.href = $(this).find(':selected').attr('link')">
 								<option value="24" link="{page/set_limit_24}">24</option>
 								<option value="48" link="{page/set_limit_48}">48</option>
 								<option value="10000" link="{page/set_limit_all}">все</option>

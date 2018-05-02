@@ -424,6 +424,9 @@ public class MainAdminServlet extends BasicAdminServlet {
 		int type = item.getTypeId();
 		if (toParent) {
 			id = AdminLoader.loadItemDirectParentId(id, ItemTypeRegistry.getPrimaryAssocId());
+			if(id == -1){
+				return pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
+			}
 			type = AdminLoader.loadItem(id, getCurrentAdmin()).getTypeId();
 		}
 		//boolean toParent = in.goToParent;
