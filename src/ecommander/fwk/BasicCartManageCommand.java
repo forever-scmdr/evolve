@@ -8,6 +8,7 @@ import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.mail.Multipart;
@@ -123,7 +124,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Подготовка тела письма
 		String regularTopic
-				= "Заявка №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
+				= "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
 		Multipart regularMP = new MimeMultipart();
 		MimeBodyPart regularTextPart = new MimeBodyPart();
 		regularMP.addBodyPart(regularTextPart);
@@ -140,7 +141,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Отправка на ящик заказчика
 		try {
-			EmailUtils.sendGmailDefault(customerEmail, regularTopic, regularMP);
+//			EmailUtils.sendGmailDefault(customerEmail, regularTopic, regularMP);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra (IN_PROGRESS, null);
@@ -149,12 +150,12 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 		// Отправка на ящик магазина
 		try {
-			EmailUtils.sendGmailDefault(shopEmail, regularTopic, regularMP);
+//			EmailUtils.sendGmailDefault(shopEmail, regularTopic, regularMP);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);
 			getSessionMapper().saveTemporaryItem(cart);
-			return getResult("email_send_failed").setVariable("message", "Отправка заявки временно недоступна, попробуйте позже или звоните по телефону");
+			return getResult("email_send_failed").setVariable("message", "Отправка заказа временно недоступна, попробуйте позже или звоните по телефону");
 		}
 
 		// Сохранение нового значения счетчика, если все отправлено удачно

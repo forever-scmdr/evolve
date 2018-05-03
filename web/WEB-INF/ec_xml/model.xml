@@ -106,6 +106,7 @@
 		<parameter name="qty" type="double" caption="Количество товаров"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
+		<parameter name="payment" type="string" caption="Оплата через ЕРИП"/>
 		<child item="bought"/>
 	</item>
 
@@ -223,6 +224,7 @@
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
 		<parameter name="google_verification" type="string" caption="google verification code"/>
 		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
+		<parameter name="erip_id" type="string" caption="id ERIP"/>
 	</item>
 
 

@@ -534,9 +534,11 @@
         </request>
         <new item="user_phys" id="user_phys">
             <parameter-input ref="user_phys" form="customer_phys"/>
+            <extra-input form="customer_phys" ref="user_phys" name="payment"/>
         </new>
         <new item="user_jur" id="user_jur">
             <parameter-input ref="user_jur" form="customer_jur"/>
+            <extra-input form="customer_jur" ref="user_jur" name="payment"/>
         </new>
         <link name="confirm_link" target="cart_action" type="itemform">
             <var name="action" value="customerForm"/>

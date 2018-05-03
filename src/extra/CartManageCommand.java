@@ -4,6 +4,7 @@ import ecommander.fwk.BasicCartManageCommand;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import extra._generated.ItemNames;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
 
@@ -51,6 +52,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			}
 			removeSessionForm("customer_jur");
 			saveSessionForm("customer_phys");
+
 		} else {
 			for (String mandatory : MANDATORY_JUR) {
 				if (form.isValueEmpty(mandatory)) {
@@ -60,6 +62,12 @@ public class CartManageCommand extends BasicCartManageCommand {
 			}
 			removeSessionForm("customer_phys");
 			saveSessionForm("customer_jur");
+		}
+		String payment = form.getStringExtra("payment");
+		if(StringUtils.isNoneBlank(payment)) {
+			Item cart = getSessionMapper().getSingleRootItemByName(ItemNames.CART);
+			cart.setValue("payment", payment);
+			getSessionMapper().saveTemporaryItem(cart);
 		}
 		return !hasError;
 	}
