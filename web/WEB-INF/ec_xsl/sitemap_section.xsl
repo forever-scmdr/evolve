@@ -4,9 +4,10 @@
     <xsl:strip-space elements="*"/>
 
     <xsl:variable name="base" select="page/base"/>
+    <xsl:variable name="schema_location" select="'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'"/>
 
     <xsl:template match="/">
-        <urlset xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+        <urlset xsi:schemaLocation="{$schema_location}">
 <xsl:text disable-output-escaping="yes">
    &lt;!--**********************************************************************************--&gt;
 </xsl:text>

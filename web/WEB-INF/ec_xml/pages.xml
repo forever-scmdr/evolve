@@ -809,4 +809,6 @@
         </command>
     </page>
 
+    <page name="test" template="utils/price_conversions"></page>
+
 </site>

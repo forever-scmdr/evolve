@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
+	<xsl:import href="utils/price_conversions.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
@@ -566,7 +567,7 @@
 	<xsl:template match="/">
 	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
 	</xsl:text>
-	<html lang="en">
+	<html lang="ru">
 		<head>
 			<!--<base href="https://ttd.by"/> -->
 			<base href="{$base}"/>
@@ -715,11 +716,8 @@
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
-		<xsl:text disable-output-escaping="yes">
-			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q" /&gt;
-			&lt;meta name="yandex-verification" content="c0176b2b8d9b89a6" /&gt;
-			&lt;meta name="yandex-verification" content="8266d133dcbdf8b6" /&gt;
-		</xsl:text>
+		<meta name="google-site-verification" content="{/page/common/google_verification}" />
+		<meta name="yandex-verification" content="{/page/common/yandex_verification}" />
 	</xsl:template>
 
 	<xsl:template match="seo">

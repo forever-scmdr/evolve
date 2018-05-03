@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 public class CreateSiteMap extends Command {
 
 	private static final String COMMENT_PATTERN = "<!--(?<comment>.*)-->";
+	private static final String SCHEMA_LOCATION = "xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\"";
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -39,7 +40,7 @@ public class CreateSiteMap extends Command {
 			PageController.newSimple().executePage(siteMap, bos);
 			pageContent = bos.toString("UTF-8");
 			bos.close();
-			pageContent = StringUtils.substringAfter(pageContent, "xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">");
+			pageContent = StringUtils.substringAfter(pageContent, SCHEMA_LOCATION + ">");
 			pageContent = StringUtils.substringBefore(pageContent, "</urlset>");
 			sb.append(pageContent);
 		}
