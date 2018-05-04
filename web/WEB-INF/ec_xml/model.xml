@@ -257,6 +257,30 @@
 		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
 	</item>
 
+	<item name="hisotry" caption="История заказов">
+		<child name="customers"/>
+		<child name="orders"/>
+	</item>
+
+	<item name="order" key="number date">
+		<parameter name="number" type="integer" caption="Номер заказа"/>
+		<parameter name="date" type="date" caption="Дата"/>
+		<parameter name="cookie" type="string" caption="Куки восстановления заказа"/>
+		<parameter name="currency_ratio" type="double" caption="курс УЕ (или другая стабильная единица) на момент покупки"/>
+		<parameter name="sum" type="currency" caption="Полная стоимость"/>
+		<child item="bought"/>
+	</item>
+
+	<item name="bought_record" caption="Покупка" key="code" >
+		<parameter name="code" type="string" caption="Код товара"/>
+		<parameter name="qty" type="double" caption="Количество"/>
+		<parameter name="price" type="currency" caption="Цена товара"/>
+		<parameter name="sum" type="currency" caption="Полная стоимость"/>
+		<parameter name="discount" type="currency" caption="Скидка"/>
+		<parameter name="name" type="string" caption="Название"/>
+	</item>
+
+	<item name="customers" caption="Покупатели"></item>
 
 	<root>
 		<child item="feedback_params" single="true" />
