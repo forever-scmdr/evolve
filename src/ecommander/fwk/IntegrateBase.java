@@ -79,14 +79,14 @@ public abstract class IntegrateBase extends Command {
 	public static class Info {
 		private static final String _indexation = "Индексация названий товаров";
 
-		private String operation = "Инициализация";
-		private int lineNumber = 0;
-		private int processed = 0;
-		private int toProcess = 0;
+		private volatile String operation = "Инициализация";
+		private volatile int lineNumber = 0;
+		private volatile int processed = 0;
+		private volatile int toProcess = 0;
 		private ArrayDeque<LogMessage> log = new ArrayDeque<>();
 		private ArrayList<Error> errors = new ArrayList<>();
-		private boolean inProgress = false;
-		private int logSize = Integer.MAX_VALUE;
+		private volatile boolean inProgress = false;
+		private volatile int logSize = 30;
 
 		public synchronized void setOperation(String opName) {
 			operation = opName;

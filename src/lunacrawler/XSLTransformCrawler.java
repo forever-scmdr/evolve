@@ -12,6 +12,8 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.PrettyXmlSerializer;
 import org.htmlcleaner.TagNode;
 
+import java.net.URLDecoder;
+
 public class XSLTransformCrawler extends BasicCrawler {
 	
 	
@@ -20,6 +22,7 @@ public class XSLTransformCrawler extends BasicCrawler {
 		if (page.getParseData() instanceof HtmlParseData) {
 			String url = page.getWebURL().getURL();
 			try {
+				url = URLDecoder.decode(url, "UTF-8");
 				HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 				String html = htmlParseData.getHtml();
 				HtmlCleaner cleaner = new HtmlCleaner();
@@ -46,6 +49,7 @@ public class XSLTransformCrawler extends BasicCrawler {
 	//			doc.body().attr("source", url);
 	//			return doc.body().outerHtml();
 				
+
 				node.findElementByName("body", false).addAttribute("source", url);
 				return new PrettyXmlSerializer(props).getAsString(node);
 			} catch (Exception e) {
@@ -55,9 +59,9 @@ public class XSLTransformCrawler extends BasicCrawler {
 		return null;
 	}
 
-	public static void startCrawling(IntegrateBase.Info info, String mode) {
+	public static void startCrawling(IntegrateBase.Info info, String mode, UrlModifier... modifier) {
 		try {
-			CrawlerController.startCrawling(XSLTransformCrawler.class, info, Mode.valueOf(mode));
+			CrawlerController.startCrawling(XSLTransformCrawler.class, info, Mode.valueOf(mode), modifier);
 		} catch (Exception e) {
 			info.pushLog("Some error", "<pre>" + ExceptionUtils.getStackTrace(e) + "</pre>");
 		}

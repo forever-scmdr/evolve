@@ -206,7 +206,7 @@ public class PageController {
 		// Работа с результатом выполнения страницы
 		if (result != null && result.getType() != ResultType.none) {
 			// Результат выполнения - XML документ
-			if (result.getType() == ResultType.xml && !StringUtils.isBlank(result.getValue())) {
+			if (result.getType() == ResultType.xml/* && !StringUtils.isBlank(result.getValue())*/) {
 				XmlDocumentBuilder xml = XmlDocumentBuilder.newDocFull(result.getValue());
 				if (page.transformationNeeded()) {
 					XmlXslOutputController.outputXmlTransformed(out, xml, xslFileName);
