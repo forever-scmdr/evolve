@@ -267,7 +267,7 @@
 		<parameter name="date" type="date" caption="Дата"/>
 		<parameter name="cookie" type="string" caption="Куки восстановления заказа"/>
 		<parameter name="currency_ratio" type="double" caption="курс УЕ (или другая стабильная единица) на момент покупки"/>
-		<parameter name="sum" type="currency" caption="Полная стоимость"/>
+		<parameter name="sum" type="currency" caption="Полная стоимость11"/>
 		<child item="bought"/>
 	</item>
 
