@@ -816,17 +816,21 @@
 
 
 
-	<page name="crawl" template="crawl" authority-groups="common">
+	<page name="crawl" template="crawl">
 		<request>
 			<var name="action"/>
+			<var name="job"/>
 		</request>
-		<command class="lunacrawler.CrawlCommand">
+		<command class="extra.MetaboCrawlCommand">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
 
 
 	<page name="test_xsl">
+		<request>
+			<var name="url"/>
+		</request>
 		<command class="lunacrawler.CrawlCommand" method="test">
 			<result name="test_xsl" type="xml"/>
 		</command>
