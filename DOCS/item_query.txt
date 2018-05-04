@@ -13,7 +13,7 @@
 		item AS i
 		INNER JOIN index AS f1 ON (i.id = f1.item)
 		INNER JOIN index AS f2 ON (i.id = f2.item)
-		INNER JOIN parsedItem AS p ON (i.id = p.child_id)
+		INNER JOIN parent AS p ON (i.id = p.child_id)
 		INNER JOIN index AS s1 ON (i.id = s1.item)
 		INNER JOIN index AS s2 ON (i.id = s2.item)
 	WHERE
@@ -52,7 +52,7 @@
 		item AS i
 		INNER JOIN index AS f1 ON (i.id = f1.item)
 		INNER JOIN index AS f2 ON (i.id = f2.item)
-		INNER JOIN parsedItem AS p ON (i.id = p.child_id)
+		INNER JOIN parent AS p ON (i.id = p.child_id)
 		INNER JOIN index AS s1 ON (i.id = s1.item)
 		INNER JOIN index AS s2 ON (i.id = s2.item)
 	WHERE
@@ -89,8 +89,8 @@
 		p.parent_id
 	FROM
 		item AS i
-		INNER JOIN parsedItem AS p ON (i.id = p.child_id)       # простой критерий предка
-		INNER JOIN parsedItem AS с1p ON (i.id = с1p.parent_id)  # связь искомого айтема и айтема-потомка для фильтрации
+		INNER JOIN parent AS p ON (i.id = p.child_id)       # простой критерий предка
+		INNER JOIN parent AS с1p ON (i.id = с1p.parent_id)  # связь искомого айтема и айтема-потомка для фильтрации
 		INNER JOIN item AS с1i ON (c1i.id = с1p.child_id)   # айтем-потомок для фильтрации (его статус долен быть 0)
 		INNER JOIN index AS с1f1 ON (с1f1.item = с1i.id)    # фильтр по айтему-потомку для фильтрации
 		INNER JOIN index AS f1 ON (i.id = f1.item)          # фильтр по основному искомому айтему
@@ -163,8 +163,8 @@
 		tp.parent_id
 	FROM
 		item AS i
-		INNER JOIN parsedItem AS p ON (i.id = p.child_id)
-		INNER JOIN parsedItem AS tp ON (i.id = tp.child_id)
+		INNER JOIN parent AS p ON (i.id = p.child_id)
+		INNER JOIN parent AS tp ON (i.id = tp.child_id)
 	WHERE
         i.status = 0
 
@@ -190,8 +190,8 @@
 		p.parent_id
 	FROM
 		item AS i
-		INNER JOIN parsedItem AS p ON (i.id = p.child_id)
-		INNER JOIN parsedItem AS p1 ON (i.id = p1.child_id)
+		INNER JOIN parent AS p ON (i.id = p.child_id)
+		INNER JOIN parent AS p1 ON (i.id = p1.child_id)
 	WHERE
         i.status = 0
 
@@ -218,8 +218,8 @@
 		p.parent_id
 	FROM
 		item AS i
-		INNER JOIN parsedItem AS p ON (i.id = p.child_id)
-		INNER JOIN parsedItem AS p1 ON (i.id = p1.parent_id)
+		INNER JOIN parent AS p ON (i.id = p.child_id)
+		INNER JOIN parent AS p1 ON (i.id = p1.parent_id)
 	WHERE
         i.status = 0
 
@@ -249,7 +249,7 @@
 		item AS i
 		INNER JOIN index AS f1 ON (i.id = f1.item)
 		INNER JOIN index AS f2 ON (i.id = f2.item)
-		INNER JOIN parsedItem AS p ON (i.id = p.child_id)
+		INNER JOIN parent AS p ON (i.id = p.child_id)
 		INNER JOIN index AS g ON (i.id = g.item)
 	WHERE
 		# статус вначале, чтобы потом всегда можно было бы использовать AND
@@ -288,7 +288,7 @@
 	FROM
 		item AS i
 		INNER JOIN index AS f1 ON (i.id = f1.item)
-		INNER JOIN parsedItem AS p ON (i.id = p.child_id)
+		INNER JOIN parent AS p ON (i.id = p.child_id)
 		INNER JOIN index AS g ON (i.id = g.item)
 		INNER JOIN index AS g1 ON (i.id = g.item)
 	WHERE
@@ -309,7 +309,7 @@
 
 
 
-11. Запрос типа parsedItem
+11. Запрос типа parent
 
 	Задано:
 		тип - раздел (S)
@@ -320,7 +320,7 @@
 		p.child_id
 	FROM
 		item AS i
-		INNER JOIN parsedItem AS p ON (i.id = p.parent_id)
+		INNER JOIN parent AS p ON (i.id = p.parent_id)
 	WHERE
         i.status = 0
 
@@ -343,11 +343,11 @@
 		p.parent_id
 	FROM
 		item AS i
-		INNER JOIN parsedItem AS p ON (i.id = p.child_id)       # простой предок
+		INNER JOIN parent AS p ON (i.id = p.child_id)       # простой предок
 
-		INNER JOIN parsedItem AS p1 ON (i.id = p1.child_id)     # критерий предка (фильтр)
+		INNER JOIN parent AS p1 ON (i.id = p1.child_id)     # критерий предка (фильтр)
 
-		INNER JOIN parsedItem AS pp ON (i.id = pp.parent_id)    # связь искомого айтема и айтема-потомка для фильтрации
+		INNER JOIN parent AS pp ON (i.id = pp.parent_id)    # связь искомого айтема и айтема-потомка для фильтрации
 		INNER JOIN item AS pi ON (pi.id = pp.child_id)      # айтем-потомок для фильтрации (его статус долен быть 0)
 		INNER JOIN index AS pf1 ON (pf1.item = pi.id)       # фильтр по айтему-потомку для фильтрации
 
@@ -377,18 +377,18 @@
 		1 параметр фильтрации предка потомка (регион - REG) (принадлежность к определенному региону) (ассоциация 1 транзитивно)
 		предки Pa и Pb (ассоциация 1 транзитивно)
 
-		(c - child: c1...   p - parsedItem: p1...   )
+		(c - child: c1...   p - parent: p1...   )
 
 	SELECT
 		i.*,
 		p.parent_id
 	FROM
 		item AS i
-		INNER JOIN parsedItem AS p ON (i.id = p.child_id)               # простой критерий предка
-		INNER JOIN parsedItem AS с1p ON (i.id = с1p.parent_id)          # связь искомого айтема и айтема-потомка для фильтрации
+		INNER JOIN parent AS p ON (i.id = p.child_id)               # простой критерий предка
+		INNER JOIN parent AS с1p ON (i.id = с1p.parent_id)          # связь искомого айтема и айтема-потомка для фильтрации
 		INNER JOIN item AS с1i ON (c1i.id = с1p.child_id)           # айтем-потомок для фильтрации (его статус долен быть 0)
 		INNER JOIN index AS с1f1 ON (с1f1.item = с1i.id)            # фильтр по айтему-потомку для фильтрации
-		INNER JOIN parsedItem AS p1c1p ON (c1i.id = p1c1p.child_id)     # связь айтема-потомка и его айтема-предка для фильтрации
+		INNER JOIN parent AS p1c1p ON (c1i.id = p1c1p.child_id)     # связь айтема-потомка и его айтема-предка для фильтрации
 		INNER JOIN item AS p1c1i ON (p1c1i.id = p1c1p.parent_id)    # айтем-предок потомка для фильтрации (его статус долен быть 0)
 		INNER JOIN index AS p1c1f1 ON (p1c1f1.item = p1c1i.id)      # фильтр по айтему-предку потомка для фильтрации
 	WHERE
