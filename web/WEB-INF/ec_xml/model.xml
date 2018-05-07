@@ -267,7 +267,8 @@
 		<parameter name="date" type="date" caption="Дата"/>
 		<parameter name="cookie" type="string" caption="Куки восстановления заказа"/>
 		<parameter name="currency_ratio" type="double" caption="курс УЕ (или другая стабильная единица) на момент покупки"/>
-		<parameter name="sum" type="currency" caption="Полная стоимость11"/>
+		<parameter name="sum" type="currency" caption="Полная стоимость"/>
+        <parameter name="ship_type" type="string" caption="Способ доставки" />
 		<child item="bought"/>
 	</item>
 
@@ -280,7 +281,23 @@
 		<parameter name="name" type="string" caption="Название"/>
 	</item>
 
-	<item name="customers" caption="Покупатели"></item>
+	<item name="customers" caption="Покупатели">
+        <child item="user_group" />
+    </item>
+
+    <item name="user_group" key="name" key-unique="true">
+        <parameter name="name" type="string" caption="Название для наглядности"/>
+        <parameter name="user_group_name" type="string" caption="название группы пользолвателей"/>
+        <child item="customer"/>
+    </item>
+
+    <item name="customer" key-unique="true" key="email phone" extends="user_jur user_phys" >
+        <parameter name="user_group_name" type="string" caption="название группы пользолвателей"/>
+		<parameter name="user_id" type="long" caption="ID пользователя"/>
+    </item>
+
+
+
 
 	<root>
 		<child item="feedback_params" single="true" />

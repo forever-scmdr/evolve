@@ -9,6 +9,7 @@
 	<xsl:variable name="title" select="'Спеццехника'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
+	<xsl:variable name="canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''"/>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
@@ -455,7 +456,7 @@
 				</xsl:if>
 			</div>
 			<div class="order">
-				<div id="cart_list_{code}" class="product_purchase_container">
+				<div id="cart_list_{replace(code, '[)()]', '-')}" class="product_purchase_container">
 					<form action="{to_cart}" method="post">
 						<xsl:if test="$has_price">
 							<input type="hidden" name="qty" value="1" min="0"/>
@@ -463,7 +464,7 @@
 						</xsl:if>
 						<xsl:if test="not($has_price)">
 							<input type="hidden" name="qty" value="1" min="0"/>
-							<input type="submit" class="not_available" value="Под заказ"/>
+							<input type="submit" class="not_available" value="Запросить цену"/>
 						</xsl:if>
 					</form>
 				</div>
@@ -565,7 +566,7 @@
 
 
 	<xsl:template match="/">
-	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
+	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
 	</xsl:text>
 	<html lang="ru">
 		<head>
@@ -705,7 +706,7 @@
 	<xsl:template name="SEO">
 		<xsl:variable name="quote">"</xsl:variable>
 
-		<link rel="canonical" href="{concat($base, tokenize(page/source_link, '\?')[1])}" />
+		<link rel="canonical" href="{concat($base, $canonical)}" />
 
 		<xsl:if test="//seo != ''">
 			<xsl:apply-templates select="//seo[1]"/>
