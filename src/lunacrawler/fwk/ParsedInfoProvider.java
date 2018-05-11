@@ -70,9 +70,9 @@ public class ParsedInfoProvider {
 	 */
 	public Path getFile(String id, String fileUrl) {
 		String fileName = fileUrl;
-		Path itemDir = Paths.get(filesDir + id);
+		Path itemDir = Paths.get(filesDir + File.separator + id);
 		Path file = null;
-		if (StringUtils.contains(fileName, File.separator)) {
+		if (StringUtils.contains(fileName, File.separator) || StringUtils.contains(fileName, '/')) {
 			fileName = Strings.getFileName(fileName);
 			file = itemDir.resolve(fileName);
 		}

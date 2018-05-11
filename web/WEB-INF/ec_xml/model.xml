@@ -35,7 +35,8 @@
 	<!--Товар из магазина yandex market-->
 	<item name="product" key="name vendor_code" caption="Продукт" extendable="false" key-unique="true" default-page="product" ag-id="6" ag-hash="-309474065">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
-		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, тип продукта" text-index="fulltext" />
+		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
+		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
@@ -52,12 +53,32 @@
 		<parameter name="main_pic" type="picture" format="width: 300" caption="Главная картинка"/>
 		<parameter name="description" type="text" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
+		<parameter name="extra_xml" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
+		<child item="product_extra"/>
+		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
 	</item>
 
 	<item name="params" caption="Параметры товара" extendable="true" ag-id="30" ag-hash="-995427962"/>
+
+	<item name="product_extra" caption="Дополнительные страницы для товара" key="name" ag-id="3123" ag-hash="1373246656">
+		<parameter name="name" type="string" caption="Заголовок страницы"/>
+		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
+		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
+	</item>
+	<!--
+	Для хранения пользовательских параметров товара, список которых отличается в зависимости от раздела или типа товара
+	Хранить их в текстовом виде нужно чтобы можно было создавать заново айтем с параметрами товара params в случае
+	если надо поменять тип этого айтема. А это нужно, например, когда заново создаются фильтры для разделов
+	Также в этот айтем сохраняются значения всех параметров, содержащихся в айтеме params
+	Параметры хранятся в таком же виде, как и пользовательские параметры в айтеме, т.е. сохранятся путём вызова
+	params.outputValues();
+	-->
+	<item name="params_xml" caption="Параметры в виде XML" ag-id="3124" ag-hash="471057886">
+		<parameter name="xml" type="xml" caption="Параметры" />
+	</item>
 
 
 	<!--/////////////                            END КАТАЛОГ                               ////////////-->

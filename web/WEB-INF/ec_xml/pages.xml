@@ -836,4 +836,14 @@
 		</command>
 	</page>
 
+	<page name="integrate_parsed" template="integrate_parsed">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.MetaboIntegrateParsedCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
 </site>
