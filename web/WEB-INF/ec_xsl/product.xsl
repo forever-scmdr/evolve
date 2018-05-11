@@ -20,7 +20,7 @@
 
 		<script type="application/ld+json">
 			<xsl:variable name="quote">"</xsl:variable>
-			<xsl:variable name="price" select="if($p/price != '') then $p/price else '15000'"/>
+			<xsl:variable name="price" select="$p/price"/>
 			{
 					"@context": "http://schema.org/",
 					"@type": "Product",
@@ -30,7 +30,8 @@
 					"offers": {
 					"@type": "Offer",
 					"priceCurrency": "BYN",
-					"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" />
+					<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
+					<xsl:if test="f:num($price) = 0">"price":""</xsl:if>
 					}
 			}
 		</script>
