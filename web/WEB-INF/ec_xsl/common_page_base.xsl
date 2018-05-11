@@ -714,14 +714,17 @@
 	</xsl:template>
 
 	<xsl:template name="SEO">
+
 		<xsl:variable name="quote">"</xsl:variable>
 
 		<link rel="canonical" href="{concat($base, $canonical)}" />
+		<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
+		<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 
-		<xsl:if test="//seo != ''">
-			<xsl:apply-templates select="//seo[1]"/>
+		<xsl:if test="$seo">
+			<xsl:apply-templates select="$seo"/>
 		</xsl:if>
-		<xsl:if test="not(//seo) or //seo = ''">
+		<xsl:if test="not($seo) or $seo = ''">
 			<title>
 				<xsl:value-of select="$title"/>
 			</title>
@@ -735,7 +738,7 @@
 		</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="seo">
+	<xsl:template match="seo | url_seo">
 		<title>
 			<xsl:value-of select="title"/>
 		</title>

@@ -12,7 +12,18 @@
 		<parameter name="meta" caption="meta" type="plain-text"/>
 	</item>
 
+	<item name="url_seo" key="name" caption="SEO" ag-id="816" ag-hash="-169844339">
+		<parameter name="name" type="string" caption="Название" description="для поиска в CMS"/>
+		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
+		<parameter name="title" type="string" caption="title"/>
+		<parameter name="description" type="string" caption="description"/>
+		<parameter name="keywords" type="string" caption="keywords"/>
+		<parameter name="meta" caption="meta" type="plain-text"/>
+	</item>
 
+	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="817" ag-hash="843192252">
+		<child item="url_seo" />
+	</item>
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -260,7 +271,6 @@
 		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
 	</item>
 
-
 	<root>
 		<child item="feedback_params" single="true" />
 		<child item="catalog" single="true" />
@@ -271,6 +281,7 @@
 		<child item="custom_pages" single="true"/>
 		<child item="modules" single="true"/>
 		<child item="counter" single="true" virtual="true"/>
+		<child item="url_seo_wrap" single="true"/>
 	</root>
 
 

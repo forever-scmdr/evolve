@@ -44,6 +44,9 @@
         <single item="modules">
             <list item="named_code"/>
         </single>
+        <single item="url_seo_wrap">
+            <list item="url_seo"/>
+        </single>
     </include-definition>
 
 
