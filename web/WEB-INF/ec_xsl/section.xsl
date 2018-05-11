@@ -1,6 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -17,6 +17,7 @@
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+	<xsl:variable name="canonical" select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
@@ -24,19 +25,24 @@
 		<!-- CONTENT BEGIN -->
 
 		<script type="application/ld+json">
+
+			<xsl:variable name="quote">"</xsl:variable>	
+			<xsl:variable name="min" select="f:currency_decimal(//min/price)"/>
+			<xsl:variable name="max" select="f:currency_decimal(//max/price)"/>
+
 			{
 			"@context": "http://schema.org/",
 			"@type": "Product",
-			"name": '<xsl:value-of select="$sel_sec/name"/>',
+			"name": <xsl:value-of select="concat($quote, replace($sel_sec/name, $quote, ''), $quote)" />,
 			<xsl:if test="$sel_sec/main_pic != ''">
-			"image": '<xsl:value-of select="concat($base, '/', $sel_sec/@path, $sel_sec/main_pic)"/>',
+			"image": <xsl:value-of select="concat($quote, $base, '/', $sel_sec/@path, $sel_sec/main_pic, $quote)"/>,
 			</xsl:if>
 			"offers": {
 			"@type": "AggregateOffer",
 			"priceCurrency": "BYN",
-			"lowPrice": '<xsl:value-of select="//min/price"/>',
-			"highPrice": '<xsl:value-of select="//max/price"/>',
-			"offerCount": '<xsl:value-of select="$sel_sec/product_count"/>'
+			"lowPrice": <xsl:value-of select="concat($quote,$min, $quote)"/>,
+			"highPrice": <xsl:value-of select="concat($quote, $max, $quote)"/>,
+			"offerCount": <xsl:value-of select="concat($quote, count($sel_sec/product), $quote)"/>
 			}
 			}
 		</script>
@@ -116,7 +122,7 @@
 						<!--</div>-->
 						<span>
 							<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
-							        onchange="window.location.href = $(this).find(':selected').attr('link')">
+									onchange="window.location.href = $(this).find(':selected').attr('link')">
 								<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
 								<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
 								<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
@@ -129,7 +135,7 @@
 						<span>Кол-во на странице:</span>
 						<span>
 							<select class="form-control" value="{page/variables/limit}"
-							        onchange="window.location.href = $(this).find(':selected').attr('link')">
+									onchange="window.location.href = $(this).find(':selected').attr('link')">
 								<option value="24" link="{page/set_limit_24}">24</option>
 								<option value="48" link="{page/set_limit_48}">48</option>
 								<option value="10000" link="{page/set_limit_all}">все</option>

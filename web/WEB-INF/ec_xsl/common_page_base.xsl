@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
+	<xsl:import href="utils/price_conversions.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
@@ -8,6 +9,7 @@
 	<xsl:variable name="title" select="'Спеццехника'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
+	<xsl:variable name="canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''"/>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
@@ -19,9 +21,6 @@
 
 
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
-
-
-
 
 
 
@@ -47,7 +46,7 @@
 						</div>
 						<div class="other-container">
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Корзина пуста</strong></p>
+								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Загрузка...</strong></p>
 							</div>
 							<div class="user">
 								<!-- <p><i class="fas fa-lock"/>
@@ -66,7 +65,13 @@
 						<div class="main-menu">
 							<!-- <a href="{page/index_link}">Главная</a> -->
 							<a href="{page/catalog_link}" id="catalog_main_menu" class="{'active'[$active_menu_item = 'catalog']}"><i class="fas fa-bars"/>Каталог</a>
-							<a href="{page/news_link}" class="{'active'[$active_menu_item = 'news']}">Новости</a>
+							<xsl:for-each select="page/news">
+								<xsl:variable name="key" select="@key"/>
+								<xsl:variable name="sel" select="page/varibles/sel"/>
+								<a href="{show_page}" class="{'active'[$sel = $key]}">
+									<xsl:value-of select="name"/>
+								</a>
+							</xsl:for-each>
 							<xsl:for-each select="page/menu_custom">
 								<xsl:variable name="key" select="@key"/>
 								<a href="{show_page}" class="{'active'[$active_menu_item = $key]}"><xsl:value-of select="header"/></a>
@@ -77,15 +82,15 @@
 							<a href="/about">О компании</a>
 							<a href="{page/docs_link}">Документация</a>
 							 -->
-							 <a href="{page/contacts_link}" class="{'active'[$active_menu_item = 'contacts']}">Контакты</a>
+							<a href="{page/contacts_link}" class="{'active'[$active_menu_item = 'contacts']}">Контакты</a>
 						</div>
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
-						 	<div class="sections">
+							<div class="sections">
 								<xsl:for-each select="page/catalog/section">
-								    <a href="{if (section) then show_section else show_products}"
-								       class="cat_menu_item_1" rel="#sub_{@id}"><xsl:value-of select="name" /></a>
+									<a href="{if (section) then show_section else show_products}"
+									   class="cat_menu_item_1" rel="#sub_{@id}"><xsl:value-of select="name" /></a>
 								</xsl:for-each>
-						 	</div>
+							</div>
 							<!-- <xsl:for-each select="page/catalog/section">
 							    <div class="subsections" style="display: none" id="sub_{@id}">
 									<xsl:for-each select="section">
@@ -122,8 +127,8 @@
 		</div>
 		<script>
 			function showMobileMainMenu() {
-				$('.content-container').toggleClass('visible-no');
-				$('.menu-container').toggleClass('visible-yes');
+			$('.content-container').toggleClass('visible-no');
+			$('.menu-container').toggleClass('visible-yes');
 			}
 		</script>
 	</xsl:template>
@@ -235,33 +240,33 @@
 		</div>
 		<script>
 			function showMobileCatalogMenu() {
-				$('#mobile_catalog_menu').toggle();
+			$('#mobile_catalog_menu').toggle();
 			}
 
 			$(document).ready(function() {
-				$("#mobile_catalog_menu .content li a[rel]").click(function(event) {
-					//event.preventDefault();
-					var menuItem = $(this);
-					var parentMenuContainer = menuItem.closest('.content');
-					parentMenuContainer.css('left', '-100%');
-					var childMenuContainer = $(menuItem.attr('rel'));
-					childMenuContainer.css('left', '0%');
-				});
+			$("#mobile_catalog_menu .content li a[rel]").click(function(event) {
+			//event.preventDefault();
+			var menuItem = $(this);
+			var parentMenuContainer = menuItem.closest('.content');
+			parentMenuContainer.css('left', '-100%');
+			var childMenuContainer = $(menuItem.attr('rel'));
+			childMenuContainer.css('left', '0%');
+			});
 
-				$('#mobile_catalog_menu a.back').click(function(event) {
-					event.preventDefault();
-					var back = $(this);
-					var childMenuContainer = back.closest('.content');
-					childMenuContainer.css('left', '100%');
-					var parentMenuContainer = $(back.attr('rel'));
-					parentMenuContainer.css('left', '0%');
-				});
+			$('#mobile_catalog_menu a.back').click(function(event) {
+			event.preventDefault();
+			var back = $(this);
+			var childMenuContainer = back.closest('.content');
+			childMenuContainer.css('left', '100%');
+			var parentMenuContainer = $(back.attr('rel'));
+			parentMenuContainer.css('left', '0%');
+			});
 			});
 
 			function hideMobileCatalogMenu() {
-				$("#mobile_catalog_menu .content").css('left', '100%');
-				$("#m_sub_cat").css('left', '0%');
-				$('#mobile_catalog_menu').hide();
+			$("#mobile_catalog_menu .content").css('left', '100%');
+			$("#m_sub_cat").css('left', '0%');
+			$('#mobile_catalog_menu').hide();
 			}
 		</script>
 	</xsl:template>
@@ -454,7 +459,7 @@
 				</xsl:if>
 			</div>
 			<div class="order">
-				<div id="cart_list_{code}" class="product_purchase_container">
+				<div id="cart_list_{replace(code, '[)()]', '-')}" class="product_purchase_container">
 					<form action="{to_cart}" method="post">
 						<xsl:if test="$has_price">
 							<input type="hidden" name="qty" value="1" min="0"/>
@@ -462,13 +467,13 @@
 						</xsl:if>
 						<xsl:if test="not($has_price)">
 							<input type="hidden" name="qty" value="1" min="0"/>
-							<input type="submit" class="not_available" value="Под заказ"/>
+							<input type="submit" class="not_available" value="Запросить цену"/>
 						</xsl:if>
 					</form>
 				</div>
 				<!--<xsl:choose>-->
-					<!--<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>-->
-					<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
+				<!--<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>-->
+				<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
 				<!--</xsl:choose>-->
 
 				<div class="links">
@@ -499,12 +504,12 @@
 	<xsl:template name="CART_SCRIPT">
 		<script>
 			$(document).ready(function() {
-				$('.product_purchase_container').find('input[type="submit"]').click(function(event) {
-					event.preventDefault();
-					var qtyForm = $(this).closest('form');
-					var lockId = $(this).closest('.product_purchase_container').attr('id');
-					postForm(qtyForm, lockId, null);
-				});
+			$('.product_purchase_container').find('input[type="submit"]').click(function(event) {
+			event.preventDefault();
+			var qtyForm = $(this).closest('form');
+			var lockId = $(this).closest('.product_purchase_container').attr('id');
+			postForm(qtyForm, lockId, null);
+			});
 			});
 		</script>
 	</xsl:template>
@@ -564,83 +569,90 @@
 
 
 	<xsl:template match="/">
-	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
+	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
 	</xsl:text>
-	<html lang="en">
-		<head>
-			<!--<base href="https://ttd.by"/> -->
-			<base href="{$base}"/>
-			<meta charset="utf-8"/>
-			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1"/>
-			<xsl:call-template name="SEO"/>
-			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
-			<link rel="stylesheet" href="css/app.css"/>
-			<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
-			<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-			<link rel="stylesheet" href="fotorama/fotorama.css"/>
-			<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
-			<script defer="defer" src="js/font_awesome_all.js"/>
-			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
-		</head>
-		<body>
-			<!-- ALL CONTENT BEGIN -->
-			<div class="content-container">
-				<xsl:call-template name="INC_DESKTOP_HEADER"/>
+		<html lang="ru">
+			<head>
+				<xsl:text disable-output-escaping="yes">
+&lt;!--
+				</xsl:text>
+<xsl:value-of select="page/source_link"/>
+				<xsl:text disable-output-escaping="yes">
+--&gt;
+				</xsl:text>
+				<!--<base href="https://ttd.by"/> -->
+				<base href="{$base}"/>
+				<meta charset="utf-8"/>
+				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+				<meta name="viewport" content="width=device-width, initial-scale=1"/>
+				<xsl:call-template name="SEO"/>
+				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
+				<link rel="stylesheet" href="css/app.css"/>
+				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+				<link rel="stylesheet" href="fotorama/fotorama.css"/>
+				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
+				<script defer="defer" src="js/font_awesome_all.js"/>
+				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
+			</head>
+			<body>
+				<!-- ALL CONTENT BEGIN -->
+				<div class="content-container">
+					<xsl:call-template name="INC_DESKTOP_HEADER"/>
 
-				<xsl:call-template name="MAIN_CONTENT"/>
+					<xsl:call-template name="MAIN_CONTENT"/>
 
-				<xsl:call-template name="BANNERS"/>
+					<xsl:call-template name="BANNERS"/>
 
-				<xsl:call-template name="INC_FOOTER"/>
+					<xsl:call-template name="INC_FOOTER"/>
 
-			</div>
-			<!-- ALL CONTENT END -->
+				</div>
+				<!-- ALL CONTENT END -->
 
 
-			<xsl:call-template name="INC_MOBILE_MENU"/>
-			<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
+				<xsl:call-template name="INC_MOBILE_MENU"/>
+				<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
 
-			<script type="text/javascript" src="js/bootstrap.js"/>
-			<script type="text/javascript" src="admin/ajax/ajax.js"/>
-			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
-			<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
-			<script type="text/javascript" src="js/fwk/common.js"/>
-			<script type="text/javascript" src="slick/slick.min.js"></script>
-			<script type="text/javascript">
-				$(document).ready(function(){
+				<script type="text/javascript" src="js/bootstrap.js"/>
+				<script type="text/javascript" src="admin/ajax/ajax.js"/>
+				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
+				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
+				<script type="text/javascript" src="js/fwk/common.js"/>
+				<script type="text/javascript" src="slick/slick.min.js"></script>
+				<script type="text/javascript">
+					$(document).ready(function(){
 					$(".footer-placeholder").height($(".footer").outerHeight()+40);
 					$('.slick-slider').slick({
-						infinite: true,
-						slidesToShow: 6,
-						slidesToScroll: 6,
-						dots: true,
-						arrows: false,
-						responsive: [
-							{
-						      breakpoint: 767,
-						      settings: {
-						        slidesToShow: 2,
-						        slidesToScroll: 2,
-						        infinite: true,
-						        dots: true
-						      }
-						    }
-						]
+					infinite: true,
+					slidesToShow: 6,
+					slidesToScroll: 6,
+					dots: true,
+					arrows: false,
+					responsive: [
+					{
+					breakpoint: 767,
+					settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2,
+					infinite: true,
+					dots: true
+					}
+					}
+					]
 					});
 
 					initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
 					initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
-				});
-				
-				$(window).resize(function(){
+					});
+
+					$(window).resize(function(){
 					$(".footer-placeholder").height($(".footer").outerHeight()+40);
-				});
-			</script>
-			<xsl:call-template name="EXTRA_SCRIPTS"/>
-			<xsl:call-template name="USER_SCRIPTS"/>
-		</body>
-	</html>
+					});
+				</script>
+				<xsl:call-template name="EXTRA_SCRIPTS"/>
+				<xsl:call-template name="USER_SCRIPTS"/>
+			</body>
+		</html>
 	</xsl:template>
 
 	<xsl:template name="USER_SCRIPTS">
@@ -660,21 +672,21 @@
 
 
 	<xsl:template match="*" mode="content">
-	<xsl:value-of select="text" disable-output-escaping="yes"/>
-	<xsl:apply-templates select="text_part | gallery_part" mode="content"/>
+		<xsl:value-of select="text" disable-output-escaping="yes"/>
+		<xsl:apply-templates select="text_part | gallery_part" mode="content"/>
 	</xsl:template>
 
 	<xsl:template match="text_part" mode="content">
-	<h3><xsl:value-of select="name"/></h3>
-	<xsl:value-of select="text" disable-output-escaping="yes"/>
+		<h3><xsl:value-of select="name"/></h3>
+		<xsl:value-of select="text" disable-output-escaping="yes"/>
 	</xsl:template>
 
 	<xsl:template match="gallery_part" mode="content">
-	<div class="fotorama" data-fit="cover">
-		<xsl:for-each select="picture_pair">
-			<img src="{@path}{big}" alt="{name}" data-caption="{name}"/>
-		</xsl:for-each>
-	</div>
+		<div class="fotorama" data-fit="cover">
+			<xsl:for-each select="picture_pair">
+				<img src="{@path}{big}" alt="{name}" data-caption="{name}"/>
+			</xsl:for-each>
+		</div>
 	</xsl:template>
 
 	<xsl:template name="PAGE_TITLE">
@@ -704,7 +716,7 @@
 	<xsl:template name="SEO">
 		<xsl:variable name="quote">"</xsl:variable>
 
-		<link rel="canonical" href="{concat($base, tokenize(page/source_link, '\?')[1])}" />
+		<link rel="canonical" href="{concat($base, $canonical)}" />
 
 		<xsl:if test="//seo != ''">
 			<xsl:apply-templates select="//seo[1]"/>
@@ -715,10 +727,11 @@
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
+		<!-- <meta name="google-site-verification" content="{/page/common/google_verification}" />
+		<meta name="yandex-verification" content="{/page/common/yandex_verification}" /> -->
 		<xsl:text disable-output-escaping="yes">
-			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q" /&gt;
-			&lt;meta name="yandex-verification" content="c0176b2b8d9b89a6" /&gt;
-			&lt;meta name="yandex-verification" content="8266d133dcbdf8b6" /&gt;
+			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
+			&lt;meta name="yandex-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
 		</xsl:text>
 	</xsl:template>
 

@@ -2,7 +2,6 @@
 <site>
 
     <!-- ******************************* Включение для разделов каталога ****************************** -->
-
     <include-definition name="COMMON">
         <single item="catalog" id="catalog_main" cacheable="true">
             <tree item="section" id="sec">
@@ -14,6 +13,7 @@
                 </link>
             </tree>
         </single>
+
         <list item="custom_page" id="custom_page" cacheable="true" tag="menu_custom">
             <filter>
                 <parameter name="in_main_menu">
@@ -24,13 +24,16 @@
                 <var name="p" ref="custom_page" style="translit"/>
             </link>
         </list>
+
+        <list item="news" id="news" cacheable="true">
+            <link name="show_page" target="news" type="exclusive">
+                <var name="sel" ref="news" style="translit"/>
+            </link>
+        </list>
+
         <single item="common" cacheable="false"/>
         <link name="index_link" target="index"/>
         <link name="catalog_link" target="catalog"/>
-        <link name="news_link" target="news"/>
-        <link name="articles_link" target="articles"/>
-        <link name="dealers_link" target="dealers"/>
-        <link name="docs_link" target="docs"/>
         <link name="contacts_link" target="contacts"/>
         <link name="cart_ajax_link" target="cart_ajax"/>
         <link name="cart_link" target="cart"/>
@@ -38,8 +41,8 @@
         <link name="feedback_form_link" target="feedback_ajax"/>
         <link name="fav_ajax_link" target="fav_ajax"/>
         <link name="compare_ajax_link" target="compare_ajax"/>
-        <single name="modules">
-            <list name="named_code"/>
+        <single item="modules">
+            <list item="named_code"/>
         </single>
     </include-definition>
 
@@ -50,8 +53,8 @@
             <list item="main_slider_frame"/>
             <single item="seo"/>
         </single>
-        <single item="news">
-            <list item="news_item" id="ni">
+        <single item="news_wrap">
+            <list item="news_item" id="ni" transit="true">
                 <filter>
                     <sorting direction="DESC">
                         <var value="date"/>
@@ -131,8 +134,12 @@
                 </link>
                 <single item="params"/>
             </list>
-            <list item="product" tag="tag">
+            <list item="product" tag="tag" id="tag">
                 <aggregation parameter="tag"/>
+                <link name="canonical" type="exclusive" target="section" copy-page-vars="no">
+                    <var name="sec" style="translit" var="sec"/>
+                    <var name="tag" parameter="tag" ref="tag"/>
+                </link>
             </list>
             <list item="product" tag="min">
                 <aggregation parameter="price" function="MIN"/>
@@ -292,9 +299,10 @@
 
     <page name="news" template="news" cacheable="true">
         <request>
+            <var name="sel" style="translit"/>
             <var name="p" value="1"/>
         </request>
-        <single item="news">
+        <single item="news" var="sel" tag="selected_news">
             <single item="seo"/>
             <list item="news_item" id="ni">
                 <filter>
@@ -315,34 +323,6 @@
         </single>
         <include name="COMMON"/>
     </page>
-
-
-    <page name="articles" template="news" cacheable="true">
-        <request>
-            <var name="p" value="1"/>
-        </request>
-        <single item="articles">
-            <single item="seo"/>
-            <list item="news_item" id="ni">
-                <filter>
-                    <sorting direction="DESC">
-                        <var value="date"/>
-                    </sorting>
-                    <limit>
-                        <var value="12"/>
-                    </limit>
-                    <pages>
-                        <var var="p"/>
-                    </pages>
-                </filter>
-                <link name="show_news_item" target="news_item" type="exclusive">
-                    <var name="ni" ref="ni" style="translit"/>
-                </link>
-            </list>
-        </single>
-        <include name="COMMON"/>
-    </page>
-
 
     <page name="news_item" template="news_item" cacheable="true">
         <request>
@@ -351,13 +331,12 @@
         <single item="news_item" var="ni" cacheable="true" cache-vars="ni">
             <single item="seo"/>
             <ancestor item="news"/>
-            <ancestor item="articles"/>
         </single>
         <include name="COMMON"/>
     </page>
 
 
-    <page name="dealers" template="dealers" cacheable="true">
+    <!-- <page name="dealers" template="dealers" cacheable="true">
         <single item="seo"/>
         <list item="dealer_coords" cacheable="true"/>
         <include name="COMMON"/>
@@ -368,7 +347,7 @@
         <single item="seo"/>
         <single item="docs" cacheable="true"/>
         <include name="COMMON"/>
-    </page>
+    </page> -->
 
 
     <page name="contacts" template="contacts" cacheable="true">
@@ -392,6 +371,16 @@
         </request>
         <single item="custom_page" var="p" cacheable="true" cache-vars="p">
             <single item="seo"/>
+            <list item="custom_page" id="child">
+                <link target="page" type="exclusive" name="show_page">
+                    <var ref="child" style="translit" name="p"/>
+                </link>
+            </list>
+            <ancestor item="custom_page" id="parents" tag="parent" transit="true">
+                <link target="page" type="exclusive" name="show_page">
+                    <var ref="parents" style="translit" name="p"/>
+                </link>
+            </ancestor>
         </single>
         <include name="COMMON"/>
     </page>
@@ -765,17 +754,18 @@
                 </link>
             </tree>
         </single>
-        <list item="custom_page" id="custom_page" cacheable="true" tag="menu_custom">
+        <list item="custom_page" id="custom_page" cacheable="true">
             <link name="show_page" target="page" type="exclusive">
                 <var name="p" ref="custom_page" style="translit"/>
             </link>
         </list>
+        <list item="news" id="news" cacheable="true">
+            <link name="show_page" target="news" type="exclusive">
+                <var name="sel" ref="news" style="translit"/>
+            </link>
+        </list>
         <link name="index_link" target="index"/>
         <link name="catalog_link" target="catalog"/>
-        <link name="news_link" target="news"/>
-        <link name="articles_link" target="articles"/>
-        <link name="dealers_link" target="dealers"/>
-        <link name="docs_link" target="docs"/>
         <link name="contacts_link" target="contacts"/>
 
         <list item="news_item" id="ni">
@@ -798,6 +788,13 @@
             <list item="product" id="prod">
                 <link name="show_product" target="product" type="exclusive">
                     <var name="prod" ref="prod" style="translit"/>
+                </link>
+            </list>
+            <list item="product" tag="tag" id="tag">
+                <aggregation parameter="tag"/>
+                <link name="canonical" type="exclusive" target="section" copy-page-vars="no">
+                    <var name="sec" style="translit" var="sec"/>
+                    <var name="tag" parameter="tag" ref="tag"/>
                 </link>
             </list>
         </single>

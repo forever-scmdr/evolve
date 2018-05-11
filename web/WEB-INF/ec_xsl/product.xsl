@@ -1,6 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="$p/name"/>
@@ -19,17 +19,19 @@
 	<xsl:template name="CONTENT">
 
 		<script type="application/ld+json">
+			<xsl:variable name="quote">"</xsl:variable>
+			<xsl:variable name="price" select="if($p/price != '') then $p/price else '15000'"/>
 			{
-			"@context": "http://schema.org/",
-			"@type": "Product",
-			"name": '<xsl:value-of select="$p/name" />',
-			"image": '<xsl:value-of select="concat($base, '/', $p/@path, $p/gallery[1])" />',
-			"brand": '<xsl:value-of select="$p/tag[1]" />',
-			"offers": {
-			"@type": "Offer",
-			"priceCurrency": "BYN",
-			"price": '<xsl:value-of select="$p/price" />'
-			}
+					"@context": "http://schema.org/",
+					"@type": "Product",
+					"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
+					"image": <xsl:value-of select="concat($quote, $base, '/', $p/@path, $p/gallery[1], $quote)" />,
+					"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
+					"offers": {
+					"@type": "Offer",
+					"priceCurrency": "BYN",
+					"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" />
+					}
 			}
 		</script>
 
@@ -76,7 +78,7 @@
 				</xsl:if>
 				<div class="order">
 					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
-					<div id="cart_list_{$p/code}" class="product_purchase_container">
+					<div id="cart_list_{replace($p/code, '[)()]', '-')}" class="product_purchase_container">
 						<form action="{$p/to_cart}" method="post">
 							<xsl:if test="$has_price">
 								<input type="hidden" name="qty" value="1" min="0"/>
@@ -223,5 +225,7 @@
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript" src="fotorama/fotorama.js"/>
 	</xsl:template>
+
+
 
 </xsl:stylesheet>

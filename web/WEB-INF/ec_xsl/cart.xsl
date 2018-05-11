@@ -1,6 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="'Список техники в заявке'" />
@@ -21,8 +21,8 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="price" select="if ($p/price) then concat($p/price, ' p.') else '0'"/>
-							<xsl:variable name="sum" select="if ($p/price) then concat(sum, ' p.') else '0'"/>
+							<xsl:variable name="price" select="if ($p/price) then concat($p/price, ' p.') else 'по запросу'"/>
+							<xsl:variable name="sum" select="if ($p/price) then concat(sum, ' p.') else ''"/>
 							<div class="item">
 								<a href="{$p/show_product}" class="image-container">
 									<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
