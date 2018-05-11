@@ -92,7 +92,7 @@
 	<!--/////////////                             КОРЗИНА                                  ////////////-->
 
 
-	<!-- Параметры электронной почты -->
+	<!-- Параметры электронной почты  -->
 	<item name="feedback_params" caption="Параметры обратной связи" ag-id="28" ag-hash="-1139606656">
 		<parameter name="server_from" type="string" caption="Адрес сервера" description="с которого отправлять обратную связь"/>
 		<parameter name="email_from" type="string" caption="Откуда" description="Адрес почтового ящика, с которого отправлять обратную связь"/>
