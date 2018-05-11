@@ -8,7 +8,7 @@
 
 	<!-- <TITLE> -->
 	
-	<xsl:template name="TITLE">ЮКС</xsl:template>
+	<xsl:template name="TITLE">Метабо</xsl:template>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
@@ -38,7 +38,7 @@
 				<div class="col-xs-12">
 					<div class="header-container" style="position: relative;">
 						<div class="logo">
-							<a href="{page/index_link}"><img src="img/logo_big.svg" alt="" /></a>
+							<a href="{page/index_link}"><img src="img/logo.jpg" alt="" /></a>
 						</div>
 						<div class="search">
 							<form action="{page/search_link}" method="post">
@@ -95,7 +95,7 @@
 		<div class="header mobile">
 			<div class="header-container">
 				<a href="" class="logo">
-					<img src="img/logo_big.svg" alt="" style="height: 1.5em; max-width: 100%;"/>
+					<img src="img/logo.jpg" alt="" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
 					<a href=""><i class="fas fa-phone"></i></a>
@@ -128,7 +128,7 @@
 					<div class="col-xs-12">
 						<div class="footer-container">
 							<div class="block">
-								<p><strong>© yuks.by, 2018</strong></p>
+								<p><strong>© metabo-shop.by, 2018</strong></p>
 								<div class="forever">
 									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
 								</div>
@@ -457,22 +457,24 @@
 
 	<xsl:template name="MAIN_CONTENT">
 		<!-- MAIN COLOUMNS BEGIN -->
-		<div class="container">
-			<div class="row">
-				<!-- LEFT COLOUMN BEGIN -->
-				<div class="col-md-3 lc desktop">
-					<xsl:call-template name="LEFT_COLOUMN"/>
-				</div>
-				<!-- LEFT COLOUMN END -->
-
-				<!-- RIGHT COLOUMN BEGIN -->
-				<div class="col-md-9 col-xs-12 main-content">
-					<div class="mc-container">
-						<xsl:call-template name="INC_MOBILE_HEADER"/>
-						<xsl:call-template name="CONTENT"/>
+		<div class="container-fluid inner-content">
+			<div class="container">
+				<div class="row">
+					<!-- LEFT COLOUMN BEGIN -->
+					<div class="col-md-3 lc desktop">
+						<xsl:call-template name="LEFT_COLOUMN"/>
 					</div>
+					<!-- LEFT COLOUMN END -->
+
+					<!-- RIGHT COLOUMN BEGIN -->
+					<div class="col-md-9 col-xs-12 main-content">
+						<div class="mc-container">
+							<xsl:call-template name="INC_MOBILE_HEADER"/>
+							<xsl:call-template name="CONTENT"/>
+						</div>
+					</div>
+					<!-- RIGHT COLOUMN END -->
 				</div>
-				<!-- RIGHT COLOUMN END -->
 			</div>
 		</div>
 		<!-- MAIN COLOUMNS END -->
@@ -517,7 +519,8 @@
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<title><xsl:call-template name="TITLE"/></title>
-			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
+			<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&amp;subset=cyrillic" rel="stylesheet" />
+			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700&amp;subset=cyrillic" rel="stylesheet" />
 			<link rel="stylesheet" href="css/app.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
