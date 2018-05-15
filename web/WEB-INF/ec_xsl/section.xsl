@@ -7,11 +7,12 @@
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
-	<xsl:variable name="title" select="$sel_sec/name"/>
+	
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="tag" select="page/variables/tag"/>
+	<xsl:variable name="title" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
@@ -58,7 +59,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$sel_sec/name"/></h1>
+		<h1><xsl:value-of select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/></h1>
 		<div class="page-content m-t">
 
 			<div class="tags">

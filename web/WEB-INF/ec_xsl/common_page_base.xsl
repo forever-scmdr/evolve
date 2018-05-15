@@ -72,9 +72,18 @@
 									<xsl:value-of select="name"/>
 								</a>
 							</xsl:for-each>
-							<xsl:for-each select="page/menu_custom">
+							<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да']">
 								<xsl:variable name="key" select="@key"/>
-								<a href="{show_page}" class="{'active'[$active_menu_item = $key]}"><xsl:value-of select="header"/></a>
+								<xsl:if test="not(menu_custom)">
+									<a href="{show_page}" class="{'active'[$active_menu_item = $key]}">
+										<xsl:value-of select="header"/>
+									</a>
+								</xsl:if>
+								<xsl:if test="menu_custom">
+									<a href="#ts-{@id}" class="show-sub{' active'[$active_menu_item = $key]}">
+										<xsl:value-of select="header"/>
+									</a>
+								</xsl:if>
 							</xsl:for-each>
 							<!-- <a href="{page/articles_link}">Статьи</a>
 							<a href="">Наши проекты</a>
@@ -91,6 +100,7 @@
 									   class="cat_menu_item_1" rel="#sub_{@id}"><xsl:value-of select="name" /></a>
 								</xsl:for-each>
 							</div>
+
 							<!-- <xsl:for-each select="page/catalog/section">
 							    <div class="subsections" style="display: none" id="sub_{@id}">
 									<xsl:for-each select="section">
@@ -99,6 +109,17 @@
 							    </div>
 							</xsl:for-each> -->
 						</div>
+						<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да' and menu_custom]">
+							<div class="popup-text-menu" style="position: absolute; display: none;" id="ts-{@id}">
+								<div class="sections">
+									<xsl:for-each select="menu_custom">
+										<a href="{show_page}">
+											<xsl:value-of select="header"/>
+										</a>
+									</xsl:for-each>
+								</div>
+							</div>
+						</xsl:for-each>
 					</div>
 				</div>
 			</div>
@@ -228,8 +249,12 @@
 					<!--<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>-->
 				</ul>
 				<ul>
-					<li><a href="{page/news_link}">Новости</a></li>
-					<xsl:for-each select="page/menu_custom">
+					<xsl:for-each select="page/news">
+						<li><a href="{show_page}">
+							<xsl:value-of select="name"/>
+						</a></li>
+					</xsl:for-each>
+					<xsl:for-each select="page/custom_pages/menu_custom">
 						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
 					</xsl:for-each>
 					<li>

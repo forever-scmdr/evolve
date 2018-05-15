@@ -32,7 +32,7 @@
 						<span>Показывать:</span>
 						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
 						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
-						<div class="checkbox">
+						<!-- <div class="checkbox">
 							<label>
 								<xsl:if test="not($only_available)">
 									<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
@@ -42,7 +42,7 @@
 								</xsl:if>
 								в наличии
 							</label>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</xsl:if>
