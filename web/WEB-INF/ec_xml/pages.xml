@@ -19,7 +19,7 @@
 				<parameter name="in_main_menu"><var value="да"/></parameter>
 			</filter>
 			<link name="show_page" target="page" type="exclusive">
-				<var name="p" ref="custom_page" style="translit"/>
+				 <var name="p" ref="custom_page" style="translit"/>
 			</link>
 		</list>
 		<single item="common" cacheable="false"/>
