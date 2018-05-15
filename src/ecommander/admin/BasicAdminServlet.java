@@ -1,22 +1,16 @@
 package ecommander.admin;
 
-import java.io.IOException;
+import ecommander.controllers.*;
+import ecommander.model.DomainBuilder;
+import ecommander.model.User;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.controllers.BasicServlet;
-import ecommander.controllers.LoginServlet;
-import ecommander.controllers.SessionContext;
-import ecommander.controllers.StartController;
-import ecommander.model.DataModelBuilder;
-import ecommander.model.DomainBuilder;
-import ecommander.model.User;
+import java.io.IOException;
 /**
  * Базовый класс для всех админских модулей
  * @author EEEE
@@ -109,7 +103,7 @@ public abstract class BasicAdminServlet extends HttpServlet {
 	 */
 	protected static String getContextPath(HttpServletRequest req) {
 		String domain = req.getServerName() + (req.getServerPort() == 80 ? "" : ":" + req.getServerPort()) + req.getContextPath();
-		return "http://" + (StringUtils.isBlank(req.getContextPath()) ? domain : domain + "/");
+		return AppContext.getProtocolScheme() + "://" + (StringUtils.isBlank(req.getContextPath()) ? domain : domain + "/");
 	}
 	/**
 	 * Получить полную строку запроса из объекта запроса
@@ -118,8 +112,9 @@ public abstract class BasicAdminServlet extends HttpServlet {
 	 */
 	public static String getRequestStrig(HttpServletRequest request) {
 		return 
-				request.getScheme() + "://" + request.getServerName() + 
-				("http".equals(request.getScheme()) && request.getServerPort() == 80 || 
+				//request.getScheme() + "://" + request.getServerName() +
+				AppContext.getProtocolScheme() + "://" + request.getServerName() +
+				("http".equals(request.getScheme()) && request.getServerPort() == 80 ||
 				"https".equals(request.getScheme()) && request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
 				request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : "");
 	}

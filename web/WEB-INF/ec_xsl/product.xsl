@@ -28,6 +28,8 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1><xsl:value-of select="$p/name"/></h1>
+		<h2><xsl:value-of select="$p/type"/></h2>
+		<h3><xsl:value-of select="$p/name_extra"/></h3>
 
 		<div class="catalog-item-container">
 			<!--
@@ -49,6 +51,7 @@
 				</div>
 			</div>
 			<div class="product-info">
+				<p>№ для заказа: <xsl:value-of select="$p/code" /></p>
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 				<xsl:if test="$has_price">
 					<div class="price">
@@ -85,6 +88,7 @@
 				</div>
 				<div class="info-blocks">
 					<div class="info-block">
+						<xsl:value-of select="$p/short" disable-output-escaping="yes"/>
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 					</div>
 					<!--
@@ -101,9 +105,9 @@
 			</div>
 			<div class="description">
 				<ul class="nav nav-tabs" role="tablist">
-					<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-						<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab">Описание</a></li>
-					<!--</xsl:if>-->
+					<li role="presentation" class="active"><a href="#text" role="tab" data-toggle="tab">Описание</a></li>
+					<li role="presentation"><a href="#tech" role="tab" data-toggle="tab">Технические данные</a></li>
+					<li role="presentation"><a href="#package" role="tab" data-toggle="tab">Объем поставки</a></li>
 					<!--<xsl:if test="$p/tech">-->
 						<!--<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">Технические данные</a></li>-->
 					<!--</xsl:if>-->
@@ -121,8 +125,17 @@
 					<!--</xsl:if>-->
 				</ul>
 				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane active" id="tab1">
-						<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
+					<div role="tabpanel" class="tab-pane active" id="text">
+						<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="tech">
+						<xsl:value-of select="$p/product_extra[name = 'tech']/text" disable-output-escaping="yes"/>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="package">
+						<xsl:value-of select="$p/product_extra[name = 'package']/text" disable-output-escaping="yes"/>
+					</div>
+					<!--
+					<div role="tabpanel" class="tab-pane active" id="text1">
 						<table>
 							<colgroup>
 								<col style="width: 40%"/>
@@ -138,8 +151,8 @@
 								</tr>
 							</xsl:for-each>
 						</table>
-
 					</div>
+					-->
 					<!--<div role="tabpanel" class="tab-pane" id="tab2">-->
 						<!--<h4>Технические данные</h4>-->
 						<!--<div class="table-responsive">-->

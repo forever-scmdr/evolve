@@ -95,7 +95,7 @@ public class PageController {
 		// Редирект, т.к. форвард уже был выполнен в методе processPageInt
 		if (result != null) {
 			// Внешняя ссылка
-			if (result.startsWith("http://")) {
+			if (result.startsWith("http://") || result.startsWith("https://")) {
 				resp.sendRedirect(result);
 			} 
 			// Внутренняя ссылка

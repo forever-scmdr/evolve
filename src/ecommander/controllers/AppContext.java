@@ -19,6 +19,7 @@ public class AppContext {
 	private static Locale LOCALE;
 	private static String ITEM_NAMES_CLASS;
 	private static String WELCOME_PAGE;
+	private static String PROTOCOL_SCHEME;
 	
 	private static String MAIN_XML_MODELS_DIR;
 	private static String MAIN_DATA_MODEL_FILE;
@@ -63,6 +64,7 @@ public class AppContext {
 			LOCALE = new Locale(props.getProperty("locale.language"), props.getProperty("locale.country"));
 			ITEM_NAMES_CLASS = props.getProperty("generated.constants_class");
 			WELCOME_PAGE = props.getProperty("url.welcome_page");
+			PROTOCOL_SCHEME = props.getProperty("url.scheme", "http");
 			
 			// часовая зона
 			try {
@@ -184,6 +186,10 @@ public class AppContext {
 	
 	public static String getWelcomePageName() {
 		return WELCOME_PAGE;
+	}
+
+	public static String getProtocolScheme() {
+		return PROTOCOL_SCHEME;
 	}
 
 	public static String getProperty(String propertyName, String defaultValue) {

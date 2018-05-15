@@ -201,7 +201,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			if (StringUtils.isNotBlank(packageTxt)) {
 				Item packageItem = Item.newChildItem(productExtraType, product);
 				packageItem.setValue(NAME, "package");
-				packageItem.setValue(TEXT, tech);
+				packageItem.setValue(TEXT, packageTxt);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(packageItem).noFulltextIndex().ignoreFileErrors());
 			}
 

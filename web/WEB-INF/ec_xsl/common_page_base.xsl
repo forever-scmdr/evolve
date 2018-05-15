@@ -384,7 +384,9 @@
 			</a>
 			<div>
 				<a href="{show_product}" title="{name}"><xsl:value-of select="name"/></a>
-				<p><xsl:value-of select="substring-before(substring-after(short, 'description&quot;&gt;'), '&lt;')" disable-output-escaping="yes"/></p>
+				<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
+				<xsl:variable name="extra" select="parse-xml(concat('&lt;extra&gt;', extra_xml, '&lt;/extra&gt;'))/extra"/>
+				<p><xsl:for-each select="$extra/pic"><img src="{@link}" alt="{.}"/></xsl:for-each></p>
 			</div>
 			<div class="price">
 				<xsl:if test="$has_price">
@@ -413,7 +415,6 @@
 					<!--<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>-->
 					<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
 				<!--</xsl:choose>-->
-				<!--
 				<div class="links">
 					<div id="compare_list_{code}">
 						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
@@ -429,7 +430,6 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</div>
-				-->
 			</div>
 		</div>
 	</xsl:template>
