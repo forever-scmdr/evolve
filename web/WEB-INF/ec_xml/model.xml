@@ -22,6 +22,7 @@
 	</item>
 
 	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="817" ag-hash="843192252">
+		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
 		<child item="url_seo" />
 	</item>
 
@@ -258,10 +259,12 @@
 	</item>
 
 	<item name="dealers_page" caption="Карта дилеров" ag-id="19" ag-hash="811291188">
+		<child item="seo" single="true"/>
 		<child item="dealer_coords"/>
 	</item>
 
 	<item name="docs" caption="Документация" ag-id="20" ag-hash="3088955">
+		<child item="seo" single="true"/>
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
