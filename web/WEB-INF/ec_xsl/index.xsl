@@ -3,6 +3,17 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:template name="MARKUP">
+		<script type="application/ld+json">
+			{
+				"@context":"http://schema.org",
+				"@type":"WebSite",
+				"url":"<xsl:value-of select="$main_host"/>/",
+				"name":"<xsl:value-of select="$title"/>"
+			}
+		</script>
+	</xsl:template>
+
 	<xsl:template name="LEFT_COLOUMN">
 		<div class="side-menu">
 			<xsl:for-each select="page/catalog/section">
@@ -82,12 +93,6 @@
 			</xsl:text>
 			});
 		</script>
-		<!-- <div class="contacts">
-			<h3>Заказ и консультация</h3>
-			<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - тел./Viber</p>
-			<p>Email <a href="">info@beltesto.by</a></p>
-			<p><a href="">Схема проезда к офису</a></p>
-		</div> -->
 	</xsl:template>
 
 
@@ -303,22 +308,6 @@
 		<!-- MAIN COLOUMNS END -->
 	</xsl:template>
 
-	<!-- <xsl:template name="BANNERS">
-		<div class="container p-t">
-			<div class="row">
-				<div class="col-xs-12 banners">
-					<div class="banners-container">
-						<xsl:for-each select="page/main_page/main_promo_bottom">
-							<a href="{link}" style="background-image: url({@path}{pic})">
-								<h4><xsl:value-of select="text_big"/></h4>
-								<p><xsl:value-of select="text_small"/></p>
-							</a>
-						</xsl:for-each>
-					</div>
-				</div>
-			</div>
-		</div>
-	</xsl:template> -->
 
 	<xsl:template name="BANNERS">
 		<div class="container">
@@ -335,11 +324,6 @@
 								</div>
 								<p><xsl:value-of select="text_small"/></p>
 							</div>
-
-							<!-- <a href="{link}" style="background-image: url({@path}{pic})">
-								<h4><xsl:value-of select="text_big"/></h4>
-								<p><xsl:value-of select="text_small"/></p>
-							</a> -->
 						</xsl:for-each>
 					</div>
 				</div>

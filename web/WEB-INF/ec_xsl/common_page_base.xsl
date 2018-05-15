@@ -756,13 +756,16 @@
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
-		<!-- <meta name="google-site-verification" content="{/page/common/google_verification}" />
-		<meta name="yandex-verification" content="{/page/common/yandex_verification}" /> -->
 		<xsl:text disable-output-escaping="yes">
 			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
 			&lt;meta name="yandex-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
 		</xsl:text>
+
+		<xsl:call-template name="MARKUP" />
+
 	</xsl:template>
+
+	<xsl:template name="MARKUP"/>
 
 	<xsl:template match="seo | url_seo">
 		<title>
