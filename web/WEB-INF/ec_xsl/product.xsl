@@ -28,7 +28,7 @@
 			"@type": "Offer",
 			"priceCurrency": "BYN",
 			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
-			<xsl:if test="f:num($price) = 0">"price":""</xsl:if>
+			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>
 			}, "aggregateRating": {
 			"@type": "AggregateRating",
 			"ratingValue": "4.9",
