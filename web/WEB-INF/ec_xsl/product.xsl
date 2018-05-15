@@ -14,27 +14,34 @@
 
 	<xsl:variable name="p" select="page/product"/>
 
-
+	<xsl:template name="MARKUP">
+		<xsl:variable name="price" select="$p/price"/>
+		<script type="application/ld+json">
+			<xsl:variable name="quote">"</xsl:variable>
+			{
+			"@context": "http://schema.org/",
+			"@type": "Product",
+			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
+			"image": <xsl:value-of select="concat($quote, $base, '/', $p/@path, $p/gallery[1], $quote)" />,
+			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
+			"offers": {
+			"@type": "Offer",
+			"priceCurrency": "BYN",
+			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
+			<xsl:if test="f:num($price) = 0">"price":""</xsl:if>
+			}, "aggregateRating": {
+			"@type": "AggregateRating",
+			"ratingValue": "4.9",
+			"ratingCount": "53"
+			}
+			}
+		</script>
+	</xsl:template>
 
 	<xsl:template name="CONTENT">
 
-		<script type="application/ld+json">
-			<xsl:variable name="quote">"</xsl:variable>
-			<xsl:variable name="price" select="$p/price"/>
-			{
-					"@context": "http://schema.org/",
-					"@type": "Product",
-					"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
-					"image": <xsl:value-of select="concat($quote, $base, '/', $p/@path, $p/gallery[1], $quote)" />,
-					"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
-					"offers": {
-					"@type": "Offer",
-					"priceCurrency": "BYN",
-					<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
-					<xsl:if test="f:num($price) = 0">"price":""</xsl:if>
-					}
-			}
-		</script>
+
+
 
 
 		<!-- CONTENT BEGIN -->
