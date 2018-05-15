@@ -14,16 +14,13 @@
             </tree>
         </single>
 
-        <list item="custom_page" id="custom_page" cacheable="true" tag="menu_custom">
-            <filter>
-                <parameter name="in_main_menu">
-                    <var value="да"/>
-                </parameter>
-            </filter>
-            <link name="show_page" target="page" type="exclusive">
-                <var name="p" ref="custom_page" style="translit"/>
-            </link>
-        </list>
+        <single item="custom_pages" id="custom_pages" cacheable="true" >
+            <tree item="custom_page" id="custom_page" tag="menu_custom">
+                <link name="show_page" target="page" type="exclusive">
+                    <var name="p" ref="custom_page" style="translit"/>
+                </link>
+            </tree>
+        </single>
 
         <list item="news" id="news" cacheable="true">
             <link name="show_page" target="news" type="exclusive">
@@ -758,14 +755,13 @@
                 </link>
             </tree>
         </single>
-        <single item="custom_pages" id="custom_pages" cacheable="true" >
-            <tree item="custom_page" id="custom_page" cacheable="true" tag="menu_custom">
+
+            <list item="custom_page" id="custom_page" cacheable="true">
                 <link name="show_page" target="page" type="exclusive">
                     <var name="p" ref="custom_page" style="translit"/>
                 </link>
-            </tree>
-        </single>
-        <list item="news" id="news" cacheable="true">
+            </list>
+            <list item="news" id="news" cacheable="true">
             <link name="show_page" target="news" type="exclusive">
                 <var name="sel" ref="news" style="translit"/>
             </link>
