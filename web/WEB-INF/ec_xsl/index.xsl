@@ -30,10 +30,12 @@
 						}
 					</xsl:for-each>
 					<xsl:if test="page/common/email != ''">
+						<xsl:for-each select="page/common/email" >
 						,{
 							"@type":"ContactPoint",
 							"email":"<xsl:value-of select="."/>"
 						}
+						</xsl:for-each>
 					</xsl:if>
 				]
 			}

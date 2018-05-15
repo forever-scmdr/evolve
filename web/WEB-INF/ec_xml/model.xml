@@ -21,7 +21,7 @@
 		<parameter name="meta" caption="meta" type="plain-text"/>
 	</item>
 
-	<item name="url_seo_wrap" caption="Хранилище спец. SEO" description="Расширенный модуль SEO" ag-id="817" ag-hash="843192252">
+	<item name="url_seo_wrap" caption="Расширенный модуль SEO" ag-id="817" ag-hash="843192252">
 		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
 		<child item="url_seo" />
 	</item>
@@ -32,7 +32,7 @@
 
 
 
-	<item name="catalog" caption="Каталог продукции" description="Основной каталог" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
+	<item name="catalog" caption="Основной каталог" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
@@ -96,7 +96,7 @@
 
 
 	<!-- Параметры электронной почты -->
-	<item name="feedback_params" caption="Параметры обратной связи" description="Служебные настройки" ag-id="28" ag-hash="-1139606656">
+	<item name="feedback_params" caption="Служебные настройки" ag-id="28" ag-hash="-1139606656">
 		<parameter name="server_from" type="string" caption="Адрес сервера" description="с которого отправлять обратную связь"/>
 		<parameter name="email_from" type="string" caption="Откуда" description="Адрес почтового ящика, с которого отправлять обратную связь"/>
 		<parameter name="email_from_password" type="string" caption="Пароль" description="Для почтового ящика, с которого отправлять обратную связь"/>
@@ -182,11 +182,6 @@
 		<child item="news_item"/>
 	</item>
 
-	<!--<item name="articles" caption="Статьи" ag-id="13" ag-hash="-1228877251">-->
-		<!--<child item="seo" single="true"/>-->
-		<!--<child item="news_item"/>-->
-	<!--</item>-->
-
 	<item name="main_promo_bottom" caption="Промо-блок на главной" key="text_big" ag-id="14" ag-hash="1303283745">
 		<parameter name="text_big" type="string" caption="Текст крупным шрифтом"/>
 		<parameter name="text_small" type="string" caption="Текст мелким шрифтом"/>
@@ -199,13 +194,13 @@
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
-	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="15" ag-hash="-251149995">
+	<item name="main_page" caption="Содержимое главной страницы" ag-id="15" ag-hash="-251149995" >
 		<child item="seo" single="true"/>
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
 	</item>
 
-	<item name="contacts" caption="Контакты" ag-id="21" ag-hash="-567451565">
+	<item name="contacts" caption="Контактная информация" ag-id="21" ag-hash="-567451565">
 		<child item="seo" single="true"/>
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="map" type="plain-text" caption="Код карты" format="height: 50px"/>
@@ -213,7 +208,7 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="common" caption="Общая информация" description="На всех страницах" ag-id="22" ag-hash="-1354814997">
+	<item name="common" caption="Общая информация" ag-id="22" ag-hash="-1354814997">
 		<parameter name="top" type="short-text" caption="Верх" description="телефоны"/>
 		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
 		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
@@ -234,7 +229,7 @@
 		<parameter name="message" type="string" caption="Сообщение" />
 	</item>
 
-	<item name="custom_pages" caption="Одиночные страницы" ag-id="26" ag-hash="727106934">
+	<item name="custom_pages" caption="Информационные разделы" ag-id="26" ag-hash="727106934">
 		<child item="custom_page"/>
 	</item>
 
@@ -249,7 +244,7 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="modules" caption="Метрики, чаты и.т.д" ag-id="812" ag-hash="1227433863">
+	<item name="modules" caption="Подключение внешних модулей" ag-id="812" ag-hash="1227433863">
 		<child item="named_code"/>
 	</item>
 
