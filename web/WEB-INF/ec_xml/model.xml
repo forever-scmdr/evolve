@@ -220,8 +220,8 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
-		<parameter name="phone" multiple="true" caption="Телефон" description="+375291234567_sales"/>
-		<parameter name="email" multiple="true" caption="Email"/>
+		<parameter name="phone" multiple="true" type="string" caption="Телефон" description="+375291234567_sales"/>
+		<parameter name="email" multiple="true" type="string" caption="Email"/>
 		<parameter name="google_verification" type="string" caption="google verification code"/>
 		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
 	</item>
