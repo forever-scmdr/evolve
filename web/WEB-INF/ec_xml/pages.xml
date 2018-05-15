@@ -67,7 +67,7 @@
 	</page>
 
 
-	<page name="section" template="section" cacheable="true" critical-item="cur_sec">
+	<page name="section" template="section" cacheable="false" critical-item="cur_sec">
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
@@ -80,8 +80,7 @@
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<list item="product" id="prod" transit="true">
 				<filter>
-					<child item="params" transit="false"
-					       ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
+					<child item="params" transit="false" ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
 					<sorting direction-var="direction"><var var="sort"/></sorting>
 					<limit><var var="limit"/></limit>
 					<pages><var var="page"/></pages>
@@ -231,6 +230,8 @@
 		</request>
 		<single item="product" id="prod" var="prod">
 			<single item="params"/>
+			<single item="params_xml"/>
+			<list item="product_extra"/>
 			<ancestor item="section" transit="false" tag="product_section"/>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>

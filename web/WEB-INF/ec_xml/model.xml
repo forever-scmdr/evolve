@@ -40,7 +40,7 @@
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
-		<parameter name="short" type="string" caption="Краткое описание" text-index="fulltext" />
+		<parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
 		<parameter name="group_id" type="string" caption="Номер группы" description="в яндекс маркете все товары одной группы выводятся на одной странице"/>
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
@@ -53,7 +53,7 @@
 		<parameter name="main_pic" type="picture" format="width: 300" caption="Главная картинка"/>
 		<parameter name="description" type="text" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
-		<parameter name="extra_xml" type="text" caption="Полное описание" text-index="fulltext" />
+		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 		<child item="product_extra"/>
