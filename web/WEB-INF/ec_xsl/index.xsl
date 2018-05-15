@@ -9,7 +9,24 @@
 				"@context":"http://schema.org",
 				"@type":"WebSite",
 				"url":"<xsl:value-of select="$main_host"/>/",
-				"name":"<xsl:value-of select="$title"/>"
+				"name":"<xsl:value-of select="$title"/>",
+				"logo":"<xsl:value-of select="concat($base, '/img/logo_big.svg')"/>",
+				"contactPoint": [
+					<xsl:for-each select="page/common/phone" >
+						<xsl:if test="position() != 0">,</xsl:if>
+						{
+						"@type":"ContactPoint",
+						"telephone":"<xsl:value-of select="tokenize(., '_')[1]"/>",
+						"contactType":"<xsl:value-of select="tokenize(., '_')[2]"/>"
+						}
+					</xsl:for-each>
+					<xsl:if test="page/common/email != ''">
+						,{
+							"@type":"ContactPoint",
+							"email":"<xsl:value-of select="."/>"
+						}
+					</xsl:if>
+				]
 			}
 		</script>
 	</xsl:template>
