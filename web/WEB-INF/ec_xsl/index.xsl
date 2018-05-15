@@ -11,6 +11,15 @@
 				"url":"<xsl:value-of select="$main_host"/>/",
 				"name":"<xsl:value-of select="$title"/>",
 				"logo":"<xsl:value-of select="concat($base, '/img/logo_big.svg')"/>",
+				"aggregateRating": {
+					"@type": "AggregateRating",
+					"ratingCount": "53",
+					"reviewCount": "53",
+					"bestRating": "5",
+					"ratingValue": "4,9",
+					"worstRating": "1",
+					"name": " TTD "
+				},
 				"contactPoint": [
 					<xsl:for-each select="page/common/phone" >
 						<xsl:if test="position() != 0">,</xsl:if>
