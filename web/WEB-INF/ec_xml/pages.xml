@@ -878,6 +878,7 @@
     <!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
     <page name="sitemap" template="sitemap" cacheable="true">
         <headers content-type="xml"/>
+        <single item="url_seo_wrap" />
         <single item="catalog" id="catalog_main">
             <tree item="section" id="sec">
                 <link name="show_section" target="sub">
@@ -921,6 +922,7 @@
         <request>
             <var name="sec" style="translit"/>
         </request>
+        <single item="url_seo_wrap" />
         <single item="section" var="sec" id="cur_sec" cache-vars="sec">
             <list item="product" id="prod">
                 <link name="show_product" target="product" type="exclusive">
