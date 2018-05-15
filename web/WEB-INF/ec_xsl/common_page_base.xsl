@@ -9,6 +9,7 @@
 	<xsl:variable name="title" select="'Спеццехника'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
+	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
 	<xsl:variable name="canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''"/>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
@@ -742,7 +743,7 @@
 
 		<xsl:variable name="quote">"</xsl:variable>
 
-		<link rel="canonical" href="{concat($base, $canonical)}" />
+		<link rel="canonical" href="{concat($main_host, $canonical)}" />
 		<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
 		<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 

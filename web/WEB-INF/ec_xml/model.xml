@@ -21,7 +21,8 @@
 		<parameter name="meta" caption="meta" type="plain-text"/>
 	</item>
 
-	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="817" ag-hash="843192252">
+	<item name="url_seo_wrap" caption="Хранилище спец. SEO" description="Расширенный модуль SEO" ag-id="817" ag-hash="843192252">
+		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
 		<child item="url_seo" />
 	</item>
 
@@ -31,7 +32,7 @@
 
 
 
-	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
+	<item name="catalog" caption="Каталог продукции" description="Основной каталог" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
@@ -95,7 +96,7 @@
 
 
 	<!-- Параметры электронной почты -->
-	<item name="feedback_params" caption="Параметры обратной связи" ag-id="28" ag-hash="-1139606656">
+	<item name="feedback_params" caption="Параметры обратной связи" description="Служебные настройки" ag-id="28" ag-hash="-1139606656">
 		<parameter name="server_from" type="string" caption="Адрес сервера" description="с которого отправлять обратную связь"/>
 		<parameter name="email_from" type="string" caption="Откуда" description="Адрес почтового ящика, с которого отправлять обратную связь"/>
 		<parameter name="email_from_password" type="string" caption="Пароль" description="Для почтового ящика, с которого отправлять обратную связь"/>
@@ -152,7 +153,7 @@
 	</item>
 
 
-	<item name="counter" caption="Счетчик номера договора" ag-id="29" ag-hash="957830652">
+	<item name="counter" caption="Номера обращений" description="Счетчик обращений, заказов" ag-id="29" ag-hash="957830652">
 		<parameter name="count" type="integer" caption="Счетчик"/>
 	</item>
 
@@ -160,7 +161,7 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
-	<item name="news_wrap" caption="Новости" ag-id="815" ag-hash="301189686">
+	<item name="news_wrap" caption="Новости, Статьи, Акции" description="Новостные разделы" ag-id="815" ag-hash="301189686">
 		<child item="news"/>
 	</item>
 
@@ -198,27 +199,11 @@
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
-	<item name="main_page" caption="Главная страница" ag-id="15" ag-hash="-251149995">
+	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="15" ag-hash="-251149995">
 		<child item="seo" single="true"/>
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
 	</item>
-
-	<!-- <item name="dealer_coords" caption="Дилер" key="name" ag-id="18" ag-hash="-1075960572">
-		<parameter name="name" type="string" caption="Название"/>
-		<parameter name="address" type="string" caption="Адрес" description="начиная с названия города"/>
-		<parameter name="info" type="short-text" caption="Инофрмация" description="телефоны, ардес сайта и т.д."/>
-	</item>
-
-	<item name="dealers_page" caption="Карта дилеров" ag-id="19" ag-hash="811291188">
-		<child item="dealer_coords"/>
-	</item>
-
-	<item name="docs" caption="Документация" ag-id="20" ag-hash="3088955">
-		<child item="seo" single="true"/>
-		<parameter name="text" type="text" caption="Текст"/>
-		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
-	</item> -->
 
 	<item name="contacts" caption="Контакты" ag-id="21" ag-hash="-567451565">
 		<child item="seo" single="true"/>
@@ -228,7 +213,7 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="common" caption="На всех страницах" ag-id="22" ag-hash="-1354814997">
+	<item name="common" caption="Общая информация" description="На всех страницах" ag-id="22" ag-hash="-1354814997">
 		<parameter name="top" type="short-text" caption="Верх" description="телефоны"/>
 		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
 		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
