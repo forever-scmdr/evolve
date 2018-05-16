@@ -54,7 +54,7 @@
 
 						<div class="checkbox">
 							<label>
-								<input type="checkbox" name="payment" value="erip"/> Оплата через ЕРИП
+								<input type="checkbox" name="{$inp/payment/@input}" value="erip"/> Оплата через ЕРИП
 							</label>
 						</div>
 
@@ -83,7 +83,7 @@
 						-->
 						<div class="checkbox">
 							<label>
-								<input type="checkbox" name="payment" value="erip"/> Оплата через ЕРИП
+								<input type="checkbox" name="{$inp/payment/@input}" value="erip"/> Оплата через ЕРИП
 							</label>
 						</div>
 
