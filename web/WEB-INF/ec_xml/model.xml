@@ -189,7 +189,7 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
-	<item name="news_wrap" caption="Новости" ag-id="2515" ag-hash="301189686">
+	<item name="news_wrap" caption="Новостые разделы" ag-id="2515" ag-hash="301189686">
 		<child item="news"/>
 	</item>
 
@@ -256,7 +256,7 @@
 		<parameter name="message" type="string" caption="Сообщение" />
 	</item>
 
-	<item name="custom_pages" caption="Одиночные страницы" ag-id="26" ag-hash="727106934">
+	<item name="custom_pages" caption="Информационные разделы" ag-id="26" ag-hash="727106934">
 		<child item="custom_page"/>
 	</item>
 
