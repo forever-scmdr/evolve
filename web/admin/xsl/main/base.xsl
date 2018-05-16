@@ -193,7 +193,7 @@
 												<xsl:value-of select="admin-page/message"/>
 											</div>
 											<div class="margin context-duplicate">
-												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?', 'simple')">Скрыть</a>
+												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?', '{admin-page/status-link}', 'simple')">Скрыть</a>
 												<xsl:if test="$item/@files-protected = 'true'">
 													<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'Снять защиту с файлов', '{admin-page/protect-files}', 'simple')">Разрешить доступ к файлам</a>
 												</xsl:if>
