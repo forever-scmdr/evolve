@@ -146,13 +146,6 @@
 					<var name="src_page" value="compare_ajax"/>
 				</link>
 			</list>
-			<list item="product" tag="tag" id="tag">
-				<aggregation parameter="tag"/>
-				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
-					<var name="sec" style="translit" var="sec"/>
-					<var name="tag" parameter="tag" ref="tag"/>
-				</link>
-			</list>
 			<list item="product" tag="min">
 				<aggregation parameter="price" function="MIN"/>
 			</list>
@@ -902,13 +895,6 @@
 			<list item="product" id="prod">
 				<link name="show_product" target="product" type="exclusive">
 					<var name="prod" ref="prod" style="translit"/>
-				</link>
-			</list>
-			<list item="product" tag="tag" id="tag">
-				<aggregation parameter="tag"/>
-				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
-					<var name="sec" style="translit" var="sec"/>
-					<var name="tag" parameter="tag" ref="tag"/>
 				</link>
 			</list>
 		</single>
