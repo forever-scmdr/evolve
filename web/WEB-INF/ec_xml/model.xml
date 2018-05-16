@@ -147,6 +147,7 @@
 	<item name="user" caption="Зарегистрированный пользователь" key="email" ag-id="1194" ag-hash="3599307">
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="password" type="string" caption="Пароль"/>
+		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<child item="purchase"/>
 	</item>
 

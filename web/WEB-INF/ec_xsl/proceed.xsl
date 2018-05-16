@@ -51,7 +51,14 @@
 							</label>
 						</div>
 						-->
-						<input type="submit" value="Отправить заказ"/>
+
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="payment" value="erip"/> Оплата через ЕРИП
+							</label>
+						</div>
+
+						<input type="submit" value="Отправить заявку"/>
 					</form>
 				</div>
 
@@ -74,6 +81,12 @@
 							</label>
 						</div>
 						-->
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="payment" value="erip"/> Оплата через ЕРИП
+							</label>
+						</div>
+
 						<input type="submit" value="Отправить заказ"/>
 					</form>
 				</div>
