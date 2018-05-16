@@ -120,7 +120,7 @@
 									<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
 										<span class="description">[<xsl:value-of select="@type-caption"/>] </span>
 									</xsl:if>
-									<xsl:if test="not($differentSubitems and @type-caption != @caption and @caption != '') and @description != ''">
+									<xsl:if test="@description != ''">
 										<span class="description">[<xsl:value-of select="@description"/>]</span>
 									</xsl:if>
 									<xsl:if test="@user-group-name != 'common'">

@@ -223,7 +223,7 @@
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
-	<item name="main_page" caption="Главная страница" ag-id="15" ag-hash="-251149995">
+	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="15" ag-hash="-251149995">
 		<child item="seo" single="true"/>
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
