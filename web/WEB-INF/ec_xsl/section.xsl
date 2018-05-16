@@ -29,7 +29,10 @@
 			}, "aggregateRating": {
 			"@type": "AggregateRating",
 			"ratingValue": "4.9",
-			"ratingCount": "53"
+			"ratingCount": "53",
+			"bestRating": "5",
+			"worstRating": "1",
+			"name": <xsl:value-of select="concat($quote, translate($sel_sec/name, $quote, ''), $quote)" />
 			}
 			}
 

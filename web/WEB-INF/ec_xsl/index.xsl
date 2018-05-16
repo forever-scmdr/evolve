@@ -7,7 +7,7 @@
 		<script type="application/ld+json">
 			{
 				"@context":"http://schema.org",
-				"@type":"WebSite",
+				"@type":"Organization",
 				"url":"<xsl:value-of select="$main_host"/>/",
 				"name":"<xsl:value-of select="$title"/>",
 				"logo":"<xsl:value-of select="concat($base, '/img/logo_big.svg')"/>",
@@ -18,26 +18,21 @@
 					"bestRating": "5",
 					"ratingValue": "4,9",
 					"worstRating": "1",
-					"name": " TTD "
+					"name": "TTD"
 				},
 				"contactPoint": [
 					<xsl:for-each select="page/common/phone" >
-						<xsl:if test="position() != 0">,</xsl:if>
-						{
+						<xsl:if test="position() != 1">,</xsl:if>{
 						"@type":"ContactPoint",
 						"telephone":"<xsl:value-of select="tokenize(., '_')[1]"/>",
 						"contactType":"<xsl:value-of select="tokenize(., '_')[2]"/>"
 						}
 					</xsl:for-each>
-					<xsl:if test="page/common/email != ''">
-						<xsl:for-each select="page/common/email" >
-						,{
-							"@type":"ContactPoint",
-							"email":"<xsl:value-of select="."/>"
-						}
-						</xsl:for-each>
-					</xsl:if>
 				]
+				<xsl:if test="page/common/email != ''">
+				,"email":[<xsl:for-each select="page/common/email" >
+						<xsl:if test="position() != 1">, </xsl:if>"<xsl:value-of select="."/>"</xsl:for-each>]
+				</xsl:if>
 			}
 		</script>
 	</xsl:template>
@@ -121,6 +116,12 @@
 			</xsl:text>
 			});
 		</script>
+		<!-- <div class="contacts">
+			<h3>Заказ и консультация</h3>
+			<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - тел./Viber</p>
+			<p>Email <a href="">info@beltesto.by</a></p>
+			<p><a href="">Схема проезда к офису</a></p>
+		</div> -->
 	</xsl:template>
 
 
@@ -336,6 +337,22 @@
 		<!-- MAIN COLOUMNS END -->
 	</xsl:template>
 
+	<!-- <xsl:template name="BANNERS">
+		<div class="container p-t">
+			<div class="row">
+				<div class="col-xs-12 banners">
+					<div class="banners-container">
+						<xsl:for-each select="page/main_page/main_promo_bottom">
+							<a href="{link}" style="background-image: url({@path}{pic})">
+								<h4><xsl:value-of select="text_big"/></h4>
+								<p><xsl:value-of select="text_small"/></p>
+							</a>
+						</xsl:for-each>
+					</div>
+				</div>
+			</div>
+		</div>
+	</xsl:template> -->
 
 	<xsl:template name="BANNERS">
 		<div class="container">
@@ -352,6 +369,11 @@
 								</div>
 								<p><xsl:value-of select="text_small"/></p>
 							</div>
+
+							<!-- <a href="{link}" style="background-image: url({@path}{pic})">
+								<h4><xsl:value-of select="text_big"/></h4>
+								<p><xsl:value-of select="text_small"/></p>
+							</a> -->
 						</xsl:for-each>
 					</div>
 				</div>
