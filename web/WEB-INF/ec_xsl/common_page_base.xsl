@@ -40,7 +40,7 @@
 		<div class="container header desktop">
 			<div class="header-container" style="position: relative;">
 				<div class="logo">
-					<a href="{page/index_link}"><img src="img/logo.png" alt="" /></a>
+					<a href="{$base}"><img src="img/logo.png" alt="" /></a>
 				</div>
 				<div class="search">
 					<form action="{page/search_link}" method="post">
@@ -65,17 +65,26 @@
 				<div class="main-menu">
 					<!-- <a href="{page/index_link}">Главная</a> -->
 					<a href="{page/catalog_link}" id="catalog_main_menu" class="{'active'[$active_menu_item = 'catalog']}"><i class="fas fa-bars"/>Каталог</a>
-					<a href="{page/news_link}" class="{'active'[$active_menu_item = 'news']}">Новости</a>
-					<xsl:for-each select="page/custom_pages/menu_custom">
+					<xsl:for-each select="page/news">
 						<xsl:variable name="key" select="@key"/>
-						<a href="{show_page}" class="{'active'[$active_menu_item = $key]}"><xsl:value-of select="header"/></a>
+						<xsl:variable name="sel" select="page/varibles/sel"/>
+						<a href="{show_page}" class="{'active'[$sel = $key]}">
+							<xsl:value-of select="name"/>
+						</a>
 					</xsl:for-each>
-					<!-- <a href="{page/articles_link}">Статьи</a>
-					<a href="">Наши проекты</a>
-					<a href="{page/dealers_link}">Дилеры</a>
-					<a href="/about">О компании</a>
-					<a href="{page/docs_link}">Документация</a>
-					 -->
+					<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да']">
+						<xsl:variable name="key" select="@key"/>
+						<xsl:if test="not(menu_custom)">
+							<a href="{show_page}" class="{'active'[$active_menu_item = $key]}">
+								<xsl:value-of select="header"/>
+							</a>
+						</xsl:if>
+						<xsl:if test="menu_custom">
+							<a href="#ts-{@id}" class="show-sub{' active'[$active_menu_item = $key]}">
+								<xsl:value-of select="header"/>
+							</a>
+						</xsl:if>
+					</xsl:for-each>
 					 <a href="{page/contacts_link}" class="{'active'[$active_menu_item = 'contacts']}">Контакты</a>
 				</div>
 				<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
@@ -92,6 +101,17 @@
 							</xsl:for-each>
 					    </div>
 					</xsl:for-each>
+					<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да' and menu_custom]">
+						<div class="popup-text-menu" style="position: absolute; display: none;" id="ts-{@id}">
+							<div class="sections">
+								<xsl:for-each select="menu_custom">
+									<a href="{show_page}">
+										<xsl:value-of select="header"/>
+									</a>
+								</xsl:for-each>
+							</div>
+						</div>
+					</xsl:for-each>
 				</div>
 			</div>
 		</div>
@@ -102,7 +122,7 @@
 	<xsl:template name="INC_MOBILE_HEADER">
 		<div class="header mobile">
 			<div class="header-container">
-				<a href="" class="logo">
+				<a href="{$base}" class="logo">
 					<img src="img/logo.png" alt="" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
