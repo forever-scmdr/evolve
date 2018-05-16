@@ -148,6 +148,9 @@
 									<li class="visible" title="Загрзить товары из Yandex Market">
 										<a href="integrate/?action=start">Интеграция каталога</a>
 									</li>
+									<li class="visible" title="Загрзить товары из Yandex Market">
+										<a href="generate_sitemap">Обновить карту сайта</a>
+									</li>
 									<li class="visible" title="Очищает все кеши. Длительная и ресурсоемкая операция.">
 										<a href="admin_drop_all_caches.action">Очистить все кеши</a>
 									</li>
