@@ -112,169 +112,19 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12 more-products p-t p-b">
-						<h4>Спецпредложения</h4>
-						<div class="slick-slider catalog-items">
-							<div class="catalog-item">
-								<div class="tags">
-									<span>Акция</span>
-								</div>
-								<a href="catalog_item.html" class="image-container"><img src="img/item_photo.jpg" alt="" /></a>
-								<div>
-									<a href="catalog_item.html">AS 18 L PC (602021000) Cordless Vacuum Cleaner</a>
-								</div>
-								<div class="price">
-									<p><span>Старая цена</span>100 р.</p>
-									<p><span>Новая цена</span>99 р.</p>
-								</div>
-								<div class="order">
-									<input type="number" value="1" />
-									<input type="submit" value="Заказать" />
-									<div class="quantity">Осталось 12 шт.</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" /> cравнение
-										</label>
+						<h4>Продукция</h4>
+						<div class="catalog-items main-page">
+							<xsl:for-each select="page/cat_pics/section">
+								<div class="catalog-item">
+									<xsl:variable name="pic_path"
+									              select="if (product/main_pic) then concat(product/@path, product/main_pic) else 'img/no_image.png'"/>
+									<a href="{show_section}" class="image-container" style="background-image: url({$pic_path})"></a>
+									<div>
+										<a href="{show_section}" style="height: unset;"><xsl:value-of select="name"/></a>
+										<xsl:value-of select="short" disable-output-escaping="yes"/>
 									</div>
 								</div>
-							</div>
-							<div class="catalog-item">
-								<div class="tags">
-									<span>Акция</span>
-								</div>
-								<a href="catalog_item.html" class="image-container"><img src="img/item_photo.jpg" alt="" /></a>
-								<div>
-									<a href="catalog_item.html">AS 18 L PC (602021000) Cordless Vacuum Cleaner</a>
-								</div>
-								<div class="price">
-									<p><span>Старая цена</span>100 р.</p>
-									<p><span>Новая цена</span>99 р.</p>
-								</div>
-								<div class="order">
-									<input type="number" value="1" />
-									<input type="submit" value="Заказать" />
-									<div class="quantity">Осталось 12 шт.</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" /> cравнение
-										</label>
-									</div>
-								</div>
-							</div>
-							<div class="catalog-item">
-								<div class="tags">
-									<span>Акция</span>
-								</div>
-								<a href="catalog_item.html" class="image-container"><img src="img/item_photo.jpg" alt="" /></a>
-								<div>
-									<a href="catalog_item.html">AS 18 L PC (602021000) Cordless Vacuum Cleaner</a>
-								</div>
-								<div class="price">
-									<p><span>Старая цена</span>100 р.</p>
-									<p><span>Новая цена</span>99 р.</p>
-								</div>
-								<div class="order">
-									<input type="number" value="1" />
-									<input type="submit" value="Заказать" />
-									<div class="quantity">Осталось 12 шт.</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" /> cравнение
-										</label>
-									</div>
-								</div>
-							</div>
-							<div class="catalog-item">
-								<div class="tags">
-									<span>Акция</span>
-								</div>
-								<a href="catalog_item.html" class="image-container"><img src="img/item_photo.jpg" alt="" /></a>
-								<div>
-									<a href="catalog_item.html">AS 18 L PC (602021000) Cordless Vacuum Cleaner</a>
-								</div>
-								<div class="price">
-									<p><span>Старая цена</span>100 р.</p>
-									<p><span>Новая цена</span>99 р.</p>
-								</div>
-								<div class="order">
-									<input type="number" value="1" />
-									<input type="submit" value="Заказать" />
-									<div class="quantity">Осталось 12 шт.</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" /> cравнение
-										</label>
-									</div>
-								</div>
-							</div>
-							<div class="catalog-item">
-								<div class="tags">
-									<span>Акция</span>
-								</div>
-								<a href="catalog_item.html" class="image-container"><img src="img/item_photo.jpg" alt="" /></a>
-								<div>
-									<a href="catalog_item.html">AS 18 L PC (602021000) Cordless Vacuum Cleaner</a>
-								</div>
-								<div class="price">
-									<p><span>Старая цена</span>100 р.</p>
-									<p><span>Новая цена</span>99 р.</p>
-								</div>
-								<div class="order">
-									<input type="number" value="1" />
-									<input type="submit" value="Заказать" />
-									<div class="quantity">Осталось 12 шт.</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" /> cравнение
-										</label>
-									</div>
-								</div>
-							</div>
-							<div class="catalog-item">
-								<div class="tags">
-									<span>Акция</span>
-								</div>
-								<a href="catalog_item.html" class="image-container"><img src="img/item_photo.jpg" alt="" /></a>
-								<div>
-									<a href="catalog_item.html">AS 18 L PC (602021000) Cordless Vacuum Cleaner</a>
-								</div>
-								<div class="price">
-									<p><span>Старая цена</span>100 р.</p>
-									<p><span>Новая цена</span>99 р.</p>
-								</div>
-								<div class="order">
-									<input type="number" value="1" />
-									<input type="submit" value="Заказать" />
-									<div class="quantity">Осталось 12 шт.</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" /> cравнение
-										</label>
-									</div>
-								</div>
-							</div>
-							<div class="catalog-item">
-								<div class="tags">
-									<span>Акция</span>
-								</div>
-								<a href="catalog_item.html" class="image-container"><img src="img/item_photo.jpg" alt="" /></a>
-								<div>
-									<a href="catalog_item.html">AS 18 L PC (602021000) Cordless Vacuum Cleaner</a>
-								</div>
-								<div class="price">
-									<p><span>Старая цена</span>100 р.</p>
-									<p><span>Новая цена</span>99 р.</p>
-								</div>
-								<div class="order">
-									<input type="number" value="1" />
-									<input type="submit" value="Заказать" />
-									<div class="quantity">Осталось 12 шт.</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" /> cравнение
-										</label>
-									</div>
-								</div>
-							</div>
+							</xsl:for-each>
 						</div>
 					</div>
 				</div>

@@ -367,7 +367,7 @@
 
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
 
-	<xsl:template match="accessory | set | probe | product">
+	<xsl:template match="accessory | set | probe | product | assoc">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<div class="catalog-item">
 			<!--
@@ -379,14 +379,25 @@
 			</div>
 			-->
 			<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
-			<a href="{show_product}" class="image-container" style="background-image: url();">
-				<img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/>
+			<a href="{show_product}" class="image-container" style="background-image: url({$pic_path});">
+				<!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/> -->
 			</a>
 			<div>
-				<a href="{show_product}" title="{name}"><xsl:value-of select="name"/></a>
+				<a href="{show_product}" title="{name}">
+					<xsl:value-of select="name"/><xsl:text> </xsl:text>
+					<xsl:value-of select="type"/><xsl:text> </xsl:text>
+					(<xsl:value-of select="code"/>)
+				</a>
 				<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 				<xsl:variable name="extra" select="parse-xml(concat('&lt;extra&gt;', extra_xml, '&lt;/extra&gt;'))/extra"/>
-				<p><xsl:for-each select="$extra/pic"><img src="{@link}" alt="{.}"/></xsl:for-each></p>
+				<div class="item-icons">
+					<xsl:for-each select="$extra/pic"><span><img src="{@link}" alt="{.}"  data-toggle="tooltip" data-placement="left" title="{.}"/></span></xsl:for-each>
+					<script>
+						$(function () {
+							$('[data-toggle="tooltip"]').tooltip()
+						})
+					</script>
+				</div>
 			</div>
 			<div class="price">
 				<xsl:if test="$has_price">
@@ -394,8 +405,9 @@
 					<p><!--<span>Новая цена</span>--><xsl:value-of select="price"/> р.</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
-					<p><span>&#160;</span>&#160;</p>
-					<p><span>&#160;</span>&#160;</p>
+					<!-- <p><span>&#160;</span>&#160;</p>
+					<p><span>&#160;</span>&#160;</p> -->
+					<p>150 р.</p>
 				</xsl:if>
 			</div>
 			<div class="order">

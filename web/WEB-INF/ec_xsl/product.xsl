@@ -12,6 +12,7 @@
 
 
 	<xsl:variable name="p" select="page/product"/>
+	<xsl:variable name="extra_xml" select="parse-xml(concat('&lt;extra&gt;', $p/extra_xml, '&lt;/extra&gt;'))/extra"/>
 
 
 
@@ -42,6 +43,15 @@
 			-->
 			<div class="gallery">
 				<div class="fotorama" data-width="100%" data-maxwidth="100%" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
+					<xsl:if test="$extra_xml/spin">
+						<div data-thumb="img/360grad.png" style="height: 100%">
+							<iframe width="100%" height="100%" data-autoplay="0" src="{tokenize($extra_xml/spin/@link, ' ')[1]}"
+							        frameborder="0" allowfullscreen="" style="display: block;"/>
+						</div>
+					</xsl:if>
+					<xsl:for-each select="$extra_xml/video">
+						<a href="{substring-before(replace(@link, '-nocookie.com/embed/', '.com/watch?v='), '?rel')}">1111</a>
+					</xsl:for-each>
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}"/>
 					</xsl:for-each>
@@ -51,14 +61,14 @@
 				</div>
 			</div>
 			<div class="product-info">
-				<p>№ для заказа: <xsl:value-of select="$p/code" /></p>
+				<!-- <p>№ для заказа: <xsl:value-of select="$p/code" /></p> -->
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
-				<xsl:if test="$has_price">
+				<!-- <xsl:if test="$has_price"> -->
 					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
 						<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
 					</div>
-				</xsl:if>
+				<!-- </xsl:if> -->
 				<div class="order">
 					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 					<div id="cart_list_{$p/code}" class="product_purchase_container">
@@ -78,6 +88,9 @@
 						<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
 					<!--</xsl:choose>-->
 				</div>
+				<div class="art-number">
+					№ для заказа: <xsl:value-of select="$p/code" />
+				</div>
 				<div class="links">
 					<div id="compare_list_{code}">
 						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
@@ -89,6 +102,11 @@
 				<div class="info-blocks">
 					<div class="info-block">
 						<xsl:value-of select="$p/short" disable-output-escaping="yes"/>
+						<xsl:if test="$extra_xml/manual">
+							<div class="extra-block">
+								<i class="fas fa-file-alt"></i><a href="{$extra_xml/manual}"><strong>Руководство по эксплуатации</strong></a>
+							</div>
+						</xsl:if>
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 					</div>
 					<!--
@@ -108,21 +126,6 @@
 					<li role="presentation" class="active"><a href="#text" role="tab" data-toggle="tab">Описание</a></li>
 					<li role="presentation"><a href="#tech" role="tab" data-toggle="tab">Технические данные</a></li>
 					<li role="presentation"><a href="#package" role="tab" data-toggle="tab">Объем поставки</a></li>
-					<!--<xsl:if test="$p/tech">-->
-						<!--<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">Технические данные</a></li>-->
-					<!--</xsl:if>-->
-					<!--<xsl:if test="page/accessory">-->
-						<!--<li role="presentation"><a href="#tab3" role="tab" data-toggle="tab">Принадлежности</a></li>-->
-					<!--</xsl:if>-->
-					<!--<xsl:if test="page/set">-->
-						<!--<li role="presentation"><a href="#tab4" role="tab" data-toggle="tab">Наборы</a></li>-->
-					<!--</xsl:if>-->
-					<!--<xsl:if test="page/probe">-->
-						<!--<li role="presentation"><a href="#tab5" role="tab" data-toggle="tab">Зонды</a></li>-->
-					<!--</xsl:if>-->
-					<!--<xsl:if test="string-length($p/apply) &gt; 15">-->
-						<!--<li role="presentation"><a href="#tab6" role="tab" data-toggle="tab">Применение</a></li>-->
-					<!--</xsl:if>-->
 				</ul>
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active" id="text">
@@ -134,77 +137,11 @@
 					<div role="tabpanel" class="tab-pane" id="package">
 						<xsl:value-of select="$p/product_extra[name = 'package']/text" disable-output-escaping="yes"/>
 					</div>
-					<!--
-					<div role="tabpanel" class="tab-pane active" id="text1">
-						<table>
-							<colgroup>
-								<col style="width: 40%"/>
-							</colgroup>
-							<xsl:for-each select="$p/params/param">
-								<tr>
-									<td>
-										<p><strong><xsl:value-of select="@caption"/></strong></p>
-									</td>
-									<td>
-										<p><xsl:value-of select="."/></p>
-									</td>
-								</tr>
-							</xsl:for-each>
-						</table>
-					</div>
-					-->
-					<!--<div role="tabpanel" class="tab-pane" id="tab2">-->
-						<!--<h4>Технические данные</h4>-->
-						<!--<div class="table-responsive">-->
-						<!--<xsl:for-each select="parse-xml(concat('&lt;tech&gt;', $p/tech, '&lt;/tech&gt;'))/tech/tag">-->
-							<!--<table>-->
-								<!--<colgroup>-->
-									<!--<col style="width: 40%"/>-->
-								<!--</colgroup>-->
-								<!--<thead>-->
-									<!--<tr>-->
-										<!--<th colspan="2"><xsl:value-of select="@name"/></th>-->
-									<!--</tr>-->
-								<!--</thead>-->
-								<!--<xsl:for-each select="parameter">-->
-									<!--<tr>-->
-										<!--<td>-->
-											<!--<p><strong>-->
-												<!--<xsl:value-of select="name"/></strong></p>-->
-										<!--</td>-->
-										<!--<td>-->
-											<!--<xsl:for-each select="value">-->
-												<!--<p><xsl:value-of select="."/></p>-->
-											<!--</xsl:for-each>-->
-										<!--</td>-->
-									<!--</tr>-->
-								<!--</xsl:for-each>-->
-							<!--</table>-->
-						<!--</xsl:for-each>-->
-						<!--</div>-->
-					<!--</div>-->
-					<!--<div role="tabpanel" class="tab-pane" id="tab3">-->
-						<!--<h4>Принадлежности</h4>-->
-						<!--<div class="slick-slider catalog-items">-->
-							<!--<xsl:apply-templates select="page/accessory"/>-->
-						<!--</div>-->
-					<!--</div>-->
-					<!--<div role="tabpanel" class="tab-pane" id="tab4">-->
-						<!--<h4>Наборы</h4>-->
-						<!--<div class="slick-slider catalog-items">-->
-							<!--<xsl:apply-templates select="page/set"/>-->
-						<!--</div>-->
-					<!--</div>-->
-					<!--<div role="tabpanel" class="tab-pane" id="tab5">-->
-						<!--<h4>Зонды</h4>-->
-						<!--<div class="slick-slider catalog-items">-->
-							<!--<xsl:apply-templates select="page/probe"/>-->
-						<!--</div>-->
-					<!--</div>-->
-					<!--<div role="tabpanel" class="tab-pane" id="tab6">-->
-						<!--<xsl:value-of select="$p/apply" disable-output-escaping="yes"/>-->
-					<!--</div>-->
 				</div>
+			</div>
+			<h3>Вас также может заинтересовать</h3>
+			<div class="catalog-items">
+				<xsl:apply-templates select="page/assoc"/>
 			</div>
 		</div>
 

@@ -49,6 +49,9 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 	private final String LINK = "link";
 	private final String MAIN_PIC = "main_pic";
 	private final String XML = "xml";
+	private final String ASSOC_CODE = "assoc_code";
+	private final String ASSOC = "assoc";
+	private final String MANUAL = "manual";
 
 
 
@@ -125,6 +128,10 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			for (Element videoEl : videoEls) {
 				extraXml += videoEl.outerHtml();
 			}
+			Elements manuals = productDoc.getElementsByTag(MANUAL);
+			if (manuals.size() > 0) {
+				extraXml += manuals.first().outerHtml();
+			}
 			ArrayList<Path> gallery = new ArrayList<>();
 			Elements pics = productDoc.getElementsByTag(GALLERY).first().getElementsByTag(PIC);
 			for (Element pic : pics) {
@@ -132,7 +139,11 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 				if (file != null)
 					gallery.add(file);
 			}
-
+			ArrayList<String> assocCodes = new ArrayList<>();
+			Elements codeEls = productDoc.getElementsByTag(ASSOC).first().getElementsByTag(CODE);
+			for (Element codeEl : codeEls) {
+				assocCodes.add(codeEl.ownText());
+			}
 			// Продукт
 
 			Item product = Item.newChildItem(productType, parent);
@@ -144,6 +155,9 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			product.setValue(DESCRIPTION, description);
 			product.setValue(TEXT, text);
 			product.setValue(EXTRA_XML, extraXml);
+			for (String assocCode : assocCodes) {
+				product.setValue(ASSOC_CODE, assocCode);
+			}
 			for (Path path : gallery) {
 				product.setValue(GALLERY, path.toFile());
 			}

@@ -58,6 +58,18 @@
 				</link>
 			</list>
 		</single>
+		<single item="catalog" id="catalog_index" cacheable="true" tag="cat_pics">
+			<list item="section" id="sec_pics">
+				<list item="product" transit="true">
+					<filter>
+						<limit><var value="1" /></limit>
+					</filter>
+				</list>
+				<link name="show_section" target="sub">
+					<var name="sec" ref="sec_pics" style="translit"/>
+				</link>
+			</list>
+		</single>
 		<include name="COMMON"/>
 	</page>
 
@@ -165,7 +177,9 @@
 		<single item="section" var="sec" cacheable="true" cache-vars="sec" tag="current_section">
 			<list item="section" id="subsec">
 				<list item="product" transit="true">
-
+					<filter>
+						<limit><var value="1" /></limit>
+					</filter>
 				</list>
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="subsec" style="translit"/>
@@ -250,6 +264,14 @@
 				<var name="src_page" value="compare_ajax"/>
 			</link>
 		</single>
+		<list item="product" tag="assoc" id="assoc">
+			<filter>
+				<parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="assoc" style="translit"/>
+			</link>
+		</list>
 		<include name="COMMON"/>
 	</page>
 
