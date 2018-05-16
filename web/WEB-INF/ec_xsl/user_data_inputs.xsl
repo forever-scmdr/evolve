@@ -99,10 +99,6 @@
 			<label>Ф.И.О директора:</label>
 			<input type="text" class="form-control" name="{$inp/director/@input}" value="{$inp/director}"/>
 		</div>
-		<div class="form-group">
-			<label>Оплата через ЕРИП</label>
-			<input type="checkbox" name="{$inp/payment/@input}"/>
-		</div>
 	</xsl:template>
 
 
