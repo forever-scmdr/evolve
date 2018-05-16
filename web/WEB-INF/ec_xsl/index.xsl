@@ -18,7 +18,7 @@
 					"bestRating": "5",
 					"ratingValue": "4,9",
 					"worstRating": "1",
-					"name": "TTD"
+					"name": "Иностранное торгово-производственное унитарное редприятие «САКУРА БЕЛ»"
 				},
 				"contactPoint": [
 					<xsl:for-each select="page/common/phone" >
