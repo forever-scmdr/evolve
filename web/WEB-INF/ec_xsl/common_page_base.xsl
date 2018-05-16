@@ -101,18 +101,18 @@
 							</xsl:for-each>
 					    </div>
 					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да' and menu_custom]">
-						<div class="popup-text-menu" style="position: absolute; display: none;" id="ts-{@id}">
-							<div class="sections">
-								<xsl:for-each select="menu_custom">
-									<a href="{show_page}">
-										<xsl:value-of select="header"/>
-									</a>
-								</xsl:for-each>
-							</div>
-						</div>
-					</xsl:for-each>
 				</div>
+				<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да' and menu_custom]">
+					<div class="popup-text-menu" style="position: absolute; display: none;" id="ts-{@id}">
+						<div class="sections">
+							<xsl:for-each select="menu_custom">
+								<a href="{show_page}">
+									<xsl:value-of select="header"/>
+								</a>
+							</xsl:for-each>
+						</div>
+					</div>
+				</xsl:for-each>
 			</div>
 		</div>
 	</xsl:template>
@@ -219,7 +219,11 @@
 					<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>
 				</ul>
 				<ul>
-					<li><a href="{page/news_link}">Новости</a></li>
+					<xsl:for-each select="page/news">
+						<li><a href="{show_page}">
+							<xsl:value-of select="name"/>
+						</a></li>
+					</xsl:for-each>
 					<xsl:for-each select="page/custom_pages/menu_custom">
 						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
 					</xsl:for-each>
@@ -533,22 +537,18 @@
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
 
 
-
-
-
-
-	<xsl:template match="/">
+<xsl:template match="/">
 	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
 	</xsl:text>
 	<html lang="ru">
 		<head>
-							<xsl:text disable-output-escaping="yes">
+<xsl:text disable-output-escaping="yes">
 &lt;!--
-				</xsl:text>
-			<xsl:value-of select="page/source_link"/>
-			<xsl:text disable-output-escaping="yes">
+</xsl:text>
+<xsl:value-of select="page/source_link"/>
+<xsl:text disable-output-escaping="yes">
 --&gt;
-				</xsl:text>
+</xsl:text>
 			<base href="{page/base}"/>
 			<meta charset="utf-8"/>
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>

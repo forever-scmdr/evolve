@@ -352,15 +352,25 @@
 	</page>
 
 
-	<page name="page" cacheable="false" template="page">
-		<request>
-			<var name="p" style="translit"/>
-		</request>
-		<single item="custom_page" var="p" cacheable="false" cache-vars="p">
-			<single item="seo"/>
-		</single>
-		<include name="COMMON"/>
-	</page>
+    <page name="page" cacheable="true" template="page">
+        <request>
+            <var name="p" style="translit"/>
+        </request>
+        <single item="custom_page" var="p" cacheable="true" cache-vars="p">
+            <single item="seo"/>
+            <list item="custom_page" id="child">
+                <link target="page" type="exclusive" name="show_page">
+                    <var ref="child" style="translit" name="p"/>
+                </link>
+            </list>
+            <ancestor item="custom_page" id="parents" tag="parent" transit="true">
+                <link target="page" type="exclusive" name="show_page">
+                    <var ref="parents" style="translit" name="p"/>
+                </link>
+            </ancestor>
+        </single>
+        <include name="COMMON"/>
+    </page>
 
 
 	<page name="feedback_ajax" template="feedback_ajax">
