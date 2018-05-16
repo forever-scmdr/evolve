@@ -145,10 +145,13 @@
 							<div class="list additional">
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
-									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">
+									<li class="visible" title="Загрзить товары из Yandex Market">
+										<a href="integrate/?action=start">Интеграция каталога</a>
+									</li>
+									<li class="visible" title="Очищает все кеши. Длительная и ресурсоемкая операция.">
 										<a href="admin_drop_all_caches.action">Очистить все кеши</a>
 									</li>
-									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">
+									<li class="visible" title="Обновить список товаров для полнотекстового поиска">
 										<a href="admin_reindex.action">Переиндексация</a>
 									</li>
 									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">
@@ -166,13 +169,6 @@
 											Управление классами объектов
 										</a>
 									</li>
-									<!--
-									<li class="visible" title="Функция в разработке">
-										<a href="#" onclick="alert('Функция в разработке'); return false;">
-											Управление миром
-										</a>
-									</li>
-									-->
 								</ul>
 							</div>
 						</div>
