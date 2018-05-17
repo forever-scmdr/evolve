@@ -178,8 +178,6 @@
 		<parameter name="address" type="string" caption="Адрес" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
 		<parameter name="comment" type="string" caption="Дополнительно" />
-	</item>
-
 
 	<item name="registered_catalog" caption="Каталог пользователей" ag-id="1195" ag-hash="-755203236">
 		<child item="user"/>
