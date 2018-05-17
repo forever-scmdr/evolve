@@ -172,12 +172,13 @@
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
-	<item name="user_phys" caption="Физическое лицо" super="user" ag-id="24" ag-hash="339407622" >
+	<item name="user_phys" caption="Физическое лицо" super="user" ag-id="24" ag-hash="339407622">
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="address" type="string" caption="Адрес" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
 		<parameter name="comment" type="string" caption="Дополнительно" />
+	</item>
 
 	<item name="registered_catalog" caption="Каталог пользователей" ag-id="1195" ag-hash="-755203236">
 		<child item="user"/>

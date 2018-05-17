@@ -99,6 +99,30 @@
 				</xsl:if>
 			</div>
 
+
+			<xsl:if test="$contacts/payment = 'erip'">
+				<div class="checkout-cont1">
+					<div class="info" style="padding-bottom: 20px;">
+						<form method="POST" action="https://pay161.paysec.by/pay/order.cfm">
+							<INPUT type="hidden" NAME="Merchant_ID" VALUE="{page/common/erip_id}"/>
+							<INPUT type="hidden" NAME="OrderNumber" VALUE="{$cart/order_num}"/>
+							<INPUT type="hidden" NAME="OrderAmount" VALUE="{f:currency_decimal($cart/sum)}"/>
+							<INPUT type="hidden" NAME="OrderCurrency" VALUE="BYN"/>
+							<xsl:variable name="fio" select="tokenize($contacts/name | $contacts/director,' ')"/>
+							<INPUT type="hidden" NAME="FirstName" VALUE="{$fio[2]}"/>
+							<INPUT type="hidden" NAME="LastName" VALUE="{$fio[1]}"/>
+							<INPUT type="hidden" NAME="FatherName" VALUE="{$fio[3]}"/>
+							<INPUT type="hidden" NAME="Email" VALUE="{$contacts/email}"/>
+							<INPUT type="hidden" NAME="MobilePhone" VALUE="{$contacts/phone}"/>
+							<INPUT type="hidden" NAME="Address" VALUE="{$contacts/post_address}"/>
+							<INPUT type="hidden" NAME="OrderComment" VALUE="{$contacts/user_message}"/>
+							<INPUT TYPE="SUBMIT" NAME="Submit" VALUE="Перейти на сайт оплаты заказа"
+								   class="assist-submit"/>
+						</form>
+					</div>
+				</div>
+			</xsl:if>
+
 			<table>
 				<tr>
 					<th>
