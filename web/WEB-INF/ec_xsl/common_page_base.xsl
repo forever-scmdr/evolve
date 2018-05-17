@@ -8,7 +8,7 @@
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
 	<!-- SEO VARS -->
-	<xsl:variable name="title" select="'САКУРА БЕЛ - Комплексные системы безопасности'" />
+	<xsl:variable name="title" select="'Керамо'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
@@ -413,6 +413,23 @@
 			<div class="name">
 				<a href="{show_product}" title="{name}"><xsl:value-of select="name"/></a>
 				<p><xsl:value-of select="substring-before(substring-after(short, 'description&quot;&gt;'), '&lt;')" disable-output-escaping="yes"/></p>
+				<div class="list-only product-params">
+					<table>
+						<colgroup>
+							<col style="width: 40%"/>
+						</colgroup>
+						<xsl:for-each select="params/param">
+							<tr class="param">
+								<td>
+									<p><strong><xsl:value-of select="@caption"/></strong></p>
+								</td>
+								<td>
+									<p><xsl:value-of select="."/></p>
+								</td>
+							</tr>
+						</xsl:for-each>
+					</table>
+				</div>
 			</div>
 			<div class="art-number">
 				<p>арт. <xsl:value-of select="code"/></p>

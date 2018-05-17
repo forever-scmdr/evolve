@@ -7178,3 +7178,10 @@ input.submit {
 input[type='number'] {
 	color: #000;
 }
+/*FIX Anton 17.05.2018*/
+.catalog-items .list-only{
+  display: none;
+}
+.catalog-items.lines .list-only{
+  display: block;
+}
