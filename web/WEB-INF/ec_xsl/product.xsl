@@ -13,32 +13,7 @@
 
 	<xsl:variable name="p" select="page/product"/>
 
-	<xsl:template name="MARKUP">
-		<xsl:variable name="price" select="$p/price"/>
-		<script type="application/ld+json">
-			<xsl:variable name="quote">"</xsl:variable>
-			{
-			"@context": "http://schema.org/",
-			"@type": "Product",
-			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
-			"image": <xsl:value-of select="concat($quote, $base, '/', $p/@path, $p/gallery[1], $quote)" />,
-			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
-			"offers": {
-			"@type": "Offer",
-			"priceCurrency": "BYN",
-			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
-			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>
-			}, "aggregateRating": {
-			"@type": "AggregateRating",
-			"ratingValue": "4.9",
-			"ratingCount": "53",
-			"bestRating": "5",
-			"worstRating": "1",
-			"name": <xsl:value-of select="concat($quote, translate($p/name, $quote, ''), $quote)" />
-			}
-			}
-		</script>
-	</xsl:template>
+
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -78,24 +53,18 @@
 				<xsl:if test="$has_price">
 					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
-						<p><span>Новая цена</span><xsl:value-of select="$p/price"/> р.</p>
-					</div>
-				</xsl:if>
-				<xsl:if test="not($has_price)">
-					<div class="price">
-						<p><span>&#160;</span></p>
-						<p><span>Новая цена</span>По запросу</p>
+						<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
 					</div>
 				</xsl:if>
 				<div class="order">
 					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 					<div id="cart_list_{$p/code}" class="product_purchase_container">
 						<form action="{$p/to_cart}" method="post">
-							<xsl:if test="$has_price and qty != '0'">
+							<xsl:if test="$has_price">
 								<input type="number" name="qty" value="1" min="0"/>
 								<input type="submit" value="В корзину"/>
 							</xsl:if>
-							<xsl:if test="not($has_price) or not(qty != '0')">
+							<xsl:if test="not($has_price)">
 								<input type="number" name="qty" value="1" min="0"/>
 								<input type="submit" class="not_available" value="Под заказ"/>
 							</xsl:if>

@@ -4,7 +4,6 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="active_menu_item" select="'news'"/>
-	<xsl:variable name="canonical" select="concat('/', page/selected_news/@key, '/')"/>
 
 	<xsl:variable name="p" select="page/product"/>
 
@@ -17,7 +16,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="page/selected_news/name"/></h1>
+		<h1><xsl:value-of select="if (page/news) then 'Новости' else 'Статьи'"/></h1>
 
 		<div class="page-content m-t">
 			<div class="catalog-items info">
