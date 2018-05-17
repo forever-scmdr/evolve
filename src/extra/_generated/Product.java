@@ -405,4 +405,20 @@ public class Product
         return containsValue("gallery", value);
     }
 
+    public void add_assoc_code(String value) {
+        setValue("assoc_code", value);
+    }
+
+    public List<String> getAll_assoc_code() {
+        return getStringValues("assoc_code");
+    }
+
+    public void remove_assoc_code(String value) {
+        removeEqualValue("assoc_code", value);
+    }
+
+    public boolean contains_assoc_code(String value) {
+        return containsValue("assoc_code", value);
+    }
+
 }

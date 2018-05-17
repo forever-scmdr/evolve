@@ -92,11 +92,11 @@
 					№ для заказа: <xsl:value-of select="$p/code" />
 				</div>
 				<div class="links">
-					<div id="compare_list_{code}">
-						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
+					<div id="compare_list_{$p/code}">
+						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">в сравнение</a></span>
 					</div>
 					<div id="fav_list_{$p/code}">
-						<span><i class="fas fa-star"></i> <a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
+						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/code}">в избранное</a></span>
 					</div>
 				</div>
 				<div class="info-blocks">
@@ -104,7 +104,7 @@
 						<xsl:value-of select="$p/short" disable-output-escaping="yes"/>
 						<xsl:if test="$extra_xml/manual">
 							<div class="extra-block">
-								<i class="fas fa-file-alt"></i><a href="{$extra_xml/manual}"><strong>Руководство по эксплуатации</strong></a>
+								<i class="fas fa-file-alt"></i><a href="{$extra_xml/manual}" target="_blank"><strong>Руководство по эксплуатации</strong></a>
 							</div>
 						</xsl:if>
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
@@ -139,10 +139,12 @@
 					</div>
 				</div>
 			</div>
-			<h3>Вас также может заинтересовать</h3>
-			<div class="catalog-items">
-				<xsl:apply-templates select="page/assoc"/>
-			</div>
+			<xsl:if test="page/assoc">
+				<h3>Вас также может заинтересовать</h3>
+				<div class="catalog-items">
+					<xsl:apply-templates select="page/assoc"/>
+				</div>
+			</xsl:if>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>

@@ -50,7 +50,15 @@
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Корзина пуста</strong></p>
 							</div>
-							<xsl:call-template name="PERSONAL_DESKTOP"/>
+							<div class="user">
+								<xsl:call-template name="PERSONAL_DESKTOP"/>
+								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
+									<p><i class="fas fa-star"/> <a href="">&#160;</a></p>
+								</div>
+								<div id="compare_ajax" ajax-href="{page/compare_ajax_link}">
+									<p><i class="fas fa-balance-scale"/> <a href="compare.html">&#160;</a></p>
+								</div>
+							</div>
 						</div>
 						<div class="main-menu">
 							<!-- <a href="{page/index_link}">Главная</a> -->
@@ -184,8 +192,8 @@
 				</ul>
 				<ul>
 					<li><i class="fas fa-shopping-cart"></i> <a href="{page/cart_link}">Корзина</a></li>
-					<!--<li><i class="fas fa-star"></i> <a href="{page/fav_link}">Избранное</a></li>-->
-					<!--<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>-->
+					<li><i class="fas fa-star"></i> <a href="{page/fav_link}">Избранное</a></li>
+					<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>
 				</ul>
 				<ul>
 					<li><a href="{page/news_link}">Новости</a></li>

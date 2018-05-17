@@ -237,6 +237,7 @@ public class ItemNames {
         String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
         String GALLERY = "gallery";
+        String ASSOC_CODE = "assoc_code";
 
     }
 

@@ -79,7 +79,7 @@
 	</page>
 
 
-	<page name="section" template="section" cacheable="false" critical-item="cur_sec">
+	<page name="section" template="section" cacheable="true" critical-item="cur_sec">
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
@@ -100,6 +100,7 @@
 						<var name="sec" var="sec" style="translit"/>
 					</link>
 				</filter>
+				<single item="params_xml"/>
 				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="translit"/>
 				</link>
