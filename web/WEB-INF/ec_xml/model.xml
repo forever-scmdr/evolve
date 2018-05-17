@@ -5,14 +5,14 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             SEO                                  ////////////-->
 
-	<item name="seo" caption="SEO" ag-id="2512" ag-hash="113757">
+	<item name="seo" caption="SEO" ag-id="2156" ag-hash="113757">
 		<parameter name="title" type="string" caption="title"/>
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
 	</item>
 
-	<item name="url_seo" key="name" caption="SEO" ag-id="2513" ag-hash="-169844339">
+	<item name="url_seo" key="name" caption="SEO" ag-id="2157" ag-hash="-169844339">
 		<parameter name="name" type="string" caption="Название" description="для поиска в CMS"/>
 		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
 		<parameter name="title" type="string" caption="title"/>
@@ -21,7 +21,7 @@
 		<parameter name="meta" caption="meta" type="plain-text"/>
 	</item>
 
-	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="2514" ag-hash="843192252">
+	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="2158" ag-hash="843192252">
 		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
 		<child item="url_seo" />
 	</item>
@@ -189,7 +189,7 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
-	<item name="news_wrap" caption="Новостые разделы" ag-id="2515" ag-hash="301189686">
+	<item name="news_wrap" caption="Новостые разделы" ag-id="2159" ag-hash="301189686">
 		<child item="news"/>
 	</item>
 
@@ -271,23 +271,23 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="modules" caption="Метрики, чаты и.т.д" ag-id="2482" ag-hash="1227433863">
+	<item name="modules" caption="Метрики, чаты и.т.д" ag-id="2160" ag-hash="1227433863">
 		<child item="named_code"/>
 	</item>
 
-	<item name="named_code" key="name" caption="Модуль" ag-id="2483" ag-hash="-281007309">
+	<item name="named_code" key="name" caption="Модуль" ag-id="2161" ag-hash="-281007309">
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
 	</item>
 
-	<item name="file_overriders" caption="Перезапись файлов" description="Тут можно создаввать айтемы, перезаписывающие файлы" ag-id="2517" ag-hash="-253836880">
+	<item name="file_overriders" caption="Перезапись файлов" description="Тут можно создаввать айтемы, перезаписывающие файлы" ag-id="2162" ag-hash="-253836880">
 		<child item="text_file_overrider"/>
 		<child item="file_overrider"/>
 		<child item="robots_text_overrider" single="true"/>
 		<child item="robots_overrider" single="true"/>
 	</item>
 
-	<item name="text_file_overrider" key="name" caption="Файл (текстовый)" description="Позволяет презаписать любой файл. Только для разработчиков!" ag-id="2518" ag-hash="1723673717">
+	<item name="text_file_overrider" key="name" caption="Файл (текстовый)" description="Позволяет презаписать любой файл. Только для разработчиков!" ag-id="2163" ag-hash="1723673717">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="src" type="string" caption="Файл" description="путь к файлу, который нужно перезаписать" />
 		<parameter name="file_content" type="plain-text" caption="Содержимое файла" description="После сохранения файл бует презаписан!" format="src: src;"/>
@@ -295,7 +295,7 @@
 		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
 	</item>
 
-	<item name="file_overrider" key="name" caption="Файл" description="Прикрепленный файл копируется в указанное место" ag-id="2519" ag-hash="1238737699">
+	<item name="file_overrider" key="name" caption="Файл" description="Прикрепленный файл копируется в указанное место" ag-id="2164" ag-hash="1238737699">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="src" type="string" caption="Файл" description="путь к файлу, который нужно перезаписать" />
 		<parameter name="file_content" type="file" caption="Файл для копирования" description="После сохранения файл бует презаписан!" format="src: src;"/>
@@ -303,13 +303,13 @@
 		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
 	</item>
 
-	<item name="robots_text_overrider" caption="Перезапись robots.txt" ag-id="2520" ag-hash="995375434">
+	<item name="robots_text_overrider" caption="Перезапись robots.txt" ag-id="2165" ag-hash="995375434">
 		<parameter name="file_content" type="plain-text" caption="Содержимое файла" description="После сохранения файл бует презаписан!" format="dest: robots.txt;"/>
 		<on-update class="ecommander.fwk.WriteToDestFileFactory"/>
 		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
 	</item>
 
-	<item name="robots_overrider" caption="Прикрепить robots.txt" ag-id="2521" ag-hash="613905584">
+	<item name="robots_overrider" caption="Прикрепить robots.txt" ag-id="2166" ag-hash="613905584">
 		<parameter name="file_content" type="file" caption="Файл для копирования" description="После сохранения файл бует презаписан!" format="dest: robots.txt;"/>
 		<on-update class="ecommander.fwk.WriteToDestFileFactory"/>
 		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>

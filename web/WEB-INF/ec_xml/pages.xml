@@ -126,6 +126,7 @@
 						<var name="sec" var="sec" style="translit"/>
 					</link>
 				</filter>
+				<single item="params"/>
 				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="translit"/>
 				</link>
