@@ -281,7 +281,40 @@
 		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
 	</item>
 
+	<item name="file_overriders" caption="Перезапись файлов" description="Тут можно создаввать айтемы, перезаписывающие файлы" ag-id="2517" ag-hash="-253836880">
+		<child item="text_file_overrider"/>
+		<child item="file_overrider"/>
+		<child item="robots_text_overrider" single="true"/>
+		<child item="robots_overrider" single="true"/>
+	</item>
 
+	<item name="text_file_overrider" key="name" caption="Файл (текстовый)" description="Позволяет презаписать любой файл. Только для разработчиков!" ag-id="2518" ag-hash="1723673717">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="src" type="string" caption="Файл" description="путь к файлу, который нужно перезаписать" />
+		<parameter name="file_content" type="plain-text" caption="Содержимое файла" description="После сохранения файл бует презаписан!" format="src: src;"/>
+		<on-update class="ecommander.fwk.WriteToDestFileFactory"/>
+		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
+	</item>
+
+	<item name="file_overrider" key="name" caption="Файл" description="Прикрепленный файл копируется в указанное место" ag-id="2519" ag-hash="1238737699">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="src" type="string" caption="Файл" description="путь к файлу, который нужно перезаписать" />
+		<parameter name="file_content" type="file" caption="Файл для копирования" description="После сохранения файл бует презаписан!" format="src: src;"/>
+		<on-update class="ecommander.fwk.WriteToDestFileFactory"/>
+		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
+	</item>
+
+	<item name="robots_text_overrider" caption="Перезапись robots.txt" ag-id="2520" ag-hash="995375434">
+		<parameter name="file_content" type="plain-text" caption="Содержимое файла" description="После сохранения файл бует презаписан!" format="dest: robots.txt;"/>
+		<on-update class="ecommander.fwk.WriteToDestFileFactory"/>
+		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
+	</item>
+
+	<item name="robots_overrider" caption="Прикрепить robots.txt" ag-id="2521" ag-hash="613905584">
+		<parameter name="file_content" type="file" caption="Файл для копирования" description="После сохранения файл бует презаписан!" format="dest: robots.txt;"/>
+		<on-update class="ecommander.fwk.WriteToDestFileFactory"/>
+		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
+	</item>
 
 	<root>
 		<child item="feedback_params" single="true" />
@@ -295,6 +328,7 @@
 		<child item="counter" single="true" virtual="true"/>
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
+		<child item="file_overriders" single="true" />
 	</root>
 
 

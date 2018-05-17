@@ -29,10 +29,6 @@
 			<label>Электронная почта:</label>
 			<input type="text" class="form-control" name="{$inp/email/@input}" value="{$inp/email}" error="{$inp/email/@validation-error}"/>
 		</div>
-		<div class="form-group">
-			<label>Оплата через ЕРИП</label>
-			<input type="checkbox" name="{$inp/payment/@input}"/>
-		</div>
 	</xsl:template>
 
 
