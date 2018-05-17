@@ -3,16 +3,12 @@
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
-	<xsl:import href="utils/price_conversions.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
-	<!-- SEO VARS -->
-	<xsl:variable name="title" select="'САКУРА БЕЛ - Комплексные системы безопасности'" />
-	<xsl:variable name="meta_description" select="''" />
-	<xsl:variable name="base" select="page/base" />
-	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
-	<xsl:variable name="canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''"/>
+	<!-- <TITLE> -->
+	
+	<xsl:template name="TITLE">Керамо</xsl:template>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
@@ -40,7 +36,7 @@
 		<div class="container header desktop">
 			<div class="header-container" style="position: relative;">
 				<div class="logo">
-					<a href="{$base}"><img src="img/logo.png" alt="" /></a>
+					<a href="{page/index_link}"><img src="img/logo_1.svg" alt="" /></a>
 				</div>
 				<div class="search">
 					<form action="{page/search_link}" method="post">
@@ -65,54 +61,34 @@
 				<div class="main-menu">
 					<!-- <a href="{page/index_link}">Главная</a> -->
 					<a href="{page/catalog_link}" id="catalog_main_menu" class="{'active'[$active_menu_item = 'catalog']}"><i class="fas fa-bars"/>Каталог</a>
-					<xsl:for-each select="page/news">
+					<a href="{page/news_link}" class="{'active'[$active_menu_item = 'news']}">Новости</a>
+					<xsl:for-each select="page/menu_custom">
 						<xsl:variable name="key" select="@key"/>
-						<xsl:variable name="sel" select="page/varibles/sel"/>
-						<a href="{show_page}" class="{'active'[$sel = $key]}">
-							<xsl:value-of select="name"/>
-						</a>
+						<a href="{show_page}" class="{'active'[$active_menu_item = $key]}"><xsl:value-of select="header"/></a>
 					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да']">
-						<xsl:variable name="key" select="@key"/>
-						<xsl:if test="not(menu_custom)">
-							<a href="{show_page}" class="{'active'[$active_menu_item = $key]}">
-								<xsl:value-of select="header"/>
-							</a>
-						</xsl:if>
-						<xsl:if test="menu_custom">
-							<a href="#ts-{@id}" class="show-sub{' active'[$active_menu_item = $key]}">
-								<xsl:value-of select="header"/>
-							</a>
-						</xsl:if>
-					</xsl:for-each>
+					<!-- <a href="{page/articles_link}">Статьи</a>
+					<a href="">Наши проекты</a>
+					<a href="{page/dealers_link}">Дилеры</a>
+					<a href="/about">О компании</a>
+					<a href="{page/docs_link}">Документация</a>
+					 -->
 					 <a href="{page/contacts_link}" class="{'active'[$active_menu_item = 'contacts']}">Контакты</a>
 				</div>
 				<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 				 	<div class="sections">
 						<xsl:for-each select="page/catalog/section">
-						    <a href="{if(section) then show_section else show_products}"
+						    <a href="{show_products}"
 						       class="cat_menu_item_1" rel="#sub_{@id}"><xsl:value-of select="name" /></a>
 						</xsl:for-each>
 				 	</div>
 					<xsl:for-each select="page/catalog/section">
 					    <div class="subsections" style="display: none" id="sub_{@id}">
 							<xsl:for-each select="section">
-						        <a href="{if(section) then show_section else show_products}"><xsl:value-of select="name" /></a>
+						        <a href="{show_products}"><xsl:value-of select="name" /></a>
 							</xsl:for-each>
 					    </div>
 					</xsl:for-each>
 				</div>
-				<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да' and menu_custom]">
-					<div class="popup-text-menu" style="position: absolute; display: none;" id="ts-{@id}">
-						<div class="sections">
-							<xsl:for-each select="menu_custom">
-								<a href="{show_page}">
-									<xsl:value-of select="header"/>
-								</a>
-							</xsl:for-each>
-						</div>
-					</div>
-				</xsl:for-each>
 			</div>
 		</div>
 	</xsl:template>
@@ -122,8 +98,8 @@
 	<xsl:template name="INC_MOBILE_HEADER">
 		<div class="header mobile">
 			<div class="header-container">
-				<a href="{$base}" class="logo">
-					<img src="img/logo.png" alt="" style="height: 1.5em; max-width: 100%;"/>
+				<a href="" class="logo">
+					<img src="img/logo.svg" alt="" style="height: 2rem; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
 					<a href=""><i class="fas fa-phone"></i></a>
@@ -152,36 +128,32 @@
 		<div class="footer-placeholder"></div><!-- ружен скрипт, задающий блоку высоту футера -->
 		<div class="footer">
 			<div class="container">
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="footer-container">
-							<div class="block">
-								<p><strong>© sakurabel.com, 2018</strong></p>
-								<div class="forever">
-									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
-								</div>
-							</div>
-							<div class="block">
-								<p>Принимаем к оплате<xsl:call-template name="BR"/> пластиковые карточки</p>
-								<div class="cards">
-									<img src="img/mastercard.svg" alt=""/>
-									<img src="img/visa.svg" alt=""/>
-								</div>
-							</div>
-							<div class="block contacts">
-								<xsl:value-of select="page/common/bottom" disable-output-escaping="yes"/>
-							</div>
-							<div class="block address">
-								<xsl:value-of select="page/common/bottom_address" disable-output-escaping="yes"/>
-								<!-- <p>Мы в социальных сетях</p>
-								<div class="social">
-									<a href="" target="_blank"><i class="fab fa-facebook" /></a>
-									<a href="" target="_blank"><i class="fab fa-vk" /></a>
-									<a href="" target="_blank"><i class="fab fa-odnoklassniki" /></a>
-									<a href="" target="_blank"><i class="fab fa-youtube" /></a>
-									<a href="" target="_blank"><i class="fab fa-instagram" /></a>
-								</div> -->
-							</div>
+				<div class="footer-container">
+					<div class="block">
+						<p><strong>© keramo.by, 2018</strong></p>
+						<div class="forever">
+							<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
+						</div>
+					</div>
+					<div class="block">
+						<p>Принимаем к оплате<xsl:call-template name="BR"/> пластиковые карточки</p>
+						<div class="cards">
+							<img src="img/mastercard.svg" alt=""/>
+							<img src="img/visa.svg" alt=""/>
+						</div>
+					</div>
+					<div class="block contacts">
+						<xsl:value-of select="page/common/bottom" disable-output-escaping="yes"/>
+					</div>
+					<div class="block address">
+						<!-- <xsl:value-of select="page/common/bottom_address" disable-output-escaping="yes"/> -->
+						<p>Мы в социальных сетях</p>
+						<div class="social">
+							<a href="" target="_blank"><i class="fab fa-facebook" /></a>
+							<a href="" target="_blank"><i class="fab fa-vk" /></a>
+							<a href="" target="_blank"><i class="fab fa-odnoklassniki" /></a>
+							<a href="" target="_blank"><i class="fab fa-youtube" /></a>
+							<a href="" target="_blank"><i class="fab fa-instagram" /></a>
 						</div>
 					</div>
 				</div>
@@ -219,12 +191,8 @@
 					<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>
 				</ul>
 				<ul>
-					<xsl:for-each select="page/news">
-						<li><a href="{show_page}">
-							<xsl:value-of select="name"/>
-						</a></li>
-					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/menu_custom">
+					<li><a href="{page/news_link}">Новости</a></li>
+					<xsl:for-each select="page/menu_custom">
 						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
 					</xsl:for-each>
 				</ul>
@@ -293,7 +261,7 @@
 					<ul>
 						<xsl:for-each select="section">
 							<li>
-								<a href="{if (section) then show_section else show_products}" rel="{if (section) then concat('#m_sub_', @id) else ''}"><xsl:value-of select="name"/></a>
+								<a href="{show_products}" rel="{if (section) then concat('#m_sub_', @id) else ''}"><xsl:value-of select="name"/></a>
 								<xsl:if test="section">
 									<i class="fas fa-chevron-right"></i>
 								</xsl:if>
@@ -306,13 +274,13 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
-						<a href="{if (section) then show_section else show_products}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
 						<xsl:for-each select="section">
 							<li>
-								<a href="{show_products}"><xsl:value-of select="name"/></a>
+								<a href="{show_section}"><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:for-each>
 					</ul>
@@ -329,17 +297,17 @@
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="level-1{' active'[$l1_active]}">
 					<div class="capsule">
-						<a href="{if(section) then show_section else show_products}"><xsl:value-of select="name"/> </a>
+						<a href="{show_products}"><xsl:value-of select="name"/> </a>
 					</div>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
 					<xsl:for-each select="section">
 						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
-						<div class="level-2{' active'[$l2_active]}"><a href="{if(section) then show_section else show_products}"><xsl:value-of select="name"/></a></div>
+						<div class="level-2{' active'[$l2_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 						<xsl:if test=".//@id = $sel_sec_id">
 							<xsl:for-each select="section">
 								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
-								<div class="level-3{' active'[$l3_active]}"><a href="{if(section) then show_section else show_products}"><xsl:value-of select="name"/></a></div>
+								<div class="level-3{' active'[$l3_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 								<xsl:if test=".//@id = $sel_sec_id">
 									<xsl:for-each select="section">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
@@ -427,17 +395,18 @@
 					<p><!--<span>Новая цена</span>--><xsl:value-of select="price"/> р.</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
-					<p>По запрсу</p>
+					<p><span>&#160;</span>&#160;</p>
+					<p><span>&#160;</span>&#160;</p>
 				</xsl:if>
 			</div>
 			<div class="order">
 				<div id="cart_list_{code}" class="product_purchase_container">
 					<form action="{to_cart}" method="post">
-						<xsl:if test="$has_price and qty != '0'">
+						<xsl:if test="$has_price">
 							<input type="number" name="qty" value="1" min="0"/>
 							<input type="submit" value="В корзину"/>
 						</xsl:if>
-						<xsl:if test="not($has_price) or not(qty != '0')">
+						<xsl:if test="not($has_price)">
 							<input type="number" name="qty" value="1" min="0"/>
 							<input type="submit" class="not_available" value="Под заказ"/>
 						</xsl:if>
@@ -537,26 +506,22 @@
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
 
 
-<xsl:template match="/">
+
+
+
+
+	<xsl:template match="/">
 	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
 	</xsl:text>
-	<html lang="ru">
+	<html lang="en">
 		<head>
-<xsl:text disable-output-escaping="yes">
-&lt;!--
-</xsl:text>
-<xsl:value-of select="page/source_link"/>
-<xsl:text disable-output-escaping="yes">
---&gt;
-</xsl:text>
 			<base href="{page/base}"/>
 			<meta charset="utf-8"/>
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
-			<xsl:call-template name="SEO"/>
-			<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
-			<link rel="stylesheet" href="css/new/app.css"/>
-			<!-- <link rel="stylesheet" href="css/app.css"/> -->
+			<title><xsl:call-template name="TITLE"/></title>
+			<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
+			<link rel="stylesheet" href="css/app.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 			<link rel="stylesheet" href="fotorama/fotorama.css"/>
@@ -566,7 +531,8 @@
 		</head>
 		<body>
 			<!-- ALL CONTENT BEGIN -->
-			<div class="content-container">
+			<xsl:variable name="page_name" select="page/@name" />
+			<div class="content-container{' main-page'[$page_name='index']}">
 				<xsl:call-template name="INC_DESKTOP_HEADER"/>
 
 				<xsl:call-template name="MAIN_CONTENT"/>
@@ -615,7 +581,6 @@
 				});
 			</script>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>
-			<xsl:call-template name="USER_DEFINED_SCRIPTS"/>
 		</body>
 	</html>
 	</xsl:template>
@@ -623,11 +588,7 @@
 	
 
 
-	<xsl:template name="USER_DEFINED_SCRIPTS">
-		<xsl:for-each select="page/modules/named_code">
-			<xsl:value-of select="code" disable-output-escaping="yes"/>
-		</xsl:for-each>
-	</xsl:template>
+
 
 	<!-- ****************************    БЛОКИ НА СТРАНИЦЕ    ******************************** -->
 
@@ -676,40 +637,6 @@
 				<xsl:with-param name="current" select="number($current) + number(1)"/>
 			</xsl:call-template>
 		</xsl:if>
-	</xsl:template>
-
-	<xsl:template name="SEO">
-
-		<xsl:variable name="quote">"</xsl:variable>
-
-		<link rel="canonical" href="{concat($main_host, $canonical)}" />
-		<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
-		<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
-
-		<xsl:if test="$seo">
-			<xsl:apply-templates select="$seo"/>
-		</xsl:if>
-		<xsl:if test="not($seo) or $seo = ''">
-			<title>
-				<xsl:value-of select="$title"/>
-			</title>
-			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
-		</xsl:if>
-		<xsl:value-of select="page/common/google_verification" disable-output-escaping="yes"/>
-		<xsl:value-of select="page/common/yandex_verification" disable-output-escaping="yes"/>
-		<xsl:call-template name="MARKUP" />
-
-	</xsl:template>
-
-	<xsl:template name="MARKUP"/>
-
-	<xsl:template match="seo | url_seo">
-		<title>
-			<xsl:value-of select="title"/>
-		</title>
-		<meta name="description" content="{description}"/>
-		<meta name="keywords" content="{keywords}"/>
-		<xsl:value-of select="meta" disable-output-escaping="yes"/>
 	</xsl:template>
 
 </xsl:stylesheet>

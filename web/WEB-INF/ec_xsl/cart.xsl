@@ -3,7 +3,6 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="'Ваш заказ'" />
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -21,8 +20,8 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="price" select="if ($p/price) then concat($p/price, ' p.') else 'по запросу'"/>
-							<xsl:variable name="sum" select="if ($p/price) then concat(sum, ' p.') else 'по запросу'"/>
+							<xsl:variable name="price" select="if ($p/price) then concat($p/price, ' p.') else 'под заказ'"/>
+							<xsl:variable name="sum" select="if ($p/price) then concat(sum, ' p.') else 'под заказ'"/>
 							<div class="item">
 								<a href="{$p/show_product}" class="image-container">
 									<img src="{$p/@path}{$p/main_pic}" alt=""/>

@@ -7,38 +7,6 @@
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
-	<xsl:template name="MARKUP">
-		<script type="application/ld+json">
-			<xsl:variable name="quote">"</xsl:variable>
-			<xsl:variable name="min" select="f:currency_decimal(//min/price)"/>
-			<xsl:variable name="max" select="f:currency_decimal(//max/price)"/>
-
-			{
-			"@context": "http://schema.org/",
-			"@type": "Product",
-			"name": <xsl:value-of select="concat($quote, replace($sel_sec/name, $quote, ''), $quote)" />,
-			<xsl:if test="$sel_sec/main_pic != ''">
-				"image": <xsl:value-of select="concat($quote, $base, '/', $sel_sec/@path, $sel_sec/main_pic, $quote)"/>,
-			</xsl:if>
-			"offers": {
-			"@type": "AggregateOffer",
-			"priceCurrency": "BYN",
-			"lowPrice": <xsl:value-of select="concat($quote,$min, $quote)"/>,
-			"highPrice": <xsl:value-of select="concat($quote, $max, $quote)"/>,
-			"offerCount": <xsl:value-of select="concat($quote, count($sel_sec/product), $quote)"/>
-			}, "aggregateRating": {
-			"@type": "AggregateRating",
-			"ratingValue": "4.9",
-			"ratingCount": "53",
-			"bestRating": "5",
-			"worstRating": "1",
-			"name": <xsl:value-of select="concat($quote, translate($sel_sec/name, $quote, ''), $quote)" />
-			}
-			}
-
-		</script>
-	</xsl:template>
-
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="view" select="page/variables/view"/>
