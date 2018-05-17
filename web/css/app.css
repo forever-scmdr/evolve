@@ -7156,3 +7156,25 @@ input.submit {
 .catalog-items.sections .catalog-item .name a {
 	color: #fff;
 }
+.big-title.label-actions, .big-title.label-news {
+	background-size: 5.5rem;
+}
+.filters {
+	border-color: #668BA0;
+}
+.filters label {
+	color: #000;
+}
+.filters > div {
+	background-color: #668ba0;
+}
+
+.pagination .pagination-container a.active, .pagination .pagination-container a:hover {
+	background-color: #668ba0;
+}
+.pagination .pagination-container a {
+	border-color: #668BA0;
+}
+input[type='number'] {
+	color: #000;
+}
