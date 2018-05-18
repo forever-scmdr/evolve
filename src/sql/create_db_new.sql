@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `item_ids` (
 CREATE TABLE IF NOT EXISTS `param_ids` (
   `pid_param_id` int(4) NOT NULL AUTO_INCREMENT,
   `pid_item_id` int(4) NOT NULL,
-  `pid_param_name` varchar(50) NOT NULL,
+  `pid_param_name` varchar(255) NOT NULL,
   PRIMARY KEY (`pid_param_id`) USING BTREE,
   UNIQUE KEY `UNIQUE` (`pid_item_id`,`pid_param_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

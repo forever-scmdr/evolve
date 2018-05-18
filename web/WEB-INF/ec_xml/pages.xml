@@ -870,4 +870,13 @@
 	</page>
 
 
+	<page name="create_filters" template="create_filters">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.CreateParametersAndFiltersCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 </site>

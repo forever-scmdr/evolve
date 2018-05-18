@@ -44,7 +44,10 @@
 						<xsl:for-each select="$sel_sec/params_filter/filter/input">
 							<xsl:variable name="name" select="@id"/>
 							<div class="active checkgroup">
-								<strong><xsl:value-of select="@caption"/></strong>
+								<strong>
+									<xsl:value-of select="@caption"/><xsl:text> </xsl:text>
+									<xsl:if test="@description and not(@description = '')">[<xsl:value-of select="@description"/>]</xsl:if>
+								</strong>
 								<div class="values">
 									<xsl:for-each select="domain/value">
 										<div class="checkbox">

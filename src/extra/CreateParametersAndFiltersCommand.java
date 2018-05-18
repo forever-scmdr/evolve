@@ -3,15 +3,24 @@ package extra;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.Pair;
 import ecommander.fwk.Strings;
-import ecommander.model.DataTypeRegistry;
-import ecommander.model.Item;
+import ecommander.fwk.integration.YMarketProductClassHandler;
+import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
+import ecommander.model.filter.CriteriaDef;
+import ecommander.model.filter.FilterDefinition;
+import ecommander.model.filter.InputDef;
+import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 import java.text.NumberFormat;
 import java.text.ParsePosition;
@@ -53,7 +62,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase {
 				paramCaptions.put(paramName, name);
 			}
 			DataType.Type currentType = paramTypes.get(paramName);
-			Pair<DataType.Type, String> test = testValue(value);
+			Pair<DataType.Type, String> test = testValueHasUnit(value);
 			if (currentType.equals(DataType.Type.INTEGER) && test.getLeft() != DataType.Type.INTEGER) {
 				paramTypes.put(paramName, test.getLeft());
 			} else if (currentType.equals(DataType.Type.DOUBLE) && test.getLeft() == DataType.Type.STRING) {
@@ -81,7 +90,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase {
 			return true;
 		}
 
-		private static Pair<DataType.Type, String> testValue(String value) {
+		private static Pair<DataType.Type, String> testValueHasUnit(String value) {
 			try {
 				Integer.parseInt(value);
 				return new Pair<>(DataType.Type.INTEGER, null);
@@ -94,10 +103,10 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase {
 						String numStr = parts[0];
 						String unit = parts.length > 1 ? parts[1] : null;
 						try {
-							Integer.parseInt(value);
+							Integer.parseInt(numStr);
 							return new Pair<>(DataType.Type.INTEGER, unit);
 						} catch (NumberFormatException nfe2) {
-							if (testDouble(value)) {
+							if (testDouble(numStr)) {
 								return new Pair<>(DataType.Type.DOUBLE, unit);
 							} else {
 								return new Pair<>(DataType.Type.STRING, null);
@@ -119,18 +128,102 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase {
 	@Override
 	protected void integrate() throws Exception {
 		List<Item> sections = new ItemQuery(ItemNames.SECTION).loadItems();
+		info.setOperation("Создание классов и фильтров");
 		info.setToProcess(sections.size());
 		info.setProcessed(0);
 		for (Item section : sections) {
 			List<Item> products = new ItemQuery(ItemNames.PRODUCT).setParentId(section.getId(), false).loadItems();
 			if (products.size() > 0) {
+
+				// Анализ параметров продуктов
 				Params params = new Params(section.getStringValue(ItemNames.section.NAME), "s" + section.getId());
+				for (Item product : products) {
+					List<Item> oldParams = new ItemQuery(ItemNames.PARAMS).setParentId(product.getId(), false).loadItems();
+					for (Item oldParam : oldParams) {
+						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldParam));
+					}
+					Item paramsXml = new ItemQuery(ItemNames.PARAMS_XML).setParentId(product.getId(), false).loadFirstItem();
+					if (paramsXml != null) {
+						String xml = "<params>" + paramsXml.getStringValue(ItemNames.params_xml.XML) + "</params>";
+						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
+						Elements paramEls = paramsTree.getElementsByTag("parameter");
+						for (Element paramEl : paramEls) {
+							String caption = StringUtils.trim(paramEl.getElementsByTag("name").first().ownText());
+							String value = StringUtils.trim(paramEl.getElementsByTag("value").first().ownText());
+							if (StringUtils.isNotBlank(caption)) {
+								params.addParameter(caption, value);
+							}
+						}
+					}
+				}
+				executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null));
+
+				// Создание фильтра
+				String className = "p" + section.getId();
+				String classCaption = section.getStringValue(ItemNames.section.NAME);
+				// Создать фильтр и установить его в айтем
+				FilterDefinition filter = FilterDefinition.create("");
+				filter.setRoot(className);
+				for (String paramName : params.paramTypes.keySet()) {
+					if (params.notInFilter.contains(paramName))
+						continue;
+					String caption = params.paramCaptions.get(paramName);
+					String unit = params.paramUnits.get(paramName);
+					InputDef input = new InputDef("droplist", caption, unit, "");
+					filter.addPart(input);
+					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
+				}
+				section.setValue(ItemNames.section.PARAMS_FILTER, filter.generateXML());
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
+
+				// Создать класс для продуктов из этого раздела
+				ItemType newClass = new ItemType(className, 0, classCaption, "", "",
+						ItemNames.PARAMS, null, false, true, false, false);
+				for (String paramName : params.paramTypes.keySet()) {
+					String type = params.paramTypes.get(paramName).toString();
+					String caption = params.paramCaptions.get(paramName);
+					String unit = params.paramUnits.get(paramName);
+					newClass.putParameter(new ParameterDescription(paramName, 0, type, false, 0,
+							"", caption, unit, "", false, false, null, null));
+				}
+				executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
+
+			}
+			info.increaseProcessed();
+		}
+
+		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+
+		info.setOperation("Заполнение параметров товаров");
+		info.setToProcess(sections.size());
+		info.setProcessed(0);
+		for (Item section : sections) {
+			String className = "p" + section.getId();
+			ItemType paramDesc = ItemTypeRegistry.getItemType(className);
+			List<Item> products = new ItemQuery(ItemNames.PRODUCT).setParentId(section.getId(), false).loadItems();
+			if (products.size() > 0) {
 				for (Item product : products) {
 					Item paramsXml = new ItemQuery(ItemNames.PARAMS_XML).setParentId(product.getId(), false).loadFirstItem();
 					if (paramsXml != null) {
 						String xml = "<params>" + paramsXml.getStringValue(ItemNames.params_xml.XML) + "</params>";
 						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
-
+						Elements paramEls = paramsTree.getElementsByTag("parameter");
+						Item params = Item.newChildItem(paramDesc, product);
+						for (Element paramEl : paramEls) {
+							String name = StringUtils.trim(paramEl.getElementsByTag("name").first().ownText());
+							name = Strings.createXmlElementName(name);
+							String value = StringUtils.trim(paramEl.getElementsByTag("value").first().ownText());
+							Pair<DataType.Type, String> valuePair = Params.testValueHasUnit(value);
+							if (StringUtils.isNotBlank(valuePair.getRight())) {
+								value = value.split("\\s")[0];
+							}
+							if (paramDesc.hasParameter(name)) {
+								params.setValueUI(name, value);
+							} else {
+								info.pushLog("No parameter {} in section {}", name, section.getStringValue("name"));
+							}
+						}
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(params));
 					}
 				}
 			}
