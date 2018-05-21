@@ -3,15 +3,13 @@ package ecommander.persistence.commandunits;
 import ecommander.filesystem.SaveItemFilesUnit;
 import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.fwk.ServerLogger;
-import ecommander.model.Item;
-import ecommander.model.ItemBasics;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
+import ecommander.model.*;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -54,6 +52,17 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 	public void execute() throws Exception {
 		// Создать значение ключа
 		item.prepareToSave();
+
+		//поиск значений по умолчанию
+		for(Parameter parameter : item.getAllParameters()){
+			if(parameter.isEmpty()){
+				ParameterDescription pd = ItemTypeRegistry.getItemType(item.getTypeId()).getParameter(parameter.getParamId());
+				String defaultValue= pd.getDefaultValue();
+				if(StringUtils.isNotBlank(defaultValue)){
+					item.setValueUI(parameter.getParamId(), defaultValue);
+				}
+			}
+		}
 
 		// Загрузка и валидация родительского айтема, если надо
 		Connection conn = getTransactionContext().getConnection();
