@@ -63,21 +63,21 @@
 			<div class="product-info">
 				<!-- <p>№ для заказа: <xsl:value-of select="$p/code" /></p> -->
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
-				<!-- <xsl:if test="$has_price"> -->
+				<xsl:if test="$has_price">
 					<div class="price">
-						<p><span>Старая цена</span>100 р.</p>
+						<xsl:if test="$p/price_old and not($p/price_old = '')"><p><span>Старая цена</span><xsl:value-of select="$p/price_old"/> р.</p></xsl:if>
 						<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
 					</div>
-				<!-- </xsl:if> -->
+				</xsl:if>
 				<div class="order">
-					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
+					<xsl:variable name="available" select="$p/available = '1'"/>
 					<div id="cart_list_{$p/code}" class="product_purchase_container">
 						<form action="{$p/to_cart}" method="post">
-							<xsl:if test="$has_price">
+							<xsl:if test="$available">
 								<input type="number" name="qty" value="1" min="0"/>
 								<input type="submit" value="В корзину"/>
 							</xsl:if>
-							<xsl:if test="not($has_price)">
+							<xsl:if test="not($available)">
 								<input type="number" name="qty" value="1" min="0"/>
 								<input type="submit" class="not_available" value="Под заказ"/>
 							</xsl:if>

@@ -166,6 +166,11 @@
 											Управление классами объектов
 										</a>
 									</li>
+									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
+										<a href="update_prices?action=start" target="_blank">
+											Запустить обновление цен
+										</a>
+									</li>
 									<!--
 									<li class="visible" title="Функция в разработке">
 										<a href="#" onclick="alert('Функция в разработке'); return false;">

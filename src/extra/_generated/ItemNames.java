@@ -229,6 +229,7 @@ public class ItemNames {
         String CURRENCY_ID = "currency_id";
         String PRICE_ORIGINAL = "price_original";
         String PRICE = "price";
+        String PRICE_OLD = "price_old";
         String QTY = "qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";

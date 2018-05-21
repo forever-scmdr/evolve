@@ -409,23 +409,24 @@
 			</div>
 			<div class="price">
 				<xsl:if test="$has_price">
-					<!--<p><span>Старая цена</span>100 р.</p>-->
+					<xsl:if test="price_old and not(price_old = '')"><p><span>Старая цена</span><xsl:value-of select="price_old"/> р.</p></xsl:if>
 					<p><!--<span>Новая цена</span>--><xsl:value-of select="price"/> р.</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
 					<!-- <p><span>&#160;</span>&#160;</p>
 					<p><span>&#160;</span>&#160;</p> -->
-					<p>150 р.</p>
+					<p>уточняйте</p>
 				</xsl:if>
 			</div>
 			<div class="order">
+				<xsl:variable name="available" select="available = '1'"/>
 				<div id="cart_list_{code}" class="product_purchase_container">
 					<form action="{to_cart}" method="post">
-						<xsl:if test="$has_price">
+						<xsl:if test="$available">
 							<input type="number" name="qty" value="1" min="0"/>
 							<input type="submit" value="В корзину"/>
 						</xsl:if>
-						<xsl:if test="not($has_price)">
+						<xsl:if test="not($available)">
 							<input type="number" name="qty" value="1" min="0"/>
 							<input type="submit" class="not_available" value="Под заказ"/>
 						</xsl:if>

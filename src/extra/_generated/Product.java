@@ -275,6 +275,28 @@ public class Product
         return containsValue("price", value);
     }
 
+    public void set_price_old(BigDecimal value) {
+        setValue("price_old", value);
+    }
+
+    public void setUI_price_old(String value)
+        throws Exception
+    {
+        setValueUI("price_old", value);
+    }
+
+    public BigDecimal get_price_old() {
+        return getDecimalValue("price_old");
+    }
+
+    public BigDecimal getDefault_price_old(BigDecimal defaultVal) {
+        return getDecimalValue("price_old", defaultVal);
+    }
+
+    public boolean contains_price_old(BigDecimal value) {
+        return containsValue("price_old", value);
+    }
+
     public void set_qty(Double value) {
         setValue("qty", value);
     }

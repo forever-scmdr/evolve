@@ -171,7 +171,7 @@
 	</page>
 
 
-	<page name="sub" template="sub" cacheable="true">
+	<page name="sub" template="sub" cacheable="true" >
 		<request>
 			<var name="sec" style="translit"/>
 		</request>
@@ -875,6 +875,16 @@
 			<var name="action"/>
 		</request>
 		<command class="extra.CreateParametersAndFiltersCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="update_prices" template="update_prices">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.UpdatePrices" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
