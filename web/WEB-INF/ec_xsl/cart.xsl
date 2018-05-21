@@ -21,8 +21,8 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="price" select="if ($p/price) then concat($p/price, ' p.') else 'под заказ'"/>
-							<xsl:variable name="sum" select="if ($p/price) then concat(sum, ' p.') else 'под заказ'"/>
+							<xsl:variable name="price" select="if ($p/price != '0') then concat($p/price, ' p.') else 'по запросу'"/>
+							<xsl:variable name="sum" select="if ($p/price != '0') then concat(sum, ' p.') else 'по запросу'"/>
 							<div class="item">
 								<a href="{$p/show_product}" class="image-container">
 									<img src="{$p/@path}{$p/main_pic}" alt=""/>

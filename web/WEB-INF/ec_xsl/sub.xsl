@@ -24,9 +24,11 @@
 		<div class="page-content m-t">
 			<div class="catalog-items"><!-- добавить класс lines для отображения по строкам -->
 				<xsl:for-each select="page/current_section/section">
-					<xsl:variable name="main_pic" select="product[1]/gallery[1]"/>
+					<xsl:variable name="own_pic" select="main_pic and not(main_pic = '')"/>
+					<xsl:variable name="main_pic" select="if ($own_pic) then main_pic else product[1]/gallery[1]"/>
+					<xsl:variable name="path" select="if ($own_pic) then @path else product[1]/@path"/>
 					<div class="catalog-item">
-						<xsl:variable name="pic_path" select="if ($main_pic) then concat(product[1]/@path, $main_pic) else 'img/no_image.png'"/>
+						<xsl:variable name="pic_path" select="if ($main_pic) then concat($path, $main_pic) else 'img/no_image.png'"/>
 						<a href="{show_products}" class="image-container" style="background-image: url({$pic_path});">
 							<!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/> -->
 						</a>

@@ -40,7 +40,7 @@
 		<div class="container header desktop">
 			<div class="header-container" style="position: relative;">
 				<div class="logo">
-					<a href="{$base}"><img src="img/logo.png" alt="" /></a>
+					<a href="{$base}"><img src="img/logo_1.svg" alt="" /></a>
 				</div>
 				<div class="search">
 					<form action="{page/search_link}" method="post">
@@ -90,14 +90,14 @@
 				<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 				 	<div class="sections">
 						<xsl:for-each select="page/catalog/section">
-						    <a href="{show_products}"
+						    <a href="{if(section != '') then show_section else show_products}"
 						       class="cat_menu_item_1" rel="#sub_{@id}"><xsl:value-of select="name" /></a>
 						</xsl:for-each>
 				 	</div>
 					<xsl:for-each select="page/catalog/section">
 					    <div class="subsections" style="display: none" id="sub_{@id}">
 							<xsl:for-each select="section">
-						        <a href="{show_products}"><xsl:value-of select="name" /></a>
+						        <a href="{if(section != '') then show_section else show_products}"><xsl:value-of select="name" /></a>
 							</xsl:for-each>
 					    </div>
 					</xsl:for-each>
@@ -123,7 +123,7 @@
 		<div class="header mobile">
 			<div class="header-container">
 				<a href="{$base}" class="logo">
-					<img src="img/logo.png" alt="logo keramo.by" style="height: 1.5em; max-width: 100%;"/>
+					<img src="img/logo.svg" alt="logo keramo.by" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
 					<a href=""><i class="fas fa-phone"></i></a>
@@ -232,7 +232,7 @@
 			}
 
 			$(document).ready(function() {
-				$("#mobile_catalog_menu .content li a[rel]").click(function(event) {
+				$("#mobile_catalog_menu .content li a[rel^='#']").click(function(event) {
 					event.preventDefault();
 					var menuItem = $(this);
 					var parentMenuContainer = menuItem.closest('.content');
@@ -289,7 +289,7 @@
 					<ul>
 						<xsl:for-each select="section">
 							<li>
-								<a href="{show_products}" rel="{if (section) then concat('#m_sub_', @id) else ''}"><xsl:value-of select="name"/></a>
+								<a href="{if(section != '') then show_section else show_products}" rel="{if (section) then concat('#m_sub_', @id) else ''}"><xsl:value-of select="name"/></a>
 								<xsl:if test="section">
 									<i class="fas fa-chevron-right"></i>
 								</xsl:if>
@@ -302,7 +302,7 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{if(section != '') then show_section else show_products}" class="header"><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
@@ -325,17 +325,17 @@
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="level-1{' active'[$l1_active]}">
 					<div class="capsule">
-						<a href="{show_products}"><xsl:value-of select="name"/> </a>
+						<a href="{if(section != '') then show_section else show_products}"><xsl:value-of select="name"/> </a>
 					</div>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
 					<xsl:for-each select="section">
 						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
-						<div class="level-2{' active'[$l2_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
+						<div class="level-2{' active'[$l2_active]}"><a href="{if(section != '') then show_section else show_products}"><xsl:value-of select="name"/></a></div>
 						<xsl:if test=".//@id = $sel_sec_id">
 							<xsl:for-each select="section">
 								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
-								<div class="level-3{' active'[$l3_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
+								<div class="level-3{' active'[$l3_active]}"><a href="{if(section != '') then show_section else show_products}"><xsl:value-of select="name"/></a></div>
 								<xsl:if test=".//@id = $sel_sec_id">
 									<xsl:for-each select="section">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
@@ -449,7 +449,7 @@
 					<form action="{to_cart}" method="post">
 						<xsl:if test="$has_price">
 							<input type="number" name="qty" value="1" min="0"/>
-							<input type="submit" value="В корзину"/>
+							<input type="submit" value="Купить"/>
 						</xsl:if>
 						<xsl:if test="not($has_price)">
 							<input type="number" name="qty" value="1" min="0"/>
@@ -457,14 +457,14 @@
 						</xsl:if>
 					</form>
 				</div>
-				<xsl:choose>
+				<!-- <xsl:choose>
 					<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>
 					<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>
-				</xsl:choose>
+				</xsl:choose> -->
 				
 				<div class="links">
 					<div id="compare_list_{code}">
-						<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i><!-- в сравнение --></a></span>
+						<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}" title="в сравнение"><i class="fas fa-balance-scale"></i><!-- в сравнение --></a></span>
 					</div>
 					<xsl:choose>
 						<xsl:when test="$is_fav">
@@ -472,7 +472,7 @@
 						</xsl:when>
 						<xsl:otherwise>
 							<div id="fav_list_{code}">
-								<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i><!-- в избранное --></a></span>
+								<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}" title="в избранное"><i class="fas fa-star"></i><!-- в избранное --></a></span>
 							</div>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -532,7 +532,7 @@
 			<xsl:for-each select="page/catalog/section">
 				<div class="level-1">
 					<div class="capsule">
-						<a href="{show_products}"><xsl:value-of select="name"/></a>
+						<a href="{if(section != '')then show_section else show_products}"><xsl:value-of select="name"/></a>
 					</div>
 				</div>
 			</xsl:for-each>

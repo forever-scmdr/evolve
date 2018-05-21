@@ -74,7 +74,7 @@ public abstract class BasicRegisterCommand extends Command {
 					if (oldUserItem != null)
 						getSessionMapper().removeItems(oldUserItem.getId());
 					userItem.setContextPrimaryParentId(Item.DEFAULT_ID);
-					getSessionMapper().saveTemporaryItem(userItem);
+					getSessionMapper().saveTemporaryItem(userItem, "user");
 				}
 				return getResult("login");
 			} else {

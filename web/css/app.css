@@ -7038,7 +7038,7 @@ svg.svg-inline--fa {
 .content-container.main-page {
   background-image: url(../img/background.jpg);
   background-repeat: no-repeat;
-  background-position: 50% 67rem; }
+  background-position: 50% 55rem; }
   .content-container.main-page .catalog-item {
     flex-basis: 17%;
     margin-right: 9.6%;
@@ -7184,4 +7184,73 @@ input[type='number'] {
 }
 .catalog-items.lines .list-only{
   display: block;
+}
+.name table p {
+    color: white !important;
+}
+/*ниже добавлен пункт каталога к основному правилу*/
+.desktop .main-menu a:hover,
+.desktop .main-menu a.active,
+.main-page .main-menu a:first-child {
+    background-color: #ff6c00;
+    background-image: linear-gradient(to bottom, #feccb1 0%, #f17432 50%, #ea5507 51%, #fb955e 100%);
+}
+
+.big-title.label-actions, .big-title.label-news {
+	padding-left: 6rem;
+}
+.side-menu a {
+	color: #fff;
+}
+.side-menu > .active a {
+	color: #ff6c00;
+}
+.catalog-items .catalog-item .name a {
+	color: white;
+}
+.links span svg {
+	color: #38b1e4;
+}
+.catalog-items .catalog-item .links {
+	flex-basis: 100%;
+}
+
+.desktop .header-container .main-menu a:after {
+    content: '';
+    display: block;
+    width: .7rem;
+    border-left: 1px solid #3a9cbd;
+    border-right: 1px solid #3a9cbd;
+    background-image: linear-gradient(to bottom, #6be6e6, #39A1CD 10%, #020141 80%);
+
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.desktop .header-container .main-menu a {
+	position: relative;
+	padding-right: 1.7rem;
+}
+.desktop .header-container .main-menu a:last-child::after {
+	display: none;
+}
+.has-slider {
+	border-bottom: .5rem solid #ff5e00;
+}
+.social a svg {
+    color: #38b1e4;
+}
+.big-title.label-news {
+    background-image: url(../img/gold_circle_2.1.png);
+}
+.big-title.label-actions {
+    background-image: url(../img/gold_circle_1.1.png);
+}
+.big-title.label-actions, .big-title.label-news {
+	background-size: unset;
+	padding-bottom: 4rem;
+}
+.catalog-items .catalog-item .image-container{
+  background-size: cover;
 }

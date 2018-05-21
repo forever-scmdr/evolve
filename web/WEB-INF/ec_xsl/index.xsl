@@ -372,7 +372,7 @@
 			<div class="container">
 				<xsl:if test="page/main_page/link_text and not(page/main_page/link_text = '')">
 					<div class="actions">
-						<h4 class="big-title label-actions">Акции</h4>
+						<h4 class="big-title label-actions">&#160;</h4>
 						<div class="actions-container">
 							<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 						</div>
@@ -380,9 +380,9 @@
 				</xsl:if>
 
 				<div class="news">
-					<h4 class="big-title label-news">Статьи</h4>
+					<h4 class="big-title label-news">&#160;</h4>
 					<div class="news-container">
-						<xsl:for-each select="page/news/news_item">
+						<xsl:for-each select="page/news_wrap/news/news_item">
 							<div>
 								<a href="{show_news_item}"><xsl:value-of select="header"/></a>
 								<div class="date"><xsl:value-of select="date"/></div>

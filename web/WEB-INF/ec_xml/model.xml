@@ -206,6 +206,7 @@
 
 	<item name="news" caption="Новостной раздел" key="name" key-unique="true" default-page="news" ag-id="12" ag-hash="3377875">
 		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="on_main" type="string" domain="yes-no" caption="Показать на главной странице?"/>
 		<child item="seo" single="true"/>
 		<child item="news_item"/>
 	</item>
