@@ -729,7 +729,11 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				if (hasFulltext()) {
 					orderBy.sql("FIELD (" + I_DOT + I_ID + ", ").longArray(fulltext.getLoadedIds()).sql(")");
 				} else if (hasParent) {
-					orderBy.sql(P_DOT + IP_WEIGHT);
+					if (isTree ) {
+						orderBy.sql(TP_DOT + IP_WEIGHT);
+					} else {
+						orderBy.sql(P_DOT + IP_WEIGHT);
+					}
 				} else {
 					orderBy.sql(I_DOT + I_ID);
 				}

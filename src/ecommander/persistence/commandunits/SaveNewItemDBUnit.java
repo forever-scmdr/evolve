@@ -53,17 +53,6 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		// Создать значение ключа
 		item.prepareToSave();
 
-		//поиск значений по умолчанию
-		for(Parameter parameter : item.getAllParameters()){
-			if(parameter.isEmpty()){
-				ParameterDescription pd = ItemTypeRegistry.getItemType(item.getTypeId()).getParameter(parameter.getParamId());
-				String defaultValue= pd.getDefaultValue();
-				if(StringUtils.isNotBlank(defaultValue)){
-					item.setValueUI(parameter.getParamId(), defaultValue);
-				}
-			}
-		}
-
 		// Загрузка и валидация родительского айтема, если надо
 		Connection conn = getTransactionContext().getConnection();
 		if (item.hasParent()) {

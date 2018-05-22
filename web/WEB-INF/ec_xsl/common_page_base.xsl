@@ -50,7 +50,7 @@
 				</div>
 				<div class="other-container">
 					<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-						<p><i class="fas fa-shopping-cart"/>&#160;<strong>Корзина пуста</strong></p>
+						<p><i class="fas fa-shopping-cart"/>&#160;<strong>Загрузка...</strong></p>
 					</div>
 					<div class="user">
 						<xsl:call-template name="PERSONAL_DESKTOP"/>
