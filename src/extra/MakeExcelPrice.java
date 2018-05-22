@@ -4,7 +4,6 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.pages.Command;
-import ecommander.pages.LinkPE;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
@@ -26,7 +25,6 @@ public class MakeExcelPrice extends Command {
 	private static final Format DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH-mm-ss");
 	private CellStyle headerStyle = null;
 	private CellStyle errorStyle = null;
-	private static boolean inProgress = false;
 	private static final Object MUTEX = new Object();
 
 
@@ -56,7 +54,6 @@ public class MakeExcelPrice extends Command {
 
 				for (int i = 0; i <= colIdx; i++)
 					row.getCell(i).setCellStyle(headerStyle);
-				row.setHeightInPoints(51);
 
 				for (Item product : products) {
 					colIdx = -1;
