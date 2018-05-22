@@ -100,7 +100,7 @@
 						<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
 					<!--</xsl:choose>-->
 				</div>
-				<!--
+				
 				<div class="links">
 					<div id="compare_list_{code}">
 						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
@@ -109,7 +109,7 @@
 						<span><i class="fas fa-star"></i> <a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
 					</div>
 				</div>
-				-->
+				
 				<div class="info-blocks">
 					<div class="info-block">
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
