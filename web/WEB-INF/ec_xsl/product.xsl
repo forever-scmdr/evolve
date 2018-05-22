@@ -102,11 +102,11 @@
 				</div>
 				
 				<div class="links">
-					<div id="compare_list_{code}">
-						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
+					<div id="compare_list_{$p/code}">
+						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">в сравнение</a></span>
 					</div>
 					<div id="fav_list_{$p/code}">
-						<span><i class="fas fa-star"></i> <a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
+						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
 					</div>
 				</div>
 				

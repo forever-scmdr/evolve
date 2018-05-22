@@ -48,11 +48,11 @@ public class MakeExcelPrice extends Command {
 
 			try {
 				row.createCell(++colIdx).setCellValue("Арт.");
-				sheet.setColumnWidth(colIdx, 8 * 256);
+				sheet.setColumnWidth(colIdx, 15 * 256);
 				row.createCell(++colIdx).setCellValue("Название");
 				sheet.setColumnWidth(colIdx, 25 * 256);
 				row.createCell(++colIdx).setCellValue("Цена");
-				sheet.setColumnWidth(colIdx, 11 * 256);
+				sheet.setColumnWidth(colIdx, 8 * 256);
 
 				for (int i = 0; i <= colIdx; i++)
 					row.getCell(i).setCellStyle(headerStyle);
@@ -60,7 +60,7 @@ public class MakeExcelPrice extends Command {
 
 				for (Item product : products) {
 					colIdx = -1;
-					row = sheet.createRow(rowIdx++);
+					row = sheet.createRow(++rowIdx);
 					row.createCell(++colIdx).setCellValue(product.getStringValue(ItemNames.product.CODE));
 					row.createCell(++colIdx).setCellValue(product.getStringValue(ItemNames.product.NAME));
 					Cell price = row.createCell(++colIdx);
@@ -77,11 +77,15 @@ public class MakeExcelPrice extends Command {
 
 			} catch (Exception e) {
 				ServerLogger.error("Can not create Excel Pricelist", e);
-
+				StackTraceElement[] stackTrace = e.getStackTrace();
+				StringBuilder sb = new StringBuilder();
+				for(StackTraceElement err : stackTrace){
+					sb.append(err.toString()+"\n");
+				}
+				return getResult("error").addVariable("stack", sb.toString());
 			}
 		}
-		String folder = AppContext.getFilesUrlPath(false)+"pricelist.xls";
-		return getResult("success").setValue(folder);
+		return getResult("success");
 	}
 
 	private void initCellStyles(Workbook wb) {

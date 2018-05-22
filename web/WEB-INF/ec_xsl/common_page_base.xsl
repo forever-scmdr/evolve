@@ -440,8 +440,9 @@
 					<p><!--<span>Новая цена</span>--><xsl:value-of select="price"/> р.</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
-					<p><span>&#160;</span>&#160;</p>
-					<p><span>&#160;</span>&#160;</p>
+					<!-- <p><span>&#160;</span>&#160;</p> -->
+					<!-- <p><span>&#160;</span>&#160;</p> -->
+					<p>&#160;</p>
 				</xsl:if>
 			</div>
 			<div class="order">
