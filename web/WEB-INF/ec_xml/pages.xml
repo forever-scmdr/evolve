@@ -945,6 +945,6 @@
         </command>
     </page>
 
-    <page name="excel_complete"  template=""/>
+    <page name="excel_complete"  template="excel_complete"/>
 
 </site>

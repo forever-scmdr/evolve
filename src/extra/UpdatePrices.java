@@ -19,8 +19,8 @@ import java.io.File;
  * Created by E on 1/3/2018.
  */
 public class UpdatePrices extends IntegrateBase {
-	private static final String QTY_HEADER = "кол-во";
-	private static final String PRICE_HEADER = "с НДС";
+	//private static final String QTY_HEADER = "кол-во";
+	private static final String PRICE_HEADER = "Цена";
 
 	private ExcelPriceList price;
 
@@ -30,17 +30,13 @@ public class UpdatePrices extends IntegrateBase {
 		if (catalog == null)
 			return false;
 		File priceFile = catalog.getFileValue(ItemNames.catalog.INTEGRATION, AppContext.getFilesDirPath(false));
-		price = new ExcelPriceList(priceFile, QTY_HEADER, PRICE_HEADER) {
+		price = new ExcelPriceList(priceFile, PRICE_HEADER) {
 			@Override
 			protected void processRow() throws Exception {
 				String code = StringUtils.replace(getValue(0), " ", "");
 				if (StringUtils.isNotBlank(code)) {
 					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code));
 					if (prod != null) {
-						Double qty = getDoubleValue(QTY_HEADER);
-						if (qty == null)
-							qty = 0d;
-						prod.set_qty(qty);
 						prod.set_price(getCurrencyValue(PRICE_HEADER));
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
 						info.increaseProcessed();
