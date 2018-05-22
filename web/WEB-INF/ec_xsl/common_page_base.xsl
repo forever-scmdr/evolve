@@ -236,7 +236,7 @@
 			}
 
 			$(document).ready(function() {
-				$("#mobile_catalog_menu .content li a[rel]").click(function(event) {
+				$("#mobile_catalog_menu .content li a[rel^='#']").click(function(event) {
 					event.preventDefault();
 					var menuItem = $(this);
 					var parentMenuContainer = menuItem.closest('.content');
@@ -427,7 +427,7 @@
 					<p><!--<span>Новая цена</span>--><xsl:value-of select="price"/> р.</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
-					<p>По запрсу</p>
+					<p>По запросу</p>
 				</xsl:if>
 			</div>
 			<div class="order">

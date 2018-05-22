@@ -91,11 +91,11 @@
 					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 					<div id="cart_list_{$p/code}" class="product_purchase_container">
 						<form action="{$p/to_cart}" method="post">
-							<xsl:if test="$has_price and qty != '0'">
+							<xsl:if test="$has_price and $p/qty != '0'">
 								<input type="number" name="qty" value="1" min="0"/>
 								<input type="submit" value="В корзину"/>
 							</xsl:if>
-							<xsl:if test="not($has_price) or not(qty != '0')">
+							<xsl:if test="not($has_price and $p/qty != '0')">
 								<input type="number" name="qty" value="1" min="0"/>
 								<input type="submit" class="not_available" value="Под заказ"/>
 							</xsl:if>
