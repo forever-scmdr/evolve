@@ -67,7 +67,7 @@
 					<a href="{page/catalog_link}" id="catalog_main_menu" class="{'active'[$active_menu_item = 'catalog']}"><i class="fas fa-bars"/>Каталог</a>
 					<xsl:for-each select="page/news">
 						<xsl:variable name="key" select="@key"/>
-						<xsl:variable name="sel" select="page/varibles/sel"/>
+						<xsl:variable name="sel" select="/page/variables/sel"/>
 						<a href="{show_page}" class="{'active'[$sel = $key]}">
 							<xsl:value-of select="name"/>
 						</a>

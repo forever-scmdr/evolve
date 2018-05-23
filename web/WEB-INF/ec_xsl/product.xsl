@@ -4,6 +4,13 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
+	
+	<xsl:variable name="ancestors" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/name, ' ')" />
+	<xsl:variable name="title-constant" select="' купить в Минске в магазине КЕРАМОМАРКЕТ ✅. Цена, фото и описание на сайте ☎☎☎  +375 (17) 291-91-50 Звоните!'"/>
+	<xsl:variable name="description-constant" select="'купить в Минске недорого в магазине КЕРАМОМАРКЕТ ✅. Цены, фото и размеры на сайте ☎☎☎  +375 (17) 291-91-50 Звоните!'" />
+	<xsl:variable name="quote">"</xsl:variable>
+	<xsl:variable name="title" select="replace(concat($ancestors, $title-constant), $quote, '')" />
+	<xsl:variable name="meta_description" select="replace(concat($ancestors, $description-constant), $quote, '')" />
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -103,10 +110,10 @@
 				
 				<div class="links">
 					<div id="compare_list_{$p/code}">
-						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">в сравнение</a></span>
+						<span><a href="{$p/to_compare}" title="в сравнение" ajax="true" ajax-loader-id="compare_list_{$p/code}"><i class="fas fa-balance-scale"></i><!-- в сравнение --></a></span>
 					</div>
 					<div id="fav_list_{$p/code}">
-						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
+						<span><a title="добавить в избранное" href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i><!-- в избранное --></a></span>
 					</div>
 				</div>
 				

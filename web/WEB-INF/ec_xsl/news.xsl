@@ -3,7 +3,7 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="active_menu_item" select="'news'"/>
+	<!-- <xsl:variable name="active_menu_item" select="page/variables/sel"/> -->
 	<xsl:variable name="canonical" select="concat('/', page/selected_news/@key, '/')"/>
 
 	<xsl:variable name="p" select="page/product"/>

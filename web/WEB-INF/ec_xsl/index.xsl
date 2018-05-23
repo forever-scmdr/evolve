@@ -152,11 +152,11 @@
 					<xsl:for-each select="/page/catalog/section">
 						<div class="catalog-item">
 							<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
-							<a href="{show_section}" class="image-container" style="background-image: url({$pic_path});">
+							<a href="{if(section != '') then show_section else show_products}" class="image-container" style="background-image: url({$pic_path});">
 								<!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/> -->
 							</a>
 							<div class="name">
-								<a href="{show_section}"><span>
+								<a href="{if(section != '') then show_section else show_products}"><span>
 									<xsl:value-of select="name"/></span></a>
 								<xsl:value-of select="short" disable-output-escaping="yes"/>
 							</div>
