@@ -53,15 +53,28 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements YMa
 			if (StringUtils.equalsIgnoreCase(CATEGORY_ELEMENT, qName) && categoryReady) {
 				String code = attributes.getValue(ID_ATTR);
 				String parentCode = attributes.getValue(PARENT_ID_ATTR);
-				currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code);
+				currentSection = categories.get(code);
 				if (currentSection == null) {
-					if (StringUtils.isBlank(parentCode)) {
+					currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code);
+					if (currentSection != null)
+						categories.put(code, currentSection);
+				}
+				Item parentSection = categories.get(parentCode);
+				if (parentSection == null) {
+					parentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, parentCode);
+					if (parentSection != null)
+						categories.put(parentCode, parentSection);
+				}
+
+				if (currentSection == null) {
+					if (parentSection == null) {
 						currentSection = Item.newChildItem(sectionDesc, catalog);
 					} else {
-						currentSection = Item.newChildItem(sectionDesc, categories.get(parentCode));
+						currentSection = Item.newChildItem(sectionDesc, parentSection);
 						currentSection.setValue(PARENT_ID_PARAM, parentCode);
 					}
 					currentSection.setValue(CATEGORY_ID_PARAM, code);
+					categories.put(code, currentSection);
 				}
 			}
 		} catch (Exception e) {
@@ -78,14 +91,12 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements YMa
 			try {
 				currentSection.setValue(NAME_PARAM, StringUtils.trimToEmpty(chars.toString()));
 				DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(currentSection, false));
-				categories.put(currentSection.getStringValue(CATEGORY_ID_PARAM), currentSection);
 				currentSection = null;
 			} catch (Exception e) {
 				ServerLogger.error("Integration error", e);
 				info.addError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
 			}
 		}
-
 	}
 
 	@Override
