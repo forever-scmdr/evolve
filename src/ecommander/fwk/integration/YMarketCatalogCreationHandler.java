@@ -74,8 +74,8 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements YMa
 						currentSection.setValue(PARENT_ID_PARAM, parentCode);
 					}
 					currentSection.setValue(CATEGORY_ID_PARAM, code);
-					categories.put(code, currentSection);
 				}
+				categories.put(code, currentSection);
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Integration error", e);
