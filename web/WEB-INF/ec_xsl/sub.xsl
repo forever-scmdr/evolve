@@ -7,7 +7,6 @@
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
-
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
@@ -25,11 +24,13 @@
 			<div class="catalog-items"><!-- добавить класс lines для отображения по строкам -->
 				<xsl:for-each select="page/current_section/section">
 					<xsl:variable name="main_pic" select="product[1]/gallery[1]"/>
+					<xsl:variable name="sec_id" select="@id"/>
+					<xsl:variable name="has_sub" select="//page/catalog//section[@id = $sec_id and section]"/>
 					<div class="catalog-item">
 						<xsl:variable name="pic_path" select="if ($main_pic) then concat(product[1]/@path, $main_pic) else 'img/no_image.png'"/>
-						<a href="{show_products}" class="image-container" style="background-image: url({$pic_path})"><!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/> --></a>
+						<a href="{if ($has_sub) then show_section else show_products}" class="image-container" style="background-image: url({$pic_path})"></a>
 						<div>
-							<a href="{show_products}" style="height: unset;"><xsl:value-of select="name"/></a>
+							<a href="{if ($has_sub) then show_section else show_products}" style="height: unset;"><xsl:value-of select="name"/></a>
 							<xsl:value-of select="short" disable-output-escaping="yes"/>
 						</div>
 					</div>

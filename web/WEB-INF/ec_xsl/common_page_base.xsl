@@ -3,6 +3,8 @@
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
+	<xsl:import href="my_price_ajax.xsl"/>
+	<xsl:import href="one_click_ajax.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
@@ -86,7 +88,7 @@
 							<xsl:for-each select="page/catalog/section">
 							    <div class="subsections" style="display: none" id="sub_{@id}">
 									<xsl:for-each select="section">
-								        <a href="{show_products}"><xsl:value-of select="name" /></a>
+								        <a href="{if (section) then show_section else show_products}"><xsl:value-of select="name" /></a>
 									</xsl:for-each>
 							    </div>
 							</xsl:for-each>
@@ -279,13 +281,13 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_section}" class="header"><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
 						<xsl:for-each select="section">
 							<li>
-								<a href="{show_section}"><xsl:value-of select="name"/></a>
+								<a href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:for-each>
 					</ul>
@@ -308,15 +310,21 @@
 				<xsl:if test=".//@id = $sel_sec_id">
 					<xsl:for-each select="section">
 						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
-						<div class="level-2{' active'[$l2_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
+						<div class="level-2{' active'[$l2_active]}">
+							<a href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/></a>
+						</div>
 						<xsl:if test=".//@id = $sel_sec_id">
 							<xsl:for-each select="section">
 								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
-								<div class="level-3{' active'[$l3_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
+								<div class="level-3{' active'[$l3_active]}">
+									<a href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/></a>
+								</div>
 								<xsl:if test=".//@id = $sel_sec_id">
 									<xsl:for-each select="section">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
-										<div class="level-4{' active'[$l4_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
+										<div class="level-4{' active'[$l4_active]}">
+											<a href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/></a>
+										</div>
 									</xsl:for-each>
 								</xsl:if>
 							</xsl:for-each>
@@ -409,8 +417,8 @@
 			</div>
 			<div class="price">
 				<xsl:if test="$has_price">
-					<xsl:if test="price_old and not(price_old = '')"><p><span>Старая цена</span><xsl:value-of select="price_old"/> р.</p></xsl:if>
-					<p><!--<span>Новая цена</span>--><xsl:value-of select="price"/> р.</p>
+					<xsl:if test="price_old and not(price_old = '')"><p><span>Цена</span><xsl:value-of select="price_old"/> р.</p></xsl:if>
+					<p><xsl:if test="price_old and not(price_old = '')"><span>Цена со скидкой</span></xsl:if><xsl:value-of select="price"/> р.</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
 					<!-- <p><span>&#160;</span>&#160;</p>
@@ -437,6 +445,12 @@
 					<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
 				<!--</xsl:choose>-->
 				<div class="links">
+					<div>
+						<a href="{my_price_link}" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
+					</div>
+					<div>
+						<a href="{one_click_link}" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+					</div>
 					<div id="compare_list_{code}">
 						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
 					</div>
@@ -567,6 +581,8 @@
 
 			<xsl:call-template name="INC_MOBILE_MENU"/>
 			<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
+			<xsl:call-template name="MY_PRICE_FORM"/>
+			<xsl:call-template name="ONE_CLICK_FORM"/>
 
 			<script type="text/javascript" src="js/bootstrap.js"/>
 			<script type="text/javascript" src="admin/ajax/ajax.js"/>

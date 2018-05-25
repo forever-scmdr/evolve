@@ -9,12 +9,12 @@
 
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
-	<xsl:variable name="view" select="page/variables/view"/>
+	<xsl:variable name="view" select="if (page/variables/view) then page/variables/view else 'list'"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
-	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+	<xsl:variable name="only_available" select="page/variables/minqty = '1'"/>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
@@ -77,17 +77,17 @@
 						<span>Показывать:</span>
 						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
 						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
-						<!--<div class="checkbox">-->
-							<!--<label>-->
-								<!--<xsl:if test="not($only_available)">-->
-									<!--<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>-->
-								<!--</xsl:if>-->
-								<!--<xsl:if test="$only_available">-->
-									<!--<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>-->
-								<!--</xsl:if>-->
-								<!--в наличии-->
-							<!--</label>-->
-						<!--</div>-->
+						<div class="checkbox">
+							<label>
+								<xsl:if test="not($only_available)">
+									<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
+								</xsl:if>
+								<xsl:if test="$only_available">
+									<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
+								</xsl:if>
+								в наличии
+							</label>
+						</div>
 						<span>
 							<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
 							        onchange="window.location.href = $(this).find(':selected').attr('link')">

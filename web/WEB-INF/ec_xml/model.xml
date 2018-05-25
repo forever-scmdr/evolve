@@ -265,6 +265,22 @@
 		<parameter name="message" type="string" caption="Сообщение" />
 	</item>
 
+	<item name="my_price_form" caption="Форма для предложения своей цены" virtual="true" ag-id="3528" ag-hash="442678893">
+		<parameter name="name" type="string" caption="Имя"/>
+		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="email" type="string" caption="E-mail"/>
+		<parameter name="product_code" type="string" caption="Артикул товара"/>
+		<parameter name="product_name" type="string" caption="Название товара"/>
+		<parameter name="price" type="string" caption="Предлагаемая цена"/>
+		<parameter name="message" type="string" caption="Комментарий" />
+	</item>
+
+	<item name="one_click_form" caption="Форма заказа в один клик" virtual="true" ag-id="3527" ag-hash="-2028535660">
+		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="product_code" type="string" caption="Артикул товара"/>
+		<parameter name="product_name" type="string" caption="Название товара"/>
+	</item>
+
 	<item name="custom_pages" caption="Одиночные страницы" ag-id="26" ag-hash="727106934">
 		<child item="custom_page"/>
 	</item>

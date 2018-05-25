@@ -23,7 +23,7 @@
 				<a href="/">Главная страница</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{if (position() = 1) then show_section else show_products}"><xsl:value-of select="name"/></a>
+					<a href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -65,8 +65,11 @@
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 				<xsl:if test="$has_price">
 					<div class="price">
-						<xsl:if test="$p/price_old and not($p/price_old = '')"><p><span>Старая цена</span><xsl:value-of select="$p/price_old"/> р.</p></xsl:if>
-						<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
+						<xsl:if test="$p/price_old and not($p/price_old = '')"><p><span>Цена</span><xsl:value-of select="$p/price_old"/> р.</p></xsl:if>
+						<p>
+							<xsl:if test="$p/price_old and not($p/price_old = '')"><span>Цена со скидкой</span></xsl:if>
+							<xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.
+						</p>
 					</div>
 				</xsl:if>
 				<div class="order">
@@ -92,6 +95,12 @@
 					№ для заказа: <xsl:value-of select="$p/code" />
 				</div>
 				<div class="links">
+					<div>
+						<a href="{$p/my_price_link}" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
+					</div>
+					<div>
+						<a href="{$p/one_click_link}" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+					</div>
 					<div id="compare_list_{$p/code}">
 						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">в сравнение</a></span>
 					</div>
@@ -105,6 +114,11 @@
 						<xsl:if test="$extra_xml/manual">
 							<div class="extra-block">
 								<i class="fas fa-file-alt"></i><a href="{$extra_xml/manual}" target="_blank"><strong>Руководство по эксплуатации</strong></a>
+							</div>
+						</xsl:if>
+						<xsl:if test="$extra_xml/parts">
+							<div class="extra-block">
+								<i class="fas fa-file-alt"></i><a href="{$extra_xml/parts}" target="_blank"><strong>Список запчастей</strong></a>
 							</div>
 						</xsl:if>
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
