@@ -255,8 +255,12 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
+		<child item="delivery" single="true"/>
 	</item>
 
+	<item name="delivery" caption="Доставка" ag-id="3529" ag-hash="823466996">
+		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
+	</item>
 
 	<item name="feedback_form" caption="Форма обратной связи" virtual="true" ag-id="25" ag-hash="-1950071490">
 		<parameter name="name" type="string" caption="Имя"/>
