@@ -3,14 +3,15 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 	
-	<xsl:variable name="ancestors" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/name, ' ')" />
-	<xsl:variable name="title-constant" select="' купить в Минске в магазине КЕРАМОМАРКЕТ ✅. Цена, фото и описание на сайте ☎☎☎  +375 (17) 291-91-50 Звоните!'"/>
-	<xsl:variable name="description-constant" select="'купить в Минске недорого в магазине КЕРАМОМАРКЕТ ✅. Цены, фото и размеры на сайте ☎☎☎  +375 (17) 291-91-50 Звоните!'" />
+	<xsl:variable name="ancestors" select="string-join(page/catalog//section[.//@id = $sel_sec_id and @id != $p/product_section/@id]/name, ' ')" />
+	<xsl:variable name="title-constant" select="' купить в Минске в магазине КЕРАМОМАРКЕТ'"/>
+	<xsl:variable name="description-constant" select="' купить в Минске недорого в магазине КЕРАМОМАРКЕТ &#9989;. Цены, фото и размеры на сайте ☎☎☎  +375 (17) 291-91-50 Звоните!'" />
 	<xsl:variable name="quote">"</xsl:variable>
-	<xsl:variable name="title" select="replace(concat($ancestors, $title-constant), $quote, '')" />
-	<xsl:variable name="meta_description" select="replace(concat($ancestors, $description-constant), $quote, '')" />
+	<xsl:variable name="title" select="replace(concat($ancestors,' ', $p/name, $title-constant), $quote, '')" />
+	<xsl:variable name="meta_description" select="replace(concat($ancestors, ' ', $p/name, $description-constant), $quote, '')" />
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -18,7 +19,7 @@
 	</xsl:template>
 
 
-	<xsl:variable name="p" select="page/product"/>
+
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>

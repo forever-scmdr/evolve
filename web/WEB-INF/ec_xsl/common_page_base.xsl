@@ -160,6 +160,9 @@
 						</div>
 					</div>
 					<div class="block">
+
+					</div>
+					<div class="block">
 						<p>Принимаем к оплате<xsl:call-template name="BR"/> пластиковые карточки</p>
 						<div class="cards">
 							<img src="img/mastercard.svg" alt=""/>
