@@ -733,6 +733,7 @@
 			<filter>
 				<parameter name="code" compare="SOME"><var var="compare"/></parameter>
 			</filter>
+			<single item="params"/>
 			<link name="from_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
@@ -952,7 +953,7 @@
 		<request>
 			<var name="action"/>
 		</request>
-		<command class="extra.CreateParametersAndFiltersCommand" clear-cache="yes">
+		<command class="ecommander.fwk.integration.CreateParametersAndFiltersCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

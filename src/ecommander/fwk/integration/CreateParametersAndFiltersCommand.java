@@ -1,9 +1,8 @@
-package extra;
+package ecommander.fwk.integration;
 
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.Pair;
 import ecommander.fwk.Strings;
-import ecommander.fwk.integration.YMarketProductClassHandler;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
 import ecommander.model.filter.CriteriaDef;
@@ -14,7 +13,6 @@ import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,7 +27,7 @@ import java.util.*;
 /**
  * Created by E on 17/5/2018.
  */
-public class CreateParametersAndFiltersCommand extends IntegrateBase {
+public class CreateParametersAndFiltersCommand extends IntegrateBase implements CatalogConst {
 
 	/**
 	 * Типы и названия параметров
@@ -127,29 +125,29 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase {
 
 	@Override
 	protected void integrate() throws Exception {
-		List<Item> sections = new ItemQuery(ItemNames.SECTION).loadItems();
+		List<Item> sections = new ItemQuery(SECTION_ITEM).loadItems();
 		info.setOperation("Создание классов и фильтров");
 		info.setToProcess(sections.size());
 		info.setProcessed(0);
 		for (Item section : sections) {
-			List<Item> products = new ItemQuery(ItemNames.PRODUCT).setParentId(section.getId(), false).loadItems();
+			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
 			if (products.size() > 0) {
 
 				// Анализ параметров продуктов
-				Params params = new Params(section.getStringValue(ItemNames.section.NAME), "s" + section.getId());
+				Params params = new Params(section.getStringValue(NAME_PARAM), "s" + section.getId());
 				for (Item product : products) {
-					List<Item> oldParams = new ItemQuery(ItemNames.PARAMS).setParentId(product.getId(), false).loadItems();
+					List<Item> oldParams = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadItems();
 					for (Item oldParam : oldParams) {
 						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldParam));
 					}
-					Item paramsXml = new ItemQuery(ItemNames.PARAMS_XML).setParentId(product.getId(), false).loadFirstItem();
+					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
 					if (paramsXml != null) {
-						String xml = "<params>" + paramsXml.getStringValue(ItemNames.params_xml.XML) + "</params>";
+						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
 						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
-						Elements paramEls = paramsTree.getElementsByTag("parameter");
+						Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
 						for (Element paramEl : paramEls) {
-							String caption = StringUtils.trim(paramEl.getElementsByTag("name").first().ownText());
-							String value = StringUtils.trim(paramEl.getElementsByTag("value").first().ownText());
+							String caption = StringUtils.trim(paramEl.getElementsByTag(NAME).first().ownText());
+							String value = StringUtils.trim(paramEl.getElementsByTag(VALUE).first().ownText());
 							if (StringUtils.isNotBlank(caption)) {
 								params.addParameter(caption, value);
 							}
@@ -160,7 +158,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase {
 
 				// Создание фильтра
 				String className = "p" + section.getId();
-				String classCaption = section.getStringValue(ItemNames.section.NAME);
+				String classCaption = section.getStringValue(NAME_PARAM);
 				// Создать фильтр и установить его в айтем
 				FilterDefinition filter = FilterDefinition.create("");
 				filter.setRoot(className);
@@ -173,12 +171,12 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase {
 					filter.addPart(input);
 					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
 				}
-				section.setValue(ItemNames.section.PARAMS_FILTER, filter.generateXML());
+				section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
 
 				// Создать класс для продуктов из этого раздела
 				ItemType newClass = new ItemType(className, 0, classCaption, "", "",
-						ItemNames.PARAMS, null, false, true, false, false);
+						PARAMS_ITEM, null, false, true, false, false);
 				for (String paramName : params.paramTypes.keySet()) {
 					String type = params.paramTypes.get(paramName).toString();
 					String caption = params.paramCaptions.get(paramName);
@@ -200,12 +198,12 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase {
 		for (Item section : sections) {
 			String className = "p" + section.getId();
 			ItemType paramDesc = ItemTypeRegistry.getItemType(className);
-			List<Item> products = new ItemQuery(ItemNames.PRODUCT).setParentId(section.getId(), false).loadItems();
+			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
 			if (products.size() > 0) {
 				for (Item product : products) {
-					Item paramsXml = new ItemQuery(ItemNames.PARAMS_XML).setParentId(product.getId(), false).loadFirstItem();
+					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
 					if (paramsXml != null) {
-						String xml = "<params>" + paramsXml.getStringValue(ItemNames.params_xml.XML) + "</params>";
+						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
 						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
 						Elements paramEls = paramsTree.getElementsByTag("parameter");
 						Item params = Item.newChildItem(paramDesc, product);

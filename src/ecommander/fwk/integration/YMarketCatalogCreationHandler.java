@@ -21,7 +21,7 @@ import java.util.HashMap;
  * Создание разделов каталога
  * Created by E on 19/3/2018.
  */
-public class YMarketCatalogCreationHandler extends DefaultHandler implements YMarketConst {
+public class YMarketCatalogCreationHandler extends DefaultHandler implements CatalogConst {
 
 	private Locator locator;
 	private boolean categoryReady = false;
