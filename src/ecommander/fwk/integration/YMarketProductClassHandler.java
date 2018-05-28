@@ -43,6 +43,8 @@ public class YMarketProductClassHandler extends DefaultHandler implements YMarke
 		
 		private void addParameter(String name, String value) {
 			String paramName = Strings.createXmlElementName(name);
+			if (StringUtils.isBlank(paramName))
+				return;
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);
 				paramCaptions.put(paramName, name);

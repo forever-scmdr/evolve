@@ -84,7 +84,7 @@ public class Strings
     	if (StringUtils.isBlank(halfValid))
     		return null;
     	if (StringUtils.contains(DIGITS, halfValid.charAt(0)) || halfValid.charAt(0) == '.')
-    		return "_" + halfValid;
+    		return "e_" + halfValid;
     	return halfValid;
     }
     /**
