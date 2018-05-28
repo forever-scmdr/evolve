@@ -256,8 +256,8 @@ public abstract class BasicServlet extends HttpServlet {
 		return
 				//request.getScheme() + "://" + request.getServerName() +
 				AppContext.getProtocolScheme() + "://" + request.getServerName() +
-				("http".equals(request.getScheme()) && request.getServerPort() == 80 ||
-						"https".equals(request.getScheme()) && request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+				("http".equals(AppContext.getProtocolScheme()) && request.getServerPort() == 80 ||
+						"https".equals(AppContext.getProtocolScheme()) && request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
 				request.getContextPath();
 	}
 	/**
