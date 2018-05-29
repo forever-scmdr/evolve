@@ -107,9 +107,13 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					if (picUrls.size() > 0) {
 						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.get(0)));
 					}
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-					DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+					try {
+						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
+						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+					} catch (Exception e) {
+						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+					}
 				}
 
 				// Создать айтем с параметрами продукта
@@ -125,7 +129,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 					Item paramsXml = Item.newChildItem(paramsXmlType, product);
 					paramsXml.setValue(XML_PARAM, xml.toString());
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml));
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreFileErrors());
 				}
 
 				info.increaseProcessed();
