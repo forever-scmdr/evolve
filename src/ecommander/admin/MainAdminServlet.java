@@ -165,7 +165,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		if (result != null) {
 			// Редирект
 			if (result.isRedirect()) {
-				resp.sendRedirect(result.getRedirectUrl());
+				resp.sendRedirect(createAbsoluteUrl(req, result.getRedirectUrl()));
 			} else {
 				result.output(resp);
 			}

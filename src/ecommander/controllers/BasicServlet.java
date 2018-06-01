@@ -252,12 +252,10 @@ public abstract class BasicServlet extends HttpServlet {
 	}
 	*/
 	
-	private static String getContextPath(HttpServletRequest request) {
+	public static String getContextPath(HttpServletRequest request) {
 		return
-				//request.getScheme() + "://" + request.getServerName() +
 				AppContext.getProtocolScheme() + "://" + request.getServerName() +
-				("http".equals(AppContext.getProtocolScheme()) && request.getServerPort() == 80 ||
-						"https".equals(AppContext.getProtocolScheme()) && request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+				(request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
 				request.getContextPath();
 	}
 	/**
@@ -267,5 +265,49 @@ public abstract class BasicServlet extends HttpServlet {
 	 */
 	public static String getBaseUrl(HttpServletRequest request) {
 		return StringUtils.isBlank(request.getContextPath()) ? getContextPath(request) : getContextPath(request) + "/";
+	}
+
+	/**
+	 * Проверяет, соответствует ли протокол запроса протоколу, установленному в настройках сайта
+	 * Если не соответствует - отправить редирект на соответствующий урл с нужным протоколом
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	public static boolean checkProtocolScheme(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String requestScheme = "http";
+		String checkHeaderValue = request.getHeader(AppContext.getTestHttpsHeader());
+		if (checkHeaderValue != null &&
+				(!AppContext.hasTestHttpsValue() || StringUtils.equalsIgnoreCase(AppContext.getTestHttpsHeaderValue(), checkHeaderValue))) {
+			requestScheme = "https";
+		}
+		if (StringUtils.equalsIgnoreCase(requestScheme, AppContext.getProtocolScheme())) {
+			return true;
+		}
+		// Строка вида /spas/eeee/test.htm (/spas - это ContextPath)
+		String userUrl = request.getRequestURI();
+		if (userUrl.charAt(0) == '/')
+			userUrl = userUrl.substring(1);
+		if (StringUtils.startsWith(userUrl, PREFIX))
+			userUrl = userUrl.substring(PREFIX_LENGTH);
+		userUrl = userUrl.replaceFirst(AppContext.getWelcomePageName(), "");
+
+		// Удалить переменную _ которая добавляется jQuery при отправке ajax запросов
+		if (StringUtils.isNotBlank(request.getQueryString())) {
+			userUrl += '?' + request.getQueryString();
+		}
+		while (userUrl.length() > 0 && userUrl.charAt(0) == '/') {
+			userUrl = userUrl.substring(1);
+		}
+
+		String contextPath = AppContext.getProtocolScheme() + "://" + request.getServerName() +
+				(request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+				request.getContextPath();
+		if (!StringUtils.endsWith(contextPath, "/"))
+			contextPath += "/";
+
+		response.sendRedirect(contextPath + userUrl);
+		return false;
 	}
 }

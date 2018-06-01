@@ -32,37 +32,35 @@ public class TransliterationServlet extends BasicServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Строка вида /spas/eeee/test.htm (/spas - это ContextPath)
-		String userUrl = getUserUrl(request);
-		// Если запрашивается индексная страница - это может быть ошибка, например в картинке не указан урл
-		// Надо проанализировать, какой заголовок Accept отправляет браузер.
-		// Для индексной страницы он должен содержать text/html
-		if (StringUtils.startsWith(userUrl, AppContext.getWelcomePageName())) {
-			if (StringUtils.startsWith(request.getHeader("Accept"), "image")) {
-				/*
-				Enumeration<String> headerNames = request.getHeaderNames();
-				String message = "HEADERS:\n\n";
-				while(headerNames.hasMoreElements()) {
-					String name = headerNames.nextElement();
-					String value = request.getHeader(name);
-					message += name + ": " + value + "\n";
-				}
-				*/
-				ServerLogger.error("Maybe page html error - empty img src attribute");
-				//ServerLogger.error(message);
-				response.sendError(HttpServletResponse.SC_NOT_FOUND);
-				return;
-			}
-		}
-		Timer.getTimer().start(Timer.REQUEST_PROCESS, userUrl);
-		// Если заданного URL нет в маппинге, то считать что запрошен файл и передать его
+		String userUrl = "";
 		try {
 			ServerLogger.debug("Get method: Page output started");
-//			ServerLogger.error("--------------------------           " + userUrl + "           --------------------------");
+
+			// проверка протокола с последующим редиректом если это надо
+			if (!checkProtocolScheme(request, response))
+				return;
+
+			// получить пользовательский урл
+			userUrl = getUserUrl(request);
+
+			// Если запрашивается индексная страница - это может быть ошибка, например в картинке не указан урл
+			// Надо проанализировать, какой заголовок Accept отправляет браузер.
+			// Для индексной страницы он должен содержать text/html
+			if (StringUtils.startsWithIgnoreCase(userUrl, AppContext.getWelcomePageName())) {
+				if (StringUtils.startsWithIgnoreCase(request.getHeader("Accept"), "image")) {
+					ServerLogger.error("Maybe page html error - empty img src attribute");
+					response.sendError(HttpServletResponse.SC_NOT_FOUND);
+					return;
+				}
+			}
+			Timer.getTimer().start(Timer.REQUEST_PROCESS, userUrl);
+
 			MainExecutionController mainController = new MainExecutionController(request, response, userUrl);
 			mainController.execute(getBaseUrl(request), getServletContext());
 		} catch (UserNotAllowedException e) {
 			processUserNotAllowed(request, response, userUrl);
 		} catch (PageNotFoundException e) {
+			// Если заданного URL нет в маппинге, то считать что запрошен файл и передать его
 			sendFile(response, userUrl, false);
 		} catch (Exception e) {
 			handleError(request, response, e);
