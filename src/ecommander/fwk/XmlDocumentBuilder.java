@@ -122,9 +122,11 @@ public class XmlDocumentBuilder {
 	 * Закрывает текущий открытый элемент
 	 */
 	public final XmlDocumentBuilder endElement() {
-		if (openTags.peek().hasSubelements)
-			xml.append(StringUtils.rightPad("\n", openTags.size() - 1, '\t'));
-		xml.append("</").append(openTags.pop().tag).append('>');
+		if (openTags.size() > 1) { // root fake не считается элементом
+			if (openTags.peek().hasSubelements)
+				xml.append(StringUtils.rightPad("\n", openTags.size() - 1, '\t'));
+			xml.append("</").append(openTags.pop().tag).append('>');
+		}
 		return this;
 	}
 	/**

@@ -111,6 +111,17 @@ public class FileDataType extends StringDataType {
 
 	@Override
 	public boolean getEquals(Object o1, Object o2) {
-		return StringUtils.equalsIgnoreCase(outputValue(o1, null), outputValue(o2, null));
+		if (!o1.getClass().equals(o2.getClass()))
+			return false;
+		if (o1 instanceof FileItem) {
+			return StringUtils.equalsIgnoreCase(((FileItem) o1).getName(), ((FileItem) o2).getName());
+		}
+		else if (o1 instanceof File) {
+			return StringUtils.equalsIgnoreCase(((File) o1).getAbsolutePath(), ((File) o2).getAbsolutePath());
+		}
+		else if (o1 instanceof URL) {
+			return o1.equals(o2);
+		}
+		return StringUtils.equalsIgnoreCase(o1.toString(), o2.toString());
 	}
 }
