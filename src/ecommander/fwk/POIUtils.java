@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import ecommander.controllers.AppContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -349,7 +348,7 @@ public class POIUtils {
 			CellValue cellValue = evaluator.evaluate(cell);
 			return cellValue.formatAsString();
 		}
-		DataFormatter df = new DataFormatter(AppContext.getCurrentLocale());
+		DataFormatter df = new DataFormatter();
 		return df.formatCellValue(cell);
 	}
 	

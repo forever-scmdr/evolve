@@ -95,7 +95,7 @@ public class PageController {
 		// Редирект, т.к. форвард уже был выполнен в методе processPageInt
 		if (result != null) {
 			// Внешняя ссылка
-			if (result.startsWith("http://")) {
+			if (result.startsWith("http://") || result.startsWith("https://")) {
 				resp.sendRedirect(result);
 			} 
 			// Внутренняя ссылка
@@ -206,7 +206,7 @@ public class PageController {
 		// Работа с результатом выполнения страницы
 		if (result != null && result.getType() != ResultType.none) {
 			// Результат выполнения - XML документ
-			if (result.getType() == ResultType.xml && !StringUtils.isBlank(result.getValue())) {
+			if (result.getType() == ResultType.xml/* && !StringUtils.isBlank(result.getValue())*/) {
 				XmlDocumentBuilder xml = XmlDocumentBuilder.newDocFull(result.getValue());
 				if (page.transformationNeeded()) {
 					XmlXslOutputController.outputXmlTransformed(out, xml, xslFileName);

@@ -76,7 +76,7 @@ public class NonemptyEmailCommand extends Command {
 		MultipleHttpPostForm postForm = getItemForm();
 		String templatePageName = getVarSingleValue(TEMPLATE_PARAM);
 		// Сообщение об ошибке в случае если не все поля заполнены
-		Item message = postForm.getSingleItem();
+		Item message = postForm.getTransientSingleItem();
 		String validationResult = validateInput(requiredStr, message);
 		if (!StringUtils.isBlank(validationResult)) {
 			saveSessionForm(formNameStr);

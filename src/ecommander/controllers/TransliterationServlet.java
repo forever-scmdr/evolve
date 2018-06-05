@@ -1,6 +1,9 @@
 package ecommander.controllers;
 
-import ecommander.fwk.*;
+import ecommander.fwk.PageNotFoundException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Timer;
+import ecommander.fwk.UserNotAllowedException;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
@@ -34,7 +37,16 @@ public class TransliterationServlet extends BasicServlet {
 		// Надо проанализировать, какой заголовок Accept отправляет браузер.
 		// Для индексной страницы он должен содержать text/html
 		if (StringUtils.startsWith(userUrl, AppContext.getWelcomePageName())) {
-			if (!StringUtils.contains(request.getHeader("Accept"), "text/html")) {
+			if (StringUtils.startsWith(request.getHeader("Accept"), "image")) {
+				/*
+				Enumeration<String> headerNames = request.getHeaderNames();
+				String message = "HEADERS:\n\n";
+				while(headerNames.hasMoreElements()) {
+					String name = headerNames.nextElement();
+					String value = request.getHeader(name);
+					message += name + ": " + value + "\n";
+				}
+				*/
 				ServerLogger.error("Maybe page html error - empty img src attribute");
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				return;

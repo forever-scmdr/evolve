@@ -9,7 +9,9 @@ import org.slf4j.helpers.MessageFormatter;
 import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Интеграция файла XML Результаты валидации и выполнения в след. виде
@@ -119,6 +121,10 @@ public abstract class IntegrateBase extends Command {
 			return this.processed;
 		}
 
+		public synchronized int getToProcess() {
+			return this.toProcess;
+		}
+
 		public synchronized void increaseProcessed() {
 			this.processed++;
 		}
@@ -130,11 +136,7 @@ public abstract class IntegrateBase extends Command {
 		public synchronized void addLog(String message, Object...params) {
 			if (log.size() >= logSize)
 				log.removeFirst();
-			LinkedList<Object> paramsl = new LinkedList<>(); Arrays.asList(paramsl, params);
-			if(StringUtils.isNotBlank(sheetName)) {
-				paramsl.add(0, sheetName);
-			}
-			log.addLast(new LogMessage(message, paramsl.toArray()));
+			log.addLast(new LogMessage(message, params));
 		}
 
 		public synchronized void pushLog(String message, Object...params) {

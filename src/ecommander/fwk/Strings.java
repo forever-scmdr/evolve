@@ -173,6 +173,10 @@ public class Strings
 		return StringUtils.lowerCase(translit(fileName.replaceFirst(".*[\\/]", "")));
 	}
 
+	public static String createFileName(String string) {
+		return translit(StringUtils.lowerCase(string));
+	}
+
     public static void main(String[] args) {
     	System.out.println(translit("подъёмник?"));
     }

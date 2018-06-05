@@ -2,6 +2,7 @@ package ecommander.fwk;
 
 import ecommander.controllers.PageController;
 import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
 import ecommander.model.datatypes.DoubleDataType;
@@ -28,13 +29,18 @@ public abstract class BasicCartManageCommand extends Command {
 	private static final String PRODUCT_ITEM = "product";
 	private static final String CART_ITEM = "cart";
 	private static final String BOUGHT_ITEM = "bought";
+	private static final String PURCHASE_ITEM = "purchase";
+	private static final String USER_ITEM = "user";
 	private static final String PRICE_PARAM = "price";
 	private static final String QTY_PARAM = "qty";
 	private static final String SUM_PARAM = "sum";
 	private static final String CODE_PARAM = "code";
+	private static final String NAME_PARAM = "name";
 	private static final String PROCESSED_PARAM = "processed";
 	private static final String COUNTER_ITEM = "counter";
 	private static final String COUNT_PARAM = "count";
+	private static final String NUM_PARAM = "num";
+	private static final String DATE_PARAM = "date";
 
 
 
@@ -87,6 +93,10 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	public ResultPE customerForm() throws Exception {
+		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
+		Item form = getItemForm().getTransientSingleItem();
+		getSessionMapper().saveTemporaryItem(form);
+
 		if (!validate()) {
 			return getResult("validation_failed");
 		}
@@ -130,7 +140,7 @@ public abstract class BasicCartManageCommand extends Command {
 		LinkPE regularLink = LinkPE.newDirectLink("link", "order_email", false);
 		regularLink.addStaticVariable("order_num", orderNumber + "");
 		ExecutablePagePE regularTemplate = getExecutablePage(regularLink.serialize());
-		final String customerEmail = getItemForm().getSingleItem().getStringValue("email");
+		final String customerEmail = getItemForm().getTransientSingleItem().getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
 
 		ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
@@ -160,7 +170,27 @@ public abstract class BasicCartManageCommand extends Command {
 		// Сохранение нового значения счетчика, если все отправлено удачно
 		counter.setValue(COUNT_PARAM, count);
 		//counter.setValue(DATE_PARAM, newDate);
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(counter).ignoreUser());
+		executeCommandUnit(SaveItemDBUnit.get(counter).ignoreUser());
+
+		// Сохранить историю
+		Item userItem = new ItemQuery(USER_ITEM).setUser(getInitiator()).loadFirstItem();
+		if (userItem != null) {
+			Item purchase = Item.newChildItem(ItemTypeRegistry.getItemType(PURCHASE_ITEM), userItem);
+			purchase.setValue(NUM_PARAM, orderNumber + "");
+			purchase.setValue(DATE_PARAM, System.currentTimeMillis());
+			purchase.setValue(QTY_PARAM, cart.getValue(QTY_PARAM));
+			purchase.setValue(SUM_PARAM, cart.getValue(SUM_PARAM));
+			executeCommandUnit(SaveItemDBUnit.get(purchase));
+			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
+			for (Item bought : boughts) {
+				bought.setContextPrimaryParentId(purchase.getId());
+				bought.setOwner(UserGroupRegistry.getGroup("registered"), getInitiator().getUserId());
+				executeCommandUnit(SaveItemDBUnit.get(bought));
+			}
+		}
+
+		// Подтвердить изменения
+		commitCommandUnits();
 
 		cart.setValue(PROCESSED_PARAM, (byte)1);
 		cart.setExtra(IN_PROGRESS, null);
@@ -205,13 +235,6 @@ public abstract class BasicCartManageCommand extends Command {
 
 	private void addProduct(String code, double qty) throws Exception {
 		ensureCart();
-		// Если корзина уже была отправлена, создать ее заново
-		byte processed = cart.getByteValue(PROCESSED_PARAM, (byte)0);
-		if (processed == (byte) 1) {
-			getSessionMapper().removeItems(cart.getId());
-			cart = getSessionMapper().createSessionRootItem(CART_ITEM);
-			getSessionMapper().saveTemporaryItem(cart);
-		}
 		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
 		Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 		if (boughtProduct == null) {
@@ -223,6 +246,8 @@ public abstract class BasicCartManageCommand extends Command {
 			if (maxQuantity > 0)
 				qty = maxQuantity > qty ? qty : maxQuantity;
 			bought.setValue(QTY_PARAM, qty);
+			bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
+			bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
 			// Сохраняется bought
 			getSessionMapper().saveTemporaryItem(bought);
 			// Сохраняется девайс
@@ -254,6 +279,22 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().saveTemporaryItem(cart);
 			}
 		}
+		refreshCart();
+	}
+
+	/**
+	 * 	Если корзина уже была отправлена, создать ее заново
+	 */
+	private void refreshCart() {
+		if (cart != null) {
+			// Если корзина уже была отправлена, создать ее заново
+			byte processed = cart.getByteValue(PROCESSED_PARAM, (byte)0);
+			if (processed == (byte) 1) {
+				getSessionMapper().removeItems(cart.getId());
+				cart = getSessionMapper().createSessionRootItem(CART_ITEM);
+				getSessionMapper().saveTemporaryItem(cart);
+			}
+		}
 	}
 
 	/**
@@ -263,6 +304,7 @@ public abstract class BasicCartManageCommand extends Command {
 		if (cart == null) {
 			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 		}
+		refreshCart();
 	}
 
 	/**
@@ -330,13 +372,15 @@ public abstract class BasicCartManageCommand extends Command {
 				result = false;
 			} else {
 				// Первоначальная сумма
-				BigDecimal productSum = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0)).multiply(new BigDecimal(quantity));
+				BigDecimal price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
 				if (maxQuantity <= 0) {
 					productSum = new BigDecimal(0);
 					zeroQuantity += quantity;
 				} else {
 					regularQuantity += quantity;
 				}
+				bought.setValue(PRICE_PARAM, price);
 				bought.setValue(SUM_PARAM, productSum);
 				sum = sum.add(productSum);
 				// Сохранить bought
