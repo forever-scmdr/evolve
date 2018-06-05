@@ -565,7 +565,7 @@
 						<xsl:call-template name="INC_MOBILE_HEADER"/>
 						<xsl:call-template name="CONTENT"/>
 						<xsl:if test="$seo/text != ''">
-							<div class="page-content m-t">
+							<div class="page-content">
 								<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
 							</div>
 						</xsl:if>

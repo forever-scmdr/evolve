@@ -11,7 +11,7 @@
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
-		<parameter name="текст" caption="text" type="text"/>
+		<parameter name="text" caption="текст" type="text"/>
 	</item>
 
 	<item name="url_seo" key="name" caption="SEO" ag-id="816" ag-hash="-169844339">
@@ -22,7 +22,7 @@
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
-		<parameter name="текст" caption="text" type="text"/>
+		<parameter name="text" caption="текст" type="text"/>
 	</item>
 
 	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="817" ag-hash="843192252">
