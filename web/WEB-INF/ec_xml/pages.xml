@@ -3,7 +3,7 @@
 
     <!-- ******************************* Включение для разделов каталога ****************************** -->
     <include-definition name="COMMON">
-        <single item="catalog" id="catalog_main" cacheable="true">
+        <single item="catalog" id="catalog_main" cacheable="false">
             <tree item="section" id="sec">
                 <link name="show_section" target="sub">
                     <var name="sec" ref="sec" style="translit"/>
@@ -293,6 +293,14 @@
                 <var name="src_page" value="compare_ajax"/>
             </link>
         </single>
+        <list item="product" tag="assoc" id="assoc">
+            <filter>
+                <parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
+            </filter>
+            <link name="show_product" target="product" type="exclusive">
+                <var name="prod" ref="assoc" style="translit"/>
+            </link>
+        </list>
         <include name="COMMON"/>
     </page>
 

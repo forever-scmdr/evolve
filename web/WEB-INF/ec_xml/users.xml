@@ -2,10 +2,12 @@
 <authority>
 <groups>
 	<group name="common"/>
+	<group name="registered"/>
 </groups>
 <users>
 	<user name="admin" password="eeee" description="Мега админ">
 		<group name="common" role="admin"/>
+		<group name="registered" role="admin"/>
 	</user>
 </users>
 </authority>

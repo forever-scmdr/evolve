@@ -106,16 +106,14 @@
 						<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
 					<!--</xsl:choose>-->
 				</div>
-				<!--
 				<div class="links">
-					<div id="compare_list_{code}">
-						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
+					<div id="compare_list_{$p/code}">
+						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">в сравнение</a></span>
 					</div>
 					<div id="fav_list_{$p/code}">
-						<span><i class="fas fa-star"></i> <a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
+						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/code}">в избранное</a></span>
 					</div>
 				</div>
-				-->
 				<div class="info-blocks">
 					<div class="info-block">
 						<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
@@ -133,46 +131,50 @@
 				</div>
 			</div>
 			<div class="description">
-				<ul class="nav nav-tabs" role="tablist">
-					<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-						<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab">Описание</a></li>
-					<!--</xsl:if>-->
-					<!--<xsl:if test="$p/tech">-->
-						<!--<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">Технические данные</a></li>-->
-					<!--</xsl:if>-->
-					<!--<xsl:if test="page/accessory">-->
-						<!--<li role="presentation"><a href="#tab3" role="tab" data-toggle="tab">Принадлежности</a></li>-->
-					<!--</xsl:if>-->
-					<!--<xsl:if test="page/set">-->
-						<!--<li role="presentation"><a href="#tab4" role="tab" data-toggle="tab">Наборы</a></li>-->
-					<!--</xsl:if>-->
-					<!--<xsl:if test="page/probe">-->
-						<!--<li role="presentation"><a href="#tab5" role="tab" data-toggle="tab">Зонды</a></li>-->
-					<!--</xsl:if>-->
-					<!--<xsl:if test="string-length($p/apply) &gt; 15">-->
-						<!--<li role="presentation"><a href="#tab6" role="tab" data-toggle="tab">Применение</a></li>-->
-					<!--</xsl:if>-->
-				</ul>
+				<xsl:if test="$p/params">
+					<ul class="nav nav-tabs" role="tablist">
+						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
+							<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab">Характеристики</a></li>
+						<!--</xsl:if>-->
+						<!--<xsl:if test="$p/tech">-->
+							<!--<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">Технические данные</a></li>-->
+						<!--</xsl:if>-->
+						<!--<xsl:if test="page/accessory">-->
+							<!--<li role="presentation"><a href="#tab3" role="tab" data-toggle="tab">Принадлежности</a></li>-->
+						<!--</xsl:if>-->
+						<!--<xsl:if test="page/set">-->
+							<!--<li role="presentation"><a href="#tab4" role="tab" data-toggle="tab">Наборы</a></li>-->
+						<!--</xsl:if>-->
+						<!--<xsl:if test="page/probe">-->
+							<!--<li role="presentation"><a href="#tab5" role="tab" data-toggle="tab">Зонды</a></li>-->
+						<!--</xsl:if>-->
+						<!--<xsl:if test="string-length($p/apply) &gt; 15">-->
+							<!--<li role="presentation"><a href="#tab6" role="tab" data-toggle="tab">Применение</a></li>-->
+						<!--</xsl:if>-->
+					</ul>
+				</xsl:if>
 				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane active" id="tab1">
-						<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
-						<table>
-							<colgroup>
-								<col style="width: 40%"/>
-							</colgroup>
-							<xsl:for-each select="$p/params/param">
-								<tr>
-									<td>
-										<p><strong><xsl:value-of select="@caption"/></strong></p>
-									</td>
-									<td>
-										<p><xsl:value-of select="."/></p>
-									</td>
-								</tr>
-							</xsl:for-each>
-						</table>
+					<xsl:if test="$p/params">
+						<div role="tabpanel" class="tab-pane active" id="tab1">
+							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
+							<table>
+								<colgroup>
+									<col style="width: 40%"/>
+								</colgroup>
+								<xsl:for-each select="$p/params/param">
+									<tr>
+										<td>
+											<p><strong><xsl:value-of select="@caption"/></strong></p>
+										</td>
+										<td>
+											<p><xsl:value-of select="."/></p>
+										</td>
+									</tr>
+								</xsl:for-each>
+							</table>
 
-					</div>
+						</div>
+					</xsl:if>
 					<!--<div role="tabpanel" class="tab-pane" id="tab2">-->
 						<!--<h4>Технические данные</h4>-->
 						<!--<div class="table-responsive">-->
@@ -226,6 +228,12 @@
 					<!--</div>-->
 				</div>
 			</div>
+			<xsl:if test="page/assoc">
+				<h3>Вас также может заинтересовать</h3>
+				<div class="catalog-items">
+					<xsl:apply-templates select="page/assoc"/>
+				</div>
+			</xsl:if>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
