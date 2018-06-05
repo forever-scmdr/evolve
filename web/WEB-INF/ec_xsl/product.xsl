@@ -4,6 +4,7 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="$p/name"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
@@ -58,7 +59,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$p/name"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="catalog-item-container">
 			<!--

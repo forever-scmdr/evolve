@@ -7,6 +7,7 @@
 
 	<item name="seo" caption="SEO" ag-id="814" ag-hash="113757">
 		<parameter name="title" type="string" caption="title"/>
+		<parameter name="h1" type="string" caption="h1"/>
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
@@ -17,6 +18,7 @@
 		<parameter name="name" type="string" caption="Название" description="для поиска в CMS"/>
 		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
 		<parameter name="title" type="string" caption="title"/>
+		<parameter name="h1" type="string" caption="h1"/>
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>

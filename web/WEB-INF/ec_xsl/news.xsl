@@ -3,7 +3,8 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="'Новости'" />
+	<xsl:variable name="title" select="page/selected_news/header" />
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'news'"/>
 
 	<xsl:variable name="p" select="page/product"/>
@@ -17,11 +18,11 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="if (page/news) then 'Новости' else 'Статьи'"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
 			<div class="catalog-items info">
-				<xsl:for-each select="page//news_item">
+				<xsl:for-each select="page/selected_news/news_item">
 					<div class="catalog-item">
 						<a href="{show_news_item}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="{@path}{main_pic}" alt=""/> --></a>
 						<div class="text">

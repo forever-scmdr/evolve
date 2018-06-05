@@ -6,6 +6,9 @@
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
 
+	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
+	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
+
 	<xsl:variable name="title" select="'Спеццехника'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
@@ -561,6 +564,11 @@
 					<div class="mc-container">
 						<xsl:call-template name="INC_MOBILE_HEADER"/>
 						<xsl:call-template name="CONTENT"/>
+						<xsl:if test="$seo/text != ''">
+							<div class="page-content m-t">
+								<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+							</div>
+						</xsl:if>
 					</div>
 				</div>
 				<!-- RIGHT COLOUMN END -->
@@ -744,8 +752,6 @@
 		<xsl:variable name="quote">"</xsl:variable>
 
 		<link rel="canonical" href="{concat($main_host, $canonical)}" />
-		<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
-		<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 
 		<xsl:if test="$seo">
 			<xsl:apply-templates select="$seo"/>

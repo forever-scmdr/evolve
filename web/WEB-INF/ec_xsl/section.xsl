@@ -3,6 +3,9 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name" />
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
@@ -65,7 +68,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 		<div class="page-content m-t">
 
 			<div class="tags">
