@@ -150,7 +150,7 @@ public class MultipleHttpPostForm implements Serializable {
 	 * @return
 	 * @throws Exception
 	 */
-	public Item getSingleItem() throws Exception {
+	public Item getTransientSingleItem() throws Exception {
 		ItemTreeNode first = getItemTree().getFirstChild();
 		if (first == null)
 			return null;

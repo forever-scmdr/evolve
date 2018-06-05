@@ -88,7 +88,7 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 			if (methodVar != null) {
 				String methodName = methodVar.writeSingleValue();
 				if (!StringUtils.isBlank(methodName)) {
-					Method method = null;
+					Method method;
 					try {
 						method = commandClass.getMethod(methodName);
 					} catch (NoSuchMethodException e) {

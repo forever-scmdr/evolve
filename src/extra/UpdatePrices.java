@@ -63,6 +63,7 @@ public class UpdatePrices extends IntegrateBase {
 		info.setProcessed(0);
 		info.setLineNumber(0);
 		info.setToProcess(price.getLinesCount());
+		info.limitLog(500);
 		price.iterate();
 		info.setOperation("Интеграция завершена");
 		price.close();

@@ -4,6 +4,9 @@ package extra._generated;
 
 public class ItemNames {
 
+    public final static String SEO = "seo";
+    public final static String URL_SEO = "url_seo";
+    public final static String URL_SEO_WRAP = "url_seo_wrap";
     public final static String CATALOG = "catalog";
     public final static String SECTION = "section";
     public final static String PRODUCT = "product";
@@ -14,25 +17,19 @@ public class ItemNames {
     public final static String USER_JUR = "user_jur";
     public final static String USER_PHYS = "user_phys";
     public final static String COUNTER = "counter";
+    public final static String NEWS_WRAP = "news_wrap";
     public final static String NEWS_ITEM = "news_item";
     public final static String NEWS = "news";
-    public final static String ARTICLES = "articles";
     public final static String MAIN_PROMO_BOTTOM = "main_promo_bottom";
+    public final static String MAIN_SLIDER_FRAME = "main_slider_frame";
     public final static String MAIN_PAGE = "main_page";
-    public final static String DEALER_COORDS = "dealer_coords";
-    public final static String DEALERS_PAGE = "dealers_page";
-    public final static String DOCS = "docs";
     public final static String CONTACTS = "contacts";
     public final static String COMMON = "common";
     public final static String FEEDBACK_FORM = "feedback_form";
     public final static String CUSTOM_PAGES = "custom_pages";
     public final static String CUSTOM_PAGE = "custom_page";
-
-    public interface articles {
-
-        String _ITEM_NAME = "articles";
-
-    }
+    public final static String MODULES = "modules";
+    public final static String NAMED_CODE = "named_code";
 
     public interface bought {
 
@@ -71,6 +68,10 @@ public class ItemNames {
         String LINK_LINK = "link_link";
         String BOTTOM = "bottom";
         String BOTTOM_ADDRESS = "bottom_address";
+        String PHONE = "phone";
+        String EMAIL = "email";
+        String GOOGLE_VERIFICATION = "google_verification";
+        String YANDEX_VERIFICATION = "yandex_verification";
 
     }
 
@@ -95,6 +96,9 @@ public class ItemNames {
 
         String _ITEM_NAME = "custom_page";
         String HEADER = "header";
+        String MAIN_PIC = "main_pic";
+        String SHORT = "short";
+        String IN_MAIN_MENU = "in_main_menu";
         String TEXT = "text";
         String TEXT_PIC = "text_pic";
 
@@ -103,29 +107,6 @@ public class ItemNames {
     public interface custom_pages {
 
         String _ITEM_NAME = "custom_pages";
-
-    }
-
-    public interface dealer_coords {
-
-        String _ITEM_NAME = "dealer_coords";
-        String NAME = "name";
-        String ADDRESS = "address";
-        String INFO = "info";
-
-    }
-
-    public interface dealers_page {
-
-        String _ITEM_NAME = "dealers_page";
-
-    }
-
-    public interface docs {
-
-        String _ITEM_NAME = "docs";
-        String TEXT = "text";
-        String TEXT_PIC = "text_pic";
 
     }
 
@@ -165,9 +146,32 @@ public class ItemNames {
 
     }
 
+    public interface main_slider_frame {
+
+        String _ITEM_NAME = "main_slider_frame";
+        String NAME = "name";
+        String PIC = "pic";
+
+    }
+
+    public interface modules {
+
+        String _ITEM_NAME = "modules";
+
+    }
+
+    public interface named_code {
+
+        String _ITEM_NAME = "named_code";
+        String NAME = "name";
+        String CODE = "code";
+
+    }
+
     public interface news {
 
         String _ITEM_NAME = "news";
+        String NAME = "name";
 
     }
 
@@ -180,6 +184,12 @@ public class ItemNames {
         String SHORT = "short";
         String TEXT = "text";
         String TEXT_PIC = "text_pic";
+
+    }
+
+    public interface news_wrap {
+
+        String _ITEM_NAME = "news_wrap";
 
     }
 
@@ -222,6 +232,35 @@ public class ItemNames {
         String PARENT_ID = "parent_id";
         String MAIN_PIC = "main_pic";
         String PARAMS_FILTER = "params_filter";
+
+    }
+
+    public interface seo {
+
+        String _ITEM_NAME = "seo";
+        String TITLE = "title";
+        String DESCRIPTION = "description";
+        String KEYWORDS = "keywords";
+        String META = "meta";
+
+    }
+
+    public interface url_seo {
+
+        String _ITEM_NAME = "url_seo";
+        String NAME = "name";
+        String URL = "url";
+        String TITLE = "title";
+        String DESCRIPTION = "description";
+        String KEYWORDS = "keywords";
+        String META = "meta";
+
+    }
+
+    public interface url_seo_wrap {
+
+        String _ITEM_NAME = "url_seo_wrap";
+        String MAIN_HOST = "main_host";
 
     }
 

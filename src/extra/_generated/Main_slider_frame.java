@@ -1,31 +1,33 @@
 
 package extra._generated;
 
+import java.io.File;
+import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class News
+public class Main_slider_frame
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "news";
+    private final static String _ITEM_TYPE_NAME = "main_slider_frame";
 
-    private News(Item item) {
+    private Main_slider_frame(Item item) {
         super(item);
     }
 
-    public static News get(Item item) {
+    public static Main_slider_frame get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'news' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'main_slider_frame' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new News(item);
+        return new Main_slider_frame(item);
     }
 
-    public static News newChild(Item parent) {
+    public static Main_slider_frame newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 
@@ -43,6 +45,18 @@ public class News
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
+    }
+
+    public void set_pic(File value) {
+        setValue("pic", value);
+    }
+
+    public File get_pic() {
+        return getFileValue("pic", AppContext.getCommonFilesDirPath());
+    }
+
+    public boolean contains_pic(File value) {
+        return containsValue("pic", value);
     }
 
 }

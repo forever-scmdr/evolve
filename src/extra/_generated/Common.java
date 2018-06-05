@@ -1,6 +1,7 @@
 
 package extra._generated;
 
+import java.util.List;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -123,6 +124,70 @@ public class Common
 
     public boolean contains_bottom_address(String value) {
         return containsValue("bottom_address", value);
+    }
+
+    public void add_phone(String value) {
+        setValue("phone", value);
+    }
+
+    public List<String> getAll_phone() {
+        return getStringValues("phone");
+    }
+
+    public void remove_phone(String value) {
+        removeEqualValue("phone", value);
+    }
+
+    public boolean contains_phone(String value) {
+        return containsValue("phone", value);
+    }
+
+    public void add_email(String value) {
+        setValue("email", value);
+    }
+
+    public List<String> getAll_email() {
+        return getStringValues("email");
+    }
+
+    public void remove_email(String value) {
+        removeEqualValue("email", value);
+    }
+
+    public boolean contains_email(String value) {
+        return containsValue("email", value);
+    }
+
+    public void set_google_verification(String value) {
+        setValue("google_verification", value);
+    }
+
+    public String get_google_verification() {
+        return getStringValue("google_verification");
+    }
+
+    public String getDefault_google_verification(String defaultVal) {
+        return getStringValue("google_verification", defaultVal);
+    }
+
+    public boolean contains_google_verification(String value) {
+        return containsValue("google_verification", value);
+    }
+
+    public void set_yandex_verification(String value) {
+        setValue("yandex_verification", value);
+    }
+
+    public String get_yandex_verification() {
+        return getStringValue("yandex_verification");
+    }
+
+    public String getDefault_yandex_verification(String defaultVal) {
+        return getStringValue("yandex_verification", defaultVal);
+    }
+
+    public boolean contains_yandex_verification(String value) {
+        return containsValue("yandex_verification", value);
     }
 
 }

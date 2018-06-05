@@ -5,7 +5,7 @@
 	<xsl:strip-space elements="*" />
 
 	<xsl:variable name="pre-last" select="count(/admin-page/path/item) - 1"/>
-	<xsl:variable name="parent" select="/admin-page/path/item[$pre-last]" />
+	<xsl:variable name="parsedItem" select="/admin-page/path/item[$pre-last]" />
 	
 
 	<xsl:template name="DOCTYPE">
@@ -164,6 +164,11 @@
 									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
 										<a href="admin_types_init.type">
 											Управление классами объектов
+										</a>
+									</li>
+									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
+										<a href="update_prices?action=start" target="_blank">
+											Запустить обновление цен
 										</a>
 									</li>
 									<!--

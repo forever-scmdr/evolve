@@ -4,28 +4,28 @@ package extra._generated;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class News
+public class Back_section
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "news";
+    private final static String _ITEM_TYPE_NAME = "back_section";
 
-    private News(Item item) {
+    private Back_section(Item item) {
         super(item);
     }
 
-    public static News get(Item item) {
+    public static Back_section get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'news' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'back_section' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new News(item);
+        return new Back_section(item);
     }
 
-    public static News newChild(Item parent) {
+    public static Back_section newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 
@@ -43,6 +43,22 @@ public class News
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
+    }
+
+    public void set_code(String value) {
+        setValue("code", value);
+    }
+
+    public String get_code() {
+        return getStringValue("code");
+    }
+
+    public String getDefault_code(String defaultVal) {
+        return getStringValue("code", defaultVal);
+    }
+
+    public boolean contains_code(String value) {
+        return containsValue("code", value);
     }
 
 }

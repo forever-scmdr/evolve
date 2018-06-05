@@ -115,6 +115,14 @@ public final class SynchronousTransaction implements AutoCloseable {
 		}
 	}
 
+	/**
+	 * Установить нового пользователя, от имени которого будет выполняться транзакция
+	 * @param newInitiator
+	 */
+	public void switchInitiator(User newInitiator) {
+		this.initiator = newInitiator;
+	}
+
 	@Override
 	public void close() throws Exception {
 		MysqlConnector.closeConnection(conn);

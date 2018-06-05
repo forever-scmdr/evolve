@@ -702,7 +702,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			query = TemplateQuery.createFromString(GROUP_COMMON_QUERY, "Group query");
 		} else {
 			if (isParent)
-				query = TemplateQuery.createFromString(PARENT_QUERY, "Parent query");
+				query = TemplateQuery.createFromString(PARENT_QUERY, "ParsedItem query");
 			else
 				query = TemplateQuery.createFromString(COMMON_QUERY, "Common query");
 		}
@@ -729,7 +729,11 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				if (hasFulltext()) {
 					orderBy.sql("FIELD (" + I_DOT + I_ID + ", ").longArray(fulltext.getLoadedIds()).sql(")");
 				} else if (hasParent) {
-					orderBy.sql(P_DOT + IP_WEIGHT);
+					if (isTree) {
+						orderBy.sql(TP_DOT + IP_WEIGHT);
+					} else {
+						orderBy.sql(P_DOT + IP_WEIGHT);
+					}
 				} else {
 					orderBy.sql(I_DOT + I_ID);
 				}
@@ -1192,7 +1196,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @throws NamingException
 	 */
 	public static boolean isAncestor(long childId, long parentId, byte assocId, Connection... conn) throws SQLException, NamingException {
-		TemplateQuery query = new TemplateQuery("Parent Check");
+		TemplateQuery query = new TemplateQuery("ParsedItem Check");
 		query.SELECT("*").FROM(ITEM_PARENT_TBL).WHERE().col(IP_CHILD_ID).long_(childId)
 				.AND().col(IP_PARENT_ID).long_(parentId)
 				.AND().col(IP_ASSOC_ID).byte_(assocId);
