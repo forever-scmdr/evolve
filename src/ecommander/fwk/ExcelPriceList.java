@@ -87,7 +87,8 @@ public abstract class ExcelPriceList implements Closeable {
 		}
 	}
 
-	public void initSectionHeaders(Row row, String... mandatoryCols) throws Exception {
+	public void initSectionHeaders(String... mandatoryCols) throws Exception {
+		Row row = currentRow;
 		for (String checkCol : mandatoryCols) {
 			ArrayList<POIUtils.CellXY> found = POIUtils.findCellInRowContaining(eval, checkCol, row);
 			if (found.size() > 0)

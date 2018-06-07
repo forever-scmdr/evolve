@@ -17,6 +17,7 @@ import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Product;
+import extra._generated.Section;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -45,6 +46,7 @@ public class IntegratePriceList extends IntegrateBase {
 	private ExcelPriceList price;
 	private Item currentSection;
 	private Item catalog;
+	private ItemType currentParamsType;
 	private HashMap<String, ArrayList<String>> pics = new HashMap<>();
 
 	@Override
@@ -57,83 +59,89 @@ public class IntegratePriceList extends IntegrateBase {
 			@Override
 			protected void processRow() throws Exception {
 				String code = getValue(CODE);
-				String name = getValue(NAME);
-				String description = getValue(DESCRIPTION);
-				String tag = getValue(TAG);
-				String pic = getValue(PIC);
-				String picsS = getValue(PICS);
-				BigDecimal price = getCurrencyValue(PRICE);
-				UniqueArrayList<String> AdditionalHeaders = getHeaders();
-				Iterator<String> headersIter = AdditionalHeaders.iterator();
-				while (headersIter.hasNext()) {
-					String s = headersIter.next();
-					if (!s.startsWith("#")) headersIter.remove();
-				}
-				String typeName = currentSection.getStringValue(ItemNames.section.NAME);
-				String typeNameTranslited = Strings.translit(typeName);
-				ItemType oldParamsType = ItemTypeRegistry.getItemType(typeNameTranslited);
-				ItemType newParamsType = createItemType(typeNameTranslited, typeName, AdditionalHeaders);
-				boolean typeExists = newParamsType.equals(oldParamsType);
-				if(!typeExists && oldParamsType != null){
-					executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(oldParamsType.getTypeId()));
-				}
-				if(!typeExists || StringUtils.isBlank(currentSection.getStringValue(ItemNames.section.PARAMS_FILTER))){
-					createFilters(currentSection, AdditionalHeaders);
-				}
-				if(!typeExists){
-					executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newParamsType));
-					DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
-				}
+				UniqueArrayList<String> AdditionalHeaders = null;
+				switch (code) {
+					case "Раздел:":
+						String sectionName = getValue(NAME);
+						String sectionCode = getValue(DESCRIPTION);
+						String sectionParentCode = getValue(PIC);
+						if(StringUtils.isBlank(sectionCode)) throw new Exception(sectionName+" section code missing");
+						Item section = ItemQuery.loadSingleItemByParamValue(ItemNames.SECTION, ItemNames.section.CATEGORY_ID, sectionCode);
+						if(section == null) section = ItemQuery.loadSingleItemByParamValue(ItemNames.SECTION, ItemNames.section.NAME, sectionName);
+						if(section == null){
+							Item parentSection = (StringUtils.isBlank(sectionCode))? currentSection : ItemQuery.loadSingleItemByParamValue(ItemNames.SECTION, ItemNames.section.CATEGORY_ID, sectionParentCode);
+							section = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.SECTION), parentSection);
+						}
+						section.setValue(ItemNames.section.CATEGORY_ID, sectionCode);
+						section.setValue(ItemNames.section.NAME, sectionCode);
+						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(section).noFulltextIndex().ingoreComputed());
+						currentSection = section;
+						break;
+					case "code":
+						price.initSectionHeaders(CODE, NAME, DESCRIPTION, PIC, PICS, PRICE, TAG);
+						AdditionalHeaders = getHeaders();
+						setCurrentParamsType(AdditionalHeaders);
+						break;
+					default:
 
-				Item productItem = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code);
-				productItem = (productItem == null) ? Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PRODUCT), currentSection) : productItem;
-				Product product = Product.get(productItem);
-				product.set_code(code);
-				product.set_name(name);
-				if (StringUtils.isNotBlank(description)) {
-					product.set_text(description);
-				}
-				if (price != null) {
-					product.set_price(price);
-				}
+						String name = getValue(NAME);
+						String description = getValue(DESCRIPTION);
+						String tag = getValue(TAG);
+						String pic = getValue(PIC);
+						String picsS = getValue(PICS);
+						BigDecimal price = getCurrencyValue(PRICE);
 
-				ArrayList<String> picsArr = new ArrayList<>();
-				if(StringUtils.isNotBlank(pic)){
-					picsArr.add(pic);
-				}
-				if (StringUtils.isNotBlank(picsS)) {
-					String[] p = picsS.split(",");
+						Item productItem = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code);
+						productItem = (productItem == null) ? Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PRODUCT), currentSection) : productItem;
+						Product product = Product.get(productItem);
+						product.set_code(code);
+						product.set_name(name);
+						if (StringUtils.isNotBlank(description)) {
+							product.set_text(description);
+						}
+						if (price != null) {
+							product.set_price(price);
+						}
 
-					picsArr.add(pic);
-					for (String s : p) {
-						picsArr.add(s);
-					}
+						ArrayList<String> picsArr = new ArrayList<>();
+						if (StringUtils.isNotBlank(pic)) {
+							picsArr.add(pic);
+						}
+						if (StringUtils.isNotBlank(picsS)) {
+							String[] p = picsS.split(",");
 
-				}
-				if(picsArr.size() > 0){
-					pics.put(code, picsArr);
-				}
-				if (StringUtils.isNotBlank(tag)) {
-					String[] tags = tag.split(";");
-					for (String t : tags) {
-						product.setValueUnique(ItemNames.product.TAG, t);
-					}
-				}
-				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().ingoreComputed());
+							picsArr.add(pic);
+							for (String s : p) {
+								picsArr.add(s);
+							}
 
-				Item params = new ItemQuery(ItemNames.PARAMS).setParentId(product.getId(), false).loadFirstItem();
-				if (params == null) {
-					params = Item.newChildItem(ItemTypeRegistry.getItemType(Strings.translit(typeName)), product);
+						}
+						if (picsArr.size() > 0) {
+							pics.put(code, picsArr);
+						}
+						if (StringUtils.isNotBlank(tag)) {
+							String[] tags = tag.split(";");
+							for (String t : tags) {
+								product.setValueUnique(ItemNames.product.TAG, t);
+							}
+						}
+						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().ingoreComputed());
 
+						Item params = new ItemQuery(ItemNames.PARAMS).setParentId(product.getId(), false).loadFirstItem();
+						if (params == null) {
+							params = Item.newChildItem(currentParamsType, product);
+
+						}
+						AdditionalHeaders = getHeaders();
+						for (String sName : AdditionalHeaders) {
+							String v = getValue(sName);
+							if (StringUtils.isBlank(v)) continue;
+							String paramName = sName.replace("#", "");
+							paramName = Strings.translit(paramName);
+							params.setValue(paramName, v);
+						}
+						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(params).noFulltextIndex().ingoreComputed());
 				}
-				for (String sName : AdditionalHeaders) {
-					String v = getValue(sName);
-					if (StringUtils.isBlank(v)) continue;
-					String paramName = sName.replace("#", "");
-					paramName = Strings.translit(paramName);
-					params.setValue(paramName, v);
-				}
-				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(params).noFulltextIndex().ingoreComputed());
 			}
 
 			@Override
@@ -159,6 +167,30 @@ public class IntegratePriceList extends IntegrateBase {
 			}
 		};
 		return true;
+	}
+
+	private void setCurrentParamsType(Collection<String> AdditionalHeaders) throws Exception {
+		Iterator<String> headersIter = AdditionalHeaders.iterator();
+		while (headersIter.hasNext()) {
+			String s = headersIter.next();
+			if (!s.startsWith("#")) headersIter.remove();
+		}
+		String typeName = currentSection.getStringValue(ItemNames.section.NAME);
+		String typeNameTranslited = Strings.translit(typeName);
+		ItemType oldParamsType = ItemTypeRegistry.getItemType(typeNameTranslited);
+		ItemType newParamsType = createItemType(typeNameTranslited, typeName, AdditionalHeaders);
+		boolean typeExists = newParamsType.equals(oldParamsType);
+		if (!typeExists && oldParamsType != null) {
+			executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(oldParamsType.getTypeId()));
+		}
+		if (!typeExists || StringUtils.isBlank(currentSection.getStringValue(ItemNames.section.PARAMS_FILTER))) {
+			createFilters(currentSection, AdditionalHeaders);
+		}
+		if (!typeExists) {
+			executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newParamsType));
+			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+		}
+		currentParamsType = newParamsType;
 	}
 
 	private void createFilters(Item currentSection, Collection<String> headers) throws Exception {
