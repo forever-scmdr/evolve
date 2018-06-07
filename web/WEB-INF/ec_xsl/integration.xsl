@@ -39,6 +39,7 @@
 					<td class="error">
 						<span id="prcnt"></span>
 						<span id="progressBar"></span>
+						<span><xsl:value-of select="sheet"/></span>
 						<xsl:value-of select="/page/line"/> / <xsl:value-of select="/page/total-line-number"/>
 					</td>
 				</tr>
@@ -68,8 +69,9 @@
 					<xsl:for-each select="/page/error">
 						<tr>
 							<td class="string-no">
-							Строка: <span class="no"><xsl:value-of select="@line"/></span> 
-							 Позиция: <span class="no"><xsl:value-of select="@coloumn"/></span>
+							Лист: <span class="no"><xsl:value-of select="@sheet"/></span>
+							Строка: <span class="no"><xsl:value-of select="@line"/></span>
+							Позиция: <span class="no"><xsl:value-of select="@coloumn"/></span>
 							</td>
 							<td class="error"><xsl:value-of select="."/></td>
 						</tr>

@@ -167,6 +167,7 @@ public abstract class IntegrateBase extends Command {
 			if (operation.equals(_indexation))
 				doc.startElement("processed").addText(LuceneIndexMapper.getSingleton().getCountProcessed()).endElement();
 			else {
+				doc.startElement("sheet").addText(sheetName).endElement();
 				doc.startElement("to_process").addText(toProcess).endElement();
 				doc.startElement("processed").addText(processed).endElement();
 			}
@@ -185,7 +186,7 @@ public abstract class IntegrateBase extends Command {
 				doc.startElement("log", "time", TIME_FORMAT.format(message.date)).addText(message.message).endElement();
 			}
 			for (Error error : errors) {
-				doc.startElement("error", "line", error.lineNumber, "coloumn", error.position, "originator", error.originator)
+				doc.startElement("error", "sheet", error.sheetName, "line", error.lineNumber, "coloumn", error.position, "originator", error.originator)
 						.addText(error.message).endElement();
 			}
 			ServerLogger.debug(doc.toString());
@@ -292,7 +293,9 @@ public abstract class IntegrateBase extends Command {
 					} catch (Exception se) {
 						setOperation("Интеграция завершена с ошибками");
 						ServerLogger.error("Integration error", se);
-						getInfo().addError(se.getMessage(), 0, 0);
+						String sheet = info.getSheetName();
+						String exception = (StringUtils.isAllBlank(se.getMessage()))? se.toString() : se.getMessage();
+						getInfo().addError(sheet + ": "+ exception, info.lineNumber, 0);
 					} finally {
 						isInProgress = false;
 						getInfo().setInProgress(false);

@@ -2,10 +2,7 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
-import ecommander.fwk.CreateSiteMap;
-import ecommander.fwk.ExcelPriceList;
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.Strings;
+import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
 import ecommander.model.filter.CriteriaDef;
@@ -13,6 +10,7 @@ import ecommander.model.filter.FilterDefinition;
 import ecommander.model.filter.InputDef;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.ResultPE;
+import ecommander.persistence.commandunits.DeleteItemTypeBDUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
@@ -43,7 +41,6 @@ public class IntegratePriceList extends IntegrateBase {
 	private static final String PICS = "Галерея";
 	private static final String PRICE = "Цена";
 	private static final String TAG = "Тег";
-	private static final String COMMENT_PATTERN = "<!--(?<comment>.*)-->";
 
 	private ExcelPriceList price;
 	private Item currentSection;
@@ -66,23 +63,25 @@ public class IntegratePriceList extends IntegrateBase {
 				String pic = getValue(PIC);
 				String picsS = getValue(PICS);
 				BigDecimal price = getCurrencyValue(PRICE);
-				TreeSet<String> AdditionalHeaders = getHeaders();
+				UniqueArrayList<String> AdditionalHeaders = getHeaders();
 				Iterator<String> headersIter = AdditionalHeaders.iterator();
-				while (headersIter.hasNext()){
+				while (headersIter.hasNext()) {
 					String s = headersIter.next();
-					if(!s.startsWith("#")) headersIter.remove();
+					if (!s.startsWith("#")) headersIter.remove();
 				}
 				String typeName = currentSection.getStringValue(ItemNames.section.NAME);
-				ItemType paramsType = ItemTypeRegistry.getItemType(Strings.translit(typeName));
-				if (StringUtils.isBlank(currentSection.getStringValue(ItemNames.section.PARAMS_FILTER))) {
+				String typeNameTranslited = Strings.translit(typeName);
+				ItemType oldParamsType = ItemTypeRegistry.getItemType(typeNameTranslited);
+				ItemType newParamsType = createItemType(typeNameTranslited, typeName, AdditionalHeaders);
+				boolean typeExists = newParamsType.equals(oldParamsType);
+				if(!typeExists && oldParamsType != null){
+					executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(oldParamsType.getTypeId()));
+				}
+				if(!typeExists || StringUtils.isBlank(currentSection.getStringValue(ItemNames.section.PARAMS_FILTER))){
 					createFilters(currentSection, AdditionalHeaders);
 				}
-				if (paramsType == null) {
-					if (currentSection.getValue(ItemNames.section.PARAMS_FILTER) == null) {
-						createFilters(currentSection, AdditionalHeaders);
-					}
-					paramsType = createItemType(Strings.translit(typeName), typeName, AdditionalHeaders);
-					executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(paramsType));
+				if(!typeExists){
+					executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newParamsType));
 					DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
 				}
 
@@ -127,10 +126,10 @@ public class IntegratePriceList extends IntegrateBase {
 					params = Item.newChildItem(ItemTypeRegistry.getItemType(Strings.translit(typeName)), product);
 
 				}
-				for (String sname : AdditionalHeaders) {
-					String v = getValue(sname);
+				for (String sName : AdditionalHeaders) {
+					String v = getValue(sName);
 					if (StringUtils.isBlank(v)) continue;
-					String paramName = sname.replace("#", "");
+					String paramName = sName.replace("#", "");
 					paramName = Strings.translit(paramName);
 					params.setValue(paramName, v);
 				}
@@ -140,10 +139,21 @@ public class IntegratePriceList extends IntegrateBase {
 			@Override
 			protected void processSheet() throws Exception {
 				String sectionName = getSheetName();
+				String[] tmp = StringUtils.split(sectionName, '|');
+				sectionName = tmp[0].trim();
+				String sectionCode = null;
+				if (tmp.length == 2) {
+					sectionCode = tmp[1].trim();
+				}
 				currentSection = ItemQuery.loadSingleItemByParamValue(ItemNames.SECTION, ItemNames.section.NAME, sectionName);
 				if (currentSection == null) {
 					currentSection = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.SECTION), catalog);
 					currentSection.setValue(ItemNames.section.NAME, sectionName);
+					if (StringUtils.isNotBlank(sectionCode))
+						currentSection.setValue(ItemNames.section.CATEGORY_ID, sectionCode);
+					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(currentSection).noFulltextIndex().ingoreComputed());
+				} else if (StringUtils.isBlank(currentSection.getStringValue(ItemNames.section.CATEGORY_ID)) && StringUtils.isNotBlank(sectionCode)) {
+					currentSection.setValue(ItemNames.section.CATEGORY_ID, sectionCode);
 					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(currentSection).noFulltextIndex().ingoreComputed());
 				}
 			}
@@ -151,7 +161,7 @@ public class IntegratePriceList extends IntegrateBase {
 		return true;
 	}
 
-	private void createFilters(Item currentSection, TreeSet<String> headers) throws Exception {
+	private void createFilters(Item currentSection, Collection<String> headers) throws Exception {
 		FilterDefinition filter = FilterDefinition.create("");
 		filter.setRoot(Strings.translit(currentSection.getStringValue(ItemNames.section.NAME)));
 		for (String paramName : headers) {
@@ -165,7 +175,7 @@ public class IntegratePriceList extends IntegrateBase {
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection));
 	}
 
-	private ItemType createItemType(String typeName, String typeCaption, TreeSet<String> headers) throws Exception {
+	private ItemType createItemType(String typeName, String typeCaption, Collection<String> headers) throws Exception {
 		ItemType newClass = new ItemType(typeName, 0, typeCaption, "", "",
 				ItemNames.PARAMS, null, false, true, false, false);
 		for (String paramName : headers) {
@@ -196,25 +206,26 @@ public class IntegratePriceList extends IntegrateBase {
 	}
 
 	private void downloadPictures() throws Exception {
+		info.setSheetName("Документ закончен. Постобработка.");
 
-		for(Map.Entry<String, ArrayList<String>> e : pics.entrySet()){
+		for (Map.Entry<String, ArrayList<String>> e : pics.entrySet()) {
 			try {
 
-			String code = e.getKey();
-			Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code);
-			ArrayList<String> urls = e.getValue();
-			for(int i = 0; i < urls.size(); i++){
-				URL pictureUrl = new URL(urls.get(i));
-				if(i > 0){
-					product.setValueUnique(ItemNames.product.GALLERY, pictureUrl);
-				}else{
-					product.setValue(ItemNames.product.MAIN_PIC, pictureUrl);
-				}
+				String code = e.getKey();
+				Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code);
+				ArrayList<String> urls = e.getValue();
+				for (int i = 0; i < urls.size(); i++) {
+					URL pictureUrl = new URL(urls.get(i));
+					if (i > 0) {
+						product.setValueUnique(ItemNames.product.GALLERY, pictureUrl);
+					} else {
+						product.setValue(ItemNames.product.MAIN_PIC, pictureUrl);
+					}
 
-			}
-			executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex());
-			}catch (Exception ex){
-				info.addLog("Не удается загрузить изображение "+ e.getKey(), ex.getMessage());
+				}
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex());
+			} catch (Exception ex) {
+				info.addLog("Не удается загрузить изображение " + e.getKey(), ex.getMessage());
 				continue;
 			}
 		}

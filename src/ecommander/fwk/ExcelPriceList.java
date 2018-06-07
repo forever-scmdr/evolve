@@ -87,6 +87,23 @@ public abstract class ExcelPriceList implements Closeable {
 		}
 	}
 
+	public void initSectionHeaders(Row row, String... mandatoryCols) throws Exception {
+		for (String checkCol : mandatoryCols) {
+			ArrayList<POIUtils.CellXY> found = POIUtils.findCellInRowContaining(eval, checkCol, row);
+			if (found.size() > 0)
+				continue;
+			throw new Exception("Sheet:"+currentSheet.getSheetName()+". Row "+row.getRowNum()+" contains no \""+checkCol+"\" header");
+		}
+		HashMap<String, Integer> headers = new HashMap<>();
+		for (Cell cell : row) {
+			String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
+			if (StringUtils.isNotBlank(colHeader)) {
+				headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+			}
+		}
+		SheetHeader sh = new SheetHeader(currentSheet, headers, headerCell);
+	}
+
 	public final String getSheetName(){
 		String shitName = currentSheet.getSheetName();
 		return shitName;
@@ -145,8 +162,8 @@ public abstract class ExcelPriceList implements Closeable {
 		}
 	}
 
-	public final TreeSet<String> getHeaders(){
-		TreeSet<String> a = new TreeSet<>();
+	public final UniqueArrayList<String> getHeaders(){
+		UniqueArrayList<String> a = new UniqueArrayList<>();
 		a.addAll(currentHeader.keySet());
 		return a;
 	}
