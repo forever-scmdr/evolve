@@ -138,28 +138,16 @@
 					<div class="col-xs-12">
 						<div class="footer-container">
 							<div class="block">
-								<p><strong>© metabo-shop.by, 2018</strong></p>
-								<div class="forever">
-							<!--		<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a> -->
-								</div>
+								<xsl:value-of select="page/common/bottom_copy" disable-output-escaping="yes"/>
 							</div>
 							<div class="block">
-								<p>Принимаем к оплате<xsl:call-template name="BR"/> пластиковые карточки</p>
-								<img src="http://mobileplus.by/images/2/icon_card_mc.png" alt=""/>
-								<img src="http://mobileplus.by/images/2/icon_card_visa.png" alt=""/>
+								<xsl:value-of select="page/common/bottom_cards" disable-output-escaping="yes"/>
 							</div>
 							<div class="block contacts">
 								<xsl:value-of select="page/common/bottom" disable-output-escaping="yes"/>
 							</div>
 							<div class="block address">
-								<!-- <xsl:value-of select="page/common/bottom_address" disable-output-escaping="yes"/> -->
-								<p>Мы в социальных сетях</p>
-								<div class="social">
-									<a href="https://vk.com/yuksmarket" target="_blank"><i class="fab fa-vk" style="color: #4F73A6;" /></a>
-									<!-- <a href=""><i class="fab fa-facebook" style="color: #425796;" /></a>
-									<a href=""><i class="fab fa-youtube" style="color: #FF2000;" /></a> -->
-									<a href="https://www.instagram.com/yuksmarket/" target="_blank"><i class="fab fa-instagram" style="color: #333;" /></a>
-								</div>
+								<xsl:value-of select="page/common/bottom_social" disable-output-escaping="yes"/>
 							</div>
 						</div>
 					</div>

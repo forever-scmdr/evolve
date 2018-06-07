@@ -183,6 +183,7 @@
 		<parameter name="email" type="string" caption="E-mail" />
 		<parameter name="address" type="string" caption="Юридический адрес" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
+		<parameter name="pay_type" type="string" caption="Способ оплаты" />
 		<parameter name="no_account" type="string" caption="Нет расчетного счета" domain="yes-no"/>
 		<parameter name="account" type="string" caption="Расчетный счет" />
 		<parameter name="bank" type="string" caption="Название банка" />
@@ -201,6 +202,7 @@
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="address" type="string" caption="Адрес" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
+		<parameter name="pay_type" type="string" caption="Способ оплаты" />
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
@@ -250,6 +252,7 @@
 	<item name="main_slider_frame" caption="Кадр для слайдера" key="name" ag-id="893" ag-hash="-806170283">
 		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
 		<parameter name="pic" type="picture" caption="Картинка"/>
+		<parameter name="link" type="string" caption="Ссылка" description="начиная с http://"/>
 	</item>
 
 	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="15" ag-hash="-251149995">
@@ -288,12 +291,20 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
+		<parameter name="bottom_copy" type="short-text" caption="Копирайт внизу"/>
+		<parameter name="bottom_cards" type="short-text" caption="Оплата карточками внизу"/>
+		<parameter name="bottom_social" type="short-text" caption="Социальные сети внизу"/>
 		<parameter name="google_verification" type="string" caption="google verification code"/>
 		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
 		<child item="delivery" single="true"/>
+		<child item="payment" single="true"/>
 	</item>
 
 	<item name="delivery" caption="Доставка" ag-id="1658" ag-hash="823466996">
+		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
+	</item>
+
+	<item name="payment" caption="Оплата" ag-id="1666" ag-hash="-786681338">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 

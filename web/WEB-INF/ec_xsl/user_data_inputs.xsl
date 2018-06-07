@@ -22,6 +22,14 @@
 			</select>
 		</div>
 		<div class="form-group">
+			<label>Способ оплаты</label>
+			<select class="form-control" name="{$inp/pay_type/@input}" value="{$inp/pay_type}" error="{$inp/pay_type/@validation-error}">
+				<xsl:for-each select="page/common/payment/option">
+					<option><xsl:value-of select="."/></option>
+				</xsl:for-each>
+			</select>
+		</div>
+		<div class="form-group">
 			<label>Телефон:</label>
 			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}" error="{$inp/phone/@validation-error}"/>
 		</div>
@@ -51,6 +59,14 @@
 			<label>Способ доставки <a href="dostavka">Подробнее об условиях доставки</a></label>
 			<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}">
 				<xsl:for-each select="page/common/delivery/option">
+					<option><xsl:value-of select="."/></option>
+				</xsl:for-each>
+			</select>
+		</div>
+		<div class="form-group">
+			<label>Способ оплаты</label>
+			<select class="form-control" name="{$inp/pay_type/@input}" value="{$inp/pay_type}">
+				<xsl:for-each select="page/common/payment/option">
 					<option><xsl:value-of select="."/></option>
 				</xsl:for-each>
 			</select>

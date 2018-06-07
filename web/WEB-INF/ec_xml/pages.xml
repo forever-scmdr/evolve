@@ -22,8 +22,9 @@
 				<var name="p" ref="custom_page" style="translit"/>
 			</link>
 		</list>
-		<single item="common" cacheable="false">
+		<single item="common" cacheable="true">
 			<single item="delivery"/>
+			<single item="payment"/>
 		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
