@@ -108,8 +108,8 @@
 					<img src="img/logo.jpg" alt="" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
-					<a href=""><i class="fas fa-phone"></i></a>
-					<a href=""><i class="fas fa-shopping-cart"></i></a>
+					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
+					<a href="{page/cart_link}"><i class="fas fa-shopping-cart"></i></a>
 					<a href="javascript:showMobileMainMenu()"><i class="fas fa-bars"></i></a>
 				</div>
 				<div class="search-container">
@@ -140,7 +140,7 @@
 							<div class="block">
 								<p><strong>© metabo-shop.by, 2018</strong></p>
 								<div class="forever">
-									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
+							<!--		<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a> -->
 								</div>
 							</div>
 							<div class="block">
@@ -211,7 +211,7 @@
 			}
 
 			$(document).ready(function() {
-				$("#mobile_catalog_menu .content li a[rel]").click(function(event) {
+				$('#mobile_catalog_menu .content li a[rel!=""]').click(function(event) {
 					event.preventDefault();
 					var menuItem = $(this);
 					var parentMenuContainer = menuItem.closest('.content');
@@ -262,7 +262,7 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_section}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_section}" class="header" rel=""><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
@@ -281,13 +281,13 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_section}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_section}" class="header" rel=""><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
 						<xsl:for-each select="section">
 							<li>
-								<a href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/></a>
+								<a href="{if (section) then show_section else show_products}" rel=""><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:for-each>
 					</ul>
@@ -402,8 +402,11 @@
 				<a href="{show_product}" title="{name}">
 					<xsl:value-of select="name"/><xsl:text> </xsl:text>
 					<xsl:value-of select="type"/><xsl:text> </xsl:text>
-					(<xsl:value-of select="code"/>)
+					<!-- (<xsl:value-of select="code"/>) -->
 				</a>
+				<div class="art-number">
+					№ для заказа: <xsl:value-of select="code"/>
+				</div>
 				<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 				<xsl:variable name="extra" select="parse-xml(concat('&lt;extra&gt;', extra_xml, '&lt;/extra&gt;'))/extra"/>
 				<div class="item-icons">
@@ -417,13 +420,14 @@
 			</div>
 			<div class="price">
 				<xsl:if test="$has_price">
-					<xsl:if test="price_old and not(price_old = '')"><p><span>Цена</span><xsl:value-of select="price_old"/> р.</p></xsl:if>
+					<xsl:if test="price_old and not(price_old = '')"><p><span>Цена</span><b>
+						<xsl:value-of select="price_old"/> р.</b></p></xsl:if>
 					<p><xsl:if test="price_old and not(price_old = '')"><span>Цена со скидкой</span></xsl:if><xsl:value-of select="price"/> р.</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
 					<!-- <p><span>&#160;</span>&#160;</p>
 					<p><span>&#160;</span>&#160;</p> -->
-					<p>уточняйте</p>
+					<p>Уточняйте цену</p>
 				</xsl:if>
 			</div>
 			<div class="order">
@@ -444,13 +448,11 @@
 					<!--<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>-->
 					<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
 				<!--</xsl:choose>-->
+				<div class="extra-links">
+					<a href="{my_price_link}" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
+					<a href="{one_click_link}" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+				</div>
 				<div class="links">
-					<div>
-						<a href="{my_price_link}" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
-					</div>
-					<div>
-						<a href="{one_click_link}" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
-					</div>
 					<div id="compare_list_{code}">
 						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
 					</div>

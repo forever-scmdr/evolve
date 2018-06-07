@@ -65,7 +65,8 @@
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 				<xsl:if test="$has_price">
 					<div class="price">
-						<xsl:if test="$p/price_old and not($p/price_old = '')"><p><span>Цена</span><xsl:value-of select="$p/price_old"/> р.</p></xsl:if>
+						<xsl:if test="$p/price_old and not($p/price_old = '')"><p><span>Цена</span><b>
+							<xsl:value-of select="$p/price_old"/> р.</b></p></xsl:if>
 						<p>
 							<xsl:if test="$p/price_old and not($p/price_old = '')"><span>Цена со скидкой</span></xsl:if>
 							<xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.
@@ -94,13 +95,11 @@
 				<div class="art-number">
 					№ для заказа: <xsl:value-of select="$p/code" />
 				</div>
+				<div class="extra-links">
+					<a href="{$p/my_price_link}" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
+					<a href="{$p/one_click_link}" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+				</div>
 				<div class="links">
-					<div>
-						<a href="{$p/my_price_link}" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
-					</div>
-					<div>
-						<a href="{$p/one_click_link}" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
-					</div>
 					<div id="compare_list_{$p/code}">
 						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">в сравнение</a></span>
 					</div>
@@ -153,13 +152,13 @@
 					</div>
 				</div>
 			</div>
-			<xsl:if test="page/assoc">
-				<h3>Вас также может заинтересовать</h3>
-				<div class="catalog-items">
-					<xsl:apply-templates select="page/assoc"/>
-				</div>
-			</xsl:if>
 		</div>
+		<xsl:if test="page/assoc">
+			<h3>Вас также может заинтересовать</h3>
+			<div class="catalog-items">
+				<xsl:apply-templates select="page/assoc"/>
+			</div>
+		</xsl:if>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
