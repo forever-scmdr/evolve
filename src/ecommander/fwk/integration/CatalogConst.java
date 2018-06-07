@@ -12,6 +12,7 @@ public interface CatalogConst {
 	String INTEGRATION_PARAM = "integration";
 	String DATE_PARAM = "date";
 	String NAME_PARAM = "name";
+	String TYPE_PARAM = "type";
 	String CODE_PARAM = "code";
 	String CATEGORY_ID_PARAM = "category_id";
 	String PARENT_ID_PARAM = "parent_id";
@@ -53,6 +54,8 @@ public interface CatalogConst {
 	String CURRENCY_ID_ELEMENT = "currencyId";
 	String CATEGORY_ID_ELEMENT = "categoryId";
 	String PICTURE_ELEMENT = "picture";
+	String VENDOR_ELEMENT = "vendor";
+	String MODEL_ELEMENT = "model";
 	String VENDOR_CODE_ELEMENT = "vendorCode";
 	String DESCRIPTION_ELEMENT = "description";
 	String COUNTRY_OF_ORIGIN_ELEMENT = "country_of_origin";

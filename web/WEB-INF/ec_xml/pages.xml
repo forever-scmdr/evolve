@@ -1048,4 +1048,20 @@
 
 	<page name="excel_complete"  template="excel_complete"/>
 
+
+	<!--
+		Создать файл YML формата со всеми разделами и товарами каталога
+	-->
+	<page name="create_yml_file">
+		<headers content-type="text/xml"/>
+		<request>
+			<var name="name" value="Юкс"/>
+			<var name="company" value="ООО Юкс"/>
+		</request>
+		<command class="ecommander.fwk.integration.YMarketCreateXMLFile">
+			<result name="success" type="redirect"/>
+			<result name="error" type="redirect"/>
+		</command>
+	</page>
+
 </site>

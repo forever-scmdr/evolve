@@ -171,6 +171,11 @@
 											Запустить обновление цен
 										</a>
 									</li>
+									<li class="visible" title="Создать YML-файл">
+										<a href="create_yml_file" target="_blank" download="yml_catalog.xml">
+											Создать YML-файл
+										</a>
+									</li>
 									<!--
 									<li class="visible" title="Функция в разработке">
 										<a href="#" onclick="alert('Функция в разработке'); return false;">
