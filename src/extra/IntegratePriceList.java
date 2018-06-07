@@ -69,11 +69,12 @@ public class IntegratePriceList extends IntegrateBase {
 						Item section = ItemQuery.loadSingleItemByParamValue(ItemNames.SECTION, ItemNames.section.CATEGORY_ID, sectionCode);
 						if(section == null) section = ItemQuery.loadSingleItemByParamValue(ItemNames.SECTION, ItemNames.section.NAME, sectionName);
 						if(section == null){
-							Item parentSection = (StringUtils.isBlank(sectionCode))? currentSection : ItemQuery.loadSingleItemByParamValue(ItemNames.SECTION, ItemNames.section.CATEGORY_ID, sectionParentCode);
-							section = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.SECTION), parentSection);
+							Item parentSection = (StringUtils.isBlank(sectionParentCode))? currentSection : ItemQuery.loadSingleItemByParamValue(ItemNames.SECTION, ItemNames.section.CATEGORY_ID, sectionParentCode);
+							ItemType sectionType = ItemTypeRegistry.getItemType(ItemNames.SECTION);
+							section = Item.newChildItem(sectionType, parentSection);
 						}
 						section.setValue(ItemNames.section.CATEGORY_ID, sectionCode);
-						section.setValue(ItemNames.section.NAME, sectionCode);
+						section.setValue(ItemNames.section.NAME, sectionName);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(section).noFulltextIndex().ingoreComputed());
 						currentSection = section;
 						break;
