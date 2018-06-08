@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 /**
  * Сервлет, который обрабатывает запросы eco/
@@ -37,8 +38,10 @@ public class TransliterationServlet extends BasicServlet {
 			ServerLogger.debug("Get method: Page output started");
 
 			// проверка протокола с последующим редиректом если это надо
-			if (!checkProtocolScheme(request, response))
+			if (!checkProtocolScheme(request, response)) {
+//				ServerLogger.warn("\n\n-----------------------CHECK PROTOCOL RETURN---------------------------");
 				return;
+			}
 
 			// получить пользовательский урл
 			userUrl = getUserUrl(request);
@@ -47,6 +50,13 @@ public class TransliterationServlet extends BasicServlet {
 			// Надо проанализировать, какой заголовок Accept отправляет браузер.
 			// Для индексной страницы он должен содержать text/html
 			if (StringUtils.startsWithIgnoreCase(userUrl, AppContext.getWelcomePageName())) {
+//				ServerLogger.warn("\n\n-----------------------REQUEST HEADERS---------------------------");
+//				Enumeration<String> names = request.getHeaderNames();
+//				while (names.hasMoreElements()) {
+//					String name = names.nextElement();
+//					ServerLogger.warn(name + " -> " + request.getHeader(name));
+//				}
+//				ServerLogger.warn("\n\n");
 				if (StringUtils.startsWithIgnoreCase(request.getHeader("Accept"), "image")) {
 					ServerLogger.error("Maybe page html error - empty img src attribute");
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
