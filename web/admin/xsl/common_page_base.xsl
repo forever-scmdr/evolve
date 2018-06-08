@@ -158,8 +158,8 @@
 					$(".fancybox").fancybox({
 					padding : 0
 					});
-					$(".active").parents("li").children("ul").show();
-					$(".active").parents("ul").show();
+					$(".active").parent("li").children("ul").show();
+					$(".active").parent("ul").show();
 				});
 			</script>
 			
