@@ -136,7 +136,7 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	}
 
 	/**
-	 * Проверка, можно ли текущему пользователю выполнять заданные действия с другип пользователем
+	 * Проверка, можно ли текущему пользователю выполнять заданные действия с другим пользователем
 	 * @param user
 	 * @param justGroups - только изменение принадлежности к группам (не удаление или изменение пароля)
 	 * @throws SQLException
@@ -157,14 +157,17 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 				adminGroups.add(group.name);
 		}
 		HashSet<String> oldUserGroups = new HashSet<>();
-		for (User.Group group : oldUser.getGroups()) {
-			oldUserGroups.add(group.name);
+		if (oldUser != null) {
+			for (User.Group group : oldUser.getGroups()) {
+				oldUserGroups.add(group.name);
+			}
 		}
 		HashSet<String> newUserGroups = new HashSet<>();
 		for (User.Group group : user.getGroups()) {
 			newUserGroups.add(group.name);
 		}
-		if (justGroups) {
+		boolean isUpdatingSelf = admin.getUserId() == user.getUserId();
+		if (justGroups || isUpdatingSelf) {
 			HashSet<String> addedGroups = new HashSet<>(newUserGroups);
 			addedGroups.removeAll(oldUserGroups);
 			HashSet<String> removedGroups = new HashSet<>(oldUserGroups);

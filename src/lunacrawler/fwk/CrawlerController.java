@@ -1,30 +1,13 @@
 package lunacrawler.fwk;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.nio.file.*;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.xml.transform.ErrorListener;
@@ -35,7 +18,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.*;
+import edu.uci.ics.crawler4j.url.WebURL;
+import lunacrawler.UrlModifier;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -45,6 +30,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Document.OutputSettings;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Entities.EscapeMode;
+import org.jsoup.parser.Parser;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
@@ -99,12 +85,30 @@ import net.sf.saxon.TransformerFactoryImpl;
  append - дописывать
  append-if-differs - допичвать в случае, если такого значения еще нет в родительском элементе
 
- Результирующий документ может содержать иерархическую структуту элементов, например, такую, как каталог
- товаров магазина с разделением на разделы и подразделы. Для того, чтобы обозначить место некоторого элемента
- в такой иерархии, в него включаются элементы h_parent, содежращие атрибут parent с уникальным идентификатором
- предков этого объекта (например, разделы каталога, в которые вложен товар). Количество элементов parent
- соответствует уровню вложенности элемета в иерархии. Если элемент не должен быть никуда вложен, в нем
- элементы parent отсутствуют. Также элемент h_parent содержит атрибут element, который содержит навзание
+ В результате создаются файлы - по одному на каждый созданный в результате парсинга элемент (по одному на каждый
+ раздел, товар, и т.д.) В каждом таком файле содержатся все полученные и собранные по описанным выше правилам
+ сведения в виде XML. Также создается один файл, представляющий иерархию вложенности элементов. Он назвается
+ hierarchy.xml. В нем в виде дерева представлена вложенность элементов с указанием тэга элемента в его ID. Например
+ <section id="1">
+    <section id="2">
+        <product id="3"/>
+        <product id="4"/>
+        <product id="5"/>
+    </section>
+	 <section id="6">
+		 <product id="7"/>
+		 <product id="8"/>
+		 <product id="9"/>
+	 </section>
+ </section>
+ <section id="10">
+ ...
+ </section>
+
+ Для создания такого дерева нужно чтобы каждый объект, который куда-то вложен, содержал ссылку на непосредственного
+ родителя в виде тэга h_parent. Этот тэг содержит атрибут parent с уникальным идентификатором
+ родителя этого объекта (например, разделы каталога, в которые вложен товар). Если элемент не должен быть никуда вложен,
+ в нем элемент parent отсутствует. Также элемент h_parent содержит атрибут element, который содержит навзание
  элемента, в который должет быть вложен текущий элемент.
 
  Скачка файлов
@@ -179,32 +183,28 @@ public class CrawlerController {
 	public static final String APPEND = "append";
 	public static final String APPEND_IF_DIFFERS = "append-if-differs";
 	public static final String DOWNLOAD = "download";
-	
-	public enum Mode { get, parse, append, files, all};
-	
-	public static final String PROPS_RESOURCE = "lunacrawler/props/settings.properties"; // файл с настройками
+
+	public enum Mode { get, transform, join, compile, files, all};
 
 	public static final String MODE = "mode"; // режим работы: только скачивание (get), только парсинг (parse), и то и другое (all)
-	public static final String STORAGE_DIR = "storage_dir"; // директория для хранения временных файлов программой crawler4j
-	public static final String NUMBER_OF_CRAWLERS = "number_of_crawlers"; // количество параллельных потоков запросов
-	public static final String POLITENESS = "politeness"; // количество миллисекунд между запросами
-	public static final String MAX_PAGES = "max_pages"; // максимальное количество разобранных страниц
-	public static final String MAX_DEPTH = "max_depth"; // максимальная глубина вложенности урлов начиная с начальных страниц (seed)
-	public static final String PROXIES = "proxies_file"; // файл со списком прокси серверов
-	public static final String URLS_PER_PROXY = "urls_per_proxy"; // количество запрошенных урлов перед переключением на следующий прокси
-	public static final String URLS = "urls"; // начальный урл, маски урлов и соответствующие им файлы стилей
-	public static final String STYLES_DIR = "styles_dir"; // директория, в которой лежат файлы со стилями
-	public static final String RESULT_DIR = "result_dir"; // директория, в которой лежат файлы со стилями
-	public static final String RESULT_FILE = "result_file"; // файл с результатом парсинга
+	public static final String STORAGE_DIR = "parsing.storage_dir"; // директория для хранения временных файлов программой crawler4j
+	public static final String NUMBER_OF_CRAWLERS = "parsing.number_of_crawlers"; // количество параллельных потоков запросов
+	public static final String POLITENESS = "parsing.politeness"; // количество миллисекунд между запросами
+	public static final String MAX_PAGES = "parsing.max_pages"; // максимальное количество разобранных страниц
+	public static final String MAX_DEPTH = "parsing.max_depth"; // максимальная глубина вложенности урлов начиная с начальных страниц (seed)
+	public static final String PROXIES = "parsing.proxies_file"; // файл со списком прокси серверов
+	public static final String URLS_PER_PROXY = "parsing.urls_per_proxy"; // количество запрошенных урлов перед переключением на следующий прокси
+	public static final String URLS = "parsing.urls"; // начальный урл, маски урлов и соответствующие им файлы стилей
+	public static final String STYLES_DIR = "parsing.styles_dir"; // директория, в которой лежат файлы со стилями
+	public static final String RESULT_DIR = "parsing.result_dir"; // директория, в которой лежат файлы со стилями
 
 	public static final String NO_TEMPLATE = "-";
 	public static final String UTF_8 = "UTF-8";
-	
+
 	private static CrawlerController singleton = null;
-	
+
 	private CrawlConfig CONFIG = null;
 	private CrawlController CONTROLLER = null;
-	private Properties props = null;
 	private LinkedList<String> proxies = null;
 	private LinkedHashMap<String, String> urlStyles = null;
 	private LinkedHashSet<String> seedUrls = null;
@@ -216,24 +216,25 @@ public class CrawlerController {
 	private String resultDir = null;
 	private String resultTempSrcDir = null;
 	private String resultTempTransformedDir = null;
+	private String resultTempJoinedDir = null;
+	private String resultTempCompiledDir = null;
 	private String resultTempFilesDir = null;
-	private String resultFile = null;
 
-	private int filesToTransform = 0;
-	private int filesToDownload = 0;
-	private int filesToAppend = 0;
+	private UrlModifier urlModifier = null;
+
+	private int currentProxyUrlsCount = 0;
 
 	private String nodeCacheFileName = null;
-	private HashMap<String, Element> nodeCache = new HashMap<String, Element>();
-	
-	private static IntegrateBase.Info info = null;
-	
+	private HashMap<String, Element> nodeCache = new HashMap<>();
+
+	private static volatile IntegrateBase.Info info = null;
+
 	private volatile long startTime = 0;
 
 	private static class Errors implements ErrorListener {
 
 		private String errors = "";
-		
+
 		public void error(TransformerException exception) throws TransformerException {
 			errors += "\nERROR " + exception.getMessageAndLocation();
 		}
@@ -245,26 +246,43 @@ public class CrawlerController {
 		public void warning(TransformerException exception) throws TransformerException {
 			errors += "\nWARNING " + exception.getMessageAndLocation();
 		}
-		
+
 		public boolean hasErrors() {
 			return !StringUtils.isEmpty(errors);
 		}
 	}
-	
-	private CrawlerController() throws Exception {
 
-		// Загрузка настроек
-		InputStream is = getClass().getClassLoader().getResourceAsStream(PROPS_RESOURCE);
-		props = new Properties();
-		if (is != null) {
-			props.load(is);
-		} else {
-			throw new Exception(PROPS_RESOURCE + " file not found");
+	private static class ParsedItem {
+		private String id;
+		private String element;
+
+		public ParsedItem(String id, String element) {
+			this.id = id;
+			this.element = element;
 		}
 
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			ParsedItem parsedItem = (ParsedItem) o;
+			return id.equals(parsedItem.id);
+		}
+
+		@Override
+		public int hashCode() {
+			return id.hashCode();
+		}
+	}
+
+
+	private CrawlerController() throws Exception {
+
+		info = new IntegrateBase.Info();
+
 		// Список прокси серверов
-		proxies = new LinkedList<String>();
-		String proxyFileName = AppContext.getRealPath(props.getProperty(PROXIES, null));
+		proxies = new LinkedList<>();
+		String proxyFileName = AppContext.getRealPath(AppContext.getProperty(PROXIES, null));
 		if (new File(proxyFileName).exists()) {
 			try(BufferedReader br = new BufferedReader(new FileReader(new File(proxyFileName)))) {
 			    for(String line; (line = br.readLine()) != null; ) {
@@ -277,13 +295,14 @@ public class CrawlerController {
 		}
 
 		// Начальные урлы и список стилей для урлов
-		urlStyles = new LinkedHashMap<String, String>();
-		seedUrls = new LinkedHashSet<String>();
-		String urlFileName = AppContext.getRealPath(props.getProperty(URLS, null));
+		urlStyles = new LinkedHashMap<>();
+		seedUrls = new LinkedHashSet<>();
+		String urlFileName = AppContext.getRealPath(AppContext.getProperty(URLS, null));
 		if (new File(urlFileName).exists()) {
-			try(BufferedReader br = new BufferedReader(new FileReader(new File(urlFileName)))) {
+			try {
+				List<String> lines = Files.readAllLines(Paths.get(urlFileName), Charset.forName(UTF_8));
 			    int lineNum = 1;
-				for(String line; (line = br.readLine()) != null; lineNum++) {
+				for (String line : lines) {
 			        line = line.trim();
 			    	if (!StringUtils.isBlank(line) && !line.startsWith("#")) {
 			        	String[] parts = StringUtils.split(line, ' ');
@@ -300,34 +319,37 @@ public class CrawlerController {
 								else
 									info.pushLog("Testing regex: {} - OK", parts[0]);
 							}
-			        		urlStyles.put(parts[0].toLowerCase(), parts[1]);
+			        		urlStyles.put(parts[0], parts[1]);
 			        	}
 			        }
 			    }
 			} catch (Exception e) {
-				throw new Exception("Can not read URLs list", e);
+				ServerLogger.error("Can not read URLs list", e);
+				throw e;
 			}
 		}
 
 		// Другие настройки
 		info.pushLog("Start creating output directories");
-		urlsPerProxy = Integer.parseInt(props.getProperty(URLS_PER_PROXY, "0"));
-		numberOfCrawlers = Integer.parseInt(props.getProperty(NUMBER_OF_CRAWLERS, "1"));
-		maxPages = Integer.parseInt(props.getProperty(MAX_PAGES, "-1"));
-		maxDepth = Integer.parseInt(props.getProperty(MAX_DEPTH, "-1"));
-		stylesDir = AppContext.getRealPath(props.getProperty(STYLES_DIR, null));
+		urlsPerProxy = Integer.parseInt(AppContext.getProperty(URLS_PER_PROXY, "0"));
+		numberOfCrawlers = Integer.parseInt(AppContext.getProperty(NUMBER_OF_CRAWLERS, "1"));
+		maxPages = Integer.parseInt(AppContext.getProperty(MAX_PAGES, "-1"));
+		maxDepth = Integer.parseInt(AppContext.getProperty(MAX_DEPTH, "-1"));
+		stylesDir = AppContext.getRealPath(AppContext.getProperty(STYLES_DIR, null));
 		if (stylesDir != null && !stylesDir.endsWith("/"))
 			stylesDir += "/";
-		resultDir = AppContext.getRealPath(props.getProperty(RESULT_DIR, null));
+		resultDir = AppContext.getRealPath(AppContext.getProperty(RESULT_DIR, null));
 		if (resultDir != null && !resultDir.endsWith("/"))
 			resultDir += "/";
 		if (resultDir != null) {
 			resultTempSrcDir = resultDir + "_src/";
 			resultTempTransformedDir = resultDir + "_transformed/";
+			resultTempJoinedDir = resultDir + "_joined/";
+			resultTempCompiledDir = resultDir + "_compiled/";
 			resultTempFilesDir = resultDir + "_files/";
 		}
-		resultFile = AppContext.getRealPath(props.getProperty(RESULT_FILE, null));
 		info.pushLog("Output directories created");
+		info.limitLog(1000);
 	}
 	/**
 	 * Выполнить проход по всем доступным урлам согласно настройкам из файлов
@@ -336,14 +358,21 @@ public class CrawlerController {
 	 */
 	private void start(Class<? extends BasicCrawler> crawlerClass,  Mode mode) throws Exception {
 		info.pushLog("Current mode : {}", mode);
-		if (mode == Mode.get || mode == Mode.all)
+		if (mode == Mode.get || mode == Mode.all) {
 			initAndStartCrawler(crawlerClass);
-		if (mode == Mode.parse || mode == Mode.all)
-			buildFinalResult();
-		if (mode == Mode.files || mode == Mode.all)
+		}
+		if (mode == Mode.transform || mode == Mode.all) {
+			transformSource();
+		}
+		if (mode == Mode.join || mode == Mode.all) {
+			joinData();
+		}
+		if (mode == Mode.compile || mode == Mode.all) {
+			compileAndBuildResult();
+		}
+		if (mode == Mode.files || mode == Mode.all) {
 			downloadFiles();
-		if (mode == Mode.append)
-			buildRresult();
+		}
 	}
 	
 	private void terminateInt() {
@@ -356,8 +385,8 @@ public class CrawlerController {
 	 */
 	private void initAndStartCrawler(Class<? extends BasicCrawler> crawlerClass) throws Exception {
 		// ������������ crawler4j
-		int politeness = Integer.parseInt(props.getProperty(POLITENESS, "50"));
-		String storageDir = AppContext.getRealPath(props.getProperty(STORAGE_DIR, ""));
+		int politeness = Integer.parseInt(AppContext.getProperty(POLITENESS, "none"));
+		String storageDir = AppContext.getRealPath(AppContext.getProperty(STORAGE_DIR, ""));
 		CONFIG = new CrawlConfig();
 		CONFIG.setCrawlStorageFolder(storageDir);
 		CONFIG.setPolitenessDelay(politeness);
@@ -365,6 +394,7 @@ public class CrawlerController {
 		CONFIG.setResumableCrawling(true);
 		CONFIG.setMaxPagesToFetch(maxPages);
 		CONFIG.setMaxDepthOfCrawling(maxDepth);
+		CONFIG.setUserAgentString("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
 
 		/*
 		 * Instantiate the controller for this crawl.
@@ -389,8 +419,11 @@ public class CrawlerController {
 	 * @param crawlerClass
 	 * @throws Exception
 	 */
-	public static void startCrawling(Class<? extends BasicCrawler> crawlerClass, IntegrateBase.Info info, Mode mode) throws Exception {
-		CrawlerController.info = info;
+	public static void startCrawling(Class<? extends BasicCrawler> crawlerClass, IntegrateBase.Info info, Mode mode,
+	                                 UrlModifier... modifier) throws Exception {
+		getSingleton().info = info;
+		if (modifier != null && modifier.length > 0)
+			getSingleton().urlModifier = modifier[0];
 		getSingleton().start(crawlerClass, mode);
 	}
 	
@@ -399,14 +432,16 @@ public class CrawlerController {
 	}
 	/**
 	 * Добавить результат парсинга одного URL (вызывается из экземпляра WebCrawler)
-	 * Результат записывается в файл с названием ,которое соответствует урлу
+	 * Результат записывается в файл с названием, которое соответствует урлу
 	 * @param crawler - кролер, который вернул результат
 	 * @param result - результат парсинга
 	 */
 	void pageProcessed(Page page, String result, BasicCrawler crawler) throws IllegalAccessException, InstantiationException {
 		// Записать в файл изначальный полученный html
 		try {
-			String fileName = URLEncoder.encode(page.getWebURL().getURL().toLowerCase(), UTF_8);
+			String url = page.getWebURL().getURL();
+			url = URLDecoder.decode(url, "UTF-8");
+			String fileName = Strings.createFileName(url);
 			Files.createDirectories(Paths.get(resultTempSrcDir));
 			// Если результат парсинга урла не пустая строка - записать этот результат в файл
 			if (!StringUtils.isBlank(result)) {
@@ -415,12 +450,14 @@ public class CrawlerController {
 		} catch (Exception e) {
 			info.pushLog("Can not write parsing results to a file", e);
 		}
+		currentProxyUrlsCount++;
 		// Проверка, нужно ли менять прокси
-		if (proxies.size() > 0 && urlsPerProxy > 0) {
+		if (proxies.size() > 0 && urlsPerProxy > 0 && currentProxyUrlsCount >= urlsPerProxy) {
 			// Взять первый прокси из очереди и поместить его в конец
 			String proxy = proxies.pop();
 			proxies.add(proxy);
-			String[] parts = StringUtils.split(proxy, ':');
+			String actualProxy = StringUtils.split(proxy, ' ')[0];
+			String[] parts = StringUtils.split(actualProxy, ':');
 			if (parts.length > 1) {
 				// Изменение настроек контроллера ,создание нового объекта PageFetcher
 				String address = parts[0];
@@ -432,6 +469,7 @@ public class CrawlerController {
 					CONFIG.setProxyUsername(parts[2]);
 					CONFIG.setProxyPassword(parts[3]);
 				}
+				currentProxyUrlsCount = 0;
 				PageFetcher newFetcher = new PageFetcher(CONFIG);
 				CONTROLLER.setPageFetcher(newFetcher);
 				// Установка нового PageFetcher в объект текущего кролера (WebCrawler)
@@ -449,42 +487,32 @@ public class CrawlerController {
 				singleton = new CrawlerController();
 			return singleton;
 		} catch (Exception e) {
+			ServerLogger.error("Crawler not inited", e);
 			info.pushLog("Error", e);
 			throw new RuntimeException(e);
 		}
 	}
 	/**
-	 * Сормировать окончательный файл с результатами парсинга
-	 */
-	private void buildFinalResult() {
-		//
-		// Шаг 1. Преобразовать все файлы из изначального вида в XML вид
-		//
-		transformSource();
-		//
-		// Шаг 2. Собрать результаты преобразований в один файл
-		//
-		buildRresult();
-		
-		info.pushLog("\n\n\n\n------------------  Finished transforming  -----------------------\n\n\n\n");
-	}
-	/**
 	 * Загрузить все файлы, которые упоминаются в результирующем документе
 	 */
 	private void downloadFiles() {
-		try {
-			Document result = Jsoup.parse(new File(resultFile), UTF_8);
-			Elements downloads = result.getElementsByAttribute(DOWNLOAD);
-			filesToDownload = downloads.size();
+		info.setProcessed(0);
+		info.setOperation("Загрузка файлов");
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempCompiledDir))) {
 			final ConcurrentLinkedQueue<Element> downloadQueue = new ConcurrentLinkedQueue<>();
-			downloadQueue.addAll(downloads);
 			final int NUM_THREADS = 10;
 			Thread[] threads = new Thread[NUM_THREADS];
+			for (Path path : stream) {
+				Document result = Jsoup.parse(path.toFile(), UTF_8);
+				Elements downloads = result.getElementsByAttribute(DOWNLOAD);
+				downloadQueue.addAll(downloads);
+			}
+			info.setToProcess(downloadQueue.size());
 			for (int i = 0; i < NUM_THREADS; i++) {
 				threads[i] = new Thread() {
 					@Override
 					public void run() {
-						Element download = null;
+						Element download;
 						while ((download = downloadQueue.poll()) != null) {
 							// Найти первого родителя с заданным ID
 							Element idOwner = download;
@@ -494,15 +522,15 @@ public class CrawlerController {
 							}
 							if (!StringUtils.isBlank(id)) {
 								String fileName = download.ownText();
+								String url = download.attr(DOWNLOAD);
+								if (StringUtils.isBlank(fileName))
+									fileName = Strings.getFileName(url);
 								Path itemDir = Paths.get(resultTempFilesDir + id);
 								try {
 									if (!Files.exists(itemDir))
 										Files.createDirectories(itemDir);
 									Path file = Paths.get(resultTempFilesDir + id + "/" + fileName);
 									if (!Files.exists(file) || Files.size(file) == 0) {
-										String url = download.attr(DOWNLOAD);
-										//url = URLEncoder.encode(url, "UTF-8");
-										info.pushLog("Downloading: {}\tTo download: {}", url, filesToDownload);
 										try {
 											FileUtils.copyURLToFile(URI.create(url).toURL(), file.toFile());
 										} catch (Exception e) {
@@ -513,41 +541,14 @@ public class CrawlerController {
 									info.pushLog("Error downloading: {}", download.attr(DOWNLOAD));
 								}
 							}
-							filesToDownload--;
+							info.increaseProcessed();
 						}
 
 					}
 				};
 				threads[i].start();
 			}
-/*
-			for (Element download : downloads) {
-				// ����� ������� �������� � �������� ID
-				Element idOwner = download;
-				String id = null;
-				for (; idOwner != null && StringUtils.isBlank(id); idOwner = idOwner.parent()) {
-					id = idOwner.attr(ID);
-				}
-				if (!StringUtils.isBlank(id)) {
-					String fileName = download.ownText();
-					Path itemDir = Paths.get(resultTempFilesDir + id);
-					if (!Files.exists(itemDir))
-						Files.createDirectories(itemDir);
-					Path file = Paths.get(resultTempFilesDir + id + "/" + fileName);
-					if (!Files.exists(file) || Files.size(file) == 0) {
-						String url = download.attr(DOWNLOAD);
-						url = UrlUtil.encode(url, "UTF-8");
-						logger.info("Downloading: {}\tTo download: {}", url, filesToDownload);
-						try {
-							FileUtils.copyURLToFile(URI.create(url).toURL(), file.toFile(), 5000, 5000);
-						} catch (Exception e) {
-							logger.error("Can not download file. Error: " + e.getMessage());
-						}
-					}
-				}
-				filesToDownload--;
-			}
-			*/
+
 			info.pushLog("Finished downloading files");
 		} catch (IOException e) {
 			info.pushLog("Can not parse result file", e);
@@ -559,24 +560,30 @@ public class CrawlerController {
 	public void transformSource() {
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempSrcDir))) {
 			Path transformedDir = Paths.get(resultTempTransformedDir);
-			if (!Files.exists(transformedDir))
-				Files.createDirectories(transformedDir);
+			if (Files.exists(transformedDir))
+				FileUtils.deleteDirectory(transformedDir.toFile());
+			Files.createDirectories(transformedDir);
 			TransformerFactory factory = TransformerFactoryImpl.newInstance();
-			filesToTransform = Paths.get(resultTempSrcDir).toFile().list().length;
+			info.setToProcess(Paths.get(resultTempSrcDir).toFile().list().length);
+			info.setProcessed(0);
+			info.setOperation("XSLT преобразование HTML в XML");
 			// Для каждого файла из временной директории
 			for (Path entry : stream) {
+				Path resultFile = Paths.get(resultTempTransformedDir + entry.getFileName().toString());
+				Document pageDoc = Jsoup.parse(entry.toFile(), UTF_8);
+
+				String url = pageDoc.getElementsByTag("body").first().attr("source");
+
 				String content = new String(Files.readAllBytes(entry), UTF_8);
-				String url = URLDecoder.decode(entry.getFileName().toString(), UTF_8);
 				File xslFile = new File(stylesDir + getStyleForUrl(url));
 				if (!xslFile.exists()) {
 					info.pushLog("No xsl file '{}' found", stylesDir + getStyleForUrl(url));
 					continue;
 				}
-				Path resultFile = Paths.get(resultTempTransformedDir + entry.getFileName().toString());
 				Errors errors = new Errors();
-				Transformer transformer = null;
+				Transformer transformer;
 				try {
-					info.pushLog("Transforming: {}\tTo transform: {}", url, filesToTransform);
+					info.pushLog("Transforming: {}\tTo transform: {}", url, info.getToProcess() - info.getProcessed());
 					factory.setErrorListener(errors);
 					transformer = factory.newTransformer(new StreamSource(xslFile));
 					Reader reader = new StringReader(content);
@@ -594,142 +601,276 @@ public class CrawlerController {
 					info.pushLog("There were errors while transforming source html file {}", url);
 					info.pushLog(errors.errors);
 				}
-				filesToTransform--;
+				info.increaseProcessed();
 			}
 		} catch (Exception e) {
 			info.pushLog("Error while transforming source html file", e);
 		}
+		info.pushLog("ЗАВЕРШЕНО: XSLT преобразование HTML в XML");
 	}
+
 	/**
-	 * Собрать результаты преобразований в один файл
+	 * Преобразовать HTML файл в XML в тестовом режиме
+	 * @param url
+	 * @return
 	 */
-	public void buildRresult() {
-		info.pushLog("Creating output document");
-		Document resultDoc = Jsoup.parse("<result></result>"); // Результирующий документ JSoup
+	public String transformUrlInt(String url) {
+		// Записать в файл изначальный полученный html
 		try {
-			OutputSettings settings = new OutputSettings();
-			settings.charset(Charset.forName("UTF-8"));
-			//settings.syntax(Syntax.xml);
-			settings.escapeMode(EscapeMode.xhtml);
-			info.pushLog("test 1 {}", resultDoc);
-			resultDoc.outputSettings(settings);
-			//resultDoc.outputSettings().escapeMode(EscapeMode.xhtml);
+			String fileName = Strings.createFileName(url);
+			Path file = Paths.get(resultTempSrcDir + fileName);
+			File xslFile = new File(stylesDir + getStyleForUrl(url));
+			if (!xslFile.exists()) {
+				return "<result>NO XSL FILE FOUND</result>";
+			}
+			String content = new String(Files.readAllBytes(file), UTF_8);
+			TransformerFactory factory = TransformerFactoryImpl.newInstance();
+			Transformer transformer = factory.newTransformer(new StreamSource(xslFile));
+			Reader reader = new StringReader(content);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			transformer.transform(new StreamSource(reader), new StreamResult(bos));
+			return bos.toString(UTF_8);
 		} catch (Exception e) {
-			info.pushLog("Some error", "<pre>" + ExceptionUtils.getStackTrace(e) + "</pre>");
+			info.pushLog("Can not write parsing results to a file", e);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			e.printStackTrace(new PrintStream(bos));
+			try {
+				return bos.toString(UTF_8);
+			} catch (UnsupportedEncodingException e1) {
+				ServerLogger.error("no encoding", e1);
+				return null;
+			}
 		}
-		info.pushLog("test 2 {}", resultDoc);
-		Element resultEl = resultDoc.getElementsByTag("result").first();
-		try {
-			info.pushLog("Searching transformed files in {}", resultTempTransformedDir);
-			DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempTransformedDir));
-			filesToAppend = Paths.get(resultTempTransformedDir).toFile().list().length;
+	}
+
+	public static String transformUrl(String url) {
+		return getSingleton().transformUrlInt(url);
+	}
+
+
+	/**
+	 * Объединяет данные из разных XML файлов в один файл, посвященный одному объекту
+	 */
+	public void joinData() {
+		info.setOperation("Сбор и объединение данных из разных источников");
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempTransformedDir))) {
+			Path joinedDir = Paths.get(resultTempJoinedDir);
+			if (Files.exists(joinedDir)) {
+				FileUtils.deleteDirectory(joinedDir.toFile());
+			}
+			Files.createDirectories(joinedDir);
+			info.setToProcess(Paths.get(resultTempTransformedDir).toFile().list().length);
+			info.setProcessed(0);
 			// Для каждого файла из временной директории
-			for (Path entry : stream) {
-				String url = URLDecoder.decode(entry.getFileName().toString(), UTF_8);
-				info.pushLog("Appending: {}\t To append: {}" , url, filesToAppend);
-				Document pageDoc = Jsoup.parse(entry.toFile(), UTF_8);
-				insertPart(resultEl, pageDoc);
-				filesToAppend--;
-			}
-			Files.write(Paths.get(resultFile), resultDoc.getElementsByTag("result").first().outerHtml().getBytes(UTF_8));
-		} catch (Exception e) {
-			info.pushLog("Can not create final result file", e);
-		}
-		info.pushLog("Transformation finished");
-	}
-	/**
-	 * Вставить информацию из страничного документа в результирующий документ
-	 * @param resultDoc
-	 * @param pageDoc
-	 */
-	private void insertPart(Element resultDoc, Document pageDoc) {
-		Elements items = pageDoc.select("*[" + ID + "]");
-		initElementCache("result");
-		for (Element partItem : items) {
-			// Элемент результирующего докумнета, в котором происходит поиск добавляемого элемента
-			Element insertTo = resultDoc;
-			// Предки в прямом порядке
-			Elements parents = partItem.getElementsByTag(H_PARENT);
-			for (Element parent : parents) {
-				String parentId = parent.attr(PARENT);
-				Element nextInsertTo = getElementById(insertTo, parentId);
-				if (nextInsertTo == null) {
-					nextInsertTo = new Element(Tag.valueOf(parent.attr(ELEMENT)), insertTo.baseUri());
-					nextInsertTo.attr(ID, parent.attr(PARENT));
-					insertTo.appendChild(nextInsertTo);
+			for (Path xmlFile : stream) {
+				String xml = new String(Files.readAllBytes(xmlFile), UTF_8);
+				Document pageDoc = Jsoup.parse(xml, "localhost", Parser.xmlParser());
+				Elements items = pageDoc.select("result > *[" + ID + "]");
+				for (Element partItem : items) {
+					String itemId = partItem.attr(ID);
+					String fileName = Strings.createFileName(itemId) + ".xml";
+					Path file = joinedDir.resolve(fileName);
+					Files.write(file, partItem.outerHtml().getBytes(UTF_8),
+							StandardOpenOption.CREATE, StandardOpenOption.APPEND, StandardOpenOption.WRITE);
 				}
-				insertTo = nextInsertTo;
-				parent.remove();
+				info.increaseProcessed();
 			}
-			// Добавление элемента
-			String itemId = partItem.attr(ID);
-			Element resultItem = getElementById(insertTo, itemId);
-			if (resultItem == null) {
-				insertTo.append(partItem.outerHtml());
-			} else {
-				// Добавление всех вложенных элементов по одиночке
-				insertTo = resultItem;
-				for (Element element : partItem.children()) {
-					String action = StringUtils.defaultIfBlank(element.attr(ACTION), IGNORE);
-					element.removeAttr(ACTION);
-					// Игнорирование
-					if (action.equalsIgnoreCase(IGNORE)) {
-						if (insertTo.select(">" + element.tagName()).isEmpty()) {
-							//insertTo.prepend(element.outerHtml());
-							insertTo.prependChild(element);
+		} catch (Exception e) {
+			ServerLogger.error("Error while joining xml files", e);
+			info.pushLog("Error while joining xml files", e);
+		}
+		info.pushLog("ЗАВЕРШЕНО: Сбор и объединение данных из разных источников");
+	}
+
+
+	/**
+	 * Удалить дублирование и создать иерархию
+	 * @throws IOException
+	 */
+	public void compileAndBuildResult() {
+		Path compiledDir = Paths.get(resultTempCompiledDir);
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempJoinedDir))) {
+			if (Files.exists(compiledDir)) {
+				FileUtils.deleteDirectory(compiledDir.toFile());
+			}
+			Files.createDirectories(compiledDir);
+			info.setOperation("Удаление дублирующихся данных");
+			info.setToProcess(Paths.get(resultTempJoinedDir).toFile().list().length);
+			info.setProcessed(0);
+			for (Path xmlFile : stream) {
+				// Сначала скомпилировать информацию (удалить дубли, объединить элементы)
+				// с сохранить в файл
+				String xml = "<result>" + new String(Files.readAllBytes(xmlFile), UTF_8) + "</result>";
+				Document doc = Jsoup.parse(xml, "localhost", Parser.xmlParser());
+				Document newDoc = null;
+				Element newItemToAppend = null;
+				String itemId = null;
+				Elements data = doc.getElementsByTag("result").first().children();
+				for (Element item : data) {
+					if (newDoc == null) {
+						itemId = item.id();
+						String elementName = item.tagName();
+						newDoc = new Document("localhost");
+						newItemToAppend = new Element(elementName);
+						for (Attribute attribute : item.attributes()) {
+							newItemToAppend.attr(attribute.getKey(), attribute.getValue());
 						}
+						newDoc.appendChild(newItemToAppend);
 					}
-					// Дописываение
-					else if (action.equalsIgnoreCase(APPEND)) {
-						//insertTo.append(element.outerHtml());
-						insertTo.appendChild(element);
-					}
-					// Дописывание, если еще нет такого значения
-					else if (action.equalsIgnoreCase(APPEND_IF_DIFFERS)) {
-						boolean append = true;
-						for (Element existing : insertTo.getElementsByTag(element.tagName())) {
-							if (StringUtils.equalsIgnoreCase(existing.html(), element.html())) {
-								append = false;
-								break;
+					for (Element property : item.children()) {
+						String action = StringUtils.defaultIfBlank(property.attr(ACTION), IGNORE);
+						property.removeAttr(ACTION);
+						boolean containsProperty = !newItemToAppend.select(":root > " + property.tagName()).isEmpty();
+						if (!containsProperty) {
+							newItemToAppend.appendChild(property);
+						} else {
+							// Дописываение
+							if (action.equalsIgnoreCase(APPEND) || property.tagName().equalsIgnoreCase(H_PARENT)) {
+								newItemToAppend.appendChild(property);
+							}
+							// Дописывание, если еще нет такого значения
+							else if (action.equalsIgnoreCase(APPEND_IF_DIFFERS)) {
+								boolean append = true;
+								for (Element existing : newItemToAppend.getElementsByTag(property.tagName())) {
+									if (StringUtils.equalsIgnoreCase(existing.html(), property.html())) {
+										append = false;
+										break;
+									}
+								}
+								if (append) {
+									newItemToAppend.appendChild(property);
+								}
 							}
 						}
-						if (append) {
-							//insertTo.append(element.outerHtml());
-							insertTo.appendChild(element);
+					}
+				}
+				if (newItemToAppend != null) {
+					String fileName = Strings.createFileName(itemId) + ".xml";
+					Path file = compiledDir.resolve(fileName);
+					Files.write(file, newItemToAppend.outerHtml().getBytes(UTF_8));
+				}
+				info.increaseProcessed();
+			}
+		} catch (IOException e) {
+			info.pushLog("Error while normalizing item personal file", e);
+		}
+		info.pushLog("ЗАВЕРШЕНО: Удаление дублирующихся данных");
+
+		// Теперь построить дерево иерархии по результатам компиляции
+
+		// 1. Первый проход по всем файлам - создание списка связности в виде
+		// хеш-отображения ID родителя -> список непосредственных потомков
+		// Выделение корневых элементов - элементов, которые не содержат родителя (или он пустой)
+
+		// 1.1. Проход по файлам и создание списка связности
+		// (в дальнейшем возможно сохранение промежуточных результатов в БД)
+
+		HashMap<ParsedItem, UniqueArrayList<ParsedItem>> parentChildren = new HashMap<>();
+		LinkedHashSet<ParsedItem> roots = new LinkedHashSet<>();
+
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempCompiledDir))) {
+			info.setOperation("Дерево иерархии (вложенности). Поиск предков и потомков");
+			info.setProcessed(0);
+			info.setToProcess(Paths.get(resultTempCompiledDir).toFile().list().length);
+			for (Path xmlFile : stream) {
+				String xml = new String(Files.readAllBytes(xmlFile), UTF_8);
+				Document pageDoc = Jsoup.parse(xml, "localhost", Parser.xmlParser());
+				Element fullItem = pageDoc.children().first();
+				ParsedItem item = new ParsedItem(fullItem.attr(ID), fullItem.tagName());
+				Elements directParents = fullItem.getElementsByTag(H_PARENT);
+				boolean hasValidParents = false;
+				// Добавить запись для каждого отдельного родителя (считается что он непосредственный)
+				// в список связности
+				if (directParents.size() > 0) {
+					for (Element directParent : directParents) {
+						String parentId = null;
+						if (directParent != null) {
+							parentId = directParent.attr(PARENT);
+						}
+						hasValidParents |= StringUtils.isNotBlank(parentId);
+						if (StringUtils.isNotBlank(parentId)) {
+							ParsedItem parent = new ParsedItem(parentId, directParent.attr(ELEMENT));
+							if (parentChildren.containsKey(parent)) {
+								parentChildren.get(parent).add(item);
+							} else {
+								UniqueArrayList<ParsedItem> children = new UniqueArrayList<>();
+								parentChildren.put(parent, children);
+								children.add(item);
+							}
+							// Добавить родителя в список потенциальных корневых айтемов
+							roots.add(parent);
 						}
 					}
 				}
-				// ���������� ���� ���������
-				String attrAction = StringUtils.defaultIfBlank(insertTo.attr(ATTR_ACTION), IGNORE);
-				insertTo.removeAttr(ATTR_ACTION);
-				for (Attribute attribute : partItem.attributes()) {
-					String currentVal = insertTo.attr(attribute.getKey());
-					// �������������
-					if (attrAction.equalsIgnoreCase(IGNORE)) {
-						if (StringUtils.isBlank(currentVal))
-							insertTo.attr(attribute.getKey(), attribute.getValue());
-					}
-					// ������������
-					else if (attrAction.equalsIgnoreCase(APPEND)) {
-						if (StringUtils.isBlank(currentVal))
-							insertTo.attr(attribute.getKey(), attribute.getValue());
-						else
-							insertTo.attr(attribute.getKey(), currentVal + "," + attribute.getValue());
-					}
-					// �����������, ���� ��� ��� ������ ��������
-					else if (attrAction.equalsIgnoreCase(APPEND_IF_DIFFERS)) {
-						List<String> vals = Arrays.asList(StringUtils.split(currentVal));
-						if (!vals.contains(attribute.getValue())) {
-							vals.add(attribute.getValue());
-							insertTo.attr(attribute.getKey(), StringUtils.join(vals, ","));
-						}
-					}
+				// Если у айтема не указаны родители - добавить его в список потенциальных корневых айтемов
+				if (!hasValidParents) {
+					roots.add(item);
 				}
+				info.increaseProcessed();
+			}
+		} catch (IOException e) {
+			ServerLogger.error("Error while reading item file", e);
+			info.pushLog("Error while reading item file", e);
+		}
+
+		// 1.2. Удалить из списка потенциальных корневых айтемов те айтемы, которые присутствуют в списках
+		// потомков какого-либо родителя
+
+		for (ParsedItem parent : parentChildren.keySet()) {
+			UniqueArrayList<ParsedItem> children = parentChildren.get(parent);
+			roots.removeAll(children);
+		}
+		info.pushLog("ЗАВЕРШЕНО: Дерево иерархии (вложенности). Поиск предков и потомков");
+
+
+		info.setOperation("Дерево иерархии (вложенности). Запись дерева в XML файл");
+		info.setProcessed(0);
+
+		// 2. Второй проход и формирование итогового XML
+
+		// 2.1. Проход по списку потомков рекурсивно вглубь начиная с корневых элементов с удалением
+		// пройденных элементов в списке
+		// Рекурсивный проход вглубь. После посещения элемент сразу удаляется
+		// По мере прохода постоянно формируется один сквозной XML файл в прямом порядке
+
+		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
+		doc.startElement("data");
+		for (ParsedItem root : roots) {
+			insertItem(doc, parentChildren, root);
+		}
+		doc.endElement();
+		Path file = compiledDir.resolve("_tree_.xml");
+		try {
+			Files.write(file, doc.toString().getBytes(UTF_8));
+		} catch (Exception e) {
+			ServerLogger.error("Error while creating result tree file", e);
+			info.pushLog("Error while creating result tree file", e);
+		}
+
+		info.pushLog("ЗАВЕРШЕНО: Дерево иерархии (вложенности). Запись дерева в XML файл");
+	}
+
+
+	/**
+	 * Вставить один айтем в иерархию
+	 * @param xml
+	 * @param parentChildren
+	 * @param parent
+	 */
+	private void insertItem(XmlDocumentBuilder xml, HashMap<ParsedItem, UniqueArrayList<ParsedItem>> parentChildren, ParsedItem parent) {
+		xml.startElement(parent.element, ID, parent.id);
+		// Добавить всех потомков
+		UniqueArrayList<ParsedItem> children = parentChildren.get(parent);
+		if (children != null) {
+			for (ParsedItem child : children) {
+				insertItem(xml, parentChildren, child);
 			}
 		}
+		xml.endElement();
 	}
+
 	/**
-	 * ������� �������� ����� �� ������� ��� ������������� ����
+	 * Найти XSL файл, который соответствует заданному урлу (нужен для преобразования этого урла)
 	 * @param url
 	 * @return
 	 */
@@ -744,7 +885,7 @@ public class CrawlerController {
 	private void initElementCache(String fileName) {
 		if (!StringUtils.equalsIgnoreCase(nodeCacheFileName, fileName)) {
 			nodeCacheFileName = fileName;
-			nodeCache = new HashMap<String, Element>();
+			nodeCache = new HashMap<>();
 		}
 	}
 	
@@ -782,5 +923,15 @@ public class CrawlerController {
 	
 	public static IntegrateBase.Info getInfo() {
 		return info;
+	}
+
+	public void modifyUrl(WebURL url) {
+		if (urlModifier != null)
+			urlModifier.modifyUrl(url);
+	}
+
+	public static void main(String[] args) {
+		System.out.println("https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=0&searchparam="
+				.matches("https://www\\.metabo\\.com/ru/index\\.php\\?cl=search(&amp;)?&?&order=?(&amp;)?&?ldtype=infogrid(&amp;)?&?_artperpage=100(&amp;)?&?pgNr=.{0,2}(&amp;)?&?searchparam=?"));
 	}
 }

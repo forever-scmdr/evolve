@@ -4,6 +4,7 @@ import ecommander.fwk.EcommanderException;
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.MysqlConnector.ConnectionCount;
 import ecommander.model.*;
+import ecommander.model.datatypes.DataType;
 import ecommander.model.filter.FilterDefinition;
 import ecommander.pages.var.FilterStaticVariable;
 import ecommander.persistence.common.TemplateQuery;
@@ -20,10 +21,7 @@ import org.apache.lucene.search.TermQuery;
 
 import javax.naming.NamingException;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -476,6 +474,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		this.limit = new LimitCriteria(limit, pageNumber);
 		return this;
 	}
+
+	/**
+	 * Установить лимит
+	 * @param limit
+	 * @return
+	 */
+	public ItemQuery setLimit(int limit) {
+		this.limit = new LimitCriteria(limit, 1);
+		return this;
+	}
 	/**
 	 * Установить критерий пользователя
 	 * @param user
@@ -494,22 +502,28 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		}
 		return this;
 	}
+
 	/**
-	 * Создать фильтр исходя из определения фильтра и ввода пользователя
+	 * Этот метод создает пользовательский фильтр по его заданному определению и переданным значениям
+	 * Этот метод ЗАМЕНЯЕТ ТИП АЙТЕМА запроса на указанный в определении фильтра, т.к. фильтр конкретизирует
+	 * тип искомых айтемов (обычно это пользовательский тип).
+	 *
+	 * Надо вызывать этот метод ДО добавления других критериев фильтрации
+	 *
 	 * @param filterDef
 	 * @param userInput
-	 * @return
-	 * @throws EcommanderException
 	 */
-	public final FilterSQLCreator createFilter(FilterDefinition filterDef, FilterStaticVariable userInput) throws EcommanderException {
+	public final void applyUserFilter(FilterDefinition filterDef, FilterStaticVariable userInput) throws EcommanderException {
+		ensureFilter();
 		ItemType userFilterItem = ItemTypeRegistry.getItemType(filterDef.getBaseItemName());
-		if (userFilterItem != null) {
+		if (itemDescStack == null) {
 			itemDescStack = new LinkedList<>();
-			itemDescStack.push(userFilterItem);
+		} else if (itemDescStack.size() > 0) {
+			itemDescStack.pop();
 		}
-		FilterSQLCreatorBuilder builderBuilder = new FilterSQLCreatorBuilder(this, userInput);
+		itemDescStack.push(userFilterItem);
+		UserFilterSQLCreator builderBuilder = new UserFilterSQLCreator(filter, userFilterItem, userInput);
 		filterDef.iterate(builderBuilder);
-		return filter = builderBuilder.getSqlCreator();
 	}
 	/**
 	 * Создать новый фильтр и вернуть его
@@ -688,7 +702,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			query = TemplateQuery.createFromString(GROUP_COMMON_QUERY, "Group query");
 		} else {
 			if (isParent)
-				query = TemplateQuery.createFromString(PARENT_QUERY, "Parent query");
+				query = TemplateQuery.createFromString(PARENT_QUERY, "ParsedItem query");
 			else
 				query = TemplateQuery.createFromString(COMMON_QUERY, "Common query");
 		}
@@ -715,7 +729,11 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				if (hasFulltext()) {
 					orderBy.sql("FIELD (" + I_DOT + I_ID + ", ").longArray(fulltext.getLoadedIds()).sql(")");
 				} else if (hasParent) {
-					orderBy.sql(P_DOT + IP_WEIGHT);
+					if (isTree) {
+						orderBy.sql(TP_DOT + IP_WEIGHT);
+					} else {
+						orderBy.sql(P_DOT + IP_WEIGHT);
+					}
 				} else {
 					orderBy.sql(I_DOT + I_ID);
 				}
@@ -1178,7 +1196,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @throws NamingException
 	 */
 	public static boolean isAncestor(long childId, long parentId, byte assocId, Connection... conn) throws SQLException, NamingException {
-		TemplateQuery query = new TemplateQuery("Parent Check");
+		TemplateQuery query = new TemplateQuery("ParsedItem Check");
 		query.SELECT("*").FROM(ITEM_PARENT_TBL).WHERE().col(IP_CHILD_ID).long_(childId)
 				.AND().col(IP_PARENT_ID).long_(parentId)
 				.AND().col(IP_ASSOC_ID).byte_(assocId);
@@ -1193,6 +1211,45 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		try (PreparedStatement pstmt = query.prepareQuery(connection)) {
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
+		} finally {
+			if (isOwnConnection)
+				MysqlConnector.closeConnection(connection);
+		}
+	}
+
+	/**
+	 * Загрузить все значения одного параметра (для айтема одного типа)
+	 * @param item
+	 * @param param
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public static ArrayList<String> loadParameterValues(ItemType item, ParameterDescription param, Connection... conn) throws SQLException, NamingException {
+		String tableName = DataTypeMapper.getTableName(param.getType());
+		TemplateQuery query = new TemplateQuery("Load Parameter Values");
+		query.SELECT(II_VALUE).FROM(tableName).WHERE()
+				.col(II_ITEM_TYPE).int_(item.getTypeId()).AND().col(II_PARAM).int_(param.getId())
+				.sql(" GROUP BY " + II_VALUE)
+				.ORDER_BY(II_VALUE);
+		boolean isOwnConnection = false;
+		Connection connection;
+		ArrayList<String> result = new ArrayList<>();
+		if (conn == null || conn.length == 0) {
+			isOwnConnection = true;
+			connection = MysqlConnector.getConnection();
+		} else {
+			connection = conn[0];
+		}
+		DataType paramType = DataTypeRegistry.getType(param.getType());
+		try (PreparedStatement pstmt = query.prepareQuery(connection)) {
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Object value = DataTypeMapper.createValue(param.getType(), rs);
+				result.add(paramType.outputValue(value, null));
+			}
+			return result;
 		} finally {
 			if (isOwnConnection)
 				MysqlConnector.closeConnection(connection);

@@ -1006,7 +1006,7 @@ public class PageModelBuilder {
 		if (!StringUtils.isBlank(userFilterItemId)
 				&& !StringUtils.isBlank(userFilterParamName)
 				&& !StringUtils.isBlank(userFilterVarName)) {
-			filter.setUserFilter(userFilterItemId, userFilterParamName, userFilterVarName, preload);
+			filter.setUserFilter(userFilterItemId, userFilterParamName, userFilterVarName, preload, true);
 		}
 		for (Element filterSubnode : detachedDirectChildren(filterNode)) {
 			// Полнотекстовый критерий
@@ -1047,7 +1047,7 @@ public class PageModelBuilder {
 				}
 			}
 			// Основные критерии и не допускать другие тэги
-			else if (!readFilterElement(filter, filterNode, filterSubnode, includes)) {
+			else if (!readFilterElement(filter, filter, filterSubnode, includes)) {
 				throw new PrimaryValidationException(page.getPageName() + " > filter", "'" + filterSubnode.tagName()
 						+ "' is not a valid subelement of &lt;filter&gt; element");
 			}
@@ -1058,31 +1058,37 @@ public class PageModelBuilder {
 	/**
 	 * Прочитать подэлемент фильтра
 	 * @param container
-	 * @param parentNode
+	 * @param filter
 	 * @param filterSubnode
 	 * @param includes
 	 * @return
 	 * @throws PrimaryValidationException
 	 */
-	private boolean readFilterElement(PageElementContainer container, Element parentNode, Element filterSubnode, HashMap<String, Element> includes) throws PrimaryValidationException {
+	private boolean readFilterElement(PageElementContainer container, FilterPE filter, Element filterSubnode, HashMap<String, Element> includes) throws PrimaryValidationException {
 		// Параметр
 		if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PARAMETER_ATTRIBUTE)) {
 			container.addElement(readFilterCriteria(filterSubnode));
 		}
-		// Критерии ассоциированного потомка айтема
-		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), CHILD_ELEMENT)) {
-			AssociatedItemCriteriaPE assocCrit = new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), filterSubnode.attr(ASSOC_ATTRIBUTE), false);
+		// Критерии ассоциированного потомка или предка айтема
+		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), CHILD_ELEMENT)
+				|| StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PARENT_ELEMENT)) {
+			String userFilterItemId = filterSubnode.attr(REF_ATTRIBUTE);
+			String userFilterParamName = filterSubnode.attr(PARAMETER_ATTRIBUTE);
+			String userFilterVarName = filterSubnode.attr(VAR_ATTRIBUTE);
+			String preloadString = filterSubnode.attr(PRELOAD_DOMAINS_ATTRIBUTE);
+			boolean preload = preloadString != null && preloadString.equals(YES_VALUE);
+			boolean isParent = StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PARENT_ELEMENT);
+			boolean isUserFiltered = StringUtils.isNotBlank(userFilterItemId)
+					&& StringUtils.isNotBlank(userFilterParamName)
+					&& StringUtils.isNotBlank(userFilterVarName);
+			AssociatedItemCriteriaPE assocCrit = new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE),
+					filterSubnode.attr(ASSOC_ATTRIBUTE), isParent, isUserFiltered);
 			container.addElement(assocCrit);
-			for (Element element : detachedDirectChildren(filterSubnode)) {
-				readFilterElement(assocCrit, filterSubnode, element, includes);
+			if (isUserFiltered) {
+				filter.setUserFilter(userFilterItemId, userFilterParamName, userFilterVarName, preload, false);
 			}
-		}
-		// Критерии ассоциированного предка айтема
-		else if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), PARENT_ELEMENT)) {
-			AssociatedItemCriteriaPE assocCrit = new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), filterSubnode.attr(ASSOC_ATTRIBUTE), true);
-			container.addElement(assocCrit);
 			for (Element element : detachedDirectChildren(filterSubnode)) {
-				readFilterElement(assocCrit, filterSubnode, element, includes);
+				readFilterElement(assocCrit, filter, element, includes);
 			}
 		}
 		// Опция
@@ -1090,7 +1096,7 @@ public class PageModelBuilder {
 			FilterOptionPE option = new FilterOptionPE();
 			container.addElement(option);
 			for (Element element : detachedDirectChildren(filterSubnode)) {
-				readFilterElement(option, filterSubnode, element, includes);
+				readFilterElement(option, filter, element, includes);
 			}
 			//throw new PrimaryValidationException(page.getPageName() + " > filter", "'option' in not supported yet");
 		}

@@ -21,13 +21,15 @@ public class AssociatedItemCriteriaPE extends PageElementContainer implements Fi
 	private String itemName;
 	private String assocName;
 	private boolean isParent = false;
+	private boolean isUserFiltered = false;
 
-	public AssociatedItemCriteriaPE(String itemName, String assocName, boolean isParent) {
+	public AssociatedItemCriteriaPE(String itemName, String assocName, boolean isParent, boolean isUserFiltered) {
 		this.itemName = itemName;
 		this.assocName = assocName;
 		if (StringUtils.isBlank(assocName))
 			this.assocName = ItemTypeRegistry.getPrimaryAssoc().getName();
 		this.isParent = isParent;
+		this.isUserFiltered = isUserFiltered;
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public class AssociatedItemCriteriaPE extends PageElementContainer implements Fi
 
 	@Override
 	protected PageElementContainer createExecutableShallowClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		return new AssociatedItemCriteriaPE(itemName, assocName, isParent);
+		return new AssociatedItemCriteriaPE(itemName, assocName, isParent, isUserFiltered);
 	}
 
 	@Override
@@ -78,5 +80,9 @@ public class AssociatedItemCriteriaPE extends PageElementContainer implements Fi
 	@Override
 	protected void postValidate(ValidationResults results) {
 		results.popBufferData();
+	}
+
+	public boolean isUserFiltered() {
+		return isUserFiltered;
 	}
 }

@@ -126,7 +126,7 @@ public class DelayedTransaction {
 	 * @param commandUnit
 	 * @throws Exception
 	 */
-	public static void executeSingle(User initiator, DBPersistenceCommandUnit commandUnit) throws Exception {
+	public static void executeSingle(User initiator, PersistenceCommandUnit commandUnit) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(initiator);
 		transaction.addCommandUnit(commandUnit);
 		transaction.execute();

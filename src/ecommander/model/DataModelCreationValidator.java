@@ -410,7 +410,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		if (criticalError)
 			return;
 		// Загрузка матрицы наследования
-		TypeHierarchyRegistry hierarchy = ItemTypeRegistry.createHierarchy(parentChildPairs, new ArrayList<String[]>(), true);
+		HierarchyRegistry hierarchy = ItemTypeRegistry.createHierarchy(parentChildPairs, new ArrayList<String[]>(), true);
 		// Проверка key (есть ли параметры, перечисленные в key)
 		for (Item item : items.values()) {
 			// Проверка key (есть ли параметры, перечисленные в key)
@@ -573,7 +573,7 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				Item item = items.get(inaccessibleItem);
 				// Проверить всех предшественников по иерархии (если доступен предшественник, то доступен и наследник)
 				boolean inaccessible = true;
-				Set<String> inaccPreds = hierarchy.getItemPredecessors(inaccessibleItem);
+				Set<String> inaccPreds = hierarchy.getPredecessors(inaccessibleItem);
 				for (String pred : inaccPreds) {
 					if (!allItems.contains(pred)) {
 						inaccessible = false;
@@ -587,20 +587,20 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		}
 	}
 
-	private void checkSubitems(ChildContainer item, HashSet<String> accessibleItems, HashSet<String> checkedItems, TypeHierarchyRegistry hierarchy) {
+	private void checkSubitems(ChildContainer item, HashSet<String> accessibleItems, HashSet<String> checkedItems, HierarchyRegistry hierarchy) {
 		if (item instanceof Item) {
 			if (checkedItems.contains(((Item)item).name))
 				return;
 			checkedItems.add(((Item)item).name);
-			Set<String> branch = hierarchy.getItemPredecessors(((Item)item).name);
-			branch.addAll(hierarchy.getItemExtenders(((Item)item).name));
+			Set<String> branch = hierarchy.getPredecessors(((Item)item).name);
+			branch.addAll(hierarchy.getExtenders(((Item)item).name));
 			accessibleItems.addAll(branch);
 			for (String itemName : branch) {
 				checkSubitems(items.get(itemName), accessibleItems, checkedItems, hierarchy);
 			}
 		}
 		for (Child child : item.children) {
-			Set<String> succNames = hierarchy.getItemExtenders(child.name);
+			Set<String> succNames = hierarchy.getExtenders(child.name);
 			accessibleItems.addAll(succNames);
 			for (String succName : succNames) {
 				checkSubitems(items.get(succName), accessibleItems, checkedItems, hierarchy);

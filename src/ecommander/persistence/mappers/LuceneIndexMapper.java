@@ -157,9 +157,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	public synchronized void startUpdate() throws IOException {
 		if (concurrentWritersCount == 0) {
 			try {
-				closeReader();
-				if (writer != null)
-					writer.close();
+				closeWriter();
 				IndexWriterConfig config = new IndexWriterConfig(getAnalyzer())
 						.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND)
 						.setRAMBufferSizeMB(5)
@@ -209,8 +207,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			concurrentWritersCount = 0;
 		if (concurrentWritersCount == 0) {
 			writer.commit();
-			writer.close();
-			writer = null;
+			closeWriter();
 		}
 		refreshReader();
 	}
@@ -222,17 +219,19 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 */
 	public synchronized void forceCloseWriter() throws IOException {
 		concurrentWritersCount = 0;
-		if (writer != null)
-			writer.close();
-		writer = null;
+		closeWriter();
 		refreshReader();
 	}
 
-	public synchronized void close() throws IOException {
+	private void closeWriter() throws IOException {
+		closeReader();
 		if (writer != null)
 			writer.close();
-		if (reader != null)
-			reader.close();
+		writer = null;
+	}
+
+	public synchronized void close() throws IOException {
+		closeWriter();
 		if (directory != null)
 			directory.close();
 	}
@@ -255,7 +254,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			reader = null;
 			return;
 		}
-		if (reader ==  null) {
+		if (reader == null) {
 			reader = DirectoryReader.open(directory);
 		} else {
 			DirectoryReader newReader = DirectoryReader.openIfChanged((DirectoryReader) reader);

@@ -572,7 +572,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				items = new ArrayList<>(0);
 			// Загрузка фильтра (домены полей ввода пользовательского фильтра)
 			// Нужно выполнять после основной загрузки айтемов, т.к. в методе модифицируестя объект ItemQuery
-			loadFilter(query);
+			loadUserFilter(query);
 			return items;
 		} 
 		
@@ -600,7 +600,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * @param baseQuery - базовый запрос, по которому извлекался этот (текущий) страничный айтем.
 	 * @throws Exception
 	 */
-	private void loadFilter(final ItemQuery baseQuery) throws Exception {
+	private void loadUserFilter(final ItemQuery baseQuery) throws Exception {
 		if (hasFilter() && getFilter().isCacheable()) {
 			// Если фильтр есть в кеше, загрузить его из кеша и завершить выполнение метода
 			if (CacheablePEManager.getCache(getFilter()))
@@ -621,6 +621,10 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 						// Если в поле не установлен домен - загрузить значения отдельно на базе базового запроса
 						// Только для простого равенства и когда есть только один критерий
 						else if (input.getCriterias().size() == 1) {
+							//
+							//          ВРЕМЕННО БАЗОВЫЙ ЗАПРОС НЕ УЧИТВАЕТСЯ. ТОЛЬКО ТИП ПАРАМЕТРА
+							//
+							/*
 							CriteriaDef crit = (CriteriaDef) input.getCriterias().get(0);
 							ParameterDescription paramDesc = itemType.getParameter(crit.getParamName());
 							baseQuery.createFilter();
@@ -638,6 +642,17 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 										input.addDomainValue(singleParam.outputValue());
 								} else
 									input.addDomainValue(((SingleParameter)param).outputValue());
+							}
+							*/
+							CriteriaDef crit = (CriteriaDef) input.getCriterias().get(0);
+							ParameterDescription paramDesc = itemType.getParameter(crit.getParamName());
+							try {
+								ArrayList<String> values = ItemQuery.loadParameterValues(itemType, paramDesc);
+								for (String value : values) {
+									input.addDomainValue(value);
+								}
+							} catch (Exception e) {
+								throw new EcommanderException(ErrorCodes.NO_SPECIAL_ERROR, "Unable to load filter fields domains", e);
 							}
 						}
 					}

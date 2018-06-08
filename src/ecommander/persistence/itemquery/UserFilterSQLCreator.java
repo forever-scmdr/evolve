@@ -9,33 +9,33 @@ import ecommander.pages.var.FilterStaticVariable;
 
 import java.util.List;
 
-class FilterSQLCreatorBuilder implements FilterDefinitionVisitor {
+/**
+ * Класс, который составляет SQL фильтр по пользовательскому фильтру
+ */
+class UserFilterSQLCreator implements FilterDefinitionVisitor {
 	private FilterSQLCreator sqlCreator;
-	private ItemQuery query;
+	private ItemType item;
 	private FilterStaticVariable userInput;
 	
-	FilterSQLCreatorBuilder(ItemQuery query, FilterStaticVariable userInput) {
-		this.query = query;
+	UserFilterSQLCreator(FilterSQLCreator filterCreator, ItemType item, FilterStaticVariable userInput) {
+		if (filterCreator == null || item == null)
+			throw new IllegalArgumentException("Impossible to create user filter without FilterSQLCreator or ItemType");
+		this.sqlCreator = filterCreator;
+		this.item = item;
 		this.userInput = userInput;
 	}
 	
 	public void visitGroup(CriteriaGroupDef group) throws FilterProcessException {
-		if (sqlCreator == null) {
-			sqlCreator = query.createFilter();
-		}
+		// ничего не делать
 	}
 	
 	public void visitInput(InputDef input) throws FilterProcessException {
-		ItemType item = query.getItemToFilter();
 		for (FilterDefPart part : input.getCriterias()) {
 			CriteriaDef criteria = (CriteriaDef)part;
 			ParameterDescription param = item.getParameter(criteria.getParamName());
 			List<String> values = userInput.getValue(input.getId());
-			sqlCreator.addParameterCriteria(param, item, values, criteria.getSign(), criteria.getPattern(), Compare.ANY);
+			if (values.size() > 0)
+				sqlCreator.addParameterCriteria(param, item, values, criteria.getSign(), criteria.getPattern(), Compare.ANY);
 		}
-	}
-
-	FilterSQLCreator getSqlCreator() {
-		return sqlCreator;
 	}
 }

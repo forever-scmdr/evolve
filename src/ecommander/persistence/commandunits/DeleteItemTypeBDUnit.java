@@ -14,6 +14,7 @@ public class DeleteItemTypeBDUnit extends ItemModelFilePersistenceCommandUnit {
 	
 	private int typeId;
 	private int newTypeId = -1;
+	private String typeName = null;
 
 	public DeleteItemTypeBDUnit(int typeId, int newTypeId) {
 		this.typeId = typeId;
@@ -24,17 +25,28 @@ public class DeleteItemTypeBDUnit extends ItemModelFilePersistenceCommandUnit {
 		this.typeId = typeId;
 		this.newTypeId = -1;
 	}
-	
+
+	public DeleteItemTypeBDUnit(String typeName) {
+		this.typeName = typeName;
+		this.newTypeId = -1;
+	}
+
 	@Override
 	protected void executeInt() throws Exception {
-		ItemType deletedItem = ItemTypeRegistry.getItemType(typeId);
+		if (typeName == null) {
+			ItemType deletedItem = ItemTypeRegistry.getItemType(typeId);
+			if (deletedItem != null)
+				typeName = deletedItem.getName();
+		}
 		// Удаление типа и всех его айтемов
-		if (newTypeId < 0) {
-			String startMark = getStartMark(deletedItem.getName());
-			String endMark = getEndMark(deletedItem.getName());
-			String startPart = StringUtils.substringBefore(getFileContents(), startMark);
-			String endPart = StringUtils.substringAfter(getFileContents(), endMark);
-			setFileContents(startPart + endPart);
+		if (newTypeId < 0 && typeName != null) {
+			String startMark = getStartMark(typeName) + '\n';
+			String endMark = getEndMark(typeName) + '\n';
+			while (StringUtils.contains(getFileContents(), startMark)) {
+				String startPart = StringUtils.substringBefore(getFileContents(), startMark);
+				String endPart = StringUtils.substringAfter(getFileContents(), endMark);
+				setFileContents(startPart + endPart);
+			}
 			saveFile();
 		}
 		// Удаление типа и замена типа всех его айтемов

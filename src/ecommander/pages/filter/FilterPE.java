@@ -90,12 +90,9 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 
 	private Variable limit = null;
 	private Variable page = null;
-	private String userFilterItemId; // При использовании пользовательского фильтра - ID страничного айтема
-	private String userFilterParamName; // При использовании пользовательского фильтра - название параметра
-	private String userFilterVarName; // При использовании пользовательского фильтра - имя страничной переменной, 
-									  // которая хранит ввод пользователя сайта (критерии фильтрации)
-	private boolean needPreloadDomains; // нужно ли подгружать возможные значения списочных полей ввода для пользовательского фильтра
-	private FilterDefinition filterDef; // Объект Фильтр, который является значением параметра userFilterParamName айтема userFilterItemId
+	private UserFilterRefPE userFilter;
+	private boolean isUserFiltered = false; // включена ли пользовательская флиьтрация непосредственно (а не во вложенный
+											// критерий по ассоциации)
 	private ExecutablePagePE parentPage;
 
 	private ItemQuery dbQuery;
@@ -109,13 +106,11 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 			clone.limit = limit.getInited(parentPage);
 		if (page != null)
 			clone.page = page.getInited(parentPage);
-		if (!StringUtils.isBlank(userFilterItemId) && !StringUtils.isBlank(userFilterParamName) && !StringUtils.isBlank(userFilterVarName)) {
-			clone.userFilterItemId = userFilterItemId;
-			clone.userFilterParamName = userFilterParamName;
-			clone.userFilterVarName = userFilterVarName;
+		if (hasUserFilter()) {
+			clone.userFilter = (UserFilterRefPE) userFilter.createExecutableClone(this, parentPage);
 		}
 		clone.parentPage = parentPage;
-		clone.needPreloadDomains = needPreloadDomains;
+		clone.isUserFiltered = isUserFiltered;
 		return clone;
 	}
 
@@ -134,11 +129,9 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	 * @param paramName
 	 * @param variableName
 	 */
-	public void setUserFilter(String itemId, String paramName, String variableName, boolean needPreloadDomains) {
-		this.userFilterItemId = itemId;
-		this.userFilterParamName = paramName;
-		this.userFilterVarName = variableName;
-		this.needPreloadDomains = needPreloadDomains;
+	public void setUserFilter(String itemId, String paramName, String variableName, boolean needPreloadDomains, boolean isDirectlyFiltered) {
+		this.userFilter = new UserFilterRefPE(itemId, paramName, variableName, needPreloadDomains);
+		this.isUserFiltered = isDirectlyFiltered;
 	}
 	
 	public void addLimit(Variable limitVar) {
@@ -178,25 +171,19 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	 * @return если есть фильтр, то вернуть его, если нету, вернуть null
 	 */
 	public final FilterDefinition getUserFilter() {
-		if (filterDef == null) {
-			if (!StringUtils.isBlank(userFilterItemId) && !StringUtils.isBlank(userFilterParamName)) {
-				String filterXML = getCachedContents();
-				try {
-					filterDef = FilterDefinition.create(filterXML);
-				} catch (Exception e) {
-					ServerLogger.error("User filter has wrong format", e);
-				}
-			}
-		}
-		return filterDef;
+		return userFilter.getFilterDef();
 	}
 	
 	public final boolean hasUserFilter() {
-		return getUserFilter() != null && parentPage.getVariable(userFilterVarName) != null;
+		return userFilter != null;
 	}
-	
+
+	public final boolean isUserFilterValid() {
+		return hasUserFilter() && userFilter.isValid();
+	}
+
 	public final String getUserFilterParamName() {
-		return userFilterParamName;
+		return userFilter.getParamName();
 	}
 	/**
 	 * Добавить критерии фильтрации к запросу для извлечения айтемов.
@@ -212,26 +199,20 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 		this.dbQuery = dbQuery;
 
 		/* *** Добавление пользовательского фильтра ****/ 
-		
-		if (hasUserFilter()) {
-			Variable var = parentPage.getVariable(userFilterVarName);
-			FilterStaticVariable filterVar = new FilterStaticVariable(userFilterVarName, var.writeSingleValue());
-			parentPage.addVariable(filterVar); // добавить переменную для последующего вывода при выводе XML страницы
-			dbQuery.createFilter(filterDef, filterVar);
+
+		dbQuery.createFilter();
+		if (isUserFiltered && userFilter.isValid()) {
+			userFilter.apply(dbQuery);
 			// Заменить значение параметра фильтра новым значением, для того, чтобы фильтр выводился в виде XML,
 			// а не в виде escaped XML. Это нужно для того, чтобы можно было напрямую работать с определением фильтра
 			// в XSL шаблонах, не прибегая к функции xsl:parse
 			updateItemFilterParameter();
 		}
-		
-		/* *** Добавление статического фильтра из определения страницы ****/
-
-		if (!dbQuery.hasFilter())
-			dbQuery.createFilter();
 
 		// Все вложенные элементы - критерии
 		for (PageElement element : getAllNested()) {
-			((FilterCriteriaPE) element).process(this);
+			if (element instanceof FilterCriteriaPE)
+				((FilterCriteriaPE) element).process(this);
 		}
 
 		// Лимит
@@ -249,30 +230,9 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 
 	@Override
 	protected boolean validateShallow(String elementPath, ValidationResults results) {
-		boolean userFilter 
-			= !StringUtils.isBlank(userFilterItemId) || !StringUtils.isBlank(userFilterParamName) || !StringUtils.isBlank(userFilterVarName);
-		
 		// Пользовательский фильтр
-		if (userFilter) {
-			// Сущетвование айтемов и параметров
-			ItemPE pageItem = parentPage.getItemPEById(userFilterItemId);
-			if (pageItem == null) {
-				results.addError(elementPath + " > " + getKey(), "there is no '" + userFilterItemId + "' page item on current page");
-				return false;
-			}
-			ItemType itemDesc = ItemTypeRegistry.getItemType(pageItem.getItemName());
-			if (itemDesc.getParameter(userFilterParamName) == null)
-				results.addError(elementPath + " > " + getKey(), "there is no '" + userFilterParamName 
-						+ "' parameter in '" + itemDesc.getName() + "' item");
-			if (!userFilterVarName.startsWith("$") && parentPage.getVariable(userFilterVarName) == null)
-				results.addError(elementPath + " > " + getKey(), "there is no '" + userFilterVarName + "' page variable on current page");
-			// Корректность использования кеширования
-			if (needPreloadDomains && !pageItem.hasCacheVars()) {
-				results.addError(elementPath + " > " + getKey(), "Page " + pageItem.getKey()
-						+ " must have attribute cache-vars set in order to operate filter cache correctly");
-			}
-		}
-
+		if (hasUserFilter())
+			userFilter.validate(elementPath, results);
 		// Ограничения количества и страницы
 		if (limit != null)
 			limit.validate(elementPath + " > " + getKey(), results);
@@ -283,21 +243,21 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	}
 
 	public boolean isCacheable() {
-		return hasUserFilter() && needPreloadDomains;
+		return hasUserFilter() && userFilter.needPreloadDomains();
 	}
 
 	public String getCacheableId() {
-		return parentPage.getItemPEById(userFilterItemId).getCacheableId();
+		return parentPage.getItemPEById(userFilter.getItemId()).getCacheableId();
 	}
 
 	public void setCachedContents(String cache) {
-		if (parentPage.getItemPEById(userFilterItemId).hasFoundItems())
-			parentPage.getItemPEById(userFilterItemId).getSingleFoundItem().setValue(userFilterParamName, cache);
+		if (parentPage.getItemPEById(userFilter.getItemId()).hasFoundItems())
+			parentPage.getItemPEById(userFilter.getItemId()).getSingleFoundItem().setValue(userFilter.getParamName(), cache);
 	}
 
 	public String getCachedContents() {
-		if (parentPage.getItemPEById(userFilterItemId).hasFoundItems())
-			return parentPage.getItemPEById(userFilterItemId).getSingleFoundItem().getStringValue(userFilterParamName);
+		if (parentPage.getItemPEById(userFilter.getItemId()).hasFoundItems())
+			return parentPage.getItemPEById(userFilter.getItemId()).getSingleFoundItem().getStringValue(userFilter.getParamName());
 		return Strings.EMPTY;
 	}
 	/**
@@ -305,12 +265,13 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 	 * Установить определение фильтра, которое в данный момент хранится в этом объекте FilterPE
 	 */
 	public void updateItemFilterParameter() {
-		setCachedContents(filterDef.generateXML());
+		setCachedContents(userFilter.getFilterDef().generateXML());
 	}
 
 	public void addLink(LinkPE linkPE) {
-		// Добавить переменную, которая должна использоваться для передачи занчения фильтра
-		linkPE.addStaticVariable(LinkPE.VAR_VARIABLE, userFilterVarName);
+		// Добавить переменную, которая должна использоваться для передачи значения фильтра
+		if (hasUserFilter())
+			linkPE.addStaticVariable(LinkPE.VAR_VARIABLE, userFilter.getFilterVarName());
 	}
 
 	public String getElementName() {
@@ -366,6 +327,14 @@ public class FilterPE extends PageElementContainer implements CacheablePE, LinkP
 			dbQuery.startParentCriteria(associated.getItemName(), associated.getAssocName());
 		else
 			dbQuery.startChildCriteria(associated.getItemName(), associated.getAssocName());
+		// Если к этому критерию ассоциации применяется пользовательский фильтр - добавить его
+		if (associated.isUserFiltered() && userFilter.isValid()) {
+			userFilter.apply(dbQuery);
+			// Заменить значение параметра фильтра новым значением, для того, чтобы фильтр выводился в виде XML,
+			// а не в виде escaped XML. Это нужно для того, чтобы можно было напрямую работать с определением фильтра
+			// в XSL шаблонах, не прибегая к функции xsl:parse
+			updateItemFilterParameter();
+		}
 		for (PageElement element : associated.getAllNested()) {
 			((FilterCriteriaPE)element).process(this);
 		}

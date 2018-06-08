@@ -1,31 +1,33 @@
 
 package extra._generated;
 
+import java.io.File;
+import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Parse_section
+public class Main_slider_frame
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "parse_section";
+    private final static String _ITEM_TYPE_NAME = "main_slider_frame";
 
-    private Parse_section(Item item) {
+    private Main_slider_frame(Item item) {
         super(item);
     }
 
-    public static Parse_section get(Item item) {
+    public static Main_slider_frame get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'parse_section' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'main_slider_frame' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Parse_section(item);
+        return new Main_slider_frame(item);
     }
 
-    public static Parse_section newChild(Item parent) {
+    public static Main_slider_frame newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 
@@ -45,20 +47,16 @@ public class Parse_section
         return containsValue("name", value);
     }
 
-    public void set_item_urls(String value) {
-        setValue("item_urls", value);
+    public void set_pic(File value) {
+        setValue("pic", value);
     }
 
-    public String get_item_urls() {
-        return getStringValue("item_urls");
+    public File get_pic() {
+        return getFileValue("pic", AppContext.getCommonFilesDirPath());
     }
 
-    public String getDefault_item_urls(String defaultVal) {
-        return getStringValue("item_urls", defaultVal);
-    }
-
-    public boolean contains_item_urls(String value) {
-        return containsValue("item_urls", value);
+    public boolean contains_pic(File value) {
+        return containsValue("pic", value);
     }
 
 }

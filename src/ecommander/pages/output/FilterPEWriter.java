@@ -28,7 +28,7 @@ public class FilterPEWriter implements PageElementWriter {
 		ExecutableItemPE item = (ExecutableItemPE)elementToWrite;
 		if (!item.hasFilter()) return;
 		FilterPE filter = item.getFilter();
-		if (filter.hasUserFilter()) {
+		if (filter.isUserFilterValid()) {
 			xml.startElement(filter.getUserFilterParamName());
 			xml.addElements(item.getFilter().getCachedContents());
 			xml.endElement();

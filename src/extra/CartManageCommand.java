@@ -13,8 +13,8 @@ import java.util.HashSet;
  */
 public class CartManageCommand extends BasicCartManageCommand {
 
-	private static final HashSet<String> MANDATORY_PHYS = new HashSet<>();
-	private static final HashSet<String> MANDATORY_JUR = new HashSet<>();
+	public static final HashSet<String> MANDATORY_PHYS = new HashSet<>();
+	public static final HashSet<String> MANDATORY_JUR = new HashSet<>();
 	static {
 		MANDATORY_PHYS.add(ItemNames.user_phys.NAME);
 		MANDATORY_PHYS.add(ItemNames.user_phys.ADDRESS);
@@ -39,7 +39,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 
 	@Override
 	protected boolean validate() throws Exception {
-		Item form = getItemForm().getSingleItem();
+		Item form = getItemForm().getTransientSingleItem();
 		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
 		boolean hasError = false;
 		if (isPhys) {

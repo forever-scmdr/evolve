@@ -280,6 +280,7 @@ public abstract class Command implements AutoCloseable {
 	 */
 	protected final void startUserSession(User user) {
 		page.getSessionContext().setUser(user);
+		transaction.switchInitiator(user);
 	}
 	
 	public final boolean hasResults() {

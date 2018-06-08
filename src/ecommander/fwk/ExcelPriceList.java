@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 /**
  * Прайс-лист
@@ -21,11 +22,12 @@ import java.util.Iterator;
 public abstract class ExcelPriceList implements Closeable {
 	private POIExcelWrapper doc;
 	private boolean isValid = true;
-	private Sheet sheet;
-	private HashMap<String, Integer> header = new HashMap<>();
+	private Sheet currentSheet;
+	private HashMap<String, Integer> currentHeader = new HashMap<>();
 	private Row currentRow;
 	private POIUtils.CellXY headerCell;
 	private FormulaEvaluator eval;
+	private ArrayList<SheetHeader> validSheets = new ArrayList<>();
 
 	public ExcelPriceList(String fileName, String... mandatoryCols) {
 		this.doc = POIUtils.openExcel(fileName);
@@ -52,7 +54,7 @@ public abstract class ExcelPriceList implements Closeable {
 		boolean sheetChecked = false;
 		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
 			// Все названия колонок должны быть в одной строке
-			sheet = wb.getSheetAt(i);
+			Sheet sheet = wb.getSheetAt(i);
 			boolean rowChecked = true;
 			for (String mandatoryCol : mandatoryCols) {
 				headerCell = POIUtils.findFirstContaining(sheet, eval, mandatoryCol);
@@ -66,7 +68,16 @@ public abstract class ExcelPriceList implements Closeable {
 			}
 			if (rowChecked) {
 				sheetChecked = true;
-				break;
+				Row row = sheet.getRow(headerCell.row);
+				HashMap<String, Integer> headers = new HashMap<>();
+				for (Cell cell : row) {
+					String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
+					if (StringUtils.isNotBlank(colHeader)) {
+						headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+					}
+				}
+				SheetHeader sh = new SheetHeader(sheet, headers, headerCell);
+				validSheets.add(sh);
 			}
 		}
 
@@ -74,14 +85,11 @@ public abstract class ExcelPriceList implements Closeable {
 			isValid = false;
 			return;
 		}
+	}
 
-		Row row = sheet.getRow(headerCell.row);
-		for (Cell cell : row) {
-			String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
-			if (StringUtils.isNotBlank(colHeader)) {
-				header.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
-			}
-		}
+	public final String getSheetName(){
+		String shitName = currentSheet.getSheetName();
+		return shitName;
 	}
 
 	public final String getValue(int colIndex, double... roundQuotient) {
@@ -99,7 +107,7 @@ public abstract class ExcelPriceList implements Closeable {
 	}
 
 	public final String getValue(String colName, double... roundQuotient) {
-		Integer colIdx = header.get(StringUtils.lowerCase(colName));
+		Integer colIdx = currentHeader.get(StringUtils.lowerCase(colName));
 		if (colIdx == null)
 			return null;
 		return getValue(colIdx);
@@ -118,21 +126,55 @@ public abstract class ExcelPriceList implements Closeable {
 	public final void iterate() throws Exception {
 		if (!isValid)
 			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, "Excel file is not valid");
-		Iterator<Row> rowIter = sheet.rowIterator();
-		for (int i = 0; i <= headerCell.row && rowIter.hasNext(); i++) {
-			rowIter.next();
+
+		for(SheetHeader sh : validSheets){
+			currentSheet = sh.sheet;
+			headerCell = sh.headerCell;
+			currentHeader = sh.header;
+			//-- do everything except processing rows;
+			processSheet();
+			//-- process rows
+			Iterator<Row> rowIter = currentSheet.rowIterator();
+			for (int i = 0; i <= headerCell.row && rowIter.hasNext(); i++) {
+				rowIter.next();
+			}
+			while (rowIter.hasNext()) {
+				currentRow = rowIter.next();
+				processRow();
+			}
 		}
-		while (rowIter.hasNext()) {
-			currentRow = rowIter.next();
-			processRow();
-		}
+	}
+
+	public final TreeSet<String> getHeaders(){
+		TreeSet<String> a = new TreeSet<>();
+		a.addAll(currentHeader.keySet());
+		return a;
 	}
 
 	public int getLinesCount() {
-		return sheet.getLastRowNum() - headerCell.row;
+		return currentSheet.getLastRowNum() - headerCell.row;
+	}
+	public int getTotalLinesCount(){
+		int tlc = 0;
+		for(SheetHeader sh : validSheets){
+			Sheet s = sh.sheet;
+			tlc += s.getLastRowNum() - sh.headerCell.row;
+		}
+		return tlc;
 	}
 
 	protected abstract void processRow() throws Exception;
+	protected abstract void processSheet() throws Exception;
+	protected static class SheetHeader{
+		private Sheet sheet;
+		private HashMap<String, Integer> header = new HashMap<>();
+		private POIUtils.CellXY headerCell;
+		protected SheetHeader(Sheet sheet, HashMap<String, Integer> header, POIUtils.CellXY headerCell){
+			this.sheet = sheet;
+			this.header = header;
+			this.headerCell = headerCell;
+		}
+	}
 
 	@Override
 	public void close() throws IOException {

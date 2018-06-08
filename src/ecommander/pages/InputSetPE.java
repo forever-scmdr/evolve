@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Набор полей ввода, может сожержать как одно поле, так и много
- * Может относиться к айтему, а может и не относиться.
+ * Может относиться к айтему, а может и не относиться. - пока относится только к айтему
  * Может представлять как параметры атйема, так и другие значения, ассоциированные с айтемом
  *
  * Представляет тэги parameter-input и extra-input
@@ -103,6 +103,8 @@ public class InputSetPE implements PageElement {
 	public void validate(String elementPath, ValidationResults results) {
 		if (names.size() == 0 && StringUtils.isBlank(refId))
 			results.addError(elementPath + " > " + getKey(), "input name is not set");
+		if (StringUtils.isBlank(refId))
+			results.addError(elementPath + " > " + getKey(), "input reference item is not set");
 		if (StringUtils.isNotBlank(refId) && pageModel.getItemPEById(refId) == null)
 			results.addError(elementPath + " > " + getKey(), "there is no page item with ID '" + refId + "'");
 		if (isParameter) {

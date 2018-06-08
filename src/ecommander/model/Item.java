@@ -390,6 +390,7 @@ public class Item implements ItemBasics {
 							if (qName.equals(PARAM_TAG)) {
 								String idStr = attributes.getValue(ID_ATTRIBUTE);
 								paramId = Integer.parseInt(idStr);
+								currentParamDesc = itemType.getParameter(paramId);
 							} else {
 								ParameterDescription paramDesc = itemType.getParameter(qName);
 								if (paramDesc != null) {
@@ -845,6 +846,19 @@ public class Item implements ItemBasics {
 	}
 
 	/**
+	 * Установить владельца для нового айтема
+	 * Это может понабобиться в случае если айтем был создан с помощью формы
+	 * @param groupId
+	 * @param userId
+	 */
+	public final void setOwner(byte groupId, int userId) {
+		if (!isNew())
+			throw new IllegalStateException("Impossible to set owner of an already existing item");
+		this.ownerGroupId = groupId;
+		this.ownerUserId = userId;
+	}
+
+	/**
 	 * @see Object#toString()
 	 */
 	public final String toString() {
@@ -1149,6 +1163,20 @@ public class Item implements ItemBasics {
 				result.add(sp.outputValue());
 		}
 		return result;
+	}
+
+	/**
+	 * Вывести значение параметра.
+	 * Если параметр множественный, значения выводятся через запятую
+	 * @param paramName
+	 * @return
+	 */
+	public final String outputValue(String paramName) {
+		Parameter param = getParameterByName(paramName);
+		if (param.isMultiple()) {
+			return StringUtils.join(outputValues(paramName), ",");
+		}
+		return ((SingleParameter) param).outputValue();
 	}
 	/**
 	 * Вернуть значение строкового параметра

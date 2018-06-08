@@ -30,6 +30,10 @@ import java.util.Collection;
 		 <parameter name="display_size" sign="&gt;=" ><var var="diag"/></parameter>
 	 </filter>
  </list>
+
+ Ассоциации могут содержать пользовательский фильтр, который определяется:
+    Определением фильтра - одиночный параметр одиночного загруженного айтема (атрибуты ref и parameter)
+    Переменной, хранящей значения фильтра - переменная страницы (атрибут var)
  *
  * Created by E on 5/7/2017.
  */
@@ -63,7 +67,7 @@ public class AssociatedItemCriteriaGroup extends CriteriaGroup implements DBCons
 
 	@Override
 	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, byte assocId, Type type) {
-		String critId = (type == AssociatedItemCriteriaGroup.Type.CHILD ? "C" : "P") + assocCriterias.size() + groupId;
+		String critId = (type == Type.CHILD ? "C" : "P") + assocCriterias.size() + groupId;
 		AssociatedItemCriteriaGroup newCrit = new AssociatedItemCriteriaGroup(critId, item, assocId, type, this, this.item);
 		assocCriterias.add(newCrit);
 		return newCrit;

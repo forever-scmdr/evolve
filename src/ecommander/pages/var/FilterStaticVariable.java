@@ -36,7 +36,7 @@ public class FilterStaticVariable extends StaticVariable {
 	private boolean isParsed = false;
 
 	public FilterStaticVariable(String varId, String value) {
-		super(null, varId, value);
+		super(varId, value);
 	}
 
 	/**

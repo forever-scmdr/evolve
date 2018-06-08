@@ -54,12 +54,12 @@ public class PictureDataType extends FileDataType {
 			}
 		} else {
 			try {
-				Path file;
+				Path file = null;
 				if (value instanceof File)
 					file = ((File) value).toPath();
-				else
+				else if (value instanceof String)
 					file = new File(getItemFilePath(item) + value).toPath();
-				if (!Files.exists(file))
+				if (file == null || !Files.exists(file))
 					return meta;
 				FileInputStream is = new FileInputStream(file.toFile());
 				Dimension size = getImageDimension(file.getFileName().toString(), is);

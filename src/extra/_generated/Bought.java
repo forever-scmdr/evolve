@@ -30,6 +30,22 @@ public class Bought
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 
+    public void set_name(String value) {
+        setValue("name", value);
+    }
+
+    public String get_name() {
+        return getStringValue("name");
+    }
+
+    public String getDefault_name(String defaultVal) {
+        return getStringValue("name", defaultVal);
+    }
+
+    public boolean contains_name(String value) {
+        return containsValue("name", value);
+    }
+
     public void set_code(String value) {
         setValue("code", value);
     }
