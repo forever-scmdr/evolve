@@ -88,19 +88,19 @@ computed-предшественник - айтем, который содерж�
 
 # 101 - удаляемый айтем, 1 - первичная ассоциация
 1)	UPDATE item SET status = 3 WHERE id = 101;
-2)	UPDATE item INNER JOIN item_parent ON p_id = id SET status = 3 WHERE parsedItem = 101 AND assoc = 1;
+2)	UPDATE item INNER JOIN item_parent ON p_id = id SET status = 3 WHERE parent = 101 AND assoc = 1;
 
 1)	INSERT INTO log (item)
 	SELECT id
-	FROM item INNER JOIN item_parent ON parsedItem = id
+	FROM item INNER JOIN item_parent ON parent = id
 	WHERE child = 101 AND assoc = 1 AND supertype IN (типы айтемов с computed параметрами)
 
-2)	Поиск предшественников      # P1.parsedItem - предки потомков 101
+2)	Поиск предшественников      # P1.parent - предки потомков 101
 	INSERT INTO log (item)
 	SELECT I.id
-	FROM item AS I INNER JOIN item_parent AS P1 ON (I.id = P1.parsedItem)
+	FROM item AS I INNER JOIN item_parent AS P1 ON (I.id = P1.parent)
 	INNER JOIN item_parent AS P2 ON P2.child = P1.child
-	WHERE P2.parsedItem = 101
+	WHERE P2.parent = 101
 	AND P1.assoc IN (все, кроме 1)      # ассоциации помимо первичной
 	AND I.supertype IN (типы айтемов с computed параметрами)
 
@@ -111,7 +111,7 @@ computed-предшественник - айтем, который содерж�
 # 101 - удаляемый айтем, А - ассоциация (первичная, если создание или копирование, другая, если создание ассоциации)
 	INSERT INTO log (item)
 	SELECT id
-	FROM item INNER JOIN item_parent ON parsedItem = id
+	FROM item INNER JOIN item_parent ON parent = id
 	WHERE child = 101 AND assoc = A AND supertype IN (типы айтемов с computed параметрами)
 
 
@@ -123,11 +123,11 @@ computed-предшественник - айтем, который содерж�
 1) Запрос до фактического перемещения (до соответствующих запросов)
 	INSERT INTO log (item)
 	SELECT id
-	FROM item INNER JOIN item_parent ON parsedItem = id
+	FROM item INNER JOIN item_parent ON parent = id
 	WHERE child = 101 AND assoc = 1 AND supertype IN (типы айтемов с computed параметрами)
 
 2) Запрос (такой же) после фактического перемещения (после соответствующих запросов)
 	INSERT INTO log (item)
 	SELECT id
-	FROM item INNER JOIN item_parent ON parsedItem = id
+	FROM item INNER JOIN item_parent ON parent = id
 	WHERE child = 101 AND assoc = 1 AND supertype IN (типы айтемов с computed параметрами)
