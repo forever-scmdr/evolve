@@ -3,6 +3,8 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="title" select="$p/name"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
@@ -14,7 +16,32 @@
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="extra_xml" select="parse-xml(concat('&lt;extra&gt;', $p/extra_xml, '&lt;/extra&gt;'))/extra"/>
 
-
+	<xsl:template name="MARKUP">
+		<xsl:variable name="price" select="$p/price"/>
+		<script type="application/ld+json">
+			<xsl:variable name="quote">"</xsl:variable>
+			{
+			"@context": "http://schema.org/",
+			"@type": "Product",
+			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
+			"image": <xsl:value-of select="concat($quote, $base, '/', $p/@path, $p/gallery[1], $quote)" />,
+			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
+			"offers": {
+			"@type": "Offer",
+			"priceCurrency": "BYN",
+			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
+			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>
+			}, "aggregateRating": {
+			"@type": "AggregateRating",
+			"ratingValue": "4.9",
+			"ratingCount": "53",
+			"bestRating": "5",
+			"worstRating": "1",
+			"name": <xsl:value-of select="concat($quote, translate($p/name, $quote, ''), $quote)" />
+			}
+			}
+		</script>
+	</xsl:template>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -23,7 +50,7 @@
 				<a href="/">Главная страница</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{if (position() = 1) then show_section else show_products}"><xsl:value-of select="name"/></a>
+					<a href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -65,8 +92,12 @@
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 				<xsl:if test="$has_price">
 					<div class="price">
-						<xsl:if test="$p/price_old and not($p/price_old = '')"><p><span>Старая цена</span><xsl:value-of select="$p/price_old"/> р.</p></xsl:if>
-						<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
+						<xsl:if test="$p/price_old and not($p/price_old = '')"><p><span>Цена</span><b>
+							<xsl:value-of select="$p/price_old"/> р.</b></p></xsl:if>
+						<p>
+							<xsl:if test="$p/price_old and not($p/price_old = '')"><span>Цена со скидкой</span></xsl:if>
+							<xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.
+						</p>
 					</div>
 				</xsl:if>
 				<div class="order">
@@ -91,6 +122,10 @@
 				<div class="art-number">
 					№ для заказа: <xsl:value-of select="$p/code" />
 				</div>
+				<div class="extra-links">
+					<a href="{$p/my_price_link}" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
+					<a href="{$p/one_click_link}" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+				</div>
 				<div class="links">
 					<div id="compare_list_{$p/code}">
 						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">в сравнение</a></span>
@@ -105,6 +140,11 @@
 						<xsl:if test="$extra_xml/manual">
 							<div class="extra-block">
 								<i class="fas fa-file-alt"></i><a href="{$extra_xml/manual}" target="_blank"><strong>Руководство по эксплуатации</strong></a>
+							</div>
+						</xsl:if>
+						<xsl:if test="$extra_xml/parts">
+							<div class="extra-block">
+								<i class="fas fa-file-alt"></i><a href="{$extra_xml/parts}" target="_blank"><strong>Список запчастей</strong></a>
 							</div>
 						</xsl:if>
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
@@ -139,13 +179,13 @@
 					</div>
 				</div>
 			</div>
-			<xsl:if test="page/assoc">
-				<h3>Вас также может заинтересовать</h3>
-				<div class="catalog-items">
-					<xsl:apply-templates select="page/assoc"/>
-				</div>
-			</xsl:if>
 		</div>
+		<xsl:if test="page/assoc">
+			<h3>Вас также может заинтересовать</h3>
+			<div class="catalog-items">
+				<xsl:apply-templates select="page/assoc"/>
+			</div>
+		</xsl:if>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>

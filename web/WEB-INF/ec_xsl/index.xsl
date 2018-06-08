@@ -99,7 +99,12 @@
 						<div class="slider-container">
 							<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
 								<xsl:for-each select="page/main_page/main_slider_frame">
-									<img src="{@path}{pic}" />
+									<xsl:if test="link and not(link = '')">
+										<div data-img="{@path}{pic}"><a href="{link}">&#160;</a></div>
+									</xsl:if>
+									<xsl:if test="not(link) or link = ''">
+										<img src="{@path}{pic}" />
+									</xsl:if>
 								</xsl:for-each>
 							</div>
 						</div>
@@ -198,7 +203,7 @@
 						<xsl:for-each select="page/main_page/main_promo_bottom">
 							<div style="background-image: url({@path}{pic})">
 								<div class="aspect-ratio"></div>
-								<a href=""></a>
+								<a href="{link}"></a>
 							</div>
 
 							<!-- <a href="{link}" style="background-image: url({@path}{pic})">

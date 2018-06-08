@@ -3,6 +3,8 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="title" select="'Статьи'" />
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'news'"/>
 
 	<xsl:variable name="p" select="page/product"/>
@@ -16,7 +18,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="if (page/news) then 'Новости' else 'Статьи'"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
 			<div class="catalog-items info">

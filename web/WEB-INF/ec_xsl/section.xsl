@@ -3,18 +3,57 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name" />
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+	</xsl:template>
+
+	<xsl:template name="MARKUP">
+		<script type="application/ld+json">
+			<xsl:variable name="quote">"</xsl:variable>
+			<xsl:variable name="min" select="f:currency_decimal(//min/price)"/>
+			<xsl:variable name="max" select="f:currency_decimal(//max/price)"/>
+
+			{
+			"@context": "http://schema.org/",
+			"@type": "Product",
+			"name": <xsl:value-of select="concat($quote, replace($sel_sec/name, $quote, ''), $quote)" />,
+			<xsl:if test="$sel_sec/main_pic != ''">
+				"image": <xsl:value-of select="concat($quote, $base, '/', $sel_sec/@path, $sel_sec/main_pic, $quote)"/>,
+			</xsl:if>
+			"offers": {
+			"@type": "AggregateOffer",
+			"priceCurrency": "BYN",
+			"lowPrice": <xsl:value-of select="concat($quote,$min, $quote)"/>,
+			"highPrice": <xsl:value-of select="concat($quote, $max, $quote)"/>,
+			"offerCount": <xsl:value-of select="concat($quote, count($sel_sec/product), $quote)"/>
+			}, "aggregateRating": {
+			"@type": "AggregateRating",
+			"ratingValue": "4.9",
+			"ratingCount": "53",
+			"bestRating": "5",
+			"worstRating": "1",
+			"name": <xsl:value-of select="concat($quote, translate($sel_sec/name, $quote, ''), $quote)" />
+			}
+			}
+
+		</script>
 	</xsl:template>
 
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="view" select="page/variables/view"/>
+	<xsl:variable name="tag" select="page/variables/tag"/>
+	<xsl:variable name="title" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
+	<xsl:variable name="canonical" select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/>
+	<xsl:variable name="view" select="if (page/variables/view) then page/variables/view else 'list'"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
-	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+	<xsl:variable name="only_available" select="page/variables/minqty = '1'"/>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
@@ -72,22 +111,24 @@
 			</xsl:if>
 
 			<xsl:if test="not($not_found)">
-				<div class="view-container desktop">
+				<div class="view-container">
 					<div class="view">
-						<span>Показывать:</span>
-						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
-						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
-						<!--<div class="checkbox">-->
-							<!--<label>-->
-								<!--<xsl:if test="not($only_available)">-->
-									<!--<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>-->
-								<!--</xsl:if>-->
-								<!--<xsl:if test="$only_available">-->
-									<!--<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>-->
-								<!--</xsl:if>-->
-								<!--в наличии-->
-							<!--</label>-->
-						<!--</div>-->
+						<div class="desktop">
+							<span>Показывать:</span>
+							<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
+							<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
+						</div>
+						<div class="checkbox">
+							<label>
+								<xsl:if test="not($only_available)">
+									<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
+								</xsl:if>
+								<xsl:if test="$only_available">
+									<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
+								</xsl:if>
+								в наличии
+							</label>
+						</div>
 						<span>
 							<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
 							        onchange="window.location.href = $(this).find(':selected').attr('link')">
@@ -99,7 +140,7 @@
 							</select>
 						</span>
 					</div>
-					<div class="quantity">
+					<div class="quantity desktop">
 						<span>Кол-во на странице:</span>
 						<span>
 							<select class="form-control" value="{page/variables/limit}"
