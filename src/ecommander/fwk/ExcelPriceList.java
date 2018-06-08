@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Прайс-лист
@@ -102,7 +99,7 @@ public abstract class ExcelPriceList implements Closeable {
 				headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
 			}
 		}
-		SheetHeader sh = new SheetHeader(currentSheet, headers, headerCell);
+		currentHeader = headers;
 	}
 
 	public final String getSheetName(){
@@ -164,8 +161,19 @@ public abstract class ExcelPriceList implements Closeable {
 	}
 
 	public final UniqueArrayList<String> getHeaders(){
+		String[] tmp = new String[currentHeader.size()];
 		UniqueArrayList<String> a = new UniqueArrayList<>();
-		a.addAll(currentHeader.keySet());
+		ArrayList<Integer> x = new ArrayList<>();
+		x.addAll(currentHeader.values());
+		Collections.sort(x);
+		for(String key : currentHeader.keySet()){
+			int v = currentHeader.get(key);
+			int index = x.lastIndexOf(v);
+			tmp[index] = key;
+		}
+		for(String s : tmp){
+			a.add(s);
+		}
 		return a;
 	}
 
