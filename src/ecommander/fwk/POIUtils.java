@@ -287,7 +287,7 @@ public class POIUtils {
 	 * @return
 	 */
 	public static ArrayList<CellXY> findRowContaining(Sheet sheet, FormulaEvaluator evaluator, String cellContent, boolean justFirst) {
-		ArrayList<CellXY> result = new ArrayList<CellXY>();
+		ArrayList<CellXY> result = new ArrayList<POIUtils.CellXY>();
 		Iterator<Row> rowIter = sheet.iterator();
 		while (rowIter.hasNext()) {
 			Row row = rowIter.next();

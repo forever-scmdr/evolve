@@ -57,7 +57,7 @@ class MultipleParamCriteria extends ParameterCriteria {
 		}
 	}
 
-	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, Occur occur) {
+	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
 		if (param.isFulltextFilterable()) {
 			if (!sign.equals(IN) && !sign.equals(NOT_IN))
 				return queryBuilder;
