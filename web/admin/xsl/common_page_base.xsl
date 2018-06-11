@@ -159,7 +159,7 @@
 					padding : 0
 					});
 					$(".active").parent("li").children("ul").show();
-					$(".active").parents("ul").show();
+					$(".active").parent("ul").show();
 				});
 			</script>
 			

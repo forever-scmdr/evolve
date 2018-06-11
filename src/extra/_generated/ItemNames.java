@@ -4,6 +4,9 @@ package extra._generated;
 
 public class ItemNames {
 
+    public final static String PARSE_SECTION = "parse_section";
+    public final static String PARSE_ITEM = "parse_item";
+
     public final static String CATALOG = "catalog";
     public final static String SECTION = "section";
     public final static String PRODUCT = "product";
@@ -323,5 +326,28 @@ public class ItemNames {
         String COMMENT = "comment";
 
     }
+
+	public interface parse_item {
+
+		String _ITEM_NAME = "parse_item";
+		String URL = "url";
+		String DOWNLOADED = "downloaded";
+		String PARSED = "parsed";
+		String GOT_FILES = "got_files";
+		String DUPLICATED = "duplicated";
+		String HTML = "html";
+		String XML = "xml";
+		String TEST_URL = "test_url";
+		String FILE = "file";
+
+	}
+
+	public interface parse_section {
+
+		String _ITEM_NAME = "parse_section";
+		String NAME = "name";
+		String ITEM_URLS = "item_urls";
+
+	}
 
 }

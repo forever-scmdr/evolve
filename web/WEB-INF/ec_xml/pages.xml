@@ -725,11 +725,10 @@
 	<!--//                                                                                                  -->
 	<page name="test_parse_item">
 		<request>
-			<var name="pi"/>
+			<var name="url"/>
 		</request>
-		<single item="parse_item" var="pi" id="pi"/>
-		<command class="lunacrawler.TestParseItemCommand" clear-cache="no">
-			<result name="test" type="xml"/>
+		<command class="lunacrawler.CrawlCommand" method="test">
+			<result name="test_xsl" type="xml"/>
 		</command>
 	</page>
 
