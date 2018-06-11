@@ -698,11 +698,8 @@
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
-		<!-- <xsl:text disable-output-escaping="yes">
-			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
-			&lt;meta name="yandex-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
-		</xsl:text> -->
-
+		<xsl:value-of select="page/common/google_verification" disable-output-escaping="yes"/>
+		<xsl:value-of select="page/common/yandex_verification" disable-output-escaping="yes"/>
 		<xsl:call-template name="MARKUP" />
 
 	</xsl:template>
