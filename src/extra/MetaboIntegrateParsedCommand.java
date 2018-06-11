@@ -52,6 +52,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 	private final String ASSOC_CODE = "assoc_code";
 	private final String ASSOC = "assoc";
 	private final String MANUAL = "manual";
+	private final String PARTS = "parts";
 
 
 
@@ -131,6 +132,10 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			Elements manuals = productDoc.getElementsByTag(MANUAL);
 			if (manuals.size() > 0) {
 				extraXml += manuals.first().outerHtml();
+			}
+			Elements spareParts = productDoc.getElementsByTag(PARTS);
+			if (spareParts.size() > 0) {
+				extraXml += spareParts.first().outerHtml();
 			}
 			ArrayList<Path> gallery = new ArrayList<>();
 			Elements pics = productDoc.getElementsByTag(GALLERY).first().getElementsByTag(PIC);

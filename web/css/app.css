@@ -6117,7 +6117,7 @@ img {
   }
   .banners-container .aspect-ratio {
     width: 100%;
-    padding-top: 60%;
+    padding-top: 192px;
   }
 .path-container {
   display: flex;
@@ -7029,8 +7029,70 @@ input.submit {
 	color: #A7323B;
 }
 .catalog-items.main-page .catalog-item {
-	flex-basis: 15.9%;
+	flex-basis: 19.3%;
 }
-.catalog-items.main-page .catalog-item:nth-child(6n+0) {
+.catalog-items.main-page .catalog-item:nth-child(5n+0) {
 	margin-right: 0;
+}
+
+
+/**/
+
+.old-price b {
+  text-decoration: line-through;
+  text-decoration-color: red;
+  color: gray;
+  font-weight: normal;
+}
+.catalog-item-container .price p:first-child, .catalog-item-container .price p span {
+  display: block;
+}
+.catalog-items .catalog-item .price p:first-child {
+  margin-right: 1rem;
+}
+.extra-links {
+  flex-basis: 100%;
+  margin-top: 1rem;
+}
+.catalog-items .catalog-item .extra-links a {
+  height: unset;
+  font-weight: normal;
+  display: inline;
+  overflow: unset;
+  margin-bottom: unset;
+  padding: unset;
+}
+.extra-links a {
+  margin-right: 1rem;
+}
+.extra-links a:last-child {
+  margin-right: unset;
+}
+.catalog-items.lines .catalog-item .extra-links a {
+  display: block;
+}
+.catalog-items .catalog-item {
+  padding-bottom: 2rem;
+}
+.catalog-items.lines .catalog-item div a {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.catalog-items .catalog-item .art-number {
+  margin-bottom: 1rem;
+}
+.product-info .order {
+  margin-bottom: 1rem;
+}
+.product-info input[type="number"] {
+  height: 3rem;
+}
+.product-info .links a {
+  margin-right: 1rem;
+}
+
+.price p:first-child b {
+  text-decoration: line-through;
+  text-decoration-color: red;
+  color: gray;
 }

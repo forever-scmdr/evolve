@@ -106,6 +106,7 @@
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec" cacheable="false">
 			<single item="seo"/>
 			<list item="product" id="prod" transit="true">
+				<!--
 				<filter>
 					<parameter name="available" compare="ANY"><var var="minqty" /></parameter>
 					<child item="params" transit="false" ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
@@ -116,6 +117,7 @@
 						<var name="sec" var="sec" style="translit"/>
 					</link>
 				</filter>
+				-->
 				<single item="params_xml"/>
 				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="translit"/>

@@ -4,10 +4,6 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
 import ecommander.model.*;
-import ecommander.model.datatypes.DataType;
-import ecommander.model.filter.CriteriaDef;
-import ecommander.model.filter.FilterDefinition;
-import ecommander.model.filter.InputDef;
 import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
@@ -24,7 +20,7 @@ import java.util.List;
  * Создание каталога продукции по файлу Yandex Market
  * Created by E on 16/3/2018.
  */
-public class YMarketCreateCatalogCommand extends IntegrateBase implements YMarketConst {
+public class YMarketCreateCatalogCommand extends IntegrateBase implements CatalogConst {
 	private static final String INTEGRATION_DIR = "ym_integrate";
 
 	@Override
@@ -61,16 +57,6 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements YMarke
 			info.increaseProcessed();
 		}
 
-		// Разбор всех параметров товаров по разделам. Операции с БД не происходят
-		info.setToProcess(xmls.size());
-		info.pushLog("Разбор типов товаров");
-		info.setProcessed(0);
-		YMarketProductClassHandler classHandler = new YMarketProductClassHandler(info);
-		for (File xml : xmls) {
-			parser.parse(xml, classHandler);
-			info.increaseProcessed();
-		}
-
 		// Удаление всех пользовательских параметров товаров (айтемов и типов)
 		info.pushLog("Удаление параметров товаров");
 		ItemQuery paramsQuery = new ItemQuery(PARAMS_ITEM);
@@ -88,47 +74,6 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements YMarke
 		typesToDelete.remove(PARAMS_ITEM);
 		for (String typeToDelete : typesToDelete) {
 			executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(ItemTypeRegistry.getItemType(typeToDelete).getTypeId()));
-		}
-
-		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
-
-		// Создание новых типов айтемов
-		info.pushLog("Создание новых параметров товаров. Создание фильтров");
-		info.setToProcess(classHandler.getParams().size());
-		info.setProcessed(0);
-		info.setToProcess(0);
-		for (String categoryId : classHandler.getParams().keySet()) {
-			Item section = secHandler.getSections().get(categoryId);
-			if (section != null) {
-				YMarketProductClassHandler.Params sectionParams = classHandler.getParams().get(categoryId);
-				String className = "p" + categoryId;
-				String classCaption = section.getStringValue(NAME_PARAM);
-				// Создать фильтр и установить его в айтем
-				FilterDefinition filter = FilterDefinition.create("");
-				filter.setRoot(className);
-				for (String paramName : sectionParams.paramTypes.keySet()) {
-					if (sectionParams.notInFilter.contains(paramName))
-						continue;
-					String caption = sectionParams.paramCaptions.get(paramName);
-					InputDef input = new InputDef("droplist", caption, "", "");
-					filter.addPart(input);
-					input.addPart(new CriteriaDef("=", paramName, sectionParams.paramTypes.get(paramName), ""));
-				}
-				section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
-
-				// Создать класс для продуктов из этого раздела
-				ItemType newClass = new ItemType(className, 0, classCaption, "", "",
-						PARAMS_ITEM, null, false, true, false, false);
-				for (String paramName : sectionParams.paramTypes.keySet()) {
-					String type = sectionParams.paramTypes.get(paramName).toString();
-					String caption = sectionParams.paramCaptions.get(paramName);
-					newClass.putParameter(new ParameterDescription(paramName, 0, type, false, 0,
-							"", caption, "", "", false, false, null, null));
-				}
-				executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
-			}
-			info.increaseProcessed();
 		}
 
 		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();

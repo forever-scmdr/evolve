@@ -236,6 +236,9 @@ public class PageController {
 						return result.getValue();
 					}
 				}
+				// Если нет такой страницы на сайте - вернуть просто как ссылку
+				if (PageModelRegistry.getRegistry().getPageModel(baseLink.getPageName()) == null)
+					return result.getValue();
 				// Сериализовать и спарсить заново ссылку, чтобы в случае если имя страницы было урлом, 
 				// корректно добавлялись бы значения переменных TODO <fix> перенести в класс LinkPE
 				else {

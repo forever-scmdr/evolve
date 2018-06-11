@@ -1164,6 +1164,20 @@ public class Item implements ItemBasics {
 		}
 		return result;
 	}
+
+	/**
+	 * Вывести значение параметра.
+	 * Если параметр множественный, значения выводятся через запятую
+	 * @param paramName
+	 * @return
+	 */
+	public final String outputValue(String paramName) {
+		Parameter param = getParameterByName(paramName);
+		if (param.isMultiple()) {
+			return StringUtils.join(outputValues(paramName), ",");
+		}
+		return ((SingleParameter) param).outputValue();
+	}
 	/**
 	 * Вернуть значение строкового параметра
 	 * @param paramName

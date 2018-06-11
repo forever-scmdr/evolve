@@ -53,6 +53,17 @@ public abstract class BasicRegisterCommand extends Command {
 		form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
 		form.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), newUser.getUserId());
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(form));
+
+		//Add cart contacts!
+		Item oldUserItem = getSessionMapper().getSingleRootItemByName(USER_ITEM);
+		Item userItem = new ItemQuery(USER_ITEM).setUser(newUser).loadFirstItem();
+		if (oldUserItem != null){
+			getSessionMapper().removeItems(oldUserItem.getId());
+		}
+		userItem.setContextPrimaryParentId(Item.DEFAULT_ID);
+		getSessionMapper().saveTemporaryItem(userItem, "user");
+
+
 		return getResult("success");
 	}
 

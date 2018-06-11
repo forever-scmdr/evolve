@@ -1,16 +1,18 @@
 package ecommander.fwk.integration;
 
-public interface YMarketConst {
+public interface CatalogConst {
 
 	String CATALOG_ITEM = "catalog";
 	String SECTION_ITEM = "section";
 	String PRODUCT_ITEM = "product";
 	String PARAMS_ITEM = "params";
+	String PARAMS_XML_ITEM = "params_xml";
 
 
 	String INTEGRATION_PARAM = "integration";
 	String DATE_PARAM = "date";
 	String NAME_PARAM = "name";
+	String TYPE_PARAM = "type";
 	String CODE_PARAM = "code";
 	String CATEGORY_ID_PARAM = "category_id";
 	String PARENT_ID_PARAM = "parent_id";
@@ -29,6 +31,11 @@ public interface YMarketConst {
 	String TEXT_PARAM = "text";
 	String TEXT_PICS_PARAM = "text_pics";
 	String GALLERY_PARAM = "gallery";
+	String XML_PARAM = "xml";
+
+	String PARAMETER = "parameter";
+	String NAME = "name";
+	String VALUE = "value";
 
 
 
@@ -47,6 +54,8 @@ public interface YMarketConst {
 	String CURRENCY_ID_ELEMENT = "currencyId";
 	String CATEGORY_ID_ELEMENT = "categoryId";
 	String PICTURE_ELEMENT = "picture";
+	String VENDOR_ELEMENT = "vendor";
+	String MODEL_ELEMENT = "model";
 	String VENDOR_CODE_ELEMENT = "vendorCode";
 	String DESCRIPTION_ELEMENT = "description";
 	String COUNTRY_OF_ORIGIN_ELEMENT = "country_of_origin";

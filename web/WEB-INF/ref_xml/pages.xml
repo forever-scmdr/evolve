@@ -37,13 +37,13 @@
 			</link>
 			<item name="service" id="service">
 				<link name="show_page" target="service">
-					<var name="parsedItem" style="translit" item="services" />
+					<var name="parent" style="translit" item="services" />
 					<var name="parent2" style="translit" value="-" />
 					<var name="sel" style="translit" item="service" />
 				</link>
 				<item name="service" id="service2">
 					<link name="show_page" target="service">
-						<var name="parsedItem" style="translit" item="services" />
+						<var name="parent" style="translit" item="services" />
 						<var name="parent2" style="translit" item="service" />
 						<var name="sel" style="translit" item="service2" />
 					</link>
@@ -214,7 +214,7 @@
 
 	<page name="service" template="services" cacheable="true">
 		<variables>
-			<var name="parsedItem" style="translit" />
+			<var name="parent" style="translit" />
 			<var name="parent2" style="translit"/>
 			<var name="sel" style="translit" />
 		</variables>

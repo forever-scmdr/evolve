@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class ResultPE implements PageElement {
 	public static final String ELEMENT_NAME = "result";
 	
-	public static enum ResultType {
+	public enum ResultType {
 		forward, redirect, xml, plain_text, none;
 	}
 

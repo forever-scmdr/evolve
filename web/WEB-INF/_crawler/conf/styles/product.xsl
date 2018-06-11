@@ -48,6 +48,7 @@
 					</xsl:for-each>
 				</symbols>
 				<manual><xsl:value-of select="//div[@class='product-attributes-pdfs']/a[1]/@href"/></manual>
+				<parts><xsl:value-of select="//div[@class='product-attributes-pdfs']/a[2]/@href"/></parts>
 				<xsl:variable name="spins" select="//iframe[@class='degree']"/>
 				<xsl:if test="$spins">
 					<spin link="{$spins[1]/@src}"/>
