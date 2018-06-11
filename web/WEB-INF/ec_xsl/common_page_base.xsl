@@ -8,9 +8,15 @@
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
-	<!-- <TITLE> -->
-	
-	<xsl:template name="TITLE">Метабо</xsl:template>
+
+	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
+	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
+
+	<xsl:variable name="title" select="'Метабо'" />
+	<xsl:variable name="meta_description" select="''" />
+	<xsl:variable name="base" select="page/base" />
+	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
+	<xsl:variable name="canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''"/>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
@@ -537,13 +543,20 @@
 	<xsl:template match="/">
 	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
 	</xsl:text>
-	<html lang="en">
+	<html lang="ru">
 		<head>
+							<xsl:text disable-output-escaping="yes">
+&lt;!--
+				</xsl:text>
+			<xsl:value-of select="page/source_link"/>
+			<xsl:text disable-output-escaping="yes">
+--&gt;
+				</xsl:text>
 			<base href="{page/base}"/>
 			<meta charset="utf-8"/>
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
-			<title><xsl:call-template name="TITLE"/></title>
+			<xsl:call-template name="SEO"/>
 			<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&amp;subset=cyrillic" rel="stylesheet" />
 			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700&amp;subset=cyrillic" rel="stylesheet" />
 			<link rel="stylesheet" href="css/app.css"/>
@@ -607,11 +620,16 @@
 				});
 			</script>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>
+			<xsl:call-template name="USER_SCRIPTS"/>
 		</body>
 	</html>
 	</xsl:template>
 
-	
+	<xsl:template name="USER_SCRIPTS">
+		<xsl:for-each select="page/modules/named_code">
+			<xsl:value-of select="code" disable-output-escaping="yes"/>
+		</xsl:for-each>
+	</xsl:template>
 
 
 
@@ -663,6 +681,41 @@
 				<xsl:with-param name="current" select="number($current) + number(1)"/>
 			</xsl:call-template>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="SEO">
+
+		<xsl:variable name="quote">"</xsl:variable>
+
+		<link rel="canonical" href="{concat($main_host, $canonical)}" />
+
+		<xsl:if test="$seo">
+			<xsl:apply-templates select="$seo"/>
+		</xsl:if>
+		<xsl:if test="not($seo) or $seo = ''">
+			<title>
+				<xsl:value-of select="$title"/>
+			</title>
+			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
+		</xsl:if>
+		<!-- <xsl:text disable-output-escaping="yes">
+			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
+			&lt;meta name="yandex-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
+		</xsl:text> -->
+
+		<xsl:call-template name="MARKUP" />
+
+	</xsl:template>
+
+	<xsl:template name="MARKUP"/>
+
+	<xsl:template match="seo | url_seo">
+		<title>
+			<xsl:value-of select="title"/>
+		</title>
+		<meta name="description" content="{description}"/>
+		<meta name="keywords" content="{keywords}"/>
+		<xsl:value-of select="meta" disable-output-escaping="yes"/>
 	</xsl:template>
 
 </xsl:stylesheet>

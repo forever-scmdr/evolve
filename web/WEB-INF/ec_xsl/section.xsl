@@ -3,8 +3,44 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="tilte" select="$sel_sec/name" />
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="canonical" select="concat('/', $sel_sec/@key, '/')"/>
+
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+	</xsl:template>
+
+	<xsl:template name="MARKUP">
+		<script type="application/ld+json">
+			<xsl:variable name="quote">"</xsl:variable>
+			<xsl:variable name="min" select="f:currency_decimal(//min/price)"/>
+			<xsl:variable name="max" select="f:currency_decimal(//max/price)"/>
+
+			{
+			"@context": "http://schema.org/",
+			"@type": "Product",
+			"name": <xsl:value-of select="concat($quote, replace($sel_sec/name, $quote, ''), $quote)" />,
+			<xsl:if test="$sel_sec/main_pic != ''">
+				"image": <xsl:value-of select="concat($quote, $base, '/', $sel_sec/@path, $sel_sec/main_pic, $quote)"/>,
+			</xsl:if>
+			"offers": {
+			"@type": "AggregateOffer",
+			"priceCurrency": "BYN",
+			"lowPrice": <xsl:value-of select="concat($quote,$min, $quote)"/>,
+			"highPrice": <xsl:value-of select="concat($quote, $max, $quote)"/>,
+			"offerCount": <xsl:value-of select="concat($quote, count($sel_sec/product), $quote)"/>
+			}, "aggregateRating": {
+			"@type": "AggregateRating",
+			"ratingValue": "4.9",
+			"ratingCount": "53",
+			"bestRating": "5",
+			"worstRating": "1",
+			"name": <xsl:value-of select="concat($quote, translate($sel_sec/name, $quote, ''), $quote)" />
+			}
+			}
+
+		</script>
 	</xsl:template>
 
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
@@ -30,7 +66,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$sel_sec/name"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 		<div class="page-content m-t">
 			<xsl:if test="$sel_sec/params_filter/filter">
 				<div class="toggle-filters">
