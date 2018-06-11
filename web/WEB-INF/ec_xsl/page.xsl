@@ -4,7 +4,7 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="$p/header"/>
-
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="p" select="page/custom_page"/>
 
 	<xsl:variable name="active_menu_item" select="$p/@key"/>
@@ -16,28 +16,13 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> >
-				<xsl:for-each select="$p/parent">
-					<a href="{show_page}"><xsl:value-of select="header"/></a> >
-				</xsl:for-each>
+				<a href="/">Главная страница</a> &gt;
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$p/header"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
-			<div class="catalog-items info">
-				<xsl:for-each select="$p/custom_page">
-					<div class="catalog-item">
-						<a href="{show_page}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="{@path}{main_pic}" alt=""/> --></a>
-						<div class="text">
-							<div class="date"><xsl:value-of select="date"/></div>
-							<a href="{show_page}"><xsl:value-of select="header"/></a>
-							<xsl:value-of select="short" disable-output-escaping="yes"/>
-						</div>
-					</div>
-				</xsl:for-each>
-			</div>
 			<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
 		</div>
 

@@ -3,12 +3,9 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="ancestors" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/name, ' ')" />
-	<xsl:variable name="title-constant" select="' купить в Минске в магазине КЕРАМОМАРКЕТ'"/>
-	<xsl:variable name="description-constant" select="' купить в Минске недорого в магазине КЕРАМОМАРКЕТ &#9989;. Фото. Доступные цены ☎☎☎  +375 (17) 291-91-50 Звоните!'" />
-	<xsl:variable name="quote">"</xsl:variable>
-	<xsl:variable name="title" select="replace(concat($ancestors, $title-constant), $quote, '')" />
-	<xsl:variable name="meta_description" select="replace(concat($ancestors, $description-constant), $quote, '')" />
+	<xsl:variable name="tilte" select="$sel_sec/name" />
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="canonical" select="concat('/', $sel_sec/@key, '/')"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -83,7 +80,10 @@
 						<xsl:for-each select="$sel_sec/params_filter/filter/input">
 							<xsl:variable name="name" select="@id"/>
 							<div class="active checkgroup">
-								<strong><xsl:value-of select="@caption"/></strong>
+								<strong>
+									<xsl:value-of select="@caption"/><xsl:text> </xsl:text>
+									<xsl:if test="@description and not(@description = '')">[<xsl:value-of select="@description"/>]</xsl:if>
+								</strong>
 								<div class="values">
 									<xsl:for-each select="domain/value">
 										<div class="checkbox">

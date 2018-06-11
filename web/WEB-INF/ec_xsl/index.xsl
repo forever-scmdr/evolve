@@ -10,7 +10,7 @@
 				"@type":"Organization",
 				"url":"<xsl:value-of select="$main_host"/>/",
 				"name":"<xsl:value-of select="$title"/>",
-				"logo":"<xsl:value-of select="concat($base, '/img/logo_big.svg')"/>",
+				"logo":"<xsl:value-of select="concat($base, '/img/logo.jpg')"/>",
 				"aggregateRating": {
 					"@type": "AggregateRating",
 					"ratingCount": "53",
@@ -18,7 +18,7 @@
 					"bestRating": "5",
 					"ratingValue": "4,9",
 					"worstRating": "1",
-					"name": "Иностранное торгово-производственное унитарное редприятие «САКУРА БЕЛ»"
+					"name": "Metabo"
 				},
 				"contactPoint": [
 					<xsl:for-each select="page/common/phone" >
@@ -126,268 +126,84 @@
 
 
 	<xsl:template name="CONTENT">
-		<div class="has-slider">
+		<div class="container-fluid has-slider">
 			<div class="container">
-				<div class="slider-container">
-					<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
-						<xsl:for-each select="page/main_page/main_slider_frame">
-							<img src="{@path}{pic}" />
-						</xsl:for-each>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- <div class="actions mobile">
-			<h3>Акции</h3>
-			<div class="actions-container">
-				<a href="{page/main_page/link_link}"><xsl:value-of select="page/main_page/link_text"/></a>
-			</div>
-		</div> -->
-		<div class="has-catalog-sections">
-			<div class="container">
-				<h4 class="big-title">
-					Каталог продукции
-				</h4>
-				<div class="catalog-items sections">
-					<xsl:for-each select="/page/catalog/section">
-						<div class="catalog-item">
-							<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
-							<a href="{if(section != '') then show_section else show_products}" class="image-container" style="background-image: url({$pic_path});">
-								<!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/> -->
-							</a>
-							<div class="name">
-								<a href="{if(section != '') then show_section else show_products}"><span>
-									<xsl:value-of select="name"/></span></a>
-								<xsl:value-of select="short" disable-output-escaping="yes"/>
-							</div>
-						</div>
-					</xsl:for-each>
-				</div>
-			</div>
-		</div>
-		<!-- <div class="has-items-carousel">
-			<div class="container">
-				<div class="more-products">
-					<h4 class="big-title">Лидеры продаж</h4>
-					<div class="slick-slider catalog-items">
-						<div class="catalog-item">
-							<div class="tags">
-								<span>Скидка</span>
-							</div>
-							<a href="catalog_item.html" class="image-container" style="background-image: url(/files/804/37f/main_pic_videokamera_st_702_pro_d.png);">
-								<img src="/files/804/37f/main_pic_videokamera_st_702_pro_d.png" alt="" />
-							</a>
-							<div class="name">
-								<a href="catalog_item.html" title="Видеокамера ST-702 PRO D">Видеокамера ST-702 PRO D</a>
-							</div>
-							<div class="price">
-								<p><span>Старая цена</span>100 р.</p>
-								<p><span>Новая цена</span>99 р.</p>
-							</div>
-							<div class="order">
-								<div id="cart_list_{code}" class="product_purchase_container">
-									<form action="">
-										<input type="number" value="1" />
-										<input type="submit" value="Заказать" />
-									</form>
-								</div>
-								<div class="quantity">Осталось 12 шт.</div>
-								<div class="links">
-									<div id="compare_list_{code}">
-										<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i></a></span>
-									</div>
-									<div id="id=fav_list_{code}">
-										<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i></a></span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="catalog-item">
-							<div class="tags">
-								<span>Скидка</span>
-							</div>
-							<a href="catalog_item.html" class="image-container" style="background-image: url(/files/804/37f/main_pic_videokamera_st_702_pro_d.png);">
-								<img src="/files/804/37f/main_pic_videokamera_st_702_pro_d.png" alt="" />
-							</a>
-							<div class="name">
-								<a href="catalog_item.html" title="Видеокамера ST-702 PRO D">Видеокамера ST-702 PRO D</a>
-							</div>
-							<div class="price">
-								<p><span>Старая цена</span>100 р.</p>
-								<p><span>Новая цена</span>99 р.</p>
-							</div>
-							<div class="order">
-								<div id="cart_list_{code}" class="product_purchase_container">
-									<form action="">
-										<input type="number" value="1" />
-										<input type="submit" value="Заказать" />
-									</form>
-								</div>
-								<div class="quantity">Осталось 12 шт.</div>
-								<div class="links">
-									<div id="compare_list_{code}">
-										<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i></a></span>
-									</div>
-									<div id="id=fav_list_{code}">
-										<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i></a></span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="catalog-item">
-							<div class="tags">
-								<span>Скидка</span>
-							</div>
-							<a href="catalog_item.html" class="image-container" style="background-image: url(/files/804/37f/main_pic_videokamera_st_702_pro_d.png);">
-								<img src="/files/804/37f/main_pic_videokamera_st_702_pro_d.png" alt="" />
-							</a>
-							<div class="name">
-								<a href="catalog_item.html" title="Видеокамера ST-702 PRO D">Видеокамера ST-702 PRO D</a>
-							</div>
-							<div class="price">
-								<p><span>Старая цена</span>100 р.</p>
-								<p><span>Новая цена</span>99 р.</p>
-							</div>
-							<div class="order">
-								<div id="cart_list_{code}" class="product_purchase_container">
-									<form action="">
-										<input type="number" value="1" />
-										<input type="submit" value="Заказать" />
-									</form>
-								</div>
-								<div class="quantity">Осталось 12 шт.</div>
-								<div class="links">
-									<div id="compare_list_{code}">
-										<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i></a></span>
-									</div>
-									<div id="id=fav_list_{code}">
-										<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i></a></span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="catalog-item">
-							<div class="tags">
-								<span>Скидка</span>
-							</div>
-							<a href="catalog_item.html" class="image-container" style="background-image: url(/files/804/37f/main_pic_videokamera_st_702_pro_d.png);">
-								<img src="/files/804/37f/main_pic_videokamera_st_702_pro_d.png" alt="" />
-							</a>
-							<div class="name">
-								<a href="catalog_item.html" title="Видеокамера ST-702 PRO D">Видеокамера ST-702 PRO D</a>
-							</div>
-							<div class="price">
-								<p><span>Старая цена</span>100 р.</p>
-								<p><span>Новая цена</span>99 р.</p>
-							</div>
-							<div class="order">
-								<div id="cart_list_{code}" class="product_purchase_container">
-									<form action="">
-										<input type="number" value="1" />
-										<input type="submit" value="Заказать" />
-									</form>
-								</div>
-								<div class="quantity">Осталось 12 шт.</div>
-								<div class="links">
-									<div id="compare_list_{code}">
-										<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i></a></span>
-									</div>
-									<div id="id=fav_list_{code}">
-										<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i></a></span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="catalog-item">
-							<div class="tags">
-								<span>Скидка</span>
-							</div>
-							<a href="catalog_item.html" class="image-container" style="background-image: url(/files/804/37f/main_pic_videokamera_st_702_pro_d.png);">
-								<img src="/files/804/37f/main_pic_videokamera_st_702_pro_d.png" alt="" />
-							</a>
-							<div class="name">
-								<a href="catalog_item.html" title="Видеокамера ST-702 PRO D">Видеокамера ST-702 PRO D</a>
-							</div>
-							<div class="price">
-								<p><span>Старая цена</span>100 р.</p>
-								<p><span>Новая цена</span>99 р.</p>
-							</div>
-							<div class="order">
-								<div id="cart_list_{code}" class="product_purchase_container">
-									<form action="">
-										<input type="number" value="1" />
-										<input type="submit" value="Заказать" />
-									</form>
-								</div>
-								<div class="quantity">Осталось 12 шт.</div>
-								<div class="links">
-									<div id="compare_list_{code}">
-										<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i></a></span>
-									</div>
-									<div id="id=fav_list_{code}">
-										<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i></a></span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="catalog-item">
-							<div class="tags">
-								<span>Скидка</span>
-							</div>
-							<a href="catalog_item.html" class="image-container" style="background-image: url(/files/804/37f/main_pic_videokamera_st_702_pro_d.png);">
-								<img src="/files/804/37f/main_pic_videokamera_st_702_pro_d.png" alt="" />
-							</a>
-							<div class="name">
-								<a href="catalog_item.html" title="Видеокамера ST-702 PRO D">Видеокамера ST-702 PRO D</a>
-							</div>
-							<div class="price">
-								<p><span>Старая цена</span>100 р.</p>
-								<p><span>Новая цена</span>99 р.</p>
-							</div>
-							<div class="order">
-								<div id="cart_list_{code}" class="product_purchase_container">
-									<form action="">
-										<input type="number" value="1" />
-										<input type="submit" value="Заказать" />
-									</form>
-								</div>
-								<div class="quantity">Осталось 12 шт.</div>
-								<div class="links">
-									<div id="compare_list_{code}">
-										<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i></a></span>
-									</div>
-									<div id="id=fav_list_{code}">
-										<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i></a></span>
-									</div>
-								</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="slider-container">
+							<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
+								<xsl:for-each select="page/main_page/main_slider_frame">
+									<xsl:if test="link and not(link = '')">
+										<div data-img="{@path}{pic}"><a href="{link}">&#160;</a></div>
+									</xsl:if>
+									<xsl:if test="not(link) or link = ''">
+										<img src="{@path}{pic}" />
+									</xsl:if>
+								</xsl:for-each>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div> -->
-		
-		
-		<div class="has-news">
-			<div class="container">
-				<xsl:if test="page/main_page/link_text and not(page/main_page/link_text = '')">
-					<div class="actions">
-						<h4 class="big-title label-actions">&#160;</h4>
-						<div class="actions-container">
-							<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
-						</div>
-					</div>
-				</xsl:if>
+		</div>
 
-				<div class="news">
-					<h4 class="big-title label-news">&#160;</h4>
-					<div class="news-container">
-						<xsl:for-each select="page/news_wrap/news/news_item">
-							<div>
-								<a href="{show_news_item}"><xsl:value-of select="header"/></a>
-								<div class="date"><xsl:value-of select="date"/></div>
+		<div class="container-fluid" style="background-color: #fff;">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 more-products p-t p-b">
+						<h4>Продукция</h4>
+						<div class="catalog-items main-page">
+							<xsl:for-each select="page/cat_pics/section">
+								<div class="catalog-item">
+									<xsl:variable name="pic_path"
+									              select="if (product/main_pic) then concat(product/@path, product/main_pic) else 'img/no_image.png'"/>
+									<a href="{show_section}" class="image-container" style="background-image: url({$pic_path})"></a>
+									<div>
+										<a href="{show_section}" style="height: unset;"><xsl:value-of select="name"/></a>
+										<xsl:value-of select="short" disable-output-escaping="yes"/>
+									</div>
+								</div>
+							</xsl:for-each>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="actions mobile">
+						<h3>Акции</h3>
+						<div class="actions-container">
+							<a href="{page/main_page/link_link}"><xsl:value-of select="page/main_page/link_text"/></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+		<div class="container-fluid" style="background-color: #e6e6e6;">
+			<div class="container p-t p-b">
+				<div class="row">
+					<div class="col-md-4 col-sm-12">
+						<xsl:if test="page/main_page/link_text and not(page/main_page/link_text = '')">
+							<div class="actions">
+								<h3>Акции</h3>
+								<div class="actions-container">
+									<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
+								</div>
 							</div>
-						</xsl:for-each>
+						</xsl:if>
+					</div>
+					<div class="col-md-8 news">
+						<h3>Новости</h3>
+						<div class="news-container">
+							<xsl:for-each select="page/news/news_item">
+								<div>
+									<div class="date"><xsl:value-of select="date"/></div>
+									<a href="{show_news_item}"><xsl:value-of select="header"/></a>
+								</div>
+							</xsl:for-each>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -395,58 +211,41 @@
 	</xsl:template>
 
 	<xsl:template name="MAIN_CONTENT">
-		
+		<!-- MAIN COLOUMNS BEGIN -->
 		<div class="container">
-			<xsl:call-template name="INC_MOBILE_HEADER"/>
-		</div>
-		<xsl:call-template name="CONTENT"/>
-					
-	</xsl:template>
+			<div class="row">
 
-	<!-- <xsl:template name="BANNERS">
-		<div class="has-banners">
-			<div class="container">
-				<div class="banners-container">
-					<xsl:for-each select="page/main_page/main_promo_bottom">
-						<div style="background-image: url({@path}{pic})">
-							<div class="aspect-ratio"></div>
-							<a href="">
-								<h4><xsl:value-of select="text_big"/></h4>
-								<p><xsl:value-of select="text_small"/></p>
-							</a>
-						</div>
-				
-						<a href="{link}" style="background-image: url({@path}{pic})">
-							<h4><xsl:value-of select="text_big"/></h4>
-							<p><xsl:value-of select="text_small"/></p>
-						</a>
-					</xsl:for-each>
+				<!-- RIGHT COLOUMN BEGIN -->
+				<div class="col-md-12 col-xs-12 main-content"> 
+					<div class="mc-container">
+						<xsl:call-template name="INC_MOBILE_HEADER"/>
+					</div>
 				</div>
+				<!-- RIGHT COLOUMN END -->
 			</div>
 		</div>
-	</xsl:template> -->
-
+		<xsl:call-template name="CONTENT"/>
+		<!-- MAIN COLOUMNS END -->
+	</xsl:template>
 
 	<xsl:template name="BANNERS">
-		<div class="has-banners">
-			<div class="container">
-				<div class="banners-container">
-					<xsl:for-each select="page/main_page/main_promo_bottom">
-						<div class="banner">
-							<div class="image-container" style="background-image: url({@path}{pic})">
+		<div class="container p-t">
+			<div class="row">
+				<div class="col-xs-12 banners">
+					<!-- <h3>Специальные предложения</h3> -->
+					<div class="banners-container">
+						<xsl:for-each select="page/main_page/main_promo_bottom">
+							<div style="background-image: url({@path}{pic})">
 								<div class="aspect-ratio"></div>
+								<a href="{link}"></a>
 							</div>
-							<div class="info">
+
+							<!-- <a href="{link}" style="background-image: url({@path}{pic})">
 								<h4><xsl:value-of select="text_big"/></h4>
 								<p><xsl:value-of select="text_small"/></p>
-							</div>
-							<a href="{link}"></a>
-						</div>
-				
-						<!-- <a href="{link}" style="background-image: url({@path}{pic})">
-							
-						</a> -->
-					</xsl:for-each>
+							</a> -->
+						</xsl:for-each>
+					</div>
 				</div>
 			</div>
 		</div>

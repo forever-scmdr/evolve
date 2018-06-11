@@ -46,7 +46,7 @@
 						<label>Подтверждение нового пароля:</label>
 						<input type="password" class="form-control" name="{$phys/input[3]/new-password-2/@input}"/>
 					</div>
-					<input type="submit" value="Сохранить изменения"/>
+					<input type="submit" value="Отправить анкету"/>
 				</form>
 			</xsl:if>
 
@@ -64,7 +64,7 @@
 						<label>Подтверждение нового пароля:</label>
 						<input type="password" class="form-control" name="{$jur/input[3]/new-password-2/@input}"/>
 					</div>
-					<input type="submit" value="Сохранить изменения"/>
+					<input type="submit" value="Отправить анкету"/>
 				</form>
 			</xsl:if>
 

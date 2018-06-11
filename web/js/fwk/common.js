@@ -96,20 +96,3 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 		}
 	);
 }
-
-$(document).on('click', '.show-sub',function(e){
-    e.preventDefault();
-    var href = $(this).attr("href");
-    var trg = $(href);
-    $(".popup-text-menu").not(trg).hide();
-    var l = $(this).position().left;
-    trg.css({"left": l});
-    trg.toggle();
-});
-
-$(document).on("click", "body", function(e){
-    var trg = $(e.target);
-    if(trg.closest(".popup-text-menu").length == 0 && !trg.is(".show-sub")){
-        $(".popup-text-menu").hide();
-    }
-});
