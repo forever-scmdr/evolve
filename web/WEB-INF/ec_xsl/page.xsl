@@ -3,13 +3,10 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="$p/header"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+
 	<xsl:variable name="p" select="page/custom_page"/>
 
 	<xsl:variable name="active_menu_item" select="$p/@key"/>
-
-	<xsl:variable name="canonical" select="concat('/', $active_menu_item, '/')"/>
 
 
 	<xsl:template name="CONTENT">

@@ -3,8 +3,6 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="page/current_section/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
@@ -21,7 +19,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$h1"/></h1>
+		<h1><xsl:value-of select="page/current_section/name"/></h1>
 		<div class="page-content m-t">
 			<div class="catalog-items"><!-- добавить класс lines для отображения по строкам -->
 				<xsl:for-each select="page/current_section/section">

@@ -3,8 +3,6 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="$p/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
@@ -16,32 +14,7 @@
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="extra_xml" select="parse-xml(concat('&lt;extra&gt;', $p/extra_xml, '&lt;/extra&gt;'))/extra"/>
 
-	<xsl:template name="MARKUP">
-		<xsl:variable name="price" select="$p/price"/>
-		<script type="application/ld+json">
-			<xsl:variable name="quote">"</xsl:variable>
-			{
-			"@context": "http://schema.org/",
-			"@type": "Product",
-			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
-			"image": <xsl:value-of select="concat($quote, $base, '/', $p/@path, $p/gallery[1], $quote)" />,
-			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
-			"offers": {
-			"@type": "Offer",
-			"priceCurrency": "BYN",
-			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
-			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>
-			}, "aggregateRating": {
-			"@type": "AggregateRating",
-			"ratingValue": "4.9",
-			"ratingCount": "53",
-			"bestRating": "5",
-			"worstRating": "1",
-			"name": <xsl:value-of select="concat($quote, translate($p/name, $quote, ''), $quote)" />
-			}
-			}
-		</script>
-	</xsl:template>
+
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->

@@ -22,7 +22,10 @@
 				<var name="p" ref="custom_page" style="translit"/>
 			</link>
 		</list>
-		<single item="common" cacheable="false"/>
+		<single item="common" cacheable="true">
+			<single item="delivery"/>
+			<single item="payment"/>
+		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
 		<link name="news_link"  target="news"/>
@@ -30,7 +33,7 @@
 		<link name="dealers_link" target="dealers"/>
 		<link name="docs_link" target="docs"/>
 		<link name="contacts_link" target="contacts"/>
-		<link name="cart_ajax_link" target="cart_ajax"/>
+		<link name="cart_ajax_link" target="cart_ajax" />
 		<link name="cart_link" target="cart"/>
 		<link name="search_link" target="search"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
@@ -39,6 +42,12 @@
 		<link name="register_link" target="register"/>
 		<link name="login_form_link" target="login_form_ajax"/>
 		<link name="personal_ajax_link" target="personal_ajax"/>
+		<single item="modules">
+			<list item="named_code"/>
+		</single>
+		<single item="url_seo_wrap">
+			<list item="url_seo"/>
+		</single>
 	</include-definition>
 
 
@@ -46,6 +55,7 @@
 		<single item="main_page" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
+			<single item="seo"/>
 		</single>
 		<single item="news">
 			<list item="news_item" id="ni">
@@ -76,6 +86,9 @@
 
 	<page name="catalog" template="catalog" cacheable="true">
 		<include name="COMMON"/>
+		<single item="catalog">
+			<single item="seo"/>
+		</single>
 	</page>
 
 
@@ -83,15 +96,18 @@
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
+			<var name="minqty" scope="cookie"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="12" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="fil"/>
 		</request>
-		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
+		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec" cacheable="false">
+			<single item="seo"/>
 			<list item="product" id="prod" transit="true">
 				<filter>
+					<parameter name="available" compare="ANY"><var var="minqty" /></parameter>
 					<child item="params" transit="false" ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
 					<sorting direction-var="direction"><var var="sort"/></sorting>
 					<limit><var var="limit"/></limit>
@@ -120,6 +136,14 @@
 					<var name="action" value="add"/>
 					<var name="src_page" value="compare_ajax"/>
 				</link>
+				<link name="my_price_link" target="my_price_ajax">
+					<var name="pname" ref="prod" parameter="name"/>
+					<var name="pcode" ref="prod" parameter="code"/>
+				</link>
+				<link name="one_click_link" target="one_click_ajax">
+					<var name="pname" ref="prod" parameter="name"/>
+					<var name="pcode" ref="prod" parameter="code"/>
+				</link>
 			</list>
 		</single>
 		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
@@ -142,7 +166,7 @@
 		</link>
 		<link name="show_only_available" target="section" type="exclusive">
 			<var name="sec" var="sec" style="translit"/>
-			<var name="minqty" value="0"/>
+			<var name="minqty" value="1"/>
 		</link>
 		<link name="show_all" target="section" type="exclusive">
 			<var name="sec" var="sec" style="translit"/>
@@ -171,11 +195,14 @@
 	</page>
 
 
+
+
 	<page name="sub" template="sub" cacheable="true" >
 		<request>
 			<var name="sec" style="translit"/>
 		</request>
 		<single item="section" var="sec" cacheable="true" cache-vars="sec" tag="current_section">
+			<single item="seo"/>
 			<list item="section" id="subsec">
 				<list item="product" transit="true">
 					<filter>
@@ -185,19 +212,27 @@
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="subsec" style="translit"/>
 				</link>
+				<link name="show_section" target="sub">
+					<var name="sec" ref="subsec" style="translit"/>
+				</link>
 			</list>
 		</single>
 		<include name="COMMON"/>
 	</page>
 
+
+
+
 	<page name="search" template="search">
 		<request>
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
+			<var name="minqty" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="30" compare="EVERY"><var var="q"/></fulltext>
+				<parameter name="available" compare="ANY"><var var="minqty" /></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="translit"/>
@@ -218,6 +253,14 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
+			<link name="my_price_link" target="my_price_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
 		</list>
 		<link name="set_view_table" target="search" copy-page-vars="yes">
 			<var name="view" value="table"/>
@@ -227,7 +270,7 @@
 		</link>
 		<link name="show_only_available" target="search">
 			<var name="q" var="q"/>
-			<var name="minqty" value="0"/>
+			<var name="minqty" value="1"/>
 		</link>
 		<link name="show_all" target="search">
 			<var name="q" var="q"/>
@@ -244,6 +287,7 @@
 			<var name="prod" style="translit"/>
 		</request>
 		<single item="product" id="prod" var="prod">
+			<single item="seo"/>
 			<single item="params"/>
 			<single item="params_xml"/>
 			<list item="product_extra"/>
@@ -264,6 +308,14 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
+			<link name="my_price_link" target="my_price_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
 		</single>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
@@ -283,6 +335,7 @@
 			<var name="p" value="1"/>
 		</request>
 		<single item="news">
+			<single item="seo"/>
 			<list item="news_item" id="ni">
 				<filter>
 					<sorting direction="DESC"><var value="date"/></sorting>
@@ -323,6 +376,7 @@
 			<var name="ni" style="translit"/>
 		</request>
 		<single item="news_item" var="ni" cacheable="true" cache-vars="ni">
+			<single item="seo"/>
 			<ancestor item="news"/>
 			<ancestor item="articles"/>
 		</single>
@@ -343,10 +397,12 @@
 	</page>
 
 
-	<page name="contacts" template="contacts" cacheable="true">
-		<single item="contacts" cacheable="true"/>
-		<include name="COMMON"/>
-	</page>
+    <page name="contacts" template="contacts" cacheable="true">
+        <single item="contacts" cacheable="true">
+            <single item="seo"/>
+        </single>
+        <include name="COMMON"/>
+    </page>
 
 
 	<page name="update_prices" template="update_prices">
@@ -360,7 +416,9 @@
 		<request>
 			<var name="p" style="translit"/>
 		</request>
-		<single item="custom_page" var="p" cacheable="true" cache-vars="p"/>
+		<single item="custom_page" var="p" cacheable="true" cache-vars="p">
+			<single item="seo"/>
+		</single>
 		<include name="COMMON"/>
 	</page>
 
@@ -380,11 +438,48 @@
 	</page>
 
 
+	<page name="my_price_ajax" template="my_price_ajax">
+		<request>
+			<var name="pname"/>
+			<var name="pcode"/>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<new item="my_price_form" id="form" tag="form">
+			<parameter-input ref="form" form="my_price"/>
+		</new>
+		<link name="submit_link" target="feedback_command" type="itemform">
+			<var name="form_name" value="my_price"/>
+			<var name="source_page" value="my_price_ajax"/>
+			<var name="required" value="phone,price"/>
+			<var name="topic" value="Моя цена"/>
+		</link>
+	</page>
+
+
+	<page name="one_click_ajax" template="one_click_ajax">
+		<request>
+			<var name="pname"/>
+			<var name="pcode"/>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<new item="one_click_form" id="form" tag="form">
+			<parameter-input ref="form" form="one_click"/>
+		</new>
+		<link name="submit_link" target="feedback_command" type="itemform">
+			<var name="form_name" value="one_click"/>
+			<var name="source_page" value="one_click_ajax"/>
+			<var name="required" value="phone"/>
+			<var name="topic" value="Заказ в один клик"/>
+		</link>
+	</page>
+
 
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="metabobelarus@gmail.com"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -444,7 +539,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="egor@forever-ds.com"/>
+			<var name="email" value="metabobelarus@gmail.com"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -635,6 +730,9 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="translit"/>
+			</link>
 		</list>
 		<link name="set_view_table" target="fav">
 			<var name="view" value="table"/>
@@ -655,6 +753,7 @@
 			<filter>
 				<parameter name="code" compare="SOME"><var var="compare"/></parameter>
 			</filter>
+			<single item="params"/>
 			<link name="from_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
@@ -838,7 +937,77 @@
 		</command>
 	</page>
 
+	<!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
+	<page name="sitemap" template="sitemap" cacheable="true">
+		<headers content-type="xml"/>
+		<single item="url_seo_wrap"/>
+		<single item="catalog" id="catalog_main">
+			<tree item="section" id="sec">
+				<link name="show_section" target="sub">
+					<var name="sec" ref="sec" style="translit"/>
+				</link>
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="sec" style="translit"/>
+				</link>
+				<link name="map_products" target="sitemap_section" type="exclusive">
+					<var name="sec" ref="sec" style="translit"/>
+				</link>
+			</tree>
+		</single>
+		<list item="custom_page" id="custom_page" cacheable="true">
+			<link name="show_page" target="page" type="exclusive">
+				<var name="p" ref="custom_page" style="translit"/>
+			</link>
+		</list>
+		<list item="news" id="news" cacheable="true">
+			<link name="show_page" target="news" type="exclusive">
+				<var name="sel" ref="news" style="translit"/>
+			</link>
+		</list>
+		<link name="index_link" target="index"/>
+		<link name="catalog_link" target="catalog"/>
+		<link name="contacts_link" target="contacts"/>
+		<list item="news_item" id="ni">
+			<filter>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+			</filter>
+			<link name="show_news_item" target="news_item" type="exclusive">
+				<var name="ni" ref="ni" style="translit"/>
+			</link>
+		</list>
+	</page>
 
+	<page name="sitemap_section" template="sitemap_section" cacheable="true">
+		<request>
+			<var name="sec" style="translit"/>
+		</request>
+		<single item="url_seo_wrap"/>
+		<single item="section" var="sec" id="cur_sec" cache-vars="sec">
+			<list item="product" id="prod">
+				<link name="show_product" target="product" type="exclusive">
+					<var name="prod" ref="prod" style="translit"/>
+				</link>
+			</list>
+		</single>
+	</page>
+
+	<page name="generate_sitemap">
+		<command class="ecommander.fwk.CreateSiteMap">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<page name="download_prices">
+		<link name="success" target="excel_complete" />
+		<link name="error" target="excel_complete">
+			<var name="result" value="error"/>
+		</link>
+		<command class="extra.MakeExcelPrice">
+			<result name="success" type="redirect" />
+		</command>
+	</page>
 
 	<page name="crawl" template="crawl">
 		<request>
@@ -874,7 +1043,7 @@
 		<request>
 			<var name="action"/>
 		</request>
-		<command class="extra.CreateParametersAndFiltersCommand" clear-cache="yes">
+		<command class="ecommander.fwk.integration.CreateParametersAndFiltersCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
@@ -886,6 +1055,24 @@
 		</request>
 		<command class="extra.UpdatePrices" clear-cache="yes">
 			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<page name="excel_complete"  template="excel_complete"/>
+
+
+	<!--
+		Создать файл YML формата со всеми разделами и товарами каталога
+	-->
+	<page name="create_yml_file">
+		<headers content-type="text/xml"/>
+		<request>
+			<var name="name" value="Юкс"/>
+			<var name="company" value="ООО Юкс"/>
+		</request>
+		<command class="ecommander.fwk.integration.YMarketCreateXMLFile">
+			<result name="success" type="redirect"/>
+			<result name="error" type="redirect"/>
 		</command>
 	</page>
 

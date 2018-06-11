@@ -4,7 +4,7 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="'Оформление заказа'"/>
+
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="is_jur" select="page/user_jur"/>
 
