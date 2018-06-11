@@ -3,15 +3,13 @@ package ecommander.persistence.commandunits;
 import ecommander.filesystem.SaveItemFilesUnit;
 import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.fwk.ServerLogger;
-import ecommander.model.Item;
-import ecommander.model.ItemBasics;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
+import ecommander.model.*;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
