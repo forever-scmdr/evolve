@@ -556,7 +556,7 @@
 
 
 <xsl:template match="/">
-	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
+	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
 	</xsl:text>
 	<html lang="ru">
 		<head>
