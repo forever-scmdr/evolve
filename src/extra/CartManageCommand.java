@@ -4,7 +4,6 @@ import ecommander.fwk.BasicCartManageCommand;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import extra._generated.ItemNames;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
 

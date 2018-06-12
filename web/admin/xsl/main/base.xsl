@@ -5,7 +5,7 @@
 	<xsl:strip-space elements="*" />
 
 	<xsl:variable name="pre-last" select="count(/admin-page/path/item) - 1"/>
-	<xsl:variable name="parsedItem" select="/admin-page/path/item[$pre-last]" />
+	<xsl:variable name="parent" select="/admin-page/path/item[$pre-last]" />
 	
 
 	<xsl:template name="DOCTYPE">
@@ -172,6 +172,23 @@
 											Управление классами объектов
 										</a>
 									</li>
+									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
+										<a href="update_prices?action=start" target="_blank">
+											Запустить обновление цен
+										</a>
+									</li>
+									<li class="visible" title="Создать YML-файл">
+										<a href="create_yml_file" target="_blank" download="yml_catalog.xml">
+											Создать YML-файл
+										</a>
+									</li>
+									<!--
+									<li class="visible" title="Функция в разработке">
+										<a href="#" onclick="alert('Функция в разработке'); return false;">
+											Управление миром
+										</a>
+									</li>
+									-->
 								</ul>
 							</div>
 						</div>

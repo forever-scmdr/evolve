@@ -165,7 +165,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		if (result != null) {
 			// Редирект
 			if (result.isRedirect()) {
-				resp.sendRedirect(result.getRedirectUrl());
+				resp.sendRedirect(createAbsoluteUrl(req, result.getRedirectUrl()));
 			} else {
 				result.output(resp);
 			}
@@ -424,7 +424,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		int type = item.getTypeId();
 		if (toParent) {
 			id = AdminLoader.loadItemDirectParentId(id, ItemTypeRegistry.getPrimaryAssocId());
-			if(id == -1){
+			if(id == -1) {
 				return pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
 			}
 			type = AdminLoader.loadItem(id, getCurrentAdmin()).getTypeId();
