@@ -9,26 +9,21 @@ import ecommander.model.filter.CriteriaDef;
 import ecommander.model.filter.FilterDefinition;
 import ecommander.model.filter.InputDef;
 import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.ResultPE;
-import ecommander.persistence.commandunits.DeleteItemTypeBDUnit;
+import ecommander.pages.LinkPE;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Product;
-import extra._generated.Section;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by user on 27.03.2018.
@@ -46,7 +41,6 @@ public class IntegratePriceList extends IntegrateBase {
 	private ExcelPriceList price;
 	private Item currentSection;
 	private Item catalog;
-	private ItemType currentParamsType;
 	private HashMap<String, ArrayList<String>> pics = new HashMap<>();
 
 	@Override
@@ -175,31 +169,6 @@ public class IntegratePriceList extends IntegrateBase {
 		return true;
 	}
 
-	private void setCurrentParamsType(Collection<String> AdditionalHeaders) throws Exception {
-		Iterator<String> headersIter = AdditionalHeaders.iterator();
-		while (headersIter.hasNext()) {
-			String s = headersIter.next();
-			if (!s.startsWith("#")) headersIter.remove();
-		}
-		String typeName = currentSection.getStringValue(ItemNames.section.NAME) + "_" + currentSection.getStringValue(ItemNames.section.CATEGORY_ID, "");
-		String typeNameTranslited = Strings.translit(typeName);
-		ItemType oldParamsType = ItemTypeRegistry.getItemType(typeNameTranslited);
-		ItemType newParamsType = createItemType(typeNameTranslited, typeName, AdditionalHeaders);
-		boolean typeExists = newParamsType.equals(oldParamsType);
-		if (!typeExists && oldParamsType != null) {
-			executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(oldParamsType.getTypeId()));
-			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
-		}
-		if (!typeExists || StringUtils.isBlank(currentSection.getStringValue(ItemNames.section.PARAMS_FILTER))) {
-			createFilters(currentSection, AdditionalHeaders);
-		}
-		if (!typeExists) {
-			executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newParamsType));
-			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
-		}
-		currentParamsType = newParamsType;
-	}
-
 	private void createFilters(Item currentSection, Collection<String> headers) throws Exception {
 		FilterDefinition filter = FilterDefinition.create("");
 		filter.setRoot(Strings.translit(currentSection.getStringValue(ItemNames.section.NAME)));
@@ -240,8 +209,16 @@ public class IntegratePriceList extends IntegrateBase {
 		price.iterate();
 		info.setOperation("Скачивание и прикрепление изображений");
 		downloadPictures();
+		launchFiltersUpdate();
 		info.setOperation("Интеграция завершена");
 		price.close();
+	}
+
+	private void launchFiltersUpdate() throws Exception {
+		info.setOperation("Запуск создания фильтров");
+		ExecutablePagePE createFiltersPage = getExecutablePage("create_filters/?action=start");
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(createFiltersPage, bos);
 	}
 
 	private void downloadPictures() throws Exception {
