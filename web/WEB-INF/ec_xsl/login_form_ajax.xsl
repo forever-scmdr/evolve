@@ -31,7 +31,7 @@
 							<label>Пароль:</label>
 							<input type="password" class="form-control" name="password"/>
 						</div>
-						<input type="submit" name="" value="Отправить заказ"/>
+						<input type="submit" name="" value="Войти"/>
 					</form>
 				</div>
 			</div>

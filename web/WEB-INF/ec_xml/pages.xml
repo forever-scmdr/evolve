@@ -529,10 +529,10 @@
 		<request>
 			<var name="message"/>
 		</request>
-		<new item="user_phys" id="user_phys">
+		<new item="user_phys" id="user_phys" tag="phys_form">
 			<parameter-input ref="user_phys" form="customer_phys"/>
 		</new>
-		<new item="user_jur" id="user_jur">
+		<new item="user_jur" id="user_jur" tag="jur_form">
 			<parameter-input ref="user_jur" form="customer_jur"/>
 		</new>
 		<link name="confirm_link" target="cart_action" type="itemform">

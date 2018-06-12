@@ -136,29 +136,7 @@
 
 		<!-- MODALS BEGIN -->
 		<!-- modal login -->
-		<div class="modal fade" tabindex="-1" role="dialog" id="modal-login">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
-						<h4 class="modal-title">Вход</h4>
-					</div>
-					<div class="modal-body">
-						<form action="" method="post">
-							<div class="form-group">
-								<label for="">Электронная почта:</label>
-								<input type="text" class="form-control" id=""/>
-							</div>
-							<div class="form-group">
-								<label for="">Пароль:</label>
-								<input type="password" class="form-control" id=""/>
-							</div>
-							<input type="submit" name="" value="Отправить заказ"/>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+		<xsl:call-template name="LOGIN_FORM"/>
 
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
