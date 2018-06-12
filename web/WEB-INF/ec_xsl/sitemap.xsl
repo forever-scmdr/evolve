@@ -4,7 +4,8 @@
     <xsl:output method="xml" encoding="UTF-8" media-type="text/xml" indent="yes" omit-xml-declaration="no"/>
     <xsl:strip-space elements="*"/>
 
-    <xsl:variable name="base" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else page/base"/>
+    <xsl:variable name="base"
+                  select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else page/base"/>
 
     <xsl:variable name="schema_location"
                   select="'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'"/>
@@ -26,15 +27,13 @@
                 <changefreq>daily</changefreq>
                 <priority>1.00</priority>
             </url>
-            <xsl:for-each select="page/news">
-                <url>
-                    <loc>
-                        <xsl:value-of select="concat($base, show_page)"/>
-                    </loc>
-                    <changefreq>daily</changefreq>
-                    <priority>0.70</priority>
-                </url>
-            </xsl:for-each>
+            <url>
+                <loc>
+                    <xsl:value-of select="concat($base,'/', page/news_link)"/>
+                </loc>
+                <changefreq>daily</changefreq>
+                <priority>0.70</priority>
+            </url>
             <url>
                 <loc>
                     <xsl:value-of select="concat($base, '/', page/contacts_link)"/>

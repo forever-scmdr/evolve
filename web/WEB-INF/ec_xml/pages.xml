@@ -961,11 +961,7 @@
 				<var name="p" ref="custom_page" style="translit"/>
 			</link>
 		</list>
-		<list item="news" id="news" cacheable="true">
-			<link name="show_page" target="news" type="exclusive">
-				<var name="sel" ref="news" style="translit"/>
-			</link>
-		</list>
+		<link name="news_link" target="news"/>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
 		<link name="contacts_link" target="contacts"/>
