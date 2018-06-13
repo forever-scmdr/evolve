@@ -48,34 +48,6 @@ public class Custom_page
         return containsValue("header", value);
     }
 
-    public void set_main_pic(File value) {
-        setValue("main_pic", value);
-    }
-
-    public File get_main_pic() {
-        return getFileValue("main_pic", AppContext.getCommonFilesDirPath());
-    }
-
-    public boolean contains_main_pic(File value) {
-        return containsValue("main_pic", value);
-    }
-
-    public void set_short(String value) {
-        setValue("short", value);
-    }
-
-    public String get_short() {
-        return getStringValue("short");
-    }
-
-    public String getDefault_short(String defaultVal) {
-        return getStringValue("short", defaultVal);
-    }
-
-    public boolean contains_short(String value) {
-        return containsValue("short", value);
-    }
-
     public void set_in_main_menu(String value) {
         setValue("in_main_menu", value);
     }

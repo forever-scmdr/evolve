@@ -61,20 +61,4 @@ public class User
         return containsValue("password", value);
     }
 
-    public void set_payment(String value) {
-        setValue("payment", value);
-    }
-
-    public String get_payment() {
-        return getStringValue("payment");
-    }
-
-    public String getDefault_payment(String defaultVal) {
-        return getStringValue("payment", defaultVal);
-    }
-
-    public boolean contains_payment(String value) {
-        return containsValue("payment", value);
-    }
-
 }

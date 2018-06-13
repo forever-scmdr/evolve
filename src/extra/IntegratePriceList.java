@@ -1,26 +1,24 @@
 package extra;
 
 import ecommander.controllers.AppContext;
-import ecommander.controllers.PageController;
 import ecommander.fwk.*;
+import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
 import ecommander.model.*;
-import ecommander.model.datatypes.DataType;
-import ecommander.model.filter.CriteriaDef;
-import ecommander.model.filter.FilterDefinition;
-import ecommander.model.filter.InputDef;
-import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.LinkPE;
+import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Product;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
@@ -169,37 +167,6 @@ public class IntegratePriceList extends IntegrateBase {
 		return true;
 	}
 
-	private void createFilters(Item currentSection, Collection<String> headers) throws Exception {
-		FilterDefinition filter = FilterDefinition.create("");
-		filter.setRoot(Strings.translit(currentSection.getStringValue(ItemNames.section.NAME)));
-		for (String paramName : headers) {
-			paramName = paramName.replace("#", "");
-			InputDef input = new InputDef("droplist", paramName, "", "");
-			paramName = Strings.translit(paramName);
-			filter.addPart(input);
-			input.addPart(new CriteriaDef("=", paramName, DataType.Type.STRING.toString(), ""));
-		}
-		currentSection.setValue(ItemNames.section.PARAMS_FILTER, filter.generateXML());
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection));
-	}
-
-	private ItemType createItemType(String typeName, String typeCaption, Collection<String> headers) throws Exception {
-		ItemType newClass = new ItemType(typeName, 0, typeCaption, "", "",
-				ItemNames.PARAMS, null, false, true, false, false);
-		for (String paramName : headers) {
-			paramName = paramName.replace("#", "");
-
-			ParameterDescription pd;
-			pd = new ParameterDescription(Strings.translit(paramName), 0, DataType.Type.STRING.toString(), false, 0,
-					"", paramName, "", "", false, false, null, null);
-			newClass.putParameter(pd);
-
-		}
-		executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
-		return newClass;
-	}
-
-
 	@Override
 	protected void integrate() throws Exception {
 		info.setOperation("Создание прайс-листа");
@@ -209,16 +176,43 @@ public class IntegratePriceList extends IntegrateBase {
 		price.iterate();
 		info.setOperation("Скачивание и прикрепление изображений");
 		downloadPictures();
-		launchFiltersUpdate();
+		updateFiltersAndItemtypes();
 		info.setOperation("Интеграция завершена");
 		price.close();
 	}
 
-	private void launchFiltersUpdate() throws Exception {
-		info.setOperation("Запуск создания фильтров");
-		ExecutablePagePE createFiltersPage = getExecutablePage("create_filters/?action=start");
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		PageController.newSimple().executePage(createFiltersPage, bos);
+	private void updateFiltersAndItemtypes() throws Exception {
+		List<Item> sections = new ItemQuery(ItemNames.SECTION).loadItems();
+		info.setOperation("Создание классов и фильтров");
+		info.setToProcess(sections.size());
+		info.setProcessed(0);
+		for(Item section : sections){
+			List<Item> products = new ItemQuery(ItemNames.PRODUCT).setParentId(section.getId(), false).loadItems();
+			if (products.size() > 0) {
+				// Анализ параметров продуктов
+				CreateParametersAndFiltersCommand.Params params = new CreateParametersAndFiltersCommand.Params(section.getStringValue(NAME_PARAM), "s" + section.getId());
+				for (Item product : products) {
+					List<Item> oldParams = new ItemQuery(ItemNames.).setParentId(product.getId(), false).loadItems();
+					for (Item oldParam : oldParams) {
+						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldParam));
+					}
+					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
+					if (paramsXml != null) {
+						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
+						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
+						Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
+						for (Element paramEl : paramEls) {
+							String caption = StringUtils.trim(paramEl.getElementsByTag(NAME).first().ownText());
+							String value = StringUtils.trim(paramEl.getElementsByTag(VALUE).first().ownText());
+							if (StringUtils.isNotBlank(caption)) {
+								params.addParameter(caption, value);
+							}
+						}
+					}
+				}
+				executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null));
+			}
+		}
 	}
 
 	private void downloadPictures() throws Exception {

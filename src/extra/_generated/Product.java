@@ -49,6 +49,38 @@ public class Product
         return containsValue("name", value);
     }
 
+    public void set_type(String value) {
+        setValue("type", value);
+    }
+
+    public String get_type() {
+        return getStringValue("type");
+    }
+
+    public String getDefault_type(String defaultVal) {
+        return getStringValue("type", defaultVal);
+    }
+
+    public boolean contains_type(String value) {
+        return containsValue("type", value);
+    }
+
+    public void set_name_extra(String value) {
+        setValue("name_extra", value);
+    }
+
+    public String get_name_extra() {
+        return getStringValue("name_extra");
+    }
+
+    public String getDefault_name_extra(String defaultVal) {
+        return getStringValue("name_extra", defaultVal);
+    }
+
+    public boolean contains_name_extra(String value) {
+        return containsValue("name_extra", value);
+    }
+
     public void set_code(String value) {
         setValue("code", value);
     }
@@ -95,6 +127,22 @@ public class Product
 
     public boolean contains_offer_id(String value) {
         return containsValue("offer_id", value);
+    }
+
+    public void set_short(String value) {
+        setValue("short", value);
+    }
+
+    public String get_short() {
+        return getStringValue("short");
+    }
+
+    public String getDefault_short(String defaultVal) {
+        return getStringValue("short", defaultVal);
+    }
+
+    public boolean contains_short(String value) {
+        return containsValue("short", value);
     }
 
     public void set_available(Byte value) {
@@ -227,6 +275,28 @@ public class Product
         return containsValue("price", value);
     }
 
+    public void set_price_old(BigDecimal value) {
+        setValue("price_old", value);
+    }
+
+    public void setUI_price_old(String value)
+        throws Exception
+    {
+        setValueUI("price_old", value);
+    }
+
+    public BigDecimal get_price_old() {
+        return getDecimalValue("price_old");
+    }
+
+    public BigDecimal getDefault_price_old(BigDecimal defaultVal) {
+        return getDecimalValue("price_old", defaultVal);
+    }
+
+    public boolean contains_price_old(BigDecimal value) {
+        return containsValue("price_old", value);
+    }
+
     public void set_qty(Double value) {
         setValue("qty", value);
     }
@@ -309,6 +379,22 @@ public class Product
         return containsValue("text", value);
     }
 
+    public void set_extra_xml(String value) {
+        setValue("extra_xml", value);
+    }
+
+    public String get_extra_xml() {
+        return getStringValue("extra_xml");
+    }
+
+    public String getDefault_extra_xml(String defaultVal) {
+        return getStringValue("extra_xml", defaultVal);
+    }
+
+    public boolean contains_extra_xml(String value) {
+        return containsValue("extra_xml", value);
+    }
+
     public void add_text_pics(File value) {
         setValue("text_pics", value);
     }
@@ -339,6 +425,22 @@ public class Product
 
     public boolean contains_gallery(File value) {
         return containsValue("gallery", value);
+    }
+
+    public void add_assoc_code(String value) {
+        setValue("assoc_code", value);
+    }
+
+    public List<String> getAll_assoc_code() {
+        return getStringValues("assoc_code");
+    }
+
+    public void remove_assoc_code(String value) {
+        removeEqualValue("assoc_code", value);
+    }
+
+    public boolean contains_assoc_code(String value) {
+        return containsValue("assoc_code", value);
     }
 
     public void add_tag(String value) {

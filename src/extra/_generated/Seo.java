@@ -1,6 +1,9 @@
 
 package extra._generated;
 
+import java.io.File;
+import java.util.List;
+import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -43,6 +46,22 @@ public class Seo
 
     public boolean contains_title(String value) {
         return containsValue("title", value);
+    }
+
+    public void set_h1(String value) {
+        setValue("h1", value);
+    }
+
+    public String get_h1() {
+        return getStringValue("h1");
+    }
+
+    public String getDefault_h1(String defaultVal) {
+        return getStringValue("h1", defaultVal);
+    }
+
+    public boolean contains_h1(String value) {
+        return containsValue("h1", value);
     }
 
     public void set_description(String value) {
@@ -91,6 +110,38 @@ public class Seo
 
     public boolean contains_meta(String value) {
         return containsValue("meta", value);
+    }
+
+    public void set_text(String value) {
+        setValue("text", value);
+    }
+
+    public String get_text() {
+        return getStringValue("text");
+    }
+
+    public String getDefault_text(String defaultVal) {
+        return getStringValue("text", defaultVal);
+    }
+
+    public boolean contains_text(String value) {
+        return containsValue("text", value);
+    }
+
+    public void add_text_pics(File value) {
+        setValue("text_pics", value);
+    }
+
+    public List<File> getAll_text_pics() {
+        return getFileValues("text_pics", AppContext.getCommonFilesDirPath());
+    }
+
+    public void remove_text_pics(File value) {
+        removeEqualValue("text_pics", value);
+    }
+
+    public boolean contains_text_pics(File value) {
+        return containsValue("text_pics", value);
     }
 
 }

@@ -1,7 +1,6 @@
 
 package extra._generated;
 
-import java.util.List;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -126,36 +125,52 @@ public class Common
         return containsValue("bottom_address", value);
     }
 
-    public void add_phone(String value) {
-        setValue("phone", value);
+    public void set_bottom_copy(String value) {
+        setValue("bottom_copy", value);
     }
 
-    public List<String> getAll_phone() {
-        return getStringValues("phone");
+    public String get_bottom_copy() {
+        return getStringValue("bottom_copy");
     }
 
-    public void remove_phone(String value) {
-        removeEqualValue("phone", value);
+    public String getDefault_bottom_copy(String defaultVal) {
+        return getStringValue("bottom_copy", defaultVal);
     }
 
-    public boolean contains_phone(String value) {
-        return containsValue("phone", value);
+    public boolean contains_bottom_copy(String value) {
+        return containsValue("bottom_copy", value);
     }
 
-    public void add_email(String value) {
-        setValue("email", value);
+    public void set_bottom_cards(String value) {
+        setValue("bottom_cards", value);
     }
 
-    public List<String> getAll_email() {
-        return getStringValues("email");
+    public String get_bottom_cards() {
+        return getStringValue("bottom_cards");
     }
 
-    public void remove_email(String value) {
-        removeEqualValue("email", value);
+    public String getDefault_bottom_cards(String defaultVal) {
+        return getStringValue("bottom_cards", defaultVal);
     }
 
-    public boolean contains_email(String value) {
-        return containsValue("email", value);
+    public boolean contains_bottom_cards(String value) {
+        return containsValue("bottom_cards", value);
+    }
+
+    public void set_bottom_social(String value) {
+        setValue("bottom_social", value);
+    }
+
+    public String get_bottom_social() {
+        return getStringValue("bottom_social");
+    }
+
+    public String getDefault_bottom_social(String defaultVal) {
+        return getStringValue("bottom_social", defaultVal);
+    }
+
+    public boolean contains_bottom_social(String value) {
+        return containsValue("bottom_social", value);
     }
 
     public void set_google_verification(String value) {
