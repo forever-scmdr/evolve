@@ -1,27 +1,27 @@
 package extra;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.*;
-import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
-import ecommander.model.*;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.fwk.ExcelPriceList;
+import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.UniqueArrayList;
+import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Product;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
-import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by user on 27.03.2018.
@@ -182,37 +182,7 @@ public class IntegratePriceList extends IntegrateBase {
 	}
 
 	private void updateFiltersAndItemtypes() throws Exception {
-		List<Item> sections = new ItemQuery(ItemNames.SECTION).loadItems();
-		info.setOperation("Создание классов и фильтров");
-		info.setToProcess(sections.size());
-		info.setProcessed(0);
-		for(Item section : sections){
-			List<Item> products = new ItemQuery(ItemNames.PRODUCT).setParentId(section.getId(), false).loadItems();
-			if (products.size() > 0) {
-				// Анализ параметров продуктов
-				CreateParametersAndFiltersCommand.Params params = new CreateParametersAndFiltersCommand.Params(section.getStringValue(NAME_PARAM), "s" + section.getId());
-				for (Item product : products) {
-					List<Item> oldParams = new ItemQuery(ItemNames.).setParentId(product.getId(), false).loadItems();
-					for (Item oldParam : oldParams) {
-						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldParam));
-					}
-					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
-					if (paramsXml != null) {
-						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
-						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
-						Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
-						for (Element paramEl : paramEls) {
-							String caption = StringUtils.trim(paramEl.getElementsByTag(NAME).first().ownText());
-							String value = StringUtils.trim(paramEl.getElementsByTag(VALUE).first().ownText());
-							if (StringUtils.isNotBlank(caption)) {
-								params.addParameter(caption, value);
-							}
-						}
-					}
-				}
-				executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null));
-			}
-		}
+
 	}
 
 	private void downloadPictures() throws Exception {
