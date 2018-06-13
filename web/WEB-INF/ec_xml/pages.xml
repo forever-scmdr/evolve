@@ -324,6 +324,14 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="assoc" style="translit"/>
 			</link>
+			<link name="my_price_link" target="my_price_ajax">
+				<var name="pname" ref="assoc" parameter="name"/>
+				<var name="pcode" ref="assoc" parameter="code"/>
+			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="assoc" parameter="name"/>
+				<var name="pcode" ref="assoc" parameter="code"/>
+			</link>
 		</list>
 		<include name="COMMON"/>
 	</page>
