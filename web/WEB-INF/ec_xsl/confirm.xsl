@@ -5,10 +5,10 @@
 
 	<xsl:variable name="title" select="'Заказ оформлен'" />
 
-	<xsl:variable name="is_jur" select="not(page/user_jur/input/organization = '')"/>
+	<xsl:variable name="is_jur" select="page/user_jur"/>
 	<xsl:variable name="is_phys" select="not($is_jur)"/>
 	<xsl:variable name="cart" select="page/cart"/>
-	<xsl:variable name="contacts" select="if ($is_jur) then page/user_jur/input else page/user_phys/input"/>
+	<xsl:variable name="contacts" select="if (page/user_jur) then page/user_jur else page/user_phys"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->

@@ -97,7 +97,7 @@
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
 			<var name="minqty" scope="cookie"/>
-			<var name="view" value="table" scope="cookie"/>
+			<var name="view" value="list" scope="cookie"/>
 			<var name="limit" value="12" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
@@ -774,6 +774,14 @@
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
 				<var name="code" ref="prod" parameter="code"/>
+			</link>
+			<link name="my_price_link" target="my_price_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
 			</link>
 		</list>
 		<include name="COMMON"/>

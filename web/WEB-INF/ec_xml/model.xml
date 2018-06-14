@@ -238,6 +238,7 @@
 
 	<item name="news" caption="Новости" ag-id="12" ag-hash="3377875">
 		<child item="news_item"/>
+		<child item="seo" single="true"/>
 	</item>
 
 	<item name="articles" caption="Статьи" ag-id="13" ag-hash="-1228877251">
@@ -254,9 +255,11 @@
 	<item name="main_slider_frame" caption="Кадр для слайдера" key="name" ag-id="893" ag-hash="-806170283">
 		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
 		<parameter name="pic" type="picture" caption="Картинка"/>
+		<parameter name="link" type="string" caption="Ссылка" description="начиная с http://"/>
 	</item>
 
 	<item name="main_page" caption="Главная страница" ag-id="15" ag-hash="-251149995">
+		<child item="seo" single="true"/>
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
 	</item>

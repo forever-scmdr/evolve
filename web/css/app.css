@@ -7118,10 +7118,10 @@ input.submit {
   .path-container > span {
     display: none;
   }
-  .view .checkbox {
+  .view-container .checkbox {
     white-space: nowrap;
   }
-  .view .checkbox + span {
+  .view-container .checkbox + span {
     padding-right: 0;
   }
 }
@@ -7135,5 +7135,9 @@ input.submit {
 .fotorama__html a {
     display: block;
     height: 100%;
+    /* Transparent links are not clickable in IE,
+       but non-existent background fixes this.
+      (Put an empty 1×1 image here to avoid
+       errors in console.) */
     background: url(_.gif);
 }
