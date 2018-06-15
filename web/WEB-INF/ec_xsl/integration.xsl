@@ -25,7 +25,9 @@
 		<script>
 			setTimeout(function(){
 				locatus = document.location.href;
-				locatus = locatus.replace("?action=start", "");
+				idx = locatus.indexOf('?');
+				locatus = locatus.split('?')[0];
+				//locatus = locatus.replace("?action=start", "");
 				document.location.replace(locatus);
 			}, 5000);
 		</script>

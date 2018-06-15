@@ -84,6 +84,16 @@ public abstract class IntegrateBase extends Command {
 		private static final String _indexation = "Индексация названий товаров";
 
 		private String operation = "Инициализация";
+		private String proceedTo = "";
+
+		public String getProceedTo() {
+			return proceedTo;
+		}
+
+		public void setProceedTo(String proceedTo) {
+			this.proceedTo = proceedTo;
+		}
+
 		private int lineNumber = 0;
 		private int processed = 0;
 		private int toProcess = 0;
@@ -274,7 +284,8 @@ public abstract class IntegrateBase extends Command {
 			return buildResult();
 		} else if (isInProgress || !"start".equals(operation)) {
 			return buildResult();
-		} else {
+		}
+		else {
 			synchronized (MUTEX) {
 				isInProgress = true;
 				newInfo().setInProgress(true);
@@ -284,6 +295,7 @@ public abstract class IntegrateBase extends Command {
 					setOperation("Интеграция завершена с ошибками");
 					return buildResult();
 				}
+				info.setProceedTo(getVarSingleValue("proceed_to"));
 				setOperation("Выполнение интеграции");
 				// Поток выполнения интеграции
 				Thread thread = new Thread(() -> {
@@ -307,6 +319,7 @@ public abstract class IntegrateBase extends Command {
 					thread.run();
 			}
 		}
+
 		return buildResult();
 	}
 	/**

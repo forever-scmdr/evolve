@@ -171,6 +171,11 @@
 											Запустить обновление цен
 										</a>
 									</li>
+                                    <li class="visible" title="Содание новых типов объектов, управление ранее созданными">
+                                        <a href="create_prices?action=start&amp;proceed_to=create_filters" target="_blank">
+                                            Разобрать катлог Excel
+                                        </a>
+                                    </li>
 									<!--
 									<li class="visible" title="Функция в разработке">
 										<a href="#" onclick="alert('Функция в разработке'); return false;">

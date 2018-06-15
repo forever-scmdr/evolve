@@ -741,8 +741,12 @@
     </page>
 
     <page name="create_prices" template="integration">
+        <link name="create_filters" target="create_filters">
+            <var name="action" value="start"/>
+        </link>
         <command class="extra.IntegratePriceList" clear-cache="yes">
             <result name="complete" type="xml"/>
+            <result name="create_filters" type="redirect"/>
         </command>
     </page>
 
