@@ -308,6 +308,15 @@ public abstract class Command implements AutoCloseable {
 			return new ResultPE(name, ResultPE.ResultType.redirect);
 		return result;
 	}
+
+	/**
+	 * Проверка, есть ли результат с заданным именем на странице
+	 * @param name
+	 * @return
+	 */
+	protected final boolean hasResult(String name) {
+		return results.containsKey(name);
+	}
 	/**
 	 * Результат, значением которого является готовая ссылка для перехода на страницу
 	 * @param url

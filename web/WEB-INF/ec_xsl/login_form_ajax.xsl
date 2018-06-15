@@ -22,10 +22,10 @@
 					</xsl:if>
 				</div>
 				<div class="modal-body">
-					<form action="{page/submit_form}" method="post" ajax="true" ajax-loader-id="login_form">
+					<form action="{page/login_link}" method="post" ajax="true" ajax-loader-id="login_form">
 						<div class="form-group">
 							<label>Электронная почта:</label>
-							<input type="text" class="form-control" name="email"/>
+							<input type="text" class="form-control" name="username"/>
 						</div>
 						<div class="form-group">
 							<label>Пароль:</label>

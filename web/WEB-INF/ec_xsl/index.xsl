@@ -97,7 +97,7 @@
 				<img src="img/slide_1.jpg" />
 				<img src="img/slide_4.jpg" />
 				<img src="img/slide_2.jpg" />
-				<img src="img/slide_3.jpg" />
+		<!--		<img src="img/slide_3.jpg" /> -->
 			</div>
 		</div>
 		<div class="actions mobile">

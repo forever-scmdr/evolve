@@ -55,17 +55,17 @@
 							<xsl:call-template name="PERSONAL_DESKTOP"/>
 						</div>
 						<div class="main-menu">
-							<a href="{page/index_link}">Главная</a>
-							<a href="{page/catalog_link}">Каталог</a>
-							<a href="{page/news_link}">Новости</a>
-							<a href="{page/articles_link}">Статьи</a>
+							<a class="{if(page/@name = 'index') then 'active' else ''}" href="{page/index_link}">Главная</a>
+							<a class="{if(page/@name = 'catalog') then 'active' else ''}" href="{page/catalog_link}">Каталог</a>
+							<a class="{if(page/@name = 'news') then 'active' else ''}" href="{page/news_link}">Новости</a>
+							<a class="{if(page/@name = 'articles') then 'active' else ''}"  href="{page/articles_link}">Статьи</a>
 							<!--
 							<a href="">Наши проекты</a>
 							<a href="{page/dealers_link}">Дилеры</a>
 							-->
-							<a href="/about">О компании</a>
-							<a href="{page/docs_link}">Документация</a>
-							<a href="{page/contacts_link}">Контакты</a>
+							<a class="{if(page/@name = 'page') then 'active' else ''}" href="/about">О компании</a>
+							<a class="{if(page/@name = 'docs') then 'active' else ''}" href="{page/docs_link}">Документация</a>
+							<a class="{if(page/@name = 'contacts') then 'active' else ''}" href="{page/contacts_link}">Контакты</a>
 						</div>
 					</div>
 				</div>
@@ -82,8 +82,8 @@
 					<img src="img/logo_big.svg" alt="" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
-					<a href=""><i class="fas fa-phone"></i></a>
-					<a href=""><i class="fas fa-shopping-cart"></i></a>
+					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
+					<a href="{page/cart_link}"><i class="fas fa-shopping-cart"></i></a>
 					<a href="javascript:showMobileMainMenu()"><i class="fas fa-bars"></i></a>
 				</div>
 				<div class="search-container">
@@ -112,9 +112,9 @@
 					<div class="col-xs-12">
 						<div class="footer-container">
 							<div class="block">
-								<p><strong>© Белтесто, 2017</strong></p>
+								<p><strong>© Белтесто, 2018</strong></p>
 								<div class="forever">
-									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
+									Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна <a href="http://forever.by">Forever</a>
 								</div>
 							</div>
 							<div class="block">
@@ -131,6 +131,9 @@
 					</div>
 				</div>
 			</div>
+			<script type="text/javascript">
+				$(document).ready(function(){$(".footer-placeholder").height($(".footer").outerHeight()+40);});
+			</script>
 		</div>
 		<!-- FOOTER END -->
 

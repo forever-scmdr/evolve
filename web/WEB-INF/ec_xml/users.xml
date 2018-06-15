@@ -3,10 +3,17 @@
 <groups>
 	<group name="common"/>
 	<group name="registered"/>
+	<group name="manager"/>
 </groups>
 <users>
 	<user name="admin" password="eeee" description="Мега админ">
 		<group name="common" role="admin"/>
+		<group name="registered" role="admin"/>
+		<group name="manager" role="admin"/>
+	</user>
+
+	<user name="manager" password="eeee" description="Менеджер тестовый">
+		<group name="manager" role="simple"/>
 		<group name="registered" role="admin"/>
 	</user>
 </users>
