@@ -648,16 +648,21 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				query.getSubquery(Const.WHERE).AND().col(P_DOT + IP_PARENT_DIRECT).byte_((byte)1);
 		} else {
 			query.getSubquery(Const.PARENT_ID).sql("0");
+			TemplateQuery where = query.getSubquery(Const.WHERE);
 			// Если нет родителя, то критерий типа айтема нужно указывать в табилце Item
+			where.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()));
 			// Для того, чтобы работал индекс, нужно указывать также пользователя и группу
 			// Пользователь и группа при их наличии добавляются в конце метода, здесь указываются
 			// только нули если пользователь и группа не заданы
-			TemplateQuery where = query.getSubquery(Const.WHERE);
-			where.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()));
-			if (user == null) {
-				where.AND().col(I_DOT + I_USER).int_(User.ANONYMOUS_ID);
-				if (userGroupName == null)
-					where.AND().col(I_DOT + I_GROUP).byte_(UserGroupRegistry.getDefaultGroup());
+			//
+			// Если использовался фильтр, то для поиска строки таблицы будет использоваться первичный ключ,
+			// и ухищрения с пользователем и группой не нужны. Поэтому проверка на существование фильтра
+			if (!hasFilter()) {
+				if (user == null) {
+					where.AND().col(I_DOT + I_USER).int_(User.ANONYMOUS_ID);
+					if (userGroupName == null)
+						where.AND().col(I_DOT + I_GROUP).byte_(UserGroupRegistry.getDefaultGroup());
+				}
 			}
 		}
 
