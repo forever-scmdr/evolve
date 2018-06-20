@@ -164,6 +164,8 @@
 		<parameter name="date" caption="Дата" type="date"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="status" type="byte" caption="Статус" default="0"
+		           description="0 - новый, 1 - обрабатывается, 2 - выполнен"/>
 		<child item="bought"/>
 	</item>
 
@@ -222,9 +224,9 @@
 
 
 	<item name="manager" caption="Менеджер" key="name" ag-id="34" ag-hash="835260333">
-		<on-create class="extra.ManageUsers.OnCreate"/>
-		<on-update class="extra.ManageUsers.OnUpdate"/>
-		<on-delete class="extra.ManageUsers.OnDelete"/>
+		<on-create class="extra.ManageUsers$OnCreate"/>
+		<on-update class="extra.ManageUsers$OnUpdate"/>
+		<on-delete class="extra.ManageUsers$OnDelete"/>
 		<parameter name="name" type="string" caption="ФИО"/>
 		<parameter name="email" type="string" caption="Email"/>
 		<parameter name="password" type="string" caption="Пароль"/>

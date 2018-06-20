@@ -798,14 +798,21 @@
 		<link name="registered" target="login_form_ajax">
 			<var name="success" value="true"/>
 		</link>
-		<link name="manager" target="test"/>
+		<link name="manager" target="login_form_ajax">
+			<var name="success" value="true"/>
+			<var name="target" value="test"/>
+		</link>
 		<command class="ecommander.fwk.LoginCommand">
 			<result name="not_correct" type="redirect"/>
 			<result name="error" type="redirect"/>
 			<result name="out" type="redirect"/>
 			<result name="registered" type="redirect"/>
+			<result name="manager" type="redirect"/>
 		</command>
 	</page>
+
+
+	<page name="test"/>
 
 
 	<page name="login_form_ajax" template="login_form_ajax">
@@ -818,10 +825,6 @@
 		<link name="login_link" target="login_action"/>
 	</page>
 
-
-	<page name="test">
-
-	</page>
 
 	<page name="personal_ajax" template="personal_ajax">
 		<link name="personal_link" target="personal"/>
@@ -892,15 +895,46 @@
 
 
 
+	<page name="orders_all" template="manager/orders" authority-groups="common">
+		<request>
+			<var name="message"/>
+		</request>
+		<list item="purchase" id="purchase">
+			<filter>
+				<sorting direction="ASC"><var value="status"/></sorting>
+				<sorting direction="DESC"><var value="date"/></sorting>
+			</filter>
+			<ancestor item="user"/>
+			<ancestor item="manager" assoc="manages"/>
+			<link name="show_purchase" target="order">
+				<var name="p" ref="purchase"/>
+			</link>
+			<link name="set_manager" target="manage_purchase">
+				<var name="p" ref="purchase"/>
+			</link>
+		</list>
+		<list item="manager"/>
+	</page>
 
 
 
+	<page name="order" authority-groups="manager">
+		<request>
+			<var name="p"/>
+		</request>
+		<single item="purchase">
+			<list item="bought"/>
+		</single>
+	</page>
 
 
 
-
-
-
+	<page name="manage_purchase" authority-groups="manager">
+		<request>
+			<var name="p"/>
+			<var name="status"/>
+		</request>
+	</page>
 
 
 

@@ -10,6 +10,7 @@
 
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
 	<xsl:variable name="message" select="page/variables/message"/>
+	<xsl:variable name="target" select="page/variables/target"/>
 
 	<xsl:template match="/">
 		<xsl:if test="not($success)">
@@ -38,7 +39,12 @@
 		</xsl:if>
 		<xsl:if test="$success">
 			<div class="result" id="login_form">
-				<script>document.location.reload();</script>
+				<xsl:if test="$target">
+					<script>document.location.href = "<xsl:value-of select="$target"/>";</script>
+				</xsl:if>
+				<xsl:if test="not($target)">
+					<script>document.location.reload();</script>
+				</xsl:if>
 			</div>
 		</xsl:if>
 	</xsl:template>

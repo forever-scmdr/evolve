@@ -93,10 +93,17 @@ public class LoginCommand extends Command {
 			if (user != null) {
 				startUserSession(user);
 				HashSet<User.Group> groups = user.getGroups();
+				// Начала логин в группы, где пользователь не админ
+				for (User.Group group : groups) {
+					if (hasResult(group.name) && group.role == User.SIMPLE)
+						return getResult(group.name);
+				}
+				// Потом логн в первую попавшуюся группу
 				for (User.Group group : groups) {
 					if (hasResult(group.name))
 						return getResult(group.name);
 				}
+				// Если нужных страниц нет, просто возвращается SUCCESS
 				return getResult(SUCCESS);
 			} else {
 				return getResult(NOT_CORRECT);

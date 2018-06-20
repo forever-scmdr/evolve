@@ -200,9 +200,16 @@
 									<xsl:variable name="item" select="admin-page/item"/>
 									<xsl:if test="$item">
 										<div class="wide">
-											<div id="message_main" style="border: 2px solid #56C493; padding: 8px 12px; background: #D7F3E6; margin-bottom: 20px; color: #164F35">
-												<xsl:value-of select="admin-page/message"/>
-											</div>
+											<xsl:if test="admin-page/message/@error = 'true'">
+												<div id="message_main" style="border: 2px solid #C45693; padding: 8px 12px; background: #F3D7E6; margin-bottom: 20px; color: #4F1635">
+													<xsl:value-of select="admin-page/message"/>
+												</div>
+											</xsl:if>
+											<xsl:if test="not(admin-page/message/@error = 'true')">
+												<div id="message_main" style="border: 2px solid #56C493; padding: 8px 12px; background: #D7F3E6; margin-bottom: 20px; color: #164F35">
+													<xsl:value-of select="admin-page/message"/>
+												</div>
+											</xsl:if>
 											<div class="margin context-duplicate">
 												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?', 'simple')">Скрыть</a>
 												<xsl:if test="$item/@files-protected = 'true'">
