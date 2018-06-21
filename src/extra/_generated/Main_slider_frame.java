@@ -59,4 +59,20 @@ public class Main_slider_frame
         return containsValue("pic", value);
     }
 
+    public void set_link(String value) {
+        setValue("link", value);
+    }
+
+    public String get_link() {
+        return getStringValue("link");
+    }
+
+    public String getDefault_link(String defaultVal) {
+        return getStringValue("link", defaultVal);
+    }
+
+    public boolean contains_link(String value) {
+        return containsValue("link", value);
+    }
+
 }

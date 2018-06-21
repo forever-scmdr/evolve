@@ -48,22 +48,6 @@ public class Custom_page
         return containsValue("header", value);
     }
 
-    public void set_in_main_menu(String value) {
-        setValue("in_main_menu", value);
-    }
-
-    public String get_in_main_menu() {
-        return getStringValue("in_main_menu");
-    }
-
-    public String getDefault_in_main_menu(String defaultVal) {
-        return getStringValue("in_main_menu", defaultVal);
-    }
-
-    public boolean contains_in_main_menu(String value) {
-        return containsValue("in_main_menu", value);
-    }
-
     public void set_text(String value) {
         setValue("text", value);
     }

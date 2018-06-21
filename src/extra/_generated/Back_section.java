@@ -4,28 +4,28 @@ package extra._generated;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Parse_section
+public class Back_section
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "parse_section";
+    private final static String _ITEM_TYPE_NAME = "back_section";
 
-    private Parse_section(Item item) {
+    private Back_section(Item item) {
         super(item);
     }
 
-    public static Parse_section get(Item item) {
+    public static Back_section get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'parse_section' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'back_section' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Parse_section(item);
+        return new Back_section(item);
     }
 
-    public static Parse_section newChild(Item parent) {
+    public static Back_section newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 
@@ -45,20 +45,20 @@ public class Parse_section
         return containsValue("name", value);
     }
 
-    public void set_item_urls(String value) {
-        setValue("item_urls", value);
+    public void set_code(String value) {
+        setValue("code", value);
     }
 
-    public String get_item_urls() {
-        return getStringValue("item_urls");
+    public String get_code() {
+        return getStringValue("code");
     }
 
-    public String getDefault_item_urls(String defaultVal) {
-        return getStringValue("item_urls", defaultVal);
+    public String getDefault_code(String defaultVal) {
+        return getStringValue("code", defaultVal);
     }
 
-    public boolean contains_item_urls(String value) {
-        return containsValue("item_urls", value);
+    public boolean contains_code(String value) {
+        return containsValue("code", value);
     }
 
 }

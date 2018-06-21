@@ -19,18 +19,22 @@
 			</div>
 			<xsl:for-each select="page/purchase">
 				<xsl:variable name="status" select="if (status = '0') then 'Новый' else if (status = '1') then 'В обработке' else 'Закрыт'"/>
+				<xsl:variable name="manager" select="manager/email"/>
 				<div class="adm-table-row">
 					<div class="adm-table-cell"><xsl:value-of select="date" /></div>
 					<div class="adm-table-cell"><a href="{show_purchase}"><xsl:value-of select="num" /></a></div>
 					<div class="adm-table-cell"><xsl:value-of select="user/name" /></div>
 					<div class="adm-table-cell"><xsl:value-of select="$status" /></div>
 					<div class="adm-table-cell">
-						<select name="" id="">
-							<xsl:for-each select="$managers">
-								<option value="{email}"><xsl:value-of select="name" /></option>
-							</xsl:for-each>
-						</select>
-						<button class="adm-button adm-button_small">Ок</button>
+						<form method="post" action="{set_manager}">
+							<select name="manager" value="{$manager}">
+								<option value=""></option>
+								<xsl:for-each select="$managers">
+									<option value="{email}"><xsl:value-of select="name" /></option>
+								</xsl:for-each>
+							</select>
+							<button class="adm-button adm-button_small" type="submit">Ок</button>
+						</form>
 					</div>
 					<div class="adm-table-cell"><a href=""><i class="fas fa-file-excel adm-download-xlsx"></i></a></div>
 					<div class="adm-table-cell"><xsl:value-of select="sum" /></div>

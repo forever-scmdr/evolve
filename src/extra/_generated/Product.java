@@ -49,38 +49,6 @@ public class Product
         return containsValue("name", value);
     }
 
-    public void set_type(String value) {
-        setValue("type", value);
-    }
-
-    public String get_type() {
-        return getStringValue("type");
-    }
-
-    public String getDefault_type(String defaultVal) {
-        return getStringValue("type", defaultVal);
-    }
-
-    public boolean contains_type(String value) {
-        return containsValue("type", value);
-    }
-
-    public void set_name_extra(String value) {
-        setValue("name_extra", value);
-    }
-
-    public String get_name_extra() {
-        return getStringValue("name_extra");
-    }
-
-    public String getDefault_name_extra(String defaultVal) {
-        return getStringValue("name_extra", defaultVal);
-    }
-
-    public boolean contains_name_extra(String value) {
-        return containsValue("name_extra", value);
-    }
-
     public void set_code(String value) {
         setValue("code", value);
     }
@@ -97,160 +65,16 @@ public class Product
         return containsValue("code", value);
     }
 
-    public void set_vendor_code(String value) {
-        setValue("vendor_code", value);
+    public void set_main_pic(File value) {
+        setValue("main_pic", value);
     }
 
-    public String get_vendor_code() {
-        return getStringValue("vendor_code");
+    public File get_main_pic() {
+        return getFileValue("main_pic", AppContext.getCommonFilesDirPath());
     }
 
-    public String getDefault_vendor_code(String defaultVal) {
-        return getStringValue("vendor_code", defaultVal);
-    }
-
-    public boolean contains_vendor_code(String value) {
-        return containsValue("vendor_code", value);
-    }
-
-    public void set_offer_id(String value) {
-        setValue("offer_id", value);
-    }
-
-    public String get_offer_id() {
-        return getStringValue("offer_id");
-    }
-
-    public String getDefault_offer_id(String defaultVal) {
-        return getStringValue("offer_id", defaultVal);
-    }
-
-    public boolean contains_offer_id(String value) {
-        return containsValue("offer_id", value);
-    }
-
-    public void set_short(String value) {
-        setValue("short", value);
-    }
-
-    public String get_short() {
-        return getStringValue("short");
-    }
-
-    public String getDefault_short(String defaultVal) {
-        return getStringValue("short", defaultVal);
-    }
-
-    public boolean contains_short(String value) {
-        return containsValue("short", value);
-    }
-
-    public void set_available(Byte value) {
-        setValue("available", value);
-    }
-
-    public void setUI_available(String value)
-        throws Exception
-    {
-        setValueUI("available", value);
-    }
-
-    public Byte get_available() {
-        return getByteValue("available");
-    }
-
-    public Byte getDefault_available(Byte defaultVal) {
-        return getByteValue("available", defaultVal);
-    }
-
-    public boolean contains_available(Byte value) {
-        return containsValue("available", value);
-    }
-
-    public void set_group_id(String value) {
-        setValue("group_id", value);
-    }
-
-    public String get_group_id() {
-        return getStringValue("group_id");
-    }
-
-    public String getDefault_group_id(String defaultVal) {
-        return getStringValue("group_id", defaultVal);
-    }
-
-    public boolean contains_group_id(String value) {
-        return containsValue("group_id", value);
-    }
-
-    public void set_url(String value) {
-        setValue("url", value);
-    }
-
-    public String get_url() {
-        return getStringValue("url");
-    }
-
-    public String getDefault_url(String defaultVal) {
-        return getStringValue("url", defaultVal);
-    }
-
-    public boolean contains_url(String value) {
-        return containsValue("url", value);
-    }
-
-    public void set_category_id(String value) {
-        setValue("category_id", value);
-    }
-
-    public String get_category_id() {
-        return getStringValue("category_id");
-    }
-
-    public String getDefault_category_id(String defaultVal) {
-        return getStringValue("category_id", defaultVal);
-    }
-
-    public boolean contains_category_id(String value) {
-        return containsValue("category_id", value);
-    }
-
-    public void set_currency_id(String value) {
-        setValue("currency_id", value);
-    }
-
-    public String get_currency_id() {
-        return getStringValue("currency_id");
-    }
-
-    public String getDefault_currency_id(String defaultVal) {
-        return getStringValue("currency_id", defaultVal);
-    }
-
-    public boolean contains_currency_id(String value) {
-        return containsValue("currency_id", value);
-    }
-
-    public void set_price_original(BigDecimal value) {
-        setValue("price_original", value);
-    }
-
-    public void setUI_price_original(String value)
-        throws Exception
-    {
-        setValueUI("price_original", value);
-    }
-
-    public BigDecimal get_price_original() {
-        return getDecimalValue("price_original");
-    }
-
-    public BigDecimal getDefault_price_original(BigDecimal defaultVal) {
-        return getDecimalValue("price_original", defaultVal);
-    }
-
-    public boolean contains_price_original(BigDecimal value) {
-        return containsValue("price_original", value);
+    public boolean contains_main_pic(File value) {
+        return containsValue("main_pic", value);
     }
 
     public void set_price(BigDecimal value) {
@@ -275,28 +99,6 @@ public class Product
         return containsValue("price", value);
     }
 
-    public void set_price_old(BigDecimal value) {
-        setValue("price_old", value);
-    }
-
-    public void setUI_price_old(String value)
-        throws Exception
-    {
-        setValueUI("price_old", value);
-    }
-
-    public BigDecimal get_price_old() {
-        return getDecimalValue("price_old");
-    }
-
-    public BigDecimal getDefault_price_old(BigDecimal defaultVal) {
-        return getDecimalValue("price_old", defaultVal);
-    }
-
-    public boolean contains_price_old(BigDecimal value) {
-        return containsValue("price_old", value);
-    }
-
     public void set_qty(Double value) {
         setValue("qty", value);
     }
@@ -319,48 +121,20 @@ public class Product
         return containsValue("qty", value);
     }
 
-    public void set_country(String value) {
-        setValue("country", value);
+    public void set_short(String value) {
+        setValue("short", value);
     }
 
-    public String get_country() {
-        return getStringValue("country");
+    public String get_short() {
+        return getStringValue("short");
     }
 
-    public String getDefault_country(String defaultVal) {
-        return getStringValue("country", defaultVal);
+    public String getDefault_short(String defaultVal) {
+        return getStringValue("short", defaultVal);
     }
 
-    public boolean contains_country(String value) {
-        return containsValue("country", value);
-    }
-
-    public void set_main_pic(File value) {
-        setValue("main_pic", value);
-    }
-
-    public File get_main_pic() {
-        return getFileValue("main_pic", AppContext.getCommonFilesDirPath());
-    }
-
-    public boolean contains_main_pic(File value) {
-        return containsValue("main_pic", value);
-    }
-
-    public void set_description(String value) {
-        setValue("description", value);
-    }
-
-    public String get_description() {
-        return getStringValue("description");
-    }
-
-    public String getDefault_description(String defaultVal) {
-        return getStringValue("description", defaultVal);
-    }
-
-    public boolean contains_description(String value) {
-        return containsValue("description", value);
+    public boolean contains_short(String value) {
+        return containsValue("short", value);
     }
 
     public void set_text(String value) {
@@ -379,36 +153,84 @@ public class Product
         return containsValue("text", value);
     }
 
-    public void set_extra_xml(String value) {
-        setValue("extra_xml", value);
+    public void set_tech(String value) {
+        setValue("tech", value);
     }
 
-    public String get_extra_xml() {
-        return getStringValue("extra_xml");
+    public String get_tech() {
+        return getStringValue("tech");
     }
 
-    public String getDefault_extra_xml(String defaultVal) {
-        return getStringValue("extra_xml", defaultVal);
+    public String getDefault_tech(String defaultVal) {
+        return getStringValue("tech", defaultVal);
     }
 
-    public boolean contains_extra_xml(String value) {
-        return containsValue("extra_xml", value);
+    public boolean contains_tech(String value) {
+        return containsValue("tech", value);
     }
 
-    public void add_text_pics(File value) {
-        setValue("text_pics", value);
+    public void set_apply(String value) {
+        setValue("apply", value);
     }
 
-    public List<File> getAll_text_pics() {
-        return getFileValues("text_pics", AppContext.getCommonFilesDirPath());
+    public String get_apply() {
+        return getStringValue("apply");
     }
 
-    public void remove_text_pics(File value) {
-        removeEqualValue("text_pics", value);
+    public String getDefault_apply(String defaultVal) {
+        return getStringValue("apply", defaultVal);
     }
 
-    public boolean contains_text_pics(File value) {
-        return containsValue("text_pics", value);
+    public boolean contains_apply(String value) {
+        return containsValue("apply", value);
+    }
+
+    public void add_accessiories(String value) {
+        setValue("accessiories", value);
+    }
+
+    public List<String> getAll_accessiories() {
+        return getStringValues("accessiories");
+    }
+
+    public void remove_accessiories(String value) {
+        removeEqualValue("accessiories", value);
+    }
+
+    public boolean contains_accessiories(String value) {
+        return containsValue("accessiories", value);
+    }
+
+    public void add_sets(String value) {
+        setValue("sets", value);
+    }
+
+    public List<String> getAll_sets() {
+        return getStringValues("sets");
+    }
+
+    public void remove_sets(String value) {
+        removeEqualValue("sets", value);
+    }
+
+    public boolean contains_sets(String value) {
+        return containsValue("sets", value);
+    }
+
+    public void add_probes(String value) {
+        setValue("probes", value);
+    }
+
+    public List<String> getAll_probes() {
+        return getStringValues("probes");
+    }
+
+    public void remove_probes(String value) {
+        removeEqualValue("probes", value);
+    }
+
+    public boolean contains_probes(String value) {
+        return containsValue("probes", value);
     }
 
     public void add_gallery(File value) {
@@ -427,20 +249,36 @@ public class Product
         return containsValue("gallery", value);
     }
 
-    public void add_assoc_code(String value) {
-        setValue("assoc_code", value);
+    public void add_text_pics(File value) {
+        setValue("text_pics", value);
     }
 
-    public List<String> getAll_assoc_code() {
-        return getStringValues("assoc_code");
+    public List<File> getAll_text_pics() {
+        return getFileValues("text_pics", AppContext.getCommonFilesDirPath());
     }
 
-    public void remove_assoc_code(String value) {
-        removeEqualValue("assoc_code", value);
+    public void remove_text_pics(File value) {
+        removeEqualValue("text_pics", value);
     }
 
-    public boolean contains_assoc_code(String value) {
-        return containsValue("assoc_code", value);
+    public boolean contains_text_pics(File value) {
+        return containsValue("text_pics", value);
+    }
+
+    public void add_video(String value) {
+        setValue("video", value);
+    }
+
+    public List<String> getAll_video() {
+        return getStringValues("video");
+    }
+
+    public void remove_video(String value) {
+        removeEqualValue("video", value);
+    }
+
+    public boolean contains_video(String value) {
+        return containsValue("video", value);
     }
 
 }

@@ -12,6 +12,9 @@
 	<xsl:template name="CONTENT"/>
 
 
+	<xsl:variable name="message" select="page/variables/message"/>
+	<xsl:variable name="success" select="page/variables/success = 'true'"/>
+
 
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
 
@@ -52,15 +55,21 @@
 							<button class="adm-button">Выход</button>
 						</div>
 					</div>
+					<!-- alert-info, alert-warning alert-danger -->
+					<xsl:if test="$message">
+						<div class="alert {'alert-success'[$success]}{'alert-danger'[not($success)]}" role="alert">
+							<xsl:value-of select="$message"/>
+						</div>
+					</xsl:if>
 					<div class="tabs adm-tabs">
 						<ul class="nav nav-tabs adm-tabs-container" role="tablist">
 							<li role="presentation" class="active adm-tab"><a href="#">Заказы</a></li>
 							<li role="presentation" class="adm-tab adm-tab_secondary"><a href="admin-user-list.html">Пользователи</a></li>
 						</ul>
 					</div>
+					<xsl:call-template name="CONTENT"/>
 				</div>
 			</div>
-			<xsl:call-template name="CONTENT"/>
 			<script type="text/javascript" src="js/bootstrap.js"/>
 			<script type="text/javascript" src="admin/ajax/ajax.js"/>
 			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>

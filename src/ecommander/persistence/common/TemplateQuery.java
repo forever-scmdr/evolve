@@ -225,6 +225,11 @@ public class TemplateQuery implements QueryPart {
 		return this;
 	}
 
+	public final TemplateQuery DELETE_join(String tableName) {
+		queryParts.add(new SqlQueryPart("DELETE " + tableName + " FROM " + tableName));
+		return this;
+	}
+
 	public final TemplateQuery SET() {
 		queryParts.add(new SqlQueryPart(" SET "));
 		return this;

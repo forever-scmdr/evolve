@@ -112,4 +112,26 @@ public class Purchase
         return containsValue("sum", value);
     }
 
+    public void set_status(Byte value) {
+        setValue("status", value);
+    }
+
+    public void setUI_status(String value)
+        throws Exception
+    {
+        setValueUI("status", value);
+    }
+
+    public Byte get_status() {
+        return getByteValue("status");
+    }
+
+    public Byte getDefault_status(Byte defaultVal) {
+        return getByteValue("status", defaultVal);
+    }
+
+    public boolean contains_status(Byte value) {
+        return containsValue("status", value);
+    }
+
 }

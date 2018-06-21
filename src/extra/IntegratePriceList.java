@@ -65,11 +65,11 @@ public class IntegratePriceList extends IntegrateBase {
 				}
 				String typeName = currentSection.getStringValue(ItemNames.section.NAME);
 				ItemType paramsType = ItemTypeRegistry.getItemType(Strings.translit(typeName));
-				if (StringUtils.isBlank(currentSection.getStringValue(ItemNames.section.PARAMS_FILTER))) {
+				if (StringUtils.isBlank(currentSection.getStringValue("params_filter"))) {
 					createFilters(currentSection, AdditionalHeaders);
 				}
 				if (paramsType == null) {
-					if (currentSection.getValue(ItemNames.section.PARAMS_FILTER) == null) {
+					if (currentSection.getValue("params_filter") == null) {
 						createFilters(currentSection, AdditionalHeaders);
 					}
 					paramsType = createItemType(Strings.translit(typeName), typeName, AdditionalHeaders);
@@ -113,7 +113,7 @@ public class IntegratePriceList extends IntegrateBase {
 				}
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().ingoreComputed());
 
-				Item params = new ItemQuery(ItemNames.PARAMS).setParentId(product.getId(), false).loadFirstItem();
+				Item params = new ItemQuery("params").setParentId(product.getId(), false).loadFirstItem();
 				if (params == null) {
 					params = Item.newChildItem(ItemTypeRegistry.getItemType(Strings.translit(typeName)), product);
 
@@ -152,13 +152,13 @@ public class IntegratePriceList extends IntegrateBase {
 			filter.addPart(input);
 			input.addPart(new CriteriaDef("=", paramName, DataType.Type.STRING.toString(), ""));
 		}
-		currentSection.setValue(ItemNames.section.PARAMS_FILTER, filter.generateXML());
+		currentSection.setValue("params_filter", filter.generateXML());
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection));
 	}
 
 	private ItemType createItemType(String typeName, String typeCaption, TreeSet<String> headers) throws Exception {
 		ItemType newClass = new ItemType(typeName, 0, typeCaption, "", "",
-				ItemNames.PARAMS, null, false, true, false, false);
+				"params", null, false, true, false, false);
 		for (String paramName : headers) {
 			paramName = paramName.replace("#", "");
 

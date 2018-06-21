@@ -37,20 +37,20 @@ public class CodeGenerator {
 		String className = AppContext.getItemNamesClassName();
 		if (StringUtils.isBlank(className))
 			className = "ItemNames";
-		JDefinedClass itemsClass = pack._getClass(className);
-		if (itemsClass != null) 
-			pack.remove(itemsClass);
-		itemsClass = pack._class(className);
+		JDefinedClass itemsInterface = pack._getClass(className);
+		if (itemsInterface != null)
+			pack.remove(itemsInterface);
+		itemsInterface = pack._interface(JMod.PUBLIC, className);
 		for (String itemName : ItemTypeRegistry.getItemNames()) {
 			ItemType item = ItemTypeRegistry.getItemType(itemName);
 			if (!item.isUserDefined()) {
 				String interfaceName = createBigJavaName(itemName);
 				try {
 					// Создать константу - имя типа
-					JFieldVar itemNameConst = itemsClass.field(JMod.PUBLIC | JMod.STATIC | JMod.FINAL, String.class, interfaceName.toUpperCase());
+					JFieldVar itemNameConst = itemsInterface.field(JMod.NONE, String.class, interfaceName.toUpperCase());
 					itemNameConst.init(JExpr.lit(item.getName()));
 					// Создать интерфейс
-					JDefinedClass itemInterface = itemsClass._interface(interfaceName);
+					JDefinedClass itemInterface = itemsInterface._interface(interfaceName);
 					JFieldVar itemNameField = itemInterface.field(JMod.NONE, String.class, "_ITEM_NAME");
 					itemNameField.init(JExpr.lit(item.getName()));
 					for (ParameterDescription param : item.getParameterList()) {

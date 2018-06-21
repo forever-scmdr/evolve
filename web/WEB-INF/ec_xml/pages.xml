@@ -898,19 +898,21 @@
 	<page name="orders_all" template="manager/orders" authority-groups="common">
 		<request>
 			<var name="message"/>
+			<var name="success"/>
 		</request>
 		<list item="purchase" id="purchase">
 			<filter>
 				<sorting direction="ASC"><var value="status"/></sorting>
 				<sorting direction="DESC"><var value="date"/></sorting>
 			</filter>
-			<ancestor item="user"/>
-			<ancestor item="manager" assoc="manages"/>
+			<ancestor item="user" tag="user"/>
+			<ancestor item="manager" assoc="manages" transit="true"/>
 			<link name="show_purchase" target="order">
 				<var name="p" ref="purchase"/>
 			</link>
 			<link name="set_manager" target="manage_purchase">
 				<var name="p" ref="purchase"/>
+				<var name="src_page" value="orders_all"/>
 			</link>
 		</list>
 		<list item="manager"/>
@@ -933,7 +935,21 @@
 		<request>
 			<var name="p"/>
 			<var name="status"/>
+			<var name="manager"/>
+			<var name="src_page"/>
 		</request>
+		<link name="success" target-var="src_page">
+			<var name="p" var="p"/>
+			<var name="success" value="true"/>
+		</link>
+		<link name="error" target-var="src_page">
+			<var name="p" var="p"/>
+			<var name="success" value="false"/>
+		</link>
+		<command class="extra.ManagePurchase">
+			<result name="success" type="redirect"/>
+			<result name="error" type="redirect"/>
+		</command>
 	</page>
 
 
