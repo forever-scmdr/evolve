@@ -40,7 +40,7 @@
 		<xsl:if test="$success">
 			<div class="result" id="login_form">
 				<xsl:if test="$target">
-					<script>document.location.href = "<xsl:value-of select="$target"/>";</script>
+					<script>document.location.href = "<xsl:value-of select="page/base"/>/<xsl:value-of select="$target"/>";</script>
 				</xsl:if>
 				<xsl:if test="not($target)">
 					<script>document.location.reload();</script>

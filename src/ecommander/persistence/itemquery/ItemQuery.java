@@ -658,10 +658,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			// Если использовался фильтр, то для поиска строки таблицы будет использоваться первичный ключ,
 			// и ухищрения с пользователем и группой не нужны. Поэтому проверка на существование фильтра
 			if (!hasFilter()) {
-				if (user == null) {
-					where.AND().col(I_DOT + I_USER).int_(User.ANONYMOUS_ID);
-					if (userGroupName == null)
-						where.AND().col(I_DOT + I_GROUP).byte_(UserGroupRegistry.getDefaultGroup());
+				if (userGroupName == null) {
+					where.AND().col_IN(I_DOT + I_GROUP).byteIN(UserGroupRegistry.getAllGroupIds());
 				}
 			}
 		}

@@ -7,7 +7,8 @@
 	<xsl:template name="TITLE">Белтесто - администратор</xsl:template>
 
 
-
+	<xsl:variable name="is_users" select="page/@name = ('users_all', 'users')"/>
+	<xsl:variable name="is_all" select="page/@name = ('users_all', 'orders_all')"/>
 
 	<xsl:template name="CONTENT"/>
 
@@ -51,8 +52,8 @@
 							<img class="adm-logo__image" src="img/logo_big.svg" alt=""></img>
 						</div>
 						<div class="adm-user">
-							Главный администратор
-							<button class="adm-button">Выход</button>
+							<xsl:value-of select="page/user/@name"/>
+							<a href="{page/logout_link}" class="adm-button">Выход</a>
 						</div>
 					</div>
 					<!-- alert-info, alert-warning alert-danger -->
@@ -63,8 +64,12 @@
 					</xsl:if>
 					<div class="tabs adm-tabs">
 						<ul class="nav nav-tabs adm-tabs-container" role="tablist">
-							<li role="presentation" class="active adm-tab"><a href="#">Заказы</a></li>
-							<li role="presentation" class="adm-tab adm-tab_secondary"><a href="admin-user-list.html">Пользователи</a></li>
+							<li role="presentation" class="{if ($is_users) then 'adm-tab_secondary' else 'active'} adm-tab">
+								<a href="{page/orders_link}">Заказы</a>
+							</li>
+							<li role="presentation" class="{if ($is_users) then 'active' else 'adm-tab_secondary'} adm-tab">
+								<a href="{page/users_link}">Пользователи</a>
+							</li>
 						</ul>
 					</div>
 					<xsl:call-template name="CONTENT"/>

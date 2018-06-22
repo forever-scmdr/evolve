@@ -1,10 +1,12 @@
 package extra;
 
-import ecommander.fwk.*;
+import ecommander.fwk.EcommanderException;
+import ecommander.fwk.ErrorCodes;
+import ecommander.fwk.ItemEventCommandFactory;
+import ecommander.fwk.UserExistsExcepion;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.PersistenceCommandUnit;
-import ecommander.persistence.itemquery.ItemQuery;
 
 /**
  * Created by E on 19/6/2018.
@@ -70,6 +72,7 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 			} catch (UserExistsExcepion e) {
 				throw new EcommanderException(VALIDATION_FAILED, "Пользователь с таким именем уже существует");
 			}
+			executeCommand(ChangeItemOwnerDBUnit.newUser(userItem, newUser.getUserId(), UserGroupRegistry.getGroup(MANAGER_GROUP)));
 		} else if (mode == UPDATE) {
 			String initialEmail = (String)((SingleParameter)userItem.getParameterByName(EMAIL_PARAM)).getInitialValue();
 			String initialPass = (String)((SingleParameter)userItem.getParameterByName(PASSWORD_PARAM)).getInitialValue();

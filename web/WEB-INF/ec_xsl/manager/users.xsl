@@ -4,34 +4,21 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="managers" select="page/manager"/>
-	<xsl:variable name="user" select="page/manager/user_jur | page/manager/user_phys | page/user_jur | page/user_phys"/>
 
 	<xsl:template name="CONTENT">
-		<h1 class="adm-page-title">
-			История заказов
-			<xsl:if test="$user">
-				пользователя
-				<xsl:value-of select="if ($user/organization) then $user/organization else $user/name"/>
-			</xsl:if>
-		</h1>
+		<h1 class="adm-page-title">Пользователи</h1>
 		<div class="adm-table">
 			<div class="adm-table-row adm-table-head">
-				<div class="adm-table-cell adm-table-head-cell">Дата</div>
-				<div class="adm-table-cell adm-table-head-cell">Номер заказа</div>
+				<div class="adm-table-cell adm-table-head-cell"></div>
 				<div class="adm-table-cell adm-table-head-cell">Пользователь</div>
-				<div class="adm-table-cell adm-table-head-cell">Статус</div>
 				<xsl:if test="$is_all"><div class="adm-table-cell adm-table-head-cell">Менеджер</div></xsl:if>
-				<div class="adm-table-cell adm-table-head-cell">Скачать .xlsx</div>
-				<div class="adm-table-cell adm-table-head-cell">Сумма, руб.</div>
+				<div class="adm-table-cell adm-table-head-cell"></div>
 			</div>
-			<xsl:for-each select="page//purchase">
-				<xsl:variable name="status" select="if (status = '0') then 'Новый' else if (status = '1') then 'В обработке' else 'Закрыт'"/>
+			<xsl:for-each select="page//user_phys | page//user_jur">
 				<xsl:variable name="manager" select="manager/email"/>
 				<div class="adm-table-row">
-					<div class="adm-table-cell"><xsl:value-of select="date" /></div>
-					<div class="adm-table-cell"><a href="{show_purchase}"><xsl:value-of select="num" /></a></div>
-					<div class="adm-table-cell"><xsl:value-of select="user/name" /></div>
-					<div class="adm-table-cell"><xsl:value-of select="$status" /></div>
+					<div class="adm-table-cell"><xsl:value-of select="position()" /></div>
+					<div class="adm-table-cell"><xsl:value-of select="if (organization) then organization else name" /></div>
 					<xsl:if test="$is_all">
 						<div class="adm-table-cell">
 							<form method="post" action="{set_manager}">
@@ -45,8 +32,7 @@
 							</form>
 						</div>
 					</xsl:if>
-					<div class="adm-table-cell"><a href=""><i class="fas fa-file-excel adm-download-xlsx"></i></a></div>
-					<div class="adm-table-cell"><xsl:value-of select="sum" /></div>
+					<div class="adm-table-cell"><a href="{show_orders}">Заказы</a></div>
 				</div>
 			</xsl:for-each>
 		</div>

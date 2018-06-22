@@ -1,7 +1,10 @@
 package ecommander.persistence.commandunits;
 
+import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.model.*;
+import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
+import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
 
@@ -87,11 +90,26 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 			pstmt.executeUpdate();
 		}
 
+		// Дополнительная обработка для удаления
+		if (newStatus == Item.STATUS_DELETED) {
+			Item itemFull = null;
+			ItemType type = ItemTypeRegistry.getItemType(item.getTypeId());
+			if (type.hasExtraHandlers()) {
+				for (ItemEventCommandFactory fac : type.getExtraHandlers(ItemType.Event.delete)) {
+					if (itemFull == null) {
+						itemFull = ItemQuery.loadById(item.getId(), getTransactionContext().getConnection());
+					}
+					PersistenceCommandUnit command = fac.createCommand(itemFull);
+					executeCommandInherited(command);
+				}
+			}
+		}
+
 		//////////////////////////////////////////////////////////////////////////////////////////
 		//         Включить в список обновления предшественников айтема (и его сабайтемов)      //
 		//////////////////////////////////////////////////////////////////////////////////////////
 
-		// Если айтем меняет свой статус с нормлаьного или на нормальный
+		// Если айтем меняет свой статус с нормального или на нормальный
 		boolean insertComputedToUpdateLog = newStatus == Item.STATUS_NORMAL || item.getStatus() == Item.STATUS_NORMAL;
 		// а также если в модели есть computed-параметры в принципе и если нет игнорирования computed-параметров
 		insertComputedToUpdateLog &= processComputed && ItemTypeRegistry.hasComputedItems();

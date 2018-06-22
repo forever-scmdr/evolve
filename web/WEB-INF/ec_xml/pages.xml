@@ -794,13 +794,14 @@
 		</link>
 		<link name="out" target="login_form_ajax">
 			<var name="success" value="true"/>
+			<var name="target" value="index"/>
 		</link>
 		<link name="registered" target="login_form_ajax">
 			<var name="success" value="true"/>
 		</link>
 		<link name="manager" target="login_form_ajax">
 			<var name="success" value="true"/>
-			<var name="target" value="test"/>
+			<var name="target" value="orders"/>
 		</link>
 		<command class="ecommander.fwk.LoginCommand">
 			<result name="not_correct" type="redirect"/>
@@ -893,15 +894,35 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
+	<include-definition name="MANAGER_ADMIN_COMMON">
+		<list item="manager"/>
+		<link name="orders_link" target="orders_all"/>
+		<link name="users_link" target="users_all"/>
+		<link name="logout_link" target="login_action">
+			<var name="action" value="out"/>
+		</link>
+	</include-definition>
+
+
+	<include-definition name="MANAGER_COMMON">
+		<link name="orders_link" target="orders"/>
+		<link name="users_link" target="users"/>
+		<link name="logout_link" target="login_action">
+			<var name="action" value="out"/>
+		</link>
+	</include-definition>
 
 
 	<page name="orders_all" template="manager/orders" authority-groups="common">
 		<request>
 			<var name="message"/>
 			<var name="success"/>
+			<var name="u"/>
 		</request>
+		<single item="user" var="u" id="pred"/>
 		<list item="purchase" id="purchase">
 			<filter>
+				<predecessor ref="pred" compare="ANY"/>
 				<sorting direction="ASC"><var value="status"/></sorting>
 				<sorting direction="DESC"><var value="date"/></sorting>
 			</filter>
@@ -915,7 +936,83 @@
 				<var name="src_page" value="orders_all"/>
 			</link>
 		</list>
-		<list item="manager"/>
+		<include name="MANAGER_ADMIN_COMMON"/>
+	</page>
+
+
+	<page name="users_all" template="manager/users" authority-groups="common">
+		<request>
+			<var name="message"/>
+			<var name="success"/>
+		</request>
+		<list item="user" id="user">
+			<ancestor item="manager" assoc="manages" transit="false"/>
+			<link name="set_manager" target="manage_purchase">
+				<var name="u" ref="user"/>
+				<var name="src_page" value="users_all"/>
+			</link>
+			<link name="show_orders" target="orders_all">
+				<var name="u" ref="user"/>
+			</link>
+		</list>
+		<include name="MANAGER_ADMIN_COMMON"/>
+	</page>
+
+
+	<page name="orders" template="manager/orders" authority-groups="manager">
+		<request>
+			<var name="message"/>
+			<var name="success"/>
+			<var name="u"/>
+		</request>
+		<single item="user" var="u" id="pred"/>
+		<personal>
+			<single item="manager">
+				<usergroup name="registered">
+					<list item="purchase" id="purchase" transit="true" assoc="manages">
+						<filter>
+							<predecessor ref="pred" compare="ANY"/>
+							<sorting direction="ASC"><var value="status"/></sorting>
+							<sorting direction="DESC"><var value="date"/></sorting>
+						</filter>
+						<ancestor item="user" tag="user"/>
+						<link name="show_purchase" target="order">
+							<var name="p" ref="purchase"/>
+						</link>
+						<link name="set_manager" target="manage_purchase">
+							<var name="p" ref="purchase"/>
+							<var name="src_page" value="orders"/>
+						</link>
+					</list>
+				</usergroup>
+			</single>
+		</personal>
+		<include name="MANAGER_COMMON"/>
+	</page>
+
+
+	<page name="users" template="manager/users" authority-groups="manager">
+		<request>
+			<var name="message"/>
+			<var name="success"/>
+		</request>
+		<personal>
+			<single item="manager">
+				<usergroup name="registered">
+					<list item="user" id="user" assoc="manages">
+						<ancestor item="manager" assoc="manages" transit="false"/>
+						<link name="set_manager" target="manage_purchase">
+							<var name="u" ref="user"/>
+							<var name="src_page" value="users"/>
+						</link>
+						<link name="show_orders" target="orders">
+							<var name="u" ref="user"/>
+						</link>
+					</list>
+				</usergroup>
+			</single>
+		</personal>
+		<include name="MANAGER_COMMON"/>
 	</page>
 
 

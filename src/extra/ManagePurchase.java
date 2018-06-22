@@ -4,14 +4,12 @@ import ecommander.fwk.ServerLogger;
 import ecommander.model.Compare;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.model.datatypes.LongDataType;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.DeleteAssocDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.ItemMapper;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 

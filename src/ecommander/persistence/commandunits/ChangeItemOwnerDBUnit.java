@@ -63,10 +63,11 @@ public class ChangeItemOwnerDBUnit extends DBPersistenceCommandUnit implements D
 		TemplateQuery updateItemOwner = new TemplateQuery("Update item owner");
 		updateItemOwner.UPDATE(ITEM_TBL).SET().col(I_GROUP).byte_(newGroup)._col(I_USER).int_(newUser)
 				.WHERE().col(I_ID).long_(item.getId()).sql(";\r\n");
-		// Потом обновить все сабайтемы
+		// Потом обновить все сабайтемы по первичной иерархии
 		updateItemOwner.UPDATE(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID)
 				.SET().col(I_GROUP).byte_(newGroup)._col(I_USER).int_(newUser)
-				.WHERE().col(IP_PARENT_ID).long_(item.getId());
+				.WHERE().col(IP_PARENT_ID).long_(item.getId())
+				.AND().col(IP_ASSOC_ID).byte_(ItemTypeRegistry.getPrimaryAssocId());
 		try(PreparedStatement pstmt = updateItemOwner.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}
