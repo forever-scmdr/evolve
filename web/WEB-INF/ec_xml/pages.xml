@@ -744,7 +744,7 @@
         <link name="create_filters" target="create_filters">
             <var name="action" value="start"/>
         </link>
-        <command class="extra.IntegratePriceList" clear-cache="yes">
+        <command class="ecommander.fwk.integration.IntegratePriceList" clear-cache="yes">
             <result name="complete" type="xml"/>
             <result name="create_filters" type="redirect"/>
         </command>
@@ -829,5 +829,28 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
+
+    <page name="generate_pricelist" template="integration">
+        <request>
+            <var name="action"/>
+        </request>
+        <link name="success" target="excel_complete" />
+        <link name="error" target="excel_complete"/>
+        <command class="ecommander.fwk.integration.GenerateExcelPriceList" clear-cache="yes">
+            <result name="success" type="redirect" />
+        </command>
+    </page>
+
+    <page name="download_prices">
+        <link name="success" target="excel_complete" />
+        <link name="error" target="excel_complete">
+            <var name="result" value="error"/>
+        </link>
+        <command class="ecommander.fwk.integration.MakeExcelPrice">
+            <result name="success" type="redirect" />
+        </command>
+    </page>
+
+    <page name="excel_complete"  template="excel_complete"/>
 
 </site>

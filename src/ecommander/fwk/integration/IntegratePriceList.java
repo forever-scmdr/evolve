@@ -1,4 +1,4 @@
-package extra;
+package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
@@ -13,6 +13,7 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
 import extra._generated.Product;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +47,7 @@ public class IntegratePriceList extends IntegrateBase {
 	private Item currentSection;
 	private Item catalog;
 	private HashMap<String, ArrayList<String>> pics = new HashMap<>();
+	private List<Item> sections = new ArrayList<>();
 
 	@Override
 	protected boolean makePreparations() throws Exception {
@@ -77,6 +79,8 @@ public class IntegratePriceList extends IntegrateBase {
 						section.setValue(ItemNames.section.NAME, sectionName);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(section).noFulltextIndex().ingoreComputed());
 						currentSection = section;
+						//Чтобы не трогать разделы, которых нет в файле.
+						sections.add(section);
 						break;
 					case "code":
 						price.initSectionHeaders(CODE, NAME, DESCRIPTION, PIC, PICS, PRICE, TAG);
@@ -181,12 +185,14 @@ public class IntegratePriceList extends IntegrateBase {
 		info.setOperation("Скачивание и прикрепление изображений");
 		downloadPictures();
 		refreshFiltersAndItemTypes();
+		info.setOperation("Индексация названий товаров");
+		//LuceneIndexMapper.getSingleton().reindexAll();
 		info.setOperation("Интеграция завершена");
 		price.close();
 	}
 
 	private void refreshFiltersAndItemTypes() throws Exception{
-		List<Item> sections = new ItemQuery(ItemNames.SECTION).loadItems();
+		sections = new ItemQuery(ItemNames.SECTION).loadItems();
 		info.setOperation("Создание классов и фильтров");
 		info.setToProcess(sections.size());
 		info.setProcessed(0);
