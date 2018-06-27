@@ -134,6 +134,16 @@ public class TemplateQuery implements QueryPart {
 	}
 
 	/**
+	 * Создать часть SELECT DISTINCT <поле1, поле2, ...>
+	 * @param columns
+	 * @return
+	 */
+	public final TemplateQuery SELECT_DISTINCT(Object... columns) {
+		queryParts.add(new SqlQueryPart("SELECT DISTINCT " + StringUtils.join(columns, ", ")));
+		return this;
+	}
+
+	/**
 	 * Создать вызов встроенной функции (функции агрегации или простой функции)
 	 * @param function
 	 * @param args
@@ -222,6 +232,11 @@ public class TemplateQuery implements QueryPart {
 
 	public final TemplateQuery DELETE(String tableName) {
 		queryParts.add(new SqlQueryPart("DELETE FROM " + tableName));
+		return this;
+	}
+
+	public final TemplateQuery DELETE_join(String tableName) {
+		queryParts.add(new SqlQueryPart("DELETE " + tableName + " FROM " + tableName));
 		return this;
 	}
 

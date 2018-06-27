@@ -382,8 +382,9 @@ public class MainAdminServlet extends BasicAdminServlet {
 		MultipleHttpPostForm itemForm = new MultipleHttpPostForm(req);
 		Item formItem = itemForm.getItemTree().getFirstChild().getItem();
 		Item item;
+		boolean isNew = formItem.isNew();
 		// Сохраняется новый айтем
-		if (formItem.isNew()) {
+		if (isNew) {
 			int userId;
 			byte groupId;
 			if (formItem.getContextParentId() == ItemTypeRegistry.getPrimaryRootId()) {
@@ -414,7 +415,23 @@ public class MainAdminServlet extends BasicAdminServlet {
 				}
 			}
 		}
-		transaction.execute();
+		try {
+			transaction.execute();
+		} catch (EcommanderException e) {
+			AdminPage page;
+			if (isNew) {
+				if (formItem.getContextParentId() == ItemTypeRegistry.getPrimaryRootId()) {
+					page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
+				} else {
+					ItemBasics parent = AdminLoader.loadItemAccessor(formItem.getContextParentId());
+					page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, parent.getId(), parent.getTypeId());
+				}
+			} else {
+				page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, item.getId(), item.getTypeId());
+			}
+			page.addMessage(e.getMessage(), true);
+			return page;
+		}
 		// Очистить кеш страниц
 		PageController.clearCache();
 		// Антоновские изменения

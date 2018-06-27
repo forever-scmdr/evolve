@@ -44,11 +44,11 @@ public class UpdatePrices extends IntegrateBase {
 						boolean available = StringUtils.contains(getValue(3), "+");
 						if (StringUtils.isNotBlank(priceNew)) {
 							prod.setValueUI(ItemNames.product.PRICE, priceNew);
-							prod.setValueUI(ItemNames.product.PRICE_OLD, priceOld);
+							prod.setValueUI("price_old", priceOld);
 						} else {
 							prod.setValueUI(ItemNames.product.PRICE, priceOld);
 						}
-						prod.setValue(ItemNames.product.AVAILABLE, available ? (byte)1 : (byte)0);
+						prod.setValue("available", available ? (byte)1 : (byte)0);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
 						info.increaseProcessed();
 					} else {

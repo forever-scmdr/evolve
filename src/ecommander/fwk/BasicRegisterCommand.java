@@ -39,7 +39,7 @@ public abstract class BasicRegisterCommand extends Command {
 			return getResult("not_set");
 		}
 		Item catalog = ItemUtils.ensureSingleRootItem(REGISTERED_CATALOG_ITEM, User.getDefaultUser(),
-				UserGroupRegistry.getGroup(REGISTERED_GROUP), User.ANONYMOUS_ID);
+				UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		String userName = form.getStringValue(EMAIL_PARAM);
 		String password = form.getStringValue(PASSWORD_PARAM);
 		User newUser = new User(userName, password, "registered user", User.ANONYMOUS_ID);

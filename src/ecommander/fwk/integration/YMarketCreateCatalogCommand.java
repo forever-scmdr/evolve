@@ -56,8 +56,6 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 			parser.parse(xml, secHandler);
 			info.increaseProcessed();
 		}
-		if (4 > 2)
-			return;
 
 		// Удаление всех пользовательских параметров товаров (айтемов и типов)
 		info.pushLog("Удаление параметров товаров");

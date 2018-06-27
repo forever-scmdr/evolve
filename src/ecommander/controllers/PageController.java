@@ -148,7 +148,13 @@ public class PageController {
 			requestUrl = StringUtils.replaceChars(requestUrl, '/', '_');
 			requestUrl = StringUtils.replaceChars(requestUrl, '?', '_');
 			String cacheFileName = domainName + "/" + page.getSessionContext().getUser().getGroupRolesStr() + "/" + requestUrl + ".html";
-			File cachedFile = new File(AppContext.getCacheHtmlDirPath() + cacheFileName);
+			String fullFileName = AppContext.getCacheHtmlDirPath() + cacheFileName;
+			if (fullFileName.length() >= 255) {
+				int hash = fullFileName.hashCode();
+				fullFileName = StringUtils.substring(fullFileName, 0, 230);
+				fullFileName += hash + ".html";
+			}
+			File cachedFile = new File(fullFileName);
 			File xslFile = new File(xslFileName);
 			if (cachedFile.exists() && xslFile.lastModified() < cachedFile.lastModified() && cachedFile.length() > 0) {
 				Timer.getTimer().start(Timer.GET_FROM_CACHE);
