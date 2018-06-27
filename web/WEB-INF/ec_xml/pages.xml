@@ -237,7 +237,6 @@
 
 
 
-
 	<page name="product" template="product" cacheable="true" critical-item="prod">
 		<request>
 			<var name="sec" style="translit"/>
@@ -894,19 +893,12 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
-	<include-definition name="MANAGER_ADMIN_COMMON">
-		<list item="manager"/>
-		<link name="orders_link" target="orders_all"/>
-		<link name="users_link" target="users_all"/>
-		<link name="logout_link" target="login_action">
-			<var name="action" value="out"/>
-		</link>
-	</include-definition>
-
 
 	<include-definition name="MANAGER_COMMON">
 		<link name="orders_link" target="orders"/>
 		<link name="users_link" target="users"/>
+		<link name="orders_all_link" target="orders_all"/>
+		<link name="users_all_link" target="users_all"/>
 		<link name="logout_link" target="login_action">
 			<var name="action" value="out"/>
 		</link>
@@ -936,7 +928,8 @@
 				<var name="src_page" value="orders_all"/>
 			</link>
 		</list>
-		<include name="MANAGER_ADMIN_COMMON"/>
+		<list item="manager"/>
+		<include name="MANAGER_COMMON"/>
 	</page>
 
 
@@ -955,7 +948,8 @@
 				<var name="u" ref="user"/>
 			</link>
 		</list>
-		<include name="MANAGER_ADMIN_COMMON"/>
+		<list item="manager"/>
+		<include name="MANAGER_COMMON"/>
 	</page>
 
 
@@ -1017,13 +1011,30 @@
 
 
 
-	<page name="order" authority-groups="manager">
+	<page name="order" template="manager/order" authority-groups="manager">
 		<request>
 			<var name="p"/>
 		</request>
-		<single item="purchase">
-			<list item="bought"/>
+		<single item="purchase" var="p">
+			<list item="bought" id="bought"/>
+			<ancestor item="user" tag="user"/>
 		</single>
+		<list item="product" id="prod">
+			<filter>
+				<parameter name="code" compare="SOME"><var ref="bought" parameter="code" /></parameter>
+			</filter>
+			<ancestor item="section" id="sec" assoc="contains">
+				<link name="show_product" target="product" type="exclusive">
+					<var name="sec" ref="sec" style="translit"/>
+					<var name="prod" ref="prod" style="translit"/>
+				</link>
+			</ancestor>
+		</list>
+		<link name="set_status" target="manage_purchase">
+			<var name="p" var="p"/>
+			<var name="src_page" value="order"/>
+		</link>
+		<include name="MANAGER_COMMON"/>
 	</page>
 
 

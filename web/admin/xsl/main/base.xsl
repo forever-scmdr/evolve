@@ -156,14 +156,21 @@
 											Управление доменами
 										</a>
 									</li>
+									<!--
 									<li class="visible" title="Измениение паролей, создание и удаление пользователей">
 										<a href="admin_users_initialize.user">
 											Управление пользователями
 										</a>
 									</li>
+									-->
 									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
 										<a href="admin_types_init.type">
 											Управление классами объектов
+										</a>
+									</li>
+									<li class="visible" title="Управление заказами">
+										<a href="orders_all" target="_blank">
+											Управление заказами
 										</a>
 									</li>
 									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">

@@ -8,13 +8,20 @@
 
 
 	<xsl:variable name="is_users" select="page/@name = ('users_all', 'users')"/>
-	<xsl:variable name="is_all" select="page/@name = ('users_all', 'orders_all')"/>
+	<xsl:variable name="is_all" select="page/user/group/@name = 'common'"/>
 
 	<xsl:template name="CONTENT"/>
 
 
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
+
+	<xsl:variable name="all_status" select="('Новый', 'Собирается', 'Отправлен', 'Доставлен')"/>
+
+	<xsl:variable name="orders_link" select="if ($is_all) then page/orders_all_link else page/orders_link"/>
+	<xsl:variable name="users_link" select="if ($is_all) then page/users_all_link else page/users_link"/>
+
+
 
 
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
@@ -65,10 +72,10 @@
 					<div class="tabs adm-tabs">
 						<ul class="nav nav-tabs adm-tabs-container" role="tablist">
 							<li role="presentation" class="{if ($is_users) then 'adm-tab_secondary' else 'active'} adm-tab">
-								<a href="{page/orders_link}">Заказы</a>
+								<a href="{$orders_link}">Заказы</a>
 							</li>
 							<li role="presentation" class="{if ($is_users) then 'active' else 'adm-tab_secondary'} adm-tab">
-								<a href="{page/users_link}">Пользователи</a>
+								<a href="{$users_link}">Пользователи</a>
 							</li>
 						</ul>
 					</div>

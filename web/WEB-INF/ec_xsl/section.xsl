@@ -11,12 +11,11 @@
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
-	<xsl:variable name="not_found" select="not($sel_sec/product)"/>
-	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 
 	<xsl:variable name="subsecs" select="/page/catalog//section[@id = $sel_sec_id]/section"/>
-
+	<xsl:variable name="not_found" select="not($subsecs) and not($sel_sec/product)"/>
+	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->

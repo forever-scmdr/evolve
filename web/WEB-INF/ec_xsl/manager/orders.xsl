@@ -25,7 +25,7 @@
 				<div class="adm-table-cell adm-table-head-cell">Сумма, руб.</div>
 			</div>
 			<xsl:for-each select="page//purchase">
-				<xsl:variable name="status" select="if (status = '0') then 'Новый' else if (status = '1') then 'В обработке' else 'Закрыт'"/>
+				<xsl:variable name="status" select="$all_status[number(current()/status) + 1]"/>
 				<xsl:variable name="manager" select="manager/email"/>
 				<div class="adm-table-row">
 					<div class="adm-table-cell"><xsl:value-of select="date" /></div>
