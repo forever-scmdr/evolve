@@ -448,7 +448,7 @@
 					<a href="{one_click_link}" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
 				</div>
 				<div class="links">
-					<div id="if(/page/@name != 'compare') then compare_list_{code} else ''">
+					<div id="{if(/page/@name != 'compare') then concat('compare_list_', code) else ''}">
 						<xsl:if test="/page/@name != 'compare'">
 							<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
 						</xsl:if>
