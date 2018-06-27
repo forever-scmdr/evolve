@@ -32,16 +32,20 @@
 		<div class="page-content m-t">
 			<div class="catalog-items"><!-- добавить класс lines для отображения по строкам -->
 				<xsl:for-each select="page/current_section/section">
+
+					<xsl:variable name="clone" select="/page/catalog//section[@id = current()/@id]"/>
+					<xsl:variable name="href" select="if($clone/section) then $clone/show_section else show_products"/>
+
 					<xsl:variable name="own_pic" select="main_pic and not(main_pic = '')"/>
 					<xsl:variable name="main_pic" select="if ($own_pic) then main_pic else product[1]/gallery[1]"/>
 					<xsl:variable name="path" select="if ($own_pic) then @path else product[1]/@path"/>
 					<div class="catalog-item">
 						<xsl:variable name="pic_path" select="if ($main_pic) then concat($path, $main_pic) else 'img/no_image.png'"/>
-						<a href="{show_products}" class="image-container" style="background-image: url({$pic_path});">
+						<a href="{$href}" class="image-container" style="background-image: url({$pic_path});">
 							<!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/> -->
 						</a>
 						<div class="name">
-							<a href="{show_products}" style="height: unset;"><xsl:value-of select="name"/></a>
+							<a href="{$href}" style="height: unset;"><xsl:value-of select="name"/></a>
 							<xsl:value-of select="short" disable-output-escaping="yes"/>
 						</div>
 					</div>
