@@ -166,7 +166,7 @@ public abstract class BasicCartManageCommand extends Command {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);
 			getSessionMapper().saveTemporaryItem(cart);
-			return getResult("email_send_failed").setVariable("message", "Отправка резерва временно недоступна, попробуйте позже или звоните по телефону");
+			return getResult("email_send_failed").setVariable("message", "Отправка заказа временно недоступна, попробуйте позже или звоните по телефону");
 		}
 
 		// Сохранение нового значения счетчика, если все отправлено удачно
