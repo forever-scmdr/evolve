@@ -7141,3 +7141,33 @@ input.submit {
        errors in console.) */
     background: url(_.gif);
 }
+
+/* hover-tag */
+.lines .hover-tag,
+.product-info .hover-tag {
+  position: static;
+  margin-top: 1rem;
+}
+.hover-tag {
+  position: absolute;
+  padding: .5rem 1rem;
+  box-shadow: 0 1px 2px gray;
+  font-weight: normal;
+  border-radius: .2rem;
+  white-space: nowrap;
+  background-color: #A7323B;
+  top: 1rem;
+  left: 1rem;
+  width: max-content;
+}
+.hover-tag__icon {
+  color: #fff;
+}
+.hover-tag a {
+  height: unset !important;
+  margin: unset !important;
+  display: inline !important;
+  font-weight: normal !important;
+  color: #fff;
+}
+/* hover-tag end*/

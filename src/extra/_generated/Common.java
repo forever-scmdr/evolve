@@ -125,4 +125,84 @@ public class Common
         return containsValue("bottom_address", value);
     }
 
+    public void set_bottom_copy(String value) {
+        setValue("bottom_copy", value);
+    }
+
+    public String get_bottom_copy() {
+        return getStringValue("bottom_copy");
+    }
+
+    public String getDefault_bottom_copy(String defaultVal) {
+        return getStringValue("bottom_copy", defaultVal);
+    }
+
+    public boolean contains_bottom_copy(String value) {
+        return containsValue("bottom_copy", value);
+    }
+
+    public void set_bottom_cards(String value) {
+        setValue("bottom_cards", value);
+    }
+
+    public String get_bottom_cards() {
+        return getStringValue("bottom_cards");
+    }
+
+    public String getDefault_bottom_cards(String defaultVal) {
+        return getStringValue("bottom_cards", defaultVal);
+    }
+
+    public boolean contains_bottom_cards(String value) {
+        return containsValue("bottom_cards", value);
+    }
+
+    public void set_bottom_social(String value) {
+        setValue("bottom_social", value);
+    }
+
+    public String get_bottom_social() {
+        return getStringValue("bottom_social");
+    }
+
+    public String getDefault_bottom_social(String defaultVal) {
+        return getStringValue("bottom_social", defaultVal);
+    }
+
+    public boolean contains_bottom_social(String value) {
+        return containsValue("bottom_social", value);
+    }
+
+    public void set_google_verification(String value) {
+        setValue("google_verification", value);
+    }
+
+    public String get_google_verification() {
+        return getStringValue("google_verification");
+    }
+
+    public String getDefault_google_verification(String defaultVal) {
+        return getStringValue("google_verification", defaultVal);
+    }
+
+    public boolean contains_google_verification(String value) {
+        return containsValue("google_verification", value);
+    }
+
+    public void set_yandex_verification(String value) {
+        setValue("yandex_verification", value);
+    }
+
+    public String get_yandex_verification() {
+        return getStringValue("yandex_verification");
+    }
+
+    public String getDefault_yandex_verification(String defaultVal) {
+        return getStringValue("yandex_verification", defaultVal);
+    }
+
+    public boolean contains_yandex_verification(String value) {
+        return containsValue("yandex_verification", value);
+    }
+
 }

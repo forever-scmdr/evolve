@@ -3,7 +3,7 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="tilte" select="$sel_sec/name" />
+	<xsl:variable name="title" select="$sel_sec/name" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="canonical" select="concat('/', $sel_sec/@key, '/')"/>
 

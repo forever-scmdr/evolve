@@ -85,6 +85,12 @@ public abstract class ExcelPriceList implements Closeable {
 			isValid = false;
 			return;
 		}
+
+		if (validSheets.size() > 0){
+			currentSheet = validSheets.get(0).sheet;
+			headerCell = validSheets.get(0).headerCell;
+			currentHeader = validSheets.get(0).header;
+		}
 	}
 
 	public final String getSheetName(){

@@ -3,7 +3,7 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="$p/name"/>
+	<xsl:variable name="title" select="concat($p/type, ' ', $p/name)"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -134,6 +134,13 @@
 						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/code}">в избранное</a></span>
 					</div>
 				</div>
+				<xsl:variable name="pres" select="$pp[product_code = $p/code]"/>
+				<xsl:if test="$pres">
+					<div class="hover-tag">
+						<i class="hover-tag__icon fas fa-gift" />
+						<a href="" data-toggle="modal" data-target="#pres_{$p/code}">Подарок</a>
+					</div>
+				</xsl:if>
 				<div class="info-blocks">
 					<div class="info-block">
 						<xsl:value-of select="$p/short" disable-output-escaping="yes"/>

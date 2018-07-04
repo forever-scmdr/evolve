@@ -169,6 +169,51 @@
 
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
+
+
+		<!-- modal gift -->
+		<xsl:for-each-group select="$pp" group-by="product_code">
+			<div class="modal fade" tabindex="-1" role="dialog" id="pres_{current-grouping-key()}">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+							<h4 class="modal-title">Подароки к выбранному товару</h4>
+						</div>
+						<div class="modal-body">
+							<div class="catalog-items lines">
+								<xsl:for-each select="current-group()">
+									<xsl:variable name="pres" select="//page/present[code = current()/present_code]"/>
+									<div class="catalog-item">
+										<xsl:variable name="pic_path"
+										              select="if ($pres/main_pic) then concat($pres/@path, $pres/main_pic) else 'img/no_image.png'"/>
+										<a class="image-container" style="background-image: url({$pic_path});"/>
+										<div>
+											<a title="{$pres/name}">
+												<xsl:value-of select="$pres/name"/><xsl:text> </xsl:text>
+												<xsl:value-of select="$pres/type"/><xsl:text> </xsl:text>
+											</a>
+											<div class="art-number">
+												№ для заказа: <xsl:value-of select="$pres/code"/>
+											</div>
+											<p><xsl:value-of select="$pres/short" disable-output-escaping="yes"/></p>
+										</div>
+									</div>
+								</xsl:for-each>
+							</div>
+						</div>
+						<!-- <div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save changes</button>
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</xsl:for-each-group>
+		<!-- modal gift end -->
+
+
+
 		<!-- MODALS END -->
 	</xsl:template>
 
@@ -377,9 +422,11 @@
 
 
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
+	<xsl:variable name="pp" select="page/product_present"/>
 
 	<xsl:template match="accessory | set | probe | product | assoc">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="pres" select="$pp[product_code = current()/code]"/>
 		<div class="catalog-item">
 			<!--
 			<div class="tags">
@@ -466,6 +513,12 @@
 							</div>
 						</xsl:otherwise>
 					</xsl:choose>
+					<xsl:if test="$pres">
+						<div class="hover-tag">
+							<i class="hover-tag__icon fas fa-gift" />
+							<a href="" data-toggle="modal" data-target="#pres_{code}">Подарок</a>
+						</div>
+					</xsl:if>
 				</div>
 			</div>
 		</div>

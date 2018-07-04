@@ -157,6 +157,22 @@ public class User_jur
         return containsValue("ship_type", value);
     }
 
+    public void set_pay_type(String value) {
+        setValue("pay_type", value);
+    }
+
+    public String get_pay_type() {
+        return getStringValue("pay_type");
+    }
+
+    public String getDefault_pay_type(String defaultVal) {
+        return getStringValue("pay_type", defaultVal);
+    }
+
+    public boolean contains_pay_type(String value) {
+        return containsValue("pay_type", value);
+    }
+
     public void set_no_account(String value) {
         setValue("no_account", value);
     }

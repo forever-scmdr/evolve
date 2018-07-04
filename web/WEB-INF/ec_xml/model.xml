@@ -32,10 +32,12 @@
 		<child item="url_seo" />
 	</item>
 
+
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             КАТАЛОГ                                  ////////////-->
-
 
 
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
@@ -67,8 +69,8 @@
 		<child item="seo" single="true"/>
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
-		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
+		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" />
@@ -114,10 +116,38 @@
 		<parameter name="xml" type="xml" caption="Параметры" />
 	</item>
 
+	<!-- Каталог подарков -->
+	<item name="present_catalog" caption="Каталог подарков" ag-id="1667" ag-hash="96179349">
+		<child item="present"/>
+	</item>
+
+	<!-- Подарок -->
+	<item name="present" caption="Подарок" key="name code" ag-id="1668" ag-hash="-318277445">
+		<parameter name="name" type="string" caption="Наименование" />
+		<parameter name="code" type="string" caption="Код подарка" />
+		<parameter name="main_pic" type="picture" format="width: 300" caption="Главная картинка"/>
+		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
+		<parameter name="short" type="tiny-text" caption="Краткое описание" />
+	</item>
+
+	<!-- Соотношение подарков и товаров -->
+	<item name="product_present" caption="Соответствие товара подарку" virtual="true" ag-id="1669" ag-hash="2122091883">
+		<parameter name="product_code" type="string" caption="Код продукта"/>
+		<parameter name="present_code" type="string" caption="Код подарка"/>
+	</item>
+
+
+	<item name="product_present_catalog" caption="Соответствие товаров подаркам" ag-id="1670" ag-hash="-1712785083">
+		<child item="product_present"/>
+	</item>
+
+
 
 	<!--/////////////                            END КАТАЛОГ                               ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
 
 
 
@@ -160,6 +190,8 @@
 	<!--/////////////                            END КОРЗИНА                               ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
 
 
 
@@ -303,11 +335,11 @@
         <child item="payment" single="true"/>
     </item>
 
-	<item name="delivery" caption="Доставка" ag-id="1667" ag-hash="823466996">
+	<item name="delivery" caption="Доставка" ag-id="1658" ag-hash="823466996">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="payment" caption="Оплата" ag-id="1668" ag-hash="-786681338">
+	<item name="payment" caption="Оплата" ag-id="1666" ag-hash="-786681338">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
@@ -318,7 +350,7 @@
 		<parameter name="message" type="string" caption="Сообщение" />
 	</item>
 
-	<item name="my_price_form" caption="Форма для предложения своей цены" virtual="true" ag-id="1669" ag-hash="442678893">
+	<item name="my_price_form" caption="Форма для предложения своей цены" virtual="true" ag-id="1275" ag-hash="442678893">
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="email" type="string" caption="E-mail"/>
@@ -328,7 +360,7 @@
 		<parameter name="message" type="string" caption="Комментарий" />
 	</item>
 
-	<item name="one_click_form" caption="Форма заказа в один клик" virtual="true" ag-id="1670" ag-hash="-2028535660">
+	<item name="one_click_form" caption="Форма заказа в один клик" virtual="true" ag-id="1276" ag-hash="-2028535660">
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="product_code" type="string" caption="Артикул товара"/>
 		<parameter name="product_name" type="string" caption="Название товара"/>
@@ -376,6 +408,8 @@
 		<child item="counter" single="true" virtual="true"/>
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
+		<child item="present_catalog" single="true"/>
+		<child item="product_present_catalog" single="true" virtual="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

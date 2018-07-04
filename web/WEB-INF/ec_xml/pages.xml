@@ -92,6 +92,25 @@
 	</page>
 
 
+	<include-definition name="PRODUCT_EXTRA">
+		<list item="product_present" id="present">
+			<filter>
+				<parameter name="product_code" compare="SOME"><var ref="prod" parameter="code" /></parameter>
+			</filter>
+		</list>
+		<list item="product" tag="present">
+			<filter>
+				<parameter name="code" compare="SOME"><var ref="present" parameter="present_code" /></parameter>
+			</filter>
+		</list>
+		<list item="present" tag="present">
+			<filter>
+				<parameter name="code" compare="SOME"><var ref="present" parameter="present_code" /></parameter>
+			</filter>
+		</list>
+	</include-definition>
+
+
 	<page name="section" template="section" cacheable="true" critical-item="cur_sec">
 		<request>
 			<var name="sec" style="translit"/>
@@ -146,6 +165,7 @@
 				</link>
 			</list>
 		</single>
+		<include name="PRODUCT_EXTRA"/>
 		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="table"/>
 		</link>
@@ -262,6 +282,7 @@
 				<var name="pcode" ref="prod" parameter="code"/>
 			</link>
 		</list>
+		<include name="PRODUCT_EXTRA"/>
 		<link name="set_view_table" target="search" copy-page-vars="yes">
 			<var name="view" value="table"/>
 		</link>
@@ -333,6 +354,7 @@
 				<var name="pcode" ref="assoc" parameter="code"/>
 			</link>
 		</list>
+		<include name="PRODUCT_EXTRA"/>
 		<include name="COMMON"/>
 	</page>
 

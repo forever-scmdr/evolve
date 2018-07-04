@@ -65,22 +65,6 @@ public class Product
         return containsValue("type", value);
     }
 
-    public void set_name_extra(String value) {
-        setValue("name_extra", value);
-    }
-
-    public String get_name_extra() {
-        return getStringValue("name_extra");
-    }
-
-    public String getDefault_name_extra(String defaultVal) {
-        return getStringValue("name_extra", defaultVal);
-    }
-
-    public boolean contains_name_extra(String value) {
-        return containsValue("name_extra", value);
-    }
-
     public void set_code(String value) {
         setValue("code", value);
     }
@@ -95,6 +79,22 @@ public class Product
 
     public boolean contains_code(String value) {
         return containsValue("code", value);
+    }
+
+    public void set_name_extra(String value) {
+        setValue("name_extra", value);
+    }
+
+    public String get_name_extra() {
+        return getStringValue("name_extra");
+    }
+
+    public String getDefault_name_extra(String defaultVal) {
+        return getStringValue("name_extra", defaultVal);
+    }
+
+    public boolean contains_name_extra(String value) {
+        return containsValue("name_extra", value);
     }
 
     public void set_vendor_code(String value) {
@@ -441,6 +441,22 @@ public class Product
 
     public boolean contains_assoc_code(String value) {
         return containsValue("assoc_code", value);
+    }
+
+    public void add_tag(String value) {
+        setValue("tag", value);
+    }
+
+    public List<String> getAll_tag() {
+        return getStringValues("tag");
+    }
+
+    public void remove_tag(String value) {
+        removeEqualValue("tag", value);
+    }
+
+    public boolean contains_tag(String value) {
+        return containsValue("tag", value);
     }
 
 }

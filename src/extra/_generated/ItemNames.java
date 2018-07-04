@@ -2,37 +2,51 @@
 package extra._generated;
 
 
-public class ItemNames {
+public interface ItemNames {
 
-    public final static String CATALOG = "catalog";
-    public final static String SECTION = "section";
-    public final static String PRODUCT = "product";
-    public final static String PARAMS = "params";
-    public final static String PRODUCT_EXTRA = "product_extra";
-    public final static String PARAMS_XML = "params_xml";
-    public final static String FEEDBACK_PARAMS = "feedback_params";
-    public final static String BOUGHT = "bought";
-    public final static String CART = "cart";
-    public final static String COUNTER = "counter";
-    public final static String PURCHASE = "purchase";
-    public final static String USER = "user";
-    public final static String USER_JUR = "user_jur";
-    public final static String USER_PHYS = "user_phys";
-    public final static String REGISTERED_CATALOG = "registered_catalog";
-    public final static String NEWS_ITEM = "news_item";
-    public final static String NEWS = "news";
-    public final static String ARTICLES = "articles";
-    public final static String MAIN_PROMO_BOTTOM = "main_promo_bottom";
-    public final static String MAIN_SLIDER_FRAME = "main_slider_frame";
-    public final static String MAIN_PAGE = "main_page";
-    public final static String DEALER_COORDS = "dealer_coords";
-    public final static String DEALERS_PAGE = "dealers_page";
-    public final static String DOCS = "docs";
-    public final static String CONTACTS = "contacts";
-    public final static String COMMON = "common";
-    public final static String FEEDBACK_FORM = "feedback_form";
-    public final static String CUSTOM_PAGES = "custom_pages";
-    public final static String CUSTOM_PAGE = "custom_page";
+    String SEO = "seo";
+    String URL_SEO = "url_seo";
+    String URL_SEO_WRAP = "url_seo_wrap";
+    String CATALOG = "catalog";
+    String SECTION = "section";
+    String PRODUCT = "product";
+    String PARAMS = "params";
+    String PRODUCT_EXTRA = "product_extra";
+    String PARAMS_XML = "params_xml";
+    String PRESENT_CATALOG = "present_catalog";
+    String PRESENT = "present";
+    String PRODUCT_PRESENT = "product_present";
+    String PRODUCT_PRESENT_CATALOG = "product_present_catalog";
+    String FEEDBACK_PARAMS = "feedback_params";
+    String BOUGHT = "bought";
+    String CART = "cart";
+    String COUNTER = "counter";
+    String PURCHASE = "purchase";
+    String USER = "user";
+    String USER_JUR = "user_jur";
+    String USER_PHYS = "user_phys";
+    String REGISTERED_CATALOG = "registered_catalog";
+    String NEWS_ITEM = "news_item";
+    String NEWS = "news";
+    String ARTICLES = "articles";
+    String MAIN_PROMO_BOTTOM = "main_promo_bottom";
+    String MAIN_SLIDER_FRAME = "main_slider_frame";
+    String MAIN_PAGE = "main_page";
+    String DEALER_COORDS = "dealer_coords";
+    String DEALERS_PAGE = "dealers_page";
+    String DOCS = "docs";
+    String CONTACTS = "contacts";
+    String COMMON = "common";
+    String DELIVERY = "delivery";
+    String PAYMENT = "payment";
+    String FEEDBACK_FORM = "feedback_form";
+    String MY_PRICE_FORM = "my_price_form";
+    String ONE_CLICK_FORM = "one_click_form";
+    String CUSTOM_PAGES = "custom_pages";
+    String CUSTOM_PAGE = "custom_page";
+    String MODULES = "modules";
+    String NAMED_CODE = "named_code";
+    String ROBOTS_TEXT_OVERRIDER = "robots_text_overrider";
 
     public interface articles {
 
@@ -78,6 +92,11 @@ public class ItemNames {
         String LINK_LINK = "link_link";
         String BOTTOM = "bottom";
         String BOTTOM_ADDRESS = "bottom_address";
+        String BOTTOM_COPY = "bottom_copy";
+        String BOTTOM_CARDS = "bottom_cards";
+        String BOTTOM_SOCIAL = "bottom_social";
+        String GOOGLE_VERIFICATION = "google_verification";
+        String YANDEX_VERIFICATION = "yandex_verification";
 
     }
 
@@ -126,6 +145,13 @@ public class ItemNames {
     public interface dealers_page {
 
         String _ITEM_NAME = "dealers_page";
+
+    }
+
+    public interface delivery {
+
+        String _ITEM_NAME = "delivery";
+        String OPTION = "option";
 
     }
 
@@ -178,6 +204,34 @@ public class ItemNames {
         String _ITEM_NAME = "main_slider_frame";
         String NAME = "name";
         String PIC = "pic";
+        String LINK = "link";
+
+    }
+
+    public interface modules {
+
+        String _ITEM_NAME = "modules";
+
+    }
+
+    public interface my_price_form {
+
+        String _ITEM_NAME = "my_price_form";
+        String NAME = "name";
+        String PHONE = "phone";
+        String EMAIL = "email";
+        String PRODUCT_CODE = "product_code";
+        String PRODUCT_NAME = "product_name";
+        String PRICE = "price";
+        String MESSAGE = "message";
+
+    }
+
+    public interface named_code {
+
+        String _ITEM_NAME = "named_code";
+        String NAME = "name";
+        String CODE = "code";
 
     }
 
@@ -199,6 +253,15 @@ public class ItemNames {
 
     }
 
+    public interface one_click_form {
+
+        String _ITEM_NAME = "one_click_form";
+        String PHONE = "phone";
+        String PRODUCT_CODE = "product_code";
+        String PRODUCT_NAME = "product_name";
+
+    }
+
     public interface params {
 
         String _ITEM_NAME = "params";
@@ -212,13 +275,37 @@ public class ItemNames {
 
     }
 
+    public interface payment {
+
+        String _ITEM_NAME = "payment";
+        String OPTION = "option";
+
+    }
+
+    public interface present {
+
+        String _ITEM_NAME = "present";
+        String NAME = "name";
+        String CODE = "code";
+        String MAIN_PIC = "main_pic";
+        String TYPE = "type";
+        String SHORT = "short";
+
+    }
+
+    public interface present_catalog {
+
+        String _ITEM_NAME = "present_catalog";
+
+    }
+
     public interface product {
 
         String _ITEM_NAME = "product";
         String NAME = "name";
         String TYPE = "type";
-        String NAME_EXTRA = "name_extra";
         String CODE = "code";
+        String NAME_EXTRA = "name_extra";
         String VENDOR_CODE = "vendor_code";
         String OFFER_ID = "offer_id";
         String SHORT = "short";
@@ -239,6 +326,7 @@ public class ItemNames {
         String TEXT_PICS = "text_pics";
         String GALLERY = "gallery";
         String ASSOC_CODE = "assoc_code";
+        String TAG = "tag";
 
     }
 
@@ -248,6 +336,20 @@ public class ItemNames {
         String NAME = "name";
         String TEXT = "text";
         String TEXT_PICS = "text_pics";
+
+    }
+
+    public interface product_present {
+
+        String _ITEM_NAME = "product_present";
+        String PRODUCT_CODE = "product_code";
+        String PRESENT_CODE = "present_code";
+
+    }
+
+    public interface product_present_catalog {
+
+        String _ITEM_NAME = "product_present_catalog";
 
     }
 
@@ -267,6 +369,13 @@ public class ItemNames {
 
     }
 
+    public interface robots_text_overrider {
+
+        String _ITEM_NAME = "robots_text_overrider";
+        String FILE_CONTENT = "file_content";
+
+    }
+
     public interface section {
 
         String _ITEM_NAME = "section";
@@ -275,6 +384,41 @@ public class ItemNames {
         String PARENT_ID = "parent_id";
         String MAIN_PIC = "main_pic";
         String PARAMS_FILTER = "params_filter";
+
+    }
+
+    public interface seo {
+
+        String _ITEM_NAME = "seo";
+        String TITLE = "title";
+        String H1 = "h1";
+        String DESCRIPTION = "description";
+        String KEYWORDS = "keywords";
+        String META = "meta";
+        String TEXT = "text";
+        String TEXT_PICS = "text_pics";
+
+    }
+
+    public interface url_seo {
+
+        String _ITEM_NAME = "url_seo";
+        String NAME = "name";
+        String URL = "url";
+        String TITLE = "title";
+        String H1 = "h1";
+        String DESCRIPTION = "description";
+        String KEYWORDS = "keywords";
+        String META = "meta";
+        String TEXT = "text";
+        String TEXT_PICS = "text_pics";
+
+    }
+
+    public interface url_seo_wrap {
+
+        String _ITEM_NAME = "url_seo_wrap";
+        String MAIN_HOST = "main_host";
 
     }
 
@@ -297,6 +441,7 @@ public class ItemNames {
         String CONTACT_PHONE = "contact_phone";
         String ADDRESS = "address";
         String SHIP_TYPE = "ship_type";
+        String PAY_TYPE = "pay_type";
         String NO_ACCOUNT = "no_account";
         String ACCOUNT = "account";
         String BANK = "bank";
@@ -320,6 +465,7 @@ public class ItemNames {
         String PHONE = "phone";
         String ADDRESS = "address";
         String SHIP_TYPE = "ship_type";
+        String PAY_TYPE = "pay_type";
         String COMMENT = "comment";
 
     }
