@@ -724,6 +724,45 @@
 	</page>
 
 
+	<page name="login_action">
+		<request>
+			<var name="username"/>
+			<var name="password"/>
+			<var name="action"/>
+			<var name="url"/>
+		</request>
+		<link name="not_correct" target="login_form_ajax">
+			<var name="message" value="Неверные логин/пароль"/>
+			<var name="success" value="false"/>
+		</link>
+		<link name="error" target="login_form_ajax">
+			<var name="message" value="Действие временно недоступно, попробуйте позже"/>
+			<var name="success" value="false"/>
+		</link>
+		<link name="out" target="login_form_ajax">
+			<var name="success" value="true"/>
+			<var name="target" value="index"/>
+		</link>
+		<link name="registered" target="login_form_ajax">
+			<var name="success" value="true"/>
+		</link>
+		<link name="manager" target="login_form_ajax">
+			<var name="success" value="true"/>
+			<var name="target" value="orders"/>
+		</link>
+		<command class="ecommander.fwk.LoginCommand">
+			<result name="not_correct" type="redirect"/>
+			<result name="error" type="redirect"/>
+			<result name="out" type="redirect"/>
+			<result name="registered" type="redirect"/>
+			<result name="manager" type="redirect"/>
+		</command>
+	</page>
+
+
+	<page name="test"/>
+
+
 	<page name="login_form_ajax" template="login_form_ajax">
 		<request>
 			<var name="message"/>
@@ -731,6 +770,7 @@
 		<link name="submit_form" target="register_action">
 			<var name="action" value="login"/>
 		</link>
+		<link name="login_link" target="login_action"/>
 	</page>
 
 

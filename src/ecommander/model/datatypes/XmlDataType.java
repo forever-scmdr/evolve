@@ -1,6 +1,7 @@
 package ecommander.model.datatypes;
 
 import ecommander.fwk.JsoupUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Тип данных XML
@@ -14,6 +15,8 @@ public class XmlDataType extends StringDataType {
 
 	@Override
 	public String outputValue(Object value, Object formatter) {
-		return JsoupUtils.prepareValidXml((String) value);
+		if (StringUtils.isNotBlank((String) value))
+			return JsoupUtils.prepareValidXml((String) value);
+		return "";
 	}
 }

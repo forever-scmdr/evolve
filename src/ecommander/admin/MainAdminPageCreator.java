@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -365,8 +366,10 @@ public class MainAdminPageCreator implements AdminXML {
 			if (item != null) {
 				basePage.addElement(item);
 				if (item.isPersonal()) {
-					User user = UserMapper.getUser(item.getOwnerUserId(), MysqlConnector.getConnection());
-					basePage.addElement(new LeafMDWriter(OWNER_USER_ELEMENT, user.getName()));
+					try (Connection conn = MysqlConnector.getConnection()) {
+						User user = UserMapper.getUser(item.getOwnerUserId(), conn);
+						basePage.addElement(new LeafMDWriter(OWNER_USER_ELEMENT, user.getName()));
+					}
 				}
 			}
 			String editUrl = createAdminUrl(SET_ITEM_ACTION, ITEM_ID_INPUT, item.getId(), ITEM_TYPE_INPUT, item.getTypeId());

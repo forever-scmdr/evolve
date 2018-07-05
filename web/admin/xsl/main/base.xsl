@@ -5,7 +5,7 @@
 	<xsl:strip-space elements="*" />
 
 	<xsl:variable name="pre-last" select="count(/admin-page/path/item) - 1"/>
-	<xsl:variable name="parsedItem" select="/admin-page/path/item[$pre-last]" />
+	<xsl:variable name="parent" select="/admin-page/path/item[$pre-last]" />
 	
 
 	<xsl:template name="DOCTYPE">
@@ -156,14 +156,31 @@
 											Управление доменами
 										</a>
 									</li>
+									<!--
 									<li class="visible" title="Измениение паролей, создание и удаление пользователей">
 										<a href="admin_users_initialize.user">
 											Управление пользователями
 										</a>
 									</li>
+									-->
 									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
 										<a href="admin_types_init.type">
 											Управление классами объектов
+										</a>
+									</li>
+									<li class="visible" title="Управление заказами">
+										<a href="orders_all" target="_blank">
+											Управление заказами
+										</a>
+									</li>
+									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
+										<a href="update_prices?action=start" target="_blank">
+											Запустить обновление цен
+										</a>
+									</li>
+									<li class="visible" title="Создать YML-файл">
+										<a href="create_yml_file" target="_blank" download="yml_catalog.xml">
+											Создать YML-файл
 										</a>
 									</li>
 									<!--
@@ -190,9 +207,16 @@
 									<xsl:variable name="item" select="admin-page/item"/>
 									<xsl:if test="$item">
 										<div class="wide">
-											<div id="message_main" style="border: 2px solid #56C493; padding: 8px 12px; background: #D7F3E6; margin-bottom: 20px; color: #164F35">
-												<xsl:value-of select="admin-page/message"/>
-											</div>
+											<xsl:if test="admin-page/message/@error = 'true'">
+												<div id="message_main" style="border: 2px solid #C45693; padding: 8px 12px; background: #F3D7E6; margin-bottom: 20px; color: #4F1635">
+													<xsl:value-of select="admin-page/message"/>
+												</div>
+											</xsl:if>
+											<xsl:if test="not(admin-page/message/@error = 'true')">
+												<div id="message_main" style="border: 2px solid #56C493; padding: 8px 12px; background: #D7F3E6; margin-bottom: 20px; color: #164F35">
+													<xsl:value-of select="admin-page/message"/>
+												</div>
+											</xsl:if>
 											<div class="margin context-duplicate">
 												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?', 'simple')">Скрыть</a>
 												<xsl:if test="$item/@files-protected = 'true'">

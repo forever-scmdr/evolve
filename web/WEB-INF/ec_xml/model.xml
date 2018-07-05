@@ -102,9 +102,9 @@
 
 
 
-	<item name="bought" caption="Покупка" virtual="true" key="code" ag-id="16" ag-hash="-1383211797">
-		<parameter name="name" type="string" caption="Наименование товара" description="не обязательно. Используется только в истории заказов"/>
+	<item name="bought" caption="Покупка" key="code" ag-id="16" ag-hash="-1383211797">
 		<parameter name="code" type="string" caption="Код товара"/>
+		<parameter name="name" type="string" caption="Название товара"/>
 		<parameter name="qty" type="double" caption="Количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
@@ -138,6 +138,8 @@
 		<parameter name="date" caption="Дата" type="date"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="status" type="byte" caption="Статус" default="0"
+		           description="0 - новый, 1 - обрабатывается, 2 - выполнен"/>
 		<child item="bought"/>
 	</item>
 

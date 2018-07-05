@@ -139,7 +139,7 @@
 	</xsl:template>
 
 	<!-- Текст без форматирования -->
-	<xsl:template match="field[ @type='plain-text' ]" mode="single">
+	<xsl:template match="field[ @type='plain-text' or @type='xml']" mode="single">
 		<label>
 			<span class=""><xsl:value-of select="@caption" /></span>
 			<xsl:if test="@description != ''">
@@ -147,7 +147,7 @@
 					[<xsl:value-of select="@description" />]
 				</p>
 			</xsl:if>
-			<textarea style="@format" name="{@input}" cols="" rows="">
+			<textarea style="{if (@format and not(@format = '')) then @format else 'width: 100%; height: 300px'}" name="{@input}" cols="" rows="">
 				<xsl:value-of select="." disable-output-escaping="yes" />
 			</textarea>
 		</label>

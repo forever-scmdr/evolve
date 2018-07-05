@@ -5,6 +5,7 @@ import ecommander.fwk.ValidationException;
 import ecommander.pages.ValidationResults;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.commandunits.SaveNewUserDBUnit;
+import ecommander.persistence.commandunits.UpdateUserDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
@@ -88,11 +89,11 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 		if (StringUtils.isBlank(password))
 			throw createValidationException("No password specified for user " + login, usersFileName,
 					"Не задан пароль пользователя " + login);
-		// Если такой пользователь уже создан - ничего не делать
-		if (UserMapper.userNameExists(login, getTransactionContext().getConnection()))
-			return;
 		// Создание нового пользователя
 		User user = new User(login, password, description, 0);
+		if (UserMapper.userNameExists(login, getTransactionContext().getConnection())) {
+			user = UserMapper.getUser(login, password, getTransactionContext().getConnection());
+		}
 		Elements groupEls = userEl.getElementsByTag(GROUP);
 		if (groupEls.size() == 0)
 			throw createValidationException("No groups specified for user " + login, usersFileName,
@@ -109,7 +110,10 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 			user.addGroup(groupName, UserGroupRegistry.getGroup(groupName),
 					StringUtils.equalsIgnoreCase(ADMIN_VALUE, roleName) ? (byte)1 : (byte)0);
 		}
-		executeCommand(new SaveNewUserDBUnit(user).ignoreUser());
+		if (user.getUserId() == 0)
+			executeCommand(new SaveNewUserDBUnit(user).ignoreUser());
+		else
+			executeCommand(new UpdateUserDBUnit(user, false).ignoreUser());
 	}
 
 
