@@ -27,7 +27,7 @@
 					</form>
 				</div>
 			</div>
-			<a href=""><i class="fas fa-file-excel adm-download-xlsx"></i> Скачать .xlsx</a>
+			<!--<a href=""><i class="fas fa-file-excel adm-download-xlsx"></i> Скачать .xlsx</a>-->
 		</div>
 		<div class="adm-table">
 			<div class="adm-table-row adm-table-head">

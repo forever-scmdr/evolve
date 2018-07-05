@@ -21,7 +21,7 @@
 				<div class="adm-table-cell adm-table-head-cell">Пользователь</div>
 				<div class="adm-table-cell adm-table-head-cell">Статус</div>
 				<xsl:if test="$is_all"><div class="adm-table-cell adm-table-head-cell">Менеджер</div></xsl:if>
-				<div class="adm-table-cell adm-table-head-cell">Скачать .xlsx</div>
+				<!--<div class="adm-table-cell adm-table-head-cell">Скачать .xlsx</div>-->
 				<div class="adm-table-cell adm-table-head-cell">Сумма, руб.</div>
 			</div>
 			<xsl:for-each select="page//purchase">
@@ -45,7 +45,7 @@
 							</form>
 						</div>
 					</xsl:if>
-					<div class="adm-table-cell"><a href=""><i class="fas fa-file-excel adm-download-xlsx"></i></a></div>
+					<!--<div class="adm-table-cell"><a href=""><i class="fas fa-file-excel adm-download-xlsx"></i></a></div>-->
 					<div class="adm-table-cell"><xsl:value-of select="sum" /></div>
 				</div>
 			</xsl:for-each>
