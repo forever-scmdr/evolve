@@ -13,8 +13,8 @@
 	<xsl:template name="MARKUP">
 		<script type="application/ld+json">
 			<xsl:variable name="quote">"</xsl:variable>
-			<xsl:variable name="min" select="f:currency_decimal(//min/price)"/>
-			<xsl:variable name="max" select="f:currency_decimal(//max/price)"/>
+			<xsl:variable name="min" select="f:currency_decimal($sel_sec/min[1])"/>
+			<xsl:variable name="max" select="f:currency_decimal($sel_sec/max[1])"/>
 
 			{
 			"@context": "http://schema.org/",
@@ -70,6 +70,8 @@
 		</div>
 		<h1><xsl:value-of select="$h1"/></h1>
 		<div class="page-content m-t">
+
+			<xsl:call-template name="SEO_TEXT"/>
 
 			<div class="tags">
 				<form method="GET" action="{page/source_link}">

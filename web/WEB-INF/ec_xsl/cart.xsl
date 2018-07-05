@@ -13,7 +13,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Список техники</h1>
+		<h1>Ваша заявка</h1>
 
 		<div class="cart-container">
 			<xsl:choose>
@@ -39,8 +39,8 @@
 						</xsl:for-each>
 
 						<div class="total">
-							<p>Итого: <xsl:value-of select="page/cart/sum"/> р.</p>
-							<input type="submit" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
+							<!-- <p>Итого: <xsl:value-of select="page/cart/sum"/> р.</p>
+							<input type="submit" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/> -->
 							<input type="submit" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 						</div>
 					</form>

@@ -61,6 +61,8 @@
 		</div>
 		<h1><xsl:value-of select="$h1"/></h1>
 
+		<xsl:call-template name="SEO_TEXT"/>
+
 		<div class="catalog-item-container">
 			<!--
 			<div class="tags">

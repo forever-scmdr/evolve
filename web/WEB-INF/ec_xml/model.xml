@@ -12,6 +12,7 @@
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
 		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
 	<item name="url_seo" key="name" caption="SEO" ag-id="816" ag-hash="-169844339">
@@ -23,6 +24,7 @@
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
 		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
 	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="817" ag-hash="843192252">
@@ -50,6 +52,8 @@
 		<child item="section" />
 		<child item="product"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
+		<parameter name="min" type="currency" caption="МИНИмальная цена"/>
+		<parameter name="max" type="currency" caption="МАКСИмальная цена"/>
 		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>

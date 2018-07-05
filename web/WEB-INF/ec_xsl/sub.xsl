@@ -23,6 +23,9 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1><xsl:value-of select="$h1"/></h1>
+
+		<xsl:call-template name="SEO_TEXT"/>
+
 		<div class="page-content m-t">
 			<div class="catalog-items"><!-- добавить класс lines для отображения по строкам -->
 				<xsl:for-each select="page/current_section/section">

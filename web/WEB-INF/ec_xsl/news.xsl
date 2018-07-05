@@ -21,6 +21,9 @@
 		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
+
+			<xsl:call-template name="SEO_TEXT"/>
+
 			<div class="catalog-items info">
 				<xsl:for-each select="page/selected_news/news_item">
 					<div class="catalog-item">

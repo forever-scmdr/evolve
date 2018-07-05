@@ -19,6 +19,9 @@
 		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
+
+			<xsl:call-template name="SEO_TEXT"/>
+
 			<xsl:value-of select="page/contacts/text" disable-output-escaping="yes"/>
 			<h3>Расположение нашего офиса на карте</h3>
 			<div class="map-container">

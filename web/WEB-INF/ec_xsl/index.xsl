@@ -18,7 +18,7 @@
 					"bestRating": "5",
 					"ratingValue": "4,9",
 					"worstRating": "1",
-					"name": "TTD"
+					"name": "Белорусдом"
 				},
 				"contactPoint": [
 					<xsl:for-each select="page/common/phone" >
@@ -329,6 +329,7 @@
 					<div class="mc-container">
 						<xsl:call-template name="INC_MOBILE_HEADER"/>
 						<xsl:call-template name="CONTENT"/>
+						<!-- <xsl:call-template name="SEO_TEXT"/> -->
 					</div>
 				</div>
 				<!-- RIGHT COLOUMN END -->

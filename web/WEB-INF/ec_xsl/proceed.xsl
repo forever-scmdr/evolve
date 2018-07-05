@@ -44,6 +44,7 @@
 							<label for="">Адрес:</label>
 							<input type="text" class="form-control" name="{$inp/address/@input}" value="{$inp/address}" error="{$inp/address/@validation-error}"/>
 						</div>
+						<input type="hidden" name="{$inp/ship_type/@input}" value="none"/>
 						<!-- <div class="form-group">
 							<label>Способ доставки <a href="">Подробнее об условиях доставки</a></label>
 							<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">
@@ -91,6 +92,7 @@
 							<label for="">Телефон/факс:</label>
 							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}"/>
 						</div>
+						<input type="hidden" name="{$inp/ship_type/@input}" value="none"/>
 						<!-- <div class="form-group">
 							<label>Способ доставки <a href="">Подробнее об условиях доставки</a></label>
 							<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}">

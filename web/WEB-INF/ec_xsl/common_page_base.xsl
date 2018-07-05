@@ -9,7 +9,7 @@
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
 	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 
-	<xsl:variable name="title" select="'Спеццехника'" />
+	<xsl:variable name="title" select="'БелорусДом'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
@@ -40,7 +40,7 @@
 				<div class="col-xs-12">
 					<div class="header-container" style="position: relative;">
 						<div class="logo">
-							<a href="{page/index_link}"><img src="img/logo_big.svg" alt="На главную страницу" /></a>
+							<a href="{$base}"><img src="img/logo_big.svg" alt="На главную страницу" /></a>
 						</div>
 						<div class="search">
 							<form action="{page/search_link}" method="post">
@@ -136,7 +136,7 @@
 		<div class="header mobile">
 			<div class="header-container">
 				<a href="" class="logo">
-					<img src="img/logo_small.svg" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
+					<img src="img/logo_big.svg" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
 					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
@@ -169,13 +169,20 @@
 					<div class="col-xs-12">
 						<div class="footer-container">
 							<div class="block">
-								<p><strong>© ttd.by, 2018</strong></p>
+								<p><strong>© Компания «БелорусДом»</strong></p>
 								<div class="forever">
 									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
 								</div>
 							</div>
 							<div class="block">
-								<p>Работаем только с юридическими лицами и индивидуальными предпринимателями по безналичному расчету</p>
+								<p><strong>Наши телефоны:</strong><br />+375 (29) 676-48-35 (velcom)</p>
+								<p><a href="https://belorusdom.by/catalog/">Каталог</a></p>
+								<!-- <p>Наш рейтинг 4,82 (голосов: 197)</p>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i> -->
 								<!-- <img src="http://mobileplus.by/images/2/icon_card_mc.png" alt=""/>
 								<img src="http://mobileplus.by/images/2/icon_card_visa.png" alt=""/> -->
 							</div>
@@ -564,11 +571,9 @@
 					<div class="mc-container">
 						<xsl:call-template name="INC_MOBILE_HEADER"/>
 						<xsl:call-template name="CONTENT"/>
-						<xsl:if test="$seo/text != ''">
-							<div class="page-content">
-								<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
-							</div>
-						</xsl:if>
+						<!-- <xsl:if test="page/@name != 'index'">
+							<xsl:call-template name="SEO_TEXT"/>
+						</xsl:if> -->
 					</div>
 				</div>
 				<!-- RIGHT COLOUMN END -->
@@ -626,6 +631,7 @@
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 				<link rel="stylesheet" href="fotorama/fotorama.css"/>
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
+				<link rel="stylesheet" href="css/spoiler.css"/>
 				<script defer="defer" src="js/font_awesome_all.js"/>
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 			</head>
@@ -633,11 +639,15 @@
 				<!-- ALL CONTENT BEGIN -->
 				<div class="content-container">
 					<xsl:call-template name="INC_DESKTOP_HEADER"/>
-
 					<xsl:call-template name="MAIN_CONTENT"/>
-
 					<xsl:call-template name="BANNERS"/>
-
+					<xsl:if test="page/@name = 'index'">
+						<div class="container">
+							
+								<xsl:call-template name="SEO_TEXT"/>
+							
+						</div>
+					</xsl:if>
 					<xsl:call-template name="INC_FOOTER"/>
 
 				</div>
@@ -653,6 +663,7 @@
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/fwk/common.js"/>
 				<script type="text/javascript" src="slick/slick.min.js"></script>
+				<script type="text/javascript" src="js/spoiler.js"/>
 				<script type="text/javascript">
 					$(document).ready(function(){
 					$(".footer-placeholder").height($(".footer").outerHeight()+40);
@@ -696,6 +707,15 @@
 	</xsl:template>
 
 
+	<xsl:template name="SEO_TEXT">
+		<xsl:if test="not(page/variables/page) or page/variables/page = '1'">
+			<div class="mc-container">
+				<div class="page-content m-t">
+					<xsl:value-of select="$seo/text" disable-output-escaping="yes" />
+				</div>
+			</div>	
+		</xsl:if>
+	</xsl:template>
 
 
 	<!-- ****************************    БЛОКИ НА СТРАНИЦЕ    ******************************** -->
@@ -762,10 +782,10 @@
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
-		<!-- <xsl:text disable-output-escaping="yes">
-			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
-			&lt;meta name="yandex-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
-		</xsl:text> -->
+		
+			<meta name="google-site-verification" content="{/page/common/google_verification}"/>
+			<meta name="yandex-verification" content="{/page/common/yandex_verification}" />
+		
 
 		<xsl:call-template name="MARKUP" />
 
