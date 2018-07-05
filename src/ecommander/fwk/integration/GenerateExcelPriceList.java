@@ -113,7 +113,7 @@ public class GenerateExcelPriceList extends Command implements CatalogConst {
 		}
 		ResultPE res = getResult("success");
 		res.setVariable("file_name", "integration_file.xls");
-		res.setVariable("file_caption", "Файл интеграции "+DATE_FORMAT.format(new Date())+".xls");
+		res.setVariable("file_caption", "Файл интеграции "+DATE_FORMAT.format(new Date()));
 		res.setVariable("h1", "Создание файла интеграции завершено успешно");
 		return getResult("success");
 	}
