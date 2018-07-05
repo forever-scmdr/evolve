@@ -39,7 +39,7 @@
 
 
 	<xsl:template name="PERSONAL_DESKTOP">
-		<div class="user" id="personal_desktop" ajax-href="{page/personal_ajax_link}">
+		<div id="personal_desktop" ajax-href="{page/personal_ajax_link}">
 			<p>
 				<i class="fas fa-lock"/>
 				<a href="" data-toggle="modal" data-target="#modal-login"> Вход</a> / <a href="{page/register_link}">Регистрация</a>

@@ -52,7 +52,15 @@
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Корзина пуста</strong></p>
 							</div>
-							<xsl:call-template name="PERSONAL_DESKTOP"/>
+							<div class="user">
+								<xsl:call-template name="PERSONAL_DESKTOP"/>
+								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
+									<p><i class="fas fa-star"/> <a href="">&#160;</a></p>
+								</div>
+								<div id="compare_ajax" ajax-href="{page/compare_ajax_link}">
+									<p><i class="fas fa-balance-scale"/> <a href="compare.html">&#160;</a></p>
+								</div>
+							</div>
 						</div>
 						<div class="main-menu">
 							<a class="{if(page/@name = 'index') then 'active' else ''}" href="{page/index_link}">Главная</a>
