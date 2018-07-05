@@ -13,7 +13,7 @@
             <body>
                 <xsl:if test="not(//stack)">
                     <h1><xsl:value-of select="//h1"/></h1>
-                    <a href="{page/base}/files/{//file_name}" download="{//file_caption}.xls">Скачать</a>
+                    <a href="{page/base}/files/{'integration_file.xls'}" download="{'Файл интеграции'}.xls">Скачать</a>
                 </xsl:if>
                 <xsl:if test="//stack">
                     <h1>Создание прайс-листа завершено с ошибками. Обратитесь в службу поддержки.</h1>
