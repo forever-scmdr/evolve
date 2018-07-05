@@ -157,6 +157,7 @@
 		<parameter name="email" type="string" caption="E-mail" />
 		<parameter name="address" type="string" caption="Юридический адрес" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
+		<parameter name="pay_type" type="string" caption="Способ оплаты" />
 		<parameter name="no_account" type="string" caption="Нет расчетного счета" domain="yes-no"/>
 		<parameter name="account" type="string" caption="Расчетный счет" />
 		<parameter name="bank" type="string" caption="Название банка" />
@@ -175,6 +176,7 @@
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="address" type="string" caption="Адрес" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
+		<parameter name="pay_type" type="string" caption="Способ оплаты" />
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
