@@ -2,13 +2,11 @@ package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ServerLogger;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.ParameterDescription;
+import ecommander.model.*;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -16,11 +14,11 @@ import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by user on 15.06.2018.
@@ -39,6 +37,7 @@ public class GenerateExcelPriceList extends Command implements CatalogConst {
 	private static final String GAL_FILE = "Галерея";
 	private static final String PRICE_FILE = "Цена";
 	private static final String TAG_FILE = "Тег";
+//	private static final String SEO_FILE = "SEO";
 	private static final String SEC_START = "Раздел:";
 	private static final Format DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH-mm-ss");
 
@@ -75,6 +74,8 @@ public class GenerateExcelPriceList extends Command implements CatalogConst {
 					sh.setColumnWidth(colIdx, 25 * 256);
 					row.createCell(++colIdx).setCellValue(TAG_FILE);
 					sh.setColumnWidth(colIdx, 25 * 256);
+//					row.createCell(++colIdx).setCellValue(SEO_FILE);
+//					sh.setColumnWidth(colIdx, 25 * 256);
 					q = new ItemQuery(SECTION_ITEM);
 					q.setParentId(section.getId(), false);
 					List<Item> subsections = new ItemQuery(SECTION_ITEM).setParentId(section.getId(), false).loadItems();
@@ -134,6 +135,20 @@ public class GenerateExcelPriceList extends Command implements CatalogConst {
 		row.createCell(++colIdx).setCellValue(section.getStringValue(parentCode));
 		sheet.setColumnWidth(colIdx, 75 * 256);
 		row.getCell(colIdx).setCellStyle(sectionStyle);
+
+//		ItemQuery q = new ItemQuery(ItemNames.SEO);
+//		q.setParentId(section.getId(), false);
+//		Item seo = q.loadFirstItem();
+//		if(seo != null){
+//			StringBuilder sb = new StringBuilder();
+//			Collection <Parameter> parameters = seo.getAllParameters();
+//			for(Parameter p : parameters){
+//				if(!p.isMultiple()){
+//					sb.append(p.getParamId()).append(":").append(p.getValue()).append('ᐁ');
+//				}
+//			}
+//		}
+
 		colIdx = -1;
 
 		ItemQuery q = new ItemQuery(PRODUCT_ITEM);
@@ -154,6 +169,8 @@ public class GenerateExcelPriceList extends Command implements CatalogConst {
 			row.createCell(++colIdx).setCellValue(PRICE_FILE);
 			row.getCell(colIdx).setCellStyle(headerStyle);
 			row.createCell(++colIdx).setCellValue(TAG_FILE);
+			row.getCell(colIdx).setCellStyle(headerStyle);
+//			row.createCell(++colIdx).setCellValue(SEO_FILE);
 			row.getCell(colIdx).setCellStyle(headerStyle);
 
 			Item params = new ItemQuery(PARAMS_ITEM).setParentId(products.get(0).getId(), false).loadFirstItem();

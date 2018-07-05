@@ -782,9 +782,10 @@
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
-		
-			<meta name="google-site-verification" content="{/page/common/google_verification}"/>
-			<meta name="yandex-verification" content="{/page/common/yandex_verification}" />
+		<xsl:value-of select="/page/common/google_verification"/>
+		<xsl:value-of select="/page/common/yandex_verification"/>
+			<!--<meta name="google-site-verification" content="{/page/common/google_verification}"/>-->
+			<!--<meta name="yandex-verification" content="{/page/common/yandex_verification}" />-->
 		
 
 		<xsl:call-template name="MARKUP" />
