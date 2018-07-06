@@ -48,12 +48,12 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		private static final NumberFormat eng_format = NumberFormat.getInstance(new Locale("en"));
 		private static final NumberFormat ru_format = NumberFormat.getInstance(new Locale("ru"));
 
-		public Params(String caption, String className) {
+		private Params(String caption, String className) {
 			this.classCaption = caption;
 			this.className = Strings.createXmlElementName(className);
 		}
 
-		public void addParameter(String name, String value) {
+		private void addParameter(String name, String value) {
 			String paramName = Strings.createXmlElementName(name);
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);

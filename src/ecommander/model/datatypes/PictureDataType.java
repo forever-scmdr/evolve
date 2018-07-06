@@ -2,6 +2,7 @@ package ecommander.model.datatypes;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.Strings;
+import ecommander.fwk.WebClient;
 import ecommander.model.Item;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;

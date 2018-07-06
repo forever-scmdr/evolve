@@ -62,4 +62,8 @@ public class UserGroupRegistry {
 	public static Byte getDefaultGroup() {
 		return getRegistry().groups.get(User.USER_DEFAULT_GROUP);
 	}
+
+	public static Byte[] getAllGroupIds() {
+		return getRegistry().groups.values().toArray(new Byte[0]);
+	}
 }

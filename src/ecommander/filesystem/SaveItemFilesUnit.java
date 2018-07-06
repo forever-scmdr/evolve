@@ -13,16 +13,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -32,10 +26,6 @@ import java.util.regex.Pattern;
  * вызывать эту команду до апдейта параметров в индексе
  */
 public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
-
-	private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://[-\\wА-Яа-я+&@#/%?=~|!:,.;]*[-\\wА-Яа-я+&@#/%=~|]");
-	//Matcher m = URL_PATTERN.matcher((CharSequence) value);
-	//if (m.matches()) {
 
 	private ArrayList<File> files;
 
@@ -94,9 +84,11 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 						File newFile = new File( fileDirectoryName + fileName);
 						// Удаление файла, если он уже есть
 						if (newFile.exists()) {
-//							if (!newFile.canWrite())
-//								throw new FileException("File '" + newFile.getName() + "' is write protected");
-//							newFile.delete();
+							/*
+							if (!newFile.canWrite())
+								throw new FileException("File '" + newFile.getName() + "' is write protected");
+							newFile.delete();
+							*/
 							fileName = decorateFileName(paramDesc, i, fileName);
 							newFile = new File( fileDirectoryName + fileName);
 						}

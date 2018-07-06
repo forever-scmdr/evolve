@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 
 /**
@@ -104,7 +105,12 @@ public class MysqlConnector
 				}
 				openConnections.add(name);
 				createTime = System.currentTimeMillis();
-				ServerLogger.error("/////////////---------- OPEN conneciton. Name " + name + "  Total: " + _open_count + createExtra() + " ----------/////////////");
+				StackTraceElement[] els = Thread.currentThread().getStackTrace();
+				String trace = "";
+				for (int i = 2; i < 12 && i < els.length; i++) {
+					trace += "\n" + els[i];
+				}
+				ServerLogger.debug("/////////////---------- OPEN conneciton. Name " + name + "  Total: " + _open_count + createExtra() + " ----------/////////////" + trace);
 			} catch (InterruptedException e) {
 				ServerLogger.error("Interrupted", e);
 			} finally {
@@ -396,13 +402,13 @@ public class MysqlConnector
 	 * @throws SQLException 
 	 */
 	public static synchronized Connection getConnection() throws NamingException, SQLException {
-		ServerLogger.error("/////////////---------- trying to get connection ----------/////////////");
+		ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
 		return new ConnectionCount(_DS.getConnection(), null);
 		//return _DS.getConnection();
 	}
 
 	public static synchronized Connection getConnection(HttpServletRequest request) throws NamingException, SQLException, InterruptedException {
-		ServerLogger.error("/////////////---------- trying to get connection ----------/////////////");
+		ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
 		return new ConnectionCount(_DS.getConnection(), request);
 		//return _DS.getConnection();
 	}

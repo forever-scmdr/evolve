@@ -20,7 +20,7 @@
                     <pre>
                         <xsl:value-of select="//stack"/>
                     </pre>
-                </xsl:if>п
+                </xsl:if>
             </body>
         </html>
     </xsl:template>

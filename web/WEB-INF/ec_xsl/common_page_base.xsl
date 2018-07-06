@@ -513,12 +513,19 @@
 				<!--</xsl:choose>-->
 
 				<div class="links">
+					<xsl:if test="/page/@name != 'compare'">
 					<div id="compare_list_{code}">
 						<span>
 							<i class="fas fa-balance-scale"></i>
 							<a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a>
 						</span>
 					</div>
+					</xsl:if>
+					<xsl:if test="/page/@name = 'compare'">
+						<div>
+							<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
+						</div>
+					</xsl:if>
 					<xsl:choose>
 						<xsl:when test="$is_fav">
 							<span><i class="fas fa-star"></i> <a href="{from_fav}">убрать</a></span>
@@ -782,10 +789,10 @@
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
-		<xsl:value-of select="/page/common/google_verification"/>
-		<xsl:value-of select="/page/common/yandex_verification"/>
-			<!--<meta name="google-site-verification" content="{/page/common/google_verification}"/>-->
-			<!--<meta name="yandex-verification" content="{/page/common/yandex_verification}" />-->
+		<!-- <xsl:value-of select="/page/common/google_verification"/>
+		<xsl:value-of select="/page/common/yandex_verification"/> -->
+			<meta name="google-site-verification" content="{/page/common/google_verification}"/>
+			<meta name="yandex-verification" content="{/page/common/yandex_verification}" />
 		
 
 		<xsl:call-template name="MARKUP" />

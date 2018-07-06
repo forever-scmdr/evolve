@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by user on 24.04.2018.
+ * Created by Anton on 24.04.2018.
  */
 public class CreateSiteMap extends Command {
 

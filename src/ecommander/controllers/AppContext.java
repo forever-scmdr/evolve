@@ -20,6 +20,10 @@ public class AppContext {
 	private static String ITEM_NAMES_CLASS;
 	private static String WELCOME_PAGE;
 	private static String PROTOCOL_SCHEME;
+	private static String TEST_HTTPS_HEADER;
+	private static String TEST_HTTPS_HEADER_VALUE;
+	private static boolean IS_HTTPS;
+	private static boolean HAS_TEST_HTTPS_VALUE;
 
 	private static String MAIN_XML_MODELS_DIR;
 	private static String MAIN_DATA_MODEL_FILE;
@@ -65,6 +69,10 @@ public class AppContext {
 			ITEM_NAMES_CLASS = props.getProperty("generated.constants_class");
 			WELCOME_PAGE = props.getProperty("url.welcome_page");
 			PROTOCOL_SCHEME = props.getProperty("url.scheme", "http");
+			TEST_HTTPS_HEADER = props.getProperty("url.https.test.header", "x-forwarded-proto");
+			TEST_HTTPS_HEADER_VALUE = props.getProperty("url.https.test.value");
+			HAS_TEST_HTTPS_VALUE = StringUtils.isNotBlank(TEST_HTTPS_HEADER_VALUE);
+			IS_HTTPS = StringUtils.equalsIgnoreCase(PROTOCOL_SCHEME, "https");
 
 			// часовая зона
 			try {
@@ -192,7 +200,23 @@ public class AppContext {
 		return PROTOCOL_SCHEME;
 	}
 
+	public static String getTestHttpsHeader() {
+		return TEST_HTTPS_HEADER;
+	}
+
+	public static String getTestHttpsHeaderValue() {
+		return TEST_HTTPS_HEADER_VALUE;
+	}
+
+	public static boolean isHttpsProtocolScheme() {
+		return IS_HTTPS;
+	}
+
 	public static String getProperty(String propertyName, String defaultValue) {
 		return props.getProperty(propertyName, defaultValue);
+	}
+
+	public static boolean hasTestHttpsValue() {
+		return HAS_TEST_HTTPS_VALUE;
 	}
 }

@@ -11,7 +11,10 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Форма на замену SingleItemHttpPostFormDeprecated
@@ -31,6 +34,7 @@ import java.util.*;
 public class MultipleHttpPostForm implements Serializable {
 
 	private static final long serialVersionUID = 2L;
+	private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://[-\\wА-Яа-я+&@#/%?=~|!:,.;]*[-\\wА-Яа-я+&@#/%=~|]");
 
 	private static final String FORM_ITEM_UNIQUE_KEY = "ukey";
 
@@ -177,6 +181,14 @@ public class MultipleHttpPostForm implements Serializable {
 							item.setValue(inDesc.getParamId(), file);
 						}
 					} else {
+						if(paramValue instanceof String){
+							String www = (String) paramValue;
+							Matcher m = URL_PATTERN.matcher(www);
+							if(m.matches()){
+								paramValue = new URL(www);
+
+							}
+						}
 						item.setValue(inDesc.getParamId(), paramValue);
 					}
 				} else {
