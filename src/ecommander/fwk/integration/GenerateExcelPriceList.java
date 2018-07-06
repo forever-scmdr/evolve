@@ -155,7 +155,6 @@ public class GenerateExcelPriceList extends Command implements CatalogConst {
 			row.getCell(colIdx).setCellStyle(headerStyle);
 			row.createCell(++colIdx).setCellValue(TAG_FILE);
 			row.getCell(colIdx).setCellStyle(headerStyle);
-//			row.createCell(++colIdx).setCellValue(SEO_FILE);
 			row.getCell(colIdx).setCellStyle(headerStyle);
 
 			Item params = new ItemQuery(PARAMS_ITEM).setParentId(products.get(0).getId(), false).loadFirstItem();
