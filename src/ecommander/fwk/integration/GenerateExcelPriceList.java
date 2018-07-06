@@ -37,7 +37,6 @@ public class GenerateExcelPriceList extends Command implements CatalogConst {
 	private static final String GAL_FILE = "Галерея";
 	private static final String PRICE_FILE = "Цена";
 	private static final String TAG_FILE = "Тег";
-//	private static final String SEO_FILE = "SEO";
 	private static final String SEC_START = "Раздел:";
 	private static final Format DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH-mm-ss");
 
@@ -74,8 +73,6 @@ public class GenerateExcelPriceList extends Command implements CatalogConst {
 					sh.setColumnWidth(colIdx, 25 * 256);
 					row.createCell(++colIdx).setCellValue(TAG_FILE);
 					sh.setColumnWidth(colIdx, 25 * 256);
-//					row.createCell(++colIdx).setCellValue(SEO_FILE);
-//					sh.setColumnWidth(colIdx, 25 * 256);
 					q = new ItemQuery(SECTION_ITEM);
 					q.setParentId(section.getId(), false);
 					List<Item> subsections = new ItemQuery(SECTION_ITEM).setParentId(section.getId(), false).loadItems();
@@ -108,7 +105,6 @@ public class GenerateExcelPriceList extends Command implements CatalogConst {
 				for (StackTraceElement err : stackTrace) {
 					sb.append(err.toString() + "\n");
 				}
-
 				return getResult("error").addVariable("stack", sb.toString());
 			}
 		}
