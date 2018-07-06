@@ -134,19 +134,6 @@ public class GenerateExcelPriceList extends Command implements CatalogConst {
 		sheet.setColumnWidth(colIdx, 75 * 256);
 		row.getCell(colIdx).setCellStyle(sectionStyle);
 
-//		ItemQuery q = new ItemQuery(ItemNames.SEO);
-//		q.setParentId(section.getId(), false);
-//		Item seo = q.loadFirstItem();
-//		if(seo != null){
-//			StringBuilder sb = new StringBuilder();
-//			Collection <Parameter> parameters = seo.getAllParameters();
-//			for(Parameter p : parameters){
-//				if(!p.isMultiple()){
-//					sb.append(p.getParamId()).append(":").append(p.getValue()).append('ᐁ');
-//				}
-//			}
-//		}
-
 		colIdx = -1;
 
 		ItemQuery q = new ItemQuery(PRODUCT_ITEM);
