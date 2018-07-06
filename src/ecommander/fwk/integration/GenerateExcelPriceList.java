@@ -108,6 +108,7 @@ public class GenerateExcelPriceList extends Command implements CatalogConst {
 				for (StackTraceElement err : stackTrace) {
 					sb.append(err.toString() + "\n");
 				}
+
 				return getResult("error").addVariable("stack", sb.toString());
 			}
 		}
