@@ -186,7 +186,7 @@ public class IntegratePriceList extends IntegrateBase {
 		downloadPictures();
 		refreshFiltersAndItemTypes();
 		info.setOperation("Индексация названий товаров");
-		//LuceneIndexMapper.getSingleton().reindexAll();
+		LuceneIndexMapper.getSingleton().reindexAll();
 		info.setOperation("Интеграция завершена");
 		price.close();
 	}
