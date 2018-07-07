@@ -50,7 +50,7 @@
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
-	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+	<xsl:variable name="only_available" select="page/variables/minqty = '1'"/>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
