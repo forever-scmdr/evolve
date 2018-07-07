@@ -424,6 +424,8 @@
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
 	<xsl:variable name="pp" select="page/product_present"/>
 
+
+
 	<xsl:template match="accessory | set | probe | product | assoc">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="pres" select="$pp[product_code = current()/code]"/>
@@ -514,9 +516,29 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:if test="$pres">
-						<div class="hover-tag">
+						<div class="hover-tag mobile">
 							<i class="hover-tag__icon fas fa-gift" />
 							<a href="" data-toggle="modal" data-target="#pres_{code}">Подарок</a>
+						</div>
+						<div class="hover-tag desktop">
+							<i class="hover-tag__icon fas fa-gift" />
+							<a data-toggle="popover" data-trigger="hover" data-placement="bottom" data-html="true">
+								<xsl:attribute name="data-content">
+									<xsl:for-each select="$pres">
+										<xsl:variable name="present" select="//page/present[code = current()/present_code]"/>
+										<xsl:variable name="pic_path"
+										              select="if ($present/main_pic) then concat($present/@path, $present/main_pic) else 'img/no_image.png'"/>
+										<xsl:text disable-output-escaping="yes">&lt;div class="gift-item"&gt;</xsl:text>
+										<xsl:text disable-output-escaping="yes">&lt;img src="</xsl:text><xsl:value-of select="$pic_path"/><xsl:text disable-output-escaping="yes">" alt=""/&gt;</xsl:text>
+											<xsl:text disable-output-escaping="yes">&lt;h3&gt;</xsl:text>
+												<xsl:value-of select="$present/name"/><xsl:text> </xsl:text><xsl:value-of select="$present/type"/>
+											<xsl:text disable-output-escaping="yes">&lt;/h3&gt;</xsl:text>
+											<xsl:value-of select="$present/short" disable-output-escaping="yes"/>
+										<xsl:text disable-output-escaping="yes">&lt;/div&gt;</xsl:text>
+									</xsl:for-each>
+								</xsl:attribute>
+								Подарок
+							</a>
 						</div>
 					</xsl:if>
 				</div>
@@ -535,6 +557,7 @@
 					var lockId = $(this).closest('.product_purchase_container').attr('id');
 					postForm(qtyForm, lockId, null);
 				});
+				$('[data-toggle="popover"]').popover();
 			});
 		</script>
 	</xsl:template>
