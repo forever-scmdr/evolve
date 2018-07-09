@@ -52,7 +52,7 @@
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 				<xsl:if test="$has_price">
 					<div class="price">
-						<p><span>Старая цена</span>100 р.</p>
+						<p><span>Старая цена</span>&#160;</p>
 						<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
 					</div>
 				</xsl:if>

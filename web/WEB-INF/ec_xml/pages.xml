@@ -39,6 +39,11 @@
 		<link name="register_link" target="register"/>
 		<link name="login_form_link" target="login_form_ajax"/>
 		<link name="personal_ajax_link" target="personal_ajax"/>
+
+		<!-- USER DEFUNED SCRIPTS -->
+		<single item="modules">
+			<list item="named_code"/>
+		</single>
 	</include-definition>
 
 
@@ -46,6 +51,7 @@
 		<single item="main_page" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
+			<single item="seo"/>
 		</single>
 		<single item="news">
 			<list item="news_item" id="ni">
@@ -63,13 +69,16 @@
 
 
 	<page name="catalog" template="catalog" cacheable="true">
+		<single item="catalog" tag="seo_wrap">
+			<single item="seo"/>
+		</single>
 		<include name="COMMON"/>
 	</page>
 
 
 	<page name="section" template="section" cacheable="true" critical-item="cur_sec">
 		<request>
-			<var name="sec" style="translit"/>
+			<var name="cur_sec" style="translit"/>
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="12" scope="cookie"/>
@@ -77,16 +86,19 @@
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="fil"/>
 		</request>
-		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
+		<single item="section" var="cur_sec" id="cur_sec" tag="current_section" cache-vars="cur_sec" >
+			<single item="seo"/>
 			<list item="product" id="prod" transit="true">
 				<filter>
+					<!--
 					<child item="params" transit="false"
 					       ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
+					-->
 					<sorting direction-var="direction"><var var="sort"/></sorting>
 					<limit><var var="limit"/></limit>
 					<pages><var var="page"/></pages>
 					<link name="filter_base_link" target="section">
-						<var name="sec" var="sec" style="translit"/>
+						<var name="cur_sec" var="cur_sec" style="translit"/>
 					</link>
 				</filter>
 				<link name="show_product" target="product">
@@ -126,14 +138,14 @@
 			<var name="limit" value="300"/>
 		</link>
 		<link name="reset_filter_link" target="section">
-			<var name="sec" var="sec" style="translit"/>
+			<var name="cur_sec" var="cur_sec" style="translit"/>
 		</link>
 		<link name="show_only_available" target="section" type="exclusive">
-			<var name="sec" var="sec" style="translit"/>
+			<var name="cur_sec" var="cur_sec" style="translit"/>
 			<var name="minqty" value="0"/>
 		</link>
 		<link name="show_all" target="section" type="exclusive">
-			<var name="sec" var="sec" style="translit"/>
+			<var name="cur_sec" var="cur_sec" style="translit"/>
 			<var name="minqty" value=""/>
 		</link>
 		<link name="set_sort_name_asc" target="section" copy-page-vars="yes" type="exclusive">
@@ -164,6 +176,7 @@
 			<var name="sec" style="translit"/>
 		</request>
 		<single item="section" var="sec" cacheable="true" cache-vars="sec" tag="current_section">
+			<single item="seo"/>
 			<list item="section" id="subsec">
 				<list item="product" transit="true">
 
@@ -230,6 +243,7 @@
 			<var name="prod" style="translit"/>
 		</request>
 		<single item="product" id="prod" var="prod">
+			<single item="seo"/>
 			<single item="params"/>
 			<ancestor item="section" transit="false" tag="product_section"/>
 			<link name="to_cart" target="cart_action">
@@ -259,6 +273,7 @@
 			<var name="p" value="1"/>
 		</request>
 		<single item="news">
+			<single item="seo"/>
 			<list item="news_item" id="ni">
 				<filter>
 					<sorting direction="DESC"><var value="date"/></sorting>
@@ -279,6 +294,7 @@
 			<var name="p" value="1"/>
 		</request>
 		<single item="articles">
+			<single item="seo"/>
 			<list item="news_item" id="ni">
 				<filter>
 					<sorting direction="DESC"><var value="date"/></sorting>
@@ -299,6 +315,7 @@
 			<var name="ni" style="translit"/>
 		</request>
 		<single item="news_item" var="ni" cacheable="true" cache-vars="ni">
+			<single item="seo"/>
 			<ancestor item="news"/>
 			<ancestor item="articles"/>
 		</single>
@@ -320,7 +337,9 @@
 
 
 	<page name="contacts" template="contacts" cacheable="true">
-		<single item="contacts" cacheable="true"/>
+		<single item="contacts" cacheable="true">
+			<single item="seo"/>
+		</single>
 		<include name="COMMON"/>
 	</page>
 
@@ -336,7 +355,9 @@
 		<request>
 			<var name="p" style="translit"/>
 		</request>
-		<single item="custom_page" var="p" cacheable="true" cache-vars="p"/>
+		<single item="custom_page" var="p" cacheable="true" cache-vars="p">
+			<single item="seo"/>
+		</single>
 		<include name="COMMON"/>
 	</page>
 
@@ -360,7 +381,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="info@yuks.by"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -420,7 +441,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="egor@forever-ds.com"/>
+			<var name="email" value="info@yuks.by"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -854,36 +875,19 @@
 		</command>
 	</page>
 
-
-
-	<page name="crawl" template="crawl">
+		<!--
+		Создать файл YML формата со всеми разделами и товарами каталога
+	-->
+	<page name="create_yml_file">
+		<headers content-type="text/xml"/>
 		<request>
-			<var name="action"/>
-			<var name="job"/>
+			<var name="name" value="Юкс"/>
+			<var name="company" value="ООО Юкс"/>
 		</request>
-		<command class="extra.MetaboCrawlCommand">
-			<result name="complete" type="xml"/>
+		<command class="ecommander.fwk.integration.YMarketCreateXMLFile">
+			<result name="success" type="forward"/>
+			<result name="error" type="forward"/>
 		</command>
 	</page>
-
-
-	<page name="test_xsl">
-		<request>
-			<var name="url"/>
-		</request>
-		<command class="lunacrawler.CrawlCommand" method="test">
-			<result name="test_xsl" type="xml"/>
-		</command>
-	</page>
-
-	<page name="integrate_parsed" template="integrate_parsed">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="extra.MetaboIntegrateParsedCommand" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
 
 </site>

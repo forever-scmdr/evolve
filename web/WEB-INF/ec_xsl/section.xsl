@@ -8,6 +8,7 @@
 	</xsl:template>
 
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
+	<xsl:variable name="canonical" select="concat('/', $sel_sec/@key, '/')"/>
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
@@ -15,6 +16,7 @@
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 

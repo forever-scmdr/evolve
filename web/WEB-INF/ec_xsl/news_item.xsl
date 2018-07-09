@@ -8,6 +8,7 @@
 
 
 	<xsl:variable name="ni" select="page/news_item"/>
+	<xsl:variable name="canonical" select="concat('/', $ni/@key, '/')"/>
 
 
 	<xsl:template name="CONTENT">

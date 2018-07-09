@@ -16,9 +16,9 @@
 		<div class="form-group">
 			<label>Способ доставки <a href="dostavka">Подробнее об условиях доставки</a></label>
 			<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">
-				<option>Курьером</option>
+				<option>Курьером по Минску</option>
+				<option>Курьером Мозырь и Калинковичи</option>
 				<option>Белпочта</option>
-				<option>Бесплатно (Мозырь и Калинковичи)</option>
 			</select>
 		</div>
 		<div class="form-group">
@@ -50,9 +50,9 @@
 		<div class="form-group">
 			<label>Способ доставки <a href="dostavka">Подробнее об условиях доставки</a></label>
 			<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}">
-				<option>Курьером</option>
+				<option>Курьером по Минску</option>
+				<option>Курьером Мозырь и Калинковичи</option>
 				<option>Белпочта</option>
-				<option>Бесплатно (Мозырь и Калинковичи)</option>
 			</select>
 		</div>
 		<div class="form-group">

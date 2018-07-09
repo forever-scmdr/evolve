@@ -99,12 +99,12 @@
 				</xsl:for-each>
 			</div>
 		</div>
-		<div class="actions mobile">
+		<!-- <div class="actions mobile">
 			<h3>Акции</h3>
 			<div class="actions-container">
 				<a href="{page/main_page/link_link}"><xsl:value-of select="page/main_page/link_text"/></a>
 			</div>
-		</div>
+		</div> -->
 		<!--
 		<div class="more-products">
 			<h4>Лидеры продаж</h4>
@@ -349,7 +349,7 @@
 						<xsl:for-each select="page/main_page/main_promo_bottom">
 							<div style="background-image: url({@path}{pic})">
 								<div class="aspect-ratio"></div>
-								<a href="">
+								<a href="{link}">
 									<h4><xsl:value-of select="text_big"/></h4>
 									<p><xsl:value-of select="text_small"/></p>
 								</a>

@@ -11,6 +11,7 @@
 
 
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
+		<child item="seo" single="true"/>
 		<child item="section" />
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
@@ -19,6 +20,7 @@
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
 	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" ag-id="3" ag-hash="1970241253">
+		<child item="seo" single="true"/>
 		<child item="section" />
 		<child item="product"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
@@ -35,12 +37,9 @@
 	<!--Товар из магазина yandex market-->
 	<item name="product" key="name vendor_code" caption="Продукт" extendable="false" key-unique="true" default-page="product" ag-id="6" ag-hash="-309474065">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
-		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
-		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
-		<parameter name="short" type="string" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
 		<parameter name="group_id" type="string" caption="Номер группы" description="в яндекс маркете все товары одной группы выводятся на одной странице"/>
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
@@ -51,34 +50,15 @@
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" format="width: 300" caption="Главная картинка"/>
-		<parameter name="description" type="text" caption="Краткое описание" text-index="fulltext" />
+		<parameter name="description" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
-		<parameter name="extra_xml" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
-		<child item="product_extra"/>
-		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
+		<child item="seo" single="true"/>
 	</item>
 
 	<item name="params" caption="Параметры товара" extendable="true" ag-id="30" ag-hash="-995427962"/>
-
-	<item name="product_extra" caption="Дополнительные страницы для товара" key="name" ag-id="3123" ag-hash="1373246656">
-		<parameter name="name" type="string" caption="Заголовок страницы"/>
-		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
-		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
-	</item>
-	<!--
-	Для хранения пользовательских параметров товара, список которых отличается в зависимости от раздела или типа товара
-	Хранить их в текстовом виде нужно чтобы можно было создавать заново айтем с параметрами товара params в случае
-	если надо поменять тип этого айтема. А это нужно, например, когда заново создаются фильтры для разделов
-	Также в этот айтем сохраняются значения всех параметров, содержащихся в айтеме params
-	Параметры хранятся в таком же виде, как и пользовательские параметры в айтеме, т.е. сохранятся путём вызова
-	params.outputValues();
-	-->
-	<item name="params_xml" caption="Параметры в виде XML" ag-id="3124" ag-hash="471057886">
-		<parameter name="xml" type="xml" caption="Параметры" />
-	</item>
 
 
 	<!--/////////////                            END КАТАЛОГ                               ////////////-->
@@ -102,9 +82,9 @@
 
 
 
-	<item name="bought" caption="Покупка" key="code" ag-id="16" ag-hash="-1383211797">
+	<item name="bought" caption="Покупка" virtual="true" key="code" ag-id="16" ag-hash="-1383211797">
+		<parameter name="name" type="string" caption="Наименование товара" description="не обязательно. Используется только в истории заказов"/>
 		<parameter name="code" type="string" caption="Код товара"/>
-		<parameter name="name" type="string" caption="Название товара"/>
 		<parameter name="qty" type="double" caption="Количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
@@ -138,8 +118,6 @@
 		<parameter name="date" caption="Дата" type="date"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
-		<parameter name="status" type="byte" caption="Статус" default="0"
-		           description="0 - новый, 1 - обрабатывается, 2 - выполнен"/>
 		<child item="bought"/>
 	</item>
 
@@ -157,7 +135,6 @@
 		<parameter name="email" type="string" caption="E-mail" />
 		<parameter name="address" type="string" caption="Юридический адрес" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
-		<parameter name="pay_type" type="string" caption="Способ оплаты" />
 		<parameter name="no_account" type="string" caption="Нет расчетного счета" domain="yes-no"/>
 		<parameter name="account" type="string" caption="Расчетный счет" />
 		<parameter name="bank" type="string" caption="Название банка" />
@@ -176,7 +153,6 @@
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="address" type="string" caption="Адрес" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
-		<parameter name="pay_type" type="string" caption="Способ оплаты" />
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
@@ -195,6 +171,7 @@
 
 
 	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" default-page="news_item" ag-id="11" ag-hash="300774655">
+		<child item="seo" single="true"/>
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
@@ -204,10 +181,12 @@
 	</item>
 
 	<item name="news" caption="Новости" ag-id="12" ag-hash="3377875">
+		<child item="seo" single="true"/>
 		<child item="news_item"/>
 	</item>
 
 	<item name="articles" caption="Статьи" ag-id="13" ag-hash="-1228877251">
+		<child item="seo" single="true"/>
 		<child item="news_item"/>
 	</item>
 
@@ -224,6 +203,7 @@
 	</item>
 
 	<item name="main_page" caption="Главная страница" ag-id="15" ag-hash="-251149995">
+		<child item="seo" single="true"/>
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
 	</item>
@@ -234,16 +214,19 @@
 		<parameter name="info" type="short-text" caption="Инофрмация" description="телефоны, ардес сайта и т.д."/>
 	</item>
 
-	<item name="dealers_page" caption="Карта дилеров" ag-id="19" ag-hash="811291188">
+	<item name="dealers_page" caption="Карта дилеров" ag-id="1191" ag-hash="811291188">
+		<child item="seo" single="true"/>
 		<child item="dealer_coords"/>
 	</item>
 
-	<item name="docs" caption="Документация" ag-id="20" ag-hash="3088955">
+	<item name="docs" caption="Документация" ag-id="1192" ag-hash="3088955">
+		<child item="seo" single="true"/>
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
 	<item name="contacts" caption="Контакты" ag-id="21" ag-hash="-567451565">
+		<child item="seo" single="true"/>
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="map" type="plain-text" caption="Код карты" format="height: 50px"/>
 		<parameter name="bottom_text" type="text" caption="Как добраться"/>
@@ -257,6 +240,8 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
+		<parameter name="google_verification" type="string" caption="google verification code"/>
+		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
 	</item>
 
 
@@ -272,12 +257,31 @@
 	</item>
 
 	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" default-page="page" ag-id="27" ag-hash="-1777660259">
+		<child item="seo" single="true"/>
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="in_main_menu" type="string" domain="yes-no" caption="Выводить в главном меню"/>
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
+<!-- ADDED by Anton 07.05.2018 -->
+	<item name="modules" caption="Метрики, чаты и.т.д" ag-id="3575" ag-hash="1227433863" >
+		<child item="named_code"/>
+	</item>
+
+	<item name="named_code" key="name" caption="Модуль" ag-id="3576" ag-hash="-281007309">
+		<parameter name="name" type="string" caption="Имя"/>
+		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
+	</item>
+
+	<item name="seo" caption="SEO" ag-id="3577" ag-hash="113757">
+		<parameter name="title" type="string" caption="title"/>
+		<parameter name="description" type="string" caption="description"/>
+		<parameter name="keywords" type="string" caption="description"/>
+		<parameter name="meta" caption="meta" type="plain-text"/>
+	</item>
+
+<!-- END ADDED by Anton 07.05.2018 -->
 
 	<root>
 		<child item="feedback_params" single="true" />
@@ -292,6 +296,7 @@
 		<child item="custom_pages" single="true"/>
 		<child item="registered_catalog" single="true"/>
 		<child item="counter" single="true" virtual="true"/>
+		<child item="modules" single="true"/>
 	</root>
 
 

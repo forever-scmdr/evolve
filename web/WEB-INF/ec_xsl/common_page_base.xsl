@@ -3,12 +3,16 @@
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
+	<xsl:import href="utils/price_conversions.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
 	<!-- <TITLE> -->
 	
-	<xsl:template name="TITLE">ЮКС</xsl:template>
+	<xsl:variable name="title" select="'ЮКС'"/>
+	<xsl:variable name="meta_description" select="''" />
+	<xsl:variable name="base" select="page/base" />
+	<xsl:variable name="canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''"/>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
@@ -98,8 +102,8 @@
 					<img src="img/logo_big.svg" alt="" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
-					<a href=""><i class="fas fa-phone"></i></a>
-					<a href=""><i class="fas fa-shopping-cart"></i></a>
+					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
+					<a href="{page/cart_link}"><i class="fas fa-shopping-cart"></i></a>
 					<a href="javascript:showMobileMainMenu()"><i class="fas fa-bars"></i></a>
 				</div>
 				<div class="search-container">
@@ -252,7 +256,10 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_section}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_products}" class="header">
+							<span style="color: #707070; font-weight: normal; display: block;">Показать товары раздела:&#160;</span>
+							<xsl:value-of select="name"/>
+						</a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
@@ -271,13 +278,16 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_products}" class="header">
+							<span style="color: #707070; font-weight: normal; display: block;">Показать товары раздела:</span>
+							<xsl:value-of select="name"/>
+						</a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
 						<xsl:for-each select="section">
 							<li>
-								<a href="{show_section}"><xsl:value-of select="name"/></a>
+								<a href="{show_products}"><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:for-each>
 					</ul>
@@ -508,7 +518,7 @@
 
 
 	<xsl:template match="/">
-	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
+	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
 	</xsl:text>
 	<html lang="en">
 		<head>
@@ -516,7 +526,8 @@
 			<meta charset="utf-8"/>
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
-			<title><xsl:call-template name="TITLE"/></title>
+			<xsl:call-template name="SEO"/>
+			<!-- <title><xsl:call-template name="TITLE"/></title> -->
 			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 			<link rel="stylesheet" href="css/app.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
@@ -577,11 +588,17 @@
 				});
 			</script>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>
+			<xsl:call-template name="USER_SCRIPTS"/>
 		</body>
 	</html>
 	</xsl:template>
 
-	
+
+	<xsl:template name="USER_SCRIPTS">
+		<xsl:for-each select="page/modules/named_code">
+			<xsl:value-of select="code" disable-output-escaping="yes"/>
+		</xsl:for-each>
+	</xsl:template>
 
 
 
@@ -633,6 +650,40 @@
 				<xsl:with-param name="current" select="number($current) + number(1)"/>
 			</xsl:call-template>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="SEO">
+		<xsl:variable name="quote">"</xsl:variable>
+
+		<link rel="canonical" href="{concat($base, $canonical)}" />
+
+		<xsl:if test="//seo != ''">
+			<xsl:apply-templates select="//seo[1]"/>
+		</xsl:if>
+		<xsl:if test="not(//seo) or //seo = ''">
+			<title>
+				<xsl:value-of select="$title"/>
+			</title>
+			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
+		</xsl:if>
+		<xsl:text disable-output-escaping="yes">
+		</xsl:text>
+		<xsl:value-of select="/page/common/yandex_verification" disable-output-escaping="yes"/>
+		<xsl:text disable-output-escaping="yes">
+		</xsl:text>
+		<xsl:value-of select="/page/common/google_verification" disable-output-escaping="yes"/>
+		<!-- <meta name="google-site-verification" content="{/page/common/google_verification}" />
+		<meta name="yandex-verification" content="{/page/common/yandex_verification}" /> -->
+
+	</xsl:template>
+
+	<xsl:template match="seo">
+		<title>
+			<xsl:value-of select="title"/>
+		</title>
+		<meta name="description" content="{description}"/>
+		<meta name="keywords" content="{keywords}"/>
+		<xsl:value-of select="meta" disable-output-escaping="yes"/>
 	</xsl:template>
 
 </xsl:stylesheet>
