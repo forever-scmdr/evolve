@@ -13,6 +13,7 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
+		<parameter name="default_price" type="currency" caption="Цена по умолчанию" format="для всех товаров"/>
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 	</item>
@@ -113,7 +114,7 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             РЕГИСТРАЦИЯ                              ////////////-->
 
-	<item name="purchase" caption="Заказ" key="num" ag-id="1190" ag-hash="1743324417">
+	<item name="purchase" caption="Заказ" key="num" ag-id="1193" ag-hash="1743324417">
 		<parameter name="num" caption="Номер" type="string"/>
 		<parameter name="date" caption="Дата" type="date"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
@@ -121,7 +122,7 @@
 		<child item="bought"/>
 	</item>
 
-	<item name="user" caption="Зарегистрированный пользователь" key="email" ag-id="1191" ag-hash="3599307">
+	<item name="user" caption="Зарегистрированный пользователь" key="email" ag-id="1194" ag-hash="3599307">
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="password" type="string" caption="Пароль"/>
 		<child item="purchase"/>
@@ -157,7 +158,7 @@
 	</item>
 
 
-	<item name="registered_catalog" caption="Каталог пользователей" ag-id="1192" ag-hash="-755203236">
+	<item name="registered_catalog" caption="Каталог пользователей" ag-id="1195" ag-hash="-755203236">
 		<child item="user"/>
 	</item>
 
@@ -208,7 +209,7 @@
 		<child item="main_slider_frame" inline="true"/>
 	</item>
 
-	<item name="dealer_coords" caption="Дилер" key="name" ag-id="18" ag-hash="-1075960572">
+	<item name="dealer_coords" caption="Дилер" key="name" ag-id="1190" ag-hash="-1075960572">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="address" type="string" caption="Адрес" description="начиная с названия города"/>
 		<parameter name="info" type="short-text" caption="Инофрмация" description="телефоны, ардес сайта и т.д."/>

@@ -14,6 +14,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +51,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private ArrayList<String> picUrls;
 	private User initiator;
 	boolean isInsideOffer = false;
+	private BigDecimal defaultPrice = new BigDecimal(2);
 
 	
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
@@ -58,6 +60,11 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		this.productType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
 		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
+	}
+
+	public void setDefaultPrice(BigDecimal price) {
+		if (price != null)
+			this.defaultPrice = price;
 	}
 
 	@Override
@@ -90,7 +97,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				product.setValue(COUNTRY_PARAM, commonParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
 
 				//product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
-				product.setValueUI(PRICE_PARAM, "2");
+				product.setValueUI(PRICE_PARAM, defaultPrice.toString());
 
 				// Качать картинки только для новых товаров
 				if (product.isNew()) {

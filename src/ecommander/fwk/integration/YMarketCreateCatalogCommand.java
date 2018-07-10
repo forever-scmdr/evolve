@@ -12,6 +12,7 @@ import org.apache.commons.io.FileUtils;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -84,6 +85,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.setOperation("Содание товаров");
 		info.setProcessed(0);
 		YMarketProductCreationHandler prodHandler = new YMarketProductCreationHandler(secHandler.getSections(), info, getInitiator());
+		prodHandler.setDefaultPrice(catalog.getDecimalValue("default_price"));
 		for (File xml : xmls) {
 			parser.parse(xml, prodHandler);
 		}

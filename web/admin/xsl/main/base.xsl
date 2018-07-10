@@ -168,14 +168,16 @@
 											Управление классами объектов
 										</a>
 									</li>
-									<li class="visible" title="Управление заказами">
-										<a href="orders_all" target="_blank">
-											Управление заказами
-										</a>
-									</li>
+									<!--
 									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
 										<a href="update_prices?action=start" target="_blank">
 											Запустить обновление цен
+										</a>
+									</li>
+									-->
+									<li class="visible" title="Выполнить интеграцию из YML-файлов">
+										<a href="integrate?action=start" target="_blank">
+											Выполнить интеграцию из YML-файлов
 										</a>
 									</li>
 									<li class="visible" title="Создать YML-файл">
