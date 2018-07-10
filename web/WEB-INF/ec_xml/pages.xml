@@ -848,6 +848,7 @@
         </link>
         <command class="ecommander.fwk.integration.MakeExcelPrice">
             <result name="success" type="redirect" />
+             <result name="error" type="redirect" />
         </command>
     </page>
 

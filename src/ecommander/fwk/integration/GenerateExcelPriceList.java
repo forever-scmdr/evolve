@@ -186,7 +186,13 @@ public class GenerateExcelPriceList extends Command implements CatalogConst {
 		row.createCell(++colIdx).setCellValue("");
 		row.createCell(++colIdx).setCellValue("");
 		row.createCell(++colIdx).setCellValue(String.valueOf(product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO)));
-		row.createCell(++colIdx).setCellValue(product.getStringValue("tag"));
+		StringBuilder sb = new StringBuilder();
+		ArrayList<String> tags = product.getStringValues(ItemNames.product.TAG);
+		for (int i = 0; i < tags.size(); i++){
+			if(i> 0)sb.append(';');
+			sb.append(tags.get(i));
+		}
+		row.createCell(++colIdx).setCellValue(sb.toString());
 		Item params = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
 		if (params != null) {
 			ItemType paramsType = ItemTypeRegistry.getItemType(params.getTypeId());
