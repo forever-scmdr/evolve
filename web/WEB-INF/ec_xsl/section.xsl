@@ -75,7 +75,8 @@
 			</xsl:if>
 
 			<xsl:if test="$sel_sec/params_filter/filter">
-				<form method="post" action="{$sel_sec/filter_base_link}">
+				<form method="get" action="{$sel_sec/filter_base_link}">
+					<input type="hidden" name="var" value="fil"/>
 					<div class="filters" style="{'display: none'[not($user_filter)]}" id="filters_container">
 						<xsl:for-each select="$sel_sec/params_filter/filter/input">
 							<xsl:variable name="name" select="@id"/>
