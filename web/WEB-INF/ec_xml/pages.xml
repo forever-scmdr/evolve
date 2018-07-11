@@ -98,10 +98,13 @@
 				<parameter name="product_code" compare="SOME"><var ref="prod" parameter="code" /></parameter>
 			</filter>
 		</list>
-		<list item="product" tag="present">
+		<list item="product" id="prod_pres" tag="present">
 			<filter>
 				<parameter name="code" compare="SOME"><var ref="present" parameter="present_code" /></parameter>
 			</filter>
+			<link name="show_product" target="product">
+				<var name="prod" ref="prod_pres" style="translit"/>
+			</link>
 		</list>
 		<list item="present" tag="present">
 			<filter>

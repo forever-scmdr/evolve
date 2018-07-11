@@ -6,6 +6,7 @@ import ecommander.fwk.ItemUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
+import ecommander.model.datatypes.DataType;
 import ecommander.model.datatypes.DateDataType;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
@@ -15,6 +16,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -34,12 +38,20 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 	private Item catalog;
 	private String name;
 	private String company;
+	private boolean hasContainsAssoc;
+	private boolean hasParamsItem;
+	private boolean hasXmlParams;
 
 	@Override
 	public ResultPE execute() throws Exception {
 		name = getVarSingleValue(NAME_ELEMENT);
 		company = getVarSingleValue(COMPANY_ELEMENT);
 		catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, User.getDefaultUser(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+		hasContainsAssoc = ItemTypeRegistry.getAssoc("contains") != null;
+		hasParamsItem = ItemTypeRegistry.getItemType(PARAMS_ITEM) != null;
+		hasXmlParams = false;
+		ParameterDescription desc = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter("tech");
+		hasXmlParams = desc != null && desc.getType() == DataType.Type.XML;
 		return createYandex();
 	}
 
@@ -92,6 +104,9 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 
 	private void processCategoryProducts(Item category) throws Exception {
 		List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(category.getId(), false).loadItems();
+		if (products.size() == 0 && hasContainsAssoc) {
+			products = new ItemQuery(PRODUCT_ITEM).setParentId(category.getId(), false, "contains").loadItems();
+		}
 		BigDecimal zero = new BigDecimal(0);
 		for (Item prod : products) {
 			BigDecimal price = prod.getDecimalValue(PRICE_PARAM, zero);
@@ -124,12 +139,28 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 			}
 
 			// Пользовательские параметры
-			Item prodParams = new ItemQuery(PARAMS_ITEM).setParentId(prod.getId(), false).loadFirstItem();
-			if (prodParams != null) {
-				for (ParameterDescription paramDesc : prodParams.getItemType().getParameterList()) {
-					xml.startElement(PARAM_ELEMENT, NAME_ATTR, paramDesc.getCaption())
-							.addText(prodParams.outputValue(paramDesc.getName()))
-							.endElement();
+			if (hasParamsItem) {
+				Item prodParams = new ItemQuery(PARAMS_ITEM).setParentId(prod.getId(), false).loadFirstItem();
+				if (prodParams != null) {
+					for (ParameterDescription paramDesc : prodParams.getItemType().getParameterList()) {
+						xml.startElement(PARAM_ELEMENT, NAME_ATTR, paramDesc.getCaption())
+								.addText(prodParams.outputValue(paramDesc.getName()))
+								.endElement();
+					}
+				}
+			}
+			// Параметры в виде XML
+			else if (hasXmlParams) {
+				String paramsXml = prod.getStringValue("tech");
+				if (StringUtils.isNotBlank(paramsXml)) {
+					String stringXml = "<params>" + paramsXml + "</params>";
+					Document paramsTree = Jsoup.parse(stringXml, "localhost", Parser.xmlParser());
+					Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
+					for (Element paramEl : paramEls) {
+						String caption = StringUtils.trim(paramEl.getElementsByTag(NAME).first().ownText());
+						String value = StringUtils.trim(paramEl.getElementsByTag(VALUE).first().ownText());
+						xml.startElement(PARAM_ELEMENT, NAME_ATTR, caption).addText(value).endElement();
+					}
 				}
 			}
 

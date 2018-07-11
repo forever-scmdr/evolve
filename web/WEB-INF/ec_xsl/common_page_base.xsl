@@ -528,10 +528,17 @@
 										<xsl:variable name="present" select="//page/present[code = current()/present_code]"/>
 										<xsl:variable name="pic_path"
 										              select="if ($present/main_pic) then concat($present/@path, $present/main_pic) else 'img/no_image.png'"/>
+										<xsl:variable name="link" select="$present/show_product"/>
 										<xsl:text disable-output-escaping="yes">&lt;div class="gift-item"&gt;</xsl:text>
 										<xsl:text disable-output-escaping="yes">&lt;img src="</xsl:text><xsl:value-of select="$pic_path"/><xsl:text disable-output-escaping="yes">" alt=""/&gt;</xsl:text>
 											<xsl:text disable-output-escaping="yes">&lt;h3&gt;</xsl:text>
+												<xsl:if test="$link">
+													<xsl:text disable-output-escaping="yes">&lt;a href="</xsl:text><xsl:value-of select="$link"/><xsl:text disable-output-escaping="yes">"&gt;</xsl:text>
+												</xsl:if>
 												<xsl:value-of select="$present/name"/><xsl:text> </xsl:text><xsl:value-of select="$present/type"/>
+												<xsl:if test="$link">
+													<xsl:text disable-output-escaping="yes">&lt;/a&gt;</xsl:text>
+												</xsl:if>
 											<xsl:text disable-output-escaping="yes">&lt;/h3&gt;</xsl:text>
 											<xsl:value-of select="$present/short" disable-output-escaping="yes"/>
 										<xsl:text disable-output-escaping="yes">&lt;/div&gt;</xsl:text>
