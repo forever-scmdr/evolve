@@ -433,6 +433,10 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * Если запросов несколько, то они выполняются в порядке появления в массиве, первый запрос считается самым
 	 * строгим и результаты по нему самыми релевантными, второй менее строгий, третий - еще менее и т. д.
 	 * Максимальный score документов второго и последующих запросов равны минимальному score предыдущего запроса
+	 *
+	 * Запросы сгруппированы. Следующая группа запросов выполняется только в случае если предыдущая группа не
+	 * вернула результатов.
+	 *
 	 * @param queries
 	 * @param filter
 	 * @param paramNames - массив названий параметров, которые могут содержать искомый текст
@@ -441,7 +445,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws IOException
 	 */
-	public synchronized LinkedHashMap<Long, String> getItems(List<Query> queries, Query filter, String[] paramNames, int maxResults, float threshold)
+	public synchronized LinkedHashMap<Long, String> getItems(ArrayList<ArrayList<Query>> queries, Query filter, String[] paramNames,
+	                                                         int maxResults, float threshold)
 			throws IOException {
 		if (getReader() == null)
 			return new LinkedHashMap<>(0);
@@ -455,71 +460,79 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		// документы, которые набрали менее 33% очков лучшего результата отбрасываются
 		if (threshold < 0f) 
 			threshold = 0.05f;
-		
-		// Все запросы в порядке появления в массиве
-		for (Query query : queries) {
-			TopDocs foundDocs;
-			if (filter != null) {
-				BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
-				boolQuery.add(query, BooleanClause.Occur.MUST);
-				boolQuery.add(filter, BooleanClause.Occur.FILTER);
-				query = boolQuery.build();
-			}
-			foundDocs = search.search(query, maxResults);
-			float scoreQuotient = 1f;
 
-			// Инициализация максиального количества очков и коэффициента пересчета
-			if (foundDocs.scoreDocs.length > 0) {
-				if (globalMaxScore <= 0)
-					globalMaxScore = foundDocs.scoreDocs[0].score;
-				if (minScore > 0)
-					scoreQuotient = minScore / foundDocs.scoreDocs[0].score;
-			}
-
-			// Подготовка подсветки найденных результатов
-			SimpleHTMLFormatter formatter = new SimpleHTMLFormatter(); //Uses HTML &lt;B&gt;&lt;/B&gt; tag to highlight the searched terms
-			QueryScorer scorer = new QueryScorer(query); //It scores text fragments by the number of unique query terms found
-			Highlighter highlighter = new Highlighter(formatter, scorer); //used to markup highlighted terms found in the best sections of a text
-			Fragmenter fragmenter = new SimpleSpanFragmenter(scorer, 40); //It breaks text up into same-size texts but does not split up spans
-			highlighter.setTextFragmenter(fragmenter); //set fragmenter to highlighter
-
-			// Итерация по результатам поиска
-			for (ScoreDoc scoreDoc : foundDocs.scoreDocs) {
-
-				// нормализованный счет (score)
-				float normalScore = scoreDoc.score * scoreQuotient;
-				if (globalMaxScore * threshold > normalScore) {
-					isFinished = true;
-					break;
+		// Все группы запросов в порядке появления в массиве
+		// Переход к следующей группе происходит только в случае, если предыдущая группа не дала результатов
+		int totalDocs = 0;
+		for (List<Query> group : queries) {
+			for (Query query : group) {
+				TopDocs foundDocs;
+				if (filter != null) {
+					BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
+					boolQuery.add(query, BooleanClause.Occur.MUST);
+					boolQuery.add(filter, BooleanClause.Occur.FILTER);
+					query = boolQuery.build();
 				}
-				Document doc = search.doc(scoreDoc.doc);
+				foundDocs = search.search(query, maxResults);
+				float scoreQuotient = 1f;
 
-				// Подсветка найденных фрагментов
-				//Fields docFields = getReader().getTermVectors(scoreDoc.doc);
-				XmlDocumentBuilder highlighted = XmlDocumentBuilder.newDocPart();
-				for (String paramName : paramNames) {
-					//TokenStream stream = TokenSources.getTermVectorTokenStreamOrNull(paramName, docFields, -1);
-					String text = StringUtils.join(doc.getValues(paramName), TEN_SPACES_STRING);
-					String[] bestFragments = new String[0];
-					try {
-						//bestFragments = highlighter.getBestFragments(stream, text, 3);
-						bestFragments = highlighter.getBestFragments(getAnalyzer(), paramName, text, 3);
-					} catch (Exception e) {
-						ServerLogger.warn("Lucene highlighter error", e);
-					}
-					for (String bestFragment : bestFragments) {
-						highlighted.startElement("p", "name", paramName).addText(bestFragment).endElement();
-					}
+				// Инициализация максиального количества очков и коэффициента пересчета
+				if (foundDocs.scoreDocs.length > 0) {
+					if (globalMaxScore <= 0)
+						globalMaxScore = foundDocs.scoreDocs[0].score;
+					if (minScore > 0)
+						scoreQuotient = minScore / foundDocs.scoreDocs[0].score;
 				}
-				Long itemId = Long.parseLong(doc.get(I_ID));
-				result.put(itemId, highlighted.toString());
-				ServerLogger.debug("\t\t---------\n" + search.explain(query, scoreDoc.doc));
+
+				// Подготовка подсветки найденных результатов
+				SimpleHTMLFormatter formatter = new SimpleHTMLFormatter(); //Uses HTML &lt;B&gt;&lt;/B&gt; tag to highlight the searched terms
+				QueryScorer scorer = new QueryScorer(query); //It scores text fragments by the number of unique query terms found
+				Highlighter highlighter = new Highlighter(formatter, scorer); //used to markup highlighted terms found in the best sections of a text
+				Fragmenter fragmenter = new SimpleSpanFragmenter(scorer, 40); //It breaks text up into same-size texts but does not split up spans
+				highlighter.setTextFragmenter(fragmenter); //set fragmenter to highlighter
+
+				// Итерация по результатам поиска
+				for (ScoreDoc scoreDoc : foundDocs.scoreDocs) {
+
+					// нормализованный счет (score)
+					float normalScore = scoreDoc.score * scoreQuotient;
+					if (globalMaxScore * threshold > normalScore) {
+						isFinished = true;
+						break;
+					}
+					Document doc = search.doc(scoreDoc.doc);
+
+					// Подсветка найденных фрагментов
+					//Fields docFields = getReader().getTermVectors(scoreDoc.doc);
+					XmlDocumentBuilder highlighted = XmlDocumentBuilder.newDocPart();
+					for (String paramName : paramNames) {
+						//TokenStream stream = TokenSources.getTermVectorTokenStreamOrNull(paramName, docFields, -1);
+						String text = StringUtils.join(doc.getValues(paramName), TEN_SPACES_STRING);
+						String[] bestFragments = new String[0];
+						try {
+							//bestFragments = highlighter.getBestFragments(stream, text, 3);
+							bestFragments = highlighter.getBestFragments(getAnalyzer(), paramName, text, 3);
+						} catch (Exception e) {
+							ServerLogger.warn("Lucene highlighter error", e);
+						}
+						for (String bestFragment : bestFragments) {
+							highlighted.startElement("p", "name", paramName).addText(bestFragment).endElement();
+						}
+					}
+					Long itemId = Long.parseLong(doc.get(I_ID));
+					result.put(itemId, highlighted.toString());
+					totalDocs++;
+					ServerLogger.debug("\t\t---------\n" + search.explain(query, scoreDoc.doc));
+				}
+
+				if (foundDocs.scoreDocs.length > 0)
+					minScore = foundDocs.scoreDocs[foundDocs.scoreDocs.length - 1].score * scoreQuotient;
+
+				if (isFinished || totalDocs >= maxResults) break;
 			}
-			
-			if (foundDocs.scoreDocs.length > 0)
-				minScore = foundDocs.scoreDocs[foundDocs.scoreDocs.length - 1].score * scoreQuotient;
-			
-			if (isFinished) break;
+			// Переход к следующей группе происходит только в случае, если предыдущая группа не дала результатов
+			if (totalDocs > 0)
+				break;
 		}
 		Timer.getTimer().stop(Timer.LOAD_LUCENE_ITEMS);
 		return result;
@@ -603,7 +616,11 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws IOException
 	 */
 	public LinkedHashMap<Long, String> getItems(Query query, Query filter, String[] paramNames, int maxResults, float threshold) throws IOException {
-		return getItems(Collections.singletonList(query), filter, paramNames, maxResults, threshold);
+		ArrayList<Query> single = new ArrayList<>();
+		single.add(query);
+		ArrayList<ArrayList<Query>> singleArray = new ArrayList<>();
+		singleArray.add(single);
+		return getItems(singleArray, filter, paramNames, maxResults, threshold);
 	}
 
 	/**

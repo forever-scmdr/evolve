@@ -389,7 +389,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	}
 	/**
 	 * Добавить критерий полнотекстового поиска (запрос и список параметров, по которым происходит поиск)
-	 * @param types - типы полнотекстового критерия (например near или term, или название фактори класса)
+	 * @param types - типы полнотекстового критерия (например near или term, или название фактори класса), сгруппированные
 	 * @param queries - список запросов (обрабатываются отдельно)
 	 * @param maxResults - максимальное количество результатов
 	 * @param paramNames - названия параметров, по которым происходит поиск
@@ -398,7 +398,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws EcommanderException
 	 */
-	public ItemQuery setFulltextCriteria(String[] types, String[] queries, int maxResults, String[] paramNames, Compare compType,
+	public ItemQuery setFulltextCriteria(List<String[]> types, String[] queries, int maxResults, String[] paramNames, Compare compType,
 			float threshold) throws Exception {
 		if (paramNames == null || paramNames.length == 0) {
 			paramNames = getItemDesc().getFulltextParams().toArray(new String[0]);
@@ -417,7 +417,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @throws EcommanderException
 	 */
 	public ItemQuery setFulltextCriteria(String type, String query, int maxResults, String[] paramNames, Compare compType) throws Exception {
-		return setFulltextCriteria(new String[] {type}, new String[] {query}, maxResults, paramNames, compType, -1);
+		return setFulltextCriteria(Collections.singletonList(new String[] {type}), new String[] {query}, maxResults, paramNames, compType, -1);
  	}
 	/**
 	 * Доабвить критерий поиска по предшественнику

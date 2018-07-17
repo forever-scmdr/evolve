@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Полнотекстовый критерий
@@ -34,17 +35,21 @@ class FulltextCriteria {
 	private final float threshold;
 	private LinkedHashMap<Long, String> loadedIds = null;
 	private final Compare compType;
-	private ArrayList<LuceneQueryCreator> queryCreators = new ArrayList<>();
+	private ArrayList<ArrayList<LuceneQueryCreator>> queryCreators = new ArrayList<>();
 	
-	FulltextCriteria(String[] queryTypes, String[] queryStr, int maxResultCount, String[] paramNames, Compare compType,
-			float threshold) throws Exception {
+	FulltextCriteria(List<String[]> queryTypes, String[] queryStr, int maxResultCount, String[] paramNames, Compare compType,
+	                 float threshold) throws Exception {
 		this.queryVals = queryStr;
 		this.paramNames = paramNames;
 		this.maxResultCount = maxResultCount;
 		this.threshold = threshold;
 		this.compType = compType;
-		for (String type : queryTypes) {
-			queryCreators.add(FulltextQueryCreatorRegistry.getCriteria(type));
+		for (String[] typeGroup : queryTypes) {
+			ArrayList<LuceneQueryCreator> group = new ArrayList<>();
+			queryCreators.add(group);
+			for (String type : typeGroup) {
+				group.add(FulltextQueryCreatorRegistry.getCriteria(type));
+			}
 		}
 	}
 
@@ -63,29 +68,37 @@ class FulltextCriteria {
 	 */
 	void loadItems(Query filter) throws IOException {
 		if (isValid()) {
-			ArrayList<Query> queries = new ArrayList<>();
+			ArrayList<ArrayList<Query>> queries = new ArrayList<>();
 			Occur occur = Occur.SHOULD;
 			if (compType == Compare.EVERY || compType == Compare.ALL)
 				occur = Occur.MUST;
 			if (queryVals.length == 1) {
-				for (LuceneQueryCreator creator : queryCreators) {
-					Query query = creator.createLuceneQuery(queryVals[0], paramNames, occur);
-					if (query != null)
-						queries.add(query);
+				for (ArrayList<LuceneQueryCreator> creatorGroup : queryCreators) {
+					ArrayList<Query> queryGroup = new ArrayList<>();
+					queries.add(queryGroup);
+					for (LuceneQueryCreator creator : creatorGroup) {
+						Query query = creator.createLuceneQuery(queryVals[0], paramNames, occur);
+						if (query != null)
+							queryGroup.add(query);
+					}
 				}
 			} else {
-				for (LuceneQueryCreator creator : queryCreators) {
-					BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
-					boolean isEmpty = true;
-					for (String term : queryVals) {
-						Query part = creator.createLuceneQuery(term, paramNames, occur);
-						if (part != null) {
-							boolQuery.add(part, occur);
-							isEmpty = false;
+				for (ArrayList<LuceneQueryCreator> creatorGroup : queryCreators) {
+					ArrayList<Query> queryGroup = new ArrayList<>();
+					queries.add(queryGroup);
+					for (LuceneQueryCreator creator : creatorGroup) {
+						BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
+						boolean isEmpty = true;
+						for (String term : queryVals) {
+							Query part = creator.createLuceneQuery(term, paramNames, occur);
+							if (part != null) {
+								boolQuery.add(part, occur);
+								isEmpty = false;
+							}
 						}
+						if (!isEmpty)
+							queryGroup.add(boolQuery.build());
 					}
-					if (!isEmpty)
-						queries.add(boolQuery.build());
 				}
 			}
 			if (!queries.isEmpty()) {
