@@ -4,7 +4,6 @@ import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.pages.LinkPE;
-import ecommander.pages.PageModelBuilder;
 import ecommander.pages.PageModelRegistry;
 import ecommander.pages.var.FilterStaticVariable;
 import ecommander.pages.var.VariablePE;
