@@ -4,7 +4,6 @@ import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.pages.LinkPE;
-import ecommander.pages.PageModelBuilder;
 import ecommander.pages.PageModelRegistry;
 import ecommander.pages.var.FilterStaticVariable;
 import ecommander.pages.var.VariablePE;
@@ -28,6 +27,15 @@ public class FilterFormServlet extends BasicServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		process(req, resp, true);
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		process(req, resp, false);
+	}
+
+	private void process(HttpServletRequest req, HttpServletResponse resp, boolean isPost) throws ServletException, IOException {
 		ServerLogger.debug("Post method: Page output started");
 		String targetUrl = getUserUrl(req);
 		targetUrl = targetUrl.substring(FILTER_PREFIX_LENGTH);
@@ -42,8 +50,10 @@ public class FilterFormServlet extends BasicServlet {
 			Map<String, String[]> params = new HashMap<>(req.getParameterMap());
 			// Удалить все лишние пеерменные, которые содержатся в targetUrl
 			params.remove(LinkPE.VAR_VARIABLE); // на всякий случай
-			for(VariablePE targetPageVar : targetLink.getAllVariables()) {
-				params.remove(targetPageVar.getName());
+			if (isPost) {
+				for (VariablePE targetPageVar : targetLink.getAllVariables()) {
+					params.remove(targetPageVar.getName());
+				}
 			}
 			if (params.containsKey(FilterStaticVariable.SORTING))
 				sortingStr = params.remove(FilterStaticVariable.SORTING)[0];
@@ -62,7 +72,10 @@ public class FilterFormServlet extends BasicServlet {
 							filterStr.append(paramName).append(FilterStaticVariable.VALUE_DELIM).append(value);
 						}
 					}
-				} else {
+					if (!isPost) {
+						targetLink.removeVariable(paramName);
+					}
+				} else if (isPost) {
 					for (String value : values) {
 						if (!StringUtils.isBlank(value)) {
 							targetLink.addStaticVariable(paramName, value);
@@ -76,7 +89,7 @@ public class FilterFormServlet extends BasicServlet {
 				filterStr.append(FilterStaticVariable.TOKEN_DELIM).append(FilterStaticVariable.PAGE).append(pageStr);
 
 			targetLink.addStaticVariable(varName, filterStr.toString());
-			
+
 			MainExecutionController mainController = new MainExecutionController(req, resp, targetLink.serialize());
 			mainController.execute(getBaseUrl(req), getServletContext());
 		} catch (UserNotAllowedException e) {
@@ -85,11 +98,6 @@ public class FilterFormServlet extends BasicServlet {
 		} catch (Exception e) {
 			handleError(req, resp, e);
 		}
-	}
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doPost(req, resp);
 	}
 
 }

@@ -6,7 +6,7 @@
 	<xsl:variable name="is_jur" select="page/user_jur"/>
 	<xsl:variable name="is_phys" select="not($is_jur)"/>
 	<xsl:variable name="cart" select="page/cart"/>
-	<xsl:variable name="contacts" select="if ($is_jur) then page/user_jur else page/user_phys"/>
+	<xsl:variable name="contacts" select="if ($is_jur) then page/user_jur[1] else page/user_phys[1]"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->

@@ -104,7 +104,7 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 
 	private void processCategoryProducts(Item category) throws Exception {
 		List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(category.getId(), false).loadItems();
-		if (hasContainsAssoc) {
+		if (products.size() == 0 && hasContainsAssoc) {
 			products = new ItemQuery(PRODUCT_ITEM).setParentId(category.getId(), false, "contains").loadItems();
 		}
 		BigDecimal zero = new BigDecimal(0);
