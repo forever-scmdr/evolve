@@ -11,9 +11,6 @@ import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
-import extra._generated.Parse_item;
-import extra._generated.Parse_section;
 import net.sf.saxon.TransformerFactoryImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.HttpResponseException;
@@ -241,7 +238,7 @@ public class SingleItemCrawlerController {
 	public void startStage(State...initState) throws Exception {
 		info.pushLog("Начало работы");
 		if (sectionsToProcess.size() == 0) {
-			List<Item> items = new ItemQuery(ItemNames.PARSE_SECTION).loadItems();
+			List<Item> items = new ItemQuery(Parse_section._ITEM_TYPE_NAME).loadItems();
 			for (Item item : items) {
 				sectionsToProcess.add(Parse_section.get(item));
 			}
@@ -280,11 +277,11 @@ public class SingleItemCrawlerController {
 		info.setOperation("Сброс состояния до " + state);
 		State nextState = State.INIT;
 		if (state == State.HTML || state == State.TRANSFORM || state == State.FILES) {
-			List<Item> sections = new ItemQuery(ItemNames.PARSE_SECTION).loadItems();
+			List<Item> sections = new ItemQuery(Parse_section._ITEM_TYPE_NAME).loadItems();
 			int secCount = sections.size();
 			info.setLineNumber(secCount);
 			for (Item section : sections) {
-				List<Item> items = new ItemQuery(ItemNames.PARSE_ITEM).setParentId(section.getId(), false).loadItems();
+				List<Item> items = new ItemQuery(Parse_item._ITEM_TYPE_NAME).setParentId(section.getId(), false).loadItems();
 				info.setToProcess(items.size());
 				int i = 0;
 				for (Item item : items) {
@@ -305,7 +302,7 @@ public class SingleItemCrawlerController {
 						nextState = State.HTML;
 					} else if (state == State.FILES) {
 						pitem.set_got_files((byte) 0);
-						pitem.clearParameter(ItemNames.parse_item.FILE);
+						pitem.clearParameter(Parse_item.FILE);
 						nextState = State.TRANSFORM;
 					}
 					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pitem).noFulltextIndex());
@@ -361,11 +358,11 @@ public class SingleItemCrawlerController {
 		sectionUniqueUrls = new ConcurrentHashMap<>();
 		while (itemsToProcess.size() == 0 && sectionsToProcess.size() > 0) {
 			currentSection = sectionsToProcess.poll();
-			ItemQuery query = new ItemQuery(ItemNames.PARSE_ITEM).setParentId(currentSection.getId(), false);
+			ItemQuery query = new ItemQuery(Parse_item._ITEM_TYPE_NAME).setParentId(currentSection.getId(), false);
 			if (StringUtils.isNotBlank(paramName)) {
 				query
 						.addParameterCriteria(paramName, "0", "=", null, Compare.ANY)
-						.addParameterCriteria(ItemNames.parse_item.DUPLICATED, "0", "=", null, Compare.ANY);
+						.addParameterCriteria(Parse_item.DUPLICATED, "0", "=", null, Compare.ANY);
 			}
 			List<Item> items = query.loadItems();
 			for (Item item : items) {
@@ -400,7 +397,7 @@ public class SingleItemCrawlerController {
 		// Сначала удаление ранее созданных айтемов для разбора
 		info.setToProcess(secCount);
 		for (Parse_section section : sectionsToProcess) {
-			List<Item> pis = new ItemQuery(ItemNames.PARSE_ITEM).setParentId(section.getId(), false).loadItems();
+			List<Item> pis = new ItemQuery(Parse_item._ITEM_TYPE_NAME).setParentId(section.getId(), false).loadItems();
 			for (Item pi : pis) {
 				DelayedTransaction.executeSingle(User.getDefaultUser(), ItemStatusDBUnit.delete(pi));
 			}
@@ -412,7 +409,7 @@ public class SingleItemCrawlerController {
 		info.setOperation("Подготовка нового списка урлов");
 		processedCount = 0;
 		info.setProcessed(processedCount);
-		ItemType piType = ItemTypeRegistry.getItemType(ItemNames.PARSE_ITEM);
+		ItemType piType = ItemTypeRegistry.getItemType(Parse_item._ITEM_TYPE_NAME);
 		for (Parse_section section : sectionsToProcess) {
 			currentSection = section;
 			// Новый список урлов (параметр раздела)
@@ -430,8 +427,8 @@ public class SingleItemCrawlerController {
 			// Создание новых айтемов для разбора из урлов с проверкой на уникальность
 			for (String url : urls) {
 				Parse_item pi = Parse_item.get(Item.newChildItem(piType, currentSection));
-				Item original = new ItemQuery(ItemNames.PARSE_ITEM)
-						.addParameterCriteria(ItemNames.parse_item.URL, url, "=", null, Compare.SOME)
+				Item original = new ItemQuery(Parse_item._ITEM_TYPE_NAME)
+						.addParameterCriteria(Parse_item.URL, url, "=", null, Compare.SOME)
 						.loadFirstItem();
 				pi.set_duplicated(original == null ? (byte) 0 : (byte) 1);
 				pi.set_url(url);
@@ -454,7 +451,7 @@ public class SingleItemCrawlerController {
 	private void downloadHtml() throws Exception {
 		info.setOperation("Скачивание HTML файлов");
 		workers.clear();
-		nextSection(ItemNames.parse_item.DOWNLOADED, null);
+		nextSection(Parse_item.DOWNLOADED, null);
 		for (int i = 0; i < numberOfCrawlers; i++) {
 			DownloadThread worker = new DownloadThread(proxies, urlsPerProxy, itemsToProcess) {
 				@Override
@@ -483,7 +480,7 @@ public class SingleItemCrawlerController {
 
 				@Override
 				protected void afterFinished() {
-					workerFinished(this, ItemNames.parse_item.DOWNLOADED);
+					workerFinished(this, Parse_item.DOWNLOADED);
 				}
 			};
 			workers.add(worker);
@@ -498,7 +495,7 @@ public class SingleItemCrawlerController {
 	private void parseHtml() throws Exception {
 		info.setOperation("Преобразование HTML в XML");
 		workers.clear();
-		nextSection(ItemNames.parse_item.PARSED, null);
+		nextSection(Parse_item.PARSED, null);
 		for (int i = 0; i < numberOfCrawlers; i++) {
 			DownloadThread worker = new DownloadThread(proxies, urlsPerProxy, itemsToProcess) {
 				@Override
@@ -550,7 +547,7 @@ public class SingleItemCrawlerController {
 
 				@Override
 				protected void afterFinished() {
-					workerFinished(this, ItemNames.parse_item.PARSED);
+					workerFinished(this, Parse_item.PARSED);
 				}
 			};
 			workers.add(worker);
@@ -561,7 +558,7 @@ public class SingleItemCrawlerController {
 	private void downloadFiles() throws Exception {
 		info.setOperation("Скачивание файлов");
 		workers.clear();
-		nextSection(ItemNames.parse_item.GOT_FILES, null);
+		nextSection(Parse_item.GOT_FILES, null);
 		for (int i = 0; i < numberOfCrawlers; i++) {
 			DownloadThread worker = new DownloadThread(proxies, urlsPerProxy, itemsToProcess) {
 				@Override
@@ -571,7 +568,7 @@ public class SingleItemCrawlerController {
 					try {
 						for (Element download : downloads) {
 							URL url = new URL(download.attr(DOWNLOAD));
-							item.setValue(ItemNames.parse_item.FILE, url);
+							item.setValue(Parse_item.FILE, url);
 						}
 						item.set_got_files((byte) 1);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item).noFulltextIndex());
@@ -584,7 +581,7 @@ public class SingleItemCrawlerController {
 
 				@Override
 				protected void afterFinished() {
-					workerFinished(this, ItemNames.parse_item.GOT_FILES);
+					workerFinished(this, Parse_item.GOT_FILES);
 				}
 			};
 			workers.add(worker);
