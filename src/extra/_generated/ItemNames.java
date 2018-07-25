@@ -4,6 +4,9 @@ package extra._generated;
 
 public interface ItemNames {
 
+    String PARSE_SECTION = "parse_section";
+    String PARSE_ITEM = "parse_item";
+    String PARSE_CATALOG = "parse_catalog";
     String SEO = "seo";
     String URL_SEO = "url_seo";
     String URL_SEO_WRAP = "url_seo_wrap";
@@ -13,10 +16,6 @@ public interface ItemNames {
     String PARAMS = "params";
     String PRODUCT_EXTRA = "product_extra";
     String PARAMS_XML = "params_xml";
-    String PRESENT_CATALOG = "present_catalog";
-    String PRESENT = "present";
-    String PRODUCT_PRESENT = "product_present";
-    String PRODUCT_PRESENT_CATALOG = "product_present_catalog";
     String FEEDBACK_PARAMS = "feedback_params";
     String BOUGHT = "bought";
     String CART = "cart";
@@ -26,6 +25,7 @@ public interface ItemNames {
     String USER_JUR = "user_jur";
     String USER_PHYS = "user_phys";
     String REGISTERED_CATALOG = "registered_catalog";
+    String NEWS_WRAP = "news_wrap";
     String NEWS_ITEM = "news_item";
     String NEWS = "news";
     String ARTICLES = "articles";
@@ -92,9 +92,6 @@ public interface ItemNames {
         String LINK_LINK = "link_link";
         String BOTTOM = "bottom";
         String BOTTOM_ADDRESS = "bottom_address";
-        String BOTTOM_COPY = "bottom_copy";
-        String BOTTOM_CARDS = "bottom_cards";
-        String BOTTOM_SOCIAL = "bottom_social";
         String GOOGLE_VERIFICATION = "google_verification";
         String YANDEX_VERIFICATION = "yandex_verification";
 
@@ -121,6 +118,8 @@ public interface ItemNames {
 
         String _ITEM_NAME = "custom_page";
         String HEADER = "header";
+        String MAIN_PIC = "main_pic";
+        String SHORT = "short";
         String IN_MAIN_MENU = "in_main_menu";
         String TEXT = "text";
         String TEXT_PIC = "text_pic";
@@ -238,6 +237,8 @@ public interface ItemNames {
     public interface news {
 
         String _ITEM_NAME = "news";
+        String NAME = "name";
+        String ON_MAIN = "on_main";
 
     }
 
@@ -250,6 +251,12 @@ public interface ItemNames {
         String SHORT = "short";
         String TEXT = "text";
         String TEXT_PIC = "text_pic";
+
+    }
+
+    public interface news_wrap {
+
+        String _ITEM_NAME = "news_wrap";
 
     }
 
@@ -275,27 +282,39 @@ public interface ItemNames {
 
     }
 
+    public interface parse_catalog {
+
+        String _ITEM_NAME = "parse_catalog";
+
+    }
+
+    public interface parse_item {
+
+        String _ITEM_NAME = "parse_item";
+        String URL = "url";
+        String DOWNLOADED = "downloaded";
+        String PARSED = "parsed";
+        String GOT_FILES = "got_files";
+        String DUPLICATED = "duplicated";
+        String HTML = "html";
+        String XML = "xml";
+        String TEST_URL = "test_url";
+        String FILE = "file";
+
+    }
+
+    public interface parse_section {
+
+        String _ITEM_NAME = "parse_section";
+        String NAME = "name";
+        String ITEM_URLS = "item_urls";
+
+    }
+
     public interface payment {
 
         String _ITEM_NAME = "payment";
         String OPTION = "option";
-
-    }
-
-    public interface present {
-
-        String _ITEM_NAME = "present";
-        String NAME = "name";
-        String CODE = "code";
-        String MAIN_PIC = "main_pic";
-        String TYPE = "type";
-        String SHORT = "short";
-
-    }
-
-    public interface present_catalog {
-
-        String _ITEM_NAME = "present_catalog";
 
     }
 
@@ -325,8 +344,6 @@ public interface ItemNames {
         String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
         String GALLERY = "gallery";
-        String ASSOC_CODE = "assoc_code";
-        String TAG = "tag";
 
     }
 
@@ -336,20 +353,6 @@ public interface ItemNames {
         String NAME = "name";
         String TEXT = "text";
         String TEXT_PICS = "text_pics";
-
-    }
-
-    public interface product_present {
-
-        String _ITEM_NAME = "product_present";
-        String PRODUCT_CODE = "product_code";
-        String PRESENT_CODE = "present_code";
-
-    }
-
-    public interface product_present_catalog {
-
-        String _ITEM_NAME = "product_present_catalog";
 
     }
 
@@ -396,7 +399,7 @@ public interface ItemNames {
         String KEYWORDS = "keywords";
         String META = "meta";
         String TEXT = "text";
-        String TEXT_PICS = "text_pics";
+        String TEXT_PIC = "text_pic";
 
     }
 
@@ -411,7 +414,7 @@ public interface ItemNames {
         String KEYWORDS = "keywords";
         String META = "meta";
         String TEXT = "text";
-        String TEXT_PICS = "text_pics";
+        String TEXT_PIC = "text_pic";
 
     }
 

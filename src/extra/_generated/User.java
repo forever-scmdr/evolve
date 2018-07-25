@@ -8,7 +8,9 @@ public class User
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "user";
+    public final static String _NAME = "user";
+    public final static String EMAIL = "email";
+    public final static String PASSWORD = "password";
 
     private User(Item item) {
         super(item);
@@ -18,7 +20,7 @@ public class User
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'user' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +28,7 @@ public class User
     }
 
     public static User newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_email(String value) {

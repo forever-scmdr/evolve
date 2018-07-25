@@ -9,7 +9,11 @@ public class Cart
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "cart";
+    public final static String _NAME = "cart";
+    public final static String ORDER_NUM = "order_num";
+    public final static String QTY = "qty";
+    public final static String SUM = "sum";
+    public final static String PROCESSED = "processed";
 
     private Cart(Item item) {
         super(item);
@@ -19,7 +23,7 @@ public class Cart
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'cart' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -27,7 +31,7 @@ public class Cart
     }
 
     public static Cart newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_order_num(String value) {

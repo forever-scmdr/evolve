@@ -6,6 +6,7 @@ import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import lunacrawler.fwk.ParsedInfoProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
@@ -21,39 +22,7 @@ import java.util.List;
 /**
  * Created by E on 3/5/2018.
  */
-public class MetaboIntegrateParsedCommand extends IntegrateBase {
-
-	private final String CATALOG = "catalog";
-	private final String SECTION = "section";
-	private final String PRODUCT = "product";
-	private final String PRODUCT_EXTRA = "product_extra";
-	private final String PARAMS_XML = "params_xml";
-
-	private final String NAME = "name";
-	private final String ID = "id";
-	private final String NAME_EXTRA = "name_extra";
-	private final String DESCRIPTION = "description";
-	private final String SHORT = "short";
-	private final String TEXT = "text";
-	private final String CODE = "code";
-	private final String TYPE = "type";
-	private final String EXTRA = "extra";
-	private final String TECH = "tech";
-	private final String PACKAGE = "package";
-	private final String EXTRA_XML = "extra_xml";
-	private final String SYMBOLS = "symbols";
-	private final String SPIN = "spin";
-	private final String VIDEO = "video";
-	private final String GALLERY = "gallery";
-	private final String PIC = "pic";
-	private final String LINK = "link";
-	private final String MAIN_PIC = "main_pic";
-	private final String XML = "xml";
-	private final String ASSOC_CODE = "assoc_code";
-	private final String ASSOC = "assoc";
-	private final String MANUAL = "manual";
-	private final String PARTS = "parts";
-
+public class MetaboIntegrateParsedCommand extends IntegrateBase implements ItemNames {
 
 
 	private ParsedInfoProvider infoProvider;

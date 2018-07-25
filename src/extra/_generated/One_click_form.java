@@ -8,7 +8,10 @@ public class One_click_form
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "one_click_form";
+    public final static String _NAME = "one_click_form";
+    public final static String PHONE = "phone";
+    public final static String PRODUCT_CODE = "product_code";
+    public final static String PRODUCT_NAME = "product_name";
 
     private One_click_form(Item item) {
         super(item);
@@ -18,7 +21,7 @@ public class One_click_form
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'one_click_form' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +29,7 @@ public class One_click_form
     }
 
     public static One_click_form newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_phone(String value) {

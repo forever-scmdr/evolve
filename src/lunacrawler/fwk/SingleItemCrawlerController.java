@@ -1,10 +1,7 @@
 package lunacrawler.fwk;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.JsoupUtils;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.WebClient;
+import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
@@ -517,8 +514,9 @@ public class SingleItemCrawlerController {
 						transformer = factory.newTransformer(new StreamSource(xslFile));
 
 						// Подготовка HTML (убирание необъявленных сущностей и т.д.)
-						Document jsoupDoc = Jsoup.parse(item.get_html());
-						String html = JsoupUtils.outputHtmlDoc(jsoupDoc);
+						//Document jsoupDoc = Jsoup.parse(item.get_html());
+						//String html = JsoupUtils.outputHtmlDoc(jsoupDoc);
+						String html = Strings.cleanHtml(item.get_html());
 
 						// Преборазование очищенного HTML
 						Reader reader = new StringReader(html);

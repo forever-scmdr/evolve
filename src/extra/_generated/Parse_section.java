@@ -8,7 +8,9 @@ public class Parse_section
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "parse_section";
+    public final static String _NAME = "parse_section";
+    public final static String NAME = "name";
+    public final static String ITEM_URLS = "item_urls";
 
     private Parse_section(Item item) {
         super(item);
@@ -18,7 +20,7 @@ public class Parse_section
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'parse_section' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +28,7 @@ public class Parse_section
     }
 
     public static Parse_section newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {

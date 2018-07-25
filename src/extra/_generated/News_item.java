@@ -11,7 +11,13 @@ public class News_item
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "news_item";
+    public final static String _NAME = "news_item";
+    public final static String HEADER = "header";
+    public final static String DATE = "date";
+    public final static String MAIN_PIC = "main_pic";
+    public final static String SHORT = "short";
+    public final static String TEXT = "text";
+    public final static String TEXT_PIC = "text_pic";
 
     private News_item(Item item) {
         super(item);
@@ -21,7 +27,7 @@ public class News_item
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'news_item' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -29,7 +35,7 @@ public class News_item
     }
 
     public static News_item newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_header(String value) {

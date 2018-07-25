@@ -11,7 +11,14 @@ public class Seo
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "seo";
+    public final static String _NAME = "seo";
+    public final static String TITLE = "title";
+    public final static String H1 = "h1";
+    public final static String DESCRIPTION = "description";
+    public final static String KEYWORDS = "keywords";
+    public final static String META = "meta";
+    public final static String TEXT = "text";
+    public final static String TEXT_PIC = "text_pic";
 
     private Seo(Item item) {
         super(item);
@@ -21,7 +28,7 @@ public class Seo
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'seo' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -29,7 +36,7 @@ public class Seo
     }
 
     public static Seo newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_title(String value) {
@@ -128,20 +135,20 @@ public class Seo
         return containsValue("text", value);
     }
 
-    public void add_text_pics(File value) {
-        setValue("text_pics", value);
+    public void add_text_pic(File value) {
+        setValue("text_pic", value);
     }
 
-    public List<File> getAll_text_pics() {
-        return getFileValues("text_pics", AppContext.getCommonFilesDirPath());
+    public List<File> getAll_text_pic() {
+        return getFileValues("text_pic", AppContext.getCommonFilesDirPath());
     }
 
-    public void remove_text_pics(File value) {
-        removeEqualValue("text_pics", value);
+    public void remove_text_pic(File value) {
+        removeEqualValue("text_pic", value);
     }
 
-    public boolean contains_text_pics(File value) {
-        return containsValue("text_pics", value);
+    public boolean contains_text_pic(File value) {
+        return containsValue("text_pic", value);
     }
 
 }

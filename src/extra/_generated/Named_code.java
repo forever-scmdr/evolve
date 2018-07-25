@@ -8,7 +8,9 @@ public class Named_code
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "named_code";
+    public final static String _NAME = "named_code";
+    public final static String NAME = "name";
+    public final static String CODE = "code";
 
     private Named_code(Item item) {
         super(item);
@@ -18,7 +20,7 @@ public class Named_code
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'named_code' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +28,7 @@ public class Named_code
     }
 
     public static Named_code newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {

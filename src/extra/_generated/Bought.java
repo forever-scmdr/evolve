@@ -9,7 +9,12 @@ public class Bought
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "bought";
+    public final static String _NAME = "bought";
+    public final static String NAME = "name";
+    public final static String CODE = "code";
+    public final static String QTY = "qty";
+    public final static String PRICE = "price";
+    public final static String SUM = "sum";
 
     private Bought(Item item) {
         super(item);
@@ -19,7 +24,7 @@ public class Bought
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'bought' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -27,7 +32,7 @@ public class Bought
     }
 
     public static Bought newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {

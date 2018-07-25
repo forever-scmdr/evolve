@@ -717,15 +717,50 @@
     <!--//                                                                                                  -->
     <!--// Команда для получения HTML, его преобразования и скачивания файлов (в зависимости от параметров) -->
     <!--//                                                                                                  -->
-    <!--<page name="get_site" template="get_site" authority-groups="common">-->
-    <!--<request>-->
-    <!--<var name="action"/>-->
-    <!--<var name="stage" value="INIT"/>-->
-    <!--</request>-->
-    <!--<command class="lunacrawler.SingleCrawlerCommand" clear-cache="no">-->
-    <!--<result name="complete" type="xml"/>-->
-    <!--</command>-->
-    <!--</page>-->
+    <!--
+    stage
+        INIT - по умолчанию, все действия
+        PREPARE_URLS - создание айтемов для парсинга (без загрузки html)
+        HTML - выгрузка html
+        TRANSFORM - преобразование html
+        FILES - выгрузка файлов
+    -->
+    <page name="get_site" template="get_site" authority-groups="common">
+        <request>
+            <var name="action"/>
+            <var name="stage" value="INIT"/>
+        </request>
+        <command class="lunacrawler.SingleCrawlerCommand" clear-cache="no">
+            <result name="complete" type="xml"/>
+        </command>
+    </page>
+
+    <!--//                                                                                                  -->
+    <!--// Тестовая страница для проверки XSLT преобразования (ссылка берется из айтема parse_item в CMS)   -->
+    <!--//                                                                                                  -->
+    <page name="test_parse_item">
+        <request>
+            <var name="pi"/>
+        </request>
+        <command class="lunacrawler.CrawlCommand" method="testPI">
+            <result name="test_xsl" type="xml"/>
+        </command>
+    </page>
+
+    <!--//                                                                          -->
+    <!--// Интеграция полученных данных, хранящихся в айтемах parse_item на сайт    -->
+    <!--//                                                                          -->
+	<page name="deploy_parsed" template="deploy_parsed" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<list item="section" id="sec">
+			<list item="parse_item" id="pi"/>
+		</list>
+		<command class="extra.DeployParsedSingle" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
 
     <!--//                                                                          -->

@@ -9,7 +9,8 @@ public class Delivery
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "delivery";
+    public final static String _NAME = "delivery";
+    public final static String OPTION = "option";
 
     private Delivery(Item item) {
         super(item);
@@ -19,7 +20,7 @@ public class Delivery
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'delivery' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -27,7 +28,7 @@ public class Delivery
     }
 
     public static Delivery newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void add_option(String value) {

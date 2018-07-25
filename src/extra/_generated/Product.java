@@ -12,7 +12,30 @@ public class Product
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "product";
+    public final static String _NAME = "product";
+    public final static String NAME = "name";
+    public final static String TYPE = "type";
+    public final static String CODE = "code";
+    public final static String NAME_EXTRA = "name_extra";
+    public final static String VENDOR_CODE = "vendor_code";
+    public final static String OFFER_ID = "offer_id";
+    public final static String SHORT = "short";
+    public final static String AVAILABLE = "available";
+    public final static String GROUP_ID = "group_id";
+    public final static String URL = "url";
+    public final static String CATEGORY_ID = "category_id";
+    public final static String CURRENCY_ID = "currency_id";
+    public final static String PRICE_ORIGINAL = "price_original";
+    public final static String PRICE = "price";
+    public final static String PRICE_OLD = "price_old";
+    public final static String QTY = "qty";
+    public final static String COUNTRY = "country";
+    public final static String MAIN_PIC = "main_pic";
+    public final static String DESCRIPTION = "description";
+    public final static String TEXT = "text";
+    public final static String EXTRA_XML = "extra_xml";
+    public final static String TEXT_PICS = "text_pics";
+    public final static String GALLERY = "gallery";
 
     private Product(Item item) {
         super(item);
@@ -22,7 +45,7 @@ public class Product
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'product' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -30,7 +53,7 @@ public class Product
     }
 
     public static Product newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {
@@ -425,38 +448,6 @@ public class Product
 
     public boolean contains_gallery(File value) {
         return containsValue("gallery", value);
-    }
-
-    public void add_assoc_code(String value) {
-        setValue("assoc_code", value);
-    }
-
-    public List<String> getAll_assoc_code() {
-        return getStringValues("assoc_code");
-    }
-
-    public void remove_assoc_code(String value) {
-        removeEqualValue("assoc_code", value);
-    }
-
-    public boolean contains_assoc_code(String value) {
-        return containsValue("assoc_code", value);
-    }
-
-    public void add_tag(String value) {
-        setValue("tag", value);
-    }
-
-    public List<String> getAll_tag() {
-        return getStringValues("tag");
-    }
-
-    public void remove_tag(String value) {
-        removeEqualValue("tag", value);
-    }
-
-    public boolean contains_tag(String value) {
-        return containsValue("tag", value);
     }
 
 }

@@ -11,7 +11,11 @@ public class Contacts
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "contacts";
+    public final static String _NAME = "contacts";
+    public final static String TEXT = "text";
+    public final static String MAP = "map";
+    public final static String BOTTOM_TEXT = "bottom_text";
+    public final static String TEXT_PIC = "text_pic";
 
     private Contacts(Item item) {
         super(item);
@@ -21,7 +25,7 @@ public class Contacts
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'contacts' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -29,7 +33,7 @@ public class Contacts
     }
 
     public static Contacts newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_text(String value) {

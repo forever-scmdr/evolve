@@ -10,7 +10,12 @@ public class Section
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "section";
+    public final static String _NAME = "section";
+    public final static String NAME = "name";
+    public final static String CATEGORY_ID = "category_id";
+    public final static String PARENT_ID = "parent_id";
+    public final static String MAIN_PIC = "main_pic";
+    public final static String PARAMS_FILTER = "params_filter";
 
     private Section(Item item) {
         super(item);
@@ -20,7 +25,7 @@ public class Section
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'section' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -28,7 +33,7 @@ public class Section
     }
 
     public static Section newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {

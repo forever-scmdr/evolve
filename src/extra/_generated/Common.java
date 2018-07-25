@@ -8,7 +8,15 @@ public class Common
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "common";
+    public final static String _NAME = "common";
+    public final static String TOP = "top";
+    public final static String LEFT = "left";
+    public final static String LINK_TEXT = "link_text";
+    public final static String LINK_LINK = "link_link";
+    public final static String BOTTOM = "bottom";
+    public final static String BOTTOM_ADDRESS = "bottom_address";
+    public final static String GOOGLE_VERIFICATION = "google_verification";
+    public final static String YANDEX_VERIFICATION = "yandex_verification";
 
     private Common(Item item) {
         super(item);
@@ -18,7 +26,7 @@ public class Common
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'common' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +34,7 @@ public class Common
     }
 
     public static Common newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_top(String value) {
@@ -123,54 +131,6 @@ public class Common
 
     public boolean contains_bottom_address(String value) {
         return containsValue("bottom_address", value);
-    }
-
-    public void set_bottom_copy(String value) {
-        setValue("bottom_copy", value);
-    }
-
-    public String get_bottom_copy() {
-        return getStringValue("bottom_copy");
-    }
-
-    public String getDefault_bottom_copy(String defaultVal) {
-        return getStringValue("bottom_copy", defaultVal);
-    }
-
-    public boolean contains_bottom_copy(String value) {
-        return containsValue("bottom_copy", value);
-    }
-
-    public void set_bottom_cards(String value) {
-        setValue("bottom_cards", value);
-    }
-
-    public String get_bottom_cards() {
-        return getStringValue("bottom_cards");
-    }
-
-    public String getDefault_bottom_cards(String defaultVal) {
-        return getStringValue("bottom_cards", defaultVal);
-    }
-
-    public boolean contains_bottom_cards(String value) {
-        return containsValue("bottom_cards", value);
-    }
-
-    public void set_bottom_social(String value) {
-        setValue("bottom_social", value);
-    }
-
-    public String get_bottom_social() {
-        return getStringValue("bottom_social");
-    }
-
-    public String getDefault_bottom_social(String defaultVal) {
-        return getStringValue("bottom_social", defaultVal);
-    }
-
-    public boolean contains_bottom_social(String value) {
-        return containsValue("bottom_social", value);
     }
 
     public void set_google_verification(String value) {

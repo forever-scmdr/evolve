@@ -8,7 +8,7 @@ public class Registered_catalog
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "registered_catalog";
+    public final static String _NAME = "registered_catalog";
 
     private Registered_catalog(Item item) {
         super(item);
@@ -18,7 +18,7 @@ public class Registered_catalog
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'registered_catalog' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +26,7 @@ public class Registered_catalog
     }
 
     public static Registered_catalog newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
 }

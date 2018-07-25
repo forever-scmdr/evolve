@@ -10,7 +10,10 @@ public class Main_slider_frame
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "main_slider_frame";
+    public final static String _NAME = "main_slider_frame";
+    public final static String NAME = "name";
+    public final static String PIC = "pic";
+    public final static String LINK = "link";
 
     private Main_slider_frame(Item item) {
         super(item);
@@ -20,7 +23,7 @@ public class Main_slider_frame
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'main_slider_frame' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -28,7 +31,7 @@ public class Main_slider_frame
     }
 
     public static Main_slider_frame newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {

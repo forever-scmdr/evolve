@@ -8,7 +8,7 @@ public class News_wrap
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "news_wrap";
+    public final static String _NAME = "news_wrap";
 
     private News_wrap(Item item) {
         super(item);
@@ -18,7 +18,7 @@ public class News_wrap
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'news_wrap' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +26,7 @@ public class News_wrap
     }
 
     public static News_wrap newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
 }

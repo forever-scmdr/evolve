@@ -55,6 +55,7 @@ public class Item implements ItemBasics {
 
 	private static final String PARAM_TAG = "param";
 	public static final String ID_ATTRIBUTE = "id";
+	public static final String KEY_PARAMETER = "@key";
 
 	private static final int DIR_NAME_LENGTH = 3;
 	private static final char FINAL_DIR_CHAR = 'f';
@@ -1157,6 +1158,11 @@ public class Item implements ItemBasics {
 	 */
 	public final ArrayList<String> outputValues(String paramName) {
 		ArrayList<String> result = new ArrayList<>();
+		// Если нужно вывести уникальный ключ, то парсинг айтема не требуется
+		if (StringUtils.equals(KEY_PARAMETER, paramName)) {
+			result.add(keyUnique);
+			return result;
+		}
 		Collection<SingleParameter> multipleValues = getParamValues(paramName);
 		for (SingleParameter sp : multipleValues) {
 			if (!sp.isEmpty())

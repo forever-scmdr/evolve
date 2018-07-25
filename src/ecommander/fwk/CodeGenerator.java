@@ -80,7 +80,13 @@ public class CodeGenerator {
 					JVar srcItemVar = constructor.param(Item.class, "item");
 					constructor.body().invoke("super").arg(srcItemVar);
 					// Константа - название класса
-					JVar typeNameVar = itemClass.field(JMod.PRIVATE | JMod.STATIC | JMod.FINAL, String.class, "_ITEM_TYPE_NAME").init(JExpr.lit(itemName));
+					JVar typeNameVar = itemClass.field(JMod.PUBLIC | JMod.STATIC | JMod.FINAL, String.class, "_NAME").init(JExpr.lit(itemName));
+					// Константы - названия всех параметров
+					for (ParameterDescription param : item.getParameterList()) {
+						String paramName = createBigJavaName(param.getName());
+						JFieldVar paramNameField = itemClass.field(JMod.PUBLIC | JMod.STATIC | JMod.FINAL, String.class, paramName.toUpperCase());
+						paramNameField.init(JExpr.lit(param.getName()));
+					}
 					// Статический метод для получения оболочки
 					JMethod getInstance = itemClass.method(JMod.PUBLIC | JMod.STATIC, itemClass, "get");
 					JVar instSrc = getInstance.param(Item.class, "item");

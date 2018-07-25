@@ -9,7 +9,11 @@ public class Purchase
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "purchase";
+    public final static String _NAME = "purchase";
+    public final static String NUM = "num";
+    public final static String DATE = "date";
+    public final static String QTY = "qty";
+    public final static String SUM = "sum";
 
     private Purchase(Item item) {
         super(item);
@@ -19,7 +23,7 @@ public class Purchase
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'purchase' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -27,7 +31,7 @@ public class Purchase
     }
 
     public static Purchase newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_num(String value) {

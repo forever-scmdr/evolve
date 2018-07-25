@@ -10,7 +10,9 @@ public class Catalog
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "catalog";
+    public final static String _NAME = "catalog";
+    public final static String INTEGRATION = "integration";
+    public final static String DATE = "date";
 
     private Catalog(Item item) {
         super(item);
@@ -20,7 +22,7 @@ public class Catalog
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'catalog' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -28,7 +30,7 @@ public class Catalog
     }
 
     public static Catalog newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_integration(File value) {

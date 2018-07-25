@@ -8,7 +8,27 @@ public class User_jur
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "user_jur";
+    public final static String _NAME = "user_jur";
+    public final static String EMAIL = "email";
+    public final static String PASSWORD = "password";
+    public final static String ORGANIZATION = "organization";
+    public final static String PHONE = "phone";
+    public final static String CONTACT_NAME = "contact_name";
+    public final static String CONTACT_PHONE = "contact_phone";
+    public final static String ADDRESS = "address";
+    public final static String SHIP_TYPE = "ship_type";
+    public final static String PAY_TYPE = "pay_type";
+    public final static String NO_ACCOUNT = "no_account";
+    public final static String ACCOUNT = "account";
+    public final static String BANK = "bank";
+    public final static String BANK_ADDRESS = "bank_address";
+    public final static String BANK_CODE = "bank_code";
+    public final static String UNP = "unp";
+    public final static String DIRECTOR = "director";
+    public final static String BASE = "base";
+    public final static String BASE_NUMBER = "base_number";
+    public final static String BASE_DATE = "base_date";
+    public final static String COMMENT = "comment";
 
     private User_jur(Item item) {
         super(item);
@@ -18,7 +38,7 @@ public class User_jur
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'user_jur' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +46,7 @@ public class User_jur
     }
 
     public static User_jur newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_email(String value) {
