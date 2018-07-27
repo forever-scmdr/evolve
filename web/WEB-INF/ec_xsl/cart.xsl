@@ -14,8 +14,15 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1>Ваш заказ</h1>
+		<xsl:variable name="delivery" select="if(f:num(page/cart/sum) &lt; 50) then 2 else 0"/>
+		<xsl:variable name="not_enough" select="f:num(page/cart/sum) &lt; 20"/>
 
-		<h3>При заказе на сумму менее <b>50 рублей,</b> стоимость доставки составляет 2 рубля.</h3>
+		<xsl:if test="$delivery">
+			<h3>При заказе на сумму менее <b>50 рублей,</b> стоимость доставки составляет 2 рубля. Более 50 - бесплатно.</h3>
+		</xsl:if>
+		<xsl:if test="$not_enough">
+			<h3><span style="color: red">Внимение!</span> Минимальная сумма заказа 20 рублей. Пожалуйста, добавьте еще товаров в корзину.</h3>
+		</xsl:if>
 		<div class="cart-container">
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
@@ -40,17 +47,18 @@
 						</xsl:for-each>
 
 						<xsl:if test="page/cart/sum != ''">
-
-							<xsl:variable name="delivery" select="if(f:num(page/cart/sum) &lt; 50) then 2 else 0"/>
-							<xsl:if test="$delivery &gt; 0">
-
-									<p>Доставка: <xsl:value-of select="$delivery"/> р.</p>
-
-							</xsl:if>
+							
+							<xsl:if test="not($not_enough)">
+								
+									<p>Доставка: <xsl:value-of select="if ($delivery) then concat($delivery, ' р.') else 'бесплатно'"/></p>
+								
+							</xsl:if> 
 							<div class="total">
 								<p>Итого: <xsl:value-of select="format-number(f:num(page/cart/sum) + $delivery, '### ##0,00', 'r')"/> р.</p>
 								<input type="submit" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
-								<input type="submit" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
+								<xsl:if test="not($not_enough)">
+									<input type="submit" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
+								</xsl:if>
 							</div>
 						</xsl:if>
 					</form>
