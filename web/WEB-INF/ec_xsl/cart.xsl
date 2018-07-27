@@ -29,7 +29,7 @@
 								</a>
 								<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
 								<div class="price one">
-									<p><span>Артикул</span><xsl:value-of select="$p/code"/></p>
+									<p><span>Артикул</span><xsl:value-of select="concat(substring($p/code, 1, 4), ' ', substring($p/code, 5))"/></p>
 									<xsl:if test="$not_available"><span style="position: relative; top: -10px;">под заказ</span></xsl:if>
 								</div>
 								<div class="price one"><p><span>Цена за ед.</span><xsl:value-of select="$price"/></p></div>

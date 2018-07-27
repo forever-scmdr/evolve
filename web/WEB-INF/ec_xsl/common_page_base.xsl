@@ -32,7 +32,7 @@
 				<div class="col-xs-12">
 					<div class="header-container">
 						<div class="logo">
-							<a href="{page/index_link}"><img src="img/logo_big.svg" alt="" style="height: 6rem; max-width: 100%;"/></a>
+							<a href="{page/index_link}"><img src="img/logo_big.svg" alt="" style="max-width: 100%;"/></a>
 						</div>
 						<div class="search">
 							<form action="{page/search_link}" method="post">
@@ -382,7 +382,7 @@
 			<div class="price">
 				<xsl:if test="$has_price">
 					<p><span>Старая цена</span>100 р.</p>
-					<p><span><xsl:value-of select="code"/></span><xsl:value-of select="price"/> р.</p>
+					<p><span><xsl:value-of select="concat(substring(code, 1, 4), ' ', substring(code, 5))"/></span><xsl:value-of select="price"/> р.</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
 					<p><span>&#160;</span>&#160;</p>
@@ -487,11 +487,52 @@
 			<meta charset="utf-8"/>
 			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="google-site-verification" content="XeCS2FR5S4Rf-Xt6g-jnxFRhpSvnhEFmlU_CFyV2Dp0" />
+			<meta name="yandex-verification" content="1d01661e8681eafe" />
 			<title><xsl:call-template name="TITLE"/></title>
 			<link rel="stylesheet" href="css/app.css"/>
 			<link rel="stylesheet" href="fotorama/fotorama.css"/>
+			<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 			<script defer="defer" src="js/font_awesome_all.js"/>
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
+			<!-- Global site tag (gtag.js) - Google Analytics -->
+			<script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-31231996-32"></script>
+			<script>
+			  window.dataLayer = window.dataLayer || [];
+			  function gtag(){dataLayer.push(arguments);}
+			  gtag('js', new Date());
+
+			  gtag('config', 'UA-31231996-32');
+			</script>
+			<!-- Yandex.Metrika counter -->
+			<script type="text/javascript" >
+			    (function (d, w, c) {
+			        (w[c] = w[c] || []).push(function() {
+			            try {
+			                w.yaCounter49538746 = new Ya.Metrika2({
+			                    id:49538746,
+			                    clickmap:true,
+			                    trackLinks:true,
+			                    accurateTrackBounce:true,
+			                    webvisor:true
+			                });
+			            } catch(e) { }
+			        });
+
+			        var n = d.getElementsByTagName("script")[0],
+			            s = d.createElement("script"),
+			            f = function () { n.parentNode.insertBefore(s, n); };
+			        s.type = "text/javascript";
+			        s.async = true;
+			        s.src = "https://mc.yandex.ru/metrika/tag.js";
+
+			        if (w.opera == "[object Opera]") {
+			            d.addEventListener("DOMContentLoaded", f, false);
+			        } else { f(); }
+			    })(document, window, "yandex_metrika_callbacks2");
+			</script>
+			<noscript><div><img src="https://mc.yandex.ru/watch/49538746" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+			<!-- /Yandex.Metrika counter -->
 		</head>
 		<body>
 			<!-- ALL CONTENT BEGIN -->
@@ -534,6 +575,7 @@
 			<script type="text/javascript" src="js/bootstrap.js"/>
 			<script type="text/javascript" src="admin/ajax/ajax.js"/>
 			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
+			<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>
 		</body>
 	</html>

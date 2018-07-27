@@ -124,7 +124,7 @@
 					<xsl:sort select="type"/>
 					<tr>
 						<td>
-							<xsl:value-of select="product/code"/>
+							<xsl:value-of select="concat(substring(product/code, 1, 4), ' ', substring(product/code, 5))"/>
 						</td>
 						<td valign="top">
 							<strong><xsl:value-of select="product/name"/></strong>

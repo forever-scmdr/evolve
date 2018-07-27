@@ -50,9 +50,8 @@
 		<div class="form-group">
 			<label>Способ доставки <a href="dostavka">Подробнее об условиях доставки</a></label>
 			<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}">
-				<option>Курьером</option>
-				<option>Белпочта</option>
-				<option>Бесплатно (Мозырь и Калинковичи)</option>
+				<option>Самовывоз со склада</option>
+				<option>Доставка до склада покупателя</option>
 			</select>
 		</div>
 		<div class="form-group">

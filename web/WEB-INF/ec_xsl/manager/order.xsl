@@ -44,7 +44,7 @@
 					<div class="adm-table-cell"><xsl:value-of select="position()" /></div>
 					<div class="adm-table-cell">
 						<a href="{$prod/section/show_product}" target="_blank">
-							<xsl:value-of select="code"/>&#160;<xsl:value-of select="$prod/name"/>
+							<xsl:value-of select="concat(substring(code, 1, 4), ' ', substring(code, 4))"/>&#160;<xsl:value-of select="$prod/name"/>
 						</a>
 					</div>
 					<div class="adm-table-cell"><xsl:value-of select="$prod/section[1]/name"/></div>

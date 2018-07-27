@@ -50,7 +50,7 @@
 				<xsl:if test="$has_price">
 					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
-						<p><span><xsl:value-of select="$p/code"/></span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
+						<p><span><xsl:value-of select="concat(substring($p/code, 1, 4), ' ', substring($p/code, 5))"/></span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
 					</div>
 				</xsl:if>
 				<div class="order">

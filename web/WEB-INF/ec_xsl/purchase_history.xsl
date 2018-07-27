@@ -3,6 +3,8 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="all_status" select="('Новый', 'Собирается', 'Отправлен', 'Доставлен')"/>
+
 
 	<xsl:variable name="products" select="page/product"/>
 
@@ -22,6 +24,7 @@
 						<div class="short-info">
 							<div><a href="#" class="order_toggle">Заказ № <xsl:value-of select="num"/></a><span>от <xsl:value-of select="date"/></span></div>
 							<div><strong><xsl:value-of select="sum"/> р.</strong><span><xsl:value-of select="qty"/> позиций</span></div>
+							<div><xsl:value-of select="$all_status[number(current()/status) + 1]"/></div>
 							<div class="order-buttons" style="display: none">
 								<a href="#" class="button desktop submit_all_again">Повторить заказ</a>
 								<a href="#" class="button mobile submit_all_again"><i class="fas fa-redo"></i></a>
@@ -51,10 +54,10 @@
 									</div>
 									<div class="info-container">
 										<xsl:if test="$prod">
-											<div><a href="{$prod/show_product}"><xsl:value-of select="concat($prod/name, ' ', $prod/code)"/></a></div>
+											<div><a href="{$prod/show_product}"><xsl:value-of select="concat($prod/name, ' ', concat(substring($prod/code, 1, 4), ' ', substring($prod/code, 5)))"/></a></div>
 										</xsl:if>
 										<xsl:if test="not($prod)">
-											<div><a><xsl:value-of select="concat(name, ' ', code)"/></a></div>
+											<div><a><xsl:value-of select="concat(name, ' ', concat(substring(code, 1, 4), ' ', substring(code, 5)))"/></a></div>
 										</xsl:if>
 										<div><xsl:value-of select="qty"/> шт.<span class="mobile">&#160;×&#160;</span></div>
 										<div><xsl:value-of select="price"/> р.<span class="mobile">&#160;=&#160;</span></div>
@@ -99,7 +102,7 @@
 					var order = $(this).closest('.order');
 					order.toggleClass('active');
 					order.find('.order-items').toggle('blind', 200);
-					order.find('.order-buttons').toggle();
+					order.find('.order-buttons').toggle('fade', 200);
 				});
 
 				$('.submit_all_again').click(function(event) {
