@@ -138,7 +138,7 @@
 				<xsl:if test="$pres">
 					<div class="hover-tag mobile">
 						<i class="hover-tag__icon fas fa-gift" />
-						<a href="" data-toggle="modal" data-target="#pres_{code}">Подарок</a>
+						<a href="" data-toggle="modal" data-target="#pres_{$p/code}">Подарок</a>
 					</div>
 					<div class="hover-tag desktop">
 						<i class="hover-tag__icon fas fa-gift" />
@@ -156,6 +156,9 @@
 										<xsl:text disable-output-escaping="yes">&lt;a href="</xsl:text><xsl:value-of select="$link"/><xsl:text disable-output-escaping="yes">"&gt;</xsl:text>
 									</xsl:if>
 									<xsl:value-of select="$present/name"/><xsl:text> </xsl:text><xsl:value-of select="$present/type"/>
+									<xsl:if test="qty">
+										(<xsl:value-of select="qty"/>)<xsl:text> </xsl:text>
+									</xsl:if>
 									<xsl:if test="$link">
 										<xsl:text disable-output-escaping="yes">&lt;/a&gt;</xsl:text>
 									</xsl:if>
@@ -222,6 +225,47 @@
 		</xsl:if>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
+
+		<div class="modal fade" tabindex="-1" role="dialog" id="pres_{$p/code}">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<h4 class="modal-title">Подарки к выбранному товару</h4>
+					</div>
+					<div class="modal-body">
+						<div class="catalog-items lines">
+							<xsl:for-each select="$pp">
+								<xsl:variable name="pres" select="//page/present[code = current()/present_code]"/>
+								<div class="catalog-item">
+									<xsl:variable name="pic_path"
+									              select="if ($pres/main_pic) then concat($pres/@path, $pres/main_pic) else 'img/no_image.png'"/>
+									<a class="image-container" style="background-image: url({$pic_path});"/>
+									<div>
+										<a title="{$pres/name}">
+											<xsl:value-of select="$pres/name"/><xsl:text> </xsl:text>
+											<xsl:value-of select="$pres/type"/><xsl:text> </xsl:text>
+											<xsl:if test="qty">
+												(<xsl:value-of select="qty"/>)<xsl:text> </xsl:text>
+											</xsl:if>
+										</a>
+										<div class="art-number">
+											№ для заказа: <xsl:value-of select="$pres/code"/>
+										</div>
+										<p><xsl:value-of select="$pres/short" disable-output-escaping="yes"/></p>
+									</div>
+								</div>
+							</xsl:for-each>
+						</div>
+					</div>
+					<!-- <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div> -->
+				</div>
+			</div>
+		</div>
+
 	</xsl:template>
 
 

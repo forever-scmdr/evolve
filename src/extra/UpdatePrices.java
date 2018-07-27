@@ -67,11 +67,14 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 						// Создать подарок
 						String presentsStr = getValue(PRESENT_HEADER);
 						if (StringUtils.isNotBlank(presentsStr)) {
-							String[] presents = StringUtils.split(presentsStr, ", ");
+							String[] presents = StringUtils.split(presentsStr, ",");
 							for (String present : presents) {
+								String[] presentQty = StringUtils.split(present, ":");
 								Item prodPres = Item.newChildItem(prodPresType, prodPresCat);
 								prodPres.setValueUI(product_present.PRODUCT_CODE, code);
-								prodPres.setValueUI(product_present.PRESENT_CODE, present);
+								prodPres.setValueUI(product_present.PRESENT_CODE, StringUtils.trim(presentQty[0]));
+								if (presentQty.length > 1 && StringUtils.isNotBlank(presentQty[1]))
+									prodPres.setValueUI("qty", presentQty[1]);
 								DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prodPres).noFulltextIndex().ingoreComputed());
 							}
 						}

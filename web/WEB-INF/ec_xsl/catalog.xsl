@@ -24,9 +24,10 @@
 		<h1><xsl:value-of select="$h1"/></h1>
 		<div class="page-content m-t">
 			<div class="catalog-items">
-				<xsl:for-each select="/page/catalog/section">
+				<xsl:for-each select="/page/cat/section">
+					<xsl:variable name="main_pic" select="product[1]/gallery[1]"/>
+					<xsl:variable name="pic_path" select="if ($main_pic) then concat(product[1]/@path, $main_pic) else 'img/no_image.png'"/>
 					<div class="catalog-item">
-						<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
 						<a href="{show_section}" class="image-container" style="background-image: url({$pic_path})"><!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/> --></a>
 						<div>
 							<a href="{show_section}" style="height: unset;"><xsl:value-of select="name"/></a>

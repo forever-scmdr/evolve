@@ -178,7 +178,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-							<h4 class="modal-title">Подароки к выбранному товару</h4>
+							<h4 class="modal-title">Подарки к выбранному товару</h4>
 						</div>
 						<div class="modal-body">
 							<div class="catalog-items lines">
@@ -192,6 +192,9 @@
 											<a title="{$pres/name}">
 												<xsl:value-of select="$pres/name"/><xsl:text> </xsl:text>
 												<xsl:value-of select="$pres/type"/><xsl:text> </xsl:text>
+												<xsl:if test="qty">
+													(<xsl:value-of select="qty"/>)<xsl:text> </xsl:text>
+												</xsl:if>
 											</a>
 											<div class="art-number">
 												№ для заказа: <xsl:value-of select="$pres/code"/>
@@ -536,6 +539,9 @@
 													<xsl:text disable-output-escaping="yes">&lt;a href="</xsl:text><xsl:value-of select="$link"/><xsl:text disable-output-escaping="yes">"&gt;</xsl:text>
 												</xsl:if>
 												<xsl:value-of select="$present/name"/><xsl:text> </xsl:text><xsl:value-of select="$present/type"/>
+												<xsl:if test="qty">
+													(<xsl:value-of select="qty"/>)<xsl:text> </xsl:text>
+												</xsl:if>
 												<xsl:if test="$link">
 													<xsl:text disable-output-escaping="yes">&lt;/a&gt;</xsl:text>
 												</xsl:if>
