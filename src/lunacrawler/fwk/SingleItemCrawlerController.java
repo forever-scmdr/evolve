@@ -133,7 +133,10 @@ public class SingleItemCrawlerController {
 	}
 
 	public static final String ID = "id";
-	public static final String DOWNLOAD = "download";
+	public static final String DOWNLOAD = "download"; // в этом атрибуте указывается урл на скачивание
+	public static final String TYPE = "type"; // Если в элементе стоит type="html", то нужно парсить этот html и скачивать
+	public static final String HTML = "html"; // картинки
+	public static final String IMG = "img"; // картинки
 
 	public static final String NUMBER_OF_CRAWLERS = "parsing.number_of_crawlers"; // количество параллельных потоков запросов
 	public static final String POLITENESS = "parsing.politeness"; // количество миллисекунд между запросами
@@ -278,7 +281,7 @@ public class SingleItemCrawlerController {
 			int secCount = sections.size();
 			info.setLineNumber(secCount);
 			for (Item section : sections) {
-				List<Item> items = new ItemQuery(Parse_item._ITEM_TYPE_NAME).setParentId(section.getId(), false).loadItems();
+				List<Item> items = new ItemQuery(Parse_item._NAME).setParentId(section.getId(), false).loadItems();
 				info.setToProcess(items.size());
 				int i = 0;
 				for (Item item : items) {
@@ -355,7 +358,7 @@ public class SingleItemCrawlerController {
 		sectionUniqueUrls = new ConcurrentHashMap<>();
 		while (itemsToProcess.size() == 0 && sectionsToProcess.size() > 0) {
 			currentSection = sectionsToProcess.poll();
-			ItemQuery query = new ItemQuery(Parse_item._ITEM_TYPE_NAME).setParentId(currentSection.getId(), false);
+			ItemQuery query = new ItemQuery(Parse_item._NAME).setParentId(currentSection.getId(), false);
 			if (StringUtils.isNotBlank(paramName)) {
 				query
 						.addParameterCriteria(paramName, "0", "=", null, Compare.ANY)
@@ -394,7 +397,7 @@ public class SingleItemCrawlerController {
 		// Сначала удаление ранее созданных айтемов для разбора
 		info.setToProcess(secCount);
 		for (Parse_section section : sectionsToProcess) {
-			List<Item> pis = new ItemQuery(Parse_item._ITEM_TYPE_NAME).setParentId(section.getId(), false).loadItems();
+			List<Item> pis = new ItemQuery(Parse_item._NAME).setParentId(section.getId(), false).loadItems();
 			for (Item pi : pis) {
 				DelayedTransaction.executeSingle(User.getDefaultUser(), ItemStatusDBUnit.delete(pi));
 			}
@@ -406,7 +409,7 @@ public class SingleItemCrawlerController {
 		info.setOperation("Подготовка нового списка урлов");
 		processedCount = 0;
 		info.setProcessed(processedCount);
-		ItemType piType = ItemTypeRegistry.getItemType(Parse_item._ITEM_TYPE_NAME);
+		ItemType piType = ItemTypeRegistry.getItemType(Parse_item._NAME);
 		for (Parse_section section : sectionsToProcess) {
 			currentSection = section;
 			// Новый список урлов (параметр раздела)
@@ -424,7 +427,7 @@ public class SingleItemCrawlerController {
 			// Создание новых айтемов для разбора из урлов с проверкой на уникальность
 			for (String url : urls) {
 				Parse_item pi = Parse_item.get(Item.newChildItem(piType, currentSection));
-				Item original = new ItemQuery(Parse_item._ITEM_TYPE_NAME)
+				Item original = new ItemQuery(Parse_item._NAME)
 						.addParameterCriteria(Parse_item.URL, url, "=", null, Compare.SOME)
 						.loadFirstItem();
 				pi.set_duplicated(original == null ? (byte) 0 : (byte) 1);
@@ -562,12 +565,24 @@ public class SingleItemCrawlerController {
 				@Override
 				protected void processItem(Parse_item item, String proxy) throws Exception {
 					Document result = Jsoup.parse(item.get_xml());
-					Elements downloads = result.getElementsByAttribute(DOWNLOAD);
 					try {
+						// Прямые загрузки (downlaod="url")
+						Elements downloads = result.getElementsByAttribute(DOWNLOAD);
 						for (Element download : downloads) {
-							URL url = new URL(download.attr(DOWNLOAD));
+							URL url = new URL(normalizeDownloadUrl(download.attr(DOWNLOAD), item.get_url()));
 							item.setValue(Parse_item.FILE, url);
 						}
+
+						// HTML с картинками (img)
+						Elements htmls = result.getElementsByAttributeValue(TYPE, HTML);
+						for (Element html : htmls) {
+							Elements imgs = html.getElementsByTag("img");
+							for (Element img : imgs) {
+								URL url = new URL(normalizeDownloadUrl(img.attr("src"), item.get_url()));
+								item.setValue(Parse_item.HTML_PIC, url);
+							}
+						}
+
 						item.set_got_files((byte) 1);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item).noFulltextIndex());
 						info.pushLog("URL {} got files", item.get_url());
@@ -586,6 +601,15 @@ public class SingleItemCrawlerController {
 			new Thread(worker).start();
 		}
 	}
+
+	private static String normalizeDownloadUrl(String fileUrl, String mainParseUrl) {
+		if (StringUtils.startsWith(fileUrl, "//")) {
+			String protocol = StringUtils.substringBefore(mainParseUrl, "//");
+			return protocol + fileUrl;
+		}
+		return fileUrl;
+	}
+
 
 	/**
 	 * Выбирает нужный XSL файл для преобразования HTML, полученного с заданного урла

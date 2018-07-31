@@ -116,7 +116,7 @@ public class DeployParsedSingle extends IntegrateBase {
 	private Product deployParsed(Parse_item pi, Item parentSection) throws Exception {
 		// Если айтем для парсинга - дублированный, найти оригинальный айтем
 		if (pi.get_duplicated() == (byte) 1) {
-			Item original = new ItemQuery(Parse_item._ITEM_TYPE_NAME)
+			Item original = new ItemQuery(Parse_item._NAME)
 					.addParameterCriteria(Parse_item.DUPLICATED, "0", "=", null, Compare.ANY)
 					.addParameterCriteria(Parse_item.URL, pi.get_url(), "=", null, Compare.SOME)
 					.loadFirstItem();

@@ -36,6 +36,7 @@
 		<parameter name="test_url" type="string" caption="Ссылка для тестирования XSL преобразования"
 		           description="должна быть соответствующая страница в pages.xml (test_parse_item)"/>
 		<parameter name="file" type="file" caption="Файл" description="скачанный файл" multiple="true"/>
+		<parameter name="html_pic" type="picture" caption="Картинка из HTML" description="скачанная картинка" multiple="true"/>
 	</item>
 
 
@@ -78,11 +79,11 @@
 
 	-->
 
-	<assoc name="seo" caption="SEO" description="Связь айтемов с seo" transitive="false"/>
+	<assoc name="seo" caption="SEO" description="Связь айтемов с seo" transitive="false" ag-id="1" ag-hash="113757"/>
 
 
-	<item name="seo" caption="SEO" ag-id="1" ag-hash="113757" key="key_unique">
-		<parameter name="key_unique" caption="Ключ страницы"
+	<item name="seo" caption="SEO" key="key_unique" ag-id="1" ag-hash="113757">
+		<parameter name="key_unique" caption="Ключ страницы" type="string"
 		           description="должен совпадать с уникальным текстовым ключом соответствующего айтема"/>
 		<parameter name="title" type="string" caption="title"/>
 		<parameter name="h1" type="string" caption="h1"/>
@@ -111,11 +112,11 @@
 		<child item="url_seo" />
 	</item>
 
-	<item name="seo_catalog" caption="Каталог SEO" description="невидимый">
+	<item name="seo_catalog" caption="Каталог SEO" description="невидимый" ag-id="44" ag-hash="990975543">
 		<child item="seo"/>
 	</item>
 
-	<item name="seo_container" caption="Контейнер для сео айтемов" virtual="true" key-unique="true">
+	<item name="seo_container" caption="Контейнер для сео айтемов" virtual="true" key-unique="true" ag-id="45" ag-hash="1272836895">
 		<child item="seo" single="true" assoc="seo"/><!-- Связь с сео айтемом из сао каталога -->
 		<child item="seo" single="true"/><!-- Для создания нового сео -->
 		<on-update class="ecommander.fwk.integration.UpdateSeoItemFactory"/>
@@ -128,14 +129,14 @@
 	<!--/////////////                             КАТАЛОГ                                  ////////////-->
 
 
-	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" super="seo_container">
+	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" super="seo_container" ag-id="4" ag-hash="555704345">
 		<child item="section" />
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 	</item>
 
 
-	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" super="seo_container">
+	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" super="seo_container" ag-id="5" ag-hash="1970241253">
 		<child item="section" />
 		<child item="product"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
@@ -148,7 +149,7 @@
 
 
 	<!--Товар из магазина yandex market-->
-	<item name="product" key="name vendor_code" caption="Продукт" extendable="false" key-unique="true" default-page="product" super="seo_container">
+	<item name="product" key="name vendor_code" caption="Продукт" extendable="false" key-unique="true" default-page="product" super="seo_container" ag-id="6" ag-hash="-309474065">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
@@ -172,8 +173,8 @@
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
-		<!--<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>-->
-		<!--<parameter name="tag" type="string" caption="Тэг" multiple="true"/>-->
+		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
+		<parameter name="tag" type="string" caption="Тэг" multiple="true"/>
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
@@ -327,7 +328,7 @@
 	</item>
 
 
-	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" default-page="news_item" super="seo_container">
+	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" default-page="news_item" super="seo_container" ag-id="20" ag-hash="300774655">
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
@@ -336,7 +337,7 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="news" caption="Новостной раздел" key="name" key-unique="true" default-page="news" super="seo_container">
+	<item name="news" caption="Новостной раздел" key="name" key-unique="true" default-page="news" super="seo_container" ag-id="21" ag-hash="3377875">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="on_main" type="string" domain="yes-no" caption="Показать на главной странице?"/>
 		<child item="news_item"/>
@@ -359,7 +360,7 @@
 		<parameter name="link" type="string" caption="Ссылка" description="начиная с http://"/>
 	</item>
 
-	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" super="seo_container">
+	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" super="seo_container" ag-id="25" ag-hash="-251149995">
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
 	</item>
@@ -379,7 +380,7 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="contacts" caption="Контакты" super="seo_container">
+	<item name="contacts" caption="Контакты" super="seo_container" ag-id="29" ag-hash="-567451565">
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="map" type="plain-text" caption="Код карты" format="height: 50px"/>
 		<parameter name="bottom_text" type="text" caption="Как добраться"/>
@@ -434,7 +435,7 @@
 		<child item="custom_page"/>
 	</item>
 
-	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" default-page="page" super="seo_container">
+	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" default-page="page" super="seo_container" ag-id="37" ag-hash="-1777660259">
 		<child item="custom_page"/>
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей"/>

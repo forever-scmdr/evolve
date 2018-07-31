@@ -26,7 +26,6 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 	private static final String PRICE_OLD_HEADER = "Цена без скидки";
 	private static final String PRICE_NEW_HEADER = "Цена со скидкой";
 	private static final String AVAILABLE_HEADER = "Наличие";
-	private static final String PRESENT_HEADER = "Подарок";
 
 	private ExcelPriceList price;
 
@@ -36,14 +35,6 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 		if (cat == null)
 			return false;
 		File priceFile = cat.getFileValue(catalog.INTEGRATION, AppContext.getFilesDirPath(false));
-		List<Item> toDelete = new ItemQuery(PRODUCT_PRESENT_CATALOG).loadItems();
-		for (Item item : toDelete) {
-			DelayedTransaction.executeSingle(User.getDefaultUser(), ItemStatusDBUnit.delete(item));
-		}
-		DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(100, null));
-		final Item prodPresCat = ItemUtils.ensureSingleRootItem(PRODUCT_PRESENT_CATALOG, User.getDefaultUser(),
-				UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-		final ItemType prodPresType = ItemTypeRegistry.getItemType(PRODUCT_PRESENT);
 		price = new ExcelPriceList(priceFile, CODE_HEADER, PRICE_OLD_HEADER, PRICE_NEW_HEADER, AVAILABLE_HEADER) {
 			@Override
 			protected void processRow() throws Exception {
@@ -63,19 +54,6 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 						prod.setValue("available", available ? (byte)1 : (byte)0);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
 						info.increaseProcessed();
-
-						// Создать подарок
-						String presentsStr = getValue(PRESENT_HEADER);
-						if (StringUtils.isNotBlank(presentsStr)) {
-							String[] presents = StringUtils.split(presentsStr, ", ");
-							for (String present : presents) {
-								Item prodPres = Item.newChildItem(prodPresType, prodPresCat);
-								prodPres.setValueUI(product_present.PRODUCT_CODE, code);
-								prodPres.setValueUI(product_present.PRESENT_CODE, present);
-								DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prodPres).noFulltextIndex().ingoreComputed());
-							}
-						}
-
 					} else {
 						info.increaseLineNumber();
 						info.pushLog("Товар с кодом {} и названием {} не найден в каталоге", code, getValue(1));

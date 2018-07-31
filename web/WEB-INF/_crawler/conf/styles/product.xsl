@@ -32,10 +32,10 @@
 					<xsl:copy-of select="//div[@class='tabbody'][1]//table[@class='technical_data']"/>
 					<xsl:copy-of select="//div[@class='tabbody'][1]//div[@class='table_legend'][1]"/>
 				</tech>
-				<elements>
+				<elements type="html">
 					<xsl:copy-of select="//div[@class='tabbody'][2]"/>
 				</elements>
-				<extra_parts>
+				<extra_parts type="html">
 					<xsl:copy-of select="//div[@class='tabbody'][3]"/>
 				</extra_parts>
 				<manuals>

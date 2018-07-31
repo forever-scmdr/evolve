@@ -11,13 +11,17 @@ public class Parse_item
     extends Item
 {
 
-    public final static String _ITEM_TYPE_NAME = "parse_item";
-    public final static String FILE = "file";
-    public final static String DUPLICATED = "duplicated";
+    public final static String _NAME = "parse_item";
     public final static String URL = "url";
     public final static String DOWNLOADED = "downloaded";
     public final static String PARSED = "parsed";
     public final static String GOT_FILES = "got_files";
+    public final static String DUPLICATED = "duplicated";
+    public final static String HTML = "html";
+    public final static String XML = "xml";
+    public final static String TEST_URL = "test_url";
+    public final static String FILE = "file";
+    public final static String HTML_PIC = "html_pic";
 
     private Parse_item(Item item) {
         super(item);
@@ -27,7 +31,7 @@ public class Parse_item
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'parse_item' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -35,7 +39,7 @@ public class Parse_item
     }
 
     public static Parse_item newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_url(String value) {
@@ -204,6 +208,22 @@ public class Parse_item
 
     public boolean contains_file(File value) {
         return containsValue("file", value);
+    }
+
+    public void add_html_pic(File value) {
+        setValue("html_pic", value);
+    }
+
+    public List<File> getAll_html_pic() {
+        return getFileValues("html_pic", AppContext.getCommonFilesDirPath());
+    }
+
+    public void remove_html_pic(File value) {
+        removeEqualValue("html_pic", value);
+    }
+
+    public boolean contains_html_pic(File value) {
+        return containsValue("html_pic", value);
     }
 
 }

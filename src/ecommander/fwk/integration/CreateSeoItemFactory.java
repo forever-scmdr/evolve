@@ -6,12 +6,11 @@ import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
-import ecommander.persistence.commandunits.CreateAssocDBUnit;
-import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
-import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+
+import java.util.List;
 
 /**
  * Создание сео айтема в каталоге сео
@@ -32,14 +31,19 @@ public class CreateSeoItemFactory implements ItemEventCommandFactory {
 
 		@Override
 		public void execute() throws Exception {
-			Item seoCatalog = ItemUtils.ensureSingleRootItem(SEO_CATALOG, User.getDefaultUser(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 			Item parent = ItemQuery.loadById(seo.getContextParentId(), getTransactionContext().getConnection());
-			seo.setValueUI(KEY_UNIIQUE, parent.getKeyUnique());
-			Item newSeo = Item.newChildItem(ItemTypeRegistry.getItemType(SEO), seoCatalog);
-			Item.updateParamValues(seo, newSeo);
-			executeCommand(SaveItemDBUnit.get(newSeo, false));
-			executeCommand(new CreateAssocDBUnit(newSeo, parent, ItemTypeRegistry.getAssocId(SEO)));
+			// Проверка, есть ли сео для айтема
+			List<Item> seos = new ItemQuery(SEO).setParentId(parent.getId(), false, SEO).loadItems();
+			if (seos.size() == 0) {
+				Item seoCatalog = ItemUtils.ensureSingleRootItem(SEO_CATALOG, User.getDefaultUser(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+				seo.setValueUI(KEY_UNIIQUE, parent.getKeyUnique());
+				Item newSeo = Item.newChildItem(ItemTypeRegistry.getItemType(SEO), seoCatalog);
+				Item.updateParamValues(seo, newSeo);
+				executeCommand(SaveItemDBUnit.get(newSeo, false));
+				executeCommand(new CreateAssocDBUnit(newSeo, parent, ItemTypeRegistry.getAssocId(SEO)));
+			}
 			executeCommand(ItemStatusDBUnit.delete(seo));
+			executeCommand(new CleanAllDeletedItemsDBUnit(10, null));
 		}
 	}
 

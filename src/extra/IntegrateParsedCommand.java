@@ -1,6 +1,7 @@
 package extra;
 
 import ecommander.fwk.*;
+import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
@@ -22,7 +23,7 @@ import java.util.List;
 /**
  * Created by E on 3/5/2018.
  */
-public class MetaboIntegrateParsedCommand extends IntegrateBase implements ItemNames {
+public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, CatalogConst {
 
 
 	private ParsedInfoProvider infoProvider;
@@ -60,7 +61,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase implements ItemN
 	private void processSubsections(Element root, Item parent) throws Exception {
 		Elements sectionEls = root.select("> section");
 		for (Element sectionEl : sectionEls) {
-			String[] path = StringUtils.split(sectionEl.attr(ID), '_');
+			String[] path = StringUtils.split(sectionEl.attr(ID_ATTR), '_');
 			if (path.length <= 0)
 				continue;
 			String secName = path[path.length - 1];
@@ -71,7 +72,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase implements ItemN
 		}
 		Elements productEls = root.select("> product");
 		for (Element productElTree : productEls) {
-			String code = productElTree.attr(ID);
+			String code = productElTree.attr(ID_ATTR);
 			if (StringUtils.isBlank(code))
 				continue;
 			Document productDoc = null;
@@ -82,65 +83,67 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase implements ItemN
 				info.addError("Документ для товара '" + code + "' содержит ошибки", code);
 			}
 			String name = productDoc.getElementsByTag(NAME).first().ownText();
-			String type = productDoc.getElementsByTag(TYPE).first().ownText();
-			String nameExtra = productDoc.getElementsByTag(NAME_EXTRA).first().ownText();
-			String shortTxt = productDoc.getElementsByTag(SHORT).first().html();
-			String description = productDoc.getElementsByTag(EXTRA).first().html();
-			String text = productDoc.getElementsByTag(DESCRIPTION).first().html();
-			String tech = productDoc.getElementsByTag(TECH).first().html();
-			String packageTxt = productDoc.getElementsByTag(PACKAGE).first().html();
-			String extraXml = productDoc.getElementsByTag(SYMBOLS).first().html();
-			Elements spinEls = productDoc.getElementsByTag(SPIN);
+			String type = productDoc.getElementsByTag(TYPE_PARAM).first().ownText();
+			String nameExtra = productDoc.getElementsByTag(NAME_EXTRA_PARAM).first().ownText();
+			String shortTxt = productDoc.getElementsByTag(SHORT_PARAM).first().html();
+			String description = productDoc.getElementsByTag(EXTRA_PARAM).first().html();
+			String text = productDoc.getElementsByTag(DESCRIPTION_PARAM).first().html();
+			String tech = productDoc.getElementsByTag(TECH_PARAM).first().html();
+			String packageTxt = productDoc.getElementsByTag(PACKAGE_PARAM).first().html();
+			String extraXml = productDoc.getElementsByTag(SYMBOLS_PARAM).first().html();
+			Elements spinEls = productDoc.getElementsByTag(SPIN_PARAM);
 			for (Element spinEl : spinEls) {
 				extraXml += spinEl.outerHtml();
 			}
-			Elements videoEls = productDoc.getElementsByTag(VIDEO);
+			Elements videoEls = productDoc.getElementsByTag(VIDEO_PARAM);
 			for (Element videoEl : videoEls) {
 				extraXml += videoEl.outerHtml();
 			}
-			Elements manuals = productDoc.getElementsByTag(MANUAL);
+			Elements manuals = productDoc.getElementsByTag(MANUAL_PARAM);
 			if (manuals.size() > 0) {
 				extraXml += manuals.first().outerHtml();
 			}
-			Elements spareParts = productDoc.getElementsByTag(PARTS);
+			Elements spareParts = productDoc.getElementsByTag(PARTS_PARAM);
 			if (spareParts.size() > 0) {
 				extraXml += spareParts.first().outerHtml();
 			}
 			ArrayList<Path> gallery = new ArrayList<>();
-			Elements pics = productDoc.getElementsByTag(GALLERY).first().getElementsByTag(PIC);
+			Elements pics = productDoc.getElementsByTag(GALLERY_PARAM).first().getElementsByTag(PIC_PARAM);
 			for (Element pic : pics) {
-				Path file = infoProvider.getFile(code, pic.attr(LINK));
+				Path file = infoProvider.getFile(code, pic.attr(LINK_PARAM));
 				if (file != null)
 					gallery.add(file);
 			}
 			ArrayList<String> assocCodes = new ArrayList<>();
-			Elements codeEls = productDoc.getElementsByTag(ASSOC).first().getElementsByTag(CODE);
+			Elements codeEls = productDoc.getElementsByTag(ASSOC_PARAM).first().getElementsByTag(CODE_PARAM);
 			for (Element codeEl : codeEls) {
 				assocCodes.add(codeEl.ownText());
 			}
 			// Продукт
 
-			Item product = Item.newChildItem(productType, parent);
-			product.setValue(NAME, name);
-			product.setValue(CODE, code);
-			product.setValue(TYPE, type);
-			product.setValue(NAME_EXTRA, nameExtra);
-			product.setValue(SHORT, shortTxt);
-			product.setValue(DESCRIPTION, description);
-			product.setValue(TEXT, text);
-			product.setValue(EXTRA_XML, extraXml);
+			Product product = Product.get(Item.newChildItem(productType, parent));
+			product.set_name(name);
+			product.set_code(code);
+			product.set_type(type);
+			product.set_name_extra(nameExtra);
+			product.set_short(shortTxt);
+			product.set_description(description);
+			product.set_text(text);
+			product.set_extra_xml(extraXml);
+			/*
 			for (String assocCode : assocCodes) {
 				product.setValue(ASSOC_CODE, assocCode);
 			}
+			*/
 			for (Path path : gallery) {
-				product.setValue(GALLERY, path.toFile());
+				product.add_gallery(path.toFile());
 			}
 			if (gallery.size() > 0) {
 				Path firstPic = gallery.get(0);
 				Path newMainPic = firstPic.resolveSibling("main_" + firstPic.getFileName());
  				ByteArrayOutputStream bos = ResizeImagesFactory.resize(firstPic.toFile(), 0, 400);
 				Files.write(newMainPic, bos.toByteArray());
-				product.setValue(MAIN_PIC, newMainPic.toFile());
+				product.set_main_pic(newMainPic.toFile());
 			}
 
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
@@ -149,7 +152,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase implements ItemN
 
 			XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 			if (StringUtils.isNotBlank(tech)) {
-				Element techEl = productDoc.getElementsByTag(TECH).first().getElementById("attributes");
+				Element techEl = productDoc.getElementsByTag(TECH_PARAM).first().getElementById("attributes");
 				Elements childrenDivs = techEl.children();
 				for (Element div : childrenDivs) {
 					String divClass = div.attr("class");
@@ -175,12 +178,12 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase implements ItemN
 				}
 
 				Item paramsXml = Item.newChildItem(paramsXmlType, product);
-				paramsXml.setValue(XML, xml.toString());
+				paramsXml.setValue(XML_PARAM, xml.toString());
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXml).noFulltextIndex().ignoreFileErrors());
 
 				Item techItem = Item.newChildItem(productExtraType, product);
 				techItem.setValue(NAME, "tech");
-				techItem.setValue(TEXT, tech);
+				techItem.setValue(TEXT_PARAM, tech);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(techItem).noFulltextIndex().ignoreFileErrors());
 			}
 
@@ -189,7 +192,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase implements ItemN
 			if (StringUtils.isNotBlank(packageTxt)) {
 				Item packageItem = Item.newChildItem(productExtraType, product);
 				packageItem.setValue(NAME, "package");
-				packageItem.setValue(TEXT, packageTxt);
+				packageItem.setValue(TEXT_PARAM, packageTxt);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(packageItem).noFulltextIndex().ignoreFileErrors());
 			}
 

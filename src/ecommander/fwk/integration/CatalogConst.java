@@ -12,6 +12,7 @@ public interface CatalogConst {
 	String INTEGRATION_PARAM = "integration";
 	String DATE_PARAM = "date";
 	String NAME_PARAM = "name";
+	String NAME_EXTRA_PARAM = "name_extra";
 	String TYPE_PARAM = "type";
 	String CODE_PARAM = "code";
 	String CATEGORY_ID_PARAM = "category_id";
@@ -32,6 +33,19 @@ public interface CatalogConst {
 	String TEXT_PICS_PARAM = "text_pics";
 	String GALLERY_PARAM = "gallery";
 	String XML_PARAM = "xml";
+	String SHORT_PARAM = "short";
+	String EXTRA_PARAM = "extra";
+	String TECH_PARAM = "tech";
+	String VIDEO_PARAM = "video";
+	String MANUAL_PARAM = "manual";
+	String PARTS_PARAM = "parts";
+	String PACKAGE_PARAM = "package";
+	String SYMBOLS_PARAM = "symbols";
+	String SPIN_PARAM = "spin";
+	String PIC_PARAM = "pic";
+	String LINK_PARAM = "link";
+	String ASSOC_PARAM = "assoc";
+
 
 	String PARAMETER = "parameter";
 	String NAME = "name";
