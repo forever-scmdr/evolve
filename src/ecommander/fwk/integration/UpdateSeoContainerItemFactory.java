@@ -13,7 +13,7 @@ import ecommander.persistence.itemquery.ItemQuery;
  * сео айтема
  * Created by E on 25/7/2018.
  */
-public class UpdateSeoItemFactory implements ItemEventCommandFactory {
+public class UpdateSeoContainerItemFactory implements ItemEventCommandFactory {
 
 	public static final String SEO = "seo";
 	public static final String KEY_UNIIQUE = "key_unique";

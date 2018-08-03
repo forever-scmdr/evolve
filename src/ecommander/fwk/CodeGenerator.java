@@ -50,7 +50,7 @@ public class CodeGenerator {
 					JFieldVar itemNameConst = itemsInterface.field(JMod.NONE, String.class, interfaceName.toUpperCase());
 					itemNameConst.init(JExpr.lit(item.getName()));
 					// Создать интерфейс
-					JDefinedClass itemInterface = itemsInterface._interface(interfaceName);
+					JDefinedClass itemInterface = itemsInterface._interface(interfaceName + "_");
 					JFieldVar itemNameField = itemInterface.field(JMod.NONE, String.class, "_ITEM_NAME");
 					itemNameField.init(JExpr.lit(item.getName()));
 					for (ParameterDescription param : item.getParameterList()) {

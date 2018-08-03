@@ -146,13 +146,13 @@
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
 									<li class="visible" title="Загрзить товары из Yandex Market">
-										<a href="integrate/?action=start">Интеграция каталога</a>
+										<a href="integrate/?action=start">Загрзить товары из Yandex Market файла</a>
 									</li>
 									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 										<a href="generate_sitemap">Обновить карту сайта</a>
 									</li>
 									<li class="visible" title="Очищает все кеши. Длительная и ресурсоемкая операция.">
-										<a href="admin_drop_all_caches.action">Очистить все кеши</a>
+										<a href="admin_drop_all_caches.action">Очистить все кеши (очень долго)</a>
 									</li>
 									<li class="visible" title="Обновить список товаров для полнотекстового поиска">
 										<a href="admin_reindex.action">Переиндексация</a>
@@ -182,13 +182,20 @@
 											Создать YML-файл
 										</a>
 									</li>
-									<!--
-									<li class="visible" title="Функция в разработке">
-										<a href="#" onclick="alert('Функция в разработке'); return false;">
-											Управление миром
-										</a>
+								</ul>
+							</div>
+							<div class="list additional">
+								<h4>Парсинг</h4>
+								<ul class="no-drag">
+									<li class="visible" title="Скачать информацию с сайта">
+										<a href="get_site/?action=start" target="_blank">Скачать информацию со стороннего сайта</a>
 									</li>
-									-->
+									<li class="visible" title="Разместить скачанную информацию на этом сайте">
+										<a href="deploy_parsed/?action=start" target="_blank">Разместить скачанную информацию</a>
+									</li>
+									<li class="visible" title="Создать типы товаров и фильтры">
+										<a href="create_filters/?action=start" target="_blank">Создать типы товаров и фильтры</a>
+									</li>
 								</ul>
 							</div>
 						</div>

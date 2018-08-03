@@ -144,10 +144,11 @@ public class PageController {
 				int i = requestUrl.indexOf("_=");
 				requestUrl = requestUrl.substring(0, i);
 			}
-			requestUrl = StringUtils.replaceChars(requestUrl, '|', '_');
-			requestUrl = StringUtils.replaceChars(requestUrl, '/', '_');
-			requestUrl = StringUtils.replaceChars(requestUrl, '?', '_');
-			String cacheFileName = domainName + "/" + page.getSessionContext().getUser().getGroupRolesStr() + "/" + requestUrl + ".html";
+			String cacheFileName = requestUrl;
+			cacheFileName = StringUtils.replaceChars(cacheFileName, '|', '_');
+			cacheFileName = StringUtils.replaceChars(cacheFileName, '/', '_');
+			cacheFileName = StringUtils.replaceChars(cacheFileName, '?', '_');
+			cacheFileName = domainName + "/" + page.getSessionContext().getUser().getGroupRolesStr() + "/" + cacheFileName + ".html";
 			String fullFileName = AppContext.getCacheHtmlDirPath() + cacheFileName;
 			if (fullFileName.length() >= 255) {
 				int hash = fullFileName.hashCode();

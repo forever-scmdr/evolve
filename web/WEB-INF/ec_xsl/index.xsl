@@ -1,6 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template name="MARKUP">
@@ -10,7 +10,7 @@
 				"@type":"Organization",
 				"url":"<xsl:value-of select="$main_host"/>/",
 				"name":"<xsl:value-of select="$title"/>",
-				"logo":"<xsl:value-of select="concat($base, '/img/logo.jpg')"/>",
+				"logo":"<xsl:value-of select="concat($base, '/img/logo_big.svg')"/>",
 				"aggregateRating": {
 					"@type": "AggregateRating",
 					"ratingCount": "53",
@@ -18,7 +18,7 @@
 					"bestRating": "5",
 					"ratingValue": "4,9",
 					"worstRating": "1",
-					"name": "Metabo"
+					"name": "TTD"
 				},
 				"contactPoint": [
 					<xsl:for-each select="page/common/phone" >
@@ -126,86 +126,40 @@
 
 
 	<xsl:template name="CONTENT">
-		<div class="container-fluid has-slider">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="slider-container">
-							<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
-								<xsl:for-each select="page/main_page/main_slider_frame">
-									<xsl:if test="link and not(link = '')">
-										<div data-img="{@path}{pic}"><a href="{link}">&#160;</a></div>
-									</xsl:if>
-									<xsl:if test="not(link) or link = ''">
-										<img src="{@path}{pic}" />
-									</xsl:if>
-								</xsl:for-each>
+		<div class="slider-container desktop">
+			<div class="fotorama" data-transition="crossfade" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
+				<xsl:for-each select="page/main_page/main_slider_frame">
+					<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+						<div class="slider-item__block">
+							<div class="slider-item__title">Лодочные моторы SUZUKI</div>
+							<div class="slider-item__text">
+								<p>Компания ТактСервис – единственный официальный дилер SUZUKI MOTORS CORPORATION, представляющий лодочные моторы SUZUKI и товары для судоходства SUZUKI на территории Республики Беларусь.</p>
 							</div>
+							<a href="" class="slider-item__button">Каталог продукции</a>
 						</div>
 					</div>
-				</div>
+				</xsl:for-each>
 			</div>
 		</div>
-
-		<div class="container-fluid" style="background-color: #fff;">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12 more-products p-t p-b">
-						<h4>Продукция</h4>
-						<div class="catalog-items main-page">
-							<xsl:for-each select="page/cat_pics/section">
-								<div class="catalog-item">
-									<xsl:variable name="pic_path"
-									              select="if (product/main_pic) then concat(product/@path, product/main_pic) else 'img/no_image.png'"/>
-									<a href="{show_section}" class="image-container" style="background-image: url({$pic_path})"></a>
-									<div>
-										<a href="{show_section}" style="height: unset;"><xsl:value-of select="name"/></a>
-										<xsl:value-of select="short" disable-output-escaping="yes"/>
-									</div>
-								</div>
-							</xsl:for-each>
+		<div class="slider-container mobile">
+			<div class="fotorama" data-width="100%" data-height="320" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="false" data-loop="true">
+				<xsl:for-each select="page/main_page/main_slider_frame">
+					<div class="slider-item" style="background-image: url({@path}{pic});">
+						<div class="slider-item__block">
+							<div class="slider-item__title">Лодочные моторы SUZUKI</div>
+							<div class="slider-item__text">
+								<p>Компания ТактСервис – единственный официальный дилер SUZUKI MOTORS CORPORATION, представляющий лодочные моторы SUZUKI и товары для судоходства SUZUKI на территории Республики Беларусь.</p>
+							</div>
+							<a href="" class="slider-item__button">Перейти в каталог</a>
 						</div>
 					</div>
-				</div>
+				</xsl:for-each>
 			</div>
 		</div>
-		<!-- <div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="actions mobile">
-						<h3>Акции</h3>
-						<div class="actions-container">
-							<a href="{page/main_page/link_link}"><xsl:value-of select="page/main_page/link_text"/></a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
-		<div class="container-fluid" style="background-color: #e6e6e6;">
-			<div class="container p-t p-b">
-				<div class="row">
-					<div class="col-md-4 col-sm-12">
-						<xsl:if test="page/main_page/link_text and not(page/main_page/link_text = '')">
-							<div class="actions">
-								<h3>Акции</h3>
-								<div class="actions-container">
-									<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
-								</div>
-							</div>
-						</xsl:if>
-					</div>
-					<div class="col-md-8 news">
-						<h3>Новости</h3>
-						<div class="news-container">
-							<xsl:for-each select="page/news/news_item">
-								<div>
-									<div class="date"><xsl:value-of select="date"/></div>
-									<a href="{show_news_item}"><xsl:value-of select="header"/></a>
-								</div>
-							</xsl:for-each>
-						</div>
-					</div>
-				</div>
+		<div class="actions mobile">
+			<h3>Акции</h3>
+			<div class="actions-container">
+				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 			</div>
 		</div>
 	</xsl:template>
@@ -216,39 +170,134 @@
 			<div class="row">
 
 				<!-- RIGHT COLOUMN BEGIN -->
-				<div class="col-md-12 col-xs-12 main-content"> 
+				<div class="col-md-12 col-xs-12 main-content">
 					<div class="mc-container">
 						<xsl:call-template name="INC_MOBILE_HEADER"/>
+						<xsl:call-template name="CONTENT"/>
 					</div>
 				</div>
 				<!-- RIGHT COLOUMN END -->
 			</div>
 		</div>
-		<xsl:call-template name="CONTENT"/>
 		<!-- MAIN COLOUMNS END -->
 	</xsl:template>
 
 	<xsl:template name="BANNERS">
-		<div class="container p-t">
-			<div class="row">
-				<div class="col-xs-12 banners">
-					<!-- <h3>Специальные предложения</h3> -->
-					<div class="banners-container">
-						<xsl:for-each select="page/main_page/main_promo_bottom">
-							<div style="background-image: url({@path}{pic})">
-								<div class="aspect-ratio"></div>
-								<a href="{link}"></a>
-							</div>
-
-							<!-- <a href="{link}" style="background-image: url({@path}{pic})">
-								<h4><xsl:value-of select="text_big"/></h4>
-								<p><xsl:value-of select="text_small"/></p>
-							</a> -->
-						</xsl:for-each>
+		<div class="container">
+			<div class="banners-container">
+				<xsl:for-each select="page/main_page/main_promo_bottom">
+					<div class="banner">
+						<div class="banner__image" style="background-image: url({@path}{pic})"></div>
+						<div class="banner__title"><xsl:value-of select="text_big"/></div>
+						<!-- <div class="banner__text"><xsl:value-of select="text_small"/></div> -->
+						<a class="banner__link" href="{link}"></a>
 					</div>
+				</xsl:for-each>
+			</div>
+		</div>
+
+		<div class="container container-ptb" style="background-color: #f2f2f2;">
+			<div class="free-cols">
+				<div class="free-col">
+					<h1>Бензоинструменты и двигатели. Сервис и продажи</h1>
+					<strong>ТактСервис – это коллектив с большим опытом и знаниями! Мы создаем для клиентов условия обладающие особой ценностью!</strong>
+					<ul>
+						<li>Узкая специализация компании и сотрудничество с передовыми производителями бензиновых инструментов, двигателей, коммунальной, сельско-хозяйственной и лесной техники позволяет предоставлять качественный, авторизованный сервис и гарантию на выполненные работы/</li>
+						<li>Прямой контакт с инженерными службами производителей оборудования позволяет нам решать самые сложные технические задачи.</li>
+						<li>Мы поставляем оригинальные запасные части и расходные материалы.</li>
+						<li>Мы не продаем бензомоторную технику «с витрины» или «курьером»! Каждый клиент имеет УНИКАЛЬНУЮ! возможность испытать приобретаемое или отремонтированное оборудование! А так же получить индивидуальный урок о безопасном и эффективном применении бензомоторной техники, коммунальных машин, лодочных моторов в общении с мастером сервисного центра ТактСервис!</li>
+						<li>Удобное расположение, подъезд и парковка на любом виде индивидуального, общественного или грузового транспорта. В непосредственной близости от улицы Радиальной, Партизанского проспекта.</li>
+						<li>Рассрочка на товары, услуги по ремонту и обслуживанию бензомоторной техники.</li>
+					</ul>
+					<h4>ТактСервис - официальный дилер:</h4>
+					<p>
+						<a href=""><strong>SUZUKI</strong><br/> навесные лодочные моторы</a>
+					</p>
+					<p>
+						<a href=""><strong>STIHL, VIKING</strong><br/> газонокосилки, бензопилы кусторезы, мотокосы отрезные устройства, мотобуры, воздуходувки</a>
+					</p>
+					<p>
+						<a href=""><strong>Briggs&amp;Stratton</strong><br/> двигатели для малой строительной, дорожной и сельскохозяйственной техники</a>
+					</p>
+					<p>
+						<a href=""><strong>LASKI</strong><br/> дробилки дерева, пней, траншеекопатели техника для коммунального хозяйства из Чехии</a>
+					</p>
+					<p>
+						<a href=""><strong>AS-Motor</strong><br/> газонокосилки для неровной местности профессионального назначения</a>
+					</p>
+					<p>
+						<a href=""><strong>MASTER</strong><br/> нагреватели воздуха на жидком топливе, газе или электричестве. Для строительных работ и отопления</a>
+					</p>
+					<p>
+						<a href=""><strong>UMS</strong><br/> катера и лодки из алюминия</a>
+					</p>
+				</div>
+				<div class="free-col">
+					<h1>Актуально в данный момент!</h1>
+					<strong>Приятная новость!</strong>
+					<p>Теперь вы можете купить товары в рассрочку и без первого взноса. С помощью карты рассрочки №1 "Халва" от МТБанка.</p>
+					<p>
+						<img src="img/image.jpg" alt=""/>
+					</p>
+					<p>Узнать об очень простой процедуре оформления карты вы можете по ссылке.</p>
+					<hr/>
+					<strong>Конкурентые преимущества STIHL</strong>
+					<p>Детали поршневой группы бензопил, кусторезов, мотокос производятся по одинаковой технологи...</p>
+					<p>
+						<img src="img/image-1.jpg" alt=""/>
+					</p>
+					<hr/>
+					<strong>Акция!!! Новый мотор для газонокосилок Briggs&amp;Stratton</strong>
+					<p>
+						<img src="img/image-2.jpg" alt=""/>
+					</p>
+					<p>Ремонт мотора дорого стоит? Нехватает запасных частей для быстрого ремонта? А если заменить мотор целиком?</p>
+					<p>Подробнее о замене мотора узнайте у специалистов "ТактСервис", а так же в статье.</p>
+					<hr/>
+					<strong>Revolution!!! SUZUKI представляет DF 350 A 350 л.с. V6</strong>
+					<p>
+						<img src="img/image-3.jpg" alt=""/>
+					</p>
+				</div>
+				<div class="free-col">
+					<h4>Статьи и обзоры</h4>
+					<p>
+						<a href="">Какая бензопила лучше</a>
+					</p>
+					<p>
+						<a href="">Осенняя АКЦИЯ STIHL 2017!!!</a>
+					</p>
+					<p>
+						<a href="">Изгиб коленчатого вала</a>
+					</p>
+					<p>
+						<a href="">Как определить Модель Тип Код мотора Briggs and Stratton</a>
+					</p>
+					<p>
+						<a href="">Мотор Briggs and Stratton</a>
+					</p>
+					<p>
+						<a href="">SUZUKI ПРЕДСТАВЛЯЕТ DF350A 350 Л.С. V6</a>
+					</p>
+					<p>
+						<a href="">АКЦИЯ!!! АКЦИЯ!!! ВЕСНА!!! 2017</a>
+					</p>
+					<p>
+						<a href="">Новые двигатели SUZUKI DF5A - начало официальных поставок.</a>
+					</p>
+					<p>
+						<a href="">Мотокоса или газонокосилка на колесах или...</a>
+					</p>
 				</div>
 			</div>
 		</div>
+
+
+
+
+
+
+
 	</xsl:template>
 
 	<xsl:template name="EXTRA_SCRIPTS">

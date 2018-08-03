@@ -34,22 +34,22 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 		Item cat = ItemQuery.loadSingleItemByName(CATALOG);
 		if (cat == null)
 			return false;
-		File priceFile = cat.getFileValue(catalog.INTEGRATION, AppContext.getFilesDirPath(false));
+		File priceFile = cat.getFileValue(catalog_.INTEGRATION, AppContext.getFilesDirPath(false));
 		price = new ExcelPriceList(priceFile, CODE_HEADER, PRICE_OLD_HEADER, PRICE_NEW_HEADER, AVAILABLE_HEADER) {
 			@Override
 			protected void processRow() throws Exception {
 				String code = StringUtils.replace(getValue(0), " ", "");
 				if (StringUtils.isNotBlank(code)) {
-					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(PRODUCT, product.CODE, code));
+					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(PRODUCT, product_.CODE, code));
 					if (prod != null) {
 						String priceOld = getValue(1);
 						String priceNew = getValue(2);
 						boolean available = StringUtils.contains(getValue(3), "+");
 						if (StringUtils.isNotBlank(priceNew)) {
-							prod.setValueUI(product.PRICE, priceNew);
+							prod.setValueUI(product_.PRICE, priceNew);
 							prod.setValueUI("price_old", priceOld);
 						} else {
-							prod.setValueUI(product.PRICE, priceOld);
+							prod.setValueUI(product_.PRICE, priceOld);
 						}
 						prod.setValue("available", available ? (byte)1 : (byte)0);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());

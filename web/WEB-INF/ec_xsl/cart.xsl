@@ -1,9 +1,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="'Ваш заказ'" />
+	<xsl:variable name="title" select="'Список техники в заявке'" />
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -13,7 +13,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Ваш заказ</h1>
+		<h1>Список техники</h1>
 
 		<div class="cart-container">
 			<xsl:choose>
@@ -21,19 +21,19 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="price" select="if ($p/price) then concat($p/price, ' p.') else 'под заказ'"/>
-							<xsl:variable name="sum" select="if ($p/price) then concat(sum, ' p.') else 'под заказ'"/>
+							<xsl:variable name="price" select="if ($p/price) then concat($p/price, ' p.') else 'по запросу'"/>
+							<xsl:variable name="sum" select="if ($p/price) then concat(sum, ' p.') else ''"/>
 							<div class="item">
 								<a href="{$p/show_product}" class="image-container">
-									<img src="{$p/@path}{$p/main_pic}" alt=""/>
+									<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
 								</a>
 								<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
-								<div class="price one"><p><span>Цена за ед.</span><xsl:value-of select="$price"/></p></div>
+								<div class="price one"><p><span>Цена</span><xsl:value-of select="$price"/></p></div>
 								<div class="quantity">
-									<span>Кол-во</span>
-									<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
+									<!-- <span>Кол-во</span> -->
+									<input type="hidden" value="{qty}" name="{input/qty/@input}" min="0"/>
 								</div>
-								<div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div>
+								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
 								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
 							</div>
 						</xsl:for-each>

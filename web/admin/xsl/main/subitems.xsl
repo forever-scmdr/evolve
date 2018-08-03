@@ -72,7 +72,7 @@
 			<div class="list">
 				<h4>Создать</h4>
 				<ul class="create">
-					<xsl:for-each select="admin-page/assoc">
+					<xsl:for-each select="admin-page/assoc[item-to-add[@virtual = 'false']]">
 						<li class="drop-zone"></li>
 						<li class="assoc-name">
 							<a href=".ass_{@id}" class="toggle-hidden"><xsl:value-of select="@caption"/></a>
@@ -96,7 +96,7 @@
 			<xsl:variable name="differentSubitems" select="count(admin-page/assoc/item-to-add) &gt; 1 or admin-page/assoc/item-to-add/item or admin-page/assoc/item/@type-id != admin-page/assoc/item/@type-id"/>
 			<div class="list">
 				<h4>Редактировать</h4>
-				<xsl:for-each select="admin-page/assoc">
+				<xsl:for-each select="admin-page/assoc[item]">
 					<xsl:variable name="ass" select="concat('ass_', @id)"/>
 					<xsl:variable name="ass_id" select="@id"/>
 					<xsl:variable name="asc" select="if (count(item) &gt; 1 and number(item[1]/@weight) &gt; number(item[2]/@weight)) then false() else true()"/>

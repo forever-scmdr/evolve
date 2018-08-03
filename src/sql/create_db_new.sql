@@ -69,7 +69,8 @@ CREATE TABLE IF NOT EXISTS `item_parent` (
   PRIMARY KEY (`ip_child_id`,`ip_assoc_id`,`ip_parent_direct`,`ip_parent_id`) USING BTREE,
   KEY `MAIN` (`ip_parent_id`,`ip_assoc_id`,`ip_child_supertype`,`ip_parent_direct`,`ip_weight`) USING BTREE,
   KEY `MAX_WEIGHT` (`ip_parent_id`,`ip_assoc_id`,`ip_weight`) USING BTREE,
-  CONSTRAINT `CHILD` FOREIGN KEY (`ip_child_id`) REFERENCES `item` (`i_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `CHILD` FOREIGN KEY (`ip_child_id`) REFERENCES `item` (`i_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `PARENT` FOREIGN KEY (`ip_parent_id`) REFERENCES `item` (`i_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

@@ -47,6 +47,7 @@
     </include-definition>
 
 
+
     <page name="index" template="index" cacheable="true">
         <single item="main_page" cacheable="true">
             <list item="main_promo_bottom"/>
@@ -72,12 +73,14 @@
     </page>
 
 
+
     <page name="catalog" template="catalog" cacheable="true">
         <include name="COMMON"/>
         <single item="catalog">
             <single item="seo"/>
         </single>
     </page>
+
 
 
     <page name="section" template="section" cacheable="true" critical-item="cur_sec">
@@ -97,21 +100,15 @@
                 <filter>
                     <child item="params" transit="false"
                            ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
-                    <sorting direction-var="direction">
-                        <var var="sort"/>
-                    </sorting>
-                    <limit>
-                        <var var="limit"/>
-                    </limit>
-                    <pages>
-                        <var var="page"/>
-                    </pages>
-                    <link name="filter_base_link" target="section">
-                        <var name="sec" var="sec" style="translit"/>
-                    </link>
+                    <sorting direction-var="direction"><var var="sort"/></sorting>
+                    <limit><var var="limit"/></limit>
+                    <pages><var var="page"/></pages>
                     <parameter name="tag" sign="=" compare="ANY">
                         <var var="tag"/>
                     </parameter>
+                    <link name="filter_base_link" target="section">
+                        <var name="sec" var="sec" style="translit"/>
+                    </link>
                 </filter>
                 <link name="show_product" target="product">
                     <var name="prod" ref="prod" style="translit"/>
@@ -200,6 +197,7 @@
     </page>
 
 
+
     <page name="sub" template="sub" cacheable="true">
         <request>
             <var name="sec" style="translit"/>
@@ -217,6 +215,8 @@
         </single>
         <include name="COMMON"/>
     </page>
+
+
 
     <page name="search" template="search">
         <request>
@@ -268,6 +268,7 @@
     </page>
 
 
+
     <page name="product" template="product" cacheable="true">
         <request>
             <var name="prod" style="translit"/>
@@ -305,6 +306,7 @@
     </page>
 
 
+
     <page name="news" template="news" cacheable="true">
         <request>
             <var name="sel" style="translit"/>
@@ -331,6 +333,8 @@
         </single>
         <include name="COMMON"/>
     </page>
+
+
 
     <page name="news_item" template="news_item" cacheable="true">
         <request>
@@ -366,11 +370,13 @@
     </page>
 
 
+
     <page name="update_prices" template="update_prices">
         <command class="extra.UpdatePrices" clear-cache="yes">
             <result name="complete" type="xml"/>
         </command>
     </page>
+
 
 
     <page name="page" cacheable="true" template="page">
@@ -394,6 +400,7 @@
     </page>
 
 
+
     <page name="feedback_ajax" template="feedback_ajax">
         <request>
             <var name="result"/>
@@ -407,6 +414,7 @@
             <var name="source_page" value="feedback_ajax"/>
         </link>
     </page>
+
 
 
     <page name="feedback_command">
@@ -438,6 +446,7 @@
     </page>
 
 
+
     <!--///////////////////////////////////////////////////////////////////////////////////////////////-->
     <!--/////////////                                                                      ////////////-->
     <!--/////////////                  КОРЗИНА, СРАВНЕНИЕ, ИЗБРАННОЕ                       ////////////-->
@@ -467,6 +476,7 @@
     </page>
 
 
+
     <page name="cart_action">
         <request>
             <var name="action"/>
@@ -492,6 +502,7 @@
             <result name="email_send_failed" type="redirect"/>
         </command>
     </page>
+
 
 
     <page name="cart" template="cart">
@@ -525,6 +536,7 @@
     </page>
 
 
+
     <page name="proceed" template="proceed">
         <request>
             <var name="message"/>
@@ -540,6 +552,7 @@
         </link>
         <include name="COMMON"/>
     </page>
+
 
 
     <page name="confirm" template="confirm">
@@ -566,6 +579,7 @@
     </page>
 
 
+
     <page name="order_email" template="order_email">
         <session>
             <single item="cart">
@@ -582,6 +596,7 @@
         </session>
         <include name="COMMON"/>
     </page>
+
 
 
     <page name="fav_ajax" template="fav_ajax">
@@ -606,6 +621,7 @@
     </page>
 
 
+
     <page name="compare_ajax" template="compare_ajax">
         <request>
             <var name="compare" scope="cookie"/>
@@ -628,6 +644,7 @@
     </page>
 
 
+
     <page name="cookie_list_action">
         <request>
             <var name="action"/>
@@ -640,6 +657,7 @@
             <result name="success" type="redirect"/>
         </command>
     </page>
+
 
 
     <page name="fav" template="fav">
@@ -677,6 +695,7 @@
         </link>
         <include name="COMMON"/>
     </page>
+
 
 
     <page name="compare" template="compare">
@@ -754,13 +773,22 @@
 		<request>
 			<var name="action"/>
 		</request>
-		<list item="section" id="sec">
-			<list item="parse_item" id="pi"/>
-		</list>
-		<command class="extra.DeployParsedSingle" clear-cache="yes">
+		<command class="extra.SingleItemIntegrateParsedCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
+
+    <!--//                                                                          -->
+    <!--// Создать типы товаров и фильтры в разделах                                -->
+    <!--//                                                                          -->
+    <page name="create_filters" template="create_filters">
+        <request>
+            <var name="action"/>
+        </request>
+        <command class="ecommander.fwk.integration.CreateParametersAndFiltersCommand" clear-cache="yes">
+            <result name="complete" type="xml"/>
+        </command>
+    </page>
 
 
     <!--//                                                                          -->
@@ -775,13 +803,23 @@
         </command>
     </page>
 
+
     <page name="create_prices" template="integration">
         <command class="extra.IntegratePriceList" clear-cache="yes">
             <result name="complete" type="xml"/>
         </command>
     </page>
 
-    <!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
+
+
+
+    <!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+    <!--/////////////                                                                      ////////////-->
+    <!--/////////////                           КАРТА САЙТА                                ////////////-->
+    <!--/////////////                                                                      ////////////-->
+    <!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
     <page name="sitemap" template="sitemap" cacheable="true">
         <headers content-type="xml"/>
         <single item="url_seo_wrap"/>
@@ -798,21 +836,19 @@
                 </link>
             </tree>
         </single>
-
-            <list item="custom_page" id="custom_page" cacheable="true">
-                <link name="show_page" target="page" type="exclusive">
-                    <var name="p" ref="custom_page" style="translit"/>
-                </link>
-            </list>
-            <list item="news" id="news" cacheable="true">
-            <link name="show_page" target="news" type="exclusive">
-                <var name="sel" ref="news" style="translit"/>
+        <list item="custom_page" id="custom_page" cacheable="true">
+            <link name="show_page" target="page" type="exclusive">
+                <var name="p" ref="custom_page" style="translit"/>
             </link>
+        </list>
+        <list item="news" id="news" cacheable="true">
+        <link name="show_page" target="news" type="exclusive">
+            <var name="sel" ref="news" style="translit"/>
+        </link>
         </list>
         <link name="index_link" target="index"/>
         <link name="catalog_link" target="catalog"/>
         <link name="contacts_link" target="contacts"/>
-
         <list item="news_item" id="ni">
             <filter>
                 <sorting direction="DESC">
@@ -824,6 +860,8 @@
             </link>
         </list>
     </page>
+
+
 
     <page name="sitemap_section" template="sitemap_section" cacheable="true">
         <request>
@@ -845,6 +883,8 @@
             </list>
         </single>
     </page>
+
+
 
     <page name="generate_sitemap">
         <command class="ecommander.fwk.CreateSiteMap">

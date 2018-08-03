@@ -10,6 +10,8 @@ public interface ItemNames {
     String SEO = "seo";
     String URL_SEO = "url_seo";
     String URL_SEO_WRAP = "url_seo_wrap";
+    String SEO_CATALOG = "seo_catalog";
+    String SEO_CONTAINER = "seo_container";
     String CATALOG = "catalog";
     String SECTION = "section";
     String PRODUCT = "product";
@@ -48,13 +50,13 @@ public interface ItemNames {
     String NAMED_CODE = "named_code";
     String ROBOTS_TEXT_OVERRIDER = "robots_text_overrider";
 
-    public interface articles {
+    public interface articles_ {
 
         String _ITEM_NAME = "articles";
 
     }
 
-    public interface bought {
+    public interface bought_ {
 
         String _ITEM_NAME = "bought";
         String NAME = "name";
@@ -65,7 +67,7 @@ public interface ItemNames {
 
     }
 
-    public interface cart {
+    public interface cart_ {
 
         String _ITEM_NAME = "cart";
         String ORDER_NUM = "order_num";
@@ -75,7 +77,7 @@ public interface ItemNames {
 
     }
 
-    public interface catalog {
+    public interface catalog_ {
 
         String _ITEM_NAME = "catalog";
         String INTEGRATION = "integration";
@@ -83,7 +85,7 @@ public interface ItemNames {
 
     }
 
-    public interface common {
+    public interface common_ {
 
         String _ITEM_NAME = "common";
         String TOP = "top";
@@ -97,7 +99,7 @@ public interface ItemNames {
 
     }
 
-    public interface contacts {
+    public interface contacts_ {
 
         String _ITEM_NAME = "contacts";
         String TEXT = "text";
@@ -107,14 +109,14 @@ public interface ItemNames {
 
     }
 
-    public interface counter {
+    public interface counter_ {
 
         String _ITEM_NAME = "counter";
         String COUNT = "count";
 
     }
 
-    public interface custom_page {
+    public interface custom_page_ {
 
         String _ITEM_NAME = "custom_page";
         String HEADER = "header";
@@ -126,13 +128,13 @@ public interface ItemNames {
 
     }
 
-    public interface custom_pages {
+    public interface custom_pages_ {
 
         String _ITEM_NAME = "custom_pages";
 
     }
 
-    public interface dealer_coords {
+    public interface dealer_coords_ {
 
         String _ITEM_NAME = "dealer_coords";
         String NAME = "name";
@@ -141,20 +143,20 @@ public interface ItemNames {
 
     }
 
-    public interface dealers_page {
+    public interface dealers_page_ {
 
         String _ITEM_NAME = "dealers_page";
 
     }
 
-    public interface delivery {
+    public interface delivery_ {
 
         String _ITEM_NAME = "delivery";
         String OPTION = "option";
 
     }
 
-    public interface docs {
+    public interface docs_ {
 
         String _ITEM_NAME = "docs";
         String TEXT = "text";
@@ -162,7 +164,7 @@ public interface ItemNames {
 
     }
 
-    public interface feedback_form {
+    public interface feedback_form_ {
 
         String _ITEM_NAME = "feedback_form";
         String NAME = "name";
@@ -172,7 +174,7 @@ public interface ItemNames {
 
     }
 
-    public interface feedback_params {
+    public interface feedback_params_ {
 
         String _ITEM_NAME = "feedback_params";
         String SERVER_FROM = "server_from";
@@ -182,13 +184,13 @@ public interface ItemNames {
 
     }
 
-    public interface main_page {
+    public interface main_page_ {
 
         String _ITEM_NAME = "main_page";
 
     }
 
-    public interface main_promo_bottom {
+    public interface main_promo_bottom_ {
 
         String _ITEM_NAME = "main_promo_bottom";
         String TEXT_BIG = "text_big";
@@ -198,7 +200,7 @@ public interface ItemNames {
 
     }
 
-    public interface main_slider_frame {
+    public interface main_slider_frame_ {
 
         String _ITEM_NAME = "main_slider_frame";
         String NAME = "name";
@@ -207,13 +209,13 @@ public interface ItemNames {
 
     }
 
-    public interface modules {
+    public interface modules_ {
 
         String _ITEM_NAME = "modules";
 
     }
 
-    public interface my_price_form {
+    public interface my_price_form_ {
 
         String _ITEM_NAME = "my_price_form";
         String NAME = "name";
@@ -226,7 +228,7 @@ public interface ItemNames {
 
     }
 
-    public interface named_code {
+    public interface named_code_ {
 
         String _ITEM_NAME = "named_code";
         String NAME = "name";
@@ -234,7 +236,7 @@ public interface ItemNames {
 
     }
 
-    public interface news {
+    public interface news_ {
 
         String _ITEM_NAME = "news";
         String NAME = "name";
@@ -242,7 +244,7 @@ public interface ItemNames {
 
     }
 
-    public interface news_item {
+    public interface news_item_ {
 
         String _ITEM_NAME = "news_item";
         String HEADER = "header";
@@ -254,13 +256,13 @@ public interface ItemNames {
 
     }
 
-    public interface news_wrap {
+    public interface news_wrap_ {
 
         String _ITEM_NAME = "news_wrap";
 
     }
 
-    public interface one_click_form {
+    public interface one_click_form_ {
 
         String _ITEM_NAME = "one_click_form";
         String PHONE = "phone";
@@ -269,26 +271,26 @@ public interface ItemNames {
 
     }
 
-    public interface params {
+    public interface params_ {
 
         String _ITEM_NAME = "params";
 
     }
 
-    public interface params_xml {
+    public interface params_xml_ {
 
         String _ITEM_NAME = "params_xml";
         String XML = "xml";
 
     }
 
-    public interface parse_catalog {
+    public interface parse_catalog_ {
 
         String _ITEM_NAME = "parse_catalog";
 
     }
 
-    public interface parse_item {
+    public interface parse_item_ {
 
         String _ITEM_NAME = "parse_item";
         String URL = "url";
@@ -300,10 +302,11 @@ public interface ItemNames {
         String XML = "xml";
         String TEST_URL = "test_url";
         String FILE = "file";
+        String HTML_PIC = "html_pic";
 
     }
 
-    public interface parse_section {
+    public interface parse_section_ {
 
         String _ITEM_NAME = "parse_section";
         String NAME = "name";
@@ -311,14 +314,14 @@ public interface ItemNames {
 
     }
 
-    public interface payment {
+    public interface payment_ {
 
         String _ITEM_NAME = "payment";
         String OPTION = "option";
 
     }
 
-    public interface product {
+    public interface product_ {
 
         String _ITEM_NAME = "product";
         String NAME = "name";
@@ -344,10 +347,12 @@ public interface ItemNames {
         String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
         String GALLERY = "gallery";
+        String ASSOC_CODE = "assoc_code";
+        String TAG = "tag";
 
     }
 
-    public interface product_extra {
+    public interface product_extra_ {
 
         String _ITEM_NAME = "product_extra";
         String NAME = "name";
@@ -356,7 +361,7 @@ public interface ItemNames {
 
     }
 
-    public interface purchase {
+    public interface purchase_ {
 
         String _ITEM_NAME = "purchase";
         String NUM = "num";
@@ -366,20 +371,20 @@ public interface ItemNames {
 
     }
 
-    public interface registered_catalog {
+    public interface registered_catalog_ {
 
         String _ITEM_NAME = "registered_catalog";
 
     }
 
-    public interface robots_text_overrider {
+    public interface robots_text_overrider_ {
 
         String _ITEM_NAME = "robots_text_overrider";
         String FILE_CONTENT = "file_content";
 
     }
 
-    public interface section {
+    public interface section_ {
 
         String _ITEM_NAME = "section";
         String NAME = "name";
@@ -390,9 +395,10 @@ public interface ItemNames {
 
     }
 
-    public interface seo {
+    public interface seo_ {
 
         String _ITEM_NAME = "seo";
+        String KEY_UNIQUE = "key_unique";
         String TITLE = "title";
         String H1 = "h1";
         String DESCRIPTION = "description";
@@ -403,7 +409,19 @@ public interface ItemNames {
 
     }
 
-    public interface url_seo {
+    public interface seo_catalog_ {
+
+        String _ITEM_NAME = "seo_catalog";
+
+    }
+
+    public interface seo_container_ {
+
+        String _ITEM_NAME = "seo_container";
+
+    }
+
+    public interface url_seo_ {
 
         String _ITEM_NAME = "url_seo";
         String NAME = "name";
@@ -418,14 +436,14 @@ public interface ItemNames {
 
     }
 
-    public interface url_seo_wrap {
+    public interface url_seo_wrap_ {
 
         String _ITEM_NAME = "url_seo_wrap";
         String MAIN_HOST = "main_host";
 
     }
 
-    public interface user {
+    public interface user_ {
 
         String _ITEM_NAME = "user";
         String EMAIL = "email";
@@ -433,7 +451,7 @@ public interface ItemNames {
 
     }
 
-    public interface user_jur {
+    public interface user_jur_ {
 
         String _ITEM_NAME = "user_jur";
         String EMAIL = "email";
@@ -459,7 +477,7 @@ public interface ItemNames {
 
     }
 
-    public interface user_phys {
+    public interface user_phys_ {
 
         String _ITEM_NAME = "user_phys";
         String EMAIL = "email";

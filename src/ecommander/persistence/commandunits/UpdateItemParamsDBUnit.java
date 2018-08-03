@@ -107,7 +107,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 			LuceneIndexMapper.getSingleton().updateItem(item);
 
 		// Дополнительная обработка
-		if (triggerExtra && item.getItemType().hasExtraHandlers()) {
+		if (triggerExtra && item.getItemType().hasExtraHandlers(ItemType.Event.update)) {
 			for (ItemEventCommandFactory fac : item.getItemType().getExtraHandlers(ItemType.Event.update)) {
 				PersistenceCommandUnit command = fac.createCommand(item);
 				executeCommandInherited(command);

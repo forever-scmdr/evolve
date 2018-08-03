@@ -34,6 +34,7 @@ public class CreateSeoItemFactory implements ItemEventCommandFactory {
 			Item parent = ItemQuery.loadById(seo.getContextParentId(), getTransactionContext().getConnection());
 			// Проверка, есть ли сео для айтема
 			List<Item> seos = new ItemQuery(SEO).setParentId(parent.getId(), false, SEO).loadItems();
+			long newSeoId = -1;
 			if (seos.size() == 0) {
 				Item seoCatalog = ItemUtils.ensureSingleRootItem(SEO_CATALOG, User.getDefaultUser(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 				seo.setValueUI(KEY_UNIIQUE, parent.getKeyUnique());
@@ -41,9 +42,13 @@ public class CreateSeoItemFactory implements ItemEventCommandFactory {
 				Item.updateParamValues(seo, newSeo);
 				executeCommand(SaveItemDBUnit.get(newSeo, false));
 				executeCommand(new CreateAssocDBUnit(newSeo, parent, ItemTypeRegistry.getAssocId(SEO)));
+				newSeoId = newSeo.getId();
+			} else {
+				newSeoId = seos.get(0).getId();
 			}
 			executeCommand(ItemStatusDBUnit.delete(seo));
 			executeCommand(new CleanAllDeletedItemsDBUnit(10, null));
+			seo.setId(newSeoId); // это надо для того, чтобы в админке был переход на страницу внов созданного айтема seo
 		}
 	}
 

@@ -117,9 +117,10 @@
 	</item>
 
 	<item name="seo_container" caption="Контейнер для сео айтемов" virtual="true" key-unique="true" ag-id="45" ag-hash="1272836895">
-		<child item="seo" single="true" assoc="seo"/><!-- Связь с сео айтемом из сао каталога -->
+		<child item="seo" single="true" assoc="seo" virtual="true"/><!-- Связь с сео айтемом из сао каталога -->
 		<child item="seo" single="true"/><!-- Для создания нового сео -->
-		<on-update class="ecommander.fwk.integration.UpdateSeoItemFactory"/>
+		<on-update class="ecommander.fwk.integration.UpdateSeoContainerItemFactory"/><!-- Обновить параметр key_unique в seo -->
+		<on-create class="ecommander.fwk.integration.CreateSeoContainerItemFactory"/><!-- Создать связь с seo (если он есть) -->
 	</item>
 
 

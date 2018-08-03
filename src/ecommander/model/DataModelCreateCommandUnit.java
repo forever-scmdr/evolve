@@ -141,8 +141,8 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		noDeletion = itemsById.size() == 0 && paramsById.size() == 0;
 		if (mode == Mode.force_update) {
 			mergeModel();
-			// Создать java класс с текстовыми константами для всех айтемов
-			createJavaConstants();
+			//// Создать java класс с текстовыми константами для всех айтемов
+			//createJavaConstants();
 			// Добавить сгенерированные ID в файлы модели
 			for (File file : xmlFileContents.keySet()) {
 				String content = xmlFileContents.get(file);
