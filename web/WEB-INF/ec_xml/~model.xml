@@ -125,6 +125,7 @@
 
 
 
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             КАТАЛОГ                                  ////////////-->
@@ -147,6 +148,12 @@
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
 	</item>
 
+
+	<!-- Основной раздел может быть не обязательно первого уровня (может быть на любом уровне) -->
+	<item name="main_section" caption="Онсовной раздел" super="section"
+	      description="раздел, который выделяется из остальных (определяется не только названием">
+		<parameter name="name_extra" type="string" caption="Другое название" description="выводится на главной вместо основного при наличии"/>
+	</item>
 
 
 	<!--Товар из магазина yandex market-->
@@ -356,12 +363,15 @@
 	</item>
 
 	<item name="main_slider_frame" caption="Кадр для слайдера" key="name" ag-id="24" ag-hash="-806170283">
-		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
+		<parameter name="name" type="string" caption="Заголовок"/>
+		<parameter name="text" type="short-text" caption="Текст"/>
 		<parameter name="pic" type="picture" caption="Картинка"/>
 		<parameter name="link" type="string" caption="Ссылка" description="начиная с http://"/>
 	</item>
 
 	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" super="seo_container" ag-id="25" ag-hash="-251149995">
+		<parameter name="text_left" type="text" caption="Текст слева"/>
+		<parameter name="text_right" type="text" caption="Текст справа"/>
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
 	</item>

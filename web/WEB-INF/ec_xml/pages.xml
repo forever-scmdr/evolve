@@ -4,7 +4,7 @@
     <!-- ******************************* Включение для разделов каталога ****************************** -->
     <include-definition name="COMMON">
         <single item="catalog" id="catalog_main" cacheable="false">
-            <tree item="section" id="sec">
+            <tree item="section" id="sec" tag="section">
                 <link name="show_section" target="sub">
                     <var name="sec" ref="sec" style="translit"/>
                 </link>
@@ -54,21 +54,19 @@
             <list item="main_slider_frame"/>
             <single item="seo"/>
         </single>
-        <single item="news_wrap">
-            <list item="news_item" id="ni" transit="true">
-                <filter>
-                    <sorting direction="DESC">
-                        <var value="date"/>
-                    </sorting>
-                    <limit>
-                        <var value="4"/>
-                    </limit>
-                </filter>
-                <link name="show_news_item" target="news_item" type="exclusive">
-                    <var name="ni" ref="ni" style="translit"/>
-                </link>
-            </list>
-        </single>
+        <list item="news_item" id="ni" transit="true">
+            <filter>
+                <sorting direction="DESC">
+                    <var value="date"/>
+                </sorting>
+                <limit>
+                    <var value="8"/>
+                </limit>
+            </filter>
+            <link name="show_news_item" target="news_item" type="exclusive">
+                <var name="ni" ref="ni" style="translit"/>
+            </link>
+        </list>
         <include name="COMMON"/>
     </page>
 

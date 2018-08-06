@@ -7,6 +7,7 @@ public interface CatalogConst {
 	String PRODUCT_ITEM = "product";
 	String PARAMS_ITEM = "params";
 	String PARAMS_XML_ITEM = "params_xml";
+	String MAIN_SECTION_ITEM = "main_section";
 
 
 	String INTEGRATION_PARAM = "integration";

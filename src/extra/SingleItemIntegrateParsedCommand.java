@@ -32,6 +32,7 @@ public class SingleItemIntegrateParsedCommand extends IntegrateBase implements I
 
 
 	private ItemType sectionType;
+	private ItemType mainSectionType;
 	private ItemType productType;
 	private ItemType productExtraType;
 	private ItemType paramsXmlType;
@@ -42,6 +43,7 @@ public class SingleItemIntegrateParsedCommand extends IntegrateBase implements I
 		productType = ItemTypeRegistry.getItemType(PRODUCT);
 		productExtraType = ItemTypeRegistry.getItemType(PRODUCT_EXTRA);
 		paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML);
+		mainSectionType = ItemTypeRegistry.getItemType(MAIN_SECTION_ITEM);
 		return true;
 	}
 
@@ -49,13 +51,6 @@ public class SingleItemIntegrateParsedCommand extends IntegrateBase implements I
 	protected void integrate() throws Exception {
 		info.setToProcess(0);
 		info.setProcessed(0);
-		List<Item> catalogs = new ItemQuery(CATALOG).loadItems();
-		if (catalogs.size() > 0) {
-			for (Item catalog : catalogs) {
-				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(catalog));
-			}
-			executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null));
-		}
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		Item parseCatalog = ItemQuery.loadSingleItemByName(PARSE_CATALOG);
 		processSubsections(parseCatalog, catalog);
@@ -65,9 +60,18 @@ public class SingleItemIntegrateParsedCommand extends IntegrateBase implements I
 
 		List<Item> parseSections = new ItemQuery(PARSE_SECTION).setParentId(parseParent.getId(), false).loadItems();
 		for (Item parseSection : parseSections) {
-			Item section = Item.newChildItem(sectionType, catalogParent);
-			section.setValue(section_.NAME, parseSection.getValue(NAME));
-			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex());
+			// Сначала проверить, есть ли уже такой раздел
+			String secName = parseSection.getStringValue(NAME);
+			Item section = new ItemQuery(SECTION)
+					.setParentId(catalogParent.getId(), false)
+					.addParameterCriteria(section_.NAME, secName, "=", null, Compare.SOME)
+					.loadFirstItem();
+			if (section == null) {
+				ItemType secType = StringUtils.equalsIgnoreCase(catalogParent.getTypeName(), CATALOG) ? mainSectionType : sectionType;
+				section = Item.newChildItem(secType, catalogParent);
+				section.setValue(section_.NAME, secName);
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex());
+			}
 			processSubsections(parseSection, section);
 		}
 		List<Item> parseItems = new ItemQuery(PARSE_ITEM).setParentId(parseParent.getId(), false).loadItems();
@@ -85,6 +89,18 @@ public class SingleItemIntegrateParsedCommand extends IntegrateBase implements I
 				info.addError("Документ для товара '" + url + "' содержит ошибки", url);
 			}
 			String code = prodEl.attr(ID_ATTR);
+
+			// Сначала проверить, создан ли уже такой продукт
+			Item prod = new ItemQuery(PRODUCT)
+					.setParentId(catalogParent.getId(), false)
+					.addParameterCriteria(product_.CODE, code, "=", null, Compare.SOME)
+					.loadFirstItem();
+			// Если продукт уже создан - пропустить его
+			if (prod != null) {
+				info.increaseProcessed();
+				continue;
+			}
+
 			String name = prodEl.getElementsByTag(NAME).first().ownText();
 			String type = prodEl.getElementsByTag(TYPE_PARAM).first().ownText();
 			String nameExtra = prodEl.getElementsByTag(NAME_EXTRA_PARAM).first().ownText();

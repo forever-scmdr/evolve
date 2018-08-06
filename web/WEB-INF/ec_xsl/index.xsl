@@ -131,11 +131,11 @@
 				<xsl:for-each select="page/main_page/main_slider_frame">
 					<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
 						<div class="slider-item__block">
-							<div class="slider-item__title">Лодочные моторы SUZUKI</div>
+							<div class="slider-item__title"><xsl:value-of select="name" /></div>
 							<div class="slider-item__text">
-								<p>Компания ТактСервис – единственный официальный дилер SUZUKI MOTORS CORPORATION, представляющий лодочные моторы SUZUKI и товары для судоходства SUZUKI на территории Республики Беларусь.</p>
+								<xsl:value-of select="text" disable-output-escaping="yes"/>
 							</div>
-							<a href="" class="slider-item__button">Каталог продукции</a>
+							<a href="{link}" class="slider-item__button">Каталог продукции</a>
 						</div>
 					</div>
 				</xsl:for-each>
@@ -146,11 +146,11 @@
 				<xsl:for-each select="page/main_page/main_slider_frame">
 					<div class="slider-item" style="background-image: url({@path}{pic});">
 						<div class="slider-item__block">
-							<div class="slider-item__title">Лодочные моторы SUZUKI</div>
+							<div class="slider-item__title"><xsl:value-of select="name" /></div>
 							<div class="slider-item__text">
-								<p>Компания ТактСервис – единственный официальный дилер SUZUKI MOTORS CORPORATION, представляющий лодочные моторы SUZUKI и товары для судоходства SUZUKI на территории Республики Беларусь.</p>
+								<xsl:value-of select="text" disable-output-escaping="yes"/>
 							</div>
-							<a href="" class="slider-item__button">Перейти в каталог</a>
+							<a href="{link}" class="slider-item__button">Перейти в каталог</a>
 						</div>
 					</div>
 				</xsl:for-each>
@@ -185,12 +185,12 @@
 	<xsl:template name="BANNERS">
 		<div class="container">
 			<div class="banners-container">
-				<xsl:for-each select="page/main_page/main_promo_bottom">
+				<xsl:for-each select="page/catalog/section">
 					<div class="banner">
-						<div class="banner__image" style="background-image: url({@path}{pic})"></div>
-						<div class="banner__title"><xsl:value-of select="text_big"/></div>
+						<div class="banner__image" style="background-image: url({@path}{main_pic})"></div>
+						<div class="banner__title"><xsl:value-of select="name_extra"/></div>
 						<!-- <div class="banner__text"><xsl:value-of select="text_small"/></div> -->
-						<a class="banner__link" href="{link}"></a>
+						<a class="banner__link" href="{show_section}"></a>
 					</div>
 				</xsl:for-each>
 			</div>
@@ -199,95 +199,18 @@
 		<div class="container container-ptb" style="background-color: #f2f2f2;">
 			<div class="free-cols">
 				<div class="free-col">
-					<h1>Бензоинструменты и двигатели. Сервис и продажи</h1>
-					<strong>ТактСервис – это коллектив с большим опытом и знаниями! Мы создаем для клиентов условия обладающие особой ценностью!</strong>
-					<ul>
-						<li>Узкая специализация компании и сотрудничество с передовыми производителями бензиновых инструментов, двигателей, коммунальной, сельско-хозяйственной и лесной техники позволяет предоставлять качественный, авторизованный сервис и гарантию на выполненные работы/</li>
-						<li>Прямой контакт с инженерными службами производителей оборудования позволяет нам решать самые сложные технические задачи.</li>
-						<li>Мы поставляем оригинальные запасные части и расходные материалы.</li>
-						<li>Мы не продаем бензомоторную технику «с витрины» или «курьером»! Каждый клиент имеет УНИКАЛЬНУЮ! возможность испытать приобретаемое или отремонтированное оборудование! А так же получить индивидуальный урок о безопасном и эффективном применении бензомоторной техники, коммунальных машин, лодочных моторов в общении с мастером сервисного центра ТактСервис!</li>
-						<li>Удобное расположение, подъезд и парковка на любом виде индивидуального, общественного или грузового транспорта. В непосредственной близости от улицы Радиальной, Партизанского проспекта.</li>
-						<li>Рассрочка на товары, услуги по ремонту и обслуживанию бензомоторной техники.</li>
-					</ul>
-					<h4>ТактСервис - официальный дилер:</h4>
-					<p>
-						<a href=""><strong>SUZUKI</strong><br/> навесные лодочные моторы</a>
-					</p>
-					<p>
-						<a href=""><strong>STIHL, VIKING</strong><br/> газонокосилки, бензопилы кусторезы, мотокосы отрезные устройства, мотобуры, воздуходувки</a>
-					</p>
-					<p>
-						<a href=""><strong>Briggs&amp;Stratton</strong><br/> двигатели для малой строительной, дорожной и сельскохозяйственной техники</a>
-					</p>
-					<p>
-						<a href=""><strong>LASKI</strong><br/> дробилки дерева, пней, траншеекопатели техника для коммунального хозяйства из Чехии</a>
-					</p>
-					<p>
-						<a href=""><strong>AS-Motor</strong><br/> газонокосилки для неровной местности профессионального назначения</a>
-					</p>
-					<p>
-						<a href=""><strong>MASTER</strong><br/> нагреватели воздуха на жидком топливе, газе или электричестве. Для строительных работ и отопления</a>
-					</p>
-					<p>
-						<a href=""><strong>UMS</strong><br/> катера и лодки из алюминия</a>
-					</p>
+					<xsl:value-of select="page/main_page/text_left" disable-output-escaping="yes"/>
 				</div>
 				<div class="free-col">
-					<h1>Актуально в данный момент!</h1>
-					<strong>Приятная новость!</strong>
-					<p>Теперь вы можете купить товары в рассрочку и без первого взноса. С помощью карты рассрочки №1 "Халва" от МТБанка.</p>
-					<p>
-						<img src="img/image.jpg" alt=""/>
-					</p>
-					<p>Узнать об очень простой процедуре оформления карты вы можете по ссылке.</p>
-					<hr/>
-					<strong>Конкурентые преимущества STIHL</strong>
-					<p>Детали поршневой группы бензопил, кусторезов, мотокос производятся по одинаковой технологи...</p>
-					<p>
-						<img src="img/image-1.jpg" alt=""/>
-					</p>
-					<hr/>
-					<strong>Акция!!! Новый мотор для газонокосилок Briggs&amp;Stratton</strong>
-					<p>
-						<img src="img/image-2.jpg" alt=""/>
-					</p>
-					<p>Ремонт мотора дорого стоит? Нехватает запасных частей для быстрого ремонта? А если заменить мотор целиком?</p>
-					<p>Подробнее о замене мотора узнайте у специалистов "ТактСервис", а так же в статье.</p>
-					<hr/>
-					<strong>Revolution!!! SUZUKI представляет DF 350 A 350 л.с. V6</strong>
-					<p>
-						<img src="img/image-3.jpg" alt=""/>
-					</p>
+					<xsl:value-of select="page/main_page/text_right" disable-output-escaping="yes"/>
 				</div>
 				<div class="free-col">
 					<h4>Статьи и обзоры</h4>
-					<p>
-						<a href="">Какая бензопила лучше</a>
-					</p>
-					<p>
-						<a href="">Осенняя АКЦИЯ STIHL 2017!!!</a>
-					</p>
-					<p>
-						<a href="">Изгиб коленчатого вала</a>
-					</p>
-					<p>
-						<a href="">Как определить Модель Тип Код мотора Briggs and Stratton</a>
-					</p>
-					<p>
-						<a href="">Мотор Briggs and Stratton</a>
-					</p>
-					<p>
-						<a href="">SUZUKI ПРЕДСТАВЛЯЕТ DF350A 350 Л.С. V6</a>
-					</p>
-					<p>
-						<a href="">АКЦИЯ!!! АКЦИЯ!!! ВЕСНА!!! 2017</a>
-					</p>
-					<p>
-						<a href="">Новые двигатели SUZUKI DF5A - начало официальных поставок.</a>
-					</p>
-					<p>
-						<a href="">Мотокоса или газонокосилка на колесах или...</a>
-					</p>
+					<xsl:for-each select="page/news_item">
+						<p>
+							<a href="{show_news_item}"><xsl:value-of select="header"/></a>
+						</p>
+					</xsl:for-each>
 				</div>
 			</div>
 		</div>

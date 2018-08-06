@@ -2,7 +2,7 @@
 <model>
 
 <!--START_p823-->
-<item name="p823" caption="Пилы для лесного хозяйства" key="" ag-id="0" ag-hash="3392009" virtual="false" user-def="true" description="" super="params *">
+<item name="p823" caption="Пилы для лесного хозяйства" key="" virtual="false" user-def="true" description="" super="params *" ag-id="46" ag-hash="3392009">
 	<parameter name="moschnost_l.s." caption="Мощность л.с." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="740852388" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ves_kg" caption="Вес кг" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="udelnyi_ves_kg_kvt" caption="Удельный вес кг/кВт" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1829097512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -16,7 +16,7 @@
 <!--END_p823-->
 
 <!--START_p884-->
-<item name="p884" caption="Аккумуляторные пилы" key="" ag-id="0" ag-hash="3392196" virtual="false" user-def="true" description="" super="params *">
+<item name="p884" caption="Аккумуляторные пилы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="47" ag-hash="3392196">
 	<parameter name="nominalnoe_napryagenie_v" caption="Номинальное напряжение В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1008858513" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ves_kg" caption="Вес кг" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obyom_maslyanogo_baka_sm3" caption="Объём масляного бака см3" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="950955221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -34,7 +34,7 @@
 <!--END_p884-->
 
 <!--START_p936-->
-<item name="p936" caption="Культиваторы" key="" ag-id="0" ag-hash="3393004" virtual="false" user-def="true" description="" super="params *">
+<item name="p936" caption="Культиваторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="48" ag-hash="3393004">
 	<parameter name="nominalnaya_moschnost_pri_rabochei_chastote_vrascheniya_ob_min" caption="Номинальная мощность при рабочей частоте вращения об/мин" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2111826247" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_shirina_sm" caption="Рабочая ширина см" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1642525330" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr__mm" caption="Диаметр Ø мм" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1870529810" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -47,7 +47,7 @@
 <!--END_p936-->
 
 <!--START_p963-->
-<item name="p963" caption="Тракторы" key="" ag-id="0" ag-hash="3393094" virtual="false" user-def="true" description="" super="params *">
+<item name="p963" caption="Тракторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="49" ag-hash="3393094">
 	<parameter name="ploschad_gazona_m" caption="Площадь газона м²" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-947415769" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_skashivaniya_sm" caption="Ширина скашивания см" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-737776385" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="nominalnaya_moschnost_pri_rabochei_chastote_vrascheniya_ob_min" caption="Номинальная мощность при рабочей частоте вращения об/мин" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2111826247" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -63,4 +63,67 @@
 	<parameter name="obyom_travosbornika_l" caption="Объём травосборника л" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1097710257" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p963-->
+
+<!--START_p1330-->
+<item name="p1330" caption="Пилы для лесного хозяйства" key="" virtual="false" user-def="true" description="" super="params *" ag-id="51" ag-hash="104944751">
+	<parameter name="moschnost_l.s." caption="Мощность л.с." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="740852388" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_kg" caption="Вес кг" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udelnyi_ves_kg_kvt" caption="Удельный вес кг/кВт" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1829097512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="uroven_zvukovogo_davleniya_dba" caption="Уровень звукового давления дБ(A)" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1063098150" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="uroven_zvukovoi_moschnosti_dba" caption="Уровень звуковой мощности дБ(A)" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1377532495" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="uroven_vibratsii_sleva_sprava_m_s" caption="Уровень вибрации слева/справа m/s²" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-73624203" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shag_tsepi" caption="Шаг цепи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1181981243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tsep_stihl_oilomatic" caption="Цепь STIHL Oilomatic" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="22371733" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochii_obem_sm" caption="Рабочий объем см³" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="50076192" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p1330-->
+
+<!--START_p1391-->
+<item name="p1391" caption="Аккумуляторные пилы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="52" ag-hash="104944938">
+	<parameter name="nominalnoe_napryagenie_v" caption="Номинальное напряжение В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1008858513" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_kg" caption="Вес кг" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obyom_maslyanogo_baka_sm3" caption="Объём масляного бака см3" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="950955221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="uroven_zvukovoi_moschnosti_dba" caption="Уровень звуковой мощности дБ(A)" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1377532495" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="uroven_vibratsii_sleva_m_s" caption="Уровень вибрации слева м/с²" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-450917115" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="uroven_vibratsii_sprava_m_s" caption="Уровень вибрации справа м/с²" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="593232909" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shina_rollomatic_e_dlina_reza_sm" caption="Шина Rollomatic E, длина реза см" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-622648165" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shag_pilnoi_tsepi" caption="Шаг пильной цепи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-398566823" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vremya_raboty_s_akkumulyatorom_ak_20_min" caption="Время работы с аккумулятором AK 20 мин" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="474124283" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_bez_akkumulyatora_kg" caption="Вес без аккумулятора кг" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-177547780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vremya_raboty_s_akkumulyatorom_ap_300_min" caption="Время работы с аккумулятором AP 300 мин" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2085669215" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vremya_raboty_s_akkumulyatorom_ar_1000_min" caption="Время работы с аккумулятором AR 1000 мин" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141264629" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vremya_raboty_s_akkumulyatorom_ar_3000_min" caption="Время работы с аккумулятором AR 3000 мин" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-668081997" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p1391-->
+
+<!--START_p1428-->
+<item name="p1428" caption="Культиваторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="53" ag-hash="104945689">
+	<parameter name="nominalnaya_moschnost_pri_rabochei_chastote_vrascheniya_ob_min" caption="Номинальная мощность при рабочей частоте вращения об/мин" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2111826247" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_shirina_sm" caption="Рабочая ширина см" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1642525330" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr__mm" caption="Диаметр Ø мм" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1870529810" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_vspahivayuschih_elementov" caption="Количество вспахивающих элементов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-358856353" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="privod_komplekta_dlya_vspahivaniya" caption="Привод комплекта для вспахивания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1148457482" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_instrumenta_kg" caption="Вес инструмента кг" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1881240484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantirovannyi_uroven_zvukovoi_moschnosti_lwa_dba" caption="Гарантированный уровень звуковой мощности LwA дБ(A)" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-918601357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="izmerennyi_uroven_zvukovogo_davleniya_lpa_dba" caption="Измеренный уровень звукового давления LpA дБ(A)" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2093675113" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p1428-->
+
+<!--START_p1455-->
+<item name="p1455" caption="Тракторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="54" ag-hash="104945779">
+	<parameter name="ploschad_gazona_m" caption="Площадь газона м²" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-947415769" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_skashivaniya_sm" caption="Ширина скашивания см" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-737776385" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="nominalnaya_moschnost_pri_rabochei_chastote_vrascheniya_ob_min" caption="Номинальная мощность при рабочей частоте вращения об/мин" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2111826247" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_skashivaniya_mm" caption="Высота скашивания мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-106328461" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_instrumenta_kg" caption="Вес инструмента кг" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1881240484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="instrument_d_sh_v_sm" caption="Инструмент (Д/Ш/В) см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1666014010" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktor" caption="Редуктор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantirovannyi_uroven_zvukovoi_moschnosti_lwa_dba" caption="Гарантированный уровень звуковой мощности LwA дБ(A)" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-918601357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="izmerennyi_uroven_zvukovogo_davleniya_lpa_dba" caption="Измеренный уровень звукового давления LpA дБ(A)" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2093675113" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="koeffitsient_pogreshnosti_kpa_dba" caption="Коэффициент погрешности KpA дБ(A)" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1563315698" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="uroven_vibratsii_ahw_sidene_rulevoe_koleso_m_s" caption="Уровень вибрации ahw, сиденье/рулевое колесо м/с²" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1434814024" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="koeffitsient_pogreshnosti_k_sidene_rulevoe_koleso_m_s" caption="Коэффициент погрешности K, сиденье/рулевое колесо м/с²" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1052890507" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obyom_travosbornika_l" caption="Объём травосборника л" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1097710257" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p1455-->
 <!--EXP--></model>
