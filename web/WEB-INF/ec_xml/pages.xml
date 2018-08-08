@@ -21,11 +21,7 @@
 				</link>
 			</tree>
 		</single>
-		<list item="news" id="news" cacheable="true">
-			<link name="show_page" target="news" type="exclusive">
-				<var name="sel" ref="news" style="translit"/>
-			</link>
-		</list>
+		<link name="news_link" target="news"/>
 		<single item="common" cacheable="false"/>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
@@ -54,7 +50,7 @@
 			<list item="main_slider_frame"/>
 			<single item="seo"/>
 		</single>
-		<single item="news_wrap">
+		<single item="news">
 			<list item="news_item" id="ni" transit="true">
 				<filter>
 					<sorting direction="DESC"><var value="date"/></sorting>
@@ -300,10 +296,9 @@
 
     <page name="news" template="news" cacheable="true">
         <request>
-            <var name="sel" style="translit"/>
             <var name="p" value="1"/>
         </request>
-        <single item="news" var="sel" tag="selected_news">
+        <single item="news">
             <single item="seo"/>
             <list item="news_item" id="ni">
                 <filter>
@@ -452,8 +447,8 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<!--<var name="email" value="sales@sakurabel.com"/>-->
-			<var name="email" value="bio@forever-ds.com"/>
+			<var name="email" value="sales@sakurabel.com"/>
+			<!-- <var name="email" value="bio@forever-ds.com"/> -->
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>

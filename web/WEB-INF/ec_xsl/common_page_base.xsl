@@ -65,13 +65,7 @@
 				<div class="main-menu">
 					<!-- <a href="{page/index_link}">Главная</a> -->
 					<a href="{page/catalog_link}" id="catalog_main_menu" class="{'active'[$active_menu_item = 'catalog']}"><i class="fas fa-bars"/>Каталог</a>
-					<xsl:for-each select="page/news">
-						<xsl:variable name="key" select="@key"/>
-						<xsl:variable name="sel" select="page/varibles/sel"/>
-						<a href="{show_page}" class="{'active'[$sel = $key]}">
-							<xsl:value-of select="name"/>
-						</a>
-					</xsl:for-each>
+					<a href="{page/news_link}" class="{'active'[$active_menu_item = 'news']}">Новости</a>
 					<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да']">
 						<xsl:variable name="key" select="@key"/>
 						<xsl:if test="not(menu_custom)">
@@ -126,8 +120,8 @@
 					<img src="img/logo.png" alt="" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
-					<a href=""><i class="fas fa-phone"></i></a>
-					<a href=""><i class="fas fa-shopping-cart"></i></a>
+					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
+					<a href="{page/cart_link}"><i class="fas fa-shopping-cart"></i></a>
 					<a href="javascript:showMobileMainMenu()"><i class="fas fa-bars"></i></a>
 				</div>
 				<div class="search-container">
@@ -219,11 +213,7 @@
 					<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>
 				</ul>
 				<ul>
-					<xsl:for-each select="page/news">
-						<li><a href="{show_page}">
-							<xsl:value-of select="name"/>
-						</a></li>
-					</xsl:for-each>
+					<li><a href="{page/news_link}">Новости</a></li>
 					<xsl:for-each select="page/custom_pages/menu_custom">
 						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
 					</xsl:for-each>
