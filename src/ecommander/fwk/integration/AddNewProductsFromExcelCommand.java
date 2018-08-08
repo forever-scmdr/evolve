@@ -34,6 +34,7 @@ public class AddNewProductsFromExcelCommand extends IntegrateBase{
 		if(temporarySec == null) return false;
 		File priceFile = temporarySec.getFileValue(ItemNames.catalog.INTEGRATION, AppContext.getFilesDirPath(false));
 		price = new ExcelPriceList(priceFile, CODE,NAME, DESCRIPTION, PRICE) {
+			private int rowNum = 0;
 			@Override
 			protected void processRow() throws Exception {
 				String code = getValue(CODE);
@@ -46,7 +47,7 @@ public class AddNewProductsFromExcelCommand extends IntegrateBase{
 					existingProduct = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PRODUCT), temporarySec);
 					existingProduct.setValue(ItemNames.product.CODE, code);
 					existingProduct.setValue(ItemNames.product.NAME, name);
-					existingProduct.setValue(ItemNames.product.TEXT, description);
+					if(StringUtils.isNotBlank(description))existingProduct.setValue(ItemNames.product.TEXT, description);
 					existingProduct.setValue(ItemNames.product.PRICE, price);
 					File pic = new File(AppContext.getContextPath()+PIC_FOLDER+code+".jpg");
 					if(pic.exists()){
@@ -56,6 +57,7 @@ public class AddNewProductsFromExcelCommand extends IntegrateBase{
 					existingProduct.setValue(ItemNames.product.PRICE, price);
 				}
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(existingProduct).noFulltextIndex().ingoreComputed());
+				setProcessed(rowNum++);
 			}
 		};
 		return true;

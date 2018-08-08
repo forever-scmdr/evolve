@@ -526,6 +526,9 @@ public class MainAdminPageCreator implements AdminXML {
 			String pasteUrl = createAdminUrl(PASTE_ACTION, ITEM_ID_INPUT, item.getId(), PARENT_ID_INPUT, newParentId, ITEM_TYPE_INPUT,
 					newParentTypeId);
 			item.addSubwriter(new LeafMDWriter(PASTE_LINK_ELEMENT, pasteUrl));
+			String moveToUrl = createAdminUrl(MOVE_TO_ACTION, ITEM_ID_INPUT, item.getId(), PARENT_ID_INPUT, newParentId, ITEM_TYPE_INPUT,
+					newParentTypeId);
+			item.addSubwriter(new LeafMDWriter("move-to-link",  moveToUrl));
 			page.addElement(item);
 		}
 		return page;
