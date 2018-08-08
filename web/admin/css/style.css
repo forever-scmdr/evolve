@@ -313,6 +313,11 @@ a, button, *[type="submit"], label.file, input[type="file"] {
 	background-size: 20px auto;
 }
 
+.edit a.copy.move {
+	background-image: url(../img/move.png);
+	background-size: 20px auto;
+}
+
 .footer {
 	position: fixed;
 	background: #E8E8E8;
