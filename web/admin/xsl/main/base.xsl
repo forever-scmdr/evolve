@@ -148,6 +148,9 @@
 									<li class="visible" title="Загрзить товары из Yandex Market">
 										<a href="integrate/?action=start">Интеграция каталога</a>
 									</li>
+									<li class="visible" title="Загрузить товары из файла во временный раздел">
+										<a href="add_products/?action=start">Добваление товаров</a>
+									</li>
 									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 										<a href="generate_sitemap">Обновить карту сайта</a>
 									</li>

@@ -35,6 +35,7 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
+		<child item="temporary_section" single="true"/>
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 	</item>
@@ -52,6 +53,10 @@
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
 	</item>
 
+	<item name="temporary_section" caption="Временный раздел" ag-id="2522" ag-hash="-1063730441">
+		<child item="product"/>
+		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цен" />
+	</item>
 
 
 
