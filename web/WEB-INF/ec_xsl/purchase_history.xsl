@@ -63,8 +63,8 @@
 											<xsl:if test="$prod">
 												<xsl:variable name="has_price" select="$prod/price and $prod/price != '0'"/>
 												<div><xsl:if test="$has_price"><xsl:value-of select="$prod/price"/> р.</xsl:if></div>
-												<div id="cart_list_{$prod/code}" class="product_purchase_container">
-													<form action="{$prod/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$prod/code}">
+												<div id="cart_list_{$prod/@id}" class="product_purchase_container">
+													<form action="{$prod/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$prod/@id}">
 														<xsl:if test="$has_price">
 															<input type="number" name="qty" value="{qty}" min="0"/>
 															<input type="submit" value="В корзину"/>

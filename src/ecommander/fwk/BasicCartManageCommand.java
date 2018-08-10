@@ -97,7 +97,7 @@ public abstract class BasicCartManageCommand extends Command {
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
 		Item form = getItemForm().getTransientSingleItem();
-		getSessionMapper().saveTemporaryItem(form);
+		getSessionMapper().saveTemporaryItem(form, "user");
 
 		if (!validate()) {
 			return getResult("validation_failed");

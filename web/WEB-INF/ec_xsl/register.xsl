@@ -7,7 +7,7 @@
 
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
-	<xsl:variable name="is_jur" select="page/user_jur//@validation-error"/>
+	<xsl:variable name="is_jur" select="page/user_jur//@validation-error or not(page/user_jur/email = '')"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->

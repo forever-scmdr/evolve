@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
@@ -196,29 +197,7 @@
 
 		<!-- MODALS BEGIN -->
 		<!-- modal login -->
-		<div class="modal fade" tabindex="-1" role="dialog" id="modal-login">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
-						<h4 class="modal-title">Вход</h4>
-					</div>
-					<div class="modal-body">
-						<form action="" method="post">
-							<div class="form-group">
-								<label for="">Электронная почта:</label>
-								<input type="text" class="form-control" />
-							</div>
-							<div class="form-group">
-								<label for="">Пароль:</label>
-								<input type="password" class="form-control" />
-							</div>
-							<input type="submit" name="" value="Отправить заказ"/>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+		<xsl:call-template name="LOGIN_FORM"/>
 
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
@@ -483,7 +462,7 @@
 				</xsl:if>
 			</div>
 			<div class="order">
-				<div id="cart_list_{replace(code, '[)()]', '-')}" class="product_purchase_container">
+				<div id="cart_list_{@id}" class="product_purchase_container">
 					<form action="{to_cart}" method="post">
 						<xsl:if test="$has_price">
 							<input type="hidden" name="qty" value="1" min="0"/>
@@ -501,10 +480,10 @@
 				<!--</xsl:choose>-->
 
 				<div class="links">
-					<div id="compare_list_{code}">
+					<div id="compare_list_{@id}">
 						<span>
 							<i class="fas fa-balance-scale"></i>
-							<a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a>
+							<a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{@id}">в сравнение</a>
 						</span>
 					</div>
 					<xsl:choose>
@@ -512,8 +491,8 @@
 							<span><i class="fas fa-star"></i> <a href="{from_fav}">убрать</a></span>
 						</xsl:when>
 						<xsl:otherwise>
-							<div id="fav_list_{code}">
-								<span><i class="fas fa-star"></i> <a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
+							<div id="fav_list_{@id}">
+								<span><i class="fas fa-star"></i> <a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{@id}">в избранное</a></span>
 							</div>
 						</xsl:otherwise>
 					</xsl:choose>

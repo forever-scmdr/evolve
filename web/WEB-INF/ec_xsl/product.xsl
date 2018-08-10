@@ -102,7 +102,7 @@
 				</xsl:if>
 				<div class="order">
 					<xsl:variable name="available" select="$p/available = '1'"/>
-					<div id="cart_list_{$p/code}" class="product_purchase_container">
+					<div id="cart_list_{$p/@id}" class="product_purchase_container">
 						<form action="{$p/to_cart}" method="post">
 							<xsl:if test="$available">
 								<input type="number" name="qty" value="1" min="0"/>
@@ -122,58 +122,27 @@
 				<div class="art-number">
 					№ для заказа: <xsl:value-of select="$p/code" />
 				</div>
-				<div class="extra-links">
-					<a href="{$p/my_price_link}" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
-					<a href="{$p/one_click_link}" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
-				</div>
+				<!--<div class="extra-links">-->
+					<!--<a href="{$p/my_price_link}" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>-->
+					<!--<a href="{$p/one_click_link}" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>-->
+				<!--</div>-->
 				<div class="links">
-					<div id="compare_list_{$p/code}">
-						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">в сравнение</a></span>
+					<div id="compare_list_{$p/@id}">
+						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/@id}">в сравнение</a></span>
 					</div>
-					<div id="fav_list_{$p/code}">
-						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/code}">в избранное</a></span>
+					<div id="fav_list_{$p/@id}">
+						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/@id}">в избранное</a></span>
 					</div>
 				</div>
-				<xsl:variable name="pres" select="$pp[product_code = $p/code]"/>
-				<xsl:if test="$pres">
-					<div class="hover-tag mobile">
-						<i class="hover-tag__icon fas fa-gift" />
-						<a href="" data-toggle="modal" data-target="#pres_{code}">Подарок</a>
-					</div>
-					<div class="hover-tag desktop">
-						<i class="hover-tag__icon fas fa-gift" />
-						<a data-toggle="popover" data-trigger="hover" data-placement="bottom" data-html="true">
-							<xsl:attribute name="data-content">
-								<xsl:for-each select="$pres">
-									<xsl:variable name="present" select="//page/present[code = current()/present_code]"/>
-									<xsl:variable name="pic_path"
-									              select="if ($present/main_pic) then concat($present/@path, $present/main_pic) else 'img/no_image.png'"/>
-									<xsl:variable name="link" select="$present/show_product"/>
-									<xsl:text disable-output-escaping="yes">&lt;div class="gift-item"&gt;</xsl:text>
-									<xsl:text disable-output-escaping="yes">&lt;img src="</xsl:text><xsl:value-of select="$pic_path"/><xsl:text disable-output-escaping="yes">" alt=""/&gt;</xsl:text>
-									<xsl:text disable-output-escaping="yes">&lt;h3&gt;</xsl:text>
-									<xsl:if test="$link">
-										<xsl:text disable-output-escaping="yes">&lt;a href="</xsl:text><xsl:value-of select="$link"/><xsl:text disable-output-escaping="yes">"&gt;</xsl:text>
-									</xsl:if>
-									<xsl:value-of select="$present/name"/><xsl:text> </xsl:text><xsl:value-of select="$present/type"/>
-									<xsl:if test="$link">
-										<xsl:text disable-output-escaping="yes">&lt;/a&gt;</xsl:text>
-									</xsl:if>
-									<xsl:text disable-output-escaping="yes">&lt;/h3&gt;</xsl:text>
-									<xsl:value-of select="$present/short" disable-output-escaping="yes"/>
-									<xsl:text disable-output-escaping="yes">&lt;/div&gt;</xsl:text>
-								</xsl:for-each>
-							</xsl:attribute>
-							Подарок
-						</a>
-					</div>
-				</xsl:if>
 				<div class="info-blocks">
 					<div class="info-block">
 						<xsl:value-of select="$p/short" disable-output-escaping="yes"/>
 						<xsl:if test="$extra_xml/manual">
 							<div class="extra-block">
-								<i class="fas fa-file-alt"></i><a href="{$extra_xml/manual}" target="_blank"><strong>Руководство по эксплуатации</strong></a>
+								<i class="fas fa-file-alt"></i>
+								<a href="https://www.stihl.ru{normalize-space($extra_xml/manual/file)}" target="_blank" download="{$extra_xml/manual/name}">
+									<strong>Руководство по эксплуатации</strong>
+								</a>
 							</div>
 						</xsl:if>
 						<xsl:if test="$extra_xml/parts">
@@ -197,19 +166,19 @@
 			</div>
 			<div class="description">
 				<ul class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><a href="#text" role="tab" data-toggle="tab">Описание</a></li>
-					<li role="presentation"><a href="#tech" role="tab" data-toggle="tab">Технические данные</a></li>
-					<li role="presentation"><a href="#package" role="tab" data-toggle="tab">Объем поставки</a></li>
+					<li role="presentation" class="active"><a href="#tech" role="tab" data-toggle="tab">Технические данные</a></li>
+					<li role="presentation"><a href="#elements" role="tab" data-toggle="tab">Технические данные</a></li>
+					<li role="presentation"><a href="#extra_parts" role="tab" data-toggle="tab">Объем поставки</a></li>
 				</ul>
 				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane active" id="text">
-						<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
-					</div>
-					<div role="tabpanel" class="tab-pane" id="tech">
+					<div role="tabpanel" class="tab-pane active" id="tech">
 						<xsl:value-of select="$p/product_extra[name = 'tech']/text" disable-output-escaping="yes"/>
 					</div>
-					<div role="tabpanel" class="tab-pane" id="package">
-						<xsl:value-of select="$p/product_extra[name = 'package']/text" disable-output-escaping="yes"/>
+					<div role="tabpanel" class="tab-pane" id="elements">
+						<xsl:value-of select="$p/product_extra[name = 'elements']/text" disable-output-escaping="yes"/>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="extra_parts">
+						<xsl:value-of select="$p/product_extra[name = 'extra_parts']/text" disable-output-escaping="yes"/>
 					</div>
 				</div>
 			</div>
