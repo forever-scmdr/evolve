@@ -27,7 +27,7 @@
 									<xsl:value-of select="$caption" />
 								</a>
 								<a href="#" onclick="insertAjaxView('{paste-link}', 'subitems', false, 'hidden_mes', 'message_main'); return false;" class="copy paste" title="вставить">вставить</a>
-								<a href="#" onclick="insertAjaxView('{move-to-link}', 'subitems', false, 'hidden_mes', 'message_main'); return false;" class="copy move" title="оригинал будет удален!">переместить</a>
+								<a href="#" onclick="insertAjaxView('{move-to-link}', 'subitems', false, 'hidden_mes', 'message_main'); return false;" class="copy move" title="Переместить. Оригинал будет удален!">переместить</a>
 								<a href="#" onclick="insertAjaxView('{delete-link}', 'pasteBuffer'); return false;"  class="delete" title="удалить">удалить</a>
 							</li>
 						</xsl:for-each>
