@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+
+<!--START_doma-->
+<item name="doma" caption="ДОМА" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2523" ag-hash="3089247">
+	<parameter name="vtoroi_etag_m.kv." caption="второй этаж, м.кв." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1611044996" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obschaya_ploschad_m.kv." caption="общая площадь, м.кв." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-332216762" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pervyi_etag_m.kv." caption="первый этаж, м.кв." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1788467630" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stenovoi_material" caption="стеновой материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1032299749" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_doma-->
+
+<!--START_bani-->
+<item name="bani" caption="БАНИ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2524" ag-hash="3016250">
+	<parameter name="komnata_otdyha_m.kv." caption="комната отдыха, м.кв." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-711744084" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moechnaya_m.kv." caption="моечная, м.кв." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1271001466" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obschaya_ploschat_m.kv." caption="общая площать, м.кв." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="982940246" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="parnaya_m.kv." caption="парная, м.кв." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2083234497" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="predbannik_m.kv." caption="предбанник, м.кв." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1688070565" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tambur_m.kv." caption="тамбур, м.кв." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1564550594" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="terassa_m.kv." caption="терасса, м.кв." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-227209468" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tualet_m.kv." caption="туалет, м.кв." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1108594174" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_bani-->
+
+<!--START_p73366-->
+<item name="p73366" caption="БАНИ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2525" ag-hash="-1036138649">
+	<parameter name="komnata_otdyha_m.kv." caption="комната отдыха, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-711744084" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moechnaya_m.kv." caption="моечная, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1271001466" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obschaya_ploschat_m.kv." caption="общая площать, м.кв." type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="982940246" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="parnaya_m.kv." caption="парная, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2083234497" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="predbannik_m.kv." caption="предбанник, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1688070565" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tambur_m.kv." caption="тамбур, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1564550594" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="terassa_m.kv." caption="терасса, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-227209468" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tualet_m.kv." caption="туалет, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1108594174" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p73366-->
+
+<!--START_p73066-->
+<item name="p73066" caption="ДОМА" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2526" ag-hash="-1036141532">
+	<parameter name="vtoroi_etag_m.kv." caption="второй этаж, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1611044996" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obschaya_ploschad_m.kv." caption="общая площадь, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-332216762" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pervyi_etag_m.kv." caption="первый этаж, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1788467630" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stenovoi_material" caption="стеновой материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1032299749" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p73066-->
+
+<!--START_p73498-->
+<item name="p73498" caption="БАНИ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2527" ag-hash="-1036137593">
+	<parameter name="komnata_otdyha_m.kv." caption="комната отдыха, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-711744084" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moechnaya_m.kv." caption="моечная, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1271001466" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obschaya_ploschat_m.kv." caption="общая площать, м.кв." type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="982940246" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="parnaya_m.kv." caption="парная, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2083234497" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="predbannik_m.kv." caption="предбанник, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1688070565" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tambur_m.kv." caption="тамбур, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1564550594" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="terassa_m.kv." caption="терасса, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-227209468" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tualet_m.kv." caption="туалет, м.кв." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1108594174" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p73498-->
+<!--EXP--></model>
