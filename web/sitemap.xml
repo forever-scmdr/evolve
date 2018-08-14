@@ -1,0 +1,1232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+   <url>
+      <loc>http://localhost:8080</loc>
+      <changefreq>daily</changefreq>
+      <priority>1.00</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/catalog/</loc>
+      <changefreq>daily</changefreq>
+      <priority>1.00</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/novosti/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/contacts/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/sub/videonablyudenie/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--priemoperedatchiki81714--><url>
+      <loc>http://localhost:8080/priemoperedatchiki81714/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--komplekty_videonablyudeniya81358--><url>
+      <loc>http://localhost:8080/komplekty_videonablyudeniya81358/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--videokamery_ahd_tvi_cvi_cvbs--><url>
+      <loc>http://localhost:8080/videokamery_ahd_tvi_cvi_cvbs/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/sub/videokamery_ip81544/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--vnutrennie_ip_videokamery--><url>
+      <loc>http://localhost:8080/vnutrennie_ip_videokamery/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--ulichnye_ip_videokamery81546--><url>
+      <loc>http://localhost:8080/ulichnye_ip_videokamery81546/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/sub/videoregistratory81661/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--videoregistratory_4_h_kanalnye--><url>
+      <loc>http://localhost:8080/videoregistratory_4_h_kanalnye/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--videoregistratory_8_mi_kanalnye--><url>
+      <loc>http://localhost:8080/videoregistratory_8_mi_kanalnye/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--videoregistratory_32_h_kanalnye--><url>
+      <loc>http://localhost:8080/videoregistratory_32_h_kanalnye/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--videoregistratory_16_ti_kanalnye--><url>
+      <loc>http://localhost:8080/videoregistratory_16_ti_kanalnye/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/sub/domofony/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--slinex--><url>
+      <loc>http://localhost:8080/slinex/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--vyzyvnye_paneli--><url>
+      <loc>http://localhost:8080/vyzyvnye_paneli/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--aksessuary--><url>
+      <loc>http://localhost:8080/aksessuary/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/sub/istochniki_pitaniya/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--bloki_bespereboinogo_pitaniya--><url>
+      <loc>http://localhost:8080/bloki_bespereboinogo_pitaniya/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--akkumulyatornye_batarei--><url>
+      <loc>http://localhost:8080/akkumulyatornye_batarei/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--bloki_pitaniya--><url>
+      <loc>http://localhost:8080/bloki_pitaniya/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--kabel--><url>
+      <loc>http://localhost:8080/kabel/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--knopki--><url>
+      <loc>http://localhost:8080/knopki/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--mikrofony--><url>
+      <loc>http://localhost:8080/mikrofony/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/sub/ohrannye_sistemy/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--datchiki--><url>
+      <loc>http://localhost:8080/datchiki/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--pribory--><url>
+      <loc>http://localhost:8080/pribory/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--svetozvukovye_opoveschateli--><url>
+      <loc>http://localhost:8080/svetozvukovye_opoveschateli/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--radio_ohrannaya_sistema_ajax--><url>
+      <loc>http://localhost:8080/radio_ohrannaya_sistema_ajax/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--razemy--><url>
+      <loc>http://localhost:8080/razemy/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--schityvateli--><url>
+      <loc>http://localhost:8080/schityvateli/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--kronshteiny--><url>
+      <loc>http://localhost:8080/kronshteiny/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/sub/sistemy_ozvuchivaniya/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--gromkogovoriteli--><url>
+      <loc>http://localhost:8080/gromkogovoriteli/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--translyatsionnye_usiliteli--><url>
+      <loc>http://localhost:8080/translyatsionnye_usiliteli/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url><!--rasprodaga--><url>
+      <loc>http://localhost:8080/rasprodaga/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/sotrudnichestvo/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/oplata_i_dostavka/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/yslygi/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/pokupatelyam/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/uroven_2/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/test_16.05.2018_17_37/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/master_sozdaniya_panoramnyh_izobragenii__vse_vagnye_svedeniya_kak_na_ladoni_28.02.2018_16_57/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/polnostyu_radiometricheskie_videozapisi_teplovyh_protsessov_28.02.2018_16_56/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/siterecognition__effektivnoe_upravlenie_marshrutami_osmotra_28.02.2018_16_55/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/predotvraschenie_riska_obrazovaniya_pleseni_blagodarya_termografii_poverhnostnoi_vlagnosti_28.02.2/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/po_irsoft_dlya_professionalnogo_analiza_termogramm_28.02.2018_16_50/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/tehnologiya_superresolution_28.02.2018_16_48/</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.70</priority>
+   </url>
+
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Приемопередатчики  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/priemoperedatchik_vt_402/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Комплекты видеонаблюдения  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/komplekt_st_400_wf_ip_videonablyudeniya_so_semnoi_antennoi81444/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Видеокамеры AHD/TVI/CVI/CVBS  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/videokamera_st_702_pro_d81533/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_726_pro_d81538/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_757_pro_d81536/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_104681306814798180581861/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_200181313814868181281868/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_2002/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_200681277814508177681884/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_200781292814658179181891/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_200881299814728179881898/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_200981351815248185081905/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_210181321814948182081912/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_420081329815028182881917/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_420181337815108183681925/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_420281344815178184381932/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Внутренние IP видеокамеры  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/videokamera_st_171_ip_home804638046382099/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_171_ip_home8155982097/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_171_ip_home_poe8161082102/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_171_ip_home_poe805018050182105/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_171_m_ip_home_h.2658163182108/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_171_m_ip_home_poe_h.2658165282111/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_176_m_ip_home8158982134/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_176_ip_home_obektiv_28mm_poe8157182131/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_177_ip_home8156282116/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_177_ip_home_poe8160782119/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_178_ip_home_h.2658165582167/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_712__ip_pro_d_poe8162882161/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_712__ip_pro_d_wifi8158682164/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_902_ip_pro_d8158382128/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_81058159582178/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Уличные IP видеокамеры  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/videokamera_st_172_ip_home_h.265_obektiv_28_12mm8163782073/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_174_ip_home8157482070/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_174_ip_home_poe8162282094/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_175_ip_home_h.265_obektiv_28_12mm8164082173/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_181_ip_home8164682079/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_181_m_ip_home_poe_h.265_obektiv_28mm8164982082/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_182_ip_home8156582122/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_182_ip_home_poe8160482125/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_184_m_ip_home8159282146/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_184_m_ip_home_poe8161382088/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_185_ip_home8160182085/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_185_ip_home_poe8161682152/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_186_ip_home_h.265_obektiv_28_12mm8164382076/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_186_ip_home_poe_h.265_obektiv_28_12mm81551/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_190_ip_home_h.2658165882170/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_700_ip_pro_d8157782137/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_703_m_ip_pro_d8158082140/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_710_m_ip_pro_d81547/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_730_m_ip_pro_d81549/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_731_ip_pro_d8161982143/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_900_ip8155682067/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videokamera_st_901_m_ip_seriya_pro8159882149/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Видеорегистраторы 4-х канальные  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/videoregistrator_st_hdvr_04_ahd_simple/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videoregistrator_st_hdvr_4_tvi_pro/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videoregistrator_st_xvr424pro_d/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videoregistrator_st_xvr400_pro_d/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Видеорегистраторы 8-ми канальные  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/videoregistrator_st_hdvr_082_simple/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videoregistrator_st_hdvr_8_tvi_pro/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videoregistrator_st_hdvr_8_l_pro/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videoregistrator_st_xvr824pro_d/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videoregistrator_st_xvr800_pro_d/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Видеорегистраторы 32-х канальные  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/videoregistrator_st_xvr320pro_d/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Видеорегистраторы 16-ти канальные  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/videoregistrator_st_hdvr_1602_simple/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videoregistrator_st_hdvr_161_m_tvi_pro/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videoregistrator_st_hdvr162pro_d/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videoregistrator_st_xvr1624pro_d/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videoregistrator_st_xvr160_pro_d/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Мониторы  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/videodomofon_slinex_sl_10ipt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videodomofon_slinex_sl_10ip/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videodomofon_slinex_sl_10m/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videodomofon_slinex_sl07ip/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videodomofon_slinex_sl_07m/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videodomofon_slinex_sq_07mt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videodomofon_slinex_sm_07m/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videodomofon_slinex_sm_04m/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videodomofon_slinex_sq_04m/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videodomofon_slinex_ms_04/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/videodomofon_slinex_rd_30/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Вызывные панели  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/vyzyvnaya_panel_slinex_ml_20ip/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/vyzyvnaya_panel_slinex_ml_20hr/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/vyzyvnaya_panel_slinex_vr_16/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/vyzyvnaya_panel_slinex_ml_15hr/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/vyzyvnaya_panel_slinex_ml_16hr/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Аксессуары  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/ip_konverter_slinex_xr_30ip/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Блоки бесперебойного питания  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/blok_pitaniya__st_din_12_5ups81748/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/blok_bespereboinogo_pitaniya_st_bbp_20_akb81751/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/blok_bespereboinogo_pitaniya_st_bbp_20_s_zaschitoi_akb81754/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/blok_bespereboinogo_pitaniya_st_bbp_30_s_zaschitoi_akb81757/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/blok_bespereboinogo_pitaniya_st_bbp_31_akb_s_zaschitoi_akb81760/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/blok_bespereboinogo_pitaniya_st_bbp_50_s_zaschitoi_akb81763/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/blok_bespereboinogo_pitaniya_st_bbp_51_s_zaschitoi_akb81766/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/blok_pitaniya__st_12_18a_ups81769/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Аккумуляторные батареи  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/akkumulyatornaya_batareya_12v_7a_ch/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/akkumulyatornaya_batareya_12v_9a_ch/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/akkumulyatornaya_batareya_12v_18a_ch/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Блоки питания  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/blok_pitaniya_st_12_181739/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/blok_pitaniya_st_12_381742/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/blok_pitaniya_st_12_581745/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Кабель  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/kabel_st_rk75_2075_64_pvc_chernyi_200m/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/kabel_st_rk75_2075_64_chernyi_vneshnii_200m/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/kabel_st_rk75_2075_64_belyi_vnutrennii_200m/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Кнопки  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/ho_01_trevognaya_knopka_s_fiksatsiei/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/no_02_knopka_vyhoda82008/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Микрофоны  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/mikrofon_st_01r_aru/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/mikrofon_st_02r/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/mikrofon_st_05r_arurr/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/mikrofon_st_54r_arurr/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/mikrofon_st_55r_aru/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/mikrofon_st_65r_waterproof/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_am_01_nastolnyi_mikrofon82032/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_am_01c_nastolnyi_mikrofon82033/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Извещатели  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/bingo/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/bingo_cr/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/flash/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/star/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/lens_lr_shtornaya_linza_k_bingo/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ho_03/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ho_03b/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ho_03l/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ho_03o_izveschatel_vreznoi_na_plastikovye_derevyannye_dveri_i_okna/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ho_03d_izveschatel_nakladnoi_na_garagnye_vorota/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ho_03i_mal_izveschatel_nakladnoi_na_garagnye_vorota_rollety/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Приборы  ********-->
+
+    <!--**********************************************************************************-->
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Светозвуковые оповещатели  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/mr_300_svetozvukovoi_opoveschatel/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/iside_130_svetozvukovoi_opoveschatel/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Радио охранная система AJAX  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/ajax_hub_intellektualnyi_tsentr_sistemy/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_motionprotect_datchik_dvigeniya_s_immunitetom_k_givotnym/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_combiprotect_kombinirovannyi_datchik_dvigeniya_i_razbitiya_stekla_s_immunitetom_k_givotnym/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_glassprotect_besprovodnoi_izveschatel_razbitiya_stekla/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_doorprotect_universalnyi_izveschatel_otkrytiya_dverei_i_okon/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_doorprotect_plus_magnitnyi_izveschatel_otkrytiya_s_sensorom_udara_i_naklona/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_homesiren_besprovodnaya_domashnyaya_sirena/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_leaksprotect_datchik_rannego_obnarugeniya_zatopleniya/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_streetsiren_besprovodnaya_ulichnaya_sirena/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_keypad_besprovodnaya_sensornaya_klaviatura/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_fireprotect_datchik_dyma_s_temperaturnym_sensorom/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_fireprotect_plus_datchik_dyma_s_sensorami_temperatury_i_ugarnogo_gaza/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_spacecontrol_brelok_s_trevognoi_knopkoi/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_wallswitch_rele_dlya_distantsionnogo_upravleniya_bytovymi_priborami/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_transmitter_besprovodnoi_modul_dlya_integratsii_storonnih_datchikov/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ajax_ocbridge_plus_modul_integratsii_s_provodnymi_i_gibridnymi_sistemami_bezopasnosti/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Разъемы  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/razem_st_bnc_2/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/st_bnc_p/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/st_rj4501_prozrachnyi/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/np3x_razem_jack_6.3mm/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/nc3mx_razem_xlr_papa/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/nc3fx_razem_xlr_mama/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Считыватели  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/schityvatel_bt_r1_ktm_h_nakladnoi/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/schityvatel_ktm_hk_nakladnoi/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Кронштейны  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/dsc_lc_kronshtein/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/ku_3m_kronshtein_universalnyi/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Громкоговорители  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/alerto_acs_03_gromkogovoritel_potolochnyi_3_6_wt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_acs_10_gromkogovoritel_potolochnyi_10vt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_aws_03l_gromkogovoritel_nastennyi_3vt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_aws_10_gromkogovoritel_nastennyi_25_5_10_vt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_aws_20_gromkogovoritel_nastennyi_20vt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_aws_10h_vsepogodnyi_gromkogovoritel/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_aws_20h_vsepogodnyi_gromkogovoritel/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_hm_30t_rupornyi_gromkogovoritel/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   Трансляционные усилители  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/alerto_alt_35bt_usilitel_35vt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_alt_60bt_usilitel_60vt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_alt_120bt_usilitel_120vt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_alt_180bt_usilitel_180vt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_alt_240ds_usilitel_240vt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+   <url>
+      <loc>http://localhost:8080/alerto_alt_500ds_usilitel_500vt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+   <!--**********************************************************************************-->
+
+    <!--**********   РАСПРОДАЖА  ********-->
+
+    <!--**********************************************************************************-->
+<url>
+      <loc>http://localhost:8080/lbc3481_12_gromkogovoritel_rupornyi_10_vt/</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.80</priority>
+   </url>
+
+</urlset>
