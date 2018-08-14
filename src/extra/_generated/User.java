@@ -29,20 +29,20 @@ public class User
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 
-    public void set_email(String value) {
-        setValue("email", value);
+    public void set_login(String value) {
+        setValue("login", value);
     }
 
-    public String get_email() {
-        return getStringValue("email");
+    public String get_login() {
+        return getStringValue("login");
     }
 
-    public String getDefault_email(String defaultVal) {
-        return getStringValue("email", defaultVal);
+    public String getDefault_login(String defaultVal) {
+        return getStringValue("login", defaultVal);
     }
 
-    public boolean contains_email(String value) {
-        return containsValue("email", value);
+    public boolean contains_login(String value) {
+        return containsValue("login", value);
     }
 
     public void set_password(String value) {

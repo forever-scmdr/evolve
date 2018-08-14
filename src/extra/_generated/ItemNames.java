@@ -8,8 +8,6 @@ public class ItemNames {
     public final static String SECTION = "section";
     public final static String PRODUCT = "product";
     public final static String PARAMS = "params";
-    public final static String PRODUCT_EXTRA = "product_extra";
-    public final static String PARAMS_XML = "params_xml";
     public final static String FEEDBACK_PARAMS = "feedback_params";
     public final static String BOUGHT = "bought";
     public final static String CART = "cart";
@@ -205,23 +203,13 @@ public class ItemNames {
 
     }
 
-    public interface params_xml {
-
-        String _ITEM_NAME = "params_xml";
-        String XML = "xml";
-
-    }
-
     public interface product {
 
         String _ITEM_NAME = "product";
         String NAME = "name";
-        String TYPE = "type";
-        String NAME_EXTRA = "name_extra";
         String CODE = "code";
         String VENDOR_CODE = "vendor_code";
         String OFFER_ID = "offer_id";
-        String SHORT = "short";
         String AVAILABLE = "available";
         String GROUP_ID = "group_id";
         String URL = "url";
@@ -234,18 +222,8 @@ public class ItemNames {
         String MAIN_PIC = "main_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
-        String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
         String GALLERY = "gallery";
-
-    }
-
-    public interface product_extra {
-
-        String _ITEM_NAME = "product_extra";
-        String NAME = "name";
-        String TEXT = "text";
-        String TEXT_PICS = "text_pics";
 
     }
 
@@ -279,7 +257,7 @@ public class ItemNames {
     public interface user {
 
         String _ITEM_NAME = "user";
-        String EMAIL = "email";
+        String LOGIN = "login";
         String PASSWORD = "password";
 
     }
@@ -287,10 +265,11 @@ public class ItemNames {
     public interface user_jur {
 
         String _ITEM_NAME = "user_jur";
-        String EMAIL = "email";
+        String LOGIN = "login";
         String PASSWORD = "password";
         String ORGANIZATION = "organization";
         String PHONE = "phone";
+        String EMAIL = "email";
         String CONTACT_NAME = "contact_name";
         String CONTACT_PHONE = "contact_phone";
         String ADDRESS = "address";
@@ -312,10 +291,11 @@ public class ItemNames {
     public interface user_phys {
 
         String _ITEM_NAME = "user_phys";
-        String EMAIL = "email";
+        String LOGIN = "login";
         String PASSWORD = "password";
         String NAME = "name";
         String PHONE = "phone";
+        String EMAIL = "email";
         String ADDRESS = "address";
         String SHIP_TYPE = "ship_type";
         String COMMENT = "comment";
