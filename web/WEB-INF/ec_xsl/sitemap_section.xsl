@@ -21,6 +21,7 @@
             <xsl:text disable-output-escaping="yes">
     &lt;!--**********************************************************************************--&gt;
 </xsl:text>
+            <xsl:text disable-output-escaping="yes"> &lt;!-- END_tags  --></xsl:text>
             <xsl:for-each select="/page/section/product">
                 <url>
                     <loc>

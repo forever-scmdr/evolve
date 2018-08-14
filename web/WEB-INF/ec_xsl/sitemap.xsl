@@ -29,7 +29,7 @@
             <xsl:for-each select="page/news">
                 <url>
                     <loc>
-                        <xsl:value-of select="concat($base, show_page)"/>
+                        <xsl:value-of select="concat($base, '/', show_page)"/>
                     </loc>
                     <changefreq>daily</changefreq>
                     <priority>0.70</priority>

@@ -3,15 +3,7 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
-	
-	<xsl:variable name="ancestors" select="string-join(page/catalog//section[.//@id = $sel_sec_id and @id != $p/product_section/@id]/name, ' ')" />
-	<xsl:variable name="title-constant" select="' купить в Минске в магазине КЕРАМОМАРКЕТ'"/>
-	<xsl:variable name="description-constant" select="' купить в Минске недорого в магазине КЕРАМОМАРКЕТ &#9989;. Цены, фото и размеры на сайте ☎☎☎  +375 (17) 291-91-50 Звоните!'" />
-	<xsl:variable name="quote">"</xsl:variable>
-	<xsl:variable name="title" select="replace(concat($ancestors,' ', $p/name, $title-constant), $quote, '')" />
-	<xsl:variable name="meta_description" select="replace(concat($ancestors, ' ', $p/name, $description-constant), $quote, '')" />
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -19,34 +11,9 @@
 	</xsl:template>
 
 
+	<xsl:variable name="p" select="page/product"/>
 
 
-	<xsl:template name="MARKUP">
-		<xsl:variable name="price" select="$p/price"/>
-		<script type="application/ld+json">
-			<xsl:variable name="quote">"</xsl:variable>
-			{
-			"@context": "http://schema.org/",
-			"@type": "Product",
-			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
-			"image": <xsl:value-of select="concat($quote, $base, '/', $p/@path, $p/gallery[1], $quote)" />,
-			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
-			"offers": {
-			"@type": "Offer",
-			"priceCurrency": "BYN",
-			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
-			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>
-			}, "aggregateRating": {
-			"@type": "AggregateRating",
-			"ratingValue": "4.9",
-			"ratingCount": "53",
-			"bestRating": "5",
-			"worstRating": "1",
-			"name": <xsl:value-of select="concat($quote, translate($p/name, $quote, ''), $quote)" />
-			}
-			}
-		</script>
-	</xsl:template>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -86,18 +53,24 @@
 				<xsl:if test="$has_price">
 					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
-						<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
+						<p><span>Новая цена</span><xsl:value-of select="$p/price"/> р.</p>
+					</div>
+				</xsl:if>
+				<xsl:if test="not($has_price)">
+					<div class="price">
+						<p><span>&#160;</span></p>
+						<p><span>Новая цена</span>По запросу</p>
 					</div>
 				</xsl:if>
 				<div class="order">
 					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 					<div id="cart_list_{$p/code}" class="product_purchase_container">
 						<form action="{$p/to_cart}" method="post">
-							<xsl:if test="$has_price">
+							<xsl:if test="$has_price and qty != '0'">
 								<input type="number" name="qty" value="1" min="0"/>
-								<input type="submit" value="Купить"/>
+								<input type="submit" value="В корзину"/>
 							</xsl:if>
-							<xsl:if test="not($has_price)">
+							<xsl:if test="not($has_price) or not(qty != '0')">
 								<input type="number" name="qty" value="1" min="0"/>
 								<input type="submit" class="not_available" value="Под заказ"/>
 							</xsl:if>
@@ -108,16 +81,16 @@
 						<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
 					<!--</xsl:choose>-->
 				</div>
-				
+				<!--
 				<div class="links">
-					<div id="compare_list_{$p/code}">
-						<span><a href="{$p/to_compare}" title="в сравнение" ajax="true" ajax-loader-id="compare_list_{$p/code}"><i class="fas fa-balance-scale"></i><!-- в сравнение --></a></span>
+					<div id="compare_list_{code}">
+						<span><i class="fas fa-balance-scale"></i> <a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}">в сравнение</a></span>
 					</div>
 					<div id="fav_list_{$p/code}">
-						<span><a title="добавить в избранное" href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i><!-- в избранное --></a></span>
+						<span><i class="fas fa-star"></i> <a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}">в избранное</a></span>
 					</div>
 				</div>
-				
+				-->
 				<div class="info-blocks">
 					<div class="info-block">
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
