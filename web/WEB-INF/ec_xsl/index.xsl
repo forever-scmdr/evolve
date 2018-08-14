@@ -3,6 +3,40 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:template name="MARKUP">
+		<script type="application/ld+json">
+			{
+				"@context":"http://schema.org",
+				"@type":"Organization",
+				"url":"<xsl:value-of select="$main_host"/>/",
+				"name":"<xsl:value-of select="$title"/>",
+				"logo":"<xsl:value-of select="concat($base, '/img/logo_big.svg')"/>",
+				"aggregateRating": {
+					"@type": "AggregateRating",
+					"ratingCount": "53",
+					"reviewCount": "53",
+					"bestRating": "5",
+					"ratingValue": "4,9",
+					"worstRating": "1",
+					"name": "Иностранное торгово-производственное унитарное редприятие «САКУРА БЕЛ»"
+				},
+				"contactPoint": [
+					<xsl:for-each select="page/common/phone" >
+						<xsl:if test="position() != 1">,</xsl:if>{
+						"@type":"ContactPoint",
+						"telephone":"<xsl:value-of select="tokenize(., '_')[1]"/>",
+						"contactType":"<xsl:value-of select="tokenize(., '_')[2]"/>"
+						}
+					</xsl:for-each>
+				]
+				<xsl:if test="page/common/email != ''">
+				,"email":[<xsl:for-each select="page/common/email" >
+						<xsl:if test="position() != 1">, </xsl:if>"<xsl:value-of select="."/>"</xsl:for-each>]
+				</xsl:if>
+			}
+		</script>
+	</xsl:template>
+
 	<xsl:template name="LEFT_COLOUMN">
 		<div class="side-menu">
 			<xsl:for-each select="page/catalog/section">
@@ -109,24 +143,236 @@
 				<a href="{page/main_page/link_link}"><xsl:value-of select="page/main_page/link_text"/></a>
 			</div>
 		</div> -->
-		
-		<div class="has-items-carousel">
+		<div class="has-catalog-sections">
+			<div class="container">
+				<h4 class="big-title">
+					Каталог продукции
+				</h4>
+				<div class="catalog-items sections">
+					<xsl:for-each select="/page/catalog/section">
+						<div class="catalog-item">
+							<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
+							<a href="{if(section != '') then show_section else show_products}" class="image-container" style="background-image: url({$pic_path});">
+								<!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/> -->
+							</a>
+							<div class="name">
+								<a href="{if(section != '') then show_section else show_products}"><span>
+									<xsl:value-of select="name"/></span></a>
+								<xsl:value-of select="short" disable-output-escaping="yes"/>
+							</div>
+						</div>
+					</xsl:for-each>
+				</div>
+			</div>
+		</div>
+		<!-- <div class="has-items-carousel">
 			<div class="container">
 				<div class="more-products">
 					<h4 class="big-title">Лидеры продаж</h4>
 					<div class="slick-slider catalog-items">
-						<xsl:apply-templates select="page/product"/>
+						<div class="catalog-item">
+							<div class="tags">
+								<span>Скидка</span>
+							</div>
+							<a href="catalog_item.html" class="image-container" style="background-image: url(/files/804/37f/main_pic_videokamera_st_702_pro_d.png);">
+								<img src="/files/804/37f/main_pic_videokamera_st_702_pro_d.png" alt="" />
+							</a>
+							<div class="name">
+								<a href="catalog_item.html" title="Видеокамера ST-702 PRO D">Видеокамера ST-702 PRO D</a>
+							</div>
+							<div class="price">
+								<p><span>Старая цена</span>100 р.</p>
+								<p><span>Новая цена</span>99 р.</p>
+							</div>
+							<div class="order">
+								<div id="cart_list_{code}" class="product_purchase_container">
+									<form action="">
+										<input type="number" value="1" />
+										<input type="submit" value="Заказать" />
+									</form>
+								</div>
+								<div class="quantity">Осталось 12 шт.</div>
+								<div class="links">
+									<div id="compare_list_{code}">
+										<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i></a></span>
+									</div>
+									<div id="id=fav_list_{code}">
+										<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i></a></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="catalog-item">
+							<div class="tags">
+								<span>Скидка</span>
+							</div>
+							<a href="catalog_item.html" class="image-container" style="background-image: url(/files/804/37f/main_pic_videokamera_st_702_pro_d.png);">
+								<img src="/files/804/37f/main_pic_videokamera_st_702_pro_d.png" alt="" />
+							</a>
+							<div class="name">
+								<a href="catalog_item.html" title="Видеокамера ST-702 PRO D">Видеокамера ST-702 PRO D</a>
+							</div>
+							<div class="price">
+								<p><span>Старая цена</span>100 р.</p>
+								<p><span>Новая цена</span>99 р.</p>
+							</div>
+							<div class="order">
+								<div id="cart_list_{code}" class="product_purchase_container">
+									<form action="">
+										<input type="number" value="1" />
+										<input type="submit" value="Заказать" />
+									</form>
+								</div>
+								<div class="quantity">Осталось 12 шт.</div>
+								<div class="links">
+									<div id="compare_list_{code}">
+										<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i></a></span>
+									</div>
+									<div id="id=fav_list_{code}">
+										<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i></a></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="catalog-item">
+							<div class="tags">
+								<span>Скидка</span>
+							</div>
+							<a href="catalog_item.html" class="image-container" style="background-image: url(/files/804/37f/main_pic_videokamera_st_702_pro_d.png);">
+								<img src="/files/804/37f/main_pic_videokamera_st_702_pro_d.png" alt="" />
+							</a>
+							<div class="name">
+								<a href="catalog_item.html" title="Видеокамера ST-702 PRO D">Видеокамера ST-702 PRO D</a>
+							</div>
+							<div class="price">
+								<p><span>Старая цена</span>100 р.</p>
+								<p><span>Новая цена</span>99 р.</p>
+							</div>
+							<div class="order">
+								<div id="cart_list_{code}" class="product_purchase_container">
+									<form action="">
+										<input type="number" value="1" />
+										<input type="submit" value="Заказать" />
+									</form>
+								</div>
+								<div class="quantity">Осталось 12 шт.</div>
+								<div class="links">
+									<div id="compare_list_{code}">
+										<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i></a></span>
+									</div>
+									<div id="id=fav_list_{code}">
+										<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i></a></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="catalog-item">
+							<div class="tags">
+								<span>Скидка</span>
+							</div>
+							<a href="catalog_item.html" class="image-container" style="background-image: url(/files/804/37f/main_pic_videokamera_st_702_pro_d.png);">
+								<img src="/files/804/37f/main_pic_videokamera_st_702_pro_d.png" alt="" />
+							</a>
+							<div class="name">
+								<a href="catalog_item.html" title="Видеокамера ST-702 PRO D">Видеокамера ST-702 PRO D</a>
+							</div>
+							<div class="price">
+								<p><span>Старая цена</span>100 р.</p>
+								<p><span>Новая цена</span>99 р.</p>
+							</div>
+							<div class="order">
+								<div id="cart_list_{code}" class="product_purchase_container">
+									<form action="">
+										<input type="number" value="1" />
+										<input type="submit" value="Заказать" />
+									</form>
+								</div>
+								<div class="quantity">Осталось 12 шт.</div>
+								<div class="links">
+									<div id="compare_list_{code}">
+										<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i></a></span>
+									</div>
+									<div id="id=fav_list_{code}">
+										<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i></a></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="catalog-item">
+							<div class="tags">
+								<span>Скидка</span>
+							</div>
+							<a href="catalog_item.html" class="image-container" style="background-image: url(/files/804/37f/main_pic_videokamera_st_702_pro_d.png);">
+								<img src="/files/804/37f/main_pic_videokamera_st_702_pro_d.png" alt="" />
+							</a>
+							<div class="name">
+								<a href="catalog_item.html" title="Видеокамера ST-702 PRO D">Видеокамера ST-702 PRO D</a>
+							</div>
+							<div class="price">
+								<p><span>Старая цена</span>100 р.</p>
+								<p><span>Новая цена</span>99 р.</p>
+							</div>
+							<div class="order">
+								<div id="cart_list_{code}" class="product_purchase_container">
+									<form action="">
+										<input type="number" value="1" />
+										<input type="submit" value="Заказать" />
+									</form>
+								</div>
+								<div class="quantity">Осталось 12 шт.</div>
+								<div class="links">
+									<div id="compare_list_{code}">
+										<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i></a></span>
+									</div>
+									<div id="id=fav_list_{code}">
+										<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i></a></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="catalog-item">
+							<div class="tags">
+								<span>Скидка</span>
+							</div>
+							<a href="catalog_item.html" class="image-container" style="background-image: url(/files/804/37f/main_pic_videokamera_st_702_pro_d.png);">
+								<img src="/files/804/37f/main_pic_videokamera_st_702_pro_d.png" alt="" />
+							</a>
+							<div class="name">
+								<a href="catalog_item.html" title="Видеокамера ST-702 PRO D">Видеокамера ST-702 PRO D</a>
+							</div>
+							<div class="price">
+								<p><span>Старая цена</span>100 р.</p>
+								<p><span>Новая цена</span>99 р.</p>
+							</div>
+							<div class="order">
+								<div id="cart_list_{code}" class="product_purchase_container">
+									<form action="">
+										<input type="number" value="1" />
+										<input type="submit" value="Заказать" />
+									</form>
+								</div>
+								<div class="quantity">Осталось 12 шт.</div>
+								<div class="links">
+									<div id="compare_list_{code}">
+										<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i></a></span>
+									</div>
+									<div id="id=fav_list_{code}">
+										<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i></a></span>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		
 		
 		<div class="has-news">
 			<div class="container">
 				<xsl:if test="page/main_page/link_text and not(page/main_page/link_text = '')">
 					<div class="actions">
-						<h4 class="big-title">Акции</h4>
+						<h4 class="big-title label-actions">&#160;</h4>
 						<div class="actions-container">
 							<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 						</div>
@@ -134,9 +380,9 @@
 				</xsl:if>
 
 				<div class="news">
-					<h4 class="big-title">Новости</h4>
+					<h4 class="big-title label-news">&#160;</h4>
 					<div class="news-container">
-						<xsl:for-each select="page/news/news_item">
+						<xsl:for-each select="page/news_wrap/news/news_item">
 							<div>
 								<a href="{show_news_item}"><xsl:value-of select="header"/></a>
 								<div class="date"><xsl:value-of select="date"/></div>
@@ -154,7 +400,7 @@
 			<xsl:call-template name="INC_MOBILE_HEADER"/>
 		</div>
 		<xsl:call-template name="CONTENT"/>
-		<xsl:call-template name="CART_SCRIPT"/>			
+					
 	</xsl:template>
 
 	<!-- <xsl:template name="BANNERS">
