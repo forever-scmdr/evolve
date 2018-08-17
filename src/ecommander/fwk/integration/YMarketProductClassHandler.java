@@ -22,7 +22,7 @@ import java.util.Locale;
  * @author E
  *
  */
-public class YMarketProductClassHandler extends DefaultHandler implements YMarketConst {
+public class YMarketProductClassHandler extends DefaultHandler implements CatalogConst {
 	/**
 	 * Типы и названия параметров
 	 * Тип параметра может быть одним из трех

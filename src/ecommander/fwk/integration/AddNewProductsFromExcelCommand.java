@@ -19,7 +19,7 @@ import java.util.HashSet;
 /**
  * Created by user on 07.08.2018.
  */
-public class AddNewProductsFromExcelCommand extends IntegrateBase{
+public class AddNewProductsFromExcelCommand extends IntegrateBase implements CatalogConst{
 	private static final String CODE = "Код";
 	private static final String NAME = "Наименование";
 	private static final String DESCRIPTION = "Описание";
@@ -29,10 +29,10 @@ public class AddNewProductsFromExcelCommand extends IntegrateBase{
 	private Item temporarySec;
 
 	@Override
-	protected boolean makePreparations() throws Exception {
+	protected boolean makePreparations() throws Exception{
 		temporarySec = ItemQuery.loadSingleItemByName("temporary_section");
 		if(temporarySec == null) return false;
-		File priceFile = temporarySec.getFileValue(ItemNames.catalog.INTEGRATION, AppContext.getFilesDirPath(false));
+		File priceFile = temporarySec.getFileValue(INTEGRATION_PARAM, AppContext.getFilesDirPath(false));
 		price = new ExcelPriceList(priceFile, CODE,NAME, DESCRIPTION, PRICE) {
 			private int rowNum = 0;
 			@Override
@@ -42,23 +42,25 @@ public class AddNewProductsFromExcelCommand extends IntegrateBase{
 				String name = getValue(NAME);
 				String description = getValue(DESCRIPTION);
 				BigDecimal price = getCurrencyValue(PRICE);
-				Item existingProduct = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code);
+				Item existingProduct = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code);
 				if(existingProduct == null){
 					existingProduct = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PRODUCT), temporarySec);
-					existingProduct.setValue(ItemNames.product.CODE, code);
-					existingProduct.setValue(ItemNames.product.NAME, name);
-					if(StringUtils.isNotBlank(description))existingProduct.setValue(ItemNames.product.TEXT, description);
-					existingProduct.setValue(ItemNames.product.PRICE, price);
+					existingProduct.setValue(CODE_PARAM, code);
+					existingProduct.setValue(NAME_PARAM, name);
+					if(StringUtils.isNotBlank(description))existingProduct.setValue(DESCRIPTION_PARAM, description);
+					existingProduct.setValue(PRICE_PARAM, price);
 					File pic = new File(AppContext.getContextPath()+PIC_FOLDER+code+".jpg");
 					if(pic.exists()){
-						existingProduct.setValue(ItemNames.product.MAIN_PIC, pic);
+						existingProduct.setValue(MAIN_PIC_PARAM, pic);
 					}
 				}else{
-					existingProduct.setValue(ItemNames.product.PRICE, price);
+					existingProduct.setValue(PRICE_PARAM, price);
 				}
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(existingProduct).noFulltextIndex().ingoreComputed());
 				setProcessed(rowNum++);
 			}
+			@Override
+			protected void processSheet() throws Exception{}
 		};
 		return true;
 	}
@@ -78,4 +80,5 @@ public class AddNewProductsFromExcelCommand extends IntegrateBase{
 	protected void terminate() throws Exception {
 
 	}
+
 }

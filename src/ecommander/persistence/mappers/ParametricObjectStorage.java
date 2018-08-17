@@ -171,7 +171,8 @@ public abstract class ParametricObjectStorage
 	 * @param parameterValues
 	 */
 	public void delete(int[] parameterIds, Object[] parameterValues) {
-		storage.removeAll(select(parameterIds, parameterValues));
+		ArrayList<Object> all = select(parameterIds, parameterValues);
+		storage.removeAll(all);
 	}
 
 	public boolean isEmpty() {

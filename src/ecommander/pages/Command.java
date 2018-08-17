@@ -25,7 +25,7 @@ public abstract class Command implements AutoCloseable {
 	
 	private ExecutablePagePE page;
 	private HashMap<String, ResultPE> results = null; // резльтаты выполнения команды
-	private SynchronousTransaction transaction = null;
+	protected SynchronousTransaction transaction = null;
 	private SessionItemMapper sessionMapper = null;
 
 	void init(ExecutablePagePE page) {
@@ -307,6 +307,15 @@ public abstract class Command implements AutoCloseable {
 		if (result == null)
 			return new ResultPE(name, ResultPE.ResultType.redirect);
 		return result;
+	}
+
+	/**
+	 * Проверка, есть ли результат с заданным именем на странице
+	 * @param name
+	 * @return
+	 */
+	protected final boolean hasResult(String name) {
+		return results.containsKey(name);
 	}
 	/**
 	 * Результат, значением которого является готовая ссылка для перехода на страницу

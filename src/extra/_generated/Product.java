@@ -12,7 +12,30 @@ public class Product
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "product";
+    public final static String _NAME = "product";
+    public final static String NAME = "name";
+    public final static String TYPE = "type";
+    public final static String CODE = "code";
+    public final static String NAME_EXTRA = "name_extra";
+    public final static String VENDOR_CODE = "vendor_code";
+    public final static String OFFER_ID = "offer_id";
+    public final static String SHORT = "short";
+    public final static String AVAILABLE = "available";
+    public final static String GROUP_ID = "group_id";
+    public final static String URL = "url";
+    public final static String CATEGORY_ID = "category_id";
+    public final static String CURRENCY_ID = "currency_id";
+    public final static String PRICE_ORIGINAL = "price_original";
+    public final static String PRICE = "price";
+    public final static String PRICE_OLD = "price_old";
+    public final static String QTY = "qty";
+    public final static String COUNTRY = "country";
+    public final static String MAIN_PIC = "main_pic";
+    public final static String DESCRIPTION = "description";
+    public final static String TEXT = "text";
+    public final static String EXTRA_XML = "extra_xml";
+    public final static String TEXT_PICS = "text_pics";
+    public final static String GALLERY = "gallery";
 
     private Product(Item item) {
         super(item);
@@ -22,7 +45,7 @@ public class Product
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'product' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -30,7 +53,7 @@ public class Product
     }
 
     public static Product newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {
@@ -65,22 +88,6 @@ public class Product
         return containsValue("type", value);
     }
 
-    public void set_name_extra(String value) {
-        setValue("name_extra", value);
-    }
-
-    public String get_name_extra() {
-        return getStringValue("name_extra");
-    }
-
-    public String getDefault_name_extra(String defaultVal) {
-        return getStringValue("name_extra", defaultVal);
-    }
-
-    public boolean contains_name_extra(String value) {
-        return containsValue("name_extra", value);
-    }
-
     public void set_code(String value) {
         setValue("code", value);
     }
@@ -95,6 +102,22 @@ public class Product
 
     public boolean contains_code(String value) {
         return containsValue("code", value);
+    }
+
+    public void set_name_extra(String value) {
+        setValue("name_extra", value);
+    }
+
+    public String get_name_extra() {
+        return getStringValue("name_extra");
+    }
+
+    public String getDefault_name_extra(String defaultVal) {
+        return getStringValue("name_extra", defaultVal);
+    }
+
+    public boolean contains_name_extra(String value) {
+        return containsValue("name_extra", value);
     }
 
     public void set_vendor_code(String value) {
@@ -273,6 +296,28 @@ public class Product
 
     public boolean contains_price(BigDecimal value) {
         return containsValue("price", value);
+    }
+
+    public void set_price_old(BigDecimal value) {
+        setValue("price_old", value);
+    }
+
+    public void setUI_price_old(String value)
+        throws Exception
+    {
+        setValueUI("price_old", value);
+    }
+
+    public BigDecimal get_price_old() {
+        return getDecimalValue("price_old");
+    }
+
+    public BigDecimal getDefault_price_old(BigDecimal defaultVal) {
+        return getDecimalValue("price_old", defaultVal);
+    }
+
+    public boolean contains_price_old(BigDecimal value) {
+        return containsValue("price_old", value);
     }
 
     public void set_qty(Double value) {

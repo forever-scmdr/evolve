@@ -68,6 +68,11 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 			// Если новое значение ключа не уникально - нужно добавить ID айтема
 			if (itemId != 0)
 				item.setKeyUnique(item.getKeyUnique() + item.getId());
+
+			query.INSERT_INTO(UNIQUE_KEY_TBL)
+					.SET().col(UK_ID).long_(item.getId())._col(UK_KEY).string(item.getKeyUnique())
+					.ON_DUPLICATE_KEY_UPDATE(UK_KEY).string(item.getKeyUnique());
+			/*
 			// Айтем имел значение уникального ключа
 			if (StringUtils.isNotBlank(item.getOldKeyUnique())) {
 				query.UPDATE(UNIQUE_KEY_TBL).SET().col(UK_KEY).string(item.getKeyUnique())
@@ -77,7 +82,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 			else {
 				query.INSERT_INTO(UNIQUE_KEY_TBL).SET().col(UK_ID).long_(item.getId())._col(UK_KEY).string(item.getKeyUnique());
 			}
-
+*/
 			try (PreparedStatement pstmt = query.prepareQuery(conn)) {
 				pstmt.executeUpdate();
 			}
@@ -102,7 +107,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 			LuceneIndexMapper.getSingleton().updateItem(item);
 
 		// Дополнительная обработка
-		if (triggerExtra && item.getItemType().hasExtraHandlers()) {
+		if (triggerExtra && item.getItemType().hasExtraHandlers(ItemType.Event.update)) {
 			for (ItemEventCommandFactory fac : item.getItemType().getExtraHandlers(ItemType.Event.update)) {
 				PersistenceCommandUnit command = fac.createCommand(item);
 				executeCommandInherited(command);

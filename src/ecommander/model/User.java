@@ -1,5 +1,7 @@
 package ecommander.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -49,8 +51,18 @@ public class User {
 	}
 
 	public void addGroup(String name, byte id, byte role) {
+		Group oldGroup = groupRoles.get(name);
+		String oldRoleStr = null;
+		String newRoleStr = name + "_" + (role == ADMIN ? "adm_" : "sim_");
+		if (oldGroup != null) {
+			oldRoleStr = name + "_" + (oldGroup.role == ADMIN ? "adm_" : "sim_");
+		}
 		groupRoles.put(name, new Group(name, id, role));
-		groupRolesStr += name + "_" + (role == ADMIN ? "adm_" : "sim_");
+		if (oldRoleStr != null) {
+			StringUtils.replace(groupRolesStr, oldRoleStr, newRoleStr);
+		} else {
+			groupRolesStr += newRoleStr;
+		}
 	}
 
 	/**

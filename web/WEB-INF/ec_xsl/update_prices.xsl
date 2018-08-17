@@ -12,7 +12,7 @@
 		<xsl:call-template name="DOCTYPE"/>
 		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
-			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+			<meta http-equiv="content-Type" content="text/html; charset=utf-8"/>
 			<title>Результат интеграции</title><!-- ******************* TODO LOCAL ******************** -->
 		<style>
 			body{font-family: Consolas; padding-left: 40px;}

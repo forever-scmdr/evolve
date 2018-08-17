@@ -1,6 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -32,7 +32,7 @@
 						<span>Показывать:</span>
 						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
 						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
-						<div class="checkbox">
+						<!-- <div class="checkbox">
 							<label>
 								<xsl:if test="not($only_available)">
 									<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
@@ -42,7 +42,7 @@
 								</xsl:if>
 								в наличии
 							</label>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</xsl:if>

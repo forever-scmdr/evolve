@@ -171,13 +171,13 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 				if (ass.length > 0) {
 					// Шаг 3. Вставить запись непосредственного предка и потомка по непервичной ассоциации
 					insert.UNION_ALL()
-							.SELECT(parent.getId(), childId, IP_ASSOC_ID, superTypeId, 1, 0)
+							.SELECT_DISTINCT(parent.getId(), childId, IP_ASSOC_ID, superTypeId, 1, 0)
 							.FROM(ITEM_PARENT_TBL).WHERE()
-							.col(IP_PARENT_ID).long_(parent.getId()).AND().col_IN(IP_ASSOC_ID).byteIN(ass).sql(" \r\n");
+							.col(IP_CHILD_ID).long_(parent.getId()).AND().col_IN(IP_ASSOC_ID).byteIN(ass).sql(" \r\n");
 
 					// Шаг 4. Добавить для нового потомка в качестве новых предков всех предков нового непосредственного родителя
 					insert.UNION_ALL()
-							.SELECT(IP_PARENT_ID, childId, IP_ASSOC_ID, superTypeId, 0, 0)
+							.SELECT_DISTINCT(IP_PARENT_ID, childId, IP_ASSOC_ID, superTypeId, 0, 0)
 							.FROM(ITEM_PARENT_TBL).WHERE()
 							.col(IP_CHILD_ID).long_(parent.getId()).AND().col_IN(IP_ASSOC_ID).byteIN(ass).sql(" \r\n");
 				}

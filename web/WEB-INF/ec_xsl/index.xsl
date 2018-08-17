@@ -1,6 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template name="MARKUP">
@@ -18,7 +18,7 @@
 					"bestRating": "5",
 					"ratingValue": "4,9",
 					"worstRating": "1",
-					"name": "Иностранное торгово-производственное унитарное предприятие «САКУРА БЕЛ»"
+					"name": "TTD"
 				},
 				"contactPoint": [
 					<xsl:for-each select="page/common/phone" >
@@ -126,117 +126,166 @@
 
 
 	<xsl:template name="CONTENT">
-		<div class="has-slider">
-			<div class="container">
-				<div class="slider-container">
-					<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
-						<xsl:for-each select="page/main_page/main_slider_frame">
-							<img src="{@path}{pic}" />
-						</xsl:for-each>
-					</div>
-				</div>
+		<div class="slider-container">
+			<div class="fotorama" data-transition="crossfade" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
+				<xsl:for-each select="page/main_page/main_slider_frame">
+					<img src="{@path}{pic}" alt="{name}"/>
+				</xsl:for-each>
 			</div>
 		</div>
-		<!-- <div class="actions mobile">
+		<div class="actions mobile">
 			<h3>Акции</h3>
 			<div class="actions-container">
-				<a href="{page/main_page/link_link}"><xsl:value-of select="page/main_page/link_text"/></a>
-			</div>
-		</div> -->
-		
-		<div class="has-items-carousel">
-			<div class="container">
-				<div class="more-products">
-					<h4 class="big-title">Лидеры продаж</h4>
-					<div class="slick-slider catalog-items">
-						<xsl:apply-templates select="page/product"/>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		
-		<div class="has-news">
-			<div class="container">
-				<xsl:if test="page/main_page/link_text and not(page/main_page/link_text = '')">
-					<div class="actions">
-						<h4 class="big-title">Акции</h4>
-						<div class="actions-container">
-							<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
-						</div>
-					</div>
-				</xsl:if>
-
-				<div class="news">
-					<h4 class="big-title">Новости</h4>
-					<div class="news-container">
-						<xsl:for-each select="page/news/news_item">
-							<div>
-								<a href="{show_news_item}"><xsl:value-of select="header"/></a>
-								<div class="date"><xsl:value-of select="date"/></div>
-							</div>
-						</xsl:for-each>
-					</div>
-				</div>
+				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 			</div>
 		</div>
 	</xsl:template>
 
 	<xsl:template name="MAIN_CONTENT">
-		
+		<!-- MAIN COLOUMNS BEGIN -->
 		<div class="container">
-			<xsl:call-template name="INC_MOBILE_HEADER"/>
+			<div class="row">
+
+				<!-- RIGHT COLOUMN BEGIN -->
+				<div class="col-md-12 col-xs-12 main-content">
+					<div class="mc-container">
+						<xsl:call-template name="INC_MOBILE_HEADER"/>
+						<xsl:call-template name="CONTENT"/>
+					</div>
+				</div>
+				<!-- RIGHT COLOUMN END -->
+			</div>
 		</div>
-		<xsl:call-template name="CONTENT"/>
-		<xsl:call-template name="CART_SCRIPT"/>			
+		<!-- MAIN COLOUMNS END -->
 	</xsl:template>
 
 	<!-- <xsl:template name="BANNERS">
-		<div class="has-banners">
-			<div class="container">
-				<div class="banners-container">
-					<xsl:for-each select="page/main_page/main_promo_bottom">
-						<div style="background-image: url({@path}{pic})">
-							<div class="aspect-ratio"></div>
-							<a href="">
+		<div class="container p-t">
+			<div class="row">
+				<div class="col-xs-12 banners">
+					<div class="banners-container">
+						<xsl:for-each select="page/main_page/main_promo_bottom">
+							<a href="{link}" style="background-image: url({@path}{pic})">
 								<h4><xsl:value-of select="text_big"/></h4>
 								<p><xsl:value-of select="text_small"/></p>
 							</a>
-						</div>
-				
-						<a href="{link}" style="background-image: url({@path}{pic})">
-							<h4><xsl:value-of select="text_big"/></h4>
-							<p><xsl:value-of select="text_small"/></p>
-						</a>
-					</xsl:for-each>
+						</xsl:for-each>
+					</div>
 				</div>
 			</div>
 		</div>
 	</xsl:template> -->
 
-
 	<xsl:template name="BANNERS">
-		<div class="has-banners">
-			<div class="container">
+		<div class="container-fluid" style="background-color: #f5f1ea; padding: 50px 0;">
+			<div class="container .container-tb">
 				<div class="banners-container">
 					<xsl:for-each select="page/main_page/main_promo_bottom">
 						<div class="banner">
-							<div class="image-container" style="background-image: url({@path}{pic})">
-								<div class="aspect-ratio"></div>
-							</div>
-							<div class="info">
-								<h4><xsl:value-of select="text_big"/></h4>
-								<p><xsl:value-of select="text_small"/></p>
-							</div>
-							<a href="{link}"></a>
+							<div class="banner__image" style="background-image: url({@path}{pic})"></div>
+							<div class="banner__title"><xsl:value-of select="text_big"/></div>
+							<div class="banner__text"><xsl:value-of select="text_small"/></div>
+							<a class="banner__link" href="{link}"></a>
 						</div>
-				
-						<!-- <a href="{link}" style="background-image: url({@path}{pic})">
-							
-						</a> -->
 					</xsl:for-each>
 				</div>
 			</div>
+		</div>
+
+
+
+
+
+		<div class="container container-tb">
+			<div class="hero hero_center">
+				<div class="hero-block hero-block_center">
+					<!-- <div class="hero-block__icon"></div> -->
+					<div class="hero-block__title">1972</div>
+					<div class="hero-block__text">год начала работы</div>
+				</div>
+				<div class="hero-block hero-block_center">
+					<!-- <div class="hero-block__icon"></div> -->
+					<div class="hero-block__title">более 180</div>
+					<div class="hero-block__text">довольных клиентов</div>
+				</div>
+				<div class="hero-block hero-block_center">
+					<!-- <div class="hero-block__icon"></div> -->
+					<div class="hero-block__title">46 лет</div>
+					<div class="hero-block__text">безупречной работы</div>
+				</div>
+			</div>
+		</div>
+		<div class="separator"></div>
+		<div class="container container-tb">
+			<div class="quote quote_center">
+				<p>Основное направление компании Тексимат — кожа оптом и в розницу. Мы любим свое дело и ценим наших клиентов, поэтому предлагаем только лучшие материалы от ведущих европейских производителей.</p>
+			</div>
+		</div>
+		<div class="container-fluid contaner-tb">
+			<div class="photo-stripe">
+				<div class="photo-stripe__item">
+					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
+					<div class="photo-stripe__image" style="background-image: url(../img/bp1_small.jpg);"></div>
+					<div class="photo-stripe__text">Подпись к фото</div>
+				</div>
+				<div class="photo-stripe__item">
+					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
+					<div class="photo-stripe__image" style="background-image: url(../img/bp2_small.jpg);"></div>
+					<div class="photo-stripe__text">Подпись к фото</div>
+				</div>
+				<div class="photo-stripe__item">
+					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
+					<div class="photo-stripe__image" style="background-image: url(../img/bp3_small.jpg);"></div>
+					<div class="photo-stripe__text">Подпись к фото</div>
+				</div>
+				<div class="photo-stripe__item">
+					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
+					<div class="photo-stripe__image" style="background-image: url(../img/bp4_small.jpg);"></div>
+					<div class="photo-stripe__text">Подпись к фото</div>
+				</div>
+				<div class="photo-stripe__item">
+					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
+					<div class="photo-stripe__image" style="background-image: url(../img/bp5_small.jpg);"></div>
+					<div class="photo-stripe__text">Подпись к фото</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container container-tb">
+			<div class="hero">
+				<div class="hero-block hero-block_center">
+					<div class="hero-block__icon">
+						<i class="fa fa-star"></i>
+					</div>
+					<div class="hero-block__title hero-block__title_small">Самые низкие цены в Минске и РБ</div>
+					<!-- <div class="hero-block__text hero-block__text_small"></div> -->
+				</div>
+				<div class="hero-block hero-block_center">
+					<div class="hero-block__icon">
+						<i class="fa fa-thumbs-up"></i>
+					</div>
+					<div class="hero-block__title hero-block__title_small">Огромный выбор кожи разных видов</div>
+					<!-- <div class="hero-block__text hero-block__text_small"></div> -->
+				</div>
+				<div class="hero-block hero-block_center">
+					<div class="hero-block__icon">
+						<i class="fa fa-trophy"></i>
+					</div>
+					<div class="hero-block__title hero-block__title_small">Можно купить отрез от 1,1 метра</div>
+					<!-- <div class="hero-block__text hero-block__text_small"></div> -->
+				</div>
+				<div class="hero-block hero-block_center">
+					<div class="hero-block__icon">
+						<i class="fa fa-truck"></i>
+					</div>
+					<div class="hero-block__title hero-block__title_small">Офис, склад и парковка в одном месте</div>
+					<!-- <div class="hero-block__text hero-block__text_small"></div> -->
+				</div>
+			</div>
+		</div>
+		<div class="separator"></div>
+		<div class="container container-tb">
+			<iframe src="https://yandex.by/map-widget/v1/-/CBumiCENKC" width="100%" height="400" frameborder="0" allowfullscreen="true"></iframe>
 		</div>
 	</xsl:template>
 

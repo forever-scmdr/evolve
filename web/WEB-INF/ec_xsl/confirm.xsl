@@ -1,12 +1,14 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="is_jur" select="page/user_jur"/>
+	<xsl:variable name="title" select="'Заявка оформлена'" />
+
+	<xsl:variable name="is_jur" select="not(page/user_jur/input/organization = '')"/>
 	<xsl:variable name="is_phys" select="not($is_jur)"/>
 	<xsl:variable name="cart" select="page/cart"/>
-	<xsl:variable name="contacts" select="if (page/user_jur) then page/user_jur else page/user_phys"/>
+	<xsl:variable name="contacts" select="if ($is_jur) then page/user_jur/input else page/user_phys/input"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -16,13 +18,13 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Спасибо за заказ!</h1>
+		<h1>Спасибо за заявку!</h1>
 
 
-		<h3>Заказ №<xsl:value-of select="$cart/order_num"/></h3>
+		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="item-summ" style="padding-bottom: 20px;">
 			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
-			Сумма: <span><xsl:value-of select="$cart/sum"/></span>
+			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
 		</div>
 		<div class="checkout-cont1">
 			<div class="info" style="padding-bottom: 20px;">
@@ -99,75 +101,53 @@
 				</xsl:if>
 			</div>
 
-
-			<xsl:if test="$contacts/payment = 'erip'">
-				<div class="checkout-cont1">
-					<div class="info" style="padding-bottom: 20px;">
-						<form method="POST" action="https://pay161.paysec.by/pay/order.cfm">
-							<INPUT type="hidden" NAME="Merchant_ID" VALUE="{page/common/erip_id}"/>
-							<INPUT type="hidden" NAME="OrderNumber" VALUE="{$cart/order_num}"/>
-							<INPUT type="hidden" NAME="OrderAmount" VALUE="{f:currency_decimal($cart/sum)}"/>
-							<INPUT type="hidden" NAME="OrderCurrency" VALUE="BYN"/>
-							<xsl:variable name="fio" select="tokenize($contacts/name | $contacts/director,' ')"/>
-							<INPUT type="hidden" NAME="FirstName" VALUE="{$fio[2]}"/>
-							<INPUT type="hidden" NAME="LastName" VALUE="{$fio[1]}"/>
-							<INPUT type="hidden" NAME="FatherName" VALUE="{$fio[3]}"/>
-							<INPUT type="hidden" NAME="Email" VALUE="{$contacts/email}"/>
-							<INPUT type="hidden" NAME="MobilePhone" VALUE="{$contacts/phone}"/>
-							<INPUT type="hidden" NAME="Address" VALUE="{$contacts/post_address}"/>
-							<INPUT type="hidden" NAME="OrderComment" VALUE="{$contacts/user_message}"/>
-							<INPUT TYPE="SUBMIT" NAME="Submit" VALUE="Перейти на сайт оплаты заказа"
-								   class="assist-submit"/>
-						</form>
-					</div>
-				</div>
-			</xsl:if>
-
-			<table>
-				<tr>
-					<th>
-						Код
-					</th>
-					<th>
-						Наименование
-					</th>
-					<th>
-						Кол
-					</th>
-					<th>
-						Цена
-					</th>
-					<th>
-						Стоимость
-					</th>
-					<th>
-						Наличие
-					</th>
-				</tr>
-				<xsl:for-each select="$cart/bought">
-					<xsl:sort select="type"/>
+			<div class="table-responsive">
+				<table>
 					<tr>
-						<td>
-							<xsl:value-of select="product/code"/>
-						</td>
-						<td valign="top">
-							<strong><xsl:value-of select="product/name"/></strong>
-						</td>
-						<td valign="top">
-							<xsl:value-of select="qty"/>
-						</td>
-						<td>
-							<xsl:value-of select="product/price"/>
-						</td>
-						<td>
-							<xsl:value-of select="sum"/>
-						</td>
-						<td>
-							<xsl:value-of select="product/qty"/>
-						</td>
+						<th>
+							Код
+						</th>
+						<th>
+							Наименование
+						</th>
+						<th>
+							Кол
+						</th>
+						<th>
+							Цена
+						</th>
+						<th>
+							Стоимость
+						</th>
+						<!-- 	<th>
+                                Наличие
+                            </th> -->
 					</tr>
-				</xsl:for-each>
-			</table>
+					<xsl:for-each select="$cart/bought">
+						<xsl:sort select="type"/>
+						<tr>
+							<td>
+								<xsl:value-of select="product/code"/>
+							</td>
+							<td valign="top">
+								<strong><xsl:value-of select="product/name"/></strong>
+							</td>
+							<td valign="top">
+								<xsl:value-of select="qty"/>
+							</td>
+							<td>
+								<xsl:value-of select="product/price"/>
+							</td>
+							<td>
+								<xsl:value-of select="sum"/>
+							</td>
+							<!-- <td>
+								<xsl:value-of select="product/qty"/>
+							</td> -->
+						</tr>
+					</xsl:for-each>
+				</table>
+			</div>
 		</div>
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>

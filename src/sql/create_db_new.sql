@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `item_ids` (
 CREATE TABLE IF NOT EXISTS `param_ids` (
   `pid_param_id` int(4) NOT NULL AUTO_INCREMENT,
   `pid_item_id` int(4) NOT NULL,
-  `pid_param_name` varchar(50) NOT NULL,
+  `pid_param_name` varchar(255) NOT NULL,
   PRIMARY KEY (`pid_param_id`) USING BTREE,
   UNIQUE KEY `UNIQUE` (`pid_item_id`,`pid_param_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `item` (
   `i_params` longtext,
   PRIMARY KEY (`i_id`),
   KEY `MAIN` (`i_id`,`i_status`,`i_group`,`i_user`) USING BTREE,
-  KEY `USER_AND_TYPE` (`i_group`,`i_user`,`i_supertype`,`i_status`) USING BTREE
+  KEY `GROUP_AND_TYPE` (`i_group`,`i_supertype`,`i_user`,`i_status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -69,7 +69,8 @@ CREATE TABLE IF NOT EXISTS `item_parent` (
   PRIMARY KEY (`ip_child_id`,`ip_assoc_id`,`ip_parent_direct`,`ip_parent_id`) USING BTREE,
   KEY `MAIN` (`ip_parent_id`,`ip_assoc_id`,`ip_child_supertype`,`ip_parent_direct`,`ip_weight`) USING BTREE,
   KEY `MAX_WEIGHT` (`ip_parent_id`,`ip_assoc_id`,`ip_weight`) USING BTREE,
-  CONSTRAINT `CHILD` FOREIGN KEY (`ip_child_id`) REFERENCES `item` (`i_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `CHILD` FOREIGN KEY (`ip_child_id`) REFERENCES `item` (`i_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `PARENT` FOREIGN KEY (`ip_parent_id`) REFERENCES `item` (`i_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

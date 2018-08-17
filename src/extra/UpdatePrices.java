@@ -3,6 +3,7 @@ package extra;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -18,24 +19,24 @@ import java.io.File;
  * Разбор файла с ценой
  * Created by E on 1/3/2018.
  */
-public class UpdatePrices extends IntegrateBase {
+public class UpdatePrices extends IntegrateBase implements CatalogConst{
 	private static final String QTY_HEADER = "кол-во";
 	private static final String PRICE_HEADER = "с НДС";
 
 	private ExcelPriceList price;
 
 	@Override
-	protected boolean makePreparations() throws Exception {
+	protected boolean makePreparations() throws Exception{
 		Item catalog = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
 		if (catalog == null)
 			return false;
-		File priceFile = catalog.getFileValue(ItemNames.catalog.INTEGRATION, AppContext.getFilesDirPath(false));
+		File priceFile = catalog.getFileValue(CATALOG_ITEM, AppContext.getFilesDirPath(false));
 		price = new ExcelPriceList(priceFile, QTY_HEADER, PRICE_HEADER) {
 			@Override
 			protected void processRow() throws Exception {
 				String code = StringUtils.replace(getValue(0), " ", "");
 				if (StringUtils.isNotBlank(code)) {
-					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code));
+					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code));
 					if (prod != null) {
 						Double qty = getDoubleValue(QTY_HEADER);
 						if (qty == null)
@@ -49,6 +50,11 @@ public class UpdatePrices extends IntegrateBase {
 						info.pushLog("Товар с кодом {} и названием {} не найден в каталоге", code, getValue(1));
 					}
 				}
+			}
+
+			@Override
+			protected void processSheet() throws Exception {
+
 			}
 		};
 		return true;

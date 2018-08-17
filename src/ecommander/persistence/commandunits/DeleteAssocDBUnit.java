@@ -1,9 +1,6 @@
 package ecommander.persistence.commandunits;
 
-import ecommander.model.Assoc;
-import ecommander.model.Item;
-import ecommander.model.ItemBasics;
-import ecommander.model.ItemTypeRegistry;
+import ecommander.model.*;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
@@ -37,6 +34,7 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		this.assocId = assocId;
 		this.item = item;
 		this.parent = parent;
+		this.parentId = parent.getId();
 	}
 
 	@Override
@@ -103,8 +101,21 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 				}
 			}
 
-			// Удалить связи с вычисленными предками
-			TemplateQuery delete = new TemplateQuery("Delete assoc by list");
+			// Удалить связи между вычисленными предками и потомками айтема, с которым разрывается связь (item)
+			TemplateQuery delete = new TemplateQuery("Delete assoc item children by list");
+			delete.DELETE_FROM_WHERE(ITEM_PARENT_TBL)
+					.col_IN(IP_PARENT_ID).longIN(toUnlink.toArray(new Long[0])).AND()
+					.col(IP_ASSOC_ID).byte_(assocId).AND()
+					.col_IN(IP_CHILD_ID).sql(" (").SELECT(IP_CHILD_ID).FROM().sql(" (")
+					.SELECT(IP_CHILD_ID).FROM(ITEM_PARENT_TBL).WHERE().col(IP_PARENT_ID).long_(childId)
+					.AND().col(IP_ASSOC_ID).byte_(ItemTypeRegistry.getPrimaryAssocId())
+					.sql(") X)");
+			try (PreparedStatement pstmt = delete.prepareQuery(getTransactionContext().getConnection())) {
+				pstmt.executeUpdate();
+			}
+
+			// Удалить связи между вычисленными предками и самим айтемом, с которым разрывается связь (item)
+			delete = new TemplateQuery("Delete assoc item itself by list");
 			delete.DELETE_FROM_WHERE(ITEM_PARENT_TBL)
 					.col_IN(IP_PARENT_ID).longIN(toUnlink.toArray(new Long[0])).AND()
 					.col(IP_CHILD_ID).long_(childId).AND()
@@ -112,7 +123,6 @@ public class DeleteAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			try (PreparedStatement pstmt = delete.prepareQuery(getTransactionContext().getConnection())) {
 				pstmt.executeUpdate();
 			}
-
 		} else {
 			TemplateQuery delete = new TemplateQuery("Delete assoc");
 			delete.DELETE_FROM_WHERE(ITEM_PARENT_TBL)

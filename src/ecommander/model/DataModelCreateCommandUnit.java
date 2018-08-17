@@ -141,8 +141,8 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		noDeletion = itemsById.size() == 0 && paramsById.size() == 0;
 		if (mode == Mode.force_update) {
 			mergeModel();
-			// Создать java класс с текстовыми константами для всех айтемов
-			createJavaConstants();
+			//// Создать java класс с текстовыми константами для всех айтемов
+			//createJavaConstants();
 			// Добавить сгенерированные ID в файлы модели
 			for (File file : xmlFileContents.keySet()) {
 				String content = xmlFileContents.get(file);
@@ -299,6 +299,8 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 				}
 			}
 			// Заменить название айтема в списке ID айтемов
+			paramIds.put(name, paramIds.get(itemsById.get(savedId)));
+			paramIds.remove(itemsById.get(savedId));
 			itemIds.remove(itemsById.get(savedId));
 			itemIds.put(name, new HashId(name.hashCode(), savedId));
 		}
@@ -320,7 +322,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 				}
 			}
 			itemIds.put(name, new HashId(name.hashCode(), newId));
-			paramIds.put(name, new HashMap<String, HashId>());
+			paramIds.put(name, new HashMap<>());
 		}
 		// Временно сохранить сведения о иерархии наследования
 		if (!StringUtils.isBlank(exts)) {
@@ -686,7 +688,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			String itemName = rs.getString(ItemIds.IID_ITEM_NAME);
 			itemIds.put(itemName, new HashId(itemName.hashCode(), itemId));
 			itemsById.put(itemId, itemName);
-			paramIds.put(itemName, new HashMap<String, HashId>());
+			paramIds.put(itemName, new HashMap<>());
 			if (itemId > maxItemId)
 				maxItemId = itemId;
 		}

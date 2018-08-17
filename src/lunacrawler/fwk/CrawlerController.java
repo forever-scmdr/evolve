@@ -3,7 +3,6 @@ package lunacrawler.fwk;
 import java.io.*;
 import java.net.URI;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.util.*;
@@ -23,15 +22,11 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import lunacrawler.UrlModifier;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Document.OutputSettings;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Entities.EscapeMode;
 import org.jsoup.parser.Parser;
-import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
 import ecommander.controllers.AppContext;
@@ -619,32 +614,64 @@ public class CrawlerController {
 		try {
 			String fileName = Strings.createFileName(url);
 			Path file = Paths.get(resultTempSrcDir + fileName);
+			String content = new String(Files.readAllBytes(file), UTF_8);
+			return transformStringInt(content, url);
+		} catch (Exception e) {
+			return handleTransformationException(e);
+		}
+	}
+
+	/**
+	 * Преобразовать заданный в виде строки HTML в XML
+	 * @param source - строка HTML
+	 * @param url - для определения нужного XSL файла
+	 * @return
+	 * @throws TransformerException
+	 * @throws UnsupportedEncodingException
+	 */
+	private String transformStringInt(String source, String url) {
+		try {
 			File xslFile = new File(stylesDir + getStyleForUrl(url));
 			if (!xslFile.exists()) {
 				return "<result>NO XSL FILE FOUND</result>";
 			}
-			String content = new String(Files.readAllBytes(file), UTF_8);
 			TransformerFactory factory = TransformerFactoryImpl.newInstance();
 			Transformer transformer = factory.newTransformer(new StreamSource(xslFile));
-			Reader reader = new StringReader(content);
+			Reader reader = new StringReader(source);
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			transformer.transform(new StreamSource(reader), new StreamResult(bos));
 			return bos.toString(UTF_8);
 		} catch (Exception e) {
-			info.pushLog("Can not write parsing results to a file", e);
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			e.printStackTrace(new PrintStream(bos));
-			try {
-				return bos.toString(UTF_8);
-			} catch (UnsupportedEncodingException e1) {
-				ServerLogger.error("no encoding", e1);
-				return null;
-			}
+			return handleTransformationException(e);
 		}
 	}
 
+	/**
+	 * Обработать исключение, которое может получиться в процессе XSL трансформации
+	 * @param e
+	 * @return
+	 */
+	private String handleTransformationException(Exception e) {
+		info.pushLog("Can not write parsing results to a file", e);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		e.printStackTrace(new PrintStream(bos));
+		try {
+			return bos.toString(UTF_8);
+		} catch (UnsupportedEncodingException e1) {
+			ServerLogger.error("no encoding", e1);
+			return null;
+		}
+	}
+
+
+
 	public static String transformUrl(String url) {
 		return getSingleton().transformUrlInt(url);
+	}
+
+
+	public static String transformString(String html, String url) {
+		return getSingleton().transformStringInt(html, url);
 	}
 
 

@@ -102,8 +102,7 @@ public abstract class BasicAdminServlet extends HttpServlet {
 	 * @return
 	 */
 	protected static String getContextPath(HttpServletRequest req) {
-		String domain = req.getServerName() + (req.getServerPort() == 80 ? "" : ":" + req.getServerPort()) + req.getContextPath();
-		return AppContext.getProtocolScheme() + "://" + (StringUtils.isBlank(req.getContextPath()) ? domain : domain + "/");
+		return BasicServlet.getContextPath(req) + (StringUtils.isBlank(req.getContextPath()) ? "" : "/");
 	}
 	/**
 	 * Получить полную строку запроса из объекта запроса
@@ -111,11 +110,15 @@ public abstract class BasicAdminServlet extends HttpServlet {
 	 * @return
 	 */
 	public static String getRequestStrig(HttpServletRequest request) {
-		return 
-				//request.getScheme() + "://" + request.getServerName() +
+		return
 				AppContext.getProtocolScheme() + "://" + request.getServerName() +
-				("http".equals(request.getScheme()) && request.getServerPort() == 80 ||
-				"https".equals(request.getScheme()) && request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+				(request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
 				request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : "");
+	}
+
+	public static String createAbsoluteUrl(HttpServletRequest request, String relativeUrl) {
+		return AppContext.getProtocolScheme() + "://" + request.getServerName() +
+				(request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+				"/" + relativeUrl;
 	}
 }
