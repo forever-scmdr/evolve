@@ -4,6 +4,7 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.Strings;
+import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
 import ecommander.model.filter.CriteriaDef;
@@ -25,7 +26,7 @@ import java.util.*;
 /**
  * Created by user on 27.03.2018.
  */
-public class IntegratePriceList extends IntegrateBase {
+public class IntegratePriceList extends IntegrateBase implements CatalogConst{
 	//headers
 	private static final String CODE = "code";
 	private static final String NAME = "Наменование";
@@ -46,7 +47,7 @@ public class IntegratePriceList extends IntegrateBase {
 		catalog = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
 		if (catalog == null)
 			return false;
-		File priceFile = catalog.getFileValue(ItemNames.catalog.INTEGRATION, AppContext.getFilesDirPath(false));
+		File priceFile = catalog.getFileValue(INTEGRATION_PARAM, AppContext.getFilesDirPath(false));
 		price = new ExcelPriceList(priceFile, CODE, NAME, DESCRIPTION, PIC, PICS, PRICE, TAG) {
 			@Override
 			protected void processRow() throws Exception {
@@ -63,7 +64,7 @@ public class IntegratePriceList extends IntegrateBase {
 					String s = headersIter.next();
 					if(!s.startsWith("#")) headersIter.remove();
 				}
-				String typeName = currentSection.getStringValue(ItemNames.section.NAME);
+				String typeName = currentSection.getStringValue(NAME_PARAM);
 				ItemType paramsType = ItemTypeRegistry.getItemType(Strings.translit(typeName));
 				if (StringUtils.isBlank(currentSection.getStringValue("params_filter"))) {
 					createFilters(currentSection, AdditionalHeaders);
@@ -77,7 +78,7 @@ public class IntegratePriceList extends IntegrateBase {
 					DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
 				}
 
-				Item productItem = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code);
+				Item productItem = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code);
 				productItem = (productItem == null) ? Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PRODUCT), currentSection) : productItem;
 				Product product = Product.get(productItem);
 				product.set_code(code);
@@ -131,10 +132,10 @@ public class IntegratePriceList extends IntegrateBase {
 			@Override
 			protected void processSheet() throws Exception {
 				String sectionName = getSheetName();
-				currentSection = ItemQuery.loadSingleItemByParamValue(ItemNames.SECTION, ItemNames.section.NAME, sectionName);
+				currentSection = ItemQuery.loadSingleItemByParamValue(ItemNames.SECTION, NAME_PARAM, sectionName);
 				if (currentSection == null) {
 					currentSection = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.SECTION), catalog);
-					currentSection.setValue(ItemNames.section.NAME, sectionName);
+					currentSection.setValue(NAME_PARAM, sectionName);
 					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(currentSection).noFulltextIndex().ingoreComputed());
 				}
 			}
@@ -144,7 +145,7 @@ public class IntegratePriceList extends IntegrateBase {
 
 	private void createFilters(Item currentSection, TreeSet<String> headers) throws Exception {
 		FilterDefinition filter = FilterDefinition.create("");
-		filter.setRoot(Strings.translit(currentSection.getStringValue(ItemNames.section.NAME)));
+		filter.setRoot(Strings.translit(currentSection.getStringValue(NAME_PARAM)));
 		for (String paramName : headers) {
 			paramName = paramName.replace("#", "");
 			InputDef input = new InputDef("droplist", paramName, "", "");
@@ -192,14 +193,14 @@ public class IntegratePriceList extends IntegrateBase {
 			try {
 
 			String code = e.getKey();
-			Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code);
+			Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code);
 			ArrayList<String> urls = e.getValue();
 			for(int i = 0; i < urls.size(); i++){
 				URL pictureUrl = new URL(urls.get(i));
 				if(i > 0){
-					product.setValueUnique(ItemNames.product.GALLERY, pictureUrl);
+					product.setValueUnique(GALLERY_PARAM, pictureUrl);
 				}else{
-					product.setValue(ItemNames.product.MAIN_PIC, pictureUrl);
+					product.setValue(MAIN_PIC_PARAM, pictureUrl);
 				}
 
 			}

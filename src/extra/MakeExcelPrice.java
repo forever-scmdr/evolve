@@ -2,6 +2,7 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
@@ -20,7 +21,7 @@ import java.util.List;
 /**
  * Created by user on 21.05.2018.
  */
-public class MakeExcelPrice extends Command {
+public class MakeExcelPrice extends Command implements CatalogConst{
 
 	private static final Format DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH-mm-ss");
 	private CellStyle headerStyle = null;
@@ -58,10 +59,10 @@ public class MakeExcelPrice extends Command {
 				for (Item product : products) {
 					colIdx = -1;
 					row = sheet.createRow(++rowIdx);
-					row.createCell(++colIdx).setCellValue(product.getStringValue(ItemNames.product.CODE));
-					row.createCell(++colIdx).setCellValue(product.getStringValue(ItemNames.product.NAME));
+					row.createCell(++colIdx).setCellValue(product.getStringValue(CODE_PARAM));
+					row.createCell(++colIdx).setCellValue(product.getStringValue(NAME_PARAM));
 					Cell price = row.createCell(++colIdx);
-					BigDecimal cost = product.getDecimalValue(ItemNames.product.PRICE, BigDecimal.ZERO);
+					BigDecimal cost = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
 					price.setCellValue(cost.doubleValue());
 					if (cost.doubleValue() == 0) {
 						price.setCellStyle(errorStyle);

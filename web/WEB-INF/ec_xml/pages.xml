@@ -1081,4 +1081,13 @@
         </command>
     </page>
 
+    <page name="import_from_old_site">
+        <request>
+            <var name="site" value="http://takt.by/"/>
+        </request>
+        <command class="ecommander.fwk.integration.ImportFromOldSite">
+            <result name="complete" type="xml"/>
+        </command>
+    </page>
+
 </site>
