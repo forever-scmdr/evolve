@@ -185,12 +185,21 @@
 	<xsl:template name="BANNERS">
 		<div class="container">
 			<div class="banners-container">
-				<xsl:for-each select="page/catalog/section">
+				<!-- <xsl:for-each select="page/catalog/section">
 					<div class="banner">
 						<div class="banner__image" style="background-image: url({@path}{main_pic})"></div>
-						<div class="banner__title"><xsl:value-of select="name_extra"/></div>
+						<div class="banner__title"><xsl:value-of select="name_extra"/></div> -->
 						<!-- <div class="banner__text"><xsl:value-of select="text_small"/></div> -->
-						<a class="banner__link" href="{show_section}"></a>
+					<!-- 	<a class="banner__link" href="{show_section}"></a>
+					</div>
+				</xsl:for-each> -->
+				<xsl:for-each select="page/main_page/main_promo_bottom">
+					<div class="banner">
+						<div class="banner__image" style="background-image: url({@path}{pic})"></div>
+						<div class="banner__title">
+							<xsl:value-of select="text_big" disable-output-escaping="yes"/>
+						</div>
+						<a class="banner__link" href="{link}"></a>
 					</div>
 				</xsl:for-each>
 			</div>
