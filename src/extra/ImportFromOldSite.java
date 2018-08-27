@@ -1,8 +1,9 @@
-package ecommander.fwk.integration;
+package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
+import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;

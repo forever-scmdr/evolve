@@ -187,7 +187,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		}
 		// Пользовательские параметры продуктов
 		else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName)) {
-			paramName = Strings.createXmlElementName(attributes.getValue(NAME_ATTR));
+			paramName = attributes.getValue(NAME_ATTR);
 			parameterReady = true;
 		}
 	}
