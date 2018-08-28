@@ -241,12 +241,14 @@
 
 	<!-- TINY_MCE -->
 	<xsl:template name="TINY_MCE">
-		<xsl:variable name="form" select=".."/>
-		<script type="text/javascript">
+		<xsl:variable name="form" select="//form"/>
+		<script type="text/javascript" id="script">
 			var startUploadUrl = "<xsl:value-of select="admin-page/upload-link"/>";
 			var openAssocUrl = "<xsl:value-of select="admin-page/open-associated-link"/>";
+
 			//-- mce image upload settings for tinyMCE
 			window.uploadPath = "<xsl:value-of select="$form/@file-path"/>";
+
 			<xsl:if test="$form/@id != '0'">
 				window.itemId = <xsl:value-of select="$form/@id" />;
 				<xsl:if test="$form/field[ @type='picture' and @quantifier = 'multiple']">
