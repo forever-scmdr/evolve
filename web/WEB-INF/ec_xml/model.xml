@@ -2,6 +2,78 @@
 <model>
 
 
+	<item name="agent" key="organization email" caption="Контрагент">
+		<parameter name="register_date" type="date" caption="Дата регистрации"/>
+		<parameter name="country" type="string" caption="Страна" text-index="fulltext"/>
+		<parameter name="region" type="string" caption="Область" text-index="fulltext"/>
+		<parameter name="city" type="string" caption="Город" text-index="fulltext"/>
+		<parameter name="organization" type="string" caption="Организация" text-index="fulltext"/>
+		<parameter name="address" type="string" caption="Адрес" text-index="fulltext"/>
+		<parameter name="phone" type="string" caption="Телефон" text-index="fulltext"/>
+		<parameter name="email_main" type="string" caption="Email 1" text-index="fulltext"/>
+		<parameter name="email_contact" type="string" caption="Email 2" text-index="fulltext"/>
+		<parameter name="site" type="string" caption="Адрес сайта" text-index="fulltext"/>
+		<parameter name="contact_name" type="string" caption="ФИО контактного лица" text-index="fulltext"/>
+		<parameter name="boss_position" type="string" caption="Должность руководителя организации"/>
+		<parameter name="boss_name" type="string" caption="ФИО руководителя организации" text-index="fulltext"/>
+		<parameter name="type" caption="Род деятельности организации" type="string" text-index="fulltext"/>
+		<parameter name="branch" caption="Отрасль" type="string" text-index="fulltext"/>
+		<parameter name="desc" type="tiny-text" caption="Примечание" text-index="fulltext"/>
+		<parameter name="tags" type="string" caption="разделы" quantifier="multiple" text-index="fulltext"/>
+		<child item="sale"/>
+	</item>
+
+
+	<item name="dealer" key="email" caption="organization">
+		<parameter name="register_date" type="date" caption="Дата регистрации"/>
+		<parameter name="country" type="string" caption="Страна" text-index="fulltext"/>
+		<parameter name="region" type="string" caption="Область" text-index="fulltext"/>
+		<parameter name="city" type="string" caption="Город" text-index="fulltext"/>
+		<parameter name="organization" type="string" caption="Организация" text-index="fulltext"/>
+		<parameter name="address" type="string" caption="Адрес" text-index="fulltext"/>
+		<parameter name="phone" type="string" caption="Телефон" text-index="fulltext"/>
+		<parameter name="email" type="string" caption="Email 1" text-index="fulltext"/>
+		<parameter name="contact_name" type="string" caption="ФИО контактного лица" text-index="fulltext"/>
+		<parameter name="desc" type="tiny-text" caption="Примечание" text-index="fulltext"/>
+	</item>
+
+
+	<!--
+	Для группировки товаров по типам, группам или видам (или любым другим признакам)
+	используется параметр tag
+	Этот параметр добавляется товару при соответствии его названия определенной маске, созданной администратором
+	После того, как администратор создал нужные группы (маски), он выполняет определенную команду, которая
+	проверяет все продажи и добавляет к ним тэги
+	 -->
+	<item name="sale" caption="Продажа" key="device year quartal">
+		<parameter name="device" type="string" caption="Наименование оборудования (устройство)"/>
+		<parameter name="device_type" type="string" caption="Тип оборудования" description="напрмер, клапан или фильтр"/>
+		<parameter name="device_group" type="string" caption="Группа оборудования" description="вид (группа по некоторому признаку), например, DN20"/>
+		<parameter name="qty" type="integer" caption="Количество" description="проданных устройств"/>
+		<parameter name="year" type="integer" caption="Год" description="в который осуществилась продажа"/>
+		<parameter name="quartal" type="integer" caption="Квартал" description="в который осуществилась продажа"/>
+		<parameter name="sale_date" type="date" caption="Точная дата продажи"/>
+		<parameter name="register_date" type="date" caption="Дата добавления в базу" description="этой продажи"/>
+		<parameter name="agent" type="string" caption="Название контрагента" description="(просто для контроля) получатель оборудования"/>
+		<parameter name="dealer_email" type="string" caption="Email дилера" description="уникальный идентификатор дилера"/>
+		<parameter name="tag" type="string" caption="Тэг" description="это может быть группа, тип или любой другой признак"/>
+	</item>
+
+
+	<item name="type_mask" caption="Маска для типа" key="name mask">
+		<parameter name="mask" type="string" caption="Маска"
+		           description="в начале маски может стоять *, что означает, что маска должна встречаться не в начале слова"/>
+		<parameter name="name" type="string" caption="Название типа"/>
+	</item>
+
+
+	<item name="group_mask" caption="Маска для группы" key="name mask" super="type_mask"
+	      description="может быть объединением по любому признаку, имеющему смысл" />
+
+
+	<item name=""
+
+
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
