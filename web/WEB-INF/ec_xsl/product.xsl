@@ -82,8 +82,11 @@
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}"/>
 					</xsl:for-each>
-					<xsl:if test="not($p/gallery)">
+					<xsl:if test="not($p/gallery) and not($p/main_pic)">
 						<img src="img/no_image.png"/>
+					</xsl:if>
+					<xsl:if test="not($p/gallery) and $p/main_pic != ''">
+						<img src="{$p/@path}{$p/main_pic}"/>
 					</xsl:if>
 				</div>
 			</div>
