@@ -139,11 +139,11 @@ var mceSettings = {
 
 $(document).ready(function(){
 	
-	filePickerTypes = "";
-	if(typeof imgId != undefined) filePickerTypes += "image";
-	if(typeof fileId != undefined) filePickerTypes += " file";
-	
-	hasFiles = typeof imgId != undefined || typeof fileId != undefined;
+	var filePickerTypes = "";
+	if(typeof window.imgId != undefined) filePickerTypes += "image";
+	if(typeof window.fileId != undefined) filePickerTypes += " file";
+
+	var hasFiles = typeof imgId != undefined || typeof fileId != undefined;
 	
 	for(var setting in mceSettings){
 		if(hasFiles && mceSettings[setting].plugins[0].indexOf(" image ") != -1){
@@ -152,9 +152,9 @@ $(document).ready(function(){
 					,file_picker_callback: function(callback, value, meta) {
 						if((meta.filetype == 'image' && typeof imgId == "undefined") || (meta.filetype == 'file' && typeof fileId == "undefined")) return;
 					
-						formId = "frm_"+ new Date().getTime();
-						paramId = (meta.filetype == 'image')? imgId : fileId;
-						form = $("<form>",{ method: "post", action: "admin_upload_img.action?itemId="+itemId+"&multipleParamId="+paramId, enctype: "multipart/form-data", id: formId});
+						var formId = "frm_"+ new Date().getTime();
+						var paramId = (meta.filetype == 'image')? imgId : fileId;
+						var form = $("<form>",{ method: "post", action: "admin_upload_img.action?itemId="+itemId+"&multipleParamId="+paramId, enctype: "multipart/form-data", id: formId});
 						ipt = $("<input>", {type:"file", name: "multipleParamValue"});
 						form.append(ipt);
 						ipt.click();

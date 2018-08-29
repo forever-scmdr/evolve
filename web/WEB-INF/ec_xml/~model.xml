@@ -123,6 +123,13 @@
 		<on-create class="ecommander.fwk.integration.CreateSeoContainerItemFactory"/><!-- Создать связь с seo (если он есть) -->
 	</item>
 
+	<!--/////////////                            END SEO                                   ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+
 
 
 
@@ -326,10 +333,12 @@
 		<child item="user"/>
 	</item>
 
-
 	<!--/////////////                            END РЕГИСТРАЦИЯ                           ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
 
 	<item name="news_wrap" caption="Новостые разделы" ag-id="19" ag-hash="301189686">
 		<child item="news"/>
@@ -342,7 +351,7 @@
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
 		<parameter name="text" type="text" caption="Текст"/>
-		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+		<parameter name="text_pics" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
 	<item name="news" caption="Новостной раздел" key="name" key-unique="true" default-page="news" super="seo_container" ag-id="21" ag-hash="3377875">

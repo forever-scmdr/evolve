@@ -1081,7 +1081,7 @@
         </command>
     </page>
 
-    <page name="import_from_old_site">
+    <page name="import_from_old_site" template="integration">
         <request>
             <var name="site" value="http://takt.by/"/>
         </request>

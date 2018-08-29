@@ -3,6 +3,7 @@ package ecommander.model;
 import java.io.File;
 import java.io.StringReader;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +11,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -56,6 +59,7 @@ public class Item implements ItemBasics {
 	private static final String PARAM_TAG = "param";
 	public static final String ID_ATTRIBUTE = "id";
 	public static final String KEY_PARAMETER = "@key";
+	public static final String URL_PATTERN = "^(https?|ftp|file)://[-\\wА-Яа-я+&@#/%?=~|!:,.;]*[-\\wА-Яа-я+&@#/%=~|]";
 
 	private static final int DIR_NAME_LENGTH = 3;
 	private static final char FINAL_DIR_CHAR = 'f';
@@ -66,6 +70,7 @@ public class Item implements ItemBasics {
 	public static final byte STATUS_NORMAL = (byte) 0;
 	public static final byte STATUS_NIDDEN = (byte) 1;
 	public static final byte STATUS_DELETED = (byte) 2;
+
 
 	private static final int _NO_PARAM_ID  = -1;
 
@@ -899,6 +904,12 @@ public class Item implements ItemBasics {
 					if (keepFiles) {
 						if (param.getType().isFile() && param.isEmpty())
 							continue;
+					}
+					Pattern urlP = Pattern.compile(URL_PATTERN);
+					Matcher urlM = urlP.matcher(param.getValue().toString());
+					if(param.getType().isFile() && urlM.matches()){
+						destination.setValue(paramDesc.getId(), new URL(param.getValue().toString()));
+						continue;
 					}
 					// Одиночные параметры
 					if (param instanceof SingleParameter) {
