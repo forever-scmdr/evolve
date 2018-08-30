@@ -144,11 +144,18 @@ public class PageController {
 				int i = requestUrl.indexOf("_=");
 				requestUrl = requestUrl.substring(0, i);
 			}
-			requestUrl = StringUtils.replaceChars(requestUrl, '|', '_');
-			requestUrl = StringUtils.replaceChars(requestUrl, '/', '_');
-			requestUrl = StringUtils.replaceChars(requestUrl, '?', '_');
-			String cacheFileName = domainName + "/" + page.getSessionContext().getUser().getGroupRolesStr() + "/" + requestUrl + ".html";
-			File cachedFile = new File(AppContext.getCacheHtmlDirPath() + cacheFileName);
+			String cacheFileName = requestUrl;
+			cacheFileName = StringUtils.replaceChars(cacheFileName, '|', '_');
+			cacheFileName = StringUtils.replaceChars(cacheFileName, '/', '_');
+			cacheFileName = StringUtils.replaceChars(cacheFileName, '?', '_');
+			cacheFileName = domainName + "/" + page.getSessionContext().getUser().getGroupRolesStr() + "/" + cacheFileName + ".html";
+			String fullFileName = AppContext.getCacheHtmlDirPath() + cacheFileName;
+			if (fullFileName.length() >= 255) {
+				int hash = fullFileName.hashCode();
+				fullFileName = StringUtils.substring(fullFileName, 0, 230);
+				fullFileName += hash + ".html";
+			}
+			File cachedFile = new File(fullFileName);
 			File xslFile = new File(xslFileName);
 			if (cachedFile.exists() && xslFile.lastModified() < cachedFile.lastModified() && cachedFile.length() > 0) {
 				Timer.getTimer().start(Timer.GET_FROM_CACHE);
@@ -236,6 +243,9 @@ public class PageController {
 						return result.getValue();
 					}
 				}
+				// Если нет такой страницы на сайте - вернуть просто как ссылку
+				if (PageModelRegistry.getRegistry().getPageModel(baseLink.getPageName()) == null)
+					return result.getValue();
 				// Сериализовать и спарсить заново ссылку, чтобы в случае если имя страницы было урлом, 
 				// корректно добавлялись бы значения переменных TODO <fix> перенести в класс LinkPE
 				else {

@@ -4,8 +4,8 @@
 <!-- ******************************* Включение для разделов каталога ****************************** -->
 
 	<include-definition name="COMMON">
-		<single item="catalog" id="catalog_main" cacheable="false">
-			<tree item="section" id="sec">
+        <single item="catalog" id="catalog_main" cacheable="true">
+            <tree item="section" id="sec" tag="section">
 				<link name="show_section" target="sub">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
@@ -35,10 +35,10 @@
 		<link name="register_link" target="register"/>
 		<link name="login_form_link" target="login_form_ajax"/>
 		<link name="personal_ajax_link" target="personal_ajax"/>
-		<single item="modules">
+        <single item="modules" cacheable="true">
 			<list item="named_code"/>
 		</single>
-		<single item="url_seo_wrap">
+        <single item="url_seo_wrap" cacheable="true">
 			<list item="url_seo"/>
 		</single>
 	</include-definition>
@@ -91,6 +91,7 @@
 	</page>
 
 
+
     <page name="catalog" template="catalog" cacheable="true">
         <include name="COMMON"/>
         <single item="catalog">
@@ -99,7 +100,8 @@
     </page>
 
 
-	<page name="section" template="section" cacheable="false" critical-item="cur_sec">
+
+    <page name="section" template="section" cacheable="true" critical-item="cur_sec">
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
@@ -198,6 +200,8 @@
 	</page>
 
 
+
+
     <page name="sub" template="sub" cacheable="true">
         <request>
             <var name="sec" style="translit"/>
@@ -206,15 +210,23 @@
             <single item="seo"/>
             <list item="section" id="subsec">
                 <list item="product" transit="true">
-
+					<filter>
+						<limit><var value="1" /></limit>
+					</filter>
 				</list>
+				<list item="section"/>
 				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="subsec" style="translit"/>
+				</link>
+				<link name="show_section" target="sub">
 					<var name="sec" ref="subsec" style="translit"/>
 				</link>
 			</list>
 		</single>
 		<include name="COMMON"/>
 	</page>
+
+
 
 	<page name="search" template="search">
 		<request>
@@ -264,14 +276,14 @@
 
 
 
-
-	<page name="product" template="product" cacheable="false">
+    <page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="translit"/>
 		</request>
-		<single item="product" id="prod" var="prod">
+        <single item="product" id="prod" var="prod" cacheable="true" cache-vars="prod">
 			<single item="seo"/>
 			<single item="params"/>
+	        <single item="product_extra"/>
 			<ancestor item="section" transit="false" tag="product_section"/>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
@@ -567,7 +579,9 @@
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<list item="product" id="prod">
 			<filter>
-				<parameter name="code" compare="SOME"><var var="favourites"/></parameter>
+                <parameter name="code" compare="SOME">
+                    <var var="favourites"/>
+                </parameter>
 			</filter>
 			<link name="from_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
@@ -588,7 +602,9 @@
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<list item="product" id="prod">
 			<filter>
-				<parameter name="code" compare="SOME"><var var="compare"/></parameter>
+                <parameter name="code" compare="SOME">
+                    <var var="compare"/>
+                </parameter>
 			</filter>
 			<link name="from_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
@@ -599,6 +615,7 @@
 		</list>
 		<link name="compare_link" target="compare"/>
 	</page>
+
 
 
 	<page name="cookie_list_action">
@@ -615,13 +632,16 @@
 	</page>
 
 
+
 	<page name="fav" template="fav">
 		<request>
 			<var name="favourites" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<parameter name="code" compare="SOME"><var var="favourites"/></parameter>
+                <parameter name="code" compare="SOME">
+                    <var var="favourites"/>
+                </parameter>
 			</filter>
 			<link name="from_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
@@ -657,7 +677,9 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<parameter name="code" compare="SOME"><var var="compare"/></parameter>
+                <parameter name="code" compare="SOME">
+                    <var var="compare"/>
+                </parameter>
 			</filter>
 			<link name="from_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
@@ -849,6 +871,20 @@
 		</command>
 	</page>
 
+
+	<!--//                                                                          -->
+	<!--// Создать типы товаров и фильтры в разделах                                -->
+	<!--//                                                                          -->
+	<page name="create_filters" template="create_filters">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="ecommander.fwk.integration.CreateParametersAndFiltersCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
 	<page name="add_products" template="integrate" authority-groups="common">
 		<request>
 			<var name="action"/>
@@ -859,7 +895,22 @@
 	</page>
 
 
-	<!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
+    <!--<page name="create_prices" template="integration">-->
+        <!--<command class="extra.IntegratePriceList" clear-cache="yes">-->
+			<!--<result name="complete" type="xml"/>-->
+		<!--</command>-->
+	<!--</page>-->
+
+
+
+
+    <!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+    <!--/////////////                                                                      ////////////-->
+    <!--/////////////                           КАРТА САЙТА                                ////////////-->
+    <!--/////////////                                                                      ////////////-->
+    <!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
 	<page name="sitemap" template="sitemap" cacheable="true">
 		<headers content-type="xml"/>
 		<single item="url_seo_wrap" />
@@ -901,6 +952,8 @@
 		</list>
 	</page>
 
+
+
 	<page name="sitemap_section" template="sitemap_section" cacheable="true">
 		<request>
 			<var name="sec" style="translit"/>
@@ -912,8 +965,17 @@
 					<var name="prod" ref="prod" style="translit"/>
 				</link>
 			</list>
+            <list item="product" tag="tag" id="tag">
+                <aggregation parameter="tag"/>
+                <link name="canonical" type="exclusive" target="section" copy-page-vars="no">
+                    <var name="sec" style="translit" var="sec"/>
+                    <var name="tag" parameter="tag" ref="tag"/>
+                </link>
+            </list>
 		</single>
 	</page>
+
+
 
 	<page name="generate_sitemap">
 		<command class="ecommander.fwk.CreateSiteMap">

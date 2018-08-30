@@ -389,7 +389,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	}
 	/**
 	 * Добавить критерий полнотекстового поиска (запрос и список параметров, по которым происходит поиск)
-	 * @param types - типы полнотекстового критерия (например near или term, или название фактори класса)
+	 * @param types - типы полнотекстового критерия (например near или term, или название фактори класса), сгруппированные
 	 * @param queries - список запросов (обрабатываются отдельно)
 	 * @param maxResults - максимальное количество результатов
 	 * @param paramNames - названия параметров, по которым происходит поиск
@@ -398,7 +398,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws EcommanderException
 	 */
-	public ItemQuery setFulltextCriteria(String[] types, String[] queries, int maxResults, String[] paramNames, Compare compType,
+	public ItemQuery setFulltextCriteria(List<String[]> types, String[] queries, int maxResults, String[] paramNames, Compare compType,
 			float threshold) throws Exception {
 		if (paramNames == null || paramNames.length == 0) {
 			paramNames = getItemDesc().getFulltextParams().toArray(new String[0]);
@@ -417,7 +417,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @throws EcommanderException
 	 */
 	public ItemQuery setFulltextCriteria(String type, String query, int maxResults, String[] paramNames, Compare compType) throws Exception {
-		return setFulltextCriteria(new String[] {type}, new String[] {query}, maxResults, paramNames, compType, -1);
+		return setFulltextCriteria(Collections.singletonList(new String[] {type}), new String[] {query}, maxResults, paramNames, compType, -1);
  	}
 	/**
 	 * Доабвить критерий поиска по предшественнику
@@ -648,16 +648,19 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				query.getSubquery(Const.WHERE).AND().col(P_DOT + IP_PARENT_DIRECT).byte_((byte)1);
 		} else {
 			query.getSubquery(Const.PARENT_ID).sql("0");
+			TemplateQuery where = query.getSubquery(Const.WHERE);
 			// Если нет родителя, то критерий типа айтема нужно указывать в табилце Item
+			where.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()));
 			// Для того, чтобы работал индекс, нужно указывать также пользователя и группу
 			// Пользователь и группа при их наличии добавляются в конце метода, здесь указываются
 			// только нули если пользователь и группа не заданы
-			TemplateQuery where = query.getSubquery(Const.WHERE);
-			where.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()));
-			if (user == null) {
-				where.AND().col(I_DOT + I_USER).int_(User.ANONYMOUS_ID);
-				if (userGroupName == null)
-					where.AND().col(I_DOT + I_GROUP).byte_(UserGroupRegistry.getDefaultGroup());
+			//
+			// Если использовался фильтр, то для поиска строки таблицы будет использоваться первичный ключ,
+			// и ухищрения с пользователем и группой не нужны. Поэтому проверка на существование фильтра
+			if (!hasFilter()) {
+				if (userGroupName == null) {
+					where.AND().col_IN(I_DOT + I_GROUP).byteIN(UserGroupRegistry.getAllGroupIds());
+				}
 			}
 		}
 
@@ -729,7 +732,11 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				if (hasFulltext()) {
 					orderBy.sql("FIELD (" + I_DOT + I_ID + ", ").longArray(fulltext.getLoadedIds()).sql(")");
 				} else if (hasParent) {
-					orderBy.sql(P_DOT + IP_WEIGHT);
+					if (isTree) {
+						orderBy.sql(TP_DOT + IP_WEIGHT);
+					} else {
+						orderBy.sql(P_DOT + IP_WEIGHT);
+					}
 				} else {
 					orderBy.sql(I_DOT + I_ID);
 				}

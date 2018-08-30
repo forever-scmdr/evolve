@@ -405,7 +405,7 @@
 				<!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/> -->
 			</a>
 			<div class="name">
-				<a href="{show_product}" title="{name}"><xsl:value-of select="name"/></a>
+				<a href="{show_product}" title="{name}"><xsl:value-of select="vendor_code"/><xsl:text> </xsl:text><xsl:value-of select="name"/></a>
 				<p><xsl:value-of select="substring-before(substring-after(short, 'description&quot;&gt;'), '&lt;')" disable-output-escaping="yes"/></p>
 			</div>
 			<div class="art-number">

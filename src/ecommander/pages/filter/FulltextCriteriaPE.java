@@ -7,12 +7,26 @@ import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElement;
 import ecommander.pages.PageElementContainer;
 import ecommander.pages.ValidationResults;
-import ecommander.pages.var.ValueOrRef;
 import ecommander.pages.var.Variable;
 import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Полнотекстовый критерий поиска
+ *
+ * Формат типа запроса (на примере)
+ * (default prefix)(ecommander.extra.FuzzyQueryBuilder)
+ *
+ * То, что находится в круглых скобках - это группы. Группы выполняются последовательно, в порядке написания.
+ * В группах идут типы запросов. Они тоже выполняются последовательно, в порядке написания.
+ * Сначала выполняется первый тип запроса из первой группы. Если количество результатов, которое он выдал, меньше заданного
+ * максимального количества, то выполняется второй тип запроса в группе, если опять результатов меньше, то третий и так далее.
+ * Переход к следующей группе происходит только в случае когда предыдущая группа не выдала результатов.
+ *
  * @author E
  *
  */
@@ -24,7 +38,7 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 	private String[] paramNames;
 	private int maxResultCount;
 	private String typesStr = FulltextQueryCreatorRegistry.DEFAULT;
-	private String[] types = new String[] {FulltextQueryCreatorRegistry.DEFAULT};
+	private List<String[]> types = Collections.singletonList(new String[] {FulltextQueryCreatorRegistry.DEFAULT});
 	private Compare compType = Compare.ANY;
 	private float threshold = -1;
 	
@@ -37,7 +51,13 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 		this.maxResultCount = maxResultCount;
 		if (!StringUtils.isBlank(types)) {
 			this.typesStr = types;
-			this.types = StringUtils.split(types, Strings.SPACE);
+			String[] typesGroups = StringUtils.split(types, "()");
+			this.types = new ArrayList<>();
+			for (String typesGroup : typesGroups) {
+				if (StringUtils.isNotBlank(typesGroup)) {
+					this.types.add(StringUtils.split(typesGroup, Strings.SPACE));
+				}
+			}
 		}
 		if (compType != null)
 			this.compType = compType;
@@ -46,7 +66,7 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 	}
 	
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		return new FulltextCriteriaPE(typesStr, (ValueOrRef) query.getInited(parentPage), maxResultCount, paramNames,
+		return new FulltextCriteriaPE(typesStr, query.getInited(parentPage), maxResultCount, paramNames,
 				compType, threshold);
 	}
 
@@ -61,11 +81,13 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 							+ "' item does not contain fulltext '" + paramName + "'");
 			}
 		}
-		for (String type : types) {
-			try {
-				FulltextQueryCreatorRegistry.getCriteria(type);
-			} catch (Exception e) {
-				results.addError(elementPath + " > " + getKey(), "there is no '" + type + "' class or named fulltext query");
+		for (String[] group : types) {
+			for (String type : group) {
+				try {
+					FulltextQueryCreatorRegistry.getCriteria(type);
+				} catch (Exception e) {
+					results.addError(elementPath + " > " + getKey(), "there is no '" + type + "' class or named fulltext query");
+				}
 			}
 		}
 	}
@@ -102,7 +124,7 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 		return query.getLocalValues().toArray(new String[0]);
 	}
 	
-	public String[] getTypes() {
+	public List<String[]> getTypes() {
 		return types;
 	}
 	

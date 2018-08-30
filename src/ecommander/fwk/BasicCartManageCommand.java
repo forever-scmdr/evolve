@@ -1,13 +1,11 @@
 package ecommander.fwk;
 
 import ecommander.controllers.PageController;
-import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.User;
-import ecommander.model.UserGroupRegistry;
+import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,6 +39,10 @@ public abstract class BasicCartManageCommand extends Command {
 	private static final String COUNT_PARAM = "count";
 	private static final String NUM_PARAM = "num";
 	private static final String DATE_PARAM = "date";
+	private static final String EMAIL_PARAM = "email";
+
+	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
+	public static final String REGISTERED_GROUP = "registered";
 
 
 
@@ -95,7 +97,7 @@ public abstract class BasicCartManageCommand extends Command {
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
 		Item form = getItemForm().getTransientSingleItem();
-		getSessionMapper().saveTemporaryItem(form);
+		getSessionMapper().saveTemporaryItem(form, "user");
 
 		if (!validate()) {
 			return getResult("validation_failed");
@@ -164,7 +166,7 @@ public abstract class BasicCartManageCommand extends Command {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);
 			getSessionMapper().saveTemporaryItem(cart);
-			return getResult("email_send_failed").setVariable("message", "Отправка резерва временно недоступна, попробуйте позже или звоните по телефону");
+			return getResult("email_send_failed").setVariable("message", "Отправка заказа временно недоступна, попробуйте позже или звоните по телефону");
 		}
 
 		// Сохранение нового значения счетчика, если все отправлено удачно
@@ -172,22 +174,51 @@ public abstract class BasicCartManageCommand extends Command {
 		//counter.setValue(DATE_PARAM, newDate);
 		executeCommandUnit(SaveItemDBUnit.get(counter).ignoreUser());
 
+		///////////////////////////////////////////////////////////////////////////////////////////////////
 		// Сохранить историю
+		//
+
+		// 1. Сначала нужно попробовать текущего пользователя (если он залогинен)
 		Item userItem = new ItemQuery(USER_ITEM).setUser(getInitiator()).loadFirstItem();
+
+		// 2. Потом надо попробовать загружить пользователя по введенному email
+		if (userItem == null) {
+			String email = form.getStringValue(EMAIL_PARAM);
+			if (StringUtils.isNotBlank(email))
+				userItem = new ItemQuery(USER_ITEM).addParameterCriteria(EMAIL_PARAM, email, "=", null, Compare.SOME).loadFirstItem();
+		}
+
+		// 3. Если пользователь не нашелся по email, надо создать нового пользователя
+		//    сам пользователь не создается (логин-пароль), только айтем пользователя
+		if (userItem == null) {
+			if (StringUtils.isNotBlank(form.getStringValue(EMAIL_PARAM))) {
+				Item catalog = ItemUtils.ensureSingleRootItem(REGISTERED_CATALOG_ITEM, User.getDefaultUser(),
+						UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+				form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
+				form.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), User.ANONYMOUS_ID);
+				executeCommandUnit(SaveItemDBUnit.get(form).ignoreUser());
+				userItem = form;
+			}
+		}
+
+		// 4. Сохранить все покупки в истории, если пользователь нашелся или был создан
 		if (userItem != null) {
 			Item purchase = Item.newChildItem(ItemTypeRegistry.getItemType(PURCHASE_ITEM), userItem);
 			purchase.setValue(NUM_PARAM, orderNumber + "");
 			purchase.setValue(DATE_PARAM, System.currentTimeMillis());
 			purchase.setValue(QTY_PARAM, cart.getValue(QTY_PARAM));
 			purchase.setValue(SUM_PARAM, cart.getValue(SUM_PARAM));
-			executeCommandUnit(SaveItemDBUnit.get(purchase));
+			executeCommandUnit(SaveItemDBUnit.get(purchase).ignoreUser());
 			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 			for (Item bought : boughts) {
 				bought.setContextPrimaryParentId(purchase.getId());
-				bought.setOwner(UserGroupRegistry.getGroup("registered"), getInitiator().getUserId());
-				executeCommandUnit(SaveItemDBUnit.get(bought));
+				bought.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
+				executeCommandUnit(SaveItemDBUnit.get(bought).ignoreUser());
 			}
 		}
+		//
+		//
+		///////////////////////////////////////////////////////////////////////////////////////////////////
 
 		// Подтвердить изменения
 		commitCommandUnits();

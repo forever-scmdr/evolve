@@ -159,7 +159,7 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 		return false;
 	}
 
-	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
+	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, Occur occur) {
 		if (!isNotBlank())
 			return queryBuilder;
 		BooleanQuery.Builder innerBuilder = new BooleanQuery.Builder();

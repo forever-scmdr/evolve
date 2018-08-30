@@ -38,7 +38,7 @@ import ecommander.model.datatypes.DataType.Type;
  * У общих айтемов нет определенного владельца (USER_ID = 0), но есть определенная группа (USER_GROUP != 0).
  * У персональных айтемов есть как владелец (USER_ID != 0), так и группа (USER_GROUP != 0)
  *
- * Параметры айетма и их сохранение:
+ * Параметры айтема и их сохранение:
  * Айтем может пребывать в следующих состояниях
  * 1) не менялся, параметры еще не разобраны
  * 2) не менялся, параметры разобраны
@@ -55,6 +55,7 @@ public class Item implements ItemBasics {
 
 	private static final String PARAM_TAG = "param";
 	public static final String ID_ATTRIBUTE = "id";
+	public static final String KEY_PARAMETER = "@key";
 
 	private static final int DIR_NAME_LENGTH = 3;
 	private static final char FINAL_DIR_CHAR = 'f';
@@ -1157,12 +1158,31 @@ public class Item implements ItemBasics {
 	 */
 	public final ArrayList<String> outputValues(String paramName) {
 		ArrayList<String> result = new ArrayList<>();
+		// Если нужно вывести уникальный ключ, то парсинг айтема не требуется
+		if (StringUtils.equals(KEY_PARAMETER, paramName)) {
+			result.add(keyUnique);
+			return result;
+		}
 		Collection<SingleParameter> multipleValues = getParamValues(paramName);
 		for (SingleParameter sp : multipleValues) {
 			if (!sp.isEmpty())
 				result.add(sp.outputValue());
 		}
 		return result;
+	}
+
+	/**
+	 * Вывести значение параметра.
+	 * Если параметр множественный, значения выводятся через запятую
+	 * @param paramName
+	 * @return
+	 */
+	public final String outputValue(String paramName) {
+		Parameter param = getParameterByName(paramName);
+		if (param.isMultiple()) {
+			return StringUtils.join(outputValues(paramName), ",");
+		}
+		return ((SingleParameter) param).outputValue();
 	}
 	/**
 	 * Вернуть значение строкового параметра

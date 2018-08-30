@@ -144,4 +144,14 @@ public class SingleParameter extends Parameter {
 		return hash;
 	}
 
+	/**
+	 * Вернуть самое первое начальное значение параметра, которое он имел после загрузки из БД
+	 * @return
+	 */
+	public final Object getInitialValue() {
+		if (oldValues == null || oldValues.size() == 0)
+			return value;
+		return oldValues.get(0);
+	}
+
 }

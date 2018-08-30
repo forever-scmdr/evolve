@@ -67,7 +67,7 @@ public class AssociatedItemCriteriaGroup extends CriteriaGroup implements DBCons
 
 	@Override
 	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, byte assocId, Type type) {
-		String critId = (type == AssociatedItemCriteriaGroup.Type.CHILD ? "C" : "P") + assocCriterias.size() + groupId;
+		String critId = (type == Type.CHILD ? "C" : "P") + assocCriterias.size() + groupId;
 		AssociatedItemCriteriaGroup newCrit = new AssociatedItemCriteriaGroup(critId, item, assocId, type, this, this.item);
 		assocCriterias.add(newCrit);
 		return newCrit;

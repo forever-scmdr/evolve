@@ -1,9 +1,6 @@
 package ecommander.fwk.integration;
 
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ResizeImagesFactory;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
+import ecommander.fwk.*;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
@@ -11,23 +8,19 @@ import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.Element;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 
-public class YMarketProductCreationHandler extends DefaultHandler implements YMarketConst {
+public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
 
 	private static final HashSet<String> COMMON_PARAMS = new HashSet<>();
 	static {
@@ -51,8 +44,9 @@ public class YMarketProductCreationHandler extends DefaultHandler implements YMa
 
 	private IntegrateBase.Info info; // информация для пользователя
 	private HashMap<String, String> commonParams;
-	private HashMap<String, String> specialParams;
+	private LinkedHashMap<String, String> specialParams;
 	private ItemType productType;
+	private ItemType paramsXmlType;
 	private ArrayList<String> picUrls;
 	private User initiator;
 	boolean isInsideOffer = false;
@@ -62,6 +56,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements YMa
 		this.info = info;
 		this.sections = sections;
 		this.productType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
+		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
 	}
 
@@ -95,7 +90,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements YMa
 				product.setValue(COUNTRY_PARAM, commonParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
 
 				//product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
-				product.setValueUI(PRICE_PARAM, "2");
+				//product.setValueUI(PRICE_PARAM, "2");
 
 				// Качать картинки только для новых товаров
 				if (product.isNew()) {
@@ -112,20 +107,29 @@ public class YMarketProductCreationHandler extends DefaultHandler implements YMa
 					if (picUrls.size() > 0) {
 						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.get(0)));
 					}
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-					DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+					try {
+						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
+						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+					} catch (Exception e) {
+						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+					}
 				}
 
 				// Создать айтем с параметрами продукта
-				String paramClassName = "p" + secCode;
-				ItemType paramType = ItemTypeRegistry.getItemType(paramClassName);
-				if (paramType != null) {
-					Item params = Item.newChildItem(paramType, product);
-					for (String paramName : specialParams.keySet()) {
-						params.setValueUI(paramName, specialParams.get(paramName));
+				if (specialParams.size() > 0) {
+					XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+					for (String name : specialParams.keySet()) {
+						String value = specialParams.get(name);
+						xml.startElement(PARAMETER)
+								.startElement(NAME).addText(name).endElement()
+								.startElement(VALUE).addText(value).endElement()
+								.endElement();
 					}
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(params));
+
+					Item paramsXml = Item.newChildItem(paramsXmlType, product);
+					paramsXml.setValue(XML_PARAM, xml.toString());
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreFileErrors());
 				}
 
 				info.increaseProcessed();
@@ -169,7 +173,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements YMa
 		// Продукт
 		if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 			commonParams = new HashMap<>();
-			specialParams = new HashMap<>();
+			specialParams = new LinkedHashMap<>();
 			picUrls = new ArrayList<>();
 			commonParams.put(ID_ATTR, attributes.getValue(ID_ATTR));
 			commonParams.put(AVAILABLE_ATTR, attributes.getValue(AVAILABLE_ATTR));
@@ -183,7 +187,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements YMa
 		}
 		// Пользовательские параметры продуктов
 		else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName)) {
-			paramName = Strings.createXmlElementName(attributes.getValue(NAME_ATTR));
+			paramName = attributes.getValue(NAME_ATTR);
 			parameterReady = true;
 		}
 	}

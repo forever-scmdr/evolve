@@ -52,7 +52,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$p/name"/></h1>
+		<h1><xsl:value-of select="$p/vendor_code"/><xsl:text> </xsl:text><xsl:value-of select="$p/name"/></h1>
 
 		<div class="catalog-item-container">
 			<!--

@@ -7,7 +7,7 @@ import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
-
+import org.htmlcleaner.*;
 
 
 /**
@@ -165,12 +165,42 @@ public class Strings
     }
 
 	/**
+	 * Очистить HTML от невалидных частей
+	 * @param html
+	 * @return
+	 */
+    public static String cleanHtml(String html) {
+	    CleanerProperties props = new CleanerProperties();
+
+		// set some properties to non-default values
+	    props.setTranslateSpecialEntities(true);
+	    props.setTransResCharsToNCR(true);
+	    props.setOmitComments(true);
+	    props.setOmitDoctypeDeclaration(true);
+	    props.setOmitCdataOutsideScriptAndStyle(true);
+	    props.setPruneTags("script");
+	    props.setNamespacesAware(false);
+	    //props.setDeserializeEntities(true);
+	    //props.setRecognizeUnicodeChars(true);
+	    //props.setTranslateSpecialEntities(true);
+	    //props.setTransSpecialEntitiesToNCR(true);
+	    props.setOmitXmlDeclaration(true);
+
+		// do parsing
+	    TagNode tagNode = new HtmlCleaner(props).clean(html);
+
+		// serialize to xml file
+	    return new PrettyXmlSerializer(props).getAsString(tagNode);
+	    //return new PrettyHtmlSerializer(props).getAsString(tagNode);
+    }
+
+	/**
 	 * Получить название файла из пути к файлу
 	 * @param fileName
 	 * @return
 	 */
 	public static String getFileName(String fileName) {
-		return StringUtils.lowerCase(translit(fileName.replaceFirst(".*[\\/]", "")));
+		return StringUtils.lowerCase(translit(StringUtils.substringBefore(fileName.replaceFirst(".*[\\/]", ""), "?")));
 	}
 
 	public static String createFileName(String string) {

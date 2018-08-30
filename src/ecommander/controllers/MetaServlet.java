@@ -1,5 +1,6 @@
 package ecommander.controllers;
 
+import ecommander.fwk.CodeGenerator;
 import ecommander.fwk.MessageError;
 import ecommander.model.DataModelBuilder;
 import ecommander.pages.PageModelBuilder;
@@ -52,6 +53,7 @@ public class MetaServlet extends BasicServlet {
 					dispatcher.forward(request, response);
 					return;
 				}
+				CodeGenerator.createJavaConstants();
 			} else if (action.equalsIgnoreCase(ACTION_FORCE_MODEL)) {
 				boolean confirmed = (Boolean) request.getSession().getAttribute(SESSION_CONFIRM_CREATE_MODEL);
 				if (confirmed) {
@@ -61,6 +63,7 @@ public class MetaServlet extends BasicServlet {
 				} else {
 					throw new MessageError("Force create model not confirmed", "Not confirmed");
 				}
+				CodeGenerator.createJavaConstants();
 			}
 			response.setContentType("text/html");
 			response.getOutputStream().write(SUCCESS.getBytes(StandardCharsets.UTF_8));

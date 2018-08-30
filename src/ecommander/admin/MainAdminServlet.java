@@ -165,7 +165,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		if (result != null) {
 			// Редирект
 			if (result.isRedirect()) {
-				resp.sendRedirect(result.getRedirectUrl());
+				resp.sendRedirect(createAbsoluteUrl(req, result.getRedirectUrl()));
 			} else {
 				result.output(resp);
 			}
@@ -382,8 +382,9 @@ public class MainAdminServlet extends BasicAdminServlet {
 		MultipleHttpPostForm itemForm = new MultipleHttpPostForm(req);
 		Item formItem = itemForm.getItemTree().getFirstChild().getItem();
 		Item item;
+		boolean isNew = formItem.isNew();
 		// Сохраняется новый айтем
-		if (formItem.isNew()) {
+		if (isNew) {
 			int userId;
 			byte groupId;
 			if (formItem.getContextParentId() == ItemTypeRegistry.getPrimaryRootId()) {
@@ -414,7 +415,23 @@ public class MainAdminServlet extends BasicAdminServlet {
 				}
 			}
 		}
-		transaction.execute();
+		try {
+			transaction.execute();
+		} catch (EcommanderException e) {
+			AdminPage page;
+			if (isNew) {
+				if (formItem.getContextParentId() == ItemTypeRegistry.getPrimaryRootId()) {
+					page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
+				} else {
+					ItemBasics parent = AdminLoader.loadItemAccessor(formItem.getContextParentId());
+					page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, parent.getId(), parent.getTypeId());
+				}
+			} else {
+				page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, item.getId(), item.getTypeId());
+			}
+			page.addMessage(e.getMessage(), true);
+			return page;
+		}
 		// Очистить кеш страниц
 		PageController.clearCache();
 		// Антоновские изменения
@@ -424,7 +441,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		int type = item.getTypeId();
 		if (toParent) {
 			id = AdminLoader.loadItemDirectParentId(id, ItemTypeRegistry.getPrimaryAssocId());
-			if(id == -1){
+			if(id == -1) {
 				return pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
 			}
 			type = AdminLoader.loadItem(id, getCurrentAdmin()).getTypeId();
@@ -791,7 +808,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		try {
 			transaction.addCommandUnit(new MoveItemDBUnit(in.itemId, in.parentId));
-			transaction.execute();
+		transaction.execute();
 			@SuppressWarnings("unchecked")
 			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
 			if (buffer != null) {
@@ -902,7 +919,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Элемент успешно копирован", false);
 		return page;
 	}
-
 	/**
 	 * Удалить из буфера обмена айтем
 	 * @param in

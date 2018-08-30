@@ -5,7 +5,7 @@
 	<xsl:strip-space elements="*" />
 
 	<xsl:variable name="pre-last" select="count(/admin-page/path/item) - 1"/>
-	<xsl:variable name="parsedItem" select="/admin-page/path/item[$pre-last]" />
+	<xsl:variable name="parent" select="/admin-page/path/item[$pre-last]" />
 	
 
 	<xsl:template name="DOCTYPE">
@@ -170,6 +170,9 @@
 											<!--Управление пользователями-->
 										<!--</a>-->
 									<!--</li>-->
+									<li class="visible" title="Создать типы товаров и фильтры">
+										<a href="create_filters/?action=start" target="_blank">Создать типы товаров и фильтры</a>
+									</li>
 									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
 										<a href="admin_types_init.type">
 											Управление классами объектов

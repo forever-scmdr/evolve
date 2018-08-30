@@ -287,7 +287,7 @@ public class POIUtils {
 	 * @return
 	 */
 	public static ArrayList<CellXY> findRowContaining(Sheet sheet, FormulaEvaluator evaluator, String cellContent, boolean justFirst) {
-		ArrayList<CellXY> result = new ArrayList<POIUtils.CellXY>();
+		ArrayList<CellXY> result = new ArrayList<>();
 		Iterator<Row> rowIter = sheet.iterator();
 		while (rowIter.hasNext()) {
 			Row row = rowIter.next();
@@ -360,7 +360,7 @@ public class POIUtils {
 	}
 	
 	public static ArrayList<XWPFRun> findDocRuns(XWPFDocument doc, String searchStr) {
-		ArrayList<XWPFRun> resultRuns = new ArrayList<XWPFRun>();
+		ArrayList<XWPFRun> resultRuns = new ArrayList<>();
 		for (XWPFParagraph p : doc.getParagraphs()) {
 			List<XWPFRun> runs = p.getRuns();
 			if (runs != null) {

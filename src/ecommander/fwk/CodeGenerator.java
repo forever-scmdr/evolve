@@ -37,20 +37,20 @@ public class CodeGenerator {
 		String className = AppContext.getItemNamesClassName();
 		if (StringUtils.isBlank(className))
 			className = "ItemNames";
-		JDefinedClass itemsClass = pack._getClass(className);
-		if (itemsClass != null) 
-			pack.remove(itemsClass);
-		itemsClass = pack._class(className);
+		JDefinedClass itemsInterface = pack._getClass(className);
+		if (itemsInterface != null)
+			pack.remove(itemsInterface);
+		itemsInterface = pack._interface(JMod.PUBLIC, className);
 		for (String itemName : ItemTypeRegistry.getItemNames()) {
 			ItemType item = ItemTypeRegistry.getItemType(itemName);
 			if (!item.isUserDefined()) {
 				String interfaceName = createBigJavaName(itemName);
 				try {
 					// Создать константу - имя типа
-					JFieldVar itemNameConst = itemsClass.field(JMod.PUBLIC | JMod.STATIC | JMod.FINAL, String.class, interfaceName.toUpperCase());
+					JFieldVar itemNameConst = itemsInterface.field(JMod.NONE, String.class, interfaceName.toUpperCase());
 					itemNameConst.init(JExpr.lit(item.getName()));
 					// Создать интерфейс
-					JDefinedClass itemInterface = itemsClass._interface(interfaceName);
+					JDefinedClass itemInterface = itemsInterface._interface(interfaceName + "_");
 					JFieldVar itemNameField = itemInterface.field(JMod.NONE, String.class, "_ITEM_NAME");
 					itemNameField.init(JExpr.lit(item.getName()));
 					for (ParameterDescription param : item.getParameterList()) {
@@ -80,7 +80,13 @@ public class CodeGenerator {
 					JVar srcItemVar = constructor.param(Item.class, "item");
 					constructor.body().invoke("super").arg(srcItemVar);
 					// Константа - название класса
-					JVar typeNameVar = itemClass.field(JMod.PRIVATE | JMod.STATIC | JMod.FINAL, String.class, "_ITEM_TYPE_NAME").init(JExpr.lit(itemName));
+					JVar typeNameVar = itemClass.field(JMod.PUBLIC | JMod.STATIC | JMod.FINAL, String.class, "_NAME").init(JExpr.lit(itemName));
+					// Константы - названия всех параметров
+					for (ParameterDescription param : item.getParameterList()) {
+						String paramName = createBigJavaName(param.getName());
+						JFieldVar paramNameField = itemClass.field(JMod.PUBLIC | JMod.STATIC | JMod.FINAL, String.class, paramName.toUpperCase());
+						paramNameField.init(JExpr.lit(param.getName()));
+					}
 					// Статический метод для получения оболочки
 					JMethod getInstance = itemClass.method(JMod.PUBLIC | JMod.STATIC, itemClass, "get");
 					JVar instSrc = getInstance.param(Item.class, "item");

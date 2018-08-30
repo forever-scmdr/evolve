@@ -39,7 +39,7 @@ public abstract class BasicRegisterCommand extends Command {
 			return getResult("not_set");
 		}
 		Item catalog = ItemUtils.ensureSingleRootItem(REGISTERED_CATALOG_ITEM, User.getDefaultUser(),
-				UserGroupRegistry.getGroup(REGISTERED_GROUP), User.ANONYMOUS_ID);
+				UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		String userName = form.getStringValue(EMAIL_PARAM);
 		String password = form.getStringValue(PASSWORD_PARAM);
 		User newUser = new User(userName, password, "registered user", User.ANONYMOUS_ID);
@@ -52,7 +52,18 @@ public abstract class BasicRegisterCommand extends Command {
 		startUserSession(newUser);
 		form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
 		form.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), newUser.getUserId());
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(form));
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(form).ignoreUser());
+
+		//Add cart contacts!
+		Item oldUserItem = getSessionMapper().getSingleRootItemByName(USER_ITEM);
+		Item userItem = new ItemQuery(USER_ITEM).setUser(newUser).loadFirstItem();
+		if (oldUserItem != null){
+			getSessionMapper().removeItems(oldUserItem.getId());
+		}
+		userItem.setContextPrimaryParentId(Item.DEFAULT_ID);
+		getSessionMapper().saveTemporaryItem(userItem, "user");
+
+
 		return getResult("success");
 	}
 

@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.HashSet;
 
 /**
  * Created by user on 07.08.2018.
@@ -58,6 +57,11 @@ public class AddNewProductsFromExcelCommand extends IntegrateBase{
 				}
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(existingProduct).noFulltextIndex().ingoreComputed());
 				setProcessed(rowNum++);
+			}
+
+			@Override
+			protected void processSheet() throws Exception {
+
 			}
 		};
 		return true;

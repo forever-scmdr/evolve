@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 
@@ -102,6 +103,26 @@ public class FileDataType extends StringDataType {
 
 	public static String getItemFileUrl(Item item) {
 		return AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath();
+	}
+
+	/**
+	 * Вернуть путь к файлу (файл) с известным именем, который лежит в директории айтема
+	 * @param item
+	 * @param fileName
+	 * @return
+	 */
+	public static Path getItemFile(Item item, String fileName) {
+		return Paths.get(getItemFilePath(item) + fileName);
+	}
+
+	/**
+	 * Получить урл для файла определенного айтема (как он будет выдаваться сервером)
+	 * @param item
+	 * @param fileName
+	 * @return
+	 */
+	public static String getItemFileUrl(Item item, String fileName) {
+		return getItemFileUrl(item) + fileName;
 	}
 
 	@Override
