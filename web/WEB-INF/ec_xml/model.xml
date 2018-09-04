@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
-	<assoc name="trade" caption="Продажи" transitive="false"/>
+	<assoc name="trade" caption="Продажи" transitive="false" ag-id="1" ag-hash="110621028"/>
 
 
 
-	<item name="agent" key="organization email code" caption="Контрагент">
+	<item name="agent" key="organization email_main code" caption="Контрагент" ag-id="1" ag-hash="92750597">
 		<parameter name="code" type="string" caption="Код агента"/>
 		<parameter name="register_date" type="date" caption="Дата регистрации"/>
 		<parameter name="country" type="string" caption="Страна" text-index="fulltext"/>
@@ -31,7 +31,7 @@
 
 
 
-	<item name="dealer" key="email" caption="organization">
+	<item name="dealer" key="email" caption="organization" ag-id="2" ag-hash="-1335779815">
 		<parameter name="register_date" type="date" caption="Дата регистрации"/>
 		<parameter name="country" type="string" caption="Страна" text-index="fulltext"/>
 		<parameter name="region" type="string" caption="Область" text-index="fulltext"/>
@@ -55,7 +55,7 @@
 	После того, как администратор создал нужные группы (маски), он выполняет определенную команду, которая
 	проверяет все продажи и добавляет к ним тэги
 	 -->
-	<item name="sale" caption="Продажа" key="device year quartal">
+	<item name="sale" caption="Продажа" key="device year quartal" ag-id="3" ag-hash="3522631">
 		<parameter name="device" type="string" caption="Наименование оборудования (устройство)"/>
 		<parameter name="device_type" type="string" caption="Тип оборудования" description="напрмер, клапан или фильтр"/>
 		<parameter name="device_group" type="string" caption="Группа оборудования" description="вид (группа по некоторому признаку), например, DN20"/>
@@ -65,7 +65,9 @@
 		<parameter name="sale_date" type="date" caption="Точная дата продажи"/>
 		<parameter name="register_date" type="date" caption="Дата добавления в базу" description="этой продажи"/>
 		<parameter name="agent_code" type="string" caption="Код контрагента" description="(просто для контроля) получатель оборудования"/>
-		<parameter name="dealer_email" type="string" caption="Email дилера" description="уникальный идентификатор дилера"/>
+		<parameter name="agent_name" type="string" caption="Контрагент" description="как указано в файле"/>
+		<parameter name="agent_plain_name" type="string" caption="Название контрагента" description="без формы собственности и кавычек"/>
+		<parameter name="dealer_code" type="string" caption="Email дилера" description="уникальный идентификатор дилера"/>
 		<parameter name="tag" type="string" caption="Тэг" description="это может быть группа, тип или любой другой признак"/>
 		<parameter name="assigned" type="byte" caption="Обработана" default="0"
 		           description="служебное значение (назначены ли дилеры и агенты по ассоциации trade)"/>
@@ -75,22 +77,22 @@
 
 
 
-	<item name="agent_catalog" caption="Каталог контрагентов">
+	<item name="agent_catalog" caption="Каталог контрагентов" ag-id="4" ag-hash="177829087">
 		<child item="agent"/>
 	</item>
 
 
-	<item name="dealer_catalog" caption="Каталог дилеров">
+	<item name="dealer_catalog" caption="Каталог дилеров" ag-id="5" ag-hash="608271347">
 		<child item="dealer"/>
 	</item>
 
 
-	<item name="sale_catalog" caption="Каталог продаж">
+	<item name="sale_catalog" caption="Каталог продаж" ag-id="6" ag-hash="455053345">
 		<child item="sale"/>
 	</item>
 
 
-	<item name="type_mask" caption="Маска для типа" key="name">
+	<item name="type_mask" caption="Маска для типа" key="name" ag-id="7" ag-hash="519152849">
 		<parameter name="name" type="string" caption="Название типа"/>
 		<parameter name="mask" type="string" caption="Маска" multiple="true"
 		           description="в начале маски может стоять *, что означает, что маска должна встречаться не в начале слова"/>
@@ -101,7 +103,7 @@
 	      description="может быть объединением по любому признаку, имеющему смысл" />
 
 
-	<item name="group_mask_catalog" caption="Каталог группировок">
+	<item name="group_mask_catalog" caption="Каталог группировок" ag-id="9" ag-hash="1243061126">
 		<child item="type_mask"/>
 	</item>
 

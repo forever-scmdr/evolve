@@ -1,33 +1,34 @@
 
 package extra._generated;
 
+import java.util.List;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Named_code
+public class Type_mask
     extends Item
 {
 
-    public final static String _NAME = "named_code";
+    public final static String _NAME = "type_mask";
     public final static String NAME = "name";
-    public final static String CODE = "code";
+    public final static String MASK = "mask";
 
-    private Named_code(Item item) {
+    private Type_mask(Item item) {
         super(item);
     }
 
-    public static Named_code get(Item item) {
+    public static Type_mask get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'named_code' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'type_mask' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Named_code(item);
+        return new Type_mask(item);
     }
 
-    public static Named_code newChild(Item parent) {
+    public static Type_mask newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
@@ -47,20 +48,20 @@ public class Named_code
         return containsValue("name", value);
     }
 
-    public void set_code(String value) {
-        setValue("code", value);
+    public void add_mask(String value) {
+        setValue("mask", value);
     }
 
-    public String get_code() {
-        return getStringValue("code");
+    public List<String> getAll_mask() {
+        return getStringValues("mask");
     }
 
-    public String getDefault_code(String defaultVal) {
-        return getStringValue("code", defaultVal);
+    public void remove_mask(String value) {
+        removeEqualValue("mask", value);
     }
 
-    public boolean contains_code(String value) {
-        return containsValue("code", value);
+    public boolean contains_mask(String value) {
+        return containsValue("mask", value);
     }
 
 }

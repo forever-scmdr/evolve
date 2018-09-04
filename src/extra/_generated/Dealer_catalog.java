@@ -4,28 +4,28 @@ package extra._generated;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Custom_pages
+public class Dealer_catalog
     extends Item
 {
 
-    public final static String _NAME = "custom_pages";
+    public final static String _NAME = "dealer_catalog";
 
-    private Custom_pages(Item item) {
+    private Dealer_catalog(Item item) {
         super(item);
     }
 
-    public static Custom_pages get(Item item) {
+    public static Dealer_catalog get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'custom_pages' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'dealer_catalog' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Custom_pages(item);
+        return new Dealer_catalog(item);
     }
 
-    public static Custom_pages newChild(Item parent) {
+    public static Dealer_catalog newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 

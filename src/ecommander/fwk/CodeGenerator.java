@@ -40,7 +40,7 @@ public class CodeGenerator {
 		JDefinedClass itemsInterface = pack._getClass(className);
 		if (itemsInterface != null)
 			pack.remove(itemsInterface);
-		itemsInterface = pack._interface(JMod.PUBLIC, className);
+		itemsInterface = pack._interface(className);
 		for (String itemName : ItemTypeRegistry.getItemNames()) {
 			ItemType item = ItemTypeRegistry.getItemType(itemName);
 			if (!item.isUserDefined()) {

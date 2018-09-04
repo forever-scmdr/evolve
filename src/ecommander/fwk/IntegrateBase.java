@@ -179,6 +179,14 @@ public abstract class IntegrateBase extends Command {
 		}
 	}
 
+	public IntegrateBase() {
+
+	}
+
+	public IntegrateBase(Command outer) {
+		super(outer);
+	}
+
 	private static Info getInfo() {
 		if (info != null)
 			return info;
