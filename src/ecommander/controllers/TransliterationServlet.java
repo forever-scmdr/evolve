@@ -1,6 +1,9 @@
 package ecommander.controllers;
 
-import ecommander.fwk.*;
+import ecommander.fwk.PageNotFoundException;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Timer;
+import ecommander.fwk.UserNotAllowedException;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
@@ -29,27 +32,44 @@ public class TransliterationServlet extends BasicServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Строка вида /spas/eeee/test.htm (/spas - это ContextPath)
-		String userUrl = getUserUrl(request);
+		String userUrl = "";
+		try {
+			ServerLogger.debug("Get method: Page output started");
+
+			// проверка протокола с последующим редиректом если это надо
+			if (!checkProtocolScheme(request, response)) {
+//				ServerLogger.warn("\n\n-----------------------CHECK PROTOCOL RETURN---------------------------");
+				return;
+			}
+
+			// получить пользовательский урл
+			userUrl = getUserUrl(request);
+
 		// Если запрашивается индексная страница - это может быть ошибка, например в картинке не указан урл
 		// Надо проанализировать, какой заголовок Accept отправляет браузер.
 		// Для индексной страницы он должен содержать text/html
-		if (StringUtils.startsWith(userUrl, AppContext.getWelcomePageName())) {
-			if (!StringUtils.contains(request.getHeader("Accept"), "text/html")) {
+			if (StringUtils.startsWithIgnoreCase(userUrl, AppContext.getWelcomePageName())) {
+//				ServerLogger.warn("\n\n-----------------------REQUEST HEADERS---------------------------");
+//				Enumeration<String> names = request.getHeaderNames();
+//				while (names.hasMoreElements()) {
+//					String name = names.nextElement();
+//					ServerLogger.warn(name + " -> " + request.getHeader(name));
+//				}
+//				ServerLogger.warn("\n\n");
+				if (StringUtils.startsWithIgnoreCase(request.getHeader("Accept"), "image")) {
 				ServerLogger.error("Maybe page html error - empty img src attribute");
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				return;
 			}
 		}
 		Timer.getTimer().start(Timer.REQUEST_PROCESS, userUrl);
-		// Если заданного URL нет в маппинге, то считать что запрошен файл и передать его
-		try {
-			ServerLogger.debug("Get method: Page output started");
-//			ServerLogger.error("--------------------------           " + userUrl + "           --------------------------");
+
 			MainExecutionController mainController = new MainExecutionController(request, response, userUrl);
 			mainController.execute(getBaseUrl(request), getServletContext());
 		} catch (UserNotAllowedException e) {
 			processUserNotAllowed(request, response, userUrl);
 		} catch (PageNotFoundException e) {
+			// Если заданного URL нет в маппинге, то считать что запрошен файл и передать его
 			sendFile(response, userUrl, false);
 		} catch (Exception e) {
 			handleError(request, response, e);
