@@ -98,34 +98,34 @@ public abstract class ExcelPriceList implements Closeable {
 		return shitName;
 	}
 
-	public final String getValue(int colIndex, double... roundQuotient) {
+	public final String getValue(int colIndex) {
 		return POIUtils.getCellAsString(currentRow.getCell(colIndex), eval);
 	}
 
-	public final Double getDoubleValue(int colIndex, double... roundQuotient) {
-		String val = getValue(colIndex, roundQuotient);
+	public final Double getDoubleValue(int colIndex) {
+		String val = getValue(colIndex);
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getCurrencyValue(int colIndex, double... roundQuotient) {
-		String val = getValue(colIndex, roundQuotient);
+	public final BigDecimal getCurrencyValue(int colIndex) {
+		String val = getValue(colIndex);
 		return DecimalDataType.parse(val, DecimalDataType.CURRENCY);
 	}
 
-	public final String getValue(String colName, double... roundQuotient) {
+	public final String getValue(String colName) {
 		Integer colIdx = currentHeader.get(StringUtils.lowerCase(colName));
 		if (colIdx == null)
 			return null;
 		return getValue(colIdx);
 	}
 
-	public final Double getDoubleValue(String colName, double... roundQuotient) {
-		String val = getValue(colName, roundQuotient);
+	public final Double getDoubleValue(String colName) {
+		String val = getValue(colName);
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getCurrencyValue(String colName, double... roundQuotient) {
-		String val = getValue(colName, roundQuotient);
+	public final BigDecimal getCurrencyValue(String colName) {
+		String val = getValue(colName);
 		return DecimalDataType.parse(val, DecimalDataType.CURRENCY);
 	}
 

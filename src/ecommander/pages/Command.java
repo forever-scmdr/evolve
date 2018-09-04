@@ -28,6 +28,19 @@ public abstract class Command implements AutoCloseable {
 	private SynchronousTransaction transaction = null;
 	private SessionItemMapper sessionMapper = null;
 
+
+	public Command() {
+
+	}
+
+
+	public Command(Command outer) {
+		this.page = outer.page;
+		this.transaction = outer.transaction;
+		this.sessionMapper = outer.sessionMapper;
+	}
+
+
 	void init(ExecutablePagePE page) {
 		this.page = page;
 		transaction = new SynchronousTransaction(page.getSessionContext().getUser());
