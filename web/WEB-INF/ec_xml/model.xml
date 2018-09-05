@@ -4,6 +4,7 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             SEO                                  ////////////-->
+	<assoc name="other_colors" transitive="false" caption="Другие варианты расцветки" ag-id="1" ag-hash="494020991"/>
 
 	<item name="seo" caption="SEO" ag-id="814" ag-hash="113757">
 		<parameter name="title" type="string" caption="title"/>
@@ -56,7 +57,6 @@
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
-		<child item="params" single="true"/>
 	</item>
 
 
@@ -94,6 +94,7 @@
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
+		<child item="product" assoc="other_colors"/>
 	</item>
 
 	<item name="params" caption="Параметры товара" extendable="true" ag-id="30" ag-hash="-995427962"/>

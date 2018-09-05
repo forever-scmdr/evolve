@@ -2,7 +2,7 @@
 <model>
 
 <!--START_p73355-->
-<item name="p73355" caption="МЕДИЦИНА" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1101" ag-hash="-1036138681">
+<item name="p73355" caption="МЕДИЦИНА" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1801" ag-hash="-1036138681">
 	<parameter name="massa" caption="Масса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="103667693" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="pokrytie_pvh" caption="Покрытие ПВХ" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-659054080" description="[%]" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_osnovy_pe" caption="Тип основы ПЭ" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2037181128" description="[%]" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -25,7 +25,7 @@
 <!--END_p73355-->
 
 <!--START_p73356-->
-<item name="p73356" caption="АВТОПРОМЫШЛЕННОСТЬ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1102" ag-hash="-1036138680">
+<item name="p73356" caption="АВТОПРОМЫШЛЕННОСТЬ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1802" ag-hash="-1036138680">
 	<parameter name="tolschina" caption="Толщина" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1420232021" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="massa" caption="Масса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="103667693" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="pokrytie_pvh" caption="Покрытие ПВХ" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-659054080" description="[%]" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -43,7 +43,7 @@
 <!--END_p73356-->
 
 <!--START_p73357-->
-<item name="p73357" caption="ОБИВКА" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1103" ag-hash="-1036138679">
+<item name="p73357" caption="ОБИВКА" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2474" ag-hash="-1036138679">
 	<parameter name="tolschina" caption="Толщина" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1420232021" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="massa" caption="Масса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="103667693" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="pokrytie_pu__pvh" caption="Покрытие ПУ + ПВХ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1911564229" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -68,7 +68,7 @@
 <!--END_p73357-->
 
 <!--START_p73358-->
-<item name="p73358" caption="ОДЕЖДА" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1104" ag-hash="-1036138678">
+<item name="p73358" caption="ОДЕЖДА" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2475" ag-hash="-1036138678">
 	<parameter name="tolschina" caption="Толщина" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1420232021" description="[mm]" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="massa" caption="Масса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="103667693" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="pokrytie_pvh" caption="Покрытие ПВХ" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-659054080" description="[%]" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -88,7 +88,7 @@
 <!--END_p73358-->
 
 <!--START_p73359-->
-<item name="p73359" caption="ОБУВЬ И ГАЛАНТЕРЕЯ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1105" ag-hash="-1036138677">
+<item name="p73359" caption="ОБУВЬ И ГАЛАНТЕРЕЯ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1803" ag-hash="-1036138677">
 	<parameter name="massa" caption="Масса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="103667693" description="[g/m²]" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ognestoikost" caption="Огнестойкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="444001231" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="standartnaya_shirina" caption="Стандартная ширина" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1719732249" description="[cm]" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -110,203 +110,203 @@
 <!--END_p73359-->
 
 <!--START_p73361-->
-<item name="p73361" caption="ANACONDA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1106" ag-hash="-1036138654"></item>
+<item name="p73361" caption="ANACONDA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2476" ag-hash="-1036138654"></item>
 <!--END_p73361-->
 
 <!--START_p73362-->
-<item name="p73362" caption="ASTOR" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1107" ag-hash="-1036138653"></item>
+<item name="p73362" caption="ASTOR" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2477" ag-hash="-1036138653"></item>
 <!--END_p73362-->
 
 <!--START_p73363-->
-<item name="p73363" caption="AURA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1108" ag-hash="-1036138652"></item>
+<item name="p73363" caption="AURA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2478" ag-hash="-1036138652"></item>
 <!--END_p73363-->
 
 <!--START_p73364-->
-<item name="p73364" caption="BARETTA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1109" ag-hash="-1036138651"></item>
+<item name="p73364" caption="BARETTA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2479" ag-hash="-1036138651"></item>
 <!--END_p73364-->
 
 <!--START_p73365-->
-<item name="p73365" caption="BAROS" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1110" ag-hash="-1036138650"></item>
+<item name="p73365" caption="BAROS" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2480" ag-hash="-1036138650"></item>
 <!--END_p73365-->
 
 <!--START_p73366-->
-<item name="p73366" caption="BASKET" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1111" ag-hash="-1036138649"></item>
+<item name="p73366" caption="BASKET" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2481" ag-hash="-1036138649"></item>
 <!--END_p73366-->
 
 <!--START_p73367-->
-<item name="p73367" caption="BENGAL MEXY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1112" ag-hash="-1036138648"></item>
+<item name="p73367" caption="BENGAL MEXY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2482" ag-hash="-1036138648"></item>
 <!--END_p73367-->
 
 <!--START_p73368-->
-<item name="p73368" caption="BUBBLE" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1113" ag-hash="-1036138647"></item>
+<item name="p73368" caption="BUBBLE" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2483" ag-hash="-1036138647"></item>
 <!--END_p73368-->
 
 <!--START_p73369-->
-<item name="p73369" caption="CAIMAN" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1114" ag-hash="-1036138646"></item>
+<item name="p73369" caption="CAIMAN" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2484" ag-hash="-1036138646"></item>
 <!--END_p73369-->
 
 <!--START_p73370-->
-<item name="p73370" caption="CAPRI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1115" ag-hash="-1036138624"></item>
+<item name="p73370" caption="CAPRI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2485" ag-hash="-1036138624"></item>
 <!--END_p73370-->
 
 <!--START_p73371-->
-<item name="p73371" caption="COBRA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1116" ag-hash="-1036138623"></item>
+<item name="p73371" caption="COBRA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2486" ag-hash="-1036138623"></item>
 <!--END_p73371-->
 
 <!--START_p73372-->
-<item name="p73372" caption="CROCOSHINE" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1117" ag-hash="-1036138622"></item>
+<item name="p73372" caption="CROCOSHINE" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2487" ag-hash="-1036138622"></item>
 <!--END_p73372-->
 
 <!--START_p73373-->
-<item name="p73373" caption="DIAMOND" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1118" ag-hash="-1036138621"></item>
+<item name="p73373" caption="DIAMOND" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2488" ag-hash="-1036138621"></item>
 <!--END_p73373-->
 
 <!--START_p73374-->
-<item name="p73374" caption="DIAMOND META" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1119" ag-hash="-1036138620"></item>
+<item name="p73374" caption="DIAMOND META" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2489" ag-hash="-1036138620"></item>
 <!--END_p73374-->
 
 <!--START_p73375-->
-<item name="p73375" caption="DILA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1120" ag-hash="-1036138619"></item>
+<item name="p73375" caption="DILA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2490" ag-hash="-1036138619"></item>
 <!--END_p73375-->
 
 <!--START_p73376-->
-<item name="p73376" caption="DORADO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1121" ag-hash="-1036138618"></item>
+<item name="p73376" caption="DORADO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2491" ag-hash="-1036138618"></item>
 <!--END_p73376-->
 
 <!--START_p73377-->
-<item name="p73377" caption="EASYSAN" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1122" ag-hash="-1036138617"></item>
+<item name="p73377" caption="EASYSAN" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2492" ag-hash="-1036138617"></item>
 <!--END_p73377-->
 
 <!--START_p73378-->
-<item name="p73378" caption="FENDI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1123" ag-hash="-1036138616"></item>
+<item name="p73378" caption="FENDI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2493" ag-hash="-1036138616"></item>
 <!--END_p73378-->
 
 <!--START_p73379-->
-<item name="p73379" caption="FLORA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1124" ag-hash="-1036138615"></item>
+<item name="p73379" caption="FLORA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2494" ag-hash="-1036138615"></item>
 <!--END_p73379-->
 
 <!--START_p73380-->
-<item name="p73380" caption="FORZA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1125" ag-hash="-1036138593"></item>
+<item name="p73380" caption="FORZA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2495" ag-hash="-1036138593"></item>
 <!--END_p73380-->
 
 <!--START_p73381-->
-<item name="p73381" caption="FUTURO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1126" ag-hash="-1036138592"></item>
+<item name="p73381" caption="FUTURO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2496" ag-hash="-1036138592"></item>
 <!--END_p73381-->
 
 <!--START_p73382-->
-<item name="p73382" caption="GLOSSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1127" ag-hash="-1036138591"></item>
+<item name="p73382" caption="GLOSSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2497" ag-hash="-1036138591"></item>
 <!--END_p73382-->
 
 <!--START_p73383-->
-<item name="p73383" caption="GUANIL." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1128" ag-hash="-1036138590"></item>
+<item name="p73383" caption="GUANIL." key="" virtual="false" user-def="true" description="" super="params *" ag-id="2498" ag-hash="-1036138590"></item>
 <!--END_p73383-->
 
 <!--START_p73384-->
-<item name="p73384" caption="HAWK" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1129" ag-hash="-1036138589"></item>
+<item name="p73384" caption="HAWK" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2499" ag-hash="-1036138589"></item>
 <!--END_p73384-->
 
 <!--START_p73385-->
-<item name="p73385" caption="HELEN" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1130" ag-hash="-1036138588"></item>
+<item name="p73385" caption="HELEN" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2500" ag-hash="-1036138588"></item>
 <!--END_p73385-->
 
 <!--START_p73386-->
-<item name="p73386" caption="IGUANA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1131" ag-hash="-1036138587"></item>
+<item name="p73386" caption="IGUANA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2501" ag-hash="-1036138587"></item>
 <!--END_p73386-->
 
 <!--START_p73387-->
-<item name="p73387" caption="INCI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1132" ag-hash="-1036138586"></item>
+<item name="p73387" caption="INCI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2502" ag-hash="-1036138586"></item>
 <!--END_p73387-->
 
 <!--START_p73388-->
-<item name="p73388" caption="KAPITONE" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1133" ag-hash="-1036138585"></item>
+<item name="p73388" caption="KAPITONE" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2503" ag-hash="-1036138585"></item>
 <!--END_p73388-->
 
 <!--START_p73389-->
-<item name="p73389" caption="KONGO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1134" ag-hash="-1036138584"></item>
+<item name="p73389" caption="KONGO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2504" ag-hash="-1036138584"></item>
 <!--END_p73389-->
 
 <!--START_p73390-->
-<item name="p73390" caption="KING COBRA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1135" ag-hash="-1036138562"></item>
+<item name="p73390" caption="KING COBRA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2505" ag-hash="-1036138562"></item>
 <!--END_p73390-->
 
 <!--START_p73391-->
-<item name="p73391" caption="LORA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1136" ag-hash="-1036138561"></item>
+<item name="p73391" caption="LORA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2506" ag-hash="-1036138561"></item>
 <!--END_p73391-->
 
 <!--START_p73392-->
-<item name="p73392" caption="KORTEX" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1137" ag-hash="-1036138560"></item>
+<item name="p73392" caption="KORTEX" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2507" ag-hash="-1036138560"></item>
 <!--END_p73392-->
 
 <!--START_p73393-->
-<item name="p73393" caption="LUNA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1138" ag-hash="-1036138559"></item>
+<item name="p73393" caption="LUNA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2508" ag-hash="-1036138559"></item>
 <!--END_p73393-->
 
 <!--START_p73394-->
-<item name="p73394" caption="MALLY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1139" ag-hash="-1036138558"></item>
+<item name="p73394" caption="MALLY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2509" ag-hash="-1036138558"></item>
 <!--END_p73394-->
 
 <!--START_p73395-->
-<item name="p73395" caption="MEXY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1140" ag-hash="-1036138557"></item>
+<item name="p73395" caption="MEXY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2510" ag-hash="-1036138557"></item>
 <!--END_p73395-->
 
 <!--START_p73396-->
-<item name="p73396" caption="MONACO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1141" ag-hash="-1036138556"></item>
+<item name="p73396" caption="MONACO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2511" ag-hash="-1036138556"></item>
 <!--END_p73396-->
 
 <!--START_p73397-->
-<item name="p73397" caption="MONRO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1142" ag-hash="-1036138555"></item>
+<item name="p73397" caption="MONRO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2512" ag-hash="-1036138555"></item>
 <!--END_p73397-->
 
 <!--START_p73398-->
-<item name="p73398" caption="PEGAS" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1143" ag-hash="-1036138554"></item>
+<item name="p73398" caption="PEGAS" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2513" ag-hash="-1036138554"></item>
 <!--END_p73398-->
 
 <!--START_p73399-->
-<item name="p73399" caption="PITON" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1144" ag-hash="-1036138553"></item>
+<item name="p73399" caption="PITON" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2514" ag-hash="-1036138553"></item>
 <!--END_p73399-->
 
 <!--START_p73400-->
-<item name="p73400" caption="PLATY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1145" ag-hash="-1036137880"></item>
+<item name="p73400" caption="PLATY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2515" ag-hash="-1036137880"></item>
 <!--END_p73400-->
 
 <!--START_p73401-->
-<item name="p73401" caption="PRONA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1146" ag-hash="-1036137879"></item>
+<item name="p73401" caption="PRONA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2516" ag-hash="-1036137879"></item>
 <!--END_p73401-->
 
 <!--START_p73402-->
-<item name="p73402" caption="RENATA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1147" ag-hash="-1036137878"></item>
+<item name="p73402" caption="RENATA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2517" ag-hash="-1036137878"></item>
 <!--END_p73402-->
 
 <!--START_p73403-->
-<item name="p73403" caption="ROZE" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1148" ag-hash="-1036137877"></item>
+<item name="p73403" caption="ROZE" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2518" ag-hash="-1036137877"></item>
 <!--END_p73403-->
 
 <!--START_p73404-->
-<item name="p73404" caption="RUMBA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1149" ag-hash="-1036137876"></item>
+<item name="p73404" caption="RUMBA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2519" ag-hash="-1036137876"></item>
 <!--END_p73404-->
 
 <!--START_p73405-->
-<item name="p73405" caption="RUSTIK" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1150" ag-hash="-1036137875"></item>
+<item name="p73405" caption="RUSTIK" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2520" ag-hash="-1036137875"></item>
 <!--END_p73405-->
 
 <!--START_p73406-->
-<item name="p73406" caption="SANCHO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1151" ag-hash="-1036137874"></item>
+<item name="p73406" caption="SANCHO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2521" ag-hash="-1036137874"></item>
 <!--END_p73406-->
 
 <!--START_p73407-->
-<item name="p73407" caption="SCARLET" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1152" ag-hash="-1036137873"></item>
+<item name="p73407" caption="SCARLET" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2522" ag-hash="-1036137873"></item>
 <!--END_p73407-->
 
 <!--START_p73408-->
-<item name="p73408" caption="SPRING" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1153" ag-hash="-1036137872"></item>
+<item name="p73408" caption="SPRING" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2523" ag-hash="-1036137872"></item>
 <!--END_p73408-->
 
 <!--START_p73409-->
-<item name="p73409" caption="SPRINTER" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1154" ag-hash="-1036137871"></item>
+<item name="p73409" caption="SPRINTER" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2524" ag-hash="-1036137871"></item>
 <!--END_p73409-->
 
 <!--START_p73410-->
-<item name="p73410" caption="для МЕБЕЛИ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1155" ag-hash="-1036137849">
+<item name="p73410" caption="для МЕБЕЛИ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2525" ag-hash="-1036137849">
 	<parameter name="osnova" caption="Основа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1007539184" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="sostav__" caption="Состав, %" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1690873362" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ves_gr_kv.m" caption="Вес, гр/кв.м" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="977860067" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -315,7 +315,7 @@
 <!--END_p73410-->
 
 <!--START_p73411-->
-<item name="p73411" caption="для ГАЛАНТЕРЕИ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1156" ag-hash="-1036137848">
+<item name="p73411" caption="для ГАЛАНТЕРЕИ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2526" ag-hash="-1036137848">
 	<parameter name="osnova" caption="Основа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1007539184" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="sostav__" caption="Состав, %" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1690873362" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ves_gr_kv.m" caption="Вес, гр/кв.м" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="977860067" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -324,7 +324,7 @@
 <!--END_p73411-->
 
 <!--START_p73412-->
-<item name="p73412" caption="для ОБУВИ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1157" ag-hash="-1036137847">
+<item name="p73412" caption="для ОБУВИ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2527" ag-hash="-1036137847">
 	<parameter name="osnova" caption="Основа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1007539184" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="sostav__" caption="Состав, %" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1690873362" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ves_gr_kv.m" caption="Вес, гр/кв.м" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="977860067" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -333,7 +333,7 @@
 <!--END_p73412-->
 
 <!--START_p73413-->
-<item name="p73413" caption="для ТРАНСПОРТА" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1158" ag-hash="-1036137846">
+<item name="p73413" caption="для ТРАНСПОРТА" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2528" ag-hash="-1036137846">
 	<parameter name="osnova" caption="Основа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1007539184" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="sostav__" caption="Состав, %" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1690873362" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ves_gr_kv.m" caption="Вес, гр/кв.м" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="977860067" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -342,34 +342,34 @@
 <!--END_p73413-->
 
 <!--START_p73414-->
-<item name="p73414" caption="Car Upholstery Artificial Leather" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1159" ag-hash="-1036137845"></item>
+<item name="p73414" caption="Car Upholstery Artificial Leather" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2529" ag-hash="-1036137845"></item>
 <!--END_p73414-->
 
 <!--START_p73415-->
-<item name="p73415" caption="TIMSAH" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1160" ag-hash="-1036137844"></item>
+<item name="p73415" caption="TIMSAH" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2530" ag-hash="-1036137844"></item>
 <!--END_p73415-->
 
 <!--START_p73416-->
-<item name="p73416" caption="ZEBRA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1161" ag-hash="-1036137843"></item>
+<item name="p73416" caption="ZEBRA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2531" ag-hash="-1036137843"></item>
 <!--END_p73416-->
 
 <!--START_p73417-->
-<item name="p73417" caption="MATRIXMAT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1162" ag-hash="-1036137842"></item>
+<item name="p73417" caption="MATRIXMAT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2532" ag-hash="-1036137842"></item>
 <!--END_p73417-->
 
 <!--START_p73418-->
-<item name="p73418" caption="MATRIXSHINE" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1163" ag-hash="-1036137841"></item>
+<item name="p73418" caption="MATRIXSHINE" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2533" ag-hash="-1036137841"></item>
 <!--END_p73418-->
 
 <!--START_p73420-->
-<item name="p73420" caption="FLEXY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1164" ag-hash="-1036137818"></item>
+<item name="p73420" caption="FLEXY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2534" ag-hash="-1036137818"></item>
 <!--END_p73420-->
 
 <!--START_p73421-->
-<item name="p73421" caption="PEGAS PERFO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1165" ag-hash="-1036137817"></item>
+<item name="p73421" caption="PEGAS PERFO" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2535" ag-hash="-1036137817"></item>
 <!--END_p73421-->
 
 <!--START_p73423-->
-<item name="p73423" caption="EASYCLEAN" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1166" ag-hash="-1036137815"></item>
+<item name="p73423" caption="EASYCLEAN" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2536" ag-hash="-1036137815"></item>
 <!--END_p73423-->
 <!--EXP--></model>
