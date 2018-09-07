@@ -806,13 +806,24 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 */
 	private AdminPage moveTo(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
-		String[] parts = MainAdminPageCreator.splitInputName(in.movingItem);
-		long newParentId = Long.parseLong(parts[2]);
-		transaction.addCommandUnit(new MoveItemDBUnit(in.itemId, newParentId));
+		try {
+			transaction.addCommandUnit(new MoveItemDBUnit(in.itemId, in.parentId));
 		transaction.execute();
+			@SuppressWarnings("unchecked")
+			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
+			if (buffer != null) {
+				buffer.remove(in.itemId);
+				in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
+			}
+		} catch (Exception e) {
+			ServerLogger.error("Unable to copy item", e);
+			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
+			page.addMessage("Невозможно переместить элемент", true);
+			return page;
+		}
 		// Очистить кеш страниц
 		PageController.clearCache();
-		AdminPage page = pageCreator.createMoveToPage(in.itemId, in.parentId);
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
 		page.addMessage("Элемент успешно перемещен", false);
 		return page;
 	}

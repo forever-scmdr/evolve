@@ -18,7 +18,9 @@ public class Sale
     public final static String SALE_DATE = "sale_date";
     public final static String REGISTER_DATE = "register_date";
     public final static String AGENT_CODE = "agent_code";
-    public final static String DEALER_EMAIL = "dealer_email";
+    public final static String AGENT_NAME = "agent_name";
+    public final static String AGENT_PLAIN_NAME = "agent_plain_name";
+    public final static String DEALER_CODE = "dealer_code";
     public final static String TAG = "tag";
     public final static String ASSIGNED = "assigned";
     public final static String HAS_TAGS = "has_tags";
@@ -216,20 +218,52 @@ public class Sale
         return containsValue("agent_code", value);
     }
 
-    public void set_dealer_email(String value) {
-        setValue("dealer_email", value);
+    public void set_agent_name(String value) {
+        setValue("agent_name", value);
     }
 
-    public String get_dealer_email() {
-        return getStringValue("dealer_email");
+    public String get_agent_name() {
+        return getStringValue("agent_name");
     }
 
-    public String getDefault_dealer_email(String defaultVal) {
-        return getStringValue("dealer_email", defaultVal);
+    public String getDefault_agent_name(String defaultVal) {
+        return getStringValue("agent_name", defaultVal);
     }
 
-    public boolean contains_dealer_email(String value) {
-        return containsValue("dealer_email", value);
+    public boolean contains_agent_name(String value) {
+        return containsValue("agent_name", value);
+    }
+
+    public void set_agent_plain_name(String value) {
+        setValue("agent_plain_name", value);
+    }
+
+    public String get_agent_plain_name() {
+        return getStringValue("agent_plain_name");
+    }
+
+    public String getDefault_agent_plain_name(String defaultVal) {
+        return getStringValue("agent_plain_name", defaultVal);
+    }
+
+    public boolean contains_agent_plain_name(String value) {
+        return containsValue("agent_plain_name", value);
+    }
+
+    public void set_dealer_code(String value) {
+        setValue("dealer_code", value);
+    }
+
+    public String get_dealer_code() {
+        return getStringValue("dealer_code");
+    }
+
+    public String getDefault_dealer_code(String defaultVal) {
+        return getStringValue("dealer_code", defaultVal);
+    }
+
+    public boolean contains_dealer_code(String value) {
+        return containsValue("dealer_code", value);
     }
 
     public void set_tag(String value) {

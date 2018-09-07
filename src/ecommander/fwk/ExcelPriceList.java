@@ -28,18 +28,22 @@ public abstract class ExcelPriceList implements Closeable {
 	private POIUtils.CellXY headerCell;
 	private FormulaEvaluator eval;
 	private ArrayList<SheetHeader> validSheets = new ArrayList<>();
+	private String fileName;
 
 	public ExcelPriceList(String fileName, String... mandatoryCols) {
+		this.fileName = Strings.getFileName(fileName);
 		this.doc = POIUtils.openExcel(fileName);
 		init(mandatoryCols);
 	}
 
 	public ExcelPriceList(File file, String... mandatoryCols) {
+		this.fileName = file.getName();
 		this.doc = POIUtils.openExcel(file);
 		init(mandatoryCols);
 	}
 
 	public ExcelPriceList(Path path, String... mandatoryCols) {
+		this.fileName = path.getFileName().toString();
 		this.doc = POIUtils.openExcel(path);
 		init(mandatoryCols);
 	}
@@ -180,6 +184,10 @@ public abstract class ExcelPriceList implements Closeable {
 			this.header = header;
 			this.headerCell = headerCell;
 		}
+	}
+
+	public final String getFileName() {
+		return fileName;
 	}
 
 	@Override

@@ -71,8 +71,8 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 * Иногда такие ошибки можно игнорировать. По умолчанию - false
 	 * @return
 	 */
-	public DBPersistenceCommandUnit ignoreFileErrors() {
-		this.ignoreFileErrors = true;
+	public DBPersistenceCommandUnit ignoreFileErrors(boolean... ignore) {
+		this.ignoreFileErrors = (ignore.length > 0)? ignore[0]: true;
 		return this;
 	}
 

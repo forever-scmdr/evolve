@@ -40,10 +40,10 @@ public class MoveItemDBUnit extends DBPersistenceCommandUnit {
 			newParent = ItemQuery.loadById(newParentId, getTransactionContext().getConnection());
 
 		// Копирование
-		executeCommand(new CopyItemDBUnit(item, newParent));
+		executeCommand(new CopyItemDBUnit(item, newParent).ignoreFileErrors(ignoreFileErrors));
 
 		// Удаление
-		executeCommand(ItemStatusDBUnit.delete(item));
+		executeCommand(ItemStatusDBUnit.delete(item).ignoreFileErrors(ignoreFileErrors));
 	}
 
 }

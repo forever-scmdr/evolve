@@ -200,7 +200,7 @@ public class Strings
 	 * @return
 	 */
 	public static String getFileName(String fileName) {
-		return StringUtils.lowerCase(translit(fileName.replaceFirst(".*[\\/]", "")));
+		return StringUtils.lowerCase(translit(StringUtils.substring(fileName, StringUtils.lastIndexOf(fileName, '/') + 1)));
 	}
 
 	public static String createFileName(String string) {

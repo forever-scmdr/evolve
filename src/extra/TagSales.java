@@ -1,7 +1,6 @@
 package extra;
 
 import ecommander.fwk.IntegrateBase;
-import ecommander.model.Compare;
 import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -39,7 +38,7 @@ public class TagSales extends IntegrateBase implements ItemNames {
 		if (resetTags) {
 			info.setOperation("Сброс тэгов товаров");
 			info.setProcessed(0);
-			ItemQuery saleQuery = new ItemQuery(SALE).addParameterCriteria(sale_.HAS_TAGS, "1", "=", null, Compare.SOME).setLimit(10);
+			ItemQuery saleQuery = new ItemQuery(SALE).addParameterEqualsCriteria(sale_.HAS_TAGS, "1").setLimit(10);
 			List<Item> sales = saleQuery.loadItems();
 			while (sales.size() > 0) {
 				for (Item sale : sales) {
@@ -55,7 +54,7 @@ public class TagSales extends IntegrateBase implements ItemNames {
 		info.setOperation("Присваивание тэгов товарам из отчетов");
 		info.setProcessed(0);
 		List<Item> masks = new ItemQuery(GROUP_MASK).loadItems();
-		ItemQuery saleQuery = new ItemQuery(SALE).addParameterCriteria(sale_.HAS_TAGS, "0", "=", null, Compare.SOME).setLimit(10);
+		ItemQuery saleQuery = new ItemQuery(SALE).addParameterEqualsCriteria(sale_.HAS_TAGS, "0").setLimit(10);
 		List<Item> sales = saleQuery.loadItems();
 		while (sales.size() > 0) {
 			for (Item mask : masks) {

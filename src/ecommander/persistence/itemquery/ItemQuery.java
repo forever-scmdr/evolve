@@ -277,6 +277,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	public ItemQuery addParameterCriteria(String paramName, String value, String sign, String pattern, Compare compType) {
 		return addParameterCriteria(paramName, Collections.singletonList(value), sign, pattern, compType);
 	}
+
+	/**
+	 * Добавить критерий поиска по параметру, в котором параметр должен быть равен заданному значению
+	 * @param paramName
+	 * @param value
+	 * @return
+	 */
+	public ItemQuery addParameterEqualsCriteria(String paramName, String value) {
+		return addParameterCriteria(paramName, value, "=", null, Compare.SOME);
+	}
 	/**
 	 * Добавить критерий поиска по параметру
 	 * @param paramDesc

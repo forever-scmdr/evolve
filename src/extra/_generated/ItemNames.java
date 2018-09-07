@@ -94,7 +94,9 @@ public interface ItemNames {
         String SALE_DATE = "sale_date";
         String REGISTER_DATE = "register_date";
         String AGENT_CODE = "agent_code";
-        String DEALER_EMAIL = "dealer_email";
+        String AGENT_NAME = "agent_name";
+        String AGENT_PLAIN_NAME = "agent_plain_name";
+        String DEALER_CODE = "dealer_code";
         String TAG = "tag";
         String ASSIGNED = "assigned";
         String HAS_TAGS = "has_tags";
