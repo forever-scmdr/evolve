@@ -29,12 +29,14 @@ public class SessionItemMapper {
 		long parentId;
 		String typeName;
 		String tagName;
+		String key;
 
-		private SessionItemMemento(long id, long parentId, String typeName, String tagName) {
+		private SessionItemMemento(long id, long parentId, String typeName, String tagName, String key) {
 			this.id = id;
 			this.parentId = parentId;
 			this.typeName = typeName;
 			this.tagName = tagName;
+			this.key = key;
 		}
 
 		/**
@@ -59,6 +61,10 @@ public class SessionItemMapper {
 		public long getParentId() {
 			return parentId;
 		}
+
+		public String getKey() {
+			return key;
+		}
 	}
 
 	/**
@@ -80,7 +86,7 @@ public class SessionItemMapper {
 		 * @param tagName
 		 */
 		private TransientMemento(Item item, String tagName) {
-			super(item.getId(), item.getContextParentId(), item.getTypeName(), tagName);
+			super(item.getId(), item.getContextParentId(), item.getTypeName(), tagName, item.getKeyUnique());
 			this.userId = item.getOwnerUserId();
 			this.groupId = item.getOwnerGroupId();
 			parameters = new HashMap<>();
@@ -113,7 +119,7 @@ public class SessionItemMapper {
 		 */
 		public Item restoreItem() throws Exception {
 			Item item = Item.existingItem(ItemTypeRegistry.getItemType(typeName), id, ItemTypeRegistry.getPrimaryAssoc(),
-					parentId, userId, groupId, Item.STATUS_NORMAL, Strings.EMPTY, null, null, 0, false);
+					parentId, userId, groupId, Item.STATUS_NORMAL, Strings.EMPTY, key, null, 0, false);
 			if (parameters != null) {
 				for (Integer paramId : parameters.keySet()) {
 					if (item.getItemType().getParameter(paramId).isMultiple()) {
