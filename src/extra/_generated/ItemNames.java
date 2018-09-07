@@ -85,6 +85,8 @@ public interface ItemNames {
     public interface sale_ {
 
         String _ITEM_NAME = "sale";
+        String CODE = "code";
+        String CODE_NAME = "code_name";
         String DEVICE = "device";
         String DEVICE_TYPE = "device_type";
         String DEVICE_GROUP = "device_group";

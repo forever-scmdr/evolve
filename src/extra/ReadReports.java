@@ -8,6 +8,7 @@ import ecommander.model.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.Agent;
+import extra._generated.Dealer;
 import extra._generated.ItemNames;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -88,16 +89,72 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 			String desc = getValue(DEVICE_HEADER);
 			String code = getValue(CODE_HEADER);
 
-			Item agentItem = null;
-			if (StringUtils.isNotBlank(code)) {
-				agentItem = new ItemQuery(AGENT).addParameterEqualsCriteria(agent_.CODE, code).loadFirstItem();
-			} else if (StringUtils.isNotBlank(normalizedName)) {
-				agentItem = new ItemQuery(AGENT).addParameterEqualsCriteria(agent_.PLAIN_NAME, normalizedName).loadFirstItem();
-			} else {
+			// Создание или загрузка контрагента
+			if (StringUtils.isNotBlank(num)) {
+				Item agentItem;
+				if (StringUtils.isNotBlank(code)) {
+					agentItem = new ItemQuery(AGENT).addParameterEqualsCriteria(agent_.CODE, code).loadFirstItem();
+				} else if (StringUtils.isNotBlank(plainName)) {
+					agentItem = new ItemQuery(AGENT).addParameterEqualsCriteria(agent_.PLAIN_NAME, plainName).loadFirstItem();
+				} else {
+					info.addError("Не заданы название и код контрагента", getFileName() + " строка " + getRowNum());
+					return;
+				}
+				agent = Agent.get(agentItem);
+				if (agent == null) {
+					agentItem = Item.newChildItem(agentType, agentCatalog);
+					agent = Agent.get(agentItem);
+					agent.set_code(code);
+				}
 
+				// обновление (или создание) данных агента
+				if (StringUtils.isNotBlank(organization))
+					agent.set_organization(organization);
+				if (StringUtils.isNotBlank(plainName))
+					agent.set_plain_name(plainName);
+				if (StringUtils.isNotBlank(address))
+					agent.set_address(address);
+				if (StringUtils.isNotBlank(city))
+					agent.set_city(city);
+				if (StringUtils.isNotBlank(region))
+					agent.set_region(region);
+				if (StringUtils.isNotBlank(country))
+					agent.set_country(country);
+				if (StringUtils.isNotBlank(bossPosition))
+					agent.set_boss_position(bossPosition);
+				if (StringUtils.isNotBlank(bossName))
+					agent.set_boss_name(bossName);
+				if (StringUtils.isNotBlank(phone))
+					agent.set_phone(phone);
+				if (StringUtils.isNotBlank(orgEmail))
+					agent.set_email_main(orgEmail);
+				if (StringUtils.isNotBlank(contactName))
+					agent.set_contact_name(contactName);
+				if (StringUtils.isNotBlank(contactEmail))
+					agent.set_email_contact(contactEmail);
+				if (StringUtils.isNotBlank(site))
+					agent.set_site(site);
+				if (StringUtils.isNotBlank(branch))
+					agent.set_branch(branch);
+				if (StringUtils.isNotBlank(desc))
+					agent.set_desc(desc);
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(agent));
 			}
 
+			// Добавление продажи (если она еще не добавлена ранее)
+			String saleCode = getSaleCode(getFileName(), device, code);
+			String saleCodeName = getSaleCode(getFileName(), device, plainName);
+			Item saleItem = new ItemQuery(SALE).addParameterEqualsCriteria(sale_.CODE, saleCode).loadFirstItem();
+			if (saleItem == null)
+				saleItem = new ItemQuery(SALE).addParameterEqualsCriteria(sale_.CODE_NAME, saleCodeName).loadFirstItem();
+			// Создать новую продажу
+			if (saleItem == null) {
 
+			}
+			// Обновить продажу (количество если надо)
+			else {
+
+			}
 		}
 
 		@Override
@@ -118,7 +175,8 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 	private ItemType agentType;
 	private ItemType saleType;
 
-	private Item currentDealer;
+	private Dealer dealer; // текущий дилер
+	private Agent agent; // текущий агент
 
 
 	@Override
@@ -153,14 +211,17 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 		for (File excel : xls) {
 			Report report = new Report(excel, NUM_HEADER, DEVICE_HEADER, QTY_HEADER, ORGANIZATION_HEADER);
 			// Загрузить или создать дилера
-			currentDealer = new ItemQuery(DEALER).addParameterEqualsCriteria(CODE_HEADER, report.getDealerCode()).loadFirstItem();
-			if (currentDealer == null) {
-				currentDealer = Item.newChildItem(dealerType, dealerCatalog);
-				currentDealer.setValueUI(dealer_.CODE, report.getDealerCode());
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(currentDealer));
+			Item dealerItem = new ItemQuery(DEALER).addParameterEqualsCriteria(CODE_HEADER, report.getDealerCode()).loadFirstItem();
+			if (dealerItem == null) {
+				dealerItem = Item.newChildItem(dealerType, dealerCatalog);
+				dealerItem.setValueUI(dealer_.CODE, report.getDealerCode());
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(dealerItem));
+				dealer = Dealer.get(dealerItem);
 			}
 			report.iterate();
 			report.close();
+			// Заархивировать файл - переместить в директорию _archive
+			FileUtils.moveFile();
 		}
 		info.setOperation("Загрузка отчетов завершена");
 
@@ -169,5 +230,9 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 	@Override
 	protected void terminate() throws Exception {
 
+	}
+
+	public static String getSaleCode(String fileName, String device, String agent) {
+		return StringUtils.substringBeforeLast(fileName, ".") + "_" + device + "_" + agent;
 	}
 }

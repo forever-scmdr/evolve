@@ -103,7 +103,7 @@ public abstract class ExcelPriceList implements Closeable {
 	}
 
 	public final String getValue(int colIndex) {
-		return POIUtils.getCellAsString(currentRow.getCell(colIndex), eval);
+		return StringUtils.trim(POIUtils.getCellAsString(currentRow.getCell(colIndex), eval));
 	}
 
 	public final Double getDoubleValue(int colIndex) {
@@ -184,6 +184,10 @@ public abstract class ExcelPriceList implements Closeable {
 			this.header = header;
 			this.headerCell = headerCell;
 		}
+	}
+
+	public final int getRowNum() {
+		return currentRow.getRowNum();
 	}
 
 	public final String getFileName() {

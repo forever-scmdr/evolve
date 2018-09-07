@@ -119,7 +119,7 @@ public class SessionItemMapper {
 		 */
 		public Item restoreItem() throws Exception {
 			Item item = Item.existingItem(ItemTypeRegistry.getItemType(typeName), id, ItemTypeRegistry.getPrimaryAssoc(),
-					parentId, userId, groupId, Item.STATUS_NORMAL, Strings.EMPTY, key, null, 0, false);
+					parentId, userId, groupId, Item.STATUS_NORMAL, Strings.EMPTY, null, key, 0, false);
 			if (parameters != null) {
 				for (Integer paramId : parameters.keySet()) {
 					if (item.getItemType().getParameter(paramId).isMultiple()) {

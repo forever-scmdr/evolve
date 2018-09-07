@@ -9,6 +9,8 @@ public class Sale
 {
 
     public final static String _NAME = "sale";
+    public final static String CODE = "code";
+    public final static String CODE_NAME = "code_name";
     public final static String DEVICE = "device";
     public final static String DEVICE_TYPE = "device_type";
     public final static String DEVICE_GROUP = "device_group";
@@ -42,6 +44,38 @@ public class Sale
 
     public static Sale newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
+    }
+
+    public void set_code(String value) {
+        setValue("code", value);
+    }
+
+    public String get_code() {
+        return getStringValue("code");
+    }
+
+    public String getDefault_code(String defaultVal) {
+        return getStringValue("code", defaultVal);
+    }
+
+    public boolean contains_code(String value) {
+        return containsValue("code", value);
+    }
+
+    public void set_code_name(String value) {
+        setValue("code_name", value);
+    }
+
+    public String get_code_name() {
+        return getStringValue("code_name");
+    }
+
+    public String getDefault_code_name(String defaultVal) {
+        return getStringValue("code_name", defaultVal);
+    }
+
+    public boolean contains_code_name(String value) {
+        return containsValue("code_name", value);
     }
 
     public void set_device(String value) {
