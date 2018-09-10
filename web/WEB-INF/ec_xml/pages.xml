@@ -5,7 +5,7 @@
 
     </page>
 
-	<page name="import_reports" template="integrate" authority-groups="common">
+	<page name="integrate" template="integrate" authority-groups="common">
 		<request>
 			<var name="action"/>
 		</request>

@@ -29,7 +29,7 @@ public class CreateSeoContainerItemFactory implements ItemEventCommandFactory {
 		public void execute() throws Exception {
 			Item seo = new ItemQuery(SEO).addParameterCriteria(KEY_UNIIQUE, item.getKeyUnique(), "=", null, Compare.SOME).loadFirstItem();
 			if (seo != null) {
-				executeCommand(new CreateAssocDBUnit(seo, item, ItemTypeRegistry.getAssocId(SEO)));
+				executeCommand(CreateAssocDBUnit.childExistsSoft(seo, item, ItemTypeRegistry.getAssocId(SEO)));
 			}
 		}
 	}

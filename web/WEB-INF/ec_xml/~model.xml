@@ -31,7 +31,7 @@
 
 
 
-	<item name="dealer" key="email" caption="organization" ag-id="2" ag-hash="-1335779815">
+	<item name="dealer" key="organization" caption="Дилер" ag-id="2" ag-hash="-1335779815">
 		<parameter name="register_date" type="date" caption="Дата регистрации"/>
 		<parameter name="country" type="string" caption="Страна" text-index="fulltext"/>
 		<parameter name="region" type="string" caption="Область" text-index="fulltext"/>
@@ -56,8 +56,11 @@
 	проверяет все продажи и добавляет к ним тэги
 	 -->
 	<item name="sale" caption="Продажа" key="device year quartal" ag-id="3" ag-hash="3522631">
+		<!--
 		<parameter name="code" type="string" caption="Код продажи (код)" description="дилер, девайс, дата, покупатель (по коду)"/>
 		<parameter name="code_name" type="string" caption="Код продажи (название)" description="дилер, девайс, дата, покупатель (по названию)"/>
+		-->
+		<parameter name="report" type="string" caption="Код отчета" description="название файла отчета"/>
 		<parameter name="device" type="string" caption="Наименование оборудования (устройство)"/>
 		<parameter name="device_type" type="string" caption="Тип оборудования" description="напрмер, клапан или фильтр"/>
 		<parameter name="device_group" type="string" caption="Группа оборудования" description="вид (группа по некоторому признаку), например, DN20"/>
@@ -101,7 +104,7 @@
 	</item>
 
 
-	<item name="group_mask" caption="Маска для группы" key="name mask" super="type_mask"
+	<item name="group_mask" caption="Маска для группы" key="name" super="type_mask"
 	      description="может быть объединением по любому признаку, имеющему смысл" />
 
 

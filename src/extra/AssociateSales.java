@@ -81,22 +81,22 @@ public class AssociateSales extends IntegrateBase implements ItemNames{
 					agent = new ItemQuery(AGENT).addParameterEqualsCriteria(agent_.PLAIN_NAME, agentName).loadFirstItem();
 				}
 				if (agent != null) {
-					executeCommandUnit(new CreateAssocDBUnit(sale, agent, TRADE_ASSOC_ID, false));
+					executeCommandUnit(CreateAssocDBUnit.childExistsSoft(sale, agent, TRADE_ASSOC_ID));
 				} else {
 					info.addError("Контрагент с названием '" + sale.get_agent_plain_name() + "' не найден", "Отчеты");
 				}
-				String dealerCode = sale.getStringValue(sale_.AGENT_PLAIN_NAME);
+				String dealerCode = sale.getStringValue(sale_.DEALER_CODE);
 				Item dealer = new ItemQuery(DEALER).addParameterEqualsCriteria(dealer_.CODE, dealerCode).loadFirstItem();
 				if (dealer != null) {
-					executeCommandUnit(new CreateAssocDBUnit(sale, dealer, TRADE_ASSOC_ID, false));
+					executeCommandUnit(CreateAssocDBUnit.childExistsSoft(sale, dealer, TRADE_ASSOC_ID));
 					if (agent != null) {
-						executeCommandUnit(new CreateAssocDBUnit(dealer, agent, TRADE_ASSOC_ID, false));
+						executeCommandUnit(CreateAssocDBUnit.childExistsSoft(agent, dealer, TRADE_ASSOC_ID));
 					}
 				} else {
 					info.addError("Дилер с кодом '" + sale.get_dealer_code() + "' не найден", "Отчеты");
 				}
 
-				sale.setValue(ItemNames.sale_.HAS_TAGS, (byte) 1);
+				sale.setValue(sale_.ASSIGNED, (byte) 1);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(sale).noFulltextIndex());
 				info.increaseProcessed();
 			}
@@ -113,7 +113,10 @@ public class AssociateSales extends IntegrateBase implements ItemNames{
 
 	public static final String createOrganizationName(String organization) {
 		organization = StringUtils.replaceChars(organization, "«»", "\"\"");
-		organization = StringUtils.substringBetween(organization, "\"", "\"");
+		if (StringUtils.contains(organization, "\"")) {
+			organization = StringUtils.substringAfter(organization, "\"");
+			organization = StringUtils.substringBefore(organization, "\"");
+		}
 		organization = StringUtils.normalizeSpace(organization);
 		organization = StringUtils.lowerCase(organization, AppContext.getCurrentLocale());
 		return organization;

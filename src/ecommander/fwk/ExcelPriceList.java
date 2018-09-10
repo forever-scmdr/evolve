@@ -59,16 +59,24 @@ public abstract class ExcelPriceList implements Closeable {
 		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
 			// Все названия колонок должны быть в одной строке
 			Sheet sheet = wb.getSheetAt(i);
-			boolean rowChecked = true;
-			for (String mandatoryCol : mandatoryCols) {
-				headerCell = POIUtils.findFirstContaining(sheet, eval, mandatoryCol);
-				Row row = sheet.getRow(headerCell.row);
-				for (String checkCol : mandatoryCols) {
-					ArrayList<POIUtils.CellXY> found = POIUtils.findCellInRowContaining(eval, checkCol, row);
-					if (found.size() > 0)
-						continue;
-					rowChecked = false;
+			boolean rowChecked = false;
+			headerCell = new POIUtils.CellXY(-1, -1);
+			String firstMandatory = mandatoryCols[0];
+			while (headerCell != null) {
+				headerCell = POIUtils.findNextContaining(sheet, eval, firstMandatory, headerCell);
+				if (headerCell != null) {
+					Row row = sheet.getRow(headerCell.row);
+					rowChecked = true;
+					for (String checkCol : mandatoryCols) {
+						ArrayList<POIUtils.CellXY> found = POIUtils.findCellInRowContaining(eval, checkCol, row);
+						if (found.size() == 0) {
+							rowChecked = false;
+							break;
+						}
+					}
 				}
+				if (rowChecked)
+					break;
 			}
 			if (rowChecked) {
 				sheetChecked = true;
@@ -145,8 +153,8 @@ public abstract class ExcelPriceList implements Closeable {
 			processSheet();
 			//-- process rows
 			Iterator<Row> rowIter = currentSheet.rowIterator();
-			for (int i = 0; i <= headerCell.row && rowIter.hasNext(); i++) {
-				rowIter.next();
+			while (rowIter.hasNext() && rowIter.next().getRowNum() < headerCell.row) {
+				// пропустить первые строки включая заголовок
 			}
 			while (rowIter.hasNext()) {
 				currentRow = rowIter.next();

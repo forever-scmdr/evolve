@@ -5,11 +5,13 @@ import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
 import ecommander.model.*;
+import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.Agent;
-import extra._generated.Dealer;
 import extra._generated.ItemNames;
+import extra._generated.Sale;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -17,6 +19,7 @@ import org.joda.time.DateTimeZone;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Разбор файла с ценой
@@ -46,22 +49,28 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 	private static final String CODE_HEADER = "Код";
 
 
-	private class Report extends ExcelPriceList {
+	private static class Report extends ExcelPriceList {
 
 		private String dealerCode;
 		private Integer year;
 		private Integer quartal;
 		private Long reportMillis;
+		private String reportCode;
+		private Agent agent;
+		private ReadReports command;
 
-		public Report(File file, String... mandatoryCols) {
+		public Report(File file, ReadReports command, String... mandatoryCols) {
 			super(file, mandatoryCols);
-			String[] parts = StringUtils.split(file.getName(), '.');
+			this.command = command;
+			String normalName = StringUtils.replaceChars(file.getName(), " ", "");
+			reportCode = StringUtils.substringBeforeLast(normalName, ".");
+			String[] parts = StringUtils.split(normalName, '.');
 			try {
-				this.dealerCode = parts[0];
-				this.quartal = Integer.parseInt(parts[1]);
-				this.year = Integer.parseInt(parts[2]);
+				dealerCode = parts[0];
+				quartal = Integer.parseInt(parts[1]);
+				year = Integer.parseInt(parts[2]);
 				DateTime reportTime = new DateTime(year, quartal * 3, 1, 0, 0, DateTimeZone.UTC);
-				this.reportMillis = reportTime.plusMonths(1).getMillis();
+				reportMillis = reportTime.plusMonths(1).getMillis();
 			} catch (Exception e) {
 				throw new IllegalArgumentException("Неверный формат названия файла отчета: " + file.getName());
 			}
@@ -86,7 +95,7 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 			String contactEmail = getValue(EMAIL_CONTACT_HEADER);
 			String site = getValue(SITE_HEADER);
 			String branch = getValue(BRANCH_HEADER);
-			String desc = getValue(DEVICE_HEADER);
+			String desc = getValue(DESC_HEADER);
 			String code = getValue(CODE_HEADER);
 
 			// Создание или загрузка контрагента
@@ -97,12 +106,12 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 				} else if (StringUtils.isNotBlank(plainName)) {
 					agentItem = new ItemQuery(AGENT).addParameterEqualsCriteria(agent_.PLAIN_NAME, plainName).loadFirstItem();
 				} else {
-					info.addError("Не заданы название и код контрагента", getFileName() + " строка " + getRowNum());
+					info.addError(getFileName() + ": Не заданы название и код контрагента", getRowNum(), 0);
 					return;
 				}
 				agent = Agent.get(agentItem);
 				if (agent == null) {
-					agentItem = Item.newChildItem(agentType, agentCatalog);
+					agentItem = Item.newChildItem(command.agentType, command.agentCatalog);
 					agent = Agent.get(agentItem);
 					agent.set_code(code);
 				}
@@ -138,22 +147,25 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 					agent.set_branch(branch);
 				if (StringUtils.isNotBlank(desc))
 					agent.set_desc(desc);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(agent));
+				command.executeAndCommitCommandUnits(SaveItemDBUnit.get(agent));
 			}
 
 			// Добавление продажи (если она еще не добавлена ранее)
-			String saleCode = getSaleCode(getFileName(), device, code);
-			String saleCodeName = getSaleCode(getFileName(), device, plainName);
-			Item saleItem = new ItemQuery(SALE).addParameterEqualsCriteria(sale_.CODE, saleCode).loadFirstItem();
-			if (saleItem == null)
-				saleItem = new ItemQuery(SALE).addParameterEqualsCriteria(sale_.CODE_NAME, saleCodeName).loadFirstItem();
-			// Создать новую продажу
-			if (saleItem == null) {
+			if (StringUtils.isNotBlank(device)) {
+				Sale sale = Sale.get(Item.newChildItem(command.saleType, command.saleCatalog));
+				sale.set_report(reportCode);
+				sale.set_device(device);
+				sale.setUI_qty(qtyStr);
+				sale.set_year(year);
+				sale.set_quartal(quartal);
+				sale.set_register_date(reportMillis);
+				sale.set_agent_code(agent.get_code());
+				sale.set_agent_name(agent.get_organization());
+				sale.set_agent_plain_name(agent.get_plain_name());
+				sale.set_dealer_code(dealerCode);
+				command.executeAndCommitCommandUnits(SaveItemDBUnit.get(sale).noFulltextIndex());
 
-			}
-			// Обновить продажу (количество если надо)
-			else {
-
+				info.increaseProcessed();
 			}
 		}
 
@@ -165,6 +177,10 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 		protected String getDealerCode() {
 			return dealerCode;
 		}
+
+		protected String getReportCode() {
+			return reportCode;
+		}
 	}
 
 	private Collection<File> xls;
@@ -174,9 +190,6 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 	private ItemType dealerType;
 	private ItemType agentType;
 	private ItemType saleType;
-
-	private Dealer dealer; // текущий дилер
-	private Agent agent; // текущий агент
 
 
 	@Override
@@ -208,31 +221,36 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 		info.setLineNumber(0);
 		info.setToProcess(xls.size());
 		info.limitLog(500);
+		File archiveDir = new File(AppContext.getRealPath(ARCHIVE_DIR));
 		for (File excel : xls) {
-			Report report = new Report(excel, NUM_HEADER, DEVICE_HEADER, QTY_HEADER, ORGANIZATION_HEADER);
+			Report report = new Report(excel, this, NUM_HEADER, DEVICE_HEADER, QTY_HEADER, ORGANIZATION_HEADER);
 			// Загрузить или создать дилера
-			Item dealerItem = new ItemQuery(DEALER).addParameterEqualsCriteria(CODE_HEADER, report.getDealerCode()).loadFirstItem();
+			Item dealerItem = new ItemQuery(DEALER).addParameterEqualsCriteria(dealer_.CODE, report.getDealerCode()).loadFirstItem();
 			if (dealerItem == null) {
 				dealerItem = Item.newChildItem(dealerType, dealerCatalog);
 				dealerItem.setValueUI(dealer_.CODE, report.getDealerCode());
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(dealerItem));
-				dealer = Dealer.get(dealerItem);
+			}
+			// Удалить продажи более ранней версии отчета
+			List<Item> reportSales = new ItemQuery(SALE).addParameterEqualsCriteria(sale_.REPORT, report.getReportCode()).loadItems();
+			for (Item reportSale : reportSales) {
+				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(reportSale));
 			}
 			report.iterate();
 			report.close();
+			executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(100, null));
 			// Заархивировать файл - переместить в директорию _archive
-			FileUtils.moveFile();
+			FileUtils.copyFileToDirectory(excel, archiveDir);
+			FileUtils.deleteQuietly(excel);
 		}
-		info.setOperation("Загрузка отчетов завершена");
+		info.addLog("Загрузка отчетов завершена");
 
+		new AssociateSales(this).integrate();
+		new TagSales(this).integrate();
 	}
 
 	@Override
 	protected void terminate() throws Exception {
 
-	}
-
-	public static String getSaleCode(String fileName, String device, String agent) {
-		return StringUtils.substringBeforeLast(fileName, ".") + "_" + device + "_" + agent;
 	}
 }
