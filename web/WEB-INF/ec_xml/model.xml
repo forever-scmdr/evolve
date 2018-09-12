@@ -72,7 +72,7 @@
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
-		<parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" />
+		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
 		<parameter name="group_id" type="string" caption="Номер группы" description="в яндекс маркете все товары одной группы выводятся на одной странице"/>
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
@@ -83,7 +83,8 @@
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
-		<parameter name="main_pic" type="picture" format="width: 300" caption="Главная картинка"/>
+		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
+		<parameter name="small_pic" type="picture" format="width: 200; src: main_pic; crop: TOP_LEFT;" caption="Маленькая картинка"/>
 		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
@@ -95,6 +96,8 @@
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
 		<child item="product" assoc="other_colors"/>
+		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
+		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
 	<item name="params" caption="Параметры товара" extendable="true" ag-id="30" ag-hash="-995427962"/>

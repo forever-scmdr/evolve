@@ -36,45 +36,51 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 
 	@Override
 	protected void integrate() throws Exception {
-		info.setOperation("Обработака товаров");
-		loadedProducts = new LinkedList<>();
-		info.setOperation("Перенос товаров");
-		loadedProducts.addAll(new ItemQuery(SECTION_ITEM).loadItems());
-		info.setToProcess(loadedProducts.size());
-		Item section;
-		while((section = loadedProducts.poll()) != null){
-			ArrayList<Item> sameName = new ArrayList<>();
-			long sectionId = section.getId();
-			Item sub = new ItemQuery(SECTION_ITEM).setParentId(sectionId, false).loadFirstItem();
-			Item seo = new ItemQuery("seo").setParentId(sectionId, false).loadFirstItem();
-			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(sectionId, false).loadItems();
-			boolean deleteAtOnce = sub == null && products.size() == 0 && (seo == null || StringUtils.isBlank(seo.getStringValue("text")));
-			if(deleteAtOnce){
-				transaction.executeCommandUnit(ItemStatusDBUnit.delete(sectionId));
-			}else{
-				String prevName = "";
-				for(Item product : products){
-					String name = product.getStringValue(NAME_PARAM,"");
-					if(StringUtils.isBlank(prevName)) prevName = name;
-					if(name.equals(prevName)){
-						sameName.add(product);
-					}else{
-						createAssoc(sameName);
-						prevName = name;
-						sameName = new ArrayList<>();
-						sameName.add(product);
-					}
-				}
-				if(products.size() > 1) {
-					createAssoc(sameName);
-				}
-			}
-			info.increaseProcessed();
+		List<Item> loadedProducts = new ItemQuery(PRODUCT_ITEM).loadItems();
+		for(Item product : loadedProducts){
+			product.forceInitialInconsistent();
+			transaction.executeCommandUnit(SaveItemDBUnit.get(product, true).ignoreFileErrors().noFulltextIndex());
+			commitCommandUnits();
 		}
-		transaction.commit();
-		executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null));
-		info.setOperation("Индексация названий товаров");
-		LuceneIndexMapper.getSingleton().reindexAll();
+//		info.setOperation("Обработака товаров");
+//		loadedProducts = new LinkedList<>();
+//		info.setOperation("Перенос товаров");
+//		loadedProducts.addAll(new ItemQuery(SECTION_ITEM).loadItems());
+//		info.setToProcess(loadedProducts.size());
+//		Item section;
+//		while((section = loadedProducts.poll()) != null){
+//			ArrayList<Item> sameName = new ArrayList<>();
+//			long sectionId = section.getId();
+//			Item sub = new ItemQuery(SECTION_ITEM).setParentId(sectionId, false).loadFirstItem();
+//			Item seo = new ItemQuery("seo").setParentId(sectionId, false).loadFirstItem();
+//			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(sectionId, false).loadItems();
+//			boolean deleteAtOnce = sub == null && products.size() == 0 && (seo == null || StringUtils.isBlank(seo.getStringValue("text")));
+//			if(deleteAtOnce){
+//				transaction.executeCommandUnit(ItemStatusDBUnit.delete(sectionId));
+//			}else{
+//				String prevName = "";
+//				for(Item product : products){
+//					String name = product.getStringValue(NAME_PARAM,"");
+//					if(StringUtils.isBlank(prevName)) prevName = name;
+//					if(name.equals(prevName)){
+//						sameName.add(product);
+//					}else{
+//						createAssoc(sameName);
+//						prevName = name;
+//						sameName = new ArrayList<>();
+//						sameName.add(product);
+//					}
+//				}
+//				if(products.size() > 1) {
+//					createAssoc(sameName);
+//				}
+//			}
+//			info.increaseProcessed();
+//		}
+//		transaction.commit();
+//		executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null));
+//		info.setOperation("Индексация названий товаров");
+//		LuceneIndexMapper.getSingleton().reindexAll();
 	}
 
 	private void createAssoc(ArrayList<Item> products) throws Exception {
