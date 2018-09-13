@@ -59,7 +59,7 @@
 		<div class="path-container">
 			<div class="path">
 				<a href="/">Главная страница</a>
-				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
+				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
 					<a href="{if (position() = 1) then show_section else show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
@@ -67,14 +67,22 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1><xsl:value-of select="$sel_sec/name"/></h1>
-		<div class="page-content m-t">
-			<xsl:if test="$sel_sec/params_filter/filter">
-				<div class="toggle-filters">
-					<i class="fas fa-cog"></i> <a href="#" onclick="$('#filters_container').toggle('blind', 200); return false;">Подбор по параметрам</a>
-				</div>
-			</xsl:if>
 
-			<xsl:if test="$sel_sec/params_filter/filter">
+		<xsl:if test="$seo/text != ''">
+			<div class="page-content">
+				<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+			</div>
+		</xsl:if>
+
+		
+			<div class="page-content m-t">
+			<xsl:if test="$sel_sec/params_filter/filter/input">
+				<div class="toggle-filters">
+						<i class="fas fa-cog"></i> <a href="#" onclick="$('#filters_container').toggle('blind', 200); return false;">Подбор по параметрам</a>
+				</div>
+			
+
+			
 				<form method="get" action="{$sel_sec/filter_base_link}">
 					<input type="hidden" name="var" value="fil"/>
 					<div class="filters" style="{'display: none'[not($user_filter)]}" id="filters_container">
@@ -108,25 +116,26 @@
 				</form>
 			</xsl:if>
 
-			<xsl:if test="not($not_found)">
+			<xsl:if test="not($not_found and $sel_sec/product)">
 				<div class="view-container">
 					<div class="view">
 						<div class="desktop">
 							<span>Показывать:</span>
-							<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
-							<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
+							<xsl:variable name="view" select="page/variables/view"/>
+							<span class="{'active'[$view = 'table']}"><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
+							<span class="{'active'[$view = 'list']}"><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
 						</div>
-						<div class="checkbox">
-							<label>
-								<xsl:if test="not($only_available)">
-									<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
-								</xsl:if>
-								<xsl:if test="$only_available">
-									<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
-								</xsl:if>
-								в наличии
-							</label>
-						</div>
+						<!--<div class="checkbox">-->
+							<!--<label>-->
+								<!--<xsl:if test="not($only_available)">-->
+									<!--<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>-->
+								<!--</xsl:if>-->
+								<!--<xsl:if test="$only_available">-->
+									<!--<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>-->
+								<!--</xsl:if>-->
+								<!--в наличии-->
+							<!--</label>-->
+						<!--</div>-->
 						<span>
 							<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
 							        onchange="window.location.href = $(this).find(':selected').attr('link')">
@@ -179,5 +188,7 @@
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
 	</xsl:template>
+
+	<xsl:template name="SEO_TEXT"/>
 
 </xsl:stylesheet>

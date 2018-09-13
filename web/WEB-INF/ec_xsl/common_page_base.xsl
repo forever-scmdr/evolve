@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="login_form_ajax.xsl"/>
-	<xsl:import href="personal_ajax.xsl"/>
+	<!--<xsl:import href="personal_ajax.xsl"/>-->
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
 
@@ -11,7 +11,7 @@
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
 	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 
-	<xsl:variable name="title" select="'Спеццехника'" />
+	<xsl:variable name="title" select="'Тактсервис'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
@@ -53,7 +53,7 @@
 								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Загрузка...</strong></p>
 							</div>
 							<div class="user">
-								<xsl:call-template name="PERSONAL_DESKTOP"/>
+								<!--<xsl:call-template name="PERSONAL_DESKTOP"/>-->
 								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
 									<p><i class="fas fa-star"/> <a href="">&#160;</a></p>
 								</div>
@@ -197,7 +197,7 @@
 
 		<!-- MODALS BEGIN -->
 		<!-- modal login -->
-		<xsl:call-template name="LOGIN_FORM"/>
+		<!--<xsl:call-template name="LOGIN_FORM"/>-->
 
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
@@ -416,6 +416,8 @@
 
 	<xsl:template match="accessory | set | probe | product">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="txt" select="if(product_extra[name = 'tech']) then product_extra/text else short "/>
+
 		<div class="catalog-item">
 			<!--
 			<div class="tags">
@@ -426,15 +428,15 @@
 			</div>
 			-->
 			<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
-			<a href="{show_product}" class="image-container" style="background-image: url({$pic_path});">
+			<a href="{show_product}" class="image-container" style="background-image: url({$pic_path});" title="{concat(type, ' ', name)}">
 				<!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/> -->
 			</a>
-			<div>
-				<a href="{show_product}" title="{name}"><xsl:value-of select="name"/></a>
-				<xsl:if test="short != ''">
-					<p><xsl:value-of select="substring-before(substring-after(short, 'description&quot;&gt;'), '&lt;')" disable-output-escaping="yes"/></p>
+			<div >
+				<a href="{show_product}" ><xsl:value-of select="concat(type, ' ', name)"/></a>
+				<xsl:if test="name_extra != ''">
+					<p><xsl:value-of select="name_extra" disable-output-escaping="yes"/></p>
 				</xsl:if>
-				<p class="inline-only">
+				<div class="inline-only product-{@id} overflow-hidden toggle-overflow">
 					<xsl:for-each select="params/param">
 						<xsl:if test="position() &gt; 1">
 							<xsl:call-template name="BR"/>
@@ -446,8 +448,16 @@
 							<xsl:value-of select="."/>
 						</span>
 					</xsl:for-each>
-				</p>
+					<xsl:if test="not(params/param)">
+						<xsl:value-of select="$txt" disable-output-escaping="yes"/>
+					</xsl:if>
+				</div>
+				<div class="inline-only">
+					<span class="uht-{@id} js-link display-block" onclick="$('.product-{@id}').toggleClass('overflow-hidden'); $('.uht-{@id}').toggle();">Развернуть</span>
+					<span class="uht-{@id} js-link display-block" onclick="$('.product-{@id}').toggleClass('overflow-hidden'); $('.uht-{@id}').toggle();" style="display: none;">Свернуть</span>
+				</div>
 			</div>
+
 			<div class="price">
 				<xsl:if test="$has_price">
 					<!-- <p><span>Старая цена</span>100 р.</p> -->
@@ -538,11 +548,7 @@
 					<div class="mc-container">
 						<xsl:call-template name="INC_MOBILE_HEADER"/>
 						<xsl:call-template name="CONTENT"/>
-						<xsl:if test="$seo/text != ''">
-							<div class="page-content">
-								<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
-							</div>
-						</xsl:if>
+						<xsl:call-template name="SEO_TEXT"/>
 					</div>
 				</div>
 				<!-- RIGHT COLOUMN END -->
@@ -596,6 +602,7 @@
 				<xsl:call-template name="SEO"/>
 				<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" href="css/app.css"/>
+				<link rel="stylesheet" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 				<link rel="stylesheet" href="fotorama/fotorama.css"/>
@@ -603,7 +610,7 @@
 				<script defer="defer" src="js/font_awesome_all.js"/>
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 			</head>
-			<body class="zz{page/catalog/section[.//@id = $sel_sec_id]/@id}{if (page/@name='index') then 'index' else ''}">
+			<body class="zz-{page/catalog/section[.//@id = $sel_sec_id]/@key}{if (page/@name='index') then 'index' else ''}">
 				<!-- ALL CONTENT BEGIN -->
 				<div class="content-container">
 					<xsl:call-template name="INC_DESKTOP_HEADER"/>
@@ -753,4 +760,11 @@
 		<xsl:value-of select="meta" disable-output-escaping="yes"/>
 	</xsl:template>
 
+	<xsl:template name="SEO_TEXT">
+		<xsl:if test="$seo/text != ''">
+			<div class="page-content">
+				<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+			</div>
+		</xsl:if>
+	</xsl:template>
 </xsl:stylesheet>

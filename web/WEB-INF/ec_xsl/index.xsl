@@ -130,7 +130,7 @@
 			<div class="fotorama" data-transition="crossfade" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
 				<xsl:for-each select="page/main_page/main_slider_frame">
 					<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
-						<div class="slider-item__block">
+						<div class="slider-item__block fotorama__select">
 							<div class="slider-item__title"><xsl:value-of select="name" /></div>
 							<div class="slider-item__text">
 								<xsl:value-of select="text" disable-output-escaping="yes"/>
@@ -183,7 +183,7 @@
 	</xsl:template>
 
 	<xsl:template name="BANNERS">
-		<div class="container">
+		<div class="container" style="border-bottom: 1px solid #d2d2d2;">
 			<div class="banners-container">
 				<!-- <xsl:for-each select="page/catalog/section">
 					<div class="banner">
