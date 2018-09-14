@@ -71,6 +71,10 @@ public abstract class Command implements AutoCloseable {
 	protected final String getUrlBase() {
 		return page.getUrlBase();
 	}
+
+	protected final String getPageName() {
+		return page.getPageName();
+	}
 	/**
 	 * Установить значение переменной куки
 	 * @param name

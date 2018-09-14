@@ -69,8 +69,9 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 			addOptimized(new MultipleParamCriteria(param, item, values, sign, tableName, groupId, isOption(), compType));
 		// Множество значений с выбором каждого варианта (параметр соответствует всем значениям)
 		else if (values.size() > 0) {
+			Compare localComp = compType == Compare.EVERY ? Compare.SOME : Compare.ANY;
 			for (String value : values) {
-				addOptimized(new SingleParamCriteria(param, item, value, sign, pattern, tableName, groupId, isOption(), compType));
+				criterias.add(new SingleParamCriteria(param, item, value, sign, pattern, tableName, groupId, isOption(), localComp));
 				tableName = groupId + "F" + criterias.size();
 			}
 		} else

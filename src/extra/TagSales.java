@@ -44,18 +44,20 @@ public class TagSales extends IntegrateBase implements ItemNames {
 			List<Item> sales = saleQuery.loadItems();
 			while (sales.size() > 0) {
 				for (Item sale : sales) {
-					sale.setValue(sale_.HAS_TAGS, (byte) 0);
+					sale.clearParameter(sale_.TAG);
+					sale.setValue(sale_.HAS_TAGS, (byte)0);
 					executeCommandUnit(SaveItemDBUnit.get(sale).noFulltextIndex());
 				}
 				commitCommandUnits();
 				info.setProcessed(info.getProcessed() + sales.size());
+				sales = saleQuery.loadItems();
 			}
 		}
 
 
 		info.setOperation("Присваивание тэгов товарам из отчетов");
 		info.setProcessed(0);
-		List<Item> masks = new ItemQuery(GROUP_MASK).loadItems();
+		List<Item> masks = new ItemQuery(TYPE_MASK).loadItems();
 		ItemQuery saleQuery = new ItemQuery(SALE).addParameterEqualsCriteria(sale_.HAS_TAGS, "0").setLimit(10);
 		List<Item> sales = saleQuery.loadItems();
 		while (sales.size() > 0) {

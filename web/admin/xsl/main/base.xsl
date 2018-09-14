@@ -187,14 +187,14 @@
 							<div class="list additional">
 								<h4>Парсинг</h4>
 								<ul class="no-drag">
-									<li class="visible" title="Скачать информацию с сайта">
-										<a href="get_site/?action=start" target="_blank">Скачать информацию со стороннего сайта</a>
+									<li class="visible" title="Разобрать отчеты">
+										<a href="integrate/?action=start" target="_blank">Разобрать отчеты</a>
 									</li>
-									<li class="visible" title="Разместить скачанную информацию на этом сайте">
-										<a href="deploy_parsed/?action=start" target="_blank">Разместить скачанную информацию</a>
+									<li class="visible" title="Обновить все тэги">
+										<a href="create_tags/?action=start" target="_blank">Обновить все тэги</a>
 									</li>
-									<li class="visible" title="Создать типы товаров и фильтры">
-										<a href="create_filters/?action=start" target="_blank">Создать типы товаров и фильтры</a>
+									<li class="visible" title="Обновить все привязки">
+										<a href="create_assoc/?action=start" target="_blank">Обновить все привязки</a>
 									</li>
 								</ul>
 							</div>

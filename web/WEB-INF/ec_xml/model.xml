@@ -73,7 +73,7 @@
 		<parameter name="agent_name" type="string" caption="Контрагент" description="как указано в файле"/>
 		<parameter name="agent_plain_name" type="string" caption="Название контрагента" description="без формы собственности и кавычек"/>
 		<parameter name="dealer_code" type="string" caption="Email дилера" description="уникальный идентификатор дилера"/>
-		<parameter name="tag" type="string" caption="Тэг" description="это может быть группа, тип или любой другой признак"/>
+		<parameter name="tag" type="string" multiple="true" caption="Тэг" description="это может быть группа, тип или любой другой признак"/>
 		<parameter name="assigned" type="byte" caption="Обработана" default="0"
 		           description="служебное значение (назначены ли дилеры и агенты по ассоциации trade)"/>
 		<parameter name="has_tags" type="byte" caption="Добавлены тэги" default="0"

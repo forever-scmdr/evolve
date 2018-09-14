@@ -70,7 +70,7 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 				quartal = Integer.parseInt(parts[1]);
 				year = Integer.parseInt(parts[2]);
 				DateTime reportTime = new DateTime(year, quartal * 3, 1, 0, 0, DateTimeZone.UTC);
-				reportMillis = reportTime.plusMonths(1).getMillis();
+				reportMillis = reportTime.getMillis();
 			} catch (Exception e) {
 				throw new IllegalArgumentException("Неверный формат названия файла отчета: " + file.getName());
 			}
@@ -85,6 +85,8 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 			String qtyStr = getValue(QTY_HEADER);
 			String address = getValue(ADDRESS_HEADER);
 			String city = getValue(CITY_HEADER);
+			if (StringUtils.containsIgnoreCase(city, "г."))
+				city = StringUtils.substringAfter(city, ".");
 			String region = getValue(REGION_HEADER);
 			String country = getValue(COUNTRY_HEADER);
 			String bossPosition = getValue(BOSS_POSITION_HEADER);

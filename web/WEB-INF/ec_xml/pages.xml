@@ -2,14 +2,68 @@
 <site>
 
     <page name="index">
-
+		<request>
+			<var name="m_from" scope="session"/>
+			<var name="m_to" scope="session"/>
+			<var name="country"/>
+			<var name="city"/>
+			<var name="dealer"/>
+			<var name="tag" value="Клапаны электромагнитные"/>
+		</request>
+	    <list item="sale" id="sale">
+		    <filter>
+			    <parameter name="register_date" compare="ANY" sign="&gt;="><var var="m_from"/></parameter>
+			    <parameter name="register_date" compare="ANY" sign="&lt;="><var var="m_to"/></parameter>
+			    <parameter name="tag" compare="ALL"><var var="tag"/></parameter>
+			    <parent item="agent" assoc="trade">
+				    <parameter name="city" compare="ANY"><var var="city"/></parameter>
+			    </parent>
+			    <parent item="dealer" assoc="trade">
+				    <parameter name="code" compare="ANY"><var var="dealer"/></parameter>
+			    </parent>
+		    </filter>
+	    </list>
+	    <list item="agent">
+		    <filter>
+			    <successor ref="sale" assoc="trade"/>
+		    </filter>
+	    </list>
+	    <list item="dealer">
+		    <filter>
+			    <successor ref="sale" assoc="trade"/>
+		    </filter>
+	    </list>
+	    <link name="set_dates" target="index" copy-page-vars="yes"/>
     </page>
+
 
 	<page name="integrate" template="integrate" authority-groups="common">
 		<request>
 			<var name="action"/>
 		</request>
 		<command class="extra.ReadReports">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="create_tags" template="integrate" authority-groups="common">
+		<request>
+			<var name="action"/>
+			<var name="reset_tags" value="true"/>
+		</request>
+		<command class="extra.TagSales">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="create_assoc" template="integrate" authority-groups="common">
+		<request>
+			<var name="action"/>
+			<var name="reset_assoc" value="true"/>
+		</request>
+		<command class="extra.AssociateSales">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
