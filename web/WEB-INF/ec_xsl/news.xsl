@@ -4,6 +4,7 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="active_menu_item" select="'news'"/>
+	<xsl:variable name="title" select="'Новости'" />
 
 	<xsl:variable name="p" select="page/product"/>
 

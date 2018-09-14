@@ -3,15 +3,18 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="active_menu_item" select="'catalog'"/>
+	<xsl:variable name="p" select="page/product"/>
 
+	<xsl:variable name="title" select="concat($p/name, ' купить в Минске - интернет магазин SakuraBel')"/>
+	<xsl:variable name="meta_description" select="concat('Купить недорого ', $p/name, ' в магазине SakuraBel в Минске ✅ Доставка во все регионы Беларуси. Доступная цена! ☎☎☎  +375 17 396 44 29, +375 29 311 44 29')"/>
+
+	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
-
-	<xsl:variable name="p" select="page/product"/>
+	<xsl:variable name="default_h1" select="concat($p/vendor_code, ' ', $p/name)"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -52,7 +55,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$p/vendor_code"/><xsl:text> </xsl:text><xsl:value-of select="$p/name"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="catalog-item-container">
 			<!--
@@ -77,8 +80,9 @@
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 				<xsl:if test="$has_price">
 					<div class="price">
-						<p><span>Старая цена</span>100 р.</p>
-						<p><span>Новая цена</span><xsl:value-of select="$p/price"/> р.</p>
+						<!-- <p><span>Старая цена</span>100 р.</p> -->
+						<p></p>
+						<p>Цена: <xsl:value-of select="$p/price"/> р.</p>
 					</div>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
@@ -93,7 +97,7 @@
 						<form action="{$p/to_cart}" method="post">
 							<xsl:if test="$has_price and $p/qty != '0'">
 								<input type="number" name="qty" value="1" min="0"/>
-								<input type="submit" value="В корзину"/>
+								<input type="submit" value="Купить"/>
 							</xsl:if>
 							<xsl:if test="not($has_price and $p/qty != '0')">
 								<input type="number" name="qty" value="1" min="0"/>
@@ -227,7 +231,7 @@
 				</div>
 			</div>
 		</div>
-
+		<xsl:call-template name="SEO_TEXT"/>
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 

@@ -8,9 +8,14 @@
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
 	<!-- SEO VARS -->
+	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
+	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
+	<xsl:variable name="default_h1"/>
 	<xsl:variable name="title" select="'САКУРА БЕЛ - Комплексные системы безопасности'" />
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $default_h1"/>
+
 	<xsl:variable name="meta_description" select="''" />
-	<xsl:variable name="base" select="page/base" />
+	<xsl:variable name="base" select="'http://www.sakurabel.com'" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
 	<xsl:variable name="canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''"/>
 
@@ -155,6 +160,24 @@
 									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
 								</div>
 							</div>
+							<div class="rating" itemscope="" itemtype="http://data-vocabulary.org/Review-aggregate">
+				<p>
+					<span itemprop="itemreviewed">Наш рейтинг</span> 4,8
+					<br />
+					голосов: <span itemprop="votes">178</span>
+					<span itemprop="rating" itemscope="" itemtype="http://data-vocabulary.org/Rating">
+                        <meta itemprop="value" content="4.8"/>
+                        <meta itemprop="best" content="5"/>
+                    </span>
+				</p>
+				<i class="fas fa-star" rel="1"></i>
+				<i class="fas fa-star" rel="2"></i>
+				<i class="fas fa-star" rel="3"></i>
+				<i class="fas fa-star" rel="4"></i>
+				<i class="far fa-star" rel="5"></i>
+			</div>
+							
+							
 							<div class="block">
 								<p>Принимаем к оплате<xsl:call-template name="BR"/> пластиковые карточки</p>
 								<div class="cards">
@@ -208,9 +231,9 @@
 					<li><i class="fas fa-th-list"></i> <a href="#" onclick="showMobileCatalogMenu(); return false">Каталог продукции</a></li>
 				</ul>
 				<ul>
-					<li><i class="fas fa-shopping-cart"></i> <a href="{page/cart_link}">Корзина</a></li>
-					<li><i class="fas fa-star"></i> <a href="{page/fav_link}">Избранное</a></li>
-					<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>
+					<li><i class="fas fa-shopping-cart"></i> <a rel="nofollow" href="{page/cart_link}">Корзина</a></li>
+					<li><i class="fas fa-star"></i> <a rel="nofollow" href="{page/fav_link}">Избранное</a></li>
+					<li><i class="fas fa-balance-scale"></i> <a rel="nofollow" href="{page/compare_link}">Сравнение</a></li>
 				</ul>
 				<ul>
 					<li><a href="{page/news_link}">Новости</a></li>
@@ -361,7 +384,7 @@
 
 	<xsl:template name="COMMON_LEFT_COLOUMN">
 		<div class="actions">
-			<h3>Акции</h3>
+			<div class="h3">Акции</div>
 			<div class="actions-container">
 				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 			</div>
@@ -382,7 +405,7 @@
 
 	<xsl:template name="ACTIONS_MOBILE">
 		<div class="actions mobile">
-			<h3>Акции</h3>
+			<div class="h3">Акции</div>
 			<div class="actions-container">
 				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 			</div>
@@ -405,7 +428,7 @@
 				<!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/> -->
 			</a>
 			<div class="name">
-				<a href="{show_product}" title="{name}"><xsl:value-of select="vendor_code"/><xsl:text> </xsl:text><xsl:value-of select="name"/></a>
+				<a href="{show_product}" title="{name}"><xsl:value-of select="concat(vendor_code,' ',name)"/></a>
 				<p><xsl:value-of select="substring-before(substring-after(short, 'description&quot;&gt;'), '&lt;')" disable-output-escaping="yes"/></p>
 			</div>
 			<div class="art-number">
@@ -414,7 +437,8 @@
 			<div class="price">
 				<xsl:if test="$has_price">
 					<!--<p><span>Старая цена</span>100 р.</p>-->
-					<p><!--<span>Новая цена</span>--><xsl:value-of select="price"/> р.</p>
+					<p></p>
+					<p>Цена <xsl:value-of select="price"/> р.</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
 					<p>По запросу</p>
@@ -425,7 +449,7 @@
 					<form action="{to_cart}" method="post">
 						<xsl:if test="$has_price and qty != '0'">
 							<input type="number" name="qty" value="1" min="0"/>
-							<input type="submit" value="В корзину"/>
+							<input type="submit" value="Купить"/>
 						</xsl:if>
 						<xsl:if test="not($has_price) or not(qty != '0')">
 							<input type="number" name="qty" value="1" min="0"/>
@@ -440,15 +464,15 @@
 				
 				<div class="links">
 					<div id="compare_list_{code}">
-						<span><a href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i><!-- в сравнение --></a></span>
+						<span><a href="{to_compare}" rel="nofollow" ajax="true" ajax-loader-id="compare_list_{code}"><i class="fas fa-balance-scale"></i><!-- в сравнение --></a></span>
 					</div>
 					<xsl:choose>
 						<xsl:when test="$is_fav">
-							<span class="active"><a href="{from_fav}"><i class="fas fa-star"></i> убрать</a></span>
+							<span class="active"><a href="{from_fav}" rel="nofollow"><i class="fas fa-star"></i> убрать</a></span>
 						</xsl:when>
 						<xsl:otherwise>
 							<div id="fav_list_{code}">
-								<span><a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i><!-- в избранное --></a></span>
+								<span><a href="{to_fav}" rel="nofollow" ajax="true" ajax-loader-id="fav_list_{code}"><i class="fas fa-star"></i><!-- в избранное --></a></span>
 							</div>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -632,7 +656,7 @@
 	</xsl:template>
 
 	<xsl:template match="text_part" mode="content">
-	<h3><xsl:value-of select="name"/></h3>
+	<div class="h3"><xsl:value-of select="name"/></div>
 	<xsl:value-of select="text" disable-output-escaping="yes"/>
 	</xsl:template>
 	
@@ -669,13 +693,8 @@
 	</xsl:template>
 
 	<xsl:template name="SEO">
-
 		<xsl:variable name="quote">"</xsl:variable>
-
 		<link rel="canonical" href="{concat($main_host, $canonical)}" />
-		<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
-		<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
-
 		<xsl:if test="$seo">
 			<xsl:apply-templates select="$seo"/>
 		</xsl:if>
@@ -702,4 +721,13 @@
 		<xsl:value-of select="meta" disable-output-escaping="yes"/>
 	</xsl:template>
 
+	<xsl:template name="SEO_TEXT">
+		<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
+		<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
+		<xsl:if test="$seo[1]/text != ''">
+			<div class="page-content m-t">
+				<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+			</div>
+		</xsl:if>
+	</xsl:template>
 </xsl:stylesheet>

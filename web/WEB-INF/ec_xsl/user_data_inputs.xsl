@@ -3,6 +3,7 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+
 	<xsl:template name="USER_PHYS_INPUTS">
 		<xsl:param name="inp"/>
 		<div class="form-group">

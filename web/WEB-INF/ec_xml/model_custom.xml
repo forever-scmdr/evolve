@@ -1,3 +1,977 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
+
+<!--START_p22-->
+<item name="p22" caption="Видеокамеры CVI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2484" ag-hash="109232">
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="form_faktor" caption="Форм-фактор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-715626462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnoe_osveschenie" caption="Минимальное освещение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1375474670" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dalnost_ik_podsvetki" caption="Дальность ИК подсветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1851835494" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gamma_korrektsiya" caption="Гамма-коррекция" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1589842512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_videosignala" caption="Формат видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="463519014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_krepleniya_videokamery" caption="Механизм крепления видеокамеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2012409473" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor_nochi" caption="Сенсор ночи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="115053182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_filtr" caption="ИК-фильтр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1602308842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zadnego_sveta" caption="Компенсация заднего света" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1945254817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kadrov_osnovnogo_potoka" caption="Частота кадров основного потока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1461405001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osd_menyu" caption="OSD-меню" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175349619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnologiya_podavleniya_shumov_v_izobragenii" caption="Технология подавления шумов в изображении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-957876532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="optika" caption="Оптика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1010137108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasshirenie_diapazona" caption="Расширение диапазона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-617266883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vandalostoikost" caption="Вандалостойкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1492435293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vnimanie" caption="ВНИМАНИЕ!!!" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1444069861" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p22-->
+
+<!--START_p44-->
+<item name="p44" caption="Видеокамеры уличные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2485" ag-hash="109296">
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="form_faktor" caption="Форм-фактор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-715626462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnoe_osveschenie" caption="Минимальное освещение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1375474670" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dalnost_ik_podsvetki" caption="Дальность ИК подсветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1851835494" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gamma_korrektsiya" caption="Гамма-коррекция" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1589842512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_videosignala" caption="Формат видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="463519014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_krepleniya_videokamery" caption="Механизм крепления видеокамеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2012409473" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor_nochi" caption="Сенсор ночи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="115053182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_filtr" caption="ИК-фильтр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1602308842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zadnego_sveta" caption="Компенсация заднего света" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1945254817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kadrov_osnovnogo_potoka" caption="Частота кадров основного потока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1461405001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osd_menyu" caption="OSD-меню" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175349619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnologiya_podavleniya_shumov_v_izobragenii" caption="Технология подавления шумов в изображении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-957876532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="optika" caption="Оптика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1010137108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasshirenie_diapazona" caption="Расширение диапазона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-617266883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vandalostoikost" caption="Вандалостойкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1492435293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p44-->
+
+<!--START_p23-->
+<item name="p23" caption="Видеорегистраторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2486" ag-hash="109233">
+	<parameter name="udalennoe_upravlenie_cherez_lan" caption="Удаленное управление через LAN" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-833049315" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="parol_dostupa" caption="Пароль доступа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="77907065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_vhod" caption="Видео вход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1617792693" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_vyhod" caption="Видео выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1388534230" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standart_videosignala" caption="Стандарт видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-331881968" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="peredacha_signala_trevogi" caption="Передача сигнала тревоги" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-207071020" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="audio_vhod_vyhod" caption="Аудио вход/выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1641987179" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompressiya_audio_video_signala" caption="Компрессия аудио/видео сигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="412074660" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="otobragenie" caption="Отображение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2009624027" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vosproizvedenie" caption="Воспроизведение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2082194454" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_zapisi" caption="Скорость записи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-619939264" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_nositelya_dannyh" caption="Тип носителя данных" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2017592995" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennyi_prosmotr_video_po_seti" caption="Удаленный просмотр видео по сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1195509518" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="setevoi_interfeis" caption="Сетевой интерфейс" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="741830899" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="setevoi_protokol" caption="Сетевой протокол" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1373864690" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennyi_kontrol" caption="Удаленный контроль" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1709033249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="funktsiya_p2p" caption="Функция P2P" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="15870517" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prosmotr_video_cherez_mobilnye_ustroistva" caption="Просмотр видео через мобильные устройства" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-765383249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhodnoe_napryagenie" caption="Входное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1795083795" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya_vneshnego_shtatnogo_istochnika" caption="Напряжение питания внешнего штатного источника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-20119293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_s_uchetom_aksessuarov_i_tary" caption="Вес с учетом аксессуаров и тары" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-394951305" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_mm." caption="Габариты, мм." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-156695452" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektnost" caption="Комплектность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="379619979" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="arhivatsiya" caption="Архивация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="415401301" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ptz" caption="PTZ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="111350" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergivaemye_formaty_video" caption="Поддерживаемые форматы видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1717669516" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="predzapis___postzapis_po_detektoru_dvigeniya" caption="Предзапись / постзапись по детектору движения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1771852119" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="test_poverhnosti_hdd" caption="Тест поверхности HDD" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1126220129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="monitoring_lan" caption="Мониторинг LAN" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1483337438" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trevoga_video" caption="Тревога/видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1579328650" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya_maksimalnyi_po_seti" caption="Ток потребления максимальный по сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="970639105" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="detektor_dvigeniya" caption="Детектор движения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1079394423" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vozmognost_udalennogo_prosmotra_cherez_smartfony" caption="Возможность удаленного просмотра через смартфоны" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1201837827" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vozmognost_sohraneniya_dannyh_na_udalennyi_ftp_server" caption="Возможность сохранения данных на удаленный FTP сервер" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-456081312" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskoe_vosctanovlenie_raboty_sistemy" caption="Автоматическое восcтановление работы системы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1047211425" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vneshnee_hranilische" caption="Внешнее хранилище" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-984123351" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="protokoly" caption="Протоколы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-599070759" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obschaya_propusknaya_sposobnost_setevoi_karty" caption="Общая пропускная способность сетевой карты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1344588613" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ishodyaschaya_propusknaya_sposobnost" caption="Исходящая пропускная способность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1217722211" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhodnaya_propusknaya_sposobnost" caption="Входная пропускная способность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="947110669" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="programmnoe_obespechenie" caption="Программное обеспечение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1580620188" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="potreblyaemaya_moschnost_ot_seti_220_v" caption="Потребляемая мощность от сети 220 В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1285696522" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtonastroika_registratora" caption="Автонастройка регистратора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="762914896" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vneshnii_vid" caption="Внешний вид" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="694660190" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergivaemye_interfeisy" caption="Поддерживаемые интерфейсы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="191283622" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zaschita_ot_grozy_i_statiki" caption="Защита от грозы и статики" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="954771841" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trevognye_vhody_vyhody" caption="Тревожные входы/выходы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-559496040" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="posledovatelnyi_interfeis" caption="Последовательный интерфейс" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-468726644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p23-->
+
+<!--START_p45-->
+<item name="p45" caption="Видеокамеры внутренние" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2487" ag-hash="109297">
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="form_faktor" caption="Форм-фактор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-715626462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnoe_osveschenie" caption="Минимальное освещение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1375474670" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dalnost_ik_podsvetki" caption="Дальность ИК подсветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1851835494" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gamma_korrektsiya" caption="Гамма-коррекция" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1589842512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_videosignala" caption="Формат видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="463519014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_krepleniya_videokamery" caption="Механизм крепления видеокамеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2012409473" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor_nochi" caption="Сенсор ночи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="115053182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_filtr" caption="ИК-фильтр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1602308842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zadnego_sveta" caption="Компенсация заднего света" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1945254817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kadrov_osnovnogo_potoka" caption="Частота кадров основного потока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1461405001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osd_menyu" caption="OSD-меню" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175349619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnologiya_podavleniya_shumov_v_izobragenii" caption="Технология подавления шумов в изображении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-957876532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="optika" caption="Оптика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1010137108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasshirenie_diapazona" caption="Расширение диапазона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-617266883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vnimanie" caption="ВНИМАНИЕ!!!" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1444069861" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p45-->
+
+<!--START_p24-->
+<item name="p24" caption="Объективы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2488" ag-hash="109234">
+	<parameter name="format_matritsy_kamery" caption="Формат матрицы камеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1319508791" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_krepleniya" caption="Тип крепления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-895594510" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ugol_obzora" caption="Угол обзора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-684371257" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="otnositelnoe_rasstoyanie" caption="Относительное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-43960706" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p24-->
+
+<!--START_p46-->
+<item name="p46" caption="Видеорегистраторы 4-х канальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2489" ag-hash="109298">
+	<parameter name="predzapis___postzapis_po_detektoru_dvigeniya" caption="Предзапись / постзапись по детектору движения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1771852119" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennoe_upravlenie_cherez_lan" caption="Удаленное управление через LAN" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-833049315" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="test_poverhnosti_hdd" caption="Тест поверхности HDD" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1126220129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="monitoring_lan" caption="Мониторинг LAN" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1483337438" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="parol_dostupa" caption="Пароль доступа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="77907065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_vhod" caption="Видео вход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1617792693" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_vyhod" caption="Видео выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1388534230" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trevoga_video" caption="Тревога/видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1579328650" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="peredacha_signala_trevogi" caption="Передача сигнала тревоги" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-207071020" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="audio_vhod_vyhod" caption="Аудио вход/выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1641987179" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompressiya_audio_video_signala" caption="Компрессия аудио/видео сигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="412074660" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="otobragenie" caption="Отображение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2009624027" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vosproizvedenie" caption="Воспроизведение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2082194454" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_zapisi" caption="Скорость записи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-619939264" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_nositelya_dannyh" caption="Тип носителя данных" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2017592995" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennyi_prosmotr_video_po_seti" caption="Удаленный просмотр видео по сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1195509518" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="setevoi_interfeis" caption="Сетевой интерфейс" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="741830899" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="setevoi_protokol" caption="Сетевой протокол" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1373864690" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennyi_kontrol" caption="Удаленный контроль" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1709033249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="funktsiya_p2p" caption="Функция P2P" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="15870517" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prosmotr_video_cherez_mobilnye_ustroistva" caption="Просмотр видео через мобильные устройства" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-765383249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya_maksimalnyi_po_seti" caption="Ток потребления максимальный по сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="970639105" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhodnoe_napryagenie" caption="Входное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1795083795" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya_vneshnego_shtatnogo_istochnika" caption="Напряжение питания внешнего штатного источника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-20119293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_mm." caption="Габариты, мм." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-156695452" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektnost" caption="Комплектность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="379619979" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="detektor_dvigeniya" caption="Детектор движения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1079394423" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vozmognost_udalennogo_prosmotra_cherez_smartfony" caption="Возможность удаленного просмотра через смартфоны" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1201837827" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vozmognost_sohraneniya_dannyh_na_udalennyi_ftp_server" caption="Возможность сохранения данных на удаленный FTP сервер" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-456081312" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskoe_vosctanovlenie_raboty_sistemy" caption="Автоматическое восcтановление работы системы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1047211425" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="arhivatsiya" caption="Архивация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="415401301" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vneshnee_hranilische" caption="Внешнее хранилище" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-984123351" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="protokoly" caption="Протоколы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-599070759" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergivaemye_formaty_video" caption="Поддерживаемые форматы видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1717669516" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obschaya_propusknaya_sposobnost_setevoi_karty" caption="Общая пропускная способность сетевой карты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1344588613" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ishodyaschaya_propusknaya_sposobnost" caption="Исходящая пропускная способность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1217722211" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhodnaya_propusknaya_sposobnost" caption="Входная пропускная способность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="947110669" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_s_uchetom_aksessuarov_i_tary" caption="Вес с учетом аксессуаров и тары" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-394951305" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="programmnoe_obespechenie" caption="Программное обеспечение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1580620188" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="potreblyaemaya_moschnost_ot_seti_220_v" caption="Потребляемая мощность от сети 220 В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1285696522" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtonastroika_registratora" caption="Автонастройка регистратора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="762914896" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vneshnii_vid" caption="Внешний вид" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="694660190" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergivaemye_interfeisy" caption="Поддерживаемые интерфейсы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="191283622" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standart_videosignala" caption="Стандарт видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-331881968" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ptz" caption="PTZ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="111350" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p46-->
+
+<!--START_p25-->
+<item name="p25" caption="Микрофоны" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2490" ag-hash="109235">
+	<parameter name="nominalnoe_rabochee_napryagenie_pitaniya_postoyannoe_stabilizirovannoe" caption="Номинальное рабочее напряжение питания, постоянное, стабилизированное" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1042160896" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="soprotivlenie_nagruzki" caption="Сопротивление нагрузки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="390425695" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnoe_vyhodnoe_napryagenie" caption="Максимальное выходное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1527992544" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="polosa_chastot" caption="Полоса частот" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1384337677" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_ruchnoi_regulirovki_koeff._usileniya" caption="Диапазон ручной регулировки коэфф. Усиления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1631669581" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnoe_rasstoyanie_peredachi_signala_po_provodnoi_linii_svyazi_sechenie" caption="Максимальное расстояние передачи сигнала по проводной линии связи, сечение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1279355313" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="akusticheskaya_dalnost" caption="Акустическая дальность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-880736864" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="primechanie" caption="Примечание" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2057262291" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_mikrofona" caption="Габариты микрофона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1695463330" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p25-->
+
+<!--START_p47-->
+<item name="p47" caption="Видеорегистраторы 8-ми канальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2491" ag-hash="109299">
+	<parameter name="udalennoe_upravlenie_cherez_lan" caption="Удаленное управление через LAN" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-833049315" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="parol_dostupa" caption="Пароль доступа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="77907065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_vhod" caption="Видео вход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1617792693" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_vyhod" caption="Видео выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1388534230" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standart_videosignala" caption="Стандарт видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-331881968" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="peredacha_signala_trevogi" caption="Передача сигнала тревоги" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-207071020" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="audio_vhod_vyhod" caption="Аудио вход/выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1641987179" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompressiya_audio_video_signala" caption="Компрессия аудио/видео сигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="412074660" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="otobragenie" caption="Отображение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2009624027" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vosproizvedenie" caption="Воспроизведение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2082194454" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_zapisi" caption="Скорость записи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-619939264" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_nositelya_dannyh" caption="Тип носителя данных" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2017592995" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennyi_prosmotr_video_po_seti" caption="Удаленный просмотр видео по сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1195509518" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="setevoi_interfeis" caption="Сетевой интерфейс" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="741830899" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="setevoi_protokol" caption="Сетевой протокол" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1373864690" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennyi_kontrol" caption="Удаленный контроль" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1709033249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="funktsiya_p2p" caption="Функция P2P" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="15870517" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prosmotr_video_cherez_mobilnye_ustroistva" caption="Просмотр видео через мобильные устройства" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-765383249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhodnoe_napryagenie" caption="Входное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1795083795" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya_vneshnego_shtatnogo_istochnika" caption="Напряжение питания внешнего штатного источника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-20119293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_s_uchetom_aksessuarov_i_tary" caption="Вес с учетом аксессуаров и тары" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-394951305" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_mm." caption="Габариты, мм." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-156695452" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektnost" caption="Комплектность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="379619979" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="arhivatsiya" caption="Архивация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="415401301" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ptz" caption="PTZ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="111350" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergivaemye_formaty_video" caption="Поддерживаемые форматы видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1717669516" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="predzapis___postzapis_po_detektoru_dvigeniya" caption="Предзапись / постзапись по детектору движения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1771852119" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="test_poverhnosti_hdd" caption="Тест поверхности HDD" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1126220129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="monitoring_lan" caption="Мониторинг LAN" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1483337438" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trevoga_video" caption="Тревога/видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1579328650" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya_maksimalnyi_po_seti" caption="Ток потребления максимальный по сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="970639105" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="detektor_dvigeniya" caption="Детектор движения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1079394423" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vozmognost_udalennogo_prosmotra_cherez_smartfony" caption="Возможность удаленного просмотра через смартфоны" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1201837827" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vozmognost_sohraneniya_dannyh_na_udalennyi_ftp_server" caption="Возможность сохранения данных на удаленный FTP сервер" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-456081312" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskoe_vosctanovlenie_raboty_sistemy" caption="Автоматическое восcтановление работы системы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1047211425" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vneshnee_hranilische" caption="Внешнее хранилище" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-984123351" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="protokoly" caption="Протоколы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-599070759" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obschaya_propusknaya_sposobnost_setevoi_karty" caption="Общая пропускная способность сетевой карты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1344588613" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ishodyaschaya_propusknaya_sposobnost" caption="Исходящая пропускная способность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1217722211" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhodnaya_propusknaya_sposobnost" caption="Входная пропускная способность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="947110669" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="programmnoe_obespechenie" caption="Программное обеспечение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1580620188" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="potreblyaemaya_moschnost_ot_seti_220_v" caption="Потребляемая мощность от сети 220 В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1285696522" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtonastroika_registratora" caption="Автонастройка регистратора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="762914896" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vneshnii_vid" caption="Внешний вид" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="694660190" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergivaemye_interfeisy" caption="Поддерживаемые интерфейсы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="191283622" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zaschita_ot_grozy_i_statiki" caption="Защита от грозы и статики" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="954771841" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trevognye_vhody_vyhody" caption="Тревожные входы/выходы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-559496040" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="posledovatelnyi_interfeis" caption="Последовательный интерфейс" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-468726644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p47-->
+
+<!--START_p26-->
+<item name="p26" caption="Приемопередатчики" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2492" ag-hash="109236">
+	<parameter name="istochnik_pitaniya" caption="Источник питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1224203326" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dalnost_peredachi" caption="Дальность передачи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="156383825" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_izobrageniya" caption="Система изображения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1772432529" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmery_ustroistva" caption="Размеры устройства" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1237869289" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="temperatura_ekspluatatsii" caption="Температура эксплуатации" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="26222354" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektnost" caption="Комплектность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="379619979" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p26-->
+
+<!--START_p48-->
+<item name="p48" caption="Видеорегистраторы 16-ти канальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2493" ag-hash="109300">
+	<parameter name="udalennoe_upravlenie_cherez_lan" caption="Удаленное управление через LAN" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-833049315" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="parol_dostupa" caption="Пароль доступа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="77907065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_vhod" caption="Видео вход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1617792693" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_vyhod" caption="Видео выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1388534230" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standart_videosignala" caption="Стандарт видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-331881968" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="peredacha_signala_trevogi" caption="Передача сигнала тревоги" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-207071020" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="audio_vhod_vyhod" caption="Аудио вход/выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1641987179" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompressiya_audio_video_signala" caption="Компрессия аудио/видео сигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="412074660" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="otobragenie" caption="Отображение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2009624027" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_zapisi" caption="Скорость записи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-619939264" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_nositelya_dannyh" caption="Тип носителя данных" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2017592995" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennyi_prosmotr_video_po_seti" caption="Удаленный просмотр видео по сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1195509518" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="setevoi_interfeis" caption="Сетевой интерфейс" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="741830899" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="setevoi_protokol" caption="Сетевой протокол" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1373864690" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennyi_kontrol" caption="Удаленный контроль" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1709033249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="funktsiya_p2p" caption="Функция P2P" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="15870517" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prosmotr_video_cherez_mobilnye_ustroistva" caption="Просмотр видео через мобильные устройства" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-765383249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhodnoe_napryagenie" caption="Входное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1795083795" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya_vneshnego_shtatnogo_istochnika" caption="Напряжение питания внешнего штатного источника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-20119293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_mm." caption="Габариты, мм." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-156695452" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektnost" caption="Комплектность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="379619979" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="arhivatsiya" caption="Архивация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="415401301" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ptz" caption="PTZ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="111350" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergivaemye_formaty_video" caption="Поддерживаемые форматы видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1717669516" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_s_uchetom_aksessuarov_i_tary" caption="Вес с учетом аксессуаров и тары" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-394951305" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="test_poverhnosti_hdd" caption="Тест поверхности HDD" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1126220129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="monitoring_lan" caption="Мониторинг LAN" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1483337438" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trevoga_video" caption="Тревога/видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1579328650" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vosproizvedenie" caption="Воспроизведение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2082194454" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya_maksimalnyi_po_seti" caption="Ток потребления максимальный по сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="970639105" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="programmnoe_obespechenie" caption="Программное обеспечение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1580620188" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="potreblyaemaya_moschnost_ot_seti_220_v" caption="Потребляемая мощность от сети 220 В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1285696522" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="protokoly" caption="Протоколы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-599070759" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="predzapis___postzapis_po_detektoru_dvigeniya" caption="Предзапись / постзапись по детектору движения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1771852119" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ishodyaschaya_propusknaya_sposobnost" caption="Исходящая пропускная способность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1217722211" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhodnaya_propusknaya_sposobnost" caption="Входная пропускная способность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="947110669" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obschaya_propusknaya_sposobnost_setevoi_karty" caption="Общая пропускная способность сетевой карты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1344588613" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trevognye_vhody_vyhody" caption="Тревожные входы/выходы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-559496040" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zaschita_ot_grozy_i_statiki" caption="Защита от грозы и статики" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="954771841" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="detektor_dvigeniya" caption="Детектор движения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1079394423" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vozmognost_udalennogo_prosmotra_cherez_smartfony" caption="Возможность удаленного просмотра через смартфоны" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1201837827" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vozmognost_sohraneniya_dannyh_na_udalennyi_ftp_server" caption="Возможность сохранения данных на удаленный FTP сервер" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-456081312" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskoe_vosctanovlenie_raboty_sistemy" caption="Автоматическое восcтановление работы системы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1047211425" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vneshnee_hranilische" caption="Внешнее хранилище" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-984123351" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p48-->
+
+<!--START_p27-->
+<item name="p27" caption="Разъемы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2494" ag-hash="109237">
+	<parameter name="maksimalnoe_nominalnoe_napryagenie" caption="Максимальное/номинальное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1470987042" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_maks._dopustimyi" caption="Ток макс. допустимый" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1581595487" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="soprotivlenie_izolyatsii" caption="Сопротивление изоляции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="402052723" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_razema" caption="Длина разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134996217" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_soedinenii" caption="Количество соединений" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="781031791" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tolschina_kabelya" caption="Толщина кабеля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1569723183" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_kabelya" caption="Длина кабеля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-179349808" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_kabelya_s_razemom_brutto" caption="Масса кабеля с разъемом брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1045118502" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="volnovoe_soprotivlenie" caption="Волновое сопротивление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1365477946" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_razema" caption="Ширина разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2129794863" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p27-->
+
+<!--START_p49-->
+<item name="p49" caption="Видеорегистраторы 32-х канальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2495" ag-hash="109301">
+	<parameter name="predzapis___postzapis_po_detektoru_dvigeniya" caption="Предзапись / постзапись по детектору движения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1771852119" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennoe_upravlenie_cherez_lan" caption="Удаленное управление через LAN" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-833049315" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="test_poverhnosti_hdd" caption="Тест поверхности HDD" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1126220129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="monitoring_lan" caption="Мониторинг LAN" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1483337438" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="parol_dostupa" caption="Пароль доступа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="77907065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_vhod" caption="Видео вход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1617792693" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_vyhod" caption="Видео выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1388534230" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trevoga_video" caption="Тревога/видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1579328650" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="peredacha_signala_trevogi" caption="Передача сигнала тревоги" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-207071020" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="audio_vhod_vyhod" caption="Аудио вход/выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1641987179" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompressiya_audio_video_signala" caption="Компрессия аудио/видео сигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="412074660" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="otobragenie" caption="Отображение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2009624027" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vosproizvedenie" caption="Воспроизведение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2082194454" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_zapisi" caption="Скорость записи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-619939264" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_nositelya_dannyh" caption="Тип носителя данных" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2017592995" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennyi_prosmotr_video_po_seti" caption="Удаленный просмотр видео по сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1195509518" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="setevoi_interfeis" caption="Сетевой интерфейс" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="741830899" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="setevoi_protokol" caption="Сетевой протокол" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1373864690" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennyi_kontrol" caption="Удаленный контроль" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1709033249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="funktsiya_p2p" caption="Функция P2P" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="15870517" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhodnoe_napryagenie" caption="Входное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1795083795" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya_vneshnego_shtatnogo_istochnika" caption="Напряжение питания внешнего штатного источника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-20119293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="potreblyaemaya_moschnost_ot_seti_220_v" caption="Потребляемая мощность от сети 220 В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1285696522" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_mm." caption="Габариты, мм." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-156695452" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektnost" caption="Комплектность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="379619979" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="protokoly" caption="Протоколы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-599070759" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergivaemye_formaty_video" caption="Поддерживаемые форматы видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1717669516" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_s_uchetom_aksessuarov_i_tary" caption="Вес с учетом аксессуаров и тары" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-394951305" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p49-->
+
+<!--START_p28-->
+<item name="p28" caption="Источники питания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2496" ag-hash="109238">
+	<parameter name="potreblyaemaya_moschnost_po_seti_220v" caption="Потребляемая мощность по сети 220В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1097188963" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost_po_tsepi_nagruzki_12_volt" caption="Мощность по цепи нагрузки 12 Вольт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1395253350" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vyhodnoe_napryagenie_nominalnoe" caption="Выходное напряжение, номинальное" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-428551475" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnyi_tok_zaryada_akb" caption="Максимальный ток заряда АКБ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1755252238" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_otsechki_akb_ot_nagruzki" caption="Напряжение отсечки АКБ от нагрузки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-98277217" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnyi_tok_nagruzki_1_kanala" caption="Максимальный ток нагрузки 1 канала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1055614769" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_nagruzki_rabochii_maksimalnyi" caption="Ток нагрузки рабочий/максимальный" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1218593084" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_ogranicheniya_vyhoda_pri_korotkom_zamykanii_nagruzki" caption="Ток ограничения выхода при коротком замыкании нагрузки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-665878687" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="filtratsiya_pomeh" caption="Фильтрация помех" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-602867190" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vneshnii_vid" caption="Внешний вид" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="694660190" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_upak.korobki" caption="Габариты упак.коробки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="871893248" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="indikatsiya" caption="Индикация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1472990994" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ispolzovanie_v_kachestve_bip" caption="Использование в качестве БИП" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1507160451" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="emkost_akb" caption="Емкость АКБ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1478822490" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zaschita_ot_korotkogo_zamykaniya" caption="Защита от короткого замыкания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="42252012" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhodnoe_napryagenie" caption="Входное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1795083795" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="velichina_pulsatsii_vyhodnogo_napryageniya_pri_nominalnom_toke_nagruzki" caption="Величина пульсаций выходного напряжения при номинальном токе нагрузки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1101140358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sootvetstvie_standartam" caption="Соответствие стандартам" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-196353685" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_ip" caption="Габариты ИП" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-559244143" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="regulirovka_vyh.napryageniya" caption="Регулировка вых.напряжения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-839718251" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_vyhodnoenominalnoe_pri_nalichii_napryageniya_seti_220v" caption="Напряжение выходное,номинальное при наличии напряжения сети 220В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-81012462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_vyhodnoenominalnoe_pri_otsutstvii_napryageniya_seti_220v" caption="Напряжение выходное,номинальное при отсутствии напряжения сети 220В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-644175937" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnyi_tok_nagruzki_vyhoda" caption="Максимальный ток нагрузки выхода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-826329590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_vyhodnoenominalnoe_pri_nalichii_napryageniya_seti_220b" caption="Напряжение выходное,номинальное при наличии напряжения сети 220B" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-81012482" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zaschita_po_toku_napryageniyu_ot_peregruzki" caption="Защита по току/напряжению от перегрузки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="469318487" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhod__razem_dannyh_pitanie" caption="Вход: Разъем данных +питание" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1583022084" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vyhod__dannye_pitanie_12_volt" caption="Выход: Данные/Питание 12 Вольт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-232941240" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standarty_poe" caption="Стандарты PoE" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1511188781" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="varianty_podachi_napryageniya_pitaniya" caption="Варианты подачи напряжения питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-618932632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p28-->
+
+<!--START_p29-->
+<item name="p29" caption="Считыватели" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2497" ag-hash="109239">
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="min._opisanie_2" caption="Мин. Описание 2" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-640624118" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tsvetovaya_markirovka_provodov" caption="Цветовая маркировка проводов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1953956622" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p29-->
+
+<!--START_p70-->
+<item name="p70" caption="Кабель" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2498" ag-hash="109385">
+	<parameter name="min.opisanie_1" caption="Мин.описание 1" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-487603422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="temperatura_ekspluatatsii" caption="Температура эксплуатации" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="26222354" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_buhty" caption="Вес бухты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1098472609" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p70-->
+
+<!--START_p51-->
+<item name="p51" caption="Блоки бесперебойного питания ST" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2499" ag-hash="109324">
+	<parameter name="potreblyaemaya_moschnost_po_seti_220v" caption="Потребляемая мощность по сети 220В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1097188963" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost_po_tsepi_nagruzki_12_volt" caption="Мощность по цепи нагрузки 12 Вольт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1395253350" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_vyhodnoenominalnoe_pri_nalichii_napryageniya_seti_220v" caption="Напряжение выходное,номинальное при наличии напряжения сети 220В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-81012462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnyi_tok_zaryada_akb" caption="Максимальный ток заряда АКБ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1755252238" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_vyhodnoenominalnoe_pri_otsutstvii_napryageniya_seti_220v" caption="Напряжение выходное,номинальное при отсутствии напряжения сети 220В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-644175937" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnyi_tok_nagruzki_vyhoda" caption="Максимальный ток нагрузки выхода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-826329590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="velichina_pulsatsii_vyhodnogo_napryageniya_pri_nominalnom_toke_nagruzki" caption="Величина пульсаций выходного напряжения при номинальном токе нагрузки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1101140358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_ogranicheniya_vyhoda_pri_korotkom_zamykanii_nagruzki" caption="Ток ограничения выхода при коротком замыкании нагрузки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-665878687" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_ip" caption="Габариты ИП" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-559244143" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="indikatsiya" caption="Индикация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1472990994" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zaschita_ot_korotkogo_zamykaniya" caption="Защита от короткого замыкания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="42252012" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_otsechki_akb_ot_nagruzki" caption="Напряжение отсечки АКБ от нагрузки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-98277217" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p51-->
+
+<!--START_p73-->
+<item name="p73" caption="Внутренние AHD видеокамеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2500" ag-hash="109388">
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="form_faktor" caption="Форм-фактор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-715626462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnoe_osveschenie" caption="Минимальное освещение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1375474670" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dalnost_ik_podsvetki" caption="Дальность ИК подсветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1851835494" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gamma_korrektsiya" caption="Гамма-коррекция" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1589842512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_videosignala" caption="Формат видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="463519014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_krepleniya_videokamery" caption="Механизм крепления видеокамеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2012409473" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor_nochi" caption="Сенсор ночи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="115053182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_filtr" caption="ИК-фильтр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1602308842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zadnego_sveta" caption="Компенсация заднего света" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1945254817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kadrov_osnovnogo_potoka" caption="Частота кадров основного потока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1461405001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osd_menyu" caption="OSD-меню" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175349619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnologiya_podavleniya_shumov_v_izobragenii" caption="Технология подавления шумов в изображении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-957876532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="optika" caption="Оптика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1010137108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasshirenie_diapazona" caption="Расширение диапазона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-617266883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zasvetki" caption="Компенсация засветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-740207838" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vnimanie" caption="ВНИМАНИЕ!!!" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1444069861" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p73-->
+
+<!--START_p52-->
+<item name="p52" caption="Блоки питания ST" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2501" ag-hash="109325">
+	<parameter name="potreblyaemaya_moschnost_po_seti_220v" caption="Потребляемая мощность по сети 220В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1097188963" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost_po_tsepi_nagruzki_12_volt" caption="Мощность по цепи нагрузки 12 Вольт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1395253350" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vyhodnoe_napryagenie_nominalnoe" caption="Выходное напряжение, номинальное" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-428551475" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnyi_tok_zaryada_akb" caption="Максимальный ток заряда АКБ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1755252238" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_otsechki_akb_ot_nagruzki" caption="Напряжение отсечки АКБ от нагрузки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-98277217" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnyi_tok_nagruzki_1_kanala" caption="Максимальный ток нагрузки 1 канала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1055614769" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_nagruzki_rabochii_maksimalnyi" caption="Ток нагрузки рабочий/максимальный" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1218593084" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_ogranicheniya_vyhoda_pri_korotkom_zamykanii_nagruzki" caption="Ток ограничения выхода при коротком замыкании нагрузки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-665878687" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="filtratsiya_pomeh" caption="Фильтрация помех" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-602867190" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vneshnii_vid" caption="Внешний вид" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="694660190" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_upak.korobki" caption="Габариты упак.коробки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="871893248" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="indikatsiya" caption="Индикация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1472990994" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ispolzovanie_v_kachestve_bip" caption="Использование в качестве БИП" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1507160451" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="emkost_akb" caption="Емкость АКБ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1478822490" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zaschita_ot_korotkogo_zamykaniya" caption="Защита от короткого замыкания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="42252012" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhodnoe_napryagenie" caption="Входное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1795083795" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="velichina_pulsatsii_vyhodnogo_napryageniya_pri_nominalnom_toke_nagruzki" caption="Величина пульсаций выходного напряжения при номинальном токе нагрузки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1101140358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sootvetstvie_standartam" caption="Соответствие стандартам" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-196353685" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_ip" caption="Габариты ИП" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-559244143" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="regulirovka_vyh.napryageniya" caption="Регулировка вых.напряжения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-839718251" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_vyhodnoenominalnoe_pri_nalichii_napryageniya_seti_220b" caption="Напряжение выходное,номинальное при наличии напряжения сети 220B" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-81012482" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zaschita_po_toku_napryageniyu_ot_peregruzki" caption="Защита по току/напряжению от перегрузки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="469318487" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vhod__razem_dannyh_pitanie" caption="Вход: Разъем данных +питание" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1583022084" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vyhod__dannye_pitanie_12_volt" caption="Выход: Данные/Питание 12 Вольт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-232941240" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standarty_poe" caption="Стандарты PoE" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1511188781" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="varianty_podachi_napryageniya_pitaniya" caption="Варианты подачи напряжения питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-618932632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p52-->
+
+<!--START_p16-->
+<item name="p16" caption="Комплекты видеонаблюдения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2502" ag-hash="109205">
+	<parameter name="kompressiya_video_signala" caption="Компрессия видео сигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="752543053" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_vyhod" caption="Видео выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1388534230" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="predosmotr_zapis" caption="Предосмотр/Запись" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-897983175" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennyi_prosmotr_video_po_seti" caption="Удаленный просмотр видео по сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1195509518" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_nositelya_dannyh" caption="Тип носителя данных" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2017592995" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="setevoi_interfeis" caption="Сетевой интерфейс" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="741830899" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prosmotr_video_cherez_mobilnye_ustroistva" caption="Просмотр видео через мобильные устройства" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-765383249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="udalennyi_kontrol" caption="Удаленный контроль" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1709033249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="funktsiya_p2p" caption="Функция P2P" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="15870517" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="programmnoe_obespechenie" caption="Программное обеспечение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1580620188" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_sohranyaemogo_video" caption="Формат сохраняемого видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2043248728" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya_ot_vneshnego_shtatnogo_istochnika" caption="Напряжение питания от внешнего штатного источника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1539843601" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya_maksimalnyi_po_seti_12v" caption="Ток потребления максимальный, по сети 12В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1319547849" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor" caption="Сенсор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-905948230" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnoe_osveschenie" caption="Минимальное освещение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1375474670" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dalnost_ik" caption="Дальность ИК" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-327201744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dopolnitelnye_funktsii" caption="Дополнительные функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2086302254" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standart_wifi" caption="Стандарт WiFi" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1534492345" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_rabochih_chastot" caption="Диапазон рабочих частот" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1334762250" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost_peredatchika_signala_wifi" caption="Мощность передатчика сигнала WiFi" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="415777928" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maks.skorost_peredachi_dannyh" caption="Макс.скорость передачи данных" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="987467176" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maks._dalnost_peredachi_signala_na_otkrytom_prostranstve" caption="Макс. дальность передачи сигнала на открытом пространстве" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1517006672" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="snigenie_kachestva_signala_v_zavisimosti_ot_materiala_prepyatstviya" caption="Снижение качества сигнала в зависимости от материала препятствия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-244704994" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="parametry_po_umolchaniyu" caption="Параметры по умолчанию" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="847243482" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="primechanie" caption="ПРИМЕЧАНИЕ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2057262291" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_ip_kanalov" caption="Количество IP каналов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="760189336" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p16-->
+
+<!--START_p39-->
+<item name="p39" caption="Цветные камеры с ИК подсветкой" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2503" ag-hash="109270">
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="form_faktor" caption="Форм-фактор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-715626462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnoe_osveschenie" caption="Минимальное освещение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1375474670" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dalnost_ik_podsvetki" caption="Дальность ИК подсветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1851835494" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gamma_korrektsiya" caption="Гамма-коррекция" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1589842512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_videosignala" caption="Формат видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="463519014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_krepleniya_videokamery" caption="Механизм крепления видеокамеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2012409473" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor_nochi" caption="Сенсор ночи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="115053182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_filtr" caption="ИК-фильтр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1602308842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zadnego_sveta" caption="Компенсация заднего света" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1945254817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kadrov_osnovnogo_potoka" caption="Частота кадров основного потока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1461405001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osd_menyu" caption="OSD-меню" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175349619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnologiya_podavleniya_shumov_v_izobragenii" caption="Технология подавления шумов в изображении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-957876532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="optika" caption="Оптика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1010137108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasshirenie_diapazona" caption="Расширение диапазона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-617266883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vandalostoikost" caption="Вандалостойкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1492435293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p39-->
+
+<!--START_p18-->
+<item name="p18" caption="Видеокамеры аналоговые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2504" ag-hash="109207">
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="form_faktor" caption="Форм-фактор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-715626462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnoe_osveschenie" caption="Минимальное освещение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1375474670" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dalnost_ik_podsvetki" caption="Дальность ИК подсветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1851835494" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gamma_korrektsiya" caption="Гамма-коррекция" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1589842512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_videosignala" caption="Формат видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="463519014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_krepleniya_videokamery" caption="Механизм крепления видеокамеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2012409473" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor_nochi" caption="Сенсор ночи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="115053182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_filtr" caption="ИК-фильтр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1602308842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zadnego_sveta" caption="Компенсация заднего света" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1945254817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kadrov_osnovnogo_potoka" caption="Частота кадров основного потока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1461405001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osd_menyu" caption="OSD-меню" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175349619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnologiya_podavleniya_shumov_v_izobragenii" caption="Технология подавления шумов в изображении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-957876532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="optika" caption="Оптика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1010137108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasshirenie_diapazona" caption="Расширение диапазона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-617266883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vandalostoikost" caption="Вандалостойкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1492435293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vnimanie" caption="ВНИМАНИЕ!!!" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1444069861" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p18-->
+
+<!--START_p19-->
+<item name="p19" caption="Видеокамеры AHD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2505" ag-hash="109208">
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="form_faktor" caption="Форм-фактор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-715626462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnoe_osveschenie" caption="Минимальное освещение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1375474670" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dalnost_ik_podsvetki" caption="Дальность ИК подсветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1851835494" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gamma_korrektsiya" caption="Гамма-коррекция" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1589842512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_videosignala" caption="Формат видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="463519014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_krepleniya_videokamery" caption="Механизм крепления видеокамеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2012409473" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor_nochi" caption="Сенсор ночи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="115053182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_filtr" caption="ИК-фильтр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1602308842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zadnego_sveta" caption="Компенсация заднего света" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1945254817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kadrov_osnovnogo_potoka" caption="Частота кадров основного потока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1461405001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osd_menyu" caption="OSD-меню" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175349619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnologiya_podavleniya_shumov_v_izobragenii" caption="Технология подавления шумов в изображении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-957876532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="optika" caption="Оптика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1010137108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasshirenie_diapazona" caption="Расширение диапазона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-617266883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vandalostoikost" caption="Вандалостойкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1492435293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zasvetki" caption="Компенсация засветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-740207838" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vnimanie" caption="ВНИМАНИЕ!!!" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1444069861" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="umnaya_podsvetka" caption="Умная подсветка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-648636671" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p19-->
+
+<!--START_p40-->
+<item name="p40" caption="Цветные купольные камеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2506" ag-hash="109292">
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="form_faktor" caption="Форм-фактор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-715626462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnoe_osveschenie" caption="Минимальное освещение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1375474670" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dalnost_ik_podsvetki" caption="Дальность ИК подсветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1851835494" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gamma_korrektsiya" caption="Гамма-коррекция" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1589842512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_videosignala" caption="Формат видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="463519014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_krepleniya_videokamery" caption="Механизм крепления видеокамеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2012409473" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor_nochi" caption="Сенсор ночи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="115053182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_filtr" caption="ИК-фильтр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1602308842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zadnego_sveta" caption="Компенсация заднего света" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1945254817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kadrov_osnovnogo_potoka" caption="Частота кадров основного потока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1461405001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osd_menyu" caption="OSD-меню" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175349619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnologiya_podavleniya_shumov_v_izobragenii" caption="Технология подавления шумов в изображении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-957876532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="optika" caption="Оптика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1010137108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasshirenie_diapazona" caption="Расширение диапазона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-617266883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p40-->
+
+<!--START_p41-->
+<item name="p41" caption="ЦВ бескорпусные в/к со встроенным объективом" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2507" ag-hash="109293">
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gamma_korrektsiya" caption="Гамма-коррекция" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1589842512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_videosignala" caption="Формат видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="463519014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vnimanie" caption="ВНИМАНИЕ!!!" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1444069861" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p41-->
+
+<!--START_p42-->
+<item name="p42" caption="Внутренние IP видеокамеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2508" ag-hash="109294">
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="form_faktor" caption="Форм-фактор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-715626462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pir" caption="PIR" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="111001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_video" caption="Формат видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2026218957" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format__audio" caption="Формат  аудио" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="946368543" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dvuhstoronnee_audio" caption="Двухстороннее аудио" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1088261347" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="parametry_po_umolchaniyu" caption="Параметры по умолчанию" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="847243482" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="p2p" caption="P2P" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="109294" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnaya_osveschennost" caption="Минимальная освещенность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-199774707" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergka_micro_sd_kart" caption="Поддержка micro SD-карт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-736299555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vstroennyi_mikrofon" caption="Встроенный микрофон" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="960561559" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor_nochi" caption="Сенсор ночи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="115053182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_filtr" caption="ИК-фильтр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1602308842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zadnego_sveta" caption="Компенсация заднего света" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1945254817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnologiya_podavleniya_shumov_v_izobragenii" caption="Технология подавления шумов в изображении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-957876532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergivaemye_protokoly" caption="Поддерживаемые протоколы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1649717241" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="optika" caption="Оптика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1010137108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kadrov_osnovnogo_potoka" caption="Частота кадров основного потока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1461405001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="knopka_sbrosa_germetichnyi_ethernet_razem" caption="Кнопка сброса/Герметичный Ethernet разъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="556269810" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_podsvetka_dalnost" caption="ИК подсветка/дальность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="780740994" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trevognyi_vhod_vyhod" caption="Тревожный вход/выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1583829814" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasshirenie_diapazona" caption="Расширение диапазона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-617266883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="oblast_povyshennogo_interesa" caption="Область повышенного интереса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-838155881" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="audio_vhod_vyhod" caption="Аудио вход/выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1641987179" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_krepleniya_videokamery" caption="Механизм крепления видеокамеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2012409473" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="audio_video_kodek" caption="Аудио/Видео кодек" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-40590215" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamerymm" caption="Габариты видеокамеры,мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1067364250" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vandalostoikost" caption="Вандалостойкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1492435293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zasvetki" caption="Компенсация засветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-740207838" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="balans_belogo" caption="Баланс белого" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1187200180" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osd_menyu" caption="OSD-меню" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175349619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pan_tilt" caption="Pan/Tilt" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1055274271" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_predustanovok" caption="Количество предустановок" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1177379201" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tury" caption="Туры" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="3571848" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnaya_skorost_povorota" caption="Максимальная скорость поворота" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-108963643" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="umnaya_podsvetka" caption="Умная подсветка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-648636671" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="primechanie" caption="ПРИМЕЧАНИЕ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2057262291" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p42-->
+
+<!--START_p20-->
+<item name="p20" caption="Видеокамеры IP" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2509" ag-hash="109230">
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="form_faktor" caption="Форм-фактор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-715626462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pir" caption="PIR" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="111001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_video" caption="Формат видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2026218957" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format__audio" caption="Формат  аудио" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="946368543" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dvuhstoronnee_audio" caption="Двухстороннее аудио" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1088261347" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="parametry_po_umolchaniyu" caption="Параметры по умолчанию" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="847243482" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="p2p" caption="P2P" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="109294" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnaya_osveschennost" caption="Минимальная освещенность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-199774707" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergka_micro_sd_kart" caption="Поддержка micro SD-карт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-736299555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vstroennyi_mikrofon" caption="Встроенный микрофон" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="960561559" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor_nochi" caption="Сенсор ночи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="115053182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_filtr" caption="ИК-фильтр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1602308842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zadnego_sveta" caption="Компенсация заднего света" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1945254817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnologiya_podavleniya_shumov_v_izobragenii" caption="Технология подавления шумов в изображении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-957876532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergivaemye_protokoly" caption="Поддерживаемые протоколы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1649717241" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="optika" caption="Оптика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1010137108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kadrov_osnovnogo_potoka" caption="Частота кадров основного потока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1461405001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="knopka_sbrosa_germetichnyi_ethernet_razem" caption="Кнопка сброса/Герметичный Ethernet разъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="556269810" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_podsvetka_dalnost" caption="ИК подсветка/дальность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="780740994" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trevognyi_vhod_vyhod" caption="Тревожный вход/выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1583829814" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasshirenie_diapazona" caption="Расширение диапазона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-617266883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_predustanovok" caption="Количество предустановок" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1177379201" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="marshruty" caption="Маршруты" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-702014789" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tury" caption="Туры" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="3571848" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnaya_skorost_povorota" caption="Максимальная скорость поворота" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-108963643" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="umnaya_podsvetka" caption="Умная подсветка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-648636671" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vandalostoikost" caption="Вандалостойкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1492435293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="oblast_povyshennogo_interesa" caption="Область повышенного интереса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-838155881" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="audio_vhod_vyhod" caption="Аудио вход/выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1641987179" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_krepleniya_videokamery" caption="Механизм крепления видеокамеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2012409473" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="audio_video_kodek" caption="Аудио/Видео кодек" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-40590215" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamerymm" caption="Габариты видеокамеры,мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1067364250" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_kodek" caption="Видео кодек" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1378073442" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zasvetki" caption="Компенсация засветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-740207838" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="balans_belogo" caption="Баланс белого" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1187200180" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osd_menyu" caption="OSD-меню" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175349619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pan_tilt" caption="Pan/Tilt" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1055274271" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="primechanie" caption="ПРИМЕЧАНИЕ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2057262291" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_gorizont." caption="Скорость горизонт." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141956426" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_vertikal." caption="Скорость вертикаль." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149202010" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskaya_regulirovka_usileniya" caption="Автоматическая регулировка усиления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="760479684" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ruchnaya_regulirovka_usileniya" caption="Ручная регулировка усиления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-888568771" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergka_nas" caption="Поддержка NAS" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="190937266" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p20-->
+
+<!--START_p21-->
+<item name="p21" caption="Видеокамеры TVI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2510" ag-hash="109231">
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="form_faktor" caption="Форм-фактор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-715626462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnoe_osveschenie" caption="Минимальное освещение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1375474670" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dalnost_ik_podsvetki" caption="Дальность ИК подсветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1851835494" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gamma_korrektsiya" caption="Гамма-коррекция" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1589842512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_videosignala" caption="Формат видеосигнала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="463519014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_krepleniya_videokamery" caption="Механизм крепления видеокамеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2012409473" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor_nochi" caption="Сенсор ночи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="115053182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_filtr" caption="ИК-фильтр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1602308842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zadnego_sveta" caption="Компенсация заднего света" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1945254817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kadrov_osnovnogo_potoka" caption="Частота кадров основного потока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1461405001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osd_menyu" caption="OSD-меню" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175349619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnologiya_podavleniya_shumov_v_izobragenii" caption="Технология подавления шумов в изображении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-957876532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="optika" caption="Оптика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1010137108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasshirenie_diapazona" caption="Расширение диапазона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-617266883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vandalostoikost" caption="Вандалостойкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1492435293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vnimanie" caption="ВНИМАНИЕ!!!" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1444069861" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p21-->
+
+<!--START_p43-->
+<item name="p43" caption="Уличные IP видеокамеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2511" ag-hash="109295">
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_predustanovok" caption="Количество предустановок" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1177379201" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="marshruty" caption="Маршруты" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-702014789" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tury" caption="Туры" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="3571848" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnaya_skorost_povorota" caption="Максимальная скорость поворота" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-108963643" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="parametry_po_umolchaniyu" caption="Параметры по умолчанию" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="847243482" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="umnaya_podsvetka" caption="Умная подсветка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-648636671" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="matritsa" caption="Матрица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="310815435" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fokusnoe_rasstoyanie" caption="Фокусное расстояние" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="833787101" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_sid" caption="Количество СИД" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141115400" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="minimalnaya_osveschennost" caption="Минимальная освещенность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-199774707" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektronnyi_zatvor" caption="Электронный затвор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="537703511" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="signal_shum" caption="Сигнал/шум" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="673058532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tok_potrebleniya" caption="Ток потребления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1254589403" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stepen_zaschischennosti" caption="Степень защищенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057337384" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa_brutto" caption="Масса брутто" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266604484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sensor_nochi" caption="Сенсор ночи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="115053182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_filtr" caption="ИК-фильтр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1602308842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zadnego_sveta" caption="Компенсация заднего света" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1945254817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnologiya_podavleniya_shumov_v_izobragenii" caption="Технология подавления шумов в изображении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-957876532" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergivaemye_protokoly" caption="Поддерживаемые протоколы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1649717241" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="optika" caption="Оптика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1010137108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kadrov_osnovnogo_potoka" caption="Частота кадров основного потока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1461405001" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ik_podsvetka_dalnost" caption="ИК подсветка/дальность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="780740994" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="p2p" caption="P2P" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="109294" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razreshenie" caption="Разрешение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vandalostoikost" caption="Вандалостойкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1492435293" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="_versii" caption="№ версии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1888529263" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="form_faktor" caption="Форм-фактор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-715626462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_krepleniya_videokamery" caption="Механизм крепления видеокамеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2012409473" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="oblast_povyshennogo_interesa" caption="Область повышенного интереса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-838155881" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="video_kodek" caption="Видео кодек" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1378073442" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamery_mm" caption="Габариты видеокамеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1271433273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format_video" caption="Формат видео" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2026218957" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergka_micro_sd_kart" caption="Поддержка micro SD-карт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-736299555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasshirenie_diapazona" caption="Расширение диапазона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-617266883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity_videokamerymm" caption="Габариты видеокамеры,мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1067364250" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kompensatsiya_zasvetki" caption="Компенсация засветки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-740207838" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="balans_belogo" caption="Баланс белого" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1187200180" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskaya_regulirovka_usileniya" caption="Автоматическая регулировка усиления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="760479684" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_gorizont." caption="Скорость горизонт." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141956426" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_vertikal." caption="Скорость вертикаль." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149202010" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="primechanie" caption="ПРИМЕЧАНИЕ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2057262291" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ruchnaya_regulirovka_usileniya" caption="Ручная регулировка усиления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-888568771" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dvuhstoronnee_audio" caption="Двухстороннее аудио" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1088261347" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="poddergka_nas" caption="Поддержка NAS" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="190937266" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="audio_vhod_vyhod" caption="Аудио вход/выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1641987179" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trevognyi_vhod_vyhod" caption="Тревожный вход/выход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1583829814" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="format__audio" caption="Формат  аудио" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="946368543" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osd_menyu" caption="OSD-меню" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175349619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p43-->
+
+<!--START_translyatsionnye_usiliteli-->
+<item name="translyatsionnye_usiliteli" caption="Трансляционные усилители" key="" virtual="false" user-def="true" description="Усилители" super="params *" extendable="true" ag-id="2521" ag-hash="1931250996"></item>
+<!--END_translyatsionnye_usiliteli-->
 <!--EXP--></model>

@@ -18,19 +18,27 @@
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
+	<xsl:variable name="title" select="concat($sel_sec/name, ' купить в Минске с доставкой - интернет магазин SakuraBel')"/>
+	<xsl:variable name="meta_description" select="concat('Купить ', $sel_sec/name, ' в Минске ✅ Доставка во все регионы Беларуси. Хорошая цена! Звоните ☎☎☎  +375 17 396 44 29, +375 29 311 44 29 Консультация и установка')"/>
+	<xsl:variable name="default_h1" select="$sel_sec/name"/>
+
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a>
+				<a href="{$main_host}">Главная страница</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
-					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{if (position() = 1) then show_section else show_products}"><xsl:value-of select="name"/></a>
+					<xsl:if test="current()/@id != $sel_sec_id">
+						<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
+						<a href="{if (position() = 1) then show_section else show_products}">
+							<xsl:value-of select="name"/>
+						</a>
+					</xsl:if>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$sel_sec/name"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 		<div class="page-content m-t">
 			<xsl:if test="$sel_sec/params_filter/filter">
 				<div class="toggle-filters">
@@ -72,8 +80,8 @@
 				<div class="view-container desktop">
 					<div class="view">
 						<span>Показывать:</span>
-						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
-						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
+						<span><i class="fas fa-th-large"></i> <a rel="nofollow" nofollow="nofollow" href="{page/set_view_table}">Плиткой</a></span>
+						<span><i class="fas fa-th-list"></i> <a rel="nofollow" nofollow="nofollow" href="{page/set_view_list}">Строками</a></span>
 						<!--<div class="checkbox">-->
 							<!--<label>-->
 								<!--<xsl:if test="not($only_available)">-->
@@ -100,7 +108,7 @@
 						<span>Кол-во на странице:</span>
 						<span>
 							<select class="form-control" value="{page/variables/limit}"
-							        onchange="window.location.href = $(this).find(':selected').attr('link')">
+							        onchange="window.location.replace = $(this).find(':selected').attr('link')">
 								<option value="12" link="{page/set_limit_12}">12</option>
 								<option value="24" link="{page/set_limit_24}">24</option>
 								<option value="10000" link="{page/set_limit_all}">все</option>
@@ -129,7 +137,7 @@
 			</div>
 		</div>
 		</xsl:if>
-
+		<xsl:call-template name="SEO_TEXT"/>
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 

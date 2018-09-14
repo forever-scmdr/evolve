@@ -4,6 +4,7 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="$ni/header" />
+	<xsl:variable name="default_h1" select="$ni/header" />
 	<xsl:variable name="active_menu_item" select="'news'"/>
 
 
@@ -23,7 +24,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$ni/header"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
 			<xsl:value-of select="$ni/text" disable-output-escaping="yes"/>

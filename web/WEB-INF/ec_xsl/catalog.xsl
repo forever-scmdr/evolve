@@ -3,6 +3,8 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="default_h1" select="'Каталог продукции'" />
+
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
@@ -18,7 +20,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Каталог продукции</h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 		<div class="page-content m-t">
 			<div class="catalog-items">
 				<xsl:for-each select="/page/catalog/section">

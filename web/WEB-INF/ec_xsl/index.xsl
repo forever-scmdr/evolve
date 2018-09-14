@@ -147,7 +147,7 @@
 		<div class="has-items-carousel">
 			<div class="container">
 				<div class="more-products">
-					<h4 class="big-title">Лидеры продаж</h4>
+					<div class="big-title h4">Лидеры продаж</div>
 					<div class="slick-slider catalog-items">
 						<xsl:apply-templates select="page/product"/>
 					</div>
@@ -160,7 +160,7 @@
 			<div class="container">
 				<xsl:if test="page/main_page/link_text and not(page/main_page/link_text = '')">
 					<div class="actions">
-						<h4 class="big-title">Акции</h4>
+						<div class="big-title h4">Акции</div>
 						<div class="actions-container">
 							<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 						</div>
@@ -168,7 +168,7 @@
 				</xsl:if>
 
 				<div class="news">
-					<h4 class="big-title">Новости</h4>
+					<div class="big-title h4">Новости</div>
 					<div class="news-container">
 						<xsl:for-each select="page/news/news_item">
 							<div>
@@ -180,6 +180,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- <xsl:call-template name="SEO_TEXT"/> -->
 	</xsl:template>
 
 	<xsl:template name="MAIN_CONTENT">
@@ -199,13 +200,13 @@
 						<div style="background-image: url({@path}{pic})">
 							<div class="aspect-ratio"></div>
 							<a href="">
-								<h4><xsl:value-of select="text_big"/></h4>
+								<div class="h4"><xsl:value-of select="text_big"/></div>
 								<p><xsl:value-of select="text_small"/></p>
 							</a>
 						</div>
 				
 						<a href="{link}" style="background-image: url({@path}{pic})">
-							<h4><xsl:value-of select="text_big"/></h4>
+							<div class="h4"><xsl:value-of select="text_big"/></div>
 							<p><xsl:value-of select="text_small"/></p>
 						</a>
 					</xsl:for-each>
@@ -225,7 +226,7 @@
 								<div class="aspect-ratio"></div>
 							</div>
 							<div class="info">
-								<h4><xsl:value-of select="text_big"/></h4>
+								<div class="h4"><xsl:value-of select="text_big"/></div>
 								<p><xsl:value-of select="text_small"/></p>
 							</div>
 							<a href="{link}"></a>
