@@ -54,7 +54,7 @@
 				<a href="/">Главная страница</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{show_products}"><xsl:value-of select="name"/></a>
+					<a href="{if(not(section)) then show_products else show_section}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -76,7 +76,7 @@
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
 					<xsl:if test="not($p/gallery)">
-						<img src="img/no_image.png" alt="{$p/name}"/>
+						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
 				</div>
 			</div>
@@ -133,10 +133,21 @@
 				</div>
 			</div>
 			<div class="description">
-				<xsl:if test="$p/params">
+				
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-							<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab">Характеристики</a></li>
+							<xsl:if test="$p/params">
+							<li role="presentation" class="active">
+								<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
+							</li>
+							</xsl:if>
+							<xsl:if test="$p/product">
+								<li role="presentation" class="{'active'[not($p/params)]}">
+									<a href="#tab2" role="tab" data-toggle="tab">
+										Другие расцветки
+									</a>
+								</li>
+							</xsl:if>
 						<!--</xsl:if>-->
 						<!--<xsl:if test="$p/tech">-->
 							<!--<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">Технические данные</a></li>-->
@@ -154,7 +165,6 @@
 							<!--<li role="presentation"><a href="#tab6" role="tab" data-toggle="tab">Применение</a></li>-->
 						<!--</xsl:if>-->
 					</ul>
-				</xsl:if>
 				<div class="tab-content">
 					<xsl:if test="$p/params">
 						<div role="tabpanel" class="tab-pane active" id="tab1">
@@ -175,6 +185,14 @@
 								</xsl:for-each>
 							</table>
 
+						</div>
+					</xsl:if>
+					<xsl:if test="$p/product">
+						<div role="tabpanel" class="tab-pane{' active'[not($p/params)]}" id="tab2">
+							<h4>Варианты расцветки</h4>
+							<div class="catalog-items">
+								<xsl:apply-templates select="$p/product[@key]"/>
+							</div>
 						</div>
 					</xsl:if>
 					<!--<div role="tabpanel" class="tab-pane" id="tab2">-->

@@ -55,15 +55,16 @@
 	<xsl:variable name="canonical" select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
-
+	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
+	
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
 				<a href="/">Главная страница</a>
-				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
+				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{if(section) then show_section else show_products}"><xsl:value-of select="name"/></a>
+					<a href="{show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -80,8 +81,16 @@
 				<form method="GET" action="{page/source_link}">
 					<xsl:apply-templates select="$sel_sec/tag"/>
 				</form>
+				<xsl:for-each select="$main_menu_section/section">
+					<a href="{show_products}" class="tag" title="перейти в подраздел">
+						<span>
+							<xsl:value-of select="name"/>
+						</span>
+					</a>
+				</xsl:for-each>
 			</div>
 
+		<xsl:if test="$sel_sec/params_filter/filter/input != ''">
 			<xsl:if test="$sel_sec/params_filter/filter">
 				<div class="toggle-filters">
 					<i class="fas fa-cog"></i> <a onclick="$('#filters_container').toggle('blind', 200);">Подбор по параметрам</a>
@@ -117,8 +126,9 @@
 					</div>
 				</form>
 			</xsl:if>
+		</xsl:if>
 
-			<xsl:if test="not($not_found)">
+			<xsl:if test="not($not_found) and $sel_sec/product">
 				<div class="view-container desktop">
 					<div class="view">
 						<span>Показывать:</span>
@@ -151,9 +161,9 @@
 						<span>
 							<select class="form-control" value="{page/variables/limit}"
 									onchange="window.location.href = $(this).find(':selected').attr('link')">
-								<option value="24" link="{page/set_limit_24}">24</option>
 								<option value="48" link="{page/set_limit_48}">48</option>
-								<option value="10000" link="{page/set_limit_all}">все</option>
+								<option value="96" link="{page/set_limit_96}">96</option>
+								<option value="144" link="{page/set_limit_144}">144</option>
 							</select>
 						</span>
 					</div>

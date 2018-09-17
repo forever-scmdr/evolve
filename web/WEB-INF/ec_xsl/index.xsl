@@ -221,7 +221,7 @@
 				<p>Основное направление компании Тексимат — кожа оптом и в розницу. Мы любим свое дело и ценим наших клиентов, поэтому предлагаем только лучшие материалы от ведущих европейских производителей.</p>
 			</div>
 		</div>
-		<div class="container-fluid contaner-tb">
+		<!-- <div class="container-fluid contaner-tb">
 			<div class="photo-stripe">
 				<div class="photo-stripe__item">
 					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
@@ -249,7 +249,7 @@
 					<div class="photo-stripe__text">Подпись к фото</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="container container-tb">
 			<div class="hero">

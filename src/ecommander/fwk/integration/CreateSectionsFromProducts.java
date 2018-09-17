@@ -15,6 +15,7 @@ import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -37,11 +38,17 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 	@Override
 	protected void integrate() throws Exception {
 		List<Item> loadedProducts = new ItemQuery(PRODUCT_ITEM).loadItems();
+		int i = 0;
 		for(Item product : loadedProducts){
-			product.forceInitialInconsistent();
-			transaction.executeCommandUnit(SaveItemDBUnit.get(product, true).ignoreFileErrors().noFulltextIndex());
-			commitCommandUnits();
+			product.setValue(PRICE_PARAM, BigDecimal.ZERO);
+			transaction.executeCommandUnit(SaveItemDBUnit.get(product, false).ignoreFileErrors().noFulltextIndex());
+			i++;
+			if(i>49) {
+				i= 0;
+				commitCommandUnits();
+			}
 		}
+		commitCommandUnits();
 //		info.setOperation("Обработака товаров");
 //		loadedProducts = new LinkedList<>();
 //		info.setOperation("Перенос товаров");

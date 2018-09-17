@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="'Список техники в заявке'" />
+	<xsl:variable name="title" select="'Список товаров'" />
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -13,7 +13,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Список техники</h1>
+		<h1>Список товаров</h1>
 
 		<div class="cart-container">
 			<xsl:choose>

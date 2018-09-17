@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>  
+<?xml version="1.0" encoding="UTF-8"?>       
 <site>
 
 	<!-- ******************************* Включение для разделов каталога ****************************** -->
@@ -11,7 +11,7 @@
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
-			</tree>
+			</tree>d
 		</single>
 
 		<single item="custom_pages" id="custom_pages" cacheable="true" >
@@ -27,7 +27,6 @@
 				<var name="sel" ref="news" style="translit"/>
 			</link>
 		</list>
-
 		<single item="common" cacheable="false"/>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
@@ -94,7 +93,7 @@
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<single item="seo"/>
 			<list item="product" id="prod" transit="true">
-				<filter>
+			<filter>
 					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
 					<sorting direction-var="direction">

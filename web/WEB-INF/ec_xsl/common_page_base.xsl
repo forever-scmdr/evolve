@@ -100,18 +100,18 @@
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 							<div class="sections">
 								<xsl:for-each select="page/catalog/section">
-									<a href="{if (section) then show_section else show_products}"
+									<a href="{show_products}"
 									   class="cat_menu_item_1" rel="#sub_{@id}"><xsl:value-of select="name" /></a>
 								</xsl:for-each>
 							</div>
 
-							<!-- <xsl:for-each select="page/catalog/section">
-							    <div class="subsections" style="display: none" id="sub_{@id}">
+							<xsl:for-each select="page/catalog/section">
+								<div class="subsections" style="display: none" id="sub_{@id}">
 									<xsl:for-each select="section">
-								        <a href="{show_products}"><xsl:value-of select="name" /></a>
+										<a href="{show_products}"><xsl:value-of select="name" /></a>
 									</xsl:for-each>
-							    </div>
-							</xsl:for-each> -->
+								</div>
+							</xsl:for-each>
 						</div>
 						<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да' and menu_custom]">
 							<div class="popup-text-menu" style="position: absolute; display: none;" id="ts-{@id}">
@@ -136,7 +136,7 @@
 		<div class="header mobile">
 			<div class="header-container">
 				<a href="" class="logo">
-					<img src="img/logo_small.svg" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
+					<img src="img/logo_big.svg" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
 					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
@@ -169,15 +169,16 @@
 					<div class="col-xs-12">
 						<div class="footer-container">
 							<div class="block">
-								<p><strong>© ttd.by, 2018</strong></p>
+								<p><strong>© teximat.by, 2018</strong></p>
 								<div class="forever">
 									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
 								</div>
 							</div>
 							<div class="block">
-								<p>Работаем только с юридическими лицами и индивидуальными предпринимателями по безналичному расчету</p>
-								<!-- <img src="http://mobileplus.by/images/2/icon_card_mc.png" alt=""/>
-								<img src="http://mobileplus.by/images/2/icon_card_visa.png" alt=""/> -->
+								<a role="button" data-toggle="modal" data-target="#regions">
+								 <img src="img/car_delivery.png" alt="truck" style="padding-right: 8px;" />	Список регионов доставки
+								</a>
+								<xsl:call-template  name="REGIONS" />
 							</div>
 							<div class="block contacts">
 								<xsl:value-of select="page/common/bottom" disable-output-escaping="yes"/>
@@ -312,7 +313,7 @@
 				<ul>
 					<xsl:for-each select="page/catalog/section">
 						<li>
-							<a href="{if(section) then show_section else show_products}" rel="{if (section) then concat('#m_sub_', @id) else ''}"><xsl:value-of select="name"/></a>
+							<a href="{show_products}" rel="{if (section) then concat('#m_sub_', @id) else ''}"><xsl:value-of select="name"/></a>
 							<xsl:if test="section">
 								<i class="fas fa-chevron-right"></i>
 							</xsl:if>
@@ -324,7 +325,7 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_section}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
@@ -349,7 +350,7 @@
 					<ul>
 						<xsl:for-each select="section">
 							<li>
-								<a href="{show_section}"><xsl:value-of select="name"/></a>
+								<a href="{show_products}"><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:for-each>
 					</ul>
@@ -366,8 +367,7 @@
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="level-1{' active'[$l1_active]}">
 					<div class="capsule">
-
-						<a href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/> </a>
+						<a href="{show_products}"><xsl:value-of select="name"/> </a>
 					</div>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
@@ -442,6 +442,7 @@
 
 	<xsl:template match="accessory | set | probe | product">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="prms" select="params/param"/>
 		<div class="catalog-item">
 			<!--
 			<div class="tags">
@@ -451,28 +452,42 @@
 				<span>Горячая цена</span>
 			</div>
 			-->
-			<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
-			<a href="{show_product}" class="image-container" style="background-image: url({$pic_path});">
+			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<a href="{concat(@path, main_pic)}"
+			 class="image-container{if(main_pic) then ' magnific_popup-image' else ''}"
+			  style="background-image: url({$pic_path});" title="{name}">
 				<!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')"/> -->
 			</a>
 			<div>
 				<a href="{show_product}" title="{name}"><xsl:value-of select="name"/></a>
 				<xsl:if test="short != ''">
 					<p><xsl:value-of select="substring-before(substring-after(short, 'description&quot;&gt;'), '&lt;')" disable-output-escaping="yes"/></p>
-				</xsl:if>
-				<p class="inline-only">
-					<xsl:for-each select="params/param">
-						<xsl:if test="position() &gt; 1">
-							<xsl:call-template name="BR"/>
-						</xsl:if>
-						<span class="caption">
-							<xsl:value-of select="@caption"/>
-						</span>
-						<span class="value">
-							<xsl:value-of select="."/>
-						</span>
-					</xsl:for-each>
-				</p>
+				</xsl:if>			
+				<div class="inline-only product-{@id} overflow-hidden toggle-overflow">
+					<xsl:if test="params/param != ''">
+						<p>
+						<xsl:for-each select="params/param">
+							<xsl:if test="position() &gt; 1">
+								<xsl:call-template name="BR"/>
+							</xsl:if>
+							<span class="caption">
+								<xsl:value-of select="@caption"/>
+							</span>
+							<span class="value">
+								<xsl:value-of select="."/>
+							</span>
+						</xsl:for-each>
+						</p>
+					</xsl:if>
+					<xsl:if test="not(params/param != '')">
+						<xsl:value-of select="description" disable-output-escaping="yes"/>
+					</xsl:if>
+				</div>
+				<div class="inline-only">
+					<span class="uht-{@id} js-link display-block" onclick="$('.product-{@id}').toggleClass('overflow-hidden'); $('.uht-{@id}').toggle();">Развернуть</span>
+					<span class="uht-{@id} js-link display-block" onclick="$('.product-{@id}').toggleClass('overflow-hidden'); $('.uht-{@id}').toggle();" style="display: none;">Свернуть</span>
+				</div>
 			</div>
 			<div class="price">
 				<xsl:if test="$has_price">
@@ -583,7 +598,7 @@
 			<xsl:for-each select="page/catalog/section">
 				<div class="level-1">
 					<div class="capsule">
-						<a href="{if(section) then show_section else show_products}"><xsl:value-of select="name"/></a>
+						<a href="{show_products}"><xsl:value-of select="name"/></a>
 					</div>
 				</div>
 			</xsl:for-each>
@@ -621,7 +636,9 @@
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
 				<xsl:call-template name="SEO"/>
 				<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
+				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
 				<link rel="stylesheet" href="css/app.css"/>
+				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 				<link rel="stylesheet" href="fotorama/fotorama.css"/>
@@ -646,7 +663,7 @@
 
 				<xsl:call-template name="INC_MOBILE_MENU"/>
 				<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
-
+				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
 				<script type="text/javascript" src="js/bootstrap.js"/>
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
@@ -655,6 +672,14 @@
 				<script type="text/javascript" src="slick/slick.min.js"></script>
 				<script type="text/javascript">
 					$(document).ready(function(){
+					$(".magnific_popup-image").magnificPopup({
+						type: 'image',
+						closeOnContentClick: true,
+						mainClass: 'mfp-img-mobile',
+						image: {
+							verticalFit: true
+						}
+					});
 					$(".footer-placeholder").height($(".footer").outerHeight()+40);
 					$('.slick-slider').slick({
 					infinite: true,
@@ -780,6 +805,167 @@
 		<meta name="description" content="{description}"/>
 		<meta name="keywords" content="{keywords}"/>
 		<xsl:value-of select="meta" disable-output-escaping="yes"/>
+	</xsl:template>
+
+	<xsl:template name="REGIONS">
+		<div class="modal fade" id="regions" tabindex="-1" role="dialog" aria-labelledby="regions-title" aria-hidden="true">
+		  <div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+			  	<button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+				  <span aria-hidden="true">&#215;</span>
+				</button>
+				<div class="modal-title" id="regions-title">
+					Регионы доставки в Республике Беларусь
+				</div>	
+			  </div>
+			  <div class="modal-body" style="column-count: 4;">
+					<ul>
+					<li><b>Минская область</b></li>
+					<li>Минск</li>
+					<li>Березино</li>
+					<li>Борисов</li>
+					<li>Вилейка</li>
+					<li>Воложин</li>
+					<li> Дзержинск</li>
+					<li>Жодино</li>
+					<li>Заславль</li>
+					<li>Клецк</li>
+					<li> Копыль</li>
+					<li>Крупки</li>
+					<li>Логойск</li>
+					<li> Любань</li>
+					<li>Марьина горка</li>
+					<li>Молодечно</li>
+					<li>Мядель</li>
+					<li>Несвиж</li>
+					<li>Слуцк</li>
+					<li>Смолевичи</li>
+					<li>Солигорск</li>
+					<li>Старые дороги</li>
+					<li>Столбцы</li>
+					<li>Узда</li>
+					<li>Червень</li>
+				</ul>
+
+				<ul>
+					<li><b>Брестская область</b></li>
+					<li>Барановичи</li>
+					<li>Береза</li>
+					<li>Брест</li>
+					<li>Ганцевичи</li>
+					<li>Дрогичин</li>
+					<li>Жабинка</li>
+					<li>Иваново</li>
+					<li>Ивацевичи</li>
+					<li>Каменец</li>
+					<li>Кобрин</li>
+					<li>Лунинец</li>
+					<li>Ляховичи</li>
+					<li>Малорита</li>
+					<li>Пинск</li>
+					<li>Пружаны</li>
+					<li>Столин</li>
+				</ul>
+
+				<ul>
+					<li><b>Витебская область</b></li>
+					<li>Бешенковичи</li>
+					<li>Браслав</li>
+					<li>Верхнедвинск</li>
+					<li>Витебск</li>
+					<li>Глубокое</li>
+					<li>Городок</li>
+					<li>Докшицы</li>
+					<li>Лепель</li>
+					<li>Лиозно</li>
+					<li>Миоры</li>
+					<li>Новополоцк</li>
+					<li>Орша</li>
+					<li>Полоцк</li>
+					<li> Поставы</li>
+					<li>Россоны</li>
+					<li>Сенно</li>
+					<li> Толочин</li>
+					<li>Ушачи</li>
+					<li>Чашники</li>
+					<li>Шарковщина</li>
+					<li>Шумилино</li>
+				</ul>
+
+				<ul>
+					<li><b>Гродненская область</b></li>
+					<li>Берестовица</li>
+					<li>Волковыск</li>
+					<li>Вороново</li>
+					<li>Гродно</li>
+					<li>Дятлово</li>
+					<li>Зельва</li>
+					<li>Ивье</li>
+					<li>Кореличи</li>
+					<li>Лида</li>
+					<li>Мосты</li>
+					<li>Новогрудок</li>
+					<li>Островец</li>
+					<li>Ошмяны</li>
+					<li>Свислочь</li>
+					<li>Слоним</li>
+					<li>Сморгонь</li>
+					<li>Щучин</li>
+				</ul>
+
+				<ul>
+					<li><b>Гомельская область</b></li>
+					<li>Брагин</li>
+					<li>Буда-кошелево</li>
+					<li>Ветка</li>
+					<li>Гомель</li>
+					<li>Добруш</li>
+					<li>Ельск</li>
+					<li>Житковичи</li>
+					<li>Жлобин</li>
+					<li>Калинковичи</li>
+					<li>Корма</li>
+					<li>Лельчицы</li>
+					<li>Лоев</li>
+					<li>Мозырь</li>
+					<li>Наровля</li>
+					<li>Октябрьский</li>
+					<li>Петриков</li>
+					<li>Речица</li>
+					<li>Рогачев</li>
+					<li>Светлогорск</li>
+					<li>Хойники</li>
+					<li> Чечерск</li>
+				</ul>
+
+				<ul>
+					<li><b>Могилевская область</b></li>
+					<li>Белыничи</li>
+					<li>Бобруйск</li>
+					<li>Быхов</li>
+					<li>Горки</li>
+					<li>Дрибин</li>
+					<li>Кировск</li>
+					<li>Климовичи</li>
+					<li>Кличев</li>
+					<li>Костюковичи</li>
+					<li>Краснополье</li>
+					<li>Кричев</li>
+					<li>Круглое</li>
+					<li>Могилев</li>
+					<li>Мстиславль</li>
+					<li>Осиповичи</li>
+					<li>Славгород</li>
+					<li>Хотимск</li>
+					<li>Чаусы</li>
+					<li>Чериков</li>
+					<li>Шклов</li>
+				</ul>
+			  </div>
+			</div>
+		  </div>
+		</div>
 	</xsl:template>
 
 </xsl:stylesheet>
