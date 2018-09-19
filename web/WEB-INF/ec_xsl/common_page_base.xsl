@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
+	<xsl:import href="../../admin/xsl/visual_editor/ve_includes.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
@@ -645,6 +646,7 @@
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 				<script defer="defer" src="js/font_awesome_all.js"/>
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
+				<xsl:call-template name="VE_HEAD" />
 			</head>
 			<body>
 				<!-- ALL CONTENT BEGIN -->
@@ -967,5 +969,6 @@
 		  </div>
 		</div>
 	</xsl:template>
+
 
 </xsl:stylesheet>
