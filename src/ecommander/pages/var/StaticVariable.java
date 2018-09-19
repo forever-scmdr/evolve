@@ -81,6 +81,11 @@ public class StaticVariable extends Variable {
 
 	@Override
 	public boolean isEmpty() {
-		return values.size() == 0;
+		return values.isEmpty();
+	}
+
+	@Override
+	public void removeValue(Object value) {
+		values.remove(value);
 	}
 }

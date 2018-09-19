@@ -81,6 +81,7 @@
 	После загрузки страницы это значение jquery устанавливает в селект
 	 -->
 	<xsl:template name="SELECT_SCRIPT">
+	<script>
 	$(document).ready(function() {
 		$('select[value]').each(function() {
 			var value = $(this).attr('value');
@@ -88,6 +89,7 @@
 				$(this).val(value);
 		});
 	});
+	</script>
 	</xsl:template>
 
 	<!-- Вставка переменной в ссылку (добавление как query string). match соответствует ссылке -->

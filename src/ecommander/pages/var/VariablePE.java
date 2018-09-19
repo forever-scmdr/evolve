@@ -21,6 +21,7 @@ public abstract class VariablePE implements PageElement {
 	public static final char COMMON_DELIMITER = '/';
 	public static final char EQ_SIGN = '=';
 	public static final char AMP_SIGN = '&';
+	public static final char NEGATIVE = '-';
 	public static final String AMP_SIGN_ENCODED = "%26";
 	public static final int AMP_SIGN_ENCODED_LENGTH = AMP_SIGN_ENCODED.length();
 	
@@ -158,10 +159,16 @@ public abstract class VariablePE implements PageElement {
 	}
 	
 	public void validate(String elementPath, ValidationResults results) {
-		if (StringUtils.isBlank(name) && name.startsWith("$"))
+		if (StringUtils.startsWith(name,"$"))
 			results.addError(elementPath + " > " + getKey(), "user defined variable can not start with $ sign. $ is reserved for predefined variables");
-		if (!StringUtils.equals(Strings.createXmlElementName(name), name))
+		if (!StringUtils.equals(Strings.createXmlElementName(name), name)) {
+			if (StringUtils.startsWith(name, NEGATIVE + "")) {
+				String posName = name.substring(1);
+				if (StringUtils.equals(Strings.createXmlElementName(posName), posName))
+					return;
+			}
 			results.addError(elementPath + " > " + getKey(), "variable name is not a valid XML element name");
+		}
 	}
 
 	@Override

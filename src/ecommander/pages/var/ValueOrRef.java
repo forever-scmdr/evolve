@@ -94,4 +94,10 @@ public class ValueOrRef extends Variable {
 				results.addError(elementPath, "there is no '" + name + "' page variable in current page");
 		}
 	}
+
+	@Override
+	public void removeValue(Object value) {
+		getActualVar();
+		var.removeValue(value);
+	}
 }

@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
 
-    <page name="index">
+    <page name="index" template="">
 		<request>
 			<var name="m_from" scope="session"/>
 			<var name="m_to" scope="session"/>
 			<var name="country"/>
+			<var name="region"/>
 			<var name="city"/>
 			<var name="dealer"/>
-			<var name="tag" value="Клапаны электромагнитные"/>
+			<var name="tag"/>
 		</request>
 	    <list item="sale" id="sale">
 		    <filter>
-			    <parameter name="register_date" compare="ANY" sign="&gt;="><var var="m_from"/></parameter>
-			    <parameter name="register_date" compare="ANY" sign="&lt;="><var var="m_to"/></parameter>
+			    <parameter name="register_date" compare="SOME" sign="&gt;="><var var="m_from"/></parameter>
+			    <parameter name="register_date" compare="SOME" sign="&lt;="><var var="m_to"/></parameter>
 			    <parameter name="tag" compare="ALL"><var var="tag"/></parameter>
 			    <parent item="agent" assoc="trade">
 				    <parameter name="city" compare="ANY"><var var="city"/></parameter>
@@ -21,6 +22,7 @@
 			    <parent item="dealer" assoc="trade">
 				    <parameter name="code" compare="ANY"><var var="dealer"/></parameter>
 			    </parent>
+			    <sorting direction="DESC"><var value="register_date" /></sorting>
 		    </filter>
 	    </list>
 	    <list item="agent">
@@ -33,8 +35,46 @@
 			    <successor ref="sale" assoc="trade"/>
 		    </filter>
 	    </list>
-	    <link name="set_dates" target="index" copy-page-vars="yes"/>
+
+	    <!-- Все страны -->
+	    <list item="agent" tag="country" id="country">
+			<aggregation parameter="country"/>
+	    </list>
+
+	    <!-- Все регионы -->
+	    <list item="agent" tag="region">
+		    <filter>
+			    <parameter name="country" compare="SOME"><var var="country" /></parameter>
+		    </filter>
+		    <aggregation parameter="region"/>
+	    </list>
+
+	    <!-- Все города -->
+	    <list item="agent" tag="city">
+		    <filter>
+			    <parameter name="country" compare="SOME"><var var="country" /></parameter>
+			    <parameter name="region" compare="ANY"><var var="region" /></parameter>
+		    </filter>
+		    <aggregation parameter="city"/>
+	    </list>
+
+	    <link name="set_dates" target="index">
+		    <var name="country" var="country"/>
+		    <var name="city" var="city"/>
+		    <var name="dealer" var="dealer"/>
+		    <var name="tag" var="tag"/>
+	    </link>
+
+	    <link name="base_link" target="index" copy-page-vars="yes"/>
+	    <link name="remove_country_base" target="index" copy-page-vars="yes">
+		    <var name="-country" value=""/>
+	    </link>
     </page>
+
+
+
+
+
 
 
 	<page name="integrate" template="integrate" authority-groups="common">

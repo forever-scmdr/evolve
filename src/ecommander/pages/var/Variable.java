@@ -105,6 +105,8 @@ public abstract class Variable {
 		// по умолчанию ничего не делать
 	}
 
+	public abstract void removeValue(Object value);
+
 	@Override
 	public String toString() {
 		return name + ": " + StringUtils.join(writeAllValues(), ", ");

@@ -131,4 +131,9 @@ public class ItemVariable extends Variable {
 				results.addError(elementPath, "there is no '" + paramName + "' parameter in '" + itemDesc.getName() + "' item");
 		}
 	}
+
+	@Override
+	public void removeValue(Object value) {
+		throw new IllegalStateException("Not allowed to remove values from item variable");
+	}
 }

@@ -37,4 +37,16 @@ public class SessionStaticVariable extends StaticVariable {
 		clean();
 		parentPage.getSessionContext().setVariableValue(name, null);
 	}
+
+	@Override
+	public void removeValue(Object value) {
+		if (isEmpty())
+			restore();
+		getAllValues().remove(value);
+		if (isEmpty()) {
+			remove();
+		} else {
+			parentPage.getSessionContext().setVariableValue(name, getSingleValue().toString());
+		}
+	}
 }
