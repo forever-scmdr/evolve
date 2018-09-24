@@ -86,7 +86,7 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 			String address = getValue(ADDRESS_HEADER);
 			String city = getValue(CITY_HEADER);
 			if (StringUtils.containsIgnoreCase(city, "г."))
-				city = StringUtils.substringAfter(city, ".");
+				city = StringUtils.trim(StringUtils.substringAfter(city, "."));
 			String region = getValue(REGION_HEADER);
 			String country = getValue(COUNTRY_HEADER);
 			String bossPosition = getValue(BOSS_POSITION_HEADER);

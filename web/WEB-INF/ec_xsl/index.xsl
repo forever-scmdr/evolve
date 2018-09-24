@@ -21,6 +21,9 @@
 	<xsl:variable name="year_to" select="year-from-date($date_to)"/>
 	<xsl:variable name="year_from" select="year-from-date($date_from)"/>
 
+	<xsl:variable name="years_quartals" select="tokenize(page/variables/quartals, '!')"/>
+
+	<xsl:variable name="sales" select="page/sale"/>
 
 	<xsl:template match="/">
 		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
@@ -48,8 +51,16 @@
 					</div>
 					<div class="row p-t select-time no-print">
 						<div class="col-md-12">
+							<h2 class="no-m-t">
+								<xsl:if test="not(page/variables/m_to)">Период не задан</xsl:if>
+								<xsl:if test="page/variables/m_to">
+									Отчетный период:
+									<xsl:value-of select="$quartal_from"/> квартал <xsl:value-of select="$year_from"/> года -
+									<xsl:value-of select="$quartal_to"/> квартал <xsl:value-of select="$year_to"/> года
+								</xsl:if>
+							</h2>
 							<div>
-								<span>Период времени</span>
+								<!--<span>Период времени</span>-->
 								<form action="{page/set_dates}" method="post" id="dates_form" onsubmit="prepareDates()">
 									<select id="q_from" value="{$quartal_from}">
 										<option value="1">1 квартал</option>
@@ -106,226 +117,101 @@
 					</div>
 					<div class="row p-t-small no-print">
 						<div class="col-md-12">
-							<button type="button" class="btn btn-default btn-sm">Подбор по параметрам</button>
-							<div class="search">
-								<input type="text" value="Поиск по названию"/>
-								<button type="button" class="btn btn-default btn-sm">Найти</button>
-							</div>
+							<button type="button" class="btn btn-default btn-sm" onclick="$('#params_form').toggle(200)">Подбор по параметрам</button>
+							<!--<div class="search">-->
+								<!--<input type="text" value="Поиск по названию"/>-->
+								<!--<button type="button" class="btn btn-default btn-sm">Найти</button>-->
+							<!--</div>-->
 						</div>
-						<div class="col-md-12">
+						<div class="col-md-12" id="params_form">
 							<div class="parameters-container m-t-small no-print" style="display: block;">
 								<h3 class="no-m-t m-b">Подбор по параметрам</h3>
 								<div class="parameters">
-									<div class="parameter">
-										<div>Страна:</div>
-										<div>
-											<form action="{page/base_link}" method="post">
-												<input list="countries" type="text" name="country"/>
-												<datalist id="countries">
-													<xsl:for-each select="page/country/country">
-														<option value="{.}"></option>
-													</xsl:for-each>
-												</datalist>
-												<button type="submit" class="btn btn-default btn-sm">Добавить</button>
-												<button type="button" class="btn btn-default btn-sm" data-toggle="modal"
-												        data-target="#country_list">Выбрать из списка</button>
-											</form>
-										</div>
-										<div class="chosen-values">
-											<xsl:for-each select="page/variables/country">
-												<a href="{//page/remove_country_base}{.}"><xsl:value-of select="." /></a>
-											</xsl:for-each>
-										</div>
-									</div>
-									<div class="parameter">
-										<div>Регион:</div>
-										<div>
-											<form action="">
-												<input list="regions" type="text"/>
-												<datalist id="regions">
-													<option value="Витебская обл."></option>
-													<option value="Минская обл."></option>
-													<option value="Гомельская обл."></option>
-													<option value="Могилевская обл."></option>
-												</datalist>
-												<button type="button" class="btn btn-default btn-sm">Добавить</button>
-												<button type="button" class="btn btn-default btn-sm">Выбрать из списка</button>
-											</form>
-										</div>
-										<div class="chosen-values">
-											<a href="">Витебская обл.</a>
-											<a href="">Минская обл.</a>
-										</div>
-									</div>
-									<div class="parameter">
-										<div>Город:</div>
-										<div>
-											<form action="">
-												<input list="parameter-3" type="text"/>
-												<datalist id="parameter-3">
-													<option value="1"></option>
-													<option value="2"></option>
-													<option value="3"></option>
-													<option value="4"></option>
-												</datalist>
-												<button type="button" class="btn btn-default btn-sm">Добавить</button>
-												<button type="button" class="btn btn-default btn-sm">Выбрать из списка</button>
-											</form>
-										</div>
-										<div class="chosen-values"></div>
-									</div>
-									<div class="parameter">
-										<div>Дилер:</div>
-										<div>
-											<form action="">
-												<input list="parameter-3" type="text"/>
-												<datalist id="parameter-3">
-													<option value="1"></option>
-													<option value="2"></option>
-													<option value="3"></option>
-													<option value="4"></option>
-												</datalist>
-												<button type="button" class="btn btn-default btn-sm">Добавить</button>
-												<button type="button" class="btn btn-default btn-sm">Выбрать из списка</button>
-											</form>
-										</div>
-										<div class="chosen-values"></div>
-									</div>
-									<div class="parameter">
-										<div>Контрагент:</div>
-										<div>
-											<form action="">
-												<input list="parameter-3" type="text"/>
-												<datalist id="parameter-3">
-													<option value="1"></option>
-													<option value="2"></option>
-													<option value="3"></option>
-													<option value="4"></option>
-												</datalist>
-												<button type="button" class="btn btn-default btn-sm">Добавить</button>
-												<button type="button" class="btn btn-default btn-sm">Выбрать из списка</button>
-											</form>
-										</div>
-										<div class="chosen-values"></div>
-									</div>
-									<div class="parameter">
-										<div>Сфера:</div>
-										<div>
-											<form action="">
-												<input list="parameter-3" type="text"/>
-												<datalist id="parameter-3">
-													<option value="1"></option>
-													<option value="2"></option>
-													<option value="3"></option>
-													<option value="4"></option>
-												</datalist>
-												<button type="button" class="btn btn-default btn-sm">Добавить</button>
-												<button type="button" class="btn btn-default btn-sm">Выбрать из списка</button>
-											</form>
-										</div>
-										<div class="chosen-values"></div>
-									</div>
-									<div class="parameter">
-										<div>Отрасль:</div>
-										<div>
-											<form action="">
-												<input list="parameter-3" type="text"/>
-												<datalist id="parameter-3">
-													<option value="1"></option>
-													<option value="2"></option>
-													<option value="3"></option>
-													<option value="4"></option>
-												</datalist>
-												<button type="button" class="btn btn-default btn-sm">Добавить</button>
-												<button type="button" class="btn btn-default btn-sm">Выбрать из списка</button>
-											</form>
-										</div>
-										<div class="chosen-values"></div>
-									</div>
-									<div class="parameter">
-										<div>Тип товара:</div>
-										<div>
-											<form action="">
-												<input list="parameter-3" type="text"/>
-												<datalist id="parameter-3">
-													<option value="1"></option>
-													<option value="2"></option>
-													<option value="3"></option>
-													<option value="4"></option>
-												</datalist>
-												<button type="button" class="btn btn-default btn-sm">Добавить</button>
-												<button type="button" class="btn btn-default btn-sm">Выбрать из списка</button>
-											</form>
-										</div>
-										<div class="chosen-values">
-											<a href="">Электромагнитные клапаны</a>
-										</div>
-									</div>
-									<div class="parameter">
-										<div>Вид товара:</div>
-										<div>
-											<form action="">
-												<input list="parameter-3" type="text"/>
-												<datalist id="parameter-3">
-													<option value="1"></option>
-													<option value="2"></option>
-													<option value="3"></option>
-													<option value="4"></option>
-												</datalist>
-												<button type="button" class="btn btn-default btn-sm">Добавить</button>
-												<button type="button" class="btn btn-default btn-sm">Выбрать из списка</button>
-											</form>
-										</div>
-										<div class="chosen-values"></div>
-									</div>
-									<div class="parameter">
-										<div>Товар:</div>
-										<div>
-											<form action="">
-												<input list="parameter-3" type="text"/>
-												<datalist id="parameter-3">
-													<option value="1"></option>
-													<option value="2"></option>
-													<option value="3"></option>
-													<option value="4"></option>
-												</datalist>
-												<button type="button" class="btn btn-default btn-sm">Добавить</button>
-												<button type="button" class="btn btn-default btn-sm">Выбрать из списка</button>
-											</form>
-										</div>
-										<div class="chosen-values"></div>
-									</div>
+									<xsl:call-template name="parameter_input">
+										<xsl:with-param name="input_name" select="'country'"/>
+										<xsl:with-param name="header" select="'Страна'"/>
+										<xsl:with-param name="list" select="page/country/country"/>
+									</xsl:call-template>
+									<xsl:call-template name="parameter_input">
+										<xsl:with-param name="input_name" select="'region'"/>
+										<xsl:with-param name="header" select="'Регион'"/>
+										<xsl:with-param name="list" select="page/region/region"/>
+									</xsl:call-template>
+									<xsl:call-template name="parameter_input">
+										<xsl:with-param name="input_name" select="'city'"/>
+										<xsl:with-param name="header" select="'Город'"/>
+										<xsl:with-param name="list" select="page/city/city"/>
+									</xsl:call-template>
+									<xsl:call-template name="parameter_input">
+										<xsl:with-param name="input_name" select="'dealer'"/>
+										<xsl:with-param name="header" select="'Дилер'"/>
+										<xsl:with-param name="list" select="page/dealer/organization"/>
+									</xsl:call-template>
+									<xsl:call-template name="parameter_input">
+										<xsl:with-param name="input_name" select="'agent'"/>
+										<xsl:with-param name="header" select="'Контрагент'"/>
+										<xsl:with-param name="list" select="page/agent/organization"/>
+									</xsl:call-template>
+									<xsl:call-template name="parameter_input">
+										<xsl:with-param name="input_name" select="'branch'"/>
+										<xsl:with-param name="header" select="'Сфера'"/>
+										<xsl:with-param name="list" select="page/branch/branch"/>
+									</xsl:call-template>
+									<xsl:call-template name="parameter_input">
+										<xsl:with-param name="input_name" select="'tag'"/>
+										<xsl:with-param name="header" select="'Тип товара'"/>
+										<xsl:with-param name="list" select="page/tag/name"/>
+									</xsl:call-template>
+									<xsl:call-template name="parameter_input">
+										<xsl:with-param name="input_name" select="'device'"/>
+										<xsl:with-param name="header" select="'Товар'"/>
+										<xsl:with-param name="list" select="page/device/device"/>
+									</xsl:call-template>
 								</div>
-								<button type="button" class="btn btn-success">Подобрать по параметрам</button>
-								<button type="button" class="btn btn-info">Отменить</button>
+								<!--<button type="button" class="btn btn-success">Подобрать по параметрам</button>-->
+								<a href="{page/index_link}" class="btn btn-info">Очистить критерии</a>
 							</div>
 						</div>
 					</div>
 					<div class="row p-t">
 						<div class="col-md-12">
-							<h2>Статистика продаж дилеров с 1 кв. 2016 по 3 кв. 2017</h2>
+							<h2>Статистика продаж дилеров с
+								<xsl:value-of select="$quartal_from"/> кв. <xsl:value-of select="$year_from"/> года по
+								<xsl:value-of select="$quartal_to"/> кв. <xsl:value-of select="$year_to"/> года
+							</h2>
 							<div class="parameters">
-								<div class="parameter">
-									<div>Страна:</div>
-									<div class="chosen-values">
-										<a href="">Россия</a>
-										<a href="">Беларусь</a>
-										<a href="">Казахстан</a>
-									</div>
-								</div>
-								<div class="parameter">
-									<div>Регион:</div>
-									<div class="chosen-values">
-										<a href="">Витебская обл.</a>
-										<a href="">Минская обл.</a>
-									</div>
-								</div>
-								<div class="parameter">
-									<div>Тип товара:</div>
-									<div class="chosen-values">
-										<a href="">Электромагнитные клапаны</a>
-									</div>
-								</div>
+								<xsl:call-template name="parameter_values">
+									<xsl:with-param name="header" select="'Страна'"/>
+									<xsl:with-param name="input_name" select="'country'"/>
+								</xsl:call-template>
+								<xsl:call-template name="parameter_values">
+									<xsl:with-param name="header" select="'Регион'"/>
+									<xsl:with-param name="input_name" select="'region'"/>
+								</xsl:call-template>
+								<xsl:call-template name="parameter_values">
+									<xsl:with-param name="header" select="'Город'"/>
+									<xsl:with-param name="input_name" select="'city'"/>
+								</xsl:call-template>
+								<xsl:call-template name="parameter_values">
+									<xsl:with-param name="header" select="'Дилер'"/>
+									<xsl:with-param name="input_name" select="'dealer'"/>
+								</xsl:call-template>
+								<xsl:call-template name="parameter_values">
+									<xsl:with-param name="header" select="'Контрагент'"/>
+									<xsl:with-param name="input_name" select="'agent'"/>
+								</xsl:call-template>
+								<xsl:call-template name="parameter_values">
+									<xsl:with-param name="header" select="'Сфера'"/>
+									<xsl:with-param name="input_name" select="'branch'"/>
+								</xsl:call-template>
+								<xsl:call-template name="parameter_values">
+									<xsl:with-param name="header" select="'Тип товара'"/>
+									<xsl:with-param name="input_name" select="'tag'"/>
+								</xsl:call-template>
+								<xsl:call-template name="parameter_values">
+									<xsl:with-param name="header" select="'Товар'"/>
+									<xsl:with-param name="input_name" select="'device'"/>
+								</xsl:call-template>
 							</div>
 							<div class="table-responsive">
 								<table class="data-table main-table">
@@ -335,89 +221,40 @@
 										<th>Организация</th>
 										<th>Страна</th>
 										<th>Город</th>
-										<th>1 кв. 2016</th>
-										<th>2 кв. 2016</th>
-										<th>3 кв. 2016</th>
-										<th>4 кв. 2016</th>
-										<th>за 2016</th>
-										<th>1 кв. 2017</th>
-										<th>2 кв. 2017</th>
-										<th>3 кв. 2017</th>
-										<th>4 кв. 2017</th>
-										<th>за 2017</th>
+										<xsl:for-each select="$years_quartals">
+											<xsl:variable name="parts" select="tokenize(., '\*')"/>
+											<th><xsl:value-of select="$parts[1]"/>кв. <xsl:value-of select="$parts[2]"/></th>
+										</xsl:for-each>
 										<th>Всего</th>
 									</tr>
-									<tr>
-										<td class="no-print"><input type="checkbox"/></td>
-										<td>1.</td>
-										<td>ООО НПФ Раско</td>
-										<td>РФ</td>
-										<td>Москва</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr class="checked">
-										<td class="no-print"><input type="checkbox" checked="checked"/></td>
-										<td>2.</td>
-										<td>ООО НПФ Раско</td>
-										<td>РФ</td>
-										<td>Москва</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td class="no-print"><input type="checkbox"/></td>
-										<td>3.</td>
-										<td>ООО НПФ Раско</td>
-										<td>РФ</td>
-										<td>Москва</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
+									<xsl:for-each select="page/all_dealer">
+										<xsl:variable name="code" select="code"/>
+										<tr>
+											<td class="no-print"><input type="checkbox"/></td>
+											<td><xsl:value-of select="position()" />.</td>
+											<td><xsl:value-of select="organization" /></td>
+											<td><xsl:value-of select="country" /></td>
+											<td><xsl:value-of select="city" /></td>
+											<xsl:for-each select="$years_quartals">
+												<xsl:variable name="parts" select="tokenize(., '\*')"/>
+												<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2] and dealer_code = $code]"/>
+												<td><xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" /></td>
+											</xsl:for-each>
+											<td><xsl:value-of select="sum($sales[dealer_code = $code]/qty)" /></td>
+										</tr>
+									</xsl:for-each>
 									<tr class="summary">
 										<td class="no-print"><input type="checkbox"/></td>
 										<td></td>
 										<td>Итого:</td>
 										<td></td>
 										<td></td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
+										<xsl:for-each select="$years_quartals">
+											<xsl:variable name="parts" select="tokenize(., '\*')"/>
+											<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2]]"/>
+											<td><xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" /></td>
+										</xsl:for-each>
+										<td><xsl:value-of select="sum($sales/qty)" /></td>
 									</tr>
 								</table>
 							</div>
@@ -787,6 +624,9 @@
 										<th>Покупатель</th>
 										<th>Дата</th>
 										<th>Девайс</th>
+										<th>Количество</th>
+										<th>Квартал</th>
+										<th>Год</th>
 									</tr>
 									<xsl:for-each select="page/sale">
 										<tr class="summary">
@@ -794,6 +634,9 @@
 											<td><xsl:value-of select="agent_plain_name"/></td>
 											<td><xsl:value-of select="register_date"/></td>
 											<td><xsl:value-of select="device"/></td>
+											<td><xsl:value-of select="qty"/></td>
+											<td><xsl:value-of select="quartal"/></td>
+											<td><xsl:value-of select="year"/></td>
 										</tr>
 									</xsl:for-each>
 								</table>
@@ -810,31 +653,122 @@
 				<!-- modals -->
 
 
-				<div id="country_list" class="modal fade" tabindex="-1" role="dialog">
-					<div class="modal-dialog modal-sm" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button"  class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-								<h4 class="modal-title">Страна</h4>
-							</div>
-							<form action="{page/base_link}" method="post">
-								<div class="modal-body list">
-									<xsl:for-each select="page/country/country">
-										<div class="checkbox"><label><input type="checkbox" name="country" value="{.}"/><xsl:value-of select="."/></label></div>
-									</xsl:for-each>
-								</div>
-								<div class="modal-footer">
-									<button type="submit"  class="btn btn-default btn-block">Добавить выбранное</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
+				<xsl:call-template name="list_modal">
+					<xsl:with-param name="header" select="'Страна'"/>
+					<xsl:with-param name="input_name" select="'country'"/>
+					<xsl:with-param name="list" select="page/country/country"/>
+ 				</xsl:call-template>
+				<xsl:call-template name="list_modal">
+					<xsl:with-param name="header" select="'Регион'"/>
+					<xsl:with-param name="input_name" select="'region'"/>
+					<xsl:with-param name="list" select="page/region/region"/>
+				</xsl:call-template>
+				<xsl:call-template name="list_modal">
+					<xsl:with-param name="header" select="'Город'"/>
+					<xsl:with-param name="input_name" select="'city'"/>
+					<xsl:with-param name="list" select="page/city/city"/>
+				</xsl:call-template>
+				<xsl:call-template name="list_modal">
+					<xsl:with-param name="header" select="'Дилер'"/>
+					<xsl:with-param name="input_name" select="'dealer'"/>
+					<xsl:with-param name="list" select="page/dealer/organization"/>
+				</xsl:call-template>
+				<xsl:call-template name="list_modal">
+					<xsl:with-param name="header" select="'Контрагент'"/>
+					<xsl:with-param name="input_name" select="'agent'"/>
+					<xsl:with-param name="list" select="page/agent/organization"/>
+				</xsl:call-template>
+				<xsl:call-template name="list_modal">
+					<xsl:with-param name="header" select="'Сфера'"/>
+					<xsl:with-param name="input_name" select="'branch'"/>
+					<xsl:with-param name="list" select="page/branch/branch"/>
+				</xsl:call-template>
+				<xsl:call-template name="list_modal">
+					<xsl:with-param name="header" select="'Тип товара'"/>
+					<xsl:with-param name="input_name" select="'tag'"/>
+					<xsl:with-param name="list" select="page/tag/name"/>
+				</xsl:call-template>
+				<xsl:call-template name="list_modal">
+					<xsl:with-param name="header" select="'Товар'"/>
+					<xsl:with-param name="input_name" select="'device'"/>
+					<xsl:with-param name="list" select="page/device/device"/>
+				</xsl:call-template>
+
 
 				<script src="js/bootstrap.min.js"></script>
 				<xsl:call-template name="SELECT_SCRIPT"/>
 			</body>
 		</html>
+	</xsl:template>
+
+
+	<xsl:template name="list_modal">
+		<xsl:param name="input_name"/>
+		<xsl:param name="header"/>
+		<xsl:param name="list"/>
+		<div id="{$input_name}_list" class="modal fade" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button"  class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<h4 class="modal-title"><xsl:value-of select="$header" /></h4>
+					</div>
+					<form action="{page/base_link}" method="post">
+						<div class="modal-body list">
+							<xsl:for-each select="$list">
+								<div class="checkbox"><label><input type="checkbox" name="{$input_name}" value="{.}"/><xsl:value-of select="."/></label></div>
+							</xsl:for-each>
+						</div>
+						<div class="modal-footer">
+							<button type="submit"  class="btn btn-default btn-block">Добавить выбранное</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</xsl:template>
+
+	<xsl:template name="parameter_input">
+		<xsl:param name="input_name"/>
+		<xsl:param name="header"/>
+		<xsl:param name="list"/>
+		<div class="parameter">
+			<div><xsl:value-of select="$header" />:</div>
+			<div>
+				<form action="{page/base_link}" method="post">
+					<input list="{$input_name}_l" type="text" name="{$input_name}"/>
+					<datalist id="{$input_name}_l">
+						<xsl:for-each select="$list">
+							<option value="{.}"></option>
+						</xsl:for-each>
+					</datalist>
+					<button type="submit" class="btn btn-default btn-sm">Добавить</button>
+					<button type="button" class="btn btn-default btn-sm" data-toggle="modal"
+					        data-target="#{$input_name}_list">Выбрать из списка</button>
+				</form>
+			</div>
+			<div class="chosen-values">
+				<xsl:for-each select="page/variables/*[name() = $input_name]">
+					<a href="{//page/*[name() = concat('remove_', $input_name, '_base')]}{.}"><xsl:value-of select="." /></a>
+				</xsl:for-each>
+			</div>
+		</div>
+	</xsl:template>
+
+
+	<xsl:template name="parameter_values">
+		<xsl:param name="input_name"/>
+		<xsl:param name="header"/>
+		<xsl:if test="page/variables/*[name() = $input_name]">
+			<div class="parameter">
+				<div><xsl:value-of select="$header" />:</div>
+				<div class="chosen-values">
+					<xsl:for-each select="page/variables/*[name() = $input_name]">
+						<a href="{//page/*[name() = concat('remove_', $input_name, '_base')]}{.}"><xsl:value-of select="." /></a>
+					</xsl:for-each>
+				</div>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>

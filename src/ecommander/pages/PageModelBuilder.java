@@ -65,7 +65,7 @@ import java.util.*;
 									// не перегружать файл ненужным текстом. В таком случае айтем надо обозначить как виртуальный
 		>
 		
-		<item name="device" quantifier="single" id="device" reference-var="device"> // Значит, что ID этого айтема берется из переменной device
+		<item name="device" quantifier="single" id="device" var="device"> // Значит, что ID этого айтема берется из переменной device
 			
 			// Ссылка на другую страницу. copy-page-vars - необязательный параметр, означает, что в ссылку надо 
 			// скопировать все переменные текуще страницы (не надо переписывать по одной)
@@ -87,14 +87,14 @@ import java.util.*;
 		</item>
 		
 		// Значит, что у этого айтема есть параметр code, который его уникально идентифицирует, и значение которого берется из переменной search_code
-		<item name="device" quantifier="single" id="device" reference-var="search_code" reference-parameter="code"> 
+		<item name="device" quantifier="single" id="device" var="search_code" reference-parameter="code">
 			...
 		</item>
 		
 		// По ID могут загружаться и множественные айтемы, тогда в переменной передается список ID разделенных запятой
 		// в таком случае надо указывать quantifier="mulitple"
 		// Такой вид загрузки используестя в основном только в AJAX страницах
-		<item name="device" quantifier="mulitple" id="device" reference-var="list" reference-parameter="code"> 
+		<item name="device" quantifier="mulitple" id="device" var="list" reference-parameter="code">
 			...
 		</item>
 		
@@ -518,7 +518,7 @@ import java.util.*;
 	<item .../>
 	// cache-vars - список переменных с соблюдением порядка следования, который использвуется для уникальной идентификации кешируемого айтема
 	// из значений переменных из этого списка строится имя файла с кэшем айтема
-	<item reference-var="selected_section" name="section" id="section" cacheable="true" cache-vars="selected_section city">
+	<item var="selected_section" name="section" id="section" cacheable="true" cache-vars="selected_section city">
 		...
 		<item ...>
 			<filter>

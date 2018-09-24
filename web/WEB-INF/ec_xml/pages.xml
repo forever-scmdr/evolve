@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
 
-    <page name="index" template="">
+    <page name="index" template="index">
 		<request>
 			<var name="m_from" scope="session"/>
 			<var name="m_to" scope="session"/>
@@ -9,32 +9,47 @@
 			<var name="region"/>
 			<var name="city"/>
 			<var name="dealer"/>
+			<var name="agent"/>
+			<var name="branch"/>
 			<var name="tag"/>
+			<var name="device"/>
+			<var name="dealers"/>
+			<var name="selected"/>
 		</request>
+	    <command class="extra.CreateQuartals"/>
 	    <list item="sale" id="sale">
 		    <filter>
 			    <parameter name="register_date" compare="SOME" sign="&gt;="><var var="m_from"/></parameter>
 			    <parameter name="register_date" compare="SOME" sign="&lt;="><var var="m_to"/></parameter>
-			    <parameter name="tag" compare="ALL"><var var="tag"/></parameter>
+			    <parameter name="tag" compare="ANY"><var var="tag"/></parameter>
+			    <parameter name="device" compare="ANY"><var var="device"/></parameter>
 			    <parent item="agent" assoc="trade">
+				    <parameter name="country" compare="ANY"><var var="country"/></parameter>
+				    <parameter name="region" compare="ANY"><var var="region"/></parameter>
 				    <parameter name="city" compare="ANY"><var var="city"/></parameter>
+				    <parameter name="organization" compare="ANY"><var var="agent"/></parameter>
+				    <parameter name="branch" compare="ANY"><var var="branch"/></parameter>
 			    </parent>
 			    <parent item="dealer" assoc="trade">
-				    <parameter name="code" compare="ANY"><var var="dealer"/></parameter>
+				    <parameter name="organization" compare="ANY"><var var="dealer"/></parameter>
 			    </parent>
 			    <sorting direction="DESC"><var value="register_date" /></sorting>
 		    </filter>
 	    </list>
-	    <list item="agent">
+	    <list item="agent" tag="all_agent">
 		    <filter>
 			    <successor ref="sale" assoc="trade"/>
 		    </filter>
 	    </list>
-	    <list item="dealer">
+	    <list item="dealer" tag="all_dealer">
 		    <filter>
 			    <successor ref="sale" assoc="trade"/>
 		    </filter>
 	    </list>
+
+		<list item="dealer" tag="selected_dealer" id="selected_dealer" var="selected">
+
+		</list>
 
 	    <!-- Все страны -->
 	    <list item="agent" tag="country" id="country">
@@ -58,17 +73,65 @@
 		    <aggregation parameter="city"/>
 	    </list>
 
-	    <link name="set_dates" target="index">
-		    <var name="country" var="country"/>
-		    <var name="city" var="city"/>
-		    <var name="dealer" var="dealer"/>
-		    <var name="tag" var="tag"/>
+	    <!-- Все агенты (названия) -->
+	    <list item="agent" tag="agent">
+		    <filter>
+			    <parameter name="country" compare="SOME"><var var="country" /></parameter>
+			    <parameter name="region" compare="ANY"><var var="region" /></parameter>
+			    <parameter name="city" compare="ANY"><var var="city" /></parameter>
+		    </filter>
+		    <aggregation parameter="organization"/>
+	    </list>
+
+	    <!-- Все сферы деятельности агентов -->
+	    <list item="agent" tag="branch">
+		    <aggregation parameter="branch"/>
+	    </list>
+
+	    <!-- Все дилеры (названия) -->
+	    <list item="dealer" tag="dealer">
+		    <aggregation parameter="organization"/>
+	    </list>
+
+	    <!-- Все тэги товаров -->
+	    <list item="type_mask" tag="tag"/>
+
+	    <!-- Все товары -->
+	    <list item="sale" tag="device">
+	        <aggregation parameter="device"/>
+	    </list>
+
+	    <link name="set_dates" target="index" copy-page-vars="yes">
+		    <var name="m_from" value=""/>
+		    <var name="m_to" value=""/>
 	    </link>
 
 	    <link name="base_link" target="index" copy-page-vars="yes"/>
 	    <link name="remove_country_base" target="index" copy-page-vars="yes">
 		    <var name="-country" value=""/>
 	    </link>
+	    <link name="remove_region_base" target="index" copy-page-vars="yes">
+		    <var name="-region" value=""/>
+	    </link>
+	    <link name="remove_city_base" target="index" copy-page-vars="yes">
+		    <var name="-city" value=""/>
+	    </link>
+	    <link name="remove_dealer_base" target="index" copy-page-vars="yes">
+		    <var name="-dealer" value=""/>
+	    </link>
+	    <link name="remove_agent_base" target="index" copy-page-vars="yes">
+		    <var name="-agent" value=""/>
+	    </link>
+	    <link name="remove_branch_base" target="index" copy-page-vars="yes">
+		    <var name="-branch" value=""/>
+	    </link>
+	    <link name="remove_tag_base" target="index" copy-page-vars="yes">
+		    <var name="-tag" value=""/>
+	    </link>
+	    <link name="remove_device_base" target="index" copy-page-vars="yes">
+		    <var name="-device" value=""/>
+	    </link>
+	    <link name="index_link" target="index"/>
     </page>
 
 

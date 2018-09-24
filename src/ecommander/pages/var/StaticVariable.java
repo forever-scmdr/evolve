@@ -29,7 +29,7 @@ public class StaticVariable extends Variable {
 	 * @param value
 	 */
 	public void addValue(Object value) {
-		if (StringUtils.isNotBlank(value.toString()))
+		if (StringUtils.isNotBlank(value.toString()) && !values.contains(value))
 			values.add(value);
 	}
 

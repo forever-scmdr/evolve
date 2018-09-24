@@ -142,50 +142,50 @@
 							<div id="subitems">
 								<div style="min-height: 100px; margin-bottom: 10px;"/>
 							</div>
-							<div class="list additional">
-								<h4>Дополнительно</h4>
-								<ul class="no-drag">
-									<li class="visible" title="Загрзить товары из Yandex Market">
-										<a href="integrate/?action=start">Загрзить товары из Yandex Market файла</a>
-									</li>
-									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
-										<a href="generate_sitemap">Обновить карту сайта</a>
-									</li>
-									<li class="visible" title="Очищает все кеши. Длительная и ресурсоемкая операция.">
-										<a href="admin_drop_all_caches.action">Очистить все кеши (очень долго)</a>
-									</li>
-									<li class="visible" title="Обновить список товаров для полнотекстового поиска">
-										<a href="admin_reindex.action">Переиндексация</a>
-									</li>
-									<!--<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">-->
-										<!--<a href="admin_domains_initialize.domain">-->
-											<!--Управление доменами-->
+							<!--<div class="list additional">-->
+								<!--<h4>Дополнительно</h4>-->
+								<!--<ul class="no-drag">-->
+									<!--<li class="visible" title="Загрзить товары из Yandex Market">-->
+										<!--<a href="integrate/?action=start">Загрзить товары из Yandex Market файла</a>-->
+									<!--</li>-->
+									<!--<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">-->
+										<!--<a href="generate_sitemap">Обновить карту сайта</a>-->
+									<!--</li>-->
+									<!--<li class="visible" title="Очищает все кеши. Длительная и ресурсоемкая операция.">-->
+										<!--<a href="admin_drop_all_caches.action">Очистить все кеши (очень долго)</a>-->
+									<!--</li>-->
+									<!--<li class="visible" title="Обновить список товаров для полнотекстового поиска">-->
+										<!--<a href="admin_reindex.action">Переиндексация</a>-->
+									<!--</li>-->
+									<!--&lt;!&ndash;<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">&ndash;&gt;-->
+										<!--&lt;!&ndash;<a href="admin_domains_initialize.domain">&ndash;&gt;-->
+											<!--&lt;!&ndash;Управление доменами&ndash;&gt;-->
+										<!--&lt;!&ndash;</a>&ndash;&gt;-->
+									<!--&lt;!&ndash;</li>&ndash;&gt;-->
+									<!--&lt;!&ndash;<li class="visible" title="Измениение паролей, создание и удаление пользователей">&ndash;&gt;-->
+										<!--&lt;!&ndash;<a href="admin_users_initialize.user">&ndash;&gt;-->
+											<!--&lt;!&ndash;Управление пользователями&ndash;&gt;-->
+										<!--&lt;!&ndash;</a>&ndash;&gt;-->
+									<!--&lt;!&ndash;</li>&ndash;&gt;-->
+									<!--<li class="visible" title="Содание новых типов объектов, управление ранее созданными">-->
+										<!--<a href="admin_types_init.type">-->
+											<!--Управление классами объектов-->
 										<!--</a>-->
 									<!--</li>-->
-									<!--<li class="visible" title="Измениение паролей, создание и удаление пользователей">-->
-										<!--<a href="admin_users_initialize.user">-->
-											<!--Управление пользователями-->
+									<!--<li class="visible" title="Содание новых типов объектов, управление ранее созданными">-->
+										<!--<a href="update_prices?action=start" target="_blank">-->
+											<!--Запустить обновление цен-->
 										<!--</a>-->
 									<!--</li>-->
-									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
-										<a href="admin_types_init.type">
-											Управление классами объектов
-										</a>
-									</li>
-									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
-										<a href="update_prices?action=start" target="_blank">
-											Запустить обновление цен
-										</a>
-									</li>
-									<li class="visible" title="Создать YML-файл">
-										<a href="create_yml_file" target="_blank" download="yml_catalog.xml">
-											Создать YML-файл
-										</a>
-									</li>
-								</ul>
-							</div>
+									<!--<li class="visible" title="Создать YML-файл">-->
+										<!--<a href="create_yml_file" target="_blank" download="yml_catalog.xml">-->
+											<!--Создать YML-файл-->
+										<!--</a>-->
+									<!--</li>-->
+								<!--</ul>-->
+							<!--</div>-->
 							<div class="list additional">
-								<h4>Парсинг</h4>
+								<h4>Действия</h4>
 								<ul class="no-drag">
 									<li class="visible" title="Разобрать отчеты">
 										<a href="integrate/?action=start" target="_blank">Разобрать отчеты</a>

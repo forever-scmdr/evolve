@@ -209,10 +209,10 @@ public abstract class BasicServlet extends HttpServlet {
 				params.put(paramName, Arrays.asList(request.getParameterMap().get(paramName)));
 			}
 		}
-		// Удалить уже установленные параметры (которые переданы через исходную ссылку)
-		for (VariablePE var : link.getAllVariables()) {
-			params.remove(var.getName());
-		}
+//		// Удалить уже установленные параметры (которые переданы через исходную ссылку)
+//		for (VariablePE var : link.getAllVariables()) {
+//			params.remove(var.getName());
+//		}
 		// Перебираются все входные парамтеры. (повторные вхождения переменных уже удалены)
 		for (String paramName : params.keySet()) {
 			List<String> values = params.get(paramName);
