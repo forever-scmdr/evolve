@@ -4,6 +4,9 @@
 	<xsl:strip-space elements="*"/>
 
 
+	<xsl:variable name="selected_id" select="page/variables/selected"/>
+	<xsl:variable name="selected" select="page/selected"/>
+
 	<xsl:variable name="now" select="current-date()"/>
 	<xsl:variable name="now_quartal" select="ceiling(month-from-date($now) div 3)"/>
 	<xsl:variable name="max_year" select="if ($now_quartal = 1) then year-from-date($now) - 1 else year-from-date($now)"/>
@@ -24,6 +27,9 @@
 	<xsl:variable name="years_quartals" select="tokenize(page/variables/quartals, '!')"/>
 
 	<xsl:variable name="sales" select="page/sale"/>
+	<xsl:variable name="selected_sales" select="page/sale[dealer_code = $selected/code]"/>
+
+
 
 	<xsl:template match="/">
 		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
@@ -106,547 +112,518 @@
 							</div>
 						</div>
 					</div>
-					<div class="row p-t no-print">
-						<div class="col-md-12">
-							<ul class="nav nav-tabs" role="tablist">
-								<li class="active"><a href="#" >Дилеры</a></li>
-								<li><a href="#">Контрагенты</a></li>
-								<li><a href="#">Товары</a></li>
-							</ul>
+					<xsl:if test="page/variables/m_to">
+						<div class="row p-t no-print">
+							<div class="col-md-12">
+								<ul class="nav nav-tabs" role="tablist">
+									<li class="active"><a href="#" >Дилеры</a></li>
+									<li><a href="#">Контрагенты</a></li>
+									<li><a href="#">Товары</a></li>
+								</ul>
+							</div>
 						</div>
-					</div>
-					<div class="row p-t-small no-print">
-						<div class="col-md-12">
-							<button type="button" class="btn btn-default btn-sm" onclick="$('#params_form').toggle(200)">Подбор по параметрам</button>
-							<!--<div class="search">-->
-								<!--<input type="text" value="Поиск по названию"/>-->
-								<!--<button type="button" class="btn btn-default btn-sm">Найти</button>-->
-							<!--</div>-->
+						<div class="row p-t-small no-print">
+							<div class="col-md-12">
+								<button type="button" class="btn btn-default btn-sm" onclick="$('#params_form').toggle(200)">Подбор по параметрам</button>
+								<!--<div class="search">-->
+									<!--<input type="text" value="Поиск по названию"/>-->
+									<!--<button type="button" class="btn btn-default btn-sm">Найти</button>-->
+								<!--</div>-->
+							</div>
+							<div class="col-md-12" id="params_form">
+								<div class="parameters-container m-t-small no-print" style="display: block;">
+									<h3 class="no-m-t m-b">Подбор по параметрам</h3>
+									<div class="parameters">
+										<xsl:call-template name="parameter_input">
+											<xsl:with-param name="input_name" select="'country'"/>
+											<xsl:with-param name="header" select="'Страна'"/>
+											<xsl:with-param name="list" select="page/country/country"/>
+										</xsl:call-template>
+										<xsl:call-template name="parameter_input">
+											<xsl:with-param name="input_name" select="'region'"/>
+											<xsl:with-param name="header" select="'Регион'"/>
+											<xsl:with-param name="list" select="page/region/region"/>
+										</xsl:call-template>
+										<xsl:call-template name="parameter_input">
+											<xsl:with-param name="input_name" select="'city'"/>
+											<xsl:with-param name="header" select="'Город'"/>
+											<xsl:with-param name="list" select="page/city/city"/>
+										</xsl:call-template>
+										<xsl:call-template name="parameter_input">
+											<xsl:with-param name="input_name" select="'dealer'"/>
+											<xsl:with-param name="header" select="'Дилер'"/>
+											<xsl:with-param name="list" select="page/dealer/organization"/>
+										</xsl:call-template>
+										<xsl:call-template name="parameter_input">
+											<xsl:with-param name="input_name" select="'agent'"/>
+											<xsl:with-param name="header" select="'Контрагент'"/>
+											<xsl:with-param name="list" select="page/agent/organization"/>
+										</xsl:call-template>
+										<xsl:call-template name="parameter_input">
+											<xsl:with-param name="input_name" select="'branch'"/>
+											<xsl:with-param name="header" select="'Сфера'"/>
+											<xsl:with-param name="list" select="page/branch/branch"/>
+										</xsl:call-template>
+										<xsl:call-template name="parameter_input">
+											<xsl:with-param name="input_name" select="'tag'"/>
+											<xsl:with-param name="header" select="'Тип товара'"/>
+											<xsl:with-param name="list" select="page/tag/name"/>
+										</xsl:call-template>
+										<xsl:call-template name="parameter_input">
+											<xsl:with-param name="input_name" select="'device'"/>
+											<xsl:with-param name="header" select="'Товар'"/>
+											<xsl:with-param name="list" select="page/device/device"/>
+										</xsl:call-template>
+									</div>
+									<!--<button type="button" class="btn btn-success">Подобрать по параметрам</button>-->
+									<a href="{page/index_link}" class="btn btn-info">Очистить критерии</a>
+								</div>
+							</div>
 						</div>
-						<div class="col-md-12" id="params_form">
-							<div class="parameters-container m-t-small no-print" style="display: block;">
-								<h3 class="no-m-t m-b">Подбор по параметрам</h3>
+						<div class="row p-t">
+							<div class="col-md-12">
+								<h2>Статистика продаж дилеров с
+									<xsl:value-of select="$quartal_from"/> кв. <xsl:value-of select="$year_from"/> года по
+									<xsl:value-of select="$quartal_to"/> кв. <xsl:value-of select="$year_to"/> года
+								</h2>
 								<div class="parameters">
-									<xsl:call-template name="parameter_input">
-										<xsl:with-param name="input_name" select="'country'"/>
+									<xsl:call-template name="parameter_values">
 										<xsl:with-param name="header" select="'Страна'"/>
-										<xsl:with-param name="list" select="page/country/country"/>
+										<xsl:with-param name="input_name" select="'country'"/>
 									</xsl:call-template>
-									<xsl:call-template name="parameter_input">
-										<xsl:with-param name="input_name" select="'region'"/>
+									<xsl:call-template name="parameter_values">
 										<xsl:with-param name="header" select="'Регион'"/>
-										<xsl:with-param name="list" select="page/region/region"/>
+										<xsl:with-param name="input_name" select="'region'"/>
 									</xsl:call-template>
-									<xsl:call-template name="parameter_input">
-										<xsl:with-param name="input_name" select="'city'"/>
+									<xsl:call-template name="parameter_values">
 										<xsl:with-param name="header" select="'Город'"/>
-										<xsl:with-param name="list" select="page/city/city"/>
+										<xsl:with-param name="input_name" select="'city'"/>
 									</xsl:call-template>
-									<xsl:call-template name="parameter_input">
-										<xsl:with-param name="input_name" select="'dealer'"/>
+									<xsl:call-template name="parameter_values">
 										<xsl:with-param name="header" select="'Дилер'"/>
-										<xsl:with-param name="list" select="page/dealer/organization"/>
+										<xsl:with-param name="input_name" select="'dealer'"/>
 									</xsl:call-template>
-									<xsl:call-template name="parameter_input">
-										<xsl:with-param name="input_name" select="'agent'"/>
+									<xsl:call-template name="parameter_values">
 										<xsl:with-param name="header" select="'Контрагент'"/>
-										<xsl:with-param name="list" select="page/agent/organization"/>
+										<xsl:with-param name="input_name" select="'agent'"/>
 									</xsl:call-template>
-									<xsl:call-template name="parameter_input">
-										<xsl:with-param name="input_name" select="'branch'"/>
+									<xsl:call-template name="parameter_values">
 										<xsl:with-param name="header" select="'Сфера'"/>
-										<xsl:with-param name="list" select="page/branch/branch"/>
+										<xsl:with-param name="input_name" select="'branch'"/>
 									</xsl:call-template>
-									<xsl:call-template name="parameter_input">
-										<xsl:with-param name="input_name" select="'tag'"/>
+									<xsl:call-template name="parameter_values">
 										<xsl:with-param name="header" select="'Тип товара'"/>
-										<xsl:with-param name="list" select="page/tag/name"/>
+										<xsl:with-param name="input_name" select="'tag'"/>
 									</xsl:call-template>
-									<xsl:call-template name="parameter_input">
-										<xsl:with-param name="input_name" select="'device'"/>
+									<xsl:call-template name="parameter_values">
 										<xsl:with-param name="header" select="'Товар'"/>
-										<xsl:with-param name="list" select="page/device/device"/>
+										<xsl:with-param name="input_name" select="'device'"/>
 									</xsl:call-template>
 								</div>
-								<!--<button type="button" class="btn btn-success">Подобрать по параметрам</button>-->
-								<a href="{page/index_link}" class="btn btn-info">Очистить критерии</a>
-							</div>
-						</div>
-					</div>
-					<div class="row p-t">
-						<div class="col-md-12">
-							<h2>Статистика продаж дилеров с
-								<xsl:value-of select="$quartal_from"/> кв. <xsl:value-of select="$year_from"/> года по
-								<xsl:value-of select="$quartal_to"/> кв. <xsl:value-of select="$year_to"/> года
-							</h2>
-							<div class="parameters">
-								<xsl:call-template name="parameter_values">
-									<xsl:with-param name="header" select="'Страна'"/>
-									<xsl:with-param name="input_name" select="'country'"/>
-								</xsl:call-template>
-								<xsl:call-template name="parameter_values">
-									<xsl:with-param name="header" select="'Регион'"/>
-									<xsl:with-param name="input_name" select="'region'"/>
-								</xsl:call-template>
-								<xsl:call-template name="parameter_values">
-									<xsl:with-param name="header" select="'Город'"/>
-									<xsl:with-param name="input_name" select="'city'"/>
-								</xsl:call-template>
-								<xsl:call-template name="parameter_values">
-									<xsl:with-param name="header" select="'Дилер'"/>
-									<xsl:with-param name="input_name" select="'dealer'"/>
-								</xsl:call-template>
-								<xsl:call-template name="parameter_values">
-									<xsl:with-param name="header" select="'Контрагент'"/>
-									<xsl:with-param name="input_name" select="'agent'"/>
-								</xsl:call-template>
-								<xsl:call-template name="parameter_values">
-									<xsl:with-param name="header" select="'Сфера'"/>
-									<xsl:with-param name="input_name" select="'branch'"/>
-								</xsl:call-template>
-								<xsl:call-template name="parameter_values">
-									<xsl:with-param name="header" select="'Тип товара'"/>
-									<xsl:with-param name="input_name" select="'tag'"/>
-								</xsl:call-template>
-								<xsl:call-template name="parameter_values">
-									<xsl:with-param name="header" select="'Товар'"/>
-									<xsl:with-param name="input_name" select="'device'"/>
-								</xsl:call-template>
-							</div>
-							<div class="table-responsive">
-								<table class="data-table main-table">
-									<tr>
-										<th class="no-print"><input type="checkbox"/></th>
-										<th>№</th>
-										<th>Организация</th>
-										<th>Страна</th>
-										<th>Город</th>
-										<xsl:for-each select="$years_quartals">
-											<xsl:variable name="parts" select="tokenize(., '\*')"/>
-											<th><xsl:value-of select="$parts[1]"/>кв. <xsl:value-of select="$parts[2]"/></th>
-										</xsl:for-each>
-										<th>Всего</th>
-									</tr>
-									<xsl:for-each select="page/all_dealer">
-										<xsl:variable name="code" select="code"/>
-										<tr>
-											<td class="no-print"><input type="checkbox"/></td>
-											<td><xsl:value-of select="position()" />.</td>
-											<td><xsl:value-of select="organization" /></td>
-											<td><xsl:value-of select="country" /></td>
-											<td><xsl:value-of select="city" /></td>
-											<xsl:for-each select="$years_quartals">
-												<xsl:variable name="parts" select="tokenize(., '\*')"/>
-												<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2] and dealer_code = $code]"/>
-												<td><xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" /></td>
+								<form method="post" action="{page/select_link}">
+									<div class="table-responsive">
+										<table class="data-table main-table" id="main_table">
+											<tr>
+												<th class="no-print">
+													<input type="checkbox"
+													       onclick="$('#main_table').find('input[type=checkbox]').prop('checked', $(this).prop('checked'))"/>
+												</th>
+												<th>№</th>
+												<th>Организация</th>
+												<th>Страна</th>
+												<th>Город</th>
+												<xsl:for-each select="$years_quartals">
+													<xsl:variable name="parts" select="tokenize(., '\*')"/>
+													<th><xsl:value-of select="$parts[1]"/>кв. <xsl:value-of select="$parts[2]"/></th>
+												</xsl:for-each>
+												<th>Всего</th>
+											</tr>
+											<xsl:for-each select="page/all_dealer">
+												<xsl:variable name="code" select="code"/>
+												<tr>
+													<td class="no-print">
+														<input type="checkbox" name="selected" value="{@id}">
+															<xsl:if test="@id = $selected_id">
+																<xsl:attribute name="checked" select="'checked'"/>
+															</xsl:if>
+														</input>
+													</td>
+													<td><xsl:value-of select="position()" />.</td>
+													<td><xsl:value-of select="organization" /></td>
+													<td><xsl:value-of select="country" /></td>
+													<td><xsl:value-of select="city" /></td>
+													<xsl:for-each select="$years_quartals">
+														<xsl:variable name="parts" select="tokenize(., '\*')"/>
+														<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2] and dealer_code = $code]"/>
+														<td><xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" /></td>
+													</xsl:for-each>
+													<td><xsl:value-of select="sum($sales[dealer_code = $code]/qty)" /></td>
+												</tr>
 											</xsl:for-each>
-											<td><xsl:value-of select="sum($sales[dealer_code = $code]/qty)" /></td>
-										</tr>
-									</xsl:for-each>
-									<tr class="summary">
-										<td class="no-print"><input type="checkbox"/></td>
-										<td></td>
-										<td>Итого:</td>
-										<td></td>
-										<td></td>
-										<xsl:for-each select="$years_quartals">
-											<xsl:variable name="parts" select="tokenize(., '\*')"/>
-											<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2]]"/>
-											<td><xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" /></td>
-										</xsl:for-each>
-										<td><xsl:value-of select="sum($sales/qty)" /></td>
-									</tr>
-								</table>
-							</div>
-							<div class="subtable-controls no-print">
-								<select name="" id="">
-									<option value="">Все строки</option>
-									<option value="">Итого</option>
-								</select>
-								<button type="button" class="btn btn-default btn-sm">Построить график</button>
-								<button type="button" class="btn btn-default btn-sm">Показать детализацию</button>
+											<tr class="summary">
+												<td class="no-print"></td>
+												<td></td>
+												<td>Итого:</td>
+												<td></td>
+												<td></td>
+												<xsl:for-each select="$years_quartals">
+													<xsl:variable name="parts" select="tokenize(., '\*')"/>
+													<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2]]"/>
+													<td><xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" /></td>
+												</xsl:for-each>
+												<td><xsl:value-of select="sum($sales/qty)" /></td>
+											</tr>
+										</table>
+									</div>
+									<div class="subtable-controls no-print">
+										<select name="" id="">
+											<option value="">Все строки</option>
+											<option value="">Итого</option>
+										</select>
+										<button type="button" class="btn btn-default btn-sm">Построить график</button>
+										<button type="submit" class="btn btn-default btn-sm">Показать детализацию</button>
 
+									</div>
+								</form>
 							</div>
 						</div>
-					</div>
-					<div class="row p-t details">
-						<div class="col-md-12">
-							<h2>Детализация</h2>
-							<div class="no-print">
-								<select name="" id="">
-									<option value="">Общая для всех</option>
-									<option value="">По дилерам</option>
-								</select>
-								<select name="" id="">
-									<option value="">Тип, вид, товары</option>
-									<option value="">Тип, вид</option>
-									<option value="">Тип</option>
-									<option value="">Контрагенты</option>
-								</select>&#160;
-								<label class="checkbox-inline"><!-- Только если выбран пункт Контрагенты -->
-									<input type="checkbox" id="inlineCheckbox2" value="option2"/>Разбить по контрагентам
-								</label>
-							</div>
-							<h3 class="p-t-small">Все дилеры из выборки</h3>
-							<p>1 кв. 2016 - 3 кв. 2017</p>
-							<div class="table-responsive">
-								<table class="data-table">
-									<tr>
-										<th>№</th>
-										<th>Организация</th>
-										<th>Страна</th>
-										<th>Город</th>
-										<th>1 кв. 2016</th>
-										<th>2 кв. 2016</th>
-										<th>3 кв. 2016</th>
-										<th>4 кв. 2016</th>
-										<th>за 2016</th>
-										<th>1 кв. 2017</th>
-										<th>2 кв. 2017</th>
-										<th>3 кв. 2017</th>
-										<th>4 кв. 2017</th>
-										<th>за 2017</th>
-										<th>Всего</th>
-									</tr>
-									<tr>
-										<td>1.</td>
-										<td>Автоматикапро</td>
-										<td>РФ</td>
-										<td>Москва</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td>2.</td>
-										<td>Белгазналадка</td>
-										<td>РФ</td>
-										<td>Москва</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td>3.</td>
-										<td>Брандстройпроект</td>
-										<td>РФ</td>
-										<td>Москва</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr class="summary">
-										<td></td>
-										<td>Итого:</td>
-										<td></td>
-										<td></td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-								</table>
-							</div>
-							<div class="subtable-controls no-print">
-								<select name="" id="">
-									<option value="">Все строки</option>
-									<option value="">Итого</option>
-								</select>
-								<button type="button" class="btn btn-default btn-sm">Построить график</button>
-								<button type="button" class="btn btn-info btn-sm">Удалить график</button>
-							</div>
-							<div class="chart m-t-small">
-								<h3 class="no-m-t">Статистика продаж дилеров с 1 кв. 2016 по 3 кв. 2017</h3>
-								<p>Надо выводить настройки фильтрации, чтобы было понятно, кто выбран.</p>
-							</div>
-							<h3 class="p-t">НПФ Раско → Белэнергокомплект</h3>
-							<p>1 кв. 2016 - 3 кв. 2017</p>
-							<div class="table-responsive">
-								<table class="data-table">
-									<tr>
-										<th>Название</th>
-										<th>1 кв. 2016</th>
-										<th>2 кв. 2016</th>
-										<th>3 кв. 2016</th>
-										<th>4 кв. 2016</th>
-										<th>за 2016</th>
-										<th>1 кв. 2017</th>
-										<th>2 кв. 2017</th>
-										<th>3 кв. 2017</th>
-										<th>4 кв. 2017</th>
-										<th>за 2017</th>
-										<th>Всего</th>
-									</tr>
-									<tr class="accent">
-										<td>Клапаны</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr class="accent">
-										<td>- <strong>DN15</strong></td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td>- - Клапан ВН1/2В-1К</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td>- - Клапан ВН1/2В-1КЕ</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td>- - Клапан ВН1/2В-1КЕ=24В</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td>- - Клапан ВН1/2Н-0,2</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td>- - Клапан ВН1/2Н-0,2  =24В</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr class="accent">
-										<td><strong>Фильтры</strong></td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td>- - Фильтр ФН1 1/2-1 м</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td>- - Фильтр ФН1 1/2-2</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td>- - Фильтр ФН1 1/2-2 УХЛ1</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td>- - Фильтр ФН1 1/2-2 фл.</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr>
-										<td>- - Фильтр ФН1 1/2-2 фл. СТ.</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-									<tr class="summary">
-										<td>Итого:</td>
-										<td>123</td>
-										<td>157</td>
-										<td>201</td>
-										<td>120</td>
-										<td>601</td>
-										<td>165</td>
-										<td>183</td>
-										<td>195</td>
-										<td>-</td>
-										<td>543</td>
-										<td>944</td>
-									</tr>
-								</table>
-							</div>
-							<div class="subtable-controls no-print">
-								<select name="" id="">
-									<option value="">Все строки</option>
-									<option value="">Итого</option>
-								</select>
-								<button type="button" class="btn btn-default btn-sm">Построить график</button>
-							</div>
+						<xsl:if test="page/selected">
+							<div class="row p-t details">
+								<div class="col-md-12">
+									<h2>Детализация</h2>
+									<div class="no-print">
+										<select name="" id="">
+											<option value="">Общая для всех</option>
+											<option value="">По дилерам</option>
+										</select>
+										<select name="" id="">
+											<option value="">Тип, вид, товары</option>
+											<option value="">Тип, вид</option>
+											<option value="">Тип</option>
+											<option value="">Контрагенты</option>
+										</select>&#160;
+										<label class="checkbox-inline"><!-- Только если выбран пункт Контрагенты -->
+											<input type="checkbox" id="inlineCheckbox2" value="option2"/>Разбить по контрагентам
+										</label>
+									</div>
+									<h3 class="p-t-small">Все дилеры из выборки</h3>
+									<p>
+										<xsl:value-of select="$quartal_from"/> кв. <xsl:value-of select="$year_from"/> -
+										<xsl:value-of select="$quartal_to"/> кв. <xsl:value-of select="$year_to"/>
+									</p>
+									<div class="table-responsive">
+										<table class="data-table">
+											<tr>
+												<th>№</th>
+												<th>Организация</th>
+												<th>Страна</th>
+												<th>Город</th>
+												<xsl:for-each select="$years_quartals">
+													<xsl:variable name="parts" select="tokenize(., '\*')"/>
+													<th><xsl:value-of select="$parts[1]"/>кв. <xsl:value-of select="$parts[2]"/></th>
+												</xsl:for-each>
+												<th>Всего</th>
+											</tr>
+											<xsl:for-each select="page/selected">
+												<xsl:variable name="code" select="code"/>
+												<tr>
+													<td><xsl:value-of select="position()" />.</td>
+													<td><xsl:value-of select="organization" /></td>
+													<td><xsl:value-of select="country" /></td>
+													<td><xsl:value-of select="city" /></td>
+													<xsl:for-each select="$years_quartals">
+														<xsl:variable name="parts" select="tokenize(., '\*')"/>
+														<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2] and dealer_code = $code]"/>
+														<td><xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" /></td>
+													</xsl:for-each>
+													<td><xsl:value-of select="sum($sales[dealer_code = $code]/qty)" /></td>
+												</tr>
+											</xsl:for-each>
+											<tr class="summary">
+												<td></td>
+												<td>Итого:</td>
+												<td></td>
+												<td></td>
+												<xsl:for-each select="$years_quartals">
+													<xsl:variable name="parts" select="tokenize(., '\*')"/>
+													<xsl:variable name="sale" select="$selected_sales[quartal = $parts[1] and year = $parts[2]]"/>
+													<td><xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" /></td>
+												</xsl:for-each>
+												<td><xsl:value-of select="sum($selected_sales/qty)" /></td>
+											</tr>
+										</table>
+									</div>
+									<div class="subtable-controls no-print">
+										<select name="" id="">
+											<option value="">Все строки</option>
+											<option value="">Итого</option>
+										</select>
+										<button type="button" class="btn btn-default btn-sm">Построить график</button>
+										<button type="button" class="btn btn-info btn-sm">Удалить график</button>
+									</div>
+									<div class="chart m-t-small">
+										<h3 class="no-m-t">Статистика продаж дилеров с 1 кв. 2016 по 3 кв. 2017</h3>
+										<p>Надо выводить настройки фильтрации, чтобы было понятно, кто выбран.</p>
+									</div>
+									<h3 class="p-t">НПФ Раско → Белэнергокомплект</h3>
+									<p>1 кв. 2016 - 3 кв. 2017</p>
+									<div class="table-responsive">
+										<table class="data-table">
+											<tr>
+												<th>Название</th>
+												<th>1 кв. 2016</th>
+												<th>2 кв. 2016</th>
+												<th>3 кв. 2016</th>
+												<th>4 кв. 2016</th>
+												<th>за 2016</th>
+												<th>1 кв. 2017</th>
+												<th>2 кв. 2017</th>
+												<th>3 кв. 2017</th>
+												<th>4 кв. 2017</th>
+												<th>за 2017</th>
+												<th>Всего</th>
+											</tr>
+											<tr class="accent">
+												<td>Клапаны</td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr class="accent">
+												<td>- <strong>DN15</strong></td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr>
+												<td>- - Клапан ВН1/2В-1К</td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr>
+												<td>- - Клапан ВН1/2В-1КЕ</td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr>
+												<td>- - Клапан ВН1/2В-1КЕ=24В</td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr>
+												<td>- - Клапан ВН1/2Н-0,2</td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr>
+												<td>- - Клапан ВН1/2Н-0,2  =24В</td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr class="accent">
+												<td><strong>Фильтры</strong></td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr>
+												<td>- - Фильтр ФН1 1/2-1 м</td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr>
+												<td>- - Фильтр ФН1 1/2-2</td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr>
+												<td>- - Фильтр ФН1 1/2-2 УХЛ1</td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr>
+												<td>- - Фильтр ФН1 1/2-2 фл.</td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr>
+												<td>- - Фильтр ФН1 1/2-2 фл. СТ.</td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+											<tr class="summary">
+												<td>Итого:</td>
+												<td>123</td>
+												<td>157</td>
+												<td>201</td>
+												<td>120</td>
+												<td>601</td>
+												<td>165</td>
+												<td>183</td>
+												<td>195</td>
+												<td>-</td>
+												<td>543</td>
+												<td>944</td>
+											</tr>
+										</table>
+									</div>
+									<div class="subtable-controls no-print">
+										<select name="" id="">
+											<option value="">Все строки</option>
+											<option value="">Итого</option>
+										</select>
+										<button type="button" class="btn btn-default btn-sm">Построить график</button>
+									</div>
 
 
 
-							<h1>Продажи (<xsl:value-of select="count(page/sale)" />)</h1>
-							<div class="table-responsive">
-								<table class="data-table">
-									<tr>
-										<th>Дилер</th>
-										<th>Покупатель</th>
-										<th>Дата</th>
-										<th>Девайс</th>
-										<th>Количество</th>
-										<th>Квартал</th>
-										<th>Год</th>
-									</tr>
-									<xsl:for-each select="page/sale">
-										<tr class="summary">
-											<td><xsl:value-of select="dealer_code"/></td>
-											<td><xsl:value-of select="agent_plain_name"/></td>
-											<td><xsl:value-of select="register_date"/></td>
-											<td><xsl:value-of select="device"/></td>
-											<td><xsl:value-of select="qty"/></td>
-											<td><xsl:value-of select="quartal"/></td>
-											<td><xsl:value-of select="year"/></td>
-										</tr>
-									</xsl:for-each>
-								</table>
+									<h1>Продажи (<xsl:value-of select="count(page/sale)" />)</h1>
+									<div class="table-responsive">
+										<table class="data-table">
+											<tr>
+												<th>Дилер</th>
+												<th>Покупатель</th>
+												<th>Дата</th>
+												<th>Товар</th>
+												<th>Количество</th>
+												<th>Квартал</th>
+												<th>Год</th>
+											</tr>
+											<xsl:for-each select="page/sale">
+												<tr class="summary">
+													<td><xsl:value-of select="dealer_code"/></td>
+													<td><xsl:value-of select="agent_plain_name"/></td>
+													<td><xsl:value-of select="register_date"/></td>
+													<td><xsl:value-of select="device"/></td>
+													<td><xsl:value-of select="qty"/></td>
+													<td><xsl:value-of select="quartal"/></td>
+													<td><xsl:value-of select="year"/></td>
+												</tr>
+											</xsl:for-each>
+										</table>
+									</div>
+
+
+
+
+								</div>
 							</div>
-
-
-							
-							
-						</div>
-					</div>
+						</xsl:if>
+					</xsl:if>
 				</div>
 
 

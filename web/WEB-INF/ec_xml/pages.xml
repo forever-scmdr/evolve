@@ -15,6 +15,9 @@
 			<var name="device"/>
 			<var name="dealers"/>
 			<var name="selected"/>
+			<var name="group_dealers" value="yes"/>
+			<var name="group_agents" value="yes"/>
+			<var name="show_devices" value="yes"/>
 		</request>
 	    <command class="extra.CreateQuartals"/>
 	    <list item="sale" id="sale">
@@ -47,7 +50,7 @@
 		    </filter>
 	    </list>
 
-		<list item="dealer" tag="selected_dealer" id="selected_dealer" var="selected">
+		<list item="dealer" tag="selected" id="selected" var="selected">
 
 		</list>
 
@@ -132,6 +135,9 @@
 		    <var name="-device" value=""/>
 	    </link>
 	    <link name="index_link" target="index"/>
+	    <link name="select_link" target="index" copy-page-vars="yes">
+		    <var name="selected" value=""/>
+	    </link>
     </page>
 
 

@@ -32,6 +32,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		COMMON_PARAMS.add(VENDOR_CODE_ELEMENT);
 		COMMON_PARAMS.add(DESCRIPTION_ELEMENT);
 		COMMON_PARAMS.add(COUNTRY_OF_ORIGIN_ELEMENT);
+		COMMON_PARAMS.add(MODEL_ELEMENT);
 	}
 
 
@@ -85,6 +86,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				product.setValue(CURRENCY_ID_PARAM, commonParams.get(CURRENCY_ID_ELEMENT));
 				product.setValue(CATEGORY_ID_PARAM, commonParams.get(CATEGORY_ID_ELEMENT));
 				product.setValue(NAME_PARAM, commonParams.get(NAME_ELEMENT));
+				if (product.isValueEmpty(NAME_PARAM))
+					product.setValue(NAME_PARAM, commonParams.get(MODEL_ELEMENT));
 				product.setValue(VENDOR_CODE_PARAM, commonParams.get(VENDOR_CODE_ELEMENT));
 				product.setValue(DESCRIPTION_PARAM, commonParams.get(DESCRIPTION_ELEMENT));
 				product.setValue(COUNTRY_PARAM, commonParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
