@@ -99,6 +99,7 @@
 
 	<item name="type_mask" caption="Маска для типа" key="name" ag-id="7" ag-hash="519152849">
 		<parameter name="name" type="string" caption="Название типа"/>
+		<parameter name="report" type="string" caption="Выводить в отчете" domain="yes-no" default="да"/>
 		<parameter name="mask" type="string" caption="Маска" multiple="true"
 		           description="в начале маски может стоять *, что означает, что маска должна встречаться не в начале слова"/>
 	</item>

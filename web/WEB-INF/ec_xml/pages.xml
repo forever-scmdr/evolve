@@ -138,6 +138,11 @@
 	    <link name="select_link" target="index" copy-page-vars="yes">
 		    <var name="selected" value=""/>
 	    </link>
+	    <link name="apply_grouping_link" target="index" copy-page-vars="yes">
+		    <var name="group_dealers" value=""/>
+		    <var name="group_agents" value=""/>
+		    <var name="show_devices" value=""/>
+	    </link>
     </page>
 
 
