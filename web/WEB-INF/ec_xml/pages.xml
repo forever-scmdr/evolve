@@ -17,6 +17,7 @@
 			<var name="selected"/>
 			<var name="group_dealers" value="yes"/>
 			<var name="group_agents" value="yes"/>
+			<var name="group_tags" value="yes"/>
 			<var name="show_devices" value="yes"/>
 		</request>
 	    <command class="extra.CreateQuartals"/>
@@ -141,6 +142,7 @@
 	    <link name="apply_grouping_link" target="index" copy-page-vars="yes">
 		    <var name="group_dealers" value=""/>
 		    <var name="group_agents" value=""/>
+		    <var name="group_tags" value=""/>
 		    <var name="show_devices" value=""/>
 	    </link>
     </page>
