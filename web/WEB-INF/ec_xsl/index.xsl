@@ -278,7 +278,7 @@
 												<xsl:for-each select="$years_quartals">
 													<xsl:variable name="parts" select="tokenize(., '\*')"/>
 													<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2]]"/>
-													<td class="chart_data_point" value="{if ($sale) then sum($sale/qty) else '0'}">
+													<td class="chart_data_point total" value="{if ($sale) then sum($sale/qty) else '0'}">
 														<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
 													</td>
 												</xsl:for-each>
@@ -287,11 +287,8 @@
 										</table>
 									</div>
 									<div class="subtable-controls no-print chart_button_container">
-										<select name="" id="">
-											<option value="">Все строки</option>
-											<option value="">Итого</option>
-										</select>
-										<button type="button" class="btn btn-default btn-sm" onclick="createChart(this)">Построить график</button>
+										<button type="button" class="btn btn-default btn-sm" onclick="createChart(this)">Подробный график</button>
+										<button type="button" class="btn btn-default btn-sm" onclick="createChart(this, true)">График Итого</button>
 										<button type="submit" class="btn btn-default btn-sm">Показать детализацию</button>
 									</div>
 									<div class="chart m-t-small" style="display: none">
@@ -388,7 +385,7 @@
 												<xsl:for-each select="$years_quartals">
 													<xsl:variable name="parts" select="tokenize(., '\*')"/>
 													<xsl:variable name="sale" select="$selected_sales[quartal = $parts[1] and year = $parts[2]]"/>
-													<td class="chart_data_point" value="{if ($sale) then sum($sale/qty) else '0'}">
+													<td class="chart_data_point total" value="{if ($sale) then sum($sale/qty) else '0'}">
 														<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
 													</td>
 												</xsl:for-each>
@@ -397,12 +394,8 @@
 										</table>
 									</div>
 									<div class="subtable-controls no-print chart_button_container">
-										<select name="" id="">
-											<option value="">Все строки</option>
-											<option value="">Итого</option>
-										</select>
-										<button type="button" class="btn btn-default btn-sm" onclick="createChart(this)">Построить график</button>
-										<!--<button type="button" class="btn btn-info btn-sm">Удалить график</button>-->
+										<button type="button" class="btn btn-default btn-sm" onclick="createChart(this)">Подробный график</button>
+										<button type="button" class="btn btn-default btn-sm" onclick="createChart(this, true)">График Итого</button>
 									</div>
 									<div class="chart m-t-small" style="display: none">
 										<h3 class="no-m-t">
@@ -454,6 +447,7 @@
 									</xsl:if>
 
 
+									<!--
 									<h1>Продажи (<xsl:value-of select="count(page/sale)" />)</h1>
 									<div class="table-responsive">
 										<table class="data-table">
@@ -479,9 +473,7 @@
 											</xsl:for-each>
 										</table>
 									</div>
-
-
-
+									-->
 
 								</div>
 							</div>
@@ -629,7 +621,7 @@
 					<xsl:for-each select="$years_quartals">
 						<xsl:variable name="parts" select="tokenize(., '\*')"/>
 						<xsl:variable name="sale" select="$list[quartal = $parts[1] and year = $parts[2] and tag = $tag]"/>
-						<td class="chart_data_point" value="{if ($sale) then sum($sale/qty) else '0'}">
+						<td class="chart_data_point total" value="{if ($sale) then sum($sale/qty) else '0'}">
 							<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
 						</td>
 					</xsl:for-each>
@@ -659,7 +651,7 @@
 			<xsl:for-each select="$years_quartals">
 				<xsl:variable name="parts" select="tokenize(., '\*')"/>
 				<xsl:variable name="sale" select="$list[quartal = $parts[1] and year = $parts[2]]"/>
-				<td class="chart_data_point" value="{if ($sale) then sum($sale/qty) else '0'}">
+				<td class="chart_data_point total" value="{if ($sale) then sum($sale/qty) else '0'}">
 					<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
 				</td>
 			</xsl:for-each>
@@ -708,11 +700,8 @@
 			</table>
 		</div>
 		<div class="subtable-controls no-print chart_button_container">
-			<select name="" id="">
-				<option value="">Все строки</option>
-				<option value="">Итого</option>
-			</select>
-			<button type="button" class="btn btn-default btn-sm chart_button" onclick="createChart(this)">Построить график</button>
+			<button type="button" class="btn btn-default btn-sm" onclick="createChart(this)">Подробный график</button>
+			<button type="button" class="btn btn-default btn-sm" onclick="createChart(this, true)">График Итого</button>
 		</div>
 		<div class="chart m-t-small" style="display: none">
 			<h3 class="no-m-t">

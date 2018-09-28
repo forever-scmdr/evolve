@@ -11,10 +11,12 @@ var createChart = null;
 
 require([ "d3", "c3" ], function(d3, c3) {
 
-	createChart = function(button) {
+	createChart = function(button, justTotal) {
 		var table = $(button).closest('.chart_button_container').prev().find('table').get(0);
 		var chart = $(button).closest('.chart_button_container').next().get(0);
-
+		var dataPointSelector = '.chart_data_point';
+		if (justTotal)
+			dataPointSelector += '.total';
 		var columns = new Array();
 		var categories = new Array();
 		$(table).find('.chart_data_x').each(function () {
@@ -22,13 +24,20 @@ require([ "d3", "c3" ], function(d3, c3) {
 		});
 		$(table).find('.chart_data_line').each(function () {
 			var points = new Array($(this).find('.chart_data_header').text());
-			$(this).find('.chart_data_point').each(function () {
+			$(this).find(dataPointSelector).each(function () {
 				points.push($(this).attr('value') * 1);
 			});
 			columns.push(points);
 		});
 
-		$(chart).toggle();
+		var chartType = 'all';
+		if (justTotal)
+			chartType = 'total';
+		if ($(chart).attr('type') == chartType)
+			$(chart).toggle();
+		else
+			$(chart).show();
+		$(chart).attr('type', chartType);
 
 		c3.generate({
 			bindto : chart,
