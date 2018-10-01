@@ -7,7 +7,7 @@
 	<xsl:variable name="group_dealers" select="page/variables/group_dealers = 'yes'"/>
 	<xsl:variable name="group_agents" select="page/variables/group_agents = 'yes'"/>
 	<xsl:variable name="group_tags" select="page/variables/group_tags = 'yes'"/>
-	<xsl:variable name="show_devices" select="page/variables/show_devices = 'yes'"/>
+	<xsl:variable name="show_devices" select="false()"/> <!--page/variables/show_devices = 'yes'-->
 	<xsl:variable name="rep_tags" select="page/tag[report = 'да']"/>
 
 	<xsl:variable name="selected" select="page/selected"/>
@@ -36,7 +36,8 @@
 	<xsl:variable name="sales" select="page/sale"/>
 	<xsl:variable name="selected_sales" select="page/sale[tag = $s_tag or device = $s_name]"/>
 
-
+	<xsl:variable name="all_agent" select="page/all_agent"/>
+	<xsl:variable name="all_dealer" select="page/all_dealer"/>
 
 	<xsl:template match="/">
 		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
@@ -326,7 +327,7 @@
 														<xsl:attribute name="checked" select="'checked'"/>
 													</xsl:if>
 												</input>
-												Разбить по дилерам
+												Статистика по дилерам
 											</label>&#160;
 											<label class="checkbox-inline">
 												<input type="checkbox" name="group_agents" value="yes">
@@ -334,24 +335,18 @@
 														<xsl:attribute name="checked" select="'checked'"/>
 													</xsl:if>
 												</input>
-												Разбить по контрагентам
+												Статистика по контрагентам
 											</label>&#160;
-											<label class="checkbox-inline">
-												<input type="checkbox" name="group_tags" value="yes">
-													<xsl:if test="$group_tags">
-														<xsl:attribute name="checked" select="'checked'"/>
-													</xsl:if>
-												</input>
-												Типы товаров
-											</label>&#160;
+											<!--
 											<label class="checkbox-inline">
 												<input type="checkbox" name="show_devices" value="yes">
 													<xsl:if test="$show_devices">
 														<xsl:attribute name="checked" select="'checked'"/>
 													</xsl:if>
 												</input>
-												Отдельные модели
+												Отдельные модели в группах
 											</label>&#160;
+											-->
 											<button type="submit" class="btn btn-default btn-sm">Применить</button>
 										</form>
 									</div>
@@ -422,62 +417,33 @@
 										</h3>
 									</div>
 
-									<!--Группировка по контрагентам-->
-									<xsl:if test="$group_agents">
-										<xsl:for-each-group select="$selected_sales" group-by="agent_plain_name">
-											<h3 class="p-t"><xsl:value-of select="current-group()[1]/agent_name" /></h3>
-											<xsl:call-template name="sales_table">
-												<xsl:with-param name="list" select="current-group()"/>
-											</xsl:call-template>
-										</xsl:for-each-group>
-									</xsl:if>
-
-									<!--Группировка по дилерам-->
-									<xsl:if test="$group_dealers">
-										<xsl:for-each-group select="$selected_sales" group-by="dealer_code">
-											<h3 class="p-t"><xsl:value-of select="$selected[code = current-grouping-key()]/organization" /></h3>
-											<xsl:call-template name="sales_table">
-												<xsl:with-param name="list" select="current-group()"/>
-											</xsl:call-template>
-										</xsl:for-each-group>
-									</xsl:if>
-
-									<!--Без группировки-->
-									<xsl:if test="not($group_agents) and not($group_dealers)">
-										<h3 class="p-t">Все продажи</h3>
+									<!--Тэги товаров-->
+									<xsl:for-each select="page/selected_tag">
+										<xsl:variable name="tag" select="tag"/>
+										<h3 class="p-t"><xsl:value-of select="$tag" /></h3>
+										<xsl:variable name="list" select="$selected_sales[tag = $tag]"/>
 										<xsl:call-template name="sales_table">
-											<xsl:with-param name="list" select="$selected_sales"/>
+											<xsl:with-param name="list" select="$list"/>
 										</xsl:call-template>
-									</xsl:if>
+										<xsl:if test="$show_devices">
+											<xsl:for-each-group select="$list" group-by="device">
+												<xsl:variable name="device" select="device"/>
+												<h4 class="p-t"><xsl:value-of select="$device" /></h4>
+												<xsl:call-template name="sales_table">
+													<xsl:with-param name="list" select="current-group()"/>
+												</xsl:call-template>
+											</xsl:for-each-group>
+										</xsl:if>
+									</xsl:for-each>
 
-
-									<!--
-									<h1>Продажи (<xsl:value-of select="count(page/sale)" />)</h1>
-									<div class="table-responsive">
-										<table class="data-table">
-											<tr>
-												<th>Дилер</th>
-												<th>Покупатель</th>
-												<th>Дата</th>
-												<th>Товар</th>
-												<th>Количество</th>
-												<th>Квартал</th>
-												<th>Год</th>
-											</tr>
-											<xsl:for-each select="page/sale">
-												<tr class="summary">
-													<td><xsl:value-of select="dealer_code"/></td>
-													<td><xsl:value-of select="agent_plain_name"/></td>
-													<td><xsl:value-of select="register_date"/></td>
-													<td><xsl:value-of select="device"/></td>
-													<td><xsl:value-of select="qty"/></td>
-													<td><xsl:value-of select="quartal"/></td>
-													<td><xsl:value-of select="year"/></td>
-												</tr>
-											</xsl:for-each>
-										</table>
-									</div>
-									-->
+									<!--Одиночные товары-->
+									<xsl:for-each select="page/selected_device">
+										<xsl:variable name="device" select="device"/>
+										<h3 class="p-t"><xsl:value-of select="$device" /></h3>
+										<xsl:call-template name="sales_table">
+											<xsl:with-param name="list" select="$selected_sales[device = $device]"/>
+										</xsl:call-template>
+									</xsl:for-each>
 
 								</div>
 							</div>
@@ -615,69 +581,46 @@
 
 
 	<!-- Список продаж в таблице продаж  -->
-	<xsl:template name="sales">
+	<xsl:template name="sales_agent">
 		<xsl:param name="list"/>
-		<xsl:if test="$group_tags">
-			<xsl:for-each select="$rep_tags">
-				<xsl:variable name="tag" select="name"/>
-				<tr class="accent chart_data_line">
-					<td class="chart_data_header"><xsl:value-of select="$tag" /></td>
-					<xsl:for-each select="$years_quartals">
-						<xsl:variable name="parts" select="tokenize(., '\*')"/>
-						<xsl:variable name="sale" select="$list[quartal = $parts[1] and year = $parts[2] and tag = $tag]"/>
-						<td class="chart_data_point total" value="{if ($sale) then sum($sale/qty) else '0'}">
-							<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
-						</td>
-					</xsl:for-each>
-					<td><xsl:value-of select="sum($list[tag = $tag]/qty)" /></td>
-				</tr>
-				<xsl:if test="$show_devices">
-					<xsl:for-each-group select="$list[tag = $tag]" group-by="device">
-						<xsl:variable name="sales" select="current-group()"/>
-						<xsl:variable name="device" select="current-grouping-key()"/>
-						<tr class="chart_data_line">
-							<td class="chart_data_header">- <xsl:value-of select="$device"/></td>
-							<xsl:for-each select="$years_quartals">
-								<xsl:variable name="parts" select="tokenize(., '\*')"/>
-								<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2] and device = $device]"/>
-								<td class="chart_data_point" value="{if ($sale) then sum($sale/qty) else '0'}">
-									<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
-								</td>
-							</xsl:for-each>
-							<td><xsl:value-of select="sum($sales[device = $device]/qty)" /></td>
-						</tr>
-					</xsl:for-each-group>
-				</xsl:if>
-			</xsl:for-each>
-		</xsl:if>
-		<tr class="accent chart_data_line">
-			<td class="chart_data_header">Все устройства</td>
-			<xsl:for-each select="$years_quartals">
-				<xsl:variable name="parts" select="tokenize(., '\*')"/>
-				<xsl:variable name="sale" select="$list[quartal = $parts[1] and year = $parts[2]]"/>
-				<td class="chart_data_point total" value="{if ($sale) then sum($sale/qty) else '0'}">
-					<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
-				</td>
-			</xsl:for-each>
-			<td><xsl:value-of select="sum($list/qty)" /></td>
-		</tr>
-		<xsl:if test="$show_devices">
-			<xsl:for-each-group select="$list" group-by="device">
-				<xsl:variable name="sales" select="current-group()"/>
-				<xsl:variable name="device" select="current-grouping-key()"/>
-				<tr class="chart_data_line">
-					<td class="chart_data_header">- <xsl:value-of select="$device"/></td>
-					<xsl:for-each select="$years_quartals">
-						<xsl:variable name="parts" select="tokenize(., '\*')"/>
-						<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2] and device = $device]"/>
-						<td class="chart_data_point" value="{if ($sale) then sum($sale/qty) else '0'}">
-							<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
-						</td>
-					</xsl:for-each>
-					<td><xsl:value-of select="sum($sales[device = $device]/qty)" /></td>
-				</tr>
-			</xsl:for-each-group>
-		</xsl:if>
+		<xsl:for-each-group select="$list" group-by="agent_plain_name">
+			<xsl:variable name="agent" select="$all_agent[plain_name = current-grouping-key()]"/>
+			<tr class="chart_data_line">
+				<td class="chart_data_header"><xsl:value-of select="$agent/organization" /></td>
+				<td><xsl:value-of select="$agent/country" /></td>
+				<td><xsl:value-of select="$agent/city" /></td>
+				<xsl:for-each select="$years_quartals">
+					<xsl:variable name="parts" select="tokenize(., '\*')"/>
+					<xsl:variable name="sale" select="$list[quartal = $parts[1] and year = $parts[2] and agent_plain_name = $agent/plain_name]"/>
+					<td class="chart_data_point total" value="{if ($sale) then sum($sale/qty) else '0'}">
+						<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
+					</td>
+				</xsl:for-each>
+				<td><xsl:value-of select="sum($list[agent_plain_name = $agent/plain_name]/qty)" /></td>
+			</tr>
+		</xsl:for-each-group>
+	</xsl:template>
+
+
+	<!-- Список продаж в таблице продаж  -->
+	<xsl:template name="sales_dealer">
+		<xsl:param name="list"/>
+		<xsl:for-each-group select="$list" group-by="dealer_code">
+			<xsl:variable name="dealer" select="$all_dealer[code = current-grouping-key()]"/>
+			<tr class="chart_data_line">
+				<td class="chart_data_header"><xsl:value-of select="$dealer/organization" /></td>
+				<td><xsl:value-of select="$dealer/country" /></td>
+				<td><xsl:value-of select="$dealer/city" /></td>
+				<xsl:for-each select="$years_quartals">
+					<xsl:variable name="parts" select="tokenize(., '\*')"/>
+					<xsl:variable name="sale" select="$list[quartal = $parts[1] and year = $parts[2] and dealer_code = $dealer/code]"/>
+					<td class="chart_data_point total" value="{if ($sale) then sum($sale/qty) else '0'}">
+						<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
+					</td>
+				</xsl:for-each>
+				<td><xsl:value-of select="sum($list[dealer_code = $dealer/code]/qty)" /></td>
+			</tr>
+		</xsl:for-each-group>
 	</xsl:template>
 
 
@@ -688,32 +631,46 @@
 		<xsl:param name="list"/>
 		<p><xsl:value-of select="$quartal_from"/> кв. <xsl:value-of select="$year_from"/> -
 			<xsl:value-of select="$quartal_to"/> кв. <xsl:value-of select="$year_to"/></p>
-		<div class="table-responsive">
-			<table class="data-table">
-				<tr>
-					<th>Название</th>
-					<xsl:for-each select="$years_quartals">
-						<xsl:variable name="parts" select="tokenize(., '\*')"/>
-						<th class="chart_data_x"><xsl:value-of select="$parts[1]"/>кв. <xsl:value-of select="$parts[2]"/></th>
-					</xsl:for-each>
-					<th>Всего</th>
-				</tr>
-				<xsl:call-template name="sales">
-					<xsl:with-param name="list" select="$list"/>
-				</xsl:call-template>
-			</table>
-		</div>
-		<div class="subtable-controls no-print chart_button_container">
-			<button type="button" class="btn btn-default btn-sm" onclick="createChart(this)">Подробный график</button>
-			<button type="button" class="btn btn-default btn-sm" onclick="createChart(this, true)">График Итого</button>
-		</div>
-		<div class="chart m-t-small" style="display: none">
-			<h3 class="no-m-t">
-				Статистика продаж дилеров с
-				<xsl:value-of select="$quartal_from"/> кв. <xsl:value-of select="$year_from"/> по
-				<xsl:value-of select="$quartal_to"/> кв. <xsl:value-of select="$year_to"/>
-			</h3>
-		</div>
+		<xsl:if test="$group_agents">
+			<h4>Контрагенты</h4>
+			<div class="table-responsive">
+				<table class="data-table">
+					<tr>
+						<th>Организация</th>
+						<th>Страна</th>
+						<th>Город</th>
+						<xsl:for-each select="$years_quartals">
+							<xsl:variable name="parts" select="tokenize(., '\*')"/>
+							<th class="chart_data_x"><xsl:value-of select="$parts[1]"/>кв. <xsl:value-of select="$parts[2]"/></th>
+						</xsl:for-each>
+						<th>Всего</th>
+					</tr>
+					<xsl:call-template name="sales_agent">
+						<xsl:with-param name="list" select="$list"/>
+					</xsl:call-template>
+				</table>
+			</div>
+		</xsl:if>
+		<xsl:if test="$group_dealers">
+			<h4>Дилеры</h4>
+			<div class="table-responsive">
+				<table class="data-table">
+					<tr>
+						<th>Организация</th>
+						<th>Страна</th>
+						<th>Город</th>
+						<xsl:for-each select="$years_quartals">
+							<xsl:variable name="parts" select="tokenize(., '\*')"/>
+							<th class="chart_data_x"><xsl:value-of select="$parts[1]"/>кв. <xsl:value-of select="$parts[2]"/></th>
+						</xsl:for-each>
+						<th>Всего</th>
+					</tr>
+					<xsl:call-template name="sales_dealer">
+						<xsl:with-param name="list" select="$list"/>
+					</xsl:call-template>
+				</table>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>

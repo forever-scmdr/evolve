@@ -171,6 +171,7 @@
 		<request>
 			<var name="s_name"/>
 			<var name="s_tag"/>
+			<var name="show_devices" value="yes"/>
 		</request>
 		<include name="COMMON"/>
 		<list item="sale" tag="selected_tag">
