@@ -110,8 +110,8 @@
 										var q_to = $('#q_to').val();
 										var y_from = $('#y_from').val();
 										var y_to = $('#y_to').val();
-										var date_from = new Date(y_from, q_from * 3 - 1);
-										var date_to = new Date(y_to, q_to * 3 - 1);
+										var date_from = new Date(y_from, q_from * 3 - 1, 1);
+										var date_to = new Date(y_to, q_to * 3 - 1, 3);
 										datesForm.find('input[name=m_from]').eq(0).val(date_from.getTime());
 										datesForm.find('input[name=m_to]').eq(0).val(date_to.getTime());
 									};

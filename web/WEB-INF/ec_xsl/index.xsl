@@ -110,8 +110,8 @@
 										var q_to = $('#q_to').val();
 										var y_from = $('#y_from').val();
 										var y_to = $('#y_to').val();
-										var date_from = new Date(y_from, q_from * 3 - 1);
-										var date_to = new Date(y_to, q_to * 3 - 1);
+										var date_from = new Date(y_from, q_from * 3 - 1, 1);
+										var date_to = new Date(y_to, q_to * 3 - 1, 3);
 										datesForm.find('input[name=m_from]').eq(0).val(date_from.getTime());
 										datesForm.find('input[name=m_to]').eq(0).val(date_to.getTime());
 									};
@@ -446,39 +446,37 @@
 										</xsl:call-template>
 									</xsl:if>
 
-
-									<!--
-									<h1>Продажи (<xsl:value-of select="count(page/sale)" />)</h1>
-									<div class="table-responsive">
-										<table class="data-table">
-											<tr>
-												<th>Дилер</th>
-												<th>Покупатель</th>
-												<th>Дата</th>
-												<th>Товар</th>
-												<th>Количество</th>
-												<th>Квартал</th>
-												<th>Год</th>
-											</tr>
-											<xsl:for-each select="page/sale">
-												<tr class="summary">
-													<td><xsl:value-of select="dealer_code"/></td>
-													<td><xsl:value-of select="agent_plain_name"/></td>
-													<td><xsl:value-of select="register_date"/></td>
-													<td><xsl:value-of select="device"/></td>
-													<td><xsl:value-of select="qty"/></td>
-													<td><xsl:value-of select="quartal"/></td>
-													<td><xsl:value-of select="year"/></td>
-												</tr>
-											</xsl:for-each>
-										</table>
-									</div>
-									-->
-
 								</div>
 							</div>
 						</xsl:if>
 					</xsl:if>
+					<!--
+					<h1>Продажи (<xsl:value-of select="count(page/sale)" />)</h1>
+					<div class="table-responsive">
+						<table class="data-table">
+							<tr>
+								<th>Дилер</th>
+								<th>Покупатель</th>
+								<th>Дата</th>
+								<th>Товар</th>
+								<th>Количество</th>
+								<th>Квартал</th>
+								<th>Год</th>
+							</tr>
+							<xsl:for-each select="page/sale">
+								<tr class="summary">
+									<td><xsl:value-of select="dealer_code"/></td>
+									<td><xsl:value-of select="agent_plain_name"/></td>
+									<td><xsl:value-of select="register_date"/></td>
+									<td><xsl:value-of select="device"/></td>
+									<td><xsl:value-of select="qty"/></td>
+									<td><xsl:value-of select="quartal"/></td>
+									<td><xsl:value-of select="year"/></td>
+								</tr>
+							</xsl:for-each>
+						</table>
+					</div>
+					-->
 				</div>
 
 
