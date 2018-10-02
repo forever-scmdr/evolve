@@ -20,7 +20,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 		MANDATORY_PHYS.add(ItemNames.user_phys.ADDRESS);
 		MANDATORY_PHYS.add(ItemNames.user_phys.EMAIL);
 		MANDATORY_PHYS.add(ItemNames.user_phys.PHONE);
-		MANDATORY_PHYS.add(ItemNames.user_phys.SHIP_TYPE);
+		//MANDATORY_PHYS.add(ItemNames.user_phys.SHIP_TYPE);
 
 		MANDATORY_JUR.add(ItemNames.user_jur.ACCOUNT);
 		MANDATORY_JUR.add(ItemNames.user_jur.ADDRESS);
@@ -32,7 +32,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 		MANDATORY_JUR.add(ItemNames.user_jur.DIRECTOR);
 		MANDATORY_JUR.add(ItemNames.user_jur.EMAIL);
 		MANDATORY_JUR.add(ItemNames.user_jur.ORGANIZATION);
-		MANDATORY_JUR.add(ItemNames.user_jur.SHIP_TYPE);
+		//MANDATORY_JUR.add(ItemNames.user_jur.SHIP_TYPE);
 		MANDATORY_JUR.add(ItemNames.user_jur.UNP);
 	}
 

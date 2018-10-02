@@ -1113,4 +1113,13 @@
 		</command>
 	</page>
 
+	<page name="onliner">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="ecommander.fwk.integration.OnlinerUploadCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 </site>
