@@ -12,10 +12,12 @@ import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -40,8 +42,19 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 		List<Item> loadedProducts = new ItemQuery(PRODUCT_ITEM).loadItems();
 		int i = 0;
 		for(Item product : loadedProducts){
-			product.setValue(PRICE_PARAM, BigDecimal.ZERO);
-			transaction.executeCommandUnit(SaveItemDBUnit.get(product, false).ignoreFileErrors().noFulltextIndex());
+			File small = product.getFileValue("small_pic", AppContext.getFilesDirPath(product.isFileProtected()));
+			if(small != null && small.isFile()){
+				FileUtils.deleteQuietly(small);
+			}
+			String folder = AppContext.getFilesDirPath(product.isFileProtected()) + product.getRelativeFilesPath();
+			String sfn = "small_pic_" + product.outputValue("main_pic");
+			info.pushLog(folder+'\\'+sfn);
+			File his = new File(folder+'\\'+sfn);
+			if(his.exists()){
+				FileUtils.deleteQuietly(his);
+			}
+			product.clearParameter("small_pic");
+			executeCommandUnit(SaveItemDBUnit.get(product, false).ignoreFileErrors().noFulltextIndex());
 			i++;
 			if(i>49) {
 				i= 0;
@@ -49,6 +62,18 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 			}
 		}
 		commitCommandUnits();
+		i = 0;
+		for(Item product : loadedProducts){
+			product.forceInitialInconsistent();
+			executeCommandUnit(SaveItemDBUnit.get(product, true).noFulltextIndex());
+			i++;
+			if(i>49) {
+				i= 0;
+				commitCommandUnits();
+			}
+		}
+		commitCommandUnits();
+
 //		info.setOperation("Обработака товаров");
 //		loadedProducts = new LinkedList<>();
 //		info.setOperation("Перенос товаров");

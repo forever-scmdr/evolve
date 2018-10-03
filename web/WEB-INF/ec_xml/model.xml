@@ -4,7 +4,7 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             SEO                                  ////////////-->
-	<assoc name="other_colors" transitive="false" caption="Другие варианты расцветки" ag-id="1" />
+	<assoc name="other_colors" transitive="false" caption="Другие варианты расцветки" ag-id="1" ag-hash="494020991" />
 
 	<item name="seo" caption="SEO" ag-id="814" ag-hash="113757">
 		<parameter name="title" type="string" caption="title"/>
@@ -84,7 +84,8 @@
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
-		<parameter name="small_pic" type="picture" format="width: 200; height: 200; src: main_pic; crop: TOP_LEFT;" caption="Маленькая картинка"/>
+		<!--<parameter name="small_pic" type="picture" format="width: 200; height: 200; src: main_pic; crop: TOP_LEFT;" caption="Маленькая картинка"/>-->
+		<parameter name="small_pic" type="picture" format="width: 200; src: main_pic;" caption="Маленькая картинка"/>
 		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
