@@ -5,20 +5,15 @@ import ecommander.fwk.EcommanderException;
 import ecommander.fwk.IntegrateBase;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.model.Parameter;
-import ecommander.model.User;
-import ecommander.persistence.commandunits.*;
-import ecommander.persistence.common.DelayedTransaction;
+import ecommander.persistence.commandunits.CreateAssocDBUnit;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.LuceneIndexMapper;
-import extra._generated.ItemNames;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by user on 15.08.2018.
@@ -41,6 +36,9 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 	protected void integrate() throws Exception {
 		List<Item> loadedProducts = new ItemQuery(PRODUCT_ITEM).loadItems();
 		int i = 0;
+		info.setToProcess(loadedProducts.size());
+		info.setOperation("Удаляю старые картинки");
+		info.setProcessed(0);
 		for(Item product : loadedProducts){
 			File small = product.getFileValue("small_pic", AppContext.getFilesDirPath(product.isFileProtected()));
 			if(small != null && small.isFile()){
@@ -48,8 +46,9 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 			}
 			String folder = AppContext.getFilesDirPath(product.isFileProtected()) + product.getRelativeFilesPath();
 			String sfn = "small_pic_" + product.outputValue("main_pic");
-			info.pushLog(folder+'\\'+sfn);
-			File his = new File(folder+'\\'+sfn);
+			sfn = folder+sfn;
+			info.increaseProcessed();
+			File his = new File(sfn);
 			if(his.exists()){
 				FileUtils.deleteQuietly(his);
 			}
@@ -63,10 +62,13 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 		}
 		commitCommandUnits();
 		i = 0;
+		info.setOperation("Создаю новые картинки");
+		info.setProcessed(0);
 		for(Item product : loadedProducts){
 			product.forceInitialInconsistent();
 			executeCommandUnit(SaveItemDBUnit.get(product, true).noFulltextIndex());
 			i++;
+			info.increaseProcessed();
 			if(i>49) {
 				i= 0;
 				commitCommandUnits();
