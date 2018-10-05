@@ -87,6 +87,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 							fileName = ((File) value).getName();
 						else if (isUrl)
 							fileName = Strings.getFileName(((URL) value).getFile());
+							fileName = StringUtils.substringAfterLast(fileName, "/");
 						// Создание новой директории
 						File dir = new File(fileDirectoryName);
 						dir.mkdirs();

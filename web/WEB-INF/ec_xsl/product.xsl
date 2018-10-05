@@ -51,7 +51,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a>
+				<a href="{$main_host}">Главная страница</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
 					<a href="{if(not(section)) then show_products else show_section}"><xsl:value-of select="name"/></a>
@@ -117,7 +117,12 @@
 				</div>
 				<div class="info-blocks">
 					<div class="info-block">
-						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
+						<xsl:if test="$p/description and not($p/description = '')">
+							<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
+						</xsl:if>
+						<xsl:if test="$not(p/description) or $p/description = ''">
+							<xsl:value-of select="$p/params/param[@caption = 'Дополнительное описание']" disable-output-escaping="yes"/>
+						</xsl:if>
 					</div>
 					<!--
 					<div class="info-block">

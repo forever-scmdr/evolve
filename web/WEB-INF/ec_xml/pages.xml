@@ -586,7 +586,7 @@
 				<parameter-input ref="user_jur" form="customer_jur"/>
 			</new>
 		</session>
-		
+		<single item="url_seo_wrap"/>
 		<include name="COMMON"/>
 	</page>
 

@@ -68,7 +68,7 @@
         <!-- CONTENT BEGIN -->
         <div class="path-container">
             <div class="path">
-                <a href="/">Главная страница</a>
+                <a href="{$main_host}">Главная страница</a>
                 <xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
                     <xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
                     <a href="{show_products}">
