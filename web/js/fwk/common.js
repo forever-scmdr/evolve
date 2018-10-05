@@ -99,11 +99,11 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 
 $(document).on('click', '.show-sub',function(e){
 	e.preventDefault();
-	var href = $(this).attr("href");
+	var href = $(this).attr("href"); 
 	var trg = $(href);
-	$(".popup-text-menu").not(trg).hide();
-	var l = $(this).position().left;
-	trg.css({"left": l});
+	// $(".popup-text-menu").not(trg).hide();
+	// var l = $(this).closest("div").offset().left;
+	// trg.css({"left": l});
 	trg.toggle();
 });
 

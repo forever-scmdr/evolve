@@ -21,14 +21,19 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="price" select="if ($p/price) then concat($p/price, ' p.') else 'по запросу'"/>
-							<xsl:variable name="sum" select="if ($p/price) then concat(sum, ' p.') else ''"/>
+							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat($p/price, ' p.') else 'по запросу'"/>
+							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(sum, ' p.') else ''"/>
 							<div class="item">
 								<a href="{$p/show_product}" class="image-container">
 									<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
 								</a>
 								<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
-								<div class="price one"><p><span>Цена</span><xsl:value-of select="$price"/></p></div>
+								<div class="price one">
+									<p>
+										<span>Цена</span>
+										<xsl:value-of select="$price"/>
+									</p>
+								</div>
 								<div class="quantity">
 									<!-- <span>Кол-во</span> -->
 									<input type="hidden" value="{qty}" name="{input/qty/@input}" min="0"/>
@@ -37,12 +42,14 @@
 								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
 							</div>
 						</xsl:for-each>
-
 						<div class="total">
-							<p>Итого: <xsl:value-of select="page/cart/sum"/> р.</p>
+							<xsl:if test="page/cart/sum != '0'">
+								<p>Итого: <xsl:value-of select="page/cart/sum"/> р.</p>
+							</xsl:if>
 							<input type="submit" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
 							<input type="submit" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 						</div>
+
 					</form>
 				</xsl:when>
 				<xsl:otherwise>

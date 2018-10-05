@@ -59,7 +59,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$h1"/></h1>
+		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
 
 		<div class="catalog-item-container">
 			<!--
@@ -83,19 +83,18 @@
 			<div class="product-info">
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 				<xsl:if test="$has_price">
-					<!-- Закоменчено до появления актуальной цены. -->
-					<!-- <div class="price">
+					<div class="price">
 						<p><span>Старая цена</span>100 р.</p>
 						<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
-					</div> -->
+					</div>
 				</xsl:if>
 				<div class="order">
 					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 					<div id="cart_list_{replace($p/code, '[)()]', '-')}" class="product_purchase_container">
 						<form action="{$p/to_cart}" method="post">
 							<xsl:if test="$has_price">
-								<input type="hidden" name="qty" value="1" min="0"/>
-								<input type="submit" value="Подать заявку"/>
+								<input type="number" name="qty" value="1" min="0"/>
+								<input type="submit" value="Заказать"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
 								<input type="hidden" name="qty" value="1" min="0"/>
@@ -103,17 +102,17 @@
 							</xsl:if>
 						</form>
 					</div>
-					<!--<xsl:choose>-->
-						<!--<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>-->
-						<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
-					<!--</xsl:choose>-->
+					<xsl:choose>
+						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>
+						<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>
+					</xsl:choose>
 				</div>
 				<div class="links">
 					<div id="compare_list_{$p/code}">
-						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">в сравнение</a></span>
+						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">сравнить</a></span>
 					</div>
 					<div id="fav_list_{$p/code}">
-						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/code}">в избранное</a></span>
+						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/code}">отложить</a></span>
 					</div>
 				</div>
 				<div class="info-blocks">
@@ -248,13 +247,13 @@
 					<!--</div>-->
 				</div>
 			</div>
-			<xsl:if test="page/assoc">
-				<h3>Вас также может заинтересовать</h3>
-				<div class="catalog-items">
-					<xsl:apply-templates select="page/assoc"/>
-				</div>
-			</xsl:if>
 		</div>
+		<xsl:if test="page/assoc">
+			<h3>Вас также может заинтересовать</h3>
+			<div class="catalog-items">
+				<xsl:apply-templates select="page/assoc"/>
+			</div>
+		</xsl:if>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>

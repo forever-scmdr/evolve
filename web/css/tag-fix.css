@@ -18,3 +18,15 @@
 .tags{
     height: auto;
 }
+a.tag{
+     display: inline-block;
+    padding: 5px 12px;
+    border-radius: 5px;
+    color: #fff;
+    background: #2e61a7;
+    margin-bottom: 5px;
+    margin-right: 8px;
+    font-size: 13px;
+    font-weight: normal;
+    text-decoration: none;
+}

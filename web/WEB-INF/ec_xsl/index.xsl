@@ -126,19 +126,19 @@
 
 
 	<xsl:template name="CONTENT">
-		<div class="slider-container">
-			<div class="fotorama" data-transition="crossfade" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
+		<!-- <div class="slider-container">
+			<div class="fotorama" data-transition="crossfade" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true" data-fit="cover">
 				<xsl:for-each select="page/main_page/main_slider_frame">
 					<img src="{@path}{pic}" alt="{name}"/>
 				</xsl:for-each>
 			</div>
-		</div>
-		<div class="actions mobile">
+		</div> -->
+		<!-- <div class="actions mobile">
 			<h3>Акции</h3>
 			<div class="actions-container">
 				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 			</div>
-		</div>
+		</div> -->
 	</xsl:template>
 
 	<xsl:template name="MAIN_CONTENT">
@@ -177,50 +177,66 @@
 	</xsl:template> -->
 
 	<xsl:template name="BANNERS">
-		<div class="container-fluid" style="background-color: #f5f1ea; padding: 50px 0;">
-			<div class="container .container-tb">
-				<div class="banners-container">
-					<xsl:for-each select="page/main_page/main_promo_bottom">
-						<div class="banner">
-							<div class="banner__image" style="background-image: url({@path}{pic})"></div>
-							<div class="banner__title"><xsl:value-of select="text_big"/></div>
-							<div class="banner__text"><xsl:value-of select="text_small"/></div>
-							<a class="banner__link" href="{link}"></a>
+		<div class="container-fluid" style="padding: 0;">
+			<div class="slider-container">
+				<div class="fotorama" style="width: 100%;" data-transition="crossfade" data-width="100%" data-height="400" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true" data-fit="cover">
+					<xsl:for-each select="page/main_page/main_slider_frame">
+						<!-- <img src="{@path}{pic}" alt="{name}"/> -->
+						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+							<div class="container">
+								<div class="slider-item__block fotorama__select">
+									<div class="slider-item__title"><xsl:value-of select="name" /></div>
+									<div class="slider-item__text">
+										<xsl:value-of select="text" disable-output-escaping="yes"/>
+									</div>
+									<!-- <a href="{link}" class="slider-item__button">Каталог продукции</a> -->
+								</div>
+							</div>
 						</div>
 					</xsl:for-each>
 				</div>
 			</div>
 		</div>
 
+		<div class="has-items-carousel">
+			<div class="container">
+				<div class="more-products">
+					<div class="title_2">Лидеры продаж</div>
+					<div class="slick-slider catalog-items">
+						<xsl:apply-templates select="page/product"/>
+					</div>
+				</div>
+			</div>
+		</div>
 
-
-
-
-		<div class="container container-tb">
+		<!-- <div class="container container-tb">
 			<div class="hero hero_center">
 				<div class="hero-block hero-block_center">
-					<!-- <div class="hero-block__icon"></div> -->
+					<div class="hero-block__icon"></div>
 					<div class="hero-block__title">1972</div>
 					<div class="hero-block__text">год начала работы</div>
 				</div>
 				<div class="hero-block hero-block_center">
-					<!-- <div class="hero-block__icon"></div> -->
+					<div class="hero-block__icon"></div>
 					<div class="hero-block__title">более 180</div>
 					<div class="hero-block__text">довольных клиентов</div>
 				</div>
 				<div class="hero-block hero-block_center">
-					<!-- <div class="hero-block__icon"></div> -->
+					<div class="hero-block__icon"></div>
 					<div class="hero-block__title">46 лет</div>
 					<div class="hero-block__text">безупречной работы</div>
 				</div>
 			</div>
-		</div>
-		<div class="separator"></div>
+		</div> -->
+
+		<!-- <div class="separator"></div>
 		<div class="container container-tb">
 			<div class="quote quote_center">
 				<p>Основное направление компании Тексимат — кожа оптом и в розницу. Мы любим свое дело и ценим наших клиентов, поэтому предлагаем только лучшие материалы от ведущих европейских производителей.</p>
 			</div>
-		</div>
+		</div> -->
+
+
 		<!-- <div class="container-fluid contaner-tb">
 			<div class="photo-stripe">
 				<div class="photo-stripe__item">
@@ -251,42 +267,118 @@
 			</div>
 		</div> -->
 
-		<div class="container container-tb">
-			<div class="hero">
-				<div class="hero-block hero-block_center">
-					<div class="hero-block__icon">
-						<i class="fa fa-star"></i>
+		<div class="container-fluid container-tb" style="background-color: #f2f2f2; padding: 40px 0;">
+			<div class="container">
+				<div class="hero">
+					<div class="hero-block hero-block_center">
+						<div class="hero-block__icon">
+							<i class="fa fa-clock"></i>
+						</div>
+						<div class="hero-block__title hero-block__title_small">Более 10 лет <br/> на рынке</div>
+						<div class="hero-block__text hero-block__text_small">Более 10 лет опыта в продаже и обслуживании светильников</div>
 					</div>
-					<div class="hero-block__title hero-block__title_small">Самые низкие цены в Минске и РБ</div>
-					<!-- <div class="hero-block__text hero-block__text_small"></div> -->
-				</div>
-				<div class="hero-block hero-block_center">
-					<div class="hero-block__icon">
-						<i class="fa fa-thumbs-up"></i>
+					<div class="hero-block hero-block_center">
+						<div class="hero-block__icon">
+							<i class="fa fa-users"></i>
+						</div>
+						<div class="hero-block__title hero-block__title_small">квалифицированный <br/> персонал</div>
+						<div class="hero-block__text hero-block__text_small">Помощь квалифицированного персонала в подборе товара</div>
 					</div>
-					<div class="hero-block__title hero-block__title_small">Огромный выбор кожи разных видов</div>
-					<!-- <div class="hero-block__text hero-block__text_small"></div> -->
-				</div>
-				<div class="hero-block hero-block_center">
-					<div class="hero-block__icon">
-						<i class="fa fa-trophy"></i>
+					<div class="hero-block hero-block_center">
+						<div class="hero-block__icon">
+							<i class="fa fa-warehouse"></i>
+						</div>
+						<div class="hero-block__title hero-block__title_small">складские <br/> помещения</div>
+						<div class="hero-block__text hero-block__text_small">Складские помещения с большим перечнем товаров</div>
 					</div>
-					<div class="hero-block__title hero-block__title_small">Можно купить отрез от 1,1 метра</div>
-					<!-- <div class="hero-block__text hero-block__text_small"></div> -->
-				</div>
-				<div class="hero-block hero-block_center">
-					<div class="hero-block__icon">
-						<i class="fa fa-truck"></i>
+					<div class="hero-block hero-block_center">
+						<div class="hero-block__icon">
+							<i class="fa fa-wrench"></i>
+						</div>
+						<div class="hero-block__title hero-block__title_small">техническая <br/> поддержка</div>
+						<div class="hero-block__text hero-block__text_small">24/7 сервисная, техническая поддержка</div>
 					</div>
-					<div class="hero-block__title hero-block__title_small">Офис, склад и парковка в одном месте</div>
-					<!-- <div class="hero-block__text hero-block__text_small"></div> -->
 				</div>
 			</div>
 		</div>
-		<div class="separator"></div>
+		<div class="container">
+			<div class="title_2">Салон светильников «Сатурн»</div>
+			<div class="text_2">
+				<p>Мы работаем для Вас с 1991 года, и всегда находим индивидуальные решения для каждого нашего клиента. Консультации специалистов, инженеров-электриков, решение проектных задач, сотрудничество с дизайнерами и архитекторами, а так же гибкая система скидок – все это делает наш салон эксклюзивным пространством света от известных мировых брендов.</p>
+				<p>На выставочной площади на рынок стройматериалов Уручье, павильон П30, представлены светильники, подходящие для интерьеров разнообразных стилей.</p>
+			</div>
+		</div>
+		<div class="container-fluid" style="background-color: #fff; padding: 50px 0;">
+			<div class="has-banners">
+				<div class="container">
+					<div class="banners-container">
+						<xsl:for-each select="page/main_page/main_promo_bottom">
+							<div class="banner">
+								<div class="image-container" style="background-image: url({@path}{pic})">
+									<div class="aspect-ratio"></div>
+								</div>
+								<div class="info">
+									<div class="h4"><xsl:value-of select="text_big"/></div>
+									<p><xsl:value-of select="text_small"/></p>
+								</div>
+								<a href="{link}"></a>
+							</div>
+					
+							<!-- <a href="{link}" style="background-image: url({@path}{pic})">
+								
+							</a> -->
+						</xsl:for-each>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="container">
+				<div class="title_2 ">Бренды</div>
+				<div class="brand-logos">
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand (0).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand (1).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand (2).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand (3).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand (4).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand (5).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand (6).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand (7).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand (8).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand (9).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand (10).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand (11).jpg" alt=""/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <div class="separator"></div>
 		<div class="container container-tb">
 			<iframe src="https://yandex.by/map-widget/v1/-/CBumiCENKC" width="100%" height="400" frameborder="0" allowfullscreen="true"></iframe>
-		</div>
+		</div> -->
 	</xsl:template>
 
 	<xsl:template name="EXTRA_SCRIPTS">

@@ -27,7 +27,7 @@
 				<xsl:for-each select="/page/catalog/section">
 					<div class="catalog-item">
 						<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
-						<a href="{show_products}" class="image-container"><img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}"/></a>
+						<a href="{show_products}" class="image-container" style="background-image: url({$pic_path})"><!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}"/> --></a>
 						<div>
 							<a href="{show_products}" style="height: unset;"><xsl:value-of select="name"/></a>
 							<xsl:value-of select="short" disable-output-escaping="yes"/>
