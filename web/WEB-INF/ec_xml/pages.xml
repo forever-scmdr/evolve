@@ -1076,6 +1076,7 @@
 
 
     <page name="generate_sitemap">
+
         <command class="ecommander.fwk.CreateSiteMap">
             <result name="complete" type="xml"/>
         </command>
