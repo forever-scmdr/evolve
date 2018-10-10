@@ -2,7 +2,7 @@
 <model>
 
 <!--START_p94544-->
-<item name="p94544" caption="Комплектующие мебели" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2961" ag-hash="-1034259958">
+<item name="p94544" caption="Комплектующие мебели" key="" virtual="false" user-def="true" description="" super="params *" ag-id="871" ag-hash="-1034259958">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -44,7 +44,7 @@
 <!--END_p94544-->
 
 <!--START_p94547-->
-<item name="p94547" caption="Настольные лампы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2962" ag-hash="-1034259955">
+<item name="p94547" caption="Настольные лампы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="872" ag-hash="-1034259955">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -97,7 +97,7 @@
 <!--END_p94547-->
 
 <!--START_p94549-->
-<item name="p94549" caption="Торшеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2963" ag-hash="-1034259953">
+<item name="p94549" caption="Торшеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="873" ag-hash="-1034259953">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -150,7 +150,7 @@
 <!--END_p94549-->
 
 <!--START_p94552-->
-<item name="p94552" caption="Споты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2964" ag-hash="-1034259929">
+<item name="p94552" caption="Споты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="874" ag-hash="-1034259929">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -201,7 +201,7 @@
 <!--END_p94552-->
 
 <!--START_p94554-->
-<item name="p94554" caption="Лампочки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2965" ag-hash="-1034259927">
+<item name="p94554" caption="Лампочки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="875" ag-hash="-1034259927">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -231,7 +231,7 @@
 <!--END_p94554-->
 
 <!--START_p94555-->
-<item name="p94555" caption="Комплектующие светильников" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2966" ag-hash="-1034259926">
+<item name="p94555" caption="Комплектующие светильников" key="" virtual="false" user-def="true" description="" super="params *" ag-id="876" ag-hash="-1034259926">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -271,7 +271,7 @@
 <!--END_p94555-->
 
 <!--START_p94556-->
-<item name="p94556" caption="Светодиодные люстры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2967" ag-hash="-1034259925">
+<item name="p94556" caption="Светодиодные люстры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="877" ag-hash="-1034259925">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -320,7 +320,7 @@
 <!--END_p94556-->
 
 <!--START_p94557-->
-<item name="p94557" caption="Хрустальные люстры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2968" ag-hash="-1034259924">
+<item name="p94557" caption="Хрустальные люстры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="878" ag-hash="-1034259924">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -374,7 +374,7 @@
 <!--END_p94557-->
 
 <!--START_p94558-->
-<item name="p94558" caption="Подвесные люстры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2969" ag-hash="-1034259923">
+<item name="p94558" caption="Подвесные люстры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="879" ag-hash="-1034259923">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -425,7 +425,7 @@
 <!--END_p94558-->
 
 <!--START_p94559-->
-<item name="p94559" caption="Потолочные люстры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2970" ag-hash="-1034259922">
+<item name="p94559" caption="Потолочные люстры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="880" ag-hash="-1034259922">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -476,7 +476,7 @@
 <!--END_p94559-->
 
 <!--START_p94560-->
-<item name="p94560" caption="На штанге люстры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2971" ag-hash="-1034259900">
+<item name="p94560" caption="На штанге люстры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="881" ag-hash="-1034259900">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -523,7 +523,7 @@
 <!--END_p94560-->
 
 <!--START_p94561-->
-<item name="p94561" caption="Хрустальные бра" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2972" ag-hash="-1034259899">
+<item name="p94561" caption="Хрустальные бра" key="" virtual="false" user-def="true" description="" super="params *" ag-id="882" ag-hash="-1034259899">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -571,7 +571,7 @@
 <!--END_p94561-->
 
 <!--START_p94562-->
-<item name="p94562" caption="Не хрустальные бра" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2973" ag-hash="-1034259898">
+<item name="p94562" caption="Не хрустальные бра" key="" virtual="false" user-def="true" description="" super="params *" ag-id="883" ag-hash="-1034259898">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -622,7 +622,7 @@
 <!--END_p94562-->
 
 <!--START_p94563-->
-<item name="p94563" caption="Светодиодные уличные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2974" ag-hash="-1034259897">
+<item name="p94563" caption="Светодиодные уличные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="884" ag-hash="-1034259897">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -671,7 +671,7 @@
 <!--END_p94563-->
 
 <!--START_p94564-->
-<item name="p94564" caption="Наземные высокие уличные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2975" ag-hash="-1034259896">
+<item name="p94564" caption="Наземные высокие уличные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="885" ag-hash="-1034259896">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -714,7 +714,7 @@
 <!--END_p94564-->
 
 <!--START_p94565-->
-<item name="p94565" caption="Наземные низкие уличные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2976" ag-hash="-1034259895">
+<item name="p94565" caption="Наземные низкие уличные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="886" ag-hash="-1034259895">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -756,7 +756,7 @@
 <!--END_p94565-->
 
 <!--START_p94566-->
-<item name="p94566" caption="Фонарные столбы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2977" ag-hash="-1034259894">
+<item name="p94566" caption="Фонарные столбы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="887" ag-hash="-1034259894">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -799,7 +799,7 @@
 <!--END_p94566-->
 
 <!--START_p94567-->
-<item name="p94567" caption="Прожекторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2978" ag-hash="-1034259893">
+<item name="p94567" caption="Прожекторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="888" ag-hash="-1034259893">
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_mm" caption="Высота, мм" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-127919181" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -817,7 +817,7 @@
 <!--END_p94567-->
 
 <!--START_p94568-->
-<item name="p94568" caption="Светодиодные технические светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2979" ag-hash="-1034259892">
+<item name="p94568" caption="Светодиодные технические светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="889" ag-hash="-1034259892">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -868,7 +868,7 @@
 <!--END_p94568-->
 
 <!--START_p94569-->
-<item name="p94569" caption="Трековые технические светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2980" ag-hash="-1034259891">
+<item name="p94569" caption="Трековые технические светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="890" ag-hash="-1034259891">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -915,7 +915,7 @@
 <!--END_p94569-->
 
 <!--START_p94570-->
-<item name="p94570" caption="Карданные технические светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2981" ag-hash="-1034259869">
+<item name="p94570" caption="Карданные технические светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="891" ag-hash="-1034259869">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -964,7 +964,7 @@
 <!--END_p94570-->
 
 <!--START_p94571-->
-<item name="p94571" caption="Специальные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2982" ag-hash="-1034259868">
+<item name="p94571" caption="Специальные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="892" ag-hash="-1034259868">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1012,7 +1012,7 @@
 <!--END_p94571-->
 
 <!--START_p94572-->
-<item name="p94572" caption="Настенные технические светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2983" ag-hash="-1034259867">
+<item name="p94572" caption="Настенные технические светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="893" ag-hash="-1034259867">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1051,7 +1051,7 @@
 <!--END_p94572-->
 
 <!--START_p94573-->
-<item name="p94573" caption="Настенно-потолочные технические светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2984" ag-hash="-1034259866">
+<item name="p94573" caption="Настенно-потолочные технические светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="894" ag-hash="-1034259866">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1097,7 +1097,7 @@
 <!--END_p94573-->
 
 <!--START_p94574-->
-<item name="p94574" caption="Потолочные технические светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2985" ag-hash="-1034259865">
+<item name="p94574" caption="Потолочные технические светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="895" ag-hash="-1034259865">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1147,7 +1147,7 @@
 <!--END_p94574-->
 
 <!--START_p94575-->
-<item name="p94575" caption="Светодиодные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2986" ag-hash="-1034259864">
+<item name="p94575" caption="Светодиодные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="896" ag-hash="-1034259864">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1201,7 +1201,7 @@
 <!--END_p94575-->
 
 <!--START_p94576-->
-<item name="p94576" caption="Настенные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2987" ag-hash="-1034259863">
+<item name="p94576" caption="Настенные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="897" ag-hash="-1034259863">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1253,7 +1253,7 @@
 <!--END_p94576-->
 
 <!--START_p94577-->
-<item name="p94577" caption="Настенно-потолочные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2988" ag-hash="-1034259862">
+<item name="p94577" caption="Настенно-потолочные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="898" ag-hash="-1034259862">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1307,7 +1307,7 @@
 <!--END_p94577-->
 
 <!--START_p94578-->
-<item name="p94578" caption="Потолочные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2989" ag-hash="-1034259861">
+<item name="p94578" caption="Потолочные светильники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="899" ag-hash="-1034259861">
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="osnovnaya_kategoriya" caption="Основная категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1145601441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategorii" caption="Категории" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-8890045" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1363,4 +1363,88 @@
 	<parameter name="neobhodimye_komponenty" caption="Необходимые компоненты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1980388848" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p94578-->
+
+<!--START_p116978-->
+<item name="p116978" caption="Доильный аппарат" key="" virtual="false" user-def="true" description="" super="params *" ag-id="845" ag-hash="2065910644"></item>
+<!--END_p116978-->
+
+<!--START_p116992-->
+<item name="p116992" caption="Управление дверьми" key="" virtual="false" user-def="true" description="" super="params *" ag-id="846" ag-hash="2065910700"></item>
+<!--END_p116992-->
+
+<!--START_p116998-->
+<item name="p116998" caption="Вакуум" key="" virtual="false" user-def="true" description="" super="params *" ag-id="847" ag-hash="2065910706"></item>
+<!--END_p116998-->
+
+<!--START_p117007-->
+<item name="p117007" caption="Молочный шлюз" key="" virtual="false" user-def="true" description="" super="params *" ag-id="848" ag-hash="2065931568"></item>
+<!--END_p117007-->
+
+<!--START_p117016-->
+<item name="p117016" caption="Счетчик молока" key="" virtual="false" user-def="true" description="" super="params *" ag-id="849" ag-hash="2065931598"></item>
+<!--END_p117016-->
+
+<!--START_p117037-->
+<item name="p117037" caption="Автомат промывки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="850" ag-hash="2065931661"></item>
+<!--END_p117037-->
+
+<!--START_p117052-->
+<item name="p117052" caption="Блок клапанов (доильное место)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="851" ag-hash="2065931718"></item>
+<!--END_p117052-->
+
+<!--START_p117061-->
+<item name="p117061" caption="Блоки питания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="852" ag-hash="2065931748"></item>
+<!--END_p117061-->
+
+<!--START_p117065-->
+<item name="p117065" caption="Распознавание" key="" virtual="false" user-def="true" description="" super="params *" ag-id="853" ag-hash="2065931752"></item>
+<!--END_p117065-->
+
+<!--START_p117077-->
+<item name="p117077" caption="Шланги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="854" ag-hash="2065931785"></item>
+<!--END_p117077-->
+
+<!--START_p117084-->
+<item name="p117084" caption="Додаивание" key="" virtual="false" user-def="true" description="" super="params *" ag-id="855" ag-hash="2065931813"></item>
+<!--END_p117084-->
+
+<!--START_p117090-->
+<item name="p117090" caption="Приборы управления" key="" virtual="false" user-def="true" description="" super="params *" ag-id="856" ag-hash="2065931840"></item>
+<!--END_p117090-->
+
+<!--START_p117100-->
+<item name="p117100" caption="Разное" key="" virtual="false" user-def="true" description="" super="params *" ag-id="857" ag-hash="2065932522"></item>
+<!--END_p117100-->
+
+<!--START_p117157-->
+<item name="p117157" caption="Клапана электромагнитные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="858" ag-hash="2065932684"></item>
+<!--END_p117157-->
+
+<!--START_p117162-->
+<item name="p117162" caption="Шланг молочный и вакуумный" key="" virtual="false" user-def="true" description="" super="params *" ag-id="859" ag-hash="2065932710"></item>
+<!--END_p117162-->
+
+<!--START_p117165-->
+<item name="p117165" caption="Доильный аппарат" key="" virtual="false" user-def="true" description="" super="params *" ag-id="860" ag-hash="2065932713"></item>
+<!--END_p117165-->
+
+<!--START_p117170-->
+<item name="p117170" caption="Мембраны" key="" virtual="false" user-def="true" description="" super="params *" ag-id="861" ag-hash="2065932739"></item>
+<!--END_p117170-->
+
+<!--START_p117174-->
+<item name="p117174" caption="Автомат промывки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="862" ag-hash="2065932743"></item>
+<!--END_p117174-->
+
+<!--START_p117177-->
+<item name="p117177" caption="Прочее" key="" virtual="false" user-def="true" description="" super="params *" ag-id="863" ag-hash="2065932746"></item>
+<!--END_p117177-->
+
+<!--START_p117201-->
+<item name="p117201" caption="Комбайны для уборки кукурузы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="864" ag-hash="2065933484"></item>
+<!--END_p117201-->
+
+<!--START_p117205-->
+<item name="p117205" caption="Комбайны для уборки гороха, фасоли и бобов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="865" ag-hash="2065933488"></item>
+<!--END_p117205-->
 <!--EXP--></model>

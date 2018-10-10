@@ -496,7 +496,7 @@ input[type="text"], input[type="password"] {
 	position: relative;
 }
 
-.form-item.picture a.delete, .form-item.file a.delete {
+.form-item.picture a.delete, .form-item.file a.delete,  .form-item.filter a.delete {
 	top: -10px;
 	right: -10px;
 	background: url('../img/delete_icon.png') center no-repeat;

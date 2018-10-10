@@ -8,9 +8,11 @@
 
     <xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
     <xsl:variable name="subs" select="$main_menu_section/section"/>
-    <xsl:variable name="show_subs" select="subs != '' and not($sel_sec/show_subs = '0')"/>
-    <xsl:variable name="sub_view" select="if($sel_sec/sub_view != '') then $sel_sec/sub_view else 'tags'"/>
-    <xsl:variable name="show_devices" select="not($sel_sec/show_devices = '0') or not($subs)"/>
+    <xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
+
+    <xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
+
+    <xsl:variable name="sub_view" select="if($sel_sec/sub_view != '') then $sel_sec/sub_view else $default_sub_view"/>
 
     <xsl:template name="LEFT_COLOUMN">
         <xsl:call-template name="CATALOG_LEFT_COLOUMN"/>

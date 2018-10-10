@@ -13,7 +13,10 @@
 	<xsl:template match="field[ @type='filter' ]" mode="single">
 		<xsl:variable name="form" select=".."/>
 		<xsl:if test="$form/@id &gt; 0">
-			<a href="#" onclick="openFilter('fil_{@id}', {$form/@id}, '{@name}');return false;">Редактировать фильтр</a>
+			<div style="position: relative; width: 175px;">
+				<a href="#" onclick="openFilter('fil_{@id}', {$form/@id}, '{@name}');return false;">Редактировать фильтр</a>
+				<a href="#" onclick="$('#fil_{@id}').val(''); document.mainForm.submit(); return false;" class="delete" title="Принудительно очистить фильтр."></a>
+			</div>
 			<textarea id="fil_{@id}" style="display:none" name="{@input}"><xsl:value-of select="."/></textarea>
 			<xsl:call-template name="BR"/>
 		</xsl:if>
