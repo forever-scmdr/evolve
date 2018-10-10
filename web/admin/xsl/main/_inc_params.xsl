@@ -12,6 +12,9 @@
 	<!-- Фильтр -->
 	<xsl:template match="field[ @type='filter' ]" mode="single">
 		<xsl:variable name="form" select=".."/>
+
+		<xsl:value-of select="name($form/..)"/>
+
 		<xsl:if test="$form/@id &gt; 0">
 			<div style="position: relative; width: 175px;">
 				<a href="#" onclick="openFilter('fil_{@id}', {$form/@id}, '{@name}');return false;">Редактировать фильтр</a>
@@ -244,12 +247,16 @@
 
 	<!-- TINY_MCE -->
 	<xsl:template name="TINY_MCE">
-		<xsl:variable name="form" select=".."/>
+		<xsl:variable name="form" select="/admin-page/form"/>
+
 		<script type="text/javascript">
 			var startUploadUrl = "<xsl:value-of select="admin-page/upload-link"/>";
 			var openAssocUrl = "<xsl:value-of select="admin-page/open-associated-link"/>";
 			//-- mce image upload settings for tinyMCE
 			window.uploadPath = "<xsl:value-of select="$form/@file-path"/>";
+
+
+
 			<xsl:if test="$form/@id != '0'">
 				window.itemId = <xsl:value-of select="$form/@id" />;
 				<xsl:if test="$form/field[ @type='picture' and @quantifier = 'multiple']">

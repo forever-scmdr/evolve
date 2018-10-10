@@ -1,8 +1,12 @@
 package ecommander.model;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Одиночный параметр
@@ -15,6 +19,8 @@ public class SingleParameter extends Parameter {
 	private ArrayList<Object> oldValues = null;
 	private HashMap<String, String> metas = null;
 	private int hash = 0;
+
+	private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
 	
 	public SingleParameter(ParameterDescription desc, Item item) {
 		super(desc, item);
@@ -54,6 +60,18 @@ public class SingleParameter extends Parameter {
 		this.value = val;
 		this.hash = desc.getDataType().getHashCode(val);
 		if (desc.getDataType().hasMeta() && !isConsistent) {
+			if(value instanceof String){
+				Matcher matcher = URL_PATTERN.matcher((String)val);
+				if(matcher.matches()){
+					try {
+						URL fileUrl = new URL((String)val);
+						this.value = fileUrl;
+						val = fileUrl;
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 			metas = desc.getDataType().createMeta(val, item);
 		}
 	}

@@ -816,7 +816,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 				in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 			}
 		} catch (Exception e) {
-			ServerLogger.error("Unable to copy item", e);
+			ServerLogger.error("Unable to move item", e);
 			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
 			page.addMessage("Невозможно переместить элемент", true);
 			return page;

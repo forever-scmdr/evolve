@@ -200,6 +200,7 @@ public class Strings
 	 * @return
 	 */
 	public static String getFileName(String fileName) {
+		fileName = fileName.replaceAll("/?\\?.*", "");
 		return StringUtils.lowerCase(translit(fileName.replaceFirst(".*[\\/]", "")));
 	}
 
@@ -208,6 +209,6 @@ public class Strings
 	}
 
     public static void main(String[] args) {
-    	System.out.println(translit("подъёмник?"));
+	   System.out.println(translit("подъёмник?"));
     }
 }
