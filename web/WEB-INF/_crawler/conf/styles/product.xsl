@@ -6,28 +6,23 @@
 
 
 	<xsl:template match="/">
-		<xsl:variable name="img" select="//img[@class='detail_image']"/>
-		<xsl:variable name="code" select="$img/@title"/>
-		<xsl:variable name="header" select="//h1"/>
-		<xsl:variable name="model" select="$code"/>
-		<xsl:variable name="type" select="substring-before($header, $code)"/>
+		<xsl:variable name="subname" select="//h2[1]/text()"/>
+		<xsl:variable name="symbols_line" select="//div[contains(@class, 'symbols')]"/>
+		<xsl:variable name="code" select="$symbols_line/td[starts-with(text(), 'Код')]/following-sibling::td[1]"/>
 		<result>
 			<product id="{$code}">
-				<name><xsl:value-of select="$model" /></name>
-				<type><xsl:value-of select="$type" /></type>
+				<name><xsl:value-of select="//h1[1]/text()" /></name>
+				<type><xsl:value-of select="substring-before($subname, ';')" /></type>
 				<code><xsl:value-of select="$code" /></code>
-				<name_extra><xsl:value-of select="h2" /></name_extra>
-				<venodor_code></venodor_code>
-				<offer_id></offer_id>
+				<name_extra><xsl:value-of select="$symbols_line" /></name_extra>
+				<vendor_code><xsl:value-of select="$symbols_line/td[starts-with(text(), 'Обозначение')]/following-sibling::td[1]" /></vendor_code>
+				<vendor><xsl:value-of select="$symbols_line/td[starts-with(text(), 'Производитель')]/following-sibling::td[1]" /></vendor>
 				<short><xsl:value-of select="//div[@class = 'tabs']/div[1]/p[1]" /></short>
-				<available></available>
-				<group_id></group_id>
-				<url></url>
-				<category_id></category_id>
-				<currency_id></currency_id>
-				<price></price>
-				<country></country>
-				<main_pic></main_pic>
+				<gallery>
+					<xsl:for-each select="//meta[@name='twitter:image']">
+						<pic download="{@content}" link="{@content}"/>
+					</xsl:for-each>
+				</gallery>
 				<tech>
 					<xsl:copy-of select="//div[@class='tabbody'][1]//table[@class='technical_data']"/>
 					<xsl:copy-of select="//div[@class='tabbody'][1]//div[@class='table_legend'][1]"/>
@@ -47,23 +42,14 @@
 					</xsl:for-each>
 				</manuals>
 				<assoc_code></assoc_code>
-				<gallery>
-					<xsl:for-each select="//div[@class='detail_text']//a[@class='image_link']">
-						<pic download="{@href}" link="{@href}"/>
-					</xsl:for-each>
-				</gallery>
+
 				<params_xml>
-					<xsl:variable name="table" select="//div[@class='tabbody'][1]//table[@class='technical_data']"/>
+					<xsl:variable name="table" select="//div[@id='specification']/table"/>
 					<xsl:for-each select="$table//tr">
-						<xsl:variable name="name" select="td[@class = 'col1']"/>
-						<xsl:variable name="value" select="td[@class = 'col2']"/>
-						<xsl:variable name="sup" select="$name/sup"/>
-						<xsl:if test="$value">
-							<parameter>
-								<name><xsl:value-of select="if ($sup) then substring-before($name, $sup) else $name" /></name>
-								<value><xsl:value-of select="$value" /></value>
-							</parameter>
-						</xsl:if>
+						<parameter>
+							<name><xsl:value-of select="td[1]/label" /></name>
+							<value><xsl:value-of select="td[2]" /></value>
+						</parameter>
 					</xsl:for-each>
 				</params_xml>
 			</product>
