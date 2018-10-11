@@ -6,46 +6,47 @@
     <xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
     <xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
-    <xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
-    <xsl:variable name="subs" select="$main_menu_section/section"/>
-    <xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
+	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
+	<xsl:variable name="subs" select="$main_menu_section/section"/>
+	<xsl:variable name="show_subs" select="subs != '' and not($sel_sec/show_subs = '0')"/>
+	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
 
-    <xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
+	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
 
-    <xsl:variable name="sub_view" select="if($sel_sec/sub_view != '') then $sel_sec/sub_view else $default_sub_view"/>
+	<xsl:variable name="sub_view" select="if($sel_sec/sub_view != '') then $sel_sec/sub_view else $default_sub_view"/>
 
-    <xsl:template name="LEFT_COLOUMN">
-        <xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
-    </xsl:template>
+	<xsl:template name="LEFT_COLOUMN">
+		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+	</xsl:template>
 
-    <xsl:template name="MARKUP">
-        <xsl:variable name="quote">"</xsl:variable>
-        <xsl:variable name="min" select="f:currency_decimal(//min/price)"/>
-        <xsl:variable name="max" select="f:currency_decimal(//max/price)"/>
-        <script type="application/ld+json">
-            {
-            "@context": "http://schema.org/",
-            "@type": "Product",
-            "name": <xsl:value-of select="concat($quote, replace($sel_sec/name, $quote, ''), $quote)"/>,
-            <xsl:if test="$sel_sec/main_pic != ''">
-                "image": <xsl:value-of select="concat($quote, $base, '/', $sel_sec/@path, $sel_sec/main_pic, $quote)"/>,
-            </xsl:if>
-            "offers": {
-            "@type": "AggregateOffer",
-            "priceCurrency": "BYN",
-            "lowPrice": <xsl:value-of select="concat($quote,$min, $quote)"/>,
-            "highPrice": <xsl:value-of select="concat($quote, $max, $quote)"/>,
-            "offerCount": <xsl:value-of select="concat($quote, count($sel_sec/product), $quote)"/>
-            }, "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "ratingCount": "53",
-            "bestRating": "5",
-            "worstRating": "1",
-            "name":
-            <xsl:value-of select="concat($quote, translate($sel_sec/name, $quote, ''), $quote)"/>
-            }
-            }
+	<xsl:template name="MARKUP">
+		<xsl:variable name="quote">"</xsl:variable>
+		<xsl:variable name="min" select="f:currency_decimal(//min/price)"/>
+		<xsl:variable name="max" select="f:currency_decimal(//max/price)"/>
+		<script type="application/ld+json">
+			{
+			"@context": "http://schema.org/",
+			"@type": "Product",
+			"name": <xsl:value-of select="concat($quote, replace($sel_sec/name, $quote, ''), $quote)"/>,
+			<xsl:if test="$sel_sec/main_pic != ''">
+				"image": <xsl:value-of select="concat($quote, $base, '/', $sel_sec/@path, $sel_sec/main_pic, $quote)"/>,
+			</xsl:if>
+			"offers": {
+			"@type": "AggregateOffer",
+			"priceCurrency": "BYN",
+			"lowPrice": <xsl:value-of select="concat($quote,$min, $quote)"/>,
+			"highPrice": <xsl:value-of select="concat($quote, $max, $quote)"/>,
+			"offerCount": <xsl:value-of select="concat($quote, $sel_sec/product_count, $quote)"/>
+			}, "aggregateRating": {
+			"@type": "AggregateRating",
+			"ratingValue": "4.9",
+			"ratingCount": "53",
+			"bestRating": "5",
+			"worstRating": "1",
+			"name":
+			<xsl:value-of select="concat($quote, translate($sel_sec/name, $quote, ''), $quote)"/>
+			}
+			}
 
         </script>
     </xsl:template>
@@ -172,14 +173,19 @@
     </xsl:template>
 
     <xsl:template name="FILTER">
-        <xsl:if test="not($subs) and $sel_sec/params_filter/filter/input != ''">
+
+		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 1]"/>
+
+		<xsl:if test="not($subs) and $valid_inputs != ''">
+
+
             <div class="toggle-filters">
                 <i class="fas fa-cog"></i>
                 <a onclick="$('#filters_container').slideToggle(200);">Подбор по параметрам</a>
             </div>
             <form method="post" action="{$sel_sec/filter_base_link}">
                 <div class="filters" style="{'display: none'[not($user_filter)]}" id="filters_container">
-                       <xsl:for-each select="$sel_sec/params_filter/filter/input">
+					   <xsl:for-each select="$valid_inputs">
                            <xsl:variable name="name" select="@id"/>
                             <div class="active checkgroup">
                                 <strong>
@@ -277,7 +283,9 @@
         <div class="catalog-item">
             <a href="{show_products}" class="image-container" style="background-image: url({$pic});"></a>
             <div>
+				<a href="{show_products}">
                 <xsl:value-of select="name"/>
+				</a>
             </div>
         </div>
     </xsl:template>
