@@ -13,8 +13,6 @@
 	<xsl:template match="field[ @type='filter' ]" mode="single">
 		<xsl:variable name="form" select=".."/>
 
-		<xsl:value-of select="name($form/..)"/>
-
 		<xsl:if test="$form/@id &gt; 0">
 			<div style="position: relative; width: 175px;">
 				<a href="#" onclick="openFilter('fil_{@id}', {$form/@id}, '{@name}');return false;">Редактировать фильтр</a>
