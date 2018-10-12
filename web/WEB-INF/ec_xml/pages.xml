@@ -52,7 +52,7 @@
 			</filter>
 		</list>
 
-		<!-- Все страны -->
+		<!-- Все страны  -->
 		<list item="agent" tag="country" id="country">
 			<aggregation parameter="country"/>
 		</list>
