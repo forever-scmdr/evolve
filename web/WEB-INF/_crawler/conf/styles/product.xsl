@@ -23,26 +23,9 @@
 						<pic download="{@content}" link="{@content}"/>
 					</xsl:for-each>
 				</gallery>
-				<tech>
-					<xsl:copy-of select="//div[@class='tabbody'][1]//table[@class='technical_data']"/>
-					<xsl:copy-of select="//div[@class='tabbody'][1]//div[@class='table_legend'][1]"/>
-				</tech>
-				<elements type="html">
-					<xsl:copy-of select="//div[@class='tabbody'][2]"/>
-				</elements>
-				<extra_parts type="html">
-					<xsl:copy-of select="//div[@class='tabbody'][3]"/>
-				</extra_parts>
-				<manuals>
-					<xsl:for-each select="//div[@id = 'manualtable']//tr">
-						<manual>
-							<name><xsl:value-of select=".//td[1]" /></name>
-							<file><xsl:value-of select=".//td[2]/a/@href" /></file>
-						</manual>
-					</xsl:for-each>
-				</manuals>
-				<assoc_code></assoc_code>
-
+				<text>
+					<xsl:copy-of select="//div[@id='specification']/*[not(name() = 'table')]"/>
+				</text>
 				<params_xml>
 					<xsl:variable name="table" select="//div[@id='specification']/table"/>
 					<xsl:for-each select="$table//tr">
@@ -52,6 +35,21 @@
 						</parameter>
 					</xsl:for-each>
 				</params_xml>
+				<manuals>
+					<xsl:for-each select="//div[@id = 'downloads']//td[@class='filename']/a">
+						<manual>
+							<name><xsl:value-of select="span[@class='filelink']" /></name>
+							<file><xsl:value-of select="@href" /></file>
+						</manual>
+					</xsl:for-each>
+				</manuals>
+				<assoc>
+					<xsl:for-each select="//div[@id='similar-box']//a[@data-product-symbol]">
+						<assoc_code><xsl:value-of select="@data-product-symbol" /></assoc_code>
+					</xsl:for-each>
+				</assoc>
+
+
 			</product>
 		</result>
 	</xsl:template>
