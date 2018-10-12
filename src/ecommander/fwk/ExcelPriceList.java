@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Прайс-лист
@@ -29,6 +26,7 @@ public abstract class ExcelPriceList implements Closeable {
 	private FormulaEvaluator eval;
 	private ArrayList<SheetHeader> validSheets = new ArrayList<>();
 	private String fileName;
+	private ArrayList<String> missingColumns = null;
 
 	public ExcelPriceList(String fileName, String... mandatoryCols) {
 		this.fileName = Strings.getFileName(fileName);
@@ -56,6 +54,7 @@ public abstract class ExcelPriceList implements Closeable {
 
 		headerCell = null;
 		boolean sheetChecked = false;
+		ArrayList<String> missingColumnsTest;
 		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
 			// Все названия колонок должны быть в одной строке
 			Sheet sheet = wb.getSheetAt(i);
@@ -65,14 +64,18 @@ public abstract class ExcelPriceList implements Closeable {
 			while (headerCell != null) {
 				headerCell = POIUtils.findNextContaining(sheet, eval, firstMandatory, headerCell);
 				if (headerCell != null) {
+					missingColumnsTest = new ArrayList<>();
 					Row row = sheet.getRow(headerCell.row);
 					rowChecked = true;
 					for (String checkCol : mandatoryCols) {
 						ArrayList<POIUtils.CellXY> found = POIUtils.findCellInRowContaining(eval, checkCol, row);
 						if (found.size() == 0) {
+							missingColumnsTest.add(checkCol);
 							rowChecked = false;
-							break;
 						}
+					}
+					if (!rowChecked && (missingColumns == null || missingColumnsTest.size() < missingColumns.size())) {
+						missingColumns = missingColumnsTest;
 					}
 				}
 				if (rowChecked)
@@ -142,8 +145,13 @@ public abstract class ExcelPriceList implements Closeable {
 	}
 
 	public final void iterate() throws Exception {
-		if (!isValid)
-			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, "Excel file is not valid");
+		if (!isValid) {
+			String message = "Excel file is not valid";
+			if (missingColumns.size() > 0) {
+				message = "Отсутствуют обязательные колонки: " + StringUtils.join(missingColumns, ", ");
+			}
+			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, message);
+		}
 
 		for(SheetHeader sh : validSheets){
 			currentSheet = sh.sheet;
