@@ -382,13 +382,13 @@
     </page>
 
 
-
+<!--
     <page name="update_prices" template="update_prices">
         <command class="extra.UpdatePrices" clear-cache="yes">
             <result name="complete" type="xml"/>
         </command>
     </page>
-
+-->
 
 
     <page name="page" cacheable="true" template="page">
@@ -521,6 +521,7 @@
         <link name="user_exists_personal" target="personal">
             <var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
         </link>
+	    <!--
         <command class="extra.RegisterCommand" method-var="action">
             <result name="not_set" type="redirect"/>
             <result name="user_exists" type="redirect"/>
@@ -530,6 +531,7 @@
             <result name="not_set_personal" type="redirect"/>
             <result name="user_exists_personal" type="redirect"/>
         </command>
+        -->
     </page>
 
 
@@ -653,7 +655,9 @@
             <var name="cart_cookie" scope="cookie"/>
         </request>
         <headers Cache-Control="no-cache" Expires="-1"/>
-        <command class="extra.CartManageCommand" method="restoreFromCookie"/>
+        <!--
+	    <command class="extra.CartManageCommand" method="restoreFromCookie"/>
+	    -->
         <session>
             <single item="cart">
                 <list item="bought">
@@ -687,14 +691,14 @@
             <var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
 		</link>
         <link name="email_send_failed" target="proceed"/>
-        <command class="extra.CartManageCommand" method-var="action">
-            <result name="ajax" type="redirect"/>
-            <result name="cart" type="redirect"/>
-            <result name="proceed" type="redirect"/>
-            <result name="confirm" type="redirect"/>
-            <result name="validation_failed" type="redirect"/>
-            <result name="email_send_failed" type="redirect"/>
-        </command>
+        <!--<command class="extra.CartManageCommand" method-var="action">-->
+            <!--<result name="ajax" type="redirect"/>-->
+            <!--<result name="cart" type="redirect"/>-->
+            <!--<result name="proceed" type="redirect"/>-->
+            <!--<result name="confirm" type="redirect"/>-->
+            <!--<result name="validation_failed" type="redirect"/>-->
+            <!--<result name="email_send_failed" type="redirect"/>-->
+        <!--</command>-->
     </page>
 
 
@@ -703,7 +707,7 @@
         <request>
             <var name="cart_cookie" scope="cookie"/>
         </request>
-        <command class="extra.CartManageCommand" method="restoreFromCookie"/>
+        <!--<command class="extra.CartManageCommand" method="restoreFromCookie"/>-->
         <session>
             <single item="cart" id="cart">
                 <list item="bought" id="bought">
@@ -962,9 +966,9 @@
 		<request>
 			<var name="action"/>
 		</request>
-		<command class="extra.SingleItemIntegrateParsedCommand" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
+		<!--<command class="extra.SingleItemIntegrateParsedCommand" clear-cache="yes">-->
+			<!--<result name="complete" type="xml"/>-->
+		<!--</command>-->
 	</page>
 
     <!--//                                                                          -->
@@ -993,11 +997,53 @@
     </page>
 
 
-    <page name="create_prices" template="integration">
-        <command class="extra.IntegratePriceList" clear-cache="yes">
+
+    <page name="crawl" template="crawl">
+        <request>
+            <var name="action"/>
+            <var name="job"/>
+        </request>
+        <command class="lunacrawler.CrawlCommand">
             <result name="complete" type="xml"/>
         </command>
     </page>
+
+
+    <page name="test_xsl">
+        <request>
+            <var name="url"/>
+        </request>
+        <command class="lunacrawler.CrawlCommand" method="test">
+            <result name="test_xsl" type="xml"/>
+        </command>
+    </page>
+
+    <page name="integrate_parsed" template="integrate_parsed">
+        <request>
+            <var name="action"/>
+        </request>
+        <!--<command class="extra.MetaboIntegrateParsedCommand" clear-cache="yes">-->
+            <!--<result name="complete" type="xml"/>-->
+        <!--</command>-->
+    </page>
+
+
+    <page name="create_filters" template="create_filters">
+        <request>
+            <var name="action"/>
+        </request>
+        <command class="ecommander.fwk.integration.CreateParametersAndFiltersCommand" clear-cache="yes">
+            <result name="complete" type="xml"/>
+        </command>
+    </page>
+
+
+
+    <!--<page name="create_prices" template="integration">-->
+        <!--<command class="extra.IntegratePriceList" clear-cache="yes">-->
+            <!--<result name="complete" type="xml"/>-->
+        <!--</command>-->
+    <!--</page>-->
 
 
 
@@ -1075,6 +1121,9 @@
 
 
 
+
+
+
     <page name="generate_sitemap">
        <command class="ecommander.fwk.CreateSiteMap">
             <result name="complete" type="xml"/>
@@ -1085,9 +1134,9 @@
         <request>
             <var name="site" value="http://takt.by/"/>
         </request>
-        <command class="extra.ImportFromOldSite">
-			<result name="complete" type="xml"/>
-		</command>
+        <!--<command class="extra.ImportFromOldSite">-->
+			<!--<result name="complete" type="xml"/>-->
+		<!--</command>-->
 	</page>
 
 </site>

@@ -8,6 +8,9 @@
 
 #https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=0&searchparam=
 
+https://www.tme.eu/ru/
+https://www.tme.eu/ru/katalog/.+    -   https://www.tme.eu/ru/katalog/poluprovodniki_112140/
+
 
 #
 # Pages to parse
@@ -18,4 +21,4 @@
 
 #.*metabo\.com/ru/ru/(prinadlezhnosti|instrumenty).*\.html.*     product.xsl     https://www.metabo.com/ru/ru/instrumenty/akkumuljatornye-instrumenty/akkumuljatornye-dreli/be-18-ltx-6-600261890-akkumuljatornaja-drel.html?listtype=search
 
-.*stihl\.ru/.*\.aspx    product.xsl     https://www.stihl.ru/%D0%9F%D1%80%D0%BE%D0%B4%D1%83%D0%BA%D1%86%D0%B8%D1%8F-STIHL/motornye-pily/dlya-lesnogo-hozyaystva/21881-130/%D0%91%D0%B5%D0%BD%D0%B7%D0%BE%D0%BF%D0%B8%D0%BB%D0%B0-MS-241-C-M.aspx
+https://www.tme.eu/ru/details/.+    product.xsl     https://www.tme.eu/ru/details/a10-lime-n8gb/odnoplatnye-kompiutery/olimex/a10-olinuxino-lime-n8gb/
