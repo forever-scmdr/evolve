@@ -12,8 +12,12 @@
 	<!-- Фильтр -->
 	<xsl:template match="field[ @type='filter' ]" mode="single">
 		<xsl:variable name="form" select=".."/>
+
 		<xsl:if test="$form/@id &gt; 0">
+			<div style="position: relative; width: 175px;">
 			<a href="#" onclick="openFilter('fil_{@id}', {$form/@id}, '{@name}');return false;">Редактировать фильтр</a>
+				<a href="#" onclick="$('#fil_{@id}').val(''); document.mainForm.submit(); return false;" class="delete" title="Принудительно очистить фильтр."></a>
+			</div>
 			<textarea id="fil_{@id}" style="display:none" name="{@input}"><xsl:value-of select="."/></textarea>
 			<xsl:call-template name="BR"/>
 		</xsl:if>
@@ -241,13 +245,15 @@
 
 	<!-- TINY_MCE -->
 	<xsl:template name="TINY_MCE">
-		<xsl:variable name="form" select="//form"/>
-		<script type="text/javascript" id="script">
+		<xsl:variable name="form" select="/admin-page/form"/>
+
+		<script type="text/javascript">
 			var startUploadUrl = "<xsl:value-of select="admin-page/upload-link"/>";
 			var openAssocUrl = "<xsl:value-of select="admin-page/open-associated-link"/>";
-
 			//-- mce image upload settings for tinyMCE
 			window.uploadPath = "<xsl:value-of select="$form/@file-path"/>";
+
+
 
 			<xsl:if test="$form/@id != '0'">
 				window.itemId = <xsl:value-of select="$form/@id" />;

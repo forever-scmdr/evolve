@@ -135,16 +135,34 @@ var mceSettings = {
 	}
 };
 
-
+function translit(russianString) {
+	var RUSSIAN_CHRS = "1234567890_abcdefghijklmnopqrstuvwxyzабвгдеёжзиыйклмнопрстуфхцчшщэюя. ,?/\|:-\"='%";
+	var REPLACEMENT_CHARS = [
+        "1","2","3","4","5","6","7","8","9","0","_",
+        "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
+        "a","b","v","g","d","e","yo","g","z","i","y","i","k","l","m","n","o","p","r","s","t",
+        "u","f","h","ts","ch","sh","sch","e","yu","ya",".","_","","ask","_","_","_","_","_","","","","_"
+	];
+	russianString = russianString.toLowerCase();
+	var arr = russianString.split("");
+    console.log(arr);
+	for(i = 0; i<arr.length; i++){
+		var idx = RUSSIAN_CHRS.indexOf(arr[i]);
+		if(idx != -1){
+			arr[i] = REPLACEMENT_CHARS[idx];
+		}else arr[i] = '_';
+	}
+	var translited = arr.join("");
+    console.log(translited);
+	return translited;
+}
 
 $(document).ready(function(){
-	
 	filePickerTypes = "";
 	if(typeof imgId != undefined) filePickerTypes += "image";
 	if(typeof fileId != undefined) filePickerTypes += " file";
 	
 	hasFiles = typeof imgId != undefined || typeof fileId != undefined;
-	
 	for(var setting in mceSettings){
 		if(hasFiles && mceSettings[setting].plugins[0].indexOf(" image ") != -1){
 			mceSettings[setting] = $.extend(mceSettings[setting], {
@@ -170,7 +188,9 @@ $(document).ready(function(){
 								form.remove();
 							}
 						});
-						callback(uploadPath + $(this).val());
+						var val = $(this).val().replace("C:\\fakepath\\", "");
+						val = translit(val);
+						callback(uploadPath + val);
 						});
 					}
 			});

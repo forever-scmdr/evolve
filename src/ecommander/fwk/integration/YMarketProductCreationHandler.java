@@ -5,6 +5,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -15,10 +16,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
 
@@ -50,7 +48,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private ItemType paramsXmlType;
 	private ArrayList<String> picUrls;
 	private User initiator;
-	boolean isInsideOffer = false;
+	private boolean isInsideOffer = false;
+	private boolean getPrice = false;
 
 	
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
@@ -68,7 +67,9 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				String code = commonParams.get(ID_ATTR);
 				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
+				boolean isProductNotNew = true;
 				if (product == null) {
+					isProductNotNew = false;
 					Item section = sections.get(secCode);
 					if (section != null) {
 						product = Item.newChildItem(productType, section);
@@ -92,8 +93,10 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				product.setValue(DESCRIPTION_PARAM, commonParams.get(DESCRIPTION_ELEMENT));
 				product.setValue(COUNTRY_PARAM, commonParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
 
-				//product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
-				product.setValueUI(PRICE_PARAM, "0");
+				if (getPrice)
+					product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
+				else
+					product.setValueUI(PRICE_PARAM, "0");
 
 				// Качать картинки только для новых товаров
 				if (product.isNew()) {
@@ -119,6 +122,13 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					}
 				}
 
+				// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
+				if (isProductNotNew) {
+					List<Item> paramsXmls = new ItemQuery(paramsXmlType.getName()).setParentId(product.getId(), false).loadItems();
+					for (Item paramsXml : paramsXmls) {
+						DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(paramsXml));
+					}
+				}
 				// Создать айтем с параметрами продукта
 				if (specialParams.size() > 0) {
 					XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
@@ -193,5 +203,9 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			paramName = attributes.getValue(NAME_ATTR);
 			parameterReady = true;
 		}
+	}
+
+	public void getPrice(boolean getPrice) {
+		this.getPrice = getPrice;
 	}
 }

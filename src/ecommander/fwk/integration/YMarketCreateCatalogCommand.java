@@ -8,6 +8,7 @@ import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -22,9 +23,13 @@ import java.util.List;
  */
 public class YMarketCreateCatalogCommand extends IntegrateBase implements CatalogConst {
 	private static final String INTEGRATION_DIR = "ym_integrate";
+	private static final String GET_PRICE_PARAM = "get_price";
+
+	private static boolean getPrice = false;
 
 	@Override
 	protected boolean makePreparations() throws Exception {
+		getPrice = StringUtils.equalsAnyIgnoreCase(getVarSingleValueDefault(GET_PRICE_PARAM, "no"), "yes", "true");
 		return true;
 	}
 
@@ -84,9 +89,11 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.setOperation("Содание товаров");
 		info.setProcessed(0);
 		YMarketProductCreationHandler prodHandler = new YMarketProductCreationHandler(secHandler.getSections(), info, getInitiator());
+		prodHandler.getPrice(getPrice);
 		for (File xml : xmls) {
 			parser.parse(xml, prodHandler);
 		}
+		executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(20, null));
 
 		info.pushLog("Создание товаров завершено");
 		info.pushLog("Индексация");
