@@ -245,6 +245,7 @@
 												<th>Всего</th>
 											</tr>
 											<xsl:for-each select="$rep_tags" >
+												<xsl:sort select="name"/>
 												<xsl:variable name="tag" select="name"/>
 												<tr class="chart_data_line">
 													<td class="no-print">
@@ -266,6 +267,7 @@
 												</tr>
 											</xsl:for-each>
 											<xsl:for-each-group select="$sales" group-by="device">
+												<xsl:sort select="current-grouping-key()"/>
 												<xsl:variable name="device" select="current-grouping-key()"/>
 												<tr class="chart_data_line">
 													<td class="no-print">

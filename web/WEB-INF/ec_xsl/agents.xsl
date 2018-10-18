@@ -600,6 +600,7 @@
 				</tr>
 				<xsl:if test="$show_devices">
 					<xsl:for-each-group select="$list[tag = $tag]" group-by="device">
+						<xsl:sort select="current-grouping-key()"/>
 						<xsl:variable name="sales" select="current-group()"/>
 						<xsl:variable name="device" select="current-grouping-key()"/>
 						<tr class="chart_data_line">
@@ -630,6 +631,7 @@
 		</tr>
 		<xsl:if test="$show_devices">
 			<xsl:for-each-group select="$list" group-by="device">
+				<xsl:sort select="current-grouping-key()"/>
 				<xsl:variable name="sales" select="current-group()"/>
 				<xsl:variable name="device" select="current-grouping-key()"/>
 				<tr class="chart_data_line">

@@ -231,6 +231,7 @@ public class ReadReports extends IntegrateBase implements ItemNames {
 			if (dealerItem == null) {
 				dealerItem = Item.newChildItem(dealerType, dealerCatalog);
 				dealerItem.setValueUI(dealer_.CODE, report.getDealerCode());
+				dealerItem.setValueUI(dealer_.ORGANIZATION, report.getDealerCode());
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(dealerItem));
 			}
 			// Удалить продажи более ранней версии отчета
