@@ -29,8 +29,6 @@ public class PictureDataType extends FileDataType {
 	private static final String CREATED_META = "created"; // дата создания файла
 	private static final String EXTENSION_META = "extenstion"; // расширение файла
 
-
-
 	public PictureDataType(Type type) {
 		super(type);
 	}
@@ -51,9 +49,9 @@ public class PictureDataType extends FileDataType {
 			} catch (IOException e) {
 					return new HashMap<>(0);
 			}
-		}else  if(value instanceof URL){return meta;}
-
-		else {
+		} else if (value instanceof URL) {
+			return meta;
+		} else {
 			try {
 				Path file = null;
 				if (value instanceof File)

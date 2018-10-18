@@ -29,7 +29,7 @@ public class StaticVariable extends Variable {
 	 * @param value
 	 */
 	public void addValue(Object value) {
-		if (StringUtils.isNotBlank(value.toString()))
+		if (StringUtils.isNotBlank(value.toString()) && !values.contains(value))
 			values.add(value);
 	}
 
@@ -81,6 +81,11 @@ public class StaticVariable extends Variable {
 
 	@Override
 	public boolean isEmpty() {
-		return values.size() == 0;
+		return values.isEmpty();
+	}
+
+	@Override
+	public void removeValue(Object value) {
+		values.remove(value);
 	}
 }

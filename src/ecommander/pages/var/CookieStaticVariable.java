@@ -44,4 +44,18 @@ public class CookieStaticVariable extends SessionStaticVariable {
 		clean();
 		parentPage.getSessionContext().setCookie(name, null);
 	}
+
+	@Override
+	public void removeValue(Object value) {
+		if (isEmpty())
+			restore();
+		if (!isEmpty()) {
+			getAllValues().remove(value);
+		}
+		if (isEmpty()) {
+			remove();
+		} else {
+			parentPage.getSessionContext().setCookie(name, getSingleValue().toString());
+		}
+	}
 }

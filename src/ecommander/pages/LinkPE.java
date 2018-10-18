@@ -110,15 +110,8 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		if (units.length > 1) {
 			// Получаются все переменные по отдельности
 			// Первая часть уже взята, поэтому i = 1
-			Iterator<RequestVariablePE> initVariablesIter;
-			if (page != null)
-				initVariablesIter = page.getInitVariablesPEList().iterator();
-			else
-				initVariablesIter = Collections.<RequestVariablePE>emptyList().iterator();
 			for (int i = 1; i < units.length; i++) {
 				String varName = units[i];
-				// Если переменная, объявленная в странице, является style="translit", значит надо использовать только одно значение, а не пару
-				RequestVariablePE initVar = initVariablesIter.hasNext() ? initVariablesIter.next() : null;
 				i++; // Берем следующее значение после /
 				// Если выход за пределы массива, значит неправильный формат URL
 				if (i >= units.length) {
@@ -126,19 +119,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 					break;
 				}
 				String varValue = URLDecoder.decode(units[i], "UTF-8");
-				RequestVariablePE varPE = (RequestVariablePE) getVariablePE(varName);
-				if (varPE == null) {
-					initVar = page == null ? null : page.getInitVariablePE(varName);
-					if (initVar != null) {
-						varPE = new RequestVariablePE(varName, initVar.getScope(), initVar.getStyle());
-						varPE.resetValue(varValue);
-					} else {
-						varPE = new RequestVariablePE(varName, varValue);
-					}
-					addVariablePE(varPE);
-				} else {
-					varPE.addValue(varValue);
-				}
+				addParsedVariableValue(page, varName, varValue);
 			}
 		}
 		// Разбор query части запроса
@@ -149,23 +130,29 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 				if (eqIdx > 0) {
 					String varName = varStr.substring(0, eqIdx);
 					String varValue = URLDecoder.decode(varStr.substring(eqIdx + 1), "UTF-8");
-					RequestVariablePE initVar = page == null ? null : page.getInitVariablePE(varName);
-					RequestVariablePE varPE = (RequestVariablePE) getVariablePE(varName);
-					if (varPE == null) {
-						if (initVar != null) {
-							varPE = new RequestVariablePE(varName, initVar.getScope(), initVar.getStyle());
-							varPE.resetValue(varValue);
-						} else {
-							varPE = new RequestVariablePE(varName, varValue);
-						}
-						addVariablePE(varPE);
-					} else {
-						varPE.addValue(varValue);
-					}
+					addParsedVariableValue(page, varName, varValue);
 				}
 			}
 		}
 	}
+
+
+	private void addParsedVariableValue(PagePE page, String varName, String varValue) {
+		RequestVariablePE varPE = (RequestVariablePE) getVariablePE(varName);
+		if (varPE == null) {
+			RequestVariablePE initVar = page == null ? null : page.getInitVariablePE(varName);
+			if (initVar != null) {
+				varPE = new RequestVariablePE(varName, initVar.getScope(), initVar.getStyle());
+				varPE.resetValue(varValue);
+			} else {
+				varPE = new RequestVariablePE(varName, varValue);
+			}
+			addVariablePE(varPE);
+		} else {
+			varPE.addValue(varValue);
+		}
+	}
+
 
 	/**
 	 * Создать ссылку на базе строки URL

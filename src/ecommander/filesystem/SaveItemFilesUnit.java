@@ -17,6 +17,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * Сохраняет все файлы - одиночные параметры айтема
@@ -26,7 +27,7 @@ import java.util.ArrayList;
  */
 public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 
-	//private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://[-\\wА-Яа-я+&@#/%?=~|!:,.;]*[-\\wА-Яа-я+&@#/%=~|]");
+	private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://[-\\wА-Яа-я+&@#/%?=~|!:,.;]*[-\\wА-Яа-я+&@#/%=~|]");
 	//Matcher m = URL_PATTERN.matcher((CharSequence) value);
 	//if (m.matches()) {
 
@@ -80,7 +81,6 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 							fileName = ((File) value).getName();
 						else if (isUrl)
 							fileName = Strings.getFileName(((URL) value).getFile());
-							fileName = (fileName.indexOf('/') != -1)? StringUtils.substringAfterLast(fileName, "/") : fileName;
 						// Создание новой директории
 						File dir = new File(fileDirectoryName);
 						dir.mkdirs();

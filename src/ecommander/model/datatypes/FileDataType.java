@@ -2,15 +2,12 @@ package ecommander.model.datatypes;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import ecommander.model.Item;
 import org.apache.commons.fileupload.FileItem;
@@ -66,8 +63,9 @@ public class FileDataType extends StringDataType {
 			meta.put(SIZE_META, file.getSize() + "");
 			meta.put(CREATED_META, DateDataType.DAY_FORMATTER.print(System.currentTimeMillis()));
 			meta.put(EXTENSION_META, StringUtils.substringAfterLast(file.getName(), "."));
-		} else  if(value instanceof URL){return meta;}
-		else {
+		} else if (value instanceof URL) {
+			return meta;
+		} else {
 			try {
 				Path file = null;
 				if (value instanceof File)

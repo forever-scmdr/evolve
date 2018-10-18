@@ -760,7 +760,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		Item item = ItemQuery.loadById(in.itemId);
 		for (String itemInput : in.mount.keySet()) {
 			String[] parts = MainAdminPageCreator.splitInputName(itemInput);
-			transaction.addCommandUnit(new CreateAssocDBUnit(item, Long.parseLong(parts[2]), in.assocId, false));
+			transaction.addCommandUnit(CreateAssocDBUnit.childExistsStrict(item, Long.parseLong(parts[2]), in.assocId));
 		}
 		transaction.execute();
 		// Очистить кеш страниц
@@ -785,7 +785,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		for (String itemInput : in.mount.keySet()) {
 			String[] parts = MainAdminPageCreator.splitInputName(itemInput);
 			Item child = ItemQuery.loadById(Long.parseLong(parts[2]));
-			transaction.addCommandUnit(new CreateAssocDBUnit(child, parent, in.assocId, false));
+			transaction.addCommandUnit(CreateAssocDBUnit.childExistsStrict(child, parent, in.assocId));
 		}
 		transaction.execute();
 		// Очистить кеш страниц
@@ -816,7 +816,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 				in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 			}
 		} catch (Exception e) {
-			ServerLogger.error("Unable to move item", e);
+			ServerLogger.error("Unable to copy item", e);
 			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
 			page.addMessage("Невозможно переместить элемент", true);
 			return page;

@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Переменная, которая поступила как параметр запроса (находится в элементе <variables></variables>)
+ * Если имя переменной начинается с символа - (минус), то значение этой переменной должно удаляться
+ * из переменной с именем без минуса
  * Created by E on 9/6/2017.
  */
 public class RequestVariablePE extends VariablePE {
@@ -27,6 +29,7 @@ public class RequestVariablePE extends VariablePE {
 	protected StaticVariable var;
 	private String defaultValue = null;
 	private Scope scope;
+	private boolean isNegative; // если переменная негативная, то ее значение должно удаляться из переменной с таким же именем, но без минуса впереди
 
 	public RequestVariablePE(String varName, Scope scope, Style style, String... defaultValue) {
 		super(varName, style);
@@ -34,6 +37,7 @@ public class RequestVariablePE extends VariablePE {
 		if (defaultValue != null && defaultValue.length > 0) {
 			this.defaultValue = defaultValue[0];
 		}
+		this.isNegative = varName != null && !varName.isEmpty() && varName.charAt(0) == VariablePE.NEGATIVE;
 	}
 
 	public RequestVariablePE(String varName, String varValue) {
@@ -111,5 +115,25 @@ public class RequestVariablePE extends VariablePE {
 
 	public boolean hasDefaultValue() {
 		return StringUtils.isNotBlank(defaultValue);
+	}
+
+	/**
+	 * Является ли переменная негативной (т.е. значение которой нужно удалять, а не добавлять)
+	 * @return
+	 */
+	public boolean isNegative() {
+		return isNegative;
+	}
+
+	/**
+	 * Получить имя переменной, из которой надо удалять значение, в случае если переменная негативна
+	 * @return
+	 */
+	public String getPositiveName() {
+		if (isNegative) {
+			return name.substring(1);
+		} else {
+			return name;
+		}
 	}
 }

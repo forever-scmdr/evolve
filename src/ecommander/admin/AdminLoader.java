@@ -151,6 +151,13 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 		if (assocIds == null || assocIds.length == 0) {
 			assocIds = ItemTypeRegistry.getItemOwnAssocIds(parentType.getName()).toArray(new Byte[0]);
 		}
+		HashSet<Integer> childrenSupertypes = new HashSet<>();
+		for (ItemTypeContainer.ChildDesc childDesc : parentType.getAllChildren()) {
+			Integer[] ids = ItemTypeRegistry.getBasicItemExtendersIds(ItemTypeRegistry.getItemTypeId(childDesc.itemName));
+			for (Integer id : ids) {
+				childrenSupertypes.add(id);
+			}
+		}
 		HashSet<Byte> adminGroups = new HashSet<>();
 		HashSet<Byte> simpleGroups = new HashSet<>();
 		for (User.Group group : user.getGroups()) {
@@ -175,6 +182,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 		base.col(IP_PARENT_ID).long_(parentId).AND()
 				.col(IP_PARENT_DIRECT).byte_((byte) 1).AND()
 				.col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_NIDDEN).AND()
+				.col_IN(IP_CHILD_SUPERTYPE).intIN(childrenSupertypes.toArray(new Integer[0])).AND()
 				.col_IN(IP_ASSOC_ID).byteIN(assocIds).AND().subquery("<<USER>>");
 		if (!justCount) {
 			if (justInline) {

@@ -25,8 +25,21 @@ public abstract class Command implements AutoCloseable {
 	
 	private ExecutablePagePE page;
 	private HashMap<String, ResultPE> results = null; // резльтаты выполнения команды
-	protected SynchronousTransaction transaction = null;
+	private SynchronousTransaction transaction = null;
 	private SessionItemMapper sessionMapper = null;
+
+
+	public Command() {
+
+	}
+
+
+	public Command(Command outer) {
+		this.page = outer.page;
+		this.transaction = outer.transaction;
+		this.sessionMapper = outer.sessionMapper;
+	}
+
 
 	void init(ExecutablePagePE page) {
 		this.page = page;
@@ -57,6 +70,10 @@ public abstract class Command implements AutoCloseable {
 	
 	protected final String getUrlBase() {
 		return page.getUrlBase();
+	}
+
+	protected final String getPageName() {
+		return page.getPageName();
 	}
 	/**
 	 * Установить значение переменной куки

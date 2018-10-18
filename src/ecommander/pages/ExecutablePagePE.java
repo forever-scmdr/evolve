@@ -109,12 +109,19 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 		this.requestLink = link;
 		this.urlBase = baseLink;
 		HashSet<RequestVariablePE> initVars = new HashSet<>(getInitVariablesPEList());
-		for (VariablePE variable : requestLink.getAllVariables()) {
-			VariablePE initialVar = getInitVariablePE(variable.getName());
-			if (initialVar != null && initialVar.getVariable() instanceof SessionStaticVariable)
-				((SessionStaticVariable) initialVar.getVariable()).update(variable.getVariable());
-			addVariable(variable.getVariable());
-			initVars.remove(initialVar);
+		ArrayList<RequestVariablePE> negativeVars = new ArrayList<>(); // только нетагивные переменные
+		for (VariablePE var : requestLink.getAllVariables()) {
+			RequestVariablePE variable = (RequestVariablePE) var;
+			if (!variable.isNegative()) {
+				VariablePE initialVar = getInitVariablePE(variable.getName());
+				if (initialVar != null && initialVar.getVariable() instanceof SessionStaticVariable) {
+					((SessionStaticVariable) initialVar.getVariable()).update(variable.getVariable());
+				}
+				addVariable(variable.getVariable());
+				initVars.remove(initialVar);
+			} else {
+				negativeVars.add(variable);
+			}
 		}
 		// Добавить все отсутствующие в ссылке начальные переменные
 		for (RequestVariablePE initialVar : initVars) {
@@ -135,6 +142,22 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 				addVariable(new StaticVariable(initialVar.getName(), initialVar.getDefaultValue()));
 			}
 		}
+		// Удалить значения, переданные в негативных переменных
+		for (RequestVariablePE negVar : negativeVars) {
+			VariablePE initialVar = getInitVariablePE(negVar.getPositiveName());
+			if (initialVar != null && initialVar.getVariable() instanceof SessionStaticVariable) {
+				for (Object val : negVar.getVariable().getAllValues()) {
+					initialVar.getVariable().removeValue(val);
+				}
+			}
+			Variable originalVar = getVariable(negVar.getPositiveName());
+			if (originalVar != null) {
+				for (Object value : negVar.getVariable().getAllValues()) {
+					originalVar.removeValue(value);
+				}
+			}
+		}
+		// Добавить переменную - ссылку на эту страницу
 		addVariablePE(new RequestVariablePE(PAGEURL_VALUE, linkUrl));
 	}
 	/**
@@ -193,8 +216,8 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	 * Не использовать напрямую.
 	 * Вызывается автоматически при клонировании (поддержка интерфейса)
 	 */
-	public final void addVariable(Variable variable) {
-		// Заменить элемент в переменных страницы и добавить его
+	public final void addVariable(Variable variable, boolean...isNegative) {
+		// Заменить элемент в переменных страницы или добавить его
 		variables.put(variable.getName(), variable);
 	}
 	/**

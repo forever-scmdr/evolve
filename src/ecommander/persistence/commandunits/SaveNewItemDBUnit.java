@@ -138,7 +138,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		// Шаг 3.   Сохранить связь нового айтема с его предшественниками по иерархии ассоциации
 		//
 		if (item.hasParent()) {
-			executeCommandInherited(new CreateAssocDBUnit(item, parent, item.getContextAssoc().getId(), true));
+			executeCommandInherited(CreateAssocDBUnit.childIsNew(item, parent, item.getContextAssoc().getId()));
 		} else {
 			TemplateQuery rootQuery = new TemplateQuery("Insert pseudoroot assoc with self");
 			rootQuery

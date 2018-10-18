@@ -179,6 +179,14 @@ public abstract class IntegrateBase extends Command {
 		}
 	}
 
+	public IntegrateBase() {
+
+	}
+
+	public IntegrateBase(Command outer) {
+		super(outer);
+	}
+
 	private static Info getInfo() {
 		if (info != null)
 			return info;
@@ -314,7 +322,7 @@ public abstract class IntegrateBase extends Command {
 	 */
 	private ResultPE buildResult() throws IOException {
 		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
-		doc.startElement("page");
+		doc.startElement("page", "name", getPageName());
 		getInfo().output(doc);
 		doc.endElement();
 		ResultPE result = null;

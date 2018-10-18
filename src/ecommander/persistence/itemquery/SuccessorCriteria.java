@@ -40,6 +40,11 @@ class SuccessorCriteria implements FilterCriteria, ItemQuery.Const, DBConstants.
 	public final void appendQuery(TemplateQuery query) {
 		final String PARENT_DOT = OTHER_PARENT_TABLE + ".";
 
+		// Добавить DISTINCT
+		TemplateQuery distinct = query.getSubquery(DISTINCT);
+		if (distinct.isEmpty())
+			distinct.sql("DISTINCT");
+
 		// Добавление таблицы в INNER JOIN
 		TemplateQuery join = query.getSubquery(JOIN);
 		join.INNER_JOIN(ITEM_PARENT_TBL + " AS " + OTHER_PARENT_TABLE, ITEM_TABLE + I_ID, PARENT_DOT + IP_PARENT_ID);

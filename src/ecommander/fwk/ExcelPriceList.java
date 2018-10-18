@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Прайс-лист
@@ -28,18 +25,23 @@ public abstract class ExcelPriceList implements Closeable {
 	private POIUtils.CellXY headerCell;
 	private FormulaEvaluator eval;
 	private ArrayList<SheetHeader> validSheets = new ArrayList<>();
+	private String fileName;
+	private ArrayList<String> missingColumns = null;
 
 	public ExcelPriceList(String fileName, String... mandatoryCols) {
+		this.fileName = Strings.getFileName(fileName);
 		this.doc = POIUtils.openExcel(fileName);
 		init(mandatoryCols);
 	}
 
 	public ExcelPriceList(File file, String... mandatoryCols) {
+		this.fileName = file.getName();
 		this.doc = POIUtils.openExcel(file);
 		init(mandatoryCols);
 	}
 
 	public ExcelPriceList(Path path, String... mandatoryCols) {
+		this.fileName = path.getFileName().toString();
 		this.doc = POIUtils.openExcel(path);
 		init(mandatoryCols);
 	}
@@ -52,19 +54,32 @@ public abstract class ExcelPriceList implements Closeable {
 
 		headerCell = null;
 		boolean sheetChecked = false;
+		ArrayList<String> missingColumnsTest;
 		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
 			// Все названия колонок должны быть в одной строке
 			Sheet sheet = wb.getSheetAt(i);
-			boolean rowChecked = true;
-			for (String mandatoryCol : mandatoryCols) {
-				headerCell = POIUtils.findFirstContaining(sheet, eval, mandatoryCol);
-				Row row = sheet.getRow(headerCell.row);
-				for (String checkCol : mandatoryCols) {
-					ArrayList<POIUtils.CellXY> found = POIUtils.findCellInRowContaining(eval, checkCol, row);
-					if (found.size() > 0)
-						continue;
-					rowChecked = false;
+			boolean rowChecked = false;
+			headerCell = new POIUtils.CellXY(-1, -1);
+			String firstMandatory = mandatoryCols[0];
+			while (headerCell != null) {
+				headerCell = POIUtils.findNextContaining(sheet, eval, firstMandatory, headerCell);
+				if (headerCell != null) {
+					missingColumnsTest = new ArrayList<>();
+					Row row = sheet.getRow(headerCell.row);
+					rowChecked = true;
+					for (String checkCol : mandatoryCols) {
+						ArrayList<POIUtils.CellXY> found = POIUtils.findCellInRowContaining(eval, checkCol, row);
+						if (found.size() == 0) {
+							missingColumnsTest.add(checkCol);
+							rowChecked = false;
+						}
+					}
+					if (!rowChecked && (missingColumns == null || missingColumnsTest.size() < missingColumns.size())) {
+						missingColumns = missingColumnsTest;
+					}
 				}
+				if (rowChecked)
+					break;
 			}
 			if (rowChecked) {
 				sheetChecked = true;
@@ -98,40 +113,45 @@ public abstract class ExcelPriceList implements Closeable {
 		return shitName;
 	}
 
-	public final String getValue(int colIndex, double... roundQuotient) {
-		return POIUtils.getCellAsString(currentRow.getCell(colIndex), eval);
+	public final String getValue(int colIndex) {
+		return StringUtils.trim(POIUtils.getCellAsString(currentRow.getCell(colIndex), eval));
 	}
 
-	public final Double getDoubleValue(int colIndex, double... roundQuotient) {
-		String val = getValue(colIndex, roundQuotient);
+	public final Double getDoubleValue(int colIndex) {
+		String val = getValue(colIndex);
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getCurrencyValue(int colIndex, double... roundQuotient) {
-		String val = getValue(colIndex, roundQuotient);
+	public final BigDecimal getCurrencyValue(int colIndex) {
+		String val = getValue(colIndex);
 		return DecimalDataType.parse(val, DecimalDataType.CURRENCY);
 	}
 
-	public final String getValue(String colName, double... roundQuotient) {
+	public final String getValue(String colName) {
 		Integer colIdx = currentHeader.get(StringUtils.lowerCase(colName));
 		if (colIdx == null)
 			return null;
 		return getValue(colIdx);
 	}
 
-	public final Double getDoubleValue(String colName, double... roundQuotient) {
-		String val = getValue(colName, roundQuotient);
+	public final Double getDoubleValue(String colName) {
+		String val = getValue(colName);
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getCurrencyValue(String colName, double... roundQuotient) {
-		String val = getValue(colName, roundQuotient);
+	public final BigDecimal getCurrencyValue(String colName) {
+		String val = getValue(colName);
 		return DecimalDataType.parse(val, DecimalDataType.CURRENCY);
 	}
 
 	public final void iterate() throws Exception {
-		if (!isValid)
-			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, "Excel file is not valid");
+		if (!isValid) {
+			String message = "Excel file is not valid";
+			if (missingColumns.size() > 0) {
+				message = "Отсутствуют обязательные колонки: " + StringUtils.join(missingColumns, ", ");
+			}
+			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, message);
+		}
 
 		for(SheetHeader sh : validSheets){
 			currentSheet = sh.sheet;
@@ -141,8 +161,8 @@ public abstract class ExcelPriceList implements Closeable {
 			processSheet();
 			//-- process rows
 			Iterator<Row> rowIter = currentSheet.rowIterator();
-			for (int i = 0; i <= headerCell.row && rowIter.hasNext(); i++) {
-				rowIter.next();
+			while (rowIter.hasNext() && rowIter.next().getRowNum() < headerCell.row) {
+				// пропустить первые строки включая заголовок
 			}
 			while (rowIter.hasNext()) {
 				currentRow = rowIter.next();
@@ -180,6 +200,14 @@ public abstract class ExcelPriceList implements Closeable {
 			this.header = header;
 			this.headerCell = headerCell;
 		}
+	}
+
+	public final int getRowNum() {
+		return currentRow.getRowNum();
+	}
+
+	public final String getFileName() {
+		return fileName;
 	}
 
 	@Override
