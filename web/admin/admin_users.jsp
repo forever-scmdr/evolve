@@ -2,10 +2,10 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="org.apache.commons.lang3.StringUtils"%>
-<%@page import="ecommander.controllers.admin.UserAdminServlet"%>
-<%@page import="ecommander.users.User"%>
+<%@page import="ecommander.admin.UserAdminServlet"%>
+<%@page import="ecommander.model.User"%>
 <%@page import="ecommander.controllers.SessionContext"%>
-<%@page import="ecommander.common.Strings"%>
+<%@page import="ecommander.fwk.Strings"%>
 <%@include file="login_import.jsp"%>
 <html>
 <head>
@@ -77,8 +77,8 @@
 								String selectHref = "admin_set_user.user?userId=" + user.getUserId();
 						%>
 							<li class="visible single">
-								<a href="<%=selectHref%>" class="name" title="радактировать">
-									<span class="description">[<%=user.getGroup()%>]</span><br/>
+								<a href="<%=selectHref%>" class="name" title="редактировать">
+									<span class="description">[<%=user.getGroupRolesStr()%>]</span><br/>
 									<%=user.getName()%>
 								</a>
 								<a href="#" onclick="confirmLink('<%=deleteHref%>')" class="delete" title="удалить">удалить</a>

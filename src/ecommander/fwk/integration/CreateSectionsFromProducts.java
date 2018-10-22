@@ -125,12 +125,12 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 				long id = product.getId();
 				byte ass = ItemTypeRegistry.getAssocId("other_colors");
 				try {
-					transaction.executeCommandUnit(new CreateAssocDBUnit(other, id, ass, false));
-				}catch (EcommanderException e){}
+					executeCommandUnit(CreateAssocDBUnit.childExistsSoft(other, id, ass));
+				} catch (EcommanderException e){}
 			}
 			info.increaseProcessed();
 		}
-		transaction.commit();
+		commitCommandUnits();
 	}
 
 	@Override
