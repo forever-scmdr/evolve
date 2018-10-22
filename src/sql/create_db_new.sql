@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `item` (
   `i_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `i_params` longtext,
   PRIMARY KEY (`i_id`),
-  KEY `MAIN` (`i_id`,`i_status`,`i_group`,`i_user`) USING BTREE,
+  KEY `MAIN` (`i_status`,`i_id`,`i_group`,`i_user`) USING BTREE,
   KEY `GROUP_AND_TYPE` (`i_group`,`i_supertype`,`i_user`,`i_status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
