@@ -29,6 +29,7 @@ import java.util.*;
  */
 public class CreateParametersAndFiltersCommand extends IntegrateBase implements CatalogConst {
 
+	private static final String DIGITS = "0123456789.,";
 	/**
 	 * Типы и названия параметров
 	 * Тип параметра может быть одним из трех
@@ -96,10 +97,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				if (testDouble(value)) {
 					return new Pair<>(DataType.Type.DOUBLE, null);
 				} else {
-					if (value.matches("^-?[0-9]+[\\.,]?[0-9]*\\s+[^-\\s]+$")) {
-						String[] parts = value.split("\\s");
-						String numStr = parts[0];
-						String unit = parts.length > 1 ? parts[1] : null;
+					if (value.matches("^-?[0-9]+[\\.,]?[0-9]*\\s*\\D+$")) {
+						int unitStart = 0;
+						for (; unitStart < value.length() && StringUtils.contains(DIGITS, value.charAt(unitStart)); unitStart++) { /* */ }
+						String numStr = value.substring(0, unitStart).trim();
+						String unit = value.substring(unitStart).trim();
 						try {
 							Integer.parseInt(numStr);
 							return new Pair<>(DataType.Type.INTEGER, unit);

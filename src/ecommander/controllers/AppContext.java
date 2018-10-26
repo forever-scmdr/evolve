@@ -1,10 +1,13 @@
 package ecommander.controllers;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import ecommander.model.datatypes.DateDataType;
@@ -91,9 +94,16 @@ public class AppContext {
 	public static String getContextPath() {
 		return _REAL_BASE_PATH;
 	}
-	
+
 	public static String getRealPath(String relPath) {
-		return _REAL_BASE_PATH + relPath;
+		Path path = Paths.get(relPath);
+		if (!path.isAbsolute()) {
+			path = Paths.get(_REAL_BASE_PATH, relPath);
+		}
+		if (path.toFile().isDirectory()) {
+			return path.toString() + "/";
+		}
+		return path.toString();
 	}
 	
 	public static String getMainModelPath() {

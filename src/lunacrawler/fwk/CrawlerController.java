@@ -416,7 +416,7 @@ public class CrawlerController {
 	 */
 	public static void startCrawling(Class<? extends BasicCrawler> crawlerClass, IntegrateBase.Info info, Mode mode,
 	                                 UrlModifier... modifier) throws Exception {
-		getSingleton().info = info;
+		getSingleton(true).info = info;
 		if (modifier != null && modifier.length > 0)
 			getSingleton().urlModifier = modifier[0];
 		getSingleton().start(crawlerClass, mode);
@@ -476,9 +476,9 @@ public class CrawlerController {
 	 * Вернуть контроллер
 	 * @return
 	 */
-	static CrawlerController getSingleton() {
+	static CrawlerController getSingleton(boolean...forceCreate) {
 		try {
-			if (singleton == null)
+			if (singleton == null || (forceCreate.length > 0 && forceCreate[0]))
 				singleton = new CrawlerController();
 			return singleton;
 		} catch (Exception e) {
@@ -553,13 +553,13 @@ public class CrawlerController {
 	 * Преобразовать все файлы из изначального вида в XML вид
 	 */
 	public void transformSource() {
+		TransformerFactory factory = TransformerFactoryImpl.newInstance();
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempSrcDir))) {
 			Path transformedDir = Paths.get(resultTempTransformedDir);
 			if (Files.exists(transformedDir))
 				FileUtils.deleteDirectory(transformedDir.toFile());
 			Files.createDirectories(transformedDir);
-			TransformerFactory factory = TransformerFactoryImpl.newInstance();
-			info.setToProcess(Paths.get(resultTempSrcDir).toFile().list().length);
+			//info.setToProcess(Paths.get(resultTempSrcDir).toFile().list().length);
 			info.setProcessed(0);
 			info.setOperation("XSLT преобразование HTML в XML");
 			// Для каждого файла из временной директории
@@ -686,7 +686,7 @@ public class CrawlerController {
 				FileUtils.deleteDirectory(joinedDir.toFile());
 			}
 			Files.createDirectories(joinedDir);
-			info.setToProcess(Paths.get(resultTempTransformedDir).toFile().list().length);
+			//info.setToProcess(Paths.get(resultTempTransformedDir).toFile().list().length);
 			info.setProcessed(0);
 			// Для каждого файла из временной директории
 			for (Path xmlFile : stream) {
@@ -722,7 +722,7 @@ public class CrawlerController {
 			}
 			Files.createDirectories(compiledDir);
 			info.setOperation("Удаление дублирующихся данных");
-			info.setToProcess(Paths.get(resultTempJoinedDir).toFile().list().length);
+			//info.setToProcess(Paths.get(resultTempJoinedDir).toFile().list().length);
 			info.setProcessed(0);
 			for (Path xmlFile : stream) {
 				// Сначала скомпилировать информацию (удалить дубли, объединить элементы)
@@ -736,6 +736,8 @@ public class CrawlerController {
 				for (Element item : data) {
 					if (newDoc == null) {
 						itemId = item.id();
+						if (StringUtils.isBlank(itemId))
+							continue;
 						String elementName = item.tagName();
 						newDoc = new Document("localhost");
 						newItemToAppend = new Element(elementName);
@@ -752,7 +754,9 @@ public class CrawlerController {
 							newItemToAppend.appendChild(property);
 						} else {
 							// Дописываение
-							if (action.equalsIgnoreCase(APPEND) || property.tagName().equalsIgnoreCase(H_PARENT)) {
+							if (action.equalsIgnoreCase(APPEND) ||
+									(property.tagName().equalsIgnoreCase(H_PARENT) &&
+											newItemToAppend.select("h_parent[parent=" + property.attr("parent") + "]").isEmpty())) {
 								newItemToAppend.appendChild(property);
 							}
 							// Дописывание, если еще нет такого значения

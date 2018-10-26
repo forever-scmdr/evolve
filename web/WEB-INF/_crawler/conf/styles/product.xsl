@@ -1,23 +1,37 @@
-<xsl:stylesheet 
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-	version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 	<xsl:output method="xml" encoding="UTF-8" media-type="text/xml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 
 	<xsl:template match="/">
-		<xsl:variable name="subname" select="//h2[1]/text()"/>
+		<xsl:variable name="name" select="//h1[1]"/>
+		<xsl:variable name="subname" select="//h2[1]"/>
 		<xsl:variable name="symbols_line" select="//div[contains(@class, 'symbols')]"/>
-		<xsl:variable name="code" select="$symbols_line/td[starts-with(text(), 'Код')]/following-sibling::td[1]"/>
+		<xsl:variable name="code" select="$symbols_line//td[starts-with(text(), 'Код')]/following-sibling::td[1]"/>
+		<xsl:variable name="paths" select="//span[@class = 'category-path']"/>
 		<result>
+			<xsl:for-each select="$paths">
+				<xsl:variable name="path" select=".//a[@href]"/>
+				<xsl:for-each select="$path">
+					<xsl:variable name="pos" select="position()"/>
+					<section id="{@data-categoryid}">
+						<xsl:if test="$pos != 1">
+							<h_parent parent="{$path[$pos - 1]/@data-categoryid}" element="section"/>
+						</xsl:if>
+						<name>
+							<xsl:value-of select="text()" />
+						</name>
+					</section>
+				</xsl:for-each>
+			</xsl:for-each>
 			<product id="{$code}">
-				<name><xsl:value-of select="//h1[1]/text()" /></name>
-				<type><xsl:value-of select="substring-before($subname, ';')" /></type>
+				<name><xsl:value-of select="normalize-space($name[1])" /></name>
+				<type><xsl:value-of select="substring-before($subname[1], ';')" /></type>
 				<code><xsl:value-of select="$code" /></code>
-				<name_extra><xsl:value-of select="$symbols_line" /></name_extra>
-				<vendor_code><xsl:value-of select="$symbols_line/td[starts-with(text(), 'Обозначение')]/following-sibling::td[1]" /></vendor_code>
-				<vendor><xsl:value-of select="$symbols_line/td[starts-with(text(), 'Производитель')]/following-sibling::td[1]" /></vendor>
-				<short><xsl:value-of select="//div[@class = 'tabs']/div[1]/p[1]" /></short>
+				<name_extra><xsl:value-of select="$subname[1]/text()" /></name_extra>
+				<vendor_code><xsl:value-of select="$symbols_line//td[starts-with(text(), 'Обозначение')]/following-sibling::td[1]" /></vendor_code>
+				<vendor><xsl:value-of select="$symbols_line//td[starts-with(text(), 'Производитель')]/following-sibling::td[1]" /></vendor>
+				<!--<short><xsl:value-of select="//div[contains(@class, 'tabs')]/div[1]/p[1]" /></short>-->
 				<gallery>
 					<xsl:for-each select="//meta[@name='twitter:image']">
 						<pic download="{@content}" link="{@content}"/>
@@ -48,8 +62,10 @@
 						<assoc_code><xsl:value-of select="@data-product-symbol" /></assoc_code>
 					</xsl:for-each>
 				</assoc>
-
-
+				<xsl:for-each select="$paths">
+					<xsl:variable name="path" select=".//a[@href]"/>
+					<h_parent parent="{$path[position() = last()]/@data-categoryid}" element="section"/>
+				</xsl:for-each>
 			</product>
 		</result>
 	</xsl:template>
