@@ -1,5 +1,6 @@
 package ecommander.persistence.commandunits;
 
+import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 
 /**
@@ -8,7 +9,7 @@ import ecommander.persistence.mappers.LuceneIndexMapper;
  * @author EEEE
  */
 public class CleanAllDeletedItemsDBUnit extends DBPersistenceCommandUnit {
-	
+
 	public interface DeleteInformer {
 		void receiveDeletedCount(int deletedCount);
 	}
@@ -22,19 +23,23 @@ public class CleanAllDeletedItemsDBUnit extends DBPersistenceCommandUnit {
 	}
 
 	public void execute() throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(context.getInitiator());
 		int deletedCount;
 		try {
-			LuceneIndexMapper.getSingleton().startUpdate();
+			if (insertIntoFulltextIndex)
+				LuceneIndexMapper.getSingleton().startUpdate();
 			do {
 				CleanDeletedItemsDBUnit cleanBatch = new CleanDeletedItemsDBUnit(deleteBatchQty);
-				executeCommand(cleanBatch);
+				transaction.addCommandUnit(cleanBatch);
+				transaction.execute();
 				deletedCount = cleanBatch.getDeletedCount();
 				if (informer != null) {
 					informer.receiveDeletedCount(deletedCount);
 				}
 			} while (deletedCount > 0);
 		} finally {
-			LuceneIndexMapper.getSingleton().finishUpdate();
+			if (insertIntoFulltextIndex)
+				LuceneIndexMapper.getSingleton().finishUpdate();
 		}
 	}
 

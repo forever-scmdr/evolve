@@ -28,10 +28,10 @@
             </link>
         </list>
 
-        <single item="common" cacheable="true">
-	        <single item="delivery"/>
-	        <single item="payment"/>
-        </single>
+        <!--<single item="common" cacheable="true">-->
+	        <!--<single item="delivery"/>-->
+	        <!--<single item="payment"/>-->
+        <!--</single>-->
         <link name="index_link" target="index"/>
         <link name="catalog_link" target="catalog"/>
         <link name="contacts_link" target="contacts"/>

@@ -116,6 +116,10 @@ public abstract class IntegrateBase extends Command {
 			this.processed++;
 		}
 
+		public synchronized void increaseProcessed(int procCount) {
+			this.processed += procCount;
+		}
+
 		public synchronized void increaseLineNumber() {
 			this.lineNumber++;
 		}

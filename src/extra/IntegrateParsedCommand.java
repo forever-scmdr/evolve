@@ -51,7 +51,7 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 			for (Item catalog : catalogs) {
 				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(catalog));
 			}
-			executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null));
+			executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
 		}
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		Document tree = infoProvider.getTree();
