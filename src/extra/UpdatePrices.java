@@ -29,34 +29,37 @@ public class UpdatePrices extends IntegrateBase implements CatalogConst{
 		Item catalog = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
 		if (catalog == null)
 			return false;
-		File priceFile = catalog.getFileValue(CATALOG_ITEM, AppContext.getFilesDirPath(false));
-		price = new ExcelPriceList(priceFile, QTY_HEADER, PRICE_HEADER) {
-			@Override
-			protected void processRow() throws Exception {
-				String code = StringUtils.replace(getValue(0), " ", "");
-				if (StringUtils.isNotBlank(code)) {
-					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code));
-					if (prod != null) {
-						Double qty = getDoubleValue(QTY_HEADER);
-						if (qty == null)
-							qty = 0d;
-						prod.set_qty(qty);
-						prod.set_price(getCurrencyValue(PRICE_HEADER));
-						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
-						info.increaseProcessed();
-					} else {
-						info.increaseLineNumber();
-						info.pushLog("Товар с кодом {} и названием {} не найден в каталоге", code, getValue(1));
+		File priceFile = catalog.getFileValue(INTEGRATION_PARAM, AppContext.getFilesDirPath(false));
+		if (priceFile.exists()) {
+			price = new ExcelPriceList(priceFile, QTY_HEADER, PRICE_HEADER) {
+				@Override
+				protected void processRow() throws Exception {
+					String code = StringUtils.replace(getValue(0), " ", "");
+					if (StringUtils.isNotBlank(code)) {
+						Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code));
+						if (prod != null) {
+							Double qty = getDoubleValue(QTY_HEADER);
+							if (qty == null)
+								qty = 0d;
+							prod.set_qty(qty);
+							prod.set_price(getCurrencyValue(PRICE_HEADER));
+							DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
+							info.increaseProcessed();
+						} else {
+							info.increaseLineNumber();
+							info.pushLog("Товар с кодом {} и названием {} не найден в каталоге", code, getValue(1));
+						}
 					}
 				}
-			}
 
-			@Override
-			protected void processSheet() throws Exception {
+				@Override
+				protected void processSheet() throws Exception {
 
-			}
-		};
-		return true;
+				}
+			};
+			return price != null;
+		}
+		return false;
 	}
 
 	@Override

@@ -18,7 +18,7 @@ import java.util.*;
  */
 public abstract class ExcelPriceList implements Closeable {
 	private POIExcelWrapper doc;
-	private boolean isValid = true;
+	private boolean isValid = false;
 	private Sheet currentSheet;
 	private HashMap<String, Integer> currentHeader = new HashMap<>();
 	private Row currentRow;
@@ -52,10 +52,9 @@ public abstract class ExcelPriceList implements Closeable {
 		Workbook wb = doc.getWorkbook();
 		eval = wb.getCreationHelper().createFormulaEvaluator();
 
-		headerCell = null;
-		boolean sheetChecked = false;
 		ArrayList<String> missingColumnsTest;
 		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
+			headerCell = null;
 			// Все названия колонок должны быть в одной строке
 			Sheet sheet = wb.getSheetAt(i);
 			boolean rowChecked = false;
@@ -81,8 +80,7 @@ public abstract class ExcelPriceList implements Closeable {
 				if (rowChecked)
 					break;
 			}
-			if (rowChecked) {
-				sheetChecked = true;
+			if (rowChecked && headerCell != null) {
 				Row row = sheet.getRow(headerCell.row);
 				HashMap<String, Integer> headers = new HashMap<>();
 				for (Cell cell : row) {
@@ -93,13 +91,10 @@ public abstract class ExcelPriceList implements Closeable {
 				}
 				SheetHeader sh = new SheetHeader(sheet, headers, headerCell);
 				validSheets.add(sh);
+				isValid = true;
 			}
 		}
 
-		if (!sheetChecked || headerCell == null) {
-			isValid = false;
-			return;
-		}
 
 		if (validSheets.size() > 0){
 			currentSheet = validSheets.get(0).sheet;
@@ -147,7 +142,7 @@ public abstract class ExcelPriceList implements Closeable {
 	public final void iterate() throws Exception {
 		if (!isValid) {
 			String message = "Excel file is not valid";
-			if (missingColumns.size() > 0) {
+			if (missingColumns != null && missingColumns.size() > 0) {
 				message = "Отсутствуют обязательные колонки: " + StringUtils.join(missingColumns, ", ");
 			}
 			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, message);
