@@ -188,7 +188,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				}
 				executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
 
-			} else{
+			} else {
 				section.clearParameter(PARAMS_FILTER_PARAM);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
 			}
