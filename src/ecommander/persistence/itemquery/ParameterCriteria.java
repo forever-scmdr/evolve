@@ -47,30 +47,31 @@ abstract class ParameterCriteria implements FilterCriteria, ItemQuery.Const, DBC
 	}
 	
 	public final void appendQuery(TemplateQuery query) {
-		if (needJoin) {
-			final String INDEX_DOT = INDEX_TABLE + ".";
-			final String GROUP_ITEM_TABLE = groupId + "I.";
+		if (isNotBlank()) {
+			if (needJoin) {
+				final String INDEX_DOT = INDEX_TABLE + ".";
+				final String GROUP_ITEM_TABLE = groupId + "I.";
 
-			// Добавление таблицы в INNER JOIN
-			TemplateQuery join = query.getSubquery(JOIN);
-			String indexTableName = DataTypeMapper.getTableName(param.getType());
-			join.INNER_JOIN(indexTableName + " AS " + INDEX_TABLE, GROUP_ITEM_TABLE + I_ID, INDEX_DOT + II_ITEM_ID);
+				// Добавление таблицы в INNER JOIN
+				TemplateQuery join = query.getSubquery(JOIN);
+				String indexTableName = DataTypeMapper.getTableName(param.getType());
+				join.INNER_JOIN(indexTableName + " AS " + INDEX_TABLE, GROUP_ITEM_TABLE + I_ID, INDEX_DOT + II_ITEM_ID);
 
-			TemplateQuery wherePart = query.getSubquery(WHERE);
+				TemplateQuery wherePart = query.getSubquery(WHERE);
 
-			// Добавление критерия типа айтема
-			// Только для пользовательских фильтров
-			if (item.isUserDefined()) {
-				wherePart.AND().col_IN(INDEX_DOT + II_ITEM_TYPE).intIN(ItemTypeRegistry.getItemExtendersIds(item.getTypeId()));
+				// Добавление критерия типа айтема
+				// Только для пользовательских фильтров
+				if (item.isUserDefined()) {
+					wherePart.AND().col_IN(INDEX_DOT + II_ITEM_TYPE).intIN(ItemTypeRegistry.getItemExtendersIds(item.getTypeId()));
+				}
+
+				// Добавление ID параметра
+				wherePart.AND().col(INDEX_DOT + II_PARAM).int_(param.getId());
 			}
 
-			// Добавление ID параметра
-			wherePart.AND().col(INDEX_DOT + II_PARAM).int_(param.getId());
-		}
-
-		// Добавление значения параметра
-		if (isNotBlank())
+			// Добавление значения параметра
 			appendParameterValue(query);
+		}
 	}
 
 	protected abstract void appendParameterValue(TemplateQuery query);

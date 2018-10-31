@@ -22,6 +22,15 @@
 			<var name="show_devices" value="yes"/>
 		</request>
 		<command class="extra.CreateQuartals"/>
+		<list item="agent" assoc="trade" tag="agent_filter">
+			<filter>
+				<parameter name="country" compare="ANY"><var var="country"/></parameter>
+				<parameter name="region" compare="ANY"><var var="region"/></parameter>
+				<parameter name="city" compare="ANY"><var var="city"/></parameter>
+				<parameter name="organization" compare="ANY"><var var="agent"/></parameter>
+				<parameter name="branch" compare="ANY"><var var="branch"/></parameter>
+			</filter>
+		</list>
 		<list item="sale" id="sale">
 			<filter>
 				<parameter name="register_date" compare="SOME" sign="&gt;="><var var="m_from"/></parameter>
@@ -77,7 +86,7 @@
 		<!-- Все агенты (названия) -->
 		<list item="agent" tag="agent">
 			<filter>
-				<parameter name="country" compare="SOME"><var var="country" /></parameter>
+				<parameter name="country" compare="ANY"><var var="country" /></parameter>
 				<parameter name="region" compare="ANY"><var var="region" /></parameter>
 				<parameter name="city" compare="ANY"><var var="city" /></parameter>
 			</filter>

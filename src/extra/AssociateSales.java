@@ -60,6 +60,7 @@ public class AssociateSales extends IntegrateBase implements ItemNames{
 				}
 				commitCommandUnits();
 				info.setProcessed(info.getProcessed() + sales.size());
+				sales = saleQuery.loadItems();
 			}
 		}
 
