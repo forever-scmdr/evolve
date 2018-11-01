@@ -443,6 +443,7 @@ public class CrawlerController {
 				Files.write(Paths.get(resultTempSrcDir + fileName), result.getBytes(UTF_8));
 			}
 		} catch (Exception e) {
+			ServerLogger.error("Error downloading html file", e);
 			info.pushLog("Can not write parsing results to a file", e);
 		}
 		currentProxyUrlsCount++;

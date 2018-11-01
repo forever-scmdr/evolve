@@ -33,7 +33,7 @@ public abstract class BasicCrawler extends WebCrawler {
 			//CrawlerController.getInfo().pushLog("Should visit: {}\tTo visit: {}", href, urlsToProcess);
 			return true;
 		}
-		CrawlerController.getInfo().pushLog("NOT VISITING: {}", href);
+		//CrawlerController.getInfo().pushLog("NOT VISITING: {}", href);
 		return false;
 	}
 
