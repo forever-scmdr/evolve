@@ -179,7 +179,7 @@
 	<xsl:template name="BANNERS">
 		<div class="container-fluid" style="padding: 0;">
 			<div class="slider-container">
-				<div class="fotorama" style="width: 100%;" data-transition="crossfade" data-width="100%" data-height="400" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true" data-fit="cover">
+				<div class="fotorama" style="width: 100%;" data-width="100%" data-height="400" data-transition="crossfade" data-autoplay="true" data-loop="true" data-fit="cover">
 					<xsl:for-each select="page/main_page/main_slider_frame">
 						<!-- <img src="{@path}{pic}" alt="{name}"/> -->
 						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
@@ -189,7 +189,7 @@
 									<div class="slider-item__text">
 										<xsl:value-of select="text" disable-output-escaping="yes"/>
 									</div>
-									<!-- <a href="{link}" class="slider-item__button">Каталог продукции</a> -->
+									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
 								</div>
 							</div>
 						</div>
@@ -198,7 +198,7 @@
 			</div>
 		</div>
 
-		<div class="has-items-carousel">
+		<!-- <div class="has-items-carousel">
 			<div class="container">
 				<div class="more-products">
 					<div class="title_2">Лидеры продаж</div>
@@ -207,7 +207,9 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
+
+
 
 		<!-- <div class="container container-tb">
 			<div class="hero hero_center">
@@ -229,12 +231,15 @@
 			</div>
 		</div> -->
 
+
+
 		<!-- <div class="separator"></div>
 		<div class="container container-tb">
 			<div class="quote quote_center">
 				<p>Основное направление компании Тексимат — кожа оптом и в розницу. Мы любим свое дело и ценим наших клиентов, поэтому предлагаем только лучшие материалы от ведущих европейских производителей.</p>
 			</div>
 		</div> -->
+
 
 
 		<!-- <div class="container-fluid contaner-tb">
@@ -267,7 +272,84 @@
 			</div>
 		</div> -->
 
-		<div class="container-fluid container-tb" style="background-color: #f2f2f2; padding: 40px 0;">
+
+		<div class="container-fluid" style="background-color: #fff; padding: 50px 0;">
+			<div class="container .container-tb">
+				<div class="banners-container">
+					<xsl:for-each select="page/main_page/main_promo_bottom">
+						<div class="banner">
+							<div class="banner__image" style="background-image: url({@path}{pic})"></div>
+							<div class="banner__title"><xsl:value-of select="text_big"/></div>
+							<!-- <div class="banner__text"><xsl:value-of select="text_small"/></div> -->
+							<a class="banner__link" href="{link}"></a>
+						</div>
+					</xsl:for-each>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="about">
+				<div class="about__text">
+					<div class="title_2">О нас</div>
+					<p>Начиная с 2006 года Общество с ограниченной ответственностью <span style="white-space:nowrap">«М-Тех»</span> успешно работает в сельскохозяйственном секторе.</p>
+					<p>Основные направления деятельности нашей компании - это реализация импортного оборудования и комплектующих, гарантийное и послегарантийное обслуживание молочно-доильного оборудования, оборудования для свиноводческих комплексов, биогазовых установок.</p>
+					<p>Прямое сотрудничество с европейскими производителями, позволяет нам поставлять качественную продукцию по оптимальной стоимости.</p>
+				</div>
+				<div class="about__blocks">
+					<div class="about__block">
+						<i class="fas fa-award about__icon"></i>
+						<strong>Качественное оборудование от производителя по приемлемым ценам</strong>
+					</div>
+					<div class="about__block">
+						<i class="fas fa-user-cog about__icon"></i>
+						<strong>Гарантийное и послегарантийное обслуживание</strong>
+					</div>
+					<div class="about__block">
+						<i class="fas fa-percent about__icon"></i>
+						<strong>Гибкая система скидок</strong>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid" style="background-color: #f4f4f4; padding: 40px 0;">
+			<div class="container">
+				<div class="title_2" style="text-align: center; margin-bottom: 48px;"><a href="img/impulsa-sert.jpg" class="magnific_popup-image">Эксклюзивный дилер Impulsa AG с подразделением<br/>Itec в Республике Беларусь</a></div>
+				<div class="brand-logos">
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (1).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (2).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (3).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (4).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (5).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (6).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (7).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (8).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (9).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (10).jpg" alt=""/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid" style="background-color: #fff; padding: 40px 0;">
 			<div class="container">
 				<div class="hero">
 					<div class="hero-block hero-block_center">
@@ -275,7 +357,7 @@
 							<i class="fa fa-clock"></i>
 						</div>
 						<div class="hero-block__title hero-block__title_small">Более 10 лет <br/> на рынке</div>
-						<div class="hero-block__text hero-block__text_small">Более 10 лет опыта в продаже и обслуживании светильников</div>
+						<div class="hero-block__text hero-block__text_small">Более 10 лет опыта в обслуживании сельскохозяйственного оборудования</div>
 					</div>
 					<div class="hero-block hero-block_center">
 						<div class="hero-block__icon">
@@ -301,76 +383,20 @@
 				</div>
 			</div>
 		</div>
-		<div class="container">
-			<div class="title_2">Салон светильников «Сатурн»</div>
-			<div class="text_2">
-				<p>Мы работаем для Вас с 1991 года, и всегда находим индивидуальные решения для каждого нашего клиента. Консультации специалистов, инженеров-электриков, решение проектных задач, сотрудничество с дизайнерами и архитекторами, а так же гибкая система скидок – все это делает наш салон эксклюзивным пространством света от известных мировых брендов.</p>
-				<p>На выставочной площади на рынок стройматериалов Уручье, павильон П30, представлены светильники, подходящие для интерьеров разнообразных стилей.</p>
-			</div>
-		</div>
-		<div class="container-fluid" style="background-color: #fff; padding: 50px 0;">
-			<div class="has-banners">
-				<div class="container">
-					<div class="banners-container">
-						<xsl:for-each select="page/main_page/main_promo_bottom">
-							<div class="banner">
-								<div class="image-container" style="background-image: url({@path}{pic})">
-									<div class="aspect-ratio"></div>
-								</div>
-								<div class="info">
-									<div class="h4"><xsl:value-of select="text_big"/></div>
-									<p><xsl:value-of select="text_small"/></p>
-								</div>
-								<a href="{link}"></a>
-							</div>
-					
-							<!-- <a href="{link}" style="background-image: url({@path}{pic})">
-								
-							</a> -->
-						</xsl:for-each>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="container-fluid">
+		<div class="container-fluid p-t">
 			<div class="container">
-				<div class="title_2 ">Бренды</div>
-				<div class="brand-logos">
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand (0).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand (1).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand (2).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand (3).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand (4).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand (5).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand (6).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand (7).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand (8).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand (9).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand (10).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand (11).jpg" alt=""/>
+				<div class="page-map" id="contacts">
+					<div class="page-map__map"><script type="text/javascript" charset="utf-8" async="async" src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A85d23034aeb71446d25bfc2b766314cfce48883a8cb39509d1b86e360cec37c7&amp;width=100%25&amp;height=360&amp;lang=ru_RU&amp;scroll=true"></script></div>
+					<div class="page-map__text">
+						<h3 class="page-map__title"><strong>Схема проезда и контакты</strong></h3>
+						<p>223053, Республика Беларусь, Минская обл., Минский р-н., р-н д. Боровая, корп. 1—3.</p>
+						<p>
+							+375 17 283 94 17 - Тел./факс;<br/>
+							+375 17 377 00 39 - Тел./факс;<br/>
+							+375 29 101 05 13 - Velcom;<br/>
+							+375 33 664 58 69 - МТС.
+						</p>
+						<p><a href="mailto:mtechservice2013@mail.ru">mtechservice2013@mail.ru</a></p>
 					</div>
 				</div>
 			</div>

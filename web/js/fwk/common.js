@@ -102,7 +102,7 @@ $(document).on('click', '.show-sub',function(e){
 	var href = $(this).attr("href"); 
 	var trg = $(href);
 	// $(".popup-text-menu").not(trg).hide();
-	// var l = $(this).closest("div").offset().left;
+	// var l = $(this).position().left - 50;
 	// trg.css({"left": l});
 	trg.toggle();
 });

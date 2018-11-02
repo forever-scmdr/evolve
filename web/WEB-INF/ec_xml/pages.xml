@@ -44,6 +44,13 @@
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
+
+		<!-- RGISTRATION -->
+		<link name="register_link" target="register"/>
+		<link name="login_form_link" target="login_form_ajax"/>
+		<link name="login_link" target="login_form"/>
+		<link name="personal_ajax_link" target="personal_ajax"/>
+
 		<single item="modules">
 			<list item="named_code"/>
 		</single>
@@ -80,7 +87,7 @@
 					<var ref="main" parameter="product"/>
 				</parameter>
 			</filter>
-			<link name="show_product" target="product">
+			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="translit"/>
 			</link>
 			<link name="to_cart" target="cart_action">
@@ -125,6 +132,9 @@
 			<var name="tag"/>
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
+			<link name="canonical_link" target="section" type="exclusive">
+				<var name="sec" item="cur_sec" style="translit"/>
+			</link>
 			<single item="seo"/>
 			<list item="product" id="prod" transit="true">
 				<filter>
@@ -146,7 +156,7 @@
 						<var var="tag"/>
 					</parameter>
 				</filter>
-				<link name="show_product" target="product">
+				<link name="show_product" target="product" type="exclusive">
 					<var name="prod" ref="prod" style="translit"/>
 				</link>
 				<link name="to_cart" target="cart_action">
@@ -284,8 +294,12 @@
 			<var name="prod" style="translit"/>
 		</request>
 		<single item="product" id="prod" var="prod">
+			<link name="canonical_link" target="product" type="exclusive">
+				<var name="prod" item="prod" style="translit"/>
+			</link>
 			<single item="seo"/>
 			<single item="params"/>
+			<single item="product_extra"/>
 			<ancestor item="section" transit="false" tag="product_section"/>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
@@ -479,7 +493,9 @@
 		<link name="validation_failed" target="proceed">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
 		</link>
-		<link name="email_send_failed" target="proceed"/>
+		<link name="email_send_failed" target="proceed">
+			<var name="message"/>
+		</link>
 		<command class="extra.CartManageCommand" method-var="action">
 			<result name="ajax" type="redirect"/>
 			<result name="cart" type="redirect"/>
@@ -500,7 +516,7 @@
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
 					<list item="product" id="prod" tag="product">
-						<link name="show_product" target="product">
+						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="translit"/>
 						</link>
 					</list>
@@ -526,6 +542,10 @@
 		<request>
 			<var name="message"/>
 		</request>
+		<session>
+			<single item="user_phys" tag="phys"/>
+			<single item="user_jur" tag="jur"/>
+		</session>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="customer_phys"/>
 		</new>
@@ -567,16 +587,16 @@
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
-					<list item="product" tag="product" id="prod">
+					<single item="product" tag="product" id="prod">
 						<filter>
 							<parameter name="code" compare="SOME" sign="=">
 								<var ref="bought" parameter="code"/>
 							</parameter>
 						</filter>
-						<link name="show_product" target="product">
+						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="translit"/>
 						</link>
-					</list>
+					</single>
 				</list>
 			</single>
 			<new item="user_phys" id="user_phys">
@@ -586,7 +606,6 @@
 				<parameter-input ref="user_jur" form="customer_jur"/>
 			</new>
 		</session>
-		<single item="url_seo_wrap"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -714,6 +733,157 @@
 		<include name="COMMON"/>
 	</page>
 
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                             РЕГИСТРАЦИЯ                              ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+	<page name="register" template="register">
+		<request>
+			<var name="message"/>
+			<var name="success" />
+		</request>
+		<new item="user_phys" id="user_phys">
+			<parameter-input ref="user_phys" form="register"/>
+		</new>
+		<new item="user_jur" id="user_jur">
+			<parameter-input ref="user_jur" form="register"/>
+		</new>
+		<link name="confirm_link" target="register_action" type="itemform">
+			<var name="action" value="register"/>
+		</link>
+		<include name="COMMON"/>
+	</page>
+
+
+	<page name="register_action">
+		<request>
+			<var name="action"/>
+			<var name="src" value="login_form_ajax"/>
+		</request>
+		<link name="not_set" target="register">
+			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
+		</link>
+		<link name="user_exists" target="register">
+			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
+		</link>
+		<link name="success" target="register">
+			<var name="message" value="Вы успешно зарегистрированы, спасибо"/>
+			<var name="success" value="true"/>
+		</link>
+		<link name="login" target-var="src">
+			<var name="success" value="true"/>
+		</link>
+		<link name="login_error" target-var="src">
+			<var name="message" value="Неверные логин/пароль"/>
+			<var name="success" value="false"/>
+		</link>
+		<link name="passwords_not_match_error" target="personal">
+			<var name="message" value="Пароль и подтверждение не совпадают"/>
+			<var name="success" value="false"/>
+		</link>
+		<link name="success_personal" target="personal">
+			<var name="message" value="Изменения учетной записи сохранены"/>
+			<var name="success" value="true"/>
+		</link>
+		<link name="not_set_personal" target="personal">
+			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
+		</link>
+		<link name="user_exists_personal" target="personal">
+			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
+		</link>
+		<command class="extra.RegisterCommand" method-var="action">
+			<result name="not_set" type="redirect"/>
+			<result name="user_exists" type="redirect"/>
+			<result name="success" type="redirect"/>
+			<result name="passwords_not_match_error" type="redirect"/>
+			<result name="success_personal" type="redirect"/>
+			<result name="not_set_personal" type="redirect"/>
+			<result name="user_exists_personal" type="redirect"/>
+		</command>
+	</page>
+
+
+	<page name="login_form_ajax" template="login_form_ajax">
+		<request>
+			<var name="message"/>
+		</request>
+		<link name="submit_form" target="register_action">
+			<var name="action" value="login"/>
+		</link>
+	</page>
+
+	<page name="login_form" template="login_form">
+		<request>
+			<var name="message"/>
+		</request>
+		<link name="submit_form" target="register_action">
+			<var name="action" value="login"/>
+			<var name="src" value="login_form"/>
+		</link>
+		<include name="COMMON"/>
+	</page>
+
+
+	<page name="personal_ajax" template="personal_ajax">
+		<link name="personal_link" target="personal"/>
+		<link name="purchase_history_link" target="purchase_history"/>
+		<link name="register_link" target="register"/>
+		<link name="login_link" target="login_form"/>
+	</page>
+
+
+	<page name="personal" template="personal" authority-groups="registered">
+		<personal>
+			<single item="user" id="user">
+				<parameter-input ref="user"/>
+				<extra-input name="new-password-1" ref="user"/>
+				<extra-input name="new-password-2" ref="user"/>
+				<link name="confirm_link" target="register_action" type="itemform">
+					<var name="action" value="update"/>
+				</link>
+			</single>
+		</personal>
+		<include name="COMMON"/>
+	</page>
+
+
+	<page name="purchase_history" template="purchase_history" authority-groups="registered">
+		<personal>
+			<list item="purchase">
+				<filter>
+					<sorting direction="DESC"><var value="date"/></sorting>
+				</filter>
+				<list item="bought" id="bought"/>
+			</list>
+		</personal>
+		<list item="product" id="prod">
+			<filter>
+				<parameter name="code" compare="SOME"><var ref="bought" parameter="code"/></parameter>
+			</filter>
+			<link name="show_product" target="product">
+				<var name="prod" ref="prod" style="translit"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="prod" parameter="code"/>
+			</link>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
+		</list>
+		<include name="COMMON"/>
+	</page>
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -835,6 +1005,34 @@
 		<command class="ecommander.fwk.integration.CreateParametersAndFiltersCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
+	</page>
+
+	<page name="delete_seo">
+		<link name="success" target="delete_seo_complete">
+			<var name="message" value="all OK. Seo is deleted"/>
+		</link>
+		<link name="error" target="delete_seo_complete"/>
+		<command class="extra.ExterminateSEO">
+			<result name="success" type="redirect"/>
+			<result name="error" type="redirect"/>
+		</command>
+	</page>
+
+	<page name="force_resize">
+		<link name="success" target="delete_seo_complete">
+			<var name="message" value="all OK. Images resized"/>
+		</link>
+		<link name="error" target="delete_seo_complete"/>
+		<command class="extra.ForceResizeCommand">
+			<result name="success" type="redirect"/>
+			<result name="error" type="redirect"/>
+		</command>
+	</page>
+
+	<page name="delete_seo_complete">
+		<request>
+			<var name="message"/>
+		</request>
 	</page>
 
 

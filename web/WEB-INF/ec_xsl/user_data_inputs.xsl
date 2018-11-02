@@ -6,7 +6,7 @@
 	<xsl:template name="USER_PHYS_INPUTS">
 		<xsl:param name="inp"/>
 		<div class="form-group">
-			<label>Ваше имя:</label>
+			<label>Ваше имя *:</label>
 			<input type="text" class="form-control" name="{$inp/name/@input}" value="{$inp/name}" error="{$inp/name/@validation-error}"/>
 		</div>
 		<div class="form-group">
@@ -22,7 +22,7 @@
 			</select>
 		</div>
 		<div class="form-group">
-			<label>Телефон:</label>
+			<label>Телефон *:</label>
 			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}" error="{$inp/phone/@validation-error}"/>
 		</div>
 		<div class="form-group">
@@ -39,12 +39,12 @@
 	<xsl:template name="USER_JUR_INPUTS">
 		<xsl:param name="inp"/>
 		<div class="form-group">
-			<label>Наименование организации:</label>
+			<label>Наименование организации *:</label>
 			<input type="text" class="form-control" name="{$inp/organization/@input}"
 			       value="{$inp/organization}" error="{$inp/organization/@validation-error}"/>
 		</div>
 		<div class="form-group">
-			<label for="">Телефон/факс:</label>
+			<label for="">Телефон/факс *:</label>
 			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}"/>
 		</div>
 		<div class="form-group">
@@ -60,7 +60,7 @@
 			<input type="text" class="form-control" name="{$inp/email/@input}" value="{$inp/email}"/>
 		</div>
 		<div class="form-group">
-			<label>Контактное лицо:</label>
+			<label>Контактное лицо *:</label>
 			<input type="text" class="form-control" name="{$inp/contact_name/@input}" value="{$inp/contact_name}"/>
 		</div>
 		<div class="form-group">

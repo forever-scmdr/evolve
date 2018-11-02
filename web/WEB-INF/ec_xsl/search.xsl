@@ -13,6 +13,7 @@
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="products" select="page/product"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+	<xsl:variable name="title" select="concat('Поиск по запросу ', page/variables/q)" />
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->

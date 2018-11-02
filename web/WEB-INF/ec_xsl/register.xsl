@@ -39,7 +39,7 @@
 
 
 				<div role="tabpanel" class="tab-pane{' active'[not($is_jur)]}" id="tab_phys">
-					<p>Заполните, пожалуйста, форму регистрации.</p>
+					<p>Заполните, пожалуйста, форму регистрации. Ваш email будет использован в качестве логина. Если не указан email, будет использован номер телефона.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
 						<xsl:call-template name="USER_PHYS_INPUTS">
@@ -55,7 +55,7 @@
 
 
 				<div role="tabpanel" class="tab-pane{' active'[$is_jur]}" id="tab_jur">
-					<p>Заполните, пожалуйста, форму регистрации.</p>
+					<p>Заполните, пожалуйста, форму регистрации. Ваш email будет использован в качестве логина. Если не указан email, будет использован номер телефона.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
 						<xsl:variable name="inp" select="page/user_jur/input"/>
 						<xsl:call-template name="USER_JUR_INPUTS">

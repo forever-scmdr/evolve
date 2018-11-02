@@ -1,14 +1,13 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
-    <xsl:import href="common_page_base.xsl"/>
-    <xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
-    <xsl:strip-space elements="*"/>
+	<xsl:import href="common_page_base.xsl"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:strip-space elements="*"/>
 
-    <xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
-    <xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section/section"/>
-	<xsl:variable name="show_subs" select="subs != '' and not($sel_sec/show_subs = '0')"/>
 	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
 
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
@@ -152,15 +151,18 @@
 
     <xsl:template name="TAGS">
        <xsl:if test="$subs or $sel_sec/tag">
-            <div class="tags">
                 <xsl:if test="not($subs)">
+					<div class="tags">
                     <form method="GET" action="{page/source_link}">
                         <xsl:apply-templates select="$sel_sec/tag"/>
                     </form>
+					</div>
                 </xsl:if>
                 <xsl:if test="not($sel_sec/show_subs = '0')">
                     <xsl:if test="$subs and $sub_view = 'tags'">
+						<div class="tags">
                         <xsl:apply-templates select="$subs" mode="tag"/>
+						</div>
                     </xsl:if>
                     <xsl:if test="$subs and $sub_view = 'pics'">
                         <div class="catalog-items">
@@ -168,17 +170,13 @@
                         </div>
                     </xsl:if>
                 </xsl:if>
-            </div>
         </xsl:if>
     </xsl:template>
 
     <xsl:template name="FILTER">
-
 		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 1]"/>
 
-		<xsl:if test="not($subs) and $valid_inputs != ''">
-
-
+		<xsl:if test="not($subs) and $valid_inputs">
             <div class="toggle-filters">
                 <i class="fas fa-cog"></i>
                 <a onclick="$('#filters_container').slideToggle(200);">Подбор по параметрам</a>
@@ -279,14 +277,9 @@
         <xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
         <xsl:variable name="product_pic" select="if (product/small_pic != '') then concat(product/@path, product/small_pic) else ''"/>
         <xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
-
-        <div class="catalog-item">
-            <a href="{show_products}" class="image-container" style="background-image: url({$pic});"></a>
-            <div>
-				<a href="{show_products}">
-                <xsl:value-of select="name"/>
-				</a>
-            </div>
+		<div class="device items-catalog__section">
+			<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
+			<a href="{show_products}" class="device__title"><xsl:value-of select="name"/></a>
         </div>
     </xsl:template>
 
