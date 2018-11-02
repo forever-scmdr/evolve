@@ -169,7 +169,7 @@ $(document).ready(function(){
 				file_picker_types: 'file image'
 					,file_picker_callback: function(callback, value, meta) {
 						if((meta.filetype == 'image' && typeof imgId == "undefined") || (meta.filetype == 'file' && typeof fileId == "undefined")) return;
-					
+
 						formId = "frm_"+ new Date().getTime();
 						paramId = (meta.filetype == 'image')? imgId : fileId;
 						form = $("<form>",{ method: "post", action: "admin_upload_img.action?itemId="+itemId+"&multipleParamId="+paramId, enctype: "multipart/form-data", id: formId});

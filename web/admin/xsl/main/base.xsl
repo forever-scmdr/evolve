@@ -128,16 +128,31 @@
 					</div>
 					<div class="mid">
 						<div class="left-col">
-							<!-- Поиск -->
-							<div class="list position-relative">
-								<form id="search-form" class="ajax-form" action="get_view.action" method="POST">
-									<input type="text" id="key_search" name="key_search" placeholder="поиск по названию" />
-									<input type="hidden" name="itemId" value="0"/>
-									<input type="hidden" name="itemType" value="0"/>
-									<input type="hidden" name="vt" value="subitems"/>
-									<a onclick="postFormView('search-form')" >искать</a>
-								</form>
-								<a onclick="insertAjaxView('{admin-page/link[@name='subitems']}', 'subitems'); $('#key_search').val('');" style="text-decoration: underline;">Очистить поиск</a>
+							<div class="list mass-select">
+								<h4 id="mass-selection-trigger" class="mass-selection-trigger">Выбрать несколько айтемов</h4>
+								<div class="selection-actions edit">
+									<div id="actions-items" class="actions-items">
+										<div class="actions sel-actions">
+											<span>Выбор:</span>
+											<a class="select-all" title="выбрать все" id="select_all">☑</a>
+											<a class="select-none" title="снять выделние со всех" id="deselect_all">⧈</a>
+											<a class="invert-selection" title="инвертировать выделение" id="invert_selection">↺</a>
+										</div>
+										<div class="actions">
+											<span>С айтемами:</span>
+											<a href="copy_all.action" class="copy set-action" rel="multi-item-action-form" title="копировать выделенное в буфер обмена"></a>
+											<a href="hide_all.action" class="hide_item set-action" rel="multi-item-action-form" title="скрыть выделенное"></a>
+											<a href="show_all.action" class="show_item set-action" rel="multi-item-action-form" title="показать выделенное"></a>
+											<a href="delete_all.action" class="delete set-action" rel="multi-item-action-form" title="удалить"></a>
+										</div>
+										<div class="actions">
+											<span>С буфером:</span>
+											<a class="copy paste" title="вставить выделенное"></a>
+											<a class="copy move" title="переместить выделенное"></a>
+											<a class="delete" title="удалить выделенное"></a>
+										</div>
+									</div>
+								</div>
 							</div>
 							<div id="subitems">
 								<div style="min-height: 100px; margin-bottom: 10px;"/>
@@ -179,6 +194,7 @@
 							</div>
 						</div>
 						<div class="right-col">
+							<xsl:call-template name="SEARCH"/>
 							<div class="inner">
 								<h1 class="title">
 									<xsl:if test="admin-page/item">
@@ -256,6 +272,23 @@
 			</body>
 		</html>
 	</xsl:template>
+
+	<!-- SEARCH -->
+	<xsl:template name="SEARCH">
+		<div class="list position-relative search-container">
+			<form id="search-form" class="ajax-form" action="get_view.action" method="POST">
+				<input type="text" id="key_search" name="key_search" placeholder="поиск по названию" />
+				<input type="hidden" name="itemId" value="0"/>
+				<input type="hidden" name="itemType" value="0"/>
+				<input type="hidden" name="vt" value="subitems"/>
+				<a onclick="postFormView('search-form')" >искать</a>
+			</form>
+			<a onclick="insertAjaxView('{admin-page/link[@name='subitems']}', 'subitems'); $('#key_search').val('');" style="text-decoration: underline;">Очистить поиск</a>
+		</div>
+	</xsl:template>
+
+
+	<!-- TODO  Context Menu -->
 
 	<xsl:template name="CONTEXT_MENU">
 

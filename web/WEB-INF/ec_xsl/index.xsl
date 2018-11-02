@@ -1,713 +1,414 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:f="f:f">
-	<xsl:import href="utils_inc.xsl"/>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:template name="MARKUP">
+		<script type="application/ld+json">
+			{
+				"@context":"http://schema.org",
+				"@type":"Organization",
+				"url":"<xsl:value-of select="$main_host"/>/",
+				"name":"<xsl:value-of select="$title"/>",
+				"logo":"<xsl:value-of select="concat($base, '/img/logo_big.svg')"/>",
+				"aggregateRating": {
+					"@type": "AggregateRating",
+					"ratingCount": "53",
+					"reviewCount": "53",
+					"bestRating": "5",
+					"ratingValue": "4,9",
+					"worstRating": "1",
+					"name": "TTD"
+				},
+				"contactPoint": [
+					<xsl:for-each select="page/common/phone" >
+						<xsl:if test="position() != 1">,</xsl:if>{
+						"@type":"ContactPoint",
+						"telephone":"<xsl:value-of select="tokenize(., '_')[1]"/>",
+						"contactType":"<xsl:value-of select="tokenize(., '_')[2]"/>"
+						}
+					</xsl:for-each>
+				]
+				<xsl:if test="page/common/email != ''">
+				,"email":[<xsl:for-each select="page/common/email" >
+						<xsl:if test="position() != 1">, </xsl:if>"<xsl:value-of select="."/>"</xsl:for-each>]
+				</xsl:if>
+			}
+		</script>
+	</xsl:template>
 
-	<xsl:variable name="group_dealers" select="page/variables/group_dealers = 'yes'"/>
-	<xsl:variable name="group_agents" select="page/variables/group_agents = 'yes'"/>
-	<xsl:variable name="group_tags" select="page/variables/group_tags = 'yes'"/>
-	<xsl:variable name="show_devices" select="page/variables/show_devices = 'yes'"/>
-	<xsl:variable name="rep_tags" select="page/tag[report = 'да']"/>
-
-	<xsl:variable name="selected_id" select="page/variables/selected"/>
-	<xsl:variable name="selected" select="page/selected"/>
-
-	<xsl:variable name="now" select="current-date()"/>
-	<xsl:variable name="now_quartal" select="ceiling(month-from-date($now) div 3)"/>
-	<xsl:variable name="max_year" select="if ($now_quartal = 1) then year-from-date($now) - 1 else year-from-date($now)"/>
-	<xsl:variable name="years" select="($max_year, $max_year - 1, $max_year - 2, $max_year - 3, $max_year - 4, $max_year - 5)"/>
-
-	<xsl:variable name="millis_to" select="if (page/variables/m_to) then number(page/variables/m_to) else f:date_to_millis($now)"/>
-	<xsl:variable name="millis_from" select="if (page/variables/m_from) then number(page/variables/m_from) else f:date_to_millis($now - 365 * xs:dayTimeDuration('P1D'))"/>
-
-	<xsl:variable name="date_to" select="f:millis_to_date($millis_to)"/>
-	<xsl:variable name="date_from" select="f:millis_to_date($millis_from)"/>
-
-	<xsl:variable name="quartal_to" select="ceiling(month-from-date($date_to) div 3)"/>
-	<xsl:variable name="quartal_from" select="ceiling(month-from-date($date_from) div 3)"/>
-
-	<xsl:variable name="year_to" select="year-from-date($date_to)"/>
-	<xsl:variable name="year_from" select="year-from-date($date_from)"/>
-
-	<xsl:variable name="years_quartals" select="tokenize(page/variables/quartals, '!')"/>
-
-	<xsl:variable name="sales" select="page/sale"/>
-	<xsl:variable name="selected_sales" select="page/sale[dealer_code = $selected/code]"/>
-
-
-
-	<xsl:template match="/">
-		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
-		</xsl:text>
-		<html>
-			<head>
-				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-				<meta charset="utf-8" />
-				<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<base href="{page/base}" />
-				<title>Дилеры - статистика</title>
-				<link rel="stylesheet" href="css/app.css" />
-				<link rel="stylesheet" href="stats/c3.min.css" />
-				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-			</head>
-			<body>
-				<div class="container">
-					<div class="row p-t no-print">
-						<div class="col-md-10">
-							<h1 class="no-m-t">Модуль статистики и аналитики</h1>
-						</div>
-						<div class="col-md-2">
-							<button type="button" class="btn btn-info btn-block">Распечатать отчет</button>
-						</div>
+	<xsl:template name="LEFT_COLOUMN">
+		<div class="side-menu">
+			<xsl:for-each select="page/catalog/section">
+				<div class="level-1">
+					<div class="capsule">
+						<a href="{show_section}"><xsl:value-of select="name"/></a>
 					</div>
-					<div class="row p-t select-time no-print">
-						<div class="col-md-12">
-							<h2 class="no-m-t">
-								<xsl:if test="not(page/variables/m_to)">Период не задан</xsl:if>
-								<xsl:if test="page/variables/m_to">
-									Отчетный период:
-									<xsl:value-of select="$quartal_from"/> квартал <xsl:value-of select="$year_from"/> года -
-									<xsl:value-of select="$quartal_to"/> квартал <xsl:value-of select="$year_to"/> года
-								</xsl:if>
-							</h2>
-							<div>
-								<!--<span>Период времени</span>-->
-								<form action="{page/set_dates}" method="post" id="dates_form" onsubmit="prepareDates()">
-									<select id="q_from" value="{$quartal_from}">
-										<option value="1">1 квартал</option>
-										<option value="2">2 квартал</option>
-										<option value="3">3 квартал</option>
-										<option value="4">4 квартал</option>
-									</select>
-									<select id="y_from" value="{$year_from}">
-										<xsl:for-each select="$years">
-											<option value="{.}"><xsl:value-of select="." /></option>
-										</xsl:for-each>
-										<option value="1980">Без ограничений</option>
-									</select> -
-									<select id="q_to" value="{$quartal_to}">
-										<option value="1">1 квартал</option>
-										<option value="2">2 квартал</option>
-										<option value="3">3 квартал</option>
-										<option value="4">4 квартал</option>
-									</select>
-									<select id="y_to" value="{$year_to}">
-										<xsl:for-each select="$years">
-											<option value="{.}"><xsl:value-of select="." /></option>
-										</xsl:for-each>
-										<option value="3000">Без ограничений</option>
-									</select>
-									<input type="hidden" name="m_from" value="{page/variables/m_from}"/>
-									<input type="hidden" name="m_to" value="{page/variables/m_to}"/>
-									<button type="submit" class="btn btn-default btn-sm">Применить</button>
-								</form>
-								<script>
-									function prepareDates() {
-										var datesForm = $('#dates_form');
-										var q_from = $('#q_from').val();
-										var q_to = $('#q_to').val();
-										var y_from = $('#y_from').val();
-										var y_to = $('#y_to').val();
-										var date_from = new Date(y_from, q_from * 3 - 1, 1);
-										var date_to = new Date(y_to, q_to * 3 - 1, 3);
-										datesForm.find('input[name=m_from]').eq(0).val(date_from.getTime());
-										datesForm.find('input[name=m_to]').eq(0).val(date_to.getTime());
-									};
-								</script>
+					<xsl:if test="section">
+						<div class="popup-menu" style="display:none">
+							<div class="popup-coloumn">
+								<xsl:for-each select="section[position() &lt;= 8]">
+									<div><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+								</xsl:for-each>
 							</div>
-						</div>
-					</div>
-					<xsl:if test="page/variables/m_to">
-						<div class="row p-t no-print">
-							<div class="col-md-12">
-								<ul class="nav nav-tabs" role="tablist">
-									<li class="active"><a href="{page/dealers_link}" >Дилеры</a></li>
-									<li><a href="{page/agents_link}">Контрагенты</a></li>
-									<li><a href="{page/products_link}">Товары</a></li>
-								</ul>
-							</div>
-						</div>
-						<div class="row p-t-small no-print">
-							<div class="col-md-12">
-								<button type="button" class="btn btn-default btn-sm" onclick="$('#params_form').toggle(200)">Подбор по параметрам</button>
-								<!--<div class="search">-->
-									<!--<input type="text" value="Поиск по названию"/>-->
-									<!--<button type="button" class="btn btn-default btn-sm">Найти</button>-->
-								<!--</div>-->
-							</div>
-							<div class="col-md-12" id="params_form">
-								<div class="parameters-container m-t-small no-print" style="display: block;">
-									<h3 class="no-m-t m-b">Подбор по параметрам</h3>
-									<div class="parameters">
-										<xsl:call-template name="parameter_input">
-											<xsl:with-param name="input_name" select="'country'"/>
-											<xsl:with-param name="header" select="'Страна'"/>
-											<xsl:with-param name="list" select="page/country/country"/>
-										</xsl:call-template>
-										<xsl:call-template name="parameter_input">
-											<xsl:with-param name="input_name" select="'region'"/>
-											<xsl:with-param name="header" select="'Регион'"/>
-											<xsl:with-param name="list" select="page/region/region"/>
-										</xsl:call-template>
-										<xsl:call-template name="parameter_input">
-											<xsl:with-param name="input_name" select="'city'"/>
-											<xsl:with-param name="header" select="'Город'"/>
-											<xsl:with-param name="list" select="page/city/city"/>
-										</xsl:call-template>
-										<xsl:call-template name="parameter_input">
-											<xsl:with-param name="input_name" select="'dealer'"/>
-											<xsl:with-param name="header" select="'Дилер'"/>
-											<xsl:with-param name="list" select="page/dealer/organization"/>
-										</xsl:call-template>
-										<xsl:call-template name="parameter_input">
-											<xsl:with-param name="input_name" select="'agent'"/>
-											<xsl:with-param name="header" select="'Контрагент'"/>
-											<xsl:with-param name="list" select="page/agent/organization"/>
-										</xsl:call-template>
-										<xsl:call-template name="parameter_input">
-											<xsl:with-param name="input_name" select="'branch'"/>
-											<xsl:with-param name="header" select="'Сфера'"/>
-											<xsl:with-param name="list" select="page/branch/branch"/>
-										</xsl:call-template>
-										<xsl:call-template name="parameter_input">
-											<xsl:with-param name="input_name" select="'tag'"/>
-											<xsl:with-param name="header" select="'Тип товара'"/>
-											<xsl:with-param name="list" select="page/tag/name"/>
-										</xsl:call-template>
-										<xsl:call-template name="parameter_input">
-											<xsl:with-param name="input_name" select="'device'"/>
-											<xsl:with-param name="header" select="'Товар'"/>
-											<xsl:with-param name="list" select="page/device/device"/>
-										</xsl:call-template>
-									</div>
-									<!--<button type="button" class="btn btn-success">Подобрать по параметрам</button>-->
-									<a href="{page/this_page_link}" class="btn btn-info">Очистить критерии</a>
+							<xsl:if test="count(section) &gt; 8">
+								<div class="popup-coloumn">
+									<xsl:for-each select="section[position() &gt; 8]">
+										<div><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+									</xsl:for-each>
 								</div>
-							</div>
+							</xsl:if>
 						</div>
-						<div class="row p-t">
-							<div class="col-md-12">
-								<h2>Статистика продаж дилеров с
-									<xsl:value-of select="$quartal_from"/> кв. <xsl:value-of select="$year_from"/> года по
-									<xsl:value-of select="$quartal_to"/> кв. <xsl:value-of select="$year_to"/> года
-								</h2>
-								<div class="parameters">
-									<xsl:call-template name="parameter_values">
-										<xsl:with-param name="header" select="'Страна'"/>
-										<xsl:with-param name="input_name" select="'country'"/>
-									</xsl:call-template>
-									<xsl:call-template name="parameter_values">
-										<xsl:with-param name="header" select="'Регион'"/>
-										<xsl:with-param name="input_name" select="'region'"/>
-									</xsl:call-template>
-									<xsl:call-template name="parameter_values">
-										<xsl:with-param name="header" select="'Город'"/>
-										<xsl:with-param name="input_name" select="'city'"/>
-									</xsl:call-template>
-									<xsl:call-template name="parameter_values">
-										<xsl:with-param name="header" select="'Дилер'"/>
-										<xsl:with-param name="input_name" select="'dealer'"/>
-									</xsl:call-template>
-									<xsl:call-template name="parameter_values">
-										<xsl:with-param name="header" select="'Контрагент'"/>
-										<xsl:with-param name="input_name" select="'agent'"/>
-									</xsl:call-template>
-									<xsl:call-template name="parameter_values">
-										<xsl:with-param name="header" select="'Сфера'"/>
-										<xsl:with-param name="input_name" select="'branch'"/>
-									</xsl:call-template>
-									<xsl:call-template name="parameter_values">
-										<xsl:with-param name="header" select="'Тип товара'"/>
-										<xsl:with-param name="input_name" select="'tag'"/>
-									</xsl:call-template>
-									<xsl:call-template name="parameter_values">
-										<xsl:with-param name="header" select="'Товар'"/>
-										<xsl:with-param name="input_name" select="'device'"/>
-									</xsl:call-template>
-								</div>
-								<form method="post" action="{page/select_link}">
-									<div class="table-responsive">
-										<table class="data-table main-table" id="main_table">
-											<tr>
-												<th class="no-print">
-													<input type="checkbox"
-													       onclick="$('#main_table').find('input[type=checkbox]').prop('checked', $(this).prop('checked'))"/>
-												</th>
-												<th>№</th>
-												<th>Организация</th>
-												<th>Страна</th>
-												<th>Город</th>
-												<xsl:for-each select="$years_quartals">
-													<xsl:variable name="parts" select="tokenize(., '\*')"/>
-													<th class="chart_data_x"><xsl:value-of select="$parts[1]"/>кв. <xsl:value-of select="$parts[2]"/></th>
-												</xsl:for-each>
-												<th>Всего</th>
-											</tr>
-											<xsl:for-each select="page/all_dealer">
-												<xsl:variable name="code" select="code"/>
-												<tr class="chart_data_line">
-													<td class="no-print">
-														<input type="checkbox" name="selected" value="{@id}">
-															<xsl:if test="@id = $selected_id">
-																<xsl:attribute name="checked" select="'checked'"/>
-															</xsl:if>
-														</input>
-													</td>
-													<td><xsl:value-of select="position()" />.</td>
-													<td class="chart_data_header"><xsl:value-of select="organization" /></td>
-													<td><xsl:value-of select="country" /></td>
-													<td><xsl:value-of select="city" /></td>
-													<xsl:for-each select="$years_quartals">
-														<xsl:variable name="parts" select="tokenize(., '\*')"/>
-														<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2] and dealer_code = $code]"/>
-														<td class="chart_data_point" value="{if ($sale) then sum($sale/qty) else '0'}">
-															<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
-														</td>
-													</xsl:for-each>
-													<td><xsl:value-of select="sum($sales[dealer_code = $code]/qty)" /></td>
-												</tr>
-											</xsl:for-each>
-											<tr class="summary chart_data_line">
-												<td class="no-print"></td>
-												<td></td>
-												<td class="chart_data_header">Итого:</td>
-												<td></td>
-												<td></td>
-												<xsl:for-each select="$years_quartals">
-													<xsl:variable name="parts" select="tokenize(., '\*')"/>
-													<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2]]"/>
-													<td class="chart_data_point total" value="{if ($sale) then sum($sale/qty) else '0'}">
-														<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
-													</td>
-												</xsl:for-each>
-												<td><xsl:value-of select="sum($sales/qty)" /></td>
-											</tr>
-										</table>
-									</div>
-									<div class="subtable-controls no-print chart_button_container">
-										<button type="button" class="btn btn-default btn-sm" onclick="createChart(this)">Подробный график</button>
-										<button type="button" class="btn btn-default btn-sm" onclick="createChart(this, true)">График Итого</button>
-										<button type="submit" class="btn btn-default btn-sm">Показать детализацию</button>
-									</div>
-									<div class="chart m-t-small" style="display: none">
-										<h3 class="no-m-t">
-											Статистика продаж дилеров с
-											<xsl:value-of select="$quartal_from"/> кв. <xsl:value-of select="$year_from"/> по
-											<xsl:value-of select="$quartal_to"/> кв. <xsl:value-of select="$year_to"/>
-										</h3>
-									</div>
-								</form>
-							</div>
-						</div>
-						<xsl:if test="page/selected">
-							<div class="row p-t details">
-								<div class="col-md-12">
-									<h2>Детализация</h2>
-									<div class="no-print">
-										<form action="{page/apply_grouping_link}" method="post">
-											<label class="checkbox-inline">
-												<input type="checkbox" name="group_dealers" value="yes">
-													<xsl:if test="$group_dealers">
-														<xsl:attribute name="checked" select="'checked'"/>
-													</xsl:if>
-												</input>
-												Разбить по дилерам
-											</label>&#160;
-											<label class="checkbox-inline">
-												<input type="checkbox" name="group_agents" value="yes">
-													<xsl:if test="$group_agents">
-														<xsl:attribute name="checked" select="'checked'"/>
-													</xsl:if>
-												</input>
-												Разбить по контрагентам
-											</label>&#160;
-											<label class="checkbox-inline">
-												<input type="checkbox" name="group_tags" value="yes">
-													<xsl:if test="$group_tags">
-														<xsl:attribute name="checked" select="'checked'"/>
-													</xsl:if>
-												</input>
-												Типы товаров
-											</label>&#160;
-											<label class="checkbox-inline">
-												<input type="checkbox" name="show_devices" value="yes">
-													<xsl:if test="$show_devices">
-														<xsl:attribute name="checked" select="'checked'"/>
-													</xsl:if>
-												</input>
-												Отдельные модели
-											</label>&#160;
-											<button type="submit" class="btn btn-default btn-sm">Применить</button>
-										</form>
-									</div>
-									<h3 class="p-t-small">Все дилеры из выборки</h3>
-									<p>
-										<xsl:value-of select="$quartal_from"/> кв. <xsl:value-of select="$year_from"/> -
-										<xsl:value-of select="$quartal_to"/> кв. <xsl:value-of select="$year_to"/>
-									</p>
-									<div class="table-responsive">
-										<table class="data-table">
-											<tr>
-												<th>№</th>
-												<th>Организация</th>
-												<th>Страна</th>
-												<th>Город</th>
-												<xsl:for-each select="$years_quartals">
-													<xsl:variable name="parts" select="tokenize(., '\*')"/>
-													<th class="chart_data_x"><xsl:value-of select="$parts[1]"/>кв. <xsl:value-of select="$parts[2]"/></th>
-												</xsl:for-each>
-												<th>Всего</th>
-											</tr>
-											<xsl:for-each select="page/selected">
-												<xsl:variable name="code" select="code"/>
-												<tr class="chart_data_line">
-													<td><xsl:value-of select="position()" />.</td>
-													<td class="chart_data_header"><xsl:value-of select="organization" /></td>
-													<td><xsl:value-of select="country" /></td>
-													<td><xsl:value-of select="city" /></td>
-													<xsl:for-each select="$years_quartals">
-														<xsl:variable name="parts" select="tokenize(., '\*')"/>
-														<xsl:variable name="sale" select="$selected_sales[quartal = $parts[1] and year = $parts[2] and dealer_code = $code]"/>
-														<td class="chart_data_point" value="{if ($sale) then sum($sale/qty) else '0'}">
-															<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
-														</td>
-													</xsl:for-each>
-													<td><xsl:value-of select="sum($selected_sales[dealer_code = $code]/qty)" /></td>
-												</tr>
-											</xsl:for-each>
-											<tr class="summary chart_data_line">
-												<td></td>
-												<td class="chart_data_header">Итого:</td>
-												<td></td>
-												<td></td>
-												<xsl:for-each select="$years_quartals">
-													<xsl:variable name="parts" select="tokenize(., '\*')"/>
-													<xsl:variable name="sale" select="$selected_sales[quartal = $parts[1] and year = $parts[2]]"/>
-													<td class="chart_data_point total" value="{if ($sale) then sum($sale/qty) else '0'}">
-														<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
-													</td>
-												</xsl:for-each>
-												<td><xsl:value-of select="sum($selected_sales/qty)" /></td>
-											</tr>
-										</table>
-									</div>
-									<div class="subtable-controls no-print chart_button_container">
-										<button type="button" class="btn btn-default btn-sm" onclick="createChart(this)">Подробный график</button>
-										<button type="button" class="btn btn-default btn-sm" onclick="createChart(this, true)">График Итого</button>
-									</div>
-									<div class="chart m-t-small" style="display: none">
-										<h3 class="no-m-t">
-											Статистика продаж дилеров с
-											<xsl:value-of select="$quartal_from"/> кв. <xsl:value-of select="$year_from"/> по
-											<xsl:value-of select="$quartal_to"/> кв. <xsl:value-of select="$year_to"/>
-										</h3>
-									</div>
-
-									<!--Группировка по контрагентам, но не по дилерам-->
-									<xsl:if test="$group_agents and not($group_dealers)">
-										<xsl:for-each-group select="$selected_sales" group-by="agent_plain_name">
-											<h3 class="p-t"><xsl:value-of select="current-group()[1]/agent_name" /></h3>
-											<xsl:call-template name="sales_table">
-												<xsl:with-param name="list" select="current-group()"/>
-											</xsl:call-template>
-										</xsl:for-each-group>
-									</xsl:if>
-
-									<!--Группировка по дилерам, но не по контрагентам-->
-									<xsl:if test="$group_dealers and not($group_agents)">
-										<xsl:for-each-group select="$selected_sales" group-by="dealer_code">
-											<h3 class="p-t"><xsl:value-of select="$selected[code = current-grouping-key()]/organization" /></h3>
-											<xsl:call-template name="sales_table">
-												<xsl:with-param name="list" select="current-group()"/>
-											</xsl:call-template>
-										</xsl:for-each-group>
-									</xsl:if>
-
-									<!--Группировка и по дилерам, и по контрагентам-->
-									<xsl:if test="$group_agents and $group_dealers">
-										<xsl:for-each-group select="$selected_sales" group-by="dealer_code">
-											<xsl:variable name="dealer" select="$selected[code = current-grouping-key()]/organization"/>
-											<xsl:for-each-group select="current-group()" group-by="agent_plain_name">
-												<h3 class="p-t"><xsl:value-of select="$dealer" /> → <xsl:value-of select="current-group()[1]/agent_name" /></h3>
-												<xsl:call-template name="sales_table">
-													<xsl:with-param name="list" select="current-group()"/>
-												</xsl:call-template>
-											</xsl:for-each-group>
-										</xsl:for-each-group>
-									</xsl:if>
-
-									<!--Без группировки-->
-									<xsl:if test="not($group_agents) and not($group_dealers)">
-										<h3 class="p-t">Все продажи</h3>
-										<xsl:call-template name="sales_table">
-											<xsl:with-param name="list" select="$selected_sales"/>
-										</xsl:call-template>
-									</xsl:if>
-
-								</div>
-							</div>
-						</xsl:if>
 					</xsl:if>
-					<!--
-					<h1>Продажи (<xsl:value-of select="count(page/sale)" />)</h1>
-					<div class="table-responsive">
-						<table class="data-table">
-							<tr>
-								<th>Дилер</th>
-								<th>Покупатель</th>
-								<th>Дата</th>
-								<th>Товар</th>
-								<th>Количество</th>
-								<th>Квартал</th>
-								<th>Год</th>
-							</tr>
-							<xsl:for-each select="page/sale">
-								<tr class="summary">
-									<td><xsl:value-of select="dealer_code"/></td>
-									<td><xsl:value-of select="agent_plain_name"/></td>
-									<td><xsl:value-of select="register_date"/></td>
-									<td><xsl:value-of select="device"/></td>
-									<td><xsl:value-of select="qty"/></td>
-									<td><xsl:value-of select="quartal"/></td>
-									<td><xsl:value-of select="year"/></td>
-								</tr>
-							</xsl:for-each>
-						</table>
-					</div>
-					-->
 				</div>
-
-
-				<!-- modals -->
-
-
-				<xsl:call-template name="list_modal">
-					<xsl:with-param name="header" select="'Страна'"/>
-					<xsl:with-param name="input_name" select="'country'"/>
-					<xsl:with-param name="list" select="page/country/country"/>
- 				</xsl:call-template>
-				<xsl:call-template name="list_modal">
-					<xsl:with-param name="header" select="'Регион'"/>
-					<xsl:with-param name="input_name" select="'region'"/>
-					<xsl:with-param name="list" select="page/region/region"/>
-				</xsl:call-template>
-				<xsl:call-template name="list_modal">
-					<xsl:with-param name="header" select="'Город'"/>
-					<xsl:with-param name="input_name" select="'city'"/>
-					<xsl:with-param name="list" select="page/city/city"/>
-				</xsl:call-template>
-				<xsl:call-template name="list_modal">
-					<xsl:with-param name="header" select="'Дилер'"/>
-					<xsl:with-param name="input_name" select="'dealer'"/>
-					<xsl:with-param name="list" select="page/dealer/organization"/>
-				</xsl:call-template>
-				<xsl:call-template name="list_modal">
-					<xsl:with-param name="header" select="'Контрагент'"/>
-					<xsl:with-param name="input_name" select="'agent'"/>
-					<xsl:with-param name="list" select="page/agent/organization"/>
-				</xsl:call-template>
-				<xsl:call-template name="list_modal">
-					<xsl:with-param name="header" select="'Сфера'"/>
-					<xsl:with-param name="input_name" select="'branch'"/>
-					<xsl:with-param name="list" select="page/branch/branch"/>
-				</xsl:call-template>
-				<xsl:call-template name="list_modal">
-					<xsl:with-param name="header" select="'Тип товара'"/>
-					<xsl:with-param name="input_name" select="'tag'"/>
-					<xsl:with-param name="list" select="page/tag/name"/>
-				</xsl:call-template>
-				<xsl:call-template name="list_modal">
-					<xsl:with-param name="header" select="'Товар'"/>
-					<xsl:with-param name="input_name" select="'device'"/>
-					<xsl:with-param name="list" select="page/device/device"/>
-				</xsl:call-template>
-
-
-				<script src="js/bootstrap.min.js"></script>
-				<script src="stats/require.js" data-main="stats/main"/>
-				<xsl:call-template name="SELECT_SCRIPT"/>
-			</body>
-		</html>
-	</xsl:template>
-
-
-
-	<!-- Выпадающий список всех возможных значений для одного параметра фильтрации -->
-	<xsl:template name="list_modal">
-		<xsl:param name="input_name"/>
-		<xsl:param name="header"/>
-		<xsl:param name="list"/>
-		<div id="{$input_name}_list" class="modal fade" tabindex="-1" role="dialog">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button"  class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-						<h4 class="modal-title"><xsl:value-of select="$header" /></h4>
-					</div>
-					<form action="{page/base_link}" method="post">
-						<div class="modal-body list">
-							<xsl:for-each select="$list">
-								<div class="checkbox"><label><input type="checkbox" name="{$input_name}" value="{.}"/><xsl:value-of select="."/></label></div>
-							</xsl:for-each>
-						</div>
-						<div class="modal-footer">
-							<button type="submit"  class="btn btn-default btn-block">Добавить выбранное</button>
-						</div>
-					</form>
-				</div>
-			</div>
+			</xsl:for-each>
 		</div>
+		<xsl:if test="page/main_page/link_text and not(page/main_page/link_text = '')">
+			<div class="actions">
+				<h3>Акции</h3>
+				<div class="actions-container">
+					<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
+				</div>
+			</div>
+		</xsl:if>
+		<script>
+			var _menuShowInterval = 0;
+			var _menuHideInterval = 0;
+			var _menuCurrentItem = 0;
+			$(document).ready(function() {
+				$('.level-1').hover(
+					function(){
+						clearInterval(_menuHideInterval);
+						if (_menuMouseMovedVertically) {
+							$('.popup-menu').hide();
+							$(this).find('.popup-menu').show();
+						} else {
+							_menuCurrentItem = $(this);
+							_menuShowInterval = setInterval(function() {
+								$('.popup-menu').hide();
+								_menuCurrentItem.find('.popup-menu').show();
+							}, 500);
+						}
+					},
+					function() {
+						clearInterval(_menuShowInterval);
+						if (_menuMouseMovedVertically) {
+							$('.popup-menu').hide();
+						} else {
+							_menuHideInterval = setInterval(function() {
+								$('.popup-menu').hide();
+							}, 500);
+						}
+					}
+				);
+			<xsl:text disable-output-escaping="yes">
+				var _menuPrevX = 1000;
+				var _menuPrevY = -1000;
+				var _menuMouseMovedVertically = true;
+				$('.side-menu').mousemove(
+					function(event) {
+						_menuMouseMovedVertically = (Math.abs(event.pageY - _menuPrevY) - Math.abs(event.pageX - _menuPrevX)) &gt; 0;
+						_menuPrevX = event.pageX;
+						_menuPrevY = event.pageY;
+						console.log(_menuMouseMovedVertically);
+					}
+				);
+			</xsl:text>
+			});
+		</script>
+		<!-- <div class="contacts">
+			<h3>Заказ и консультация</h3>
+			<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - тел./Viber</p>
+			<p>Email <a href="">info@beltesto.by</a></p>
+			<p><a href="">Схема проезда к офису</a></p>
+		</div> -->
 	</xsl:template>
 
 
-	<!-- Поле ввода для одного параметра фильтрации -->
-	<xsl:template name="parameter_input">
-		<xsl:param name="input_name"/>
-		<xsl:param name="header"/>
-		<xsl:param name="list"/>
-		<div class="parameter">
-			<div><xsl:value-of select="$header" />:</div>
-			<div>
-				<form action="{page/base_link}" method="post">
-					<input list="{$input_name}_l" type="text" name="{$input_name}"/>
-					<datalist id="{$input_name}_l">
-						<xsl:for-each select="$list">
-							<option value="{.}"></option>
-						</xsl:for-each>
-					</datalist>
-					<button type="submit" class="btn btn-default btn-sm">Добавить</button>
-					<button type="button" class="btn btn-default btn-sm" data-toggle="modal"
-					        data-target="#{$input_name}_list">Выбрать из списка</button>
-				</form>
-			</div>
-			<div class="chosen-values">
-				<xsl:for-each select="page/variables/*[name() = $input_name]">
-					<a href="{//page/*[name() = concat('remove_', $input_name, '_base')]}{.}"><xsl:value-of select="." /></a>
+	<xsl:template name="CONTENT">
+		<!-- <div class="slider-container">
+			<div class="fotorama" data-transition="crossfade" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true" data-fit="cover">
+				<xsl:for-each select="page/main_page/main_slider_frame">
+					<img src="{@path}{pic}" alt="{name}"/>
 				</xsl:for-each>
 			</div>
-		</div>
+		</div> -->
+		<!-- <div class="actions mobile">
+			<h3>Акции</h3>
+			<div class="actions-container">
+				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
+			</div>
+		</div> -->
 	</xsl:template>
 
+	<xsl:template name="MAIN_CONTENT">
+		<!-- MAIN COLOUMNS BEGIN -->
+		<div class="container">
+			<div class="row">
 
-	<!-- Список значений одного параметра фильтрации -->
-	<xsl:template name="parameter_values">
-		<xsl:param name="input_name"/>
-		<xsl:param name="header"/>
-		<xsl:if test="page/variables/*[name() = $input_name]">
-			<div class="parameter">
-				<div><xsl:value-of select="$header" />:</div>
-				<div class="chosen-values">
-					<xsl:for-each select="page/variables/*[name() = $input_name]">
-						<a href="{//page/*[name() = concat('remove_', $input_name, '_base')]}{.}"><xsl:value-of select="." /></a>
+				<!-- RIGHT COLOUMN BEGIN -->
+				<div class="col-md-12 col-xs-12 main-content">
+					<div class="mc-container">
+						<xsl:call-template name="INC_MOBILE_HEADER"/>
+						<xsl:call-template name="CONTENT"/>
+					</div>
+				</div>
+				<!-- RIGHT COLOUMN END -->
+			</div>
+		</div>
+		<!-- MAIN COLOUMNS END -->
+	</xsl:template>
+
+	<!-- <xsl:template name="BANNERS">
+		<div class="container p-t">
+			<div class="row">
+				<div class="col-xs-12 banners">
+					<div class="banners-container">
+						<xsl:for-each select="page/main_page/main_promo_bottom">
+							<a href="{link}" style="background-image: url({@path}{pic})">
+								<h4><xsl:value-of select="text_big"/></h4>
+								<p><xsl:value-of select="text_small"/></p>
+							</a>
+						</xsl:for-each>
+					</div>
+				</div>
+			</div>
+		</div>
+	</xsl:template> -->
+
+	<xsl:template name="BANNERS">
+		<div class="container-fluid" style="padding: 0;">
+			<div class="slider-container">
+				<div class="fotorama" style="width: 100%;" data-width="100%" data-height="400" data-transition="crossfade" data-autoplay="true" data-loop="true" data-fit="cover">
+					<xsl:for-each select="page/main_page/main_slider_frame">
+						<!-- <img src="{@path}{pic}" alt="{name}"/> -->
+						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+							<div class="container">
+								<div class="slider-item__block fotorama__select">
+									<div class="slider-item__title"><xsl:value-of select="name" /></div>
+									<div class="slider-item__text">
+										<xsl:value-of select="text" disable-output-escaping="yes"/>
+									</div>
+									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+								</div>
+							</div>
+						</div>
 					</xsl:for-each>
 				</div>
 			</div>
-		</xsl:if>
+		</div>
+
+		<!-- <div class="has-items-carousel">
+			<div class="container">
+				<div class="more-products">
+					<div class="title_2">Лидеры продаж</div>
+					<div class="slick-slider catalog-items">
+						<xsl:apply-templates select="page/product"/>
+					</div>
+				</div>
+			</div>
+		</div> -->
+
+
+
+		<!-- <div class="container container-tb">
+			<div class="hero hero_center">
+				<div class="hero-block hero-block_center">
+					<div class="hero-block__icon"></div>
+					<div class="hero-block__title">1972</div>
+					<div class="hero-block__text">год начала работы</div>
+				</div>
+				<div class="hero-block hero-block_center">
+					<div class="hero-block__icon"></div>
+					<div class="hero-block__title">более 180</div>
+					<div class="hero-block__text">довольных клиентов</div>
+				</div>
+				<div class="hero-block hero-block_center">
+					<div class="hero-block__icon"></div>
+					<div class="hero-block__title">46 лет</div>
+					<div class="hero-block__text">безупречной работы</div>
+				</div>
+			</div>
+		</div> -->
+
+
+
+		<!-- <div class="separator"></div>
+		<div class="container container-tb">
+			<div class="quote quote_center">
+				<p>Основное направление компании Тексимат — кожа оптом и в розницу. Мы любим свое дело и ценим наших клиентов, поэтому предлагаем только лучшие материалы от ведущих европейских производителей.</p>
+			</div>
+		</div> -->
+
+
+
+		<!-- <div class="container-fluid contaner-tb">
+			<div class="photo-stripe">
+				<div class="photo-stripe__item">
+					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
+					<div class="photo-stripe__image" style="background-image: url(../img/bp1_small.jpg);"></div>
+					<div class="photo-stripe__text">Подпись к фото</div>
+				</div>
+				<div class="photo-stripe__item">
+					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
+					<div class="photo-stripe__image" style="background-image: url(../img/bp2_small.jpg);"></div>
+					<div class="photo-stripe__text">Подпись к фото</div>
+				</div>
+				<div class="photo-stripe__item">
+					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
+					<div class="photo-stripe__image" style="background-image: url(../img/bp3_small.jpg);"></div>
+					<div class="photo-stripe__text">Подпись к фото</div>
+				</div>
+				<div class="photo-stripe__item">
+					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
+					<div class="photo-stripe__image" style="background-image: url(../img/bp4_small.jpg);"></div>
+					<div class="photo-stripe__text">Подпись к фото</div>
+				</div>
+				<div class="photo-stripe__item">
+					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
+					<div class="photo-stripe__image" style="background-image: url(../img/bp5_small.jpg);"></div>
+					<div class="photo-stripe__text">Подпись к фото</div>
+				</div>
+			</div>
+		</div> -->
+
+
+		<div class="container-fluid" style="background-color: #fff; padding: 50px 0;">
+			<div class="container .container-tb">
+				<div class="banners-container">
+					<xsl:for-each select="page/main_page/main_promo_bottom">
+						<div class="banner">
+							<div class="banner__image" style="background-image: url({@path}{pic})"></div>
+							<div class="banner__title"><xsl:value-of select="text_big"/></div>
+							<!-- <div class="banner__text"><xsl:value-of select="text_small"/></div> -->
+							<a class="banner__link" href="{link}"></a>
+						</div>
+					</xsl:for-each>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="about">
+				<div class="about__text">
+					<div class="title_2">О нас</div>
+					<p>Начиная с 2006 года Общество с ограниченной ответственностью <span style="white-space:nowrap">«М-Тех»</span> успешно работает в сельскохозяйственном секторе.</p>
+					<p>Основные направления деятельности нашей компании - это реализация импортного оборудования и комплектующих, гарантийное и послегарантийное обслуживание молочно-доильного оборудования, оборудования для свиноводческих комплексов, биогазовых установок.</p>
+					<p>Прямое сотрудничество с европейскими производителями, позволяет нам поставлять качественную продукцию по оптимальной стоимости.</p>
+				</div>
+				<div class="about__blocks">
+					<div class="about__block">
+						<i class="fas fa-award about__icon"></i>
+						<strong>Качественное оборудование от производителя по приемлемым ценам</strong>
+					</div>
+					<div class="about__block">
+						<i class="fas fa-user-cog about__icon"></i>
+						<strong>Гарантийное и послегарантийное обслуживание</strong>
+					</div>
+					<div class="about__block">
+						<i class="fas fa-percent about__icon"></i>
+						<strong>Гибкая система скидок</strong>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid" style="background-color: #f4f4f4; padding: 40px 0;">
+			<div class="container">
+				<div class="title_2" style="text-align: center; margin-bottom: 48px;"><a href="img/impulsa-sert.jpg" class="magnific_popup-image">Эксклюзивный дилер Impulsa AG с подразделением<br/>Itec в Республике Беларусь</a></div>
+				<div class="brand-logos">
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (1).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (2).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (3).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (4).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (5).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (6).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (7).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (8).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (9).jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-logo (10).jpg" alt=""/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid" style="background-color: #fff; padding: 40px 0;">
+			<div class="container">
+				<div class="hero">
+					<div class="hero-block hero-block_center">
+						<div class="hero-block__icon">
+							<i class="fa fa-clock"></i>
+						</div>
+						<div class="hero-block__title hero-block__title_small">Более 10 лет <br/> на рынке</div>
+						<div class="hero-block__text hero-block__text_small">Более 10 лет опыта в обслуживании сельскохозяйственного оборудования</div>
+					</div>
+					<div class="hero-block hero-block_center">
+						<div class="hero-block__icon">
+							<i class="fa fa-users"></i>
+						</div>
+						<div class="hero-block__title hero-block__title_small">квалифицированный <br/> персонал</div>
+						<div class="hero-block__text hero-block__text_small">Помощь квалифицированного персонала в подборе товара</div>
+					</div>
+					<div class="hero-block hero-block_center">
+						<div class="hero-block__icon">
+							<i class="fa fa-warehouse"></i>
+						</div>
+						<div class="hero-block__title hero-block__title_small">складские <br/> помещения</div>
+						<div class="hero-block__text hero-block__text_small">Складские помещения с большим перечнем товаров</div>
+					</div>
+					<div class="hero-block hero-block_center">
+						<div class="hero-block__icon">
+							<i class="fa fa-wrench"></i>
+						</div>
+						<div class="hero-block__title hero-block__title_small">техническая <br/> поддержка</div>
+						<div class="hero-block__text hero-block__text_small">24/7 сервисная, техническая поддержка</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid p-t">
+			<div class="container">
+				<div class="page-map" id="contacts">
+					<div class="page-map__map"><script type="text/javascript" charset="utf-8" async="async" src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A85d23034aeb71446d25bfc2b766314cfce48883a8cb39509d1b86e360cec37c7&amp;width=100%25&amp;height=360&amp;lang=ru_RU&amp;scroll=true"></script></div>
+					<div class="page-map__text">
+						<h3 class="page-map__title"><strong>Схема проезда и контакты</strong></h3>
+						<p>223053, Республика Беларусь, Минская обл., Минский р-н., р-н д. Боровая, корп. 1—3.</p>
+						<p>
+							+375 17 283 94 17 - Тел./факс;<br/>
+							+375 17 377 00 39 - Тел./факс;<br/>
+							+375 29 101 05 13 - Velcom;<br/>
+							+375 33 664 58 69 - МТС.
+						</p>
+						<p><a href="mailto:mtechservice2013@mail.ru">mtechservice2013@mail.ru</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <div class="separator"></div>
+		<div class="container container-tb">
+			<iframe src="https://yandex.by/map-widget/v1/-/CBumiCENKC" width="100%" height="400" frameborder="0" allowfullscreen="true"></iframe>
+		</div> -->
 	</xsl:template>
 
-
-	<!-- Список продаж в таблице продаж  -->
-	<xsl:template name="sales">
-		<xsl:param name="list"/>
-		<xsl:if test="$group_tags">
-			<xsl:for-each select="$rep_tags">
-				<xsl:variable name="tag" select="name"/>
-				<tr class="accent chart_data_line">
-					<td class="chart_data_header"><xsl:value-of select="$tag" /></td>
-					<xsl:for-each select="$years_quartals">
-						<xsl:variable name="parts" select="tokenize(., '\*')"/>
-						<xsl:variable name="sale" select="$list[quartal = $parts[1] and year = $parts[2] and tag = $tag]"/>
-						<td class="chart_data_point total" value="{if ($sale) then sum($sale/qty) else '0'}">
-							<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
-						</td>
-					</xsl:for-each>
-					<td><xsl:value-of select="sum($list[tag = $tag]/qty)" /></td>
-				</tr>
-				<xsl:if test="$show_devices">
-					<xsl:for-each-group select="$list[tag = $tag]" group-by="device">
-						<xsl:variable name="sales" select="current-group()"/>
-						<xsl:variable name="device" select="current-grouping-key()"/>
-						<tr class="chart_data_line">
-							<td class="chart_data_header">- <xsl:value-of select="$device"/></td>
-							<xsl:for-each select="$years_quartals">
-								<xsl:variable name="parts" select="tokenize(., '\*')"/>
-								<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2] and device = $device]"/>
-								<td class="chart_data_point" value="{if ($sale) then sum($sale/qty) else '0'}">
-									<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
-								</td>
-							</xsl:for-each>
-							<td><xsl:value-of select="sum($sales[device = $device]/qty)" /></td>
-						</tr>
-					</xsl:for-each-group>
-				</xsl:if>
-			</xsl:for-each>
-		</xsl:if>
-		<tr class="accent chart_data_line">
-			<td class="chart_data_header">Все устройства</td>
-			<xsl:for-each select="$years_quartals">
-				<xsl:variable name="parts" select="tokenize(., '\*')"/>
-				<xsl:variable name="sale" select="$list[quartal = $parts[1] and year = $parts[2]]"/>
-				<td class="chart_data_point total" value="{if ($sale) then sum($sale/qty) else '0'}">
-					<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
-				</td>
-			</xsl:for-each>
-			<td><xsl:value-of select="sum($list/qty)" /></td>
-		</tr>
-		<xsl:if test="$show_devices">
-			<xsl:for-each-group select="$list" group-by="device">
-				<xsl:variable name="sales" select="current-group()"/>
-				<xsl:variable name="device" select="current-grouping-key()"/>
-				<tr class="chart_data_line">
-					<td class="chart_data_header">- <xsl:value-of select="$device"/></td>
-					<xsl:for-each select="$years_quartals">
-						<xsl:variable name="parts" select="tokenize(., '\*')"/>
-						<xsl:variable name="sale" select="$sales[quartal = $parts[1] and year = $parts[2] and device = $device]"/>
-						<td class="chart_data_point" value="{if ($sale) then sum($sale/qty) else '0'}">
-							<xsl:value-of select="if ($sale) then sum($sale/qty) else '-'" />
-						</td>
-					</xsl:for-each>
-					<td><xsl:value-of select="sum($sales[device = $device]/qty)" /></td>
-				</tr>
-			</xsl:for-each-group>
-		</xsl:if>
-	</xsl:template>
-
-
-
-	<!-- Отдельная таблица продаж (по определенной группировке, например, по дилерам) -->
-	<!-- Не зависит от группировки, т.к. список продаж передается как параметр -->
-	<xsl:template name="sales_table">
-		<xsl:param name="list"/>
-		<p><xsl:value-of select="$quartal_from"/> кв. <xsl:value-of select="$year_from"/> -
-			<xsl:value-of select="$quartal_to"/> кв. <xsl:value-of select="$year_to"/></p>
-		<div class="table-responsive">
-			<table class="data-table">
-				<tr>
-					<th>Название</th>
-					<xsl:for-each select="$years_quartals">
-						<xsl:variable name="parts" select="tokenize(., '\*')"/>
-						<th class="chart_data_x"><xsl:value-of select="$parts[1]"/>кв. <xsl:value-of select="$parts[2]"/></th>
-					</xsl:for-each>
-					<th>Всего</th>
-				</tr>
-				<xsl:call-template name="sales">
-					<xsl:with-param name="list" select="$list"/>
-				</xsl:call-template>
-			</table>
-		</div>
-		<div class="subtable-controls no-print chart_button_container">
-			<button type="button" class="btn btn-default btn-sm" onclick="createChart(this)">Подробный график</button>
-			<button type="button" class="btn btn-default btn-sm" onclick="createChart(this, true)">График Итого</button>
-		</div>
-		<div class="chart m-t-small" style="display: none">
-			<h3 class="no-m-t">
-				Статистика продаж дилеров с
-				<xsl:value-of select="$quartal_from"/> кв. <xsl:value-of select="$year_from"/> по
-				<xsl:value-of select="$quartal_to"/> кв. <xsl:value-of select="$year_to"/>
-			</h3>
-		</div>
+	<xsl:template name="EXTRA_SCRIPTS">
+		<script type="text/javascript" src="fotorama/fotorama.js"/>
 	</xsl:template>
 
 </xsl:stylesheet>

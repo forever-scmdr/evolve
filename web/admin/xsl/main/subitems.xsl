@@ -115,6 +115,7 @@
 							<li class="drop-zone {$ass}" href="{replace(replace($reorder_link, ':pos:', string($dropPos)), ':assoc:', $ass_id)}"></li>
 							<li class="dragable visible multiple call-context-menu default {$ass}" data-link="{edit-link}" data-del="{delete-link}" id="{@id}">
 								<xsl:if test="$hidden"><xsl:attribute name="style" select="'background-color: #c8c8c8'"/></xsl:if>
+								<div class="selection-overlay"></div>
 								<div class="drag" title="нажмите, чтобы перемещать элемент"></div>
 								<a href="{edit-link}" class="name" title="редактировать">
 									<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
