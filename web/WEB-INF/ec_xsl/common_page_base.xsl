@@ -7,6 +7,7 @@
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
+	<!-- ****************************    SEO    ******************************** -->
 
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
 	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
@@ -28,6 +29,16 @@
 
 	<xsl:variable name="active_menu_item"/>
 
+
+	<!-- ****************************    ПОЛЬЗОВАТЕЛЬСКИЕ МОДУЛИ    ******************************** -->
+
+	<xsl:variable name="source_link" select="/page/source_link"/>
+	<xsl:variable name="modules" select="page/modules/named_code[not(url != '') or contains($source_link, url)]"/>
+
+	<xsl:variable name="head-start-modules" select="$modules[place = 'head_start']"/>
+	<xsl:variable name="head-end-modules" select="$modules[place = 'head_end']"/>
+	<xsl:variable name="body-start-modules" select="$modules[place = 'body_start']"/>
+	<xsl:variable name="body-end-modules" select="$modules[not(place != '') or place = 'body_end']"/>
 
 
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
@@ -703,11 +714,15 @@
 				<xsl:text disable-output-escaping="yes">
 --&gt;
 				</xsl:text>
-				<!--<base href="https://ttd.by"/> -->
 				<base href="{$main_host}"/>
 				<meta charset="utf-8"/>
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+				<xsl:for-each select="$head-start-modules">
+					<xsl:value-of select="code" disable-output-escaping="yes"/>
+				</xsl:for-each>
+
 				<xsl:call-template name="SEO"/>
 				<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
@@ -719,8 +734,14 @@
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 				<script defer="defer" src="js/font_awesome_all.js"/>
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
+				<xsl:for-each select="$head-end-modules">
+					<xsl:value-of select="code" disable-output-escaping="yes"/>
+				</xsl:for-each>
 			</head>
 			<body>
+				<xsl:for-each select="$body-start-modules">
+					<xsl:value-of select="code" disable-output-escaping="yes"/>
+				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
 				<!-- ALL CONTENT BEGIN -->
 				<div class="content-container">
@@ -784,18 +805,12 @@
 					});
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
-				<xsl:call-template name="USER_SCRIPTS"/>
+				<xsl:for-each select="$body-end-modules">
+					<xsl:value-of select="code" disable-output-escaping="yes"/>
+				</xsl:for-each>
 			</body>
 		</html>
 	</xsl:template>
-
-	<xsl:template name="USER_SCRIPTS">
-		<xsl:for-each select="page/modules/named_code">
-			<xsl:value-of select="code" disable-output-escaping="yes"/>
-		</xsl:for-each>
-	</xsl:template>
-
-
 
 
 	<!-- ****************************    БЛОКИ НА СТРАНИЦЕ    ******************************** -->
