@@ -44,7 +44,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 		// Сначала сохраняются файлы, это надо делать вначале, чтобы сгенерировалась метаинформация по файлам
 		// Фактическое сохранение файлов происходит в этой команде
 		try {
-			executeCommand(new SaveItemFilesUnit(item));
+			executeCommand(new SaveItemFilesUnit(item, ignoreFileErrors));
 		} catch (Exception e) {
 			if (!ignoreFileErrors)
 				throw e;

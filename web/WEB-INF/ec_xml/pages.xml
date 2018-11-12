@@ -149,7 +149,7 @@
 					<pages>
 						<var var="page"/>
 					</pages>
-					<link name="filter_base_link" target="section">
+					<link name="filter_base_link" type="exclusive" target="section">
 						<var name="sec" var="sec" style="translit"/>
 					</link>
 					<parameter name="tag" sign="=" compare="ANY">
@@ -206,7 +206,7 @@
 		<link name="set_limit_144" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="144"/>
 		</link>
-		<link name="reset_filter_link" target="section">
+		<link name="reset_filter_link" type="exclusive" target="section">
 			<var name="sec" var="sec" style="translit"/>
 		</link>
 		<link name="show_only_available" target="section" type="exclusive">
@@ -862,7 +862,7 @@
 			<filter>
 				<parameter name="code" compare="SOME"><var ref="bought" parameter="code"/></parameter>
 			</filter>
-			<link name="show_product" target="product">
+			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="translit"/>
 			</link>
 			<link name="to_cart" target="cart_action">
@@ -913,6 +913,16 @@
 			<var name="action"/>
 		</request>
 		<command class="ecommander.fwk.integration.YMarketCreateCatalogCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="import_form_ancient" template="integration" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.ImportFromAncientXML" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

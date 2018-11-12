@@ -125,7 +125,7 @@
 						<xsl:if test="$p/description and not($p/description = '')">
 							<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 						</xsl:if>
-						<xsl:if test="$not(p/description) or $p/description = ''">
+						<xsl:if test="not($p/description) or $p/description = ''">
 							<xsl:value-of select="$p/params/param[@caption = 'Дополнительное описание']" disable-output-escaping="yes"/>
 						</xsl:if>
 					</div>

@@ -158,7 +158,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		// Шаг 4.   Сохранение файлов айтема
 		//
 		try {
-			executeCommand(new SaveItemFilesUnit(item));
+			executeCommand(new SaveItemFilesUnit(item, ignoreFileErrors));
 		} catch (Exception e) {
 			if (!ignoreFileErrors)
 				throw e;

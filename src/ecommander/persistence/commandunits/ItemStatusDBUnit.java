@@ -40,11 +40,11 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 	}
 
 	public static ItemStatusDBUnit hide(long itemId) {
-		return new ItemStatusDBUnit(Item.STATUS_NIDDEN, itemId, null);
+		return new ItemStatusDBUnit(Item.STATUS_HIDDEN, itemId, null);
 	}
 
 	public static ItemStatusDBUnit hide(ItemBasics item) {
-		return new ItemStatusDBUnit(Item.STATUS_NIDDEN, -1, item);
+		return new ItemStatusDBUnit(Item.STATUS_HIDDEN, -1, item);
 	}
 
 	public static ItemStatusDBUnit restore(long itemId) {
@@ -76,7 +76,7 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 		if (newStatus == STATUS_TOGGLE) {
 			if (item.getStatus() == Item.STATUS_DELETED)
 				return;
-			newStatus = item.getStatus() == Item.STATUS_NORMAL ? Item.STATUS_NIDDEN : Item.STATUS_NORMAL;
+			newStatus = item.getStatus() == Item.STATUS_NORMAL ? Item.STATUS_HIDDEN : Item.STATUS_NORMAL;
 		}
 
 		byte primaryAssoc = ItemTypeRegistry.getPrimaryAssoc().getId();

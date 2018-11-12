@@ -17,6 +17,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 
 /**
@@ -32,10 +33,12 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 	//if (m.matches()) {
 
 	private ArrayList<File> files;
+	private boolean ignoreFileErrors = false;
 
-	public SaveItemFilesUnit(Item item) {
+	public SaveItemFilesUnit(Item item, boolean... ignoreFileErrors) {
 		super(item);
 		files = new ArrayList<>();
+		this.ignoreFileErrors = (ignoreFileErrors.length > 0)? ignoreFileErrors[0] : false;
 	}
 	/**
 	 * Перемещает файлы из директории загрузки в постоянную директорию и дает им новое название (c ID предков)
@@ -45,6 +48,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 		String fileDirectoryName = createItemDirectoryName();
 		for (ParameterDescription paramDesc : item.getItemType().getParameterList()) {
 			if (paramDesc.getDataType().isFile()) {
+				HashSet<String> existingNames = new HashSet<>();
 				// Пропустить параметры, которые не менялись
 				if (!item.getParameter(paramDesc.getId()).hasChanged())
 					continue;
@@ -81,11 +85,16 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 							fileName = ((File) value).getName();
 						else if (isUrl)
 							fileName = Strings.getFileName(((URL) value).getFile());
+						while(existingNames.contains(fileName)){
+							fileName = decorateFileName(paramDesc, i, fileName);
+						}
+						existingNames.add(fileName);
+
 						// Создание новой директории
 						File dir = new File(fileDirectoryName);
 						dir.mkdirs();
 						files.add(dir);
-						File newFile = new File( fileDirectoryName + fileName);
+						File newFile = new File( fileDirectoryName + Strings.createFileName(fileName));
 						// Удаление файла, если он уже есть
 						if (newFile.exists()) {
 							/*
@@ -102,10 +111,13 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 							else if (isDirect)
 								Files.copy(((File) value).toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 							else if (isUrl)
-								WebClient.saveFile(value.toString(), fileDirectoryName, fileName);
+								WebClient.saveFile(value.toString(), fileDirectoryName, Strings.createFileName(fileName));
+
 						} catch (Exception e) {
 							ServerLogger.error("File error", e);
-							throw new FileException("File '" + newFile.getName() + "' has not been moved successfully");
+							if(!ignoreFileErrors) {
+								throw new FileException("File '" + newFile.getName() + "' has not been moved successfully");
+							}
 						}
 						files.add(newFile);
 						newValues.add(fileName);

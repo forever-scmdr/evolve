@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
@@ -64,7 +63,7 @@ public class Item implements ItemBasics {
 	public static final int WEIGHT_STEP = 64;
 
 	public static final byte STATUS_NORMAL = (byte) 0;
-	public static final byte STATUS_NIDDEN = (byte) 1;
+	public static final byte STATUS_HIDDEN = (byte) 1;
 	public static final byte STATUS_DELETED = (byte) 2;
 
 	private static final int _NO_PARAM_ID  = -1;
@@ -726,7 +725,7 @@ public class Item implements ItemBasics {
 	}
 
 	public final boolean isStatusHidden() {
-		return status == STATUS_NIDDEN;
+		return status == STATUS_HIDDEN;
 	}
 
 	public final boolean isStatusDeleted() {
