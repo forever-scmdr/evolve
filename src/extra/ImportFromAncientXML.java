@@ -161,9 +161,9 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 		//product.setValue(MAIN_PIC_PARAM, new URL(base+"/"+bigPic));
 		//product.setValue(SMALL_PIC_PARAM,new URL(base+"/"+smallPic));
 		product.setValue(MAIN_PIC_PARAM, Paths.get(AppContext.getContextPath(), "sitefiles", bigPic).toFile());
-		product.setValue(SMALL_PIC_PARAM, Paths.get(AppContext.getContextPath(), "sitefiles", smallPic).toFile());
+		//product.setValue(SMALL_PIC_PARAM, Paths.get(AppContext.getContextPath(), "sitefiles", smallPic).toFile());
 		processTextPics(product, TEXT_PICS_PARAM, TEXT_PARAM, text);
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors(true));
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(product, true).noFulltextIndex().ignoreFileErrors(true));
 		info.increaseProcessed();
 	}
 }
