@@ -44,7 +44,7 @@
 					<xsl:variable name="table" select="//div[@id='specification']/table"/>
 					<xsl:for-each select="$table//tr">
 						<parameter>
-							<name><xsl:value-of select="td[1]/label" /></name>
+							<name><xsl:value-of select="normalize-space(td[1])" /></name>
 							<value><xsl:value-of select="td[2]" /></value>
 						</parameter>
 					</xsl:for-each>

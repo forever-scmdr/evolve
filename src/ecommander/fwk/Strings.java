@@ -84,9 +84,10 @@ public class Strings
     	if (StringUtils.isBlank(halfValid))
     		return null;
     	if (StringUtils.contains(DIGITS, halfValid.charAt(0)) || halfValid.charAt(0) == '.')
-    		return "_" + halfValid;
-    	return halfValid;
+    		return StringUtils.substring("_" + halfValid, 0, 254);
+    	return StringUtils.substring(halfValid, 0, 254);
     }
+
     /**
      * Проверяет, является ли строка 
      * @param string

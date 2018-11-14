@@ -1,13 +1,12 @@
 
-package extra;
-
-import ecommander.controllers.AppContext;
-import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
+package extra._generated;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
+import ecommander.controllers.AppContext;
+import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
 
 public class Product
     extends Item
@@ -33,6 +32,8 @@ public class Product
     public final static String COUNTRY = "country";
     public final static String MAIN_PIC = "main_pic";
     public final static String SMALL_PIC = "small_pic";
+    public final static String MIN_QTY = "min_qty";
+    public final static String QUOTIENT = "quotient";
     public final static String DESCRIPTION = "description";
     public final static String TEXT = "text";
     public final static String EXTRA_XML = "extra_xml";
@@ -324,7 +325,7 @@ public class Product
         return containsValue("price_old", value);
     }
 
-    public void set_qty(Double value) {
+    public void set_qty(BigDecimal value) {
         setValue("qty", value);
     }
 
@@ -334,15 +335,15 @@ public class Product
         setValueUI("qty", value);
     }
 
-    public Double get_qty() {
-        return getDoubleValue("qty");
+    public BigDecimal get_qty() {
+        return getDecimalValue("qty");
     }
 
-    public Double getDefault_qty(Double defaultVal) {
-        return getDoubleValue("qty", defaultVal);
+    public BigDecimal getDefault_qty(BigDecimal defaultVal) {
+        return getDecimalValue("qty", defaultVal);
     }
 
-    public boolean contains_qty(Double value) {
+    public boolean contains_qty(BigDecimal value) {
         return containsValue("qty", value);
     }
 
@@ -384,6 +385,50 @@ public class Product
 
     public boolean contains_small_pic(File value) {
         return containsValue("small_pic", value);
+    }
+
+    public void set_min_qty(BigDecimal value) {
+        setValue("min_qty", value);
+    }
+
+    public void setUI_min_qty(String value)
+        throws Exception
+    {
+        setValueUI("min_qty", value);
+    }
+
+    public BigDecimal get_min_qty() {
+        return getDecimalValue("min_qty");
+    }
+
+    public BigDecimal getDefault_min_qty(BigDecimal defaultVal) {
+        return getDecimalValue("min_qty", defaultVal);
+    }
+
+    public boolean contains_min_qty(BigDecimal value) {
+        return containsValue("min_qty", value);
+    }
+
+    public void set_quotient(BigDecimal value) {
+        setValue("quotient", value);
+    }
+
+    public void setUI_quotient(String value)
+        throws Exception
+    {
+        setValueUI("quotient", value);
+    }
+
+    public BigDecimal get_quotient() {
+        return getDecimalValue("quotient");
+    }
+
+    public BigDecimal getDefault_quotient(BigDecimal defaultVal) {
+        return getDecimalValue("quotient", defaultVal);
+    }
+
+    public boolean contains_quotient(BigDecimal value) {
+        return containsValue("quotient", value);
     }
 
     public void set_description(String value) {

@@ -4,20 +4,17 @@ package extra._generated;
 
 public interface ItemNames {
 
-    String PARSE_SECTION = "parse_section";
-    String PARSE_ITEM = "parse_item";
-    String PARSE_CATALOG = "parse_catalog";
     String SEO = "seo";
     String URL_SEO = "url_seo";
     String URL_SEO_WRAP = "url_seo_wrap";
-    String SEO_CATALOG = "seo_catalog";
-    String SEO_CONTAINER = "seo_container";
     String CATALOG = "catalog";
     String SECTION = "section";
     String PRODUCT = "product";
     String PARAMS = "params";
     String PRODUCT_EXTRA = "product_extra";
     String PARAMS_XML = "params_xml";
+    String PRICE = "price";
+    String MANUAL = "manual";
     String FEEDBACK_PARAMS = "feedback_params";
     String BOUGHT = "bought";
     String CART = "cart";
@@ -40,7 +37,6 @@ public interface ItemNames {
     String CONTACTS = "contacts";
     String COMMON = "common";
     String DELIVERY = "delivery";
-    String PAYMENT = "payment";
     String FEEDBACK_FORM = "feedback_form";
     String MY_PRICE_FORM = "my_price_form";
     String ONE_CLICK_FORM = "one_click_form";
@@ -180,13 +176,13 @@ public interface ItemNames {
         String SERVER_FROM = "server_from";
         String EMAIL_FROM = "email_from";
         String EMAIL_FROM_PASSWORD = "email_from_password";
-        String ENCODING = "encoding";
 
     }
 
     public interface main_page_ {
 
         String _ITEM_NAME = "main_page";
+        String PRODUCT = "product";
 
     }
 
@@ -204,7 +200,17 @@ public interface ItemNames {
 
         String _ITEM_NAME = "main_slider_frame";
         String NAME = "name";
+        String TEXT = "text";
+        String LINK_NAME = "link_name";
+        String LINK = "link";
         String PIC = "pic";
+
+    }
+
+    public interface manual_ {
+
+        String _ITEM_NAME = "manual";
+        String NAME = "name";
         String LINK = "link";
 
     }
@@ -284,40 +290,11 @@ public interface ItemNames {
 
     }
 
-    public interface parse_catalog_ {
+    public interface price_ {
 
-        String _ITEM_NAME = "parse_catalog";
-
-    }
-
-    public interface parse_item_ {
-
-        String _ITEM_NAME = "parse_item";
-        String URL = "url";
-        String DOWNLOADED = "downloaded";
-        String PARSED = "parsed";
-        String GOT_FILES = "got_files";
-        String DUPLICATED = "duplicated";
-        String HTML = "html";
-        String XML = "xml";
-        String TEST_URL = "test_url";
-        String FILE = "file";
-        String HTML_PIC = "html_pic";
-
-    }
-
-    public interface parse_section_ {
-
-        String _ITEM_NAME = "parse_section";
-        String NAME = "name";
-        String ITEM_URLS = "item_urls";
-
-    }
-
-    public interface payment_ {
-
-        String _ITEM_NAME = "payment";
-        String OPTION = "option";
+        String _ITEM_NAME = "price";
+        String QTY = "qty";
+        String PRICE = "price";
 
     }
 
@@ -326,11 +303,11 @@ public interface ItemNames {
         String _ITEM_NAME = "product";
         String NAME = "name";
         String TYPE = "type";
-        String CODE = "code";
         String NAME_EXTRA = "name_extra";
+        String CODE = "code";
         String VENDOR_CODE = "vendor_code";
+        String VENDOR = "vendor";
         String OFFER_ID = "offer_id";
-        String SHORT = "short";
         String AVAILABLE = "available";
         String GROUP_ID = "group_id";
         String URL = "url";
@@ -342,6 +319,9 @@ public interface ItemNames {
         String QTY = "qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
+        String SMALL_PIC = "small_pic";
+        String MIN_QTY = "min_qty";
+        String QUOTIENT = "quotient";
         String DESCRIPTION = "description";
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
@@ -388,6 +368,10 @@ public interface ItemNames {
 
         String _ITEM_NAME = "section";
         String NAME = "name";
+        String CODE = "code";
+        String SHOW_SUBS = "show_subs";
+        String SUB_VIEW = "sub_view";
+        String SHOW_DEVICES = "show_devices";
         String CATEGORY_ID = "category_id";
         String PARENT_ID = "parent_id";
         String MAIN_PIC = "main_pic";
@@ -398,26 +382,14 @@ public interface ItemNames {
     public interface seo_ {
 
         String _ITEM_NAME = "seo";
-        String KEY_UNIQUE = "key_unique";
         String TITLE = "title";
         String H1 = "h1";
         String DESCRIPTION = "description";
         String KEYWORDS = "keywords";
         String META = "meta";
         String TEXT = "text";
+        String BOTTOM_TEXT = "bottom_text";
         String TEXT_PIC = "text_pic";
-
-    }
-
-    public interface seo_catalog_ {
-
-        String _ITEM_NAME = "seo_catalog";
-
-    }
-
-    public interface seo_container_ {
-
-        String _ITEM_NAME = "seo_container";
 
     }
 
@@ -432,6 +404,7 @@ public interface ItemNames {
         String KEYWORDS = "keywords";
         String META = "meta";
         String TEXT = "text";
+        String BOTTOM_TEXT = "bottom_text";
         String TEXT_PIC = "text_pic";
 
     }
@@ -447,6 +420,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "user";
         String EMAIL = "email";
+        String PHONE = "phone";
         String PASSWORD = "password";
 
     }
@@ -455,14 +429,13 @@ public interface ItemNames {
 
         String _ITEM_NAME = "user_jur";
         String EMAIL = "email";
+        String PHONE = "phone";
         String PASSWORD = "password";
         String ORGANIZATION = "organization";
-        String PHONE = "phone";
         String CONTACT_NAME = "contact_name";
         String CONTACT_PHONE = "contact_phone";
         String ADDRESS = "address";
         String SHIP_TYPE = "ship_type";
-        String PAY_TYPE = "pay_type";
         String NO_ACCOUNT = "no_account";
         String ACCOUNT = "account";
         String BANK = "bank";
@@ -481,12 +454,11 @@ public interface ItemNames {
 
         String _ITEM_NAME = "user_phys";
         String EMAIL = "email";
+        String PHONE = "phone";
         String PASSWORD = "password";
         String NAME = "name";
-        String PHONE = "phone";
         String ADDRESS = "address";
         String SHIP_TYPE = "ship_type";
-        String PAY_TYPE = "pay_type";
         String COMMENT = "comment";
 
     }

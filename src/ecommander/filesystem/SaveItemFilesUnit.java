@@ -17,6 +17,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 
 /**
@@ -51,6 +52,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 				ArrayList<SingleParameter> params = new ArrayList<>();
 				params.addAll(item.getParamValues(paramDesc.getName()));
 				ArrayList<String> newValues = new ArrayList<>();
+				HashSet<String> existingFileNames = new HashSet<>();
 				for (int i = 0; i < params.size(); i++) {
 					SingleParameter param = params.get(i);
 					//-- Надо решить удалять файл или нет если значение параметра null
@@ -75,19 +77,25 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 					if (isUploaded || isDirect || isUrl) {
 						// Если название файла содержит путь - удалить этот путь
 						String fileName = null;
-						if (isUploaded)
+						if (isUploaded) {
 							fileName = FileDataType.getFileName((FileItem) value);
-						else if (isDirect)
+						} else if (isDirect) {
 							fileName = ((File) value).getName();
-						else if (isUrl)
+						} else if (isUrl) {
 							fileName = Strings.getFileName(((URL) value).getFile());
+						}
+						// Проверка, добавлялся ли к этому параметру файл с таким именем ранее
+						while (existingFileNames.contains(fileName)) {
+							fileName = decorateFileName(paramDesc, i, fileName);
+						}
+						existingFileNames.add(fileName);
 						// Создание новой директории
 						File dir = new File(fileDirectoryName);
 						dir.mkdirs();
 						files.add(dir);
 						File newFile = new File( fileDirectoryName + fileName);
 						// Удаление файла, если он уже есть
-						if (newFile.exists()) {
+						while (newFile.exists()) {
 							/*
 							if (!newFile.canWrite())
 								throw new FileException("File '" + newFile.getName() + "' is write protected");

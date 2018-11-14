@@ -1,34 +1,33 @@
 
 package extra._generated;
 
-import java.util.List;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Group_mask
+public class News
     extends Item
 {
 
-    public final static String _NAME = "group_mask";
+    public final static String _NAME = "news";
     public final static String NAME = "name";
-    public final static String MASK = "mask";
+    public final static String ON_MAIN = "on_main";
 
-    private Group_mask(Item item) {
+    private News(Item item) {
         super(item);
     }
 
-    public static Group_mask get(Item item) {
+    public static News get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'group_mask' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'news' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Group_mask(item);
+        return new News(item);
     }
 
-    public static Group_mask newChild(Item parent) {
+    public static News newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
@@ -48,20 +47,20 @@ public class Group_mask
         return containsValue("name", value);
     }
 
-    public void add_mask(String value) {
-        setValue("mask", value);
+    public void set_on_main(String value) {
+        setValue("on_main", value);
     }
 
-    public List<String> getAll_mask() {
-        return getStringValues("mask");
+    public String get_on_main() {
+        return getStringValue("on_main");
     }
 
-    public void remove_mask(String value) {
-        removeEqualValue("mask", value);
+    public String getDefault_on_main(String defaultVal) {
+        return getStringValue("on_main", defaultVal);
     }
 
-    public boolean contains_mask(String value) {
-        return containsValue("mask", value);
+    public boolean contains_on_main(String value) {
+        return containsValue("on_main", value);
     }
 
 }

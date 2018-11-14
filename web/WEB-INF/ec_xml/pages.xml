@@ -3,7 +3,7 @@
 
 	<!-- ******************************* Включение для разделов каталога ****************************** -->
 	<include-definition name="COMMON">
-		<single item="catalog" id="catalog_main" cacheable="false">
+		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="translit"/>
@@ -21,7 +21,7 @@
 			</tree>
 		</single>
 
-		<single item="custom_pages" id="custom_pages" cacheable="false" >
+		<single item="custom_pages" id="custom_pages" cacheable="true" >
 			<tree item="custom_page" id="custom_page" tag="menu_custom">
 				<link name="show_page" target="page" type="exclusive">
 					<var name="p" ref="custom_page" style="translit"/>
@@ -29,12 +29,12 @@
 			</tree>
 		</single>
 
-		<list item="news" id="news" cacheable="false">
+		<list item="news" id="news" cacheable="true">
 			<link name="show_page" target="news" type="exclusive">
 				<var name="sel" ref="news" style="translit"/>
 			</link>
 		</list>
-		<single item="common" cacheable="false"/>
+		<single item="common" cacheable="true"/>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
 		<link name="contacts_link" target="contacts"/>
@@ -60,7 +60,7 @@
 	</include-definition>
 
 
-	<page name="index" template="index" cacheable="false">
+	<page name="index" template="index" cacheable="true">
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
@@ -112,7 +112,7 @@
 	</page>
 
 
-	<page name="catalog" template="catalog" cacheable="false">
+	<page name="catalog" template="catalog" cacheable="true">
 		<include name="COMMON"/>
 		<single item="catalog">
 			<single item="seo"/>
@@ -289,7 +289,7 @@
 	</page>
 
 
-	<page name="product" template="product" cacheable="false">
+	<page name="product" template="product" cacheable="true" critical-item="prod">
 		<request>
 			<var name="prod" style="translit"/>
 		</request>
@@ -330,7 +330,7 @@
 	</page>
 
 
-	<page name="news" template="news" cacheable="false">
+	<page name="news" template="news" cacheable="true">
 		<request>
 			<var name="sel" style="translit"/>
 			<var name="p" value="1"/>
@@ -357,11 +357,11 @@
 		<include name="COMMON"/>
 	</page>
 
-	<page name="news_item" template="news_item" cacheable="false">
+	<page name="news_item" template="news_item" cacheable="true" critical-item="sni">
 		<request>
 			<var name="ni" style="translit"/>
 		</request>
-		<single item="news_item" var="ni" cacheable="false" cache-vars="ni">
+		<single item="news_item" id="sni" var="ni" cacheable="true" cache-vars="ni">
 			<single item="seo"/>
 			<ancestor item="news"/>
 		</single>
@@ -369,8 +369,8 @@
 	</page>
 
 
-	<page name="contacts" template="contacts" cacheable="false">
-		<single item="contacts" cacheable="false">
+	<page name="contacts" template="contacts" cacheable="true">
+		<single item="contacts" cacheable="true">
 			<single item="seo"/>
 		</single>
 		<include name="COMMON"/>
@@ -384,11 +384,11 @@
 	</page>
 
 
-	<page name="page" cacheable="false" template="page">
+	<page name="page" cacheable="true" template="page" critical-item="sp">
 		<request>
 			<var name="p" style="translit"/>
 		</request>
-		<single item="custom_page" var="p" cacheable="false" cache-vars="p">
+		<single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
 			<single item="seo"/>
 			<list item="custom_page" id="child">
 				<link target="page" type="exclusive" name="show_page">
@@ -943,9 +943,9 @@
         <request>
             <var name="action"/>
         </request>
-        <!--<command class="extra.MetaboIntegrateParsedCommand" clear-cache="yes">-->
-            <!--<result name="complete" type="xml"/>-->
-        <!--</command>-->
+        <command class="extra.IntegrateParsedCommand" clear-cache="yes">
+            <result name="complete" type="xml"/>
+        </command>
     </page>
 
 
@@ -987,12 +987,12 @@
 			</tree>
 		</single>
 
-			<list item="custom_page" id="custom_page" cacheable="false">
-				<link name="show_page" target="page" type="exclusive">
-					<var name="p" ref="custom_page" style="translit"/>
-				</link>
-			</list>
-			<list item="news" id="news" cacheable="false">
+		<list item="custom_page" id="custom_page" cacheable="false">
+			<link name="show_page" target="page" type="exclusive">
+				<var name="p" ref="custom_page" style="translit"/>
+			</link>
+		</list>
+		<list item="news" id="news" cacheable="false">
 			<link name="show_page" target="news" type="exclusive">
 				<var name="sel" ref="news" style="translit"/>
 			</link>
@@ -1013,7 +1013,7 @@
 		</list>
 	</page>
 
-	<page name="sitemap_section" template="sitemap_section" cacheable="false">
+	<page name="sitemap_section" template="sitemap_section" cacheable="true">
 		<request>
 			<var name="sec" style="translit"/>
 		</request>
