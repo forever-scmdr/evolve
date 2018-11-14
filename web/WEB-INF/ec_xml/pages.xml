@@ -45,7 +45,7 @@
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
 
-		<!-- RGISTRATION -->
+		<!-- REGISTRATION -->
 		<link name="register_link" target="register"/>
 		<link name="login_form_link" target="login_form_ajax"/>
 		<link name="login_link" target="login_form"/>
