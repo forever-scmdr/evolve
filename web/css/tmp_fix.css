@@ -1,0 +1,37 @@
+.overflow-hidden{
+    overflow: hidden;
+}
+.catalog-items.lines .catalog-item .toggle-overflow{
+    height: auto;
+}
+.catalog-items.lines .catalog-item .toggle-overflow.overflow-hidden{
+    height: 83px; /*по высоте рисунка*/
+}
+/*как у ссылки. если можно, подчерикиваение точечками*/
+.js-link{cursor: pointer; color: #2F80ED;  -moz-text-decoration-style: dotted; -webkit-text-decoration-style: dotted;}
+.js-link:hover, js-link:focus{color: #23527c; text-decoration: underline;}
+.inline-only{display: none;}
+.catalog-items.lines .inline-only{
+	display: block;
+}
+.catalog-item .zoom-icon{
+	font-size: 17px;
+	position: absolute;
+	z-index: 2;
+	display: inline-block;
+	left: 18px;
+    top: 15px;
+	color: #d8d8d8;
+	text-shadow: 1px 0px 1px rgba(150, 150, 150, 1);
+}
+.catalog-item{
+	position: relative;
+}
+.catalog-items .catalog-item .image-container{
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: 50%;
+}
+.popup-text-menu{
+	left: auto;
+}

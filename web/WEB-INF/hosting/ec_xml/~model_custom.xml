@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+
+<!--START_p117157-->
+<item name="p117157" caption="Клапана электромагнитные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="858" ag-hash="2065932684"></item>
+<!--END_p117157-->
+
+<!--START_p117162-->
+<item name="p117162" caption="Шланг молочный и вакуумный" key="" virtual="false" user-def="true" description="" super="params *" ag-id="859" ag-hash="2065932710"></item>
+<!--END_p117162-->
+
+<!--START_p117165-->
+<item name="p117165" caption="Доильный аппарат" key="" virtual="false" user-def="true" description="" super="params *" ag-id="860" ag-hash="2065932713"></item>
+<!--END_p117165-->
+
+<!--START_p117170-->
+<item name="p117170" caption="Мембраны" key="" virtual="false" user-def="true" description="" super="params *" ag-id="861" ag-hash="2065932739"></item>
+<!--END_p117170-->
+
+<!--START_p117174-->
+<item name="p117174" caption="Автомат промывки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="862" ag-hash="2065932743"></item>
+<!--END_p117174-->
+
+<!--START_p117177-->
+<item name="p117177" caption="Прочее" key="" virtual="false" user-def="true" description="" super="params *" ag-id="863" ag-hash="2065932746"></item>
+<!--END_p117177-->
+
+<!--START_p117237-->
+<item name="p117237" caption="Клапана электромагнитные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="866" ag-hash="2065933583"></item>
+<!--END_p117237-->
+
+<!--START_p117242-->
+<item name="p117242" caption="Шланг молочный и вакуумный" key="" virtual="false" user-def="true" description="" super="params *" ag-id="867" ag-hash="2065933609"></item>
+<!--END_p117242-->
+
+<!--START_p117249-->
+<item name="p117249" caption="Доильный аппарат" key="" virtual="false" user-def="true" description="" super="params *" ag-id="868" ag-hash="2065933616"></item>
+<!--END_p117249-->
+
+<!--START_p117254-->
+<item name="p117254" caption="Мембраны" key="" virtual="false" user-def="true" description="" super="params *" ag-id="869" ag-hash="2065933642"></item>
+<!--END_p117254-->
+
+<!--START_p117258-->
+<item name="p117258" caption="Автомат промывки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="870" ag-hash="2065933646"></item>
+<!--END_p117258-->
+
+<!--START_p117261-->
+<item name="p117261" caption="Прочее" key="" virtual="false" user-def="true" description="" super="params *" ag-id="871" ag-hash="2065933670"></item>
+<!--END_p117261-->
+
+<!--START_p116853-->
+<item name="p116853" caption="Оборудование для свиноводческих комплексов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="878" ag-hash="2065909616"></item>
+<!--END_p116853-->
+
+<!--START_p116978-->
+<item name="p116978" caption="Доильный аппарат" key="" virtual="false" user-def="true" description="" super="params *" ag-id="845" ag-hash="2065910644">
+	<parameter name="tolschina" caption="Толщина" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1420232021" description="[mm]" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="massa" caption="Масса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="103667693" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pokrytie_pvh" caption="Покрытие ПВХ" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-659054080" description="[%]" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_osnovy_pe" caption="Тип основы ПЭ" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2037181128" description="[%]" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ognestoikost" caption="Огнестойкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="444001231" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razryvnaya_nagruzka_v_prodolnom_napravlenii" caption="Разрывная нагрузка в продольном направлении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1092537611" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razryvnaya_nagruzka_v_poperechnom_napravlenii" caption="Разрывная нагрузка в поперечном направлении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1365757725" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="soprotivlenie_razdiraniyuv_v_prodolnom_napravlenii" caption="Сопротивление раздираниюв в продольном направлении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-275455142" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="soprotivlenie_razdiraniyu_v_poperechnom_napravlenii" caption="Сопротивление раздиранию в поперечном направлении" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129105732" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ustoichivost_k_mnogokratnomu_izgibu_v_komnatnoi_temperature" caption="Устойчивость к многократному изгибу в комнатной температуре" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-590996882" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vodonepronitsaemost" caption="Водонепроницаемость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1356733389" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnaya_shirina" caption="Стандартная ширина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1719732249" description="[cm]" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnaya_namotka_rulona" caption="Стандартная намотка рулона" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-111047302" description="[m]" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p116978-->
+
+<!--START_p116992-->
+<item name="p116992" caption="Управление дверьми" key="" virtual="false" user-def="true" description="" super="params *" ag-id="846" ag-hash="2065910700"></item>
+<!--END_p116992-->
+
+<!--START_p116998-->
+<item name="p116998" caption="Вакуум" key="" virtual="false" user-def="true" description="" super="params *" ag-id="847" ag-hash="2065910706"></item>
+<!--END_p116998-->
+
+<!--START_p117007-->
+<item name="p117007" caption="Молочный шлюз" key="" virtual="false" user-def="true" description="" super="params *" ag-id="848" ag-hash="2065931568"></item>
+<!--END_p117007-->
+
+<!--START_p117016-->
+<item name="p117016" caption="Счетчик молока" key="" virtual="false" user-def="true" description="" super="params *" ag-id="849" ag-hash="2065931598"></item>
+<!--END_p117016-->
+
+<!--START_p117037-->
+<item name="p117037" caption="Автомат промывки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="850" ag-hash="2065931661"></item>
+<!--END_p117037-->
+
+<!--START_p117052-->
+<item name="p117052" caption="Блок клапанов (доильное место)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="851" ag-hash="2065931718"></item>
+<!--END_p117052-->
+
+<!--START_p117061-->
+<item name="p117061" caption="Блоки питания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="852" ag-hash="2065931748"></item>
+<!--END_p117061-->
+
+<!--START_p117065-->
+<item name="p117065" caption="Распознавание" key="" virtual="false" user-def="true" description="" super="params *" ag-id="853" ag-hash="2065931752"></item>
+<!--END_p117065-->
+
+<!--START_p117077-->
+<item name="p117077" caption="Шланги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="854" ag-hash="2065931785"></item>
+<!--END_p117077-->
+
+<!--START_p117084-->
+<item name="p117084" caption="Додаивание" key="" virtual="false" user-def="true" description="" super="params *" ag-id="855" ag-hash="2065931813"></item>
+<!--END_p117084-->
+
+<!--START_p117090-->
+<item name="p117090" caption="Приборы управления" key="" virtual="false" user-def="true" description="" super="params *" ag-id="856" ag-hash="2065931840"></item>
+<!--END_p117090-->
+
+<!--START_p117100-->
+<item name="p117100" caption="Разное" key="" virtual="false" user-def="true" description="" super="params *" ag-id="857" ag-hash="2065932522"></item>
+<!--END_p117100-->
+
+<!--START_p117118-->
+<item name="p117118" caption="Unibox. Запчасти и комплектующие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="879" ag-hash="2065932561"></item>
+<!--END_p117118-->
+
+<!--START_p117201-->
+<item name="p117201" caption="Комбайны для уборки кукурузы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="864" ag-hash="2065933484"></item>
+<!--END_p117201-->
+
+<!--START_p117205-->
+<item name="p117205" caption="Комбайны для уборки гороха, фасоли и бобов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="865" ag-hash="2065933488"></item>
+<!--END_p117205-->
+
+<!--START_p117269-->
+<item name="p117269" caption="Клапана электромагнитные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="872" ag-hash="2065933678"></item>
+<!--END_p117269-->
+
+<!--START_p117274-->
+<item name="p117274" caption="Шланг молочный и вакуумный" key="" virtual="false" user-def="true" description="" super="params *" ag-id="873" ag-hash="2065933704"></item>
+<!--END_p117274-->
+
+<!--START_p117281-->
+<item name="p117281" caption="Доильный аппарат" key="" virtual="false" user-def="true" description="" super="params *" ag-id="874" ag-hash="2065933732"></item>
+<!--END_p117281-->
+
+<!--START_p117286-->
+<item name="p117286" caption="Мембраны" key="" virtual="false" user-def="true" description="" super="params *" ag-id="875" ag-hash="2065933737"></item>
+<!--END_p117286-->
+
+<!--START_p117290-->
+<item name="p117290" caption="Автомат промывки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="876" ag-hash="2065933762"></item>
+<!--END_p117290-->
+
+<!--START_p117293-->
+<item name="p117293" caption="Прочее" key="" virtual="false" user-def="true" description="" super="params *" ag-id="877" ag-hash="2065933765"></item>
+<!--END_p117293-->
+<!--EXP--></model>

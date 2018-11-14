@@ -8,7 +8,7 @@
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
-				<list item="product"  transit="true">
+				<list item="product" transit="true">
 					<filter>
 						<!--<parameter sign="!=" name="small_pic" compare="SOME">-->
 							<!--<var value="q"/>-->
@@ -58,6 +58,9 @@
 			<list item="url_seo"/>
 		</single>
 	</include-definition>
+
+
+
 
 
 	<page name="index" template="index" cacheable="true">
@@ -112,12 +115,18 @@
 	</page>
 
 
+
+
+
 	<page name="catalog" template="catalog" cacheable="true">
 		<include name="COMMON"/>
 		<single item="catalog">
 			<single item="seo"/>
 		</single>
 	</page>
+
+
+
 
 
 	<page name="section" template="section" cacheable="false" critical-item="cur_sec">
@@ -239,6 +248,10 @@
 		<include name="COMMON"/>
 	</page>
 
+
+
+
+
 	<page name="search" template="search">
 		<request>
 			<var name="q"/>
@@ -289,6 +302,8 @@
 	</page>
 
 
+
+
 	<page name="product" template="product" cacheable="true" critical-item="prod">
 		<request>
 			<var name="prod" style="translit"/>
@@ -330,6 +345,8 @@
 	</page>
 
 
+
+
 	<page name="news" template="news" cacheable="true">
 		<request>
 			<var name="sel" style="translit"/>
@@ -357,6 +374,9 @@
 		<include name="COMMON"/>
 	</page>
 
+
+
+
 	<page name="news_item" template="news_item" cacheable="true" critical-item="sni">
 		<request>
 			<var name="ni" style="translit"/>
@@ -367,6 +387,8 @@
 		</single>
 		<include name="COMMON"/>
 	</page>
+
+
 
 
 	<page name="contacts" template="contacts" cacheable="true">
@@ -382,6 +404,8 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
+
+
 
 
 	<page name="page" cacheable="true" template="page" critical-item="sp">
@@ -405,6 +429,8 @@
 	</page>
 
 
+
+
 	<page name="feedback_ajax" template="feedback_ajax">
 		<request>
 			<var name="result"/>
@@ -418,6 +444,8 @@
 			<var name="source_page" value="feedback_ajax"/>
 		</link>
 	</page>
+
+
 
 
 	<page name="feedback_command">

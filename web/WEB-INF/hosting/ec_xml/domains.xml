@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<domains>
+	<domain name="yes-no" view-type="combobox">
+		<value>да</value>
+		<value>нет</value>
+	</domain>
+	<domain name="0-1" view-type="combobox">
+		<value>0</value>
+		<value>1</value>
+	</domain>
+	<domain name="sub_view" view-type="combobox">
+		<value>tags</value>
+		<value>pics</value>
+	</domain>
+	<domain name="news_tags" view-type="combobox">
+		<value>Новости клуба</value>
+		<value>Беларусь</value>
+		<value>Международные</value>
+	</domain>
+	<domain name="event_tags" view-type="combobox">
+		<value>Игры</value>
+		<value>Видео</value>
+	</domain>
+</domains>

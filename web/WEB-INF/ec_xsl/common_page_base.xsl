@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
-	<xsl:import href="login_form_ajax.xsl"/>
-	<xsl:import href="personal_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
@@ -15,11 +13,7 @@
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
-
-	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''" />
-	<xsl:variable name="custom_canonical" select="//canonical_link[1]"/>
-
-	<xsl:variable name="canonical" select="if($custom_canonical != '') then $custom_canonical else $default_canonical"/>
+	<xsl:variable name="canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''"/>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
@@ -37,7 +31,6 @@
 	<xsl:template name="INC_DESKTOP_HEADER">
 		<div class="container-fluid top-stripe desktop">
 			<div class="container">
-				<i class="fas fa-phone"></i>
 				<xsl:value-of select="page/common/top" disable-output-escaping="yes"/>
 			</div>
 		</div>
@@ -59,7 +52,11 @@
 								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Загрузка...</strong></p>
 							</div>
 							<div class="user">
-								<xsl:call-template name="PERSONAL_DESKTOP"/>
+								<p><i class="fas fa-lock"/>
+									<a href="" data-toggle="modal" data-target="#modal-login">Вход</a> / <a href="registration.html">Регистрация</a>
+									<!-- <a href="javascript:alert('Функция временно отключена')">Вход</a> /
+									<a href="javascript:alert('Функция временно отключена')">Регистрация</a> -->
+								</p>
 								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
 									<p><i class="fas fa-star"/> <a href="">&#160;</a></p>
 								</div>
@@ -213,7 +210,7 @@
 					<div class="col-xs-12">
 						<div class="footer-container">
 							<div class="block">
-								<p><strong>© svetilniki.by, 2018</strong></p>
+								<p><strong>© ООО «М-тех», 2018</strong></p>
 								<div class="forever">
 									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
 								</div>
@@ -225,8 +222,7 @@
 								<xsl:value-of select="page/common/bottom_address" disable-output-escaping="yes"/>
 							</div>
 							<div class="block">
-								<p><strong>Форма оплаты товара</strong></p>
-								<p>Работаем с физическими, юридическими лицами и индивидуальными предпринимателями по наличному и безналичному расчету</p>
+								<p>Работаем с юридическими лицами и индивидуальными предпринимателями по безналичному расчету</p>
 							</div>
 						</div>
 					</div>
@@ -237,7 +233,29 @@
 
 		<!-- MODALS BEGIN -->
 		<!-- modal login -->
-		<xsl:call-template name="LOGIN_FORM"/>
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-login">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
+						<div class="modal-title h4">Вход</div>
+					</div>
+					<div class="modal-body">
+						<form action="" method="post">
+							<div class="form-group">
+								<label for="">Электронная почта:</label>
+								<input type="text" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label for="">Пароль:</label>
+								<input type="password" class="form-control" />
+							</div>
+							<input type="submit" name="" value="Отправить заказ"/>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
@@ -251,11 +269,13 @@
 		<div class="menu-container mobile">
 			<div class="overlay" onclick="showMobileMainMenu()"></div>
 			<div class="content">
-				<ul>
+				<!-- <ul>
 					<li>
-						<xsl:call-template name="PERSONAL_MOBILE"/>
+						<i class="fas fa-lock"></i>
+						<a href="javascript:alert('Функция временно отключена')">Вход</a> /
+						<a href="javascript:alert('Функция временно отключена')">Регистрация</a>
 					</li>
-				</ul>
+				</ul> -->
 				<ul>
 					<li><i class="fas fa-th-list"></i> <a href="#" onclick="showMobileCatalogMenu(); return false">Каталог продукции</a></li>
 				</ul>
@@ -433,12 +453,12 @@
 
 
 	<xsl:template name="COMMON_LEFT_COLOUMN">
-		<div class="actions">
-			<div class="h3">Акции</div>
+		<!-- <div class="actions">
+			<h3>Акции</h3>
 			<div class="actions-container">
 				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 			</div>
-		</div>
+		</div> -->
 		<div class="contacts">
 			<xsl:value-of select="page/common/left" disable-output-escaping="yes"/>
 		</div>
@@ -483,7 +503,7 @@
 			<div class="device__article-number"><xsl:value-of select="code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
-					<!-- <div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div> -->
+					<div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div>
 					<div class="price_normal"><xsl:value-of select="price"/> руб.</div>
 				</div>
 			</xsl:if>
@@ -493,8 +513,8 @@
 				</div>
 			</xsl:if>
 			<div class="device__order">
-				<div id="cart_list_{replace(code, '[)()]', '-')}">
-					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{replace(code, '[)()]', '-')}">
+				<div id="cart_list_{@id}">
+					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 						<xsl:if test="$has_price">
 							<input type="number" class="text-input" name="qty" value="1" min="0"/>
 							<input type="submit" class="button" value="Заказать"/>
@@ -506,17 +526,15 @@
 					</form>
 				</div>
 			</div>
-			<!-- <xsl:if test="qty and number(qty) &gt; 0"> -->
-			 <xsl:if test="$has_price">
+			<xsl:if test="qty and number(qty) &gt; 0">
 				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div>
 			</xsl:if>
-			<!-- <xsl:if test="not(qty) or number(qty) &lt;= 0"> -->
-			<xsl:if test="not($has_price)">
+			<xsl:if test="not(qty) or number(qty) &lt;= 0">
 				<div class="device__in-stock"><i class="fas fa-check"></i> под заказ</div>
 			</xsl:if>
 			<div class="device__actions">
-				<div id="compare_list_{code}">
-					<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{code}">
+				<div id="compare_list_{@id}">
+					<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
 						<i class="fas fa-balance-scale"></i>сравнить
 					</a>
 				</div>
@@ -525,8 +543,8 @@
 						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
 					</xsl:when>
 					<xsl:otherwise>
-						<div id="fav_list_{code}">
-							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{code}">
+						<div id="fav_list_{@id}">
+							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
 								<i class="fas fa-star"></i>отложить
 							</a>
 						</div>
@@ -560,10 +578,10 @@
 					<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 				</div>
 			</div>
-			<div class="device__article-number"><xsl:value-of select="code"/></div>
+			<div class="device__article-number"><xsl:value-of select="@id"/></div>
 			<div class="device__actions device_row__actions">
-				<div id="compare_list_{code}">
-					<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{code}">
+				<div id="compare_list_{@id}">
+					<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
 						<i class="fas fa-balance-scale"></i>сравнить
 					</a>
 				</div>
@@ -572,8 +590,8 @@
 						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
 					</xsl:when>
 					<xsl:otherwise>
-						<div id="fav_list_{code}">
-							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{code}">
+						<div id="fav_list_{@id}">
+							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
 								<i class="fas fa-star"></i>отложить
 							</a>
 						</div>
@@ -582,7 +600,7 @@
 			</div>
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
-					<!-- <div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div> -->
+					<div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div>
 					<div class="price_normal"><xsl:value-of select="price"/> руб.</div>
 				</div>
 			</xsl:if>
@@ -592,8 +610,8 @@
 				</div>
 			</xsl:if>
 			<div class="device__order device_row__order">
-				<div id="cart_list_{replace(code, '[)()]', '-')}">
-					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{replace(code, '[)()]', '-')}">
+				<div id="cart_list_{@id}">
+					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 						<xsl:if test="$has_price">
 							<input type="number" class="text-input" name="qty" value="1" min="0"/>
 							<input type="submit" class="button" value="Заказать"/>
@@ -881,5 +899,4 @@
 		<meta name="keywords" content="{keywords}"/>
 		<xsl:value-of select="meta" disable-output-escaping="yes"/>
 	</xsl:template>
-
 </xsl:stylesheet>

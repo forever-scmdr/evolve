@@ -13,7 +13,6 @@
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="products" select="page/product"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
-	<xsl:variable name="title" select="concat('Поиск по запросу ', page/variables/q)" />
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -49,7 +48,12 @@
 			</xsl:if>
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
-				<xsl:apply-templates select="$products"/>
+				<xsl:if test="$view = 'table'">
+					<xsl:apply-templates select="$products"/>
+				</xsl:if>
+				<xsl:if test="$view = 'list'">
+					<xsl:apply-templates select="$products" mode="lines"/>
+				</xsl:if>
 				<xsl:if test="not($products)">
 					<h4>По заданным критериям товары не найдены</h4>
 				</xsl:if>
