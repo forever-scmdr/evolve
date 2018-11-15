@@ -304,6 +304,26 @@
 
 
 
+	<page name="efind" template="efind">
+		<headers Content-Type="text/xml"/>
+		<request>
+			<var name="q"/>
+		</request>
+		<list item="product" id="prod">
+			<filter>
+				<fulltext name="name" limit="50" compare="EVERY" type="term wildcard">
+					<var var="q"/>
+				</fulltext>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="translit"/>
+			</link>
+		</list>
+	</page>
+
+
+
+
 	<page name="product" template="product" cacheable="true" critical-item="prod">
 		<request>
 			<var name="prod" style="translit"/>

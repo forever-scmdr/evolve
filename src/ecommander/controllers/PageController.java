@@ -23,6 +23,7 @@ import java.util.Map;
  *
  */
 public class PageController {
+	private static final String CONTENT_TYPE_HEADER = "Content-Type";
 	
 	private String requestUrl; // для работы кеша
 	private final String domainName; // для работы кеша
@@ -78,7 +79,11 @@ public class PageController {
 		// Дополнительные заголовки
 		Map<String, String> headers = this.page.getResponseHeaders();
 		for (String header : headers.keySet()) {
-			resp.setHeader(header, headers.get(header));
+			if (StringUtils.equalsIgnoreCase(header, CONTENT_TYPE_HEADER)) {
+				contentType = headers.get(header);
+			} else {
+				resp.setHeader(header, headers.get(header));
+			}
 		}
 		// Переменные, хранящиеся в куки
 		page.getSessionContext().flushCookies(resp);
