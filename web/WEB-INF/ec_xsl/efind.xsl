@@ -15,7 +15,7 @@
 					<sku><xsl:value-of select="code"/></sku>
 					<cur>RUR</cur>
 					<stock>0</stock>
-					<dlv>10-12 дней</dlv>
+					<dlv>10-12 дней </dlv>
 					<bid>0</bid>
 				</item>
 			</xsl:for-each>
