@@ -72,10 +72,11 @@
 			<div class="path">
 				<a href="{$main_host}">Главная страница</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
-					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
+					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}">
 						<xsl:value-of select="name"/>
 					</a>
+					<i class="fas fa-angle-right"></i>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -206,8 +207,8 @@
 							</div>
 					   </xsl:for-each>
 					   <div class="buttons">
-							<input type="submit" value="Показать найденное"/>
-							<input type="submit" value="Сбросить" onclick="location.href = '{page/reset_filter_link}'; return false;"/>
+							<input class="button" type="submit" value="Показать найденное"/>
+							<input class="button" type="submit" value="Сбросить" onclick="location.href = '{page/reset_filter_link}'; return false;"/>
 					   </div>
 				</div>
 			</form>
@@ -275,7 +276,7 @@
 
 	<xsl:template match="section" mode="pic">
 		<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
-		<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
+		<xsl:variable name="product_pic" select="if (product/small_pic != '') then concat(product/@path, product/small_pic) else ''"/>
 		<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 		<div class="device items-catalog__section">
 			<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>

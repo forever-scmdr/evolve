@@ -46,8 +46,8 @@
 							<xsl:if test="page/cart/sum != '0'">
 								<p>Итого: <xsl:value-of select="page/cart/sum"/> р.</p>
 							</xsl:if>
-							<input type="submit" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
-							<input type="submit" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
+							<input class="button" type="submit" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
+							<input class="button" type="submit" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 						</div>
 
 					</form>

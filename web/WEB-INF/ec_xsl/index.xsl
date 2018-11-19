@@ -147,234 +147,155 @@
 
 
 	<xsl:template name="BANNERS">
-		<div class="container-fluid" style="padding: 0;">
-			<div class="slider-container">
-				<div class="fotorama" style="width: 100%;" data-width="100%" data-height="400" data-transition="crossfade" data-autoplay="true" data-loop="true" data-fit="cover">
+		<section class="hero">
+			<div class="container">
+				<div class="fotorama" data-width="100%">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<!-- <img src="{@path}{pic}" alt="{name}"/> -->
-						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
-							<div class="container">
-								<div class="slider-item__block fotorama__select">
-									<div class="slider-item__title"><xsl:value-of select="name" /></div>
-									<div class="slider-item__text">
-										<xsl:value-of select="text" disable-output-escaping="yes"/>
-									</div>
-									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
-								</div>
-							</div>
-						</div>
+						<img src="{@path}{pic}" alt="{name}"/>
 					</xsl:for-each>
 				</div>
+				<div class="hero__banners">
+					<div class="banner hero__banner">
+						<div class="banner__background"></div>
+							<div class="banner__title">Epson SureColor SC-F2000</div>
+							<div class="banner__text">Производительный и надежный принтер прямой печати на ткани</div>
+							<div class="banner__image"></div>
+							<a href="/" class="banner__link"></a>
+					</div>
+					<div class="banner hero__banner">
+						<div class="banner__background"></div>
+							<div class="banner__title">Epson SureColor SC-F2000</div>
+							<div class="banner__text">Производительный и надежный принтер прямой печати на ткани</div>
+							<div class="banner__image"></div>
+							<a href="/" class="banner__link"></a>
+					</div>
+				</div>
 			</div>
-		</div>
-
-		<!-- <div class="has-items-carousel">
+		</section>
+		<section class="events">
 			<div class="container">
-				<div class="more-products">
-					<div class="title_2">Лидеры продаж</div>
-					<div class="slick-slider catalog-items">
-						<xsl:apply-templates select="page/product"/>
-					</div>
-				</div>
-			</div>
-		</div> -->
-
-
-
-		<!-- <div class="container container-tb">
-			<div class="hero hero_center">
-				<div class="hero-block hero-block_center">
-					<div class="hero-block__icon"></div>
-					<div class="hero-block__title">1972</div>
-					<div class="hero-block__text">год начала работы</div>
-				</div>
-				<div class="hero-block hero-block_center">
-					<div class="hero-block__icon"></div>
-					<div class="hero-block__title">более 180</div>
-					<div class="hero-block__text">довольных клиентов</div>
-				</div>
-				<div class="hero-block hero-block_center">
-					<div class="hero-block__icon"></div>
-					<div class="hero-block__title">46 лет</div>
-					<div class="hero-block__text">безупречной работы</div>
-				</div>
-			</div>
-		</div> -->
-
-
-
-		<!-- <div class="separator"></div>
-		<div class="container container-tb">
-			<div class="quote quote_center">
-				<p>Основное направление компании Тексимат — кожа оптом и в розницу. Мы любим свое дело и ценим наших клиентов, поэтому предлагаем только лучшие материалы от ведущих европейских производителей.</p>
-			</div>
-		</div> -->
-
-
-
-		<!-- <div class="container-fluid contaner-tb">
-			<div class="photo-stripe">
-				<div class="photo-stripe__item">
-					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
-					<div class="photo-stripe__image" style="background-image: url(../img/bp1_small.jpg);"></div>
-					<div class="photo-stripe__text">Подпись к фото</div>
-				</div>
-				<div class="photo-stripe__item">
-					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
-					<div class="photo-stripe__image" style="background-image: url(../img/bp2_small.jpg);"></div>
-					<div class="photo-stripe__text">Подпись к фото</div>
-				</div>
-				<div class="photo-stripe__item">
-					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
-					<div class="photo-stripe__image" style="background-image: url(../img/bp3_small.jpg);"></div>
-					<div class="photo-stripe__text">Подпись к фото</div>
-				</div>
-				<div class="photo-stripe__item">
-					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
-					<div class="photo-stripe__image" style="background-image: url(../img/bp4_small.jpg);"></div>
-					<div class="photo-stripe__text">Подпись к фото</div>
-				</div>
-				<div class="photo-stripe__item">
-					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
-					<div class="photo-stripe__image" style="background-image: url(../img/bp5_small.jpg);"></div>
-					<div class="photo-stripe__text">Подпись к фото</div>
-				</div>
-			</div>
-		</div> -->
-
-
-		<div class="container-fluid" style="background-color: #fff; padding: 50px 0;">
-			<div class="container .container-tb">
-				<div class="banners-container">
-					<xsl:for-each select="page/main_page/main_promo_bottom">
-						<div class="banner">
-							<div class="banner__image" style="background-image: url({@path}{pic})"></div>
-							<div class="banner__title"><xsl:value-of select="text_big"/></div>
-							<!-- <div class="banner__text"><xsl:value-of select="text_small"/></div> -->
-							<a class="banner__link" href="{link}"></a>
+				<div>
+					<div class="events__banners">
+						<div class="banner events__banner">
+							<div class="banner__background"></div>
+							<div class="banner__title">Epson SureColor SC-F2000</div>
+							<div class="banner__text">Производительный и надежный принтер прямой печати на ткани</div>
+							<div class="banner__image"></div>
+							<a href="/" class="banner__link"></a>
 						</div>
-					</xsl:for-each>
+						<div class="banner events__banner banner_blue">
+							<div class="banner__background"></div>
+							<div class="banner__title">Месяц скидок</div>
+							<div class="banner__text">Производительный и надежный принтер прямой печати на ткани</div>
+							<div class="banner__image"><i class="fas fa-percent"></i></div>
+							<a href="/" class="banner__link"></a>
+						</div>
+					</div>
+					<div class="block-title events__title">Новости</div>
+					<div class="events__news">
+						<div class="news-item events__news-item">
+							<div class="small-text">01.01.2018</div>
+							<a href="">Новая компьютерная прямострочка JUKI DDL-9000c продана в Беларуси</a>
+						</div>
+						<div class="news-item events__news-item">
+							<div class="small-text">01.01.2018</div>
+							<a href="">Новая компьютерная прямострочка JUKI DDL-9000c продана в Беларуси</a>
+						</div>
+					</div>
+				</div>
+				<div class="banner events__big-banner">
+					<div class="banner__background"></div>
+					<div class="banner__title"></div>
+					<div class="banner__text"></div>
+					<div class="banner__image"></div>
+					<a href="/" class="banner__link"></a>
 				</div>
 			</div>
-		</div>
-
-		<div class="container">
-			<div class="about">
-				<div class="about__text">
-					<div class="title_2">О нас</div>
-					<p>Начиная с 2006 года Общество с ограниченной ответственностью «М-Тех» успешно работает в сельскохозяйственном секторе.</p>
-					<p>Основные направления деятельности нашей компании - это реализация импортного оборудования и комплектующих, гарантийное и послегарантийное обслуживание молочно-доильного оборудования, оборудования для свиноводческих комплексов, биогазовых установок.</p>
-					<p>Прямое сотрудничество с европейскими производителями, позволяет нам поставлять качественную продукцию по оптимальной стоимости.</p>
-				</div>
-				<div class="about__blocks">
-					<div class="about__block">
-						<i class="fas fa-award about__icon"></i>
-						<strong>Качественное оборудование от производителя по приемлемым ценам</strong>
-					</div>
-					<div class="about__block">
-						<i class="fas fa-user-cog about__icon"></i>
-						<strong>Гарантийное и послегарантийное обслуживание</strong>
-					</div>
-					<div class="about__block">
-						<i class="fas fa-percent about__icon"></i>
-						<strong>Гибкая система скидок</strong>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="container-fluid" style="background-color: #f4f4f4; padding: 40px 0;">
+		</section>
+		<section class="special-items">
 			<div class="container">
-				<div class="title_2" style="text-align: center; margin-bottom: 48px;"><a href="img/impulsa-sert.jpg" class="magnific_popup-image">Эксклюзивный дилер Impulsa AG с подразделением<br/>Itec в Республике Беларусь</a></div>
-				<div class="brand-logos">
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (1).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (2).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (3).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (4).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (5).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (6).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (7).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (8).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (9).jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (10).jpg" alt=""/>
-					</div>
+				<div class="block-title">Новинки</div>
+				<div class="special-items__devices slick-slider">
+					<xsl:apply-templates select="page/product[tag='Новинка']"/>
 				</div>
 			</div>
-		</div>
-		<div class="container-fluid" style="background-color: #fff; padding: 40px 0;">
+		</section>
+		<section class="special-items">
 			<div class="container">
-				<div class="hero">
-					<div class="hero-block hero-block_center">
-						<div class="hero-block__icon">
-							<i class="fa fa-clock"></i>
-						</div>
-						<div class="hero-block__title hero-block__title_small">Более 10 лет <br/> на рынке</div>
-						<div class="hero-block__text hero-block__text_small">Более 10 лет опыта в обслуживании сельскохозяйственного оборудования</div>
-					</div>
-					<div class="hero-block hero-block_center">
-						<div class="hero-block__icon">
-							<i class="fa fa-users"></i>
-						</div>
-						<div class="hero-block__title hero-block__title_small">квалифицированный <br/> персонал</div>
-						<div class="hero-block__text hero-block__text_small">Помощь квалифицированного персонала в подборе товара</div>
-					</div>
-					<div class="hero-block hero-block_center">
-						<div class="hero-block__icon">
-							<i class="fa fa-warehouse"></i>
-						</div>
-						<div class="hero-block__title hero-block__title_small">складские <br/> помещения</div>
-						<div class="hero-block__text hero-block__text_small">Складские помещения с большим перечнем товаров</div>
-					</div>
-					<div class="hero-block hero-block_center">
-						<div class="hero-block__icon">
-							<i class="fa fa-wrench"></i>
-						</div>
-						<div class="hero-block__title hero-block__title_small">техническая <br/> поддержка</div>
-						<div class="hero-block__text hero-block__text_small">24/7 сервисная, техническая поддержка</div>
-					</div>
+				<div class="block-title">Акции</div>
+				<div class="special-items__devices slick-slider zu">
+					<xsl:apply-templates select="page/product[tag='Акция']"/>
 				</div>
 			</div>
-		</div>
-		<div class="container-fluid p-t">
+		</section>
+		<section class="benefits">
 			<div class="container">
-				<div class="page-map" id="contacts">
-					<div class="page-map__map"><script type="text/javascript" charset="utf-8" async="async" src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A85d23034aeb71446d25bfc2b766314cfce48883a8cb39509d1b86e360cec37c7&amp;width=100%25&amp;height=360&amp;lang=ru_RU&amp;scroll=true"></script></div>
-					<div class="page-map__text">
-						<h3 class="page-map__title"><strong>Схема проезда и контакты</strong></h3>
-						<p>223053, Республика Беларусь, Минская обл., Минский р-н., р-н д. Боровая, корп. 1—3.</p>
-						<p>
-							+375 17 283 94 17 - Тел./факс;<br/>
-							+375 17 377 00 39 - Тел./факс;<br/>
-							+375 29 101 05 13 - Velcom;<br/>
-							+375 33 664 58 69 - МТС.
-						</p>
-						<p><a href="mailto:mtechservice2013@mail.ru">mtechservice2013@mail.ru</a></p>
+				<div class="block-title">Почему нас выбирают клиенты</div>
+				<div class="benefits__banners">
+					<div class="banner benefits__banner banner_gray">
+						<div class="banner__background"></div>
+						<div class="banner__title">Надежность</div>
+						<div class="banner__text">Нам доверяют 17 лет</div>
+						<div class="banner__image"><i class="fas fa-shield-alt"></i></div>
+						<a href="/" class="banner__link"></a>
+					</div>
+					<div class="banner benefits__banner banner_gray">
+						<div class="banner__background"></div>
+						<div class="banner__title">Гарантии</div>
+						<div class="banner__text">Свой сервисный центр</div>
+						<div class="banner__image"><i class="fas fa-trophy"></i></div>
+						<a href="/" class="banner__link"></a>
+					</div>
+					<div class="banner benefits__banner banner_gray">
+						<div class="banner__background"></div>
+						<div class="banner__title">Цены</div>
+						<div class="banner__text">Специальные предложения и акции</div>
+						<div class="banner__image"><i class="far fa-thumbs-up"></i></div>
+						<a href="/" class="banner__link"></a>
+					</div>
+					<div class="banner benefits__banner banner_gray">
+						<div class="banner__background"></div>
+						<div class="banner__title">Качество</div>
+						<div class="banner__text">Только проверенные бренды</div>
+						<div class="banner__image"><i class="fas fa-check"></i></div>
+						<a href="/" class="banner__link"></a>
+					</div>
+					<div class="banner benefits__banner banner_gray">
+						<div class="banner__background"></div>
+						<div class="banner__title">Опыт</div>
+						<div class="banner__text">Квалифицированные специалисты</div>
+						<div class="banner__image"><i class="far fa-clock"></i></div>
+						<a href="/" class="banner__link"></a>
+					</div>
+					<div class="banner benefits__banner banner_gray">
+						<div class="banner__background"></div>
+						<div class="banner__title">Репутация</div>
+						<div class="banner__text">Ценим каждого клиента</div>
+						<div class="banner__image"><i class="far fa-user"></i></div>
+						<a href="/" class="banner__link"></a>
 					</div>
 				</div>
 			</div>
-		</div>
-		<!-- <div class="separator"></div>
-		<div class="container container-tb">
-			<iframe src="https://yandex.by/map-widget/v1/-/CBumiCENKC" width="100%" height="400" frameborder="0" allowfullscreen="true"></iframe>
-		</div> -->
+		</section>
+		<section class="s-info pt-4">
+			<div class="container">
+				<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+				<p>
+				Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
+			</div>
+		</section>
+
+		<!-- BANNER EXAMPLE -->
+		<!-- <xsl:for-each select="page/main_page/main_promo_bottom">
+			<div class="banner">
+				<div class="banner__image" style="background-image: url({@path}{pic})"></div>
+				<div class="banner__title"><xsl:value-of select="text_big"/></div>
+				<div class="banner__text"><xsl:value-of select="text_small"/></div>
+				<a class="banner__link" href="{link}"></a>
+			</div>
+		</xsl:for-each> -->
+		<!-- BANNER EXAMPLE END-->
+
 	</xsl:template>
 
 	<xsl:template name="EXTRA_SCRIPTS">

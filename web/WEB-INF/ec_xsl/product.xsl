@@ -62,16 +62,8 @@
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
 		<p>арт. <xsl:value-of select="$p/code"/></p>
 		<div class="catalog-item-container">
-			<!--
-			<div class="tags">
-				<span>Акция</span>
-				<span>Скидка</span>
-				<span>Распродажа</span>
-				<span>Горячая цена</span>
-			</div>
-			-->
 			<div class="gallery">
-				<div class="fotorama" data-width="100%" data-maxwidth="100%" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
+				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
@@ -81,50 +73,184 @@
 				</div>
 			</div>
 			<div class="product-info">
+				<!-- new html -->
 				<xsl:for-each select="$p/tag">
+					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
+				</xsl:for-each>
+
+				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
+				<div class="device-page__actions">
+					<xsl:if test="$has_price">
+						<div class="device__price device__price_device-page">
+							<div class="price_old"><span>100 руб.</span></div>
+							<div class="price_normal"><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</div>
+						</div>
+					</xsl:if>
+
+					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
+					<div id="cart_list_{replace($p/code, '[)()]', '-')}" class="device__order device__order_device-page product_purchase_container">
+						<form action="{$p/to_cart}" method="post" ajax="true">
+							<xsl:if test="$has_price">
+								<input type="number" class="text-input" name="qty" value="1" min="0" />
+								<input type="submit" class="button" value="Заказать" />
+							</xsl:if>
+							<xsl:if test="not($has_price)">
+								<input type="number" class="text-input" name="qty" value="1" min="0" />
+								<input type="submit" class="button" value="Запросить цену" />
+							</xsl:if>
+						</form>
+					</div>
+					<div class="device__actions device__actions_device-page">
+						<a href="" class="device__action-link icon-link"><i class="fas fa-balance-scale"></i>сравнить</a>
+						<a href="" class="device__action-link icon-link"><i class="fas fa-star"></i>отложить</a>
+					</div>
+					<xsl:choose>
+						<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
+						<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
+					</xsl:choose>
+				</div>
+				<div class="multi-device">
+					<div style="padding-left: 0;">Размер</div>
+					<div>Цена</div>
+					<div></div>
+
+					<div class="multi-device__name">P318L1/8 - 3,2 мм</div>
+					<div class="multi-device__price">
+						<div class="multi-device__price_old">1 р. 50 коп.</div>
+						<div class="multi-device__price_new">1 р. 20 коп.</div>
+					</div>
+					<div class="multi-device__actions">
+						<input type="number" class="text-input" name="qty" value="1" min="0" />
+						<input type="submit" class="button" value="Заказать" />
+					</div>
+
+					<div class="multi-device__name">P318L1/8 - 3,2 мм</div>
+					<div class="multi-device__price">
+						<div class="multi-device__price_old">1 р. 50 коп.</div>
+						<div class="multi-device__price_new">1 р. 20 коп.</div>
+					</div>
+					<div class="multi-device__actions">
+						<input type="number" class="text-input" name="qty" value="1" min="0" />
+						<input type="submit" class="button" value="Заказать" />
+					</div>
+
+					<div class="multi-device__name">P318L1/8 - 3,2 мм</div>
+					<div class="multi-device__price">
+						<div class="multi-device__price_old">1 р. 50 коп.</div>
+						<div class="multi-device__price_new">1 р. 20 коп.</div>
+					</div>
+					<div class="multi-device__actions">
+						<input type="number" class="text-input" name="qty" value="1" min="0" />
+						<input type="submit" class="button" value="Заказать" />
+					</div>
+
+					<div class="multi-device__name">P318L1/8 - 3,2 мм</div>
+					<div class="multi-device__price">
+						<div class="multi-device__price_old">1 р. 50 коп.</div>
+						<div class="multi-device__price_new">1 р. 20 коп.</div>
+					</div>
+					<div class="multi-device__actions">
+						<input type="number" class="text-input" name="qty" value="1" min="0" />
+						<input type="submit" class="button" value="Заказать" />
+					</div>
+				</div>
+				<div class="multi-device__links">
+					<a href="" class="device__action-link icon-link"><i class="fas fa-balance-scale"></i>сравнить</a>
+					<a href="" class="device__action-link icon-link"><i class="fas fa-star"></i>отложить</a>
+				</div>
+				<div class="device-benefits">
+					<div class="device-benefits__item">
+						<i class="fas fa-shield-alt device-benefits__icon"></i>
+						<div class="device-benefits__label">Официальная гарантия и сервис</div>
+					</div>
+					<div class="device-benefits__item">
+						<i class="fas fa-trophy device-benefits__icon"></i>
+						<div class="device-benefits__label">Официальные поставки</div>
+					</div>
+					<div class="device-benefits__item">
+						<i class="far fa-thumbs-up device-benefits__icon"></i>
+						<div class="device-benefits__label">Обучение и сопровождение</div>
+					</div>
+				</div>
+				<div class="extra-contacts">
+					<div class="extra-contacts__title">Звоните, чтобы получить помощь и консультацию</div>
+					<div class="extra-contacts__items">
+						<div class="extra-contacts__item">
+							<div class="extra-contacts__number">(+375 17) 233-65-94</div>
+							<div class="extra-contacts__text">офис г. Минск</div>
+						</div>
+						<div class="extra-contacts__item">
+							<div class="extra-contacts__number">(+375 162) 54-54-40</div>
+							<div class="extra-contacts__text">филиал г. Брест</div>
+						</div>
+						<div class="extra-contacts__item">
+							<div class="extra-contacts__number">(+375 152) 77-29-52</div>
+							<div class="extra-contacts__text">филиал г. Гродно</div>
+						</div>
+					</div>
+				</div>
+				<div class="extra-info">
+					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
+				</div>
+								
+				<!-- new html end -->
+				
+
+				<!-- <xsl:for-each select="$p/tag">
 					<div class="tag-container">
 						<div class="device__tag"><xsl:value-of select="." /></div>
 					</div>
 				</xsl:for-each>
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
-				<xsl:if test="$has_price">
-					<div class="price">
-						<!-- <p><span>Старая цена</span>100 р.</p> -->
-						<p><!-- <span>Новая цена</span> --><span>Цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
+				<div class="price-etc">
+					<xsl:if test="$has_price">
+						<div class="price">
+							<div class="price_old">
+								<span class="marked">Старая цена</span>
+								<span class="lthrough"><span>100 руб.</span></span>
+							</div>
+							<div class="price_normal">
+								<span class="marked">Цена</span>
+								<p>
+									<xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.
+								</p>
+							</div>
+
+						</div>
+					</xsl:if>
+					<div class="order">
+						<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
+						<div id="cart_list_{replace($p/code, '[)()]', '-')}" class="product_purchase_container">
+							<form action="{$p/to_cart}" method="post" ajax="true">
+								<xsl:if test="$has_price">
+									<input type="number" name="qty" value="1" min="0"/>
+									<input type="submit" value="Заказать"/>
+								</xsl:if>
+								<xsl:if test="not($has_price)">
+									<input type="number" name="qty" value="1" min="0"/>
+									<input type="submit" class="button not_available" value="Запросить цену"/>
+								</xsl:if>
+							</form>
+						</div>
 					</div>
-				</xsl:if>
-				<div class="order">
-					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
-					<div id="cart_list_{replace($p/code, '[)()]', '-')}" class="product_purchase_container">
-						<form action="{$p/to_cart}" method="post" ajax="true">
-							<xsl:if test="$has_price">
-								<input type="number" name="qty" value="1" min="0"/>
-								<input type="submit" value="Заказать"/>
-							</xsl:if>
-							<xsl:if test="not($has_price)">
-								<input type="hidden" name="qty" value="1" min="0"/>
-								<input type="submit" class="not_available" value="Запросить цену"/>
-							</xsl:if>
-						</form>
+					<div class="links">
+						<div id="compare_list_{$p/code}">
+							<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">сравнить</a></span>
+						</div>
+						<div id="fav_list_{$p/code}">
+							<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/code}">отложить</a></span>
+						</div>
 					</div>
 					<xsl:choose>
-						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>
-						<xsl:otherwise><!-- <div class="quantity">Нет на складе</div> --></xsl:otherwise>
+						<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
+						<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
 					</xsl:choose>
-				</div>
-				<div class="links">
-					<div id="compare_list_{$p/code}">
-						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">сравнить</a></span>
-					</div>
-					<div id="fav_list_{$p/code}">
-						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/code}">отложить</a></span>
-					</div>
 				</div>
 				<div class="info-blocks">
 					<div class="info-block">
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 					</div>
-					<!--
+
 					<div class="info-block">
 						<h4>Рассрочка от 3 до 12 месяцев</h4>
 						<p><a href="">Условия рассрочки</a></p>
@@ -133,11 +259,11 @@
 						<h4>Бесплатная доставка по Минску</h4>
 						<p>При сумме заказа до 100 рублей, доставка — 5 рублей.</p>
 					</div>
-					-->
-				</div>
+
+				</div> -->
 			</div>
 			<div class="description">
-				
+
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
 							<xsl:if test="$p/params">

@@ -1,1 +1,396 @@
 <product_count>0</product_count>
+<product type="product" id="117836" path="files/117/836f/" key="parogenerator_comel_comeleco_15_l_1527207038117836">
+<name>Парогенератор Comel COMELECO 1,5 л</name>
+<code>1527207038</code>
+<vendor_code>1527207038</vendor_code>
+<offer_id>1527207038</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/parogenerator-comel-comeleco-15-l/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>99</price>
+<price_old>100</price_old>
+<qty>11</qty>
+<main_pic size="30637" created="14.11.2018 09:00" extenstion="jpg" width="480" height="480">1.jpg</main_pic>
+<small_pic size="7491" created="31.10.2018 14:54" extenstion="jpeg" width="200" height="198">small_pic_main_pic_71b172d0_5a9a_11e0_b986_003048d98905_8d4e5329_5b61_11e0_b986_003048d98905.jpeg</small_pic>
+<description>&lt;p&gt;Парогенератор в комплекте с профессиональным электропаровым утюгом.&lt;br /&gt;&lt;br /&gt;Преимущества:&lt;br /&gt;Регулятор подачи пара&lt;br /&gt;Стальной бойлер&lt;br /&gt;Манометр&lt;br /&gt;Компактен и прост в использовании&lt;br /&gt;&lt;br /&gt;Применение:&lt;br /&gt;Парогенератор идеально подходит для дома, ателье и мини производства.&lt;/p&gt;</description>
+<text>&lt;p&gt;Парогенератор в комплекте с профессиональным электропаровым утюгом.&lt;br /&gt;&lt;br /&gt;Преимущества:&lt;br /&gt;Регулятор подачи пара&lt;br /&gt;Стальной бойлер&lt;br /&gt;Манометр&lt;br /&gt;Компактен и прост в использовании&lt;br /&gt;&lt;br /&gt;Применение:&lt;br /&gt;Парогенератор идеально подходит для дома, ателье и мини производства.&lt;/p&gt;</text>
+<gallery size="39500" created="31.10.2018 14:54" extenstion="jpeg" width="621" height="614">71b172d0_5a9a_11e0_b986_003048d98905_8d4e5329_5b61_11e0_b986_003048d98905.jpeg</gallery>
+<tag>Новинка</tag>
+	<show_product>product/parogenerator_comel_comeleco_15_l_1527207038117836/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=1527207038</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=1527207038&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=1527207038&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117835" id="119717" path="files/119/717f/" key="parogeneratory">
+<param id="13898" name="obem_boilera" type="string" multiple="false" caption="Объем бойлера" description="л" format="">1,5л</param>
+<param id="13899" name="moschnost_boilera" type="string" multiple="false" caption="Мощность бойлера" description="" format="">900Вт</param>
+<param id="13900" name="rabochee_davlenie" type="string" multiple="false" caption="Рабочее давление" description="bar" format="">2,5</param>
+<param id="13901" name="napryagenie" type="string" multiple="false" caption="Напряжение" description="Вт" format="">220</param>
+<param id="13902" name="utyug" type="string" multiple="false" caption="Утюг" description="Вт" format="">900</param>
+<param id="13903" name="ves_utyuga" type="double" multiple="false" caption="Вес утюга" description="кг" format="">1,5</param>
+<param id="13904" name="ves" type="double" multiple="false" caption="Вес" description="кг" format="">10,5</param>
+<param id="13905" name="razmery_korobki" type="string" multiple="false" caption="Размеры коробки" description="" format="">42x27x29</param>
+	</params>
+</product>
+<product type="product" id="117839" path="files/117/839f/" key="parogenerator_comel_fb_f_4kvt_0152149082117839">
+<name>Парогенератор Comel FB/F (4кВт)</name>
+<code>152149082</code>
+<vendor_code>0152149082</vendor_code>
+<offer_id>152149082</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/parogenerator-comel-fb_f-4kvt/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>0</price>
+<main_pic size="14196" created="31.10.2018 14:54" extenstion="jpeg" width="476" height="520">main_pic_0a28da9d_8b92_11e6_a895_003048d98905_0a3c8069_a0c2_11e6_b539_003048d98905.jpeg</main_pic>
+<small_pic size="3653" created="31.10.2018 14:54" extenstion="jpeg" width="200" height="218">small_pic_main_pic_0a28da9d_8b92_11e6_a895_003048d98905_0a3c8069_a0c2_11e6_b539_003048d98905.jpeg</small_pic>
+<description>&lt;p&gt;Парогенератор с автоматической подкачкой на 2 рабочих места. Без утюгов.&lt;br /&gt;&lt;br /&gt;Преимущества:&lt;br /&gt;Регулятор подачи пара&lt;br /&gt;Стальной бойлер&lt;br /&gt;Манометр&lt;br /&gt;Встроенная ёмкость для подкачки&lt;br /&gt;Можно установить любой утюг &lt;br /&gt;&lt;br /&gt;Применение:&lt;br /&gt;Для производства&lt;/p&gt;</description>
+<gallery size="14196" created="31.10.2018 14:54" extenstion="jpeg" width="476" height="520">0a28da9d_8b92_11e6_a895_003048d98905_0a3c8069_a0c2_11e6_b539_003048d98905.jpeg</gallery>
+<tag>Новинка</tag>
+	<show_product>product/parogenerator_comel_fb_f_4kvt_0152149082117839/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=152149082</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=152149082&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=152149082&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117835" id="119718" path="files/119/718f/" key="parogeneratory">
+<param id="13898" name="obem_boilera" type="string" multiple="false" caption="Объем бойлера" description="л" format="">7л</param>
+<param id="13899" name="moschnost_boilera" type="string" multiple="false" caption="Мощность бойлера" description="" format="">4000Вт</param>
+<param id="13900" name="rabochee_davlenie" type="string" multiple="false" caption="Рабочее давление" description="bar" format="">3</param>
+<param id="13901" name="napryagenie" type="string" multiple="false" caption="Напряжение" description="Вт" format="">380Вт</param>
+<param id="13904" name="ves" type="double" multiple="false" caption="Вес" description="кг" format="">55</param>
+<param id="13905" name="razmery_korobki" type="string" multiple="false" caption="Размеры коробки" description="" format="">52x54x99</param>
+<param id="13906" name="proizvoditelnost_po_paru" type="string" multiple="false" caption="Производительность по пару" description="кг/час" format="">8,4кг/часВодяной насос</param>
+	</params>
+</product>
+<product type="product" id="117842" path="files/117/842f/" key="parogenerator_comel_fb_f_6kvt_0152155356117842">
+<name>Парогенератор Comel FB/F (6кВт)</name>
+<code>152155356</code>
+<vendor_code>0152155356</vendor_code>
+<offer_id>152155356</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/parogenerator-comel-fb_f-6kvt/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>0</price>
+<main_pic size="66779" created="31.10.2018 14:54" extenstion="jpeg" width="1600" height="1200">main_pic_e161b7ac_3d81_11e0_812f_003048d98905_fb670da9_40a4_11e0_812f_003048d98905.jpeg</main_pic>
+<small_pic size="2893" created="31.10.2018 14:54" extenstion="jpeg" width="200" height="150">small_pic_main_pic_e161b7ac_3d81_11e0_812f_003048d98905_fb670da9_40a4_11e0_812f_003048d98905.jpeg</small_pic>
+<description>&lt;p&gt;Парогенератор с автоматической подкачкой на 2 рабочих места.&lt;br /&gt;&lt;br /&gt;Преимущества:&lt;br /&gt;Регулятор подачи пара&lt;br /&gt;Стальной бойлер&lt;br /&gt;Манометр&lt;br /&gt;Встроенная ёмкость для подкачки&lt;br /&gt;Можно установить любой утюг &lt;br /&gt;&lt;br /&gt;Применение:&lt;br /&gt;Для производства&lt;/p&gt;</description>
+<gallery size="66779" created="31.10.2018 14:54" extenstion="jpeg" width="1600" height="1200">e161b7ac_3d81_11e0_812f_003048d98905_fb670da9_40a4_11e0_812f_003048d98905.jpeg</gallery>
+<tag>Новинка</tag>
+	<show_product>product/parogenerator_comel_fb_f_6kvt_0152155356117842/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=152155356</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=152155356&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=152155356&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117835" id="119719" path="files/119/719f/" key="parogeneratory">
+<param id="13898" name="obem_boilera" type="string" multiple="false" caption="Объем бойлера" description="л" format="">7л</param>
+<param id="13899" name="moschnost_boilera" type="string" multiple="false" caption="Мощность бойлера" description="" format="">6000Вт</param>
+<param id="13900" name="rabochee_davlenie" type="string" multiple="false" caption="Рабочее давление" description="bar" format="">3,5</param>
+<param id="13901" name="napryagenie" type="string" multiple="false" caption="Напряжение" description="Вт" format="">380Вт</param>
+<param id="13902" name="utyug" type="string" multiple="false" caption="Утюг" description="Вт" format="">Нет</param>
+<param id="13904" name="ves" type="double" multiple="false" caption="Вес" description="кг" format="">58</param>
+<param id="13905" name="razmery_korobki" type="string" multiple="false" caption="Размеры коробки" description="" format="">52x54x99</param>
+<param id="13907" name="vodyanoi_nasos" type="integer" multiple="false" caption="Водяной насос" description="Вт" format="">550</param>
+	</params>
+</product>
+<product type="product" id="117845" path="files/117/845f/" key="parogenerator_comel_fb_f_25l_0979412542117845">
+<name>Парогенератор Comel FB/F 25L</name>
+<code>979412542</code>
+<vendor_code>0979412542</vendor_code>
+<offer_id>979412542</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/parogenerator-comel-fb_f-25l/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>0</price>
+<main_pic size="13431" created="31.10.2018 14:54" extenstion="jpeg" width="329" height="402">main_pic_ffd3433c_d45c_11e0_a8ef_003048d98905_bf245a95_efd8_11e0_b986_003048d98905.jpeg</main_pic>
+<small_pic size="6295" created="31.10.2018 14:54" extenstion="jpeg" width="200" height="244">small_pic_main_pic_ffd3433c_d45c_11e0_a8ef_003048d98905_bf245a95_efd8_11e0_b986_003048d98905.jpeg</small_pic>
+<description>&lt;p&gt;Парогенератор с автоматической подкачкой.&lt;br /&gt;&lt;br /&gt;Преимущества:&lt;br /&gt;Регулятор подачи пара&lt;br /&gt;Стальной бойлер&lt;br /&gt;Манометр&lt;br /&gt;Встроенная ёмкость для подкачки&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;Применение:&lt;br /&gt;Для производства&lt;/p&gt;</description>
+<gallery size="13431" created="31.10.2018 14:54" extenstion="jpeg" width="329" height="402">ffd3433c_d45c_11e0_a8ef_003048d98905_bf245a95_efd8_11e0_b986_003048d98905.jpeg</gallery>
+<tag>Новинка</tag>
+	<show_product>product/parogenerator_comel_fb_f_25l_0979412542117845/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=979412542</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=979412542&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=979412542&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117835" id="119720" path="files/119/720f/" key="parogeneratory">
+<param id="13898" name="obem_boilera" type="string" multiple="false" caption="Объем бойлера" description="л" format="">25л</param>
+<param id="13899" name="moschnost_boilera" type="string" multiple="false" caption="Мощность бойлера" description="" format="">20000Вт</param>
+<param id="13900" name="rabochee_davlenie" type="string" multiple="false" caption="Рабочее давление" description="bar" format="">4,5</param>
+<param id="13901" name="napryagenie" type="string" multiple="false" caption="Напряжение" description="Вт" format="">380</param>
+<param id="13904" name="ves" type="double" multiple="false" caption="Вес" description="кг" format="">121</param>
+<param id="13905" name="razmery_korobki" type="string" multiple="false" caption="Размеры коробки" description="" format="">75x67x92</param>
+<param id="13907" name="vodyanoi_nasos" type="integer" multiple="false" caption="Водяной насос" description="Вт" format="">800</param>
+	</params>
+</product>
+<product type="product" id="117848" path="files/117/848f/" key="parogenerator_comel_pratica_bez_podkachki_vody__bez_utyuga_192301943117848">
+<name>Парогенератор Comel PRATICA без подкачки воды  (без утюга)</name>
+<code>192301943</code>
+<vendor_code>192301943</vendor_code>
+<offer_id>192301943</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/parogenerator-comel-pratica-bez-podkachki-vody-bez-utyuga/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>0</price>
+<main_pic size="80830" created="31.10.2018 14:54" extenstion="jpeg" width="1600" height="1200">main_pic_71b172d2_5a9a_11e0_b986_003048d98905_8d4e5328_5b61_11e0_b986_003048d98905.jpeg</main_pic>
+<small_pic size="3775" created="31.10.2018 14:54" extenstion="jpeg" width="200" height="150">small_pic_main_pic_71b172d2_5a9a_11e0_b986_003048d98905_8d4e5328_5b61_11e0_b986_003048d98905.jpeg</small_pic>
+<description>&lt;p&gt;Парогенератор заливного типа на один утюг, с бойлером из стали &amp;bdquo;inox&amp;rdquo;.&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;</description>
+<gallery size="80830" created="31.10.2018 14:54" extenstion="jpeg" width="1600" height="1200">71b172d2_5a9a_11e0_b986_003048d98905_8d4e5328_5b61_11e0_b986_003048d98905.jpeg</gallery>
+<tag>Новинка</tag>
+	<show_product>product/parogenerator_comel_pratica_bez_podkachki_vody__bez_utyuga_192301943117848/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=192301943</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=192301943&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=192301943&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117835" id="119721" path="files/119/721f/" key="parogeneratory">
+<param id="13900" name="rabochee_davlenie" type="string" multiple="false" caption="Рабочее давление" description="bar" format="">2,5 бар+++ Вес нетто</param>
+<param id="13905" name="razmery_korobki" type="string" multiple="false" caption="Размеры коробки" description="" format="">55x29x40 см</param>
+<param id="13908" name="moschnost_tena" type="string" multiple="false" caption="Мощность тена" description="" format="">1700 Вт+++ Объем бойлера</param>
+<param id="13909" name="podklyuchenie" type="string" multiple="false" caption="Подключение" description="" format="">220 ÷ 240 B</param>
+	</params>
+</product>
+<product type="product" id="117851" path="files/117/851f/" key="parogenerator_comel_pratica_s_podkachkoi_vody_bez_utyuga_1641557116117851">
+<name>Парогенератор Comel PRATICA с подкачкой воды (без утюга)</name>
+<code>1641557116</code>
+<vendor_code>1641557116</vendor_code>
+<offer_id>1641557116</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/parogenerator-comel-pratica-s-podkachkoy-vody-bez-utyuga/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>0</price>
+<main_pic size="25724" created="31.10.2018 14:54" extenstion="jpeg" width="481" height="841">main_pic_71b172cd_5a9a_11e0_b986_003048d98905_8d4e532a_5b61_11e0_b986_003048d98905.jpeg</main_pic>
+<small_pic size="7485" created="31.10.2018 14:54" extenstion="jpeg" width="200" height="350">small_pic_main_pic_71b172cd_5a9a_11e0_b986_003048d98905_8d4e532a_5b61_11e0_b986_003048d98905.jpeg</small_pic>
+<description>Парогенератор на колёсах, с резервуаром и ручным питательным насосом, с бойлером из стали „inox” ёмкостью 5 литров с аварийным клапаном; &lt;br/&gt;снабжённый силиконовой подставкой под утюг; антенной, поддерживающей провода; контролькой уровня воды; манометром, контролирующим давление;&lt;br/&gt;электроклапаном для регулировки пара.&lt;br/&gt;&lt;br/&gt;Ёмкость бойлера 5 Литров, &lt;br/&gt;&lt;br/&gt;Рабочее давление 2,5 бар, &lt;br/&gt;&lt;br/&gt;Водяной насос 500 ВТ, &lt;br/&gt;&lt;br/&gt;Вес нетто 28,0 Кг, Размеры коробки 30x55x91 См.</description>
+<gallery size="25724" created="31.10.2018 14:54" extenstion="jpeg" width="481" height="841">71b172cd_5a9a_11e0_b986_003048d98905_8d4e532a_5b61_11e0_b986_003048d98905.jpeg</gallery>
+<tag>Новинка</tag>
+	<show_product>product/parogenerator_comel_pratica_s_podkachkoi_vody_bez_utyuga_1641557116117851/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=1641557116</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=1641557116&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=1641557116&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117835" id="119722" path="files/119/722f/" key="parogeneratory">
+<param id="13905" name="razmery_korobki" type="string" multiple="false" caption="Размеры коробки" description="" format="">30x55x91См</param>
+<param id="13907" name="vodyanoi_nasos" type="integer" multiple="false" caption="Водяной насос" description="Вт" format="">500</param>
+<param id="13910" name="yomkost_boilera" type="integer" multiple="false" caption="Ёмкость бойлера" description="л" format="">5</param>
+<param id="13911" name="pitanie_elektroseti" type="string" multiple="false" caption="Питание электросети" description="" format="">220 ÷ 240 B</param>
+<param id="13912" name="moschnost_tena_parogeneratora" type="string" multiple="false" caption="Мощность тэна парогенератора" description="" format="">1700 Вт+++ Рабочее давление</param>
+	</params>
+</product>
+<product type="product" id="117867" path="files/117/867f/" key="comel_mp_f_pv_stol_dlya_otparivaniya_trikotaga__200_x100_01222747319117867">
+<name>Comel MP/F/PV Стол для отпаривания трикотажа  200 x100</name>
+<code>1222747319</code>
+<vendor_code>01222747319</vendor_code>
+<offer_id>1222747319</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/comel-mp_f_pv-stol-dlya-otparivaniya-trikotazha-200-x100/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>0</price>
+<main_pic size="10836" created="31.10.2018 14:56" extenstion="jpeg" width="363" height="385">main_pic_e6f62e97_1a43_11e1_b986_003048d98905_0026d947_2c74_11e1_8e95_003048d98905.jpeg</main_pic>
+<small_pic size="4898" created="31.10.2018 14:56" extenstion="jpeg" width="200" height="212">small_pic_main_pic_e6f62e97_1a43_11e1_b986_003048d98905_0026d947_2c74_11e1_8e95_003048d98905.jpeg</small_pic>
+<description>&lt;p&gt;Отпарочный стол для стабилизации трикотажа, оборудован встроенным парогенератором, вентилятором для отсоса пара и утюгом&lt;br /&gt;&lt;br /&gt;Преимущества:&lt;br /&gt;Равномерное пропаривания всей поверхности рабочей зоны &lt;br /&gt;Есть возможность регулировки подачи пара.&lt;br /&gt;Автоматическая подкачка воды&lt;br /&gt;&lt;br /&gt;Комплектация:&amp;nbsp;&amp;nbsp;парогенератор ёмкостью 25 литров, автоматический водяной насос, манометр для контролирования давления, 1 электроклапан с регулировкой пара, контролька уровня воды, силиконовая подставка под утюг, антенна, поддерживающая провода.&lt;br /&gt;&lt;br /&gt;Применение:&lt;br /&gt;Для стабилизации трикотажных и шерстяных изделий в производственном процессе.&lt;/p&gt;</description>
+<gallery size="10836" created="31.10.2018 14:56" extenstion="jpeg" width="363" height="385">e6f62e97_1a43_11e1_b986_003048d98905_0026d947_2c74_11e1_8e95_003048d98905.jpeg</gallery>
+<tag>Акция</tag>
+	<show_product>product/comel_mp_f_pv_stol_dlya_otparivaniya_trikotaga__200_x100_01222747319117867/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=1222747319</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=1222747319&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=1222747319&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117866" id="119727" path="files/119/727f/" key="stoly">
+<param id="13914" name="elektricheskoe_podklyuchenie" type="integer" multiple="false" caption="Электрическое подключение" description="В" format="">380</param>
+<param id="13915" name="yomkost_boilera" type="double" multiple="false" caption="Ёмкость бойлера" description="л" format="">25</param>
+<param id="13916" name="moschnost_tenov" type="integer" multiple="false" caption="Мощность тенов" description="Вт" format="">20</param>
+<param id="13917" name="rabochee_davlenie" type="double" multiple="false" caption="Рабочее давление" description="bar" format="">4,5</param>
+<param id="13918" name="proizvoditelnost_po_paru" type="string" multiple="false" caption="Производительность по пару" description="" format="">22кг/час</param>
+<param id="13919" name="moschnost_vodyanoi_pompy" type="integer" multiple="false" caption="Мощность водяной помпы" description="Вт" format="">800</param>
+<param id="13920" name="moschnost_vakuuma" type="string" multiple="false" caption="Мощность вакуума" description="Вт" format="">600</param>
+<param id="13921" name="razmery_rabochei_poverhnosti" type="string" multiple="false" caption="Размеры рабочей поверхности" description="" format="">200 x 100 см</param>
+<param id="13922" name="upakovochnyi_razmer" type="string" multiple="false" caption="Упаковочный размер" description="" format="">100x110x210 См</param>
+<param id="13923" name="ves" type="double" multiple="false" caption="Вес" description="кг" format="">335</param>
+	</params>
+</product>
+<product type="product" id="117870" path="files/117/870f/" key="comel_mp_f_pv_stol_dlya_otparivaniya_trikotaga_180x90_376997811117870">
+<name>Comel MP/F/PV Стол для отпаривания трикотажа 180x90</name>
+<code>376997811</code>
+<vendor_code>376997811</vendor_code>
+<offer_id>376997811</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/comel-mp_f_pv-stol-dlya-otparivaniya-trikotazha-180x90/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>0</price>
+<main_pic size="73290" created="31.10.2018 14:56" extenstion="jpeg" width="1900" height="1200">main_pic_ccbaff60_d6b5_11df_aff0_003048d98905_bf245a94_efd8_11e0_b986_003048d98905.jpeg</main_pic>
+<small_pic size="2582" created="31.10.2018 14:56" extenstion="jpeg" width="200" height="126">small_pic_main_pic_ccbaff60_d6b5_11df_aff0_003048d98905_bf245a94_efd8_11e0_b986_003048d98905.jpeg</small_pic>
+<description>&lt;p&gt;Отпарочный стол для стабилизации трикотажа, оборудован встроенным парогенератором, вентилятором для отсоса пара&lt;br /&gt;&lt;br /&gt;Преимущества:&lt;br /&gt;Равномерное пропаривания всей поверхности рабочей зоны&lt;br /&gt;Есть возможность регулировки подачи пара.&lt;br /&gt;&lt;br /&gt;Комплектация:&amp;nbsp;&amp;nbsp;парогенироатор ёмкостью 25 литров, автоматический водяной насос, манометр для контролирования давления, 1 электроклапан с регулировкой пара, контролька уровня воды, силиконовая подставка под утюг, антенна, поддерживающая провода.&lt;br /&gt;&lt;br /&gt;Применение:&lt;br /&gt;Для стабилизации трикотажных и шерстяных изделий в производственном процессе&lt;/p&gt;</description>
+<gallery size="73290" created="31.10.2018 14:56" extenstion="jpeg" width="1900" height="1200">ccbaff60_d6b5_11df_aff0_003048d98905_bf245a94_efd8_11e0_b986_003048d98905.jpeg</gallery>
+<tag>Акция</tag>
+	<show_product>product/comel_mp_f_pv_stol_dlya_otparivaniya_trikotaga_180x90_376997811117870/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=376997811</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=376997811&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=376997811&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117866" id="119728" path="files/119/728f/" key="stoly">
+<param id="13914" name="elektricheskoe_podklyuchenie" type="integer" multiple="false" caption="Электрическое подключение" description="В" format="">380</param>
+<param id="13915" name="yomkost_boilera" type="double" multiple="false" caption="Ёмкость бойлера" description="л" format="">25</param>
+<param id="13917" name="rabochee_davlenie" type="double" multiple="false" caption="Рабочее давление" description="bar" format="">4,5</param>
+<param id="13918" name="proizvoditelnost_po_paru" type="string" multiple="false" caption="Производительность по пару" description="" format="">22кг/час</param>
+<param id="13919" name="moschnost_vodyanoi_pompy" type="integer" multiple="false" caption="Мощность водяной помпы" description="Вт" format="">800</param>
+<param id="13920" name="moschnost_vakuuma" type="string" multiple="false" caption="Мощность вакуума" description="Вт" format="">600</param>
+<param id="13921" name="razmery_rabochei_poverhnosti" type="string" multiple="false" caption="Размеры рабочей поверхности" description="" format="">180 x 90 см</param>
+<param id="13922" name="upakovochnyi_razmer" type="string" multiple="false" caption="Упаковочный размер" description="" format="">100x110x190 См</param>
+<param id="13923" name="ves" type="double" multiple="false" caption="Вес" description="кг" format="">305</param>
+<param id="13924" name="moschnost_nagrevatelnogo_elementa_parogeneratora" type="integer" multiple="false" caption="Мощность нагревательного элемента парогенератора" description="КВт" format="">20</param>
+	</params>
+</product>
+<product type="product" id="117873" path="files/117/873f/" key="stol_comel_utyugilnyi_dlya_shtor_s_separatorom_para__mp_fc_a_t_250x75_1510576581117873">
+<name>Стол Comel утюжильный для штор с сепаратором пара  MP/FC/A/T 250x75</name>
+<code>1510576581</code>
+<vendor_code>1510576581</vendor_code>
+<offer_id>1510576581</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/stol-comel-utyuzhilnyy-dlya-shtor-s-separatorom-para-mp_fc_a_t-250x75-/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>0</price>
+<main_pic size="24171" created="31.10.2018 14:56" extenstion="jpeg" width="555" height="500">main_pic_479934bf_8a92_11e0_aca1_003048d98905_37c2e274_adf0_11e0_aed0_003048d98905.jpeg</main_pic>
+<small_pic size="5722" created="31.10.2018 14:56" extenstion="jpeg" width="200" height="180">small_pic_main_pic_479934bf_8a92_11e0_aca1_003048d98905_37c2e274_adf0_11e0_aed0_003048d98905.jpeg</small_pic>
+<description>&lt;p&gt;Стол прямоугольный для глажения штор 250х75.&lt;br /&gt;&lt;br /&gt;Преимущества:&lt;br /&gt;Большая рабочая поверхность, позволяет работать со шторой во всю её величину&lt;br /&gt;Предотвращает сминание изделия &lt;br /&gt;Мощный вакуум позволяет быстрей распрямлять изделия и сушить.&lt;br /&gt;&lt;br /&gt;Комплектация: &lt;br /&gt;Сепараторя для утюга с электроклапаном с регулировкой пара, подвесного устройства, а также силиконовой подставки под утюг.&lt;br /&gt;&lt;br /&gt;Аксессуары на заказ (приобретаются дополнительно):&lt;br /&gt;Паровой пистолет [AKN-06] &lt;br /&gt;Утюг электропаровой Comel 721 PAB Маленький. [AKN-08E] &lt;br /&gt;Утюг электропаровой Comel 721 GAB Большой. [AKN-08F] &lt;br /&gt;Карман для размещения обрабатываемых изделий 200x75 [AKN-21A] &lt;br /&gt;Лампа [AKN-09D]&amp;nbsp;&amp;nbsp;&lt;br /&gt;Подвес утюга. [AKN-11]&amp;nbsp;&amp;nbsp;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;</description>
+<gallery size="24171" created="31.10.2018 14:56" extenstion="jpeg" width="555" height="500">479934bf_8a92_11e0_aca1_003048d98905_37c2e274_adf0_11e0_aed0_003048d98905.jpeg</gallery>
+<tag>Акция</tag>
+	<show_product>product/stol_comel_utyugilnyi_dlya_shtor_s_separatorom_para__mp_fc_a_t_250x75_1510576581117873/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=1510576581</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=1510576581&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=1510576581&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117866" id="119729" path="files/119/729f/" key="stoly">
+<param id="13914" name="elektricheskoe_podklyuchenie" type="integer" multiple="false" caption="Электрическое подключение" description="В" format="">380</param>
+<param id="13920" name="moschnost_vakuuma" type="string" multiple="false" caption="Мощность вакуума" description="Вт" format="">2 x 600 Вт</param>
+<param id="13921" name="razmery_rabochei_poverhnosti" type="string" multiple="false" caption="Размеры рабочей поверхности" description="" format="">250 x 75 см</param>
+<param id="13922" name="upakovochnyi_razmer" type="string" multiple="false" caption="Упаковочный размер" description="" format="">92x107x285</param>
+<param id="13923" name="ves" type="double" multiple="false" caption="Вес" description="кг" format="">230</param>
+<param id="13925" name="moschnost_nagreva_stola" type="double" multiple="false" caption="Мощность нагрева стола" description="Вт" format="">3 000</param>
+	</params>
+</product>
+<product type="product" id="117876" path="files/117/876f/" key="stol_gladilnyi_futura_ra_1019083552117876">
+<name>Стол гладильный Futura RA</name>
+<code>1019083552</code>
+<vendor_code>1019083552</vendor_code>
+<offer_id>1019083552</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/stol-gladilnyy-futura-ra/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>0</price>
+<main_pic size="21437" created="31.10.2018 14:56" extenstion="jpeg" width="578" height="547">main_pic_bb75f986_6256_11e3_89e7_003048d98905_e8db7ad6_29ea_11e5_84a8_003048d98905.jpeg</main_pic>
+<small_pic size="5222" created="31.10.2018 14:56" extenstion="jpeg" width="200" height="189">small_pic_main_pic_bb75f986_6256_11e3_89e7_003048d98905_e8db7ad6_29ea_11e5_84a8_003048d98905.jpeg</small_pic>
+<description>&lt;p&gt;Стол гладильный прямоугольный размером 115 x 62 см с отсосом и электрическим подогревом. Регулировка температуры стола при помощи термостата.&amp;nbsp;&amp;nbsp;&lt;br /&gt;&lt;br /&gt;Преимущества:&lt;br /&gt;Готовое и недорогое рабочее место. &lt;br /&gt;Регулировка температуры стола при помощи термостата, большая рабочая зона.&lt;br /&gt;Стол может быть укомплектован поворотным рукавом (отдельная опция)&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;Применение:&lt;br /&gt;В быту&lt;br /&gt;Для глажки изделий&lt;br /&gt;Для влажно-тепловой обработки в производственном процессе.&lt;/p&gt;</description>
+<gallery size="21437" created="31.10.2018 14:56" extenstion="jpeg" width="578" height="547">bb75f986_6256_11e3_89e7_003048d98905_e8db7ad6_29ea_11e5_84a8_003048d98905.jpeg</gallery>
+<tag>Акция</tag>
+	<show_product>product/stol_gladilnyi_futura_ra_1019083552117876/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=1019083552</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=1019083552&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=1019083552&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117866" id="119730" path="files/119/730f/" key="stoly">
+<param id="13925" name="moschnost_nagreva_stola" type="double" multiple="false" caption="Мощность нагрева стола" description="Вт" format="">1,2</param>
+<param id="13926" name="razmer_poverhnosti" type="string" multiple="false" caption="Размер поверхности" description="" format="">115х62 см</param>
+<param id="13927" name="moschnost_vakuumnogo_otsosa" type="integer" multiple="false" caption="Мощность вакуумного отсоса" description="Вт." format="">120</param>
+<param id="13928" name="podklyuchenie" type="integer" multiple="false" caption="Подключение" description="V." format="">220</param>
+	</params>
+</product>
+<product type="product" id="117879" path="files/117/879f/" key="stol_gladilnyi_futura_rc_bez_utyuga_1645730064117879">
+<name>Стол гладильный Futura RC без утюга</name>
+<code>1645730064</code>
+<vendor_code>1645730064</vendor_code>
+<offer_id>1645730064</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/stol-gladilnyy-futura-rc-bez-utyuga/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>0</price>
+<main_pic size="8788" created="31.10.2018 14:56" extenstion="jpeg" width="288" height="314">main_pic_9d20de2b_f55f_11e0_b986_003048d98905_acd8f8ee_f61d_11e0_b986_003048d98905.jpeg</main_pic>
+<small_pic size="5336" created="31.10.2018 14:56" extenstion="jpeg" width="200" height="218">small_pic_main_pic_9d20de2b_f55f_11e0_b986_003048d98905_acd8f8ee_f61d_11e0_b986_003048d98905.jpeg</small_pic>
+<description>&lt;p&gt;Стол гладильный с парогенератором объемом 1,5 литра&lt;br /&gt;&lt;br /&gt;Преимущества:&lt;br /&gt;Готовое и недорогое рабочее место. &lt;br /&gt;Регулировка температуры стола при помощи термостата, большая рабочая зона.&lt;br /&gt;Стол может быть укомплектован поворотным рукавом (отдельная опция)&lt;br /&gt;&lt;br /&gt;В комплект входит: парогенератор ёмкостью 1,5 литра с аварийным клапаном, контролькой уровня воды, силиконовой подставки под утюг, электроклапана для регулировки пара, а также антенны, поддерживающей провода.&lt;br /&gt;&lt;br /&gt;Применение:&lt;br /&gt;В быту&lt;br /&gt;Для глажки изделий&lt;br /&gt;Для влажно-тепловой обработки в производственном процессе.&lt;/p&gt;</description>
+<gallery size="8788" created="31.10.2018 14:56" extenstion="jpeg" width="288" height="314">9d20de2b_f55f_11e0_b986_003048d98905_acd8f8ee_f61d_11e0_b986_003048d98905.jpeg</gallery>
+<tag>Акция</tag>
+	<show_product>product/stol_gladilnyi_futura_rc_bez_utyuga_1645730064117879/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=1645730064</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=1645730064&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=1645730064&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117866" id="119731" path="files/119/731f/" key="stoly">
+<param id="13914" name="elektricheskoe_podklyuchenie" type="integer" multiple="false" caption="Электрическое подключение" description="В" format="">220</param>
+<param id="13915" name="yomkost_boilera" type="double" multiple="false" caption="Ёмкость бойлера" description="л" format="">1,5</param>
+<param id="13916" name="moschnost_tenov" type="integer" multiple="false" caption="Мощность тенов" description="Вт" format="">900</param>
+<param id="13917" name="rabochee_davlenie" type="double" multiple="false" caption="Рабочее давление" description="bar" format="">2,5</param>
+<param id="13920" name="moschnost_vakuuma" type="string" multiple="false" caption="Мощность вакуума" description="Вт" format="">120</param>
+<param id="13921" name="razmery_rabochei_poverhnosti" type="string" multiple="false" caption="Размеры рабочей поверхности" description="" format="">115 x 62 см</param>
+<param id="13922" name="upakovochnyi_razmer" type="string" multiple="false" caption="Упаковочный размер" description="" format="">43x67x145 См</param>
+<param id="13923" name="ves" type="double" multiple="false" caption="Вес" description="кг" format="">46,5</param>
+<param id="13925" name="moschnost_nagreva_stola" type="double" multiple="false" caption="Мощность нагрева стола" description="Вт" format="">1 200</param>
+	</params>
+</product>
+<product type="product" id="117882" path="files/117/882f/" key="stol_gladilnyi_futura_rc5_bez_utyuga_1589155557117882">
+<name>Стол Гладильный Futura RC5 без утюга</name>
+<code>1589155557</code>
+<vendor_code>1589155557</vendor_code>
+<offer_id>1589155557</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/stol-gladilnyy-futura-rc5-bez-utyuga/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>0</price>
+<main_pic size="8772" created="31.10.2018 14:56" extenstion="jpeg" width="288" height="314">main_pic_9d20de2d_f55f_11e0_b986_003048d98905_acd8f8ef_f61d_11e0_b986_003048d98905.jpeg</main_pic>
+<small_pic size="5331" created="31.10.2018 14:56" extenstion="jpeg" width="200" height="218">small_pic_main_pic_9d20de2d_f55f_11e0_b986_003048d98905_acd8f8ef_f61d_11e0_b986_003048d98905.jpeg</small_pic>
+<description>&lt;p&gt;Стол гладильный с парогенератором объемом 5 литров.&lt;br /&gt;&lt;br /&gt;Преимущества:&lt;br /&gt;Готовое и недорогое рабочее место. &lt;br /&gt;Регулировка температуры стола при помощи термостата, большая рабочая зона.&lt;br /&gt;Стол может быть укомплектован поворотным рукавом (отдельная опция)&lt;br /&gt;&lt;br /&gt;В комплект входит: парогенератор ёмкостью 5 литров с аварийным клапаном, контролькой уровня воды, силиконовой подставки под утюг, электроклапана для регулировки пара, а также антенны, поддерживающей провода.&lt;br /&gt;&lt;br /&gt;Применение:&lt;br /&gt;В быту&lt;br /&gt;Для глажки изделий&lt;br /&gt;Для влажно-тепловой обработки в производственном процессе.&lt;/p&gt;</description>
+<gallery size="8772" created="31.10.2018 14:56" extenstion="jpeg" width="288" height="314">9d20de2d_f55f_11e0_b986_003048d98905_acd8f8ef_f61d_11e0_b986_003048d98905.jpeg</gallery>
+<tag>Акция</tag>
+	<show_product>product/stol_gladilnyi_futura_rc5_bez_utyuga_1589155557117882/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=1589155557</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=1589155557&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=1589155557&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117866" id="119732" path="files/119/732f/" key="stoly">
+<param id="13914" name="elektricheskoe_podklyuchenie" type="integer" multiple="false" caption="Электрическое подключение" description="В" format="">220</param>
+<param id="13915" name="yomkost_boilera" type="double" multiple="false" caption="Ёмкость бойлера" description="л" format="">5</param>
+<param id="13916" name="moschnost_tenov" type="integer" multiple="false" caption="Мощность тенов" description="Вт" format="">1900</param>
+<param id="13917" name="rabochee_davlenie" type="double" multiple="false" caption="Рабочее давление" description="bar" format="">2,5</param>
+<param id="13920" name="moschnost_vakuuma" type="string" multiple="false" caption="Мощность вакуума" description="Вт" format="">120</param>
+<param id="13921" name="razmery_rabochei_poverhnosti" type="string" multiple="false" caption="Размеры рабочей поверхности" description="" format="">115 x 62 см</param>
+<param id="13922" name="upakovochnyi_razmer" type="string" multiple="false" caption="Упаковочный размер" description="" format="">43x67x145 См</param>
+<param id="13923" name="ves" type="double" multiple="false" caption="Вес" description="кг" format="">50</param>
+<param id="13925" name="moschnost_nagreva_stola" type="double" multiple="false" caption="Мощность нагрева стола" description="Вт" format="">1 200</param>
+	</params>
+</product>
+<product type="product" id="117885" path="files/117/885f/" key="stol_dlya_vyvedeniya_pyaten_comel_ecoflo_01875772172117885">
+<name>Стол для выведения пятен Comel ECOFLO</name>
+<code>1875772172</code>
+<vendor_code>01875772172</vendor_code>
+<offer_id>1875772172</offer_id>
+<available>1</available>
+<url>https://www.transmetall.ru/catalog/product/stol-dlya-vyvedeniya-pyaten-comel-ecoflo/</url>
+<category_id>284730550</category_id>
+<currency_id>RUB</currency_id>
+<price>0</price>
+<main_pic size="15463" created="31.10.2018 14:56" extenstion="jpeg" width="318" height="477">main_pic_e6f62ea1_1a43_11e1_b986_003048d98905_51daf956_29ff_11e1_8e95_003048d98905.jpeg</main_pic>
+<small_pic size="7912" created="31.10.2018 14:56" extenstion="jpeg" width="200" height="300">small_pic_main_pic_e6f62ea1_1a43_11e1_b986_003048d98905_51daf956_29ff_11e1_8e95_003048d98905.jpeg</small_pic>
+<description>&lt;p&gt;Стол из нержавеющей стали для выведения пятен&lt;br /&gt;&lt;br /&gt;Преимущества: Регулировка температуры стола при помощи термостата. Имеется возможность его доставки в разобранном виде.&lt;br /&gt;&lt;br /&gt;Комплектация:&amp;nbsp;&amp;nbsp;Состоит из встроенного отсоса, приводящегося в движение педалью, двух пистолетов на подвесе для опрыскивания пятновыводящими средствами, 2 ёмкостей для пятновыводящей жидкости и пистолета высокого давления для быстрой сушки поверхности материала. Адаптирован для подключения к устройству со сжатым воздухом. &lt;br /&gt;&lt;br /&gt;Применение:&lt;br /&gt;Для прачечных и химчисток&lt;br /&gt;Для ателье&lt;/p&gt;</description>
+<gallery size="15463" created="31.10.2018 14:56" extenstion="jpeg" width="318" height="477">e6f62ea1_1a43_11e1_b986_003048d98905_51daf956_29ff_11e1_8e95_003048d98905.jpeg</gallery>
+<tag>Акция</tag>
+	<show_product>product/stol_dlya_vyvedeniya_pyaten_comel_ecoflo_01875772172117885/</show_product>
+	<to_cart>cart_action/?action=addToCart&amp;code=1875772172</to_cart>
+	<to_fav>cookie_list_action/?update_cookie_name=favourites&amp;update_cookie_value=1875772172&amp;action=add&amp;src_page=fav_ajax</to_fav>
+	<to_compare>cookie_list_action/?update_cookie_name=compare&amp;update_cookie_value=1875772172&amp;action=add&amp;src_page=compare_ajax</to_compare>
+	<params_count>1</params_count>
+	<params type="p117866" id="119733" path="files/119/733f/" key="stoly">
+<param id="13914" name="elektricheskoe_podklyuchenie" type="integer" multiple="false" caption="Электрическое подключение" description="В" format="">220</param>
+<param id="13920" name="moschnost_vakuuma" type="string" multiple="false" caption="Мощность вакуума" description="Вт" format="">600</param>
+<param id="13921" name="razmery_rabochei_poverhnosti" type="string" multiple="false" caption="Размеры рабочей поверхности" description="" format="">125 x 74 см</param>
+<param id="13922" name="upakovochnyi_razmer" type="string" multiple="false" caption="Упаковочный размер" description="" format="">76x92x127см</param>
+<param id="13923" name="ves" type="double" multiple="false" caption="Вес" description="кг" format="">100</param>
+<param id="13929" name="moschnost_nagreva" type="integer" multiple="false" caption="Мощность нагрева" description="Вт" format="">2000</param>
+	</params>
+</product>
