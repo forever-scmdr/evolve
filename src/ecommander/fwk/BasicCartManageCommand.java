@@ -24,7 +24,7 @@ import java.util.Date;
  */
 public abstract class BasicCartManageCommand extends Command {
 
-	private static final String PRODUCT_ITEM = "product";
+	private static final String PRODUCT_ITEM = "abstract_product";
 	private static final String CART_ITEM = "cart";
 	private static final String BOUGHT_ITEM = "bought";
 	private static final String PURCHASE_ITEM = "purchase";

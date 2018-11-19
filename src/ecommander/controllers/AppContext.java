@@ -100,7 +100,7 @@ public class AppContext {
 		if (!path.isAbsolute()) {
 			path = Paths.get(_REAL_BASE_PATH, relPath);
 		}
-		if (path.toFile().isDirectory()) {
+		if (path.toFile().isDirectory() || relPath.length() - StringUtils.lastIndexOf(relPath, ".") > 5) {
 			return path.toString() + "/";
 		}
 		return path.toString();

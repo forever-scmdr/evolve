@@ -27,10 +27,10 @@
 
 	-->
 
-	<assoc name="seo" caption="SEO" description="Связь айтемов с seo" transitive="false"/>
+	<assoc name="seo" caption="SEO" description="Связь айтемов с seo" transitive="false" ag-id="2" ag-hash="113757"/>
 
 
-	<item name="seo" caption="SEO" key="key_unique">
+	<item name="seo" caption="SEO" key="key_unique" ag-id="814" ag-hash="113757">
 		<parameter name="key_unique" caption="Ключ страницы" type="string"
 		           description="должен совпадать с уникальным текстовым ключом соответствующего айтема"/>
 		<parameter name="title" type="string" caption="title"/>
@@ -44,7 +44,7 @@
 		<parameter name="extra_style" type="plain-text" caption="Код дополнительных стилей" description="вставляется в head, тэг style писать не надо"/>
 	</item>
 
-	<item name="url_seo" key="name" caption="SEO">
+	<item name="url_seo" key="name" caption="SEO" ag-id="816" ag-hash="-169844339">
 		<parameter name="name" type="string" caption="Название" description="для поиска в CMS"/>
 		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
 		<parameter name="title" type="string" caption="title"/>
@@ -57,16 +57,16 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="url_seo_wrap" caption="Хранилище спец. SEO">
+	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="817" ag-hash="843192252">
 		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
 		<child item="url_seo" />
 	</item>
 
-	<item name="seo_catalog" caption="Каталог SEO" description="невидимый">
+	<item name="seo_catalog" caption="Каталог SEO" description="невидимый" ag-id="1018" ag-hash="990975543">
 		<child item="seo"/>
 	</item>
 
-	<item name="seo_container" caption="Контейнер для сео айтемов" virtual="true" key-unique="true">
+	<item name="seo_container" caption="Контейнер для сео айтемов" virtual="true" key-unique="true" ag-id="1019" ag-hash="1272836895">
 		<child item="seo" single="true" assoc="seo" virtual="true"/><!-- Связь с сео айтемом из сао каталога -->
 		<child item="seo" single="true"/><!-- Для создания нового сео -->
 		<on-update class="ecommander.fwk.integration.UpdateSeoContainerItemFactory"/><!-- Обновить параметр key_unique в seo -->
@@ -111,16 +111,19 @@
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
 	</item>
 
-
-	<item name=""
-
-
-	<!--Товар из магазина yandex market-->
-	<item name="product" key="name vendor_code" caption="Продукт" extendable="false" key-unique="true" default-page="product" super="seo_container" ag-id="6" ag-hash="-309474065">
+	<!--Базовый товар с ценой. Его можно положить в корзину-->
+	<item name="abstract_product" caption="Абстрактный товар" key="name" virtual="true" ag-id="1020" ag-hash="1636704722">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
+		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
+		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
+		<parameter name="qty" type="double" caption="Количество на складе"/>
+		<parameter name="unit" type="string" caption="Единица измерения"/>
+	</item>
+
+	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
+	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product * seo_container" virtual="true" ag-id="1021" ag-hash="1523682729">
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
-		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
@@ -130,9 +133,7 @@
 		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
 		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
-		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
-		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
@@ -147,10 +148,24 @@
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
-		<child item="product" assoc="other_colors"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
+
+
+	<!--Товар, который вложен в другой товар-->
+	<!--Обновляет цену ОТ (минимальная цена) своего родительского товара при сохранении-->
+	<item name="line_product" caption="Товар-строка" description="содержится в товаре, как один из видов этого товара" super="described_product" ag-id="1022" ag-hash="1097527204">
+		<on-update class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/>
+		<on-create class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/>
+	</item>
+
+	<!--Обычный товар или товар, который содержит другие товары-->
+	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true" default-page="product" super="described_product" ag-id="6" ag-hash="-309474065">
+		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
+		<child item="line_product"/>
+	</item>
+
 
 	<item name="params" caption="Параметры товара" extendable="true" ag-id="30" ag-hash="-995427962"/>
 
@@ -308,7 +323,7 @@
 	<!--/////////////                          ГЛАВНАЯ СТРАНИЦА                            ////////////-->
 	<!--/////////////                                                                      ////////////-->
 
-	<assoc name="general" caption="Ассоциация общего назначения" description="для связи разных несвязанных напрямую айтемов"/>
+	<assoc name="general" caption="Ассоциация общего назначения" description="для связи разных несвязанных напрямую айтемов" ag-id="3" ag-hash="-80148248"/>
 
 	<item name="main_promo_bottom" caption="Промо-блок на главной" key="text_big" ag-id="14" ag-hash="1303283745">
 		<parameter name="text_big" type="string" caption="Текст крупным шрифтом"/>
@@ -325,7 +340,7 @@
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
-	<item name="banner" caption="Баннер" key="header">
+	<item name="banner" caption="Баннер" key="header" ag-id="1023" ag-hash="-1396342996">
 		<parameter name="background" type="string" caption="background" description="baner__background"/>
 		<parameter name="header" type="string" caption="Заголовок" description="banner__title"/>
 		<parameter name="text" type="string" caption="Текст" description="banner__text"/>
@@ -336,8 +351,8 @@
 	</item>
 
 
-	<item name="banner_section" key="name">
-		<parameter name="name" caption="Название" description="для наглядности"/>
+	<item name="banner_section" caption="Секция баннеров" key="name" ag-id="1024" ag-hash="-2003257134">
+		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
 		<child item="banner" inline="true"/>
 	</item>
 
@@ -495,6 +510,7 @@
 		<child item="counter" single="true" virtual="true"/>
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
+		<child item="seo_catalog" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

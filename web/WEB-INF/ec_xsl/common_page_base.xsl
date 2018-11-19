@@ -320,33 +320,33 @@
 		</div>
 		<script>
 			function showMobileCatalogMenu() {
-			$('#mobile_catalog_menu').toggle();
+				$('#mobile_catalog_menu').toggle();
 			}
 
 			$(document).ready(function() {
-			$("#mobile_catalog_menu .content li a[rel]").click(function(event) {
-			//event.preventDefault();
-			var menuItem = $(this);
-			var parentMenuContainer = menuItem.closest('.content');
-			parentMenuContainer.css('left', '-100%');
-			var childMenuContainer = $(menuItem.attr('rel'));
-			childMenuContainer.css('left', '0%');
-			});
+				$("#mobile_catalog_menu .content li a[rel]").click(function(event) {
+					//event.preventDefault();
+					var menuItem = $(this);
+					var parentMenuContainer = menuItem.closest('.content');
+					parentMenuContainer.css('left', '-100%');
+					var childMenuContainer = $(menuItem.attr('rel'));
+					childMenuContainer.css('left', '0%');
+				});
 
-			$('#mobile_catalog_menu a.back').click(function(event) {
-			event.preventDefault();
-			var back = $(this);
-			var childMenuContainer = back.closest('.content');
-			childMenuContainer.css('left', '100%');
-			var parentMenuContainer = $(back.attr('rel'));
-			parentMenuContainer.css('left', '0%');
-			});
+				$('#mobile_catalog_menu a.back').click(function(event) {
+					event.preventDefault();
+					var back = $(this);
+					var childMenuContainer = back.closest('.content');
+					childMenuContainer.css('left', '100%');
+					var parentMenuContainer = $(back.attr('rel'));
+					parentMenuContainer.css('left', '0%');
+				});
 			});
 
 			function hideMobileCatalogMenu() {
-			$("#mobile_catalog_menu .content").css('left', '100%');
-			$("#m_sub_cat").css('left', '0%');
-			$('#mobile_catalog_menu').hide();
+				$("#mobile_catalog_menu .content").css('left', '100%');
+				$("#m_sub_cat").css('left', '0%');
+				$('#mobile_catalog_menu').hide();
 			}
 		</script>
 	</xsl:template>
@@ -354,7 +354,7 @@
 
 
 	<xsl:template name="INC_MOBILE_NAVIGATION">
-		<div id="mobile_catalog_menu" class="nav-container mobile" style="display: none; position:absolute; width: 100%">
+		<div id="mobile_catalog_menu" class="nav-container mobile" style="display: none; position:absolute; width: 100%; overflow:hidden">
 			<div class="content" id="m_sub_cat">
 				<div class="small-nav">
 					<a class="header">Каталог продукции</a>
@@ -658,12 +658,12 @@
 	<xsl:template name="CART_SCRIPT">
 		<script>
 			$(document).ready(function() {
-			$('.product_purchase_container').find('input[type="submit"]').click(function(event) {
-			event.preventDefault();
-			var qtyForm = $(this).closest('form');
-			var lockId = $(this).closest('.product_purchase_container').attr('id');
-			postForm(qtyForm, lockId, null);
-			});
+				$('.product_purchase_container').find('input[type="submit"]').click(function(event) {
+					event.preventDefault();
+					var qtyForm = $(this).closest('form');
+					var lockId = $(this).closest('.product_purchase_container').attr('id');
+					postForm(qtyForm, lockId, null);
+				});
 			});
 		</script>
 	</xsl:template>

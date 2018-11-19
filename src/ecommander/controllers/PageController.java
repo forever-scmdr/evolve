@@ -144,17 +144,9 @@ public class PageController {
 		String xslFileName = AppContext.getStylesDirPath() + page.getTemplate() + ".xsl";
 		long timeStart = System.currentTimeMillis();
 		if (AppContext.isCacheEnabled() && page.isCacheable()) {
-			// Удалить часть, добавляемую аяксом (_=123456789123123)
-			if (StringUtils.contains(requestUrl, "_=")) {
-				int i = requestUrl.indexOf("_=");
-				requestUrl = requestUrl.substring(0, i);
-			}
-			String cacheFileName = requestUrl;
-			cacheFileName = StringUtils.replaceChars(cacheFileName, '|', '_');
-			cacheFileName = StringUtils.replaceChars(cacheFileName, '/', '_');
-			cacheFileName = StringUtils.replaceChars(cacheFileName, '?', '_');
+			String cacheFileName = page.getCacheableId();
 			cacheFileName = domainName + "/" + page.getSessionContext().getUser().getGroupRolesStr() + "/" + cacheFileName + ".html";
-			String fullFileName = AppContext.getCacheHtmlDirPath() + cacheFileName;
+			String fullFileName = AppContext.getCacheHtmlDirPath() + "/" + cacheFileName;
 			if (fullFileName.length() >= 255) {
 				int hash = fullFileName.hashCode();
 				fullFileName = StringUtils.substring(fullFileName, 0, 230);

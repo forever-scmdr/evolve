@@ -10,9 +10,6 @@
 				</link>
 				<list item="product"  transit="true">
 					<filter>
-						<parameter sign="!=" name="small_pic" compare="SOME">
-							<var value="q"/>
-						</parameter>
 						<limit>
 							<var value="1"/>
 						</limit>
@@ -53,11 +50,33 @@
 	</include-definition>
 
 
-	<page name="index" template="index" cacheable="false">
+	<page name="index" template="index" cacheable="true">
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
 			<single item="seo"/>
+			<list item="product" id="prod" assoc="general">
+				<link name="show_product" target="product">
+					<var name="prod" ref="prod" style="translit"/>
+				</link>
+				<link name="to_cart" target="cart_action">
+					<var name="action" value="addToCart"/>
+					<var name="code" ref="prod" parameter="code"/>
+				</link>
+				<link name="to_fav" target="cookie_list_action">
+					<var name="update_cookie_name" value="favourites"/>
+					<var name="update_cookie_value" ref="prod" parameter="code"/>
+					<var name="action" value="add"/>
+					<var name="src_page" value="fav_ajax"/>
+				</link>
+				<link name="to_compare" target="cookie_list_action">
+					<var name="update_cookie_name" value="compare"/>
+					<var name="update_cookie_value" ref="prod" parameter="code"/>
+					<var name="action" value="add"/>
+					<var name="src_page" value="compare_ajax"/>
+				</link>
+				<single item="params"/>
+			</list>
 		</single>
 		<single item="news_wrap" cacheable="true">
 			<list item="news_item" id="ni" transit="true">
@@ -74,33 +93,6 @@
 				</link>
 			</list>
 		</single>
-		<list item="product" id="prod" cacheable="true">
-			<filter>
-				<parameter name="code" compare="SOME">
-					<var ref="main" parameter="product"/>
-				</parameter>
-			</filter>
-			<link name="show_product" target="product">
-				<var name="prod" ref="prod" style="translit"/>
-			</link>
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="code" ref="prod" parameter="code"/>
-			</link>
-			<link name="to_fav" target="cookie_list_action">
-				<var name="update_cookie_name" value="favourites"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="fav_ajax"/>
-			</link>
-			<link name="to_compare" target="cookie_list_action">
-				<var name="update_cookie_name" value="compare"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="compare_ajax"/>
-			</link>
-			<single item="params"/>
-		</list>
 		<include name="COMMON"/>
 	</page>
 
@@ -124,7 +116,7 @@
 			<var name="fil"/>
 			<var name="tag"/>
 		</request>
-		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
+		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
 			<single item="seo"/>
 			<list item="product" id="prod" transit="true">
 				<filter>
