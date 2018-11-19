@@ -41,6 +41,7 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 	private boolean hasContainsAssoc;
 	private boolean hasParamsItem;
 	private boolean hasXmlParams;
+	private boolean withPriceOnly;
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -56,6 +57,7 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 	}
 
 	private ResultPE createYandex() throws EcommanderException {
+		withPriceOnly = "yes".equalsIgnoreCase(getVarSingleValue("with_price_only"));
 		String nowStr = DateDataType.outputDate(System.currentTimeMillis(), DateTimeFormat.forPattern("dd-MM-yyyy HH:mm").withZoneUTC());
 		Path file = Paths.get(AppContext.getFilesDirPath(false) + YANDEX_FILE_NAME);
 		try {
@@ -111,6 +113,9 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 		for (Item prod : products) {
 			BigDecimal price = prod.getDecimalValue(PRICE_PARAM, zero);
 			String avail = price.doubleValue() <= 0.001d ? "false" : "true";
+			//patch 14.11.2018 fix no products without price or code
+			if(StringUtils.isBlank(prod.getStringValue(CODE_PARAM)) || (price.doubleValue() <= 0.001d && withPriceOnly)) continue;
+
 			xml.startElement(OFFER_ELEMENT, ID_ATTR, prod.getStringValue(CODE_PARAM), AVAILABLE_ATTR, avail);
 			String url = getUrlBase() + "/" + prod.getKeyUnique() + "/";
 			xml.startElement(URL_ELEMENT).addText(url).endElement();
