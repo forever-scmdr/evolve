@@ -9,7 +9,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> &gt;
+				<a href="{$main_host}">Главная страница</a> &gt;
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -21,8 +21,8 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat($p/price, ' p.') else 'по запросу'"/>
-							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(sum, ' p.') else ''"/>
+							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal($p/price), ' p.') else 'по запросу'"/>
+							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' p.') else ''"/>
 							<div class="item">
 								<a href="{$p/show_product}" class="image-container">
 									<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
@@ -44,10 +44,10 @@
 						</xsl:for-each>
 						<div class="total">
 							<xsl:if test="page/cart/sum != '0'">
-								<p>Итого: <xsl:value-of select="page/cart/sum"/> р.</p>
+								<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
 							</xsl:if>
-							<input class="button" type="submit" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
-							<input class="button" type="submit" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
+							<input type="submit" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
+							<input type="submit" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 						</div>
 
 					</form>

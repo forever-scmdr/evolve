@@ -249,3 +249,59 @@ $(document).on("click", ".toggle-hidden", function (e) {
 	t = $(this);
 	$(t.attr("href")).toggle();
 });
+$(document).on("click", "#mass-selection-trigger", function (e) {
+	e.preventDefault();
+	$(".selection-actions, .selection-overlay").toggle();
+});
+$(document).on("click", ".selection-overlay", function (e) {
+	var $t = $(this);
+	$t.toggleClass("selected");
+	var $ipt = ($t.is(".buffer"))?  $("#multi-item-action-form-ids-buffer") : $("#multi-item-action-form-ids");
+    var v = $ipt.val();
+    var id = $t.attr("data-id");
+	if($t.is(".selected")){
+		select();
+	}else if(typeof v != "undefined"){
+		deselect();
+	}
+
+	function select() {
+        if(typeof v == "undefined" || v == ""){
+            $ipt.val(id);
+        }else{
+            $ipt.val(v+","+id);
+        }
+    }
+    function deselect() {
+        var re = new RegExp(id+",?");
+        v = v.replace(re, "").replace(/,$/, "");
+        $ipt.val(v);
+    }
+
+});
+
+function selectAll() {
+	$("#primary-item-list").find(".selection-overlay").not(".selected").trigger("click");
+}
+function selectNone() {
+    $("#primary-item-list").find(".selection-overlay.selected").trigger("click");
+}
+function invertSelection() {
+    $("#primary-item-list").find(".selection-overlay").trigger("click");
+}
+
+
+function highlightSelected(container, ipt) {
+	var $ipt = $(ipt);
+	if(typeof $ipt.val() != "undefined"){
+		var arr1 = $ipt.val().split(",");
+		if(arr1.length > 0 && arr1[0] != ""){
+			$(".selection-actions, .selection-overlay").show();
+		}
+		for(i=0; i<arr1.length; i++){
+            if(arr1[i] == "")continue;
+			var $el = $(container).find(".selection-overlay[data-id="+arr1[i]+"]");
+			$el.addClass("selected");
+		}
+	}
+}

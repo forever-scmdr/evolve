@@ -16,7 +16,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> >
+				<a href="{$main_host}">Главная страница</a> >
 				<xsl:for-each select="$p/parent">
 					<a href="{show_page}"><xsl:value-of select="header"/></a> >
 				</xsl:for-each>

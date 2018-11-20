@@ -163,8 +163,11 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
 	// Разблокировка частей
 	unlock(lockElementIds);
 	// Вызов дополнительной обработки и передача дополнительных данных
-	if (typeof additionalHandling == 'function')
+	if (typeof additionalHandling == 'function') {
+		// alert("WTF?");
 		additionalHandling(argData);
+	}
+
 }
 /**
  * Добавить переменную к указанному урлу

@@ -486,7 +486,7 @@
 		<parameter name="url" type="string" caption="адрес страницы содержит"/>
 		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
 		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
-		<parameter name="place" type="string" caption="место вставки" domain="modules_place"/>
+		<parameter name="place" type="string" caption="место вставки" domain="module_place"/>
 	</item>
 
 	<item name="robots_text_overrider" caption="Перезапись robots.txt" virtual="true" ag-id="830" ag-hash="995375434">

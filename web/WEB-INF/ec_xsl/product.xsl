@@ -23,7 +23,7 @@
 			"@context": "http://schema.org/",
 			"@type": "Product",
 			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
-			"image": <xsl:value-of select="concat($quote, $base, '/', $p/@path, $p/gallery[1], $quote)" />,
+			"image": <xsl:value-of select="concat($quote, $main_host, '/', $p/@path, $p/gallery[1], $quote)" />,
 			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
 			"offers": {
 			"@type": "Offer",

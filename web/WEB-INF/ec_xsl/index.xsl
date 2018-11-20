@@ -10,7 +10,7 @@
 				"@type":"Organization",
 				"url":"<xsl:value-of select="$main_host"/>/",
 				"name":"<xsl:value-of select="$title"/>",
-				"logo":"<xsl:value-of select="concat($base, '/img/logo_big.svg')"/>",
+				"logo":"<xsl:value-of select="concat($main_host, '/img/logo_big.svg')"/>",
 				"aggregateRating": {
 					"@type": "AggregateRating",
 					"ratingCount": "53",

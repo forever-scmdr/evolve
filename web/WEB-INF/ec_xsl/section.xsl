@@ -23,30 +23,29 @@
 		<xsl:variable name="min" select="f:currency_decimal(//min/price)"/>
 		<xsl:variable name="max" select="f:currency_decimal(//max/price)"/>
 		<script type="application/ld+json">
-			{
+		{
 			"@context": "http://schema.org/",
 			"@type": "Product",
 			"name": <xsl:value-of select="concat($quote, replace($sel_sec/name, $quote, ''), $quote)"/>,
 			<xsl:if test="$sel_sec/main_pic != ''">
-				"image": <xsl:value-of select="concat($quote, $base, '/', $sel_sec/@path, $sel_sec/main_pic, $quote)"/>,
+				"image": <xsl:value-of select="concat($quote, $main_host, '/', $sel_sec/@path, $sel_sec/main_pic, $quote)"/>,
 			</xsl:if>
 			"offers": {
-			"@type": "AggregateOffer",
-			"priceCurrency": "BYN",
-			"lowPrice": <xsl:value-of select="concat($quote,$min, $quote)"/>,
-			"highPrice": <xsl:value-of select="concat($quote, $max, $quote)"/>,
-			"offerCount": <xsl:value-of select="concat($quote, $sel_sec/product_count, $quote)"/>
-			}, "aggregateRating": {
-			"@type": "AggregateRating",
-			"ratingValue": "4.9",
-			"ratingCount": "53",
-			"bestRating": "5",
-			"worstRating": "1",
-			"name":
-			<xsl:value-of select="concat($quote, translate($sel_sec/name, $quote, ''), $quote)"/>
+				"@type": "AggregateOffer",
+				"priceCurrency": "BYN",
+				"lowPrice": <xsl:value-of select="concat($quote,$min, $quote)"/>,
+				"highPrice": <xsl:value-of select="concat($quote, $max, $quote)"/>,
+				"offerCount": <xsl:value-of select="concat($quote, $sel_sec/product_count, $quote)"/>
+			},
+			"aggregateRating": {
+				"@type": "AggregateRating",
+				"ratingValue": "4.9",
+				"ratingCount": "53",
+				"bestRating": "5",
+				"worstRating": "1",
+				"name": <xsl:value-of select="concat($quote, translate($sel_sec/name, $quote, ''), $quote)"/>
 			}
-			}
-
+		}
 		</script>
 	</xsl:template>
 

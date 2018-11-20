@@ -11,7 +11,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> &gt;
+				<a href="{$main_host}">Главная страница</a> &gt;
 				<a href="{page/cart_link}">Изменить зявку</a> &gt;
 			</div>
 			<xsl:call-template name="PRINT"/>

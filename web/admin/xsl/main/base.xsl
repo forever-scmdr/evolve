@@ -78,9 +78,10 @@
 				prepareForm(formId, "main_view", "hidden_mes", "message_main", additionalHandling);
 			}
 			$(document).ready(function() {
-				insertAjaxView("<xsl:value-of select="admin-page/link[@name='subitems']" />", "subitems");
+				insertAjaxView("<xsl:value-of select="admin-page/link[@name='subitems']" />", "subitems", false, null, null, function(){highlightSelected("#primary-item-list", "#multi-item-action-form-ids");});
 				insertAjaxView("<xsl:value-of select="admin-page/link[@name='parameters']" />", "main_view");
 				$("#message_main").effect("highlight", 1000);
+				//highlightSelected();
 			});
 		</script>
 	</xsl:template>
@@ -134,9 +135,9 @@
 									<div id="actions-items" class="actions-items">
 										<div class="actions sel-actions">
 											<span>Выбор:</span>
-											<a class="select-all" title="выбрать все" id="select_all">☑</a>
-											<a class="select-none" title="снять выделние со всех" id="deselect_all">⧈</a>
-											<a class="invert-selection" title="инвертировать выделение" id="invert_selection">↺</a>
+											<a class="select-all" title="выбрать все" id="select_all" onclick="selectAll();"></a>
+											<a class="select-none" title="снять выделние со всех" id="deselect_all" onclick="selectNone();"></a>
+											<a class="invert-selection" title="инвертировать выделение" id="invert_selection" onclick="invertSelection();"></a>
 										</div>
 										<div class="actions">
 											<span>С айтемами:</span>
@@ -147,10 +148,14 @@
 										</div>
 										<div class="actions">
 											<span>С буфером:</span>
-											<a class="copy paste" title="вставить выделенное"></a>
-											<a class="copy move" title="переместить выделенное"></a>
-											<a class="delete" title="удалить выделенное"></a>
+											<a href="paste_all.action" class="copy paste set-action" rel="multi-item-action-form" title="вставить выделенное"></a>
+											<a href="move_all.action" class="copy move set-action" rel="multi-item-action-form" title="переместить выделенное"></a>
+											<a href="delete_all_from_buffer.action" class="delete set-action" rel="multi-item-action-form" title="удалить"></a>
 										</div>
+										<form id="multi-item-action-form" method="POST">
+											<input type="text" name="ids" id="multi-item-action-form-ids"/>
+											<input type="text" name="ids_b" id="multi-item-action-form-ids-buffer"/>
+										</form>
 									</div>
 								</div>
 							</div>

@@ -282,7 +282,7 @@ a, button, *[type="submit"], label.file, input[type="file"] {
     display: block;
 }
 
-.edit a.delete, .edit a.copy, .edit a.hide_item, .edit a.show_item {
+.edit .controls a, .selection-actions.edit .actions a, #pasteBuffer .copy, #pasteBuffer .delete{
     /*position: absolute;*/
     display: inline-block;
     width: 27px;
@@ -290,6 +290,19 @@ a, button, *[type="submit"], label.file, input[type="file"] {
     text-indent: 10000px;
     overflow: hidden;
     top: 0;
+}
+
+.selection-actions.edit .actions .select-all{
+    background: url("../img/check-square-regular.svg") center no-repeat;
+    background-size: 18px auto;
+}
+.selection-actions.edit .actions .select-none{
+    background: url("../img/square-regular.svg") center no-repeat;
+    background-size: 18px auto;
+}
+.selection-actions.edit .actions .invert-selection{
+    background: url("../img/check-square-solid.svg") center no-repeat;
+    background-size: 18px auto;
 }
 
 .edit a.hide_item {
@@ -1348,7 +1361,16 @@ h2.title {
     right: 0;
     opacity: .25;
     display: none;
+    z-index: 2;
 }
 .selected .selection-overlay{
     background: #ffff00;
+    display: block;
+}
+.selection-overlay:hover{
+    background: #ffff00;
+    opacity: .5;
+}
+.selection-actions{
+    display: none;
 }
