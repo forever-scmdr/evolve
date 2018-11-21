@@ -343,9 +343,9 @@
 	<item name="banner" caption="Баннер" key="header" ag-id="1023" ag-hash="-1396342996">
 		<parameter name="background" type="string" caption="background" description="baner__background"/>
 		<parameter name="header" type="string" caption="Заголовок" description="banner__title"/>
-		<parameter name="text" type="string" caption="Текст" description="banner__text"/>
+		<parameter name="text" type="tiny-text" caption="Текст" description="banner__text"/>
 		<parameter name="image_pic" type="picture" caption="Картинка-файл" description="banner__image"/>
-		<parameter name="image_code" type="picture" caption="Картинка-код (svg)" description="banner__image"/>
+		<parameter name="image_code" type="plain-text" caption="Картинка-код (svg)" description="banner__image"/>
 		<parameter name="link" type="string" caption="Ссылка" description="внешняя ссылка должна начинаться с http://"/>
 		<parameter name="extra_style" type="string" caption="Дополнительные классы стилей баннера" description="кроме класса banner"/>
 	</item>

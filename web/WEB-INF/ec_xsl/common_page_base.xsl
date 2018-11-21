@@ -12,7 +12,7 @@
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
 	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 
-	<xsl:variable name="title" select="'Спеццехника'" />
+	<xsl:variable name="title" select="'Мизида'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
@@ -84,7 +84,7 @@
 							<div>Cумма: <strong>1250 руб.</strong></div> -->
 						</div>
 						<div class="user-links header__column">
-							<a href="login.html"><i class="fas fa-lock"></i>Вход</a>
+							<xsl:call-template name="PERSONAL_DESKTOP"/>
 							<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
 								<a href=""><i class="fas fa-star"/>Избранное</a>
 							</div>
@@ -305,20 +305,18 @@
 		<div class="menu-container mobile">
 			<div class="overlay" onclick="showMobileMainMenu()"></div>
 			<div class="content">
-				<!-- <ul>
+				<ul>
 					<li>
-						<i class="fas fa-lock"></i>
-						<a href="javascript:alert('Функция временно отключена')">Вход</a> /
-						<a href="javascript:alert('Функция временно отключена')">Регистрация</a>
+						<xsl:call-template name="PERSONAL_MOBILE"/>
 					</li>
-				</ul> -->
+				</ul>
 				<ul>
 					<li><i class="fas fa-th-list"></i> <a href="#" onclick="showMobileCatalogMenu(); return false">Каталог продукции</a></li>
 				</ul>
 				<ul>
 					<li><i class="fas fa-shopping-cart"></i> <a href="{page/cart_link}" rel="nofolow">Заявки</a></li>
-					<!--<li><i class="fas fa-star"></i> <a href="{page/fav_link}">Избранное</a></li>-->
-					<!--<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>-->
+					<li><i class="fas fa-star"></i> <a href="{page/fav_link}">Избранное</a></li>
+					<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>
 				</ul>
 				<ul>
 					<xsl:for-each select="page/news">
@@ -548,8 +546,8 @@
 				</div>
 			</xsl:if>
 			<div class="device__order">
-				<div id="cart_list_{replace(code, '[)()]', '-')}">
-					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{replace(code, '[)()]', '-')}">
+				<div id="cart_list_{@id}">
+					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 						<xsl:if test="$has_price">
 							<input type="number" class="text-input" name="qty" value="1" min="0"/>
 							<input type="submit" class="button" value="Заказать"/>
@@ -568,8 +566,8 @@
 				<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div>
 			</xsl:if>
 			<div class="device__actions">
-				<div id="compare_list_{code}">
-					<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{code}">
+				<div id="compare_list_{@id}">
+					<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
 						<i class="fas fa-balance-scale"></i>сравнить
 					</a>
 				</div>
@@ -578,8 +576,8 @@
 						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
 					</xsl:when>
 					<xsl:otherwise>
-						<div id="fav_list_{code}">
-							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{code}">
+						<div id="fav_list_{@id}">
+							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
 								<i class="fas fa-star"></i>отложить
 							</a>
 						</div>
@@ -615,8 +613,8 @@
 			</div>
 			<div class="device__article-number"><xsl:value-of select="code"/></div>
 			<div class="device__actions device_row__actions">
-				<div id="compare_list_{code}">
-					<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{code}">
+				<div id="compare_list_{@id}">
+					<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
 						<i class="fas fa-balance-scale"></i>сравнить
 					</a>
 				</div>
@@ -625,8 +623,8 @@
 						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
 					</xsl:when>
 					<xsl:otherwise>
-						<div id="fav_list_{code}">
-							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{code}">
+						<div id="fav_list_{@id}">
+							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
 								<i class="fas fa-star"></i>отложить
 							</a>
 						</div>
@@ -645,8 +643,8 @@
 				</div>
 			</xsl:if>
 			<div class="device__order device_row__order">
-				<div id="cart_list_{replace(code, '[)()]', '-')}">
-					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{replace(code, '[)()]', '-')}">
+				<div id="cart_list_{@id}">
+					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 						<xsl:if test="$has_price">
 							<input type="number" class="text-input" name="qty" value="1" min="0"/>
 							<input type="submit" class="button" value="Заказать"/>

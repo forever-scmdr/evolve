@@ -44,8 +44,9 @@
 
 		<!-- REGISTRATION -->
 		<link name="register_link" target="register"/>
-		<link name="login_form_link" target="login_form_ajax"/>
-		<link name="login_link" target="login_form"/>
+		<link name="login_link" target="register">
+			<var name="login" value="true"/>
+		</link>
 		<link name="personal_ajax_link" target="personal_ajax"/>
 
 		<single item="modules">
@@ -457,7 +458,7 @@
 		<session>
 			<single item="cart">
 				<list item="bought">
-					<list item="product" id="product">
+					<list item="abstract_product" id="product" tag="product">
 						<link name="to_cart" target="cart_action">
 							<var name="action" value="addToCart"/>
 							<var name="code" ref="product" parameter="code"/>
@@ -735,7 +736,12 @@
 		<request>
 			<var name="message"/>
 			<var name="success" />
+			<var name="login" />
 		</request>
+		<link name="submit_login" target="register_action">
+			<var name="action" value="login"/>
+			<var name="src" value="register"/>
+		</link>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="register"/>
 		</new>
@@ -752,7 +758,7 @@
 	<page name="register_action">
 		<request>
 			<var name="action"/>
-			<var name="src" value="login_form_ajax"/>
+			<var name="src" value="register"/>
 		</request>
 		<link name="not_set" target="register">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
@@ -770,6 +776,7 @@
 		<link name="login_error" target-var="src">
 			<var name="message" value="Неверные логин/пароль"/>
 			<var name="success" value="false"/>
+			<var name="login" value="true"/>
 		</link>
 		<link name="passwords_not_match_error" target="personal">
 			<var name="message" value="Пароль и подтверждение не совпадают"/>
@@ -822,7 +829,9 @@
 		<link name="personal_link" target="personal"/>
 		<link name="purchase_history_link" target="purchase_history"/>
 		<link name="register_link" target="register"/>
-		<link name="login_link" target="login_form"/>
+		<link name="login_link" target="register">
+			<var name="login" value="true"/>
+		</link>
 	</page>
 
 
@@ -1037,5 +1046,9 @@
 		</request>
 	</page>
 
+
+	<page name="test">
+		<list item="product"/>
+	</page>
 
 </site>

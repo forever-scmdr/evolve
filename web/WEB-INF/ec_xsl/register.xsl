@@ -8,6 +8,7 @@
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
 	<xsl:variable name="is_jur" select="page/user_jur//@validation-error"/>
+	<xsl:variable name="is_login" select="page/variables/login = 'true'"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -17,7 +18,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Регистрация</h1>
+		<h1>Вход/Регистрация</h1>
 
 		<div class="page-content m-t">
 			<xsl:if test="$message and not($success)">
@@ -32,13 +33,28 @@
 				</div>
 			</xsl:if>
 			<ul class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="{'active'[not($is_jur)]}"><a href="#tab_phys" role="tab" data-toggle="tab">Физическое лицо</a></li>
+				<li role="presentation" class="{'active'[$is_login]}"><a href="#tab_login" role="tab" data-toggle="tab">Вход</a></li>
+				<li role="presentation" class="{'active'[not($is_jur) and not($is_login)]}"><a href="#tab_phys" role="tab" data-toggle="tab">Физическое лицо</a></li>
 				<li role="presentation" class="{'active'[$is_jur]}"><a href="#tab_jur" role="tab" data-toggle="tab">Юридическое лицо</a></li>
 			</ul>
 			<div class="tab-content">
 
+				<div role="tabpanel" class="tab-pane{' active'[$is_login]}" id="tab_login">
+					<p>Введите адрес электрнной почты и пароль.</p>
+					<form action="{page/submit_login}" method="post" onsubmit="lock('tab_login')">
+						<div class="form-group">
+							<label>Электронная почта:</label>
+							<input type="text" class="form-control" name="email"/>
+						</div>
+						<div class="form-group">
+							<label>Пароль:</label>
+							<input type="password" class="form-control" name="password"/>
+						</div>
+						<input type="submit" value="Войти"/>
+					</form>
+				</div>
 
-				<div role="tabpanel" class="tab-pane{' active'[not($is_jur)]}" id="tab_phys">
+				<div role="tabpanel" class="tab-pane{' active'[not($is_jur) and not($is_login)]}" id="tab_phys">
 					<p>Заполните, пожалуйста, форму регистрации. Ваш email будет использован в качестве логина. Если не указан email, будет использован номер телефона.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
@@ -52,7 +68,6 @@
 						<input type="submit" value="Отправить анкету"/>
 					</form>
 				</div>
-
 
 				<div role="tabpanel" class="tab-pane{' active'[$is_jur]}" id="tab_jur">
 					<p>Заполните, пожалуйста, форму регистрации. Ваш email будет использован в качестве логина. Если не указан email, будет использован номер телефона.</p>
