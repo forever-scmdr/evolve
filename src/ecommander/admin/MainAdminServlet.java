@@ -1,6 +1,5 @@
 package ecommander.admin;
 
-import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.controllers.SessionContext;
 import ecommander.filesystem.DeleteItemFileUnit;
@@ -14,7 +13,6 @@ import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
-import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -36,18 +34,19 @@ import java.util.*;
 
 /**
  * Класс контроллер для админской части
+ *
  * @author EEEE
  */
 public class MainAdminServlet extends BasicAdminServlet {
-	
+
 	private static final long serialVersionUID = 1388493441159548824L;
 	public static final String ENABLE_VISUAL_EDITING_ACTION = "admin_visual";
 	public static final String TARGET_PARAM = "target";
-	
-	
+
+
 	private static class UserInput {
 		// ID типа айтема
-		private int itemTypeId= -1;
+		private int itemTypeId = -1;
 		// Является ли действие пользователя действием в режиме визуального редактирования
 		private boolean isVisual = false;
 		// Является ли создаваемый айтем персональным (или общим для группы)
@@ -55,6 +54,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 		private boolean isPersonal = false;
 		// ID айтема
 		private long itemId = -1;
+		private HashSet<Long> itemIds = new HashSet();
+		private HashSet<Long> bufferedItemIds = new HashSet();
 		// Поисковый запрос (Антон)
 		private String searchQuery = null;
 		// ID айтема (родительский)
@@ -78,17 +79,17 @@ public class MainAdminServlet extends BasicAdminServlet {
 		// Сообщение
 		private String message = null;
 	}
-	
+
 	/**
 	 * Выбор действия, которое должно выполниться
 	 */
 	protected void processRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		AdminPage result = null;
-		
+
 //		if (!checkUser(req, resp, MainAdminPageCreator.INITIALIZE_ACTION + ".action")) return;
-		
+
 		if (!checkUser(req, resp, getRequestStrig(req))) return;
-		
+
 		UserInput input = start(req);
 		String actionName = getAction(req);
 		MainAdminPageCreator pageCreator = new MainAdminPageCreator(getCurrentAdmin(), getContextPath(req));
@@ -99,6 +100,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 		else if (actionName.equals(MainAdminPageCreator.CREATE_ITEM_ACTION))
 			result = createItem(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.DELETE_ITEM_ACTION))
+			result = deleteItem(input, pageCreator);
+		else if (actionName.equals(MainAdminPageCreator.MASS_DELETE_ACTION))
 			result = deleteItem(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.SAVE_ITEM_ACTION))
 			result = saveItem(input, req, pageCreator);
@@ -126,6 +129,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 			result = createAssociations(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.MOVE_TO_ACTION))
 			result = moveTo(input, pageCreator);
+		else if (actionName.equals(MainAdminPageCreator.MASS_MOVE_TO_ACTION))
+			result = moveTo(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.TO_MOVE_ACTION))
 			result = move(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.DELETE_REFERENCE_ACTION))
@@ -144,12 +149,22 @@ public class MainAdminServlet extends BasicAdminServlet {
 			result = uploadImage(input, req, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.COPY_ACTION))
 			result = copy(input, pageCreator);
-		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.DELETE_PASTE_ACTION))
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.MASS_COPY_ACTION)) {
+			result = copy(input, pageCreator);
+		} else if (actionName.equalsIgnoreCase(MainAdminPageCreator.MASS_SHOW_ACTION)) {
+			result = showItems(input, pageCreator);
+		} else if (actionName.equalsIgnoreCase(MainAdminPageCreator.DELETE_PASTE_ACTION))
+			result = deletePaste(input, pageCreator);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.MASS_DELETE_FROM_BUFFER_ACTION))
 			result = deletePaste(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.PASTE_ACTION))
 			result = paste(input, pageCreator);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.MASS_PASTE_ACTION))
+			result = paste(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.STATUS_ACTION))
 			result = toggleItem(input, pageCreator);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.MASS_HIDE_ACTION))
+			result = hideItems(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.NEW_GROUP_ACTION))
 			result = setNewUserGroup(input, false);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.NEW_USER_ACTION))
@@ -171,8 +186,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 			}
 		}
 	}
+
 	/**
 	 * Начало работы
+	 *
 	 * @throws FileUploadException
 	 * @throws UnsupportedEncodingException
 	 */
@@ -181,51 +198,67 @@ public class MainAdminServlet extends BasicAdminServlet {
 		// Если запрос multipart/formdata, то обрабатывать его как file upload
 		input.mount = new HashMap<>();
 //		if (!ServletFileUpload.isMultipartContent(req)) {
-			// Простые параметры
-			input.movingItem = req.getParameter(MainAdminPageCreator.MOVING_ITEM_INPUT);
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT)))
-				input.itemId = Long.parseLong(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_TYPE_INPUT)))
-				input.itemTypeId = Integer.parseInt(req.getParameter(MainAdminPageCreator.ITEM_TYPE_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PARENT_ID_INPUT)))
-				input.parentId = Long.parseLong(req.getParameter(MainAdminPageCreator.PARENT_ID_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT)))
-				input.assocId = Byte.parseByte(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.INDEX_INPUT)))
-				input.index = Integer.parseInt(req.getParameter(MainAdminPageCreator.INDEX_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.NEW_ITEM_POSITION)))
-				input.newItemPosition = Integer.parseInt(req.getParameter(MainAdminPageCreator.NEW_ITEM_POSITION));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PARAM_ID_INPUT)))
-				input.paramId = Integer.parseInt(req.getParameter(MainAdminPageCreator.PARAM_ID_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.VIEW_TYPE_INPUT)))
-				input.viewType = req.getParameter(MainAdminPageCreator.VIEW_TYPE_INPUT);
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.VISUAL_INPUT)))
-				input.isVisual = Boolean.parseBoolean(req.getParameter(MainAdminPageCreator.VISUAL_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.SEARCH_INPUT)))
-				input.searchQuery = req.getParameter(MainAdminPageCreator.SEARCH_INPUT);
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PAGE_INPUT)))
-				input.page = NumberUtils.toInt(req.getParameter(MainAdminPageCreator.PAGE_INPUT), 1);
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.MESSAGE_INPUT)))
-				input.message = URLDecoder.decode(req.getParameter(MainAdminPageCreator.MESSAGE_INPUT), "utf-8");
-			// Создание ссылок
-			Enumeration<String> paramNames = req.getParameterNames();
-			while (paramNames.hasMoreElements()) {
-				String inputName = paramNames.nextElement();
-				if (inputName.startsWith(MainAdminPageCreator.MOUNT_INPUT_PREFIX) || inputName.startsWith(MainAdminPageCreator.UNMOUNT_INPUT_PREFIX))
-					input.mount.put(inputName, req.getParameter(inputName));
+		// Простые параметры
+		input.movingItem = req.getParameter(MainAdminPageCreator.MOVING_ITEM_INPUT);
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_IDS_INPUT))) {
+			String ids[] = req.getParameter(MainAdminPageCreator.ITEM_IDS_INPUT).split(",");
+			for (String s : ids) {
+				long itemId = Long.parseLong(s.trim());
+				input.itemIds.add(itemId);
 			}
-			input.session = req.getSession();
+		}
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.BUFFERED_ITEM_IDS_INPUT))) {
+			String ids[] = req.getParameter(MainAdminPageCreator.BUFFERED_ITEM_IDS_INPUT).split(",");
+			for (String s : ids) {
+				long itemId = Long.parseLong(s.trim());
+				input.bufferedItemIds.add(itemId);
+				//input.itemId = itemId;
+			}
+		}
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT)))
+			input.itemId = Long.parseLong(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_TYPE_INPUT)))
+			input.itemTypeId = Integer.parseInt(req.getParameter(MainAdminPageCreator.ITEM_TYPE_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PARENT_ID_INPUT)))
+			input.parentId = Long.parseLong(req.getParameter(MainAdminPageCreator.PARENT_ID_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT)))
+			input.assocId = Byte.parseByte(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.INDEX_INPUT)))
+			input.index = Integer.parseInt(req.getParameter(MainAdminPageCreator.INDEX_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.NEW_ITEM_POSITION)))
+			input.newItemPosition = Integer.parseInt(req.getParameter(MainAdminPageCreator.NEW_ITEM_POSITION));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PARAM_ID_INPUT)))
+			input.paramId = Integer.parseInt(req.getParameter(MainAdminPageCreator.PARAM_ID_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.VIEW_TYPE_INPUT)))
+			input.viewType = req.getParameter(MainAdminPageCreator.VIEW_TYPE_INPUT);
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.VISUAL_INPUT)))
+			input.isVisual = Boolean.parseBoolean(req.getParameter(MainAdminPageCreator.VISUAL_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.SEARCH_INPUT)))
+			input.searchQuery = req.getParameter(MainAdminPageCreator.SEARCH_INPUT);
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PAGE_INPUT)))
+			input.page = NumberUtils.toInt(req.getParameter(MainAdminPageCreator.PAGE_INPUT), 1);
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.MESSAGE_INPUT)))
+			input.message = URLDecoder.decode(req.getParameter(MainAdminPageCreator.MESSAGE_INPUT), "utf-8");
+		// Создание ссылок
+		Enumeration<String> paramNames = req.getParameterNames();
+		while (paramNames.hasMoreElements()) {
+			String inputName = paramNames.nextElement();
+			if (inputName.startsWith(MainAdminPageCreator.MOUNT_INPUT_PREFIX) || inputName.startsWith(MainAdminPageCreator.UNMOUNT_INPUT_PREFIX))
+				input.mount.put(inputName, req.getParameter(inputName));
+		}
+		input.session = req.getSession();
 //		}
 		return input;
 	}
+
 	/**
 	 * Начало работы с CMS, выбран корневой айтем
-	 * 
+	 * <p>
 	 * Параметры
-	 *  - не требуются
-	 *  
+	 * - не требуются
+	 *
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private AdminPage initialize(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
@@ -235,8 +268,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 			page.addMessage("Приложение готово к работе, выбран корневой элемент", false);
 		return page;
 	}
+
 	/**
 	 * Переиндексация всех айтемов (Lucene)
+	 *
 	 * @param pageCreator
 	 * @return
 	 * @throws Exception
@@ -249,10 +284,12 @@ public class MainAdminServlet extends BasicAdminServlet {
 				"Переиндексация завершена успешно");
 		return page;
 	}
+
 	/**
 	 * Сбросить все кеши.
 	 * Также загрузить все айтемы и сохранить их заново для того, чтобы
 	 * ко всем айтемам применились изменения в параметрах (model.xml, model_custom.xml)
+	 *
 	 * @param pageCreator
 	 * @return
 	 * @throws Exception
@@ -297,17 +334,18 @@ public class MainAdminServlet extends BasicAdminServlet {
 				"Все кеши очищены успешно");
 		return page;
 	}
+
 	/**
 	 * Переключить на другой режим редактирования
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового айтема
 	 * itemTypeId - ID типа базового айтема
 	 * viewType - вид страницы
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
-	 * @throws SQLException 
+	 * @throws Exception
+	 * @throws SQLException
 	 */
 	private AdminPage getView(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = null;
@@ -331,16 +369,17 @@ public class MainAdminServlet extends BasicAdminServlet {
 		}
 		return page;
 	}
+
 	/**
 	 * Выбор айтема для редактирования
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового айтема
 	 * itemTypeId - тип базового айтема
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
-	 * @throws SQLException 
+	 * @throws Exception
+	 * @throws SQLException
 	 */
 	private AdminPage setItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, in.itemId, in.itemTypeId);
@@ -350,15 +389,16 @@ public class MainAdminServlet extends BasicAdminServlet {
 			page.addMessage("Выбран элемент для редактирования. После редактирования нажмите кнопку 'Сохранить'", false);
 		return page;
 	}
+
 	/**
 	 * Создать форму для нового айтемы
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemTypeId - тип создаваемого айтема
 	 * parentId - ID родительского айтема
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private AdminPage createItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = pageCreator.createParamsPage(in.itemTypeId, in.parentId, in.isVisual);
@@ -367,15 +407,16 @@ public class MainAdminServlet extends BasicAdminServlet {
 				" кнопки 'Сохранить'", false);
 		return page;
 	}
+
 	/**
 	 * Сохраняет айтем
-	 * 
+	 * <p>
 	 * Параметры:
 	 * html форма айтема (SingleItemHttpPostFormDeprecated)
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
-	 * @throws SQLException 
+	 * @throws Exception
+	 * @throws SQLException
 	 */
 	private AdminPage saveItem(UserInput in, HttpServletRequest req, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
@@ -441,7 +482,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		int type = item.getTypeId();
 		if (toParent) {
 			id = AdminLoader.loadItemDirectParentId(id, ItemTypeRegistry.getPrimaryAssocId());
-			if(id == -1) {
+			if (id == -1) {
 				return pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
 			}
 			type = AdminLoader.loadItem(id, getCurrentAdmin()).getTypeId();
@@ -455,20 +496,26 @@ public class MainAdminServlet extends BasicAdminServlet {
 		AdminPage page = MainAdminPageCreator.createSetItemRedirectPage(id, type, "Изменения успешно сохранены");
 		return page;
 	}
+
 	/**
 	 * Удаление айтема
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID удаляемого айтема
 	 * parentId - ID родительского айтема (сабайтем которого удаляется)
 	 * itemTypeId - ID типа родительского айтема (сабайтем которого удаляется)
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private AdminPage deleteItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		transaction.addCommandUnit(ItemStatusDBUnit.delete(in.itemId));
+		if (in.itemIds.size() > 0) {
+			for (long id : in.itemIds) {
+				transaction.addCommandUnit(ItemStatusDBUnit.delete(id));
+			}
+		}
 		transaction.execute();
 		// Очистить корзину
 		LuceneIndexMapper.getSingleton().startUpdate();
@@ -482,9 +529,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Элемент успешно удален", false);
 		return page;
 	}
+
 	/**
 	 * Сделать элемент видимым или скрытым
-	 *
+	 * <p>
 	 * Параметры:
 	 * itemId - ID айтема
 	 * parentId - ID родительского айтема
@@ -503,9 +551,56 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Видимость элемента успешно изменена", false);
 		return page;
 	}
+
+	/**
+	 * Массово скарыть элементы
+	 * <p>
+	 * Параметры:
+	 * itemId - ID айтемов
+	 * parentId - ID родительского айтема
+	 * itemTypeId - ID типа родительского айтема
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	private AdminPage hideItems(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
+		for (long id : in.itemIds) {
+			transaction.addCommandUnit(ItemStatusDBUnit.hide(id));
+		}
+		transaction.execute();
+		PageController.clearCache();
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
+		page.addMessage("Элементы скрыты", false);
+		return page;
+	}
+
+	/**
+	 * Массово показать элементы
+	 * <p>
+	 * Параметры:
+	 * itemId - ID айтемов
+	 * parentId - ID родительского айтема
+	 * itemTypeId - ID типа родительского айтема
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	private AdminPage showItems(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
+		for (long id : in.itemIds) {
+			transaction.addCommandUnit(ItemStatusDBUnit.restore(id));
+		}
+		transaction.execute();
+		PageController.clearCache();
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
+		page.addMessage("Видимость элементов успешно восстановлена", false);
+		return page;
+	}
+
 	/**
 	 * Устанавливает новый порядковый номер айтема
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID айтема, который переставляется
 	 * parentId - ID родительского айтема (порядок следования сабайтемов которого меняется)
@@ -513,8 +608,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * newItemPosition - новый порядковый номер
 	 *
 	 * @return
-	 * @throws Exception 
-	 * @throws SQLException 
+	 * @throws Exception
+	 * @throws SQLException
 	 */
 	private AdminPage setNewItemIndex(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
@@ -527,16 +622,17 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Порядок следования элементов изменен", false);
 		return page;
 	}
+
 	/**
 	 * Добавить множественный параметр
-	 * 
+	 * <p>
 	 * Параметры:
 	 * параметр запроса itemId - ID айтема владельца параметра
 	 * параметр запроса multipleParamId - ID параметра
 	 * параметр запроса multipleParamValue - значение параметра
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
 	private AdminPage addParameter(UserInput in, HttpServletRequest req, MainAdminPageCreator pageCreator) throws Exception {
@@ -552,11 +648,11 @@ public class MainAdminServlet extends BasicAdminServlet {
 			upload.setHeaderEncoding(encoding);
 			List<FileItem> values = upload.parseRequest(req);
 			for (FileItem fileItem : values) {
-				if (fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.PARAM_ID_INPUT)) 
-		    		multipleParamId = Integer.parseInt(fileItem.getString(encoding));
-				else if (fileItem.isFormField() && fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.MULTIPLE_PARAM_VALUE_INPUT)) 
-		    		multipleParamValue = fileItem.getString(encoding);
-				else if (fileItem.isFormField() && fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.ITEM_ID_INPUT)) 
+				if (fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.PARAM_ID_INPUT))
+					multipleParamId = Integer.parseInt(fileItem.getString(encoding));
+				else if (fileItem.isFormField() && fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.MULTIPLE_PARAM_VALUE_INPUT))
+					multipleParamValue = fileItem.getString(encoding);
+				else if (fileItem.isFormField() && fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.ITEM_ID_INPUT))
 					itemId = Long.parseLong(fileItem.getString());
 				else if (!fileItem.isFormField())
 					uploadedFiles.add(fileItem);
@@ -566,7 +662,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		if (item.getItemType().getParameter(multipleParamId).getDataType().isFile()) {
 			for (FileItem fileItem : uploadedFiles) {
-				transaction.addCommandUnit(new SaveItemFileUnit(item, multipleParamId, fileItem));				
+				transaction.addCommandUnit(new SaveItemFileUnit(item, multipleParamId, fileItem));
 			}
 		} else {
 			item.setValueUI(multipleParamId, multipleParamValue);
@@ -579,16 +675,17 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Дополнительный параметр добавлен и отображается в колонке справа", false);
 		return page;
 	}
+
 	/**
 	 * Загрузка картинки (плагин tinyMCE)
-	 * 
+	 * <p>
 	 * Параметры (все параметры запроса):
 	 * itemId - ID айтема владельца параметра
 	 * multipleParamId - ID параметра картинки
 	 * height - высота картинки (необязательный)
 	 * width - ширина картинки (необязательный)
 	 * multipleParamValue - подгружаемый файл или несколько файлов (FileItem)
-	 * 
+	 *
 	 * @param req
 	 * @param pageCreator
 	 * @return
@@ -610,9 +707,9 @@ public class MainAdminServlet extends BasicAdminServlet {
 			for (FileItem fileItem : values) {
 				if (fileItem.isFormField() && fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.HEIGHT_INPUT))
 					height = Strings.parseIntDefault(fileItem.getString(), 0);
-				else if (fileItem.isFormField() && fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.WIDTH_INPUT)) 
+				else if (fileItem.isFormField() && fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.WIDTH_INPUT))
 					width = Strings.parseIntDefault(fileItem.getString(), 0);
-				else if (fileItem.isFormField() && fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.ALT_INPUT)) 
+				else if (fileItem.isFormField() && fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.ALT_INPUT))
 					alt = fileItem.getString();
 				else if (fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.MULTIPLE_PARAM_VALUE_INPUT))
 					uploadedFiles.add(fileItem);
@@ -635,17 +732,18 @@ public class MainAdminServlet extends BasicAdminServlet {
 		String itemPath = FileDataType.getItemFilePath(item);
 		return pageCreator.createImageUploadedPage(in.itemId, in.paramId, uploadedFiles, itemPath, alt);
 	}
+
 	/**
 	 * Удалить множественный параметр
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID айтема владельца параметра
 	 * multipleParamId - ID параметра
 	 * index - индекс параметра
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
-	 * @throws SQLException 
+	 * @throws Exception
+	 * @throws SQLException
 	 */
 	private AdminPage deleteParameter(UserInput in, MainAdminPageCreator pageCreator) throws SQLException, Exception {
 		Item item = ItemQuery.loadById(in.itemId);
@@ -662,33 +760,35 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Дополнительный параметр удален", false);
 		return page;
 	}
+
 	/**
 	 * Установить текущий родительский айтем для айтемов, в которых может быть созадна ссылка на текущий айтем
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * itemTypeId - ID типа базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private AdminPage setMountToParentItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = pageCreator.createMountToPage(in.itemId, in.parentId);
 		page.addMessage("Чтобы создать связь, нужно отметить элементы для создания связи с текущим нажать 'Добавить связи'." +
 				" Чтобы удалить связи, нужно отмеить элементы, связь с которыми должна быть удалена, и нажать 'Удалить связи'", false);
-		return page;		
+		return page;
 	}
+
 	/**
 	 * Установить текущий родительский айтем для айтемов, ссылки на которые можно создавать в текущем айтеме
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * itemTypeId - ID типа базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private AdminPage setToMountParentItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId, in.searchQuery);
@@ -696,16 +796,17 @@ public class MainAdminServlet extends BasicAdminServlet {
 				" Чтобы удалить связи, нужно отмеить элементы, связь с которыми должна быть удалена, и нажать 'Удалить связи'", false);
 		return page;
 	}
+
 	/**
 	 * Установить текущий родительский айтем для айтемов, ассоциации с которыми можно создавать в текущем айтеме
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * itemTypeId - ID типа базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private AdminPage setAssociatedParentItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId, in.searchQuery);
@@ -713,47 +814,50 @@ public class MainAdminServlet extends BasicAdminServlet {
 				" Чтобы удалить связи, нужно отмеить элементы, связь с которыми должна быть удалена, и нажать 'Удалить связи'", false);
 		return page;
 	}
+
 	/**
 	 * Установить текущий родительский айтем для айтемов, в которые можно перемещать текущий айтем
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * itemTypeId - ID типа базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных перемещений
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private AdminPage setMoveToParentItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = pageCreator.createMoveToPage(in.itemId, in.parentId);
 		page.addMessage("Чтобы переместить элемент, нужно отметить новый родительский элемент для текущего и нажать 'Переместить'", false);
 		return page;
 	}
+
 	/**
 	 * Установить текущий родительский айтем для айтемов, которые можно перемещать текущем айтем
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * itemTypeId - ID типа базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных перемещений
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private AdminPage setToMoveParentItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		AdminPage page = pageCreator.createAssociatedPage(in.itemId, in.parentId, in.assocId, in.searchQuery);
 		page.addMessage("Чтобы переместить элемент, нужно отметить элемент для перемещения и нажать 'Переместить'", false);
 		return page;
 	}
+
 	/**
 	 * Создать ссылки на текущий айтем в выбранных айтемах
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
 	 * mount - значения монтирования
-	 * 
-	 * @throws Exception 
+	 *
+	 * @throws Exception
 	 */
 	private AdminPage createMountedToReferences(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
@@ -767,17 +871,18 @@ public class MainAdminServlet extends BasicAdminServlet {
 		PageController.clearCache();
 		AdminPage page = pageCreator.createMountToPage(in.itemId, in.parentId);
 		page.addMessage("Новые связи успешно созданы", false);
-		return page;	
+		return page;
 	}
+
 	/**
 	 * Создать ссылки на выбранные айтемы в текущем айтеме
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
 	 * mount - значения монтирования
 	 *
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private AdminPage createAssociations(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
@@ -794,25 +899,33 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Новые ассоциации успешно созданы", false);
 		return page;
 	}
+
 	/**
 	 * Переместить текущий айтем в выбранный айтем
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
 	 * movingItem - ???
-	 * 
-	 * @throws Exception 
+	 *
+	 * @throws Exception
 	 */
 	private AdminPage moveTo(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		try {
-			transaction.addCommandUnit(new MoveItemDBUnit(in.itemId, in.parentId));
+			if(in.itemId > 0)
+				transaction.addCommandUnit(new MoveItemDBUnit(in.itemId, in.parentId));
+			for(long id : in.bufferedItemIds){
+				transaction.addCommandUnit(new MoveItemDBUnit(id, in.parentId));
+			}
 			transaction.execute();
 			@SuppressWarnings("unchecked")
 			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
 			if (buffer != null) {
 				buffer.remove(in.itemId);
+				for(long id : in.bufferedItemIds){
+					buffer.remove(id);
+				}
 				in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 			}
 		} catch (Exception e) {
@@ -827,15 +940,16 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Элемент успешно перемещен", false);
 		return page;
 	}
+
 	/**
 	 * Переместить выбранный айтем в текущий айтем
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
 	 * movingItem - ???
-	 * 
-	 * @throws Exception 
+	 *
+	 * @throws Exception
 	 */
 	protected AdminPage move(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
@@ -849,14 +963,15 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Элемент успешно перемещен", false);
 		return page;
 	}
+
 	/**
 	 * Копировать айтем
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID копируемого айтема
 	 * parentId - ID айтема, в который вставляется копируемый
 	 * itemTypeId - ID типа айтема, в который происходит вставка
-	 * 
+	 *
 	 * @param in
 	 * @param pageCreator
 	 * @return
@@ -868,19 +983,29 @@ public class MainAdminServlet extends BasicAdminServlet {
 		if (buffer == null) {
 			buffer = new LinkedHashMap<>();
 		}
-		ItemAccessor item = AdminLoader.loadItemAccessor(in.itemId);
-		buffer.put(item.getId(), item);
+		if (in.itemId > 0) {
+			ItemAccessor item = AdminLoader.loadItemAccessor(in.itemId);
+			buffer.put(item.getId(), item);
+		}
+		if (in.itemIds.size() > 0) {
+			List<ItemAccessor> items = AdminLoader.loadItemAccessors(in.itemIds.toArray(new Long[0]));
+			for (ItemAccessor item : items) {
+				buffer.put(item.getId(), item);
+			}
+
+		}
 		in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 		return pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId);
 	}
+
 	/**
 	 * Произвести копирование айтема
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID копируемого айтема
 	 * parentId - ID айтема, в который вставляется копируемый
 	 * itemTypeId - ID типа айтема, в который происходит вставка
-	 * 
+	 *
 	 * @param in
 	 * @param pageCreator
 	 * @return
@@ -889,12 +1014,21 @@ public class MainAdminServlet extends BasicAdminServlet {
 	protected AdminPage paste(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		try {
-			transaction.addCommandUnit(new CopyItemDBUnit(in.itemId, in.parentId));
-			transaction.execute();
 			@SuppressWarnings("unchecked")
 			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
+			if (in.itemId > 0) {
+				transaction.addCommandUnit(new CopyItemDBUnit(in.itemId, in.parentId));
+			}
+			for (long id : in.bufferedItemIds) {
+				transaction.addCommandUnit(new CopyItemDBUnit(id, in.parentId));
+			}
+			transaction.execute();
+
 			if (buffer != null) {
 				buffer.remove(in.itemId);
+				for (long id : in.bufferedItemIds) {
+					buffer.remove(id);
+				}
 				in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 			}
 		} catch (Exception e) {
@@ -909,8 +1043,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Элемент успешно копирован", false);
 		return page;
 	}
+
 	/**
 	 * Удалить из буфера обмена айтем
+	 *
 	 * @param in
 	 * @param pageCreator
 	 * @return
@@ -921,20 +1057,24 @@ public class MainAdminServlet extends BasicAdminServlet {
 		LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
 		if (buffer != null) {
 			buffer.remove(in.itemId);
+			for(long id : in.bufferedItemIds){
+				buffer.remove(id);
+			}
 			in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 		}
 		return pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId);
 	}
+
 	/**
 	 * Удалить какую-либо ссылку
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
 	 * mount - значения монтирования
 	 * viewType - страница
-	 * 
-	 * @throws Exception 
+	 *
+	 * @throws Exception
 	 */
 	private AdminPage deleteReference(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
@@ -951,16 +1091,17 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Связи успешно удалены", false);
 		return page;
 	}
+
 	/**
 	 * Удалить какую-либо ссылку
-	 * 
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
 	 * mount - значения монтирования
 	 * viewType - страница
-	 * 
-	 * @throws Exception 
+	 *
+	 * @throws Exception
 	 */
 	private AdminPage deleteAssociated(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
@@ -980,7 +1121,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Удалить ссылку из списка сабайтемов
-	 *
+	 * <p>
 	 * Параметры:
 	 * itemId - ID удаляемого айтема
 	 * parentId - ID родительского айтема (сабайтем которого удаляется)
@@ -1006,7 +1147,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Поменять пользователя-владельца или группу-владельца айтема
-	 *
+	 * <p>
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * paramId - ID группы или пользователя
@@ -1044,7 +1185,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Включить или выключить защиту файлов айтема
-	 *
+	 * <p>
 	 * Параметры
 	 * itemId - ID защищаемого айтема
 	 *

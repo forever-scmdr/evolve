@@ -197,12 +197,24 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String UPLOAD_START_ACTION = "admin_upload_start";
 	public static final String UPLOAD_IMG_ACTION = "admin_upload_img";
 	public static final String COPY_ACTION = "admin_copy";
+
 	public static final String PASTE_ACTION = "admin_paste";
 	public static final String DELETE_PASTE_ACTION = "admin_delete_paste";
 	public static final String STATUS_ACTION = "admin_status";
 	public static final String NEW_GROUP_ACTION = "new_group";
 	public static final String NEW_USER_ACTION = "new_user";
 	public static final String TOGGLE_FILE_PROTECTION_ACTION = "file_protection";
+
+	//MASS ACTIONS
+	public static final String MASS_COPY_ACTION = "admin_copy_all";
+	public static final String MASS_PASTE_ACTION = "admin_paste_all";
+	public static final String MASS_MOVE_TO_ACTION = "admin_move_all";
+	public static final String MASS_DELETE_ACTION = "admin_delete_all";
+	public static final String MASS_HIDE_ACTION = "admin_hide_all";
+	public static final String MASS_SHOW_ACTION = "admin_show_all";
+	public static final String MASS_DELETE_FROM_BUFFER_ACTION = "admin_delete_all_from_buffer";
+
+
 	/**
 	 * Инпуты
 	 */
@@ -228,6 +240,8 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String USER_ID_INPUT = "userId";
 	public static final String MESSAGE_INPUT = "msg";
 	public static final String GO_TO_PARENT_INPUT = "goToParent";
+	public static final String ITEM_IDS_INPUT = "ids";
+	public static final String BUFFERED_ITEM_IDS_INPUT = "ids_b";
 	/**
 	 * Значения
 	 */
@@ -267,7 +281,7 @@ public class MainAdminPageCreator implements AdminXML {
 	 * Параметры сеанса
 	 */
 	public static final String PASTE_LIST = "admin_paste_list";
-	
+
 	private static class ItemToAdd extends MetaDataWriter {
 		private final String baseItem; // Имя айтема-родоначальника 
 		private final ArrayList<String> extenders;

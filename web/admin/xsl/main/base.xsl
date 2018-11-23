@@ -132,7 +132,10 @@
 							<div class="list mass-select">
 								<h4 id="mass-selection-trigger" class="mass-selection-trigger">Выбрать несколько айтемов</h4>
 								<div class="selection-actions edit">
-									<div id="actions-items" class="actions-items">
+									<div id="actions-items" class="actions-items call-function">
+
+										<xsl:variable name="base-vars" select="concat('?parentId=', admin-page/base-id, '&amp;itemType=', admin-page/base-type)"/>
+
 										<div class="actions sel-actions">
 											<span>Выбор:</span>
 											<a class="select-all" title="выбрать все" id="select_all" onclick="selectAll();"></a>
@@ -141,16 +144,16 @@
 										</div>
 										<div class="actions">
 											<span>С айтемами:</span>
-											<a href="copy_all.action" class="copy set-action" rel="multi-item-action-form" title="копировать выделенное в буфер обмена"></a>
-											<a href="hide_all.action" class="hide_item set-action" rel="multi-item-action-form" title="скрыть выделенное"></a>
-											<a href="show_all.action" class="show_item set-action" rel="multi-item-action-form" title="показать выделенное"></a>
-											<a href="delete_all.action" class="delete set-action" rel="multi-item-action-form" title="удалить"></a>
+											<a href="admin_copy_all.action" id="copy-all-link" class="copy set-action" rel="multi-item-action-form" title="Копировать выделенное в буфер обмена"></a>
+											<a href="admin_hide_all.action{$base-vars}" class="hide_item set-action" rel="multi-item-action-form" title="Скрыть выделенное"></a>
+											<a href="admin_show_all.action{$base-vars}" class="show_item set-action" rel="multi-item-action-form" title="Показать выделенное"></a>
+											<a href="admin_delete_all.action{$base-vars}" class="delete set-action" rel="multi-item-action-form" title="Удалить выделенное"></a>
 										</div>
 										<div class="actions">
 											<span>С буфером:</span>
-											<a href="paste_all.action" class="copy paste set-action" rel="multi-item-action-form" title="вставить выделенное"></a>
-											<a href="move_all.action" class="copy move set-action" rel="multi-item-action-form" title="переместить выделенное"></a>
-											<a href="delete_all_from_buffer.action" class="delete set-action" rel="multi-item-action-form" title="удалить"></a>
+											<a href="admin_paste_all.action{$base-vars}" class="copy paste set-action total-replace" rel="multi-item-action-form" title="вставить выделенное"></a>
+											<a href="admin_move_all.action{$base-vars}" class="copy move set-action total-replace" rel="multi-item-action-form" title="переместить выделенное"></a>
+											<a href="admin_delete_all_from_buffer.action{$base-vars}" class="delete set-action" rel="multi-item-action-form" title="удалить из буфера"></a>
 										</div>
 										<form id="multi-item-action-form" method="POST">
 											<input type="text" name="ids" id="multi-item-action-form-ids"/>
@@ -174,7 +177,7 @@
 									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 										<a href="generate_sitemap">Обновить карту сайта</a>
 									</li>
-									<li class="visible" title="Очищает все кеши. Длительная и ресурсоемкая операция.">
+									<li class="visible" title="Это абсолютно безопасно. Я вас уверяю.">
 										<a href="admin_drop_all_caches.action">Очистить все кеши</a>
 									</li>
 									<li class="visible" title="Обновить список товаров для полнотекстового поиска">

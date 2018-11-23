@@ -11,7 +11,7 @@
 	<xsl:template match="/">
 		<xsl:if test="admin-page/item">
 			<!-- Буфер обмена -->
-			<div>
+			<div id="pasteBuffer" class="result">
 				<div class="list">
 					<h4>Буфер обмена (вставить)</h4>
 					<ul class="edit">

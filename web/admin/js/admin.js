@@ -82,6 +82,64 @@ function confirmAjaxView(link, viewId, postProcess, el) {
 }
 
 /**
+ * Вывести диалоговое окно с произвольной функцией.
+ * @param el - элемент по которому позиционируется диалоговое окно
+ * @param function - функция, которая вызывается при клике на кнопку "да"
+ * */
+function confirmAjaxViewCustom(el,title, onConfirm) {
+    destroyDialog();
+    buildDialog(title);
+    positionDialog(el);
+    $("#dialog-yes-button").click(function (e) {
+        e.preventDefault();
+        destroyDialog();
+        onConfirm.call();
+    });
+
+    $("#dialog-no-button").click(function (e) {
+        e.preventDefault();
+        $("#dialog-yes-button, #dialog-no-button").unbind("click");
+        destroyDialog();
+    });
+}
+
+/**
+ * Отправить форму с заданным экшеном.
+ * @param action - атрибут "action"
+ * @param el - форма
+ * @param lockElementIds - jQuery селектор для блокируемых элементов
+ * */
+function postFormViewWithAction(el, action, lockElementIds, totalRefresh){
+	$("#"+el).attr({"action" : action});
+	console.log(lockElementIds);
+
+        postForm(el, lockElementIds, function () {
+            if(!totalRefresh == true) {
+                highlightSelected("#pasteBuffer", "#multi-item-action-form-ids-buffer");
+                highlightSelected("#primary-item-list", "#multi-item-action-form-ids");
+            }else{
+                //TODO make normal ajax block replacement
+            	document.location.reload();
+			}
+        });
+
+}
+
+
+$(document).on('click', '.set-action', function (e) {
+	e.preventDefault();
+	var $t = $(this);
+	var formId = $t.attr("rel");
+	var action = $t.attr("href");
+	var id = $t.attr("id");
+	var title = $t.attr("title")+"?";
+    confirmAjaxViewCustom(this, title, callback);
+    function callback() {
+        postFormViewWithAction(formId, action, id, $t.is(".total-replace"));
+    }
+});
+
+/**
  * Отправка AJAX запроса для обновления указанной части страницы
  */
 function simpleAjaxView(link, viewId, postProcess) {
@@ -290,18 +348,26 @@ function invertSelection() {
     $("#primary-item-list").find(".selection-overlay").trigger("click");
 }
 
-
+//Highlights selected. Removes not found by id from inputs
 function highlightSelected(container, ipt) {
 	var $ipt = $(ipt);
 	if(typeof $ipt.val() != "undefined"){
 		var arr1 = $ipt.val().split(",");
+		var clearedVal = $ipt.val();
 		if(arr1.length > 0 && arr1[0] != ""){
 			$(".selection-actions, .selection-overlay").show();
 		}
 		for(i=0; i<arr1.length; i++){
             if(arr1[i] == "")continue;
 			var $el = $(container).find(".selection-overlay[data-id="+arr1[i]+"]");
-			$el.addClass("selected");
+			if($el.length == 0){
+				var regex = new RegExp(arr1[i]+',?');
+				clearedVal = clearedVal.replace(regex, '');
+			}
+			else {
+                $el.addClass("selected");
+            }
 		}
+		$ipt.val(clearedVal);
 	}
 }
