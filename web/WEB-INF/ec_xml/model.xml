@@ -121,7 +121,7 @@
 	</item>
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
-	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product * seo_container" virtual="true" ag-id="1021" ag-hash="1523682729">
+	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product *" virtual="true" ag-id="1021" ag-hash="1523682729">
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
@@ -158,10 +158,12 @@
 	<item name="line_product" caption="Товар-строка" description="содержится в товаре, как один из видов этого товара" super="described_product" ag-id="1022" ag-hash="1097527204">
 		<on-update class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/>
 		<on-create class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/>
+		<on-delete class="ecommander.fwk.integration.UpdateProductMinPriceDeletedFactory"/>
 	</item>
 
 	<!--Обычный товар или товар, который содержит другие товары-->
-	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true" default-page="product" super="described_product" ag-id="6" ag-hash="-309474065">
+	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true"
+	      default-page="product * seo_container" super="described_product" ag-id="6" ag-hash="-309474065">
 		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
 		<child item="line_product"/>
 	</item>

@@ -146,6 +146,25 @@
 	</xsl:template>
 
 
+
+	<xsl:template match="banner">
+		<div class="banner {extra_style}">
+			<div class="banner__background" style="{background}"></div>
+			<div class="banner__title"><xsl:value-of select="header" /></div>
+			<div class="banner__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
+			<div class="banner__image">
+				<xsl:choose>
+					<xsl:when test="image_code and not(image_code = '')"><xsl:value-of select="image_code" disable-output-escaping="yes" /></xsl:when>
+					<xsl:otherwise>
+						<xsl:if test="image_pic and not(image_pic = '')"><img src="{@path}{image_pic}"/></xsl:if>
+					</xsl:otherwise>
+				</xsl:choose>
+			</div>
+			<a href="{link}" class="banner__link"></a>
+		</div>
+	</xsl:template>
+
+
 	<xsl:template name="BANNERS">
 		<section class="hero">
 			<div class="container">
@@ -155,20 +174,7 @@
 					</xsl:for-each>
 				</div>
 				<div class="hero__banners">
-					<div class="banner hero__banner">
-						<div class="banner__background"></div>
-							<div class="banner__title">Epson SureColor SC-F2000</div>
-							<div class="banner__text">Производительный и надежный принтер прямой печати на ткани</div>
-							<div class="banner__image"></div>
-							<a href="/" class="banner__link"></a>
-					</div>
-					<div class="banner hero__banner">
-						<div class="banner__background"></div>
-							<div class="banner__title">Epson SureColor SC-F2000</div>
-							<div class="banner__text">Производительный и надежный принтер прямой печати на ткани</div>
-							<div class="banner__image"></div>
-							<a href="/" class="banner__link"></a>
-					</div>
+					<xsl:apply-templates select="page/banner_section[1]/banner"/>
 				</div>
 			</div>
 		</section>
@@ -176,47 +182,26 @@
 			<div class="container">
 				<div>
 					<div class="events__banners">
-						<div class="banner events__banner">
-							<div class="banner__background"></div>
-							<div class="banner__title">Epson SureColor SC-F2000</div>
-							<div class="banner__text">Производительный и надежный принтер прямой печати на ткани</div>
-							<div class="banner__image"></div>
-							<a href="/" class="banner__link"></a>
-						</div>
-						<div class="banner events__banner banner_blue">
-							<div class="banner__background"></div>
-							<div class="banner__title">Месяц скидок</div>
-							<div class="banner__text">Производительный и надежный принтер прямой печати на ткани</div>
-							<div class="banner__image"><i class="fas fa-percent"></i></div>
-							<a href="/" class="banner__link"></a>
-						</div>
+						<xsl:apply-templates select="page/banner_section[2]/banner"/>
 					</div>
 					<div class="block-title events__title">Новости</div>
 					<div class="events__news">
-						<div class="news-item events__news-item">
-							<div class="small-text">01.01.2018</div>
-							<a href="">Новая компьютерная прямострочка JUKI DDL-9000c продана в Беларуси</a>
-						</div>
-						<div class="news-item events__news-item">
-							<div class="small-text">01.01.2018</div>
-							<a href="">Новая компьютерная прямострочка JUKI DDL-9000c продана в Беларуси</a>
-						</div>
+						<xsl:for-each select="page//news_item">
+							<div class="news-item events__news-item">
+								<div class="small-text"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
+								<a href="{show_news_item}"><xsl:value-of select="header" /></a>
+							</div>
+						</xsl:for-each>
 					</div>
 				</div>
-				<div class="banner events__big-banner">
-					<div class="banner__background"></div>
-					<div class="banner__title"></div>
-					<div class="banner__text"></div>
-					<div class="banner__image"></div>
-					<a href="/" class="banner__link"></a>
-				</div>
+				<xsl:apply-templates select="page/banner_section[3]/banner"/>
 			</div>
 		</section>
 		<section class="special-items">
 			<div class="container">
 				<div class="block-title">Новинки</div>
 				<div class="special-items__devices slick-slider">
-					<xsl:apply-templates select="page/product[tag='Новинка']"/>
+					<xsl:apply-templates select="page/main_page/product[tag='Новинка']"/>
 				</div>
 			</div>
 		</section>
@@ -224,7 +209,7 @@
 			<div class="container">
 				<div class="block-title">Акции</div>
 				<div class="special-items__devices slick-slider zu">
-					<xsl:apply-templates select="page/product[tag='Акция']"/>
+					<xsl:apply-templates select="page/main_page/product[tag='Акция']"/>
 				</div>
 			</div>
 		</section>
@@ -232,69 +217,15 @@
 			<div class="container">
 				<div class="block-title">Почему нас выбирают клиенты</div>
 				<div class="benefits__banners">
-					<div class="banner benefits__banner banner_gray">
-						<div class="banner__background"></div>
-						<div class="banner__title">Надежность</div>
-						<div class="banner__text">Нам доверяют 17 лет</div>
-						<div class="banner__image"><i class="fas fa-shield-alt"></i></div>
-						<a href="/" class="banner__link"></a>
-					</div>
-					<div class="banner benefits__banner banner_gray">
-						<div class="banner__background"></div>
-						<div class="banner__title">Гарантии</div>
-						<div class="banner__text">Свой сервисный центр</div>
-						<div class="banner__image"><i class="fas fa-trophy"></i></div>
-						<a href="/" class="banner__link"></a>
-					</div>
-					<div class="banner benefits__banner banner_gray">
-						<div class="banner__background"></div>
-						<div class="banner__title">Цены</div>
-						<div class="banner__text">Специальные предложения и акции</div>
-						<div class="banner__image"><i class="far fa-thumbs-up"></i></div>
-						<a href="/" class="banner__link"></a>
-					</div>
-					<div class="banner benefits__banner banner_gray">
-						<div class="banner__background"></div>
-						<div class="banner__title">Качество</div>
-						<div class="banner__text">Только проверенные бренды</div>
-						<div class="banner__image"><i class="fas fa-check"></i></div>
-						<a href="/" class="banner__link"></a>
-					</div>
-					<div class="banner benefits__banner banner_gray">
-						<div class="banner__background"></div>
-						<div class="banner__title">Опыт</div>
-						<div class="banner__text">Квалифицированные специалисты</div>
-						<div class="banner__image"><i class="far fa-clock"></i></div>
-						<a href="/" class="banner__link"></a>
-					</div>
-					<div class="banner benefits__banner banner_gray">
-						<div class="banner__background"></div>
-						<div class="banner__title">Репутация</div>
-						<div class="banner__text">Ценим каждого клиента</div>
-						<div class="banner__image"><i class="far fa-user"></i></div>
-						<a href="/" class="banner__link"></a>
-					</div>
+					<xsl:apply-templates select="page/banner_section[4]/banner"/>
 				</div>
 			</div>
 		</section>
 		<section class="s-info pt-4">
 			<div class="container">
-				<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-				<p>
-				Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
+				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
 			</div>
 		</section>
-
-		<!-- BANNER EXAMPLE -->
-		<!-- <xsl:for-each select="page/main_page/main_promo_bottom">
-			<div class="banner">
-				<div class="banner__image" style="background-image: url({@path}{pic})"></div>
-				<div class="banner__title"><xsl:value-of select="text_big"/></div>
-				<div class="banner__text"><xsl:value-of select="text_small"/></div>
-				<a class="banner__link" href="{link}"></a>
-			</div>
-		</xsl:for-each> -->
-		<!-- BANNER EXAMPLE END-->
 
 	</xsl:template>
 

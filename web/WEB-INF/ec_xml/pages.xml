@@ -58,6 +58,7 @@
 	</include-definition>
 
 
+
 	<page name="index" template="index" cacheable="true">
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
@@ -86,6 +87,9 @@
 				<single item="params"/>
 			</list>
 		</single>
+		<list item="banner_section" id="banner_section" cacheable="true">
+			<list item="banner"/>
+		</list>
 		<single item="news_wrap" cacheable="true">
 			<list item="news_item" id="ni" transit="true">
 				<filter>
@@ -508,7 +512,7 @@
 		<session>
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
-					<list item="product" id="prod" tag="product">
+					<list item="abstract_product" id="prod" tag="product">
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="translit"/>
 						</link>

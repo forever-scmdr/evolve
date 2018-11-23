@@ -7,6 +7,10 @@
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
+
+	<xsl:variable name="common" select="page/common"/>
+
+
 	<!-- ****************************    SEO    ******************************** -->
 
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
@@ -490,11 +494,11 @@
 		<!-- <div class="actions">
 			<h3>Акции</h3>
 			<div class="actions-container">
-				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
+				<a href="{$common/link_link}"><xsl:value-of select="$common/link_text"/></a>
 			</div>
 		</div> -->
 		<div class="contacts">
-			<xsl:value-of select="page/common/left" disable-output-escaping="yes"/>
+			<xsl:value-of select="$common/left" disable-output-escaping="yes"/>
 		</div>
 	</xsl:template>
 
@@ -511,7 +515,7 @@
 		<div class="actions mobile" style="display:none;">
 			<div class="h3">Акции</div>
 			<div class="actions-container">
-				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
+				<a href="{$common/link_link}"><xsl:value-of select="$common/link_text"/></a>
 			</div>
 		</div>
 	</xsl:template>
@@ -536,7 +540,7 @@
 			<div class="device__article-number"><xsl:value-of select="code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
-					<div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div>
+					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
 					<div class="price_normal"><xsl:value-of select="price"/> руб.</div>
 				</div>
 			</xsl:if>
@@ -633,7 +637,7 @@
 			</div>
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
-					<div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div>
+					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
 					<div class="price_normal"><xsl:value-of select="price"/> руб.</div>
 				</div>
 			</xsl:if>
@@ -893,6 +897,8 @@
 	</xsl:template>
 
 
+
+
 	<!-- ****************************    БЛОКИ НА СТРАНИЦЕ    ******************************** -->
 
 
@@ -918,11 +924,13 @@
 		</div>
 	</xsl:template>
 
+
 	<xsl:template name="PAGE_TITLE">
 		<xsl:param name="page"/>
 		<xsl:if test="$page/header_pic != ''"><h1><img src="{$page/@path}{$page/header_pic}" alt="{$page/header}"/></h1></xsl:if>
 		<xsl:if test="not($page/header_pic) or $page/header_pic = ''"><h1><xsl:value-of select="$page/header"/></h1></xsl:if>
 	</xsl:template>
+
 
 	<xsl:template name="number_option">
 		<xsl:param name="max"/>
@@ -942,12 +950,10 @@
 		</xsl:if>
 	</xsl:template>
 
+
 	<xsl:template name="SEO">
-
 		<xsl:variable name="quote">"</xsl:variable>
-
 		<link rel="canonical" href="{concat($main_host, $canonical)}" />
-
 		<xsl:if test="$seo">
 			<xsl:apply-templates select="$seo"/>
 		</xsl:if>
@@ -957,16 +963,18 @@
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
-		<!-- <xsl:text disable-output-escaping="yes">
-			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
-			&lt;meta name="yandex-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
-		</xsl:text> -->
-
+		<xsl:if test="$common/google_verification">
+			<meta name="google-site-verification" content="{$common/google_verification}"/>
+		</xsl:if>
+		<xsl:if test="$common/yandex_verification">
+			<meta name="google-site-verification" content="{$common/yandex_verification}"/>
+		</xsl:if>
 		<xsl:call-template name="MARKUP" />
-
 	</xsl:template>
 
+
 	<xsl:template name="MARKUP"/>
+
 
 	<xsl:template match="seo | url_seo">
 		<title>

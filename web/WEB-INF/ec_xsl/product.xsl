@@ -82,7 +82,7 @@
 				<div class="device-page__actions">
 					<xsl:if test="$has_price">
 						<div class="device__price device__price_device-page">
-							<div class="price_old"><span>100 руб.</span></div>
+							<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$p/price_old"/> руб.</span></div></xsl:if>
 							<div class="price_normal"><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</div>
 						</div>
 					</xsl:if>
