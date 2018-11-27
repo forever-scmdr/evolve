@@ -1,3 +1,571 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
+
+<!--START_p119979-->
+<item name="p119979" caption="Машины цепного стежка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1130" ag-hash="2066000018">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tolschina_skreplyaemyh_materialov" caption="Толщина скрепляемых материалов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1642814211" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_obmetki" caption="Ширина обметки" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1046749210" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stegok" caption="Стежок" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-892375073" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie" caption="Напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1451382223" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="smazka" caption="Смазка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-898940759" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_vrascheniya_motora" caption="Скорость вращения мотора" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1249219744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochee_napryagenie" caption="Рабочее напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1900878609" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p119979-->
+
+<!--START_p119982-->
+<item name="p119982" caption="Подшивочные швейные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1131" ag-hash="2066000042">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stegok" caption="Стежок" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-892375073" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie" caption="Напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1451382223" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prodvigenie_materiala" caption="Продвижение материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-939485571" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p119982-->
+
+<!--START_p119984-->
+<item name="p119984" caption="Двухигольные швейные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1132" ag-hash="2066000044">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasstoyanie_megdu_iglami" caption="Расстояние между иглами" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2082628245" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="hod_iglovoditelya" caption="Ход игловодителя" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-324324446" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prodvigenie_materiala" caption="Продвижение материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-939485571" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie" caption="Напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1451382223" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="otklyuchenie_igl" caption="Отключение игл" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1610817499" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_chelnoka" caption="Тип челнока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-806458425" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p119984-->
+
+<!--START_p119985-->
+<item name="p119985" caption="Прямострочные швейные машины с электронным управлением" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1133" ag-hash="2066000045">
+	<parameter name="tip_prodvigeniya" caption="Тип продвижения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="815865295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="funktsionalnye_knopki_v_zone_iglovoditelya" caption="Функциональные кнопки (в зоне игловодителя)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-936417814" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vstroennaya_led_podsvetka" caption="Встроенная LED-подсветка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="976240498" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="niteprityagivatel" caption="Нитепритягиватель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-26805267" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="raspologenie_chelnoka" caption="Расположение челнока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-106253700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maslyanyi_karter" caption="Масляный картер" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1067150491" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obrezka_kraya_materiala" caption="Обрезка края материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2079072392" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_dvigatelya" caption="Тип двигателя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="522491894" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_upravleniya" caption="Тип управления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-12369916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vylet_rukava" caption="Вылет рукава" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-157687573" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="hod_igly" caption="Ход иглы" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-748778003" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_chelnoka" caption="Размер челнока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1916980499" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="funktsiya_plavnogo_starta" caption="Функция плавного старта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-920795189" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p119985-->
+
+<!--START_p119989-->
+<item name="p119989" caption="Прямострочные швейные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1134" ag-hash="2066000049">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prodvigenie_materiala" caption="Продвижение материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-939485571" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_chelnoka" caption="Тип челнока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-806458425" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p119989-->
+
+<!--START_p120011-->
+<item name="p120011" caption="Закрепочные промышленные швейные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1135" ag-hash="2066646577">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_platformy" caption="Тип платформы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904567358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_chelnoka" caption="Тип челнока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-806458425" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_zakrepki" caption="Ширина закрепки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1326608040" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_stegkov" caption="Количество стежков" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1161679913" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vyota_podema_lapki" caption="Выота подъема лапки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="533122452" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_zakrepki" caption="Длина закрепки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-623074142" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie" caption="Напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1451382223" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120011-->
+
+<!--START_p120013-->
+<item name="p120013" caption="Пуговичные промышленные швейные машины JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1136" ag-hash="2066646579">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="yazyki_interfeisa" caption="Языки интерфейса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-416484202" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vvod___vyvod_dannyh" caption="Ввод / вывод данных" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-539454323" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stegok" caption="Стежок" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-892375073" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_pamyati" caption="Объем памяти" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="884485013" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="panel_upravleniya" caption="Панель управления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1697756141" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vneshnii_diametr_pugovitsy" caption="Внешний диаметр пуговицы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-186258726" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_podema" caption="Механизм подъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1523433900" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_obrezki" caption="Длина обрезки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-880883865" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="natyagenie_niti" caption="Натяжение нити" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="567448076" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="schetchiki" caption="Счетчики" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-245729637" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_tsiklichnyh_programm" caption="Количество цикличных программ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-898245132" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_gotovyh_shablonov_dlya_prishivaniya" caption="Количество готовых шаблонов для пришивания" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1420215332" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnoe_rasstoyanie_megdu_otverstiyami_pugovitsy_po_osi_y_gotovye_shablony" caption="Максимальное расстояние между отверстиями пуговицы по оси Y (готовые шаблоны)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-86382854" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="korrektirovka_rasstoyanii_megdu_otverstiyami_pugovits" caption="Корректировка расстояний между отверстиями пуговиц" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1668878527" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pugovitsy" caption="Пуговицы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1687562426" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/ мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_stegkov" caption="Количество стежков" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1161679913" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnoe_rasstoyanie_megdu_otverstiyami_pugovitsy_po_osi_h_gotovye_shablony" caption="Максимальное расстояние между отверстиями пуговицы по оси Х (готовые шаблоны)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-316022037" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_podachi" caption="Механизм подачи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="18060904" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_chelnoka" caption="Размер челнока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1916980499" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_stegka" caption="Тип стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1612437373" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tolschina_pugovitsy" caption="Толщина пуговицы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-483704240" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="funktsiya_dvoinogo_uzla" caption="Функция двойного узла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1729320693" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="primenimye_pugovitsy" caption="Применимые пуговицы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="510988794" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_dvigatelya" caption="Тип двигателя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="522491894" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120013-->
+
+<!--START_p120014-->
+<item name="p120014" caption="Плоскошовные швейные машины JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1137" ag-hash="2066646580">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasstoyanie_megdu_iglami" caption="Расстояние между иглами" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2082628245" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="privod" caption="Привод" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-979975996" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_platformy" caption="Тип платформы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904567358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_smescheniya" caption="Длина смещения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="170759088" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_dvigatelya" caption="Тип двигателя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="522491894" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_upravleniya" caption="Тип управления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-12369916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vylet_rukava" caption="Вылет рукава" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-157687573" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_transporta_tkani" caption="Тип транспорта ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-614826366" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_stegka" caption="Тип стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1612437373" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maslyanyi_karter" caption="Масляный картер" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1067150491" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120014-->
+
+<!--START_p120015-->
+<item name="p120015" caption="Закрепочные промышленные швейные машины JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1138" ag-hash="2066646581">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="yazyki_interfeisa" caption="Языки интерфейса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-416484202" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vvod___vyvod_dannyh" caption="Ввод / вывод данных" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-539454323" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stegok" caption="Стежок" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-892375073" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="panel_upravleniya" caption="Панель управления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1697756141" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="niteprityagivatel" caption="Нитепритягиватель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-26805267" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="smazka" caption="Смазка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-898940759" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kategoriya" caption="Категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-275590802" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="natyagenie_niti" caption="Натяжение нити" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="567448076" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_podema" caption="Механизм подъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1523433900" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_obrezki" caption="Длина обрезки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-880883865" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pamyat" caption="Память" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-995554224" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_vstroennyh_shablonov_shitya" caption="Количество встроенных шаблонов шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1363438116" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ploschad_shitya" caption="Площадь шитья" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2028972351" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="schetchiki" caption="Счетчики" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-245729637" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_stegkov" caption="Количество стежков" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1161679913" description="стежков/шаблон" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_tsiklichnyh_programm" caption="Количество цикличных программ" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-898245132" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_podachi" caption="Механизм подачи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="18060904" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_chelnoka" caption="Размер челнока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1916980499" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_stegka" caption="Тип стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1612437373" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_pamyati" caption="Объем памяти" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="884485013" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120015-->
+
+<!--START_p120016-->
+<item name="p120016" caption="Пуговичные промышленные швейные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1139" ag-hash="2066646582">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie" caption="Напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1451382223" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_pugovits" caption="Диаметр пуговиц" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1083145044" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pugovitsy" caption="Пуговицы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1687562426" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_stegkov" caption="Количество стежков" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1161679913" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120016-->
+
+<!--START_p120017-->
+<item name="p120017" caption="Промышленные швейные машины для тяжёлых материалов JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1140" ag-hash="2066646583">
+	<parameter name="tip_prodvigeniya" caption="Тип продвижения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="815865295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vylet_rukava" caption="Вылет рукава" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-157687573" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_vrascheniya_motora" caption="Скорость вращения мотора" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1249219744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie" caption="Напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1451382223" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="otklonenie_igly" caption="Отклонение иглы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1258611424" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="regulirovka_davleniya_lapki_na_tkan" caption="Регулировка давления лапки на ткань" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1327518510" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_chelnoka" caption="Тип челнока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-806458425" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pozitsionirovanie_igly" caption="Позиционирование иглы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2075962314" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120017-->
+
+<!--START_p120018-->
+<item name="p120018" caption="Одноголовочные вышивальные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1141" ag-hash="2066646584"></item>
+<!--END_p120018-->
+
+<!--START_p120019-->
+<item name="p120019" caption="Многоголовочные вышивальные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1142" ag-hash="2066646585"></item>
+<!--END_p120019-->
+
+<!--START_p120021-->
+<item name="p120021" caption="Промышленные прямострочные швейные машины JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1143" ag-hash="2066646608">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="funktsiya_plavnogo_starta" caption="Функция плавного старта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-920795189" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="raspologenie_chelnoka" caption="Расположение челнока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-106253700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maslyanyi_karter" caption="Масляный картер" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1067150491" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="hod_igly" caption="Ход иглы" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-748778003" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_dvigatelya" caption="Тип двигателя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="522491894" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_upravleniya" caption="Тип управления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-12369916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vylet_rukava" caption="Вылет рукава" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-157687573" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_chelnoka" caption="Размер челнока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1916980499" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_transporta_tkani" caption="Тип транспорта ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-614826366" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_transportera_tkani" caption="Тип транспортера ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1962326645" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_smazki" caption="Тип смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1605871829" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prodvigenie_materiala" caption="Продвижение материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-939485571" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="hod_iglovoditelya" caption="Ход игловодителя" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-324324446" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_prodvigeniya" caption="Тип продвижения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="815865295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obrezka_kraya_materiala" caption="Обрезка края материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2079072392" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="funktsionalnye_knopki_v_zone_iglovoditelya" caption="Функциональные кнопки (в зоне игловодителя)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-936417814" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="niteprityagivatel" caption="Нитепритягиватель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-26805267" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki_rukoi_avto_kolenopriemnikom" caption="Высота подъема лапки рукой/авто/коленоприемником" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="178815761" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="transporter_tkani" caption="Транспортер ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1440742428" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="privod" caption="Привод" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-979975996" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chelnok" caption="Челнок" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="742585214" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vyota_podema_lapki" caption="Выота подъема лапки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="533122452" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120021-->
+
+<!--START_p120025-->
+<item name="p120025" caption="Промышленные стачивающе-обмёточные оверлоки JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1144" ag-hash="2066646612">
+	<parameter name="tipy_tkani" caption="Типы ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1654680636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_obmetki" caption="Ширина обметки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1046749210" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasstoyanie_megdu_iglami" caption="Расстояние между иглами" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="2082628245" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_platformy" caption="Тип платформы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904567358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_stola" caption="Тип стола" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1749091457" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_prodvigeniya" caption="Тип продвижения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="815865295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_smazki" caption="Тип смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1605871829" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stegok" caption="Стежок" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-892375073" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="hod_iglovoditelya" caption="Ход игловодителя" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-324324446" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vyota_podema_lapki" caption="Выота подъема лапки" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="533122452" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sposob_regulirovki_dif._prodvigeniya" caption="Способ регулировки диф. продвижения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="37371084" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sposob_regulirovki_stegka" caption="Способ регулировки стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1827895862" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_dvigatelya" caption="Тип двигателя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="522491894" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_upravleniya" caption="Тип управления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-12369916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_stegka" caption="Тип стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1612437373" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_transportera_tkani" caption="Тип транспортера ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1962326645" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_smescheniya" caption="Длина смещения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="170759088" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_transporta_tkani" caption="Тип транспорта ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-614826366" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120025-->
+
+<!--START_p120027-->
+<item name="p120027" caption="Промышленные петельные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1145" ag-hash="2066646614">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_petli" caption="Длина петли" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1591158065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_petli" caption="Ширина петли" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175348283" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_petli" caption="Тип петли" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1752304072" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_platformy" caption="Тип платформы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904567358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie" caption="Напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1451382223" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost" caption="Скорость" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2141922571" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_stegka" caption="Тип стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1612437373" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120027-->
+
+<!--START_p120028-->
+<item name="p120028" caption="Промышленные петельные машины  JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1146" ag-hash="2066646615">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prodvigenie_materiala" caption="Продвижение материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-939485571" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kategoriya" caption="Категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-275590802" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_prishivaniya_pugovitsy" caption="Тип пришивания пуговицы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1548142662" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="regim_strochki" caption="Режим строчки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1286851976" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="forma_petli" caption="Форма петли" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="872650810" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tolschina_materiala" caption="Толщина материала" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1490134608" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shag_stegka" caption="Шаг стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2041001251" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="katushka_dlya_namotki_niti" caption="Катушка для намотки нити" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1528727268" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskii_podem_lapki" caption="Автоматический подъем лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1800186265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="regim_prorezki_tkani" caption="Режим прорезки ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1430461733" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_nakovalni" caption="Длина наковальни" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1991445382" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obrezka_nignei_niti" caption="Обрезка нижней нити" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-639711340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obrezka_verhnei_niti" caption="Обрезка верхней нити" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="890415095" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_petli" caption="Длина петли" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1591158065" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_petli" caption="Ширина петли" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175348283" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_stegkov" caption="Количество стежков" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1161679913" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="natyagenie_niti" caption="Натяжение нити" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="567448076" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_stegka" caption="Тип стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1612437373" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="yazyki_interfeisa" caption="Языки интерфейса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-416484202" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_gotovyh_shablonov_petel" caption="Количество готовых шаблонов петель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1770031296" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_pamyati" caption="Объем памяти" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="884485013" description="шаблонов" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vvod___vyvod_dannyh" caption="Ввод / вывод данных" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-539454323" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_konicheskoi_zakrepki" caption="Длина конической закрепки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="804685582" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_zakrepki_krome_konicheskoi" caption="Длина закрепки (кроме конической)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2131545911" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_zakruglennoi_zakrepki" caption="Длина закругленной закрепки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2012295096" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_stegkov_dlya_vypolneniya_zakruglennoi_zakrepki" caption="Количество стежков для выполнения закругленной закрепки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2226351" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_podachi" caption="Механизм подачи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="18060904" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="privod_noga_dlya_prorezki_tkani" caption="Привод ножа для прорезки ткани" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="83370116" description="-х шаговый соленоид" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="privod_igovoditelya" caption="Привод иговодителя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="123971023" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="panel_upravleniya" caption="Панель управления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1697756141" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obrezka_verhnei_nignei_niti" caption="Обрезка верхней/нижней нити" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2003661406" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_zigzaga" caption="Ширина зигзага" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="321326840" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_glazka" caption="Длина глазка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1829509631" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_stegkov_dlya_vypolneniya_glazka" caption="Количество стежков для выполнения глазка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="969368040" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shit" caption="Скорость шить" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1009207626" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vstroennyi_svetilnik" caption="Встроенный светильник" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1956350365" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_operatsii" caption="Количество операций" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="247310828" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_petli" caption="Тип петли" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1752304072" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="hod_iglovoditelya" caption="Ход игловодителя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-324324446" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_vrascheniya_motora" caption="Скорость вращения мотора" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1249219744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="otklonenie_igly" caption="Отклонение иглы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1258611424" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_platformy" caption="Тип платформы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904567358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="privod" caption="Привод" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-979975996" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_noga" caption="Длина ножа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-87270042" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_dvigatelya" caption="Тип двигателя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="522491894" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120028-->
+
+<!--START_p120030-->
+<item name="p120030" caption="Промышленные прямострочные швейные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1147" ag-hash="2066646638">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prodvigenie_materiala" caption="Продвижение материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-939485571" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie" caption="Напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1451382223" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chelnok" caption="Челнок" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="742585214" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="servomotor" caption="Сервомотор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1543435012" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_prodvigeniya" caption="Тип продвижения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="815865295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vstroennyi_svetilnik" caption="Встроенный светильник" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1956350365" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_chelnoka" caption="Тип челнока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-806458425" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_platformy" caption="Тип платформы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904567358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="transporter_tkani" caption="Транспортер ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1440742428" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pozitsionirovanie_igly" caption="Позиционирование иглы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2075962314" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_stegka" caption="Тип стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1612437373" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki_rukoi_kolenopriemnikom" caption="Высота подъема лапки рукой/коленоприемником" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-742051336" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shit" caption="Скорость шить" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1009207626" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vylet_rukava" caption="Вылет рукава" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-157687573" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120030-->
+
+<!--START_p120032-->
+<item name="p120032" caption="Пресс для установки фурнитуры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1148" ag-hash="2066646640">
+	<parameter name="pitanie" caption="Питание" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-562614748" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="velichina_hoda_proboinika" caption="Величина хода пробойника" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1609817017" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chislo_oborotov_glavnogo_vala" caption="Число оборотов главного вала" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1151866708" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120032-->
+
+<!--START_p120033-->
+<item name="p120033" caption="Промышленные стачивающе-обмёточные оверлоки GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1149" ag-hash="2066646641">
+	<parameter name="tipy_tkani" caption="Типы ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1654680636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_obmetki" caption="Ширина обметки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1046749210" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasstoyanie_megdu_iglami" caption="Расстояние между иглами" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2082628245" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prodvigenie_materiala" caption="Продвижение материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-939485571" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120033-->
+
+<!--START_p120039-->
+<item name="p120039" caption="Промышленные обмёточные оверлоки JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1150" ag-hash="2066646647">
+	<parameter name="tipy_tkani" caption="Типы ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1654680636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_platformy" caption="Тип платформы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904567358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_obmetki" caption="Ширина обметки" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1046749210" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="stegok" caption="Стежок" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-892375073" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="koeffitsient_izmeneniya_dliny_hoda_zubchatoi_reiki" caption="Коэффициент изменения длины хода зубчатой рейки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-238118900" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="hod_iglovoditelya" caption="Ход игловодителя" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-324324446" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehanizm_obrezki_kraya_materiala" caption="Механизм обрезки края материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-707787120" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_smazki" caption="Тип смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1605871829" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vid_overloka" caption="Вид оверлока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="794387803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_smescheniya" caption="Длина смещения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="170759088" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_dvigatelya" caption="Тип двигателя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="522491894" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_upravleniya" caption="Тип управления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-12369916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_transporta_tkani" caption="Тип транспорта ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-614826366" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_stegka" caption="Тип стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1612437373" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_transportera_tkani" caption="Тип транспортера ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1962326645" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120039-->
+
+<!--START_p120040-->
+<item name="p120040" caption="Плоскошовные швейные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1151" ag-hash="2066646669">
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_vrascheniya_motora" caption="Скорость вращения мотора" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1249219744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="regulirovka_skorosti" caption="Регулировка скорости" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="699581570" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasstoyanie_megdu_krainimi_iglami" caption="Расстояние между крайними иглами" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1748193666" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_platformy" caption="Тип платформы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904567358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie" caption="Напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1451382223" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120040-->
+
+<!--START_p120041-->
+<item name="p120041" caption="Промышленные швейные машины для тяжёлых материалов GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1152" ag-hash="2066646670">
+	<parameter name="tip_prodvigeniya" caption="Тип продвижения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="815865295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_platformy" caption="Тип платформы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904567358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_motora" caption="Тип мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1436499632" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_vrascheniya_motora" caption="Скорость вращения мотора" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1249219744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prodvigenie_materiala" caption="Продвижение материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-939485571" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie" caption="Напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1451382223" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chelnok" caption="Челнок" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="742585214" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tipy_chelnochnogo_ustroistva" caption="Типы челночного устройства" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1538062875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki_rukoi_kolenopriemnikom" caption="Высота подъема лапки рукой/коленоприемником" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-742051336" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120041-->
+
+<!--START_p120042-->
+<item name="p120042" caption="Промышленные обмёточные оверлоки GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1153" ag-hash="2066646671">
+	<parameter name="tipy_tkani" caption="Типы ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1654680636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_obmetki" caption="Ширина обметки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1046749210" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="стежков/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_stegka" caption="Длина стежка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p120042-->
 <!--EXP--></model>

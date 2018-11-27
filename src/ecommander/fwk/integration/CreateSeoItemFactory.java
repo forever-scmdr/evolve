@@ -48,7 +48,7 @@ public class CreateSeoItemFactory implements ItemEventCommandFactory {
 			}
 			executeCommand(ItemStatusDBUnit.delete(seo));
 			executeCommand(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
-			seo.setId(newSeoId); // это надо для того, чтобы в админке был переход на страницу внов созданного айтема seo
+			seo.setId(newSeoId); // это надо для того, чтобы в админке был переход на страницу вновь созданного айтема seo
 		}
 	}
 

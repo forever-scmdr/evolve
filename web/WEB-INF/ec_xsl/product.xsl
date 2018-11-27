@@ -14,6 +14,7 @@
 
 
 	<xsl:variable name="p" select="page/product"/>
+	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -51,7 +52,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a>
+				<a href="{$main_host}">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
 					<a href="{show_products}"><xsl:value-of select="name"/></a>
@@ -79,85 +80,93 @@
 				</xsl:for-each>
 
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
-				<div class="device-page__actions">
-					<xsl:if test="$has_price">
-						<div class="device__price device__price_device-page">
-							<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$p/price_old"/> руб.</span></div></xsl:if>
-							<div class="price_normal"><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</div>
+
+				<xsl:if test="not($has_lines)">
+					<div class="device-page__actions">
+						<xsl:if test="$has_price">
+							<div class="device__price device__price_device-page">
+								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$p/price_old"/> руб.</span></div></xsl:if>
+								<div class="price_normal"><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</div>
+							</div>
+						</xsl:if>
+						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
+							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+								<xsl:if test="$has_price">
+									<input type="number" class="text-input" name="qty" value="1" min="0" />
+									<input type="submit" class="button" value="Заказать" />
+								</xsl:if>
+								<xsl:if test="not($has_price)">
+									<input type="number" class="text-input" name="qty" value="1" min="0" />
+									<input type="submit" class="button" value="Запросить цену" />
+								</xsl:if>
+							</form>
 						</div>
-					</xsl:if>
+						<div class="device__actions device__actions_device-page">
+							<div id="compare_list_{$p/@id}">
+								<a href="{$p/to_compare}" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
+									<i class="fas fa-balance-scale"></i>сравнить
+								</a>
+							</div>
+							<div id="fav_list_{$p/@id}">
+								<a href="{$p/to_fav}" class="device__action-link icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
+									<i class="fas fa-star"></i>отложить
+								</a>
+							</div>
+						</div>
+						<xsl:choose>
+							<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
+							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
+						</xsl:choose>
+					</div>
+				</xsl:if>
 
-					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
-					<div id="cart_list_{replace($p/code, '[)()]', '-')}" class="device__order device__order_device-page product_purchase_container">
-						<form action="{$p/to_cart}" method="post" ajax="true">
-							<xsl:if test="$has_price">
-								<input type="number" class="text-input" name="qty" value="1" min="0" />
-								<input type="submit" class="button" value="Заказать" />
-							</xsl:if>
-							<xsl:if test="not($has_price)">
-								<input type="number" class="text-input" name="qty" value="1" min="0" />
-								<input type="submit" class="button" value="Запросить цену" />
-							</xsl:if>
-						</form>
-					</div>
-					<div class="device__actions device__actions_device-page">
-						<a href="" class="device__action-link icon-link"><i class="fas fa-balance-scale"></i>сравнить</a>
-						<a href="" class="device__action-link icon-link"><i class="fas fa-star"></i>отложить</a>
-					</div>
-					<xsl:choose>
-						<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
-						<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
-					</xsl:choose>
-				</div>
-				<div class="multi-device">
-					<div style="padding-left: 0;">Размер</div>
-					<div>Цена</div>
-					<div></div>
+				<xsl:if test="$has_lines">
+					<div class="multi-device">
+						<div style="padding-left: 0;">Размер</div>
+						<div>Цена</div>
+						<div></div>
 
-					<div class="multi-device__name">P318L1/8 - 3,2 мм</div>
-					<div class="multi-device__price">
-						<div class="multi-device__price_old">1 р. 50 коп.</div>
-						<div class="multi-device__price_new">1 р. 20 коп.</div>
-					</div>
-					<div class="multi-device__actions">
-						<input type="number" class="text-input" name="qty" value="1" min="0" />
-						<input type="submit" class="button" value="Заказать" />
-					</div>
+						<xsl:for-each select="$p/line_product">
+							<xsl:variable name="has_price" select="price and price != '0'"/>
+							<div class="multi-device__name"><xsl:value-of select="name" /></div>
+							<div class="multi-device__price">
+								<xsl:if test="$has_price">
+									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="price_old"/> руб.</div></xsl:if>
+									<div class="multi-device__price_new"><xsl:value-of select="if (price) then price else '0'"/></div>
+								</xsl:if>
+								<xsl:if test="not($has_price)">
+									<div class="multi-device__price_new">по запросу</div>
+								</xsl:if>
+							</div>
+							<div class="multi-device__actions" id="cart_list_{@id}">
+								<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
+									<xsl:if test="$has_price">
+										<input type="number" class="text-input" name="qty" value="1" min="0" />
+										<input type="submit" class="button" value="Заказать" />
+									</xsl:if>
+									<xsl:if test="not($has_price)">
+										<input type="number" class="text-input" name="qty" value="1" min="0" />
+										<input type="submit" class="button" value="Запросить цену" />
+									</xsl:if>
+								</form>
+							</div>
+						</xsl:for-each>
 
-					<div class="multi-device__name">P318L1/8 - 3,2 мм</div>
-					<div class="multi-device__price">
-						<div class="multi-device__price_old">1 р. 50 коп.</div>
-						<div class="multi-device__price_new">1 р. 20 коп.</div>
 					</div>
-					<div class="multi-device__actions">
-						<input type="number" class="text-input" name="qty" value="1" min="0" />
-						<input type="submit" class="button" value="Заказать" />
+					<div class="multi-device__links">
+						<div id="compare_list_{$p/@id}">
+							<a href="{$p/to_compare}" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
+								<i class="fas fa-balance-scale"></i>сравнить
+							</a>
+						</div>
+						<div id="fav_list_{$p/@id}">
+							<a href="{$p/to_fav}" class="device__action-link icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
+								<i class="fas fa-star"></i>отложить
+							</a>
+						</div>
 					</div>
+				</xsl:if>
 
-					<div class="multi-device__name">P318L1/8 - 3,2 мм</div>
-					<div class="multi-device__price">
-						<div class="multi-device__price_old">1 р. 50 коп.</div>
-						<div class="multi-device__price_new">1 р. 20 коп.</div>
-					</div>
-					<div class="multi-device__actions">
-						<input type="number" class="text-input" name="qty" value="1" min="0" />
-						<input type="submit" class="button" value="Заказать" />
-					</div>
-
-					<div class="multi-device__name">P318L1/8 - 3,2 мм</div>
-					<div class="multi-device__price">
-						<div class="multi-device__price_old">1 р. 50 коп.</div>
-						<div class="multi-device__price_new">1 р. 20 коп.</div>
-					</div>
-					<div class="multi-device__actions">
-						<input type="number" class="text-input" name="qty" value="1" min="0" />
-						<input type="submit" class="button" value="Заказать" />
-					</div>
-				</div>
-				<div class="multi-device__links">
-					<a href="" class="device__action-link icon-link"><i class="fas fa-balance-scale"></i>сравнить</a>
-					<a href="" class="device__action-link icon-link"><i class="fas fa-star"></i>отложить</a>
-				</div>
 				<div class="device-benefits">
 					<div class="device-benefits__item">
 						<i class="fas fa-shield-alt device-benefits__icon"></i>
@@ -192,75 +201,6 @@
 				<div class="extra-info">
 					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 				</div>
-								
-				<!-- new html end -->
-				
-
-				<!-- <xsl:for-each select="$p/tag">
-					<div class="tag-container">
-						<div class="device__tag"><xsl:value-of select="." /></div>
-					</div>
-				</xsl:for-each>
-				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
-				<div class="price-etc">
-					<xsl:if test="$has_price">
-						<div class="price">
-							<div class="price_old">
-								<span class="marked">Старая цена</span>
-								<span class="lthrough"><span>100 руб.</span></span>
-							</div>
-							<div class="price_normal">
-								<span class="marked">Цена</span>
-								<p>
-									<xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.
-								</p>
-							</div>
-
-						</div>
-					</xsl:if>
-					<div class="order">
-						<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
-						<div id="cart_list_{replace($p/code, '[)()]', '-')}" class="product_purchase_container">
-							<form action="{$p/to_cart}" method="post" ajax="true">
-								<xsl:if test="$has_price">
-									<input type="number" name="qty" value="1" min="0"/>
-									<input type="submit" value="Заказать"/>
-								</xsl:if>
-								<xsl:if test="not($has_price)">
-									<input type="number" name="qty" value="1" min="0"/>
-									<input type="submit" class="button not_available" value="Запросить цену"/>
-								</xsl:if>
-							</form>
-						</div>
-					</div>
-					<div class="links">
-						<div id="compare_list_{$p/code}">
-							<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">сравнить</a></span>
-						</div>
-						<div id="fav_list_{$p/code}">
-							<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/code}">отложить</a></span>
-						</div>
-					</div>
-					<xsl:choose>
-						<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
-						<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
-					</xsl:choose>
-				</div>
-				<div class="info-blocks">
-					<div class="info-block">
-						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
-					</div>
-
-					<div class="info-block">
-						<h4>Рассрочка от 3 до 12 месяцев</h4>
-						<p><a href="">Условия рассрочки</a></p>
-					</div>
-					<div class="info-block">
-						<h4>Бесплатная доставка по Минску</h4>
-						<p>При сумме заказа до 100 рублей, доставка — 5 рублей.</p>
-					</div>
-
-				</div> -->
 			</div>
 			<div class="description">
 
@@ -270,13 +210,6 @@
 							<li role="presentation" class="active">
 								<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
 							</li>
-							</xsl:if>
-							<xsl:if test="$p/product">
-								<li role="presentation" class="{'active'[not($p/params)]}">
-									<a href="#tab2" role="tab" data-toggle="tab">
-										Другие расцветки
-									</a>
-								</li>
 							</xsl:if>
 							<xsl:for-each select="$p/product_extra">
 								<li role="presentation">

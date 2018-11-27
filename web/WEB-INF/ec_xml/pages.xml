@@ -132,7 +132,7 @@
 			<link name="canonical_link" target="section" type="exclusive">
 				<var name="sec" item="cur_sec" style="translit"/>
 			</link>
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" transit="true">
 				<filter>
 					<child item="params" transit="false"
@@ -236,6 +236,8 @@
 		<include name="COMMON"/>
 	</page>
 
+
+
 	<page name="search" template="search">
 		<request>
 			<var name="q"/>
@@ -286,6 +288,7 @@
 	</page>
 
 
+
 	<page name="product" template="product" cacheable="false">
 		<request>
 			<var name="prod" style="translit"/>
@@ -294,7 +297,7 @@
 			<link name="canonical_link" target="product" type="exclusive">
 				<var name="prod" item="prod" style="translit"/>
 			</link>
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 			<single item="params"/>
 			<single item="product_extra"/>
 			<ancestor item="section" transit="false" tag="product_section"/>
@@ -314,6 +317,14 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
+
+			<list item="line_product" id="lprod">
+				<link name="to_cart" target="cart_action">
+					<var name="action" value="addToCart"/>
+					<var name="code" ref="lprod" parameter="code"/>
+				</link>
+			</list>
+
 		</single>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
@@ -325,6 +336,7 @@
 		</list>
 		<include name="COMMON"/>
 	</page>
+
 
 
 	<page name="news" template="news" cacheable="false">
@@ -513,6 +525,11 @@
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
 					<list item="abstract_product" id="prod" tag="product">
+						<single item="product" id="parent">
+							<link name="show_product" target="product" type="exclusive">
+								<var name="prod" ref="parent" style="translit"/>
+							</link>
+						</single>
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="translit"/>
 						</link>

@@ -42,6 +42,7 @@
 		<parameter name="bottom_text" caption="текст снизу" type="text"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<parameter name="extra_style" type="plain-text" caption="Код дополнительных стилей" description="вставляется в head, тэг style писать не надо"/>
+		<on-create class="ecommander.fwk.integration.CreateSeoItemFactory"/>
 	</item>
 
 	<item name="url_seo" key="name" caption="SEO" ag-id="816" ag-hash="-169844339">
@@ -163,7 +164,7 @@
 
 	<!--Обычный товар или товар, который содержит другие товары-->
 	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true"
-	      default-page="product * seo_container" super="described_product" ag-id="6" ag-hash="-309474065">
+	      default-page="product" super="described_product * seo_container" ag-id="6" ag-hash="-309474065">
 		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
 		<child item="line_product"/>
 	</item>

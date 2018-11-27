@@ -24,10 +24,20 @@
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal($p/price), ' p.') else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' p.') else ''"/>
 							<div class="item">
-								<a href="{$p/show_product}" class="image-container">
-									<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
-								</a>
-								<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
+								<xsl:if test="not($p/product)">
+									<a href="{$p/show_product}" class="image-container">
+										<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
+									</a>
+									<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
+								</xsl:if>
+								<xsl:if test="$p/product">
+									<a href="{$p/product/show_product}" class="image-container">
+										<img src="{$p/product/@path}{$p/product/main_pic}" alt="{$p/name}"/>
+									</a>
+									<a href="{$p/product/show_product}" class="title">
+										<xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)
+									</a>
+								</xsl:if>
 								<div class="price one">
 									<p>
 										<span>Цена</span>

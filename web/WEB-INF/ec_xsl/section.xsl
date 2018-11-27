@@ -69,7 +69,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a>
+				<a href="{$main_host}">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}">
@@ -151,25 +151,25 @@
 
 	<xsl:template name="TAGS">
 	   <xsl:if test="$subs or $sel_sec/tag">
-				<xsl:if test="not($subs)">
+			<xsl:if test="not($subs)">
+				<div class="tags">
+					<form method="GET" action="{page/source_link}">
+						<xsl:apply-templates select="$sel_sec/tag"/>
+					</form>
+				</div>
+			</xsl:if>
+			<xsl:if test="not($sel_sec/show_subs = '0')">
+				<xsl:if test="$subs and $sub_view = 'tags'">
 					<div class="tags">
-						<form method="GET" action="{page/source_link}">
-							<xsl:apply-templates select="$sel_sec/tag"/>
-						</form>
+						<xsl:apply-templates select="$subs" mode="tag"/>
 					</div>
 				</xsl:if>
-				<xsl:if test="not($sel_sec/show_subs = '0')">
-					<xsl:if test="$subs and $sub_view = 'tags'">
-						<div class="tags">
-							<xsl:apply-templates select="$subs" mode="tag"/>
-						</div>
-					</xsl:if>
-					<xsl:if test="$subs and $sub_view = 'pics'">
-						<div class="catalog-items">
-							<xsl:apply-templates select="$subs" mode="pic"/>
-						</div>
-					</xsl:if>
+				<xsl:if test="$subs and $sub_view = 'pics'">
+					<div class="catalog-items">
+						<xsl:apply-templates select="$subs" mode="pic"/>
+					</div>
 				</xsl:if>
+			</xsl:if>
 		</xsl:if>
 	</xsl:template>
 
@@ -275,7 +275,7 @@
 
 	<xsl:template match="section" mode="pic">
 		<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
-		<xsl:variable name="product_pic" select="if (product/small_pic != '') then concat(product/@path, product/small_pic) else ''"/>
+		<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
 		<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 		<div class="device items-catalog__section">
 			<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
