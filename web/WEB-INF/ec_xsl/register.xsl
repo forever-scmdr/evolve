@@ -50,7 +50,7 @@
 							<label>Пароль:</label>
 							<input type="password" class="form-control" name="password"/>
 						</div>
-						<input type="submit" value="Войти"/>
+						<input type="submit" class="button" value="Войти"/>
 					</form>
 				</div>
 
@@ -65,7 +65,7 @@
 							<label>Пароль:</label>
 							<input type="text" class="form-control" name="{$inp/password/@input}" value="{$inp/password}" error="{$inp/password/@validation-error}"/>
 						</div>
-						<input type="submit" value="Отправить анкету"/>
+						<input type="submit" class="button" value="Отправить анкету"/>
 					</form>
 				</div>
 
@@ -80,7 +80,7 @@
 							<label>Пароль:</label>
 							<input type="text" class="form-control" name="{$inp/password/@input}" value="{$inp/password}" error="{$inp/password/@validation-error}"/>
 						</div>
-						<input type="submit" value="Отправить анкету"/>
+						<input type="submit" class="button" value="Отправить анкету"/>
 					</form>
 				</div>
 			</div>

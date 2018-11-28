@@ -692,6 +692,9 @@
 					<var var="favourites"/>
 				</parameter>
 			</filter>
+			<link name="show_product" target="product">
+				<var name="prod" ref="prod" style="translit"/>
+			</link>
 			<link name="from_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
@@ -761,7 +764,7 @@
 		</request>
 		<link name="submit_login" target="register_action">
 			<var name="action" value="login"/>
-			<var name="src" value="register"/>
+			<var name="src" value="personal"/>
 		</link>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="register"/>
@@ -794,7 +797,7 @@
 		<link name="login" target-var="src">
 			<var name="success" value="true"/>
 		</link>
-		<link name="login_error" target-var="src">
+		<link name="login_error" target="register">
 			<var name="message" value="Неверные логин/пароль"/>
 			<var name="success" value="false"/>
 			<var name="login" value="true"/>

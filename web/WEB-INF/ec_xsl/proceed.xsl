@@ -6,6 +6,8 @@
 	<xsl:variable name="title" select="'Оформление заявки'"/>
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="is_jur" select="page/user_jur//@validation-error"/>
+	<xsl:variable name="phys_reg" select="page/phys"/>
+	<xsl:variable name="jur_reg" select="page/jur"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -37,12 +39,12 @@
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
 						<div class="form-group">
-							<label>Ваше имя:</label>
-							<input type="text" class="form-control" name="{$inp/name/@input}" value="{$inp/name}" error="{$inp/name/@validation-error}"/>
+							<label>Ваше имя *:</label>
+							<input type="text" class="form-control" name="{$inp/name/@input}" value="{if($inp/name != '') then $inp/name else $phys_reg/name}" error="{$inp/name/@validation-error}"/>
 						</div>
 						<div class="form-group">
 							<label for="">Адрес:</label>
-							<input type="text" class="form-control" name="{$inp/address/@input}" value="{$inp/address}" error="{$inp/address/@validation-error}"/>
+							<input type="text" class="form-control" name="{$inp/address/@input}" value="{if($inp/address != '') then $inp/address else $phys_reg/address}" error="{$inp/address/@validation-error}"/>
 						</div>
 						<!-- <div class="form-group">
 							<label>Способ доставки <a href="">Подробнее об условиях доставки</a></label>
@@ -55,12 +57,12 @@
 							</select>
 						</div> -->
 						<div class="form-group">
-							<label>Телефон:</label>
-							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}" error="{$inp/phone/@validation-error}"/>
+							<label>Телефон *:</label>
+							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{if($inp/phone != '') then $inp/phone else $phys_reg/phone}" error="{$inp/phone/@validation-error}"/>
 						</div>
 						<div class="form-group">
 							<label>Электронная почта:</label>
-							<input type="text" class="form-control" name="{$inp/email/@input}" value="{$inp/email}" error="{$inp/email/@validation-error}"/>
+							<input type="text" class="form-control" name="{$inp/email/@input}" value="{if($inp/email != '') then $inp/email else $phys_reg/email}" error="{$inp/email/@validation-error}"/>
 						</div>
 						<div class="form-group">
 							<label>Комментарий:</label>
@@ -73,7 +75,7 @@
 							</label>
 						</div>
 						-->
-						<input type="submit" value="Отправить заявку"/>
+						<input type="submit" class="button" value="Отправить заявку"/>
 					</form>
 				</div>
 
@@ -83,13 +85,13 @@
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
 						<xsl:variable name="inp" select="page/user_jur/input"/>
 						<div class="form-group">
-							<label>Наименование организации:</label>
+							<label>Наименование организации *:</label>
 							<input type="text" class="form-control" name="{$inp/organization/@input}"
-							       value="{$inp/organization}" error="{$inp/organization/@validation-error}"/>
+							       value="{if($inp/organization != '') then $inp/organization else $jur_reg/organization}" error="{$inp/organization/@validation-error}"/>
 						</div>
 						<div class="form-group">
-							<label for="">Телефон/факс:</label>
-							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}"/>
+							<label for="">Телефон/факс *:</label>
+							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{if($inp/phone != '') then $inp/phone else $jur_reg/phone}"/>
 						</div>
 						<!-- <div class="form-group">
 							<label>Способ доставки <a href="">Подробнее об условиях доставки</a></label>
@@ -103,43 +105,43 @@
 						</div> -->
 						<div class="form-group">
 							<label>E-mail:</label>
-							<input type="text" class="form-control" name="{$inp/email/@input}" value="{$inp/email}"/>
+							<input type="text" class="form-control" name="{$inp/email/@input}" value="{if($inp/email != '') then $inp/email else $jur_reg/email}"/>
 						</div>
 						<div class="form-group">
-							<label>Контактное лицо:</label>
-							<input type="text" class="form-control" name="{$inp/contact_name/@input}" value="{$inp/contact_name}"/>
+							<label>Контактное лицо *:</label>
+							<input type="text" class="form-control" name="{$inp/contact_name/@input}" value="{if($inp/contact_name != '') then $inp/contact_name else $jur_reg/contact_name}"/>
 						</div>
 						<div class="form-group">
 							<label>Телефон контактного лица:</label>
-							<input type="text" class="form-control" name="{$inp/contact_phone/@input}" value="{$inp/contact_phone}"/>
+							<input type="text" class="form-control" name="{$inp/contact_phone/@input}" value="{if($inp/contact_phone != '') then $inp/contact_phone else $jur_reg/contact_phone}"/>
 						</div>
 						<div class="form-group">
 							<label>Юридический адрес:</label>
-							<input type="text" class="form-control" name="{$inp/address/@input}" value="{$inp/address}"/>
+							<input type="text" class="form-control" name="{$inp/address/@input}" value="{if($inp/address != '') then $inp/address else $jur_reg/address}"/>
 						</div>
 						<div class="form-group">
 							<label>Расчетный счет:</label>
-							<input type="text" class="form-control" name="{$inp/account/@input}" value="{$inp/account}"/>
+							<input type="text" class="form-control" name="{$inp/account/@input}" value="{if($inp/account != '') then $inp/account else $jur_reg/account}"/>
 						</div>
 						<div class="form-group">
 							<label>Название банка:</label>
-							<input type="text" class="form-control" name="{$inp/bank/@input}" value="{$inp/bank}"/>
+							<input type="text" class="form-control" name="{$inp/bank/@input}" value="{if($inp/bank != '') then $inp/bank else $jur_reg/bank}"/>
 						</div>
 						<div class="form-group">
 							<label>Адрес банка:</label>
-							<input type="text" class="form-control" name="{$inp/bank_address/@input}" value="{$inp/bank_address}"/>
+							<input type="text" class="form-control" name="{$inp/bank_address/@input}" value="{if($inp/bank_address != '') then $inp/bank_address else $jur_reg/bank_address}"/>
 						</div>
 						<div class="form-group">
 							<label>Код банка:</label>
-							<input type="text" class="form-control" name="{$inp/bank_code/@input}" value="{$inp/bank_code}"/>
+							<input type="text" class="form-control" name="{$inp/bank_code/@input}" value="{if($inp/bank_code != '') then $inp/bank_code else $jur_reg/bank_code}"/>
 						</div>
 						<div class="form-group">
 							<label>УНП:</label>
-							<input type="text" class="form-control" name="{$inp/unp/@input}" value="{$inp/unp}"/>
+							<input type="text" class="form-control" name="{$inp/unp/@input}" value="{if($inp/unp != '') then $inp/unp else $jur_reg/unp}"/>
 						</div>
 						<div class="form-group">
 							<label>Ф.И.О директора:</label>
-							<input type="text" class="form-control" name="{$inp/director/@input}" value="{$inp/director}"/>
+							<input type="text" class="form-control" name="{$inp/director/@input}" value="{if($inp/director != '') then $inp/director else $jur_reg/director}"/>
 						</div>
 						<div class="form-group">
 							<label>Комментарий:</label>
@@ -152,7 +154,7 @@
 							</label>
 						</div>
 						-->
-						<input type="submit" value="Отправить заявку"/>
+						<input type="submit" class="button" value="Отправить заявку"/>
 					</form>
 				</div>
 			</div>
