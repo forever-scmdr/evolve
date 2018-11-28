@@ -883,6 +883,7 @@
 		</xsl:text> -->
 
 		<xsl:call-template name="MARKUP" />
+		<xsl:call-template name="PAGINATION_LINKS" />
 
 	</xsl:template>
 
@@ -895,6 +896,23 @@
 		<meta name="description" content="{description}"/>
 		<meta name="keywords" content="{keywords}"/>
 		<xsl:value-of select="meta" disable-output-escaping="yes"/>
+	</xsl:template>
+
+	<xsl:template name="PAGINATION_LINKS">
+		<xsl:variable name="pages" select="//*[ends-with(name(), '_pages')]"/>
+		<xsl:if test="$pages">
+			<xsl:variable name="current_page" select="number(page/variables/page)"/>
+
+			<xsl:variable name="prev" select="$pages/page[$current_page - 1]"/>
+			<xsl:variable name="next" select="$pages/page[$current_page]"/>
+
+			<xsl:if test="$prev">
+				<link rel="prev" href="{$prev/link}" />
+			</xsl:if>
+			<xsl:if test="$next">
+				<link rel="next" href="{$next/link}" />
+			</xsl:if>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>
