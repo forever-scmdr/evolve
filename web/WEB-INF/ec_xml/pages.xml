@@ -41,19 +41,19 @@
             <var name="q"/>
             <var name="view" value="table" scope="cookie"/>
         </request>
-        <list item="searchable" id="prod">
-            <filter>
-                <fulltext limit="48" compare="EVERY">
-                    <var var="q"/>
-                </fulltext>
-            </filter>
-            <link name="show_page" target="page" type="exclusive">
-                <var name="prod" ref="prod" style="translit"/>
-            </link>
-            <link name="show_news_item" target="news_item" type="exclusive">
-                <var name="prod" ref="prod" style="translit"/>
-            </link>
-        </list>
+        <!--<list item="searchable" id="prod">-->
+            <!--<filter>-->
+                <!--<fulltext limit="48" compare="EVERY">-->
+                    <!--<var var="q"/>-->
+                <!--</fulltext>-->
+            <!--</filter>-->
+            <!--<link name="show_page" target="custom_page" type="exclusive">-->
+                <!--<var name="prod" ref="prod" style="translit"/>-->
+            <!--</link>-->
+            <!--<link name="show_news_item" target="news_item" type="exclusive">-->
+                <!--<var name="prod" ref="prod" style="translit"/>-->
+            <!--</link>-->
+        <!--</list>-->
         <include name="COMMON"/>
     </page>
 
