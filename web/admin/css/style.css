@@ -1374,3 +1374,6 @@ h2.title {
 .selection-actions{
     display: none;
 }
+.pale{
+    opacity: .33;
+}

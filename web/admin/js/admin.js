@@ -322,6 +322,16 @@ $(document).on("click", ".selection-overlay", function (e) {
 	}else if(typeof v != "undefined"){
 		deselect();
 	}
+	if($("#multi-item-action-form-ids-buffer").val() != ''){
+   		$("#buffer-actions").removeClass("pale");
+	}else{
+        $("#buffer-actions").addClass("pale");
+	}
+    if($("#multi-item-action-form-ids").val() != ''){
+        $("#item-actions").removeClass("pale");
+    }else{
+        $("#item-actions").addClass("pale");
+    }
 
 	function select() {
         if(typeof v == "undefined" || v == ""){
@@ -340,9 +350,11 @@ $(document).on("click", ".selection-overlay", function (e) {
 
 function selectAll() {
 	$("#primary-item-list").find(".selection-overlay").not(".selected").trigger("click");
+    $("#item-actions").removeClass("pale");
 }
 function selectNone() {
     $("#primary-item-list").find(".selection-overlay.selected").trigger("click");
+    $("#item-actions").addClass("pale");
 }
 function invertSelection() {
     $("#primary-item-list").find(".selection-overlay").trigger("click");
@@ -351,6 +363,10 @@ function invertSelection() {
 //Highlights selected. Removes not found by id from inputs
 function highlightSelected(container, ipt) {
 	var $ipt = $(ipt);
+	var hId = ($ipt.attr("id") == "multi-item-action-form-ids")? "#item-actions" : "#buffer-actions";
+	if($ipt.val() != '') {
+        $(hId).removeClass("pale");
+    }
 	if(typeof $ipt.val() != "undefined"){
 		var arr1 = $ipt.val().split(",");
 		var clearedVal = $ipt.val();
