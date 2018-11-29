@@ -151,25 +151,25 @@
 
 	<xsl:template name="TAGS">
 	   <xsl:if test="$subs or $sel_sec/tag">
-			<xsl:if test="not($subs)">
-				<div class="tags">
-					<form method="GET" action="{page/source_link}">
-						<xsl:apply-templates select="$sel_sec/tag"/>
-					</form>
-				</div>
-			</xsl:if>
-			<xsl:if test="not($sel_sec/show_subs = '0')">
-				<xsl:if test="$subs and $sub_view = 'tags'">
+				<xsl:if test="not($subs)">
 					<div class="tags">
-						<xsl:apply-templates select="$subs" mode="tag"/>
+						<form method="GET" action="{page/source_link}">
+							<xsl:apply-templates select="$sel_sec/tag"/>
+						</form>
 					</div>
 				</xsl:if>
-				<xsl:if test="$subs and $sub_view = 'pics'">
-					<div class="catalog-items">
-						<xsl:apply-templates select="$subs" mode="pic"/>
-					</div>
+				<xsl:if test="not($sel_sec/show_subs = '0')">
+					<xsl:if test="$subs and $sub_view = 'tags'">
+						<div class="tags">
+							<xsl:apply-templates select="$subs" mode="tag"/>
+						</div>
+					</xsl:if>
+					<xsl:if test="$subs and $sub_view = 'pics'">
+						<div class="catalog-items">
+							<xsl:apply-templates select="$subs" mode="pic"/>
+						</div>
+					</xsl:if>
 				</xsl:if>
-			</xsl:if>
 		</xsl:if>
 	</xsl:template>
 

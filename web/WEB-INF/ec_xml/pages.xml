@@ -125,6 +125,7 @@
 			<var name="limit" value="48" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
+			<var name="minqty" value="" scope="cookie"/>
 			<var name="fil"/>
 			<var name="tag"/>
 		</request>
@@ -137,6 +138,7 @@
 				<filter>
 					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
+					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 					<sorting direction-var="direction">
 						<var var="sort"/>
 					</sorting>
@@ -242,12 +244,14 @@
 		<request>
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
+			<var name="minqty" value="" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="48" compare="EVERY">
 					<var var="q"/>
 				</fulltext>
+				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="translit"/>

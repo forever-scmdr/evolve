@@ -50,7 +50,7 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 
 		Document oldCatalog = Jsoup.parse(new FileInputStream(exportFile), "UTF-8", "", Parser.xmlParser());
 		Item existingCatalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
-		ItemQuery q = new ItemQuery(SECTION_ITEM, Item.STATUS_NIDDEN);
+		ItemQuery q = new ItemQuery(SECTION_ITEM, Item.STATUS_HIDDEN);
 		q.addParameterCriteria(NAME_PARAM, OLD_SECTION_NAME, "=", null, Compare.SOME);
 		Item oldBigSection = q.loadFirstItem();
 		if(oldBigSection != null){

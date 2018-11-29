@@ -94,7 +94,7 @@
 		<xsl:if test="admin-page/assoc/item">
 
 			<xsl:variable name="differentSubitems" select="count(admin-page/assoc/item-to-add) &gt; 1 or admin-page/assoc/item-to-add/item or admin-page/assoc/item/@type-id != admin-page/assoc/item/@type-id"/>
-			<div class="list" id="primary-item-list">
+			<div class="list result" id="primary-item-list">
 				<h4>Редактировать</h4>
 				<xsl:for-each select="admin-page/assoc[item]">
 					<xsl:variable name="ass" select="concat('ass_', @id)"/>
