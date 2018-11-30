@@ -21,9 +21,7 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.net.URL;
 import java.net.URLDecoder;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +29,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by user on 08.11.2018.
+ * Created by Anton on 08.11.2018.
  */
 public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 	private File exportFile;
-	private String base = "http://mizida.by";
+//	private String base = "http://mizida.by";
 	private static final Pattern SRC = Pattern.compile("src=\"(?<src>sitefiles/(\\d+/)+(?<filename>[^\"]+))\"");
 	private static final String OLD_SECTION_NAME = "каталог со старого сайта";
 
@@ -149,7 +147,7 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 		String oldURL =  productElement.select("show_device").eq(0).first().ownText();
 		String text = productElement.select("text").eq(0).first().ownText();
 		String bigPic = productElement.select("big").eq(0).first().ownText();
-		String smallPic = productElement.select("small").eq(0).first().ownText();
+		//String smallPic = productElement.select("small").eq(0).first().ownText();
 
 		Item product = Item.newChildItem(ItemTypeRegistry.getItemType(PRODUCT_ITEM), section);
 		product.setValue(NAME_PARAM, name);
