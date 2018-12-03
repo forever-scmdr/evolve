@@ -81,33 +81,33 @@
 				</link>
 			</list>
 		</single>
-		<list item="product" id="prod" cacheable="true">
-			<filter>
-				<parameter name="code" compare="SOME">
-					<var ref="main" parameter="product"/>
-				</parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="translit"/>
-			</link>
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="code" ref="prod" parameter="code"/>
-			</link>
-			<link name="to_fav" target="cookie_list_action">
-				<var name="update_cookie_name" value="favourites"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="fav_ajax"/>
-			</link>
-			<link name="to_compare" target="cookie_list_action">
-				<var name="update_cookie_name" value="compare"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="compare_ajax"/>
-			</link>
-			<single item="params"/>
-		</list>
+		<!--<list item="product" id="prod" cacheable="true">-->
+			<!--<filter>-->
+				<!--<parameter name="code" compare="SOME">-->
+					<!--<var ref="main" parameter="product"/>-->
+				<!--</parameter>-->
+			<!--</filter>-->
+			<!--<link name="show_product" target="product" type="exclusive">-->
+				<!--<var name="prod" ref="prod" style="translit"/>-->
+			<!--</link>-->
+			<!--<link name="to_cart" target="cart_action">-->
+				<!--<var name="action" value="addToCart"/>-->
+				<!--<var name="code" ref="prod" parameter="code"/>-->
+			<!--</link>-->
+			<!--<link name="to_fav" target="cookie_list_action">-->
+				<!--<var name="update_cookie_name" value="favourites"/>-->
+				<!--<var name="update_cookie_value" ref="prod" parameter="code"/>-->
+				<!--<var name="action" value="add"/>-->
+				<!--<var name="src_page" value="fav_ajax"/>-->
+			<!--</link>-->
+			<!--<link name="to_compare" target="cookie_list_action">-->
+				<!--<var name="update_cookie_name" value="compare"/>-->
+				<!--<var name="update_cookie_value" ref="prod" parameter="code"/>-->
+				<!--<var name="action" value="add"/>-->
+				<!--<var name="src_page" value="compare_ajax"/>-->
+			<!--</link>-->
+			<!--<single item="params"/>-->
+		<!--</list>-->
 		<include name="COMMON"/>
 	</page>
 

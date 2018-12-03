@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <page>
    <source_link>export_catalog</source_link>
-   <variables>
-      <var name="base">http://mizida.by</var>
-   </variables>
+   <variables></variables>
    <catalog_count>1</catalog_count>
    <catalog>
       <id>42</id>
@@ -799,7 +797,7 @@
                <short>&lt;p&gt;Программа для оцифровки готовых лекал, позволяющая всего за несколько секунд оцифровать
                   контур, надсечки, долевые линии и другие элементы лекал&lt;/p&gt;
                </short>
-               <show_device>device2</show_device>
+               <show_device>device:l:selected_device:v:46461</show_device>
             </device>
             <device>
                <id>46467</id>
@@ -1091,7 +1089,7 @@
                   Arial, Helvetica, sans-serif;"&gt;Благодаря уникальным функциям конструктор может решать
                   любые задачи по модифицированию лекал, значительно сокращая время на разработку модели.&lt;/p&gt;
                </short>
-               <show_device>device2</show_device>
+               <show_device>device:l:selected_device:v:46467</show_device>
             </device>
             <device>
                <id>46469</id>
@@ -1393,7 +1391,7 @@
                   Nest Expert &amp;nbsp;- это эффективность расчетов, возможность ручной раскладки, экономия
                   материалов и времени.&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2</show_device>
+               <show_device>device:l:selected_device:v:46469</show_device>
             </device>
             <device>
                <id>46468</id>
@@ -1499,7 +1497,7 @@
                   и раскроя. Обеспечивает быструю и высококачественную автоматическую или диалоговую
                   оптимизацию для операций настилания и раскроя.&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2</show_device>
+               <show_device>device:l:selected_device:v:46468</show_device>
             </device>
             <device>
                <id>46470</id>
@@ -1598,7 +1596,7 @@
                <name>Почему Gemini CAD</name>
                <price>0</price>
                <short></short>
-               <show_device>device2</show_device>
+               <show_device>device:l:selected_device:v:46470</show_device>
             </device>
          </section>
          <section>
@@ -3911,7 +3909,7 @@
                <short>&lt;p&gt;Раздвижной манекен 42-50 размеры!&lt;/p&gt;&#xD;
                   &lt;p&gt;Премиум качество!&lt;br /&gt;Пр-во Великобритания!&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45857</show_device>
             </device>
             <device>
                <id>45858</id>
@@ -3951,7 +3949,7 @@
                <name>Манекен Diana B</name>
                <price>0</price>
                <short>&lt;p&gt;Раздвижной манекен 50-58 размеры!&lt;br /&gt;Премиум качество!&lt;br /&gt;Пр-во Великобритания!&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45858</show_device>
             </device>
             <device>
                <id>46114</id>
@@ -3961,7 +3959,7 @@
                <name>Манекен Delux Leg</name>
                <price>0</price>
                <short>&lt;p&gt;Манекен раздвижной.&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46114</show_device>
             </device>
             <device>
                <id>45859</id>
@@ -3992,7 +3990,7 @@
                <name>Манекен Diana D</name>
                <price>0</price>
                <short>&lt;p&gt;Раздвижной манекен 60-68 размеры!&lt;br /&gt;Премиум качество!&lt;br /&gt;Пр-во Великобритания!&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45859</show_device>
             </device>
             <device>
                <id>46110</id>
@@ -4045,7 +4043,7 @@
                <name>Манекен мужской</name>
                <price>0</price>
                <short>&lt;p&gt;Регулируемый мужской манекен.&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46110</show_device>
             </device>
             <device>
                <id>46111</id>
@@ -4067,7 +4065,7 @@
                <short>&lt;p&gt;Раздвижной манекен для детей возраста 6-10 лет.&lt;/p&gt;&#xD;
                   &lt;p&gt;&amp;nbsp;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46111</show_device>
             </device>
             <device>
                <id>46113</id>
@@ -4106,7 +4104,7 @@
                <name>Манекен Diana C</name>
                <price>0</price>
                <short>&lt;p&gt;Раздвижной манекен 54-60 размеры!&lt;br /&gt;Премиум качество!&lt;br /&gt;Пр-во Великобритания!&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46113</show_device>
             </device>
             <device>
                <id>46115</id>
@@ -4120,7 +4118,7 @@
                <short>&lt;p&gt;Комплект: манекен раздвижной на деревянном основании, устройство для отмечания
                   длины&amp;nbsp;подола, щетка.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46115</show_device>
             </device>
             <device>
                <id>46116</id>
@@ -4130,7 +4128,7 @@
                <name>Манекен</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46116</show_device>
             </device>
          </section>
          <section>
@@ -4417,7 +4415,7 @@
                <name>Бумага плоттерная CREDO CMAX 152</name>
                <price>0</price>
                <short>&lt;p&gt;Пригодна для всех видов плоттеров (чернильная печать) и для ручной работы.&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:21222</show_device>
             </device>
             <device>
                <id>21422</id>
@@ -4714,7 +4712,7 @@
                <name>Бумага плоттерная CREDO CMAX 162</name>
                <price>0</price>
                <short>&lt;p&gt;Пригодна для всех видов плоттеров (чернильная печать) и для ручной работы.&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:21422</show_device>
             </device>
             <device>
                <id>21522</id>
@@ -5546,7 +5544,7 @@
                <name>Бумага плоттерная CREDO CMAX 182</name>
                <price>0</price>
                <short>&lt;p&gt;Пригодна для всех видов плоттеров (чернильная печать) и для ручной работы.&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:21522</show_device>
             </device>
             <device>
                <id>45988</id>
@@ -5572,7 +5570,7 @@
                   &lt;p&gt;ВНИМАНИЕ!!!  Фотография не является оригинальной! Диаметр и частота отверстий могут
                   отличаться!!!&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45988</show_device>
             </device>
             <device>
                <id>45990</id>
@@ -5599,7 +5597,7 @@
                   &lt;p&gt;ВНИМАНИЕ!!!  Фотография не является оригинальной! Диаметр и частота отверстий могут
                   отличаться!!!&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45990</show_device>
             </device>
             <device>
                <id>46797</id>
@@ -5677,7 +5675,7 @@
                <name>Плоттер YT 1800- 2</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46797</show_device>
             </device>
             <device>
                <id>45991</id>
@@ -5706,7 +5704,7 @@
                   &lt;p&gt;ВНИМАНИЕ!!!  Фотография не является оригинальной! Диаметр и частота отверстий могут
                   отличаться!!!&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45991</show_device>
             </device>
          </section>
       </section>
@@ -5729,7 +5727,7 @@
                <name>Лента тефлоновая HASHIMA 450 мм верхняя</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37052</show_device>
             </device>
             <device>
                <id>37062</id>
@@ -5737,7 +5735,7 @@
                <name>Лента тефлоновая HASHIMA 450 мм нижняя</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37062</show_device>
             </device>
             <device>
                <id>37072</id>
@@ -5745,7 +5743,7 @@
                <name>Лента тефлоновая НАSHIMA 900</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37072</show_device>
             </device>
             <device>
                <id>37082</id>
@@ -5756,7 +5754,7 @@
                <name>Лента тефлоновая OSHIMA верхняя для OP-450F/GS</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37082</show_device>
             </device>
             <device>
                <id>37092</id>
@@ -5768,7 +5766,7 @@
                <name>Лента тефлоновая OSHIMA нижняя для OP-450F/GS</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37092</show_device>
             </device>
             <device>
                <id>37102</id>
@@ -5780,7 +5778,7 @@
                <name>Лента тефлоновая OSHIMA 600 верхняя</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37102</show_device>
             </device>
             <device>
                <id>37112</id>
@@ -5792,7 +5790,7 @@
                <name>Лента тефлоновая ОSHIMA 900 нижняя</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37112</show_device>
             </device>
          </section>
          <section>
@@ -5949,7 +5947,7 @@
                <short>&lt;p&gt;Один из популярнейших универсальных дублирующих прессов проходного типа. Ширина
                   лент 45 см. Пресс консольного типа (одна сторона открыта), что позволяет:&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:4642</show_device>
             </device>
             <device>
                <id>4672</id>
@@ -6032,7 +6030,7 @@
                   дублерин для сорочек можно обрабатывать с помощью Hashima-900 LCS.&lt;/p&gt;&#xD;
                   &lt;p&gt;&amp;nbsp;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:4672</show_device>
             </device>
             <device>
                <id>4692</id>
@@ -6184,7 +6182,7 @@
                <short>&lt;p&gt;Пневматическое устройство для горячей склейки с рабочей плитой размером 50 х 40
                   см.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:4692</show_device>
             </device>
             <device>
                <id>4712</id>
@@ -6565,7 +6563,7 @@
                   регулировкой силы прижима и электронным термостатом для регулировки температуры плиты
                   и времени склейки.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:4712</show_device>
             </device>
             <device>
                <id>4732</id>
@@ -6713,7 +6711,7 @@
                <name>Comel PL / T 1250 дублировочная машина ручного типа </name>
                <price>0</price>
                <short>&lt;p&gt;Устройство для горячей склейки с рабочей плитой размером 125 х 50 см.&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:4732</show_device>
             </device>
          </section>
          <section>
@@ -6728,7 +6726,7 @@
                <name>SM-33 реле IPT SM115</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37142</show_device>
             </device>
             <device>
                <id>37152</id>
@@ -6736,7 +6734,7 @@
                <name>Датчик OP450GS/SSR-DA25 на пресс Oshima</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37152</show_device>
             </device>
             <device>
                <id>37162</id>
@@ -6744,7 +6742,7 @@
                <name>Микрик SUM M-120</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37162</show_device>
             </device>
             <device>
                <id>37172</id>
@@ -6752,7 +6750,7 @@
                <name>Пружина Comel (2-го крюка) Р0337 дублирующего пресса PLT</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37172</show_device>
             </device>
             <device>
                <id>37182</id>
@@ -6760,7 +6758,7 @@
                <name>Пружина IPT (малая) SM120</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37182</show_device>
             </device>
             <device>
                <id>37192</id>
@@ -6768,7 +6766,7 @@
                <name>Пружина IPT (малая) SM124</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37192</show_device>
             </device>
             <device>
                <id>37242</id>
@@ -6776,7 +6774,7 @@
                <name>Цепь привода JL-1002</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37242</show_device>
             </device>
             <device>
                <id>37232</id>
@@ -6784,7 +6782,7 @@
                <name>Улавливатель ленты</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37232</show_device>
             </device>
             <device>
                <id>37202</id>
@@ -6792,7 +6790,7 @@
                <name>Пружина IPT (1 крюк) SM18</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37202</show_device>
             </device>
             <device>
                <id>37222</id>
@@ -6800,7 +6798,7 @@
                <name>Съемник силиконовый ZA 3208 50см</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37222</show_device>
             </device>
             <device>
                <id>37212</id>
@@ -6808,7 +6806,7 @@
                <name>Регулятор температуры TC-48S на Oshima</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:37212</show_device>
             </device>
          </section>
       </section>
@@ -6928,7 +6926,7 @@
                <short>&lt;p style="text-align: justify;"&gt;Профессиональный парогенератор SILTER 3004 - многооперационный
                   парогенератор с разъемом для быстрой смены утюга, щетки и паропистолета.&amp;nbsp;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46331</show_device>
             </device>
             <device>
                <id>46338</id>
@@ -6999,7 +6997,7 @@
                   &lt;p style="text-align: justify;"&gt;Особенность данной модели парогенератора - это долгий
                   цикл беспрерывной работы и бойлер объемом 5 литров.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46338</show_device>
             </device>
             <device>
                <id>46333</id>
@@ -7105,7 +7103,7 @@
                   дизайн корпуса наиболее удобен для работы. &amp;nbsp; &amp;nbsp;&lt;/p&gt;&#xD;
                   &lt;p&gt;&amp;nbsp;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46333</show_device>
             </device>
             <device>
                <id>46340</id>
@@ -7220,7 +7218,7 @@
                   отличает большой вместимостью бойлера 7,5 литров, удобной стойка и специальным механизмом
                   регулировки высоты &amp;nbsp; &amp;nbsp;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46340</show_device>
             </device>
             <device>
                <id>46351</id>
@@ -7313,7 +7311,7 @@
                   проникнуть пару сквозь изделие для лучшего эффекта и фиксирует полученный результат
                   - великолепно отглаженное изделие. &amp;nbsp; &amp;nbsp;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46351</show_device>
             </device>
             <device>
                <id>46431</id>
@@ -7340,7 +7338,7 @@
                   12px;"&gt;ST/B 200&lt;/span&gt;&lt;span style="font-size: 12px;"&gt;. Вес 2,1 кг, подключение 220В,
                   подошва из литого аллюминия, мощностью 800 Вт.&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46431</show_device>
             </device>
             <device>
                <id>46332</id>
@@ -7451,7 +7449,7 @@
                   литра, вытяжкой и подогревом. Высокое качество и производительность гарантирует идеальный
                   результат при влажно-тепловой обработке и предпродажной подготовке швейных изделий.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46332</show_device>
             </device>
             <device>
                <id>46430</id>
@@ -7480,7 +7478,7 @@
                   style="font-size: 12px;"&gt;. Вес 1,69 кг, подключение 220В, подошва из литого аллюминия,
                   мощностью 800 Вт.&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46430</show_device>
             </device>
             <device>
                <id>46388</id>
@@ -7585,7 +7583,7 @@
                   Высокое качество                               и производительность гарантирует идеальный
                   результат при влажно-тепловой обработке и предпродажной подготовке  швейных изделий.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46388</show_device>
             </device>
          </section>
          <section>
@@ -7680,7 +7678,7 @@
                   ёмкостью 1 литра с аварийным клапаном, силиконовая подставка под утюг, антенна, поддерживающая
                   провода, электроклапан для регулировки пара.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:162</show_device>
             </device>
             <device>
                <id>182</id>
@@ -7764,7 +7762,7 @@
                   поддерживающая провода, манометром контролирующим давление, электроклапан для регулировки
                   пара. Корпус может быть изготовленным из стали &amp;bdquo;inox&amp;rdquo; или лакированным.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:182</show_device>
             </device>
             <device>
                <id>202</id>
@@ -7848,7 +7846,7 @@
                   контролькой уровня воды, манометром контролирующим давление, электроклапаном для регулировки
                   пара.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:202</show_device>
             </device>
             <device>
                <id>232</id>
@@ -7931,7 +7929,7 @@
                   контролькой уровня воды; манометром, контролирующим давление, электроклапаном для
                   регулировки пара и колёсами.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:232</show_device>
             </device>
             <device>
                <id>252</id>
@@ -8010,7 +8008,7 @@
                   контролирующий давление, комплект из двух электроклапанов с регулировкой пара. Корпус
                   может быть из стали &amp;bdquo;inox&amp;rdquo; или лакированным.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:252</show_device>
             </device>
             <device>
                <id>282</id>
@@ -8085,7 +8083,7 @@
                   контролирующий давление, комплект из двух электроклапанов с регулировкой пара. Корпус
                   может быть из стали &amp;bdquo;inox&amp;rdquo; или лакированным.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:282</show_device>
             </device>
             <device>
                <id>302</id>
@@ -8157,7 +8155,7 @@
                   нагревательных элементов 20000 Вт, с манометром, контролирующим давление и контролькой
                   уровня воды. Возможность обслуживания шести мест.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:302</show_device>
             </device>
             <device>
                <id>45945</id>
@@ -8177,7 +8175,7 @@
                   ТЭНа бойлера 1.7 кВт&lt;br /&gt;Емкость бойлера 3 л&lt;br /&gt;Рабочее давление 2.5 бар&lt;br /&gt;Напряжение
                   220В&lt;br /&gt;Вес 11 кг&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45945</show_device>
             </device>
          </section>
          <section>
@@ -8220,7 +8218,7 @@
                   style="font-size: 12px;"&gt;. Вес 1,69 кг, подключение 220В, подошва из литого аллюминия,
                   мощностью 800 Вт.&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46430</show_device>
             </device>
             <device>
                <id>46431</id>
@@ -8247,7 +8245,7 @@
                   12px;"&gt;ST/B 200&lt;/span&gt;&lt;span style="font-size: 12px;"&gt;. Вес 2,1 кг, подключение 220В,
                   подошва из литого аллюминия, мощностью 800 Вт.&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46431</show_device>
             </device>
             <device>
                <id>92</id>
@@ -8258,7 +8256,7 @@
                <name>Утюг для разглаживания бумаги AKN-07</name>
                <price>0</price>
                <short>&lt;p&gt;Утюг для разглаживания бумаги AKN-07&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:92</show_device>
             </device>
             <device>
                <id>112</id>
@@ -8281,7 +8279,7 @@
                <short>&lt;p&gt;Универсальный утюг Comel. Вес 1,85 кг, подключение 220В, подошва из литого аллюминия,
                   мощностью 900 Вт.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:112</show_device>
             </device>
             <device>
                <id>152</id>
@@ -8320,7 +8318,7 @@
                <name>Щетка электропаровая Speedy</name>
                <price>0</price>
                <short>&lt;p&gt;Для разравнивания ткани, освежения внешнего вида, для окончательной обработки изделия.&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:152</show_device>
             </device>
             <device>
                <id>132</id>
@@ -8341,7 +8339,7 @@
                <short>&lt;p&gt;Утюг для брючных швов 1,3 кг,&amp;nbsp; 220 &amp;divide; 240 В. Комплект состоит из парошланга
                   2,2 м, электрического кабеля и вилки.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:132</show_device>
             </device>
          </section>
          <section>
@@ -8387,7 +8385,7 @@
                <name>Eco DOB Primula</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46800</show_device>
             </device>
             <device>
                <id>46801</id>
@@ -8441,7 +8439,7 @@
                <name>Flex DOB Primula</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46801</show_device>
             </device>
             <device>
                <id>46802</id>
@@ -8491,7 +8489,7 @@
                <name>Perfect PD Primula</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46802</show_device>
             </device>
             <device>
                <id>46804</id>
@@ -8547,7 +8545,7 @@
                <name>Perfect PDL Primula</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46804</show_device>
             </device>
          </section>
          <section>
@@ -8596,7 +8594,7 @@
                   &amp;quot;lucida&amp;quot;, sans-serif;"&gt;Войлочное полотно в качестве покрытия утюжильных
                   поверхностей применяется для равномерного рассеивания пара на поверхности&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33642</show_device>
             </device>
             <device>
                <id>33652</id>
@@ -8625,7 +8623,7 @@
                   гарантирует высокую производительность и высокое качество глаженья фактурных материалов:
                   драпа, бархата, велюра, шерсти&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33652</show_device>
             </device>
             <device>
                <id>33662</id>
@@ -8875,7 +8873,7 @@
                <name>Лента тефлоновая 0,15 мм</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33662</show_device>
             </device>
             <device>
                <id>33672</id>
@@ -8891,7 +8889,7 @@
                <name>Лента тефлоновая 0,25 мм</name>
                <price>0</price>
                <short>&lt;p&gt;Особенности PTFE включают в себя термическую выносливость, также отсутствие прилипания.&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33672</show_device>
             </device>
             <device>
                <id>33682</id>
@@ -8914,7 +8912,7 @@
                <short>&lt;p&gt;Физические особенности PTFE включают в себя термическую выносливость, также отсутствие
                   прилипания.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33682</show_device>
             </device>
             <device>
                <id>33702</id>
@@ -8949,7 +8947,7 @@
                   MS',tahoma,lucida,sans-serif;"&gt;Очень эластичный и прочный, мягкий, воздухопроницаемый,
                   паропроницаемый силиконизированный поролон.&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33702</show_device>
             </device>
             <device>
                <id>33712</id>
@@ -8984,7 +8982,7 @@
                   MS',tahoma,lucida,sans-serif;"&gt;Очень эластичный и прочный, воздухопроницаемый, паропроницаемый
                   силиконизированный поролон. &lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33712</show_device>
             </device>
             <device>
                <id>33722</id>
@@ -9017,7 +9015,7 @@
                   MS',tahoma,lucida,sans-serif;"&gt;Очень эластичный, исключительно мягкий, воздухопроницаемый,
                   паропроницаемый поролон.&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33722</show_device>
             </device>
             <device>
                <id>33732</id>
@@ -9058,7 +9056,7 @@
                   эластичный и прочный, исключительно мягкий, воздухопроницаемый, паропроницаемый силиконизированный
                   поролон. &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33732</show_device>
             </device>
             <device>
                <id>33742</id>
@@ -9084,7 +9082,7 @@
                   sans-serif; color: #000000;"&gt;Ткань применяется как верхнее покрытие утюжильных столов,
                   воздухопроницаемая, износостойкая.&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33742</show_device>
             </device>
             <device>
                <id>33692</id>
@@ -9122,7 +9120,7 @@
                <short>&lt;p&gt;Физические особенности PTFE включают в себя термическую выносливость, также отсутствие
                   прилипания.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33692</show_device>
             </device>
             <device>
                <id>33772</id>
@@ -9136,7 +9134,7 @@
                <name>Паропровод силиконовый белый</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33772</show_device>
             </device>
             <device>
                <id>33802</id>
@@ -9151,7 +9149,7 @@
                <name>Провод электрический</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33802</show_device>
             </device>
             <device>
                <id>33782</id>
@@ -9166,7 +9164,7 @@
                <name>Паропровод стандартный</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33782</show_device>
             </device>
             <device>
                <id>33792</id>
@@ -9176,7 +9174,7 @@
                <name>Паропровод стандартный EPDM</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33792</show_device>
             </device>
             <device>
                <id>33762</id>
@@ -9204,7 +9202,7 @@
                <name>Сетка стальная</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:33762</show_device>
             </device>
          </section>
          <section>
@@ -9233,7 +9231,7 @@
                <name>Подошва тефлоновая для Brook-c</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:36822</show_device>
             </device>
             <device>
                <id>36832</id>
@@ -9254,7 +9252,7 @@
                <name>Подошва тефлоновая Comel P.</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:36832</show_device>
             </device>
             <device>
                <id>36852</id>
@@ -9274,7 +9272,7 @@
                <name>Подошва тефлоновая Due N</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:36852</show_device>
             </device>
             <device>
                <id>36872</id>
@@ -9282,7 +9280,7 @@
                <name>Подошва тефлоновая Protomet</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:36872</show_device>
             </device>
             <device>
                <id>36862</id>
@@ -9304,7 +9302,7 @@
                <name>Подошва тефлоновая для Iron Master, Jolly</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:36862</show_device>
             </device>
             <device>
                <id>36902</id>
@@ -9325,7 +9323,7 @@
                <name>Подошва тефлоновая для Trevil</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:36902</show_device>
             </device>
             <device>
                <id>36892</id>
@@ -9346,7 +9344,7 @@
                <name>Подошва тефлоновая Sussman 100</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:36892</show_device>
             </device>
             <device>
                <id>36912</id>
@@ -9368,7 +9366,7 @@
                <name>Подошва тефлоновая для VEIT HD 2000-2002</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:36912</show_device>
             </device>
             <device>
                <id>36922</id>
@@ -9379,7 +9377,7 @@
                <name>Подошва тефлоновая для VEIT ND</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:36922</show_device>
             </device>
          </section>
          <section>
@@ -9461,7 +9459,7 @@
                   &lt;p&gt;Снижает энергопотребление на 85 % по сравнению с обычным фрикционным приводом.&lt;/p&gt;&#xD;
                   &lt;p&gt;Обладает пониженным уровнем шума и вибрации.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45952</show_device>
             </device>
             <device>
                <id>38272</id>
@@ -9472,7 +9470,7 @@
                <name>Двигатель пром. швейной машины 220V</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38272</show_device>
             </device>
             <device>
                <id>38282</id>
@@ -9484,7 +9482,7 @@
                <name>Двигатель пром. швейной машины 380V</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38282</show_device>
             </device>
             <device>
                <id>38292</id>
@@ -9496,7 +9494,7 @@
                <name>Двигатель к швейной машине  380V индукционный</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38292</show_device>
             </device>
             <device>
                <id>38302</id>
@@ -9508,7 +9506,7 @@
                <name>Двигатель тихоходный 1425 оборотов </name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38302</show_device>
             </device>
             <device>
                <id>38312</id>
@@ -9516,7 +9514,7 @@
                <name>Ремень силиконовый 5 мм</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38312</show_device>
             </device>
             <device>
                <id>38332</id>
@@ -9524,7 +9522,7 @@
                <name>Ремень силиконовый 8 мм</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38332</show_device>
             </device>
          </section>
          <section>
@@ -9846,7 +9844,7 @@
                   запаха.&lt;/p&gt;&#xD;
                   &lt;p&gt;Используется для швейных машин. Объем&amp;nbsp;&lt;span style="font-size: 12px;"&gt;1 литр.&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38362</show_device>
             </device>
             <device>
                <id>45862</id>
@@ -10136,7 +10134,7 @@
                   12px;"&gt;&amp;nbsp;литров.&lt;/span&gt;&lt;/p&gt;&#xD;
                   &lt;/div&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45862</show_device>
             </device>
          </section>
          <section>
@@ -10160,7 +10158,7 @@
                   &lt;p&gt;Специальное лезвие справляется с задачей по обрезке нити намного быстрее, чем ножницы.&lt;/p&gt;&#xD;
                   &lt;p&gt;Незаменим, где используются толстые нити.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38392</show_device>
             </device>
             <device>
                <id>38402</id>
@@ -10195,7 +10193,7 @@
                   одновременно. Благодаря прозрачному, закрытому резервуару средство не испаряется,
                   а уровень средства можно контролировать.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38402</show_device>
             </device>
             <device>
                <id>38412</id>
@@ -10207,7 +10205,7 @@
                <name>Масленка MS-029394</name>
                <price>0</price>
                <short>&lt;p&gt;Маслёнка с пластиковым носиком позволяет подавать масло к детали капельным путём.&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38412</show_device>
             </device>
             <device>
                <id>38422</id>
@@ -10220,7 +10218,7 @@
                <short>&lt;p&gt;Маслёнка с металическим носиком.&lt;/p&gt;&#xD;
                   &lt;p&gt;Остащена металическим колпачком на резьбе, что предотвращает утечки масла.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38422</show_device>
             </device>
             <device>
                <id>38432</id>
@@ -10256,7 +10254,7 @@
                   &lt;p&gt;Для обеспечения непрерывноо рабочего процесса шестигранная отвёртка для оверлока
                   должна быть на кждом рабочем месте.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38432</show_device>
             </device>
             <device>
                <id>38452</id>
@@ -10287,7 +10285,7 @@
                <name>Отвертка шпульного колпачка плоская HA-1-140</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38452</show_device>
             </device>
             <device>
                <id>38462</id>
@@ -10319,7 +10317,7 @@
                <name>Пинцет </name>
                <price>0</price>
                <short>&lt;p&gt;Со специальными закруглёнными кончиками.&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38462</show_device>
             </device>
             <device>
                <id>38472</id>
@@ -10355,7 +10353,7 @@
                <name>Пистолет для сжатого воздуха</name>
                <price>0</price>
                <short>&lt;p&gt;Предназначен для чистки оборудования от пыли и загрязнений.&lt;/p&gt;</short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38472</show_device>
             </device>
             <device>
                <id>38482</id>
@@ -10366,7 +10364,7 @@
                <name>Шланг PSE std M сжатого воздуха 10м.</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38482</show_device>
             </device>
             <device>
                <id>38492</id>
@@ -10377,7 +10375,7 @@
                <name>Шланг PSE std M сжатого воздуха 5м.</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38492</show_device>
             </device>
             <device>
                <id>38442</id>
@@ -10412,7 +10410,7 @@
                   &lt;p&gt;Для обеспечения непрерывноо рабочего процесса шестигранная отвёртка для оверлока
                   должна быть на каждом рабочем месте.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38442</show_device>
             </device>
             <device>
                <id>38502</id>
@@ -10449,7 +10447,7 @@
                   &lt;p&gt;Имеетя специальный защитный колпачёк.&lt;/p&gt;&#xD;
                   &lt;/div&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38502</show_device>
             </device>
             <device>
                <id>38522</id>
@@ -10486,7 +10484,7 @@
                   &lt;p&gt;Имеетя специальный защитный колпачёк.&lt;/p&gt;&#xD;
                   &lt;/div&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38522</show_device>
             </device>
             <device>
                <id>38532</id>
@@ -10521,7 +10519,7 @@
                <short>&lt;p&gt;Для удобного быстрого вспарывания швов.&lt;/p&gt;&#xD;
                   &lt;p&gt;Имеетя специальный защитный колпачёк.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38532</show_device>
             </device>
             <device>
                <id>38562</id>
@@ -10587,7 +10585,7 @@
                <name>Ножнички обрезки ниток TC-101</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38562</show_device>
             </device>
             <device>
                <id>46828</id>
@@ -10669,7 +10667,7 @@
                <name>Ножнички обрезки ниток ТС-805С</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46828</show_device>
             </device>
             <device>
                <id>38582</id>
@@ -10719,7 +10717,7 @@
                   &lt;p&gt;Установка лапки всего за 5 секунд даже непрофессиональным механиком.&lt;/p&gt;&#xD;
                   &lt;p&gt;Для тех, кто ценит время.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38582</show_device>
             </device>
             <device>
                <id>38592</id>
@@ -10754,7 +10752,7 @@
                <short>&lt;p&gt;Щёточка предназначена для удаления пыли и частичек грязи с поверхностей швейной
                   машины.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:38592</show_device>
             </device>
             <device>
                <id>40072</id>
@@ -10790,7 +10788,7 @@
                   месте!&lt;br /&gt; Специальная и антискользящая подставка с краями высотой 1,5 см позволит
                   хранить самые необходимые мелочи под рукой!&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:40072</show_device>
             </device>
             <device>
                <id>45885</id>
@@ -10862,7 +10860,7 @@
                <name>Шило с круглой рукоятью</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45885</show_device>
             </device>
             <device>
                <id>45886</id>
@@ -10870,7 +10868,7 @@
                <name>Щетка для одежды</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45886</show_device>
             </device>
             <device>
                <id>46830</id>
@@ -10942,7 +10940,7 @@
                <name>Вспарыватель шва  112R</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46830</show_device>
             </device>
             <device>
                <id>46831</id>
@@ -10956,7 +10954,7 @@
                <name>Отвертка шпульного колпачка SC-2</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46831</show_device>
             </device>
             <device>
                <id>46878</id>
@@ -10998,7 +10996,7 @@
                <name>Шило с цилиндрической рукоятью</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46878</show_device>
             </device>
          </section>
          <section>
@@ -11048,7 +11046,7 @@
                   нарезает 2 ленты.&lt;/p&gt;&#xD;
                   &lt;p&gt;&amp;nbsp;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46181</show_device>
             </device>
             <device>
                <id>46182</id>
@@ -11090,7 +11088,7 @@
                <short>&lt;p&gt;Машина для нарезки бейки из &amp;laquo;мешка&amp;raquo; (трикотаж и ткани) одновременно
                   нарезает 3 ленты.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46182</show_device>
             </device>
             <device>
                <id>39822</id>
@@ -11572,7 +11570,7 @@
                   &lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xD;
                   &lt;p&gt;&amp;nbsp;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:39822</show_device>
             </device>
             <device>
                <id>40062</id>
@@ -11651,7 +11649,7 @@
                   тихая работа, простое обслуживание. Предназначена для зашивания горловины мешка из
                   различных материалов [бумаги, хлопка, полиэтилена и т. д.].&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:40062</show_device>
             </device>
             <device>
                <id>45974</id>
@@ -11686,7 +11684,7 @@
                <short>&lt;p&gt;Машина для выполнения    имитации ручного стежка (с двигателем EFKA) 1,0 м (стандартный
                   тип)&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45974</show_device>
             </device>
             <device>
                <id>45958</id>
@@ -11729,7 +11727,7 @@
                <short>&lt;p&gt;Компьютеризированная швейная машина челночного стежка с сухой головой  для втачивания
                   руковов с мультипрограммируемым устройством.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45958</show_device>
             </device>
          </section>
          <section>
@@ -11777,7 +11775,7 @@
                <short>&lt;p&gt;Превосходная, прочная и универсальная &lt;span style="font-size: 12px;"&gt;металлокаркасная
                   рама для столов&amp;nbsp;&lt;/span&gt;&lt;span style="font-size: 12px;"&gt;промышленных швейных машин.&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:46721</show_device>
             </device>
          </section>
          <section>
@@ -11815,7 +11813,7 @@
                <short>&lt;p&gt;Линейка ограничительная механическая.&lt;/p&gt;&#xD;
                   &lt;p&gt;Для идеально ровной строчки.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:40832</show_device>
             </device>
             <device>
                <id>40842</id>
@@ -11859,7 +11857,7 @@
                   &lt;p&gt;Для идеально ровной строчки.&lt;/p&gt;&#xD;
                   &lt;/div&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:40842</show_device>
             </device>
             <device>
                <id>40852</id>
@@ -11884,7 +11882,7 @@
                   &lt;p&gt;Для идеально ровной строчки.&lt;/p&gt;&#xD;
                   &lt;/div&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:40852</show_device>
             </device>
             <device>
                <id>40862</id>
@@ -11904,7 +11902,7 @@
                   &lt;/div&gt;&#xD;
                   &lt;/div&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:40862</show_device>
             </device>
             <device>
                <id>40872</id>
@@ -12318,7 +12316,7 @@
                   &lt;p&gt;Для идеально ровной строчки.&lt;/p&gt;&#xD;
                   &lt;/div&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:40872</show_device>
             </device>
             <device>
                <id>45874</id>
@@ -12333,7 +12331,7 @@
                <name>Линейка MG-40 магнитная</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45874</show_device>
             </device>
             <device>
                <id>45873</id>
@@ -12345,7 +12343,7 @@
                <name>Линейка MG-20L магнитная</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:45873</show_device>
             </device>
             <device>
                <id>40902</id>
@@ -12361,7 +12359,7 @@
                <short>&lt;p&gt;Линейка ограничительная механическая.&lt;/p&gt;&#xD;
                   &lt;p&gt;Для идеально ровной строчки.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:40902</show_device>
             </device>
             <device>
                <id>40892</id>
@@ -12376,7 +12374,7 @@
                <short>&lt;p&gt;Линейка ограничительная магнитная.&lt;/p&gt;&#xD;
                   &lt;p&gt;Для идеально ровной строчки.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:40892</show_device>
             </device>
             <device>
                <id>40882</id>
@@ -12395,7 +12393,7 @@
                   &lt;/div&gt;&#xD;
                   &lt;/div&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46030</show_device>
+               <show_device>device:l:selected_device:v:40882</show_device>
             </device>
          </section>
       </section>
@@ -15681,7 +15679,7 @@
                   небольших ателье, изготавливающих эксклюзивные вещи, и поэтому не нуждающихся в большом
                   количестве головок.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:39152</show_device>
             </device>
             <device>
                <id>39142</id>
@@ -17588,7 +17586,7 @@
                   вышивальных машин, имеют более высокую скорость и бесшумную работу за счет усовершенствования
                   технологий.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:39142</show_device>
             </device>
             <device>
                <id>39132</id>
@@ -17768,7 +17766,7 @@
                <short>&lt;p&gt;Это самая быстрая машина среди многоголовочных вышивальных автоматов, с ее помощью
                   вы сможете радикально повысить производительность.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:39132</show_device>
             </device>
             <device>
                <id>39122</id>
@@ -17893,7 +17891,7 @@
                   на основе передовых технологий, многолетнего опыта и успешных достижений компании
                   Tajima.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:39122</show_device>
             </device>
             <device>
                <id>39182</id>
@@ -18138,7 +18136,7 @@
                   &lt;p&gt;TFSN - многоголовочная (9 цветов, 12, 15 и 20 игольная) вышивальная автоматическая
                   машина TAJIMA.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:39182</show_device>
             </device>
             <device>
                <id>39192</id>
@@ -18349,7 +18347,7 @@
                <name>Вышивальные машины  TAJIMA серии  TFMX -  CYLINDER TYPE</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:39192</show_device>
             </device>
          </section>
          <section>
@@ -18481,7 +18479,7 @@
                <short>&lt;p&gt;Одноголовочная 15-игольная промышленная вышивальная машина&amp;nbsp;&amp;nbsp;HAFTEX -
                   Junior&amp;nbsp;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:46864</show_device>
             </device>
             <device>
                <id>46865</id>
@@ -18590,7 +18588,7 @@
                <short>&lt;p&gt;&lt;span style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; background-color:
                   #ffffff;"&gt;Одноголовочная 15-игольная промышленная вышивальная машина&amp;nbsp;&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:46865</show_device>
             </device>
             <device>
                <id>46866</id>
@@ -18684,7 +18682,7 @@
                <short>&lt;p&gt;&lt;span style="font-size: 12px;"&gt;&lt;span style="font-size: 12px;"&gt;Одноголовочная 10-игольная
                   промышленная вышивальная машина&amp;nbsp;&amp;nbsp;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:46866</show_device>
             </device>
             <device>
                <id>46867</id>
@@ -18800,7 +18798,7 @@
                   style="font-size: 12px;"&gt;Одноголовочная 15-игольная промышленная вышивальная машина&lt;span
                   style="background-color: #ffffff;"&gt;&amp;nbsp;с увеличенным полем для вышивки&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:46867</show_device>
             </device>
             <device>
                <id>46868</id>
@@ -18889,7 +18887,7 @@
                <short>&lt;p&gt;&lt;span style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; background-color:
                   #ffffff;"&gt;Двухголовочная 15-игольная промышленная вышивальная машина&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:46868</show_device>
             </device>
             <device>
                <id>46869</id>
@@ -19001,7 +18999,7 @@
                <short>&lt;p&gt;&lt;span style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; background-color:
                   #ffffff;"&gt;4-головочная 15-игольная промышленная вышивальная машина&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:46869</show_device>
             </device>
             <device>
                <id>46870</id>
@@ -19088,7 +19086,7 @@
                <short>&lt;p&gt;&lt;span style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; background-color:
                   #ffffff;"&gt;6-головочная 15-игольная промышленная вышивальная машина&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:39192</show_device>
+               <show_device>device:l:selected_device:v:46870</show_device>
             </device>
          </section>
       </section>
@@ -19262,7 +19260,7 @@
                <short>&lt;p&gt;Однопозиционный электрический пресс Gemsy GEM 808 предназначен для установки металлической
                   фурнитуры&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46307</show_device>
             </device>
             <device>
                <id>39782</id>
@@ -19287,7 +19285,7 @@
                   блочек, хольнитенов) на швейных и галантерейных изделиях. Имеет приспособление для
                   прорезей.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:39782</show_device>
             </device>
             <device>
                <id>46317</id>
@@ -19318,7 +19316,7 @@
                <short>&lt;p&gt;Универсальный ручной пресс для установки металлической&lt;strong&gt;&amp;nbsp;&lt;/strong&gt;фурнитуры
                   предназначен для установки&amp;nbsp;блочек, люверсов, хольнитенов, пуговиц&amp;nbsp; и т.д.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46317</show_device>
             </device>
             <device>
                <id>46315</id>
@@ -19348,7 +19346,7 @@
                   предназначен для  установки&amp;nbsp;блочек, люверсов, хольнитенов, пуговиц&amp;nbsp; и  
                   т.д.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46315</show_device>
             </device>
          </section>
          <section>
@@ -19363,7 +19361,7 @@
                <name>Головка для нумератора TEX 5322</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46508</show_device>
             </device>
             <device>
                <id>46509</id>
@@ -19371,7 +19369,7 @@
                <name>Крышка красящего ролика V5035-4 для TEX 5322</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46509</show_device>
             </device>
             <device>
                <id>39452</id>
@@ -19384,7 +19382,7 @@
                <name>Ролик красящий Tex 5322</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:39452</show_device>
             </device>
             <device>
                <id>39422</id>
@@ -19408,7 +19406,7 @@
                <name>нумератор кроя TEX-5322</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:39422</show_device>
             </device>
             <device>
                <id>46510</id>
@@ -19416,7 +19414,7 @@
                <name>Лента AD4 22*12W (white,strong) 1500 эт/рол </name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46510</show_device>
             </device>
             <device>
                <id>46511</id>
@@ -19436,7 +19434,7 @@
                <name>Лента MMB 22*12 (white) 900 эт/рол</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46511</show_device>
             </device>
             <device>
                <id>46512</id>
@@ -19456,7 +19454,7 @@
                <name>Лента к нумератору кроя AD4 22*12 зелён</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46512</show_device>
             </device>
             <device>
                <id>46513</id>
@@ -19465,7 +19463,7 @@
                <name>Лента к нумератору кроя AD4 22*12 оранж</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46513</show_device>
             </device>
             <device>
                <id>46514</id>
@@ -19473,7 +19471,7 @@
                <name>Штифт V5087 для TEX 5322</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46514</show_device>
             </device>
          </section>
          <section>
@@ -19488,7 +19486,7 @@
                <name>Игла 102</name>
                <price>0</price>
                <short>&lt;html /&gt;</short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:39482</show_device>
             </device>
             <device>
                <id>39472</id>
@@ -19505,7 +19503,7 @@
                <name>Этикет-пистолет YH-31S</name>
                <price>0</price>
                <short>&lt;html /&gt;</short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:39472</show_device>
             </device>
             <device>
                <id>39492</id>
@@ -19513,7 +19511,7 @@
                <name>Игла 120</name>
                <price>0</price>
                <short>&lt;html /&gt;</short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:39492</show_device>
             </device>
             <device>
                <id>39502</id>
@@ -19521,7 +19519,7 @@
                <name>Игла для этикет-пистолета YН-202 </name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:39502</show_device>
             </device>
             <device>
                <id>39542</id>
@@ -19532,7 +19530,7 @@
                <name>Ярлыкодержатель 25 мм</name>
                <price>0</price>
                <short>&lt;html /&gt;</short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:39542</show_device>
             </device>
             <device>
                <id>46499</id>
@@ -19560,7 +19558,7 @@
                <name>Игла для этикет-пистолета YН-203 </name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46499</show_device>
             </device>
             <device>
                <id>39552</id>
@@ -19569,7 +19567,7 @@
                <name>Ярлыкодержатель 45 мм</name>
                <price>0</price>
                <short>&lt;html /&gt;</short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:39552</show_device>
             </device>
             <device>
                <id>39562</id>
@@ -19580,7 +19578,7 @@
                <name>Ярлыкодержатель 65 мм</name>
                <price>0</price>
                <short>&lt;html /&gt;</short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:39562</show_device>
             </device>
             <device>
                <id>46500</id>
@@ -19599,7 +19597,7 @@
                <name>Игла для этикет-пистолета YН-204</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46500</show_device>
             </device>
             <device>
                <id>46502</id>
@@ -19609,7 +19607,7 @@
                </name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46502</show_device>
             </device>
             <device>
                <id>46503</id>
@@ -19633,7 +19631,7 @@
                <name>Этикет-пистолет 120 PF</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46503</show_device>
             </device>
             <device>
                <id>45865</id>
@@ -19641,7 +19639,7 @@
                <name>Ярлыкодержатель 120 (40 мм) голубые					</name>
                <price>0</price>
                <short>&lt;html /&gt;</short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:45865</show_device>
             </device>
             <device>
                <id>46504</id>
@@ -19661,7 +19659,7 @@
                <name>Этикет-пистолет 120 PS</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46504</show_device>
             </device>
             <device>
                <id>46505</id>
@@ -19672,7 +19670,7 @@
                <name>Этикет-пистолет KOBE TAG GUN (эт.п+игл+ярл)	KOBE TAG GUN</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46505</show_device>
             </device>
             <device>
                <id>46506</id>
@@ -19681,7 +19679,7 @@
                <name>Этикет пистолет YH-31-L</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46506</show_device>
             </device>
             <device>
                <id>46539</id>
@@ -19700,7 +19698,7 @@
                <name>Этикет пистолет YH-31-X</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46539</show_device>
             </device>
             <device>
                <id>46540</id>
@@ -19730,7 +19728,7 @@
                <name>Ярлыкодержатель 120 (65 мм) белые (12 000 шт)</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46540</show_device>
             </device>
             <device>
                <id>46541</id>
@@ -19738,7 +19736,7 @@
                <name>Ярлыкодержатели LPP-7 (1000 шт)	</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46541</show_device>
             </device>
             <device>
                <id>46542</id>
@@ -19749,7 +19747,7 @@
                <name>Ярлыкодержатели 25 (F) (5000 шт)</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46542</show_device>
             </device>
             <device>
                <id>46543</id>
@@ -19760,7 +19758,7 @@
                <name>Ярлыкодержатели 45 (F) (5000 шт)</name>
                <price>0</price>
                <short></short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46543</show_device>
             </device>
          </section>
          <section>
@@ -19860,7 +19858,7 @@
                <short>&lt;p&gt;Удобная технология, широкий формат А2, яркие цвета. Возможна печать на 100% полиэстере
                   с использованием специальной жидкости для подготовки ткани.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46507</show_device>
+               <show_device>device:l:selected_device:v:46185</show_device>
             </device>
          </section>
       </section>
@@ -25339,7 +25337,7 @@
                   &lt;p style="font-size: 12px;"&gt;Улучшенная надежность: минимизирована возможность складок
                   на носителе и удара головы о носитель для увеличения времени безотказной работы.&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46732</show_device>
+               <show_device>device:l:selected_device:v:46888</show_device>
             </device>
             <device>
                <id>46889</id>
@@ -26101,7 +26099,7 @@
                   arial, helvetica, sans-serif;"&gt;&lt;span style="font-weight: normal;"&gt;Улучшенная система
                   намотки рулонов&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46732</show_device>
+               <show_device>device:l:selected_device:v:46889</show_device>
             </device>
             <device>
                <id>46904</id>
@@ -26783,7 +26781,7 @@
                   &lt;p&gt;Глубокий черный цвет и насыщенные тени благодаря чернилам высокой плотности UltraChrome
                   HDK&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46732</show_device>
+               <show_device>device:l:selected_device:v:46904</show_device>
             </device>
          </section>
          <section>
@@ -27445,7 +27443,7 @@
                   USB слот для повторной отправки заданий на печать напрямую с USB накопителей. ПО Garment
                   Creator, позволяющее без особых усилий создавать индивидуальный дизайн для футболок.&amp;nbsp;&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46732</show_device>
+               <show_device>device:l:selected_device:v:46905</show_device>
             </device>
             <device>
                <id>46906</id>
@@ -28096,7 +28094,7 @@
                   &lt;p&gt;ПО Garment Creator, позволяющее без особых усилий создавать индивидуальный дизайн
                   для футболок&lt;/p&gt;
                </short>
-               <show_device>device2:l:selected_device:v:46732</show_device>
+               <show_device>device:l:selected_device:v:46906</show_device>
             </device>
          </section>
       </section>
