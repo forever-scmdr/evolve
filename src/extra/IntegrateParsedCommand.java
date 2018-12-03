@@ -8,6 +8,7 @@ import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
+import extra._generated.Product;
 import lunacrawler.fwk.ParsedInfoProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;

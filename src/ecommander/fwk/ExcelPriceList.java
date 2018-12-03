@@ -117,9 +117,13 @@ public abstract class ExcelPriceList implements Closeable {
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getCurrencyValue(int colIndex) {
+	public final BigDecimal getCurrencyValue(int colIndex, BigDecimal...defaultVal) {
 		String val = getValue(colIndex);
-		return DecimalDataType.parse(val, DecimalDataType.CURRENCY);
+		BigDecimal bd = DecimalDataType.parse(val, DecimalDataType.CURRENCY);
+		if (bd == null) {
+			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
+		}
+		return bd;
 	}
 
 	public final String getValue(String colName) {
@@ -134,9 +138,13 @@ public abstract class ExcelPriceList implements Closeable {
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getCurrencyValue(String colName) {
+	public final BigDecimal getCurrencyValue(String colName, BigDecimal...defaultVal) {
 		String val = getValue(colName);
-		return DecimalDataType.parse(val, DecimalDataType.CURRENCY);
+		BigDecimal bd = DecimalDataType.parse(val, DecimalDataType.CURRENCY);
+		if (bd == null) {
+			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
+		}
+		return bd;
 	}
 
 	public final void iterate() throws Exception {

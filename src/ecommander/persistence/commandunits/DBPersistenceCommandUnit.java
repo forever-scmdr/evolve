@@ -26,6 +26,7 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	boolean ignoreFileErrors = false;
 	boolean insertIntoFulltextIndex = true;
 	boolean processComputed = true;
+	boolean triggerExtra = true;
 	private ArrayList<PersistenceCommandUnit> executedCommands;
 	
 	public TransactionContext getTransactionContext() {
@@ -92,6 +93,15 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 */
 	public DBPersistenceCommandUnit noFulltextIndex() {
 		this.insertIntoFulltextIndex = false;
+		return this;
+	}
+
+	/**
+	 * Надо ли вызывать дополнительные команды обработки по событиям (создание, удаление, сохранение)
+	 * @return
+	 */
+	public DBPersistenceCommandUnit noTriggerExtra() {
+		this.triggerExtra = false;
 		return this;
 	}
 

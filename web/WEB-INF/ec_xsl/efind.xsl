@@ -10,8 +10,8 @@
 					<mfg><xsl:value-of select="vendor"/></mfg>
 					<part><xsl:value-of select="name"/></part>
 					<note><xsl:value-of select="type"/><xsl:text> </xsl:text><xsl:value-of select="name_extra"/></note>
-					<img>http://alfacomponent.must.by<xsl:value-of select="concat(@path, main_img)"/></img>
-					<url>http://alfacomponent.must.by<xsl:value-of select="show_product"/></url>
+					<img>http://alfacomponent.must.by/<xsl:value-of select="concat('http://alfacomponent.must.by/', @path, main_img)"/></img>
+					<url>http://alfacomponent.must.by/<xsl:value-of select="show_product"/></url>
 					<sku><xsl:value-of select="code"/></sku>
 					<cur>RUR</cur>
 					<stock>0</stock>

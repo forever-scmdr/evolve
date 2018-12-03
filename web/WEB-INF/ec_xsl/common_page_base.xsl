@@ -100,9 +100,8 @@
 		<div class="mmenu-container">
 			<div class="container">
 				<div class="main-menu">
-					<a href="{page/index_link}">Главная</a>
 					<div style="position: relative;">
-						<a href="{page/catalog_link}" id="catalog_main_menu" class="{'active'[$active_menu_item = 'catalog']}"><!-- <i class="fas fa-bars"/> -->Продукция</a>
+						<a href="{page/catalog_link}" id="catalog_main_menu" class="{'active'[$active_menu_item = 'catalog']}"><i class="fas fa-bars"/>Каталог</a>
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 							<div class="sections">
 								<xsl:for-each select="page/catalog/section">
@@ -210,7 +209,7 @@
 					<div class="col-xs-12">
 						<div class="footer-container">
 							<div class="block">
-								<p><strong>© ООО «М-тех», 2018</strong></p>
+								<p><strong>Alfacomponent.by, 2018</strong></p>
 								<div class="forever">
 									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
 								</div>
@@ -490,17 +489,24 @@
 		<xsl:variable name="prms" select="params/param"/>
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat('http://alfacomponent.must.by/', @path, $main_pic) else 'img/no_image.png'"/>
 
 			<!-- <xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
+				<a href="{concat('http://alfacomponent.must.by/', @path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if> -->
 
 			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
-			<div class="device__article-number"><xsl:value-of select="code"/></div>
+			<div class="small-text device__small-text" title="{name_extra}"><xsl:value-of select="name_extra"/></div>
+			<div class="device__small-text">
+				<a href=""><xsl:value-of select="vendor"/></a> - <a href="{show_product}">
+					<xsl:value-of select="vendor_code"/></a>
+			</div>
+			<!-- <div class="device__article-number"><xsl:value-of select="code"/></div> -->
+			<a href="https://tme.eu/{manual[1]/link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
+			<!-- <a href="{manual[1]/link}"><xsl:value-of select="manual[1]/name"/></a> -->
 			<xsl:if test="$has_price">
 				<div class="device__price">
 					<div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div>
@@ -565,17 +571,24 @@
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat('http://alfacomponent.must.by/', @path, $main_pic) else 'img/no_image.png'"/>
 			<!-- <xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
+				<a href="{concat('http://alfacomponent.must.by/', @path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if> -->
 			<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}">&#160;</a>
 			<div class="device__info">
-				<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
+				<div style="position: relative; display: inline-block;">
+					<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
+					<a href="https://tme.eu/{manual[1]/link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
+				</div>
 				<div class="device__description">
-					<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
+					<div class="small-text device__small-text" title="{name_extra}"><xsl:value-of select="name_extra"/></div>
+					<div class="device__small-text">
+						<a href=""><xsl:value-of select="vendor"/></a> - <a href="{show_product}"><xsl:value-of select="vendor_code"/></a>
+					</div>
+					
 				</div>
 			</div>
 			<div class="device__article-number"><xsl:value-of select="@id"/></div>
@@ -728,6 +741,7 @@
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
 				<xsl:call-template name="SEO"/>
 				<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
+				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
 				<link rel="stylesheet" href="css/app.css"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
@@ -836,7 +850,7 @@
 	<xsl:template match="gallery_part" mode="content">
 		<div class="fotorama" data-fit="cover">
 			<xsl:for-each select="picture_pair">
-				<img src="{@path}{big}" alt="{name}" data-caption="{name}"/>
+				<img src="http://alfacomponent.must.by/{@path}{big}" alt="{name}" data-caption="{name}"/>
 			</xsl:for-each>
 		</div>
 	</xsl:template>

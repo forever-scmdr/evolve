@@ -147,12 +147,12 @@
 
 
 	<xsl:template name="BANNERS">
-		<div class="container-fluid" style="padding: 0;">
-			<div class="slider-container">
-				<div class="fotorama" style="width: 100%;" data-width="100%" data-height="400" data-transition="crossfade" data-autoplay="true" data-loop="true" data-fit="cover">
+		<div class="container-fluid" style="padding: 0; background-color: #1A3D74; margin-bottom: 64px;">
+			<div class="container">
+				<div class="fotorama" style="width: 100%;" data-width="100%" data-height="301px" data-transition="crossfade" data-autoplay="true" data-loop="true" data-fit="cover">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<!-- <img src="{@path}{pic}" alt="{name}"/> -->
-						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+						<img src="http://alfacomponent.must.by/{@path}{pic}" alt="{name}"/>
+						<!-- <div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url(http://alfacomponent.must.by/{@path}{pic});">
 							<div class="container">
 								<div class="slider-item__block fotorama__select">
 									<div class="slider-item__title"><xsl:value-of select="name" /></div>
@@ -162,11 +162,52 @@
 									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
 								</div>
 							</div>
+						</div> -->
+					</xsl:for-each>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- CATALOG ITEMS -->
+		<div class="container">
+			<div class="title_2">Каталог продукции</div>
+			<div class="catalog-items">
+				<xsl:for-each select="/page/catalog/section">
+					<xsl:variable name="sec_pic" select="if (main_pic != '') then concat('http://alfacomponent.must.by/', @path, main_pic) else ''"/>
+					<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat('http://alfacomponent.must.by/', product/@path, product/main_pic) else ''"/>
+					<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
+					<div class="device items-catalog__section">
+						<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
+						<a href="{show_products}" class="device__title"><xsl:value-of select="name"/></a>
+					</div>
+				</xsl:for-each>
+			</div>
+		</div>
+		<!-- CATALOG ITEMS END -->
+
+
+
+		<!-- NEWS -->
+		<div class="container-fluid" style="background-color: #f2f2f2; padding: 48px 0;">
+			<div class="container">
+				<div class="catalog-items info">
+					<xsl:for-each select="page//news_item">
+						<div class="catalog-item">
+							<a href="{show_news_item}" class="image-container" style="background-image: url('http://alfacomponent.must.by/{@path}{main_pic}');"><!-- <img src="http://alfacomponent.must.by/{@path}{main_pic}" alt=""/> --></a>
+							<div class="text">
+								<a href="{show_news_item}"><xsl:value-of select="header"/></a>
+								<div class="date"><xsl:value-of select="date"/></div>
+								<!-- <xsl:value-of select="short" disable-output-escaping="yes"/> -->
+							</div>
 						</div>
 					</xsl:for-each>
 				</div>
 			</div>
 		</div>
+		<!-- NEWS END -->
+
+
 
 		<!-- <div class="has-items-carousel">
 			<div class="container">
@@ -242,23 +283,26 @@
 			</div>
 		</div> -->
 
-
-		<div class="container-fluid" style="background-color: #fff; padding: 50px 0;">
+		<!-- BANNERS -->
+		<!-- <div class="container-fluid" style="background-color: #fff; padding: 50px 0;">
 			<div class="container .container-tb">
 				<div class="banners-container">
 					<xsl:for-each select="page/main_page/main_promo_bottom">
 						<div class="banner">
-							<div class="banner__image" style="background-image: url({@path}{pic})"></div>
+							<div class="banner__image" style="background-image: url(http://alfacomponent.must.by/{@path}{pic})"></div>
 							<div class="banner__title"><xsl:value-of select="text_big"/></div>
-							<!-- <div class="banner__text"><xsl:value-of select="text_small"/></div> -->
+							<div class="banner__text"><xsl:value-of select="text_small"/></div>
 							<a class="banner__link" href="{link}"></a>
 						</div>
 					</xsl:for-each>
 				</div>
 			</div>
-		</div>
+		</div> -->
+		<!-- BANNERS END -->
 
-		<div class="container">
+
+		<!-- TEXT -->
+		<!-- <div class="container">
 			<div class="about">
 				<div class="about__text">
 					<div class="title_2">О нас</div>
@@ -281,45 +325,59 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="container-fluid" style="background-color: #f4f4f4; padding: 40px 0;">
+		</div> -->
+		<!-- TEXT END -->
+
+
+
+		<div class="container-fluid" style="padding-top: 32px;">
 			<div class="container">
-				<div class="title_2" style="text-align: center; margin-bottom: 48px;"><a href="img/impulsa-sert.jpg" class="magnific_popup-image">Эксклюзивный дилер Impulsa AG с подразделением<br/>Itec в Республике Беларусь</a></div>
+				<div class="title_2">Производители</div>
 				<div class="brand-logos">
 					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (1).jpg" alt=""/>
+						<img class="brand-logos__image" src="img/brand.jpg" alt=""/>
 					</div>
 					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (2).jpg" alt=""/>
+						<img class="brand-logos__image" src="img/brand-1.jpg" alt=""/>
 					</div>
 					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (3).jpg" alt=""/>
+						<img class="brand-logos__image" src="img/brand-2.jpg" alt=""/>
 					</div>
 					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (4).jpg" alt=""/>
+						<img class="brand-logos__image" src="img/brand-3.jpg" alt=""/>
 					</div>
 					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (5).jpg" alt=""/>
+						<img class="brand-logos__image" src="img/brand-4.jpg" alt=""/>
 					</div>
 					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (6).jpg" alt=""/>
+						<img class="brand-logos__image" src="img/brand-5.jpg" alt=""/>
 					</div>
 					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (7).jpg" alt=""/>
+						<img class="brand-logos__image" src="img/brand-6.jpg" alt=""/>
 					</div>
 					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (8).jpg" alt=""/>
+						<img class="brand-logos__image" src="img/brand-7.jpg" alt=""/>
 					</div>
 					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (9).jpg" alt=""/>
+						<img class="brand-logos__image" src="img/brand-8.jpg" alt=""/>
 					</div>
 					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-logo (10).jpg" alt=""/>
+						<img class="brand-logos__image" src="img/brand-9.jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-10.jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-11.jpg" alt=""/>
+					</div>
+					<div class="brand-logos__item">
+						<img class="brand-logos__image" src="img/brand-12.jpg" alt=""/>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="container-fluid" style="background-color: #fff; padding: 40px 0;">
+		<!-- BENEFITS -->
+		<!-- <div class="container-fluid" style="background-color: #fff; padding: 40px 0;">
 			<div class="container">
 				<div class="hero">
 					<div class="hero-block hero-block_center">
@@ -352,8 +410,12 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="container-fluid p-t">
+		</div> -->
+		<!-- BENEFITS END -->
+
+
+		<!-- MAP -->
+		<!-- <div class="container-fluid p-t">
 			<div class="container">
 				<div class="page-map" id="contacts">
 					<div class="page-map__map"><script type="text/javascript" charset="utf-8" async="async" src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A85d23034aeb71446d25bfc2b766314cfce48883a8cb39509d1b86e360cec37c7&amp;width=100%25&amp;height=360&amp;lang=ru_RU&amp;scroll=true"></script></div>
@@ -370,7 +432,11 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
+		<!-- MAP END -->
+
+
+
 		<!-- <div class="separator"></div>
 		<div class="container container-tb">
 			<iframe src="https://yandex.by/map-widget/v1/-/CBumiCENKC" width="100%" height="400" frameborder="0" allowfullscreen="true"></iframe>

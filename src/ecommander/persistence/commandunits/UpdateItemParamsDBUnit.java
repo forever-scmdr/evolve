@@ -25,17 +25,11 @@ import java.sql.ResultSet;
 class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConstants.UniqueItemKeys, DBConstants {
 	
 	private Item item;
-	private boolean triggerExtra = true;
 
-	UpdateItemParamsDBUnit(Item item, boolean triggerExtra) {
-		this.item = item;
-		this.triggerExtra = triggerExtra;
-	}
-	
 	UpdateItemParamsDBUnit(Item item) {
-		this(item, true);
+		this.item = item;
 	}
-	
+
 	public void execute() throws Exception {
 		// Проверка прав пользователя
 		testPrivileges(item);

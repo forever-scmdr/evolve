@@ -31,7 +31,7 @@ public class UpdateSeoContainerItemFactory implements ItemEventCommandFactory {
 			Item seo = new ItemQuery(SEO).setParentId(item.getId(), false, SEO).loadFirstItem();
 			if (seo != null) {
 				seo.setValueUI(KEY_UNIIQUE, item.getKeyUnique());
-				executeCommand(SaveItemDBUnit.get(seo, false));
+				executeCommand(SaveItemDBUnit.get(seo).noTriggerExtra());
 			}
 		}
 	}

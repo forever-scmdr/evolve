@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0"> 
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -29,7 +29,7 @@
 			<div class="catalog-items info">
 				<xsl:for-each select="$p/custom_page">
 					<div class="catalog-item">
-						<a href="{show_page}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="{@path}{main_pic}" alt=""/> --></a>
+						<a href="{show_page}" class="image-container" style="background-image: url('http://alfacomponent.must.by/{@path}{main_pic}');"><!-- <img src="http://alfacomponent.must.by/{@path}{main_pic}" alt=""/> --></a>
 						<div class="text">
 							<div class="date"><xsl:value-of select="date"/></div>
 							<a href="{show_page}"><xsl:value-of select="header"/></a>

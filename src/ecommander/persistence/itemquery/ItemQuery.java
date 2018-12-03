@@ -715,7 +715,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			query = TemplateQuery.createFromString(GROUP_COMMON_QUERY, "Group query");
 		} else {
 			if (isParent)
-				query = TemplateQuery.createFromString(PARENT_QUERY, "ParsedItem query");
+				query = TemplateQuery.createFromString(PARENT_QUERY, "Parent query");
 			else
 				query = TemplateQuery.createFromString(COMMON_QUERY, "Common query");
 		}
@@ -785,8 +785,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws Exception
 	 */
-	public Item loadFirstItem() throws Exception {
-		List<Item> all = loadItems();
+	public Item loadFirstItem(Connection...conn) throws Exception {
+		List<Item> all = loadItems(conn);
 		if (all.size() == 0)
 			return null;
 		return all.get(0);

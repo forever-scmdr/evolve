@@ -14,7 +14,6 @@ import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
-import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -36,6 +35,7 @@ import java.util.*;
 
 /**
  * Класс контроллер для админской части
+ *
  * @author EEEE
  */
 public class MainAdminServlet extends BasicAdminServlet {
@@ -55,6 +55,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 		private boolean isPersonal = false;
 		// ID айтема
 		private long itemId = -1;
+		private HashSet<Long> itemIds = new HashSet();
+		private HashSet<Long> bufferedItemIds = new HashSet();
 		// Поисковый запрос (Антон)
 		private String searchQuery = null;
 		// ID айтема (родительский)
@@ -100,6 +102,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 			result = createItem(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.DELETE_ITEM_ACTION))
 			result = deleteItem(input, pageCreator);
+		else if (actionName.equals(MainAdminPageCreator.MASS_DELETE_ACTION))
+			result = deleteItem(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.SAVE_ITEM_ACTION))
 			result = saveItem(input, req, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.REORDER_ACTION))
@@ -126,6 +130,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 			result = createAssociations(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.MOVE_TO_ACTION))
 			result = moveTo(input, pageCreator);
+		else if (actionName.equals(MainAdminPageCreator.MASS_MOVE_TO_ACTION))
+			result = moveTo(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.TO_MOVE_ACTION))
 			result = move(input, pageCreator);
 		else if (actionName.equals(MainAdminPageCreator.DELETE_REFERENCE_ACTION))
@@ -144,12 +150,22 @@ public class MainAdminServlet extends BasicAdminServlet {
 			result = uploadImage(input, req, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.COPY_ACTION))
 			result = copy(input, pageCreator);
-		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.DELETE_PASTE_ACTION))
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.MASS_COPY_ACTION)) {
+			result = copy(input, pageCreator);
+		} else if (actionName.equalsIgnoreCase(MainAdminPageCreator.MASS_SHOW_ACTION)) {
+			result = showItems(input, pageCreator);
+		} else if (actionName.equalsIgnoreCase(MainAdminPageCreator.DELETE_PASTE_ACTION))
+			result = deletePaste(input, pageCreator);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.MASS_DELETE_FROM_BUFFER_ACTION))
 			result = deletePaste(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.PASTE_ACTION))
 			result = paste(input, pageCreator);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.MASS_PASTE_ACTION))
+			result = paste(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.STATUS_ACTION))
 			result = toggleItem(input, pageCreator);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.MASS_HIDE_ACTION))
+			result = hideItems(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.NEW_GROUP_ACTION))
 			result = setNewUserGroup(input, false);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.NEW_USER_ACTION))
@@ -171,8 +187,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 			}
 		}
 	}
+
 	/**
 	 * Начало работы
+	 *
 	 * @throws FileUploadException
 	 * @throws UnsupportedEncodingException
 	 */
@@ -183,6 +201,21 @@ public class MainAdminServlet extends BasicAdminServlet {
 //		if (!ServletFileUpload.isMultipartContent(req)) {
 			// Простые параметры
 			input.movingItem = req.getParameter(MainAdminPageCreator.MOVING_ITEM_INPUT);
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_IDS_INPUT))) {
+			String ids[] = req.getParameter(MainAdminPageCreator.ITEM_IDS_INPUT).split(",");
+			for (String s : ids) {
+				long itemId = Long.parseLong(s.trim());
+				input.itemIds.add(itemId);
+			}
+		}
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.BUFFERED_ITEM_IDS_INPUT))) {
+			String ids[] = req.getParameter(MainAdminPageCreator.BUFFERED_ITEM_IDS_INPUT).split(",");
+			for (String s : ids) {
+				long itemId = Long.parseLong(s.trim());
+				input.bufferedItemIds.add(itemId);
+				//input.itemId = itemId;
+			}
+		}
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT)))
 				input.itemId = Long.parseLong(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT));
 			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_TYPE_INPUT)))
@@ -218,6 +251,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 //		}
 		return input;
 	}
+
 	/**
 	 * Начало работы с CMS, выбран корневой айтем
 	 * 
@@ -235,8 +269,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 			page.addMessage("Приложение готово к работе, выбран корневой элемент", false);
 		return page;
 	}
+
 	/**
 	 * Переиндексация всех айтемов (Lucene)
+	 *
 	 * @param pageCreator
 	 * @return
 	 * @throws Exception
@@ -249,10 +285,12 @@ public class MainAdminServlet extends BasicAdminServlet {
 				"Переиндексация завершена успешно");
 		return page;
 	}
+
 	/**
 	 * Сбросить все кеши.
 	 * Также загрузить все айтемы и сохранить их заново для того, чтобы
 	 * ко всем айтемам применились изменения в параметрах (model.xml, model_custom.xml)
+	 *
 	 * @param pageCreator
 	 * @return
 	 * @throws Exception
@@ -297,9 +335,10 @@ public class MainAdminServlet extends BasicAdminServlet {
 				"Все кеши очищены успешно");
 		return page;
 	}
+
 	/**
 	 * Переключить на другой режим редактирования
-	 * 
+	 *
 	 * Параметры:
 	 * itemId - ID базового айтема
 	 * itemTypeId - ID типа базового айтема
@@ -331,6 +370,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		}
 		return page;
 	}
+
 	/**
 	 * Выбор айтема для редактирования
 	 * 
@@ -350,6 +390,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			page.addMessage("Выбран элемент для редактирования. После редактирования нажмите кнопку 'Сохранить'", false);
 		return page;
 	}
+
 	/**
 	 * Создать форму для нового айтемы
 	 * 
@@ -367,6 +408,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 				" кнопки 'Сохранить'", false);
 		return page;
 	}
+
 	/**
 	 * Сохраняет айтем
 	 * 
@@ -455,6 +497,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		AdminPage page = MainAdminPageCreator.createSetItemRedirectPage(id, type, "Изменения успешно сохранены");
 		return page;
 	}
+
 	/**
 	 * Удаление айтема
 	 * 
@@ -469,6 +512,11 @@ public class MainAdminServlet extends BasicAdminServlet {
 	private AdminPage deleteItem(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		transaction.addCommandUnit(ItemStatusDBUnit.delete(in.itemId));
+		if (in.itemIds.size() > 0) {
+			for (long id : in.itemIds) {
+				transaction.addCommandUnit(ItemStatusDBUnit.delete(id));
+			}
+		}
 		transaction.execute();
 		// Очистить корзину
 		LuceneIndexMapper.getSingleton().startUpdate();
@@ -482,6 +530,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Элемент успешно удален", false);
 		return page;
 	}
+
 	/**
 	 * Сделать элемент видимым или скрытым
 	 *
@@ -503,6 +552,53 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Видимость элемента успешно изменена", false);
 		return page;
 	}
+
+	/**
+	 * Массово скарыть элементы
+	 *
+	 * Параметры:
+	 * itemId - ID айтемов
+	 * parentId - ID родительского айтема
+	 * itemTypeId - ID типа родительского айтема
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	private AdminPage hideItems(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
+		for (long id : in.itemIds) {
+			transaction.addCommandUnit(ItemStatusDBUnit.hide(id));
+		}
+		transaction.execute();
+		PageController.clearCache();
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
+		page.addMessage("Элементы скрыты", false);
+		return page;
+	}
+
+	/**
+	 * Массово показать элементы
+	 *
+	 * Параметры:
+	 * itemId - ID айтемов
+	 * parentId - ID родительского айтема
+	 * itemTypeId - ID типа родительского айтема
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	private AdminPage showItems(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
+		for (long id : in.itemIds) {
+			transaction.addCommandUnit(ItemStatusDBUnit.restore(id));
+		}
+		transaction.execute();
+		PageController.clearCache();
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
+		page.addMessage("Видимость элементов успешно восстановлена", false);
+		return page;
+	}
+
 	/**
 	 * Устанавливает новый порядковый номер айтема
 	 * 
@@ -527,6 +623,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Порядок следования элементов изменен", false);
 		return page;
 	}
+
 	/**
 	 * Добавить множественный параметр
 	 * 
@@ -579,6 +676,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Дополнительный параметр добавлен и отображается в колонке справа", false);
 		return page;
 	}
+
 	/**
 	 * Загрузка картинки (плагин tinyMCE)
 	 * 
@@ -635,6 +733,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		String itemPath = FileDataType.getItemFilePath(item);
 		return pageCreator.createImageUploadedPage(in.itemId, in.paramId, uploadedFiles, itemPath, alt);
 	}
+
 	/**
 	 * Удалить множественный параметр
 	 * 
@@ -662,6 +761,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Дополнительный параметр удален", false);
 		return page;
 	}
+
 	/**
 	 * Установить текущий родительский айтем для айтемов, в которых может быть созадна ссылка на текущий айтем
 	 * 
@@ -679,6 +779,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 				" Чтобы удалить связи, нужно отмеить элементы, связь с которыми должна быть удалена, и нажать 'Удалить связи'", false);
 		return page;		
 	}
+
 	/**
 	 * Установить текущий родительский айтем для айтемов, ссылки на которые можно создавать в текущем айтеме
 	 * 
@@ -696,6 +797,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 				" Чтобы удалить связи, нужно отмеить элементы, связь с которыми должна быть удалена, и нажать 'Удалить связи'", false);
 		return page;
 	}
+
 	/**
 	 * Установить текущий родительский айтем для айтемов, ассоциации с которыми можно создавать в текущем айтеме
 	 * 
@@ -713,6 +815,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 				" Чтобы удалить связи, нужно отмеить элементы, связь с которыми должна быть удалена, и нажать 'Удалить связи'", false);
 		return page;
 	}
+
 	/**
 	 * Установить текущий родительский айтем для айтемов, в которые можно перемещать текущий айтем
 	 * 
@@ -729,6 +832,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Чтобы переместить элемент, нужно отметить новый родительский элемент для текущего и нажать 'Переместить'", false);
 		return page;
 	}
+
 	/**
 	 * Установить текущий родительский айтем для айтемов, которые можно перемещать текущем айтем
 	 * 
@@ -745,6 +849,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Чтобы переместить элемент, нужно отметить элемент для перемещения и нажать 'Переместить'", false);
 		return page;
 	}
+
 	/**
 	 * Создать ссылки на текущий айтем в выбранных айтемах
 	 * 
@@ -769,6 +874,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Новые связи успешно созданы", false);
 		return page;	
 	}
+
 	/**
 	 * Создать ссылки на выбранные айтемы в текущем айтеме
 	 * 
@@ -794,6 +900,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Новые ассоциации успешно созданы", false);
 		return page;
 	}
+
 	/**
 	 * Переместить текущий айтем в выбранный айтем
 	 * 
@@ -807,12 +914,19 @@ public class MainAdminServlet extends BasicAdminServlet {
 	private AdminPage moveTo(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		try {
-			transaction.addCommandUnit(new MoveItemDBUnit(in.itemId, in.parentId));
+			if(in.itemId > 0)
+				transaction.addCommandUnit(new MoveItemDBUnit(in.itemId, in.parentId));
+			for (long id : in.bufferedItemIds) {
+				transaction.addCommandUnit(new MoveItemDBUnit(id, in.parentId));
+			}
 		transaction.execute();
 			@SuppressWarnings("unchecked")
 			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
 			if (buffer != null) {
 				buffer.remove(in.itemId);
+				for (long id : in.bufferedItemIds) {
+					buffer.remove(id);
+				}
 				in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 			}
 		} catch (Exception e) {
@@ -827,6 +941,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Элемент успешно перемещен", false);
 		return page;
 	}
+
 	/**
 	 * Переместить выбранный айтем в текущий айтем
 	 * 
@@ -849,6 +964,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Элемент успешно перемещен", false);
 		return page;
 	}
+
 	/**
 	 * Копировать айтем
 	 * 
@@ -868,11 +984,20 @@ public class MainAdminServlet extends BasicAdminServlet {
 		if (buffer == null) {
 			buffer = new LinkedHashMap<>();
 		}
-		ItemAccessor item = AdminLoader.loadItemAccessor(in.itemId);
-		buffer.put(item.getId(), item);
+		if (in.itemId > 0) {
+			ItemAccessor item = AdminLoader.loadItemAccessor(in.itemId);
+			buffer.put(item.getId(), item);
+		}
+		if (in.itemIds.size() > 0) {
+			List<ItemAccessor> items = AdminLoader.loadItemAccessors(in.itemIds.toArray(new Long[0]));
+			for (ItemAccessor item : items) {
+				buffer.put(item.getId(), item);
+			}
+		}
 		in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 		return pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId);
 	}
+
 	/**
 	 * Произвести копирование айтема
 	 * 
@@ -889,12 +1014,21 @@ public class MainAdminServlet extends BasicAdminServlet {
 	protected AdminPage paste(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
 		try {
-			transaction.addCommandUnit(new CopyItemDBUnit(in.itemId, in.parentId));
-			transaction.execute();
 			@SuppressWarnings("unchecked")
 			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
+			if (in.itemId > 0) {
+				transaction.addCommandUnit(new CopyItemDBUnit(in.itemId, in.parentId));
+			}
+			for (long id : in.bufferedItemIds) {
+				transaction.addCommandUnit(new CopyItemDBUnit(id, in.parentId));
+			}
+			transaction.execute();
+
 			if (buffer != null) {
 				buffer.remove(in.itemId);
+				for (long id : in.bufferedItemIds) {
+					buffer.remove(id);
+				}
 				in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 			}
 		} catch (Exception e) {
@@ -909,6 +1043,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Элемент успешно копирован", false);
 		return page;
 	}
+
 	/**
 	 * Удалить из буфера обмена айтем
 	 * @param in
@@ -921,10 +1056,14 @@ public class MainAdminServlet extends BasicAdminServlet {
 		LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
 		if (buffer != null) {
 			buffer.remove(in.itemId);
+			for(long id : in.bufferedItemIds){
+				buffer.remove(id);
+			}
 			in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 		}
 		return pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId);
 	}
+
 	/**
 	 * Удалить какую-либо ссылку
 	 * 
@@ -951,6 +1090,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		page.addMessage("Связи успешно удалены", false);
 		return page;
 	}
+
 	/**
 	 * Удалить какую-либо ссылку
 	 * 

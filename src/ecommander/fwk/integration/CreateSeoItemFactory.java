@@ -40,7 +40,7 @@ public class CreateSeoItemFactory implements ItemEventCommandFactory {
 				seo.setValueUI(KEY_UNIIQUE, parent.getKeyUnique());
 				Item newSeo = Item.newChildItem(ItemTypeRegistry.getItemType(SEO), seoCatalog);
 				Item.updateParamValues(seo, newSeo);
-				executeCommand(SaveItemDBUnit.get(newSeo, false));
+				executeCommand(SaveItemDBUnit.get(newSeo).noTriggerExtra());
 				executeCommand(CreateAssocDBUnit.childExistsSoft(newSeo, parent, ItemTypeRegistry.getAssocId(SEO)));
 				newSeoId = newSeo.getId();
 			} else {
@@ -48,7 +48,7 @@ public class CreateSeoItemFactory implements ItemEventCommandFactory {
 			}
 			executeCommand(ItemStatusDBUnit.delete(seo));
 			executeCommand(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
-			seo.setId(newSeoId); // это надо для того, чтобы в админке был переход на страницу внов созданного айтема seo
+			seo.setId(newSeoId); // это надо для того, чтобы в админке был переход на страницу вновь созданного айтема seo
 		}
 	}
 

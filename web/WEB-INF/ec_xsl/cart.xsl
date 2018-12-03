@@ -25,7 +25,7 @@
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(sum, ' p.') else ''"/>
 							<div class="item">
 								<a href="{$p/show_product}" class="image-container">
-									<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
+									<img src="http://alfacomponent.must.by/{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
 								</a>
 								<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
 								<div class="price one">

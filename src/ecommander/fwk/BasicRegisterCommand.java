@@ -20,6 +20,7 @@ public abstract class BasicRegisterCommand extends Command {
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
 
 	public static final String EMAIL_PARAM = "email";
+	public static final String PHONE_PARAM = "phone";
 	public static final String PASSWORD_PARAM = "password";
 
 	public static final String REGISTERED_GROUP = "registered";
@@ -40,7 +41,8 @@ public abstract class BasicRegisterCommand extends Command {
 		}
 		Item catalog = ItemUtils.ensureSingleRootItem(REGISTERED_CATALOG_ITEM, User.getDefaultUser(),
 				UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-		String userName = form.getStringValue(EMAIL_PARAM);
+		String userName = (StringUtils.isEmpty(form.getStringValue(EMAIL_PARAM)))? form.getStringValue(PHONE_PARAM) : form.getStringValue(EMAIL_PARAM);
+		//String userName = form.getStringValue(EMAIL_PARAM);
 		String password = form.getStringValue(PASSWORD_PARAM);
 		User newUser = new User(userName, password, "registered user", User.ANONYMOUS_ID);
 		newUser.addGroup(REGISTERED_GROUP, UserGroupRegistry.getGroup(REGISTERED_GROUP), User.SIMPLE);

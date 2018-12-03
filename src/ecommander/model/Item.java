@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
@@ -64,7 +63,7 @@ public class Item implements ItemBasics {
 	public static final int WEIGHT_STEP = 64;
 
 	public static final byte STATUS_NORMAL = (byte) 0;
-	public static final byte STATUS_NIDDEN = (byte) 1;
+	public static final byte STATUS_HIDDEN = (byte) 1;
 	public static final byte STATUS_DELETED = (byte) 2;
 
 	private static final int _NO_PARAM_ID  = -1;
@@ -288,17 +287,22 @@ public class Item implements ItemBasics {
 	 * @param paramId
 	 * @param value
 	 */
-	public final void setValue(int paramId, Object value) {
+	public final boolean setValue(int paramId, Object value) {
+		boolean modified;
 		if (value == null) {
 			// Если добавляется пустое значение к множественному параметру - ничего не делать
 			if (itemType.getParameter(paramId).isMultiple())
-				return;
+				return false;
 			// Удалить параметр, если значение равно null
-			clearParameter(paramId);
+			modified = clearParameter(paramId);
 		} else {
-			getParameter(paramId).setValue(value, false);
+			modified = getParameter(paramId).setValue(value, false);
 		}
-		state = State.modified_NO_xml;
+		if (modified) {
+			state = State.modified_NO_xml;
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Прямая установка параметра. Используется когда сразу есть значение параметра соответствующего типа
@@ -306,8 +310,8 @@ public class Item implements ItemBasics {
 	 * @param paramName
 	 * @param value
 	 */
-	public final void setValue(String paramName, Object value) {
-		setValue(itemType.getParameter(paramName).getId(), value);
+	public final boolean setValue(String paramName, Object value) {
+		return setValue(itemType.getParameter(paramName).getId(), value);
 	}
 	/**
 	 * Содержит параметр айтема определенное значение
@@ -323,9 +327,10 @@ public class Item implements ItemBasics {
 	 * @param paramName
 	 * @param value
 	 */
-	public final void setValueUnique(String paramName, Object value) {
+	public final boolean setValueUnique(String paramName, Object value) {
 		if (!containsValue(paramName, value))
-			setValue(paramName, value);
+			return setValue(paramName, value);
+		return false;
 	}
 	/**
 	 * Возвращает параметр по его ID.
@@ -517,10 +522,13 @@ public class Item implements ItemBasics {
 	 * Удаляет параметр с заданным ID
 	 * @param paramId
 	 */
-	public final void clearParameter(int paramId) {
+	public final boolean clearParameter(int paramId) {
 		populateMap();
-		getParameterFromMap(paramId).clear();
-		state = State.modified_NO_xml;
+		if (getParameterFromMap(paramId).clear()) {
+			state = State.modified_NO_xml;
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Удалить все значения определенного параметра по его названию
@@ -726,7 +734,7 @@ public class Item implements ItemBasics {
 	}
 
 	public final boolean isStatusHidden() {
-		return status == STATUS_NIDDEN;
+		return status == STATUS_HIDDEN;
 	}
 
 	public final boolean isStatusDeleted() {

@@ -8,6 +8,7 @@ public interface ItemNames {
     String URL_SEO = "url_seo";
     String URL_SEO_WRAP = "url_seo_wrap";
     String CATALOG = "catalog";
+    String PLAIN_CATALOG = "plain_catalog";
     String SECTION = "section";
     String PRODUCT = "product";
     String PARAMS = "params";
@@ -290,6 +291,12 @@ public interface ItemNames {
 
     }
 
+    public interface plain_catalog_ {
+
+        String _ITEM_NAME = "plain_catalog";
+
+    }
+
     public interface price_ {
 
         String _ITEM_NAME = "price";
@@ -322,6 +329,7 @@ public interface ItemNames {
         String SMALL_PIC = "small_pic";
         String MIN_QTY = "min_qty";
         String QUOTIENT = "quotient";
+        String UNIT = "unit";
         String DESCRIPTION = "description";
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";

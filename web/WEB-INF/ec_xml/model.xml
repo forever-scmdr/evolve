@@ -48,6 +48,12 @@
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 	</item>
 
+
+	<item name="plain_catalog" caption="Список товаров" children-per-page="30" children-sorting="ASC" ag-id="140" ag-hash="-1742571868">
+		<child item="product"/>
+	</item>
+
+
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
 	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" ag-id="10" ag-hash="1970241253">
@@ -91,6 +97,7 @@
 		<parameter name="small_pic" type="picture" format="width: 200; src: main_pic;" caption="Маленькая картинка"/>
 		<parameter name="min_qty" type="decimal" caption="Минимальное количесво заказа"/>
 		<parameter name="quotient" type="decimal" caption="Кратность заказа"/>
+		<parameter name="unit" type="string" caption="Единица измерения"/>
 		<parameter name="description" type="text" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
@@ -411,6 +418,7 @@
 		<child item="counter" single="true" virtual="true"/>
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
+		<child item="plain_catalog" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

@@ -10,9 +10,11 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
+import extra._generated.Product;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.math.BigDecimal;
 
 /**
  * Разбор файла с ценой
@@ -41,7 +43,7 @@ public class UpdatePrices extends IntegrateBase implements CatalogConst{
 							Double qty = getDoubleValue(QTY_HEADER);
 							if (qty == null)
 								qty = 0d;
-							prod.set_qty(qty);
+							prod.set_qty(new BigDecimal(qty));
 							prod.set_price(getCurrencyValue(PRICE_HEADER));
 							DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
 							info.increaseProcessed();

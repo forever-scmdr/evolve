@@ -46,9 +46,68 @@
 					</div>
 				</div>
 			</xsl:if>
-
+			<div>
+				<form action="">
+					<input type="file"/>
+					<input type="submit"/>
+				</form>
+				<h3>Таблица с результатами</h3>
+				<table>
+					<tr>
+						<th>Фото</th>
+						<th>Название</th>
+						<th>Описание</th>
+						<th>Производитель</th>
+						<th>Код производителя</th>
+						<th>Цена</th>
+						<th>На складе</th>
+						<th>Мин. заказ</th>
+						<th>Заказать</th>
+						<th></th>
+					</tr>
+					<tr>
+						<td><a href=""><i class="fas fa-file-image"></i></a></td>
+						<td><a href="">10A05-DC</a></td>
+						<td>Диод: выпрямительный Шоттки; THT; 100В; 2x5А; TO220AB</td>
+						<td><a href="">DC Components</a></td>
+						<td><a href="">10A05</a></td>
+						<td>23 руб./шт.</td>
+						<td>112 шт.</td>
+						<td>мин. 3 шт.</td>
+						<td>
+							<form action="">
+								<input type="number" value="1"/>
+								<input type="submit" value="Заказать"/>
+							</form>
+						</td>
+						<td><a href=""><i class="fas fa-plus-square"></i></a></td>
+					</tr>
+					<tr>
+						<td><a href=""><i class="fas fa-file-image"></i></a></td>
+						<td><a href="">10A05-DC</a></td>
+						<td>Диод: выпрямительный Шоттки; THT; 100В; 2x5А; TO220AB</td>
+						<td><a href="">DC Components</a></td>
+						<td><a href="">10A05</a></td>
+						<td>23 руб./шт.</td>
+						<td>112 шт.</td>
+						<td>мин. 3 шт.</td>
+						<td>
+							<form action="">
+								<input type="number" value="1"/>
+								<input type="submit" value="Заказать"/>
+							</form>
+						</td>
+						<td><a href=""><i class="fas fa-plus-square"></i></a></td>
+					</tr>
+				</table>
+			</div>
 			<div class="catalog-items{' lines'[$view = 'list']}">
-				<xsl:apply-templates select="$products"/>
+				<xsl:if test="$view = 'table'">
+					<xsl:apply-templates select="$products"/>
+				</xsl:if>
+				<xsl:if test="$view = 'list'">
+					<xsl:apply-templates select="$products" mode="lines"/>
+				</xsl:if>
 				<xsl:if test="not($products)">
 					<h4>По заданным критериям товары не найдены</h4>
 				</xsl:if>

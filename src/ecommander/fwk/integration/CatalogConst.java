@@ -19,6 +19,7 @@ public interface CatalogConst {
 	String CATEGORY_ID_PARAM = "category_id";
 	String PARENT_ID_PARAM = "parent_id";
 	String MAIN_PIC_PARAM = "main_pic";
+	String SMALL_PIC_PARAM = "small_pic";
 	String PARAMS_FILTER_PARAM = "params_filter";
 	String VENDOR_CODE_PARAM = "vendor_code";
 	String OFFER_ID_PARAM = "offer_id";

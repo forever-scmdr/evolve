@@ -184,7 +184,7 @@
 					<var name="action" value="add"/>
 					<var name="src_page" value="compare_ajax"/>
 				</link>
-				<single item="params"/>
+				<single item="manual"/>
 			</list>
 			<list item="product" tag="tag" id="tag">
 				<aggregation parameter="tag"/>
@@ -282,7 +282,7 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
-			<single item="params"/>
+			<single item="manual"/>
 		</list>
 		<link name="set_view_table" target="search" copy-page-vars="yes">
 			<var name="view" value="table"/>
@@ -335,6 +335,7 @@
 			<single item="seo"/>
 			<single item="params"/>
 			<single item="product_extra"/>
+			<single item="manual"/>
 			<ancestor item="section" transit="false" tag="product_section"/>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
@@ -961,6 +962,17 @@
 			<var name="action"/>
 		</request>
 		<command class="ecommander.fwk.integration.YMarketCreateCatalogCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+
+	<page name="integrate_excel" template="integrate" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.ImportPlainCatalog" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

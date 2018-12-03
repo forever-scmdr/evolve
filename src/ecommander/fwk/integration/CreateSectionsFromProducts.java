@@ -53,7 +53,7 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 				FileUtils.deleteQuietly(his);
 			}
 			product.clearParameter("small_pic");
-			executeCommandUnit(SaveItemDBUnit.get(product, false).ignoreFileErrors().noFulltextIndex());
+			executeCommandUnit(SaveItemDBUnit.get(product).ignoreFileErrors().noFulltextIndex().noTriggerExtra());
 			i++;
 			if(i>49) {
 				i= 0;
@@ -66,7 +66,7 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 		info.setProcessed(0);
 		for(Item product : loadedProducts){
 			product.forceInitialInconsistent();
-			executeCommandUnit(SaveItemDBUnit.get(product, true).noFulltextIndex());
+			executeCommandUnit(SaveItemDBUnit.get(product).noFulltextIndex());
 			i++;
 			info.increaseProcessed();
 			if(i>49) {

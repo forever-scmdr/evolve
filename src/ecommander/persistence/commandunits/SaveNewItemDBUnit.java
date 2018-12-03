@@ -29,7 +29,6 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 
 	private Item item;
 	private ItemBasics parent;
-	private boolean triggerExtra = true;
 
 	SaveNewItemDBUnit(Item item) {
 		this.item = item;
@@ -38,17 +37,6 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 	SaveNewItemDBUnit(Item item, ItemBasics parent) {
 		this.item = item;
 		this.parent = parent;
-	}
-
-	SaveNewItemDBUnit(Item item, boolean triggerExtra) {
-		this.item = item;
-		this.triggerExtra = triggerExtra;
-	}
-
-	SaveNewItemDBUnit(Item item, ItemBasics parent, boolean triggerExtra) {
-		this.item = item;
-		this.parent = parent;
-		this.triggerExtra = triggerExtra;
 	}
 
 	public void execute() throws Exception {
