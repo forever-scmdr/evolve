@@ -69,6 +69,15 @@
 	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="8" ag-hash="-251149995">
 		<parameter name="product" type="string" caption="Код продукта" description="для вывода на главной странице" multiple="true"/>
 		<child item="seo" single="true"/>
+		<child item="featured" multiple="true"/>
+	</item>
+
+	<item name="featured" caption="слайд" key="name" ag-id="18" ag-hash="-290659282">
+		<parameter name="name" type="string" caption="Заголовок"/>
+		<parameter name="link" type="string" caption="Ссылка"/>
+		<parameter name="date" type="date" caption="Дата публикации"/>
+		<parameter name="tag" type="string" caption="теги" multiple="true" domain="tags"/>
+		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
 	</item>
 
 	<item name="contacts" caption="Контакты" ag-id="9" ag-hash="-567451565">
@@ -86,6 +95,12 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
+		<child item="soc_link"/>
+	</item>
+
+	<item name="soc_link" key="name" caption="соцсеть" ag-id="17" ag-hash="1213728690">
+		<parameter name="name" type="string" caption="название" description="свопадает с суфиксом font-awesome" />
+		<parameter name="link" type="string" caption="ссылка" />
 	</item>
 
 	<item name="feedback_form" caption="Форма обратной связи" virtual="true" ag-id="11" ag-hash="-1950071490" >

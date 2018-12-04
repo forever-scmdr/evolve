@@ -211,7 +211,7 @@
 			</label>
 			<xsl:if test="@format = '' or @format = 'dd.MM.YYYY hh:mm'">
 				<label style="float:left;">
-					<input type="text" class="time" style="width: 42px;text-align:center; padding: 4px 0;"/>
+					<input type="text" class="time" value="{substring(.,11)}" style="width: 42px;text-align:center; padding: 4px 0;"/>
 				</label>
 			</xsl:if>
 		

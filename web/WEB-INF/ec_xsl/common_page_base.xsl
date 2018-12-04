@@ -29,7 +29,10 @@
     <xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
 
-    <xsl:variable name="active_menu_item"/>
+    <xsl:variable name="active_menu_item" select="page/@name"/>
+    <xsl:variable name="extra-header-class"/>
+    <!-- Инфа, общая для всех страниц -->
+    <xsl:variable name="common" select="page/common" />
 
 
     <!-- ****************************    ПОЛЬЗОВАТЕЛЬСКИЕ МОДУЛИ    ******************************** -->
@@ -44,37 +47,175 @@
 
 
     <!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
-
-
-    <xsl:template name="INC_DESKTOP_HEADER">
-
+    <xsl:template name="HEADER">
+        <section class="s-pageheader{$extra-header-class}">
+            <header class="header">
+                <div class="header__content row">
+                    <div class="header__logo">
+                        <a class="logo" href="{$base}">
+                            <img src="images/logo.svg" alt="на главную - {$main_host}"/>
+                        </a>
+                    </div>
+                    <xsl:if test="$common/soc_link">
+                        <ul class="header__social">
+                            <xsl:for-each select="$common/soc_link">
+                                <li>
+                                    <a href="{link}" target="_blank">
+                                        <i class="fa fa-{name}" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                            </xsl:for-each>
+                    </ul>
+                    </xsl:if>
+                    <xsl:call-template name="SEARCH"/>
+                    <xsl:call-template name="HEADER_NAV" />
+                </div>
+            </header>
+            <xsl:call-template name="EXTRA_HEADER_CONTENT"/>
+        </section>
     </xsl:template>
 
+    <xsl:template name="HEADER_NAV">
+        <a class="header__toggle-menu" href="#0" title="Меню">
+            <span>Меню</span>
+        </a>
+        <nav class="header__nav-wrap">
+            <h2 class="header__nav-heading h6">Главное меню</h2>
+            <ul class="header__nav">
+                <li class="{'current'[$active_menu_item = 'index']}"><a href="{$main_host}">Главная страница</a></li>
+                <xsl:for-each select="page/custom_pages/menu_custom">
+                    <xsl:variable name="k" select="@key"/>
+                    <xsl:if test="menu_custom != ''">
+                        <li class="has-children{' current'[$active_menu_item = $k]}">
+                            <a>
+                                <xsl:value-of select="header"/>
+                            </a>
+                            <ul class="sub-menu">
+                                <xsl:for-each select="menu_custom">
+                                    <xsl:variable name="k" select="@key"/>
+                                    <li class="{'current'[$active_menu_item = $k]}">
+                                        <a href="{show_page}"><xsl:value-of select="header"/></a>
+                                    </li>
+                                </xsl:for-each>
+                            </ul>
+                        </li>
+                    </xsl:if>
+                    <xsl:if test="not(menu_custom)">
+                        <xsl:variable name="k" select="@key"/>
+                        <li class="{'current'[$active_menu_item = $k]}">
+                            <a href="{show_page}"><xsl:value-of select="header"/></a>
+                        </li>
+                    </xsl:if>
+                </xsl:for-each>
 
-    <xsl:template name="INC_MOBILE_HEADER">
+                    <xsl:if test="count(page/news) = 1">
+                        <xsl:variable name="k" select="@key"/>
+                        <li class="{'current'[$active_menu_item = $k]}">
+                            <a href="{news/show_page}"><xsl:value-of select="news/name"/></a>
+                        </li>
+                    </xsl:if>
+                    <xsl:if test="count(page/news) &gt; 1">
+                        <xsl:variable name="k" select="@key"/>
+                        <li class="has-children{' current'[$active_menu_item = $k]}">
+                            <a>
+                              Новости
+                            </a>
+                            <ul class="sub-menu">
+                                <xsl:for-each select="page/news" >
+                                    <xsl:variable name="k" select="$k"/>
+                                    <li class="{'current'[$active_menu_item = $k]}">
+                                        <a href="{show_page}"><xsl:value-of select="name"/></a>
+                                    </li>
+                                </xsl:for-each>
+                            </ul>
+                        </li>
+                    </xsl:if>
 
+                <li class="{'current'[$active_menu_item = 'contacts']}">
+                    <a href="{page/contacts_link}">Контакты</a>
+                </li>
+            </ul>
+            <a href="#0" title="Скрыть меню" class="header__overlay-close close-mobile-menu">Закрыть</a>
+        </nav>
+    </xsl:template>
+
+    <xsl:template name="SEARCH">
+        <a class="header__search-trigger" href="#0"></a>
+        <div class="header__search">
+            <form role="search" method="get" class="header__search-form" action="{page/search_link}">
+                <label>
+                    <span class="hide-content">Поиск:</span>
+                    <input type="search" class="search-field" placeholder="Введите запрос" value="{page/variables/q}" name="q" title="запрос" autocomplete="off"/>
+                </label>
+                <input type="submit" class="search-submit" value="Искать"/>
+            </form>
+            <a href="#0" title="Закрыть" class="header__overlay-close">Закарыть</a>
+        </div>
     </xsl:template>
 
 
     <xsl:template name="INC_FOOTER">
-        <!-- modal feedback -->
-        <xsl:call-template name="FEEDBACK_FORM"/>
-        <!-- MODALS END -->
-    </xsl:template>
+        <footer class="s-footer">
 
+            <div class="s-footer__main">
+                <div class="row">
+                    <div class="col-two md-four mob-full s-footer__sitelinks">
+                        <h4>Разделы</h4>
+                        <ul class="s-footer__linklist">
+                            <li><a href="{$main_host}">Главная страница</a></li>
+                            <xsl:for-each select="page/custom_pages/menu_custom">
+                                <li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
+                            </xsl:for-each>
+                            <li><a href="{page/contacts_link}">Контакты</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-two md-four mob-full s-footer__archives">
+                        <h4>Новости</h4>
+                        <ul class="s-footer__linklist">
+                            <li><a href="#0">January 2018</a></li>
+                            <li><a href="#0">December 2017</a></li>
+                            <li><a href="#0">November 2017</a></li>
+                            <li><a href="#0">October 2017</a></li>
+                            <li><a href="#0">September 2017</a></li>
+                            <li><a href="#0">August 2017</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-two md-four mob-full s-footer__social">
+                        <h4>Соцсети</h4>
+                        <ul class="s-footer__linklist">
+                            <xsl:for-each select="$common/soc_link">
+                                <li><a href="{link}"><xsl:value-of select="name"/></a></li>
+                            </xsl:for-each>
+                        </ul>
+                    </div>
+                    <div class="col-five md-full end s-footer__subscribe">
+                        <h4>Какой-то текст</h4>
+                        <p>Тут будет какой-то текст.</p>
+                        <!--<div class="subscribe-form">-->
+                            <!--<form id="mc-form" class="group" novalidate="true">-->
+                                <!--<input type="email" value="" name="" class="email" id="mc-email" placeholder="Email" required=""/>-->
+                                <!--<input type="submit" name="subscribe" value="Send"/>-->
+                                <!--<label for="mc-email" class="subscribe-message"></label>-->
+                            <!--</form>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="s-footer__bottom">
+                <div class="row">
+                    <div class="col-full">
+                        <div class="s-footer__copyright">
+                            <span>© Copyright Philosophy 2018</span>
+                            <span>Site Template by <a href="https://colorlib.com/">Colorlib</a></span>
+                        </div>
 
-    <xsl:template name="INC_MOBILE_MENU">
-
-    </xsl:template>
-
-
-    <xsl:template name="INC_MOBILE_NAVIGATION">
-
-    </xsl:template>
-
-
-    <xsl:template name="INC_SIDE_MENU_INTERNAL">
-
+                        <div class="go-top">
+                            <a class="smoothscroll" title="Back to Top" href="#top"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </xsl:template>
 
 
@@ -94,7 +235,14 @@
 
     <xsl:template name="MAIN_CONTENT"></xsl:template>
     <xsl:template name="CONTENT"/>
+    <xsl:template name="EXTRA_HEADER_CONTENT"/>
     <xsl:template name="EXTRA_SCRIPTS"/>
+    <xsl:template name="COMMON_SCRIPTS">
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <script src="js/plugins.js"></script>
+        <!--<script src="https://maps.googleapis.com/maps/api/js"></script>-->
+        <script src="js/main.js"></script>
+    </xsl:template>
 
 
     <!-- ****************************    СТРАНИЦА    ******************************** -->
@@ -113,24 +261,37 @@
 --&gt;
 				</xsl:text>
                 <base href="{$main_host}"/>
+                <!--- basic page needs -->
                 <meta charset="utf-8"/>
                 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
+                <!-- USER-defined code -->
                 <xsl:for-each select="$head-start-modules">
                     <xsl:value-of select="code" disable-output-escaping="yes"/>
                 </xsl:for-each>
+                <!--- mobile specific meta -->
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+                <!-- CSS -->
+                <link rel="stylesheet" href="css/base.css"/>
+                <link rel="stylesheet" href="css/vendor.css"/>
+                <link rel="stylesheet" href="css/main.css"/>
 
+                <!-- SEO -->
                 <xsl:call-template name="SEO"/>
+                <!-- SCRIPTS -->
+                <script src="js/modernizr.js"></script>
+                <script src="js/pace.min.js"></script>
                 <xsl:for-each select="$head-end-modules">
                     <xsl:value-of select="code" disable-output-escaping="yes"/>
                 </xsl:for-each>
             </head>
-            <body>
+            <body id="top">
                 <xsl:for-each select="$body-start-modules">
                     <xsl:value-of select="code" disable-output-escaping="yes"/>
                 </xsl:for-each>
-
+                <xsl:call-template name="HEADER"/>
+                <xsl:call-template name="CONTENT"/>
+                <xsl:call-template name="INC_FOOTER"/>
+                <xsl:call-template name="COMMON_SCRIPTS" />
                 <xsl:call-template name="EXTRA_SCRIPTS"/>
                 <xsl:for-each select="$body-end-modules">
                     <xsl:value-of select="code" disable-output-escaping="yes"/>
@@ -138,6 +299,9 @@
             </body>
         </html>
     </xsl:template>
+
+
+
 
 
     <!-- ****************************    БЛОКИ НА СТРАНИЦЕ    ******************************** -->

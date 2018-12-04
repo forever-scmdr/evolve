@@ -16,7 +16,10 @@
                 <var name="sel" ref="news" style="translit"/>
             </link>
         </list>
-        <single item="common" cacheable="false"/>
+
+        <single item="common" cacheable="false">
+            <list item="soc_link"/>
+        </single>
         <link name="contacts_link" target="contacts"/>
         <link name="search_link" target="search"/>
         <link name="feedback_form_link" target="feedback_ajax"/>
@@ -30,10 +33,55 @@
 
 
     <page name="index" template="index" cacheable="false">
+        <request>
+            <var name="limit" value="3"/>
+            <var name="page" value="1"/>
+        </request>
         <single item="main_page" id="main" cacheable="true">
             <single item="seo"/>
+            <list item="featured">
+                <filter>
+                    <limit>
+                        <var value="3"/>
+                    </limit>
+                </filter>
+            </list>
         </single>
+        <list item="news_item" id="ni">
+            <filter>
+                <sorting direction="DESC">
+                    <var value="date"/>
+                </sorting>
+                <limit>
+                    <var value="3"/>
+                </limit>
+            </filter>
+            <link name="show_page" target="news_item" type="exclusive">
+                <var name="sel" ref="ni" style="translit"/>
+            </link>
+        </list>
+        <link name="load_more" target="news_ajax"/>
         <include name="COMMON"/>
+    </page>
+
+    <page name="news_ajax" template="">
+        <request>
+            <var name="limit" value="3"/>
+            <var name="page" value="2"/>
+        </request>
+        <list item="news_item">
+            <filter>
+                <sorting direction="DESC">
+                    <var value="date"/>
+                </sorting>
+                <limit>
+                    <var var="limit"/>
+                </limit>
+                <limit>
+                    <var name="page" var="page"/>
+                </limit>
+            </filter>
+        </list>
     </page>
 
     <page name="search" template="search">
@@ -42,17 +90,17 @@
             <var name="view" value="table" scope="cookie"/>
         </request>
         <!--<list item="searchable" id="prod">-->
-            <!--<filter>-->
-                <!--<fulltext limit="48" compare="EVERY">-->
-                    <!--<var var="q"/>-->
-                <!--</fulltext>-->
-            <!--</filter>-->
-            <!--<link name="show_page" target="custom_page" type="exclusive">-->
-                <!--<var name="prod" ref="prod" style="translit"/>-->
-            <!--</link>-->
-            <!--<link name="show_news_item" target="news_item" type="exclusive">-->
-                <!--<var name="prod" ref="prod" style="translit"/>-->
-            <!--</link>-->
+        <!--<filter>-->
+        <!--<fulltext limit="48" compare="EVERY">-->
+        <!--<var var="q"/>-->
+        <!--</fulltext>-->
+        <!--</filter>-->
+        <!--<link name="show_page" target="custom_page" type="exclusive">-->
+        <!--<var name="prod" ref="prod" style="translit"/>-->
+        <!--</link>-->
+        <!--<link name="show_news_item" target="news_item" type="exclusive">-->
+        <!--<var name="prod" ref="prod" style="translit"/>-->
+        <!--</link>-->
         <!--</list>-->
         <include name="COMMON"/>
     </page>
@@ -92,6 +140,14 @@
             <single item="seo"/>
             <ancestor item="news"/>
         </single>
+        <include name="COMMON"/>
+    </page>
+
+    <page name="page">
+        <request>
+            <var name="p" style="translit"/>
+        </request>
+        <single item="custom_page" var="p"/>
         <include name="COMMON"/>
     </page>
 
