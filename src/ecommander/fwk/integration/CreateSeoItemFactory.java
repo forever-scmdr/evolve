@@ -40,7 +40,7 @@ public class CreateSeoItemFactory implements ItemEventCommandFactory {
 				seo.setValueUI(KEY_UNIIQUE, parent.getKeyUnique());
 				Item newSeo = Item.newChildItem(ItemTypeRegistry.getItemType(SEO), seoCatalog);
 				Item.updateParamValues(seo, newSeo);
-				executeCommand(SaveItemDBUnit.get(newSeo, false));
+				executeCommand(SaveItemDBUnit.get(newSeo).noTriggerExtra());
 				executeCommand(CreateAssocDBUnit.childExistsSoft(newSeo, parent, ItemTypeRegistry.getAssocId(SEO)));
 				newSeoId = newSeo.getId();
 			} else {

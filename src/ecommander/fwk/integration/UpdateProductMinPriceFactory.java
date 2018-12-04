@@ -68,7 +68,7 @@ public class UpdateProductMinPriceFactory implements ItemEventCommandFactory {
 					product.setValue(HAS_LINES, (byte) 1);
 				}
 				if (product.hasChanged()) {
-					executeCommand(SaveItemDBUnit.get(product, false));
+					executeCommand(SaveItemDBUnit.get(product).noTriggerExtra());
 				}
 			}
 		}

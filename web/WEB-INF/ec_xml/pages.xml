@@ -1075,8 +1075,19 @@
 	</page>
 
 
+
 	<page name="test">
-		<list item="product"/>
+		<request>
+			<var name="p" value="name"/>
+			<var name="v"/>
+		</request>
+		<list item="product">
+			<filter>
+				<parameter name-var="p" sign="=" compare="SOME">
+					<var var="v"/>
+				</parameter>
+			</filter>
+		</list>
 	</page>
 
 </site>

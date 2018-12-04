@@ -109,7 +109,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 						section.setValue(CATEGORY_ID_PARAM, newCode);
 						section.setValue(NAME_PARAM, sec.getLeft());
 						try {
-							DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(section, false));
+							DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(section).noTriggerExtra());
 							categories.put(newCode, section);
 							newSectionParent.remove(newCode);
 						} catch (Exception e) {
@@ -124,7 +124,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 			try {
 				if (currentSection != null) {
 					currentSection.setValue(NAME_PARAM, StringUtils.trimToEmpty(chars.toString()));
-					DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(currentSection, false));
+					DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(currentSection).noTriggerExtra());
 					currentSection = null;
 					code = null;
 				} else {
