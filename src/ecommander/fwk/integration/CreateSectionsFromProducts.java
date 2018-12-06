@@ -65,8 +65,7 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 		info.setOperation("Создаю новые картинки");
 		info.setProcessed(0);
 		for(Item product : loadedProducts){
-			product.forceInitialInconsistent();
-			executeCommandUnit(SaveItemDBUnit.get(product).noFulltextIndex());
+			executeCommandUnit(SaveItemDBUnit.forceUpdate(product).noFulltextIndex());
 			i++;
 			info.increaseProcessed();
 			if(i>49) {

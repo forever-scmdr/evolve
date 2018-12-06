@@ -17,6 +17,10 @@ public class SaveItemDBUnit {
 			return new UpdateItemParamsDBUnit(item);
 	}
 
+	public static DBPersistenceCommandUnit forceUpdate(Item item) {
+		return new UpdateItemParamsDBUnit(item, true);
+	}
+
 	public static DBPersistenceCommandUnit new_(Item item, Item parent) {
 		return new SaveNewItemDBUnit(item, parent);
 	}

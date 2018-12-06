@@ -227,7 +227,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 					pstmt.close();
 					
 					// Выполнить запросы для сохранения параметров
-					ItemMapper.insertItemParametersToIndex(item, false, getTransactionContext());
+					ItemMapper.insertItemParametersToIndex(item, ItemMapper.Mode.UPDATE, getTransactionContext());
 				} finally {
 					MysqlConnector.closeStatement(pstmt);
 				}

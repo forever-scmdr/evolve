@@ -9,6 +9,7 @@ public interface ItemNames {
     String URL_SEO_WRAP = "url_seo_wrap";
     String CATALOG = "catalog";
     String PLAIN_CATALOG = "plain_catalog";
+    String PLAIN_SECTION = "plain_section";
     String SECTION = "section";
     String PRODUCT = "product";
     String PARAMS = "params";
@@ -294,6 +295,14 @@ public interface ItemNames {
     public interface plain_catalog_ {
 
         String _ITEM_NAME = "plain_catalog";
+
+    }
+
+    public interface plain_section_ {
+
+        String _ITEM_NAME = "plain_section";
+        String NAME = "name";
+        String DATE = "date";
 
     }
 

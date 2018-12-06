@@ -8,6 +8,7 @@ import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
+import ecommander.model.datatypes.DateDataType;
 import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -17,6 +18,8 @@ import extra._generated.Product;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -39,13 +42,16 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 	private static final String UNIT_HEADER = "единица измерения";
 
 	private ExcelPriceList price;
+	private Item section;
 	private Item catalog;
 	private ItemType productType;
+	private ItemType sectionType;
 
 	@Override
 	protected boolean makePreparations() throws Exception {
 		catalog = ItemUtils.ensuteSingleRootAnonymousItem(PLAIN_CATALOG, getInitiator());
 		productType = ItemTypeRegistry.getItemType(PRODUCT);
+		sectionType = ItemTypeRegistry.getItemType(PLAIN_SECTION);
 		return true;
 	}
 
@@ -56,7 +62,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 			info.addError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
 			return;
 		}
-		Collection<File> excels = FileUtils.listFiles(integrationDir, new String[] {"xls, xlsx"}, true);
+		Collection<File> excels = FileUtils.listFiles(integrationDir, null, true);
 		if (excels.size() == 0) {
 			info.addError("Не найдены файлы в директории " + INTEGRATION_DIR, "init");
 			return;
@@ -68,6 +74,17 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 		info.setOperation("Создание товаров");
 		info.setProcessed(0);
 		for (File excel : excels) {
+			if (!StringUtils.endsWithAny(excel.getName(), "xls", "xlsx"))
+				continue;
+			// Загрузка раздела
+			section = ItemQuery.loadSingleItemByParamValue(ItemNames.PLAIN_SECTION, plain_section_.NAME, excel.getName());
+			if (section == null) {
+				section = Item.newChildItem(sectionType, catalog);
+				section.setValue(plain_section_.NAME, excel.getName());
+			}
+			section.setValue(plain_section_.DATE, DateTime.now(DateTimeZone.UTC).getMillis());
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
+			// Разбор прайс-листа
 			try {
 				price = new ExcelPriceList(excel, NAME_HEADER, CODE_HEADER) {
 					@Override
@@ -78,11 +95,8 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							if (StringUtils.isNotBlank(code)) {
 								Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
 								if (prod == null) {
-									prod = Product.get(Item.newChildItem(productType, catalog));
+									prod = Product.get(Item.newChildItem(productType, section));
 									prod.set_code(code);
-								} else {
-									info.increaseLineNumber();
-									info.pushLog("Товар с кодом {} и названием {} не найден в каталоге", code, getValue(1));
 								}
 								prod.set_name(getValue(NAME_HEADER));
 								prod.set_available(NumberUtils.toByte(getValue(DELAY_HEADER), (byte) -1));
@@ -106,6 +120,8 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 
 					}
 				};
+				price.iterate();
+				price.close();
 			} catch (Exception e) {
 				ServerLogger.error("File parse error", e);
 				info.addError("Ошибка формата файла", excel.getName());

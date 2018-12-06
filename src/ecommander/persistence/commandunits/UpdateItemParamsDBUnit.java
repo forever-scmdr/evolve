@@ -25,9 +25,17 @@ import java.sql.ResultSet;
 class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConstants.UniqueItemKeys, DBConstants {
 	
 	private Item item;
+	private ItemMapper.Mode mode = ItemMapper.Mode.UPDATE;
 
 	UpdateItemParamsDBUnit(Item item) {
 		this.item = item;
+	}
+
+	UpdateItemParamsDBUnit(Item item, boolean forceUpdate) {
+		this.item = item;
+		if (forceUpdate) {
+			this.mode = ItemMapper.Mode.FORCE_UPDATE;
+		}
 	}
 
 	public void execute() throws Exception {
@@ -94,7 +102,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 		}
 
 		// Теперь сохраняются параметры в таблицах индексов
-		ItemMapper.insertItemParametersToIndex(item, false, getTransactionContext());
+		ItemMapper.insertItemParametersToIndex(item, mode, getTransactionContext());
 
 		// Вставка в Lucene индекс
 		if (insertIntoFulltextIndex)

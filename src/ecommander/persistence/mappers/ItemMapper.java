@@ -15,7 +15,13 @@ import java.sql.*;
  */
 public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 
-	private static final String PARAM_INSERT_PREPARED_START 
+	public enum Mode {
+		INSERT, // вставка в таблицу (без изменения и удаления)
+		UPDATE, // изменение существующих данных (удаление и вставка)
+		FORCE_UPDATE // принудительное изменение (даже если параметры не менялись)
+	}
+
+	private static final String PARAM_INSERT_PREPARED_START
 		= " ("
 		+ ItemIndexes.II_ITEM_ID + ", "
 		+ ItemIndexes.II_PARAM + ", "
@@ -31,17 +37,17 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 	 * Удаление старых параметров происходит только в том случе, если это надо (параметры были удалены).
 	 * Обновление параметров также происходит только если это надо (параметры поменялись)
 	 * @param item
-	 * @param isNew
+	 * @param mode
 	 * @param transaction
 	 * @throws SQLException
 	 * @throws EcommanderException
 	 */
-	public static void insertItemParametersToIndex(Item item, boolean isNew, TransactionContext transaction) throws SQLException, EcommanderException {
-		if (!item.hasChanged())
+	public static void insertItemParametersToIndex(Item item, Mode mode, TransactionContext transaction) throws SQLException, EcommanderException {
+		if (!item.hasChanged() && mode != Mode.FORCE_UPDATE)
 			return;
 		TemplateQuery query;
 		// Если айтем новый, то не нужно удалять старые значения и обновлять существующие
-		if (isNew) {
+		if (mode == Mode.INSERT) {
 			query = new TemplateQuery("Item index insert new");
 			for (Parameter param : item.getAllParameters()) {
 				if (!param.isEmpty()) {
@@ -60,7 +66,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 			query = new TemplateQuery("Item index update");
 			for (Parameter param : item.getAllParameters()) {
 				// Пропустить все неизмененные параметры
-				if (!param.hasChanged())
+				if (!param.hasChanged() && mode == Mode.UPDATE)
 					continue;
 				// Удалить старое значение
 				query.DELETE_FROM_WHERE(DataTypeMapper.getTableName(param.getType()))

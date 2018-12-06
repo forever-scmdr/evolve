@@ -168,7 +168,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 5.   Сохранить параметры айтема в таблицах индексов
 		//
-		ItemMapper.insertItemParametersToIndex(item, true, getTransactionContext());
+		ItemMapper.insertItemParametersToIndex(item, ItemMapper.Mode.INSERT, getTransactionContext());
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 6.   Дополнительная обработка

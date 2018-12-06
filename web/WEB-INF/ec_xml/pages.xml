@@ -972,7 +972,7 @@
 		<request>
 			<var name="action"/>
 		</request>
-		<command class="extra.ImportPlainCatalog" clear-cache="yes">
+		<command class="extra.ImportPlainCatalog" clear-cache="yes">]
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

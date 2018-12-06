@@ -49,7 +49,14 @@
 	</item>
 
 
-	<item name="plain_catalog" caption="Список товаров" children-per-page="30" children-sorting="ASC" ag-id="140" ag-hash="-1742571868">
+	<item name="plain_catalog" caption="Список товаров" children-per-page="30" children-sorting="DESC" ag-id="140" ag-hash="-1742571868">
+		<child item="plain_section"/>
+	</item>
+
+
+	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="30" children-sorting="ASC">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="date" type="date" caption="Дата"/>
 		<child item="product"/>
 	</item>
 

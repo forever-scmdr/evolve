@@ -55,9 +55,10 @@
 						<td class="error"><xsl:value-of select="."/></td>
 					</tr>
 				</xsl:for-each>
+				<tr><td colspan="2" align="center"><b>Ошибки</b></td></tr>
 				<xsl:for-each select="/page/error">
 					<tr>
-						<td class="string-no"><xsl:value-of select="@line"/></td>
+						<td class="string-no"><xsl:value-of select="@line"/> : <xsl:value-of select="@originator"/></td>
 						<td class="error"><xsl:value-of select="."/></td>
 					</tr>
 				</xsl:for-each>
