@@ -2,7 +2,10 @@ package ecommander.model;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 
 
 /**
@@ -133,11 +136,12 @@ public final class MultipleParameter extends Parameter {
 	}
 
 	@Override
-	public void clear() {
+	public boolean clear() {
 		if (values.size() == 0)
-			return;
+			return false;
 		backup();
 		values = new LinkedHashSet<>();
+		return true;
 	}
 
 	@Override

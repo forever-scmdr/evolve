@@ -1,6 +1,5 @@
 package ecommander.model;
 
-import ecommander.fwk.Strings;
 import ecommander.model.datatypes.DataType.Type;
 
 /**
@@ -81,7 +80,7 @@ public abstract class Parameter {
 	/**
 	 * Очистить значение параметра
 	 */
-	public abstract void clear();
+	public abstract boolean clear();
 
 	/**
 	 * Узнать, менялся ли параметр с момента загрузки айтема

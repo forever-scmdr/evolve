@@ -227,9 +227,9 @@ public class SessionItemMapper {
 				item.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), rootItemId);
 		}
 		SessionItemMemento sessionItem = new TransientMemento(item, itemTag);
-		// Удалить старый айтем, если такой уже есть
-		int[] paramIds = { ID, TAG_NAME };
-		Object[] paramValues = { item.getId(), itemTag };
+		// Удалить старый айтем, если такой уже есть (с таким же родителем)
+		int[] paramIds = { ID, TAG_NAME, PARENT_ID };
+		Object[] paramValues = { item.getId(), itemTag, item.getContextParentId() };
 		forceGetStorage().delete(paramIds, paramValues);
 		forceGetStorage().addObject(sessionItem);
 	}

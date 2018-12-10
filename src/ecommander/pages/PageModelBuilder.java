@@ -1399,11 +1399,12 @@ public class PageModelBuilder {
 	private CommandPE readCommand(Element commandNode) throws PrimaryValidationException {
 		boolean clearCache = commandNode.attr(CLEAR_CACHE_ATTRIBUTE).equalsIgnoreCase(YES_VALUE);
 		String className = commandNode.attr(CLASS_ATTRIBUTE);
+		String tag = commandNode.attr(TAG_ATTRIBUTE);
 		String method = commandNode.attr(METHOD_ATTRIBUTE);
 		String methodVar = commandNode.attr(METHOD_VAR_ATTRIBUTE);
 		CommandPE command;
 		try {
-			command = new CommandPE(className, clearCache);
+			command = new CommandPE(className, tag, clearCache);
 			command.setMethod(method);
 			command.setMethodVar(methodVar);
 		} catch (ClassNotFoundException e) {

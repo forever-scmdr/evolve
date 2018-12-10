@@ -11,7 +11,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -23,7 +26,8 @@ import java.util.Map;
  *
  */
 public class PageController {
-	
+	private static final String CONTENT_TYPE_HEADER = "Content-Type";
+
 	private String requestUrl; // для работы кеша
 	private final String domainName; // для работы кеша
 	private final boolean useCache; // надо ли использовать кеш
@@ -78,7 +82,11 @@ public class PageController {
 		// Дополнительные заголовки
 		Map<String, String> headers = this.page.getResponseHeaders();
 		for (String header : headers.keySet()) {
+			if (StringUtils.equalsIgnoreCase(header, CONTENT_TYPE_HEADER)) {
+				contentType = headers.get(header);
+			} else {
 			resp.setHeader(header, headers.get(header));
+		}
 		}
 		// Переменные, хранящиеся в куки
 		page.getSessionContext().flushCookies(resp);

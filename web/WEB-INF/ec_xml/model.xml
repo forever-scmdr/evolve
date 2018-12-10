@@ -95,6 +95,7 @@
 		<child item="section" />
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
+		<parameter name="integration_pending" type="byte" domain="0-1" caption="Переучет"/>
 	</item>
 
 	<!--Является также и разделом для парсинга-->

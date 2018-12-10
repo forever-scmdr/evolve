@@ -51,6 +51,7 @@ public class CleanDeletedItemsDBUnit extends DBPersistenceCommandUnit implements
 		}
 
 		// Удаление из полнотекстового индекса
+		if (insertIntoFulltextIndex)
 		LuceneIndexMapper.getSingleton().deleteItem(deletedArray);
 
 		deletedQty = deletedArray.length;
