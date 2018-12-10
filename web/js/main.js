@@ -130,7 +130,7 @@
             e.stopPropagation();
         });
             
-        searchField.attr({placeholder: 'Введите запрос', autocomplete: 'off'});
+        searchField.attr({placeholder: 'Type Keywords', autocomplete: 'off'});
     
     };
 

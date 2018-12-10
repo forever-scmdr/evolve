@@ -1,9 +1,11 @@
 package ecommander.pages;
 
 import ecommander.controllers.SessionContext;
+import ecommander.fwk.Strings;
 import ecommander.model.User;
 import ecommander.pages.CommandPE.CommandContainer;
 import ecommander.pages.var.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -198,9 +200,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 		ResultPE result = null;
 		try {
 			for (ExecutablePE exec : executables) {
-				ResultPE innerResult = exec.execute();
-				if (innerResult != null)
-					result = innerResult;
+				result = exec.execute();
 			}
 		} finally {
 			sessionContext.close();
@@ -263,6 +263,33 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Если страница кешируемая, то возвращает уникальный идентификатор страницы, которым должен обозначаться кеш этой страницы
+	 * Идентификатор состоит из названия этой страинцы и переменных
+	 * @return
+	 */
+	public final String getCacheableId() {
+		String id = getPageName() + "_";
+		if (hasCacheVars()) {
+			for (String varName : getCacheVars()) {
+				Variable var = getVariable(varName);
+				if (var != null && !var.isEmpty()) {
+					id += var.getName() + "_" + Strings.translit(var.writeSingleValue()) + "_";
+				}
+			}
+		} else {
+			for (RequestVariablePE initVar : getInitVariablesPEList()) {
+				if (!StringUtils.startsWith(initVar.getName(), "$")) {
+					Variable var = getVariable(initVar.getPositiveName());
+					if (var != null && !var.isEmpty()) {
+						id += var.getName() + "_" + Strings.translit(var.writeSingleValue()) + "_";
+					}
+				}
+			}
+		}
+		return id;
 	}
 
 	@Override

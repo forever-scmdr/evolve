@@ -21,7 +21,6 @@
 					<a href="{show_page}"><xsl:value-of select="header"/></a> >
 				</xsl:for-each>
 			</div>
-			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1><xsl:value-of select="$h1"/></h1>
 
@@ -40,8 +39,6 @@
 			</div>
 			<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
 		</div>
-
-		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 
 </xsl:stylesheet>

@@ -236,6 +236,14 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 		return criticalItem;
 	}
 
+	public final boolean hasCacheVars() {
+		return cacheVars != null && !cacheVars.isEmpty();
+	}
+
+	protected LinkedHashSet<String> getCacheVars() {
+		return cacheVars;
+	}
+
 	@Override
 	protected boolean validateShallow(String elementPath, ValidationResults results) {
 		// Есть ли название у страницы

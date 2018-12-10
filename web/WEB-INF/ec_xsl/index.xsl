@@ -7,23 +7,70 @@
 
 	<xsl:template name="CONTENT">
 		<section class="s-content">
-
 			<div class="row masonry-wrap">
 				<div class="masonry">
 					<div class="grid-sizer"></div>
-					<xsl:apply-templates select="page/news_item" mode="masonry"/>
+					<xsl:apply-templates select="/page/news_item" mode="masonry"/>
 				</div>
 			</div>
 		</section>
 	</xsl:template>
 
 	<xsl:template match="news_item" mode="masonry">
-		<article class="masonry__brick entry format-standard" data-aos="fade-up">
-			<div class="entry__thumb">
-				<a href="{show_page}" class="entry__thumb-link">
-					<img src="@path/main_pic" alt="{name}" />
-				</a>
+
+		<xsl:variable name="format" select="if(video_url != '') then 'video' else if(top_gal/main_pic != '') then 'gallery' else 'standard'"/>
+
+		<article class="masonry__brick entry format-{$format}" data-aos="fade-up">
+
+			<!-- STANDARD -->
+			<xsl:if test="$format = 'standard'">
+				<div class="entry__thumb">
+					<a href="{show_page}" class="entry__thumb-link">
+						<img src="{concat(@path, small_pic)}" srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
+					</a>
+				</div>
+			</xsl:if>
+
+			<!-- VIDEO -->
+			<xsl:if test="$format = 'video'">
+				<div class="entry__thumb video-image">
+					<a href="{video_url}" data-lity="">
+						<img src="{concat(@path, small_pic)}" srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
+					</a>
+				</div>
+			</xsl:if>
+
+			<xsl:if test="$format = 'gallery'">
+				<div class="entry__thumb slider">
+					<div class="slider__slides">
+						<div class="slider__slide">
+							<img src="images/thumbs/masonry/gallery/gallery-1-400.jpg"
+								 srcset="images/thumbs/masonry/gallery/gallery-1-400.jpg 1x, images/thumbs/masonry/gallery/gallery-1-800.jpg 2x" alt=""/>
+						</div>
+					</div>
+				</div>
+			</xsl:if>
+
+			<!-- TEXT -->
+			<div class="entry__text">
+				<div class="entry__header">
+					<div class="entry__date">
+						<a href="single-standard.html"><xsl:value-of select="date"/></a>
+					</div>
+					<div class="h1 entry__title"><a href="{show_page}"><xsl:value-of select="header"/></a></div>
+				</div>
+				<div class="entry__excerpt">
+					<xsl:value-of select="short" disable-output-escaping="yes"/>
+				</div>
+				<div class="entry__meta">
+					<span class="entry__meta-links">
+						<a href="category.html">Что за ссылки?</a>
+						<a href="category.html">Куда они ведут?</a>
+						<a href="category.html">А они вообще нужны?</a>
+					</span>
+				</div>
 			</div>
+
 		</article>
 	</xsl:template>
 

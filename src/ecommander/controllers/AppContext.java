@@ -1,13 +1,13 @@
 package ecommander.controllers;
 
-import java.util.Locale;
-import java.util.Properties;
-
-import javax.servlet.ServletContext;
-
+import ecommander.model.datatypes.DateDataType;
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.model.datatypes.DateDataType;
+import javax.servlet.ServletContext;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Locale;
+import java.util.Properties;
 
 /**
  * Интерфейс для хранения всех сведений о работе приложения, в будущем, для влияния на работу всего приложения,
@@ -93,7 +93,14 @@ public class AppContext {
 	}
 	
 	public static String getRealPath(String relPath) {
-		return _REAL_BASE_PATH + relPath;
+		Path path = Paths.get(relPath);
+		if (!path.isAbsolute()) {
+			path = Paths.get(_REAL_BASE_PATH, relPath);
+		}
+		if (path.toFile().isDirectory() || relPath.length() - StringUtils.lastIndexOf(relPath, ".") > 5) {
+			return path.toString() + "/";
+		}
+		return path.toString();
 	}
 	
 	public static String getMainModelPath() {

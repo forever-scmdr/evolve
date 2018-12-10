@@ -21,7 +21,10 @@ import org.apache.lucene.search.TermQuery;
 
 import javax.naming.NamingException;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -715,7 +718,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			query = TemplateQuery.createFromString(GROUP_COMMON_QUERY, "Group query");
 		} else {
 			if (isParent)
-				query = TemplateQuery.createFromString(PARENT_QUERY, "ParsedItem query");
+				query = TemplateQuery.createFromString(PARENT_QUERY, "Parent query");
 			else
 				query = TemplateQuery.createFromString(COMMON_QUERY, "Common query");
 		}
@@ -785,8 +788,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws Exception
 	 */
-	public Item loadFirstItem() throws Exception {
-		List<Item> all = loadItems();
+	public Item loadFirstItem(Connection...conn) throws Exception {
+		List<Item> all = loadItems(conn);
 		if (all.size() == 0)
 			return null;
 		return all.get(0);

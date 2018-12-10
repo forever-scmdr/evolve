@@ -1,19 +1,11 @@
 package ecommander.model;
 
-import java.io.File;
-import java.io.StringReader;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.model.datatypes.DataType.Type;
 import ecommander.pages.InputValues;
+import ecommander.pages.output.UserParameterDescriptionMDWriter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.xml.sax.Attributes;
@@ -21,11 +13,13 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
-import ecommander.pages.output.UserParameterDescriptionMDWriter;
-import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.model.datatypes.DataType.Type;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
+import java.io.StringReader;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Такие действия, как добавление (или удаление) сабайтема в айтем должны происходить следующим образом:
@@ -287,17 +281,22 @@ public class Item implements ItemBasics {
 	 * @param paramId
 	 * @param value
 	 */
-	public final void setValue(int paramId, Object value) {
+	public final boolean setValue(int paramId, Object value) {
+		boolean modified;
 		if (value == null) {
 			// Если добавляется пустое значение к множественному параметру - ничего не делать
 			if (itemType.getParameter(paramId).isMultiple())
-				return;
+				return false;
 			// Удалить параметр, если значение равно null
-			clearParameter(paramId);
+			modified = clearParameter(paramId);
 		} else {
-			getParameter(paramId).setValue(value, false);
+			modified = getParameter(paramId).setValue(value, false);
 		}
+		if (modified) {
 		state = State.modified_NO_xml;
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Прямая установка параметра. Используется когда сразу есть значение параметра соответствующего типа
@@ -305,8 +304,8 @@ public class Item implements ItemBasics {
 	 * @param paramName
 	 * @param value
 	 */
-	public final void setValue(String paramName, Object value) {
-		setValue(itemType.getParameter(paramName).getId(), value);
+	public final boolean setValue(String paramName, Object value) {
+		return setValue(itemType.getParameter(paramName).getId(), value);
 	}
 	/**
 	 * Содержит параметр айтема определенное значение
@@ -322,9 +321,10 @@ public class Item implements ItemBasics {
 	 * @param paramName
 	 * @param value
 	 */
-	public final void setValueUnique(String paramName, Object value) {
+	public final boolean setValueUnique(String paramName, Object value) {
 		if (!containsValue(paramName, value))
-			setValue(paramName, value);
+			return setValue(paramName, value);
+		return false;
 	}
 	/**
 	 * Возвращает параметр по его ID.
@@ -516,10 +516,13 @@ public class Item implements ItemBasics {
 	 * Удаляет параметр с заданным ID
 	 * @param paramId
 	 */
-	public final void clearParameter(int paramId) {
+	public final boolean clearParameter(int paramId) {
 		populateMap();
-		getParameterFromMap(paramId).clear();
+		if (getParameterFromMap(paramId).clear()) {
 		state = State.modified_NO_xml;
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Удалить все значения определенного параметра по его названию

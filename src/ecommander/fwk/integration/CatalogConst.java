@@ -11,11 +11,13 @@ public interface CatalogConst {
 
 
 	String INTEGRATION_PARAM = "integration";
+	String INTEGRATION_PENDING_PARAM = "integration_pending";
 	String DATE_PARAM = "date";
 	String NAME_PARAM = "name";
 	String NAME_EXTRA_PARAM = "name_extra";
 	String TYPE_PARAM = "type";
 	String CODE_PARAM = "code";
+	String QTY_PARAM = "qty";
 	String CATEGORY_ID_PARAM = "category_id";
 	String PARENT_ID_PARAM = "parent_id";
 	String MAIN_PIC_PARAM = "main_pic";
