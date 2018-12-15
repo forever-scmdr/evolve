@@ -5,6 +5,7 @@ public interface CatalogConst {
 	String CATALOG_ITEM = "catalog";
 	String SECTION_ITEM = "section";
 	String PRODUCT_ITEM = "product";
+	String LINE_PRODUCT_ITEM = "line_product";
 	String PARAMS_ITEM = "params";
 	String PARAMS_XML_ITEM = "params_xml";
 	String MAIN_SECTION_ITEM = "main_section";
@@ -49,6 +50,7 @@ public interface CatalogConst {
 	String PIC_PARAM = "pic";
 	String LINK_PARAM = "link";
 	String ASSOC_PARAM = "assoc";
+	String HAS_LINE_PRODUCTS = "has_lines";
 
 
 	String PARAMETER = "parameter";

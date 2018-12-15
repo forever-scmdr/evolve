@@ -3,7 +3,7 @@
 
 	<!-- ******************************* Включение для разделов каталога ****************************** -->
 	<include-definition name="COMMON">
-		<single item="catalog" id="catalog_main" cacheable="false">
+		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="translit"/>
@@ -927,30 +927,65 @@
 		</command>
 	</page>
 
+	<page name="section_list" template="integration/section_list">
+		<request>
+			<var name="page" value="1"/>
+		</request>
+		<link name="create_pricelist" target="create_excel_pricelist">
+			<var name="action" value="start"/>
+			<var name="aux_params" value="yes"/>
+		</link>
+		<single item="catalog" id="catalog_main" >
+			<tree item="section" id="sec">
+				<link name="create_link" target="create_excel_pricelist">
+					<var name="action" value="start"/>
+					<var name="prod_params" value="yes"/>
+					<var name="aux_params" value="yes"/>
+					<var name="sec" ref="sec"/>
+				</link>
+				<list item="product"  transit="false">
+					<filter>
+						<limit>
+							<var value="1"/>
+						</limit>
+						<pages>
+							<var var="page" name="page"/>
+						</pages>
+					</filter>
+				</list>
+			</tree>
+		</single>
+	</page>
+
 	<page name="create_excel_pricelist" template="integration/create_excel"  authority-groups="common">
 		<request>
 			<var name="action"/>
+			<var name="sec"/>
 		</request>
 		<command class="ecommander.fwk.integration.CreateExcelPriceList" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
 
-	<page name="parse_excel_pricelist" template="integration/create_excel"  authority-groups="common">
+	<page name="update_prices_from_excel" template="integration/create_excel"  authority-groups="common">
 		<request>
 			<var name="action"/>
 		</request>
-		<command class="ecommander.fwk.integration.ParseExcelPriceList" clear-cache="yes">
+		<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
 
-	<!--<page name="create_prices" template="integrate/integration
-">-->
-		<!--<command class="extra.IntegratePriceList" clear-cache="yes">-->
-			<!--<result name="complete" type="xml"/>-->
-		<!--</command>-->
-	<!--</page>-->
+	<page name="parse_excel" template="integration/create_excel"  authority-groups="common">
+		<request>
+			<var name="action"/>
+			<var name="with_existing_sections" value="copy"/>
+		</request>
+		<command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 
 	<page name="separate_products" template="integration/integration">
 		<command class="ecommander.fwk.integration.CreateSectionsFromProducts" clear-cache="yes">

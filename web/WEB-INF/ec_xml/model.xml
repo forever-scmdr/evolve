@@ -27,7 +27,7 @@
 
 	-->
 
-	<assoc name="seo" caption="SEO" description="Связь айтемов с seo" transitive="false" ag-id="2" ag-hash="113757"/>
+	<assoc name="seo" caption="SEO" description="Связь айтемов с seo" transitive="false" ag-id="4" ag-hash="113757"/>
 
 
 	<item name="seo" caption="SEO" key="key_unique" ag-id="814" ag-hash="113757">
@@ -63,11 +63,11 @@
 		<child item="url_seo" />
 	</item>
 
-	<item name="seo_catalog" caption="Каталог SEO" description="невидимый" ag-id="1018" ag-hash="990975543">
+	<item name="seo_catalog" caption="Каталог SEO" description="невидимый" ag-id="862" ag-hash="990975543">
 		<child item="seo"/>
 	</item>
 
-	<item name="seo_container" caption="Контейнер для сео айтемов" virtual="true" key-unique="true" ag-id="1019" ag-hash="1272836895">
+	<item name="seo_container" caption="Контейнер для сео айтемов" virtual="true" key-unique="true" ag-id="863" ag-hash="1272836895">
 		<child item="seo" single="true" assoc="seo" virtual="true"/><!-- Связь с сео айтемом из сао каталога -->
 		<child item="seo" single="true"/><!-- Для создания нового сео -->
 		<on-update class="ecommander.fwk.integration.UpdateSeoContainerItemFactory"/><!-- Обновить параметр key_unique в seo -->
@@ -114,7 +114,7 @@
 	</item>
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
-	<item name="abstract_product" caption="Абстрактный товар" key="name" virtual="true" ag-id="1020" ag-hash="1636704722">
+	<item name="abstract_product" caption="Абстрактный товар" key="name" virtual="true" ag-id="864" ag-hash="1636704722">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
@@ -123,7 +123,7 @@
 	</item>
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
-	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product *" virtual="true" ag-id="1021" ag-hash="1523682729">
+	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product *" virtual="true" ag-id="865" ag-hash="1523682729">
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
@@ -136,8 +136,8 @@
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
 		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
-		<parameter name="unit" type="string" caption="Единица измерения"/>
-		<parameter name="old_file" type="string" caption="старая картинка"/>
+		<parameter name="unit" type="string" caption="Единица измерения" default="м"/>
+		<!--<parameter name="old_file" type="string" caption="старая картинка"/>-->
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
 		<parameter name="small_pic" type="picture" format="width: 200; src: main_pic;" caption="Маленькая картинка"/>
@@ -158,7 +158,7 @@
 
 	<!--Товар, который вложен в другой товар-->
 	<!--Обновляет цену ОТ (минимальная цена) своего родительского товара при сохранении-->
-	<item name="line_product" caption="Товар-строка" description="содержится в товаре, как один из видов этого товара" super="described_product" ag-id="1022" ag-hash="1097527204">
+	<item name="line_product" caption="Товар-строка" description="содержится в товаре, как один из видов этого товара" super="described_product" ag-id="866" ag-hash="1097527204">
 		<on-update class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/>
 		<on-create class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/>
 		<on-delete class="ecommander.fwk.integration.UpdateProductMinPriceDeletedFactory"/>
@@ -328,7 +328,7 @@
 	<!--/////////////                          ГЛАВНАЯ СТРАНИЦА                            ////////////-->
 	<!--/////////////                                                                      ////////////-->
 
-	<assoc name="general" caption="Ассоциация общего назначения" description="для связи разных несвязанных напрямую айтемов" ag-id="3" ag-hash="-80148248"/>
+	<assoc name="general" caption="Ассоциация общего назначения" description="для связи разных несвязанных напрямую айтемов" ag-id="5" ag-hash="-80148248"/>
 
 	<item name="main_promo_bottom" caption="Промо-блок на главной" key="text_big" ag-id="14" ag-hash="1303283745">
 		<parameter name="text_big" type="string" caption="Текст крупным шрифтом"/>
@@ -345,7 +345,7 @@
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
-	<item name="banner" caption="Баннер" key="header" ag-id="1023" ag-hash="-1396342996">
+	<item name="banner" caption="Баннер" key="header" ag-id="867" ag-hash="-1396342996">
 		<parameter name="background" type="string" caption="background" description="baner__background"/>
 		<parameter name="header" type="string" caption="Заголовок" description="banner__title"/>
 		<parameter name="text" type="tiny-text" caption="Текст" description="banner__text"/>
@@ -356,7 +356,7 @@
 	</item>
 
 
-	<item name="banner_section" caption="Секция баннеров" key="name" ag-id="1024" ag-hash="-2003257134">
+	<item name="banner_section" caption="Секция баннеров" key="name" ag-id="868" ag-hash="-2003257134">
 		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
 		<child item="banner" inline="true"/>
 	</item>

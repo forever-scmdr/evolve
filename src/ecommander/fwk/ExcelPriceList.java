@@ -10,7 +10,10 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 /**
  * Прайс-лист
@@ -44,6 +47,36 @@ public abstract class ExcelPriceList implements Closeable {
 		this.fileName = path.getFileName().toString();
 		this.doc = POIUtils.openExcel(path);
 		init(mandatoryCols);
+	}
+
+	public void reInit(String... mandatoryCols) throws Exception {
+		boolean rowChecked = false;
+		headerCell = new POIUtils.CellXY(currentRow.getRowNum(), -1);
+		String firstMandatory = mandatoryCols[0];
+		headerCell = POIUtils.findNextContaining(currentSheet, eval, firstMandatory, headerCell);
+		rowChecked = true;
+		ArrayList<String> missingColumnsTest = new ArrayList<>();
+		for (String checkCol : mandatoryCols) {
+			ArrayList<POIUtils.CellXY> found = POIUtils.findCellInRowContaining(eval, checkCol, currentRow);
+			if (found.size() == 0) {
+				missingColumnsTest.add(checkCol);
+				rowChecked = false;
+			}
+		}
+		if (!rowChecked) {
+			missingColumns = missingColumnsTest;
+			throw new Exception("Missing columns: "+ missingColumns.toString());
+		}
+		if (rowChecked) {
+			HashMap<String, Integer> headers = new HashMap<>();
+			for (Cell cell : currentRow) {
+				String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
+				if (StringUtils.isNotBlank(colHeader)) {
+					headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+				}
+			}
+			currentHeader = headers;
+		}
 	}
 
 	private void init(String... mandatoryCols) {

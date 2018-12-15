@@ -55,6 +55,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 		private void addParameter(String name, String value) {
 			String paramName = Strings.createXmlElementName(name);
+			paramName = (paramName.length() > 200)? paramName.substring(paramName.length() - 200) : paramName;
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);
 				paramCaptions.put(paramName, name);

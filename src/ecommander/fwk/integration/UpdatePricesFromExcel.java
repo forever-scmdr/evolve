@@ -16,7 +16,7 @@ import java.io.File;
 /**
  * Created by user on 06.12.2018.
  */
-public class ParseExcelPriceList extends IntegrateBase implements CatalogConst {
+public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst {
 	ExcelPriceList priceWB;
 	Item catalog;
 
@@ -30,7 +30,9 @@ public class ParseExcelPriceList extends IntegrateBase implements CatalogConst {
 			@Override
 			protected void processRow() throws Exception {
 				String code = getValue(CreateExcelPriceList.CODE_FILE);
-				if(StringUtils.isBlank(code))return;
+				if(StringUtils.isBlank(code) || CreateExcelPriceList.CODE_FILE.equalsIgnoreCase(code)) return;
+				boolean isLineProduct = code.indexOf('@') != -1;
+				code = (isLineProduct)? code.substring(0, code.indexOf('@')) : code;
 				String price = getValue(CreateExcelPriceList.PRICE_FILE);
 				String qty = getValue(CreateExcelPriceList.QTY_FILE);
 				String av = getValue(CreateExcelPriceList.AVAILABLE_FILE);
