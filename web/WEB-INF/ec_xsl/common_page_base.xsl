@@ -386,7 +386,7 @@
 
     <xsl:template match="seo | url_seo">
         <title>
-            <xsl:value-of select="title"/>
+            <xsl:value-of select="if(title != '') then title else $title"/>
         </title>
         <meta name="description" content="{description}"/>
         <meta name="keywords" content="{keywords}"/>

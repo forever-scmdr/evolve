@@ -37,7 +37,7 @@
             <var name="limit" value="3"/>
             <var name="page" value="1"/>
         </request>
-        <single item="main_page" id="main" cacheable="true">
+        <single item="main_page" id="main" >
             <single item="seo"/>
             <list item="featured">
                 <filter>
@@ -47,41 +47,59 @@
                 </filter>
             </list>
         </single>
-        <list item="news_item" id="ni">
-            <filter>
-                <sorting direction="DESC">
-                    <var value="date"/>
-                </sorting>
-                <limit>
-                    <var value="3"/>
-                </limit>
-            </filter>
-            <link name="show_page" target="news_item" type="exclusive">
-                <var name="sel" ref="ni" style="translit"/>
+        <single item="news_wrap">
+            <list item="news_item" id="ni" transit="true">
+                <filter>
+                    <sorting direction="DESC">
+                        <var value="date"/>
+                    </sorting>
+                    <limit>
+                        <var var="limit"/>
+                    </limit>
+                    <pages>
+                        <var var="page"/>
+                    </pages>
+                </filter>
+                <single item="top_gal"/>
+                <link name="show_page" target="news_item" type="exclusive">
+                    <var name="sel" ref="ni" style="translit"/>
+                </link>
+            </list>
+        </single>
+        <link name="load_more" target="news_ajax"/>
+        <list item="custom_page" tag="custom" id="article">
+            <link name="show_page" target="page" type="exclusive">
+                <var name="p" ref="article" style="translit"/>
             </link>
         </list>
-        <link name="load_more" target="news_ajax"/>
         <include name="COMMON"/>
     </page>
 
-    <page name="news_ajax" template="">
+    <page name="news_ajax" template="news_ajax">
         <request>
             <var name="limit" value="3"/>
             <var name="page" value="2"/>
         </request>
-        <list item="news_item">
-            <filter>
-                <sorting direction="DESC">
-                    <var value="date"/>
-                </sorting>
-                <limit>
-                    <var var="limit"/>
-                </limit>
-                <limit>
-                    <var name="page" var="page"/>
-                </limit>
-            </filter>
-        </list>
+        <single item="news_wrap">
+            <list item="news_item" id="ni" transit="true">
+                <filter>
+                    <sorting direction="DESC">
+                        <var value="date"/>
+                    </sorting>
+                    <limit>
+                        <var var="limit"/>
+                    </limit>
+                    <pages>
+                        <var var="page"/>
+                    </pages>
+                </filter>
+                <single item="top_gal"/>
+                <link name="show_page" target="news_item" type="exclusive">
+                    <var name="sel" ref="ni" style="translit"/>
+                </link>
+            </list>
+        </single>
+        <link name="load_more" target="news_ajax"/>
     </page>
 
     <page name="search" template="search">
@@ -118,10 +136,10 @@
                         <var value="date"/>
                     </sorting>
                     <limit>
-                        <var value="12"/>
+                        <var value="2"/>
                     </limit>
                     <pages>
-                        <var var="p"/>
+                        <var name="p" var="p"/>
                     </pages>
                 </filter>
                 <link name="show_news_item" target="news_item" type="exclusive">
@@ -138,6 +156,7 @@
         </request>
         <single item="news_item" var="ni" cacheable="false" cache-vars="ni">
             <single item="seo"/>
+            <single item="top_gal"/>
             <ancestor item="news"/>
         </single>
         <include name="COMMON"/>

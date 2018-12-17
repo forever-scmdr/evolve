@@ -1163,6 +1163,7 @@ button::-moz-focus-inner, input::-moz-focus-inner {
    height: 3.6rem;
    margin: .3rem .15rem;
    color: #151515;
+   border: 1px solid #c4c4c4;
    border-radius: 3px;
    -webkit-transition: all 0.3s ease-in-out;
    transition: all 0.3s ease-in-out;

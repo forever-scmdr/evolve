@@ -8,9 +8,48 @@
 	<xsl:template name="CONTENT">
 		<section class="s-content">
 			<div class="row masonry-wrap">
-				<div class="masonry">
+				<div class="masonry" id="add-content">
 					<div class="grid-sizer"></div>
-					<xsl:apply-templates select="/page/news_item" mode="masonry"/>
+					<xsl:apply-templates select="/page/news_wrap/news_item" mode="masonry"/>
+					<!--<xsl:apply-templates select="/page/news_wrap/news_item" mode="masonry"/>-->
+					<!--<xsl:apply-templates select="/page/news_wrap/news_item" mode="masonry"/>-->
+				</div>
+			</div>
+			<xsl:if test="/page/news_wrap/news_item_pages">
+				<div class="row">
+					<div class="col-full">
+						<nav class="pgn">
+							<ul>
+								<li id="load_more">
+									<a class="pgn__num" id="load-more-link" href="{page/load_more}">Загрузить еще</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</xsl:if>
+		</section>
+		<section class="s-extra">
+			<div class="row top">
+				<div class="col-eight md-six tab-full popular">
+					<h3>Статьи</h3>
+					<div class="block-1-2 block-m-full popular__posts">
+						<xsl:for-each select="page/custom">
+							<article class="col-block popular__post">
+								<a href="#0" class="popular__thumb">
+									<img src="{concat(@path,small_pic)}" alt="header"/>
+								</a>
+								<h5><a href="{show_page}"><xsl:value-of select="header"/></a></h5>
+								<section class="popular__meta">
+									<!--<span class="popular__author"><span>By</span> <a href="#0"> John Doe</a></span>-->
+									<!--<span class="popular__date"><span>on</span> <time datetime="2017-12-19">Dec 19, 2017</time></span>-->
+								</section>
+							</article>
+						</xsl:for-each>
+					</div>
+				</div>
+				<div class="col-four md-six tab-full about">
+					<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
 				</div>
 			</div>
 		</section>
@@ -43,10 +82,13 @@
 			<xsl:if test="$format = 'gallery'">
 				<div class="entry__thumb slider">
 					<div class="slider__slides">
+						<xsl:variable name="path" select="top_gal/@path"/>
+						<xsl:for-each select="top_gal/small_pic">
+							<xsl:variable name="p" select="position()"/>
 						<div class="slider__slide">
-							<img src="images/thumbs/masonry/gallery/gallery-1-400.jpg"
-								 srcset="images/thumbs/masonry/gallery/gallery-1-400.jpg 1x, images/thumbs/masonry/gallery/gallery-1-800.jpg 2x" alt=""/>
+							<img src="{concat($path,.)}" srcset="{concat($path,.)} 1x, {concat($path,../medium_pic[$p])} 2x" alt=""/>
 						</div>
+						</xsl:for-each>
 					</div>
 				</div>
 			</xsl:if>
@@ -55,7 +97,7 @@
 			<div class="entry__text">
 				<div class="entry__header">
 					<div class="entry__date">
-						<a href="single-standard.html"><xsl:value-of select="date"/></a>
+						<a href="{show_page}"><xsl:value-of select="date"/></a>
 					</div>
 					<div class="h1 entry__title"><a href="{show_page}"><xsl:value-of select="header"/></a></div>
 				</div>

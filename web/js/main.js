@@ -192,21 +192,19 @@
     * ---------------------------------------------------- */ 
     var clMasonryFolio = function () {
         
-        var containerBricks = $('.masonry');
-
-        containerBricks.imagesLoaded(function () {
-            containerBricks.masonry({
-                itemSelector: '.masonry__brick',
-                percentPosition: true,
-                resize: true
-            });
-        });
-
-
-        // layout Masonry after each image loads
-        containerBricks.imagesLoaded().progress( function() {
-            containerBricks.masonry('layout');
-        });
+        // var containerBricks = $('.masonry');
+        //
+        // containerBricks.imagesLoaded(function () {
+        //     containerBricks.masonry({
+        //         itemSelector: '.masonry__brick',
+        //         percentPosition: true,
+        //         resize: true
+        //     });
+        // });
+        // //layout Masonry after each image loads
+        // containerBricks.imagesLoaded().progress( function() {
+        //         containerBricks.masonry("layout");
+        // });
     };
 
 
@@ -604,6 +602,36 @@
 
     };
 
+    /* loadMoreNews
+     * ------------------------------------------------------ */
+    var  loadMoreNews = function () {
+       $("#load-more-link").on("click", function (e) {
+          e.preventDefault();
+          var href = $(this).attr("href");
+          $.ajax({
+               url: href
+              ,dataType: "html"
+              ,cache: false
+              ,error: function(arg1, errorType, arg3) {
+                   alert("ajax error");
+              }
+              ,success: function(data, status, arg3) {
+                  if (data.indexOf('<') == 0) {
+                      var parsedData = $("<div>" + data + "</div>");
+                      var articles = parsedData.find("article");
+                      $("#add-content").append(articles);
+                      var button = data.find("#load_more");
+                      if(button.length == 0){
+                          $("#load_more").remove();
+                      }else{
+                          $("#load_more").html(button.html());
+                      }
+                      //clMasonryFolio();
+                  }
+              }
+          });
+       });
+    };
 
    /* Initialize
     * ------------------------------------------------------ */
@@ -623,7 +651,7 @@
         clAjaxChimp();
         clBackToTop();
         clGoogleMap();
-
+        loadMoreNews();
     })();
         
 })(jQuery);

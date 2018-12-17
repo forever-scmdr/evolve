@@ -100,7 +100,7 @@
 	</item>
 
 	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="8" ag-hash="-251149995">
-		<parameter name="product" type="string" caption="Код продукта" description="для вывода на главной странице" multiple="true"/>
+		<!--<parameter name="product" type="string" caption="Код продукта" description="для вывода на главной странице" multiple="true"/>-->
 		<child item="seo" single="true"/>
 		<child item="featured" multiple="true"/>
 	</item>
