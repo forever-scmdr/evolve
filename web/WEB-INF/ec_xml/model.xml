@@ -145,6 +145,7 @@
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
+		<parameter name="files" type="file" caption="Дополнительные файлы" description="документация, 3D модели, презентации и.т.п." multiple="true"/>
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
 		<parameter name="tag" type="string" caption="Тэг" multiple="true"/>

@@ -36,6 +36,7 @@ public interface CatalogConst {
 	String DESCRIPTION_PARAM = "description";
 	String TEXT_PARAM = "text";
 	String TEXT_PICS_PARAM = "text_pics";
+	String FILES_PARAM = "files";
 	String GALLERY_PARAM = "gallery";
 	String XML_PARAM = "xml";
 	String SHORT_PARAM = "short";
