@@ -102,6 +102,10 @@ public class MultipleHttpPostForm implements Serializable {
 		return (String) extras.get(key);
 	}
 
+	public FileItem getSingleFileExtra(String key) {
+		return (FileItem) extras.get(key);
+	}
+
 	InputValues getItemInput(long itemId) {
 		return inputs.get(itemId);
 	}

@@ -200,7 +200,10 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 		ResultPE result = null;
 		try {
 			for (ExecutablePE exec : executables) {
-				result = exec.execute();
+				ResultPE localResult = exec.execute();
+				if (!ResultPE.isResultInline(localResult)) {
+					result = localResult;
+				}
 			}
 		} finally {
 			sessionContext.close();

@@ -161,10 +161,10 @@
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
 									<li class="visible" title="Загрзить товары из Yandex Market">
-										<a href="integrate/?action=start">Интеграция каталога</a>
+										<a href="integrate/?action=start">Интеграция яндекс-маркета</a>
 									</li>
-									<li class="visible" title="Загрузить товары из файла во временный раздел">
-										<a href="add_products/?action=start">Добваление товаров</a>
+									<li class="visible" title="Разобрать прайс-листы определенных производителей">
+										<a href="integrate_excel/?action=start">Интеграция прайс-листов</a>
 									</li>
 									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 										<a href="generate_sitemap">Обновить карту сайта</a>

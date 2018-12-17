@@ -1,6 +1,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+	<xsl:import href="utils/price_conversions.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -13,6 +14,9 @@
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="products" select="page/product"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+	<xsl:variable name="queries" select="page/variables/q"/>
+	<xsl:variable name="numbers" select="page/variables/n"/>
+	<xsl:variable name="multiple" select="count($queries) &gt; 1"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -22,48 +26,58 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
+		<xsl:if test="not($multiple)">
+			<h1>Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
+		</xsl:if>
+		<xsl:if test="$multiple">
+			<h1>Результаты поиска</h1>
+		</xsl:if>
 
 		<div class="page-content m-t">
 			<xsl:if test="$products">
 				<div>
-					<form action="">
-						<input type="file"/>
-						<input type="submit"/>
-					</form>
-					<h3>Таблица с результатами</h3>
+					<!--<h3>Таблица с результатами</h3>-->
 					<table>
 						<tr>
-							<th>Фото</th>
+							<xsl:if test="$multiple">
+								<th>Запрос</th>
+							</xsl:if>
 							<th>Название</th>
 							<th>Описание</th>
 							<th>Производитель</th>
 							<th>Код производителя</th>
 							<th>Цена</th>
 							<th>На складе</th>
+							<th>Срок поставки</th>
 							<th>Мин. заказ</th>
 							<th>Заказать</th>
-							<th></th>
+							<xsl:if test="$multiple">
+								<th></th>
+							</xsl:if>
 						</tr>
-						<xsl:for-each select="$products">
-							<tr>
-								<td><a><i class="fas fa-file-image"></i></a></td>
-								<td><a>10A05-DC</a></td>
-								<td>Диод: выпрямительный Шоттки; THT; 100В; 2x5А; TO220AB</td>
-								<td><a>DC Components</a></td>
-								<td><a>10A05</a></td>
-								<td>23 руб./шт.</td>
-								<td>112 шт.</td>
-								<td>мин. 3 шт.</td>
-								<td>
-									<form action="">
-										<input type="number" value="1"/>
-										<input type="submit" value="Заказать"/>
-									</form>
-								</td>
-								<td><a href=""><i class="fas fa-plus-square"></i></a></td>
-							</tr>
-						</xsl:for-each>
+						<xsl:if test="$multiple">
+							<xsl:for-each select="$queries">
+								<xsl:variable name="q" select="."/>
+								<xsl:variable name="nn" select="$numbers[starts-with(., concat($q, ':'))][1]"/>
+								<xsl:variable name="n" select="f:num(tokenize($nn, ':')[last()])"/>
+								<xsl:variable name="p" select="position()"/>
+ 								<xsl:variable name="query_products" select="$products[item_own_extras/query = $q]"/>
+								<xsl:apply-templates select="$query_products[1]">
+									<xsl:with-param name="number" select="$n"/>
+									<xsl:with-param name="position" select="$p"/>
+								</xsl:apply-templates>
+								<xsl:apply-templates select="$query_products[position() &gt; 1]">
+									<xsl:with-param name="hidden" select="'hidden'"/>
+									<xsl:with-param name="number" select="$n"/>
+									<xsl:with-param name="position" select="$p"/>
+ 								</xsl:apply-templates>
+							</xsl:for-each>
+						</xsl:if>
+						<xsl:if test="not($multiple)">
+							<xsl:for-each select="$products">
+								<xsl:apply-templates select="."/>
+							</xsl:for-each>
+						</xsl:if>
 					</table>
 				</div>
 			</xsl:if>
@@ -73,6 +87,49 @@
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
+	</xsl:template>
+
+
+	<xsl:template match="product">
+		<xsl:param name="hidden"/>
+		<xsl:param name="number"/>
+		<xsl:param name="position"/>
+		<xsl:variable name="unit" select="if (unit) then unit else 'шт.'"/>
+		<xsl:variable name="min_qty" select="if (min_qty) then f:num(min_qty) else 1"/>
+		<xsl:variable name="num" select="if ($number and $number &gt;= $min_qty) then $number else $min_qty"/>
+		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<tr style="{'display: none'[$hidden]}" class="{if ($hidden) then concat('p_', $position) else ''}">
+			<xsl:if test="$multiple">
+				<td><b><xsl:value-of select="item_own_extras/query" /></b></td>
+			</xsl:if>
+			<td><a><xsl:value-of select="name" /></a></td>
+			<td><xsl:value-of select="name_extra" /></td>
+			<td><a><xsl:value-of select="vendor" /></a></td>
+			<td><a><xsl:value-of select="code"/></a></td>
+			<td><xsl:value-of select="price"/> руб./<xsl:value-of select="$unit"/></td>
+			<td><xsl:value-of select="qty"/><xsl:text> </xsl:text><xsl:value-of select="$unit"/></td>
+			<td><xsl:value-of select="available"/></td>
+			<td>мин. <xsl:value-of select="min_qty"/><xsl:text> </xsl:text><xsl:value-of select="$unit"/></td>
+			<td id="cart_search_{@id}">
+				<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
+					<xsl:if test="$has_price">
+						<input type="number" name="qty" value="{$num}" min="0"/>
+						<input type="submit" value="Заказать"/>
+					</xsl:if>
+					<xsl:if test="not($has_price)">
+						<input type="number" name="qty" value="{$num}" min="0"/>
+						<input type="submit" value="Запросить цену"/>
+					</xsl:if>
+				</form>
+			</td>
+			<xsl:if test="$multiple">
+				<td>
+					<xsl:if test="not($hidden)">
+						<a href="#" onclick="$('.p_{$position}').toggle(); return false;"><i class="fas fa-plus-square"></i></a>
+					</xsl:if>
+				</td>
+			</xsl:if>
+		</tr>
 	</xsl:template>
 
 

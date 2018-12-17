@@ -273,7 +273,7 @@ public abstract class BasicCartManageCommand extends Command {
 				return;
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
-			double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(1000000d)).doubleValue();
 			if (maxQuantity > 0)
 				qty = maxQuantity > qty ? qty : maxQuantity;
 			bought.setValue(QTY_PARAM, qty);
@@ -396,7 +396,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// Обычные заказы и заказы с нулевым количеством на складе
 		for (Item bought : boughts) {
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-			double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(1000000d)).doubleValue();
 			double quantity = bought.getDoubleValue(QTY_PARAM);
 			if (quantity <= 0) {
 				getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);

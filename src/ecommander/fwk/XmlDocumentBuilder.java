@@ -158,6 +158,17 @@ public class XmlDocumentBuilder {
 		xml.append('\n').append(tags);
 		return this;
 	}
+
+	/**
+	 * Добавляет тэги к текущему открытому элементу (кусок XML)
+	 * но делает это без перехода на новую строку
+	 * @return
+	 */
+	public XmlDocumentBuilder addElementsInline(CharSequence tags) {
+		if (StringUtils.isNotBlank(tags))
+			xml.append(tags);
+		return this;
+	}
 	
 	@Override
 	public String toString() {

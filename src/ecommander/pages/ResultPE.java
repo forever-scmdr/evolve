@@ -15,7 +15,7 @@ public class ResultPE implements PageElement {
 	public static final String ELEMENT_NAME = "result";
 	
 	public enum ResultType {
-		forward, redirect, xml, plain_text, none;
+		forward, redirect, xml, plain_text, none, inline_text, inline_xml
 	}
 
 	private String name; // название страничной ссылки (по которой надо переходить после выполнения команды)
@@ -128,5 +128,8 @@ public class ResultPE implements PageElement {
 	public String getElementName() {
 		return ELEMENT_NAME;
 	}
-	
+
+	public static final boolean isResultInline(ResultPE result) {
+		return result == null || result.type == ResultType.none || result.type == ResultType.inline_xml || result.type == ResultType.inline_text;
+	}
 }

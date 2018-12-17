@@ -99,7 +99,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 									prod.set_code(code);
 								}
 								prod.set_name(getValue(NAME_HEADER));
-								prod.set_available(NumberUtils.toByte(getValue(DELAY_HEADER), (byte) -1));
+								prod.set_available(NumberUtils.toByte(getValue(DELAY_HEADER), (byte) 0));
 								prod.set_qty(getCurrencyValue(QTY_HEADER, new BigDecimal(0)));
 								prod.set_min_qty(getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1)));
 								prod.set_price(getCurrencyValue(PRICE_HEADER));

@@ -6,6 +6,7 @@ import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.*;
 import ecommander.pages.ResultPE.ResultType;
 import ecommander.pages.output.PageWriter;
+import ecommander.pages.var.StaticVariable;
 import ecommander.pages.var.Variable;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -208,7 +209,7 @@ public class PageController {
 		if (page.isCacheClearNeeded())
 			clearCache();
 		// Работа с результатом выполнения страницы
-		if (result != null && result.getType() != ResultType.none) {
+		if (result != null) {
 			// Результат выполнения - XML документ
 			if (result.getType() == ResultType.xml/* && !StringUtils.isBlank(result.getValue())*/) {
 				XmlDocumentBuilder xml = XmlDocumentBuilder.newDocFull(result.getValue());
@@ -250,11 +251,14 @@ public class PageController {
 				}
 				// Если результат выполнения - динамическая ссылка - установить дополнительные переменные в ссылку
 				if (result.hasVariables()) {
-					for (Variable var : result.getVariables()) {
-						if (var.isEmpty())
+					for (StaticVariable var : result.getVariables()) {
+						if (var.isEmpty()) {
 							baseLink.removeVariable(var.getName());
-						else
-							baseLink.addStaticVariable(var.getName(), var.writeSingleValue());
+						} else {
+							for (Object val : var.getAllValues()) {
+								baseLink.addStaticVariable(var.getName(), val.toString());
+							}
+						}
 					}
 				}
 				// Это надо для того, чтобы все переменные в ссылке сделать статическими

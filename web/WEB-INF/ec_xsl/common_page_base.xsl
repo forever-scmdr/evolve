@@ -46,6 +46,10 @@
 								<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
 								<input type="submit" value="Найти"/>
 							</form>
+							<form action="{page/excel_search_link}" method="post" enctype="multipart/form-data">
+								<input type="file" name="file"/>
+								<input type="submit"/>
+							</form>
 						</div>
 						<div class="other-container">
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">

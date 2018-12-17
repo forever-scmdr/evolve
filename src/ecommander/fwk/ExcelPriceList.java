@@ -2,6 +2,7 @@ package ecommander.fwk;
 
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.model.datatypes.DoubleDataType;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 
@@ -46,6 +47,17 @@ public abstract class ExcelPriceList implements Closeable {
 		init(mandatoryCols);
 	}
 
+	public ExcelPriceList(FileItem fileItem, String... mandatoryCols) throws Exception {
+		this.fileName = fileItem.getName();
+		String prefix = StringUtils.substringBeforeLast(fileName, ".");
+		String suffix = "." + StringUtils.substringAfterLast(fileName, ".");
+		File temp = File.createTempFile(prefix + System.currentTimeMillis(), suffix);
+		temp.deleteOnExit();
+		fileItem.write(temp);
+		this.doc = POIUtils.openExcel(temp);
+		init(mandatoryCols);
+	}
+
 	private void init(String... mandatoryCols) {
 		if (doc == null)
 			return;
@@ -59,37 +71,43 @@ public abstract class ExcelPriceList implements Closeable {
 			Sheet sheet = wb.getSheetAt(i);
 			boolean rowChecked = false;
 			headerCell = new POIUtils.CellXY(-1, -1);
-			String firstMandatory = mandatoryCols[0];
-			while (headerCell != null) {
-				headerCell = POIUtils.findNextContaining(sheet, eval, firstMandatory, headerCell);
-				if (headerCell != null) {
-					missingColumnsTest = new ArrayList<>();
-					Row row = sheet.getRow(headerCell.row);
-					rowChecked = true;
-					for (String checkCol : mandatoryCols) {
-						ArrayList<POIUtils.CellXY> found = POIUtils.findCellInRowContaining(eval, checkCol, row);
-						if (found.size() == 0) {
-							missingColumnsTest.add(checkCol);
-							rowChecked = false;
+			if (mandatoryCols.length > 0) {
+				String firstMandatory = mandatoryCols[0];
+				while (headerCell != null) {
+					headerCell = POIUtils.findNextContaining(sheet, eval, firstMandatory, headerCell);
+					if (headerCell != null) {
+						missingColumnsTest = new ArrayList<>();
+						Row row = sheet.getRow(headerCell.row);
+						rowChecked = true;
+						for (String checkCol : mandatoryCols) {
+							ArrayList<POIUtils.CellXY> found = POIUtils.findCellInRowContaining(eval, checkCol, row);
+							if (found.size() == 0) {
+								missingColumnsTest.add(checkCol);
+								rowChecked = false;
+							}
+						}
+						if (!rowChecked && (missingColumns == null || missingColumnsTest.size() < missingColumns.size())) {
+							missingColumns = missingColumnsTest;
 						}
 					}
-					if (!rowChecked && (missingColumns == null || missingColumnsTest.size() < missingColumns.size())) {
-						missingColumns = missingColumnsTest;
-					}
+					if (rowChecked)
+						break;
 				}
-				if (rowChecked)
-					break;
-			}
-			if (rowChecked && headerCell != null) {
-				Row row = sheet.getRow(headerCell.row);
-				HashMap<String, Integer> headers = new HashMap<>();
-				for (Cell cell : row) {
-					String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
-					if (StringUtils.isNotBlank(colHeader)) {
-						headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+				if (rowChecked && headerCell != null) {
+					Row row = sheet.getRow(headerCell.row);
+					HashMap<String, Integer> headers = new HashMap<>();
+					for (Cell cell : row) {
+						String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
+						if (StringUtils.isNotBlank(colHeader)) {
+							headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+						}
 					}
+					SheetHeader sh = new SheetHeader(sheet, headers, headerCell);
+					validSheets.add(sh);
+					isValid = true;
 				}
-				SheetHeader sh = new SheetHeader(sheet, headers, headerCell);
+			} else {
+				SheetHeader sh = new SheetHeader(sheet, null, null);
 				validSheets.add(sh);
 				isValid = true;
 			}
@@ -164,8 +182,10 @@ public abstract class ExcelPriceList implements Closeable {
 			processSheet();
 			//-- process rows
 			Iterator<Row> rowIter = currentSheet.rowIterator();
-			while (rowIter.hasNext() && rowIter.next().getRowNum() < headerCell.row) {
-				// пропустить первые строки включая заголовок
+			if (headerCell != null) {
+				while (rowIter.hasNext() && rowIter.next().getRowNum() < headerCell.row) {
+					// пропустить первые строки включая заголовок
+				}
 			}
 			while (rowIter.hasNext()) {
 				currentRow = rowIter.next();
@@ -187,7 +207,9 @@ public abstract class ExcelPriceList implements Closeable {
 		int tlc = 0;
 		for(SheetHeader sh : validSheets){
 			Sheet s = sh.sheet;
-			tlc += s.getLastRowNum() - sh.headerCell.row;
+			tlc += s.getLastRowNum();
+			if (sh.headerCell != null)
+				tlc -= sh.headerCell.row;
 		}
 		return tlc;
 	}

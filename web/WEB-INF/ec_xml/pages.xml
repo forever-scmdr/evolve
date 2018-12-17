@@ -44,6 +44,7 @@
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
+		<link name="excel_search_link" target="excel_search" type="itemform"/>
 
 		<!-- REGISTRATION -->
 		<link name="register_link" target="register"/>
@@ -255,6 +256,7 @@
 	<page name="search" template="search">
 		<request>
 			<var name="q"/>
+			<var name="n"/>
 			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
@@ -319,6 +321,19 @@
 				<var name="prod" ref="prod" style="translit"/>
 			</link>
 		</list>
+	</page>
+
+
+
+	<page name="excel_search">
+		<link name="success" target="search"/>
+		<link name="error" target="search">
+			<var name="message" value="Ошибка формата файла запроса"/>
+		</link>
+		<command class="extra.ExcelSearch">
+			<result name="success" type="forward"/>
+			<result name="error" type="redirect"/>
+		</command>
 	</page>
 
 
@@ -972,7 +987,7 @@
 		<request>
 			<var name="action"/>
 		</request>
-		<command class="extra.ImportPlainCatalog" clear-cache="yes">]
+		<command class="extra.ImportPlainCatalog" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
