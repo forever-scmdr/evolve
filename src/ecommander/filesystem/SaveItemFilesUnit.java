@@ -13,16 +13,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -87,7 +81,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 							fileName = ((File) value).getName();
 						else if (isUrl)
 							fileName = Strings.getFileName(((URL) value).getFile());
-							fileName = StringUtils.substringAfterLast(fileName, "/");
+							fileName = (fileName.indexOf('/') != -1)? StringUtils.substringAfterLast(fileName, "/") : fileName;
 						// Создание новой директории
 						File dir = new File(fileDirectoryName);
 						dir.mkdirs();
