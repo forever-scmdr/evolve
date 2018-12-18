@@ -50,7 +50,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		add("vendor_code");
 		add("offer_id");
 		add("extra_xml");
-//		add("unit");
+		add("unit");
 	}};
 
 	//page vars
@@ -331,7 +331,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			ArrayList<Object> pv = aux.getValues(param.getName());
 			String value = (pv.size() == 0)? "" : (pv.size() == 1)? pv.get(0).toString() : join(pv);
 			row.createCell(++colIdx).setCellValue(value);
-			row.getCell(colIdx).setCellStyle(auxHeaderStyle);
+			row.getCell(colIdx).setCellStyle(auxStyle);
 		}
 	}
 
@@ -391,27 +391,48 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		headerStyle.setAlignment(HorizontalAlignment.CENTER);
 		headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		headerStyle.setBorderLeft(BorderStyle.THIN);
+		headerStyle.setBorderRight(BorderStyle.THIN);
+		headerStyle.setBorderTop(BorderStyle.THIN);
+		headerStyle.setBorderBottom(BorderStyle.THIN);
 		headerStyle.setFillForegroundColor(IndexedColors.GOLD.getIndex());
 
 		auxStyle = workBook.createCellStyle();
 		auxStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		auxStyle.setAlignment(HorizontalAlignment.CENTER);
 		auxStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		auxStyle.setBorderLeft(BorderStyle.THIN);
+		auxStyle.setBorderRight(BorderStyle.THIN);
+		auxStyle.setBorderTop(BorderStyle.THIN);
+		auxStyle.setBorderBottom(BorderStyle.THIN);
 		auxStyle.setFillForegroundColor(IndexedColors.AQUA.getIndex());
 
 		auxHeaderStyle = workBook.createCellStyle();
 		auxHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		auxHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
 		auxHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		auxHeaderStyle.setBorderLeft(BorderStyle.THIN);
+		auxHeaderStyle.setBorderRight(BorderStyle.THIN);
+		auxHeaderStyle.setBorderTop(BorderStyle.THIN);
+		auxHeaderStyle.setBorderBottom(BorderStyle.THIN);
+
 		auxHeaderStyle.setFillForegroundColor(IndexedColors.BLUE_GREY.getIndex());
 
 
 		noPriceStyle = workBook.createCellStyle();
 		noPriceStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		noPriceStyle.setBorderLeft(BorderStyle.THIN);
+		noPriceStyle.setBorderRight(BorderStyle.THIN);
+		noPriceStyle.setBorderTop(BorderStyle.THIN);
+		noPriceStyle.setBorderBottom(BorderStyle.THIN);
 		noPriceStyle.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
 
 		noCodeStyle = workBook.createCellStyle();
 		noCodeStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		noCodeStyle.setBorderLeft(BorderStyle.THIN);
+		noCodeStyle.setBorderRight(BorderStyle.THIN);
+		noCodeStyle.setBorderTop(BorderStyle.THIN);
+		noCodeStyle.setBorderBottom(BorderStyle.THIN);
 		noCodeStyle.setFillForegroundColor(IndexedColors.RED1.getIndex());
 
 		sectionStyle = workBook.createCellStyle();

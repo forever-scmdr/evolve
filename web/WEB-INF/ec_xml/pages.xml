@@ -979,7 +979,7 @@
 	<page name="parse_excel" template="integration/create_excel"  authority-groups="common">
 		<request>
 			<var name="action"/>
-			<var name="with_existing_sections" value="copy"/>
+			<!--<var name="with_existing_sections" value="copy"/>-->
 		</request>
 		<command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
 			<result name="complete" type="xml"/>
@@ -1099,5 +1099,10 @@
 		</request>
 	</page>
 
+	<page name="update_prices" template="update_prices">
+		<command class="extra.UpdatePrices" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
 </site>

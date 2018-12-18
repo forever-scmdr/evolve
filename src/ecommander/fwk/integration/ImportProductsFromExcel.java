@@ -3,6 +3,7 @@ package ecommander.fwk.integration;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -12,9 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Created by user on 12.12.2018.
@@ -24,11 +23,13 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 	Item catalog;
 	Item currentSection;
 	Item currentSubsection;
+	private boolean newItemTypes = false;
+	private HashSet<Long> sectionsWithNewItemTypes = new HashSet<>();
 	//page vars
 	//private static final String SEC_VAR = "sec";
-	private static final String WITH_EXISTING_SECS = "with_existing_sections"; // what to do with existing sections
-	private static final String WITH_EXISTING_PRODUCTS = "with_existing_products"; // what to do with existing products (UPDATE, COPY, CREATE, COPY_IF_PARENT_DIFFERS, MOVE_IF_PARENT_DIFFERS, DELETE)
-	private static final String IF_BLANK = "if_blank"; // what to do if the cell is blank; (ignore, update)
+	private static final String WITH_EXISTING_SECS = "with_existing_sections"; // what to do with existing sections (UPDATE, COPY, CREATE, COPY_IF_PARENT_DIFFERS, MOVE_IF_PARENT_DIFFERS, DELETE)
+	private static final String WITH_EXISTING_PRODUCTS = "with_existing_products"; // what to do with existing products (UPDATE)
+	private static final String IF_BLANK = "if_blank"; // what to do if the cell is blank; (IGNORE, CLEAR)
 	private static final String WITH_PICS = "with_pics"; // where to look for product files (SEARCH_BY_CODE, SEARCH_BY_CELL_VALUE)
 	private static final String IF_FILE_EXISTS = "if_file_exists";
 
@@ -64,6 +65,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 		Collection<File> files = FileUtils.listFiles(contextPath.toFile(), new String[]{"xls", "xlsx"}, false);
 
 		ItemType productItemType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
+		ItemType paramsXMLItemType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		for (ParameterDescription param : productItemType.getParameterList()) {
 			if (HEADER_PARAM.containsValue(param.getName())) continue;
 			HEADER_PARAM.put(param.getCaption().toLowerCase(), param.getName());
@@ -113,17 +115,17 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 										Path mainPicPath = picsFolder.resolve(code + ".jpg");
 										Path filesPath = picsFolder.resolve(code);
 										File mainPic = mainPicPath.toFile();
-										if(mainPic.exists())product.setValue(MAIN_PIC_PARAM, mainPic);
+										if (mainPic.exists()) product.setValue(MAIN_PIC_PARAM, mainPic);
 										File additionalFiles = filesPath.toFile();
 										if (additionalFiles.exists()) {
 											for (File f : FileUtils.listFiles(filesPath.toFile(), null, false)) {
 												if (f.getName().matches("[^\\s]+(\\.(?i)(jpe?g|png|gif|bmp|svg))$")) {
 													product.setValue(GALLERY_PARAM, f);
 												} else if (f.isDirectory()) {
-													for (File textPic : FileUtils.listFiles(filesPath.toFile(), null, false)) {
+													for (File textPic : FileUtils.listFiles(f, null, false)) {
 														product.setValue(TEXT_PICS_PARAM, textPic);
 													}
-												}else {
+												} else {
 													product.setValue(FILES_PARAM, f);
 												}
 											}
@@ -136,79 +138,210 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 									default:
 										break;
 								}
-							} else if(GALLERY_PARAM.equalsIgnoreCase(paramName) && TEXT_PICS_PARAM.equalsIgnoreCase(paramName) || FILES_PARAM.equalsIgnoreCase(paramName)){
-								if (withPictures == varValues.IGNORE || withPictures == varValues.SEARCH_BY_CODE) continue;
+							} else if (GALLERY_PARAM.equalsIgnoreCase(paramName) && TEXT_PICS_PARAM.equalsIgnoreCase(paramName) || FILES_PARAM.equalsIgnoreCase(paramName)) {
+								if (withPictures == varValues.IGNORE || withPictures == varValues.SEARCH_BY_CODE)
+									continue;
 								String[] arr = cellValue.split("\",\\s*\"");
-								for (String s : arr){
+								for (String s : arr) {
 									File p = picsFolder.resolve(s).toFile();
-									if(p.exists() && p.isFile()) product.setValue(paramName, p);
+									if (p.exists() && p.isFile()) product.setValue(paramName, p);
 								}
 							} else {
 								product.setValueUI(paramName, cellValue);
 							}
 						}
-						//process auxType
-						if (headers.contains(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase())) {
-							String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE);
-							ItemType auxType;
-							if (StringUtils.isNotBlank(auxTypeString)) {
-								auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
-							}
-						}
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(product, true).ignoreFileErrors(true).noFulltextIndex());
+
 					}
 					//PRODUCT EXISTS
-					else{
+					else {
 						//set product params
-						for(String header : headers){
+						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
 							if (!productItemType.getParameterNames().contains(paramName)) continue;
 							String cellValue = getValue(header);
 							varValues ifBlank = settings.get(IF_BLANK);
-							if(StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
-							if(CODE_PARAM.equals(paramName)){
-								if(StringUtils.isBlank(product.getStringValue(VENDOR_CODE_PARAM))){
+							if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
+							if (CODE_PARAM.equals(paramName)) {
+								if (StringUtils.isBlank(product.getStringValue(VENDOR_CODE_PARAM))) {
 									product.setValueUI(VENDOR_CODE_PARAM, code);
-								}if(StringUtils.isBlank(product.getStringValue(OFFER_ID_PARAM))){
+								}
+								if (StringUtils.isBlank(product.getStringValue(OFFER_ID_PARAM))) {
 									product.setValueUI(OFFER_ID_PARAM, code);
 								}
-							}else if(MAIN_PIC_PARAM.equals(paramName)){
-								Object mainPic = product.getValue(MAIN_PIC_PARAM,"");
+							} else if (MAIN_PIC_PARAM.equals(paramName)) {
+								Object mainPic = product.getValue(MAIN_PIC_PARAM, "");
 
-								if(mainPic.toString().equals(cellValue) && StringUtils.isBlank(mainPic.toString())) continue;
+								if (mainPic.toString().equals(cellValue) && StringUtils.isNotBlank(mainPic.toString()))
+									continue;
 
-								if(StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR && withPictures == varValues.SEARCH_BY_CODE){
+								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR && withPictures == varValues.SEARCH_BY_CODE) {
 									File mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
-									if(mainPicFile.exists()){
+									if (mainPicFile.exists()) {
 										product.setValue(MAIN_PIC_PARAM, mainPicFile);
 										product.clearParameter("medium_pic");
 										product.clearParameter("small_pic");
 									}
-								}else if(StringUtils.isBlank(mainPic.toString())){
-									switch(withPictures){
-										case SEARCH_BY_CODE :
+								} else if (StringUtils.isBlank(mainPic.toString())) {
+									switch (withPictures) {
+										case SEARCH_BY_CODE:
 											File mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
-											if(mainPicFile.exists()){
+											if (mainPicFile.exists()) {
 												product.setValue(MAIN_PIC_PARAM, mainPicFile);
 												product.clearParameter("medium_pic");
 												product.clearParameter("small_pic");
 											}
 											break;
 										case SEARCH_BY_CELL_VALUE:
-											if(StringUtils.isBlank(cellValue)) break;
+											if (StringUtils.isBlank(cellValue)) break;
 											mainPicFile = picsFolder.resolve(cellValue).toFile();
-											if(mainPicFile.exists()){
+											if (mainPicFile.exists()) {
 												product.setValue(MAIN_PIC_PARAM, mainPicFile);
 												product.clearParameter("medium_pic");
 												product.clearParameter("small_pic");
-											} break;
-										default: break;
+											}
+											break;
+										default:
+											break;
 									}
 								}
+							} else if (GALLERY_PARAM.equals(paramName)) {
+								String currVa = getStr(product, paramName);
+								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
+								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
+									product.clearParameter(paramName);
+									if (withPictures == varValues.SEARCH_BY_CODE) {
+										Path filesPath = picsFolder.resolve(code);
+										File additionalFiles = filesPath.toFile();
+										if (additionalFiles.exists()) {
+											for (File f : FileUtils.listFiles(filesPath.toFile(), null, false)) {
+												if (f.getName().matches("[^\\s]+(\\.(?i)(jpe?g|png|gif|bmp|svg))$")) {
+													product.setValue(GALLERY_PARAM, f);
+												}
+											}
+										}
+									}
+								} else {
+									product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
+								}
+							} else if (TEXT_PICS_PARAM.equals(paramName)) {
+								String currVa = getStr(product, paramName);
+								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
+								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
+									product.clearParameter(paramName);
+									if (withPictures == varValues.SEARCH_BY_CODE) {
+										Path filesPath = picsFolder.resolve(code);
+										File additionalFiles = filesPath.toFile();
+										if (additionalFiles.exists()) {
+											for (File f : FileUtils.listFiles(filesPath.toFile(), null, false)) {
+												if(!f.isDirectory()) continue;
+												for (File textPic : FileUtils.listFiles(f, null, false)) {
+													product.setValue(TEXT_PICS_PARAM, textPic);
+												}
+											}
+										}
+									}
+								} else {
+									product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
+								}
+							} else if (FILES_PARAM.equals(paramName)) {
+								String currVa = getStr(product, paramName);
+								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
+								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
+									product.clearParameter(FILES_PARAM);
+									if (withPictures == varValues.SEARCH_BY_CODE) {
+										Path filesPath = picsFolder.resolve(code);
+										File additionalFiles = filesPath.toFile();
+										if (additionalFiles.exists()) {
+											for (File f : FileUtils.listFiles(filesPath.toFile(), null, false)) {
+												if (!f.getName().matches("[^\\s]+(\\.(?i)(jpe?g|png|gif|bmp|svg))$")) {
+													product.setValue(FILES_PARAM, f);
+												}
+											}
+										}
+									}
+								} else {
+									product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
+								}
+							} else {
+								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
+								product.setValueUI(paramName, cellValue);
 							}
+
 						}
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(product, true).ignoreFileErrors(true).noFulltextIndex());
+					}
+					//process auxType
+					if (headers.contains(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase())) {
+						String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
+						ItemType auxType = null;
+						Item paramsXML = new ItemQuery(paramsXMLItemType).setParentId(product.getId(), false).loadFirstItem();
+						paramsXML = (paramsXML == null) ? Item.newChildItem(paramsXMLItemType, product) : paramsXML;
+						if (StringUtils.isNotBlank(auxTypeString)) {
+							auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
+						}
+						Item aux = null;
+						HashMap<String, String> auxParams = new HashMap<>();
+						if (auxType != null) {
+							aux = new ItemQuery(auxType.getName()).setParentId(product.getId(), false).loadFirstItem();
+							aux = (aux == null) ? Item.newChildItem(auxType, product) : aux;
+
+							for (ParameterDescription pd : auxType.getParameterList()) {
+								auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
+							}
+						} else {
+							newItemTypes = true;
+						}
+						XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+						for (String header : headers) {
+							String paramName = HEADER_PARAM.get(header);
+							if (productItemType.getParameterNames().contains(paramName)) continue;
+							String cellValue = getValue(header);
+							xml.startElement("parameter")
+									.startElement("name")
+									.addText(firstUpperCase(header))
+									.endElement()
+									.startElement("value")
+									.addText(cellValue)
+									.endElement()
+									.endElement();
+
+							if (auxType != null) aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
+						}
+						paramsXML.setValueUI(XML_PARAM, xml.toString());
+						executeCommandUnit(SaveItemDBUnit.get(paramsXML, true).noFulltextIndex());
+						if (auxType != null) {
+							executeCommandUnit(SaveItemDBUnit.get(aux, true).noFulltextIndex());
+						}
+						commitCommandUnits();
 					}
 				}
 
+			}
+
+			private Item setMultipleFileParam(Item item, String paramName, String values, Path folder){
+				String[] apv = values.split("\",\\s?\"");
+				LinkedHashSet<File> existingFiles = new LinkedHashSet<>();
+				for (String s : apv) {
+					s = StringUtils.startsWith(s, "\"") ? s.substring(1) : s;
+					s = StringUtils.endsWith(s, "\"") ? s.substring(0, s.length() - 2) : s;
+					File f = folder.resolve(s).toFile();
+					if (f.exists()) {
+						existingFiles.add(f);
+					}
+				}
+				if (existingFiles.size() > 0) {
+					item.clearParameter(paramName);
+					for (File f : existingFiles) {
+						item.setValue(paramName, f);
+					}
+				}
+				return item;
+			}
+
+			private String getStr(Item item, String paramName) {
+				ArrayList<Object> pv = item.getValues(paramName);
+				return (pv.size() == 0) ? "" : (pv.size() == 1) ? pv.get(0).toString() : CreateExcelPriceList.join(pv);
 			}
 
 			private Item getExistingProduct(String code) throws Exception {
@@ -253,7 +386,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 							if (existingSection != null) {
 								String sectionParentId = secInfo[2].trim();
 								Item parent = getDeclaredParent(sectionParentId);
-								info.setOperation("Копирую раздел: \"" + sectionName + "\".Это долгий и трудный процесс. Вы уверены, что оно Вам надо?");
+								info.setOperation("Копирую раздел: \"" + sectionName + "\".Это долгий и трудный процесс.");
 								info.pushLog("Попробуйте создавать новые разделы и копировать в них продукты. Это будет быстрее.");
 								executeAndCommitCommandUnits(new CopyItemDBUnit(existingSection, parent).ignoreFileErrors(true));
 								info.pushLog("Уфф! Скопировал.");
@@ -270,7 +403,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								long currentParentId = existingSection.getContextParentId();
 								Item declaredParent = getDeclaredParent(sectionParentId);
 								if (declaredParent.getId() != currentParentId) {
-									info.setOperation("Копирую раздел: \"" + sectionName + "\".Это долгий и трудный процесс. Вы уверены, что оно Вам надо?");
+									info.setOperation("Копирую раздел: \"" + sectionName + "\".Это долгий и трудный процесс.");
 									info.pushLog("Попробуйте создавать новые разделы и копировать в них продукты. Это будет быстрее.");
 									executeAndCommitCommandUnits(new CopyItemDBUnit(existingSection, declaredParent).ignoreFileErrors(true));
 									info.pushLog("Уфф! Скопировал.");
@@ -351,8 +484,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 					break;
 				case UPDATE:
 					if (!existingSection.getStringValue(NAME_PARAM, "").equals(sName)) {
-						existingSection.setValue(NAME_PARAM, sName);
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(existingSection).noFulltextIndex());
+						updateSectionName(existingSection, sName);
 					}
 				default:
 					break;
@@ -371,7 +503,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 	private void updateSectionName(Item section, String name) throws Exception {
 		if (!section.getStringValue(NAME_PARAM, "").equals(name)) {
 			section.setValue(NAME_PARAM, name);
-			info.addLog("Обновлено название раздела: \"" + section.getStringValue(NAME_PARAM, "") + "\"");
+			info.addLog("Обновлено название раздела " + section.getStringValue(CODE_PARAM) + ": \"" + section.getStringValue(NAME_PARAM, "") + "\"");
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section, false).noFulltextIndex().ignoreFileErrors(true));
 		}
 	}
@@ -444,5 +576,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 
 	}
 
+	private String firstUpperCase(String s) {
+		return s.substring(0, 1).toUpperCase() + s.substring(1);
+	}
 
 }
