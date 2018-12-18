@@ -78,6 +78,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 		priceWB = new ExcelPriceList(f, CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE) {
 			@Override
 			protected void processRow() throws Exception {
+				info.setLineNumber(getRowNum()+1);
 				String code = getValue(CreateExcelPriceList.CODE_FILE);
 				if (StringUtils.isBlank(code)) {
 					String name = getValue(CreateExcelPriceList.NAME_FILE);
@@ -119,7 +120,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 										File additionalFiles = filesPath.toFile();
 										if (additionalFiles.exists()) {
 											for (File f : FileUtils.listFiles(filesPath.toFile(), null, false)) {
-												if (f.getName().matches("[^\\s]+(\\.(?i)(jpe?g|png|gif|bmp|svg))$")) {
+												if (f.getName().matches(".+(\\.(?i)(jpe?g|png|gif|bmp|svg))$")) {
 													product.setValue(GALLERY_PARAM, f);
 												} else if (f.isDirectory()) {
 													for (File textPic : FileUtils.listFiles(f, null, false)) {
@@ -138,7 +139,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 									default:
 										break;
 								}
-							} else if (GALLERY_PARAM.equalsIgnoreCase(paramName) && TEXT_PICS_PARAM.equalsIgnoreCase(paramName) || FILES_PARAM.equalsIgnoreCase(paramName)) {
+							} else if (GALLERY_PARAM.equalsIgnoreCase(paramName) || TEXT_PICS_PARAM.equalsIgnoreCase(paramName) || FILES_PARAM.equalsIgnoreCase(paramName)) {
 								if (withPictures == varValues.IGNORE || withPictures == varValues.SEARCH_BY_CODE)
 									continue;
 								String[] arr = cellValue.split("\",\\s*\"");
@@ -283,7 +284,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						Item aux = null;
 						HashMap<String, String> auxParams = new HashMap<>();
 						if (auxType != null) {
-							aux = new ItemQuery(auxType.getName()).setParentId(product.getId(), false).loadFirstItem();
+							aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
 							aux = (aux == null) ? Item.newChildItem(auxType, product) : aux;
 
 							for (ParameterDescription pd : auxType.getParameterList()) {
@@ -295,7 +296,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
-							if (productItemType.getParameterNames().contains(paramName)) continue;
+							if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header)) continue;
 							String cellValue = getValue(header);
 							xml.startElement("parameter")
 									.startElement("name")
@@ -306,7 +307,10 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 									.endElement()
 									.endElement();
 
-							if (auxType != null) aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
+							if(auxType == null) continue;
+							String param = auxParams.get(header.toLowerCase());
+							if(!auxType.getParameterNames().contains(param)) continue;
+							if (StringUtils.isNotBlank(auxParams.get(param))) aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
 						}
 						paramsXML.setValueUI(XML_PARAM, xml.toString());
 						executeCommandUnit(SaveItemDBUnit.get(paramsXML, true).noFulltextIndex());
@@ -489,15 +493,16 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 				default:
 					break;
 			}
+			currentSubsection = existingSection;
 		} else {
 			Item newSection = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), declaredParent);
 			newSection.setValue(NAME_PARAM, sName);
 			newSection.setValue(CATEGORY_ID_PARAM, sCode);
 			newSection.setValue(PARENT_ID_PARAM, sParentCode);
-			executeAndCommitCommandUnits(SaveItemDBUnit.get(existingSection).noFulltextIndex());
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(newSection).noFulltextIndex());
 			info.pushLog("Создан раздел: " + sName);
+			currentSubsection = newSection;
 		}
-		currentSubsection = existingSection;
 	}
 
 	private void updateSectionName(Item section, String name) throws Exception {
