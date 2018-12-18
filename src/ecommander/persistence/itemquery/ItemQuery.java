@@ -3,6 +3,7 @@ package ecommander.persistence.itemquery;
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.MysqlConnector.ConnectionCount;
+import ecommander.fwk.Pair;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
 import ecommander.model.filter.FilterDefinition;
@@ -1091,9 +1092,13 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Установка фрагментов подсвеченного текста в айтемы
 		if (fulltext != null) {
 			for (Item item : result) {
-				String highlightedText = fulltext.getHighlightedText(item.getId());
-				if (StringUtils.isNotBlank(highlightedText))
-					item.setExtra(FulltextCriteria.HIGHLIGHT_EXTRA_NAME, highlightedText);
+				ArrayList<Pair<String, String>> queryAndHighlight = fulltext.getQueryAndHighlightedText(item.getId());
+				if (queryAndHighlight != null) {
+					for (Pair<String, String> qandh : queryAndHighlight) {
+						item.setExtra(FulltextCriteria.QUERY, qandh.getLeft());
+						item.setExtra(FulltextCriteria.HIGHLIGHT_EXTRA_NAME, qandh.getRight());
+					}
+				}
 			}
 		}
 		return result;

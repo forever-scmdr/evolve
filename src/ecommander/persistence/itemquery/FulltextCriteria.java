@@ -1,5 +1,6 @@
 package ecommander.persistence.itemquery;
 
+import ecommander.fwk.Pair;
 import ecommander.model.Compare;
 import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
 import ecommander.persistence.itemquery.fulltext.LuceneQueryCreator;
@@ -28,12 +29,13 @@ import java.util.List;
 class FulltextCriteria {
 
 	public static final String HIGHLIGHT_EXTRA_NAME = "highlight";
+	public static final String QUERY = "query";
 
 	private final String[] paramNames;
 	private final String[] queryVals;
 	private final int maxResultCount;
 	private final float threshold;
-	private LinkedHashMap<Long, String> loadedIds = null;
+	private LinkedHashMap<Long, ArrayList<Pair<String, String>>> loadedIdsAndQueryAndHighlight = null;
 	private final Compare compType;
 	private ArrayList<ArrayList<LuceneQueryCreator>> queryCreators = new ArrayList<>();
 	
@@ -67,46 +69,55 @@ class FulltextCriteria {
 	 * @throws IOException
 	 */
 	void loadItems(Query filter) throws IOException {
+		loadedIdsAndQueryAndHighlight = new LinkedHashMap<>(0);
 		if (isValid()) {
-			ArrayList<ArrayList<Query>> queries = new ArrayList<>();
 			Occur occur = Occur.SHOULD;
 			if (compType == Compare.EVERY || compType == Compare.ALL)
 				occur = Occur.MUST;
-			if (queryVals.length == 1) {
+			//if (queryVals.length == 1) {
+			for (String queryVal : queryVals) {
+				ArrayList<ArrayList<Query>> queries = new ArrayList<>();
 				for (ArrayList<LuceneQueryCreator> creatorGroup : queryCreators) {
 					ArrayList<Query> queryGroup = new ArrayList<>();
 					queries.add(queryGroup);
 					for (LuceneQueryCreator creator : creatorGroup) {
-						Query query = creator.createLuceneQuery(queryVals[0], paramNames, occur);
+						Query query = creator.createLuceneQuery(queryVal, paramNames, occur);
 						if (query != null)
 							queryGroup.add(query);
 					}
 				}
-			} else {
-				for (ArrayList<LuceneQueryCreator> creatorGroup : queryCreators) {
-					ArrayList<Query> queryGroup = new ArrayList<>();
-					queries.add(queryGroup);
-					for (LuceneQueryCreator creator : creatorGroup) {
-						BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
-						boolean isEmpty = true;
-						for (String term : queryVals) {
-							Query part = creator.createLuceneQuery(term, paramNames, occur);
-							if (part != null) {
-								boolQuery.add(part, occur);
-								isEmpty = false;
-							}
+				if (!queries.isEmpty()) {
+					LinkedHashMap<Long, String> loaded = LuceneIndexMapper.getSingleton().getItems(queries, filter, paramNames, maxResultCount, threshold);
+					for (Long loadedId : loaded.keySet()) {
+						ArrayList<Pair<String, String>> queryAndHighlight = loadedIdsAndQueryAndHighlight.get(loadedId);
+						if (queryAndHighlight == null) {
+							queryAndHighlight = new ArrayList<>();
+							loadedIdsAndQueryAndHighlight.put(loadedId, queryAndHighlight);
 						}
-						if (!isEmpty)
-							queryGroup.add(boolQuery.build());
+						queryAndHighlight.add(new Pair<>(queryVal, loaded.get(loadedId)));
 					}
 				}
 			}
-			if (!queries.isEmpty()) {
-				loadedIds = LuceneIndexMapper.getSingleton().getItems(queries, filter, paramNames, maxResultCount, threshold);
-				return;
-			}
+
+			//} else {
+//				for (ArrayList<LuceneQueryCreator> creatorGroup : queryCreators) {
+//					ArrayList<Query> queryGroup = new ArrayList<>();
+//					queries.add(queryGroup);
+//					for (LuceneQueryCreator creator : creatorGroup) {
+//						BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
+//						boolean isEmpty = true;
+//						for (String term : queryVals) {
+//							Query part = creator.createLuceneQuery(term, paramNames, occur);
+//							if (part != null) {
+//								boolQuery.add(part, occur);
+//								isEmpty = false;
+//							}
+//						}
+//						if (!isEmpty)
+//							queryGroup.add(boolQuery.build());
+//					}
+//				}
 		}
-		loadedIds = new LinkedHashMap<>(0);
 	}
 	/**
 	 * Получить часть массива найденных ID
@@ -119,7 +130,7 @@ class FulltextCriteria {
 			int start = (limit.getPage() - 1) * limit.getLimit();
 			int end = limit.getPage() * limit.getLimit();
 			ArrayList<Long> ids = new ArrayList<>();
-			Iterator<Long> loadedIter = loadedIds.keySet().iterator();
+			Iterator<Long> loadedIter = loadedIdsAndQueryAndHighlight.keySet().iterator();
 			for (int i = 0; i < start; i++) {
 				if (loadedIter.hasNext())
 					loadedIter.next();
@@ -132,7 +143,7 @@ class FulltextCriteria {
 			}
 			return ids.toArray(new Long[0]);
 		}
-		return loadedIds.keySet().toArray(new Long[0]);
+		return loadedIdsAndQueryAndHighlight.keySet().toArray(new Long[0]);
 	}
 
 	/**
@@ -140,7 +151,7 @@ class FulltextCriteria {
 	 * @return
 	 */
 	Long[] getLoadedIds() {
-		return loadedIds.keySet().toArray(new Long[0]);
+		return loadedIdsAndQueryAndHighlight.keySet().toArray(new Long[0]);
 	}
 
 	/**
@@ -148,12 +159,12 @@ class FulltextCriteria {
 	 * @param itemId - ID найденного полнотекстовым поиском айтема
 	 * @return
 	 */
-	String getHighlightedText(Long itemId) {
-		return loadedIds.get(itemId);
+	ArrayList<Pair<String,String>> getQueryAndHighlightedText(Long itemId) {
+		return loadedIdsAndQueryAndHighlight.get(itemId);
 	}
 
 	boolean isLoaded() {
-		return loadedIds != null;
+		return loadedIdsAndQueryAndHighlight != null;
 	}
 	
 	Compare getCompareType() {

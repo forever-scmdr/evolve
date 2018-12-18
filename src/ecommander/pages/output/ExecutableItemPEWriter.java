@@ -84,7 +84,7 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 		if (item.hasExtras()) {
 			xml.startElement(OWN_EXTRAS_ELEMENT);
 			for (String key : item.getExtraKeys()) {
-				xml.startElement(Strings.createXmlElementName(key)).addElements(item.getStringExtra(key)).endElement();
+				xml.startElement(Strings.createXmlElementName(key)).addElementsInline(item.getStringExtra(key)).endElement();
 			}
 			xml.endElement();
 		}
