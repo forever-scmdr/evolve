@@ -238,7 +238,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			CellStyle cellStyle = chooseCellStyle(product);
 			BigDecimal price = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
 			String priceValue = (price.doubleValue() > 0.001) ? price.toString() : "";
-			String qtyValue = (product.getDoubleValue(QTY_PARAM) != null) ? String.valueOf(product.getDoubleValue(QTY_PARAM)) : "";
+			String qtyValue = (product.getDecimalValue(QTY_PARAM) != null) ? String.valueOf(product.getDecimalValue(QTY_PARAM)) : "";
 
 			row.createCell(++colIdx).setCellValue(product.getStringValue(CODE_PARAM, ""));
 			row.createCell(++colIdx).setCellValue(product.getStringValue(NAME_PARAM, ""));
@@ -262,52 +262,52 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			}
 
 			info.increaseProcessed();
-			if (product.getByteValue(HAS_LINE_PRODUCTS, (byte) 0) == 1) {
-				List<Item> lineProducts = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(product.getId(), false).loadItems();
-				info.setToProcess(info.getToProcess() + lineProducts.size());
-				info.pushLog(product.getStringValue(NAME_PARAM) + ". Обнаружено вложенных товаров: " + lineProducts.size());
-				String parentCode = product.getStringValue(CODE_PARAM, "");
-				for(Item lineProduct : lineProducts){
-					//write aux params
-					if(writeAuxParams) {
-						aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
-						if(aux != null && !aux.getItemType().equals(paramsType)){
-							paramsType = aux.getItemType();
-							rowI = initializeHeader(sh, rowI, paramsType);
-						}
-					}
-					row = sh.createRow(++rowI);
-					cellStyle = chooseCellStyle(lineProduct);
-					price = lineProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
-					priceValue = (price.doubleValue() > 0.001) ? price.toString() : "";
-					qtyValue = (lineProduct.getDoubleValue(QTY_PARAM) != null) ? String.valueOf(lineProduct.getDoubleValue(QTY_PARAM)) : "";
-
-					row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(CODE_PARAM + "@" + parentCode, ""));
-					row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(NAME_PARAM, ""));
-					row.createCell(++colIdx).setCellValue(priceValue);
-					row.createCell(++colIdx).setCellValue(qtyValue);
-					row.createCell(++colIdx).setCellValue(lineProduct.getStringValue("unit", ""));
-					row.createCell(++colIdx).setCellValue(String.valueOf(lineProduct.getByteValue(AVAILABLE_PARAM, (byte) 0)));
-
-					//write all product params
-					if(writeAllProductParams){
-						colIdx = writeParams(row, lineProduct, colIdx, productItemType);
-					}
-
-					if (cellStyle != null) {
-						for (int i = 0; i < colIdx + 1; i++) {
-							row.getCell(i).setCellStyle(cellStyle);
-						}
-					}
-
-					//write aux params
-					if(writeAuxParams) {
-						aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
-						writeAux(row, aux, colIdx, paramsType);
-					}
-					info.increaseProcessed();
-				}
-			}
+//			if (product.getByteValue(HAS_LINE_PRODUCTS, (byte) 0) == 1) {
+//				List<Item> lineProducts = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(product.getId(), false).loadItems();
+//				info.setToProcess(info.getToProcess() + lineProducts.size());
+//				info.pushLog(product.getStringValue(NAME_PARAM) + ". Обнаружено вложенных товаров: " + lineProducts.size());
+//				String parentCode = product.getStringValue(CODE_PARAM, "");
+//				for(Item lineProduct : lineProducts){
+//					//write aux params
+//					if(writeAuxParams) {
+//						aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
+//						if(aux != null && !aux.getItemType().equals(paramsType)){
+//							paramsType = aux.getItemType();
+//							rowI = initializeHeader(sh, rowI, paramsType);
+//						}
+//					}
+//					row = sh.createRow(++rowI);
+//					cellStyle = chooseCellStyle(lineProduct);
+//					price = lineProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
+//					priceValue = (price.doubleValue() > 0.001) ? price.toString() : "";
+//					qtyValue = (lineProduct.getDoubleValue(QTY_PARAM) != null) ? String.valueOf(lineProduct.getDoubleValue(QTY_PARAM)) : "";
+//
+//					row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(CODE_PARAM + "@" + parentCode, ""));
+//					row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(NAME_PARAM, ""));
+//					row.createCell(++colIdx).setCellValue(priceValue);
+//					row.createCell(++colIdx).setCellValue(qtyValue);
+//					row.createCell(++colIdx).setCellValue(lineProduct.getStringValue("unit", ""));
+//					row.createCell(++colIdx).setCellValue(String.valueOf(lineProduct.getByteValue(AVAILABLE_PARAM, (byte) 0)));
+//
+//					//write all product params
+//					if(writeAllProductParams){
+//						colIdx = writeParams(row, lineProduct, colIdx, productItemType);
+//					}
+//
+//					if (cellStyle != null) {
+//						for (int i = 0; i < colIdx + 1; i++) {
+//							row.getCell(i).setCellStyle(cellStyle);
+//						}
+//					}
+//
+//					//write aux params
+//					if(writeAuxParams) {
+//						aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
+//						writeAux(row, aux, colIdx, paramsType);
+//					}
+//					info.increaseProcessed();
+//				}
+//			}
 		}
 		return rowI;
 	}

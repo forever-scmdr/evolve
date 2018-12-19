@@ -126,9 +126,10 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 													for (File textPic : FileUtils.listFiles(f, null, false)) {
 														product.setValue(TEXT_PICS_PARAM, textPic);
 													}
-												} else {
-													product.setValue(FILES_PARAM, f);
 												}
+//												} else {
+//													product.setValue(FILES_PARAM, f);
+//												}
 											}
 										}
 										break;
@@ -139,7 +140,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 									default:
 										break;
 								}
-							} else if (GALLERY_PARAM.equalsIgnoreCase(paramName) || TEXT_PICS_PARAM.equalsIgnoreCase(paramName) || FILES_PARAM.equalsIgnoreCase(paramName)) {
+							}else if (GALLERY_PARAM.equalsIgnoreCase(paramName) || TEXT_PICS_PARAM.equalsIgnoreCase(paramName)) {
+							//else if (GALLERY_PARAM.equalsIgnoreCase(paramName) || TEXT_PICS_PARAM.equalsIgnoreCase(paramName) || FILES_PARAM.equalsIgnoreCase(paramName)) {
 								if (withPictures == varValues.IGNORE || withPictures == varValues.SEARCH_BY_CODE)
 									continue;
 								String[] arr = cellValue.split("\",\\s*\"");
@@ -245,26 +247,28 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								} else {
 									product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
 								}
-							} else if (FILES_PARAM.equals(paramName)) {
-								String currVa = getStr(product, paramName);
-								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
-								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
-									product.clearParameter(FILES_PARAM);
-									if (withPictures == varValues.SEARCH_BY_CODE) {
-										Path filesPath = picsFolder.resolve(code);
-										File additionalFiles = filesPath.toFile();
-										if (additionalFiles.exists()) {
-											for (File f : FileUtils.listFiles(filesPath.toFile(), null, false)) {
-												if (!f.getName().matches("[^\\s]+(\\.(?i)(jpe?g|png|gif|bmp|svg))$")) {
-													product.setValue(FILES_PARAM, f);
-												}
-											}
-										}
-									}
-								} else {
-									product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
-								}
-							} else {
+							}
+//							else if (FILES_PARAM.equals(paramName)) {
+//								String currVa = getStr(product, paramName);
+//								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
+//								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
+//									product.clearParameter(FILES_PARAM);
+//									if (withPictures == varValues.SEARCH_BY_CODE) {
+//										Path filesPath = picsFolder.resolve(code);
+//										File additionalFiles = filesPath.toFile();
+//										if (additionalFiles.exists()) {
+//											for (File f : FileUtils.listFiles(filesPath.toFile(), null, false)) {
+//												if (!f.getName().matches("[^\\s]+(\\.(?i)(jpe?g|png|gif|bmp|svg))$")) {
+//													product.setValue(FILES_PARAM, f);
+//												}
+//											}
+//										}
+//									}
+//								} else {
+//									product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
+//								}
+//							}
+							else {
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
 								product.setValueUI(paramName, cellValue);
 							}
