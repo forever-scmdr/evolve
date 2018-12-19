@@ -376,6 +376,55 @@
 
 
 
+
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                       ОБЩЕЕ ДЛЯ ВСЕХ СТРАНИЦ                         ////////////-->
+	<!--/////////////                                                                      ////////////-->
+
+
+	<item name="common" caption="На всех страницах" ag-id="22" ag-hash="-1354814997">
+		<parameter name="top" type="short-text" caption="Верх" description="телефоны"/>
+		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
+		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
+		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
+		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
+		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
+		<parameter name="google_verification" type="string" caption="google verification code"/>
+		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
+		<child item="delivery" single="true"/>
+		<child item="topper" single="true"/>
+		<child item="footer" single="true"/>
+	</item>
+
+	<item name="block" caption="Блок текста (кода)" key="header">
+		<parameter name="header" type="string" caption="Заголовок"/>
+		<parameter name="text" type="short-text" caption="Текст (код)"/>
+	</item>
+
+	<item name="block_array" caption="Массив блоков" virtual="true">
+		<child item="block" inline="true"/>
+	</item>
+
+
+	<item name="delivery" caption="Доставка" ag-id="827" ag-hash="823466996">
+		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
+	</item>
+
+	<item name="footer" caption="Футер (низ)" super="block_array"/>
+
+	<item name="topper" caption="Топпер (верх)" super="block_array"/>
+
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                     END ОБЩЕЕ ДЛЯ ВСЕХ СТРАНИЦ                       ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+
+
 	<item name="news_wrap" caption="Новостые разделы" ag-id="815" ag-hash="301189686">
 		<child item="news"/>
 	</item>
@@ -426,21 +475,6 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="common" caption="На всех страницах" ag-id="22" ag-hash="-1354814997">
-		<parameter name="top" type="short-text" caption="Верх" description="телефоны"/>
-		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
-		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
-		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
-		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
-		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
-		<parameter name="google_verification" type="string" caption="google verification code"/>
-		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
-		<child item="delivery" single="true"/>
-	</item>
-
-	<item name="delivery" caption="Доставка" ag-id="827" ag-hash="823466996">
-		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
-	</item>
 
 	<item name="feedback_form" caption="Форма обратной связи" virtual="true" ag-id="25" ag-hash="-1950071490">
 		<parameter name="name" type="string" caption="Имя"/>

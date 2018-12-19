@@ -1363,7 +1363,7 @@ h2.title {
     display: none;
     z-index: 2;
 }
-.selection-overlay.selected {
+.selected.selection-overlay{
     background: #ffff00;
     display: block;
 }
@@ -1373,4 +1373,7 @@ h2.title {
 }
 .selection-actions{
     display: none;
+}
+.pale{
+    opacity: .33;
 }

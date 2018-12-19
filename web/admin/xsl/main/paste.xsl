@@ -4,6 +4,8 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/html" indent="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="base-vars" select="substring-after(admin-page/item[1]/paste-link,'?')"/>
+
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br/&gt;</xsl:text></xsl:template>
 
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
@@ -14,7 +16,15 @@
 			<div id="pasteBuffer" class="result">
 				<div class="list">
 					<h4>Буфер обмена (вставить)</h4>
+
 					<ul class="edit">
+						<li style="padding-top: 8px;" >
+							<div class="buffer-actions-all" style="text-align: center; padding: 2px 5px; background: #fff; border: 1px solid #ccc;">
+								<a class="copy paste" onclick="insertAjaxView('admin_paste_all.action?{$base-vars}', 'subitems', false, 'hidden_mes', 'message_main')" title="вставить все">вставить</a>
+								<a class="copy move" onclick="insertAjaxView('admin_move_all.action?{$base-vars}', 'subitems', false, 'hidden_mes', 'message_main')" title="Переместить  все. Оригиналы будут удалены!">переместить</a>
+								<a class="delete" onclick="insertAjaxView('admin_clear_paste_buffer.action?{$base-vars}', 'pasteBuffer', false, 'hidden_mes', 'message_main')" title="Очистить буфер обмена">удалить</a>
+							</div>
+						</li>
 						<xsl:for-each select="admin-page/item">
 
 							<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']" />

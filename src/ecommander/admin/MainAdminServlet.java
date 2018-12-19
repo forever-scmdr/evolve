@@ -171,6 +171,12 @@ public class MainAdminServlet extends BasicAdminServlet {
 			result = setNewUserGroup(input, true);
 		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.TOGGLE_FILE_PROTECTION_ACTION))
 			result = toggleFileProtection(input);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.CLEAR_BUFFER_ACTION))
+			result = clearPasteBuffer(input, pageCreator);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.PASTE_ALL_ACTION))
+			result = pasteAll(input, pageCreator);
+		else if (actionName.equalsIgnoreCase(MainAdminPageCreator.MOVE_ALL_ACTION))
+			result = moveAll(input, pageCreator);
 		else if (actionName.equalsIgnoreCase(ENABLE_VISUAL_EDITING_ACTION)) {
 			SessionContext.createSessionContext(req).setContentUpdateMode(true);
 			String target = req.getParameter(TARGET_PARAM);
@@ -1042,6 +1048,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Удалить из буфера обмена айтем
+	 *
 	 * @param in
 	 * @param pageCreator
 	 * @return
@@ -1058,6 +1065,91 @@ public class MainAdminServlet extends BasicAdminServlet {
 			in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 		}
 		return pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId);
+	}
+
+	/**
+	 * Очистить буфер обмена
+	 *
+	 * @param in
+	 * @param pageCreator
+	 * @return
+	 * @throws Exception
+	 */
+	private AdminPage clearPasteBuffer(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
+		in.session.removeAttribute(MainAdminPageCreator.PASTE_LIST);
+		return pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId);
+	}
+
+	/**
+	 * Произвести копирование всех айтемов из буфера обмента
+	 * <p>
+	 * Параметры:
+	 * parentId - ID айтема, в который вставляется копируемый
+	 * itemTypeId - ID типа айтема, в который происходит вставка
+	 *
+	 * @param in
+	 * @param pageCreator
+	 * @return
+	 * @throws Exception
+	 */
+	protected AdminPage pasteAll(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
+		try {
+			@SuppressWarnings("unchecked")
+			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
+
+			for (long id : buffer.keySet()) {
+				transaction.addCommandUnit(new CopyItemDBUnit(id, in.parentId));
+			}
+			transaction.execute();
+			in.session.removeAttribute(MainAdminPageCreator.PASTE_LIST);
+		} catch (Exception e) {
+			ServerLogger.error("Unable to copy items", e);
+			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
+			page.addMessage("Невозможно вставить скопированный элемент", true);
+			return page;
+		}
+		// Очистить кеш страниц
+		PageController.clearCache();
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
+		page.addMessage("Элементы успешно копированы", false);
+		return page;
+	}
+
+	/**
+	 * Переместить все айтемы из буфера обмента
+	 * <p>
+	 * Параметры:
+	 * parentId - ID айтема, в который вставляется копируемый
+	 * itemTypeId - ID типа айтема, в который происходит вставка
+	 *
+	 * @param in
+	 * @param pageCreator
+	 * @return
+	 * @throws Exception
+	 */
+	protected AdminPage moveAll(UserInput in, MainAdminPageCreator pageCreator) throws Exception {
+		DelayedTransaction transaction = new DelayedTransaction(getCurrentAdmin());
+		try {
+			@SuppressWarnings("unchecked")
+			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
+
+			for (long id : buffer.keySet()) {
+				transaction.addCommandUnit(new MoveItemDBUnit(id, in.parentId));
+			}
+			transaction.execute();
+			in.session.removeAttribute(MainAdminPageCreator.PASTE_LIST);
+		} catch (Exception e) {
+			ServerLogger.error("Unable to move items", e);
+			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
+			page.addMessage("Невозможно переместиь элемент", true);
+			return page;
+		}
+		// Очистить кеш страниц
+		PageController.clearCache();
+		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
+		page.addMessage("Элементы успешно перемещены", false);
+		return page;
 	}
 
 	/**

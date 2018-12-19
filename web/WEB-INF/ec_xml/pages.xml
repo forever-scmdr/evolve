@@ -31,7 +31,9 @@
 				<var name="sel" ref="news" style="translit"/>
 			</link>
 		</list>
-		<single item="common" cacheable="false"/>
+		<single item="common" cacheable="true">
+			<list item="block_array"/>
+		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
 		<link name="contacts_link" target="contacts"/>

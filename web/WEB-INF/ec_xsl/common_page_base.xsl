@@ -52,25 +52,29 @@
 	<xsl:template name="INC_DESKTOP_HEADER">
 		<section class="top-stripe desktop">
 			<div class="container">
+				<xsl:variable name="topper" select="page/common/topper"/>
 				<div class="dropdown">
 					<a class="dropdown-toggle top-stripe__location" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Минск <i class="fas fa-caret-down"></i>
+					<xsl:value-of select="$topper/block[1]/header"/>&#160;<i class="fas fa-caret-down"></i>
 					</a>
 
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-						<a class="dropdown-item" href="#">Минск</a>
-						<a class="dropdown-item" href="#">Брест</a>
-						<a class="dropdown-item" href="#">Гродно</a>
+						<xsl:for-each select="$topper/block">
+							<a class="dropdown-item" href="#"><xsl:value-of select="header"/></a>
+						</xsl:for-each>
 					</div>
 				</div>
-				
-				<div class="top-stripe__phone">(+375 17) 123-45-67 <span>- отдел снабжения</span></div>
-				<div class="top-stripe__phone">(+375 17) 123-45-67 <span>- отдел запчастей</span></div>
-				<div class="top-stripe__time">Пн.-пт.: с 9.00 до 17.00</div>
-				<div class="top-stripe__links">
-					<a href="" class="top-stripe__link">Оплата</a>
-					<a href="" class="top-stripe__link">Доставка</a>
-				</div>
+				<xsl:for-each select="$topper/block">
+					<div >
+						<div class="top-stripe__phone">(+375 17) 123-45-67 <span>- отдел снабжения</span></div>
+						<div class="top-stripe__phone">(+375 17) 123-45-67 <span>- отдел запчастей</span></div>
+						<div class="top-stripe__time">Пн.-пт.: с 9.00 до 17.00</div>
+						<div class="top-stripe__links">
+							<a href="" class="top-stripe__link">Оплата</a>
+							<a href="" class="top-stripe__link">Доставка</a>
+						</div>
+					</div>
+				</xsl:for-each>
 			</div>
 		</section>
 		<section class="header desktop">
@@ -216,59 +220,66 @@
 	<xsl:template name="INC_FOOTER">
 		<!-- FOOTER BEGIN -->
 		<div class="footer-placeholder"></div>
-		<footer class="footer pt-4" w3-include-html="html_includes/footer.html">
-			<div class="container">
-				<div>
-					<div class="title_3">Информация</div>
-					<div class="footer__links">
-						<a href="">О компании</a>
-						<a href="">Доставка</a>
-						<a href="">Гарантии</a>
-						<a href="">Лизинг</a>
-						<a href="">Сотрудничество</a>
-					</div>
-				</div>
-				<div>
-					<div class="title_3">Личный кабинет</div>
-					<div class="footer__links">
-						<a href="">История заказов</a>
-						<a href="">Личный кабинет</a>
-						<a href="">Закладки</a>
-						<a href="">Рассылки</a>
-					</div>
-				</div>
-				<div>
-					<div class="title_3">Дополнительно</div>
-					<div class="footer__links">
-						<a href="">Производители</a>
-						<a href="">Акции</a>
-						<a href="">Блог</a>
-					</div>
-				</div>
-				<div>
-					<div class="title_3">Контакты</div>
-					<div class="footer__links">
-						<a href="tel:(+375 17) 233-65-94">(+375 17) 233-65-94 - Минск; </a>
-						<a href="tel:(+375 17) 233-65-94">(+375 17) 233-65-94 - Брест; </a>
-						<a href="tel:(+375 17) 233-65-94">(+375 17) 233-65-94 - Гродно. </a>
-					</div>
-						<a href="">Связаться с нами</a>
-				</div>
-				<div>
-					<div class="footer__social">
-						<div class="title_3">Мы в социальных сетях</div>
-						<a href="" class="footer__social-link facebook"><i class="fab fa-facebook"></i></a>
-						<a href="" class="footer__social-link vkontakte"><i class="fab fa-vk"></i></a>
-						<a href="" class="footer__social-link odnoklassniki"><i class="fab fa-odnoklassniki"></i></a>
-						<a href="" class="footer__social-link youtube"><i class="fab fa-youtube"></i></a>
-						<a href="" class="footer__social-link twitter"><i class="fab fa-twitter"></i></a>
-					</div>
-					<div class="footer__forever">
-						<a href="http://forever.by">Разработка сайта — студия веб-дизайна Forever</a>
-					</div>
-				</div>
-			</div>
-		</footer>
+		<section class="footer">
+		    <div class="container">
+		        <div class="footer__menu">
+		            <a href="">Каталог</a>
+		            <a href="">Новости</a>
+		            <a href="">Акции</a>
+		            <a href="">О компании</a>
+		            <a href="">Сервис</a>
+		            <a href="">Оплата</a>
+		            <a href="">Доставка</a>
+		            <a href="">Контакты</a>
+		        </div>
+		        <div class="footer__content">
+		            <div class="footer__column">
+		                <div class="title_3">© ООО «Мизида»</div>
+		                <div class="social-one">
+		                    <i class="fab fa-facebook"></i>
+		                    <a href="">наша страница на фейсбуке</a>
+		                </div>
+		                <div class="forever">
+		                    <img src="img/forever.png" alt="" />
+		                    <a href="forever.by" target="_blank">Разработка сайта студия веб-дизайна Forever</a>
+		                </div>
+		            </div>
+		            <div class="footer__column">
+		                <div class="title_3">Время работы</div>
+		                <p>Пн.-пт.: с 9:00 до 18:00</p>
+		            </div>
+		            <div class="footer__column">
+		                <div class="title_3">г. Минск</div>
+		                <p>220053, Старовиленский тракт, д. 88, офис 39</p>
+		                <p>+375-17-233-65-94;</p>
+		                <p>+375-17-233-65-94;</p>
+		                <p>+375-17-233-65-94;</p>
+		                <p><a href="mailto:info@mizida.by">info@mizida.by</a></p>
+		            </div>
+		            <div class="footer__column">
+		                <div class="title_3">Отдел оборудования</div>
+		                <p>+375-29-335-43-37;</p>
+		                <p>Skype: <a href="">mizidaism</a></p>
+		                <div class="title_3">Отдел запчастей</div>
+		                <p>+375-29-335-43-36;</p>
+		                <p><a href="mailto:info@mizida.by">info@mizida.by</a></p>
+		            </div>
+		            <div class="footer__column">
+		                <div class="title_3">г. Брест</div>
+		                <p>ул. Краснознаменная, д. 2</p>
+		                <p>+375-162-54-54-40;</p>
+		                <p>+375-29-703-54-89;</p>
+		                <p>+375-162-54-54-40 — факс;</p>
+		                <p><a href="mailto:brest@mizida.by">brest@mizida.by</a></p>
+		            </div>
+		            <div class="footer__column">
+		                <div class="title_3">г. Гродно</div>
+		                <p>ул. 17 Сентября, 49, оф. 216</p>
+		                <p>+375-152-71 89 63 — тел./факс;</p>
+		            </div>
+		        </div>
+		    </div>
+		</section>
 		<!-- FOOTER END -->
 
 		<!-- MODALS BEGIN -->
