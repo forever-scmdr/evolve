@@ -1,26 +1,39 @@
 <catalog_count>1</catalog_count>
 <catalog type="catalog" id="39" path="files/39f/" key="katalog_produktsii">
-	<section_count>18</section_count>
+<integration_pending>1</integration_pending>
+	<section_count>19</section_count>
 	<section type="section" id="40" path="files/40f/" key="avtomatika">
 <name>Автоматика</name>
 <code>100124</code>
+<category_id>40</category_id>
 		<show_products>/avtomatika/</show_products>
 		<product_count>1</product_count>
-		<product type="product" id="43" path="files/43f/" key="danfoss_bcp1_bcp1">
-<name>DANFOSS BCP1</name>
-<type>Модуль: прессостат</type>
-<name_extra>Модуль: прессостат; давление; 0,1÷1,1 бар; Вид выхода: SPDT</name_extra>
-<code>017B0002</code>
-<vendor_code>BCP1</vendor_code>
-<vendor>DANFOSS</vendor>
+		<product type="product" id="321" path="files/321f/" key="kubler_8.0000.1202.0608_8.0000.1202.0608">
+<name>KUBLER 8.0000.1202.0608</name>
+<name_extra>Муфта 6/8 мм</name_extra>
+<code>0000.1201.0608</code>
+<vendor_code>8.0000.1202.0608</vendor_code>
+<vendor>KUBLER</vendor>
+<main_pic>main_378704.jpg</main_pic>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;Масса брутто: 1 g&lt;/li&gt; 
+ &lt;li&gt;Масса брутто: 5.4 g&lt;/li&gt; 
 &lt;/ul&gt;</text>
+<gallery>378704.jpg</gallery>
+<gallery>prime_presentation_pres_0000.jpg</gallery>
+<gallery>prime_presentation_pres_0001.jpg</gallery>
+<gallery>prime_presentation_pres_0002.jpg</gallery>
+<gallery>prime_presentation_pres_0003.jpg</gallery>
+<gallery>prime_presentation_pres_0004.jpg</gallery>
+<gallery>prime_presentation_pres_0005.jpg</gallery>
+<gallery>prime_presentation_pres_0006.jpg</gallery>
+<gallery>prime_presentation_pres_0007.jpg</gallery>
 		</product>
 		<section type="section" id="41" path="files/41f/" key="regulirovka_i_upravlenie">
 <name>Регулировка и управление</name>
 <code>100228</code>
+<category_id>41</category_id>
+<parent_id>40</parent_id>
 			<show_products>/regulirovka_i_upravlenie/</show_products>
 			<product_count>1</product_count>
 			<product type="product" id="43" path="files/43f/" key="danfoss_bcp1_bcp1">
@@ -38,6 +51,8 @@
 			<section type="section" id="42" path="files/42f/" key="pressostaty">
 <name>Прессостаты</name>
 <code>100495</code>
+<category_id>42</category_id>
+<parent_id>41</parent_id>
 				<show_products>/pressostaty/</show_products>
 				<product_count>1</product_count>
 				<product type="product" id="43" path="files/43f/" key="danfoss_bcp1_bcp1">
@@ -56,6 +71,8 @@
 			<section type="section" id="52" path="files/52f/" key="rele_vremeni">
 <name>Реле времени</name>
 <code>112584</code>
+<category_id>52</category_id>
+<parent_id>41</parent_id>
 				<show_products>/rele_vremeni/</show_products>
 				<product_count>1</product_count>
 				<product type="product" id="54" path="files/54f/" key="legrand_rc302_rc302">
@@ -65,6 +82,8 @@
 <code>004740</code>
 <vendor_code>RC302</vendor_code>
 <vendor>LEGRAND</vendor>
+<offer_id>004740</offer_id>
+<available>0</available>
 <main_pic>main_456775.jpg</main_pic>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
@@ -84,10 +103,13 @@
 <assoc_code>PW-C.2019</assoc_code>
 <assoc_code>PW-C.2027</assoc_code>
 <assoc_code>1SLM006502A1203</assoc_code>
+<assoc_code>&quot;PW-C.2030&quot;, &quot;PW-C.2013&quot;, &quot;PW-C.2019&quot;, &quot;PW-C.2027&quot;, &quot;1SLM006502A1203&quot;</assoc_code>
 				</product>
 				<section type="section" id="53" path="files/53f/" key="vremennye_analogovye_rele">
 <name>Временные аналоговые реле</name>
 <code>100053</code>
+<category_id>53</category_id>
+<parent_id>52</parent_id>
 					<show_products>/vremennye_analogovye_rele/</show_products>
 					<product_count>1</product_count>
 					<product type="product" id="54" path="files/54f/" key="legrand_rc302_rc302">
@@ -97,6 +119,8 @@
 <code>004740</code>
 <vendor_code>RC302</vendor_code>
 <vendor>LEGRAND</vendor>
+<offer_id>004740</offer_id>
+<available>0</available>
 <main_pic>main_456775.jpg</main_pic>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
@@ -116,12 +140,15 @@
 <assoc_code>PW-C.2019</assoc_code>
 <assoc_code>PW-C.2027</assoc_code>
 <assoc_code>1SLM006502A1203</assoc_code>
+<assoc_code>&quot;PW-C.2030&quot;, &quot;PW-C.2013&quot;, &quot;PW-C.2019&quot;, &quot;PW-C.2027&quot;, &quot;1SLM006502A1203&quot;</assoc_code>
 					</product>
 				</section>
 			</section>
 			<section type="section" id="72" path="files/72f/" key="schetchiki">
 <name>Счетчики</name>
 <code>112587</code>
+<category_id>72</category_id>
+<parent_id>41</parent_id>
 				<show_products>/schetchiki/</show_products>
 				<product_count>1</product_count>
 				<product type="product" id="74" path="files/74f/" key="kubler_8.0000.3241.0010_8.0000.3241.0010">
@@ -131,6 +158,8 @@
 <code>0000.3241.0010</code>
 <vendor_code>8.0000.3241.0010</vendor_code>
 <vendor>KUBLER</vendor>
+<offer_id>0000.3241.0010</offer_id>
+<available>0</available>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
  &lt;li&gt;Масса брутто: 0.04 kg&lt;/li&gt; 
@@ -139,6 +168,8 @@
 				<section type="section" id="73" path="files/73f/" key="schetchiki_impulsov">
 <name>Счетчики импульсов</name>
 <code>100122</code>
+<category_id>73</category_id>
+<parent_id>72</parent_id>
 					<show_products>/schetchiki_impulsov/</show_products>
 					<product_count>1</product_count>
 					<product type="product" id="74" path="files/74f/" key="kubler_8.0000.3241.0010_8.0000.3241.0010">
@@ -148,6 +179,8 @@
 <code>0000.3241.0010</code>
 <vendor_code>8.0000.3241.0010</vendor_code>
 <vendor>KUBLER</vendor>
+<offer_id>0000.3241.0010</offer_id>
+<available>0</available>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
  &lt;li&gt;Масса брутто: 0.04 kg&lt;/li&gt; 
@@ -157,6 +190,8 @@
 				<section type="section" id="76" path="files/76f/" key="schetchiki_rabochego_vremeni">
 <name>Счетчики рабочего времени</name>
 <code>112588</code>
+<category_id>76</category_id>
+<parent_id>72</parent_id>
 					<show_products>/schetchiki_rabochego_vremeni/</show_products>
 					<product_count>1</product_count>
 					<product type="product" id="77" path="files/77f/" key="kubler_0.135.200.302_0.135.200.302">
@@ -166,6 +201,8 @@
 <code>0.135.200.302</code>
 <vendor_code>0.135.200.302</vendor_code>
 <vendor>KUBLER</vendor>
+<offer_id>0.135.200.302</offer_id>
+<available>0</available>
 <main_pic>main_486416.jpg</main_pic>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
@@ -186,6 +223,8 @@
 			<section type="section" id="123" path="files/123f/" key="regulyatory">
 <name>Регуляторы</name>
 <code>112589</code>
+<category_id>123</category_id>
+<parent_id>41</parent_id>
 				<show_products>/regulyatory/</show_products>
 				<product_count>1</product_count>
 				<product type="product" id="125" path="files/125f/" key="legrand_003840_003840">
@@ -195,6 +234,8 @@
 <code>003840</code>
 <vendor_code>003840</vendor_code>
 <vendor>LEGRAND</vendor>
+<offer_id>003840</offer_id>
+<available>0</available>
 <main_pic>main_456777.jpg</main_pic>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
@@ -214,10 +255,13 @@
 <assoc_code>076723</assoc_code>
 <assoc_code>PW-C.2030</assoc_code>
 <assoc_code>PW-C.2013</assoc_code>
+<assoc_code>&quot;078802&quot;, &quot;080251&quot;, &quot;076723&quot;, &quot;PW-C.2030&quot;, &quot;PW-C.2013&quot;</assoc_code>
 				</product>
 				<section type="section" id="124" path="files/124f/" key="regulyatory_temperatury">
 <name>Регуляторы температуры</name>
 <code>100121</code>
+<category_id>124</category_id>
+<parent_id>123</parent_id>
 					<show_products>/regulyatory_temperatury/</show_products>
 					<product_count>1</product_count>
 					<product type="product" id="125" path="files/125f/" key="legrand_003840_003840">
@@ -227,6 +271,8 @@
 <code>003840</code>
 <vendor_code>003840</vendor_code>
 <vendor>LEGRAND</vendor>
+<offer_id>003840</offer_id>
+<available>0</available>
 <main_pic>main_456777.jpg</main_pic>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
@@ -246,12 +292,15 @@
 <assoc_code>076723</assoc_code>
 <assoc_code>PW-C.2030</assoc_code>
 <assoc_code>PW-C.2013</assoc_code>
+<assoc_code>&quot;078802&quot;, &quot;080251&quot;, &quot;076723&quot;, &quot;PW-C.2030&quot;, &quot;PW-C.2013&quot;</assoc_code>
 					</product>
 				</section>
 			</section>
 			<section type="section" id="128" path="files/128f/" key="avtomatika_zdanii">
 <name>Автоматика зданий</name>
 <code>113668</code>
+<category_id>128</category_id>
+<parent_id>41</parent_id>
 				<show_products>/avtomatika_zdanii/</show_products>
 				<product_count>1</product_count>
 				<product type="product" id="129" path="files/129f/" key="legrand_ro_358_ro_358">
@@ -261,6 +310,8 @@
 <code>003658</code>
 <vendor_code>RO 358</vendor_code>
 <vendor>LEGRAND</vendor>
+<offer_id>003658</offer_id>
+<available>0</available>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
  &lt;li&gt;Масса брутто: 0.13 kg&lt;/li&gt; 
@@ -270,6 +321,7 @@
 <assoc_code>PW-C.2019</assoc_code>
 <assoc_code>PW-C.2027</assoc_code>
 <assoc_code>1SLM006502A1203</assoc_code>
+<assoc_code>&quot;PW-C.2030&quot;, &quot;PW-C.2013&quot;, &quot;PW-C.2019&quot;, &quot;PW-C.2027&quot;, &quot;1SLM006502A1203&quot;</assoc_code>
 				</product>
 			</section>
 		</section>
@@ -719,21 +771,21 @@
 <code>100336</code>
 		<show_products>/mehanicheskie_elementy/</show_products>
 		<product_count>1</product_count>
-		<product type="product" id="676" path="files/676f/" key="bossard_1163531_1163531">
-<name>BOSSARD 1163531</name>
-<type>Винт</type>
-<name_extra>Винт; M1,2x10; DIN:84; Головка: цилиндрическая; прямой; сталь</name_extra>
-<code>B1.2X10/BN402</code>
-<vendor_code>1163531</vendor_code>
-<vendor>BOSSARD</vendor>
-<main_pic>main_58381.jpg</main_pic>
+		<product type="product" id="2461" path="files/246/1f/" key="fix_gipk_fix_gipk2461">
+<name>FIX-GIPK</name>
+<type>Заглушка для профилей LED</type>
+<name_extra>Заглушка для профилей LED; Назначение: GIP-K</name_extra>
+<code>FIX-GIPK</code>
+<vendor_code>FIX-GIPK</vendor_code>
+<main_pic>main_456168.jpg</main_pic>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;Масса брутто: 0.08 g&lt;/li&gt; 
+ &lt;li&gt;Масса брутто: 1.39 g&lt;/li&gt; 
 &lt;/ul&gt;</text>
-<gallery>58381.jpg</gallery>
-<assoc_code>B1.2/BN726</assoc_code>
-<assoc_code>B1.2/BN109</assoc_code>
+<gallery>456168.jpg</gallery>
+<gallery>456811.jpg</gallery>
+<assoc_code>OF-PROFGIPK-M2</assoc_code>
+<assoc_code>OF-PROFGIPK-M</assoc_code>
 		</product>
 		<section type="section" id="675" path="files/675f/" key="vinty">
 <name>Винты</name>
@@ -1827,35 +1879,18 @@
 <code>100431</code>
 		<show_products>/korpusa/</show_products>
 		<product_count>1</product_count>
-		<product type="product" id="3313" path="files/331/3f/" key="fibox_abs_17_16_3_abs_17_16_3">
-<name>FIBOX ABS 17/16-3</name>
-<type>Корпус: настенный</type>
-<name_extra>Корпус: настенный; Х:188мм; Y:160мм; Z:134мм; CARDMASTER; ABS; IP65</name_extra>
-<code>ABS17/16-3</code>
-<vendor_code>ABS 17/16-3</vendor_code>
-<vendor>FIBOX</vendor>
-<main_pic>main_376105.jpg</main_pic>
-<text>&lt;label&gt;Состав набора:&lt;/label&gt; 
+		<product type="product" id="3526" path="files/352/6f/" key="kss_wiring_ed_0163526">
+<name>KSS WIRING ED-016</name>
+<type>Защитная кромка</type>
+<name_extra>Защитная кромка; полиэтилен; L:10м; натуральный; Выс:1,2÷1,6мм</name_extra>
+<code>ED-016</code>
+<vendor>KSS WIRING</vendor>
+<main_pic>main_19816.jpg</main_pic>
+<text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;корпус шкафа&lt;/li&gt; 
- &lt;li&gt;крышка отсека для клеммников&lt;/li&gt; 
- &lt;li&gt;монтажные винты&lt;/li&gt; 
-&lt;/ul&gt; 
-&lt;label&gt;Дополнительная информация&lt;/label&gt; 
-&lt;ul&gt; 
- &lt;li&gt;Масса брутто: 0.55 kg&lt;/li&gt; 
+ &lt;li&gt;Масса брутто: 0.17 kg&lt;/li&gt; 
 &lt;/ul&gt;</text>
-<gallery>376105.jpg</gallery>
-<gallery>prime_presentation_pres_0000.jpg</gallery>
-<gallery>prime_presentation_pres_0001.jpg</gallery>
-<gallery>prime_presentation_pres_0002.jpg</gallery>
-<gallery>prime_presentation_pres_0003.jpg</gallery>
-<gallery>prime_presentation_pres_0004.jpg</gallery>
-<gallery>prime_presentation_pres_0005.jpg</gallery>
-<gallery>prime_presentation_pres_0006.jpg</gallery>
-<gallery>prime_presentation_pres_0007.jpg</gallery>
-<assoc_code>FP17/16</assoc_code>
-<assoc_code>FCPC17/16</assoc_code>
+<gallery>19816.jpg</gallery>
 		</product>
 		<section type="section" id="3312" path="files/331/2f/" key="korpusa_nastennye">
 <name>Корпуса настенные</name>
@@ -2117,19 +2152,32 @@
 <code>112140</code>
 		<show_products>/poluprovodniki/</show_products>
 		<product_count>1</product_count>
-		<product type="product" id="3721" path="files/372/1f/" key="littelfuse_2n6071ag_2n6071ag">
-<name>LITTELFUSE 2N6071AG</name>
-<type>Симистор</type>
-<name_extra>Симистор; 200В; 4А; 5мА; Упаковка: россыпью; THT; TO225</name_extra>
-<code>2N6071AG-LF</code>
-<vendor_code>2N6071AG</vendor_code>
-<vendor>LITTELFUSE</vendor>
-<main_pic>main_58355.jpg</main_pic>
+		<product type="product" id="4847" path="files/484/7f/" key="sr_passives_433m_ant110_1_433m_ant110_1">
+<name>SR PASSIVES 433M-ANT110-1</name>
+<type>Антенна</type>
+<name_extra>Антенна; RF; f:433,050÷434,790MГц; 2дБи; I-PEX (u.FL); -40÷85°C</name_extra>
+<code>433M-ANT110-1</code>
+<vendor_code>433M-ANT110-1</vendor_code>
+<vendor>SR PASSIVES</vendor>
+<main_pic>main_446440.jpg</main_pic>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;Масса брутто: 0.65 g&lt;/li&gt; 
+ &lt;li&gt;Масса брутто: 0.02 kg&lt;/li&gt; 
 &lt;/ul&gt;</text>
-<gallery>58355.jpg</gallery>
+<gallery>446440.jpg</gallery>
+<gallery>prime_presentation_pres_0000.jpg</gallery>
+<gallery>prime_presentation_pres_0001.jpg</gallery>
+<gallery>prime_presentation_pres_0002.jpg</gallery>
+<gallery>prime_presentation_pres_0003.jpg</gallery>
+<gallery>prime_presentation_pres_0004.jpg</gallery>
+<gallery>prime_presentation_pres_0005.jpg</gallery>
+<gallery>prime_presentation_pres_0006.jpg</gallery>
+<gallery>prime_presentation_pres_0007.jpg</gallery>
+<assoc_code>RFM75-S</assoc_code>
+<assoc_code>RFM01/433S2</assoc_code>
+<assoc_code>RFM22-868S2</assoc_code>
+<assoc_code>RFID-IT-86-S</assoc_code>
+<assoc_code>RN-UFL-SMA6</assoc_code>
 		</product>
 		<section type="section" id="3720" path="files/372/0f/" key="simistory">
 <name>Симисторы</name>
@@ -3622,30 +3670,32 @@
 <code>112309</code>
 		<show_products>/passivnye_elementy/</show_products>
 		<product_count>1</product_count>
-		<product type="product" id="5064" path="files/506/4f/" key="royal_ohm_0402wgf1000tce_0402wgf1000tce">
-<name>ROYAL OHM 0402WGF1000TCE</name>
-<type>Резистор: thick film</type>
-<name_extra>Резистор: thick film; SMD; 0402; 100Ом; 63мВт; ±1%; -55÷155°C</name_extra>
-<code>0402WGF1000TCE</code>
-<vendor_code>0402WGF1000TCE</vendor_code>
-<vendor>ROYAL OHM</vendor>
-<main_pic>main_582146.jpg</main_pic>
+		<product type="product" id="5734" path="files/573/4f/" key="honeywell_510e1a48f204pd_510e1a48f204pd">
+<name>HONEYWELL 510E1A48F204PD</name>
+<type>Энкодер: увеличивающий</type>
+<name_extra>Энкодер: увеличивающий; Монтаж: THT; 4имп./об; 100000циклов</name_extra>
+<code>510E1A48F204PD</code>
+<vendor_code>510E1A48F204PD</vendor_code>
+<vendor>HONEYWELL</vendor>
+<main_pic>main_498624.jpg</main_pic>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;Масса брутто: 0.01 g&lt;/li&gt; 
-&lt;/ul&gt; 
-&lt;label&gt;Информация о способе упаковки, осуществляемой в TME&lt;/label&gt; 
-&lt;div id=&quot;tme_package_note&quot;&gt; 
- &lt;p&gt;Если заказанное количество отвечает:&lt;/p&gt; 
- &lt;p&gt; 100% – 80% бобины производителя – товар выдается в одном отрезке &lt;br&gt; 80% – 40% бобины производителя – товар выдается максимум в двух отрезках &lt;br&gt; Менее 40% бобины производителя – товар выдается максимум в трех отрезках &lt;/br&gt;&lt;/br&gt;&lt;/p&gt; 
- &lt;p&gt;Если в момент выдачи мы будем располагать отрезком свыше 1000 шт., товар наматывается в соответствующую бобину, к которой мы бесплатно добавляем технологические отрезки с обеих сторон.&lt;/p&gt; 
-&lt;/div&gt;</text>
-<gallery>582146.jpg</gallery>
-<assoc_code>EL.VAMPIRE-540</assoc_code>
-<assoc_code>EL.VAMPIRE-ESD</assoc_code>
-<assoc_code>ERSA-SVP100</assoc_code>
-<assoc_code>JBC-T260-A</assoc_code>
-<assoc_code>SMA10SL</assoc_code>
+ &lt;li&gt;Масса брутто: 6.65 g&lt;/li&gt; 
+&lt;/ul&gt;</text>
+<gallery>498624.jpg</gallery>
+<gallery>prime_presentation_pres_0000.jpg</gallery>
+<gallery>prime_presentation_pres_0001.jpg</gallery>
+<gallery>prime_presentation_pres_0002.jpg</gallery>
+<gallery>prime_presentation_pres_0003.jpg</gallery>
+<gallery>prime_presentation_pres_0004.jpg</gallery>
+<gallery>prime_presentation_pres_0005.jpg</gallery>
+<gallery>prime_presentation_pres_0006.jpg</gallery>
+<gallery>prime_presentation_pres_0007.jpg</gallery>
+<assoc_code>TO-SA01</assoc_code>
+<assoc_code>IDL-MPT1R.CP</assoc_code>
+<assoc_code>IDL-MPT3.CP</assoc_code>
+<assoc_code>IDL-MPTSP1</assoc_code>
+<assoc_code>TO-SA10</assoc_code>
 		</product>
 		<section type="section" id="5061" path="files/506/1f/" key="rezistory">
 <name>Резисторы</name>
@@ -5375,19 +5425,29 @@
 <code>112533</code>
 		<show_products>/provoda_i_kabeli/</show_products>
 		<product_count>1</product_count>
-		<product type="product" id="6348" path="files/634/8f/" key="cyg_cyg_pet10_cyg_pet10">
-<name>CYG CYG-PET10</name>
-<type>Оплетка полиэфирная</type>
-<name_extra>Оплетка полиэфирная; Диаметр рукава:9,5÷13,ном.9,5мм; черный</name_extra>
-<code>CYG-PET-10-BK</code>
-<vendor_code>CYG-PET10</vendor_code>
-<vendor>CYG</vendor>
-<main_pic>main_58758.jpg</main_pic>
-<text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
+		<product type="product" id="6552" path="files/655/2f/" key="harting_09456000100_09456000100">
+<name>HARTING 09456000100</name>
+<type>Провод</type>
+<name_extra>Провод; Ethernet промышленный, PROFINET; 5; однопров; Cu; 4x22AWG</name_extra>
+<code>09456000100</code>
+<vendor_code>09456000100</vendor_code>
+<vendor>HARTING</vendor>
+<main_pic>main_406137.jpg</main_pic>
+<text>&lt;label&gt;Характеристики проводов:&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;Масса брутто: 0.01 kg&lt;/li&gt; 
+ &lt;li&gt;двойной экран&lt;/li&gt; 
+ &lt;li&gt;не способствует самораспространению пламени&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;label&gt;Дополнительная информация&lt;/label&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;Масса брутто: 6.56 kg&lt;/li&gt; 
 &lt;/ul&gt;</text>
-<gallery>58758.jpg</gallery>
+<gallery>406137.jpg</gallery>
+<assoc_code>09451511100</assoc_code>
+<assoc_code>09352260401</assoc_code>
+<assoc_code>09451511121</assoc_code>
+<assoc_code>LSA-E</assoc_code>
+<assoc_code>KNP.974010</assoc_code>
 		</product>
 		<section type="section" id="6346" path="files/634/6f/" key="opletki_i_zaschitnye_obolochki">
 <name>Оплетки и защитные оболочки</name>
@@ -5704,19 +5764,20 @@
 <code>112607</code>
 		<show_products>/oborudovanie_masterskih/</show_products>
 		<product_count>1</product_count>
-		<product type="product" id="6763" path="files/676/3f/" key="keysight_technologies_10076c_10076c">
-<name>KEYSIGHT TECHNOLOGIES 10076C</name>
-<type>Щуп для осциллографа</type>
-<name_extra>Щуп для осциллографа; Частота: ≤500МГц; Делитель:100:1</name_extra>
-<code>10076C</code>
-<vendor_code>10076C</vendor_code>
-<vendor>KEYSIGHT TECHNOLOGIES</vendor>
-<main_pic>main_407057.jpg</main_pic>
+		<product type="product" id="6981" path="files/698/1f/" key="deltron_302_0500_302_0500">
+<name>DELTRON 302-0500</name>
+<type>Изоляц.корпус</type>
+<name_extra>Изоляц.корпус; красный; Применение:303-0000</name_extra>
+<code>302-0500</code>
+<vendor_code>302-0500</vendor_code>
+<vendor>DELTRON</vendor>
+<main_pic>main_1432.jpg</main_pic>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;Масса брутто: 0.57 kg&lt;/li&gt; 
+ &lt;li&gt;Масса брутто: 1.93 g&lt;/li&gt; 
 &lt;/ul&gt;</text>
-<gallery>407057.jpg</gallery>
+<gallery>1432.jpg</gallery>
+<assoc_code>303-0000</assoc_code>
 		</product>
 		<section type="section" id="6760" path="files/676/0f/" key="izmeritelnaya_apparatura">
 <name>Измерительная аппаратура</name>
@@ -6995,32 +7056,29 @@
 <code>113324</code>
 		<show_products>/robototehnika_i_maketirovanie/</show_products>
 		<product_count>1</product_count>
-		<product type="product" id="7204" path="files/720/4f/" key="adafruit_1222_1222">
-<name>ADAFRUIT 1222</name>
-<type>Arduino</type>
-<name_extra>Arduino; Attiny85; 7÷16ВDC; ШИМ:2; Кол-во вх./вых:3; I2C, SPI; LED</name_extra>
-<code>ADA-1222</code>
-<vendor_code>1222</vendor_code>
-<vendor>ADAFRUIT</vendor>
-<main_pic>main_563230.jpg</main_pic>
-<text>&lt;label&gt;Интерфейс:&lt;/label&gt; 
+		<product type="product" id="7496" path="files/749/6f/" key="dfrobot_sen0197_sen0197">
+<name>DFROBOT SEN0197</name>
+<type>Датчик: звука</type>
+<name_extra>Датчик: звука; цифровой; Gravity; 5ВDC; модуль, провода; Каналы:1</name_extra>
+<code>DF-SEN0197</code>
+<vendor_code>SEN0197</vendor_code>
+<vendor>DFROBOT</vendor>
+<main_pic>main_551485.jpg</main_pic>
+<text>&lt;label&gt;Состав набора:&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;I2C&lt;/li&gt; 
- &lt;li&gt;SPI&lt;/li&gt; 
+ &lt;li&gt;модуль&lt;/li&gt; 
+ &lt;li&gt;провода&lt;/li&gt; 
 &lt;/ul&gt; 
 &lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;Масса брутто: 3.5 g&lt;/li&gt; 
+ &lt;li&gt;Масса брутто: 0.02 kg&lt;/li&gt; 
 &lt;/ul&gt;</text>
-<gallery>563230.jpg</gallery>
-<gallery>prime_presentation_pres_0000.jpg</gallery>
-<gallery>prime_presentation_pres_0001.jpg</gallery>
-<gallery>prime_presentation_pres_0002.jpg</gallery>
-<gallery>prime_presentation_pres_0003.jpg</gallery>
-<gallery>prime_presentation_pres_0004.jpg</gallery>
-<gallery>prime_presentation_pres_0005.jpg</gallery>
-<gallery>prime_presentation_pres_0006.jpg</gallery>
-<gallery>prime_presentation_pres_0007.jpg</gallery>
+<gallery>551485.jpg</gallery>
+<assoc_code>POLOLU-2595</assoc_code>
+<assoc_code>POLOLU-391</assoc_code>
+<assoc_code>SF-BOB-12009</assoc_code>
+<assoc_code>MSX-024</assoc_code>
+<assoc_code>MR002-005.1</assoc_code>
 		</product>
 		<section type="section" id="7203" path="files/720/3f/" key="programmiruemye_kontrollery">
 <name>Программируемые контроллеры</name>
@@ -8086,29 +8144,36 @@
 <code>113643</code>
 		<show_products>/kompyuternye_aksessuary/</show_products>
 		<product_count>1</product_count>
-		<product type="product" id="8010" path="files/801/0f/" key="hsk_data_acar_504wf_1.5m_acar_504wf_1.5m">
-<name>HSK DATA ACAR 504WF 1.5M</name>
-<type>Сетевой фильтр: защитный</type>
-<name_extra>Сетевой фильтр: защитный; Гнезда:5; 230ВAC; 10А; Цвет: черный; 460г</name_extra>
-<code>ACAR504WF-1.8</code>
-<vendor_code>ACAR 504WF 1.5M</vendor_code>
-<vendor>HSK DATA</vendor>
-<main_pic>main_57983.jpg</main_pic>
-<text>&lt;label&gt;Характеристики защитных реек:&lt;/label&gt; 
+		<product type="product" id="8794" path="files/879/4f/" key="logilink_au0013_au0013">
+<name>LOGILINK AU0013</name>
+<type>Адаптер USB / SATA</type>
+<name_extra>Адаптер USB / SATA; SATA вилка, вилка USB A; 200мм; 4,8Гбит/с</name_extra>
+<code>AU0013</code>
+<vendor_code>AU0013</vendor_code>
+<vendor>LOGILINK</vendor>
+<main_pic>main_298257.jpg</main_pic>
+<text>&lt;label&gt; Конструкция кабеля / переходника: &lt;span class=&quot;info-icon tmeTip&quot; data-title=&quot;Конструкция кабеля / переходника&quot; data-source=&quot;InternetDescription_1182&quot;&gt;&lt;/span&gt; &lt;/label&gt; 
+&lt;div id=&quot;InternetDescription_1182&quot; style=&quot;display:none&quot;&gt; 
+ &lt;div style=&quot;font-weight:normal;&quot;&gt; 
+  &lt;div align=&quot;center&quot;&gt; 
+   &lt;a href=&quot;https://www.tme.eu/en/pages/plugs-drawings.html&quot; target=&quot;_blank&quot;&gt; &lt;img src=&quot;https://www.tme.eu/u/parameters_info/plugs_short.jpg&quot; alt=&quot;plugs drawings&quot; title=&quot;see more&quot;&gt; &lt;/img&gt;&lt;/a&gt; 
+  &lt;/div&gt; 
+ &lt;/div&gt; 
+&lt;/div&gt; 
 &lt;ul&gt; 
- &lt;li&gt;помехоподавляющий фильтр LC&lt;/li&gt; 
- &lt;li&gt;сетевые гнезда с заземлением&lt;/li&gt; 
- &lt;li&gt;сетевой провод выведен со стороны, противоположной выключателю&lt;/li&gt; 
- &lt;li&gt;держатели, позволяющие крепить фильтр в шкафах 19&quot;&lt;/li&gt; 
- &lt;li&gt;сетевая вилка с заземлением и кольцом для более удобного извлечения из розетки&lt;/li&gt; 
- &lt;li&gt;защита двумя предохранителями 10 А/250 В&lt;/li&gt; 
- &lt;li&gt;защита от перенапряжения&lt;/li&gt; 
+ &lt;li&gt;SATA вилка&lt;/li&gt; 
+ &lt;li&gt;вилка USB A&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;label&gt;Характ. компьютерных принадлежностей:&lt;/label&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;обслуживает 1x HDD 2,5&quot;/3,5&quot; SATA/SATAII/SATAIII&lt;/li&gt; 
+ &lt;li&gt;внешний блок питания&lt;/li&gt; 
 &lt;/ul&gt; 
 &lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;Масса брутто: 0.69 kg&lt;/li&gt; 
+ &lt;li&gt;Масса брутто: 0.35 kg&lt;/li&gt; 
 &lt;/ul&gt;</text>
-<gallery>57983.jpg</gallery>
+<gallery>298257.jpg</gallery>
 		</product>
 		<section type="section" id="8009" path="files/800/9f/" key="planki_zaschity_ot_perenapryageniya">
 <name>Планки защиты от перенапряжения</name>
@@ -8364,32 +8429,17 @@
 <code>41</code>
 		<show_products>/ventilyatory_sis._ohlagdeniya_i_nagreva/</show_products>
 		<product_count>1</product_count>
-		<product type="product" id="8969" path="files/896/9f/" key="ebm_papst_3212_jh4_3212_jh4">
-<name>EBM-PAPST 3212 JH4</name>
+		<product type="product" id="9947" path="files/994/7f/" key="sunon_ha60150v3_e02u_a99_ha60150v3_e02u_a999947">
+<name>SUNON HA60150V3-E02U-A99</name>
 <type>Вентилятор: DC</type>
-<name_extra>Вентилятор: DC; осевой; 92x92x32мм; 280м3/ч; 73дБА; шариковый</name_extra>
-<code>3212JH4</code>
-<vendor_code>3212 JH4</vendor_code>
-<vendor>EBM-PAPST</vendor>
-<main_pic>main_584111.jpg</main_pic>
+<name_extra>Вентилятор: DC; осевой; 5ВDC; Ø84,9x15,4мм; 22,43м3/ч; 16,1дБА</name_extra>
+<code>HA60150V3-E02U-A99</code>
+<vendor_code>HA60150V3-E02U-A99</vendor_code>
+<vendor>SUNON</vendor>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;Масса брутто: 0.29 kg&lt;/li&gt; 
+ &lt;li&gt;Масса брутто: 1 g&lt;/li&gt; 
 &lt;/ul&gt;</text>
-<gallery>584111.jpg</gallery>
-<gallery>prime_presentation_pres_0000.jpg</gallery>
-<gallery>prime_presentation_pres_0001.jpg</gallery>
-<gallery>prime_presentation_pres_0002.jpg</gallery>
-<gallery>prime_presentation_pres_0003.jpg</gallery>
-<gallery>prime_presentation_pres_0004.jpg</gallery>
-<gallery>prime_presentation_pres_0005.jpg</gallery>
-<gallery>prime_presentation_pres_0006.jpg</gallery>
-<gallery>prime_presentation_pres_0007.jpg</gallery>
-<assoc_code>STP5X10</assoc_code>
-<assoc_code>FMM-1</assoc_code>
-<assoc_code>FM-1</assoc_code>
-<assoc_code>FMB-2</assoc_code>
-<assoc_code>FM-4</assoc_code>
 		</product>
 		<section type="section" id="8967" path="files/896/7f/" key="ventilyatory_dc">
 <name>Вентиляторы DC</name>
@@ -9462,19 +9512,19 @@
 <code>67</code>
 		<show_products>/istochniki_energii/</show_products>
 		<product_count>1</product_count>
-		<product type="product" id="10803" path="files/108/03f/" key="te_connectivity_120591_1_120591_1">
-<name>TE CONNECTIVITY 120591-1</name>
-<type>Панелька</type>
-<name_extra>Панелька; Размер:2032,BR2032,CR2032; Монтаж: THT, горизонтальный</name_extra>
-<code>120591-1</code>
-<vendor_code>120591-1</vendor_code>
-<vendor>TE CONNECTIVITY</vendor>
-<main_pic>main_378565.jpg</main_pic>
+		<product type="product" id="11480" path="files/114/80f/" key="siemens_6ep1321_5ba00_6ep1321_5ba00">
+<name>SIEMENS 6EP1321-5BA00</name>
+<type>Блок питания: импульсный</type>
+<name_extra>Блок питания: импульсный; 24Вт; 12ВDC; 2А; 85÷264ВAC; 110÷300ВDC</name_extra>
+<code>6EP1321-5BA00</code>
+<vendor_code>6EP1321-5BA00</vendor_code>
+<vendor>SIEMENS</vendor>
+<main_pic>main_355485.jpg</main_pic>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;Масса брутто: 1.1 g&lt;/li&gt; 
+ &lt;li&gt;Масса брутто: 0.21 kg&lt;/li&gt; 
 &lt;/ul&gt;</text>
-<gallery>378565.jpg</gallery>
+<gallery>355485.jpg</gallery>
 <gallery>prime_presentation_pres_0000.jpg</gallery>
 <gallery>prime_presentation_pres_0001.jpg</gallery>
 <gallery>prime_presentation_pres_0002.jpg</gallery>
@@ -9792,19 +9842,32 @@
 <code>71</code>
 		<show_products>/avtomobilnaya_audiosistema/</show_products>
 		<product_count>1</product_count>
-		<product type="product" id="12340" path="files/123/40f/" key="4carmedia_etui_40.001_etui_40.001">
-<name>4CARMEDIA ETUI-40.001</name>
-<type>Футляр</type>
-<name_extra>Футляр; большой</name_extra>
-<code>ETUI-40.001</code>
-<vendor_code>ETUI-40.001</vendor_code>
-<vendor>4CARMEDIA</vendor>
-<main_pic>main_20675.jpg</main_pic>
+		<product type="product" id="13247" path="files/132/47f/" key="acv_271000_05_0_271000_05_0">
+<name>ACV 271000-05-0</name>
+<type>Бокс автомагнитолы</type>
+<name_extra>Бокс автомагнитолы; черный</name_extra>
+<code>RAM-40.031.6</code>
+<vendor_code>271000-05-0</vendor_code>
+<vendor>ACV</vendor>
+<main_pic>main_370966.jpg</main_pic>
 <text>&lt;label&gt;Дополнительная информация&lt;/label&gt; 
 &lt;ul&gt; 
- &lt;li&gt;Масса брутто: 0.06 kg&lt;/li&gt; 
+ &lt;li&gt;Масса брутто: 0.14 kg&lt;/li&gt; 
 &lt;/ul&gt;</text>
-<gallery>20675.jpg</gallery>
+<gallery>370966.jpg</gallery>
+<gallery>prime_presentation_pres_0000.jpg</gallery>
+<gallery>prime_presentation_pres_0001.jpg</gallery>
+<gallery>prime_presentation_pres_0002.jpg</gallery>
+<gallery>prime_presentation_pres_0003.jpg</gallery>
+<gallery>prime_presentation_pres_0004.jpg</gallery>
+<gallery>prime_presentation_pres_0005.jpg</gallery>
+<gallery>prime_presentation_pres_0006.jpg</gallery>
+<gallery>prime_presentation_pres_0007.jpg</gallery>
+<assoc_code>KLUCZ-65.240</assoc_code>
+<assoc_code>KLUCZ-65.238</assoc_code>
+<assoc_code>KLUCZ-65.241</assoc_code>
+<assoc_code>KLUCZ-65.239</assoc_code>
+<assoc_code>KLUCZ-65.221</assoc_code>
 		</product>
 		<section type="section" id="12339" path="files/123/39f/" key="oblitsovki_radiopr._i_avtomob._dinamikov">
 <name>Облицовки радиопр. и автомоб. динамиков</name>
@@ -10441,6 +10504,44 @@
 <assoc_code>PAL-7350</assoc_code>
 <assoc_code>WEL.WT13EU</assoc_code>
 <assoc_code>PAL-7320/B</assoc_code>
+			</product>
+		</section>
+	</section>
+	<section type="section" id="78733" path="files/787/33f/" key="testovyi_razdel">
+<name>Тестовый раздел</name>
+<category_id>12345678</category_id>
+		<show_products>/testovyi_razdel/</show_products>
+		<product_count>1</product_count>
+		<product type="product" id="82984" path="files/829/84f/" key="ncs603dtbr2g_ncs603dtbr2gosdkr_nd">
+<name>NCS603DTBR2G</name>
+<type>Line Driver</type>
+<name_extra>IC AUDIO LINE DRIVER</name_extra>
+<code>NCS603DTBR2GOSDKR-ND</code>
+<vendor_code>NCS603DTBR2GOSDKR-ND</vendor_code>
+<vendor>ON Semiconductor</vendor>
+<offer_id>NCS603DTBR2GOSDKR-ND</offer_id>
+<qty>2 340</qty>
+<main_pic width="640" size="22727" created="19.12.2018 16:47" extenstion="jpg" height="640">14_tssop.jpg</main_pic>
+		</product>
+		<section type="section" id="82512" path="files/825/12f/" key="audio_special">
+<name>Audio Special</name>
+<category_id>87654321</category_id>
+<parent_id>12345678</parent_id>
+			<show_products>/audio_special/</show_products>
+			<product_count>1</product_count>
+			<product type="product" id="82513" path="files/825/13f/" key="ak4104et_ak4104ettr_nd">
+<name>AK4104ET</name>
+<type>Digital Audio Transmitter</type>
+<name_extra>IC TX DGTL AUD 192KHZ 16TSSOP</name_extra>
+<code>AK4104ETTR-ND</code>
+<vendor_code>AK4104ETTR-ND</vendor_code>
+<vendor>AKM Semiconductor Inc.</vendor>
+<offer_id>AK4104ETTR-ND</offer_id>
+<qty>9 000</qty>
+<main_pic width="640" size="13734" created="19.12.2018 16:45" extenstion="jpg" height="640">ru_16.jpg</main_pic>
+<text>&lt;ul&gt; 
+ &lt;li&gt;Масса брутто: 0.57 g&lt;/li&gt; 
+&lt;/ul&gt;</text>
 			</product>
 		</section>
 	</section>

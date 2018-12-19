@@ -4,7 +4,7 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             SEO                                  ////////////-->
-	<assoc name="other_colors" transitive="false" caption="Другие варианты расцветки" ag-id="2" ag-hash="494020991"/>
+	<assoc name="other_colors" transitive="false" caption="Другие варианты расцветки" ag-id="3" ag-hash="494020991"/>
 
 	<item name="seo" caption="SEO" ag-id="4" ag-hash="113757">
 		<parameter name="title" type="string" caption="title"/>
@@ -44,6 +44,7 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="9" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
+		<parameter name="integration_pending" type="byte" caption="Интеграция в процессе" domain="0-1"/>
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 	</item>
@@ -54,7 +55,7 @@
 	</item>
 
 
-	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="30" children-sorting="ASC">
+	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="30" children-sorting="ASC" ag-id="141" ag-hash="-328034960">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="date" type="date" caption="Дата"/>
 		<child item="product"/>
