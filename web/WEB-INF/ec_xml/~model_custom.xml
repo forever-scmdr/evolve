@@ -1992,29 +1992,6 @@
 </item>
 <!--END_p124-->
 
-<!--START_p128-->
-<item name="p128" caption="Автоматика зданий" key="" virtual="false" user-def="true" description="" super="params *" ag-id="147" ag-hash="3385287">
-	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="klass_zaschity" caption="Класс защиты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-321513636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kontroliruemaya_velichina" caption="Контролируемая величина" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-571614874" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="naznachenie" caption="Назначение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1886637308" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kommutiruemaya_moschnost" caption="Коммутируемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="656269777" description="кВт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="soputstvuyuschie_tovary" caption="Сопутствующие товары" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1657259271" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_bloka_pitaniya" caption="Тип блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1568080785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="В AC" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_vyhodov" caption="Количество выходов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-324628421" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="elektricheskoe_podklyuchenie" caption="Электрическое подключение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1036193789" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vyhodnoe_napryagenie" caption="Выходное напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1030150406" description="В DC" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="harakteristiki_blokov_pitaniya_preobrazovatelei" caption="Характеристики блоков питания/преобразователей" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1416208386" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kontakty" caption="Контакты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="490136921" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diapazon_scheta" caption="Диапазон счета" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1468971827" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="regim_raboty_schetchika" caption="Режим работы счетчика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1427442570" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="elektricheskie_parametry_vyhoda" caption="Электрические параметры выхода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1951193932" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p128-->
-
 <!--START_p156-->
 <item name="p156" caption="Термостаты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="148" ag-hash="3385378">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6830,7 +6807,7 @@
     
 
 <!--START_p86525-->
-<item name="p86525" caption="Audio Special" key="" ag-id="0" ag-hash="-1035123958" virtual="false" user-def="true" description="" super="params *">
+<item name="p86525" caption="Audio Special" key="" virtual="false" user-def="true" description="" super="params *" ag-id="411" ag-hash="-1035123958">
 	<parameter name="applications" caption="Applications" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="937207075" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="function" caption="Function" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1380938712" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="interface" caption="Interface" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="502623545" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6845,4 +6822,26 @@
 	<parameter name="voltage___supply" caption="Voltage - supply" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2112097424" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p86525-->
+
+<!--START_p128-->
+<item name="p128" caption="Автоматика зданий" key="" ag-id="0" ag-hash="3385287" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="vyhodnoe_napryagenie" caption="Выходное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1030150406" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_scheta" caption="Диапазон счета" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1468971827" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="klass_zaschity" caption="Класс защиты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-321513636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_vyhodov" caption="Количество выходов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-324628421" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kommutiruemaya_moschnost" caption="Коммутируемая мощность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="656269777" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kontakty" caption="Контакты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="490136921" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kontroliruemaya_velichina" caption="Контролируемая величина" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-571614874" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="naznachenie" caption="Назначение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1886637308" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="regim_raboty_schetchika" caption="Режим работы счетчика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1427442570" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="soputstvuyuschie_tovary" caption="Сопутствующие товары" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1657259271" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_bloka_pitaniya" caption="Тип блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1568080785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="harakteristiki_blokov_pitaniya_preobrazovatelei" caption="Характеристики блоков питания/преобразователей" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1416208386" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektricheskie_parametry_vyhoda" caption="Электрические параметры выхода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1951193932" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="elektricheskoe_podklyuchenie" caption="Электрическое подключение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1036193789" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p128-->
 <!--EXP--></model>

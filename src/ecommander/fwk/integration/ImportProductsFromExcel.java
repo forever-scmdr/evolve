@@ -87,16 +87,99 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 		priceWB = new ExcelPriceList(f, CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE) {
 			@Override
 			protected void processRow() throws Exception {
-				info.setLineNumber(getRowNum()+1);
+				info.setLineNumber(getRowNum() + 1);
 				String code = getValue(CreateExcelPriceList.CODE_FILE);
 				String name = getValue(CreateExcelPriceList.NAME_FILE);
-				if(StringUtils.isBlank(name) || StringUtils.isBlank(code)) return;
-				else if(StringUtils.startsWith(code, "разд:")){
-					code = StringUtils.substringAfter(code,"разд:").trim();
+				if (StringUtils.isBlank(name) || StringUtils.isBlank(code)) return;
+				else if (StringUtils.startsWith(code, "разд:")) {
+					code = StringUtils.substringAfter(code, "разд:").trim();
 					String parentCode = name;
 					name = getValue(CreateExcelPriceList.PRICE_FILE);
-					String[]secInfo = new String[]{name, code, parentCode};
-					processSubsection(secInfo);
+					String[] secInfo = new String[]{name, code, parentCode};
+					if (currentSection != null) {
+						processSubsection(secInfo);
+					} else {
+						Item existingSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code);
+						if (existingSection != null) {
+							switch (settings.get(WITH_EXISTING_SECS)) {
+								case UPDATE:
+									if (existingSection != null) {
+										updateSectionName(existingSection, name);
+										currentSection = existingSection;
+									} else {
+										currentSection = createSection(secInfo);
+									}
+									break;
+								case CREATE:
+									currentSection = createSection(secInfo);
+									break;
+								case DELETE:
+									executeCommandUnit(ItemStatusDBUnit.delete(existingSection.getId()).noFulltextIndex());
+									executeCommandUnit(new CleanAllDeletedItemsDBUnit(20, null));
+									currentSection = createSection(secInfo);
+									break;
+								case COPY:
+									if (existingSection != null) {
+										String sectionParentId = secInfo[2].trim();
+										Item parent = getDeclaredParent(sectionParentId);
+										info.setOperation("Копирую раздел: \"" + name + "\".Это долгий и трудный процесс.");
+										info.pushLog("Попробуйте создавать новые разделы и копировать в них продукты. Это будет быстрее.");
+										executeAndCommitCommandUnits(new CopyItemDBUnit(existingSection, parent).ignoreFileErrors(true));
+										info.pushLog("Уфф! Скопировал.");
+										setOperation("Обработка раздела: \"" + name + "\"");
+										Item recentlyCopiedSection = ItemQuery.loadByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code).get(1);
+										currentSection = recentlyCopiedSection;
+									} else {
+										currentSection = createSection(secInfo);
+									}
+									break;
+								case COPY_IF_PARENT_DIFFERS:
+									if (existingSection != null) {
+										String sectionParentId = secInfo[2].trim();
+										long currentParentId = existingSection.getContextParentId();
+										Item declaredParent = getDeclaredParent(sectionParentId);
+										if (declaredParent.getId() != currentParentId) {
+											info.setOperation("Копирую раздел: \"" + name + "\".Это долгий и трудный процесс.");
+											info.pushLog("Попробуйте создавать новые разделы и копировать в них продукты. Это будет быстрее.");
+											executeAndCommitCommandUnits(new CopyItemDBUnit(existingSection, declaredParent).ignoreFileErrors(true));
+											info.pushLog("Уфф! Скопировал.");
+											setOperation("Обработка раздела: \"" + name + "\"");
+										}
+										ItemQuery q = new ItemQuery(SECTION_ITEM).setParentId(declaredParent.getId(), false).addParameterCriteria(CATEGORY_ID_PARAM, secInfo[1], "=", null, Compare.SOME);
+										Item recentlyCopiedSection = q.loadFirstItem();
+										currentSection = recentlyCopiedSection;
+									} else {
+										currentSection = createSection(secInfo);
+									}
+									break;
+								case MOVE_IF_PARENT_DIFFERS:
+									if (existingSection != null) {
+										String sectionParentId = secInfo[2].trim();
+										Item currentParent = new ItemQuery(SECTION_ITEM).setChildId(existingSection.getId(), false).loadFirstItem();
+										if (currentParent == null) {
+											currentParent = catalog;
+										}
+										long currentParentId = currentParent.getId();
+										Item declaredParent = getDeclaredParent(sectionParentId);
+										if (declaredParent.getId() != currentParentId) {
+											info.setOperation("Перемещаю раздел: \"" + name + "\".Это долгий и трудный процесс. Вы уверены, что оно Вам надо?");
+											info.pushLog("Попробуйте создавать новые разделы и перемещать в них продукты. Это будет быстрее.");
+											executeAndCommitCommandUnits(new MoveItemDBUnit(existingSection, declaredParent).ignoreFileErrors(true));
+											info.pushLog("Уфф! Переместил.");
+											setOperation("Обработка раздела: \"" + name + "\"");
+										}
+										currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code);
+									} else {
+										currentSection = createSection(secInfo);
+									}
+									break;
+								default:
+									break;
+							}
+						} else {
+							currentSection = createSection(secInfo);
+						}
+					}
 				} else if (code.equals(CreateExcelPriceList.CODE_FILE)) {
 					reInit(CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE);
 				} else {
@@ -114,7 +197,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						//set product params
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
-							if (!productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) continue;
+							if (!productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+								continue;
 							String cellValue = getValue(header);
 							if (CODE_PARAM.equals(paramName)) {
 								product.setValue(CODE_PARAM, code);
@@ -150,44 +234,49 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 										product.setValue(MAIN_PIC_PARAM, mainPicPath.toFile());
 										break;
 									case DOWNLOAD: {
-										if(StringUtils.isNotBlank(cellValue)) {
+										if (StringUtils.isNotBlank(cellValue)) {
 											try {
 												URL url = new URL(cellValue.trim());
 												product.setValue(paramName, url);
-											}catch (Exception e){}
+											} catch (Exception e) {
+											}
 
 										}
 									}
 									default:
 										break;
 								}
-							}else if (GALLERY_PARAM.equalsIgnoreCase(paramName) || TEXT_PICS_PARAM.equalsIgnoreCase(paramName)) {
+							} else if (GALLERY_PARAM.equalsIgnoreCase(paramName) || TEXT_PICS_PARAM.equalsIgnoreCase(paramName)) {
 								//else if (GALLERY_PARAM.equalsIgnoreCase(paramName) || TEXT_PICS_PARAM.equalsIgnoreCase(paramName) || FILES_PARAM.equalsIgnoreCase(paramName)) {
 								if (withPictures == varValues.IGNORE || withPictures == varValues.SEARCH_BY_CODE)
 									continue;
-								if(StringUtils.isBlank(cellValue))continue;
+								if (StringUtils.isBlank(cellValue)) continue;
 								String[] arr = cellValue.split("\\s+_END_\\s+");
 								for (String s : arr) {
-									switch(withPictures){
+									switch (withPictures) {
 										case SEARCH_BY_CELL_VALUE:
 											File p = picsFolder.resolve(s).toFile();
 											if (p.exists() && p.isFile()) product.setValue(paramName, p);
 											break;
 										case DOWNLOAD:
-											if(StringUtils.isBlank(s))continue;
-											try{URL url = new URL(s);
-											product.setValue(paramName, url);}catch (Exception e){}
+											if (StringUtils.isBlank(s)) continue;
+											try {
+												URL url = new URL(s);
+												product.setValue(paramName, url);
+											} catch (Exception e) {
+											}
 											break;
-										default: break;
+										default:
+											break;
 									}
 
 								}
 							} else {
 								if (StringUtils.isBlank(cellValue)) continue;
 								ParameterDescription pd = productItemType.getParameter(paramName);
-								if(pd.isMultiple()){
-									String[]values = cellValue.split("\\s+_END_\\s+");
-									for(String val :values){
+								if (pd.isMultiple()) {
+									String[] values = cellValue.split("\\s+_END_\\s+");
+									for (String val : values) {
 										product.setValueUI(paramName, val);
 									}
 
@@ -198,18 +287,19 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
 
 						//MANUALS
-						for(String header : headers){
-							if(CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)){
+						for (String header : headers) {
+							if (CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) {
 								String cellValue = getValue(header);
-								String[]m = cellValue.split("_END_");
-								for(String manual : m){
-									Item manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);;
-									if(manual.indexOf('|') == -1){
+								String[] m = cellValue.split("_END_");
+								for (String manual : m) {
+									Item manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
+									;
+									if (manual.indexOf('|') == -1) {
 										manualItem.setValue(NAME_PARAM, "Документ");
 										manualItem.setValue(LINK_PARAM, manual);
-									}else{
-										String[]x = manual.split("[|]");
-										switch (x.length){
+									} else {
+										String[] x = manual.split("[|]");
+										switch (x.length) {
 											case 1:
 												manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
 												manualItem.setValue(NAME_PARAM, "Документ");
@@ -219,7 +309,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 												manualItem.setValue(NAME_PARAM, x[0]);
 												manualItem.setValue(LINK_PARAM, x[1]);
 												break;
-											default: break;
+											default:
+												break;
 										}
 									}
 									executeCommandUnit(SaveItemDBUnit.get(manualItem).noFulltextIndex().noTriggerExtra());
@@ -234,7 +325,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						//set product params
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
-							if (!productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) continue;
+							if (!productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+								continue;
 							String cellValue = getValue(header);
 							varValues ifBlank = settings.get(IF_BLANK);
 							if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
@@ -311,7 +403,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 										File additionalFiles = filesPath.toFile();
 										if (additionalFiles.exists()) {
 											for (File f : FileUtils.listFiles(filesPath.toFile(), null, false)) {
-												if(!f.isDirectory()) continue;
+												if (!f.isDirectory()) continue;
 												for (File textPic : FileUtils.listFiles(f, null, false)) {
 													product.setValue(TEXT_PICS_PARAM, textPic);
 												}
@@ -345,9 +437,9 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 							else {
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
 								ParameterDescription pd = productItemType.getParameter(paramName);
-								if(pd.isMultiple()){
-									String[]values = cellValue.split("\\s+_END_\\s+");
-									for(String val :values){
+								if (pd.isMultiple()) {
+									String[] values = cellValue.split("\\s+_END_\\s+");
+									for (String val : values) {
 										product.setValueUI(paramName, val);
 									}
 
@@ -358,20 +450,35 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						}
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
 						//MANUALS
-						for(String header : headers){
-							if(CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)){
+						for (String header : headers) {
+							if (CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) {
 								String cellValue = getValue(header);
-								String[]m = cellValue.split("\\s+_END_\\s+");
-								for(String manual : m){
+								String[] m = cellValue.split("\\s+_END_\\s+");
+								if(StringUtils.isBlank(cellValue)){
+									if(settings.get(IF_BLANK) != varValues.CLEAR) continue;
+									List<Item> items = ItemQuery.loadByParentId(product.getId(), ItemTypeRegistry.getPrimaryAssocId());
+									for(Item item : items){
+										executeCommandUnit(ItemStatusDBUnit.delete(item.getId()).noFulltextIndex());
+									}
+									executeCommandUnit(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
+									commitCommandUnits();
+									continue;
+								}
+								for (String manual : m) {
 									Item manualItem = null;
-									if(manual.indexOf('|') == -1) {
+									if (manual.indexOf('|') == -1) {
 										manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
 										manualItem.setValue(NAME_PARAM, "Документ");
 										manualItem.setValue(LINK_PARAM, manual);
 
-									}else{
-										String[]x = manual.split("[|]");
-										switch (x.length){
+									} else {
+										String[] x = manual.split("[|]");
+										for(int i =0; i<x.length; i++) {
+											if(StringUtils.isBlank(x[i])) continue;
+											x[i] = x[i].replace("_END_", "").trim();
+										}
+										switch (x.length) {
+											case 0: break;
 											case 1:
 												manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
 												manualItem.setValue(NAME_PARAM, "Документ");
@@ -383,12 +490,14 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 												manualItem.setValue(LINK_PARAM, x[1]);
 												break;
 											case 3:
-												long id = Long.parseLong(x[0].trim());
+												long id = Long.parseLong(x[0]);
 												manualItem = ItemQuery.loadById(id);
 												manualItem.setValue(NAME_PARAM, x[1]);
 												manualItem.setValue(LINK_PARAM, x[2]);
 												break;
-											default: break;
+											default: id = Long.parseLong(x[0]);
+												manualItem = ItemQuery.loadById(id);
+												break;
 										}
 
 									}
@@ -423,7 +532,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
-							if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) continue;
+							if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+								continue;
 							String cellValue = getValue(header);
 							xml.startElement("parameter")
 									.startElement("name")
@@ -434,10 +544,11 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 									.endElement()
 									.endElement();
 
-							if(auxType == null) continue;
+							if (auxType == null) continue;
 							String param = auxParams.get(header.toLowerCase());
-							if(!auxType.getParameterNames().contains(param)) continue;
-							if (StringUtils.isNotBlank(auxParams.get(param))) aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
+							if (!auxType.getParameterNames().contains(param)) continue;
+							if (StringUtils.isNotBlank(auxParams.get(param)))
+								aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
 						}
 						paramsXML.setValueUI(XML_PARAM, xml.toString());
 						executeCommandUnit(SaveItemDBUnit.get(paramsXML).noFulltextIndex());
@@ -450,10 +561,13 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 
 			}
 
-			private Item setMultipleFileParam(Item item, String paramName, String values, Path folder){
+			private Item setMultipleFileParam(Item item, String paramName, String values, Path folder) {
 				String[] apv = values.split("\\s+_END_\\s+");
 				LinkedHashSet<File> existingFiles = new LinkedHashSet<>();
 				for (String s : apv) {
+					if (StringUtils.isBlank(s)) continue;
+					s = s.replace("_END_", "").trim();
+					if (StringUtils.isBlank(s)) continue;
 					File f = folder.resolve(s).toFile();
 					if (f.exists()) {
 						existingFiles.add(f);
@@ -467,11 +581,14 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 				}
 				return item;
 			}
+
 			private Item setMultipleStringParam(Item item, String paramName, String values) throws Exception {
 				String[] apv = values.split("\\s+_END_\\s+");
 				item.clearParameter(paramName);
-				for(String s : apv){
-					if(StringUtils.isBlank(s))continue;
+				for (String s : apv) {
+					if (StringUtils.isBlank(s)) continue;
+					s = s.replace("_END_", "").trim();
+					if (StringUtils.isBlank(s)) continue;
 					item.setValueUI(paramName, s);
 				}
 				return item;
@@ -485,7 +602,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 			private Item getExistingProduct(String code) throws Exception {
 				Item prod;
 //				if (code.indexOf('@') == -1) {
-					prod = new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME).loadFirstItem();
+				prod = new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME).loadFirstItem();
 //				}
 //				else {
 //					String[] codes = code.split("@");
@@ -497,91 +614,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 
 			@Override
 			protected void processSheet() throws Exception {
-				String sheetName = getSheetName();
-				String[] secInfo = sheetName.split("[|]");
-				String sectionName = secInfo[0].trim();
-				setOperation("Обработка раздела: \"" + sectionName + "\"");
-				String sectionCode = secInfo[1].trim();
-				Item existingSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, sectionCode);
-				if (existingSection != null) {
-					switch (settings.get(WITH_EXISTING_SECS)) {
-						case UPDATE:
-							if (existingSection != null) {
-								updateSectionName(existingSection, sectionName);
-								currentSection = existingSection;
-							} else {
-								currentSection = createSection(secInfo);
-							}
-							break;
-						case CREATE:
-							currentSection = createSection(secInfo);
-							break;
-						case DELETE:
-							executeCommandUnit(ItemStatusDBUnit.delete(existingSection.getId()).noFulltextIndex());
-							executeCommandUnit(new CleanAllDeletedItemsDBUnit(20, null));
-							currentSection = createSection(secInfo);
-							break;
-						case COPY:
-							if (existingSection != null) {
-								String sectionParentId = secInfo[2].trim();
-								Item parent = getDeclaredParent(sectionParentId);
-								info.setOperation("Копирую раздел: \"" + sectionName + "\".Это долгий и трудный процесс.");
-								info.pushLog("Попробуйте создавать новые разделы и копировать в них продукты. Это будет быстрее.");
-								executeAndCommitCommandUnits(new CopyItemDBUnit(existingSection, parent).ignoreFileErrors(true));
-								info.pushLog("Уфф! Скопировал.");
-								setOperation("Обработка раздела: \"" + sectionName + "\"");
-								Item recentlyCopiedSection = ItemQuery.loadByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, sectionCode).get(1);
-								currentSection = recentlyCopiedSection;
-							} else {
-								currentSection = createSection(secInfo);
-							}
-							break;
-						case COPY_IF_PARENT_DIFFERS:
-							if (existingSection != null) {
-								String sectionParentId = secInfo[2].trim();
-								long currentParentId = existingSection.getContextParentId();
-								Item declaredParent = getDeclaredParent(sectionParentId);
-								if (declaredParent.getId() != currentParentId) {
-									info.setOperation("Копирую раздел: \"" + sectionName + "\".Это долгий и трудный процесс.");
-									info.pushLog("Попробуйте создавать новые разделы и копировать в них продукты. Это будет быстрее.");
-									executeAndCommitCommandUnits(new CopyItemDBUnit(existingSection, declaredParent).ignoreFileErrors(true));
-									info.pushLog("Уфф! Скопировал.");
-									setOperation("Обработка раздела: \"" + sectionName + "\"");
-								}
-								ItemQuery q = new ItemQuery(SECTION_ITEM).setParentId(declaredParent.getId(), false).addParameterCriteria(CATEGORY_ID_PARAM, secInfo[1], "=", null, Compare.SOME);
-								Item recentlyCopiedSection = q.loadFirstItem();
-								currentSection = recentlyCopiedSection;
-							} else {
-								currentSection = createSection(secInfo);
-							}
-							break;
-						case MOVE_IF_PARENT_DIFFERS:
-							if (existingSection != null) {
-								String sectionParentId = secInfo[2].trim();
-								Item currentParent = new ItemQuery(SECTION_ITEM).setChildId(existingSection.getId(), false).loadFirstItem();
-								if (currentParent == null) {
-									currentParent = catalog;
-								}
-								long currentParentId = currentParent.getId();
-								Item declaredParent = getDeclaredParent(sectionParentId);
-								if (declaredParent.getId() != currentParentId) {
-									info.setOperation("Перемещаю раздел: \"" + sectionName + "\".Это долгий и трудный процесс. Вы уверены, что оно Вам надо?");
-									info.pushLog("Попробуйте создавать новые разделы и перемещать в них продукты. Это будет быстрее.");
-									executeAndCommitCommandUnits(new MoveItemDBUnit(existingSection, declaredParent).ignoreFileErrors(true));
-									info.pushLog("Уфф! Переместил.");
-									setOperation("Обработка раздела: \"" + sectionName + "\"");
-								}
-								currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, sectionCode);
-							} else {
-								currentSection = createSection(secInfo);
-							}
-							break;
-						default:
-							break;
-					}
-				} else {
-					currentSection = createSection(secInfo);
-				}
+				currentSection = null;
 			}
 		};
 		return true;
@@ -664,7 +697,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 	private Item createSection(String[] secInfo) throws Exception {
 		String sectionName = secInfo[0].trim();
 		info.pushLog("Найден раздел: " + sectionName);
-		String sectionParentId = (secInfo.length == 3)? secInfo[2].trim() : "";
+		String sectionParentId = (secInfo.length == 3) ? secInfo[2].trim() : "";
 		Item parent = getDeclaredParent(sectionParentId);
 		Item newSection = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), parent);
 		newSection.setValue(NAME_PARAM, sectionName);
@@ -696,7 +729,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 	}
 
 	private void createFiltersAndItemTypes() throws Exception {
-		if(sectionsWithNewItemTypes.size() == 0) return;
+		if (sectionsWithNewItemTypes.size() == 0) return;
 		setOperation("Создание классов и фильтров");
 		List<Item> sections = ItemQuery.loadByIdsLong(sectionsWithNewItemTypes);
 		for (Item section : sections) {
@@ -822,7 +855,6 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Интеграция завершена");
 	}
-
 
 
 	@Override

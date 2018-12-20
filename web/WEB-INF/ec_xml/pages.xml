@@ -8,16 +8,16 @@
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
-				<list item="product" transit="true">
-					<filter>
-						<!--<parameter sign="!=" name="small_pic" compare="SOME">-->
-							<!--<var value="q"/>-->
-						<!--</parameter>-->
-						<limit>
-							<var value="1"/>
-						</limit>
-					</filter>
-				</list>
+				<!--<list item="product" transit="true">-->
+					<!--<filter>-->
+						<!--&lt;!&ndash;<parameter sign="!=" name="small_pic" compare="SOME">&ndash;&gt;-->
+							<!--&lt;!&ndash;<var value="q"/>&ndash;&gt;-->
+						<!--&lt;!&ndash;</parameter>&ndash;&gt;-->
+						<!--<limit>-->
+							<!--<var value="1"/>-->
+						<!--</limit>-->
+					<!--</filter>-->
+				<!--</list>-->
 			</tree>
 		</single>
 
@@ -1153,7 +1153,7 @@
 		</request>
 	</page>
 
-	<page name="section_list" template="integration/section_list">
+	<page name="section_list" template="integration/section_list" authority-groups="common">
 		<request>
 			<var name="page" value="1"/>
 		</request>

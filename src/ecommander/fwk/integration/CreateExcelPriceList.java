@@ -96,9 +96,19 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 		for (Item section : sections) {
 			Sheet sh = initializeSheet(section);
-			initializeHeader(sh,-1);
-			long id = section.getId();
 			int rowIndex = -1;
+			rowIndex = initializeHeader(sh,rowIndex);
+			long id = section.getId();
+			int colIdx = -1;
+			Row row = sh.createRow(++rowIndex);
+			String[]secInfo = getSectionName(section);
+			row.createCell(++colIdx).setCellValue("разд:"+secInfo[0]);
+			row.getCell(colIdx).setCellStyle(sectionStyle);
+			row.createCell(++colIdx).setCellValue(secInfo[1]);
+			row.getCell(colIdx).setCellStyle(sectionStyle);
+			row.createCell(++colIdx).setCellValue(secInfo[2]);
+			row.getCell(colIdx).setCellStyle(sectionStyle);
+
 			boolean isEmpty = new ItemQuery(PRODUCT_ITEM).setParentId(id, false).loadFirstItem() == null;
 			if(!isEmpty) {
 				ItemType auxType = getAuxType(section.getId());
@@ -118,7 +128,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 	private Sheet initializeSheet(Item section) throws Exception {
 		String[]secInfo = getSectionName(section);
-		String sheetName = secInfo[2]+'|'+secInfo[0]+'|'+secInfo[1];
+		String sheetName = secInfo[2];
 		setOperation(section.getValue(NAME_PARAM) + ". Обработка подразделов.");
 		Sheet sh = workBook.createSheet(sheetName);
 		return sh;
