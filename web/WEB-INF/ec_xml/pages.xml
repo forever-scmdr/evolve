@@ -32,7 +32,9 @@
 			</link>
 		</list>
 		<single item="common" cacheable="true">
-			<list item="block_array"/>
+			<list item="block_array">
+				<list item="block"/>
+			</list>
 		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
@@ -99,7 +101,7 @@
 						<var value="date"/>
 					</sorting>
 					<limit>
-						<var value="4"/>
+						<var value="2"/>
 					</limit>
 				</filter>
 				<link name="show_news_item" target="news_item" type="exclusive">

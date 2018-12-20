@@ -164,6 +164,8 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				// Создать фильтр и установить его в айтем
 				FilterDefinition filter = FilterDefinition.create("");
 				filter.setRoot(className);
+				// Добавить производителя
+
 				for (String paramName : params.paramTypes.keySet()) {
 					if (params.notInFilter.contains(paramName))
 						continue;

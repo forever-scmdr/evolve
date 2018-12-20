@@ -55,24 +55,19 @@
 				<xsl:variable name="topper" select="page/common/topper"/>
 				<div class="dropdown">
 					<a class="dropdown-toggle top-stripe__location" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<xsl:value-of select="$topper/block[1]/header"/>&#160;<i class="fas fa-caret-down"></i>
+						<xsl:value-of select="$topper/block[1]/header"/>&#160;<i class="fas fa-caret-down"></i>
 					</a>
 
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 						<xsl:for-each select="$topper/block">
-							<a class="dropdown-item" href="#"><xsl:value-of select="header"/></a>
+							<a class="dropdown-item dd_menu_item" href="#" dd-id="dd_block_{@id}"><xsl:value-of select="header"/></a>
 						</xsl:for-each>
 					</div>
 				</div>
 				<xsl:for-each select="$topper/block">
-					<div >
-						<div class="top-stripe__phone">(+375 17) 123-45-67 <span>- отдел снабжения</span></div>
-						<div class="top-stripe__phone">(+375 17) 123-45-67 <span>- отдел запчастей</span></div>
-						<div class="top-stripe__time">Пн.-пт.: с 9.00 до 17.00</div>
-						<div class="top-stripe__links">
-							<a href="" class="top-stripe__link">Оплата</a>
-							<a href="" class="top-stripe__link">Доставка</a>
-						</div>
+					<xsl:variable name="not_first" select="position() != 1"/>
+					<div class="dd_block" id="dd_block_{@id}" style="{'display: none'[$not_first]}">
+						<xsl:value-of select="text" disable-output-escaping="yes"/>
 					</div>
 				</xsl:for-each>
 			</div>
@@ -233,50 +228,18 @@
 		            <a href="">Контакты</a>
 		        </div>
 		        <div class="footer__content">
-		            <div class="footer__column">
-		                <div class="title_3">© ООО «Мизида»</div>
-		                <div class="social-one">
-		                    <i class="fab fa-facebook"></i>
-		                    <a href="">наша страница на фейсбуке</a>
-		                </div>
+			        <xsl:variable name="footer" select="page/common/footer"/>
+			        <div class="footer__column">
+		                <xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
+				            <div class="title_3"><xsl:value-of select="$footer/block[1]/header" /></div>
+		                </xsl:if>
+				        <xsl:value-of select="$footer/block[1]/text" disable-output-escaping="yes"/>
 		                <div class="forever">
 		                    <img src="img/forever.png" alt="" />
 		                    <a href="forever.by" target="_blank">Разработка сайта студия веб-дизайна Forever</a>
 		                </div>
 		            </div>
-		            <div class="footer__column">
-		                <div class="title_3">Время работы</div>
-		                <p>Пн.-пт.: с 9:00 до 18:00</p>
-		            </div>
-		            <div class="footer__column">
-		                <div class="title_3">г. Минск</div>
-		                <p>220053, Старовиленский тракт, д. 88, офис 39</p>
-		                <p>+375-17-233-65-94;</p>
-		                <p>+375-17-233-65-94;</p>
-		                <p>+375-17-233-65-94;</p>
-		                <p><a href="mailto:info@mizida.by">info@mizida.by</a></p>
-		            </div>
-		            <div class="footer__column">
-		                <div class="title_3">Отдел оборудования</div>
-		                <p>+375-29-335-43-37;</p>
-		                <p>Skype: <a href="">mizidaism</a></p>
-		                <div class="title_3">Отдел запчастей</div>
-		                <p>+375-29-335-43-36;</p>
-		                <p><a href="mailto:info@mizida.by">info@mizida.by</a></p>
-		            </div>
-		            <div class="footer__column">
-		                <div class="title_3">г. Брест</div>
-		                <p>ул. Краснознаменная, д. 2</p>
-		                <p>+375-162-54-54-40;</p>
-		                <p>+375-29-703-54-89;</p>
-		                <p>+375-162-54-54-40 — факс;</p>
-		                <p><a href="mailto:brest@mizida.by">brest@mizida.by</a></p>
-		            </div>
-		            <div class="footer__column">
-		                <div class="title_3">г. Гродно</div>
-		                <p>ул. 17 Сентября, 49, оф. 216</p>
-		                <p>+375-152-71 89 63 — тел./факс;</p>
-		            </div>
+					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
 		        </div>
 		    </div>
 		</section>
@@ -314,6 +277,12 @@
 	</xsl:template>
 
 
+	<xsl:template match="block" mode="footer">
+		<div class="footer__column">
+			<xsl:if test="header and not(header = '')"><div class="title_3"><xsl:value-of select="header" /></div></xsl:if>
+			<xsl:value-of select="text" disable-output-escaping="yes"/>
+		</div>
+	</xsl:template>
 
 
 	<xsl:template name="INC_MOBILE_MENU">
@@ -845,82 +814,93 @@
 				<script type="text/javascript" src="js/fwk/common.js"/>
 				<script type="text/javascript" src="slick/slick.min.js"></script>
 				<script type="text/javascript">
-					$(document).ready(function(){
-					$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
-						type: 'image',
-						closeOnContentClick: true,
-						mainClass: 'mfp-img-mobile',
-						image: {
-							verticalFit: true
-						}
-					});
-					var oh = $(".footer").outerHeight();
-					$(".footer-placeholder").height(oh+40);
-					$(".footer").css("margin-top", -1*oh);
-					$('.slick-slider').slick({
-					infinite: true,
-					slidesToShow: 6,
-					slidesToScroll: 6,
-					dots: true,
-					arrows: false,
-					responsive: [
-						{
-							breakpoint: 1440,
-							settings: {
-								slidesToShow: 5,
-								slidesToScroll: 5,
-								infinite: true,
-								dots: true
+					$(document).ready(function() {
+						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
+							type: 'image',
+							closeOnContentClick: true,
+							mainClass: 'mfp-img-mobile',
+							image: {
+								verticalFit: true
 							}
-						},
-						{
-							breakpoint: 1200,
-							settings: {
-								slidesToShow: 4,
-								slidesToScroll: 4,
-								infinite: true,
-								dots: true
+						});
+						var oh = $(".footer").outerHeight();
+						$(".footer-placeholder").height(oh+40);
+						$(".footer").css("margin-top", -1*oh);
+						$('.slick-slider').slick({
+						infinite: true,
+						slidesToShow: 6,
+						slidesToScroll: 6,
+						dots: true,
+						arrows: false,
+						responsive: [
+							{
+								breakpoint: 1440,
+								settings: {
+									slidesToShow: 5,
+									slidesToScroll: 5,
+									infinite: true,
+									dots: true
+								}
+							},
+							{
+								breakpoint: 1200,
+								settings: {
+									slidesToShow: 4,
+									slidesToScroll: 4,
+									infinite: true,
+									dots: true
+								}
+							},
+							{
+								breakpoint: 992,
+								settings: {
+									slidesToShow: 3,
+									slidesToScroll: 3,
+									infinite: true,
+									dots: true
+								}
+							},
+							{
+								breakpoint: 768,
+								settings: {
+									slidesToShow: 2,
+									slidesToScroll: 2,
+									infinite: true,
+									dots: true
+								}
+							},
+							{
+								breakpoint: 375,
+								settings: {
+									slidesToShow: 1,
+									slidesToScroll: 1,
+									infinite: true,
+									dots: true
+								}
 							}
-						},
-						{
-							breakpoint: 992,
-							settings: {
-								slidesToShow: 3,
-								slidesToScroll: 3,
-								infinite: true,
-								dots: true
-							}
-						},
-						{
-							breakpoint: 768,
-							settings: {
-								slidesToShow: 2,
-								slidesToScroll: 2,
-								infinite: true,
-								dots: true
-							}
-						},
-						{
-							breakpoint: 375,
-							settings: {
-								slidesToShow: 1,
-								slidesToScroll: 1,
-								infinite: true,
-								dots: true
-							}
-						}
-					]
-					});
+						]
+						});
 
-					initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
-					initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
+						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+						initDropDownHeader();
 					});
 
 					$(window).resize(function(){
-					var oh = $(".footer").outerHeight();
-					$(".footer-placeholder").height(oh+40);
-					$(".footer").css("margin-top", -1*oh);
+						var oh = $(".footer").outerHeight();
+						$(".footer-placeholder").height(oh+40);
+						$(".footer").css("margin-top", -1*oh);
 					});
+
+
+					function initDropDownHeader() {
+						$('.dd_menu_item').click(function() {
+							var mi = $(this);
+							$('#dropdownMenuLink').html(mi.html() + ' <i class="fas fa-caret-down"></i>');
+							$('.dd_block').hide();
+							$('#' + mi.attr('dd-id')).show();
+						});
+					}
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
 				<xsl:for-each select="$body-end-modules">
