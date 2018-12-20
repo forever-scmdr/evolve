@@ -1,14 +1,22 @@
 package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.ExcelPriceList;
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.fwk.*;
 import ecommander.model.*;
+import ecommander.model.datatypes.DataType;
+import ecommander.model.filter.CriteriaDef;
+import ecommander.model.filter.FilterDefinition;
+import ecommander.model.filter.InputDef;
 import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.net.URL;
@@ -32,7 +40,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 	private static final String WITH_EXISTING_PRODUCTS = "with_existing_products"; // what to do with existing products (UPDATE)
 	private static final String IF_BLANK = "if_blank"; // what to do if the cell is blank; (IGNORE, CLEAR)
 	private static final String WITH_PICS = "with_pics"; // where to look for product files (SEARCH_BY_CODE, SEARCH_BY_CELL_VALUE, DOWNLOAD)
-	private static final String IF_FILE_EXISTS = "if_file_exists";
+	private static final String DIGITS = "0123456789.,";
 
 	//default page var values
 	private enum varValues {
@@ -82,12 +90,13 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 				info.setLineNumber(getRowNum()+1);
 				String code = getValue(CreateExcelPriceList.CODE_FILE);
 				String name = getValue(CreateExcelPriceList.NAME_FILE);
-				if(StringUtils.isBlank(name)) return;
-				if (StringUtils.isBlank(code)) {
-					name = getValue(CreateExcelPriceList.NAME_FILE);
-					if (name.indexOf('|') != -1) {
-						processSubsection(name);
-					}
+				if(StringUtils.isBlank(name) || StringUtils.isBlank(code)) return;
+				else if(StringUtils.startsWith(code, "разд:")){
+					code = StringUtils.substringAfter(code,"разд:").trim();
+					String parentCode = name;
+					name = getValue(CreateExcelPriceList.PRICE_FILE);
+					String[]secInfo = new String[]{name, code, parentCode};
+					processSubsection(secInfo);
 				} else if (code.equals(CreateExcelPriceList.CODE_FILE)) {
 					reInit(CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE);
 				} else {
@@ -157,7 +166,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								if (withPictures == varValues.IGNORE || withPictures == varValues.SEARCH_BY_CODE)
 									continue;
 								if(StringUtils.isBlank(cellValue))continue;
-								String[] arr = cellValue.split("\",\\s*\"");
+								String[] arr = cellValue.split("\\s+_END_\\s+");
 								for (String s : arr) {
 									switch(withPictures){
 										case SEARCH_BY_CELL_VALUE:
@@ -174,6 +183,15 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 
 								}
 							} else {
+								if (StringUtils.isBlank(cellValue)) continue;
+								ParameterDescription pd = productItemType.getParameter(paramName);
+								if(pd.isMultiple()){
+									String[]values = cellValue.split("\\s+_END_\\s+");
+									for(String val :values){
+										product.setValueUI(paramName, val);
+									}
+
+								}
 								product.setValueUI(paramName, cellValue);
 							}
 						}
@@ -185,9 +203,25 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								String cellValue = getValue(header);
 								String[]m = cellValue.split("_END_");
 								for(String manual : m){
-									Item manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
-									manualItem.setValue(NAME_PARAM, "Документ");
-									manualItem.setValue(LINK_PARAM, manual);
+									Item manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);;
+									if(manual.indexOf('|') == -1){
+										manualItem.setValue(NAME_PARAM, "Документ");
+										manualItem.setValue(LINK_PARAM, manual);
+									}else{
+										String[]x = manual.split("[|]");
+										switch (x.length){
+											case 1:
+												manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
+												manualItem.setValue(NAME_PARAM, "Документ");
+												manualItem.setValue(LINK_PARAM, x[0]);
+												break;
+											case 2:
+												manualItem.setValue(NAME_PARAM, x[0]);
+												manualItem.setValue(LINK_PARAM, x[1]);
+												break;
+											default: break;
+										}
+									}
 									executeCommandUnit(SaveItemDBUnit.get(manualItem).noFulltextIndex().noTriggerExtra());
 								}
 								commitCommandUnits();
@@ -310,6 +344,14 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 //							}
 							else {
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
+								ParameterDescription pd = productItemType.getParameter(paramName);
+								if(pd.isMultiple()){
+									String[]values = cellValue.split("\\s+_END_\\s+");
+									for(String val :values){
+										product.setValueUI(paramName, val);
+									}
+
+								}
 								product.setValueUI(paramName, cellValue);
 							}
 
@@ -319,9 +361,9 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						for(String header : headers){
 							if(CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)){
 								String cellValue = getValue(header);
-								String[]m = cellValue.split("}\\s?\\{");
+								String[]m = cellValue.split("\\s+_END_\\s+");
 								for(String manual : m){
-									Item manualItem;
+									Item manualItem = null;
 									if(manual.indexOf('|') == -1) {
 										manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
 										manualItem.setValue(NAME_PARAM, "Документ");
@@ -329,9 +371,26 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 
 									}else{
 										String[]x = manual.split("[|]");
-										long id = Long.parseLong(x[0].trim());
-										manualItem = ItemQuery.loadById(id);
-										manualItem.setValue(LINK_PARAM, manual);
+										switch (x.length){
+											case 1:
+												manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
+												manualItem.setValue(NAME_PARAM, "Документ");
+												manualItem.setValue(LINK_PARAM, x[0]);
+												break;
+											case 2:
+												manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
+												manualItem.setValue(NAME_PARAM, x[0]);
+												manualItem.setValue(LINK_PARAM, x[1]);
+												break;
+											case 3:
+												long id = Long.parseLong(x[0].trim());
+												manualItem = ItemQuery.loadById(id);
+												manualItem.setValue(NAME_PARAM, x[1]);
+												manualItem.setValue(LINK_PARAM, x[2]);
+												break;
+											default: break;
+										}
+
 									}
 									executeCommandUnit(SaveItemDBUnit.get(manualItem).noFulltextIndex().noTriggerExtra());
 								}
@@ -359,6 +418,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 							}
 						} else {
 							newItemTypes = true;
+							sectionsWithNewItemTypes.add(currentSubsection.getId());
 						}
 						XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 						for (String header : headers) {
@@ -391,11 +451,9 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 			}
 
 			private Item setMultipleFileParam(Item item, String paramName, String values, Path folder){
-				String[] apv = values.split("\",\\s?\"");
+				String[] apv = values.split("\\s+_END_\\s+");
 				LinkedHashSet<File> existingFiles = new LinkedHashSet<>();
 				for (String s : apv) {
-					s = StringUtils.startsWith(s, "\"") ? s.substring(1) : s;
-					s = StringUtils.endsWith(s, "\"") ? s.substring(0, s.length() - 2) : s;
 					File f = folder.resolve(s).toFile();
 					if (f.exists()) {
 						existingFiles.add(f);
@@ -406,6 +464,15 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 					for (File f : existingFiles) {
 						item.setValue(paramName, f);
 					}
+				}
+				return item;
+			}
+			private Item setMultipleStringParam(Item item, String paramName, String values) throws Exception {
+				String[] apv = values.split("\\s+_END_\\s+");
+				item.clearParameter(paramName);
+				for(String s : apv){
+					if(StringUtils.isBlank(s))continue;
+					item.setValueUI(paramName, s);
 				}
 				return item;
 			}
@@ -520,8 +587,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 		return true;
 	}
 
-	private void processSubsection(String name) throws Exception {
-		String[] secInfo = name.split("[|]");
+	private void processSubsection(String[] secInfo) throws Exception {
 		String sName = secInfo[0].trim();
 		String sCode = secInfo[1].trim();
 		String sParentCode = secInfo[2].trim();
@@ -629,20 +695,135 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 		}
 	}
 
+	private void createFiltersAndItemTypes() throws Exception {
+		if(sectionsWithNewItemTypes.size() == 0) return;
+		setOperation("Создание классов и фильтров");
+		List<Item> sections = ItemQuery.loadByIdsLong(sectionsWithNewItemTypes);
+		for (Item section : sections) {
+			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
+			if (products.size() > 0) {
+
+				// Анализ параметров продуктов
+				CreateParametersAndFiltersCommand.Params params = new CreateParametersAndFiltersCommand.Params(section.getStringValue(NAME_PARAM), "s" + section.getId());
+				for (Item product : products) {
+					List<Item> oldParams = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadItems();
+					for (Item oldParam : oldParams) {
+						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldParam));
+					}
+					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
+					if (paramsXml != null) {
+						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
+						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
+						Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
+						for (Element paramEl : paramEls) {
+							String caption = StringUtils.trim(paramEl.getElementsByTag(NAME).first().ownText());
+							String value = StringUtils.trim(paramEl.getElementsByTag(VALUE).first().ownText());
+							if (StringUtils.isNotBlank(caption)) {
+								params.addParameter(caption, value);
+							}
+						}
+					}
+				}
+				executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
+
+				// Создание фильтра
+				String className = "p" + section.getId();
+				String classCaption = section.getStringValue(NAME_PARAM);
+				// Создать фильтр и установить его в айтем
+				FilterDefinition filter = FilterDefinition.create("");
+				filter.setRoot(className);
+				for (String paramName : params.paramTypes.keySet()) {
+					if (params.notInFilter.contains(paramName))
+						continue;
+					String caption = params.paramCaptions.get(paramName);
+					String unit = params.paramUnits.get(paramName);
+					InputDef input = new InputDef("droplist", caption, unit, "");
+					filter.addPart(input);
+					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
+				}
+				section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
+
+				// Создать класс для продуктов из этого раздела
+				ItemType newClass = new ItemType(className, 0, classCaption, "", "",
+						PARAMS_ITEM, null, false, true, false, false);
+				for (String paramName : params.paramTypes.keySet()) {
+					String type = params.paramTypes.get(paramName).toString();
+					String caption = params.paramCaptions.get(paramName);
+					String unit = params.paramUnits.get(paramName);
+					newClass.putParameter(new ParameterDescription(paramName, 0, type, false, 0,
+							"", caption, unit, "", false, false, null, null));
+				}
+				executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
+
+			} else {
+				section.clearParameter(PARAMS_FILTER_PARAM);
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
+			}
+			info.increaseProcessed();
+		}
+		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+
+		info.setOperation("Заполнение параметров товаров");
+		info.setToProcess(sections.size());
+		info.setProcessed(0);
+		for (Item section : sections) {
+			String className = "p" + section.getId();
+			ItemType paramDesc = ItemTypeRegistry.getItemType(className);
+			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
+			if (products.size() > 0) {
+				for (Item product : products) {
+					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
+					if (paramsXml != null) {
+						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
+						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
+						Elements paramEls = paramsTree.getElementsByTag("parameter");
+						Item params = Item.newChildItem(paramDesc, product);
+						for (Element paramEl : paramEls) {
+							String name = StringUtils.trim(paramEl.getElementsByTag("name").first().ownText());
+							name = Strings.createXmlElementName(name);
+							String value = StringUtils.trim(paramEl.getElementsByTag("value").first().ownText());
+							Pair<DataType.Type, String> valuePair = CreateParametersAndFiltersCommand.Params.testValueHasUnit(value);
+							if (StringUtils.isNotBlank(valuePair.getRight())) {
+								value = value.split("\\s")[0];
+							}
+							if (paramDesc.hasParameter(name)) {
+								params.setValueUI(name, value);
+							} else {
+								info.pushLog("No parameter {} in section {}", name, section.getStringValue("name"));
+							}
+						}
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(params));
+					}
+				}
+			}
+			info.increaseProcessed();
+		}
+
+	}
+
 	@Override
 	protected void integrate() throws Exception {
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 1);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
-		info.setOperation("Обновлние каталога");
-		info.setProcessed(0);
-		info.setLineNumber(0);
+		setOperation("Обновлние каталога");
+		setProcessed(0);
+		setLineNumber(0);
+		//parsing from Excel
 		info.setToProcess(priceWB.getLinesCount());
 		priceWB.iterate();
-		info.setOperation("Интеграция завершена");
 		priceWB.close();
+		//creating filters and item types
+		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
+		//indexation
+		info.setOperation("Индексация названий товаров");
+		LuceneIndexMapper.getSingleton().reindexAll();
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
+		setOperation("Интеграция завершена");
 	}
+
+
 
 	@Override
 	protected void terminate() throws Exception {

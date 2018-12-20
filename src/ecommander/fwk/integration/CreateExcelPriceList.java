@@ -96,6 +96,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 		for (Item section : sections) {
 			Sheet sh = initializeSheet(section);
+			initializeHeader(sh,-1);
 			long id = section.getId();
 			int rowIndex = -1;
 			boolean isEmpty = new ItemQuery(PRODUCT_ITEM).setParentId(id, false).loadFirstItem() == null;
@@ -116,13 +117,14 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 
 	private Sheet initializeSheet(Item section) throws Exception {
-		String sheetName = getSectionName(section);
+		String[]secInfo = getSectionName(section);
+		String sheetName = secInfo[2]+'|'+secInfo[0]+'|'+secInfo[1];
 		setOperation(section.getValue(NAME_PARAM) + ". Обработка подразделов.");
 		Sheet sh = workBook.createSheet(sheetName);
 		return sh;
 	}
 
-	private String getSectionName(Item section) throws Exception {
+	private String[] getSectionName(Item section) throws Exception {
 		String name = section.getStringValue(NAME_PARAM,"");
 		String categoryId = section.getStringValue(CATEGORY_ID_PARAM,"");
 		boolean needsSave = false;
@@ -149,8 +151,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 		}
 		if(needsSave) commitCommandUnits();
-		String s = name+'|'+categoryId+'|'+parentId;
-		return s;
+		return new String[]{categoryId, parentId, name,};
 	}
 
 	private int initializeHeader(Sheet sh, int rowIndex, ItemType... auxType){
@@ -194,6 +195,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		//Write manuals
 		if(writeManuals){
 			row.createCell(++colIdx).setCellValue(MANUAL);
+			row.getCell(colIdx).setCellStyle(headerStyle);
 		}
 
 		//Write aux params
@@ -263,6 +265,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 				StringBuilder manuals = new StringBuilder();
 				for(Item manual : new ItemQuery(MANUAL_PARAM).setParentId(product.getId(), false).loadItems()){
 					manuals	.append(manual.getId()).append('|')
+							.append(manual.getStringValue(NAME_PARAM)).append('|')
 							.append(manual.getStringValue(LINK_PARAM))
 							.append(" _END_ ");
 				}
@@ -355,15 +358,11 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 	protected static String join(ArrayList<Object> pv) {
 		StringBuilder sb = new StringBuilder();
-		final String sep1 = "\"";
-		final String sep2 = ", \"";
+		final String sep = " _END_ ";
 		for(int i = 0; i < pv.size(); i++){
+			if(i>0)sb.append(sep);
 			String os = pv.get(i).toString();
-			os = os.replaceAll("\"", "/\"");
-			if(i > 0){
-				sb.append(sep2);
-			}else{ sb.append(sep1);}
-			sb.append(os).append('"');
+			sb.append(os);
 		}
 		return sb.toString();
 	}
@@ -382,8 +381,12 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			info.setProcessed(0);
 			Row row = sh.createRow(++rowI);
 			int colIdx = -1;
-			row.createCell(++colIdx).setCellStyle(sectionStyle);
-			row.createCell(++colIdx).setCellValue(getSectionName(section));
+			String[]secInfo = getSectionName(section);
+			row.createCell(++colIdx).setCellValue("разд:"+secInfo[0]);
+			row.getCell(colIdx).setCellStyle(sectionStyle);
+			row.createCell(++colIdx).setCellValue(secInfo[1]);
+			row.getCell(colIdx).setCellStyle(sectionStyle);
+			row.createCell(++colIdx).setCellValue(secInfo[2]);
 			row.getCell(colIdx).setCellStyle(sectionStyle);
 
 			boolean noSubs = new ItemQuery(SECTION_ITEM).setParentId(section.getId(), false).loadFirstItem() == null;
@@ -464,9 +467,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	}
 
 	@Override
-	protected void terminate() throws Exception {
-
-	}
+	protected void terminate() throws Exception {}
 
 	@Override
 	protected boolean makePreparations() throws Exception {

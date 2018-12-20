@@ -81,6 +81,7 @@ public abstract class IntegrateBase extends Command {
 
 		private volatile String operation = "Инициализация";
 		private volatile int lineNumber = 0;
+		private volatile int position = 0;
 		private volatile int processed = 0;
 		private volatile int toProcess = 0;
 		private ArrayDeque<LogMessage> log = new ArrayDeque<>();
@@ -94,6 +95,10 @@ public abstract class IntegrateBase extends Command {
 
 		public synchronized void setLineNumber(int lineNumber) {
 			this.lineNumber = lineNumber;
+		}
+
+		public synchronized void setLinePosition(int position) {
+			this.position = position;
 		}
 
 		public synchronized void setProcessed(int processed) {
@@ -291,7 +296,7 @@ public abstract class IntegrateBase extends Command {
 					} catch (Exception se) {
 						setOperation("Интеграция завершена с ошибками");
 						ServerLogger.error("Integration error", se);
-						getInfo().addError(se.getMessage(), 0, 0);
+						getInfo().addError(se.toString() +" says ["+se.getMessage()+"]", info.lineNumber, info.position);
 					} finally {
 						isInProgress = false;
 						getInfo().setInProgress(false);
