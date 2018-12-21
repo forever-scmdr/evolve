@@ -7981,3 +7981,58 @@ h3 + .catalog-items {
   margin-top: 32px;
 }
 /* new fixes end*/
+
+/* excel search */
+input.get-file {
+  display: none;
+}
+label.upload {
+  display: inline-block;
+  padding: 8px;
+  border-radius: 2px;
+  background-color: #fff;
+  color:#1B50A0;
+  border: 1px solid #1B50A0;
+  cursor: pointer;
+}
+label.upload:hover {
+  opacity: .85;
+}
+label.upload + input[type="submit"] {
+  display: inline-block;
+  padding: 8px;
+  height: unset;
+  vertical-align: unset;
+  border: 1px solid transparent;
+  margin-left: 8px;
+}
+.search form {
+  margin-bottom: 4px;
+}
+.search form + a {
+  font-size: 12px;
+}
+.srtable tr:nth-child(even) {
+  background-color: unset;
+}
+.srtable form {
+  display: flex;
+}
+.srtable input[type="number"] {
+  width: 50px;
+  text-align: center;
+  margin-right: 8px;
+}
+.srtable td {
+  font-size: 12px;
+}
+.srtable .parent {
+  border: 1px solid #005692;
+}
+.srtable .p_2 {
+  border-top: 1px solid #e0e0e0;
+}
+td.toggle-plus a {
+  color: #0F5392;
+}
+/* excel search end */

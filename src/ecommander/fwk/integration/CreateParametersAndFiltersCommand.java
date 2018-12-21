@@ -2,6 +2,7 @@ package ecommander.fwk.integration;
 
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.Pair;
+import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
@@ -195,7 +196,14 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			info.increaseProcessed();
 		}
 
-		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+		try {
+			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+		} catch (Exception e) {
+			ServerLogger.error("Unable to reload new model", e);
+			info.addError("Невозможно создать новую модель данных", e.getLocalizedMessage());
+			info.setOperation("Фатальная ошибка");
+			return;
+		}
 
 		info.setOperation("Заполнение параметров товаров");
 		info.setToProcess(sections.size());

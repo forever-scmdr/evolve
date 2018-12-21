@@ -46,10 +46,11 @@
 								<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
 								<input type="submit" value="Найти"/>
 							</form>
-							<form action="{page/excel_search_link}" method="post" enctype="multipart/form-data">
+							<a href="" data-toggle="modal" data-target="#modal-excel">Поиск по списку из Excel-файла</a>
+							<!-- <form action="{page/excel_search_link}" method="post" enctype="multipart/form-data">
 								<input type="file" name="file"/>
 								<input type="submit"/>
-							</form>
+							</form> -->
 						</div>
 						<div class="other-container">
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
@@ -259,7 +260,27 @@
 				</div>
 			</div>
 		</div>
-
+		<!-- excel search -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-excel">
+			<div class="modal-dialog modal-md" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
+						<div class="modal-title h4">Поиск по списку из Excel-файла</div>
+					</div>
+					<div class="modal-body">
+						<p>Вы можете загрузить список необходимых товаров в формате Excel. Такой способ позволяет быстро нахдить большое количество товаров.</p>
+						<p><a href="">Скачать образец файла</a></p>
+						<form action="{page/excel_search_link}" method="post" enctype="multipart/form-data">
+							<input type="file" name="file" id="file" class="get-file"/>
+							<label for="file" class="upload">Загрузить Excel-файл с компьютера</label>
+							<input type="submit" value="Найти" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- excel search end -->
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
 		<!-- MODALS END -->

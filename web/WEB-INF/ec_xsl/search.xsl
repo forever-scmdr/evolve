@@ -18,6 +18,34 @@
 	<xsl:variable name="numbers" select="page/variables/n"/>
 	<xsl:variable name="multiple" select="count($queries) &gt; 1"/>
 
+
+
+
+
+	<xsl:template name="MAIN_CONTENT">
+		<!-- MAIN COLOUMNS BEGIN -->
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 main-content">
+					<div class="mc-container">
+						<xsl:call-template name="INC_MOBILE_HEADER"/>
+						<xsl:call-template name="CONTENT"/>
+						<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub'">
+							<div class="page-content">
+								<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+							</div>
+						</xsl:if>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MAIN COLOUMNS END -->
+	</xsl:template>
+
+
+
+
+
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
@@ -37,7 +65,7 @@
 			<xsl:if test="$products">
 				<div>
 					<!--<h3>Таблица с результатами</h3>-->
-					<table>
+					<table class="srtable">
 						<tr>
 							<xsl:if test="$multiple">
 								<th>Запрос</th>
@@ -90,6 +118,9 @@
 	</xsl:template>
 
 
+
+
+
 	<xsl:template match="product">
 		<xsl:param name="hidden"/>
 		<xsl:param name="number"/>
@@ -98,7 +129,7 @@
 		<xsl:variable name="min_qty" select="if (min_qty) then f:num(min_qty) else 1"/>
 		<xsl:variable name="num" select="if ($number and $number &gt;= $min_qty) then $number else $min_qty"/>
 		<xsl:variable name="has_price" select="price and price != '0'"/>
-		<tr style="{'display: none'[$hidden]}" class="{if ($hidden) then concat('p_', $position) else ''}">
+		<tr style="{'display: none'[$hidden]}" class="{if ($hidden) then concat('p_', $position) else 'parent'}">
 			<xsl:if test="$multiple">
 				<td><b><xsl:value-of select="item_own_extras/query" /></b></td>
 			</xsl:if>
@@ -123,7 +154,7 @@
 				</form>
 			</td>
 			<xsl:if test="$multiple">
-				<td>
+				<td class="toggle-plus">
 					<xsl:if test="not($hidden)">
 						<a href="#" onclick="$('.p_{$position}').toggle(); return false;"><i class="fas fa-plus-square"></i></a>
 					</xsl:if>
@@ -131,6 +162,8 @@
 			</xsl:if>
 		</tr>
 	</xsl:template>
+
+
 
 
 	<xsl:template name="EXTRA_SCRIPTS">
