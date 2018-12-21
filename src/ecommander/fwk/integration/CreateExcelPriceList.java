@@ -273,11 +273,13 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 			if(writeManuals){
 				StringBuilder manuals = new StringBuilder();
+				int i=0;
 				for(Item manual : new ItemQuery(MANUAL_PARAM).setParentId(product.getId(), false).loadItems()){
+					if(i>0)manuals.append("; ");
 					manuals	.append(manual.getId()).append('|')
 							.append(manual.getStringValue(NAME_PARAM)).append('|')
-							.append(manual.getStringValue(LINK_PARAM))
-							.append(" _END_ ");
+							.append(manual.getStringValue(LINK_PARAM));
+					i++;
 				}
 				row.createCell(++colIdx).setCellValue(manuals.toString());
 			}
@@ -368,7 +370,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 	protected static String join(ArrayList<Object> pv) {
 		StringBuilder sb = new StringBuilder();
-		final String sep = " _END_ ";
+		final String sep = ";";
 		for(int i = 0; i < pv.size(); i++){
 			if(i>0)sb.append(sep);
 			String os = pv.get(i).toString();

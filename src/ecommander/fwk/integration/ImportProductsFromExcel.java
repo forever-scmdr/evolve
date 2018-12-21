@@ -251,8 +251,9 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								if (withPictures == varValues.IGNORE || withPictures == varValues.SEARCH_BY_CODE)
 									continue;
 								if (StringUtils.isBlank(cellValue)) continue;
-								String[] arr = cellValue.split("\\s+_END_\\s+");
+								String[] arr = cellValue.split(";");
 								for (String s : arr) {
+									s = s.trim();
 									switch (withPictures) {
 										case SEARCH_BY_CELL_VALUE:
 											File p = picsFolder.resolve(s).toFile();
@@ -275,7 +276,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								if (StringUtils.isBlank(cellValue)) continue;
 								ParameterDescription pd = productItemType.getParameter(paramName);
 								if (pd.isMultiple()) {
-									String[] values = cellValue.split("\\s+_END_\\s+");
+									String[] values = cellValue.split(";");
 									for (String val : values) {
 										product.setValueUI(paramName, val);
 									}
@@ -290,7 +291,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						for (String header : headers) {
 							if (CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) {
 								String cellValue = getValue(header);
-								String[] m = cellValue.split("_END_");
+								String[] m = cellValue.split(";");
 								for (String manual : m) {
 									Item manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
 									;
@@ -438,9 +439,9 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
 								ParameterDescription pd = productItemType.getParameter(paramName);
 								if (pd.isMultiple()) {
-									String[] values = cellValue.split("\\s+_END_\\s+");
+									String[] values = cellValue.split(";");
 									for (String val : values) {
-										product.setValueUI(paramName, val);
+										product.setValueUI(paramName, val.trim());
 									}
 
 								}
@@ -453,7 +454,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						for (String header : headers) {
 							if (CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) {
 								String cellValue = getValue(header);
-								String[] m = cellValue.split("\\s+_END_\\s+");
+
 								if(StringUtils.isBlank(cellValue)){
 									if(settings.get(IF_BLANK) != varValues.CLEAR) continue;
 									List<Item> items = ItemQuery.loadByParentId(product.getId(), ItemTypeRegistry.getPrimaryAssocId());
@@ -464,6 +465,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 									commitCommandUnits();
 									continue;
 								}
+								String[] m = cellValue.split(";");
 								for (String manual : m) {
 									Item manualItem = null;
 									if (manual.indexOf('|') == -1) {
@@ -475,7 +477,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 										String[] x = manual.split("[|]");
 										for(int i =0; i<x.length; i++) {
 											if(StringUtils.isBlank(x[i])) continue;
-											x[i] = x[i].replace("_END_", "").trim();
+											x[i] = x[i].replace(";", "").trim();
 										}
 										switch (x.length) {
 											case 0: break;
@@ -562,11 +564,11 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 			}
 
 			private Item setMultipleFileParam(Item item, String paramName, String values, Path folder) {
-				String[] apv = values.split("\\s+_END_\\s+");
+				String[] apv = values.split(";");
 				LinkedHashSet<File> existingFiles = new LinkedHashSet<>();
 				for (String s : apv) {
 					if (StringUtils.isBlank(s)) continue;
-					s = s.replace("_END_", "").trim();
+					s = s.replace(";", "").trim();
 					if (StringUtils.isBlank(s)) continue;
 					File f = folder.resolve(s).toFile();
 					if (f.exists()) {
@@ -578,18 +580,6 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 					for (File f : existingFiles) {
 						item.setValue(paramName, f);
 					}
-				}
-				return item;
-			}
-
-			private Item setMultipleStringParam(Item item, String paramName, String values) throws Exception {
-				String[] apv = values.split("\\s+_END_\\s+");
-				item.clearParameter(paramName);
-				for (String s : apv) {
-					if (StringUtils.isBlank(s)) continue;
-					s = s.replace("_END_", "").trim();
-					if (StringUtils.isBlank(s)) continue;
-					item.setValueUI(paramName, s);
 				}
 				return item;
 			}
