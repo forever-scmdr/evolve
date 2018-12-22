@@ -30,7 +30,7 @@
 		</head>
 		<body>
 			<h1><xsl:value-of select="/page/operation"/></h1>
-			<h2>Процесс выполнения 1</h2>
+			<h2>Процесс выполнения</h2>
 			<table>
 				<tr>
 					<td>Всего элементов для обработки:</td>
