@@ -2,6 +2,7 @@ package ecommander.fwk.integration;
 
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.Pair;
+import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
@@ -42,19 +43,19 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 	public static class Params {
 		private final String className;
 		private final String classCaption;
-		private LinkedHashMap<String, DataType.Type> paramTypes = new LinkedHashMap<>();
-		private LinkedHashMap<String, String> paramCaptions = new LinkedHashMap<>();
-		private HashMap<String, String> paramUnits = new HashMap<>();
-		private HashSet<String> notInFilter = new HashSet<>();
-		private static final NumberFormat eng_format = NumberFormat.getInstance(new Locale("en"));
-		private static final NumberFormat ru_format = NumberFormat.getInstance(new Locale("ru"));
+		protected LinkedHashMap<String, DataType.Type> paramTypes = new LinkedHashMap<>();
+		protected LinkedHashMap<String, String> paramCaptions = new LinkedHashMap<>();
+		protected HashMap<String, String> paramUnits = new HashMap<>();
+		protected HashSet<String> notInFilter = new HashSet<>();
+		protected static final NumberFormat eng_format = NumberFormat.getInstance(new Locale("en"));
+		protected static final NumberFormat ru_format = NumberFormat.getInstance(new Locale("ru"));
 
-		private Params(String caption, String className) {
+		protected Params(String caption, String className) {
 			this.classCaption = caption;
 			this.className = Strings.createXmlElementName(className);
 		}
 
-		private void addParameter(String name, String value) {
+		protected void addParameter(String name, String value) {
 			String paramName = Strings.createXmlElementName(name);
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);
@@ -72,7 +73,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			}
 		}
 
-		private void addNotInFilter(String name) {
+		protected void addNotInFilter(String name) {
 			String paramName = Strings.createXmlElementName(name);
 			notInFilter.add(paramName);
 		}
@@ -89,7 +90,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			return true;
 		}
 
-		private static Pair<DataType.Type, String> testValueHasUnit(String value) {
+		protected static Pair<DataType.Type, String> testValueHasUnit(String value) {
 			try {
 				Integer.parseInt(value);
 				return new Pair<>(DataType.Type.INTEGER, null);
@@ -164,8 +165,6 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				// Создать фильтр и установить его в айтем
 				FilterDefinition filter = FilterDefinition.create("");
 				filter.setRoot(className);
-				// Добавить производителя
-
 				for (String paramName : params.paramTypes.keySet()) {
 					if (params.notInFilter.contains(paramName))
 						continue;
@@ -197,7 +196,14 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			info.increaseProcessed();
 		}
 
-		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+		try {
+			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+		} catch (Exception e) {
+			ServerLogger.error("Unable to reload new model", e);
+			info.addError("Невозможно создать новую модель данных", e.getLocalizedMessage());
+			info.setOperation("Фатальная ошибка");
+			return;
+		}
 
 		info.setOperation("Заполнение параметров товаров");
 		info.setToProcess(sections.size());

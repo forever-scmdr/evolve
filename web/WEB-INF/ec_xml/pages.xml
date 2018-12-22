@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>                     
 <site>
 
-	<!-- ******************************* Включение для разделов каталога ****************************** -->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                            ОБЩИЕ ЧАСТИ                               ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
 	<include-definition name="COMMON">
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec">
@@ -63,6 +69,14 @@
 
 
 
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                                ИНДЕКС                                ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
 	<page name="index" template="index" cacheable="true">
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
@@ -113,12 +127,24 @@
 	</page>
 
 
-	<page name="catalog" template="catalog" cacheable="false">
+
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                        КАТАЛОГ ПРОДУКЦИИ                             ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+
+    <page name="catalog" template="catalog" cacheable="true">
 		<include name="COMMON"/>
 		<single item="catalog">
 			<single item="seo"/>
 		</single>
 	</page>
+
 
 
 	<page name="section" template="section" cacheable="true" critical-item="cur_sec">
@@ -347,7 +373,16 @@
 
 
 
-	<page name="news" template="news" cacheable="false">
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                           ПРОСТЫЕ СТРАНИЦЫ                           ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+
+    <page name="news" template="news" cacheable="true">
 		<request>
 			<var name="sel" style="translit"/>
 			<var name="p" value="1"/>
@@ -374,11 +409,12 @@
 		<include name="COMMON"/>
 	</page>
 
-	<page name="news_item" template="news_item" cacheable="false">
+
+    <page name="news_item" template="news_item" cacheable="true" critical-item="sni">
 		<request>
 			<var name="ni" style="translit"/>
 		</request>
-		<single item="news_item" var="ni" cacheable="false" cache-vars="ni">
+        <single item="news_item" id="sni" var="ni" cacheable="true" cache-vars="ni">
 			<single item="seo"/>
 			<ancestor item="news"/>
 		</single>
@@ -386,8 +422,8 @@
 	</page>
 
 
-	<page name="contacts" template="contacts" cacheable="false">
-		<single item="contacts" cacheable="false">
+    <page name="contacts" template="contacts" cacheable="true">
+        <single item="contacts" cacheable="true">
 			<single item="seo"/>
 		</single>
 		<include name="COMMON"/>
@@ -401,11 +437,11 @@
 	</page>
 
 
-	<page name="page" cacheable="false" template="page">
+    <page name="page" cacheable="true" template="page" critical-item="sp">
 		<request>
 			<var name="p" style="translit"/>
 		</request>
-		<single item="custom_page" var="p" cacheable="false" cache-vars="p">
+        <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
 			<single item="seo"/>
 			<list item="custom_page" id="child">
 				<link target="page" type="exclusive" name="show_page">
@@ -414,7 +450,7 @@
 			</list>
 			<ancestor item="custom_page" id="parents" tag="parent" transit="true">
 				<link target="page" type="exclusive" name="show_page">
-					<var ref="parents" style="translit" name="p"/>
+					<var ref="parents" style="translit" name="sp"/>
 				</link>
 			</ancestor>
 		</single>
@@ -466,11 +502,13 @@
 	</page>
 
 
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                  КОРЗИНА, СРАВНЕНИЕ, ИЗБРАННОЕ                       ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
 
 
 	<page name="cart_ajax" template="cart_ajax">
@@ -758,11 +796,15 @@
 		<include name="COMMON"/>
 	</page>
 
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
-	<!--/////////////                             РЕГИСТРАЦИЯ                              ////////////-->
+	<!--/////////////                       РЕГИСТРАЦИЯ И КАБИНЕТ                          ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
 
 	<page name="register" template="register">
 		<request>
@@ -920,7 +962,7 @@
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
-	<!--/////////////                             ПАРСИНГ                                  ////////////-->
+	<!--/////////////                       ИНТЕГРАЦИЯ И ПАРСИНГ                           ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
@@ -959,6 +1001,47 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
+
+
+    <page name="crawl" template="crawl">
+        <request>
+            <var name="action"/>
+            <var name="job"/>
+        </request>
+        <command class="lunacrawler.CrawlCommand">
+            <result name="complete" type="xml"/>
+        </command>
+    </page>
+
+
+    <page name="test_xsl">
+        <request>
+            <var name="url"/>
+        </request>
+        <command class="lunacrawler.CrawlCommand" method="test">
+            <result name="test_xsl" type="xml"/>
+        </command>
+    </page>
+
+    <page name="integrate_parsed" template="integrate_parsed">
+        <request>
+            <var name="action"/>
+        </request>
+        <command class="extra.IntegrateParsedCommand" clear-cache="yes">
+            <result name="complete" type="xml"/>
+        </command>
+    </page>
+
+
+    <page name="create_filters" template="create_filters">
+        <request>
+            <var name="action"/>
+        </request>
+        <command class="ecommander.fwk.integration.CreateParametersAndFiltersCommand" clear-cache="yes">
+            <result name="complete" type="xml"/>
+        </command>
+    </page>
+
 
 	<!--<page name="create_prices" template="integration">-->
 		<!--<command class="extra.IntegratePriceList" clear-cache="yes">-->
@@ -1013,7 +1096,7 @@
 		</list>
 	</page>
 
-	<page name="sitemap_section" template="sitemap_section" cacheable="false">
+    <page name="sitemap_section" template="sitemap_section" cacheable="true">
 		<request>
 			<var name="sec" style="translit"/>
 		</request>
@@ -1078,20 +1161,72 @@
 		</request>
 	</page>
 
-
-
-	<page name="test">
+    <page name="section_list" template="integration/section_list" authority-groups="common">
 		<request>
-			<var name="p" value="name"/>
-			<var name="v"/>
+            <var name="page" value="1"/>
 		</request>
-		<list item="product">
-			<filter>
-				<parameter name-var="p" sign="=" compare="SOME">
-					<var var="v"/>
-				</parameter>
-			</filter>
-		</list>
+        <link name="create_pricelist" target="create_excel_pricelist">
+            <var name="action" value="start"/>
+            <var name="aux_params" value="yes"/>
+        </link>
+        <single item="catalog" id="catalog_main">
+            <tree item="section" id="sec">
+                <link name="create_link" target="create_excel_pricelist">
+                    <var name="action" value="start"/>
+                    <var name="prod_params" value="yes"/>
+                    <var name="aux_params" value="yes"/>
+                    <var name="sec" ref="sec"/>
+                </link>
+                <list item="product" transit="false">
+					<filter>
+		                <limit>
+		                    <var value="1"/>
+		                </limit>
+		                <pages>
+		                    <var var="page" name="page"/>
+		                </pages>
+					</filter>
+				</list>
+            </tree>
+        </single>
+    </page>
+
+    <page name="create_excel_pricelist" template="integration/create_excel" authority-groups="common">
+        <request>
+            <var name="action"/>
+            <var name="sec"/>
+        </request>
+        <command class="ecommander.fwk.integration.CreateExcelPriceList" clear-cache="yes">
+            <result name="complete" type="xml"/>
+        </command>
+    </page>
+
+    <page name="set_pics">
+        <request>
+            <var name="action"/>
+        </request>
+        <command class="ecommander.fwk.integration.SetSectionPics" clear-cache="yes">
+            <result name="complete" type="xml"/>
+        </command>
+    </page>
+
+    <!--<page name="update_prices_from_excel" template="integration/create_excel"  authority-groups="common">-->
+    <!--<request>-->
+    <!--<var name="action"/>-->
+    <!--</request>-->
+    <!--<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">-->
+    <!--<result name="complete" type="xml"/>-->
+    <!--</command>-->
+    <!--</page>-->
+
+    <page name="parse_excel" template="integration/create_excel" authority-groups="common">
+        <request>
+            <var name="action"/>
+            <!--<var name="with_existing_sections" value="copy"/>-->
+        </request>
+        <command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
+            <result name="complete" type="xml"/>
+        </command>
 	</page>
 
 </site>
