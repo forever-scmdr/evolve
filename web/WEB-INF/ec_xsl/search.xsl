@@ -73,7 +73,7 @@
 							<th>Название</th>
 							<th>Описание</th>
 							<th>Производитель</th>
-							<th>Код производителя</th>
+							<!--<th>Код производителя</th>-->
 							<th>Цена</th>
 							<th>На складе</th>
 							<th>Срок поставки</th>
@@ -133,10 +133,19 @@
 			<xsl:if test="$multiple">
 				<td><b><xsl:value-of select="item_own_extras/query" /></b></td>
 			</xsl:if>
-			<td><a><xsl:value-of select="name" /></a></td>
+			<td>
+				<xsl:choose>
+					<xsl:when test="vendor_code">
+						<a href="{show_product}"><xsl:value-of select="name" /></a>
+					</xsl:when>
+					<xsl:otherwise>
+						<b><xsl:value-of select="name" /></b>
+					</xsl:otherwise>
+				</xsl:choose>
+			</td>
 			<td><xsl:value-of select="name_extra" /></td>
-			<td><a><xsl:value-of select="vendor" /></a></td>
-			<td><a><xsl:value-of select="code"/></a></td>
+			<td><xsl:value-of select="vendor" /></td>
+			<!--<td><a><xsl:value-of select="code"/></a></td>-->
 			<td><xsl:value-of select="price"/> руб./<xsl:value-of select="$unit"/></td>
 			<td><xsl:value-of select="qty"/><xsl:text> </xsl:text><xsl:value-of select="$unit"/></td>
 			<td><xsl:value-of select="available"/></td>

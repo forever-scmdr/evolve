@@ -117,7 +117,7 @@
 
 		<xsl:if test="$sel_sec/product_pages and $show_devices">
 			<div class="pagination">
-				<span>Странциы:</span>
+				<span>Страницы:</span>
 				<div class="pagination-container">
 					<xsl:for-each select="$sel_sec/product_pages/page">
 						<a href="{link}" class="{'active'[current()/@current]}">

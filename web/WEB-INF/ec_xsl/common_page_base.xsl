@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+	<xsl:import href="personal_ajax.xsl"/>
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
 
@@ -9,7 +10,7 @@
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
 	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 
-	<xsl:variable name="title" select="'Спеццехника'" />
+	<xsl:variable name="title" select="'Альфакомпонент'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
@@ -46,7 +47,7 @@
 								<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
 								<input type="submit" value="Найти"/>
 							</form>
-							<a href="" data-toggle="modal" data-target="#modal-excel">Поиск по списку из Excel-файла</a>
+							<a href="" data-toggle="modal" data-target="#modal-excel">Загрузка BOOM</a>
 							<!-- <form action="{page/excel_search_link}" method="post" enctype="multipart/form-data">
 								<input type="file" name="file"/>
 								<input type="submit"/>
@@ -57,11 +58,7 @@
 								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Загрузка...</strong></p>
 							</div>
 							<div class="user">
-								<p><i class="fas fa-lock"/>
-									<a href="" data-toggle="modal" data-target="#modal-login">Вход</a> / <a href="registration.html">Регистрация</a>
-									<!-- <a href="javascript:alert('Функция временно отключена')">Вход</a> /
-									<a href="javascript:alert('Функция временно отключена')">Регистрация</a> -->
-								</p>
+								<xsl:call-template name="PERSONAL_DESKTOP"/>
 								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
 									<p><i class="fas fa-star"/> <a href="">&#160;</a></p>
 								</div>
@@ -266,11 +263,11 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
-						<div class="modal-title h4">Поиск по списку из Excel-файла</div>
+						<div class="modal-title h4">Загрузка BOOM</div>
 					</div>
 					<div class="modal-body">
 						<p>Вы можете загрузить список необходимых товаров в формате Excel. Такой способ позволяет быстро нахдить большое количество товаров.</p>
-						<p><a href="">Скачать образец файла</a></p>
+						<p><a href="files/query.xlsx">Скачать образец файла</a></p>
 						<form action="{page/excel_search_link}" method="post" enctype="multipart/form-data">
 							<input type="file" name="file" id="file" class="get-file"/>
 							<label for="file" class="upload">Загрузить Excel-файл с компьютера</label>
@@ -293,13 +290,7 @@
 		<div class="menu-container mobile">
 			<div class="overlay" onclick="showMobileMainMenu()"></div>
 			<div class="content">
-				<!-- <ul>
-					<li>
-						<i class="fas fa-lock"></i>
-						<a href="javascript:alert('Функция временно отключена')">Вход</a> /
-						<a href="javascript:alert('Функция временно отключена')">Регистрация</a>
-					</li>
-				</ul> -->
+				<xsl:call-template name="PERSONAL_MOBILE"/>
 				<ul>
 					<li><i class="fas fa-th-list"></i> <a href="#" onclick="showMobileCatalogMenu(); return false">Каталог продукции</a></li>
 				</ul>
@@ -530,7 +521,8 @@
 					<xsl:value-of select="vendor_code"/></a>
 			</div>
 			<!-- <div class="device__article-number"><xsl:value-of select="code"/></div> -->
-			<a href="https://tme.eu/{manual[1]/link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
+			<xsl:variable name="device-link" select="if(starts-with(manual[1]/link, 'http://') or starts-with(manual[1]/link, 'https://')) then manual[1]/link else concat('https://tme.eu', manual[1]/link)"/>
+					<a href="{$device-link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
 			<!-- <a href="{manual[1]/link}"><xsl:value-of select="manual[1]/name"/></a> -->
 			<xsl:if test="$has_price">
 				<div class="device__price">
@@ -606,7 +598,8 @@
 			<div class="device__info">
 				<div style="position: relative; display: inline-block;">
 					<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
-					<a href="https://tme.eu/{manual[1]/link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
+					<xsl:variable name="device-link" select="if(starts-with(manual[1]/link, 'http://') or starts-with(manual[1]/link, 'https://')) then manual[1]/link else concat('https://tme.eu', manual[1]/link)"/>
+					<a href="{$device-link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
 				</div>
 				<div class="device__description">
 					<div class="small-text device__small-text" title="{name_extra}"><xsl:value-of select="name_extra"/></div>

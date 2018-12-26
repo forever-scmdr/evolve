@@ -250,7 +250,7 @@ public abstract class BasicCartManageCommand extends Command {
 				} catch (NumberFormatException e) { /**/ }
 				if (quantity > 0) {
 					Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-					double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+					double maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(1000000d)).doubleValue();
 					if (maxQuantity > 0)
 						quantity = maxQuantity > quantity ? quantity : maxQuantity;
 					bought.setValue(QTY_PARAM, quantity);

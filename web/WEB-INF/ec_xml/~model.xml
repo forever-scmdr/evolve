@@ -312,11 +312,21 @@
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
+	<item name="main_logos" caption="Логотипы">
+		<child item="main_logo" inline="true"/>
+	</item>
+
+	<item name="main_logo" caption="Логотип" key="name">
+		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
+		<parameter name="pic" type="picture" caption="Картинка"/>
+	</item>
+
 	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="32" ag-hash="-251149995">
 		<parameter name="product" type="string" caption="Код продукта" description="для вывода на главной странице" multiple="true"/>
 		<child item="seo" single="true"/>
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
+		<child item="main_logos" single="true"/>
 	</item>
 
 	<item name="dealer_coords" caption="Дилер" key="name" ag-id="33" ag-hash="-1075960572">

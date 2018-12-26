@@ -4,7 +4,7 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             SEO                                  ////////////-->
-	<assoc name="other_colors" transitive="false" caption="Другие варианты расцветки" ag-id="3" ag-hash="494020991"/>
+	<assoc name="other_colors" transitive="false" caption="Другие варианты расцветки" ag-id="2" ag-hash="494020991"/>
 
 	<item name="seo" caption="SEO" ag-id="4" ag-hash="113757">
 		<parameter name="title" type="string" caption="title"/>
@@ -50,12 +50,12 @@
 	</item>
 
 
-	<item name="plain_catalog" caption="Список товаров" children-per-page="30" children-sorting="DESC" ag-id="142" ag-hash="-1742571868">
+	<item name="plain_catalog" caption="Список товаров" children-per-page="30" children-sorting="DESC" ag-id="140" ag-hash="-1742571868">
 		<child item="plain_section"/>
 	</item>
 
 
-	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="30" children-sorting="ASC" ag-id="143" ag-hash="-328034960">
+	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="30" children-sorting="ASC" ag-id="141" ag-hash="-328034960">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="date" type="date" caption="Дата"/>
 		<child item="product"/>
@@ -312,11 +312,21 @@
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
+	<item name="main_logos" caption="Логотипы" ag-id="142" ag-hash="801008162">
+		<child item="main_logo" inline="true"/>
+	</item>
+
+	<item name="main_logo" caption="Логотип" key="name" ag-id="143" ag-hash="-251255695">
+		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
+		<parameter name="pic" type="picture" caption="Картинка"/>
+	</item>
+
 	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="32" ag-hash="-251149995">
 		<parameter name="product" type="string" caption="Код продукта" description="для вывода на главной странице" multiple="true"/>
 		<child item="seo" single="true"/>
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
+		<child item="main_logos" single="true"/>
 	</item>
 
 	<item name="dealer_coords" caption="Дилер" key="name" ag-id="33" ag-hash="-1075960572">

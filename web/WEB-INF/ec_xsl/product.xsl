@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="$p/name"/>
+	<xsl:variable name="title" select="if (starts-with($p/name, $p/vendor)) then $p/name else concat($p/vendor, ' ', $p/name)"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -134,8 +134,11 @@
 						<div>Обозначение производителя:</div><div class="value"><xsl:value-of select="$p/vendor_code"/></div>
 						<div>Производитель:</div><div class="value"><xsl:value-of select="$p/vendor"/></div>
 						<xsl:for-each select="$p/manual">
+							
+							<xsl:variable name="link" select="if(starts-with(link, 'http://') or starts-with(link, 'https://')) then link else concat('https://tme.eu', link)"/>
+
 							<div><xsl:value-of select="name"/></div><div class="value">
-								<a href="https://tme.eu/{link}">Скачать</a>
+								<a href="{$link}">Скачать</a>
 							</div>
 						</xsl:for-each>
 						<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
