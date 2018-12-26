@@ -785,7 +785,14 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 			}
 			info.increaseProcessed();
 		}
-		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+		try {
+			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+		} catch (Exception e) {
+			ServerLogger.error("Unable to reload new model", e);
+			info.addError("Невозможно создать новую модель данных", e.getLocalizedMessage());
+			info.setOperation("Фатальная ошибка");
+			return;
+		}
 
 		info.setOperation("Заполнение параметров товаров");
 		info.setToProcess(sections.size());
