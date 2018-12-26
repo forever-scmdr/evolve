@@ -3,6 +3,7 @@
 
     <!-- ******************************* Включение для разделов каталога ****************************** -->
     <include-definition name="COMMON">
+        <link name="feedback_link" target="feedback_ajax"/>
         <single item="custom_pages" id="custom_pages" cacheable="false">
             <tree item="custom_page" id="custom_page" tag="menu_custom">
                 <link name="show_page" target="page" type="exclusive">
@@ -37,7 +38,7 @@
             <var name="limit" value="3"/>
             <var name="page" value="1"/>
         </request>
-        <single item="main_page" id="main" >
+        <single item="main_page" id="main">
             <single item="seo"/>
             <list item="featured">
                 <filter>
@@ -107,19 +108,29 @@
             <var name="q"/>
             <var name="view" value="table" scope="cookie"/>
         </request>
-        <!--<list item="searchable" id="prod">-->
-        <!--<filter>-->
-        <!--<fulltext limit="48" compare="EVERY">-->
-        <!--<var var="q"/>-->
-        <!--</fulltext>-->
-        <!--</filter>-->
-        <!--<link name="show_page" target="custom_page" type="exclusive">-->
-        <!--<var name="prod" ref="prod" style="translit"/>-->
-        <!--</link>-->
-        <!--<link name="show_news_item" target="news_item" type="exclusive">-->
-        <!--<var name="prod" ref="prod" style="translit"/>-->
-        <!--</link>-->
-        <!--</list>-->
+        <list item="searchable" id="prod">
+            <filter>
+                <fulltext limit="48" compare="EVERY">
+                    <var var="q"/>
+                </fulltext>
+            </filter>
+            <link name="show_page" target="page" type="exclusive">
+                <var name="prod" ref="prod" style="translit"/>
+            </link>
+            <link name="show_news_item" target="news_item" type="exclusive">
+                <var name="prod" ref="prod" style="translit"/>
+            </link>
+            <ancestor item="news_item" id="ni">
+                <link name="show_news_item" target="news_item" type="exclusive">
+                    <var name="prod" ref="ni" style="translit"/>
+                </link>
+            </ancestor>
+            <ancestor item="custom_page" id="cp">
+                <link name="show_page" target="page" type="exclusive">
+                    <var name="prod" ref="cp" style="translit"/>
+                </link>
+            </ancestor>
+        </list>
         <include name="COMMON"/>
     </page>
 
@@ -157,12 +168,19 @@
         <single item="news_item" var="ni" cacheable="false" cache-vars="ni">
             <single item="seo"/>
             <single item="top_gal"/>
+            <single item="comments" id="comment">
+                <tree item="comment"/>
+                <link name="comment_link" target="comment_ajax">
+                    <var name="id" ref="comment"/>
+                    <var name="big_id" ref="comment"/>
+                </link>
+            </single>
             <ancestor item="news"/>
         </single>
         <include name="COMMON"/>
     </page>
 
-    <page name="page">
+    <page name="page" template="page">
         <request>
             <var name="p" style="translit"/>
         </request>
@@ -192,11 +210,37 @@
         </link>
     </page>
 
+    <page name="comment_ajax" template="comment_ajax">
+        <request>
+            <var name="id"/>
+            <var name="big_id"/>
+            <var name="result"/>
+            <var name="message"/>
+        </request>
+
+        <single item="comments" var="big_id" id="comments">
+            <tree item="comment"/>
+            <link name="comment_link" target="comment_ajax">
+                <var name="id" ref="comments"/>
+                <var name="big_id" var="big_id"/>
+            </link>
+        </single>
+
+        <new item="comment" id="form" tag="comment_form">
+            <parameter-input ref="form" form="feedback"/>
+        </new>
+        <link name="submit_link" target="comments_command" type="itemform">
+            <var name="big_id" var="big_id"/>
+            <var name="form_name" value="feedback"/>
+            <var name="source_page" value="comment_ajax"/>
+        </link>
+    </page>
+
 
     <page name="feedback_command">
         <request>
             <var name="topic" value="Обратная связь"/>
-            <var name="email" value="forever@forever-ds.com"/>
+            <var name="email" value="bio@forever-ds.com"/>
             <var name="form_name"/>
             <var name="source_page"/>
             <var name="required" value="phone|email, message"/>
@@ -207,7 +251,7 @@
         </link>
         <link name="error_not_set" target-var="source_page">
             <var name="result" value="error"/>
-            <var name="message" value="Заполните, пожалуйста, обязательные поля"/>
+            <var name="message" value="Заполните, пожалуйста, все поля"/>
         </link>
         <link name="general_error" target-var="source_page">
             <var name="result" value="error"/>
@@ -221,6 +265,34 @@
         </command>
     </page>
 
+    <page name="comments_command">
+        <request>
+            <var name="big_id"/>
+            <var name="id"/>
+            <var name="source_page"/>
+        </request>
+        <link name="success" target-var="source_page">
+            <var name="big_id" var="big_id"/>
+            <var name="result" value="success"/>
+            <var name="message" value="Комментарий отправлен, спасибо"/>
+        </link>
+        <link name="error_not_set" target-var="source_page">
+            <var name="big_id" var="big_id"/>
+            <var name="result" value="error"/>
+            <var name="message" value="Заполните, пожалуйста, обязательные поля"/>
+        </link>
+        <link name="general_error" target-var="source_page">
+            <var name="big_id" var="big_id"/>
+            <var name="result" value="error"/>
+            <var name="message"
+                 value="Комментарий не может быть отправлен сейчас из-за ошибки сервера. Пожалуйста, попробуйте позже."/>
+        </link>
+        <command class="extra.CommentCommand">
+            <result name="success" type="redirect"/>
+            <result name="error_not_set" type="redirect"/>
+            <result name="general_error" type="redirect"/>
+        </command>
+    </page>
 
     <!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
     <page name="sitemap" template="sitemap" cacheable="false">
@@ -249,6 +321,7 @@
             <link name="show_news_item" target="news_item" type="exclusive">
                 <var name="ni" ref="ni" style="translit"/>
             </link>
+
         </list>
     </page>
 

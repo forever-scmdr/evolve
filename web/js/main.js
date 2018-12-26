@@ -633,6 +633,19 @@
        });
     };
 
+    /* Reply
+     * ------------------------------------------------------ */
+    var reply = function () {
+        $(document).on("click", ".reply", function (e) {
+           e.preventDefault();
+            var href = $(this).attr("href");
+            $("#reply-to").val(href);
+            var nm = $("#nm-"+href).html();
+            $("#reply-name").html("Ответ для: " + nm);
+        });
+    };
+
+
    /* Initialize
     * ------------------------------------------------------ */
     (function ssInit() {
@@ -648,10 +661,12 @@
         clPlaceholder();
         clAlertBoxes();
         clAOS();
-        clAjaxChimp();
+        //clAjaxChimp();
         clBackToTop();
-        clGoogleMap();
+       // clGoogleMap();
         loadMoreNews();
+        reply();
     })();
         
 })(jQuery);
+

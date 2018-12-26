@@ -88,13 +88,13 @@
                     <xsl:if test="menu_custom != ''">
                         <li class="has-children{' current'[$active_menu_item = $k]}">
                             <a>
-                                <xsl:value-of select="header"/>
+                                <xsl:value-of select="name"/>
                             </a>
                             <ul class="sub-menu">
                                 <xsl:for-each select="menu_custom">
                                     <xsl:variable name="k" select="@key"/>
                                     <li class="{'current'[$active_menu_item = $k]}">
-                                        <a href="{show_page}"><xsl:value-of select="header"/></a>
+                                        <a href="{show_page}"><xsl:value-of select="name"/></a>
                                     </li>
                                 </xsl:for-each>
                             </ul>
@@ -103,7 +103,7 @@
                     <xsl:if test="not(menu_custom)">
                         <xsl:variable name="k" select="@key"/>
                         <li class="{'current'[$active_menu_item = $k]}">
-                            <a href="{show_page}"><xsl:value-of select="header"/></a>
+                            <a href="{show_page}"><xsl:value-of select="name"/></a>
                         </li>
                     </xsl:if>
                 </xsl:for-each>
@@ -164,7 +164,7 @@
                         <ul class="s-footer__linklist">
                             <li><a href="{$main_host}">Главная страница</a></li>
                             <xsl:for-each select="page/custom_pages/menu_custom">
-                                <li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
+                                <li><a href="{show_page}"><xsl:value-of select="name"/></a></li>
                             </xsl:for-each>
                             <li><a href="{page/contacts_link}">Контакты</a></li>
                         </ul>
@@ -242,6 +242,8 @@
         <script src="js/plugins.js"></script>
         <!--<script src="https://maps.googleapis.com/maps/api/js"></script>-->
         <script src="js/main.js"></script>
+        <script type="text/javascript" src="admin/ajax/ajax.js"></script>
+        <script type="text/javascript" src="admin/js/jquery.form.min.js"></script>
     </xsl:template>
 
 
@@ -331,12 +333,12 @@
         <xsl:param name="page"/>
         <xsl:if test="$page/header_pic != ''">
             <h1>
-                <img src="{$page/@path}{$page/header_pic}" alt="{$page/header}"/>
+                <img src="{$page/@path}{$page/header_pic}" alt="{$page/name}"/>
             </h1>
         </xsl:if>
         <xsl:if test="not($page/header_pic) or $page/header_pic = ''">
             <h1>
-                <xsl:value-of select="$page/header"/>
+                <xsl:value-of select="$page/name"/>
             </h1>
         </xsl:if>
     </xsl:template>

@@ -100,7 +100,7 @@
 					<div class="entry__date">
 						<a href="{show_page}"><xsl:value-of select="date"/></a>
 					</div>
-					<div class="h1 entry__title"><a href="{show_page}"><xsl:value-of select="header"/></a></div>
+					<div class="h1 entry__title"><a href="{show_page}"><xsl:value-of select="name"/></a></div>
 				</div>
 				<div class="entry__excerpt">
 					<xsl:value-of select="short" disable-output-escaping="yes"/>

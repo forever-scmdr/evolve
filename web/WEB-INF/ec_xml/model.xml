@@ -37,8 +37,26 @@
 		<child item="url_seo" />
 	</item>
 
+	<item name="comment" caption="Комметнарий" key="email date" ag-id="24" ag-hash="950398559">
+		<parameter name="name" type="String" caption="Имя"/>
+		<parameter name="email" type="String" caption="email"/>
+		<parameter name="date" type="date" caption="email"/>
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="moderated" type="byte" domain="0-1" caption="одобрен?"/>
+		<child item="comment"/>
+	</item>
+
+	<item name="comments" caption="Комменатрии" ag-id="25" ag-hash="-602415628">
+		<child item="comment"/>
+	</item>
+
 	<item name="news_wrap" caption="Новостые разделы" ag-id="4" ag-hash="301189686">
 		<child item="news"/>
+	</item>
+
+	<item name="searchable" virtual="true" key="name" ag-id="26" ag-hash="-710088958">
+		<parameter name="name" caption="Название" type="string" text-index="fulltext"/>
+		<parameter name="text" caption="Текст" type="text" text-index="fulltext"/>
 	</item>
 
 	<item name="feedback_params" caption="Параметры обратной связи" ag-id="5" ag-hash="-1139606656">
@@ -48,12 +66,10 @@
 		<!--<parameter name="encoding" type="string" caption="Кодировка" description="В большинстве случаев подходит UTF-8"/>-->
 	</item>
 
-	<item name="page_part" virtual="true" key="name" ag-id="19" ag-hash="883751843">
-		<parameter name="name" type="string" caption="Название"/>
+	<item name="page_part" virtual="true" key="name" super="searchable" ag-id="19" ag-hash="883751843">
 	</item>
 
-	<item name="text_part" caption="Текстовый блок" super="page_part" ag-id="20" ag-hash="-1037694011">
-		<parameter name="text" type="text" caption="Текст"/>
+	<item name="text_part" caption="Текстовый блок" super="page_part *" ag-id="20" ag-hash="-1037694011">
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
@@ -75,19 +91,19 @@
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
-	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" default-page="news_item" ag-id="6" ag-hash="300774655" >
+	<item name="news_item" key="name date" caption="Новость или статья" key-unique="true" default-page="news_item" super="searchable" ag-id="6" ag-hash="300774655">
 		<child item="seo" single="true"/>
-		<parameter name="header" type="string" caption="Заголовок"/>
+		<parameter name="header" type="string" caption="Заголовок" text-index="fulltext"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="video_url" type="string" caption="Ссылка на видео"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000"/>
 		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;"/>
 		<parameter name="small_pic" type="picture" caption="Маленькое изображение" description="500" format="width: 500; src: main_pic;"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
-		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<child item="page_part"/>
 		<child item="top_gal" single="true"/>
+		<child item="comments" single="true"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
@@ -117,7 +133,8 @@
 		<child item="seo" single="true"/>
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="map" type="plain-text" caption="Код карты" format="height: 50px"/>
-		<parameter name="bottom_text" type="text" caption="Как добраться"/>
+		<parameter name="address" type="tiny-text" caption="Адрес"/>
+		<parameter name="phones" type="tiny-text" caption="Контактные данные"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
@@ -147,17 +164,16 @@
 		<child item="custom_page"/>
 	</item>
 
-	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" default-page="page" ag-id="13" ag-hash="-1777660259">
+	<item name="custom_page" caption="Одиночная страница" key="name" key-unique="true" super="searchable" default-page="page" ag-id="13" ag-hash="-1777660259">
 		<child item="seo" single="true"/>
 		<child item="custom_page"/>
-		<parameter name="header" type="string" caption="Заголовок"/>
+		<parameter name="header" type="string" caption="Заголовок" text-index="fulltext"/>
 		<parameter name="video_url" type="string" caption="Ссылка на видео"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000"/>
 		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;"/>
 		<parameter name="small_pic" type="picture" caption="Маленькое изображение" description="500" format="width: 500; src: main_pic;"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей"/>
 		<parameter name="in_main_menu" type="string" domain="yes-no" caption="Выводить в главном меню"/>
-		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<child item="page_part"/>
 		<child item="top_gal" single="true"/>
@@ -182,6 +198,8 @@
 		<on-update class="ecommander.fwk.WriteToDestFileFactory"/>
 		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
 	</item>
+
+
 
 	<root>
 		<child item="feedback_params" single="true" />

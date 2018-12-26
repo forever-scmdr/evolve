@@ -3,10 +3,6 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
-	</xsl:template>
-
 
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -15,54 +11,29 @@
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 	<xsl:variable name="title" select="concat('Поиск по запросу ', page/variables/q)" />
 
+	<xsl:variable name="news_items" select="/page/news_item"/>
+	<xsl:variable name="news_parts" select="/page/text_part[news_item[@id != $news_items/@id]]"/>
+
+	<xsl:variable name="custom_pages" select="/page/custom_page"/>
+	<xsl:variable name="custom_parts" select="/page/text_part[custom_page[@id != $custom_pages/@id]]"/>
+
 	<xsl:template name="CONTENT">
-		<!-- CONTENT BEGIN -->
-		<div class="path-container">
-			<div class="path">
-				<a href="/">Главная страница</a>
-			</div>
-			<xsl:call-template name="PRINT"/>
-		</div>
-		<h1>Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
-
-		<div class="page-content m-t">
-
-			<xsl:if test="$products">
-				<div class="view-container desktop">
-					<div class="view">
-						<span>Показывать:</span>
-						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
-						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
-						<!-- <div class="checkbox">
-							<label>
-								<xsl:if test="not($only_available)">
-									<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
-								</xsl:if>
-								<xsl:if test="$only_available">
-									<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
-								</xsl:if>
-								в наличии
-							</label>
-						</div> -->
-					</div>
+		<section class="s-content">
+			<div class="row narrow">
+				<div class="col-full s-content__header" data-aos="fade-up">
+					<h1>
+						<xsl:value-of select="$title"/>
+					</h1>
 				</div>
-			</xsl:if>
-
-			<div class="catalog-items{' lines'[$view = 'list']}">
-				<xsl:apply-templates select="$products"/>
-				<xsl:if test="not($products)">
-					<h4>По заданным критериям товары не найдены</h4>
-				</xsl:if>
 			</div>
-
-		</div>
-
-		<xsl:call-template name="ACTIONS_MOBILE"/>
+			<div class="row masonry-wrap">
+				<div class="masonry" id="add-content">
+					<div class="grid-sizer"></div>
+					<xsl:apply-templates select="/page/selected_news/news_item" mode="masonry"/>
+				</div>
+			</div>
+		</section>
 	</xsl:template>
 
-
-	<xsl:template name="EXTRA_SCRIPTS">
-		<xsl:call-template name="CART_SCRIPT"/>
-	</xsl:template>
 
 </xsl:stylesheet>

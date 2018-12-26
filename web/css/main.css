@@ -3114,7 +3114,7 @@ html.no-csstransitions .featured {
 }
 
 .s-extra .popular__thumb img {
-   height: 6.9rem;
+   /*height: 6.9rem;*/
    width: 6.9rem;
 }
 
@@ -4010,7 +4010,7 @@ footer h4::after {
    list-style: none;
    margin: 0;
    padding: 1.8rem 0;
-   padding-left: 14%;
+   /*padding-left: 14%;*/
 }
 
 .comment__avatar {
@@ -4215,5 +4215,17 @@ footer h4::after {
 #cForm {
    margin-top: 3.6rem;
 }
-
+#modal-feedback .required{
+   overflow: hidden;
+   margin: 0 0 0 0;
+   padding: 0 0 0 0;
+   width: 0;
+   height: 0;
+   visibility: hidden;
+}
 /*# sourceMappingURL=main.css.map */
+
+#map-wrap iframe{
+   width: 100%;
+   height: 100%;
+}

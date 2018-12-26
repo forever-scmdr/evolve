@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="$ni/header" />
+	<xsl:variable name="title" select="$ni/name" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'news'"/>
 
@@ -89,7 +89,67 @@
 				</div>
 
 			</article>
+
+			<xsl:call-template name="COMMENTS"/>
+
 		</section>
+	</xsl:template>
+
+	<xsl:template name="COMMENTS">
+		<xsl:if test="$ni/comments">
+			<div class="comments-wrap">
+				<div id="comments" class="row">
+					<div class="col-full">
+						<xsl:if test="$ni/comments/comment">
+							<h3 class="h2"><xsl:value-of select="count($ni/comments//comment)"/> Комментариев</h3>
+							<ol class="commentlist" id="comment-{$ni/comments/@id}">
+								<xsl:for-each select="$ni/comments/comment">
+									<xsl:call-template name="COMMENT">
+										<xsl:with-param name="comment" select="."/>
+										<xsl:with-param name="level" select="1" />
+									</xsl:call-template>
+								</xsl:for-each>
+							</ol>
+						</xsl:if>
+						<div class="respond" id="modal-feedback" ajax-href="{$ni/comments/comment_link}" show-loader="yes">
+						</div>
+					</div>
+				</div>
+			</div>
+		</xsl:if>
+		<xsl:if test="not($ni/comments)">
+			<div style="height: 3rem;"></div>
+		</xsl:if>
+	</xsl:template>
+
+
+	<xsl:template name="COMMENT">
+		<xsl:param name="comment"/>
+		<xsl:param name="level"/>
+
+		<li class="{'thread-alt '[$level = 0]}depth-{$level+1} comment" id="cmt-{$comment/@id}">
+			<div class="comment__content">
+				<cite><xsl:value-of select="$comment/name"/></cite>
+				<div class="comment__meta">
+					<time class="comment__time"><xsl:value-of select="$comment/date"/></time>
+					<a class="reply" href="{$comment/@id}">Ответить</a>
+				</div>
+				<div class="comment__text">
+					<xsl:value-of select="$comment/text" disable-output-escaping="yes"/>
+				</div>
+				<xsl:if test="$comment/comment">
+					<ul class="children">
+						<xsl:for-each select="$comment/comment">
+							<xsl:call-template name="COMMENT">
+								<xsl:with-param name="comment" select="."/>
+								<xsl:with-param name="level" select="$level+1" />
+							</xsl:call-template>
+						</xsl:for-each>
+					</ul>
+				</xsl:if>
+			</div>
+		</li>
+
 	</xsl:template>
 
 </xsl:stylesheet>
