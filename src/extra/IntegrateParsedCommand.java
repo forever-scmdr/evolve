@@ -38,7 +38,7 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 		sectionType = ItemTypeRegistry.getItemType(SECTION);
 		productType = ItemTypeRegistry.getItemType(PRODUCT);
 		//productExtraType = ItemTypeRegistry.getItemType(PRODUCT_EXTRA);
-		manualType = ItemTypeRegistry.getItemType(MANUAL);
+		//manualType = ItemTypeRegistry.getItemType(MANUAL);
 		paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML);
 		infoProvider = new ParsedInfoProvider();
 		return infoProvider.isValid();
@@ -208,7 +208,7 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(techItem).noFulltextIndex().ignoreFileErrors());
 				*/
 				}
-
+				/*
 				Elements manuals = productDoc.getElementsByTag(MANUALS_ELEMENT).first().getElementsByTag(MANUAL);
 				for (Element manual : manuals) {
 					Item manualItem = Item.newChildItem(manualType, product);
@@ -216,7 +216,7 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 					manualItem.setValue(LINK_PARAM, manual.getElementsByTag(FILE_ELEMENT).first().ownText());
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(manualItem).noFulltextIndex().ignoreFileErrors());
 				}
-
+				*/
 				// комплектность поставки
 /*
 			if (StringUtils.isNotBlank(packageTxt)) {

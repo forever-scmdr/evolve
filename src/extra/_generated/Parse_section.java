@@ -1,5 +1,5 @@
 
-package lunacrawler.fwk;
+package extra._generated;
 
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;

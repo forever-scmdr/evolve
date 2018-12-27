@@ -12,11 +12,13 @@ public class User_jur
     public final static String EMAIL = "email";
     public final static String PHONE = "phone";
     public final static String PASSWORD = "password";
+    public final static String PAYMENT = "payment";
     public final static String ORGANIZATION = "organization";
     public final static String CONTACT_NAME = "contact_name";
     public final static String CONTACT_PHONE = "contact_phone";
     public final static String ADDRESS = "address";
     public final static String SHIP_TYPE = "ship_type";
+    public final static String PAY_TYPE = "pay_type";
     public final static String NO_ACCOUNT = "no_account";
     public final static String ACCOUNT = "account";
     public final static String BANK = "bank";
@@ -94,6 +96,22 @@ public class User_jur
 
     public boolean contains_password(String value) {
         return containsValue("password", value);
+    }
+
+    public void set_payment(String value) {
+        setValue("payment", value);
+    }
+
+    public String get_payment() {
+        return getStringValue("payment");
+    }
+
+    public String getDefault_payment(String defaultVal) {
+        return getStringValue("payment", defaultVal);
+    }
+
+    public boolean contains_payment(String value) {
+        return containsValue("payment", value);
     }
 
     public void set_organization(String value) {
@@ -174,6 +192,22 @@ public class User_jur
 
     public boolean contains_ship_type(String value) {
         return containsValue("ship_type", value);
+    }
+
+    public void set_pay_type(String value) {
+        setValue("pay_type", value);
+    }
+
+    public String get_pay_type() {
+        return getStringValue("pay_type");
+    }
+
+    public String getDefault_pay_type(String defaultVal) {
+        return getStringValue("pay_type", defaultVal);
+    }
+
+    public boolean contains_pay_type(String value) {
+        return containsValue("pay_type", value);
     }
 
     public void set_no_account(String value) {

@@ -12,6 +12,7 @@ public class Seo
 {
 
     public final static String _NAME = "seo";
+    public final static String KEY_UNIQUE = "key_unique";
     public final static String TITLE = "title";
     public final static String H1 = "h1";
     public final static String DESCRIPTION = "description";
@@ -20,6 +21,7 @@ public class Seo
     public final static String TEXT = "text";
     public final static String BOTTOM_TEXT = "bottom_text";
     public final static String TEXT_PIC = "text_pic";
+    public final static String EXTRA_STYLE = "extra_style";
 
     private Seo(Item item) {
         super(item);
@@ -38,6 +40,22 @@ public class Seo
 
     public static Seo newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
+    }
+
+    public void set_key_unique(String value) {
+        setValue("key_unique", value);
+    }
+
+    public String get_key_unique() {
+        return getStringValue("key_unique");
+    }
+
+    public String getDefault_key_unique(String defaultVal) {
+        return getStringValue("key_unique", defaultVal);
+    }
+
+    public boolean contains_key_unique(String value) {
+        return containsValue("key_unique", value);
     }
 
     public void set_title(String value) {
@@ -166,6 +184,22 @@ public class Seo
 
     public boolean contains_text_pic(File value) {
         return containsValue("text_pic", value);
+    }
+
+    public void set_extra_style(String value) {
+        setValue("extra_style", value);
+    }
+
+    public String get_extra_style() {
+        return getStringValue("extra_style");
+    }
+
+    public String getDefault_extra_style(String defaultVal) {
+        return getStringValue("extra_style", defaultVal);
+    }
+
+    public boolean contains_extra_style(String value) {
+        return containsValue("extra_style", value);
     }
 
 }

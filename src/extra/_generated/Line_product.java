@@ -8,11 +8,11 @@ import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Product
+public class Line_product
     extends Item
 {
 
-    public final static String _NAME = "product";
+    public final static String _NAME = "line_product";
     public final static String NAME = "name";
     public final static String CODE = "code";
     public final static String PRICE = "price";
@@ -39,24 +39,23 @@ public class Product
     public final static String GALLERY = "gallery";
     public final static String ASSOC_CODE = "assoc_code";
     public final static String TAG = "tag";
-    public final static String HAS_LINES = "has_lines";
 
-    private Product(Item item) {
+    private Line_product(Item item) {
         super(item);
     }
 
-    public static Product get(Item item) {
+    public static Line_product get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'product' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'line_product' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Product(item);
+        return new Line_product(item);
     }
 
-    public static Product newChild(Item parent) {
+    public static Line_product newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
@@ -496,28 +495,6 @@ public class Product
 
     public boolean contains_tag(String value) {
         return containsValue("tag", value);
-    }
-
-    public void set_has_lines(Byte value) {
-        setValue("has_lines", value);
-    }
-
-    public void setUI_has_lines(String value)
-        throws Exception
-    {
-        setValueUI("has_lines", value);
-    }
-
-    public Byte get_has_lines() {
-        return getByteValue("has_lines");
-    }
-
-    public Byte getDefault_has_lines(Byte defaultVal) {
-        return getByteValue("has_lines", defaultVal);
-    }
-
-    public boolean contains_has_lines(Byte value) {
-        return containsValue("has_lines", value);
     }
 
 }

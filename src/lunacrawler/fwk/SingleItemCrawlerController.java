@@ -238,7 +238,7 @@ public class SingleItemCrawlerController {
 	public void startStage(State...initState) throws Exception {
 		info.pushLog("Начало работы");
 		if (sectionsToProcess.size() == 0) {
-			List<Item> items = new ItemQuery(Parse_section._ITEM_TYPE_NAME).loadItems();
+			List<Item> items = new ItemQuery(Parse_section._NAME).loadItems();
 			for (Item item : items) {
 				sectionsToProcess.add(Parse_section.get(item));
 			}
@@ -277,7 +277,7 @@ public class SingleItemCrawlerController {
 		info.setOperation("Сброс состояния до " + state);
 		State nextState = State.INIT;
 		if (state == State.HTML || state == State.TRANSFORM || state == State.FILES) {
-			List<Item> sections = new ItemQuery(Parse_section._ITEM_TYPE_NAME).loadItems();
+			List<Item> sections = new ItemQuery(Parse_section._NAME).loadItems();
 			int secCount = sections.size();
 			info.setLineNumber(secCount);
 			for (Item section : sections) {
@@ -434,9 +434,9 @@ public class SingleItemCrawlerController {
 				pi.set_url(url);
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pi));
 				if (original == null) {
-					info.pushLog("NEW - {} - {}", currentSection.get_name(), url);
+					info.pushLog("NEW - {}", url);
 				} else {
-					info.pushLog("DUPLICATED - {} - {}", currentSection.get_name(), url);
+					info.pushLog("DUPLICATED - {}", url);
 				}
 			}
 			info.setProcessed(++processedCount);

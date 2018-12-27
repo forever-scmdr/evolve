@@ -3,11 +3,12 @@ package extra;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
 import ecommander.model.*;
-import ecommander.model.User;
+import ecommander.persistence.commandunits.CopyItemDBUnit;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import extra._generated.ItemNames;
 import lunacrawler.fwk.Parse_item;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,29 +30,30 @@ import java.util.List;
  */
 public class DeployParsedSingle extends IntegrateBase {
 
-	private final byte USER_GROUP_ID = UserGroupRegistry.getDefaultGroup();
-	private final int USER_ID = User.ANONYMOUS_ID;
+	protected final byte USER_GROUP_ID = UserGroupRegistry.getDefaultGroup();
+	protected final int USER_ID = User.ANONYMOUS_ID;
 
-	private final String ID = "id";
-	private final String CODE = "code";
-	private final String NAME = "name";
-	private final String SHORT = "short";
-	private final String GALLERY = "gallery";
-	private final String PICTURE = "picture";
-	private final String VIDEO = "video";
-	private final String TEXT = "text";
-	private final String APPLY = "apply";
-	private final String TEXTPICS = "textpics";
-	private final String IMG = "img";
-	private final String DOWNLOAD = "download";
-	private final String ASSOCIATED = "associated";
-	private final String ACCESSORY = "accessory";
-	private final String SET = "set";
-	private final String PROBE = "probe";
-	private final String TECH = "tech";
-	private final String TAG = "tag";
-	private final String PARAMETER = "parameter";
-	private final String VALUE = "value";
+	protected final String ID = "id";
+	protected final String CODE = "code";
+	protected final String NAME = "name";
+	protected final String SHORT = "short";
+	protected final String GALLERY = "gallery";
+	protected final String PICTURE = "picture";
+	protected final String VIDEO = "video";
+	protected final String TEXT = "text";
+	protected final String APPLY = "apply";
+	protected final String TEXTPICS = "textpics";
+	protected final String IMG = "img";
+	protected final String DOWNLOAD = "download";
+	protected final String ASSOCIATED = "associated";
+	protected final String ACCESSORY = "accessory";
+	protected final String SET = "set";
+	protected final String PROBE = "probe";
+	protected final String TECH = "tech";
+	protected final String TAG = "tag";
+	protected final String PARAMETER = "parameter";
+	protected final String VALUE = "value";
+	protected final String PARAMS_XML = "params_xml";
 
 	private final String CONTAINS = "contains";
 
@@ -59,7 +61,7 @@ public class DeployParsedSingle extends IntegrateBase {
 	protected boolean makePreparations() throws Exception {
 		info.setOperation("Перенос разобранных товаров в каталог");
 		return true;
-}
+	}
 
 	@Override
 	protected void integrate() throws Exception {
@@ -94,13 +96,13 @@ public class DeployParsedSingle extends IntegrateBase {
 			// Создать и заполнить все товары
 			for (Item item : secPIs.values()) {
 				Parse_item pi = Parse_item.get(item);
-				Product prod = deployParsed(pi, backSection);
+				Product prod = deployParsed(pi, backSection, false);
 				if (prod == null) {
 					info.pushLog("ОШИБКА ! Товар {} НЕ ДОБАВЛЕН в раздел {}", pi.get_url(), sec.getStringValue("name"));
 					continue;
 				}
 				if (!ItemQuery.isAncestor(prod.getId(), sec.getId(), CONTAINS_ASSOC)) {
-					executeCommandUnit(new CreateAssocDBUnit(prod, sec, CONTAINS_ASSOC));
+					//executeCommandUnit(new CreateAssocDBUnit(prod, sec, CONTAINS_ASSOC));
 					commitCommandUnits();
 					info.pushLog("Товар {} добавлен в раздел {}", prod.get_name(), sec.getStringValue("name"));
 				} else {
@@ -113,7 +115,17 @@ public class DeployParsedSingle extends IntegrateBase {
 		LuceneIndexMapper.getSingleton().finishUpdate();
 	}
 
-	private Product deployParsed(Parse_item pi, Item parentSection) throws Exception {
+	/**
+	 * Размещение товара в каталоге
+	 * Коммит транзакции не присходит в методе, за это отвечает вызывающий метод.
+	 * Это нужно чтобы исключить ошибки, которые не могут быть проверены в этом методе.
+	 * @param pi
+	 * @param parentSection
+	 * @param doCopy
+	 * @return
+	 * @throws Exception
+	 */
+	protected Product deployParsed(Parse_item pi, Item parentSection, boolean doCopy) throws Exception {
 		// Если айтем для парсинга - дублированный, найти оригинальный айтем
 		if (pi.get_duplicated() == (byte) 1) {
 			Item original = new ItemQuery(Parse_item._NAME)
@@ -130,11 +142,15 @@ public class DeployParsedSingle extends IntegrateBase {
 		Document doc = Jsoup.parse(pi.get_xml(), "localhost", Parser.xmlParser());
 		String code = JsoupUtils.nodeText(doc, CODE);
 
-		// Проверка, если айтем существует - ничего не делать
-		// (Просто создать ссылку на этот продукт в вызывающем методе)
+		// Проверка, если айтем существует - создать копию этого продукта
 		Item product = ItemQuery.loadSingleItemByParamValue(Product._NAME, "code", code);
-		if (product != null)
-			return Product.get(product);
+		if (product != null) {
+			if (doCopy) {
+				executeCommandUnit(new CopyItemDBUnit(product, parentSection));
+			} else {
+				return Product.get(product);
+			}
+		}
 
 		// Создать сам продукт и все вложенные айтемы в одной транзакции
 		//
@@ -143,7 +159,7 @@ public class DeployParsedSingle extends IntegrateBase {
 		Product prod = Product.get(ItemUtils.newChildItem(Product._NAME, parentSection));
 		prod.set_code(code);
 		prod.set_name(JsoupUtils.nodeText(doc, NAME));
-		prod.set_short(RF_to_RB(JsoupUtils.nodeHtml(doc, SHORT)));
+		//prod.set_short(RF_to_RB(JsoupUtils.nodeHtml(doc, SHORT)));
 		prod.set_text(RF_to_RB(JsoupUtils.nodeHtml(doc, TEXT)));
 		//prod.set_tech(RF_to_RB(JsoupUtils.nodeHtml(doc, TECH)));
 		//prod.set_apply(RF_to_RB(JsoupUtils.nodeHtml(doc, APPLY)));
@@ -198,6 +214,14 @@ public class DeployParsedSingle extends IntegrateBase {
 		// Сохранение продукта
 		executeCommandUnit(SaveItemDBUnit.get(prod));
 
+		// Параметры XML
+		String paramsXml = JsoupUtils.nodeHtml(doc, PARAMS_XML);
+		if (StringUtils.isNotBlank(paramsXml)) {
+			Item xmlItem = ItemUtils.newChildItem(ItemNames.PARAMS_XML, prod);
+			xmlItem.setValue(ItemNames.params_xml_.XML, paramsXml);
+			executeCommandUnit(SaveItemDBUnit.get(xmlItem));
+		}
+
 		// Создание тэгов
 		/*
 		for (Element tag : doc.getElementsByTag(TAG)) {
@@ -220,34 +244,25 @@ public class DeployParsedSingle extends IntegrateBase {
 		*/
 
 		// Исправить адреса картинок в HTML
-		//updatePics(prod, ItemNames.product.TEXT, ItemNames.product.TEXT_PICS);
+		updatePics(prod, ItemNames.product_.TEXT, ItemNames.product_.TEXT_PICS);
 		//updatePics(prod, ItemNames.product.APPLY, ItemNames.product.TEXT_PICS);
 		executeCommandUnit(SaveItemDBUnit.get(prod));
 
 		return prod;
 	}
 
-	private void updatePics(Item item, String textParamName, String picParamName) {
+	protected void updatePics(Item item, String textParamName, String picParamName) {
 		HashSet<String> picNames = new HashSet<>();
 		picNames.addAll(item.outputValues(picParamName));
 		Document doc = Jsoup.parse(item.getStringValue(textParamName));
 		// Элементы img src
 		updateDocTagAttributeWithPic(doc, "img", "src", item, picNames);
-		/*
-		for (Element img : doc.getElementsByTag("img")) {
-			String src = img.attr("src");
-			String fileName = Strings.getFileName(src);
-			if (picNames.contains(fileName)) {
-				String newSrc = AppContext.getFilesUrlPath(item.isFileProtected()) + item.getRelativeFilesPath() + fileName;
-				img.attr("src", newSrc);
-			}
-		} */
 		// Элементы a href
 		updateDocTagAttributeWithPic(doc, "a", "href", item, picNames);
 		item.setValue(textParamName, JsoupUtils.outputHtmlDoc(doc));
 	}
 
-	private void updateDocTagAttributeWithPic(Element parentEl, String tag, String attr, Item item, HashSet<String> pics) {
+	protected void updateDocTagAttributeWithPic(Element parentEl, String tag, String attr, Item item, HashSet<String> pics) {
 		for (Element el : parentEl.getElementsByTag(tag)) {
 			String attrOldFileName = el.attr(attr);
 			String correctFileName = Strings.getFileName(attrOldFileName);

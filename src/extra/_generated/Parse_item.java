@@ -1,12 +1,11 @@
 
-package lunacrawler.fwk;
-
-import ecommander.controllers.AppContext;
-import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
+package extra._generated;
 
 import java.io.File;
 import java.util.List;
+import ecommander.controllers.AppContext;
+import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
 
 public class Parse_item
     extends Item

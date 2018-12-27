@@ -12,6 +12,7 @@ public class User
     public final static String EMAIL = "email";
     public final static String PHONE = "phone";
     public final static String PASSWORD = "password";
+    public final static String PAYMENT = "payment";
 
     private User(Item item) {
         super(item);
@@ -78,6 +79,22 @@ public class User
 
     public boolean contains_password(String value) {
         return containsValue("password", value);
+    }
+
+    public void set_payment(String value) {
+        setValue("payment", value);
+    }
+
+    public String get_payment() {
+        return getStringValue("payment");
+    }
+
+    public String getDefault_payment(String defaultVal) {
+        return getStringValue("payment", defaultVal);
+    }
+
+    public boolean contains_payment(String value) {
+        return containsValue("payment", value);
     }
 
 }

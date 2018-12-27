@@ -12,7 +12,6 @@ public class Section
 
     public final static String _NAME = "section";
     public final static String NAME = "name";
-    public final static String CODE = "code";
     public final static String SHOW_SUBS = "show_subs";
     public final static String SUB_VIEW = "sub_view";
     public final static String SHOW_DEVICES = "show_devices";
@@ -54,22 +53,6 @@ public class Section
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
-    }
-
-    public void set_code(String value) {
-        setValue("code", value);
-    }
-
-    public String get_code() {
-        return getStringValue("code");
-    }
-
-    public String getDefault_code(String defaultVal) {
-        return getStringValue("code", defaultVal);
-    }
-
-    public boolean contains_code(String value) {
-        return containsValue("code", value);
     }
 
     public void set_show_subs(Byte value) {

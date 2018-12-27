@@ -1,0 +1,67 @@
+package extra;
+
+import ecommander.controllers.AppContext;
+import ecommander.fwk.*;
+import ecommander.model.*;
+import ecommander.model.User;
+import ecommander.persistence.commandunits.CreateAssocDBUnit;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.LuceneIndexMapper;
+import extra._generated.ItemNames;
+import lunacrawler.fwk.Parse_item;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+/**
+ * Размещает на сайте информацию, полученную с помощью парсинга
+ * Created by E on 15/2/2018.
+ */
+public class DeployParsedSingleSameCatalog extends DeployParsedSingle {
+
+	@Override
+	protected boolean makePreparations() throws Exception {
+		info.setOperation("Перенос разобранных товаров в каталог");
+		return true;
+	}
+
+	@Override
+	protected void integrate() throws Exception {
+		int processed = 0;
+		info.limitLog(5000);
+		List<Item> parseSections = new ItemQuery(ItemNames.PARSE_SECTION).loadItems();
+		for (Item ps : parseSections) {
+			Item section = new ItemQuery(ItemNames.SECTION).setChildId(ps.getId(), false).loadFirstItem();
+			info.pushLog("Обработка раздела {}", section.getStringValue(NAME));
+			List<Item> secPIs = new ItemQuery(ItemNames.PARSE_ITEM).setParentId(ps.getId(), false).loadItems();
+			if (secPIs.size() == 0)
+				continue;
+
+			// Создать и заполнить все товары
+			for (Item item : secPIs) {
+				Parse_item pi = Parse_item.get(item);
+				Product prod = deployParsed(pi, section, true);
+				if (prod == null) {
+					info.pushLog("ОШИБКА ! Товар {} НЕ ДОБАВЛЕН в раздел {}", pi.get_url(), section.getStringValue(ItemNames.section_.NAME));
+					continue;
+				} else {
+					commitCommandUnits();
+				}
+				info.setProcessed(++processed);
+			}
+		}
+		LuceneIndexMapper.getSingleton().finishUpdate();
+	}
+
+}
