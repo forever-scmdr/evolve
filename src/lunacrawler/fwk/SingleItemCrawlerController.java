@@ -10,6 +10,7 @@ import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import net.sf.saxon.TransformerFactoryImpl;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.cxf.common.util.UrlUtils;
 import org.apache.http.client.HttpResponseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,6 +21,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
 import java.util.*;
 import java.util.Map.Entry;
@@ -458,7 +460,7 @@ public class SingleItemCrawlerController {
 				protected void processItem(Parse_item item, String proxy) throws Exception {
 					String html;
 					try {
-						html = WebClient.getString(item.get_url(), proxy);
+						html = WebClient.getCleanHtml(item.get_url(), proxy);
 					} catch (HttpResponseException re) {
 						info.addError("Url status code " + re.getStatusCode(), item.get_url());
 						return;
@@ -566,7 +568,7 @@ public class SingleItemCrawlerController {
 				protected void processItem(Parse_item item, String proxy) throws Exception {
 					Document result = Jsoup.parse(item.get_xml());
 					try {
-						// Прямые загрузки (downlaod="url")
+						// Прямые загрузки (download="url")
 						Elements downloads = result.getElementsByAttribute(DOWNLOAD);
 						for (Element download : downloads) {
 							URL url = new URL(normalizeDownloadUrl(download.attr(DOWNLOAD), item.get_url()));
@@ -607,6 +609,11 @@ public class SingleItemCrawlerController {
 			String protocol = StringUtils.substringBefore(mainParseUrl, "//");
 			return protocol + fileUrl;
 		}
+		URI picUri = URI.create(fileUrl);
+		if (!picUri.isAbsolute()) {
+			URI baseSiteUri = URI.create(mainParseUrl);
+			return baseSiteUri.getScheme() + "://" + baseSiteUri.getHost() + fileUrl;
+		}
 		return fileUrl;
 	}
 
@@ -626,5 +633,9 @@ public class SingleItemCrawlerController {
 
 	private void setTestXSLLink(Parse_item pi) {
 		pi.set_test_url("test_parse_item?pi=" + pi.getId());
+	}
+
+	public static void main(String[] args) {
+		System.out.println(normalizeDownloadUrl("/files/megafile.xml", "http://petronik.ru/catalog/id/218/"));
 	}
 }

@@ -16,6 +16,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -33,8 +34,10 @@ public class DeployParsedSingle extends IntegrateBase {
 	protected final byte USER_GROUP_ID = UserGroupRegistry.getDefaultGroup();
 	protected final int USER_ID = User.ANONYMOUS_ID;
 
+	protected final String PRODUCT = "product";
 	protected final String ID = "id";
 	protected final String CODE = "code";
+	protected final String VENDOR_CODE = "vendor_code";
 	protected final String NAME = "name";
 	protected final String SHORT = "short";
 	protected final String GALLERY = "gallery";
@@ -140,113 +143,119 @@ public class DeployParsedSingle extends IntegrateBase {
 		if (StringUtils.isBlank(pi.get_xml()))
 			return null;
 		Document doc = Jsoup.parse(pi.get_xml(), "localhost", Parser.xmlParser());
-		String code = JsoupUtils.nodeText(doc, CODE);
+		Product prod = null;
+		Elements prodEls = doc.getElementsByTag(PRODUCT);
+		for (Element prodEl : prodEls) {
+			String code = JsoupUtils.nodeText(prodEl, CODE);
 
-		// Проверка, если айтем существует - создать копию этого продукта
-		Item product = ItemQuery.loadSingleItemByParamValue(Product._NAME, "code", code);
-		if (product != null) {
-			if (doCopy) {
-				executeCommandUnit(new CopyItemDBUnit(product, parentSection));
-			} else {
-				return Product.get(product);
+			// Проверка, если айтем существует - создать копию этого продукта
+			Item product = ItemQuery.loadSingleItemByParamValue(Product._NAME, "code", code);
+			if (product != null) {
+				if (doCopy) {
+					executeCommandUnit(new CopyItemDBUnit(product, parentSection));
+				} else {
+					return Product.get(product);
+				}
 			}
-		}
 
-		// Создать сам продукт и все вложенные айтемы в одной транзакции
-		//
+			// Создать сам продукт и все вложенные айтемы в одной транзакции
+			//
 
-		// Создание и заполнение продукта
-		Product prod = Product.get(ItemUtils.newChildItem(Product._NAME, parentSection));
-		prod.set_code(code);
-		prod.set_name(JsoupUtils.nodeText(doc, NAME));
-		//prod.set_short(RF_to_RB(JsoupUtils.nodeHtml(doc, SHORT)));
-		prod.set_text(RF_to_RB(JsoupUtils.nodeHtml(doc, TEXT)));
-		//prod.set_tech(RF_to_RB(JsoupUtils.nodeHtml(doc, TECH)));
-		//prod.set_apply(RF_to_RB(JsoupUtils.nodeHtml(doc, APPLY)));
-		Element associated = doc.getElementsByTag(ASSOCIATED).first();
-		for (Element access : associated.getElementsByTag(ACCESSORY)) {
-			//prod.add_accessiories(access.ownText());
-		}
-		for (Element set : associated.getElementsByTag(SET)) {
-			//prod.add_sets(set.ownText());
-		}
-		for (Element probe : associated.getElementsByTag(PROBE)) {
-			//prod.add_probes(probe.ownText());
-		}
+			// Создание и заполнение продукта
+			prod = Product.get(ItemUtils.newChildItem(Product._NAME, parentSection));
+			prod.set_code(code);
+			prod.set_vendor_code(JsoupUtils.nodeText(prodEl, VENDOR_CODE));
+			prod.set_name(JsoupUtils.nodeText(prodEl, NAME));
+			//prod.set_short(RF_to_RB(JsoupUtils.nodeHtml(doc, SHORT)));
+			prod.set_text(RF_to_RB(JsoupUtils.nodeHtml(prodEl, TEXT)));
+			//prod.set_tech(RF_to_RB(JsoupUtils.nodeHtml(doc, TECH)));
+			//prod.set_apply(RF_to_RB(JsoupUtils.nodeHtml(doc, APPLY)));
+			Element associated = prodEl.getElementsByTag(ASSOCIATED).first();
+			for (Element access : associated.getElementsByTag(ACCESSORY)) {
+				//prod.add_accessiories(access.ownText());
+			}
+			for (Element set : associated.getElementsByTag(SET)) {
+				//prod.add_sets(set.ownText());
+			}
+			for (Element probe : associated.getElementsByTag(PROBE)) {
+				//prod.add_probes(probe.ownText());
+			}
 
-		// Заполнение картинок
-		HashMap<String, File> picFiles = new HashMap<>();
-		List<File> allFiles = pi.getAll_file();
-		for (File file : allFiles) {
-			picFiles.put(file.getName(), file);
-		}
-		Element gallery = doc.getElementsByTag(GALLERY).first();
-		boolean noMainPic = true;
-		for (Element picEl : gallery.getElementsByTag(PICTURE)) {
-			String fileName = Strings.getFileName(picEl.ownText());
-			File pic = picFiles.get(fileName);
-			if (pic != null) {
-				prod.setValue("gallery", pic);
-				picFiles.remove(fileName);
-				if (noMainPic) {
-					try {
-						ByteArrayOutputStream os = ResizeImagesFactory.resize(pic, -1, 300);
-						File mainFile = new File(pic.getParentFile().getCanonicalPath() + "/main_" + pic.getName());
-						FileUtils.writeByteArrayToFile(mainFile, os.toByteArray());
-						prod.setValue("main_pic", mainFile);
-						noMainPic = false;
-					} catch (Exception e) {
-						ServerLogger.error("resize error", e);
-						info.pushLog("ОШИБКА! {}", e.getLocalizedMessage());
+			// Заполнение картинок
+			HashMap<String, File> picFiles = new HashMap<>();
+			List<File> allFiles = pi.getAll_file();
+			for (File file : allFiles) {
+				picFiles.put(file.getName(), file);
+			}
+			Element gallery = prodEl.getElementsByTag(GALLERY).first();
+			boolean noMainPic = true;
+			for (Element picEl : gallery.getElementsByTag(PICTURE)) {
+				String fileName = Strings.getFileName(picEl.ownText());
+				File pic = picFiles.get(fileName);
+				if (pic != null) {
+					prod.setValue("gallery", pic);
+					picFiles.remove(fileName);
+					if (noMainPic) {
+						try {
+							ByteArrayOutputStream os = ResizeImagesFactory.resize(pic, -1, 300);
+							File mainFile = new File(pic.getParentFile().getCanonicalPath() + "/main_" + pic.getName());
+							FileUtils.writeByteArrayToFile(mainFile, os.toByteArray());
+							prod.setValue("main_pic", mainFile);
+							noMainPic = false;
+						} catch (Exception e) {
+							ServerLogger.error("resize error", e);
+							info.pushLog("ОШИБКА! {}", e.getLocalizedMessage());
+						}
 					}
 				}
 			}
-		}
-		for (File picFile : picFiles.values()) {
-			prod.setValue("text_pics", picFile);
-		}
-
-		// Заполнение видео
-		for (Element vidEl : gallery.getElementsByTag(VIDEO)) {
-			prod.setValue("video", vidEl.ownText());
-		}
-
-		// Сохранение продукта
-		executeCommandUnit(SaveItemDBUnit.get(prod));
-
-		// Параметры XML
-		String paramsXml = JsoupUtils.nodeHtml(doc, PARAMS_XML);
-		if (StringUtils.isNotBlank(paramsXml)) {
-			Item xmlItem = ItemUtils.newChildItem(ItemNames.PARAMS_XML, prod);
-			xmlItem.setValue(ItemNames.params_xml_.XML, paramsXml);
-			executeCommandUnit(SaveItemDBUnit.get(xmlItem));
-		}
-
-		// Создание тэгов
-		/*
-		for (Element tag : doc.getElementsByTag(TAG)) {
-			Tag_first tagFirst = Tag_first.get(ItemUtils.newChildItem(ItemNames.TAG_FIRST, prod));
-			tagFirst.set_tag(tag.attr(NAME));
-			executeCommandUnit(SaveItemDBUnit.get(tagFirst));
-			for (Element param : tag.getElementsByTag(PARAMETER)) {
-				String name = JsoupUtils.nodeText(param, NAME);
-				for (Element value : param.getElementsByTag(VALUE)) {
-					String valStr = value.ownText();
-					Tag_second tagSecond = Tag_second.get(ItemUtils.newChildItem(ItemNames.TAG_SECOND, tagFirst));
-					tagSecond.set_name(name);
-					tagSecond.set_value(valStr);
-					tagSecond.set_name_value(name + ":" + valStr);
-					executeCommandUnit(SaveItemDBUnit.get(tagSecond));
-				}
-
+			for (File picFile : picFiles.values()) {
+				prod.setValue("text_pics", picFile);
 			}
-		}
-		*/
 
-		// Исправить адреса картинок в HTML
-		updatePics(prod, ItemNames.product_.TEXT, ItemNames.product_.TEXT_PICS);
-		//updatePics(prod, ItemNames.product.APPLY, ItemNames.product.TEXT_PICS);
-		executeCommandUnit(SaveItemDBUnit.get(prod));
+			// Заполнение видео
+			for (Element vidEl : gallery.getElementsByTag(VIDEO)) {
+				prod.setValue("video", vidEl.ownText());
+			}
+
+			// Сохранение продукта
+			executeCommandUnit(SaveItemDBUnit.get(prod));
+
+			// Параметры XML
+			String paramsXml = JsoupUtils.nodeHtml(prodEl, PARAMS_XML);
+			if (StringUtils.isNotBlank(paramsXml)) {
+				Item xmlItem = ItemUtils.newChildItem(ItemNames.PARAMS_XML, prod);
+				xmlItem.setValue(ItemNames.params_xml_.XML, paramsXml);
+				executeCommandUnit(SaveItemDBUnit.get(xmlItem));
+			}
+
+			// Создание тэгов
+			/*
+			for (Element tag : doc.getElementsByTag(TAG)) {
+				Tag_first tagFirst = Tag_first.get(ItemUtils.newChildItem(ItemNames.TAG_FIRST, prod));
+				tagFirst.set_tag(tag.attr(NAME));
+				executeCommandUnit(SaveItemDBUnit.get(tagFirst));
+				for (Element param : tag.getElementsByTag(PARAMETER)) {
+					String name = JsoupUtils.nodeText(param, NAME);
+					for (Element value : param.getElementsByTag(VALUE)) {
+						String valStr = value.ownText();
+						Tag_second tagSecond = Tag_second.get(ItemUtils.newChildItem(ItemNames.TAG_SECOND, tagFirst));
+						tagSecond.set_name(name);
+						tagSecond.set_value(valStr);
+						tagSecond.set_name_value(name + ":" + valStr);
+						executeCommandUnit(SaveItemDBUnit.get(tagSecond));
+					}
+
+				}
+			}
+			*/
+
+			// Исправить адреса картинок в HTML
+			updatePics(prod, ItemNames.product_.TEXT, ItemNames.product_.TEXT_PICS);
+			//updatePics(prod, ItemNames.product.APPLY, ItemNames.product.TEXT_PICS);
+			executeCommandUnit(SaveItemDBUnit.get(prod));
+		}
+
 
 		return prod;
 	}
