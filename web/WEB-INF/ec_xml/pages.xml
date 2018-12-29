@@ -30,6 +30,12 @@
         <single item="url_seo_wrap">
             <list item="url_seo"/>
         </single>
+        <list item="news_item" tag="min">
+            <aggregation parameter="date" function="min"/>
+        </list>
+        <list item="news_item" tag="max">
+            <aggregation parameter="date" function="max"/>
+        </list>
     </include-definition>
 
 
@@ -60,11 +66,20 @@
                     <pages>
                         <var var="page"/>
                     </pages>
+
+                    <parameter name="date" sign="&lt;=" compare="SOME">
+                        <var var="$now"/>
+                    </parameter>
                 </filter>
                 <single item="top_gal"/>
                 <link name="show_page" target="news_item" type="exclusive">
                     <var name="sel" ref="ni" style="translit"/>
                 </link>
+                <ancestor item="news" transit="false" id="cat">
+                    <link name="show_page" target="news" type="exclusive">
+                        <var name="sel" ref="cat" style="translit"/>
+                    </link>
+                </ancestor>
             </list>
         </single>
         <link name="load_more" target="news_ajax"/>
@@ -98,6 +113,11 @@
                 <link name="show_page" target="news_item" type="exclusive">
                     <var name="sel" ref="ni" style="translit"/>
                 </link>
+                <ancestor item="news" transit="false" id="cat">
+                    <link name="show_page" target="news" type="exclusive">
+                        <var name="sel" ref="cat" style="translit"/>
+                    </link>
+                </ancestor>
             </list>
         </single>
         <link name="load_more" target="news_ajax"/>
@@ -106,7 +126,6 @@
     <page name="search" template="search">
         <request>
             <var name="q"/>
-            <var name="view" value="table" scope="cookie"/>
         </request>
         <list item="searchable" id="prod">
             <filter>
@@ -120,6 +139,11 @@
             <link name="show_news_item" target="news_item" type="exclusive">
                 <var name="prod" ref="prod" style="translit"/>
             </link>
+            <ancestor item="news" transit="true" id="cat">
+                <link name="show_page" target="news" type="exclusive">
+                    <var name="sel" ref="cat" style="translit"/>
+                </link>
+            </ancestor>
             <ancestor item="news_item" id="ni">
                 <link name="show_news_item" target="news_item" type="exclusive">
                     <var name="prod" ref="ni" style="translit"/>
@@ -158,6 +182,56 @@
                 </link>
             </list>
         </single>
+        <include name="COMMON"/>
+    </page>
+
+    <page name="all_news" template="all_news">
+        <request>
+            <var name="page" value="1"/>
+            <var name="limit" value="2"/>
+            <var name="tag" />
+            <var name="min_date" />
+            <var name="max_date" />
+        </request>
+        <single item="news_wrap">
+            <list item="news_item" id="ni" transit="true">
+                <filter>
+                    <parameter name="tag" sign="=">
+                        <var var="tag"/>
+                    </parameter>
+                    <parameter name="date" sign="&gt;=">
+                        <var var="min_date"/>
+                    </parameter>
+                    <parameter name="date" sign="&lt;=">
+                        <var var="max_date"/>
+                    </parameter>
+                    <sorting direction="DESC">
+                        <var value="date"/>
+                    </sorting>
+                    <limit>
+                        <var var="limit"/>
+                    </limit>
+                    <pages>
+                        <var var="page"/>
+                    </pages>
+                </filter>
+                <single item="top_gal"/>
+                <link name="show_page" target="news_item" type="exclusive">
+                    <var name="sel" ref="ni" style="translit"/>
+                </link>
+                <ancestor item="news" transit="false" id="cat">
+                    <link name="show_page" target="news" type="exclusive">
+                        <var name="sel" ref="cat" style="translit"/>
+                    </link>
+                </ancestor>
+            </list>
+        </single>
+        <list item="news_item" id="tag" tag="tag">
+            <aggregation parameter="tag" />
+            <link name="show_tag" target="all_news">
+                <var name="tag" ref="tag" parameter="tag"/>
+            </link>
+        </list>
         <include name="COMMON"/>
     </page>
 

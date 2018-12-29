@@ -2462,7 +2462,7 @@ body.search-is-visible {
    display: block;
 }
 
-.featured .entry__category {
+.featured .entry__category, .tags .entry__category{
    display: inline-block;
    font-family: "metropolis-bold", sans-serif;
    font-size: 1.1rem;
@@ -2473,10 +2473,41 @@ body.search-is-visible {
    margin-right: .5rem;
 }
 
-.featured .entry__category a {
+.featured .entry__category a, .tags .entry__category a {
    display: inline-block;
    color: #FFFFFF;
    padding: 0 1.5rem;
+}
+
+.tags .entry__category{
+   margin-bottom: .25rem;
+}
+
+.tags .gray{
+   background: #666;
+}
+.tags .green{
+   background: #679a23;
+}
+.tags .blue{
+   background: #01aef0;
+}
+.tags .dark-blue{
+   background: #06478a;
+}
+.tags .yellow{
+   background: #ffd704;
+
+}
+.tags .orange{
+   background: orange;
+
+}
+.tags .yellow a{
+   color: #666;
+}
+.tags .red{
+   background: #dd0c25;
 }
 
 .featured .entry__info {

@@ -3,11 +3,14 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="/page/selected_news/name" />
+	<xsl:variable name="quot">"</xsl:variable>
+	<xsl:variable name="dt" select="if(page/variables/min_date != '') then concat(' за', f:day_month_year(f:millis_to_date(page/variables/min_date))) else ''"/>
+	<xsl:variable name="postfix" select="if(page/variables/tag != '') then concat($dt, ' по тегу ',$quot, page/variables/tag, $quot) else ''" />
+	<xsl:variable name="title" select="concat('Новости', $postfix)" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'news'"/>
 
-	<xsl:variable name="pagination" select="/page/selected_news/news_item_pages"/>
+	<xsl:variable name="pagination" select="/page/news_wrap/news_item_pages"/>
 	<xsl:variable name="prev" select="$pagination/page[number(/page/variables/p)-1]"/>
 	<xsl:variable name="next" select="$pagination/page[number(/page/variables/p)+1]"/>
 
@@ -26,7 +29,7 @@
 			<div class="row masonry-wrap">
 				<div class="masonry" id="add-content">
 					<div class="grid-sizer"></div>
-					<xsl:apply-templates select="/page/selected_news/news_item" mode="masonry"/>
+					<xsl:apply-templates select="/page/news_wrap/news_item" mode="masonry"/>
 				</div>
 			</div>
 			<xsl:if test="$pagination">

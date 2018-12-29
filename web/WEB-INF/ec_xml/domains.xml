@@ -12,6 +12,13 @@
 		<value>tags</value>
 		<value>pics</value>
 	</domain>
+	<domain name="tags" view-type="combobox">
+		<value>Бизнес</value>
+		<value>Политика</value>
+		<value>Технологии</value>
+		<value>Инфографика</value>
+		<value>Менеджмент</value>
+	</domain>
 	<domain name="module_place" view-type="combobox">
 		<value>head_start</value>
 		<value>head_end</value>

@@ -93,7 +93,6 @@
 
 	<item name="news_item" key="name date" caption="Новость или статья" key-unique="true" default-page="news_item" super="searchable" ag-id="6" ag-hash="300774655">
 		<child item="seo" single="true"/>
-		<parameter name="header" type="string" caption="Заголовок" text-index="fulltext"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="video_url" type="string" caption="Ссылка на видео"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000"/>
@@ -101,6 +100,7 @@
 		<parameter name="small_pic" type="picture" caption="Маленькое изображение" description="500" format="width: 500; src: main_pic;"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags"/>
 		<child item="page_part"/>
 		<child item="top_gal" single="true"/>
 		<child item="comments" single="true"/>
@@ -167,7 +167,6 @@
 	<item name="custom_page" caption="Одиночная страница" key="name" key-unique="true" super="searchable" default-page="page" ag-id="13" ag-hash="-1777660259">
 		<child item="seo" single="true"/>
 		<child item="custom_page"/>
-		<parameter name="header" type="string" caption="Заголовок" text-index="fulltext"/>
 		<parameter name="video_url" type="string" caption="Ссылка на видео"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000"/>
 		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;"/>

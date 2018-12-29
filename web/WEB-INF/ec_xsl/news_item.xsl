@@ -20,6 +20,28 @@
 					<h1 class="s-content__header-title">
 						<xsl:value-of select="$h1"/>
 					</h1>
+					<xsl:if test="$ni/tag">
+						<div class="tags">
+							<xsl:for-each select="$ni/tag">
+								<xsl:variable name="class">
+									<xsl:choose>
+										<xsl:when test=". = 'Бизнес'">dark-blue</xsl:when>
+										<xsl:when test=". = 'Политика'">red</xsl:when>
+										<xsl:when test=". = 'Технологии'">yellow</xsl:when>
+										<xsl:when test=". = 'Инфографика'">orange</xsl:when>
+										<xsl:when test=". = 'Менеджмент'">blue</xsl:when>
+										<xsl:otherwise>gray</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+
+								<span class="entry__category {$class}">
+									<a href="{concat('all_news/?tag=', .)}">
+										<xsl:value-of select="." />
+									</a>
+								</span>
+							</xsl:for-each>
+						</div>
+					</xsl:if>
 					<ul class="s-content__header-meta">
 						<li class="date"><xsl:value-of select="date"/></li>
 						<li class="cat">

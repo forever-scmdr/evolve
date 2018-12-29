@@ -130,7 +130,7 @@
             e.stopPropagation();
         });
             
-        searchField.attr({placeholder: 'Type Keywords', autocomplete: 'off'});
+        searchField.attr({placeholder: 'Введите запрос', autocomplete: 'off'});
     
     };
 
@@ -192,21 +192,21 @@
     * ---------------------------------------------------- */ 
     var clMasonryFolio = function () {
         
-        // var containerBricks = $('.masonry');
-        //
-        // containerBricks.imagesLoaded(function () {
-        //     containerBricks.masonry({
-        //         itemSelector: '.masonry__brick',
-        //         percentPosition: true,
-        //         resize: true
-        //     });
-        // });
-        // //layout Masonry after each image loads
-        // containerBricks.imagesLoaded().progress( function() {
-        //         containerBricks.masonry("layout");
-        // });
+        var containerBricks = $('.masonry');
+
+        containerBricks.imagesLoaded(function () {
+            containerBricks.masonry({
+                itemSelector: '.masonry__brick',
+                percentPosition: true,
+                resize: true
+            });
+        });
+
     };
 
+    var clMasonryImagesLoaded = function(){
+
+    }
 
    /* slick slider
     * ------------------------------------------------------ */
@@ -618,15 +618,23 @@
               ,success: function(data, status, arg3) {
                   if (data.indexOf('<') == 0) {
                       var parsedData = $("<div>" + data + "</div>");
+                      //var articles = $("#add-content").find("article");
                       var articles = parsedData.find("article");
-                      $("#add-content").append(articles);
-                      var button = data.find("#load_more");
+                      var button = $(data).find("#load_more");
                       if(button.length == 0){
                           $("#load_more").remove();
                       }else{
                           $("#load_more").html(button.html());
                       }
-                      //clMasonryFolio();
+                      //reloading masonry
+                      var gridContainer = $("#add-content");
+                      gridContainer.append(articles).masonry('appended', articles);
+                      gridContainer.masonry('reloadItems');
+                      //gridContainer.masonry('layout');
+                      //layout Masonry after each image loads
+                      $(".masonry").imagesLoaded().progress( function() {
+                          $(".masonry").masonry("layout");
+                      });
                   }
               }
           });
@@ -649,13 +657,12 @@
    /* Initialize
     * ------------------------------------------------------ */
     (function ssInit() {
-        
+        clMasonryFolio();
         clPreloader();
         clMediaElement();
         clPrettyPrint();
         clSearch();
         clMobileMenu();
-        clMasonryFolio();
         clSlickSlider();
         clSmoothScroll();
         clPlaceholder();

@@ -12,10 +12,10 @@
 	<xsl:variable name="title" select="concat('Поиск по запросу ', page/variables/q)" />
 
 	<xsl:variable name="news_items" select="/page/news_item"/>
-	<xsl:variable name="news_parts" select="/page/text_part[news_item[@id != $news_items/@id]]"/>
+	<xsl:variable name="news_parts" select="/page/text_part[news_item]"/>
 
 	<xsl:variable name="custom_pages" select="/page/custom_page"/>
-	<xsl:variable name="custom_parts" select="/page/text_part[custom_page[@id != $custom_pages/@id]]"/>
+	<xsl:variable name="custom_parts" select="/page/text_part[custom_page]"/>
 
 	<xsl:template name="CONTENT">
 		<section class="s-content">
@@ -32,67 +32,61 @@
 					<xsl:apply-templates select="$news_items | $news_parts" mode="masonry"/>
 				</div>
 			</div>
+			<div class="row narrow">
+				<div class="col-full s-content__header" data-aos="fade-up">
+					<h1>
+						Статьи по заппросу "<xsl:value-of select="page/variables/q"/>"
+					</h1>
+				</div>
+			</div>
+			<div class="row masonry-wrap">
+				<div class="masonry" id="add-content">
+					<div class="grid-sizer"></div>
+					<xsl:apply-templates select="$custom_pages | $custom_parts" mode="masonry"/>
+				</div>
+			</div>
 		</section>
 	</xsl:template>
 
 	<xsl:template match="text_part" mode="masonry">
-		<xsl:apply-templates select="custom_page | news_item" mode="masonry"/>
+		<xsl:variable name="nid" select="news_item/@id"/>
+		<xsl:variable name="cid" select="news_item/@id"/>
+		<xsl:if test="not($news_items[@id = $nid])">
+			<xsl:apply-templates select="news_item" mode="masonry"/>
+		</xsl:if>
+		<xsl:if test="not($custom_pages[@id = custom_page/@id])">
+			<xsl:apply-templates select="custom_page" mode="masonry"/>
+		</xsl:if>
 	</xsl:template>
-	<xsl:template match="news_item" mode="masonry">
 
-		<xsl:variable name="format" select="if(video_url != '') then 'video' else if(top_gal/main_pic != '') then 'gallery' else 'standard'"/>
+	<xsl:template match="custom_page" mode="masonry">
 
-		<article class="masonry__brick entry format-{$format}" data-aos="fade-up">
 
-			<!-- STANDARD -->
-			<xsl:if test="$format = 'standard'">
-				<div class="entry__thumb">
-					<a href="{show_page}" class="entry__thumb-link">
-						<img src="{concat(@path, small_pic)}" srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
-					</a>
-				</div>
-			</xsl:if>
+		<article class="masonry__brick entry format-standard" data-aos="fade-up">
 
-			<!-- VIDEO -->
-			<xsl:if test="$format = 'video'">
-				<div class="entry__thumb video-image">
-					<a href="{video_url}" data-lity="">
-						<img src="{concat(@path, small_pic)}" srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
-					</a>
-				</div>
-			</xsl:if>
-
-			<xsl:if test="$format = 'gallery'">
-				<div class="entry__thumb slider">
-					<div class="slider__slides">
-						<xsl:variable name="path" select="top_gal/@path"/>
-						<xsl:for-each select="top_gal/small_pic">
-							<xsl:variable name="p" select="position()"/>
-							<div class="slider__slide">
-								<img src="{concat($path,.)}" srcset="{concat($path,.)} 1x, {concat($path,../medium_pic[$p])} 2x" alt=""/>
-							</div>
-						</xsl:for-each>
-					</div>
-				</div>
-			</xsl:if>
+			<div class="entry__thumb">
+				<a href="{show_page}" class="entry__thumb-link">
+					<img src="{concat(@path, small_pic)}"
+						 srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
+				</a>
+			</div>
 
 			<!-- TEXT -->
 			<div class="entry__text">
 				<div class="entry__header">
 					<div class="entry__date">
-						<a href="{show_page}"><xsl:value-of select="date"/></a>
+						<a href="{show_page}">
+							<xsl:value-of select="date"/>
+						</a>
 					</div>
-					<div class="h1 entry__title"><a href="{show_page}"><xsl:value-of select="name"/></a></div>
+					<div class="h1 entry__title">
+						<a href="{show_page}">
+							<xsl:value-of select="name"/>
+						</a>
+					</div>
 				</div>
 				<div class="entry__excerpt">
 					<xsl:value-of select="short" disable-output-escaping="yes"/>
-				</div>
-				<div class="entry__meta">
-					<span class="entry__meta-links">
-						<a href="category.html">Что за ссылки?</a>
-						<a href="category.html">Куда они ведут?</a>
-						<a href="category.html">А они вообще нужны?</a>
-					</span>
 				</div>
 			</div>
 
