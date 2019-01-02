@@ -342,6 +342,12 @@
 				</link>
 			</list>
 		</single>
+		<list item="small_news_item" id="tag" tag="tag">
+			<aggregation parameter="tag" />
+			<link name="show_tag" target="small_news">
+				<var name="tag" ref="tag" parameter="tag"/>
+			</link>
+		</list>
 		<include name="COMMON"/>
 	</page>
 

@@ -4261,3 +4261,31 @@ footer h4::after {
    width: 100%;
    height: 100%;
 }
+.small-news-item .name{
+   border-bottom: 1px solid #777;
+   padding-bottom: .6rem;
+}
+.small-news-item .date{
+   margin-bottom: 0px;
+   font-size: 1.25rem;
+}
+.brief-news .date{
+   margin-bottom: 0px;
+   font-size: 1.25rem;
+}
+.brief-news {
+   margin-bottom: 1rem;
+   border-bottom: 1px solid #777;
+}
+.entry__meta.caps{
+   text-transform: uppercase;
+   font-size: 1.3rem;
+   text-align: center;
+   margin-top: 1.6rem;
+}
+.entry__meta.caps a{
+   display: block;
+   border: 1px solid #0054a5;
+   text-decoration: none;
+
+}

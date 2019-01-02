@@ -173,6 +173,7 @@
                         <h4>Разделы</h4>
                         <ul class="s-footer__linklist">
                             <li><a href="{$main_host}">Главная страница</a></li>
+                            <li><a href="{page/news_link}">Новости</a></li>
                             <xsl:for-each select="page/news">
                                 <li><a href="{show_page}"><xsl:value-of select="name"/></a></li>
                             </xsl:for-each>

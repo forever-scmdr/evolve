@@ -31,7 +31,7 @@
 									<xsl:if test="$p != 1">
 										<xsl:text> </xsl:text>
 									</xsl:if>
-									<a href="{concat('all_news/?tag=', .)}">
+									<a href="{concat('small_news/?tag=', .)}">
 										<xsl:value-of select="."/>
 									</a>
 								</xsl:for-each>

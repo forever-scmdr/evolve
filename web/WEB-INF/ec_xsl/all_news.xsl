@@ -21,6 +21,33 @@
 					<h1>
 						<xsl:value-of select="$h1"/>
 					</h1>
+					<xsl:if test="page/tag">
+						<div class="tags">
+							<span class="entry__category gray">
+								<a href="all_news">
+									Все
+								</a>
+							</span>
+							<xsl:for-each select="page/tag">
+								<xsl:variable name="class">
+									<xsl:choose>
+										<xsl:when test="tag = 'Бизнес'">dark-blue</xsl:when>
+										<xsl:when test="tag = 'Политика'">red</xsl:when>
+										<xsl:when test="tag = 'Технологии'">yellow</xsl:when>
+										<xsl:when test="tag = 'Инфографика'">orange</xsl:when>
+										<xsl:when test="tag = 'Менеджмент'">blue</xsl:when>
+										<xsl:otherwise>gray</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+
+								<span class="entry__category {$class}">
+									<a href="{show_tag}">
+										<xsl:value-of select="tag"/>
+									</a>
+								</span>
+							</xsl:for-each>
+						</div>
+					</xsl:if>
 					<div class="lead">
 						<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
 					</div>
