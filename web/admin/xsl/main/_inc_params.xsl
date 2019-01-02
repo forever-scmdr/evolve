@@ -195,9 +195,11 @@
 	</xsl:template>
 
 	<!-- Дата -->
-	<xsl:template match="field[ @type='date']" mode="single">
+	<xsl:template match="field[@type='date']" mode="single">
+		<xsl:variable name="value" select="."/>
 		<!-- Дата и время -->
 		<div class="timeStamp" style="">
+
 			<p style="clear: both;">
 				<span class=""><xsl:value-of select="@caption" /></span>
 				<xsl:if test="@description != ''">
@@ -209,12 +211,11 @@
 			<label style="float:left;padding-right: 5px;">
 				<input type="text" class="datepicker" style="width: 80px; padding: 4px 0; text-align: center;"/>
 			</label>
-			<xsl:if test="@format = '' or @format = 'dd.MM.YYYY hh:mm'">
+			<xsl:if test="@format = '' or @format = 'dd.MM.yyyy HH:mm'">
 				<label style="float:left;">
-					<input type="text" class="time" value="{substring(.,11)}" style="width: 42px;text-align:center; padding: 4px 0;"/>
+					<input type="text" class="time" value="{substring(.,12)}" style="width: 42px;text-align:center; padding: 4px 0;"/>
 				</label>
 			</xsl:if>
-		
 			<!-- этот инпут отправляется. Дата в формате dd.mm.yy, hh:mm -->
 			<input class="whole" type="hidden" name="{@input}" value="{.}" />
 		</div>
@@ -265,6 +266,7 @@
 				</xsl:if>
 			</xsl:if>
 		</script>
+
 		<script type="text/javascript" src="admin/js/mce-setup.js"></script>
 		<script type="text/javascript" src="admin/js/inputs_script.js"></script>
 	</xsl:template>

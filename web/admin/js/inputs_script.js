@@ -2,7 +2,6 @@
 **	URI: http://www.howtomake.com.ua/2012/stilizaciya-vsex-elementov-form-s-pomoshhyu-css-i-jquery.html 
 *	
 */
-
 $(document).on("click", ".text_ipt", function(){
 	$(this).hide();
 	$(this).closest(".file-load-block").find(".url").show();
@@ -43,13 +42,11 @@ function isValidUrl(url)
 {
   var objRE = /(^https?:\/\/)?[a-zA-Zа-яА-Я0-9~_\-\.]+\.[a-zA-Zа-яА-Я]{2,9}(\/|:|\?[!-~]*)?$/i;
   return objRE.test(url);
-}
-
-		$.datepicker.setDefaults($.datepicker.regional["ru"]);
+}		$.datepicker.setDefaults($.datepicker.regional["ru"]);
 		$(".datepicker").datepicker();
 		var now = new Date().toLocaleString("ru").substring(0,17).replace(',', '');
 		$(".timeStamp").each(function() {
-			var targ = $(this).find(".whole");
+           	var targ = $(this).find("input[type=hidden]");
 			var date = $(this).find(".datepicker");
 			var time = $(this).find(".time");
 		
@@ -59,13 +56,15 @@ function isValidUrl(url)
 				nd =  new Date(tls*1);
 				tls = $.datepicker.formatDate("dd.mm.yy",nd);
 				time.val(nd.getHours()+":"+nd.getMinutes());
+
 			}
 			date.val(tls.substring(0,10));
 			if(dv == "") {
 				targ.val(tls);
 			}
 			if(time.val() == ""){
-				time.val("0:0");
+                nd =  new Date();
+                time.val(nd.getHours()+":"+nd.getMinutes());
 			}
 			date.change(function() {
 				makeVal(targ, date, time);
@@ -81,12 +80,12 @@ function isValidUrl(url)
 			arr[0]=(arr[0]*1 > 23)? 23 : arr[0];
 			arr[1]=(arr[1]*1 > 59)? 59 : arr[1];
 			arr[0]=(arr[0]*1 < 0)? 0 : arr[0];
-			arr[1]=(arr[1]*1 > 0)? 0 : arr[1];
-	
+			arr[1]=(arr[1]*1 > 0)? arr[1] : 0;
 			$(el).val(arr.join(":"));
+
 		}
 		function makeVal(target, date, time) {
-			v = (time.val() == undefined)? $(date).val() : $(date).val()+' '+$(time).val();
+         	v = (time.val() == undefined)? $(date).val() : $(date).val()+' '+$(time).val();
 			$(target).val(v);
 		}
 		
