@@ -653,6 +653,10 @@
         });
     };
 
+    var newsItemLength = function () {
+        var nil = $("#nil").text().length;
+        $("#news-text-length").text("Количество символов: "+nil);
+    };
 
    /* Initialize
     * ------------------------------------------------------ */
@@ -673,6 +677,7 @@
        // clGoogleMap();
         loadMoreNews();
         reply();
+        newsItemLength();
     })();
         
 })(jQuery);

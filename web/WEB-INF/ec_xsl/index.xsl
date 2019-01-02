@@ -10,6 +10,36 @@
 			<div class="row masonry-wrap">
 				<div class="masonry" id="add-content">
 					<div class="grid-sizer"></div>
+					<xsl:if test="/page/small_news_item">
+						<article class="masonry__brick entry format-standard" data-aos="fade-up">
+							<div class="entry__text">
+								<div class="entry__header">
+									<div class="h1 entry__title">
+										Последние новости:
+									</div>
+								</div>
+								<xsl:for-each select="/page/small_news_item">
+									<div class="brief-news">
+										<div class="date">
+											<xsl:value-of select="date"/>
+										</div>
+										<div>
+											<a href="{show_page}">
+												<xsl:value-of select="name"/>
+											</a>
+										</div>
+									</div>
+								</xsl:for-each>
+								<div class="entry__meta caps">
+									<span class="entry__meta-links">
+										<a href="{page/news_link}">
+											Все новости >
+										</a>
+									</span>
+								</div>
+							</div>
+						</article>
+					</xsl:if>
 					<xsl:apply-templates select="/page/news_wrap/news_item" mode="masonry"/>
 					<!--<xsl:apply-templates select="/page/news_wrap/news_item" mode="masonry"/>-->
 					<!--<xsl:apply-templates select="/page/news_wrap/news_item" mode="masonry"/>-->
@@ -32,9 +62,9 @@
 		<section class="s-extra">
 			<div class="row top">
 				<div class="col-eight md-six tab-full popular">
-					<h3>Статьи</h3>
+					<h3>Популярные статьи</h3>
 					<div class="block-1-2 block-m-full popular__posts">
-						<xsl:for-each select="page/custom">
+						<xsl:for-each select="page/popular">
 							<article class="col-block popular__post">
 								<a href="#0" class="popular__thumb">
 									<img src="{concat(@path,small_pic)}" alt="{name}"/>
@@ -42,7 +72,7 @@
 								<h5><a href="{show_page}"><xsl:value-of select="name"/></a></h5>
 								<section class="popular__meta">
 									<!--<span class="popular__author"><span>By</span> <a href="#0"> John Doe</a></span>-->
-									<!--<span class="popular__date"><span>on</span> <time datetime="2017-12-19">Dec 19, 2017</time></span>-->
+									<span class="popular__date"><time datetime="{date}"><xsl:value-of select="date"/></time></span>
 								</section>
 							</article>
 						</xsl:for-each>
@@ -81,7 +111,7 @@
 			<div class="entry__content">
 				<xsl:for-each select="tag">
 					<span class="entry__category">
-						<a href="{concat(tag_link, '/?tag=', .)}">
+						<a href="{cat_link}">
 							<xsl:value-of select="."/>
 						</a>
 					</span>

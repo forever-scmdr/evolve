@@ -9,6 +9,7 @@
 
 
 	<xsl:variable name="ni" select="page/news_item"/>
+	<xsl:variable name="parent" select="/page/news[@id = $ni/news/@id]" />
 	<xsl:variable name="canonical" select="concat('/', $ni/@key, '/')"/>
 	<xsl:variable name="format" select="if($ni/video_url != '') then 'video' else if($ni/top_gal/main_pic != '') then 'gallery' else 'standard'"/>
 
@@ -20,28 +21,59 @@
 					<h1 class="s-content__header-title">
 						<xsl:value-of select="$h1"/>
 					</h1>
-					<xsl:if test="$ni/tag">
-						<div class="tags">
-							<xsl:for-each select="$ni/tag">
-								<xsl:variable name="class">
-									<xsl:choose>
-										<xsl:when test=". = 'Бизнес'">dark-blue</xsl:when>
-										<xsl:when test=". = 'Политика'">red</xsl:when>
-										<xsl:when test=". = 'Технологии'">yellow</xsl:when>
-										<xsl:when test=". = 'Инфографика'">orange</xsl:when>
-										<xsl:when test=". = 'Менеджмент'">blue</xsl:when>
-										<xsl:otherwise>gray</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-
-								<span class="entry__category {$class}">
+					<ul class="s-content__header-meta">
+						<li class="date"><xsl:value-of select="$ni/date"/></li>
+						<li class="cat">
+							Категория:	<a href="{$parent/show_page}" rel="next">
+								<xsl:value-of select="$parent/name"/>
+							</a>
+						</li>
+						<xsl:if test="$ni/tag">
+							<li class="cat">
+								Теги:&#160;
+								<xsl:for-each select="$ni/tag">
+									<xsl:variable name="p" select="position()"/>
+									<xsl:if test="$p != 1"> </xsl:if>
 									<a href="{concat('all_news/?tag=', .)}">
-										<xsl:value-of select="." />
+										<xsl:value-of select="."/>
 									</a>
-								</span>
-							</xsl:for-each>
-						</div>
-					</xsl:if>
+								</xsl:for-each>
+							</li>
+						</xsl:if>
+					</ul>
+					<div class="tags">
+						<span class="entry__category red">
+							<a id="news-text-length"></a>
+						</span>
+						<span class="entry__category yellow">
+							<a>Сложность: <b><xsl:value-of select="$ni/complexity" /></b></a>
+						</span>
+						<span class="entry__category blue">
+							<a>Среднее время прочтения: <b><xsl:value-of select="$ni/read_time" /></b></a>
+						</span>
+					</div>
+					<!--<xsl:if test="$ni/tag">-->
+						<!--<div class="tags">-->
+							<!--<xsl:for-each select="$ni/tag">-->
+								<!--<xsl:variable name="class">-->
+									<!--<xsl:choose>-->
+										<!--<xsl:when test=". = 'Бизнес'">dark-blue</xsl:when>-->
+										<!--<xsl:when test=". = 'Политика'">red</xsl:when>-->
+										<!--<xsl:when test=". = 'Технологии'">yellow</xsl:when>-->
+										<!--<xsl:when test=". = 'Инфографика'">orange</xsl:when>-->
+										<!--<xsl:when test=". = 'Менеджмент'">blue</xsl:when>-->
+										<!--<xsl:otherwise>gray</xsl:otherwise>-->
+									<!--</xsl:choose>-->
+								<!--</xsl:variable>-->
+
+								<!--<span class="entry__category {$class}">-->
+									<!--<a href="{concat('all_news/?tag=', .)}">-->
+										<!--<xsl:value-of select="." />-->
+									<!--</a>-->
+								<!--</span>-->
+							<!--</xsl:for-each>-->
+						<!--</div>-->
+					<!--</xsl:if>-->
 					<ul class="s-content__header-meta">
 						<li class="date"><xsl:value-of select="date"/></li>
 						<li class="cat">
@@ -54,51 +86,55 @@
 					</ul>
 				</div>
 
-				<xsl:if test="$format = 'standard'">
-					<div class="s-content__media col-full">
-						<div class="s-content__post-thumb">
-							<img src="{concat($ni/@path, $ni/main_pic)}"
-								 srcset="{concat($ni/@path, $ni/main_pic)} 2000w,
-                                 {concat($ni/@path, $ni/medium_pic)} 1000w,
-                                 {concat($ni/@path, $ni/small_pic)} 500w"
-								 sizes="(max-width: 2000px) 100vw, 2000px" alt="" />
-						</div>
-					</div>
-				</xsl:if>
-
-				<xsl:if test="$format = 'gallery'">
-					<div class="s-content__media col-full">
-						<div class="s-content__slider slider">
-							<div class="slider__slides">
-								<xsl:variable name="gal" select="$ni/top_gal"/>
-								<xsl:variable name="path" select="$gal/@path"/>
-								<xsl:for-each select="$ni/top_gal/main_pic">
-									<xsl:variable name="p" select="position()"/>
-									<div class="slider__slide">
-										<img src="{concat($path, .)}"
-											 srcset="{concat($path, .)} 2000w,
-											 {concat($path, $gal/medium_pic[$p])} 1000w,
-											 {concat($path, $gal/small_pic[$p])} 500w"
-											 sizes="(max-width: 2000px) 100vw, 2000px" alt=""/>
-									</div>
-								</xsl:for-each>
+				<xsl:if test="$ni/main_pic | $ni/top_gal/main_pic | $ni/video_url">
+					<xsl:if test="$format = 'standard'">
+						<div class="s-content__media col-full">
+							<div class="s-content__post-thumb">
+								<img src="{concat($ni/@path, $ni/main_pic)}"
+									 srcset="{concat($ni/@path, $ni/main_pic)} 2000w,
+									 {concat($ni/@path, $ni/medium_pic)} 1000w,
+									 {concat($ni/@path, $ni/small_pic)} 500w"
+									 sizes="(max-width: 2000px) 100vw, 2000px" alt="" />
 							</div>
 						</div>
-					</div>
-				</xsl:if>
+					</xsl:if>
 
-				<xsl:if test="$format = 'video'">
-					<div class="s-content__media col-full">
-						<div class="video-container">
-							<iframe src="{$ni/video_url}" width="640" height="360" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+					<xsl:if test="$format = 'gallery'">
+						<div class="s-content__media col-full">
+							<div class="s-content__slider slider">
+								<div class="slider__slides">
+									<xsl:variable name="gal" select="$ni/top_gal"/>
+									<xsl:variable name="path" select="$gal/@path"/>
+									<xsl:for-each select="$ni/top_gal/main_pic">
+										<xsl:variable name="p" select="position()"/>
+										<div class="slider__slide">
+											<img src="{concat($path, .)}"
+												 srcset="{concat($path, .)} 2000w,
+												 {concat($path, $gal/medium_pic[$p])} 1000w,
+												 {concat($path, $gal/small_pic[$p])} 500w"
+												 sizes="(max-width: 2000px) 100vw, 2000px" alt=""/>
+										</div>
+									</xsl:for-each>
+								</div>
+							</div>
 						</div>
-					</div>
+					</xsl:if>
+
+					<xsl:if test="$format = 'video'">
+						<div class="s-content__media col-full">
+							<div class="video-container">
+								<iframe src="{$ni/video_url}" width="640" height="360" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+							</div>
+						</div>
+					</xsl:if>
 				</xsl:if>
 
 				<div class="col-full s-content__main">
-					<xsl:apply-templates select="$ni" mode="content"/>
+					<div id="nil">
+						<xsl:apply-templates select="$ni" mode="content"/>
+					</div>
 					<div class="s-content__pagenav">
-						<xsl:variable name="parent" select="/page/news[@id = $ni/news/@id]" />
+
 						<div class="s-content__nav">
 							<div class="s-content__next">
 								<a href="{$parent/show_page}" rel="next">

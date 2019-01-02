@@ -32,6 +32,8 @@
 					<xsl:apply-templates select="$news_items | $news_parts" mode="masonry"/>
 				</div>
 			</div>
+			
+			<xsl:if test="$custom_pages | $custom_parts">
 			<div class="row narrow">
 				<div class="col-full s-content__header" data-aos="fade-up">
 					<h1>
@@ -45,6 +47,7 @@
 					<xsl:apply-templates select="$custom_pages | $custom_parts" mode="masonry"/>
 				</div>
 			</div>
+		</xsl:if>
 		</section>
 	</xsl:template>
 
@@ -75,7 +78,7 @@
 			<div class="entry__text">
 				<div class="entry__header">
 					<div class="entry__date">
-						<a href="{show_page}">
+						<a href="{show_custom_page}">
 							<xsl:value-of select="date"/>
 						</a>
 					</div>

@@ -84,53 +84,62 @@
             <h2 class="header__nav-heading h6">Главное меню</h2>
             <ul class="header__nav">
                 <li class="{'current'[$active_menu_item = 'index']}"><a href="{$main_host}">Главная страница</a></li>
-                <xsl:for-each select="page/custom_pages/menu_custom">
+                <!--<xsl:for-each select="page/custom_pages/menu_custom">-->
+                    <!--<xsl:variable name="k" select="@key"/>-->
+                    <!--<xsl:if test="menu_custom != ''">-->
+                        <!--<li class="has-children{' current'[$active_menu_item = $k]}">-->
+                            <!--<a>-->
+                                <!--<xsl:value-of select="name"/>-->
+                            <!--</a>-->
+                            <!--<ul class="sub-menu">-->
+                                <!--<xsl:for-each select="menu_custom">-->
+                                    <!--<xsl:variable name="k" select="@key"/>-->
+                                    <!--<li class="{'current'[$active_menu_item = $k]}">-->
+                                        <!--<a href="{show_page}"><xsl:value-of select="name"/></a>-->
+                                    <!--</li>-->
+                                <!--</xsl:for-each>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                    <!--</xsl:if>-->
+                    <!--<xsl:if test="not(menu_custom)">-->
+                        <!--<xsl:variable name="k" select="@key"/>-->
+                        <!--<li class="{'current'[$active_menu_item = $k]}">-->
+                            <!--<a href="{show_page}"><xsl:value-of select="name"/></a>-->
+                        <!--</li>-->
+                    <!--</xsl:if>-->
+                <!--</xsl:for-each>-->
+                <li class="{'current'[$active_menu_item = 'small_news']}">
+                    <a href="{page/news_link}">Новости</a>
+                </li>
+                <xsl:for-each select="page/news">
                     <xsl:variable name="k" select="@key"/>
-                    <xsl:if test="menu_custom != ''">
-                        <li class="has-children{' current'[$active_menu_item = $k]}">
-                            <a>
-                                <xsl:value-of select="name"/>
-                            </a>
-                            <ul class="sub-menu">
-                                <xsl:for-each select="menu_custom">
-                                    <xsl:variable name="k" select="@key"/>
-                                    <li class="{'current'[$active_menu_item = $k]}">
-                                        <a href="{show_page}"><xsl:value-of select="name"/></a>
-                                    </li>
-                                </xsl:for-each>
-                            </ul>
-                        </li>
-                    </xsl:if>
-                    <xsl:if test="not(menu_custom)">
-                        <xsl:variable name="k" select="@key"/>
-                        <li class="{'current'[$active_menu_item = $k]}">
-                            <a href="{show_page}"><xsl:value-of select="name"/></a>
-                        </li>
-                    </xsl:if>
+                    <li class="{'current'[$active_menu_item = $k]}">
+                        <a href="{show_page}"><xsl:value-of select="name"/></a>
+                    </li>
                 </xsl:for-each>
 
-                    <xsl:if test="count(page/news) = 1">
-                        <xsl:variable name="k" select="@key"/>
-                        <li class="{'current'[$active_menu_item = $k]}">
-                            <a href="{news/show_page}"><xsl:value-of select="news/name"/></a>
-                        </li>
-                    </xsl:if>
-                    <xsl:if test="count(page/news) &gt; 1">
-                        <xsl:variable name="k" select="@key"/>
-                        <li class="has-children{' current'[$active_menu_item = $k]}">
-                            <a>
-                              Новости
-                            </a>
-                            <ul class="sub-menu">
-                                <xsl:for-each select="page/news" >
-                                    <xsl:variable name="k" select="$k"/>
-                                    <li class="{'current'[$active_menu_item = $k]}">
-                                        <a href="{show_page}"><xsl:value-of select="name"/></a>
-                                    </li>
-                                </xsl:for-each>
-                            </ul>
-                        </li>
-                    </xsl:if>
+                    <!--<xsl:if test="count(page/news) = 1">-->
+                        <!--<xsl:variable name="k" select="page/news/@key"/>-->
+                        <!--<li class="{'current'[$active_menu_item = $k]}">-->
+                            <!--<a href="{page/news/show_page}"><xsl:value-of select="page/news/name"/></a>-->
+                        <!--</li>-->
+                    <!--</xsl:if>-->
+                    <!--<xsl:if test="count(page/news) &gt; 1">-->
+                        <!--<xsl:variable name="k" select="@key"/>-->
+                        <!--<li class="has-children{' current'[$active_menu_item = $k]}">-->
+                            <!--<a>-->
+                              <!--Новости-->
+                            <!--</a>-->
+                            <!--<ul class="sub-menu">-->
+                                <!--<xsl:for-each select="page/news" >-->
+                                    <!--<xsl:variable name="k" select="$k"/>-->
+                                    <!--<li class="{'current'[$active_menu_item = $k]}">-->
+                                        <!--<a href="{show_page}"><xsl:value-of select="name"/></a>-->
+                                    <!--</li>-->
+                                <!--</xsl:for-each>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                    <!--</xsl:if>-->
 
                 <li class="{'current'[$active_menu_item = 'contacts']}">
                     <a href="{page/contacts_link}">Контакты</a>
@@ -164,7 +173,7 @@
                         <h4>Разделы</h4>
                         <ul class="s-footer__linklist">
                             <li><a href="{$main_host}">Главная страница</a></li>
-                            <xsl:for-each select="page/custom_pages/menu_custom">
+                            <xsl:for-each select="page/news">
                                 <li><a href="{show_page}"><xsl:value-of select="name"/></a></li>
                             </xsl:for-each>
                             <li><a href="{page/contacts_link}">Контакты</a></li>
@@ -463,28 +472,28 @@
                     <div class="h1 entry__title"><a href="{show_page}"><xsl:value-of select="name"/></a></div>
                 </div>
 
-                <xsl:if test="tag">
-                    <div class="tags">
-                        <xsl:for-each select="tag">
-                            <xsl:variable name="class">
-                                <xsl:choose>
-                                    <xsl:when test=". = 'Бизнес'">dark-blue</xsl:when>
-                                    <xsl:when test=". = 'Политика'">red</xsl:when>
-                                    <xsl:when test=". = 'Технологии'">yellow</xsl:when>
-                                    <xsl:when test=". = 'Инфографика'">orange</xsl:when>
-                                    <xsl:when test=". = 'Менеджмент'">blue</xsl:when>
-                                    <xsl:otherwise>gray</xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:variable>
+                <!--<xsl:if test="tag">-->
+                    <!--<div class="tags">-->
+                        <!--<xsl:for-each select="tag">-->
+                            <!--<xsl:variable name="class">-->
+                                <!--<xsl:choose>-->
+                                    <!--<xsl:when test=". = 'Бизнес'">dark-blue</xsl:when>-->
+                                    <!--<xsl:when test=". = 'Политика'">red</xsl:when>-->
+                                    <!--<xsl:when test=". = 'Технологии'">yellow</xsl:when>-->
+                                    <!--<xsl:when test=". = 'Инфографика'">orange</xsl:when>-->
+                                    <!--<xsl:when test=". = 'Менеджмент'">blue</xsl:when>-->
+                                    <!--<xsl:otherwise>gray</xsl:otherwise>-->
+                                <!--</xsl:choose>-->
+                            <!--</xsl:variable>-->
 
-                            <span class="entry__category {$class}">
-                                <a href="{concat('all_news/?tag=', .)}">
-                                    <xsl:value-of select="." />
-                                </a>
-                            </span>
-                        </xsl:for-each>
-                    </div>
-                </xsl:if>
+                            <!--<span class="entry__category {$class}">-->
+                                <!--<a href="{concat('all_news/?tag=', .)}">-->
+                                    <!--<xsl:value-of select="." />-->
+                                <!--</a>-->
+                            <!--</span>-->
+                        <!--</xsl:for-each>-->
+                    <!--</div>-->
+                <!--</xsl:if>-->
 
                 <div class="entry__excerpt">
                     <xsl:value-of select="short" disable-output-escaping="yes"/>
