@@ -1,13 +1,15 @@
 package ecommander.fwk;
 
+import com.ibm.icu.text.RuleBasedNumberFormat;
+import org.apache.commons.lang3.StringUtils;
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.PrettyXmlSerializer;
+import org.htmlcleaner.TagNode;
+
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Locale;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.ibm.icu.text.RuleBasedNumberFormat;
-import org.htmlcleaner.*;
 
 
 /**
@@ -54,7 +56,7 @@ public class Strings
 		"1","2","3","4","5","6","7","8","9","0","_",
 		"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",		
 		"a","b","v","g","d","e","yo","g","z","i","y","i","k","l","m","n","o","p","r","s","t",
-		"u","f","h","ts","ch","sh","sch","e","yu","ya",".","_","","ask","_","_","_","_","_","","","","_"
+		"u","f","h","ts","ch","sh","sch","e","yu","ya","dot","_","","ask","_","_","_","_","_","","","","_"
 	};
 	private static final String PASSWORD_LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 	private static Charset ASCII_CHARSET = Charset.forName("ISO-8859-1");

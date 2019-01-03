@@ -44,7 +44,8 @@ function isValidUrl(url)
   return objRE.test(url);
 }		$.datepicker.setDefaults($.datepicker.regional["ru"]);
 		$(".datepicker").datepicker();
-		var now = new Date().toLocaleString("ru").substring(0,17).replace(',', '');
+		var now = new Date().toLocaleString("ru",{timeZone : "UTC" }).substring(0,17).replace(',', '');
+		console.log(now);
 		$(".timeStamp").each(function() {
            	var targ = $(this).find("input[type=hidden]");
 			var date = $(this).find(".datepicker");
@@ -63,8 +64,7 @@ function isValidUrl(url)
 				targ.val(tls);
 			}
 			if(time.val() == ""){
-                nd =  new Date();
-                time.val(nd.getHours()+":"+nd.getMinutes());
+               time.val(tls.substring(11));
 			}
 			date.change(function() {
 				makeVal(targ, date, time);

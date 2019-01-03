@@ -53,20 +53,34 @@
 					</div>
 				</div>
 			</div>
-			<xsl:for-each select="page/small_news/small_news_item">
-				<div class="row">
-					<div class="col-full small-news-item">
+
+			<div class="row">
+				<xsl:for-each select="page/small_news/small_news_item">
+					<div class="col-four tab-full small-news-item">
 						<p class="date">
 							<xsl:value-of select="date"/>
 						</p>
-						<p class="name">
+						<p class="name{if(not(tag)) then ' botmar' else ' mar-0'}">
 							<a href="{show_page}">
 								<xsl:value-of select="name"/>
 							</a>
 						</p>
+						<xsl:if test="tag">
+						<p class="tags botmar">
+							Теги: <xsl:for-each select="tag">
+								<xsl:if test="position() &gt; 1">
+									<xsl:text>, </xsl:text>
+								</xsl:if>
+								<a href="{concat('small_news/?tag=', .)}">
+									<xsl:value-of select="."/>
+								</a>
+							</xsl:for-each>
+						</p>
+						</xsl:if>
 					</div>
-				</div>
-			</xsl:for-each>
+				</xsl:for-each>
+			</div>
+
 			<xsl:if test="$pagination">
 				<div class="row">
 					<div class="col-full">

@@ -4261,9 +4261,15 @@ footer h4::after {
    width: 100%;
    height: 100%;
 }
-.small-news-item .name{
+.small-news-item .botmar{
    border-bottom: 1px solid #777;
    padding-bottom: .6rem;
+}
+.small-news-item .mar-0{
+   margin-bottom: .75rem;
+}
+.small-news-item .tags{
+   font-size: 1.25rem;
 }
 .small-news-item .date{
    margin-bottom: 0px;
@@ -4288,4 +4294,9 @@ footer h4::after {
    border: 1px solid #0054a5;
    text-decoration: none;
 
+}
+.about h1, .about h2, .about h3, .about h4, .about h5, .about h6,
+.about .h1, .about .h2, .about .h3, .about .h4, .about .h5, .about .h6
+{
+   margin-top: 0;
 }

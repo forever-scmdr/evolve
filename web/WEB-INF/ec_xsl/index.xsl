@@ -71,7 +71,11 @@
 								</a>
 								<h5><a href="{show_page}"><xsl:value-of select="name"/></a></h5>
 								<section class="popular__meta">
-									<!--<span class="popular__author"><span>By</span> <a href="#0"> John Doe</a></span>-->
+									<xsl:if test="source != ''">
+										<span class="popular__author">
+											<span>Источник</span> <a href="{source_link}"><xsl:value-of select="source"/></a>
+										</span>
+									</xsl:if>
 									<span class="popular__date"><time datetime="{date}"><xsl:value-of select="date"/></time></span>
 								</section>
 							</article>

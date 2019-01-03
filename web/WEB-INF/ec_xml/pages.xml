@@ -114,6 +114,12 @@
 				<limit>
 					<var value="5"/>
 				</limit>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<parameter name="date" sign="&lt;=" compare="SOME">
+					<var var="$now"/>
+				</parameter>
 			</filter>
 			<link name="show_page" target="small_news_item">
 				<var name="sni" ref="sni" style="translit"/>
@@ -333,12 +339,12 @@
 					<pages>
 						<var var="page"/>
 					</pages>
-					<!--<parameter name="date" sign="&lt;=" compare="SOME">-->
-						<!--<var var="$now"/>-->
-					<!--</parameter>-->
+					<parameter name="date" sign="&lt;=" compare="SOME">
+						<var var="$now"/>
+					</parameter>
 				</filter>
-				<link name="show_page" target="small_news_item">
-					<var name="sni" ref="ni" style="translit"/>
+				<link name="show_page" target="small_news_item" type="exclusive">
+					<var name="sni" ref="ni" style="translit" />
 				</link>
 			</list>
 		</single>
