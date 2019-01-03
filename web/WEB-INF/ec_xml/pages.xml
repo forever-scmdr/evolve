@@ -166,7 +166,7 @@
 			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" transit="true">
 				<filter>
-					<child item="params" transit="false"
+					 <child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
 					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 					<sorting direction-var="direction">

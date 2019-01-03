@@ -41,7 +41,7 @@ public class DeployParsedSingle extends IntegrateBase {
 	protected final String NAME = "name";
 	protected final String SHORT = "short";
 	protected final String GALLERY = "gallery";
-	protected final String PICTURE = "picture";
+	protected final String PIC = "pic";
 	protected final String VIDEO = "video";
 	protected final String TEXT = "text";
 	protected final String APPLY = "apply";
@@ -171,14 +171,16 @@ public class DeployParsedSingle extends IntegrateBase {
 			//prod.set_tech(RF_to_RB(JsoupUtils.nodeHtml(doc, TECH)));
 			//prod.set_apply(RF_to_RB(JsoupUtils.nodeHtml(doc, APPLY)));
 			Element associated = prodEl.getElementsByTag(ASSOCIATED).first();
-			for (Element access : associated.getElementsByTag(ACCESSORY)) {
-				//prod.add_accessiories(access.ownText());
-			}
-			for (Element set : associated.getElementsByTag(SET)) {
-				//prod.add_sets(set.ownText());
-			}
-			for (Element probe : associated.getElementsByTag(PROBE)) {
-				//prod.add_probes(probe.ownText());
+			if (associated != null) {
+				for (Element access : associated.getElementsByTag(ACCESSORY)) {
+					//prod.add_accessiories(access.ownText());
+				}
+				for (Element set : associated.getElementsByTag(SET)) {
+					//prod.add_sets(set.ownText());
+				}
+				for (Element probe : associated.getElementsByTag(PROBE)) {
+					//prod.add_probes(probe.ownText());
+				}
 			}
 
 			// Заполнение картинок
@@ -189,25 +191,35 @@ public class DeployParsedSingle extends IntegrateBase {
 			}
 			Element gallery = prodEl.getElementsByTag(GALLERY).first();
 			boolean noMainPic = true;
-			for (Element picEl : gallery.getElementsByTag(PICTURE)) {
-				String fileName = Strings.getFileName(picEl.ownText());
-				File pic = picFiles.get(fileName);
-				if (pic != null) {
-					prod.setValue("gallery", pic);
-					picFiles.remove(fileName);
-					if (noMainPic) {
-						try {
-							ByteArrayOutputStream os = ResizeImagesFactory.resize(pic, -1, 300);
-							File mainFile = new File(pic.getParentFile().getCanonicalPath() + "/main_" + pic.getName());
-							FileUtils.writeByteArrayToFile(mainFile, os.toByteArray());
-							prod.setValue("main_pic", mainFile);
-							noMainPic = false;
-						} catch (Exception e) {
-							ServerLogger.error("resize error", e);
-							info.pushLog("ОШИБКА! {}", e.getLocalizedMessage());
+			if (gallery != null) {
+				for (Element picEl : gallery.getElementsByTag(PIC)) {
+					String fileName = Strings.getFileName(picEl.attr("download"));
+					File pic = picFiles.get(fileName);
+					if (pic != null) {
+						prod.setValue("gallery", pic);
+						picFiles.remove(fileName);
+						if (noMainPic) {
+							try {
+								File mainFile = new File(pic.getParentFile().getCanonicalPath() + "/main_" + pic.getName());
+								FileUtils.copyFile(pic, mainFile);
+								prod.setValue("main_pic", mainFile);
+								/*
+								ByteArrayOutputStream os = ResizeImagesFactory.resize(pic, 200, -1);
+								File smallFile = new File(pic.getParentFile().getCanonicalPath() + "/small_" + pic.getName());
+								FileUtils.writeByteArrayToFile(mainFile, os.toByteArray());
+								prod.setValue("main_pic", mainFile);
+								*/
+								noMainPic = false;
+							} catch (Exception e) {
+								ServerLogger.error("resize error", e);
+								info.pushLog("ОШИБКА! {}", e.getLocalizedMessage());
+							}
 						}
 					}
 				}
+			}
+			for (File htmlPic : pi.getAll_html_pic()) {
+				picFiles.put(htmlPic.getName(), htmlPic);
 			}
 			for (File picFile : picFiles.values()) {
 				prod.setValue("text_pics", picFile);
@@ -255,7 +267,6 @@ public class DeployParsedSingle extends IntegrateBase {
 			//updatePics(prod, ItemNames.product.APPLY, ItemNames.product.TEXT_PICS);
 			executeCommandUnit(SaveItemDBUnit.get(prod));
 		}
-
 
 		return prod;
 	}

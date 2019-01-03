@@ -169,10 +169,19 @@
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
 									<li class="visible" title="Загрзить товары из Yandex Market">
-										<a href="integrate/?action=start">Интеграция каталога</a>
+										<a href="integrate/?action=start">Интеграция Yandex Market</a>
 									</li>
-									<li class="visible" title="Загрузить товары из файла во временный раздел">
-										<a href="add_products/?action=start">Добваление товаров</a>
+									<!--<li class="visible" title="Загрузить товары из файла во временный раздел">-->
+										<!--<a href="add_products/?action=start">Добваление товаров</a>-->
+									<!--</li>-->
+									<li class="visible" title="Загрузить товары с других сайтов">
+										<a href="get_site/?action=start" target="_blank">Скачать с сайтов</a>
+									</li>
+									<li class="visible" title="Загрузить товары с других сайтов">
+										<a href="deploy_parsed/?action=start" target="_blank">Разместить скачанное</a>
+									</li>
+									<li class="visible" title="Создать фильтры по параметрам товаров">
+										<a href="create_filters/?action=start" target="_blank">Создать фильтры</a>
 									</li>
 									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 										<a href="generate_sitemap">Обновить карту сайта</a>
