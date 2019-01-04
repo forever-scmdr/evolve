@@ -9,6 +9,10 @@
 
 -->
 <urlrewrite>
+    <rule match-type="regex" enabled="true">
+        <from>product/(.+)</from>
+        <to type="permanent-redirect" last="true">/$1</to>
+    </rule>
     <!--Переход на страницу index-->
     <rule match-type="regex" enabled="true">
         <from>^/?$</from>
@@ -49,5 +53,7 @@
         <to type="forward">/un/eco/$1</to>
     </rule>
      -->
+
+
 
 </urlrewrite>
