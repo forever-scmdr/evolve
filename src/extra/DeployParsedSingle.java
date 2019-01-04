@@ -9,6 +9,7 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
+import extra._generated.Section;
 import lunacrawler.fwk.Parse_item;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -151,11 +152,11 @@ public class DeployParsedSingle extends IntegrateBase {
 			// Проверка, если айтем существует - создать копию этого продукта
 			Item product = ItemQuery.loadSingleItemByParamValue(Product._NAME, "code", code);
 			if (product != null) {
-				if (doCopy) {
+				Item parent = new ItemQuery(Section._NAME).setChildId(product.getId(), false).loadFirstItem();
+				if (doCopy && (parent == null || parent.getId() != parentSection.getId())) {
 					executeCommandUnit(new CopyItemDBUnit(product, parentSection));
-				} else {
-					return Product.get(product);
 				}
+				return Product.get(product);
 			}
 
 			// Создать сам продукт и все вложенные айтемы в одной транзакции

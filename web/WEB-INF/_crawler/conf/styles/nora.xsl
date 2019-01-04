@@ -31,7 +31,7 @@
 						<xsl:for-each select="$tech_table//tr[position() &gt; 1]">
 							<parameter>
 								<name><xsl:value-of select="normalize-space(td[1])" /></name>
-								<value><xsl:value-of select="normalize-space(td[2]/text())" /></value>
+								<value><xsl:value-of select="normalize-space(td[2])" /></value>
 							</parameter>
 						</xsl:for-each>
 					</params_xml>
