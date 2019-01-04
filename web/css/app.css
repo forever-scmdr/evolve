@@ -5815,7 +5815,7 @@ img {
 .popup-catalog-menu{
   background-color: #fff;
   left: 0;
-  top: 17rem;
+  top: 18rem;
   box-shadow: #00000087 0 0 5rem;
   z-index: 2;
   padding: unset !important;
@@ -5970,14 +5970,14 @@ img {
         height: unset;
         font-size: 1.2em; }
   .desktop .header-container .main-menu {
-    border-radius: 2px;
+    border-radius: 4px;
     flex-basis: 100%;
-    /*margin-bottom: 3rem;*/
     display: flex;
     overflow: hidden;
     padding-top: 0;
     margin-top: 1.5rem;
-    /*box-shadow: 0 10px 30px #d2cfcb;*/
+    box-shadow: 0 2px 10px #9c9c9c;
+    background-color: #3e3e3e;
     }
     .desktop .header-container .main-menu a {
       text-align: center;
@@ -5988,7 +5988,8 @@ img {
 .mobile.header .header-container {
   padding-top: 1.5rem;
   display: flex;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+  width: 100%; }
 .mobile.header .logo {
   display: block;
   flex: 1;
@@ -6015,7 +6016,8 @@ img {
     margin: auto; }
   .slider-container .fotorama__nav-wrap {
     position: relative;
-    top: 1rem; }
+    margin-top: -30px;
+    /*top: 1rem; */}
 
 .news-container {
   display: flex;
@@ -6055,7 +6057,7 @@ img {
   .side-menu > .active a {
     font-weight: bold;
     text-decoration: none; }
-  .side-menu > .active:before {
+  .side-menu > .active:after {
     content: '';
     display: block;
     position: absolute;
@@ -6074,14 +6076,14 @@ img {
     color: #fff;
     background-color: #db151a;
     padding: 1.5rem 2rem;}
-  .side-menu .level-2 {
+  .side-menu .level-2, .side-menu .level-3 {
     margin-bottom: .1rem;
     color: #000;
     background-color: #ffc8ce;
     padding: 1.5rem 2rem;}
   .side-menu .level-3 {
-    padding-left: 2rem;
-    margin-left: 3.5rem; }
+
+    padding-left: 4rem;}
   .side-menu .level-4 {
     padding-left: 2rem;
     margin-left: 5.5rem; }
@@ -6225,6 +6227,10 @@ img {
     margin-right: 1.3%; }
     .catalog-items .catalog-item:nth-child(4n+0) {
       margin-right: 0; }
+    .catalog-items.info .catalog-item:nth-child(3n+0) {
+      margin-right: 0; }
+    .catalog-items.info .catalog-item:nth-child(4n+0) {
+      margin-right: 1.3%; }
     .catalog-items .catalog-item form {
       display: flex; }
     .catalog-items .catalog-item div a {
@@ -6251,7 +6257,9 @@ img {
     .catalog-items .catalog-item .image-container {
       display: block;
       height: 15rem;
-      background-size: cover;
+      background-size: contain;
+      background-position: 50% 100%;
+      background-repeat: no-repeat;
       margin-bottom: 1rem; }
       .catalog-items .catalog-item .image-container img {
         max-height: 100%;
@@ -6653,12 +6661,12 @@ ul.icons {
 .content-container {
   transition: transform 300ms ease-out; }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .mobile {
     display: none !important; }
 
   .slider-container {
-    margin-bottom: 1rem; }
+    /*margin-bottom: 1rem;*/ }
 
   .p-t {
     padding-top: 4rem; }
@@ -6666,7 +6674,7 @@ ul.icons {
  /* .footer-placeholder {
     height: 18rem; }*/
    }
-@media (max-width: 767px) {
+@media (max-width: 991px) {
   .desktop {
     display: none !important; }
 
@@ -6740,8 +6748,8 @@ ul.icons {
   width: 10rem; }
 
 .info-block ul {
-  list-style-type: none;
-  padding-left: 3rem; }
+  list-style-type: disc;
+  padding-left: 1.5rem; }
 .info-block li {
   position: relative; }
   .info-block li svg {
@@ -6801,9 +6809,9 @@ margin-right: .5rem; }
   color: #000; }
 
 .desktop .main-menu a {
-  color: #333;
+  color: #fff;
   font-size: 1.2em;
-  background: #d6d6d6; }
+  background: #3e3e3e; }
   .desktop .main-menu a:first-child {
     background-color: #DA251D !important;
     color: #fff !important; }
@@ -7131,7 +7139,7 @@ svg {
   display: flex;
   align-content: stretch;
   justify-content: space-between;
-  padding-top: 1rem; }
+  /*padding-top: 1rem;*/ }
 .banner {
   flex: 1;
   overflow: hidden;
@@ -7340,353 +7348,470 @@ svg {
 
 /* custom colors */
 
-/* stihl viking */
-.zz71112 .content-container {
+/* stihl */
+.zz-produktsiya_stihl .content-container {
   background-image: url(../img/viking_bg.jpg);
   background-color: #ed6c04;
 }
-.zz71112 .desktop .main-menu a:first-child,
-.zz71112 .desktop .main-menu a:first-child svg {
+.zz-produktsiya_stihl .desktop .main-menu a:first-child,
+.zz-produktsiya_stihl .desktop .main-menu a:first-child svg {
   color: #fff !important;
 }
-.zz71112 .level-1
+.zz-produktsiya_stihl .level-1
 {
   background-color: #ed6c04;
   color: white;
 }
-.zz71112 .level-2,
-.zz71112 .level-3,
-.zz71112 .level-4,
-.zz71112 .level-5
+.zz-produktsiya_stihl .level-2,
+.zz-produktsiya_stihl .level-3,
+.zz-produktsiya_stihl .level-4,
+.zz-produktsiya_stihl .level-5
 {
   background-color: silver;
   color: #fff;
 }
-.zz71112 .side-menu > .active:before
+.zz-produktsiya_stihl .side-menu > .active:before
 {
   background-color: #04ad0f;
 }
-.zz71112 .side-menu .active a {
+.zz-produktsiya_stihl .side-menu .active a {
   color: #fff;
 }
-.zz71112 .desktop .main-menu a:first-child {
+.zz-produktsiya_stihl .desktop .main-menu a:first-child {
   background-color: #ed6c04 !important;
 }
-.zz71112 .tags label,
-.zz71112 input[type="submit"] {
+.zz-produktsiya_stihl .tags label,
+.zz-produktsiya_stihl input[type="submit"] {
   background-color: #fff;
   border: 1px solid #ed6c04;
   color: #ed6c04;
 }
 
-.zz71112 .tags label.active,
-.zz71112 input[type="submit"].to_cart,
-.zz71112 input.submit.to_cart {
+.zz-produktsiya_stihl .tags label.active,
+.zz-produktsiya_stihl input[type="submit"].to_cart,
+.zz-produktsiya_stihl input.submit.to_cart {
   background-color: #ed6c04;
   color: #fff;
 }
-.zz71112 svg,
-.zz71112 .catalog-items .links span.active a,
-.zz71112 .catalog-items .links span.active svg,
-.zz71112 .path + span svg {
+.zz-produktsiya_stihl svg,
+.zz-produktsiya_stihl .catalog-items .links span.active a,
+.zz-produktsiya_stihl .catalog-items .links span.active svg,
+.zz-produktsiya_stihl .path + span svg {
   color: #ed6c04;
 }
-.zz71112 .links span svg {
+.zz-produktsiya_stihl .links span svg {
   color: #a9a9a9;
 }
-.zz71112 .footer-container {
+.zz-produktsiya_stihl .footer-container {
+  border-top-color: transparent;
+}
+
+
+/* viking */
+.zz-produktsiya_viking .content-container {
+  background-image: url(../img/viking_bg.jpg);
+  background-color: #ed6c04;
+}
+.zz-produktsiya_viking .desktop .main-menu a:first-child,
+.zz-produktsiya_viking .desktop .main-menu a:first-child svg {
+  color: #fff !important;
+}
+.zz-produktsiya_viking .level-1
+{
+  background-color: #ed6c04;
+  color: white;
+}
+.zz-produktsiya_viking .level-2,
+.zz-produktsiya_viking .level-3,
+.zz-produktsiya_viking .level-4,
+.zz-produktsiya_viking .level-5
+{
+  background-color: silver;
+  color: #fff;
+}
+.zz-produktsiya_viking .side-menu > .active:before
+{
+  background-color: #04ad0f;
+}
+.zz-produktsiya_viking .side-menu .active a {
+  color: #fff;
+}
+.zz-produktsiya_viking .desktop .main-menu a:first-child {
+  background-color: #ed6c04 !important;
+}
+.zz-produktsiya_viking .tags label,
+.zz-produktsiya_viking input[type="submit"] {
+  background-color: #fff;
+  border: 1px solid #ed6c04;
+  color: #ed6c04;
+}
+
+.zz-produktsiya_viking .tags label.active,
+.zz-produktsiya_viking input[type="submit"].to_cart,
+.zz-produktsiya_viking input.submit.to_cart {
+  background-color: #ed6c04;
+  color: #fff;
+}
+.zz-produktsiya_viking svg,
+.zz-produktsiya_viking .catalog-items .links span.active a,
+.zz-produktsiya_viking .catalog-items .links span.active svg,
+.zz-produktsiya_viking .path + span svg {
+  color: #ed6c04;
+}
+.zz-produktsiya_viking .links span svg {
+  color: #a9a9a9;
+}
+.zz-produktsiya_viking .footer-container {
+  border-top-color: transparent;
+}
+
+/* stihl 2 */
+.zz-stihl___lesnaya_i_sadovaya_tehnika .content-container {
+  background-image: url(../img/viking_bg.jpg);
+  background-color: #ed6c04;
+}
+.zz-stihl___lesnaya_i_sadovaya_tehnika .desktop .main-menu a:first-child,
+.zz-stihl___lesnaya_i_sadovaya_tehnika .desktop .main-menu a:first-child svg {
+  color: #fff !important;
+}
+.zz-stihl___lesnaya_i_sadovaya_tehnika .level-1
+{
+  background-color: #ed6c04;
+  color: white;
+}
+.zz-stihl___lesnaya_i_sadovaya_tehnika .level-2,
+.zz-stihl___lesnaya_i_sadovaya_tehnika .level-3,
+.zz-stihl___lesnaya_i_sadovaya_tehnika .level-4,
+.zz-stihl___lesnaya_i_sadovaya_tehnika .level-5
+{
+  background-color: silver;
+  color: #fff;
+}
+.zz-stihl___lesnaya_i_sadovaya_tehnika .side-menu > .active:before
+{
+  background-color: #04ad0f;
+}
+.zz-stihl___lesnaya_i_sadovaya_tehnika .side-menu .active a {
+  color: #fff;
+}
+.zz-stihl___lesnaya_i_sadovaya_tehnika .desktop .main-menu a:first-child {
+  background-color: #ed6c04 !important;
+}
+.zz-stihl___lesnaya_i_sadovaya_tehnika .tags label,
+.zz-stihl___lesnaya_i_sadovaya_tehnika input[type="submit"] {
+  background-color: #fff;
+  border: 1px solid #ed6c04;
+  color: #ed6c04;
+}
+
+.zz-stihl___lesnaya_i_sadovaya_tehnika .tags label.active,
+.zz-stihl___lesnaya_i_sadovaya_tehnika input[type="submit"].to_cart,
+.zz-stihl___lesnaya_i_sadovaya_tehnika input.submit.to_cart {
+  background-color: #ed6c04;
+  color: #fff;
+}
+.zz-stihl___lesnaya_i_sadovaya_tehnika svg,
+.zz-stihl___lesnaya_i_sadovaya_tehnika .catalog-items .links span.active a,
+.zz-stihl___lesnaya_i_sadovaya_tehnika .catalog-items .links span.active svg,
+.zz-stihl___lesnaya_i_sadovaya_tehnika .path + span svg {
+  color: #ed6c04;
+}
+.zz-stihl___lesnaya_i_sadovaya_tehnika .links span svg {
+  color: #a9a9a9;
+}
+.zz-stihl___lesnaya_i_sadovaya_tehnika .footer-container {
   border-top-color: transparent;
 }
 
 
 /* suzuki */
-.zz71153 .content-container {
+.zz-suzuki___lodochnye_motory .content-container {
   background-image: url(../img/common.jpg);
   background-color: #003045;
 }
-.zz71153 .desktop .main-menu a:first-child,
-.zz71153 .desktop .main-menu a:first-child svg {
+.zz-suzuki___lodochnye_motory .desktop .main-menu a:first-child,
+.zz-suzuki___lodochnye_motory .desktop .main-menu a:first-child svg {
   color: #fff !important;
 }
-.zz71153 .level-1
+.zz-suzuki___lodochnye_motory .level-1
 {
   background-color: #003045;
   color: white;
 }
-.zz71153 .level-2,
-.zz71153 .level-3,
-.zz71153 .level-4,
-.zz71153 .level-5
+.zz-suzuki___lodochnye_motory .level-2,
+.zz-suzuki___lodochnye_motory .level-3,
+.zz-suzuki___lodochnye_motory .level-4,
+.zz-suzuki___lodochnye_motory .level-5
 {
   background-color: #b2d6e6;
   color: #003045;
 }
-.zz71153 .side-menu > .active:before
+.zz-suzuki___lodochnye_motory .side-menu > .active:before
 {
   background-color: #d21e0f;
 }
-.zz71153 .side-menu .active a {
+.zz-suzuki___lodochnye_motory .side-menu .active a {
   color: #fff;
 }
-.zz71153 .desktop .main-menu a:first-child {
+.zz-suzuki___lodochnye_motory .desktop .main-menu a:first-child {
   background-color: #003045 !important;
 }
-.zz71153 .tags label,
-.zz71153 input[type="submit"] {
+.zz-suzuki___lodochnye_motory .tags label,
+.zz-suzuki___lodochnye_motory input[type="submit"] {
   background-color: #fff;
   border: 1px solid #003045;
   color: #003045;
 }
 
-.zz71153 .tags label.active,
-.zz71153 input[type="submit"].to_cart,
-.zz71153 input.submit.to_cart {
+.zz-suzuki___lodochnye_motory .tags label.active,
+.zz-suzuki___lodochnye_motory input[type="submit"].to_cart,
+.zz-suzuki___lodochnye_motory input.submit.to_cart {
   background-color: #003045;
   color: #fff;
 }
-.zz71153 svg,
-.zz71153 .catalog-items .links span.active a,
-.zz71153 .catalog-items .links span.active svg,
-.zz71153 .path + span svg {
+.zz-suzuki___lodochnye_motory svg,
+.zz-suzuki___lodochnye_motory .catalog-items .links span.active a,
+.zz-suzuki___lodochnye_motory .catalog-items .links span.active svg,
+.zz-suzuki___lodochnye_motory .path + span svg {
   color: #003045;
 }
-.zz71153 .links span svg {
+.zz-suzuki___lodochnye_motory .links span svg {
   color: #a9a9a9;
 }
-.zz71153 .footer-container {
+.zz-suzuki___lodochnye_motory .footer-container {
   border-top-color: transparent;
 }
 
 
 /* briggs & stratton */
-.zz71170 .content-container {
+.zz-briggs_and_stratton___dvigateli_i_generatory .content-container {
   background-image: url(../img/briggs_bg.jpg);
   background-color: #1C1E1F;
 }
-.zz71170 .desktop .main-menu a:first-child,
-.zz71170 .desktop .main-menu a:first-child svg {
+.zz-briggs_and_stratton___dvigateli_i_generatory .desktop .main-menu a:first-child,
+.zz-briggs_and_stratton___dvigateli_i_generatory .desktop .main-menu a:first-child svg {
   color: #fff !important;
 }
-.zz71170 .level-1
+.zz-briggs_and_stratton___dvigateli_i_generatory .level-1
 {
   background-color: #1C1E1F;
   color: white;
 }
-.zz71170 .level-2,
-.zz71170 .level-3,
-.zz71170 .level-4,
-.zz71170 .level-5
+.zz-briggs_and_stratton___dvigateli_i_generatory .level-2,
+.zz-briggs_and_stratton___dvigateli_i_generatory .level-3,
+.zz-briggs_and_stratton___dvigateli_i_generatory .level-4,
+.zz-briggs_and_stratton___dvigateli_i_generatory .level-5
 {
   background-color: #7C7C7D;
   color: #fff;
 }
-.zz71170 .side-menu > .active:before
+.zz-briggs_and_stratton___dvigateli_i_generatory .side-menu > .active:before
 {
   background-color: #d21e0f;
 }
-.zz71170 .side-menu .active a {
+.zz-briggs_and_stratton___dvigateli_i_generatory .side-menu .active a {
   color: #fff;
 }
-.zz71170 .desktop .main-menu a:first-child {
+.zz-briggs_and_stratton___dvigateli_i_generatory .desktop .main-menu a:first-child {
   background-color: #1C1E1F !important;
 }
-.zz71170 .tags label,
-.zz71170 input[type="submit"] {
+.zz-briggs_and_stratton___dvigateli_i_generatory .tags label,
+.zz-briggs_and_stratton___dvigateli_i_generatory input[type="submit"] {
   background-color: #fff;
   border: 1px solid #1C1E1F;
   color: #1C1E1F;
 }
 
-.zz71170 .tags label.active,
-.zz71170 input[type="submit"].to_cart,
-.zz71170 input.submit.to_cart {
+.zz-briggs_and_stratton___dvigateli_i_generatory .tags label.active,
+.zz-briggs_and_stratton___dvigateli_i_generatory input[type="submit"].to_cart,
+.zz-briggs_and_stratton___dvigateli_i_generatory input.submit.to_cart {
   background-color: #1C1E1F;
   color: #fff;
 }
-.zz71170 svg,
-.zz71170 .catalog-items .links span.active a,
-.zz71170 .catalog-items .links span.active svg,
-.zz71170 .path + span svg {
+.zz-briggs_and_stratton___dvigateli_i_generatory svg,
+.zz-briggs_and_stratton___dvigateli_i_generatory .catalog-items .links span.active a,
+.zz-briggs_and_stratton___dvigateli_i_generatory .catalog-items .links span.active svg,
+.zz-briggs_and_stratton___dvigateli_i_generatory .path + span svg {
   color: #1C1E1F;
 }
-.zz71170 .links span svg {
+.zz-briggs_and_stratton___dvigateli_i_generatory .links span svg {
   color: #a9a9a9;
 }
-.zz71170 .footer-container {
+.zz-briggs_and_stratton___dvigateli_i_generatory .footer-container {
   border-top-color: transparent;
 }
 
 /* laski */
-.zz71177 .content-container {
+.zz-laski___drobilnye_mashiny_dlya_dereva .content-container {
   background-image: url(../img/a5bg.jpg);
   background-color: #39620b;
 }
-.zz71177 .desktop .main-menu a:first-child,
-.zz71177 .desktop .main-menu a:first-child svg {
+.zz-laski___drobilnye_mashiny_dlya_dereva .desktop .main-menu a:first-child,
+.zz-laski___drobilnye_mashiny_dlya_dereva .desktop .main-menu a:first-child svg {
   color: #fff !important;
 }
-.zz71177 .level-1
+.zz-laski___drobilnye_mashiny_dlya_dereva .level-1
 {
   background-color: #313131;
   color: white;
 }
-.zz71177 .level-2,
-.zz71177 .level-3,
-.zz71177 .level-4,
-.zz71177 .level-5
+.zz-laski___drobilnye_mashiny_dlya_dereva .level-2,
+.zz-laski___drobilnye_mashiny_dlya_dereva .level-3,
+.zz-laski___drobilnye_mashiny_dlya_dereva .level-4,
+.zz-laski___drobilnye_mashiny_dlya_dereva .level-5
 {
   background-color: #4B4B4B;
   color: #fff;
 }
-.zz71177 .side-menu > .active:before
+.zz-laski___drobilnye_mashiny_dlya_dereva .side-menu > .active:before
 {
   background-color: #197B30;
 }
-.zz71177 .side-menu .active a {
+.zz-laski___drobilnye_mashiny_dlya_dereva .side-menu .active a {
   color: #fff;
 }
-.zz71177 .desktop .main-menu a:first-child {
+.zz-laski___drobilnye_mashiny_dlya_dereva .desktop .main-menu a:first-child {
   background-color: #313131 !important;
 }
-.zz71177 .tags label,
-.zz71177 input[type="submit"] {
+.zz-laski___drobilnye_mashiny_dlya_dereva .tags label,
+.zz-laski___drobilnye_mashiny_dlya_dereva input[type="submit"] {
   background-color: #fff;
   border: 1px solid #313131;
   color: #313131;
 }
 
-.zz71177 .tags label.active,
-.zz71177 input[type="submit"].to_cart,
-.zz71177 input.submit.to_cart {
+.zz-laski___drobilnye_mashiny_dlya_dereva .tags label.active,
+.zz-laski___drobilnye_mashiny_dlya_dereva input[type="submit"].to_cart,
+.zz-laski___drobilnye_mashiny_dlya_dereva input.submit.to_cart {
   background-color: #313131;
   color: #fff;
 }
-.zz71177 svg,
-.zz71177 .catalog-items .links span.active a,
-.zz71177 .catalog-items .links span.active svg,
-.zz71177 .path + span svg {
+.zz-laski___drobilnye_mashiny_dlya_dereva svg,
+.zz-laski___drobilnye_mashiny_dlya_dereva .catalog-items .links span.active a,
+.zz-laski___drobilnye_mashiny_dlya_dereva .catalog-items .links span.active svg,
+.zz-laski___drobilnye_mashiny_dlya_dereva .path + span svg {
   color: ##313131;
 }
-.zz71177 .links span svg {
+.zz-laski___drobilnye_mashiny_dlya_dereva .links span svg {
   color: #a9a9a9;
 }
-.zz71177 .footer-container {
+.zz-laski___drobilnye_mashiny_dlya_dereva .footer-container {
   border-top-color: transparent;
 }
 
 /* ums */
-.zz71194 .content-container {
+.zz-ums_katera_i_lodki .content-container {
   background-image: url(../img/common.jpg);
   background-color: #003045;
 }
-.zz71194 .desktop .main-menu a:first-child,
-.zz71194 .desktop .main-menu a:first-child svg {
+.zz-ums_katera_i_lodki .desktop .main-menu a:first-child,
+.zz-ums_katera_i_lodki .desktop .main-menu a:first-child svg {
   color: #fff !important;
 }
-.zz71194 .level-1
+.zz-ums_katera_i_lodki .level-1
 {
   background-color: #003045;
   color: white;
 }
-.zz71194 .level-2,
-.zz71194 .level-3,
-.zz71194 .level-4,
-.zz71194 .level-5
+.zz-ums_katera_i_lodki .level-2,
+.zz-ums_katera_i_lodki .level-3,
+.zz-ums_katera_i_lodki .level-4,
+.zz-ums_katera_i_lodki .level-5
 {
   background-color: #b2d6e6;
   color: #003045;
 }
-.zz71194 .side-menu > .active:before
+.zz-ums_katera_i_lodki .side-menu > .active:before
 {
   background-color: #d21e0f;
 }
-.zz71194 .side-menu .active a {
+.zz-ums_katera_i_lodki .side-menu .active a {
   color: #fff;
 }
-.zz71194 .desktop .main-menu a:first-child {
+.zz-ums_katera_i_lodki .desktop .main-menu a:first-child {
   background-color: #003045 !important;
 }
-.zz71194 .tags label,
-.zz71194 input[type="submit"] {
+.zz-ums_katera_i_lodki .tags label,
+.zz-ums_katera_i_lodki input[type="submit"] {
   background-color: #fff;
   border: 1px solid #003045;
   color: #003045;
 }
 
-.zz71194 .tags label.active,
-.zz71194 input[type="submit"].to_cart,
-.zz71194 input.submit.to_cart {
+.zz-ums_katera_i_lodki .tags label.active,
+.zz-ums_katera_i_lodki input[type="submit"].to_cart,
+.zz-ums_katera_i_lodki input.submit.to_cart {
   background-color: #003045;
   color: #fff;
 }
-.zz71194 svg,
-.zz71194 .catalog-items .links span.active a,
-.zz71194 .catalog-items .links span.active svg,
-.zz71194 .path + span svg {
+.zz-ums_katera_i_lodki svg,
+.zz-ums_katera_i_lodki .catalog-items .links span.active a,
+.zz-ums_katera_i_lodki .catalog-items .links span.active svg,
+.zz-ums_katera_i_lodki .path + span svg {
   color: #003045;
 }
-.zz71194 .links span svg {
+.zz-ums_katera_i_lodki .links span svg {
   color: #a9a9a9;
 }
-.zz71194 .footer-container {
+.zz-ums_katera_i_lodki .footer-container {
   border-top-color: transparent;
 }
 
 /* as-motor */
-.zz71195 .content-container {
+.zz-as_motor_germaniya_gazonokosilki .content-container {
   background-image: url(../img/a5bg.jpg);
   background-color: #39620b;
 }
-.zz71195 .desktop .main-menu a:first-child,
-.zz71195 .desktop .main-menu a:first-child svg {
+.zz-as_motor_germaniya_gazonokosilki .desktop .main-menu a:first-child,
+.zz-as_motor_germaniya_gazonokosilki .desktop .main-menu a:first-child svg {
   color: #EFA619 !important;
 }
-.zz71195 .level-1
+.zz-as_motor_germaniya_gazonokosilki .level-1
 {
   background-color: #313131;
   color: #EFA619;
 }
-.zz71195 .level-2,
-.zz71195 .level-3,
-.zz71195 .level-4,
-.zz71195 .level-5
+.zz-as_motor_germaniya_gazonokosilki .level-2,
+.zz-as_motor_germaniya_gazonokosilki .level-3,
+.zz-as_motor_germaniya_gazonokosilki .level-4,
+.zz-as_motor_germaniya_gazonokosilki .level-5
 {
   background-color: #4B4B4B;
   color: #EFA619;
 }
-.zz71195 .side-menu > .active:before
+.zz-as_motor_germaniya_gazonokosilki .side-menu > .active:before
 {
   background-color: #EFA619;
 }
-.zz71195 .side-menu .active a {
+.zz-as_motor_germaniya_gazonokosilki .side-menu .active a {
   color: #fff;
 }
-.zz71195 .desktop .main-menu a:first-child {
+.zz-as_motor_germaniya_gazonokosilki .desktop .main-menu a:first-child {
   background-color: #313131 !important;
 }
-.zz71195 .tags label,
-.zz71195 input[type="submit"] {
+.zz-as_motor_germaniya_gazonokosilki .tags label,
+.zz-as_motor_germaniya_gazonokosilki input[type="submit"] {
   background-color: #fff;
   border: 1px solid #313131;
   color: #313131;
 }
 
-.zz71195 .tags label.active,
-.zz71195 input[type="submit"].to_cart,
-.zz71195 input.submit.to_cart {
+.zz-as_motor_germaniya_gazonokosilki .tags label.active,
+.zz-as_motor_germaniya_gazonokosilki input[type="submit"].to_cart,
+.zz-as_motor_germaniya_gazonokosilki input.submit.to_cart {
   background-color: #313131;
   color: #fff;
 }
-.zz71195 svg,
-.zz71195 .catalog-items .links span.active a,
-.zz71195 .catalog-items .links span.active svg,
-.zz71195 .path + span svg {
+.zz-as_motor_germaniya_gazonokosilki svg,
+.zz-as_motor_germaniya_gazonokosilki .catalog-items .links span.active a,
+.zz-as_motor_germaniya_gazonokosilki .catalog-items .links span.active svg,
+.zz-as_motor_germaniya_gazonokosilki .path + span svg {
   color: #313131;
 }
-.zz71195 .links span svg {
+.zz-as_motor_germaniya_gazonokosilki .links span svg {
   color: #a9a9a9;
 }
-.zz71195 .footer-container {
+.zz-as_motor_germaniya_gazonokosilki .footer-container {
   border-top-color: transparent;
 }
 /* custom colors end */
@@ -7706,5 +7831,96 @@ svg {
 @media (max-width: 767px) {
   .cart-container .item .image-container {
     margin-left: 1rem;
+  }
+}
+
+.product-info .art-number {
+  flex-basis: 100%;
+  margin-top: 1rem;
+}
+
+/*fix description*/
+.configuration_list {
+	margin-top: 30px;
+	padding-left: 0;
+}
+.configuration_list li {
+	display: flex;
+	margin-bottom: 30px;
+}
+.configuration_list li > a {
+	flex: 1;
+  padding-right: 10px;
+}
+.configuration_list li > a img {
+	border: 1px solid #eaeaea;
+}
+.configuration_list li > div {
+	flex: 4;
+}
+img.image_zoom_icon {
+	display: none;
+}
+.configuration_list li h5 {
+	font-weight: bold;
+}
+@media (max-width: 420px) {
+	.configuration_list li {
+		flex-wrap: wrap;
+	}
+	.configuration_list li > a,
+	.configuration_list li > div {
+		flex; 1;
+		flex-basis: 100%;
+	}
+}
+.show_all li ul,
+.show_all ul {
+	list-style: none;
+	padding-left: 0;
+}
+/*fix description end*/
+
+.side-menu .level-3:before {
+	content: '–';
+	position: absolute;
+	top: 1.5rem;
+	left: 2rem;
+}
+.path-container > span {
+	display: none;
+}
+@media (max-width: 1199px) {
+  .desktop .header-container .logo img {
+    height: auto !important;
+  }
+  .desktop .logo {
+    width: 210px;
+    padding-top: 2.3rem;
+  }
+}
+/*@media (max-width: 991px) {
+  .desktop.top-stripe,
+  .desktop.header {
+    display: none;
+  }
+  .mobile.header {
+    display: flex !important;
+  }
+}*/
+
+.zz-index .container.header.desktop + .container {
+  padding-bottom: 0 !important;
+}
+@media (min-width: 1024px) {
+  .container.header.desktop + .container + .container + .container {
+    padding-right: 40px !important;
+    padding-left: 40px !important;
+  }
+  .free-col:nth-child(1) {
+    flex-basis: 42%;
+  }
+  .free-col {
+    flex-basis: 24%;
   }
 }

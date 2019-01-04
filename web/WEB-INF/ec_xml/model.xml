@@ -82,7 +82,7 @@
 	<assoc name="seo" caption="SEO" description="Связь айтемов с seo" transitive="false" ag-id="1" ag-hash="113757"/>
 
 
-	<item name="seo" caption="SEO" key="key_unique" ag-id="1" ag-hash="113757">
+	<item name="seo" caption="SEO" key="title" ag-id="1" ag-hash="113757">
 		<parameter name="key_unique" caption="Ключ страницы" type="string"
 		           description="должен совпадать с уникальным текстовым ключом соответствующего айтема"/>
 		<parameter name="title" type="string" caption="title"/>
@@ -183,7 +183,7 @@
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" format="width: 300" caption="Главная картинка"/>
-		<parameter name="description" type="text" caption="Краткое описание" text-index="fulltext" />
+		<parameter name="description" type="text" caption="Описание" description="Не выводится. Но индексируется для поиска по сайту." text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
@@ -351,7 +351,7 @@
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
 		<parameter name="text" type="text" caption="Текст"/>
-		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+		<parameter name="text_pics" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
 	<item name="news" caption="Новостной раздел" key="name" key-unique="true" default-page="news" super="seo_container" ag-id="21" ag-hash="3377875">

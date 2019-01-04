@@ -130,7 +130,7 @@
 			<div class="fotorama" data-transition="crossfade" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
 				<xsl:for-each select="page/main_page/main_slider_frame">
 					<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
-						<div class="slider-item__block">
+						<div class="slider-item__block fotorama__select">
 							<div class="slider-item__title"><xsl:value-of select="name" /></div>
 							<div class="slider-item__text">
 								<xsl:value-of select="text" disable-output-escaping="yes"/>
@@ -183,14 +183,23 @@
 	</xsl:template>
 
 	<xsl:template name="BANNERS">
-		<div class="container">
+		<div class="container" style="border-bottom: 1px solid #d2d2d2;">
 			<div class="banners-container">
-				<xsl:for-each select="page/catalog/section">
+				<!-- <xsl:for-each select="page/catalog/section">
 					<div class="banner">
 						<div class="banner__image" style="background-image: url({@path}{main_pic})"></div>
-						<div class="banner__title"><xsl:value-of select="name_extra"/></div>
+						<div class="banner__title"><xsl:value-of select="name_extra"/></div> -->
 						<!-- <div class="banner__text"><xsl:value-of select="text_small"/></div> -->
-						<a class="banner__link" href="{show_section}"></a>
+					<!-- 	<a class="banner__link" href="{show_section}"></a>
+					</div>
+				</xsl:for-each> -->
+				<xsl:for-each select="page/main_page/main_promo_bottom">
+					<div class="banner">
+						<div class="banner__image" style="background-image: url({@path}{pic})"></div>
+						<div class="banner__title">
+							<xsl:value-of select="text_big" disable-output-escaping="yes"/>
+						</div>
+						<a class="banner__link" href="{link}"></a>
 					</div>
 				</xsl:for-each>
 			</div>

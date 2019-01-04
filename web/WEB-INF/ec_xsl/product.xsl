@@ -56,7 +56,7 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1><xsl:value-of select="$h1"/></h1>
-		<h2><xsl:value-of select="$p/type"/></h2>
+		<!--<h2><xsl:value-of select="$p/type"/></h2>-->
 		<h3><xsl:value-of select="$p/name_extra"/></h3>
 
 		<div class="catalog-item-container">
@@ -82,8 +82,11 @@
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}"/>
 					</xsl:for-each>
-					<xsl:if test="not($p/gallery)">
+					<xsl:if test="not($p/gallery) and not($p/main_pic)">
 						<img src="img/no_image.png"/>
+					</xsl:if>
+					<xsl:if test="not($p/gallery) and $p/main_pic != ''">
+						<img src="{$p/@path}{$p/main_pic}"/>
 					</xsl:if>
 				</div>
 			</div>
@@ -104,13 +107,13 @@
 					<xsl:variable name="available" select="$p/available = '1'"/>
 					<div id="cart_list_{$p/@id}" class="product_purchase_container">
 						<form action="{$p/to_cart}" method="post">
-							<xsl:if test="$available">
+							<xsl:if test="$has_price">
 								<input type="number" name="qty" value="1" min="0"/>
-								<input type="submit" value="В корзину"/>
+								<input type="submit" value="Заявка"/>
 							</xsl:if>
-							<xsl:if test="not($available)">
+							<xsl:if test="not($has_price)">
 								<input type="number" name="qty" value="1" min="0"/>
-								<input type="submit" class="not_available" value="Под заказ"/>
+								<input type="submit" class="not_available" value="Запросить цену"/>
 							</xsl:if>
 						</form>
 					</div>
@@ -164,11 +167,22 @@
 					-->
 				</div>
 			</div>
+
+			<xsl:variable name="has_tech" select="$p/product_extra[name = 'tech']/text != ''"/>
+			<xsl:variable name="has_elements" select="$p/product_extra[name = 'elements']/text != ''"/>
+			<xsl:variable name="has_extra_parts" select="$p/product_extra[name = 'extra_parts']/text != ''"/>
+
 			<div class="description">
 				<ul class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><a href="#tech" role="tab" data-toggle="tab">Технические данные</a></li>
-					<li role="presentation"><a href="#elements" role="tab" data-toggle="tab">Технические данные</a></li>
-					<li role="presentation"><a href="#extra_parts" role="tab" data-toggle="tab">Объем поставки</a></li>
+					<xsl:if test="$has_tech">
+						<li role="presentation" class="active"><a href="#tech" role="tab" data-toggle="tab">Технические характеристики</a></li>
+					</xsl:if>
+					<xsl:if test="$has_elements">
+						<li role="presentation" class="{'active'[not($has_tech)]}"><a href="#elements" role="tab" data-toggle="tab">Оснащение</a></li>
+					</xsl:if>
+					<xsl:if test="$has_extra_parts">
+					<li role="presentation" class="{'active'[not($has_elements)]}"><a href="#extra_parts" role="tab" data-toggle="tab">Объем поставки</a></li>
+					</xsl:if>
 				</ul>
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active" id="tech">
