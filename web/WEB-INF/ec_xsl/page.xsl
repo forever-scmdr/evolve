@@ -20,15 +20,6 @@
 						<xsl:value-of select="$h1"/>
 					</h1>
 				</div>
-				<div class="s-content__media col-full">
-					<div class="s-content__post-thumb">
-						<img src="{concat($p/@path, $p/main_pic)}"
-							 srcset="{concat($p/@path, $p/main_pic)} 2000w,
-                                 {concat($p/@path, $p/medium_pic)} 1000w,
-                                 {concat($p/@path, $p/small_pic)} 500w"
-							 sizes="(max-width: 2000px) 100vw, 2000px" alt="" />
-					</div>
-				</div>
 				<div class="col-full s-content__main">
 					<xsl:apply-templates select="$p" mode="content"/>
 					<div style="height: 3rem;"></div>

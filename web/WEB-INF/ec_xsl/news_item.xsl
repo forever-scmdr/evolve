@@ -22,36 +22,39 @@
 						<xsl:value-of select="$h1"/>
 					</h1>
 					<ul class="s-content__header-meta">
+						<xsl:if test="$ni/source">
+							<li class="cat">
+								Источник: <a href="{$ni/source_link}" >
+									<xsl:value-of select="$ni/source"/>
+								</a>
+							</li>
+						</xsl:if>
 						<li class="date"><xsl:value-of select="$ni/date"/></li>
 						<li class="cat">
-							Категория:	<a href="{$parent/show_page}" rel="next">
+							Категория:	<a href="{$parent/show_page}" >
 								<xsl:value-of select="$parent/name"/>
 							</a>
 						</li>
-						<xsl:if test="$ni/tag">
-							<li class="cat">
-								Теги:&#160;
-								<xsl:for-each select="$ni/tag">
-									<xsl:variable name="p" select="position()"/>
-									<xsl:if test="$p != 1"> </xsl:if>
-									<a href="{concat('all_news/?tag=', .)}">
-										<xsl:value-of select="."/>
-									</a>
-								</xsl:for-each>
-							</li>
-						</xsl:if>
 					</ul>
-					<div class="tags">
-						<span class="entry__category red">
-							<a id="news-text-length"></a>
-						</span>
-						<span class="entry__category yellow">
-							<a>Сложность: <b><xsl:value-of select="$ni/complexity" /></b></a>
-						</span>
-						<span class="entry__category blue">
-							<a>Среднее время прочтения: <b><xsl:value-of select="$ni/read_time" /></b></a>
-						</span>
-					</div>
+					<xsl:if test="$ni/complexity != '' or $ni/read_time != '' or $ni/size != ''">
+						<div class="tags">
+							<xsl:if test="$ni/complexity != ''">
+								<span class="entry__category yellow">
+									<a>Сложность: <b><xsl:value-of select="$ni/complexity" /></b></a>
+								</span>
+							</xsl:if>
+							<xsl:if test="$ni/read_time != ''">
+								<span class="entry__category blue">
+									<a>Среднее время прочтения: <b><xsl:value-of select="$ni/read_time" /></b></a>
+								</span>
+							</xsl:if>
+							<xsl:if test="$ni/size != ''">
+								<span class="entry__category red">
+									<a>Размер статьи: <b><xsl:value-of select="$ni/size" /></b></a>
+								</span>
+							</xsl:if>
+						</div>
+					</xsl:if>
 					<!--<xsl:if test="$ni/tag">-->
 						<!--<div class="tags">-->
 							<!--<xsl:for-each select="$ni/tag">-->
@@ -74,19 +77,9 @@
 							<!--</xsl:for-each>-->
 						<!--</div>-->
 					<!--</xsl:if>-->
-					<ul class="s-content__header-meta">
-						<li class="date"><xsl:value-of select="date"/></li>
-						<li class="cat">
-							<xsl:for-each select="tag">
-								<a href="{tag-link}">
-									<xsl:value-of select="tag"/>
-								</a>
-							</xsl:for-each>
-						</li>
-					</ul>
 				</div>
 
-				<xsl:if test="$ni/main_pic | $ni/top_gal/main_pic | $ni/video_url">
+				<xsl:if test="$ni/main_pic != '' or $ni/top_gal/main_pic != '' or $ni/video_url != ''">
 					<xsl:if test="$format = 'standard'">
 						<div class="s-content__media col-full">
 							<div class="s-content__post-thumb">
@@ -130,22 +123,42 @@
 				</xsl:if>
 
 				<div class="col-full s-content__main">
-					<div id="nil">
-						<xsl:apply-templates select="$ni" mode="content"/>
-					</div>
-					<div class="s-content__pagenav">
-
-						<div class="s-content__nav">
-							<div class="s-content__next">
-								<a href="{$parent/show_page}" rel="next">
-									<span>Еще</span>
-									<xsl:value-of select="$parent/name"/>
-								</a>
+					<xsl:apply-templates select="$ni" mode="content"/>
+					<xsl:if test="$ni/tag">
+						<p class="s-content__tags">
+							<span>Теги</span>
+							<span class="s-content__tag-list">
+								<xsl:for-each select="$ni/tag">
+									<a href="{concat('all_news/?tag=', .)}">
+										<xsl:value-of select="."/>
+									</a>
+								</xsl:for-each>
+							</span>
+						</p>
+					</xsl:if>
+					<xsl:if test="$ni/news/prev|$ni/news/next">
+						<div class="s-content__pagenav">
+							<div class="s-content__nav">
+								<xsl:if test="$ni/news/prev">
+									<div class="s-content__prev">
+										<a href="{$ni/news/show_page}" rel="next">
+											<span>Предыдущая новость</span>
+											<xsl:value-of select="$ni/news/prev/name"/>
+										</a>
+									</div>
+								</xsl:if>
+								<xsl:if test="$ni/news/next">
+									<div class="s-content__next">
+										<a href="{$ni/news/next/show_page}" rel="next">
+											<span>Следующая новость</span>
+											<xsl:value-of select="$ni/news/next/name"/>
+										</a>
+									</div>
+								</xsl:if>
 							</div>
 						</div>
-					</div>
+					</xsl:if>
 				</div>
-
 			</article>
 
 			<xsl:call-template name="COMMENTS"/>

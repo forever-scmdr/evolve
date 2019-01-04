@@ -84,40 +84,29 @@
             <h2 class="header__nav-heading h6">Главное меню</h2>
             <ul class="header__nav">
                 <li class="{'current'[$active_menu_item = 'index']}"><a href="{$main_host}">Главная страница</a></li>
-                <!--<xsl:for-each select="page/custom_pages/menu_custom">-->
-                    <!--<xsl:variable name="k" select="@key"/>-->
-                    <!--<xsl:if test="menu_custom != ''">-->
-                        <!--<li class="has-children{' current'[$active_menu_item = $k]}">-->
-                            <!--<a>-->
-                                <!--<xsl:value-of select="name"/>-->
-                            <!--</a>-->
-                            <!--<ul class="sub-menu">-->
-                                <!--<xsl:for-each select="menu_custom">-->
-                                    <!--<xsl:variable name="k" select="@key"/>-->
-                                    <!--<li class="{'current'[$active_menu_item = $k]}">-->
-                                        <!--<a href="{show_page}"><xsl:value-of select="name"/></a>-->
-                                    <!--</li>-->
-                                <!--</xsl:for-each>-->
-                            <!--</ul>-->
-                        <!--</li>-->
-                    <!--</xsl:if>-->
-                    <!--<xsl:if test="not(menu_custom)">-->
-                        <!--<xsl:variable name="k" select="@key"/>-->
-                        <!--<li class="{'current'[$active_menu_item = $k]}">-->
-                            <!--<a href="{show_page}"><xsl:value-of select="name"/></a>-->
-                        <!--</li>-->
-                    <!--</xsl:if>-->
-                <!--</xsl:for-each>-->
+
                 <li class="{'current'[$active_menu_item = 'small_news']}">
                     <a href="{page/news_link}">Новости</a>
                 </li>
-                <xsl:for-each select="page/news">
+                <li class="has-children">
+                    <a>Статьи</a>
+                    <ul class="sub-menu">
+                        <xsl:for-each select="page/news">
+                            <xsl:variable name="k" select="@key"/>
+                            <li class="{'current'[$active_menu_item = $k]}">
+                                <a href="{show_page}"><xsl:value-of select="name"/></a>
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </li>
+                <xsl:for-each select="page/menu_custom">
                     <xsl:variable name="k" select="@key"/>
                     <li class="{'current'[$active_menu_item = $k]}">
-                        <a href="{show_page}"><xsl:value-of select="name"/></a>
+                        <a href="{show_page}">
+                            <xsl:value-of select="name"/>
+                        </a>
                     </li>
                 </xsl:for-each>
-
                     <!--<xsl:if test="count(page/news) = 1">-->
                         <!--<xsl:variable name="k" select="page/news/@key"/>-->
                         <!--<li class="{'current'[$active_menu_item = $k]}">-->
@@ -174,27 +163,20 @@
                         <ul class="s-footer__linklist">
                             <li><a href="{$main_host}">Главная страница</a></li>
                             <li><a href="{page/news_link}">Новости</a></li>
-                            <xsl:for-each select="page/news">
+                            <xsl:for-each select="page/menu_custom">
                                 <li><a href="{show_page}"><xsl:value-of select="name"/></a></li>
                             </xsl:for-each>
                             <li><a href="{page/contacts_link}">Контакты</a></li>
                         </ul>
                     </div>
-                    <!--<div class="col-two md-four mob-full s-footer__archives">-->
-                        <!--<h4>Новости</h4>-->
-                        <!--<ul class="s-footer__linklist">-->
-                            <!--<li>-->
-                                <!--<a href="all_news/?max_date={page/max/date/@millis}" data-max="{page/max/date/@millis}">-->
-                                    <!--<xsl:value-of select="f:month_of_year(f:xsl_date(page/max/date))"/>-->
-                                <!--</a>-->
-                            <!--</li>-->
-                            <!--<li>-->
-                                <!--<a href="" data-max="{page/min/date/@millis}">-->
-                                    <!--<xsl:value-of select="f:month_of_year(f:xsl_date(page/min/date))"/>-->
-                                <!--</a>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                    <!--</div>-->
+                    <div class="col-two md-four mob-full s-footer__archives">
+                        <h4>Статьи</h4>
+                        <ul class="s-footer__linklist">
+                            <xsl:for-each select="page/news">
+                                <li><a href="{show_page}"><xsl:value-of select="name"/></a></li>
+                            </xsl:for-each>
+                        </ul>
+                    </div>
                     <div class="col-two md-four mob-full s-footer__social">
                         <h4>Соцсети</h4>
                         <ul class="s-footer__linklist">

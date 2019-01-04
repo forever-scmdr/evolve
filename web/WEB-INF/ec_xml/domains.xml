@@ -32,4 +32,9 @@
 		<value>для экспертов</value>
 		<value>вывих мозга</value>
 	</domain>
+	<domain name="szie" view-type="combobox">
+		<value>большой</value>
+		<value>средний</value>
+		<value>короткий</value>
+	</domain>
 </domains>

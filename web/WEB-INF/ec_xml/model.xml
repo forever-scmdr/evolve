@@ -99,6 +99,7 @@
 		<parameter name="popular" type="byte" caption="Популярная новость" domain="0-1"/>
 		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
 		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
+		<parameter name="size" type="string" caption="Размер" domain="size"/>
 		<parameter name="video_url" type="string" caption="Ссылка на видео"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000"/>
 		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;"/>
@@ -184,21 +185,17 @@
 		<!--<child item="custom_page"/>-->
 	<!--</item>-->
 
-	<!--<item name="custom_page" caption="Одиночная страница" key="name" key-unique="true" super="searchable" default-page="page" ag-id="23" ag-hash="-1777660259">-->
-		<!--<child item="seo" single="true"/>-->
+	<item name="custom_page" caption="Одиночная страница" key="name" key-unique="true" default-page="page" ag-id="29" ag-hash="-1777660259">
+		<child item="seo" single="true"/>
 		<!--<child item="custom_page"/>-->
-		<!--<parameter name="video_url" type="string" caption="Ссылка на видео"/>-->
-		<!--<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000"/>-->
-		<!--<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;"/>-->
-		<!--<parameter name="small_pic" type="picture" caption="Маленькое изображение" description="500" format="width: 500; src: main_pic;"/>-->
-		<!--<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей"/>-->
-		<!--<parameter name="in_main_menu" type="string" domain="yes-no" caption="Выводить в главном меню"/>-->
-		<!--<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>-->
-		<!--<child item="page_part"/>-->
-		<!--<child item="top_gal" single="true"/>-->
-		<!--<on-create class="ecommander.fwk.ResizeImagesFactory"/>-->
-		<!--<on-update class="ecommander.fwk.ResizeImagesFactory"/>-->
-	<!--</item>-->
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+		<child item="page_part"/>
+		<child item="top_gal" single="true"/>
+		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
+		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
+	</item>
 
 	<item name="modules" caption="Метрики, чаты и.т.д" ag-id="24" ag-hash="1227433863">
 		<child item="named_code"/>
@@ -227,7 +224,7 @@
 		<child item="small_news" single="true"/>
 		<child item="contacts" single="true"/>
 		<child item="common" single="true"/>
-		<!--<child item="custom_pages" single="true"/>-->
+		<child item="custom_page"/>
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
