@@ -307,7 +307,9 @@ public abstract class BasicServlet extends HttpServlet {
 		if (!StringUtils.endsWith(contextPath, "/"))
 			contextPath += "/";
 
-		response.sendRedirect(contextPath + userUrl);
+		//response.sendRedirect(contextPath + userUrl);
+		response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+		response.setHeader("Location", contextPath + userUrl);
 		return false;
 	}
 }
