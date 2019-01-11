@@ -73,10 +73,7 @@
 
 	<assoc name="seo" caption="SEO" description="Связь айтемов с seo" transitive="false" ag-id="1" ag-hash="113757"/>
 
-
-	<item name="seo" caption="SEO" key="key_unique" ag-id="3" ag-hash="113757">
-		<parameter name="key_unique" caption="Ключ страницы" type="string"
-		           description="должен совпадать с уникальным текстовым ключом соответствующего айтема"/>
+	<item name="base_seo" caption="Информация для SEO" virtual="true" ag-id="53" ag-hash="-1721163281">
 		<parameter name="title" type="string" caption="title"/>
 		<parameter name="h1" type="string" caption="h1"/>
 		<parameter name="description" type="string" caption="description"/>
@@ -86,20 +83,19 @@
 		<parameter name="bottom_text" caption="текст снизу" type="text"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<parameter name="extra_style" type="plain-text" caption="Код дополнительных стилей" description="вставляется в head, тэг style писать не надо"/>
+		<parameter name="body_class" type="plain-text" caption="Класс для тега body" description="при наличии в body добавляется этот класс"/>
+	</item>
+
+
+	<item name="seo" caption="SEO" key="key_unique" super="* base_seo" ag-id="3" ag-hash="113757">
+		<parameter name="key_unique" caption="Ключ страницы" type="string"
+		           description="должен совпадать с уникальным текстовым ключом соответствующего айтема"/>
 		<on-create class="ecommander.fwk.integration.CreateSeoItemFactory"/>
 	</item>
 
-	<item name="url_seo" key="name" caption="SEO" ag-id="4" ag-hash="-169844339">
+	<item name="url_seo" key="name" caption="SEO" super="* base_seo" ag-id="4" ag-hash="-169844339">
 		<parameter name="name" type="string" caption="Название" description="для поиска в CMS"/>
 		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
-		<parameter name="title" type="string" caption="title"/>
-		<parameter name="h1" type="string" caption="h1"/>
-		<parameter name="description" type="string" caption="description"/>
-		<parameter name="keywords" type="string" caption="keywords"/>
-		<parameter name="meta" caption="meta" type="plain-text"/>
-		<parameter name="text" caption="текст" type="text"/>
-		<parameter name="bottom_text" caption="текст снизу" type="text"/>
-		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
 	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="5" ag-hash="843192252">

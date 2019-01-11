@@ -18,7 +18,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -49,10 +49,10 @@
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
 				<xsl:apply-templates select="$products"/>
-				<xsl:if test="not($products)">
-					<h4>По заданным критериям товары не найдены</h4>
-				</xsl:if>
 			</div>
+			<xsl:if test="not($products)">
+				<h4>По заданным критериям товары не найдены</h4>
+			</xsl:if>
 
 		</div>
 

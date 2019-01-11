@@ -14,20 +14,20 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> &gt;
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$h1"/></h1>
+		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
 			<div class="catalog-items info">
 				<xsl:for-each select="page/selected_news/news_item">
 					<div class="catalog-item">
-						<a href="{show_news_item}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="{@path}{main_pic}" alt=""/> --></a>
+						<a href="{show_news_item}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="http://shop4.must.by/{@path}{main_pic}" alt=""/> --></a>
 						<div class="text">
-							<div class="date"><xsl:value-of select="date"/></div>
 							<a href="{show_news_item}"><xsl:value-of select="header"/></a>
+							<div class="date"><xsl:value-of select="date"/></div>
 							<xsl:value-of select="short" disable-output-escaping="yes"/>
 						</div>
 					</div>

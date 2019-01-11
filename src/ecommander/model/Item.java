@@ -127,6 +127,9 @@ public class Item implements ItemBasics {
 		this.areFilesProtected = src.areFilesProtected;
 		this.timeUpdated = src.timeUpdated;
 		this.paramMap.putAll(src.paramMap);
+		for (Parameter parameter : paramMap.values()) {
+			parameter.item = this;
+		}
 		this.state = src.state;
 		setFilesPath();
 	}

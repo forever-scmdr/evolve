@@ -71,6 +71,28 @@
         </div>
     </xsl:template>
 
+
+    <xsl:function name="f:substring-before-last" as="xs:string">
+        <xsl:param name="arg" as="xs:string?"/>
+        <xsl:param name="delim" as="xs:string"/>
+        <xsl:sequence select="
+           if (matches($arg, f:escape-for-regex($delim)))
+           then replace($arg,
+                    concat('^(.*)', f:escape-for-regex($delim),'.*'),
+                    '$1')
+           else ''
+        "/>
+    </xsl:function>
+
+    <xsl:function name="f:escape-for-regex" as="xs:string">
+        <xsl:param name="arg" as="xs:string?"/>
+        <xsl:sequence select="
+            replace($arg,
+           '(\.|\[|\]|\\|\||\-|\^|\$|\?|\*|\+|\{|\}|\(|\))','\\$1')
+        "/>
+   </xsl:function>
+
+
     <xsl:template match="/">
         <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
 	</xsl:text>

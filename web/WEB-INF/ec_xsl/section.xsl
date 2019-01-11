@@ -69,13 +69,12 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}">
 						<xsl:value-of select="name"/>
 					</a>
-					<i class="fas fa-angle-right"></i>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -227,7 +226,9 @@
 						<a href="{page/set_view_list}">Строками</a>
 					</span>
 				</div>
-				<div class="checkbox">
+
+
+				<!-- <div class="checkbox">
 					<label>
 						<xsl:if test="not($only_available)">
 							<input type="checkbox"
@@ -239,7 +240,9 @@
 						</xsl:if>
 						в наличии на складе
 					</label>
-				</div>
+				</div> -->
+				
+				Сортировка: 
 				<span>
 					<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
 							onchange="window.location.href = $(this).find(':selected').attr('link')">

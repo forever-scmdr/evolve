@@ -147,7 +147,7 @@
 
 
 
-	<page name="section" template="section" cacheable="true" critical-item="cur_sec">
+	<page name="section" template="section" cacheable="true" critical-item="cur_sec" >
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
