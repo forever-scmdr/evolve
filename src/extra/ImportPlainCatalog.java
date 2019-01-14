@@ -1,15 +1,10 @@
 package extra;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.ExcelPriceList;
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ItemUtils;
-import ecommander.fwk.ServerLogger;
+import ecommander.fwk.*;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.model.datatypes.DateDataType;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
@@ -41,7 +36,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 	private static final String NAME_EXTRA_HEADER = "описание";
 	private static final String UNIT_HEADER = "единица измерения";
 
-	private ExcelPriceList price;
+	private TableDataSource price;
 	private Item section;
 	private Item catalog;
 	private ItemType productType;
@@ -74,7 +69,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 		info.setOperation("Создание товаров");
 		info.setProcessed(0);
 		for (File excel : excels) {
-			if (!StringUtils.endsWithAny(excel.getName(), "xls", "xlsx"))
+			if (!StringUtils.endsWithAny(excel.getName(), "xls", "xlsx", "txt"))
 				continue;
 			// Загрузка раздела
 			section = ItemQuery.loadSingleItemByParamValue(ItemNames.PLAIN_SECTION, plain_section_.NAME, excel.getName());
@@ -86,41 +81,41 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
 			// Разбор прайс-листа
 			try {
-				price = new ExcelPriceList(excel, NAME_HEADER, CODE_HEADER) {
+				if (StringUtils.endsWithIgnoreCase(excel.getName(), "txt")) {
+					price = new TabTxtTableData(excel, NAME_HEADER, CODE_HEADER);
+				} else {
+					price = new ExcelTableData(excel, NAME_HEADER, CODE_HEADER);
+				}
+				TableDataRowProcessor proc = new TableDataRowProcessor() {
 					@Override
-					protected void processRow() throws Exception {
+					public void processRow(TableDataSource src) throws Exception {
 						String code = null;
 						try {
-							code = getValue(CODE_HEADER);
+							code = src.getValue(CODE_HEADER);
 							if (StringUtils.isNotBlank(code)) {
 								Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
 								if (prod == null) {
 									prod = Product.get(Item.newChildItem(productType, section));
 									prod.set_code(code);
 								}
-								prod.set_name(getValue(NAME_HEADER));
-								prod.set_available(NumberUtils.toByte(getValue(DELAY_HEADER), (byte) 0));
-								prod.set_qty(getCurrencyValue(QTY_HEADER, new BigDecimal(0)));
-								prod.set_min_qty(getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1)));
-								prod.set_price(getCurrencyValue(PRICE_HEADER));
-								prod.set_vendor(getValue(VENDOR_HEADER));
-								prod.set_name_extra(getValue(NAME_EXTRA_HEADER));
-								prod.set_unit(getValue(UNIT_HEADER));
+								prod.set_name(src.getValue(NAME_HEADER));
+								prod.set_available(NumberUtils.toByte(src.getValue(DELAY_HEADER), (byte) 0));
+								prod.set_qty(src.getCurrencyValue(QTY_HEADER, new BigDecimal(0)));
+								prod.set_min_qty(src.getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1)));
+								prod.set_price(src.getCurrencyValue(PRICE_HEADER));
+								prod.set_vendor(src.getValue(VENDOR_HEADER));
+								prod.set_name_extra(src.getValue(NAME_EXTRA_HEADER));
+								prod.set_unit(src.getValue(UNIT_HEADER));
 								executeAndCommitCommandUnits(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
 								info.increaseProcessed();
 							}
 						} catch (Exception e) {
 							ServerLogger.error("line process error", e);
-							info.addError("Ошибка формата строки (" + code + ")", getRowNum(), 0);
+							info.addError("Ошибка формата строки (" + code + ")", src.getRowNum(), 0);
 						}
 					}
-
-					@Override
-					protected void processSheet() throws Exception {
-
-					}
 				};
-				price.iterate();
+				price.iterate(proc);
 				price.close();
 			} catch (Exception e) {
 				ServerLogger.error("File parse error", e);
