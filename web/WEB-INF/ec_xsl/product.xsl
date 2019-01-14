@@ -47,10 +47,6 @@
 
 	<xsl:template name="CONTENT">
 
-
-
-
-
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
