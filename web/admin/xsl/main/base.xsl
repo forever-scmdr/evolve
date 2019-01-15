@@ -169,11 +169,14 @@
 									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 										<a href="generate_sitemap">Обновить карту сайта</a>
 									</li>
-									<li class="visible" title="Очищает все кеши. Длительная и ресурсоемкая операция.">
-										<a href="admin_drop_all_caches.action">Очистить все кеши</a>
-									</li>
 									<li class="visible" title="Обновить список товаров для полнотекстового поиска">
-										<a href="admin_reindex.action">Переиндексация</a>
+										<a href="reindex_all/?action=start" target="_blank">Переиндексация</a>
+									</li>
+									<li class="visible" title="Создать классы товаров и фильтры для разделов этих товаров">
+										<a href="create_filters/?action=start">Создать типы и фильтры</a>
+									</li>
+									<li class="visible" title="Создать файл для загрузки на яндекс-маркет">
+										<a href="create_yml_file">Файл яндекс-маркета</a>
 									</li>
 									<!--<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">-->
 										<!--<a href="admin_domains_initialize.domain">-->

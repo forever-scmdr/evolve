@@ -6824,7 +6824,7 @@
 <!--END_p86525-->
 
 <!--START_p128-->
-<item name="p128" caption="Автоматика зданий" key="" ag-id="0" ag-hash="3385287" virtual="false" user-def="true" description="" super="params *">
+<item name="p128" caption="Автоматика зданий" key="" virtual="false" user-def="true" description="" super="params *" ag-id="147" ag-hash="3385287">
 	<parameter name="vyhodnoe_napryagenie" caption="Выходное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1030150406" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diapazon_scheta" caption="Диапазон счета" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1468971827" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="klass_zaschity" caption="Класс защиты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-321513636" description="" owner-id="0" virtual="false" hidden="false"></parameter>

@@ -26,12 +26,13 @@
 				</div>
 			</xsl:if>
 			<ul class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="{'active'[not($is_jur)]}"><a href="#tab_phys" role="tab" data-toggle="tab">Физическое лицо</a></li>
-				<li role="presentation" class="{'active'[$is_jur]}"><a href="#tab_jur" role="tab" data-toggle="tab">Юридическое лицо</a></li>
+				<!--<li role="presentation" class="{'active'[not($is_jur)]}"><a href="#tab_phys" role="tab" data-toggle="tab">Физическое лицо</a></li>-->
+				<!--<li role="presentation" class="{'active'[$is_jur]}"><a href="#tab_jur" role="tab" data-toggle="tab">Юридическое лицо</a></li>-->
+				<li role="presentation" class="active"><a href="#tab_jur" role="tab" data-toggle="tab">Юридическое лицо</a></li>
 			</ul>
 			<div class="tab-content">
 
-
+<!--
 				<div role="tabpanel" class="tab-pane{' active'[not($is_jur)]}" id="tab_phys">
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заявки.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
@@ -44,16 +45,6 @@
 							<label for="">Адрес:</label>
 							<input type="text" class="form-control" name="{$inp/address/@input}" value="{$inp/address}" error="{$inp/address/@validation-error}"/>
 						</div>
-						<!-- <div class="form-group">
-							<label>Способ доставки <a href="">Подробнее об условиях доставки</a></label>
-							<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</select>
-						</div> -->
 						<div class="form-group">
 							<label>Телефон:</label>
 							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}" error="{$inp/phone/@validation-error}"/>
@@ -66,19 +57,12 @@
 							<label>Комментарий:</label>
 							<textarea class="form-control" rows="3" name="{$inp/comment/@input}"><xsl:value-of select="$inp/comment"/></textarea>
 						</div>
-						<!--
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value=""/> зарегистрироваться на сайте
-							</label>
-						</div>
-						-->
 						<input type="submit" value="Отправить заявку"/>
 					</form>
 				</div>
+-->
 
-
-				<div role="tabpanel" class="tab-pane{' active'[$is_jur]}" id="tab_jur">
+				<div role="tabpanel" class="tab-pane active" id="tab_jur">
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заявки.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
 						<xsl:variable name="inp" select="page/user_jur/input"/>

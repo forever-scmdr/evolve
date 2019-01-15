@@ -137,7 +137,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	private IndexReader reader = null;
 	private HashMap<String, Parser> tikaParsers = new HashMap<>();
 	private volatile int concurrentWritersCount = 0;
-	private int countProcessed = 0; // Количество проиндексированных айтемов
+	private volatile int countProcessed = 0; // Количество проиндексированных айтемов
 	
 	private LuceneIndexMapper() throws IOException {
 		directory = FSDirectory.open(Paths.get(AppContext.getLuceneIndexPath()));
