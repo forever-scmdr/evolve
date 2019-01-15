@@ -2,7 +2,6 @@ package ecommander.fwk.integration;
 
 import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.PersistenceCommandUnit;
@@ -31,7 +30,7 @@ public class UpdateSeoContainerItemFactory implements ItemEventCommandFactory {
 			Item seo = new ItemQuery(SEO).setParentId(item.getId(), false, SEO).loadFirstItem();
 			if (seo != null) {
 				seo.setValueUI(KEY_UNIIQUE, item.getKeyUnique());
-				executeCommand(SaveItemDBUnit.get(seo, false));
+				executeCommand(SaveItemDBUnit.get(seo).noTriggerExtra());
 			}
 		}
 	}

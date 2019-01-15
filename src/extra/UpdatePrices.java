@@ -45,7 +45,7 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 						prod.setValueUI("price", price);
 						prod.setValueUI("available", avlb);
 						//DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(prod, false).noFulltextIndex().ingoreComputed());
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(prod).noTriggerExtra().noFulltextIndex().ingoreComputed());
 						info.increaseProcessed();
 					} else {
 						info.increaseLineNumber();

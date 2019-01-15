@@ -25,15 +25,17 @@ import java.sql.ResultSet;
 class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConstants.UniqueItemKeys, DBConstants {
 	
 	private Item item;
-	private boolean triggerExtra = true;
+	private ItemMapper.Mode mode = ItemMapper.Mode.UPDATE;
 
-	UpdateItemParamsDBUnit(Item item, boolean triggerExtra) {
+	UpdateItemParamsDBUnit(Item item) {
 		this.item = item;
-		this.triggerExtra = triggerExtra;
 	}
 	
-	UpdateItemParamsDBUnit(Item item) {
-		this(item, true);
+	UpdateItemParamsDBUnit(Item item, boolean forceUpdate) {
+		this.item = item;
+		if (forceUpdate) {
+			this.mode = ItemMapper.Mode.FORCE_UPDATE;
+		}
 	}
 	
 	public void execute() throws Exception {
@@ -44,7 +46,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 		// Сначала сохраняются файлы, это надо делать вначале, чтобы сгенерировалась метаинформация по файлам
 		// Фактическое сохранение файлов происходит в этой команде
 		try {
-			executeCommand(new SaveItemFilesUnit(item, ignoreFileErrors));
+			executeCommand(new SaveItemFilesUnit(item));
 		} catch (Exception e) {
 			if (!ignoreFileErrors)
 				throw e;
@@ -100,7 +102,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 		}
 
 		// Теперь сохраняются параметры в таблицах индексов
-		ItemMapper.insertItemParametersToIndex(item, false, getTransactionContext());
+		ItemMapper.insertItemParametersToIndex(item, mode, getTransactionContext());
 
 		// Вставка в Lucene индекс
 		if (insertIntoFulltextIndex)

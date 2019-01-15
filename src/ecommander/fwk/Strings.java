@@ -1,13 +1,15 @@
 package ecommander.fwk;
 
+import com.ibm.icu.text.RuleBasedNumberFormat;
+import org.apache.commons.lang3.StringUtils;
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.PrettyXmlSerializer;
+import org.htmlcleaner.TagNode;
+
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Locale;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.ibm.icu.text.RuleBasedNumberFormat;
-import org.htmlcleaner.*;
 
 
 /**
@@ -84,8 +86,8 @@ public class Strings
     	if (StringUtils.isBlank(halfValid))
     		return null;
     	if (StringUtils.contains(DIGITS, halfValid.charAt(0)) || halfValid.charAt(0) == '.')
-    		return "_" + halfValid;
-    	return halfValid;
+    		return StringUtils.substring("_" + halfValid, 0, 254);
+    	return StringUtils.substring(halfValid, 0, 254);
     }
     /**
      * Проверяет, является ли строка 

@@ -33,12 +33,10 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 	//if (m.matches()) {
 
 	private ArrayList<File> files;
-	private boolean ignoreFileErrors = false;
 
-	public SaveItemFilesUnit(Item item, boolean... ignoreFileErrors) {
+	public SaveItemFilesUnit(Item item) {
 		super(item);
 		files = new ArrayList<>();
-		this.ignoreFileErrors = (ignoreFileErrors.length > 0)? ignoreFileErrors[0] : false;
 	}
 	/**
 	 * Перемещает файлы из директории загрузки в постоянную директорию и дает им новое название (c ID предков)
@@ -48,13 +46,13 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 		String fileDirectoryName = createItemDirectoryName();
 		for (ParameterDescription paramDesc : item.getItemType().getParameterList()) {
 			if (paramDesc.getDataType().isFile()) {
-				HashSet<String> existingNames = new HashSet<>();
 				// Пропустить параметры, которые не менялись
 				if (!item.getParameter(paramDesc.getId()).hasChanged())
 					continue;
 				ArrayList<SingleParameter> params = new ArrayList<>();
 				params.addAll(item.getParamValues(paramDesc.getName()));
 				ArrayList<String> newValues = new ArrayList<>();
+				HashSet<String> existingFileNames = new HashSet<>();
 				for (int i = 0; i < params.size(); i++) {
 					SingleParameter param = params.get(i);
 					//-- Надо решить удалять файл или нет если значение параметра null
@@ -79,25 +77,25 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 					if (isUploaded || isDirect || isUrl) {
 						// Если название файла содержит путь - удалить этот путь
 						String fileName = null;
-						if (isUploaded)
+						if (isUploaded) {
 							fileName = FileDataType.getFileName((FileItem) value);
-						else if (isDirect)
+						} else if (isDirect) {
 							fileName = ((File) value).getName();
-						else if (isUrl)
+						} else if (isUrl) {
 							fileName = Strings.getFileName(((URL) value).getFile());
-						while(existingNames.contains(fileName)){
+						}
+						// Проверка, добавлялся ли к этому параметру файл с таким именем ранее
+						while (existingFileNames.contains(fileName)) {
 							fileName = decorateFileName(paramDesc, i, fileName);
 						}
-						existingNames.add(fileName);
-
+						existingFileNames.add(fileName);
 						// Создание новой директории
 						File dir = new File(fileDirectoryName);
 						dir.mkdirs();
 						files.add(dir);
-						fileName = Strings.createFileName(fileName);
 						File newFile = new File( fileDirectoryName + fileName);
 						// Удаление файла, если он уже есть
-						if (newFile.exists()) {
+						while (newFile.exists()) {
 							/*
 							if (!newFile.canWrite())
 								throw new FileException("File '" + newFile.getName() + "' is write protected");
@@ -112,14 +110,11 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 							else if (isDirect)
 								Files.copy(((File) value).toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 							else if (isUrl)
-								WebClient.saveFile(value.toString(), fileDirectoryName, Strings.createFileName(fileName));
-
+								WebClient.saveFile(value.toString(), fileDirectoryName, fileName);
 						} catch (Exception e) {
 							ServerLogger.error("File error", e);
-							if(!ignoreFileErrors) {
 								throw new FileException("File '" + newFile.getName() + "' has not been moved successfully");
 							}
-						}
 						files.add(newFile);
 						newValues.add(fileName);
 						item.removeEqualValue(paramDesc.getName(), value);

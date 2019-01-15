@@ -38,6 +38,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	protected static final String UNIT_FILE = "Единица измерения";
 	protected static final String AVAILABLE_FILE = "Наличие";
 	protected static final String AUX_TYPE_FILE = "ID типа товара";
+	protected static final String MANUAL = "Документация";
 
 	private static final LinkedHashSet<String> BUILT_IN_PARAMS = new LinkedHashSet<String>() {{
 		add(CODE_PARAM);
@@ -58,11 +59,13 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private static final String AUX_PARAMS_VAR = "aux_params";
 	private static final String PRODUCTS_VAR = "existing_products";
 	private static final String SECTION_VAR = "sec";
+	private static final String MANUALS_VAR = "manuals";
 	private static final String YES = "yes";
 
 	private boolean writeAllProductParams = false;
 	private boolean writeAuxParams = false;
 	private boolean writeProducts = true;
+	private boolean writeManuals = true;
 	private long secId = 0L;
 
 
@@ -93,8 +96,19 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 		for (Item section : sections) {
 			Sheet sh = initializeSheet(section);
-			long id = section.getId();
 			int rowIndex = -1;
+			rowIndex = initializeHeader(sh,rowIndex);
+			long id = section.getId();
+			int colIdx = -1;
+			Row row = sh.createRow(++rowIndex);
+			String[]secInfo = getSectionName(section);
+			row.createCell(++colIdx).setCellValue("разд:"+secInfo[0]);
+			row.getCell(colIdx).setCellStyle(sectionStyle);
+			row.createCell(++colIdx).setCellValue(secInfo[1]);
+			row.getCell(colIdx).setCellStyle(sectionStyle);
+			row.createCell(++colIdx).setCellValue(secInfo[2]);
+			row.getCell(colIdx).setCellStyle(sectionStyle);
+
 			boolean isEmpty = new ItemQuery(PRODUCT_ITEM).setParentId(id, false).loadFirstItem() == null;
 			if(!isEmpty) {
 				ItemType auxType = getAuxType(section.getId());
@@ -113,43 +127,41 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 
 	private Sheet initializeSheet(Item section) throws Exception {
-		String sheetName = getSectionName(section);
+		String[]secInfo = getSectionName(section);
+		String sheetName = secInfo[2];
 		setOperation(section.getValue(NAME_PARAM) + ". Обработка подразделов.");
 		Sheet sh = workBook.createSheet(sheetName);
 		return sh;
 	}
 
-	private String getSectionName(Item section) throws Exception {
+	private String[] getSectionName(Item section) throws Exception {
 		String name = section.getStringValue(NAME_PARAM,"");
 		String categoryId = section.getStringValue(CATEGORY_ID_PARAM,"");
 		boolean needsSave = false;
 		if(StringUtils.isBlank(categoryId)){
 			categoryId = String.valueOf(section.getId());
 			section.setValue(CATEGORY_ID_PARAM, categoryId);
-			executeCommandUnit(SaveItemDBUnit.get(section, false).noFulltextIndex());
+			executeCommandUnit(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
 			needsSave = true;
 		}
 		String parentId = section.getStringValue(PARENT_ID_PARAM,"");
 		if(StringUtils.isBlank(parentId)){
-			long pid = section.getContextParentId();
-			if(pid != ItemQuery.loadSingleItemByName(CATALOG_ITEM).getId()) parentId = "";
-			else{
-				Item parentSec = ItemQuery.loadById(pid);
-				parentId = parentSec.getStringValue(CATEGORY_ID_PARAM,"");
+			Item parent = new ItemQuery(SECTION_ITEM).setChildId(section.getId(), false).loadFirstItem();
+			if(parent != null){
+				parentId = parent.getStringValue(CATEGORY_ID_PARAM,"");
 				if(StringUtils.isBlank(parentId)){
-					parentId = String.valueOf(parentSec.getId());
-					parentSec.setValue(CATEGORY_ID_PARAM, parentId);
-					executeCommandUnit(SaveItemDBUnit.get(parentSec, false).noFulltextIndex());
+					parentId = String.valueOf(parent.getId());
+					parent.setValue(CATEGORY_ID_PARAM, parentId);
+					executeCommandUnit(SaveItemDBUnit.get(parent).noFulltextIndex().noTriggerExtra());
 				}
 				section.setValue(PARENT_ID_PARAM, parentId);
-				executeCommandUnit(SaveItemDBUnit.get(section, false).noFulltextIndex());
+				executeCommandUnit(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
 				needsSave = true;
 			}
 
 		}
 		if(needsSave) commitCommandUnits();
-		String s = name+'|'+categoryId+'|'+parentId;
-		return s;
+		return new String[]{categoryId, parentId, name,};
 	}
 
 	private int initializeHeader(Sheet sh, int rowIndex, ItemType... auxType){
@@ -186,8 +198,14 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 				String caption = param.getCaption();
 				row.createCell(++colIdx).setCellValue(caption);
 				row.getCell(colIdx).setCellStyle(headerStyle);
-				sh.setColumnWidth(colIdx, 20 * 256);
+				//sh.setColumnWidth(colIdx, 20 * 256);
 			}
+		}
+
+		//Write manuals
+		if(writeManuals){
+			row.createCell(++colIdx).setCellValue(MANUAL);
+			row.getCell(colIdx).setCellStyle(headerStyle);
 		}
 
 		//Write aux params
@@ -252,6 +270,20 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			if(writeAllProductParams){
 				colIdx = writeParams(row, product, colIdx, productItemType);
 			}
+
+			if(writeManuals){
+				StringBuilder manuals = new StringBuilder();
+				int i=0;
+				for(Item manual : new ItemQuery(MANUAL_PARAM).setParentId(product.getId(), false).loadItems()){
+					if(i>0)manuals.append("; ");
+					manuals	.append(manual.getId()).append('|')
+							.append(manual.getStringValue(NAME_PARAM)).append('|')
+							.append(manual.getStringValue(LINK_PARAM));
+					i++;
+				}
+				row.createCell(++colIdx).setCellValue(manuals.toString());
+			}
+
 			if (cellStyle != null) {
 				for (int i = 0; i < colIdx + 1; i++) {
 					row.getCell(i).setCellStyle(cellStyle);
@@ -337,15 +369,11 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 	protected static String join(ArrayList<Object> pv) {
 		StringBuilder sb = new StringBuilder();
-		final String sep1 = "\"";
-		final String sep2 = ", \"";
+		final String sep = ";";
 		for(int i = 0; i < pv.size(); i++){
+			if(i>0)sb.append(sep);
 			String os = pv.get(i).toString();
-			os = os.replaceAll("\"", "/\"");
-			if(i > 0){
-				sb.append(sep2);
-			}else{ sb.append(sep1);}
-			sb.append(os).append('"');
+			sb.append(os);
 		}
 		return sb.toString();
 	}
@@ -364,15 +392,22 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			info.setProcessed(0);
 			Row row = sh.createRow(++rowI);
 			int colIdx = -1;
-			row.createCell(++colIdx).setCellStyle(sectionStyle);
-			row.createCell(++colIdx).setCellValue(getSectionName(section));
+			String[]secInfo = getSectionName(section);
+			row.createCell(++colIdx).setCellValue("разд:"+secInfo[0]);
+			row.getCell(colIdx).setCellStyle(sectionStyle);
+			row.createCell(++colIdx).setCellValue(secInfo[1]);
+			row.getCell(colIdx).setCellStyle(sectionStyle);
+			row.createCell(++colIdx).setCellValue(secInfo[2]);
 			row.getCell(colIdx).setCellStyle(sectionStyle);
 
 			boolean noSubs = new ItemQuery(SECTION_ITEM).setParentId(section.getId(), false).loadFirstItem() == null;
 			ItemType auxType = getAuxType(section.getId());
-			if(noSubs) rowI = (auxType == null) ? initializeHeader(sh, rowI) : initializeHeader(sh, rowI, auxType);
+			if(noSubs){
+				rowI = (auxType == null) ? initializeHeader(sh, rowI) : initializeHeader(sh, rowI, auxType);
 			rowI = processProducts(sh, rowI, section.getId());
-			processSubsections(sh, rowI, section.getId());
+				continue;
+			}
+			rowI = processSubsections(sh, rowI, section.getId());
 		}
 		return rowI;
 	}
@@ -452,6 +487,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		writeAllProductParams = (YES.equals(getVarSingleValue(PROD_PARAMS_VAR))) ? true : writeAllProductParams;
 		writeAuxParams = (YES.equals(getVarSingleValue(AUX_PARAMS_VAR))) ? true : writeAuxParams;
 		writeProducts = (YES.equals(getVarSingleValue(PRODUCTS_VAR))) ? true : writeProducts;
+		writeManuals = (YES.equals(getVarSingleValue(MANUALS_VAR))) ? true : writeManuals;
 		String sectionId = getVarSingleValue(SECTION_VAR);
 		if (StringUtils.isNotBlank(sectionId)) secId = Long.parseLong(sectionId);
 		return true;

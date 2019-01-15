@@ -316,11 +316,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 				Item item = AdminLoader.loadItem(rs.getLong(1), getCurrentAdmin());
 				if (item == null)
 					continue;
-				item.forceInitialInconsistent();
-				tr.addCommandUnit(SaveItemDBUnit.get(item).ignoreUser());
-				if (tr.getCommandCount() >= 10) {
+				tr.addCommandUnit(SaveItemDBUnit.forceUpdate(item).ignoreUser().ignoreFileErrors());
 					tr.execute();
-				}
 				count++;
 				if (count % 500 == 0)
 					ServerLogger.warn("Updated " + count + " items");

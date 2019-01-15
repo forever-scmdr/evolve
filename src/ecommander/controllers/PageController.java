@@ -6,6 +6,7 @@ import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.*;
 import ecommander.pages.ResultPE.ResultType;
 import ecommander.pages.output.PageWriter;
+import ecommander.pages.var.StaticVariable;
 import ecommander.pages.var.Variable;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -147,17 +148,9 @@ public class PageController {
 		String xslFileName = AppContext.getStylesDirPath() + page.getTemplate() + ".xsl";
 		long timeStart = System.currentTimeMillis();
 		if (AppContext.isCacheEnabled() && page.isCacheable()) {
-			// Удалить часть, добавляемую аяксом (_=123456789123123)
-			if (StringUtils.contains(requestUrl, "_=")) {
-				int i = requestUrl.indexOf("_=");
-				requestUrl = requestUrl.substring(0, i);
-			}
-			String cacheFileName = requestUrl;
-			cacheFileName = StringUtils.replaceChars(cacheFileName, '|', '_');
-			cacheFileName = StringUtils.replaceChars(cacheFileName, '/', '_');
-			cacheFileName = StringUtils.replaceChars(cacheFileName, '?', '_');
+			String cacheFileName = page.getCacheableId();
 			cacheFileName = domainName + "/" + page.getSessionContext().getUser().getGroupRolesStr() + "/" + cacheFileName + ".html";
-			String fullFileName = AppContext.getCacheHtmlDirPath() + cacheFileName;
+			String fullFileName = AppContext.getCacheHtmlDirPath() + "/" + cacheFileName;
 			if (fullFileName.length() >= 255) {
 				int hash = fullFileName.hashCode();
 				fullFileName = StringUtils.substring(fullFileName, 0, 230);
@@ -261,11 +254,14 @@ public class PageController {
 				}
 				// Если результат выполнения - динамическая ссылка - установить дополнительные переменные в ссылку
 				if (result.hasVariables()) {
-					for (Variable var : result.getVariables()) {
-						if (var.isEmpty())
+					for (StaticVariable var : result.getVariables()) {
+						if (var.isEmpty()) {
 							baseLink.removeVariable(var.getName());
-						else
-							baseLink.addStaticVariable(var.getName(), var.writeSingleValue());
+						} else {
+							for (Object val : var.getAllValues()) {
+								baseLink.addStaticVariable(var.getName(), val.toString());
+							}
+						}
 					}
 				}
 				// Это надо для того, чтобы все переменные в ссылке сделать статическими

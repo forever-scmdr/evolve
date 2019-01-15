@@ -55,7 +55,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 	@Override
 	protected void integrate() throws Exception {
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte)1);
-		executeAndCommitCommandUnits( SaveItemDBUnit.get(catalog, false).noFulltextIndex());
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex());
 		info.setOperation("Обновлние цен");
 		info.setProcessed(0);
 		info.setLineNumber(0);
@@ -64,7 +64,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 		info.setOperation("Интеграция завершена");
 		priceWB.close();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte)0);
-		executeAndCommitCommandUnits( SaveItemDBUnit.get(catalog, false).noFulltextIndex());
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex());
 	}
 
 

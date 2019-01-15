@@ -90,7 +90,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 		} else if (StringUtils.equalsIgnoreCase(CATEGORY_ELEMENT, qName)) {
 			try {
 				currentSection.setValue(NAME_PARAM, StringUtils.trimToEmpty(chars.toString()));
-				DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(currentSection, false));
+				DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(currentSection).noTriggerExtra());
 				currentSection = null;
 			} catch (Exception e) {
 				ServerLogger.error("Integration error", e);

@@ -10,7 +10,7 @@
 -->
 <urlrewrite>
     <rule match-type="regex" enabled="true">
-        <from>product/(.+)</from>
+        <from>(product|section|news_item|page)/(.+)</from>
         <to type="permanent-redirect" last="true">/$1</to>
     </rule>
     <!--Переход на страницу index-->
@@ -27,12 +27,14 @@
     <rule match-type="wildcard" enabled="true">
         <from>/**.*</from>
         <to type="forward" last="true">/$1.$2</to>
-    </rule>
+    </rule>  
     <!--Страницы сайта (основная работа CMS)-->
     <rule match-type="wildcard" enabled="true">
         <from>/**</from>
         <to type="forward" last="true">/eco/$1</to>
     </rule>
+
+
     <!-- 
     <rule match-type="wildcard" enabled="true">
         <from>/**/</from>
