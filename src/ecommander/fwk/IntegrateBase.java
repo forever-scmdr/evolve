@@ -186,6 +186,10 @@ public abstract class IntegrateBase extends Command {
 			}
 			ServerLogger.debug(doc.toString());
 		}
+
+		public synchronized void indexsationStarted() {
+			operation = _indexation;
+		}
 	}
 
 	public IntegrateBase() {

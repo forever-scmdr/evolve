@@ -183,7 +183,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 							}
 							destVals.clear();
 						}
-						ArrayList<SingleParameter> vals = new ArrayList<SingleParameter>(((MultipleParameter) item.getParameter(srcParam
+						ArrayList<SingleParameter> vals = new ArrayList<>(((MultipleParameter) item.getParameter(srcParam
 								.getId())).getValues());
 						for (SingleParameter srcVal : vals) {
 							File srcFile = new File(createItemDirectoryName() + "/" + srcVal.getValue());
