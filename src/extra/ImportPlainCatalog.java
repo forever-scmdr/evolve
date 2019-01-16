@@ -86,33 +86,30 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 				} else {
 					price = new ExcelTableData(excel, NAME_HEADER, CODE_HEADER);
 				}
-				TableDataRowProcessor proc = new TableDataRowProcessor() {
-					@Override
-					public void processRow(TableDataSource src) throws Exception {
-						String code = null;
-						try {
-							code = src.getValue(CODE_HEADER);
-							if (StringUtils.isNotBlank(code)) {
-								Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
-								if (prod == null) {
-									prod = Product.get(Item.newChildItem(productType, section));
-									prod.set_code(code);
-								}
-								prod.set_name(src.getValue(NAME_HEADER));
-								prod.set_available(NumberUtils.toByte(src.getValue(DELAY_HEADER), (byte) 0));
-								prod.set_qty(src.getCurrencyValue(QTY_HEADER, new BigDecimal(0)));
-								prod.set_min_qty(src.getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1)));
-								prod.set_price(src.getCurrencyValue(PRICE_HEADER));
-								prod.set_vendor(src.getValue(VENDOR_HEADER));
-								prod.set_name_extra(src.getValue(NAME_EXTRA_HEADER));
-								prod.set_unit(src.getValue(UNIT_HEADER));
-								executeAndCommitCommandUnits(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
-								info.increaseProcessed();
+				TableDataRowProcessor proc = src -> {
+					String code = null;
+					try {
+						code = src.getValue(CODE_HEADER);
+						if (StringUtils.isNotBlank(code)) {
+							Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
+							if (prod == null) {
+								prod = Product.get(Item.newChildItem(productType, section));
+								prod.set_code(code);
 							}
-						} catch (Exception e) {
-							ServerLogger.error("line process error", e);
-							info.addError("Ошибка формата строки (" + code + ")", src.getRowNum(), 0);
+							prod.set_name(src.getValue(NAME_HEADER));
+							prod.set_available(NumberUtils.toByte(src.getValue(DELAY_HEADER), (byte) 0));
+							prod.set_qty(src.getCurrencyValue(QTY_HEADER, new BigDecimal(0)));
+							prod.set_min_qty(src.getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1)));
+							prod.set_price(src.getCurrencyValue(PRICE_HEADER, new BigDecimal(0)));
+							prod.set_vendor(src.getValue(VENDOR_HEADER));
+							prod.set_name_extra(src.getValue(NAME_EXTRA_HEADER));
+							prod.set_unit(src.getValue(UNIT_HEADER));
+							executeAndCommitCommandUnits(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
+							info.increaseProcessed();
 						}
+					} catch (Exception e) {
+						ServerLogger.error("line process error", e);
+						info.addError("Ошибка формата строки (" + code + ")", src.getRowNum(), 0);
 					}
 				};
 				price.iterate(proc);
