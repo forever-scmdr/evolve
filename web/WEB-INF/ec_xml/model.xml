@@ -135,6 +135,7 @@
 		<child item="section" />
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
+		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 	</item>
 
 	<!--Является также и разделом для парсинга-->
@@ -185,6 +186,7 @@
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
+		<parameter name="gallery_water" type="picture" caption="Галерея с водяными знаками" multiple="true"/>
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
 		<parameter name="tag" type="string" caption="Тэг" multiple="true"/>
 		<child item="product_extra"/>
