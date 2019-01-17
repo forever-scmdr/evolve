@@ -1,896 +1,8 @@
 <catalog_count>1</catalog_count>
 <catalog type="catalog" id="93252" path="files/932/52f/" key="katalog_produktsii">
-<integration size="122398" created="29.06.2018 13:54" extenstion="xlsx">prais_dlya_im1.xlsx</integration>
+<integration size="132243" created="13.09.2018 09:23" extenstion="xlsx">kniga2_avtosohranennyi_1.xlsx</integration>
 <date millis="1527528660000">28.05.2018 17:31</date>
 	<section_count>10</section_count>
-	<section type="section" id="95355" path="files/953/55f/" key="pnevmatika">
-<name>Пневматика</name>
-		<show_section>sub/pnevmatika/</show_section>
-		<show_products>/pnevmatika/</show_products>
-		<section type="section" id="95356" path="files/953/56f/" key="kompressory">
-<name>Компрессоры</name>
-			<show_section>sub/kompressory/</show_section>
-			<show_products>/kompressory/</show_products>
-			<section type="section" id="95357" path="files/953/57f/" key="mobilnye_kompressory_dlya_tseha___masterskoi">
-<name>Мобильные компрессоры для цеха / мастерской</name>
-<params_filter>&lt;filter item-desc=&quot;p95357&quot; id=&quot;1&quot; count=&quot;27&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Производительность всасывания&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;proizvoditelnost_vsasyvaniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Производительность наполнения&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;proizvoditelnost_napolneniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Эффективная производительность (при 80% от макс. давления)&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;effektivnaya_proizvoditelnost_pri_80__ot_maks._davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. давление&quot; description=&quot;бар&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;maks._davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;кВт&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. число оборотов&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;maks._chislo_oborotov&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер ресивера&quot; description=&quot;л&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;razmer_resivera&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления (LрА)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;uroven_zvukovogo_davleniya_lra&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
-		&lt;criteria id=&quot;25&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;27&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-				<show_section>sub/mobilnye_kompressory_dlya_tseha___masterskoi/</show_section>
-				<show_products>/mobilnye_kompressory_dlya_tseha___masterskoi/</show_products>
-			</section>
-			<section type="section" id="95422" path="files/954/22f/" key="kompressory_dlya_stroitelnyh_ploschadok">
-<name>Компрессоры для строительных площадок</name>
-<params_filter>&lt;filter item-desc=&quot;p95422&quot; id=&quot;1&quot; count=&quot;27&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Производительность всасывания&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;proizvoditelnost_vsasyvaniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Производительность наполнения&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;proizvoditelnost_napolneniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Эффективная производительность (при 80% от макс. давления)&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;effektivnaya_proizvoditelnost_pri_80__ot_maks._davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. давление&quot; description=&quot;бар&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;maks._davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;кВт&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. число оборотов&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;maks._chislo_oborotov&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер ресивера&quot; description=&quot;л&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;razmer_resivera&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления (LрА)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;uroven_zvukovogo_davleniya_lra&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
-		&lt;criteria id=&quot;25&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;27&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-				<show_section>sub/kompressory_dlya_stroitelnyh_ploschadok/</show_section>
-				<show_products>/kompressory_dlya_stroitelnyh_ploschadok/</show_products>
-			</section>
-		</section>
-		<section type="section" id="95439" path="files/954/39f/" key="pnevmaticheskie_instrumenty">
-<name>Пневматические инструменты</name>
-			<show_section>sub/pnevmaticheskie_instrumenty/</show_section>
-			<show_products>/pnevmaticheskie_instrumenty/</show_products>
-			<section type="section" id="95440" path="files/954/40f/" key="pnevmaticheskie_raspylitelnye_pistolety">
-<name>Пневматические распылительные пистолеты</name>
-<params_filter>&lt;filter item-desc=&quot;p95440&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;бар&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-				<show_section>sub/pnevmaticheskie_raspylitelnye_pistolety/</show_section>
-				<show_products>/pnevmaticheskie_raspylitelnye_pistolety/</show_products>
-			</section>
-			<section type="section" id="95449" path="files/954/49f/" key="pnevmaticheskii_kartridgnyi_pistolet">
-<name>Пневматический картриджный пистолет</name>
-<params_filter>&lt;filter item-desc=&quot;p95449&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;бар&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-				<show_section>sub/pnevmaticheskii_kartridgnyi_pistolet/</show_section>
-				<show_products>/pnevmaticheskii_kartridgnyi_pistolet/</show_products>
-			</section>
-			<section type="section" id="95454" path="files/954/54f/" key="pnevmaticheskie_pryamoshlifovalnye_mashiny">
-<name>Пневматические прямошлифовальные машины</name>
-<params_filter>&lt;filter item-desc=&quot;p95454&quot; id=&quot;1&quot; count=&quot;19&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;бар&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;chislo_oborotov&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Крепежное отверстие цангового зажима&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;krepegnoe_otverstie_tsangovogo_zagima&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Шлифование поверхностей&quot; description=&quot;м/с²&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;shlifovanie_poverhnostei&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-				<show_section>sub/pnevmaticheskie_pryamoshlifovalnye_mashiny/</show_section>
-				<show_products>/pnevmaticheskie_pryamoshlifovalnye_mashiny/</show_products>
-			</section>
-			<section type="section" id="95467" path="files/954/67f/" key="pnevmaticheskie_kraskoraspylitelnye_pistolety">
-<name>Пневматические краскораспылительные пистолеты</name>
-<params_filter>&lt;filter item-desc=&quot;p95467&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;бар&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-				<show_section>sub/pnevmaticheskie_kraskoraspylitelnye_pistolety/</show_section>
-				<show_products>/pnevmaticheskie_kraskoraspylitelnye_pistolety/</show_products>
-			</section>
-			<section type="section" id="95488" path="files/954/88f/" key="kuzovnye_pily">
-<name>Кузовные пилы</name>
-<params_filter>&lt;filter item-desc=&quot;p95488&quot; id=&quot;1&quot; count=&quot;23&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;бар&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Толщина реза алюминия&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;tolschina_reza_alyuminiya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Толщина реза стали&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;tolschina_reza_stali&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина хода&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;dlina_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Частота хода при номинальной нагрузке&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;chastota_hoda_pri_nominalnoi_nagruzke&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление металла&quot; description=&quot;м/с²&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;pilenie_metalla&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-				<show_section>sub/kuzovnye_pily/</show_section>
-				<show_products>/kuzovnye_pily/</show_products>
-			</section>
-			<section type="section" id="95493" path="files/954/93f/" key="pnevmaticheskie_produvochnye_pistolety">
-<name>Пневматические продувочные пистолеты</name>
-<params_filter>&lt;filter item-desc=&quot;p95493&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-				<show_section>sub/pnevmaticheskie_produvochnye_pistolety/</show_section>
-				<show_products>/pnevmaticheskie_produvochnye_pistolety/</show_products>
-			</section>
-			<section type="section" id="95518" path="files/955/18f/" key="shinnye_manometry">
-<name>Шинные манометры</name>
-<params_filter>&lt;filter item-desc=&quot;p95518&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина шланга&quot; description=&quot;cm&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;dlina_shlanga&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-				<show_section>sub/shinnye_manometry/</show_section>
-				<show_products>/shinnye_manometry/</show_products>
-			</section>
-			<section type="section" id="95535" path="files/955/35f/" key="pnevmaticheskii_smazochnyi_shprits">
-<name>Пневматический смазочный шприц</name>
-<params_filter>&lt;filter item-desc=&quot;p95535&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха на 1 ход&quot; description=&quot;л&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha_na_1_hod&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-				<show_section>sub/pnevmaticheskii_smazochnyi_shprits/</show_section>
-				<show_products>/pnevmaticheskii_smazochnyi_shprits/</show_products>
-			</section>
-			<section type="section" id="95540" path="files/955/40f/" key="pnevmaticheskie_skobozabivateli___gvozdezabivateli">
-<name>Пневматические скобозабиватели / гвоздезабиватели</name>
-<params_filter>&lt;filter item-desc=&quot;p95540&quot; id=&quot;1&quot; count=&quot;15&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Тип скобы&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;tip_skoby&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина скобы&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;dlina_skoby&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха на 1 удар&quot; description=&quot;л&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;rashod_vozduha_na_1_udar&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Тип гвоздя&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;tip_gvozdya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина гвоздя&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;dlina_gvozdya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-				<show_section>sub/pnevmaticheskie_skobozabivateli___gvozdezabivateli/</show_section>
-				<show_products>/pnevmaticheskie_skobozabivateli___gvozdezabivateli/</show_products>
-			</section>
-			<section type="section" id="95565" path="files/955/65f/" key="pnevmaticheskie_peskostruinye_pistolety">
-<name>Пневматические пескоструйные пистолеты</name>
-<params_filter>&lt;filter item-desc=&quot;p95565&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;бар&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-				<show_section>sub/pnevmaticheskie_peskostruinye_pistolety/</show_section>
-				<show_products>/pnevmaticheskie_peskostruinye_pistolety/</show_products>
-			</section>
-			<section type="section" id="95570" path="files/955/70f/" key="nabory_pnevmaticheskih_instrumentov">
-<name>Наборы пневматических инструментов</name>
-<params_filter>&lt;filter item-desc=&quot;p95570&quot; id=&quot;1&quot; count=&quot;1&quot;&gt;&lt;/filter&gt;</params_filter>
-				<show_section>sub/nabory_pnevmaticheskih_instrumentov/</show_section>
-				<show_products>/nabory_pnevmaticheskih_instrumentov/</show_products>
-			</section>
-		</section>
-	</section>
-	<section type="section" id="93859" path="files/938/59f/" key="pily">
-<name>Пилы</name>
-		<show_section>sub/pily/</show_section>
-		<show_products>/pily/</show_products>
-		<section type="section" id="93860" path="files/938/60f/" key="tortsovochnye_i_nastolnye_tsirkulyarnye_pily">
-<name>Торцовочные и настольные циркулярные пилы</name>
-<params_filter>&lt;filter item-desc=&quot;p93860&quot; id=&quot;1&quot; count=&quot;39&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер стола&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;razmer_stola&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Высота реза - в настольном режиме&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;vysota_reza___v_nastolnom_regime&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Ширина реза в режиме торцевания 90/45°&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;shirina_reza_v_regime_tortsevaniya_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Глубина реза в режиме торцевания 90/45°&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;glubina_reza_v_regime_tortsevaniya_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер пропила 90°/90°&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;razmer_propila_90_90&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер пропила 45°/45°&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;razmer_propila_45_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Настройка поворотного стола влево/вправо&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;nastroika_povorotnogo_stola_vlevo_vpravo&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Наклон пильного диска влево/вправо&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;naklon_pilnogo_diska_vlevo_vpravo&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов холостого хода&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;chislo_oborotov_holostogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов при номинальной нагрузке&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;25&quot; param=&quot;chislo_oborotov_pri_nominalnoi_nagruzke&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. скорость резания&quot; description=&quot;м/с&quot;&gt;
-		&lt;criteria id=&quot;27&quot; param=&quot;maks._skorost_rezaniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пильное полотно&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;29&quot; param=&quot;pilnoe_polotno&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;31&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;32&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
-		&lt;criteria id=&quot;33&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;34&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;35&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;36&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;37&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;38&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;39&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-			<show_section>sub/tortsovochnye_i_nastolnye_tsirkulyarnye_pily/</show_section>
-			<show_products>/tortsovochnye_i_nastolnye_tsirkulyarnye_pily/</show_products>
-		</section>
-		<section type="section" id="93865" path="files/938/65f/" key="stroitelnye_tsirkulyarnye_pily">
-<name>Строительные циркулярные пилы</name>
-<params_filter>&lt;filter item-desc=&quot;p93865&quot; id=&quot;1&quot; count=&quot;31&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер стола&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;razmer_stola&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. ширина реза с параллельным упором&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;maks._shirina_reza_s_parallelnym_uporom&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. ширина реза с дополнительным столом&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;maks._shirina_reza_s_dopolnitelnym_stolom&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. толщина материала с угловым упором&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;maks._tolschina_materiala_s_uglovym_uporom&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Высота реза&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;vysota_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов при номинальной нагрузке&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;chislo_oborotov_pri_nominalnoi_nagruzke&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Скорость реза&quot; description=&quot;м/с&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;skorost_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пильное полотно&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;pilnoe_polotno&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;25&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;27&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;29&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;31&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-			<show_section>sub/stroitelnye_tsirkulyarnye_pily/</show_section>
-			<show_products>/stroitelnye_tsirkulyarnye_pily/</show_products>
-		</section>
-		<section type="section" id="93874" path="files/938/74f/" key="sabelnye_pily">
-<name>Сабельные пилы</name>
-<params_filter>&lt;filter item-desc=&quot;p93874&quot; id=&quot;1&quot; count=&quot;23&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Частота хода на холостых оборотах&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;chastota_hoda_na_holostyh_oborotah&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Ход пильного полотна&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;hod_pilnogo_polotna&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Ступени маятникового хода&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;stupeni_mayatnikovogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес без сетевого кабеля&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;ves_bez_setevogo_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление стружечной плиты&quot; description=&quot;м/с²&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;pilenie_strugechnoi_plity&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-			<show_section>sub/sabelnye_pily/</show_section>
-			<show_products>/sabelnye_pily/</show_products>
-		</section>
-		<section type="section" id="93883" path="files/938/83f/" key="tortsovochnye_pily">
-<name>Торцовочные пилы</name>
-<params_filter>&lt;filter item-desc=&quot;p93883&quot; id=&quot;1&quot; count=&quot;39&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. ширина реза 90°/45°&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;maks._shirina_reza_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. глубина реза 90°/45°&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;maks._glubina_reza_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер пропила 90°/90°&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;razmer_propila_90_90&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер пропила 45°/45°&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;razmer_propila_45_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Настройка поворотного стола влево/вправо&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;nastroika_povorotnogo_stola_vlevo_vpravo&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Наклон пильного диска влево/вправо&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;naklon_pilnogo_diska_vlevo_vpravo&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пильное полотно&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;pilnoe_polotno&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность S6 20%&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost_s6_20_&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов холостого хода&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;chislo_oborotov_holostogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов при номинальной нагрузке&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;25&quot; param=&quot;chislo_oborotov_pri_nominalnoi_nagruzke&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Скорость реза&quot; description=&quot;м/с&quot;&gt;
-		&lt;criteria id=&quot;27&quot; param=&quot;skorost_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;29&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
-		&lt;criteria id=&quot;31&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;32&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;33&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;34&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;35&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;36&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;37&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;38&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность S1 100%&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;39&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost_s1_100_&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-			<show_section>sub/tortsovochnye_pily/</show_section>
-			<show_products>/tortsovochnye_pily/</show_products>
-		</section>
-		<section type="section" id="93928" path="files/939/28f/" key="universalnyi_instrument">
-<name>Универсальный инструмент</name>
-<params_filter>&lt;filter item-desc=&quot;p93928&quot; id=&quot;1&quot; count=&quot;27&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Частота колебаний на холостом ходу&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;chastota_kolebanii_na_holostom_hodu&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Угол колебаний влево/вправо&quot; description=&quot;°&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;ugol_kolebanii_vlevo_vpravo&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Держатель инструментальных насадок&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;dergatel_instrumentalnyh_nasadok&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Шлифовальная пластина, размер от угла до угла&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;shlifovalnaya_plastina_razmer_ot_ugla_do_ugla&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес без сетевого кабеля&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;ves_bez_setevogo_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Шлифование поверхностей&quot; description=&quot;м/с²&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;shlifovanie_poverhnostei&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Шабровка&quot; description=&quot;м/с²&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;shabrovka&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление погружным пильным полотном&quot; description=&quot;м/с²&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;pilenie_pogrugnym_pilnym_polotnom&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление сегментным пильным полотном&quot; description=&quot;м/с²&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;pilenie_segmentnym_pilnym_polotnom&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;25&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;27&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-			<show_section>sub/universalnyi_instrument/</show_section>
-			<show_products>/universalnyi_instrument/</show_products>
-		</section>
-		<section type="section" id="93941" path="files/939/41f/" key="ruchnye_diskovye_pily">
-<name>Ручные дисковые пилы</name>
-<params_filter>&lt;filter item-desc=&quot;p93941&quot; id=&quot;1&quot; count=&quot;33&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. глубина реза при 90°&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;maks._glubina_reza_pri_90&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. глубина реза при 45°&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;maks._glubina_reza_pri_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пильный диск, Ø x отверстие&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;pilnyi_disk__x_otverstie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Диапазон наклона от/до&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;diapazon_naklona_ot_do&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов холостого хода&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;chislo_oborotov_holostogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов при номинальной нагрузке&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;chislo_oborotov_pri_nominalnoi_nagruzke&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. скорость резания&quot; description=&quot;м/с&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;maks._skorost_rezaniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Крутящий момент&quot; description=&quot;Нм&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;krutyaschii_moment&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес без сетевого кабеля&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;ves_bez_setevogo_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
-		&lt;criteria id=&quot;25&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление стружечной плиты&quot; description=&quot;м/с²&quot;&gt;
-		&lt;criteria id=&quot;27&quot; param=&quot;pilenie_strugechnoi_plity&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;29&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;31&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;32&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;33&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-			<show_section>sub/ruchnye_diskovye_pily/</show_section>
-			<show_products>/ruchnye_diskovye_pily/</show_products>
-		</section>
-		<section type="section" id="93974" path="files/939/74f/" key="lobziki">
-<name>Лобзики</name>
-<params_filter>&lt;filter item-desc=&quot;p93974&quot; id=&quot;1&quot; count=&quot;33&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Глубина реза дерева&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;glubina_reza_dereva&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Глубина реза цветных металлов&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;glubina_reza_tsvetnyh_metallov&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Глубина реза листовой стали&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;glubina_reza_listovoi_stali&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Диапазон наклона от/до&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;diapazon_naklona_ot_do&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Ступени маятникового хода&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;stupeni_mayatnikovogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Частота хода на холостых оборотах&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;chastota_hoda_na_holostyh_oborotah&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Ход пильного полотна&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;hod_pilnogo_polotna&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес без сетевого кабеля&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;ves_bez_setevogo_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление дерева&quot; description=&quot;м/с²&quot;&gt;
-		&lt;criteria id=&quot;25&quot; param=&quot;pilenie_dereva&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление металла&quot; description=&quot;м/с²&quot;&gt;
-		&lt;criteria id=&quot;27&quot; param=&quot;pilenie_metalla&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;м/с²&quot;&gt;
-		&lt;criteria id=&quot;29&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;31&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;32&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;33&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-			<show_section>sub/lobziki/</show_section>
-			<show_products>/lobziki/</show_products>
-		</section>
-		<section type="section" id="94031" path="files/940/31f/" key="nastolnye_tsirkulyarnye_pily">
-<name>Настольные циркулярные пилы</name>
-<params_filter>&lt;filter item-desc=&quot;p94031&quot; id=&quot;1&quot; count=&quot;37&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. опорная поверхность&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;maks._opornaya_poverhnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочая высота&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;rabochaya_vysota&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Высота реза&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;vysota_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. высота распила 90/45°&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;maks._vysota_raspila_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. ширина реза на параллельном упоре&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;maks._shirina_reza_na_parallelnom_upore&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. толщина материала на угловом упоре&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;maks._tolschina_materiala_na_uglovom_upore&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов холостого хода&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;chislo_oborotov_holostogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Скорость реза&quot; description=&quot;м/с&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;skorost_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пильное полотно&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;pilnoe_polotno&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Область поворота пильного полотна&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;oblast_povorota_pilnogo_polotna&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;25&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;27&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;29&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;31&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;32&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;33&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;34&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;35&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;36&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
-		&lt;criteria id=&quot;37&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-			<show_section>sub/nastolnye_tsirkulyarnye_pily/</show_section>
-			<show_products>/nastolnye_tsirkulyarnye_pily/</show_products>
-		</section>
-		<section type="section" id="94060" path="files/940/60f/" key="nastolnye_tsirkulyarnye_pily_s_protyagkoi">
-<name>Настольные циркулярные пилы с протяжкой</name>
-<params_filter>&lt;filter item-desc=&quot;p94060&quot; id=&quot;1&quot; count=&quot;41&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочая высота&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;rabochaya_vysota&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер стола&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;razmer_stola&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Высота реза&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;vysota_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. высота распила 90/45°&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;maks._vysota_raspila_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. толщина материала на угловом упоре 90/45°&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;maks._tolschina_materiala_na_uglovom_upore_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. ширина реза на параллельном упоре&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;maks._shirina_reza_na_parallelnom_upore&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов холостого хода&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;chislo_oborotov_holostogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов при номинальной нагрузке&quot; description=&quot;/мин&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;chislo_oborotov_pri_nominalnoi_nagruzke&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пильное полотно&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;pilnoe_polotno&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Диапазон углов наклона&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;diapazon_uglov_naklona&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Скорость реза&quot; description=&quot;м/с&quot;&gt;
-		&lt;criteria id=&quot;25&quot; param=&quot;skorost_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Тяговая длина&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;27&quot; param=&quot;tyagovaya_dlina&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;29&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;31&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;32&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес (вкл. подставку)&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;33&quot; param=&quot;ves_vkl._podstavku&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;34&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
-		&lt;criteria id=&quot;35&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;36&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;37&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;38&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;39&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;40&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;41&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-			<show_section>sub/nastolnye_tsirkulyarnye_pily_s_protyagkoi/</show_section>
-			<show_products>/nastolnye_tsirkulyarnye_pily_s_protyagkoi/</show_products>
-		</section>
-		<section type="section" id="94069" path="files/940/69f/" key="lentochnye_pily">
-<name>Ленточные пилы</name>
-<params_filter>&lt;filter item-desc=&quot;p94069&quot; id=&quot;1&quot; count=&quot;31&quot;&gt;
-	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;3&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Опорная поверхность&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;5&quot; param=&quot;opornaya_poverhnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочая высота с подставкой&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;7&quot; param=&quot;rabochaya_vysota_s_podstavkoi&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Область поворота распилочного стола&quot; description=&quot;&quot;&gt;
-		&lt;criteria id=&quot;9&quot; param=&quot;oblast_povorota_raspilochnogo_stola&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Высота реза&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;11&quot; param=&quot;vysota_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Ширина прохода&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;13&quot; param=&quot;shirina_prohoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Скорость реза&quot; description=&quot;м/мин&quot;&gt;
-		&lt;criteria id=&quot;15&quot; param=&quot;skorost_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина пильной ленты&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;17&quot; param=&quot;dlina_pilnoi_lenty&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;19&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;Вт&quot;&gt;
-		&lt;criteria id=&quot;21&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
-		&lt;criteria id=&quot;23&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочая высота без подставки&quot; description=&quot;мм&quot;&gt;
-		&lt;criteria id=&quot;25&quot; param=&quot;rabochaya_vysota_bez_podstavki&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;27&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;29&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
-		&lt;criteria id=&quot;31&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
-	&lt;/input&gt;
-&lt;/filter&gt;</params_filter>
-			<show_section>sub/lentochnye_pily/</show_section>
-			<show_products>/lentochnye_pily/</show_products>
-		</section>
-	</section>
 	<section type="section" id="93253" path="files/932/53f/" key="otrezanie_shlifovanie_frezerovanie">
 <name>Отрезание, шлифование, фрезерование</name>
 		<show_section>sub/otrezanie_shlifovanie_frezerovanie/</show_section>
@@ -2062,6 +1174,567 @@
 				<show_section>sub/shlifovatel_uglovyh_svarnyh_shvov/</show_section>
 				<show_products>/shlifovatel_uglovyh_svarnyh_shvov/</show_products>
 			</section>
+		</section>
+	</section>
+	<section type="section" id="93859" path="files/938/59f/" key="pily">
+<name>Пилы</name>
+		<show_section>sub/pily/</show_section>
+		<show_products>/pily/</show_products>
+		<section type="section" id="93860" path="files/938/60f/" key="tortsovochnye_i_nastolnye_tsirkulyarnye_pily">
+<name>Торцовочные и настольные циркулярные пилы</name>
+<params_filter>&lt;filter item-desc=&quot;p93860&quot; id=&quot;1&quot; count=&quot;39&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер стола&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;razmer_stola&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Высота реза - в настольном режиме&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;vysota_reza___v_nastolnom_regime&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Ширина реза в режиме торцевания 90/45°&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;shirina_reza_v_regime_tortsevaniya_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Глубина реза в режиме торцевания 90/45°&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;glubina_reza_v_regime_tortsevaniya_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер пропила 90°/90°&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;razmer_propila_90_90&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер пропила 45°/45°&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;razmer_propila_45_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Настройка поворотного стола влево/вправо&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;nastroika_povorotnogo_stola_vlevo_vpravo&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Наклон пильного диска влево/вправо&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;naklon_pilnogo_diska_vlevo_vpravo&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов холостого хода&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;chislo_oborotov_holostogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов при номинальной нагрузке&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;25&quot; param=&quot;chislo_oborotov_pri_nominalnoi_nagruzke&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. скорость резания&quot; description=&quot;м/с&quot;&gt;
+		&lt;criteria id=&quot;27&quot; param=&quot;maks._skorost_rezaniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пильное полотно&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;29&quot; param=&quot;pilnoe_polotno&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;31&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;32&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
+		&lt;criteria id=&quot;33&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;34&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;35&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;36&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;37&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;38&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;39&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+			<show_section>sub/tortsovochnye_i_nastolnye_tsirkulyarnye_pily/</show_section>
+			<show_products>/tortsovochnye_i_nastolnye_tsirkulyarnye_pily/</show_products>
+		</section>
+		<section type="section" id="93865" path="files/938/65f/" key="stroitelnye_tsirkulyarnye_pily">
+<name>Строительные циркулярные пилы</name>
+<params_filter>&lt;filter item-desc=&quot;p93865&quot; id=&quot;1&quot; count=&quot;31&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер стола&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;razmer_stola&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. ширина реза с параллельным упором&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;maks._shirina_reza_s_parallelnym_uporom&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. ширина реза с дополнительным столом&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;maks._shirina_reza_s_dopolnitelnym_stolom&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. толщина материала с угловым упором&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;maks._tolschina_materiala_s_uglovym_uporom&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Высота реза&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;vysota_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов при номинальной нагрузке&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;chislo_oborotov_pri_nominalnoi_nagruzke&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Скорость реза&quot; description=&quot;м/с&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;skorost_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пильное полотно&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;pilnoe_polotno&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;25&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;27&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;29&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;31&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+			<show_section>sub/stroitelnye_tsirkulyarnye_pily/</show_section>
+			<show_products>/stroitelnye_tsirkulyarnye_pily/</show_products>
+		</section>
+		<section type="section" id="93874" path="files/938/74f/" key="sabelnye_pily">
+<name>Сабельные пилы</name>
+<params_filter>&lt;filter item-desc=&quot;p93874&quot; id=&quot;1&quot; count=&quot;23&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Частота хода на холостых оборотах&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;chastota_hoda_na_holostyh_oborotah&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Ход пильного полотна&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;hod_pilnogo_polotna&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Ступени маятникового хода&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;stupeni_mayatnikovogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес без сетевого кабеля&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;ves_bez_setevogo_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление стружечной плиты&quot; description=&quot;м/с²&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;pilenie_strugechnoi_plity&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+			<show_section>sub/sabelnye_pily/</show_section>
+			<show_products>/sabelnye_pily/</show_products>
+		</section>
+		<section type="section" id="93883" path="files/938/83f/" key="tortsovochnye_pily">
+<name>Торцовочные пилы</name>
+<params_filter>&lt;filter item-desc=&quot;p93883&quot; id=&quot;1&quot; count=&quot;39&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. ширина реза 90°/45°&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;maks._shirina_reza_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. глубина реза 90°/45°&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;maks._glubina_reza_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер пропила 90°/90°&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;razmer_propila_90_90&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер пропила 45°/45°&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;razmer_propila_45_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Настройка поворотного стола влево/вправо&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;nastroika_povorotnogo_stola_vlevo_vpravo&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Наклон пильного диска влево/вправо&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;naklon_pilnogo_diska_vlevo_vpravo&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пильное полотно&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;pilnoe_polotno&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность S6 20%&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost_s6_20_&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов холостого хода&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;chislo_oborotov_holostogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов при номинальной нагрузке&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;25&quot; param=&quot;chislo_oborotov_pri_nominalnoi_nagruzke&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Скорость реза&quot; description=&quot;м/с&quot;&gt;
+		&lt;criteria id=&quot;27&quot; param=&quot;skorost_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;29&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
+		&lt;criteria id=&quot;31&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;32&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;33&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;34&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;35&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;36&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;37&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;38&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность S1 100%&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;39&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost_s1_100_&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+			<show_section>sub/tortsovochnye_pily/</show_section>
+			<show_products>/tortsovochnye_pily/</show_products>
+		</section>
+		<section type="section" id="93928" path="files/939/28f/" key="universalnyi_instrument">
+<name>Универсальный инструмент</name>
+<params_filter>&lt;filter item-desc=&quot;p93928&quot; id=&quot;1&quot; count=&quot;27&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Частота колебаний на холостом ходу&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;chastota_kolebanii_na_holostom_hodu&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Угол колебаний влево/вправо&quot; description=&quot;°&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;ugol_kolebanii_vlevo_vpravo&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Держатель инструментальных насадок&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;dergatel_instrumentalnyh_nasadok&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Шлифовальная пластина, размер от угла до угла&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;shlifovalnaya_plastina_razmer_ot_ugla_do_ugla&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес без сетевого кабеля&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;ves_bez_setevogo_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Шлифование поверхностей&quot; description=&quot;м/с²&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;shlifovanie_poverhnostei&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Шабровка&quot; description=&quot;м/с²&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;shabrovka&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление погружным пильным полотном&quot; description=&quot;м/с²&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;pilenie_pogrugnym_pilnym_polotnom&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление сегментным пильным полотном&quot; description=&quot;м/с²&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;pilenie_segmentnym_pilnym_polotnom&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;25&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;27&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+			<show_section>sub/universalnyi_instrument/</show_section>
+			<show_products>/universalnyi_instrument/</show_products>
+		</section>
+		<section type="section" id="93941" path="files/939/41f/" key="ruchnye_diskovye_pily">
+<name>Ручные дисковые пилы</name>
+<params_filter>&lt;filter item-desc=&quot;p93941&quot; id=&quot;1&quot; count=&quot;33&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. глубина реза при 90°&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;maks._glubina_reza_pri_90&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. глубина реза при 45°&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;maks._glubina_reza_pri_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пильный диск, Ø x отверстие&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;pilnyi_disk__x_otverstie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Диапазон наклона от/до&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;diapazon_naklona_ot_do&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов холостого хода&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;chislo_oborotov_holostogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов при номинальной нагрузке&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;chislo_oborotov_pri_nominalnoi_nagruzke&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. скорость резания&quot; description=&quot;м/с&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;maks._skorost_rezaniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Крутящий момент&quot; description=&quot;Нм&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;krutyaschii_moment&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес без сетевого кабеля&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;ves_bez_setevogo_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
+		&lt;criteria id=&quot;25&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление стружечной плиты&quot; description=&quot;м/с²&quot;&gt;
+		&lt;criteria id=&quot;27&quot; param=&quot;pilenie_strugechnoi_plity&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;29&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;31&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;32&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;33&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+			<show_section>sub/ruchnye_diskovye_pily/</show_section>
+			<show_products>/ruchnye_diskovye_pily/</show_products>
+		</section>
+		<section type="section" id="93974" path="files/939/74f/" key="lobziki">
+<name>Лобзики</name>
+<params_filter>&lt;filter item-desc=&quot;p93974&quot; id=&quot;1&quot; count=&quot;33&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Глубина реза дерева&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;glubina_reza_dereva&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Глубина реза цветных металлов&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;glubina_reza_tsvetnyh_metallov&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Глубина реза листовой стали&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;glubina_reza_listovoi_stali&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Диапазон наклона от/до&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;diapazon_naklona_ot_do&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Ступени маятникового хода&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;stupeni_mayatnikovogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Частота хода на холостых оборотах&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;chastota_hoda_na_holostyh_oborotah&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Ход пильного полотна&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;hod_pilnogo_polotna&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес без сетевого кабеля&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;ves_bez_setevogo_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление дерева&quot; description=&quot;м/с²&quot;&gt;
+		&lt;criteria id=&quot;25&quot; param=&quot;pilenie_dereva&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление металла&quot; description=&quot;м/с²&quot;&gt;
+		&lt;criteria id=&quot;27&quot; param=&quot;pilenie_metalla&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;м/с²&quot;&gt;
+		&lt;criteria id=&quot;29&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;31&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;32&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;33&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+			<show_section>sub/lobziki/</show_section>
+			<show_products>/lobziki/</show_products>
+		</section>
+		<section type="section" id="94031" path="files/940/31f/" key="nastolnye_tsirkulyarnye_pily">
+<name>Настольные циркулярные пилы</name>
+<params_filter>&lt;filter item-desc=&quot;p94031&quot; id=&quot;1&quot; count=&quot;37&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. опорная поверхность&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;maks._opornaya_poverhnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочая высота&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;rabochaya_vysota&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Высота реза&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;vysota_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. высота распила 90/45°&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;maks._vysota_raspila_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. ширина реза на параллельном упоре&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;maks._shirina_reza_na_parallelnom_upore&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. толщина материала на угловом упоре&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;maks._tolschina_materiala_na_uglovom_upore&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов холостого хода&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;chislo_oborotov_holostogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Скорость реза&quot; description=&quot;м/с&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;skorost_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пильное полотно&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;pilnoe_polotno&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Область поворота пильного полотна&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;oblast_povorota_pilnogo_polotna&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;25&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;27&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;29&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;31&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;32&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;33&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;34&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;35&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;36&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
+		&lt;criteria id=&quot;37&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+			<show_section>sub/nastolnye_tsirkulyarnye_pily/</show_section>
+			<show_products>/nastolnye_tsirkulyarnye_pily/</show_products>
+		</section>
+		<section type="section" id="94060" path="files/940/60f/" key="nastolnye_tsirkulyarnye_pily_s_protyagkoi">
+<name>Настольные циркулярные пилы с протяжкой</name>
+<params_filter>&lt;filter item-desc=&quot;p94060&quot; id=&quot;1&quot; count=&quot;41&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочая высота&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;rabochaya_vysota&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер стола&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;razmer_stola&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Высота реза&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;vysota_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. высота распила 90/45°&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;maks._vysota_raspila_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. толщина материала на угловом упоре 90/45°&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;maks._tolschina_materiala_na_uglovom_upore_90_45&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. ширина реза на параллельном упоре&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;maks._shirina_reza_na_parallelnom_upore&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов холостого хода&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;chislo_oborotov_holostogo_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов при номинальной нагрузке&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;chislo_oborotov_pri_nominalnoi_nagruzke&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пильное полотно&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;pilnoe_polotno&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Диапазон углов наклона&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;diapazon_uglov_naklona&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Скорость реза&quot; description=&quot;м/с&quot;&gt;
+		&lt;criteria id=&quot;25&quot; param=&quot;skorost_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Тяговая длина&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;27&quot; param=&quot;tyagovaya_dlina&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;29&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;31&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;32&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес (вкл. подставку)&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;33&quot; param=&quot;ves_vkl._podstavku&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;34&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
+		&lt;criteria id=&quot;35&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;36&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;37&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;38&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;39&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;40&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;41&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+			<show_section>sub/nastolnye_tsirkulyarnye_pily_s_protyagkoi/</show_section>
+			<show_products>/nastolnye_tsirkulyarnye_pily_s_protyagkoi/</show_products>
+		</section>
+		<section type="section" id="94069" path="files/940/69f/" key="lentochnye_pily">
+<name>Ленточные пилы</name>
+<params_filter>&lt;filter item-desc=&quot;p94069&quot; id=&quot;1&quot; count=&quot;31&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Опорная поверхность&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;opornaya_poverhnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочая высота с подставкой&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;rabochaya_vysota_s_podstavkoi&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Область поворота распилочного стола&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;oblast_povorota_raspilochnogo_stola&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Высота реза&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;vysota_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Ширина прохода&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;shirina_prohoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Скорость реза&quot; description=&quot;м/мин&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;skorost_reza&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина пильной ленты&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;dlina_pilnoi_lenty&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Отдаваемая мощность&quot; description=&quot;Вт&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;otdavaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочая высота без подставки&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;25&quot; param=&quot;rabochaya_vysota_bez_podstavki&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;27&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;28&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;29&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;30&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;31&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+			<show_section>sub/lentochnye_pily/</show_section>
+			<show_products>/lentochnye_pily/</show_products>
 		</section>
 	</section>
 	<section type="section" id="94090" path="files/940/90f/" key="pyleotsos_i_pyleudalenie">
@@ -3697,6 +3370,333 @@
 &lt;/filter&gt;</params_filter>
 			<show_section>sub/osushenie/</show_section>
 			<show_products>/osushenie/</show_products>
+		</section>
+	</section>
+	<section type="section" id="95355" path="files/953/55f/" key="pnevmatika">
+<name>Пневматика</name>
+		<show_section>sub/pnevmatika/</show_section>
+		<show_products>/pnevmatika/</show_products>
+		<section type="section" id="95356" path="files/953/56f/" key="kompressory">
+<name>Компрессоры</name>
+			<show_section>sub/kompressory/</show_section>
+			<show_products>/kompressory/</show_products>
+			<section type="section" id="95357" path="files/953/57f/" key="mobilnye_kompressory_dlya_tseha___masterskoi">
+<name>Мобильные компрессоры для цеха / мастерской</name>
+<params_filter>&lt;filter item-desc=&quot;p95357&quot; id=&quot;1&quot; count=&quot;27&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Производительность всасывания&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;proizvoditelnost_vsasyvaniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Производительность наполнения&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;proizvoditelnost_napolneniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Эффективная производительность (при 80% от макс. давления)&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;effektivnaya_proizvoditelnost_pri_80__ot_maks._davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. давление&quot; description=&quot;бар&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;maks._davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;кВт&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. число оборотов&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;maks._chislo_oborotov&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер ресивера&quot; description=&quot;л&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;razmer_resivera&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления (LрА)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;uroven_zvukovogo_davleniya_lra&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
+		&lt;criteria id=&quot;25&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;27&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+				<show_section>sub/mobilnye_kompressory_dlya_tseha___masterskoi/</show_section>
+				<show_products>/mobilnye_kompressory_dlya_tseha___masterskoi/</show_products>
+			</section>
+			<section type="section" id="95422" path="files/954/22f/" key="kompressory_dlya_stroitelnyh_ploschadok">
+<name>Компрессоры для строительных площадок</name>
+<params_filter>&lt;filter item-desc=&quot;p95422&quot; id=&quot;1&quot; count=&quot;27&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Производительность всасывания&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;proizvoditelnost_vsasyvaniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Производительность наполнения&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;proizvoditelnost_napolneniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Эффективная производительность (при 80% от макс. давления)&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;effektivnaya_proizvoditelnost_pri_80__ot_maks._davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. давление&quot; description=&quot;бар&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;maks._davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Номинальная потребляемая мощность&quot; description=&quot;кВт&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;nominalnaya_potreblyaemaya_moschnost&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Макс. число оборотов&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;maks._chislo_oborotov&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размер ресивера&quot; description=&quot;л&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;razmer_resivera&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления (LрА)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;uroven_zvukovogo_davleniya_lra&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Размеры&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;razmery&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;24&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина кабеля&quot; description=&quot;м&quot;&gt;
+		&lt;criteria id=&quot;25&quot; param=&quot;dlina_kabelya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;26&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;27&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+				<show_section>sub/kompressory_dlya_stroitelnyh_ploschadok/</show_section>
+				<show_products>/kompressory_dlya_stroitelnyh_ploschadok/</show_products>
+			</section>
+		</section>
+		<section type="section" id="95439" path="files/954/39f/" key="pnevmaticheskie_instrumenty">
+<name>Пневматические инструменты</name>
+			<show_section>sub/pnevmaticheskie_instrumenty/</show_section>
+			<show_products>/pnevmaticheskie_instrumenty/</show_products>
+			<section type="section" id="95440" path="files/954/40f/" key="pnevmaticheskie_raspylitelnye_pistolety">
+<name>Пневматические распылительные пистолеты</name>
+<params_filter>&lt;filter item-desc=&quot;p95440&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;бар&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+				<show_section>sub/pnevmaticheskie_raspylitelnye_pistolety/</show_section>
+				<show_products>/pnevmaticheskie_raspylitelnye_pistolety/</show_products>
+			</section>
+			<section type="section" id="95449" path="files/954/49f/" key="pnevmaticheskii_kartridgnyi_pistolet">
+<name>Пневматический картриджный пистолет</name>
+<params_filter>&lt;filter item-desc=&quot;p95449&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;бар&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+				<show_section>sub/pnevmaticheskii_kartridgnyi_pistolet/</show_section>
+				<show_products>/pnevmaticheskii_kartridgnyi_pistolet/</show_products>
+			</section>
+			<section type="section" id="95454" path="files/954/54f/" key="pnevmaticheskie_pryamoshlifovalnye_mashiny">
+<name>Пневматические прямошлифовальные машины</name>
+<params_filter>&lt;filter item-desc=&quot;p95454&quot; id=&quot;1&quot; count=&quot;19&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;бар&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Число оборотов&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;chislo_oborotov&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Крепежное отверстие цангового зажима&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;krepegnoe_otverstie_tsangovogo_zagima&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Шлифование поверхностей&quot; description=&quot;м/с²&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;shlifovanie_poverhnostei&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+				<show_section>sub/pnevmaticheskie_pryamoshlifovalnye_mashiny/</show_section>
+				<show_products>/pnevmaticheskie_pryamoshlifovalnye_mashiny/</show_products>
+			</section>
+			<section type="section" id="95467" path="files/954/67f/" key="pnevmaticheskie_kraskoraspylitelnye_pistolety">
+<name>Пневматические краскораспылительные пистолеты</name>
+<params_filter>&lt;filter item-desc=&quot;p95467&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;бар&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+				<show_section>sub/pnevmaticheskie_kraskoraspylitelnye_pistolety/</show_section>
+				<show_products>/pnevmaticheskie_kraskoraspylitelnye_pistolety/</show_products>
+			</section>
+			<section type="section" id="95488" path="files/954/88f/" key="kuzovnye_pily">
+<name>Кузовные пилы</name>
+<params_filter>&lt;filter item-desc=&quot;p95488&quot; id=&quot;1&quot; count=&quot;23&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;бар&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Толщина реза алюминия&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;tolschina_reza_alyuminiya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Толщина реза стали&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;tolschina_reza_stali&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина хода&quot; description=&quot;мм&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;dlina_hoda&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Частота хода при номинальной нагрузке&quot; description=&quot;/мин&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;chastota_hoda_pri_nominalnoi_nagruzke&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;16&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Пиление металла&quot; description=&quot;м/с²&quot;&gt;
+		&lt;criteria id=&quot;17&quot; param=&quot;pilenie_metalla&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;18&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Погрешность измерения K&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;19&quot; param=&quot;pogreshnost_izmereniya_k&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;20&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звукового давления&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;21&quot; param=&quot;uroven_zvukovogo_davleniya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;22&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Уровень звуковой мощности (LwA)&quot; description=&quot;дБ(А)&quot;&gt;
+		&lt;criteria id=&quot;23&quot; param=&quot;uroven_zvukovoi_moschnosti_lwa&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+				<show_section>sub/kuzovnye_pily/</show_section>
+				<show_products>/kuzovnye_pily/</show_products>
+			</section>
+			<section type="section" id="95493" path="files/954/93f/" key="pnevmaticheskie_produvochnye_pistolety">
+<name>Пневматические продувочные пистолеты</name>
+<params_filter>&lt;filter item-desc=&quot;p95493&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+				<show_section>sub/pnevmaticheskie_produvochnye_pistolety/</show_section>
+				<show_products>/pnevmaticheskie_produvochnye_pistolety/</show_products>
+			</section>
+			<section type="section" id="95518" path="files/955/18f/" key="shinnye_manometry">
+<name>Шинные манометры</name>
+<params_filter>&lt;filter item-desc=&quot;p95518&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина шланга&quot; description=&quot;cm&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;dlina_shlanga&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+				<show_section>sub/shinnye_manometry/</show_section>
+				<show_products>/shinnye_manometry/</show_products>
+			</section>
+			<section type="section" id="95535" path="files/955/35f/" key="pnevmaticheskii_smazochnyi_shprits">
+<name>Пневматический смазочный шприц</name>
+<params_filter>&lt;filter item-desc=&quot;p95535&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха на 1 ход&quot; description=&quot;л&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha_na_1_hod&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+				<show_section>sub/pnevmaticheskii_smazochnyi_shprits/</show_section>
+				<show_products>/pnevmaticheskii_smazochnyi_shprits/</show_products>
+			</section>
+			<section type="section" id="95540" path="files/955/40f/" key="pnevmaticheskie_skobozabivateli___gvozdezabivateli">
+<name>Пневматические скобозабиватели / гвоздезабиватели</name>
+<params_filter>&lt;filter item-desc=&quot;p95540&quot; id=&quot;1&quot; count=&quot;15&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Тип скобы&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;tip_skoby&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина скобы&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;dlina_skoby&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;8&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха на 1 удар&quot; description=&quot;л&quot;&gt;
+		&lt;criteria id=&quot;9&quot; param=&quot;rashod_vozduha_na_1_udar&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;10&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;11&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;12&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Тип гвоздя&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;13&quot; param=&quot;tip_gvozdya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;14&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Длина гвоздя&quot; description=&quot;&quot;&gt;
+		&lt;criteria id=&quot;15&quot; param=&quot;dlina_gvozdya&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;string&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+				<show_section>sub/pnevmaticheskie_skobozabivateli___gvozdezabivateli/</show_section>
+				<show_products>/pnevmaticheskie_skobozabivateli___gvozdezabivateli/</show_products>
+			</section>
+			<section type="section" id="95565" path="files/955/65f/" key="pnevmaticheskie_peskostruinye_pistolety">
+<name>Пневматические пескоструйные пистолеты</name>
+<params_filter>&lt;filter item-desc=&quot;p95565&quot; id=&quot;1&quot; count=&quot;7&quot;&gt;
+	&lt;input id=&quot;2&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Рабочее давление&quot; description=&quot;бар&quot;&gt;
+		&lt;criteria id=&quot;3&quot; param=&quot;rabochee_davlenie&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;4&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Расход воздуха&quot; description=&quot;л/мин&quot;&gt;
+		&lt;criteria id=&quot;5&quot; param=&quot;rashod_vozduha&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;integer&quot;/&gt;
+	&lt;/input&gt;
+	&lt;input id=&quot;6&quot; type=&quot;droplist&quot; domain=&quot;&quot; caption=&quot;Вес&quot; description=&quot;кг&quot;&gt;
+		&lt;criteria id=&quot;7&quot; param=&quot;ves&quot; sign=&quot;=&quot; pattern=&quot;&quot; type=&quot;double&quot;/&gt;
+	&lt;/input&gt;
+&lt;/filter&gt;</params_filter>
+				<show_section>sub/pnevmaticheskie_peskostruinye_pistolety/</show_section>
+				<show_products>/pnevmaticheskie_peskostruinye_pistolety/</show_products>
+			</section>
+			<section type="section" id="95570" path="files/955/70f/" key="nabory_pnevmaticheskih_instrumentov">
+<name>Наборы пневматических инструментов</name>
+<params_filter>&lt;filter item-desc=&quot;p95570&quot; id=&quot;1&quot; count=&quot;1&quot;&gt;&lt;/filter&gt;</params_filter>
+				<show_section>sub/nabory_pnevmaticheskih_instrumentov/</show_section>
+				<show_products>/nabory_pnevmaticheskih_instrumentov/</show_products>
+			</section>
 		</section>
 	</section>
 	<section type="section" id="95579" path="files/955/79f/" key="prochee">
