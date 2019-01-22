@@ -1122,4 +1122,15 @@
 		</command>
 	</page>
 
+	<page name="watermarks" template="integration/watermarks" authority-groups="common">
+		<request>
+			<var name="action"/>
+			<var name="watermark" value="css/watermark_metabo.png"/>
+			<var name="force" value="yes"/>
+		</request>
+		<command class="ecommander.fwk.CreateWaterMarks" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 </site>

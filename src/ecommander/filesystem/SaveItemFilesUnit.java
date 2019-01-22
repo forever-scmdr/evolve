@@ -122,7 +122,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 					}
 				}
 				// Замена объектов на имена файлов
-				item.clearParameter(paramDesc.getName());
+				item.clearValue(paramDesc.getName());
 				for (String newVal : newValues) {
 					item.setValue(paramDesc.getName(), newVal);
 				}

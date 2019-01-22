@@ -55,6 +55,7 @@ public class Item implements ItemBasics {
 
 	private static final String PARAM_TAG = "param";
 	public static final String ID_ATTRIBUTE = "id";
+	public static final String KEY_PARAMETER = "@key";
 
 	private static final int DIR_NAME_LENGTH = 3;
 	private static final char FINAL_DIR_CHAR = 'f';
@@ -127,6 +128,9 @@ public class Item implements ItemBasics {
 		this.areFilesProtected = src.areFilesProtected;
 		this.timeUpdated = src.timeUpdated;
 		this.paramMap.putAll(src.paramMap);
+		for (Parameter parameter : paramMap.values()) {
+			parameter.item = this;
+		}
 		this.state = src.state;
 		setFilesPath();
 	}
@@ -293,7 +297,7 @@ public class Item implements ItemBasics {
 			if (itemType.getParameter(paramId).isMultiple())
 				return;
 			// Удалить параметр, если значение равно null
-			clearParameter(paramId);
+			clearValue(paramId);
 		} else {
 			getParameter(paramId).setValue(value, false);
 		}
@@ -516,7 +520,7 @@ public class Item implements ItemBasics {
 	 * Удаляет параметр с заданным ID
 	 * @param paramId
 	 */
-	public final void clearParameter(int paramId) {
+	public final void clearValue(int paramId) {
 		populateMap();
 		getParameterFromMap(paramId).clear();
 		state = State.modified_NO_xml;
@@ -525,8 +529,8 @@ public class Item implements ItemBasics {
 	 * Удалить все значения определенного параметра по его названию
 	 * @param paramName
 	 */
-	public final void clearParameter(String paramName) {
-		clearParameter(itemType.getParameter(paramName).getId());
+	public final void clearValue(String paramName) {
+		clearValue(itemType.getParameter(paramName).getId());
 	}
 	/**
 	 * Удалить определенное значение параметра
@@ -540,7 +544,7 @@ public class Item implements ItemBasics {
 			((MultipleParameter) param).deleteValue(paramValue);
 		} else {
 			if (param.containsValue(paramValue))
-				clearParameter(paramId);
+				clearValue(paramId);
 		}
 		state = State.modified_NO_xml;
 	}

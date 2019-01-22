@@ -302,7 +302,7 @@ public class SingleItemCrawlerController {
 						nextState = State.HTML;
 					} else if (state == State.FILES) {
 						pitem.set_got_files((byte) 0);
-						pitem.clearParameter(Parse_item.FILE);
+						pitem.clearValue(Parse_item.FILE);
 						nextState = State.TRANSFORM;
 					}
 					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pitem).noFulltextIndex());
