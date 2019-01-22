@@ -52,7 +52,7 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 			if(his.exists()){
 				FileUtils.deleteQuietly(his);
 			}
-			product.clearParameter("small_pic");
+			product.clearValue("small_pic");
 			executeCommandUnit(SaveItemDBUnit.get(product).ignoreFileErrors().noFulltextIndex().noTriggerExtra());
 			i++;
 			if(i>49) {

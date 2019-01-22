@@ -555,7 +555,9 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 					ArrayList<Item> items;
 					long startFrom = 0;
 					do {
-						items = loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom);
+						try (Connection conn = MysqlConnector.getConnection()) {
+							items = ItemMapper.loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom, conn);
+						}
 						for (Item item : items) {
 							updateItem(item);
 						}
@@ -572,30 +574,6 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			finishUpdate();
 		}
 		return true;
-	}
-	/**
-	 * Загрузить все айтемы определенного типа с ограничением по количеству и ID больше или равным определенному
-	 * @param itemId
-	 * @param limit
-	 * @param startFromId
-	 * @return
-	 * @throws Exception
-	 */
-	private ArrayList<Item> loadByTypeId(int itemId, int limit, long startFromId) throws Exception {
-		ArrayList<Item> result = new ArrayList<>();
-		// Полиморфная загрузка
-		TemplateQuery select = new TemplateQuery("Select items for indexing");
-		select.SELECT("*").FROM(ITEM_TBL).WHERE().col(I_TYPE_ID).int_(itemId).AND()
-				.col(I_ID, ">=").long_(startFromId).ORDER_BY(I_ID).LIMIT(limit);
-		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = select.prepareQuery(conn)) {
-			ResultSet rs = pstmt.executeQuery();
-			// Создание айтемов
-			while (rs.next()) {
-				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), 0L));
-			}
-		}
-		return result;
 	}
 	/**
 	 * Удалить все документы из индекса

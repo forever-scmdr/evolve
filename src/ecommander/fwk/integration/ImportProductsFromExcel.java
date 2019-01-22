@@ -348,8 +348,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 									File mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
 									if (mainPicFile.exists()) {
 										product.setValue(MAIN_PIC_PARAM, mainPicFile);
-										product.clearParameter("medium_pic");
-										product.clearParameter("small_pic");
+										product.clearValue("medium_pic");
+										product.clearValue("small_pic");
 									}
 								} else if (StringUtils.isBlank(mainPic.toString())) {
 									switch (withPictures) {
@@ -357,8 +357,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 											File mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
 											if (mainPicFile.exists()) {
 												product.setValue(MAIN_PIC_PARAM, mainPicFile);
-												product.clearParameter("medium_pic");
-												product.clearParameter("small_pic");
+												product.clearValue("medium_pic");
+												product.clearValue("small_pic");
 											}
 											break;
 										case SEARCH_BY_CELL_VALUE:
@@ -366,8 +366,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 											mainPicFile = picsFolder.resolve(cellValue).toFile();
 											if (mainPicFile.exists()) {
 												product.setValue(MAIN_PIC_PARAM, mainPicFile);
-												product.clearParameter("medium_pic");
-												product.clearParameter("small_pic");
+												product.clearValue("medium_pic");
+												product.clearValue("small_pic");
 											}
 											break;
 
@@ -379,7 +379,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								String currVa = getStr(product, paramName);
 								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
 								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
-									product.clearParameter(paramName);
+									product.clearValue(paramName);
 									if (withPictures == varValues.SEARCH_BY_CODE) {
 										Path filesPath = picsFolder.resolve(code);
 										File additionalFiles = filesPath.toFile();
@@ -398,7 +398,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								String currVa = getStr(product, paramName);
 								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
 								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
-									product.clearParameter(paramName);
+									product.clearValue(paramName);
 									if (withPictures == varValues.SEARCH_BY_CODE) {
 										Path filesPath = picsFolder.resolve(code);
 										File additionalFiles = filesPath.toFile();
@@ -419,7 +419,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 //								String currVa = getStr(product, paramName);
 //								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
 //								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
-//									product.clearParameter(FILES_PARAM);
+//									product.clearValue(FILES_PARAM);
 //									if (withPictures == varValues.SEARCH_BY_CODE) {
 //										Path filesPath = picsFolder.resolve(code);
 //										File additionalFiles = filesPath.toFile();
@@ -576,7 +576,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 					}
 				}
 				if (existingFiles.size() > 0) {
-					item.clearParameter(paramName);
+					item.clearValue(paramName);
 					for (File f : existingFiles) {
 						item.setValue(paramName, f);
 					}
@@ -780,7 +780,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 				executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
 
 			} else {
-				section.clearParameter(PARAMS_FILTER_PARAM);
+				section.clearValue(PARAMS_FILTER_PARAM);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
 			}
 			info.increaseProcessed();

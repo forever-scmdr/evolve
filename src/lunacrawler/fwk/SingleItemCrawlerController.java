@@ -10,7 +10,6 @@ import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import net.sf.saxon.TransformerFactoryImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.cxf.common.util.UrlUtils;
 import org.apache.http.client.HttpResponseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -304,7 +303,7 @@ public class SingleItemCrawlerController {
 						nextState = State.HTML;
 					} else if (state == State.FILES) {
 						pitem.set_got_files((byte) 0);
-						pitem.clearParameter(Parse_item.FILE);
+						pitem.clearValue(Parse_item.FILE);
 						nextState = State.TRANSFORM;
 					}
 					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pitem).noFulltextIndex());

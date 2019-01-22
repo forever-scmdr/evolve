@@ -2,11 +2,13 @@ package ecommander.persistence.mappers;
 
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
+import ecommander.fwk.MysqlConnector;
 import ecommander.model.*;
 import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.common.TemplateQuery;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Выполняет различные операции с Item и БД
@@ -174,5 +176,48 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 	 */
 	public static Item buildItem(ResultSet rs, byte contextAssocId, String contextParentIdColName) throws Exception {
 		return buildItem(rs, contextAssocId, rs.getLong(contextParentIdColName));
+	}
+
+	/**
+	 * Загрузать определенное количесвто айтемов определенного типа.
+	 * Метод нужен для загрузки большого массива данных последовательно небольшими порциями, поэтому айтемы
+	 * загружаются в порядке следования их ID, и в метод передается ID последнего загруженного айтема
+	 * @param itemId
+	 * @param limit
+	 * @param moreThanId
+	 * @param conn
+	 * @return
+	 * @throws Exception
+	 */
+	public static ArrayList<Item> loadByTypeId(int itemId, int limit, long moreThanId, Connection conn) throws Exception {
+		ArrayList<Item> result = new ArrayList<>();
+		// Полиморфная загрузка
+		TemplateQuery select = new TemplateQuery("Select items for indexing");
+		Integer[] extenders = ItemTypeRegistry.getBasicItemExtendersIds(itemId);
+		select.SELECT("*").FROM(ITEM_TBL).WHERE().col_IN(I_TYPE_ID).intIN(extenders).AND()
+				.col(I_ID, ">").long_(moreThanId).ORDER_BY(I_ID).LIMIT(limit);
+		try (PreparedStatement pstmt = select.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			// Создание айтемов
+			while (rs.next()) {
+				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), 0L));
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Загрузать определенное количесвто айтемов определенного типа.
+	 * Метод нужен для загрузки большого массива данных последовательно небольшими порциями, поэтому айтемы
+	 * загружаются в порядке следования их ID, и в метод передается ID последнего загруженного айтема
+	 * @param itemName
+	 * @param limit
+	 * @param startFromId
+	 * @param conn
+	 * @return
+	 * @throws Exception
+	 */
+	public static ArrayList<Item> loadByName(String itemName, int limit, long startFromId, Connection conn) throws Exception {
+		return loadByTypeId(ItemTypeRegistry.getItemType(itemName).getTypeId(), limit, startFromId, conn);
 	}
 }

@@ -102,7 +102,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 			if (paramDesc.getDataType().isFile()) {
 				ArrayList<File> files = baseItem.getFileValues(paramDesc.getName(),
 						AppContext.getFilesDirPath(baseItem.isFileProtected()));
-				item.clearParameter(paramDesc.getName()); // для того, чтобы не было дублирования
+				item.clearValue(paramDesc.getName()); // для того, чтобы не было дублирования
 				for (File file : files) {
 					if(file.exists() && file.isFile()) {
 						item.setValue(paramDesc.getName(), file);
