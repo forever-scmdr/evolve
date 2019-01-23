@@ -117,7 +117,7 @@ public class CreateWaterMarks extends IntegrateBase {
 
 	private BufferedImage createWatermarkedImage(BufferedImage original) throws IOException {
 		BufferedImage newWater = Thumbnails.of(watermark).size(original.getWidth(), original.getHeight()).asBufferedImage();
-		return Thumbnails.of(original).scale(1f).watermark(Positions.CENTER, newWater, 0.3f).asBufferedImage();
+		return Thumbnails.of(original).scale(1f).watermark(Positions.CENTER, newWater, 1.0f).asBufferedImage();
 	}
 
 	@Override
