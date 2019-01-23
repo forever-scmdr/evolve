@@ -61,8 +61,8 @@ public class CreateWaterMarks extends IntegrateBase {
 	protected void integrate() throws Exception {
 		ArrayList<Item> items;
 		long startFrom = 0;
+		info.setProcessed(0);
 		do {
-			info.setProcessed(0);
 			DelayedTransaction transaction = new DelayedTransaction(getInitiator());
 			try (Connection conn = MysqlConnector.getConnection()) {
 				items = ItemMapper.loadByName(GALLERY, 10, startFrom, conn);
