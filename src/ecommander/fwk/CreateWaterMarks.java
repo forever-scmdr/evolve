@@ -61,8 +61,8 @@ public class CreateWaterMarks extends IntegrateBase {
 	protected void integrate() throws Exception {
 		ArrayList<Item> items;
 		long startFrom = 0;
+		info.setProcessed(0);
 		do {
-			info.setProcessed(0);
 			DelayedTransaction transaction = new DelayedTransaction(getInitiator());
 			try (Connection conn = MysqlConnector.getConnection()) {
 				items = ItemMapper.loadByName(GALLERY, 10, startFrom, conn);
@@ -117,7 +117,7 @@ public class CreateWaterMarks extends IntegrateBase {
 
 	private BufferedImage createWatermarkedImage(BufferedImage original) throws IOException {
 		BufferedImage newWater = Thumbnails.of(watermark).size(original.getWidth(), original.getHeight()).asBufferedImage();
-		return Thumbnails.of(original).scale(1f).watermark(Positions.CENTER, newWater, 0.3f).asBufferedImage();
+		return Thumbnails.of(original).scale(1f).watermark(Positions.CENTER, newWater, 1.0f).asBufferedImage();
 	}
 
 	@Override
