@@ -3,8 +3,9 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="concat($p/type, ' ', $p/name)"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="title" select="concat($p/type, '  Метабо ', $p/name, ' купить в Минске: цена, фото, рассрочка - интернет магазин Метабо.бел')"/>
+	<xsl:variable name="meta_description" select="concat($p/type, ' Метабо от официального дилера №1 ✅ Доставка по Беларуси ☎☎☎ +375 29 566 61 16 Хорошая цена, рассрочка, гарантия 3 года!')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($p/type,' ' ,$p/name)"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
@@ -56,9 +57,9 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1><xsl:value-of select="$h1"/></h1>
-		<h2><xsl:value-of select="$p/type"/></h2>
-		<h3><xsl:value-of select="$p/name_extra"/></h3>
-
+		<!--<h2><xsl:value-of select="$p/type"/></h2>-->
+		<xsl:value-of select="$p/name_extra"/>
+		<div><br></br></div>
 		<div class="catalog-item-container">
 			<!--
 			<div class="tags">
@@ -128,10 +129,10 @@
 				</div>
 				<div class="links">
 					<div id="compare_list_{$p/code}">
-						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}">в сравнение</a></span>
+						<span><i class="fas fa-balance-scale"></i> <a href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/code}" rel="nofollow">в сравнение</a></span>
 					</div>
 					<div id="fav_list_{$p/code}">
-						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/code}">в избранное</a></span>
+						<span><i class="fas fa-star"></i> <a href="{$p/to_fav}" rel="nofollow" ajax="true" ajax-loader-id="fav_list_{$p/code}">в избранное</a></span>
 					</div>
 				</div>
 				<xsl:variable name="pres" select="$pp[product_code = $p/code]"/>
@@ -176,12 +177,12 @@
 						<xsl:value-of select="$p/short" disable-output-escaping="yes"/>
 						<xsl:if test="$extra_xml/manual">
 							<div class="extra-block">
-								<i class="fas fa-file-alt"></i><a href="{$extra_xml/manual}" target="_blank"><strong>Руководство по эксплуатации</strong></a>
+								<i class="fas fa-file-alt"></i><a href="{$extra_xml/manual}" rel="nofollow" target="_blank"><strong>Руководство по эксплуатации</strong></a>
 							</div>
 						</xsl:if>
 						<xsl:if test="$extra_xml/parts">
 							<div class="extra-block">
-								<i class="fas fa-file-alt"></i><a href="{$extra_xml/parts}" target="_blank"><strong>Список запчастей</strong></a>
+								<i class="fas fa-file-alt"></i><a href="{$extra_xml/parts}" target="_blank" rel="nofollow"><strong>Список запчастей</strong></a>
 							</div>
 						</xsl:if>
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>

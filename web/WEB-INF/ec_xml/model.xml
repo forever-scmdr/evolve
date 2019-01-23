@@ -38,20 +38,6 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             КАТАЛОГ                                  ////////////-->
-	<!--/////////////                                                                      ////////////-->
-
-
-	<item name="original_gallery" caption="Исходная галерея" ag-id="55" ag-hash="743720676">
-		<parameter name="watermark_filename"  type="string" caption="Название файла водяного знака"/>
-		<parameter name="watermark_file_modified"  type="long" caption="Дата изменения файла водяного знака"/>
-		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
-	</item>
-
-
-	<item name="gallery" caption="Галерея" ag-id="56" ag-hash="-196315310">
-		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
-		<child item="original_gallery" single="true"/>
-	</item>
 
 
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
@@ -79,7 +65,7 @@
 
 
 	<!--Товар из магазина yandex market-->
-	<item name="product" key="name vendor_code" caption="Продукт" super="* gallery" extendable="false" key-unique="true" default-page="product" ag-id="6" ag-hash="-309474065">
+	<item name="product" key="name vendor_code" caption="Продукт" extendable="false" key-unique="true" default-page="product" ag-id="6" ag-hash="-309474065">
 		<child item="seo" single="true"/>
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />

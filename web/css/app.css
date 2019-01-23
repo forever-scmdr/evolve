@@ -7184,7 +7184,7 @@ input.submit {
   margin: 1rem 0;
   padding-bottom: 1rem;
   border-bottom: 1px solid #f2f2f2;
-  max-height: 20rem;
+  /*max-height: 20rem;*/
   overflow: hidden;
   font-size: .9em;
   width: 20rem;
@@ -7222,4 +7222,29 @@ input.submit {
   height: 5rem;
   margin-right: 1rem;
   border: 1px solid #cccccc;
+}
+.new-list-wrap {
+  height: 300px;
+  overflow: hidden;
+}
+.new-list {
+    color: #b9c5c2;
+    font-size: 12px;
+    column-count: 4;
+    margin-top: 48px;
+    min-height: 1000px;
+}
+.new-list li:first-child {
+    font-weight: bold;
+    font-size: 14px;
+    color: #fff;
+}
+.new-list ul {
+    padding: 0px;
+    list-style: none;
+    margin-bottom: 16px;
+    break-inside: avoid-column;
+}
+.new-list a {
+  color: inherit;
 }
