@@ -778,8 +778,10 @@
 						<li><a href="">Ящики из листовой стали для переноски</a></li>
 					</ul>
 				</div>
+				<div class="dim"></div>
+				<a href="" class="toggle-list"><span>Развернуть</span></a>
+				<!-- добавить тегу .new-list-wrap класс .show Текст заменить на Свернуть-->
 			</div>
-			<div class="dim"></div>
 		</div>
 	</xsl:template>
 
