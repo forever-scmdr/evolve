@@ -263,7 +263,7 @@ body {
   .level-1,
   .level-2,
   .level-3,
-  .level-4 {
+  .level-4, {
     &:before {
       position: absolute;
       left: 0;
@@ -1014,7 +1014,7 @@ ul.icons {
     }
   }
   .catalog-items {
-    .catalog-item
+    .catalog-item,
      {
       flex-basis: 49%;
       margin-bottom: .8rem;
