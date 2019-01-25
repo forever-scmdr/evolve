@@ -59,7 +59,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			String paramName = Strings.createXmlElementName(name);
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);
-				paramCaptions.put(paramName, new Pair<>(paramName, isMultiple));
+				paramCaptions.put(paramName, new Pair<>(name, isMultiple));
 			}
 			DataType.Type currentType = paramTypes.get(paramName);
 			Pair<DataType.Type, String> test = testValueHasUnit(value);
@@ -244,7 +244,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 								info.pushLog("No parameter {} in section {}", name, section.getStringValue("name"));
 							}
 						}
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(params));
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(params).noFulltextIndex().noTriggerExtra());
 					}
 				}
 			}

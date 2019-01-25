@@ -227,7 +227,11 @@
 	</item>
 
 
-	<item name="params" caption="Параметры товара" extendable="true" ag-id="30" ag-hash="-995427962"/>
+	<item name="params" caption="Параметры товара" extendable="true" ag-id="30" ag-hash="-995427962">
+		<on-update class="ecommander.fwk.integration.UpdateProductParamsXml"/><!-- Обновить параметр params_xml в продукте -->
+		<on-create class="ecommander.fwk.integration.UpdateProductParamsXml"/>
+	</item>
+
 
 	<item name="product_extra" caption="Дополнительные страницы для товара" key="name" ag-id="818" ag-hash="1373246656">
 		<parameter name="name" type="string" caption="Заголовок страницы"/>
