@@ -22,6 +22,7 @@ public class Seo
     public final static String BOTTOM_TEXT = "bottom_text";
     public final static String TEXT_PIC = "text_pic";
     public final static String EXTRA_STYLE = "extra_style";
+    public final static String BODY_CLASS = "body_class";
 
     private Seo(Item item) {
         super(item);
@@ -200,6 +201,22 @@ public class Seo
 
     public boolean contains_extra_style(String value) {
         return containsValue("extra_style", value);
+    }
+
+    public void set_body_class(String value) {
+        setValue("body_class", value);
+    }
+
+    public String get_body_class() {
+        return getStringValue("body_class");
+    }
+
+    public String getDefault_body_class(String defaultVal) {
+        return getStringValue("body_class", defaultVal);
+    }
+
+    public boolean contains_body_class(String value) {
+        return containsValue("body_class", value);
     }
 
 }

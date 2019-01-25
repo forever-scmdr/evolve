@@ -27,7 +27,7 @@ import java.util.*;
 /**
  * Created by user on 12.12.2018.
  */
-public class ImportProductsFromExcel extends IntegrateBase implements CatalogConst {
+public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand implements CatalogConst {
 	ExcelPriceList priceWB;
 	Item catalog;
 	Item currentSection;
@@ -722,114 +722,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 		if (sectionsWithNewItemTypes.size() == 0) return;
 		setOperation("Создание классов и фильтров");
 		List<Item> sections = ItemQuery.loadByIdsLong(sectionsWithNewItemTypes);
-		for (Item section : sections) {
-			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
-			if (products.size() > 0) {
-
-				// Анализ параметров продуктов
-				CreateParametersAndFiltersCommand.Params params = new CreateParametersAndFiltersCommand.Params(section.getStringValue(NAME_PARAM), "s" + section.getId());
-				for (Item product : products) {
-					List<Item> oldParams = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadItems();
-					for (Item oldParam : oldParams) {
-						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldParam));
-					}
-					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
-					if (paramsXml != null) {
-						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
-						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
-						Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
-						for (Element paramEl : paramEls) {
-							String caption = StringUtils.trim(paramEl.getElementsByTag(NAME).first().ownText());
-							String value = StringUtils.trim(paramEl.getElementsByTag(VALUE).first().ownText());
-							if (StringUtils.isNotBlank(caption)) {
-								params.addParameter(caption, value);
-							}
-						}
-					}
-				}
-				executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
-
-				// Создание фильтра
-				String className = "p" + section.getId();
-				String classCaption = section.getStringValue(NAME_PARAM);
-				// Создать фильтр и установить его в айтем
-				FilterDefinition filter = FilterDefinition.create("");
-				filter.setRoot(className);
-				for (String paramName : params.paramTypes.keySet()) {
-					if (params.notInFilter.contains(paramName))
-						continue;
-					String caption = params.paramCaptions.get(paramName);
-					String unit = params.paramUnits.get(paramName);
-					InputDef input = new InputDef("droplist", caption, unit, "");
-					filter.addPart(input);
-					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
-				}
-				section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
-
-				// Создать класс для продуктов из этого раздела
-				ItemType newClass = new ItemType(className, 0, classCaption, "", "",
-						PARAMS_ITEM, null, false, true, false, false);
-				for (String paramName : params.paramTypes.keySet()) {
-					String type = params.paramTypes.get(paramName).toString();
-					String caption = params.paramCaptions.get(paramName);
-					String unit = params.paramUnits.get(paramName);
-					newClass.putParameter(new ParameterDescription(paramName, 0, type, false, 0,
-							"", caption, unit, "", false, false, null, null));
-				}
-				executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
-
-			} else {
-				section.clearValue(PARAMS_FILTER_PARAM);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
-			}
-			info.increaseProcessed();
-		}
-		try {
-			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
-		} catch (Exception e) {
-			ServerLogger.error("Unable to reload new model", e);
-			info.addError("Невозможно создать новую модель данных", e.getLocalizedMessage());
-			info.setOperation("Фатальная ошибка");
-			return;
-		}
-
-		info.setOperation("Заполнение параметров товаров");
-		info.setToProcess(sections.size());
-		info.setProcessed(0);
-		for (Item section : sections) {
-			String className = "p" + section.getId();
-			ItemType paramDesc = ItemTypeRegistry.getItemType(className);
-			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
-			if (products.size() > 0) {
-				for (Item product : products) {
-					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
-					if (paramsXml != null) {
-						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
-						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
-						Elements paramEls = paramsTree.getElementsByTag("parameter");
-						Item params = Item.newChildItem(paramDesc, product);
-						for (Element paramEl : paramEls) {
-							String name = StringUtils.trim(paramEl.getElementsByTag("name").first().ownText());
-							name = Strings.createXmlElementName(name);
-							String value = StringUtils.trim(paramEl.getElementsByTag("value").first().ownText());
-							Pair<DataType.Type, String> valuePair = CreateParametersAndFiltersCommand.Params.testValueHasUnit(value);
-							if (StringUtils.isNotBlank(valuePair.getRight())) {
-								value = value.split("\\s")[0];
-							}
-							if (paramDesc.hasParameter(name)) {
-								params.setValueUI(name, value);
-							} else {
-								info.pushLog("No parameter {} in section {}", name, section.getStringValue("name"));
-							}
-						}
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(params));
-					}
-				}
-			}
-			info.increaseProcessed();
-		}
-
+		doCreate(sections);
 	}
 
 	@Override

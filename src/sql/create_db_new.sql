@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS `item` (
   `i_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `i_supertype` int(10) unsigned NOT NULL,
   `i_type_id` int(10) unsigned NOT NULL,
-  `i_key` varchar(100) NOT NULL,
-  `i_t_key` varchar(100) NOT NULL,
+  `i_key` varchar(250) NOT NULL,
+  `i_t_key` varchar(250) NOT NULL,
   `i_status` tinyint(3) unsigned NOT NULL,
   `i_user` int(10) unsigned NOT NULL,
   `i_group` tinyint(3) unsigned NOT NULL,
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `int_index` (
 
 CREATE TABLE IF NOT EXISTS `unique_key` (
   `uk_item_id` bigint(20) unsigned NOT NULL,
-  `uk_key` varchar(100) NOT NULL,
+  `uk_key` varchar(250) NOT NULL,
   PRIMARY KEY (`uk_item_id`),
   UNIQUE `MAIN` (`uk_key`),
   CONSTRAINT `ITEM` FOREIGN KEY (`uk_item_id`) REFERENCES `item` (`i_id`) ON DELETE CASCADE ON UPDATE CASCADE

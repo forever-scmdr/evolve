@@ -147,9 +147,11 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 		// Удалить старые файлы айтема
 		if (filesChanged) {
 			File[] allFiles = new File(fileDirectoryName).listFiles();
-			for (File itemFile : allFiles) {
-				if (!actualFiles.contains(itemFile.getName())) {
-					FileUtils.deleteQuietly(itemFile);
+			if (allFiles != null) {
+				for (File itemFile : allFiles) {
+					if (!actualFiles.contains(itemFile.getName())) {
+						FileUtils.deleteQuietly(itemFile);
+					}
 				}
 			}
 		}

@@ -10,6 +10,7 @@ public class Parse_section
 
     public final static String _NAME = "parse_section";
     public final static String ITEM_URLS = "item_urls";
+    public final static String ITEM_URLS_BACKUP = "item_urls_backup";
 
     private Parse_section(Item item) {
         super(item);
@@ -44,6 +45,22 @@ public class Parse_section
 
     public boolean contains_item_urls(String value) {
         return containsValue("item_urls", value);
+    }
+
+    public void set_item_urls_backup(String value) {
+        setValue("item_urls_backup", value);
+    }
+
+    public String get_item_urls_backup() {
+        return getStringValue("item_urls_backup");
+    }
+
+    public String getDefault_item_urls_backup(String defaultVal) {
+        return getStringValue("item_urls_backup", defaultVal);
+    }
+
+    public boolean contains_item_urls_backup(String value) {
+        return containsValue("item_urls_backup", value);
     }
 
 }

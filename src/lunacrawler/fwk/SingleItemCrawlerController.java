@@ -440,6 +440,19 @@ public class SingleItemCrawlerController {
 					info.pushLog("DUPLICATED - {}", url);
 				}
 			}
+
+			// Сохранение урлов в бекап и удаление из раздела для парсинга
+			String[] oldUrls = StringUtils.split(currentSection.get_item_urls_backup(), '\n');
+			if (!urls.isEmpty() && oldUrls.length > 0) {
+				urls.add("");
+				for (String oldUrl : oldUrls) {
+					urls.add(oldUrl);
+				}
+				currentSection.set_item_urls_backup(StringUtils.join(urls, '\n'));
+				currentSection.set_item_urls(null);
+				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(currentSection));
+			}
+
 			info.setProcessed(++processedCount);
 		}
 

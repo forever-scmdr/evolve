@@ -7,13 +7,11 @@ import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Url_seo
+public class Base_seo
     extends Item
 {
 
-    public final static String _NAME = "url_seo";
-    public final static String NAME = "name";
-    public final static String URL = "url";
+    public final static String _NAME = "base_seo";
     public final static String TITLE = "title";
     public final static String H1 = "h1";
     public final static String DESCRIPTION = "description";
@@ -25,55 +23,23 @@ public class Url_seo
     public final static String EXTRA_STYLE = "extra_style";
     public final static String BODY_CLASS = "body_class";
 
-    private Url_seo(Item item) {
+    private Base_seo(Item item) {
         super(item);
     }
 
-    public static Url_seo get(Item item) {
+    public static Base_seo get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'url_seo' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'base_seo' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Url_seo(item);
+        return new Base_seo(item);
     }
 
-    public static Url_seo newChild(Item parent) {
+    public static Base_seo newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
-    }
-
-    public void set_name(String value) {
-        setValue("name", value);
-    }
-
-    public String get_name() {
-        return getStringValue("name");
-    }
-
-    public String getDefault_name(String defaultVal) {
-        return getStringValue("name", defaultVal);
-    }
-
-    public boolean contains_name(String value) {
-        return containsValue("name", value);
-    }
-
-    public void set_url(String value) {
-        setValue("url", value);
-    }
-
-    public String get_url() {
-        return getStringValue("url");
-    }
-
-    public String getDefault_url(String defaultVal) {
-        return getStringValue("url", defaultVal);
-    }
-
-    public boolean contains_url(String value) {
-        return containsValue("url", value);
     }
 
     public void set_title(String value) {

@@ -36,9 +36,9 @@ public class Line_product
     public final static String TEXT = "text";
     public final static String EXTRA_XML = "extra_xml";
     public final static String TEXT_PICS = "text_pics";
-    public final static String GALLERY = "gallery";
     public final static String ASSOC_CODE = "assoc_code";
     public final static String TAG = "tag";
+    public final static String GALLERY = "gallery";
 
     private Line_product(Item item) {
         super(item);
@@ -449,22 +449,6 @@ public class Line_product
         return containsValue("text_pics", value);
     }
 
-    public void add_gallery(File value) {
-        setValue("gallery", value);
-    }
-
-    public List<File> getAll_gallery() {
-        return getFileValues("gallery", AppContext.getCommonFilesDirPath());
-    }
-
-    public void remove_gallery(File value) {
-        removeEqualValue("gallery", value);
-    }
-
-    public boolean contains_gallery(File value) {
-        return containsValue("gallery", value);
-    }
-
     public void add_assoc_code(String value) {
         setValue("assoc_code", value);
     }
@@ -495,6 +479,22 @@ public class Line_product
 
     public boolean contains_tag(String value) {
         return containsValue("tag", value);
+    }
+
+    public void add_gallery(File value) {
+        setValue("gallery", value);
+    }
+
+    public List<File> getAll_gallery() {
+        return getFileValues("gallery", AppContext.getCommonFilesDirPath());
+    }
+
+    public void remove_gallery(File value) {
+        removeEqualValue("gallery", value);
+    }
+
+    public boolean contains_gallery(File value) {
+        return containsValue("gallery", value);
     }
 
 }

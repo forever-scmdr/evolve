@@ -6,11 +6,14 @@ public interface ItemNames {
 
     String PARSE_SECTION = "parse_section";
     String PARSE_ITEM = "parse_item";
+    String BASE_SEO = "base_seo";
     String SEO = "seo";
     String URL_SEO = "url_seo";
     String URL_SEO_WRAP = "url_seo_wrap";
     String SEO_CATALOG = "seo_catalog";
     String SEO_CONTAINER = "seo_container";
+    String ORIGINAL_GALLERY = "original_gallery";
+    String GALLERY = "gallery";
     String CATALOG = "catalog";
     String SECTION = "section";
     String ABSTRACT_PRODUCT = "abstract_product";
@@ -91,6 +94,22 @@ public interface ItemNames {
 
         String _ITEM_NAME = "banner_section";
         String NAME = "name";
+
+    }
+
+    public interface base_seo_ {
+
+        String _ITEM_NAME = "base_seo";
+        String TITLE = "title";
+        String H1 = "h1";
+        String DESCRIPTION = "description";
+        String KEYWORDS = "keywords";
+        String META = "meta";
+        String TEXT = "text";
+        String BOTTOM_TEXT = "bottom_text";
+        String TEXT_PIC = "text_pic";
+        String EXTRA_STYLE = "extra_style";
+        String BODY_CLASS = "body_class";
 
     }
 
@@ -234,9 +253,9 @@ public interface ItemNames {
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
-        String GALLERY = "gallery";
         String ASSOC_CODE = "assoc_code";
         String TAG = "tag";
+        String GALLERY = "gallery";
 
     }
 
@@ -273,6 +292,13 @@ public interface ItemNames {
 
     }
 
+    public interface gallery_ {
+
+        String _ITEM_NAME = "gallery";
+        String GALLERY = "gallery";
+
+    }
+
     public interface line_product_ {
 
         String _ITEM_NAME = "line_product";
@@ -299,9 +325,9 @@ public interface ItemNames {
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
-        String GALLERY = "gallery";
         String ASSOC_CODE = "assoc_code";
         String TAG = "tag";
+        String GALLERY = "gallery";
 
     }
 
@@ -396,6 +422,15 @@ public interface ItemNames {
 
     }
 
+    public interface original_gallery_ {
+
+        String _ITEM_NAME = "original_gallery";
+        String WATERMARK_FILENAME = "watermark_filename";
+        String WATERMARK_FILE_MODIFIED = "watermark_file_modified";
+        String GALLERY = "gallery";
+
+    }
+
     public interface params_ {
 
         String _ITEM_NAME = "params";
@@ -429,6 +464,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "parse_section";
         String ITEM_URLS = "item_urls";
+        String ITEM_URLS_BACKUP = "item_urls_backup";
 
     }
 
@@ -458,9 +494,9 @@ public interface ItemNames {
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
-        String GALLERY = "gallery";
         String ASSOC_CODE = "assoc_code";
         String TAG = "tag";
+        String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
 
     }
@@ -524,6 +560,7 @@ public interface ItemNames {
         String BOTTOM_TEXT = "bottom_text";
         String TEXT_PIC = "text_pic";
         String EXTRA_STYLE = "extra_style";
+        String BODY_CLASS = "body_class";
 
     }
 
@@ -558,6 +595,8 @@ public interface ItemNames {
         String TEXT = "text";
         String BOTTOM_TEXT = "bottom_text";
         String TEXT_PIC = "text_pic";
+        String EXTRA_STYLE = "extra_style";
+        String BODY_CLASS = "body_class";
 
     }
 
