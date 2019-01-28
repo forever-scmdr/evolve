@@ -196,7 +196,7 @@ public abstract class BasicServlet extends HttpServlet {
 			for (FileItem fileItem : values) {
 				List<String> vals = params.get(fileItem.getFieldName());
 				if (vals == null) {
-					vals = new ArrayList<String>();
+					vals = new ArrayList<>();
 					params.put(fileItem.getFieldName(), vals);
 				}
 	    		if (fileItem.isFormField())

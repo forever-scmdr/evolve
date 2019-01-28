@@ -39,12 +39,12 @@
 	</xsl:template>
 
 	<xsl:template match="itemdesc" mode="OPTION">
-		<option value="{@id}"><xsl:value-of select="@caption"/></option>
+		<option value="{@ag-id}"><xsl:value-of select="@caption"/></option>
 		<xsl:apply-templates select="itemdesc" mode="OPTION"/>
 	</xsl:template>
 
 	<xsl:template match="updating-itemdesc[@user-def = 'true']">
-		<xsl:variable name="iid" select="@id"/>
+		<xsl:variable name="iid" select="@ag-id"/>
 		<xsl:call-template name="MOVE_SCRIPT"/>
 		<div class="buttonBar">
 			<a href="#deleteOptions" class="button totalDelete fancybox" style="background: #DA4453;">Удалить этот класс</a>
@@ -159,7 +159,7 @@
 					<input type="text" class="textForm" value="{@description}" name="description" />
 				</label>
 				<input id="paramOrder" type="hidden" name="paramOrder" value="" />
-				<input type="hidden" name="extends" value="{@extends}" />
+				<input type="hidden" name="extends" value="{@super}" />
 				<input type="hidden" name="name" value="{@name}" />
 			</form>
 			
@@ -167,18 +167,18 @@
 				<p class="form_title" style="background: #909090;">Редактируемые параметры</p>
 				<ul class="edit-params">
 					<xsl:for-each select="parameter[@owner-id = $iid]">
-						<li id="pord_{@id}" name="{@id}">
-							<a class="{@type} param" title="редактировать" onclick="$('#par_{@id}').toggle(200);return false;">
+						<li id="pord_{@ag-id}" name="{@ag-id}">
+							<a class="{@type} param" title="редактировать" onclick="$('#par_{@ag-id}').toggle(200);return false;">
 								<xsl:value-of select="@caption" />
 							</a>
 							<span class="setPosition">
-								<a href="#" class="up" onclick="up('pord_{@id}');return false;"></a>
-								<a href="#" class="down" onclick="down('pord_{@id}');return false;"></a>
+								<a href="#" class="up" onclick="up('pord_{@ag-id}');return false;"></a>
+								<a href="#" class="down" onclick="down('pord_{@ag-id}');return false;"></a>
 							</span>
 							<a href="{delete_link}" class="delete" title="Удалить" >Удалить</a>
 							
-							<div id="par_{@id}" class="parameterOptions" style="display:none;">
-								<form id="id_{@id}" action="{update_link}" method="post">
+							<div id="par_{@ag-id}" class="parameterOptions" style="display:none;">
+								<form id="id_{@ag-id}" action="{update_link}" method="post">
 									<label >
 										Название:
 										<input name="caption" type="text" value="{@caption}" />
@@ -189,14 +189,14 @@
 									</label>
 									<div class="label">Количество зачений:<br/>
 										<xsl:call-template name="check_radio">
-											<xsl:with-param name="value" select="'single'" />
-											<xsl:with-param name="check" select="@quantifier" />
+											<xsl:with-param name="value" select="'false'" />
+											<xsl:with-param name="check" select="@multiple" />
 											<xsl:with-param name="name" select="'quantifier'" />
 										</xsl:call-template>
 										<label for="single" style="display: inline;">одиночный</label><br/>
 										<xsl:call-template name="check_radio">
-											<xsl:with-param name="value" select="'multiple'" />
-											<xsl:with-param name="check" select="@quantifier" />
+											<xsl:with-param name="value" select="'true'" />
+											<xsl:with-param name="check" select="@multiple" />
 											<xsl:with-param name="name" select="'quantifier'" />
 										</xsl:call-template>
 										<label for="multiple"  style="display: inline;">множественный</label>
@@ -275,7 +275,7 @@
 										<input name="format" type="text" value="{@format}" />
 									</label>
 									<input name="paramName" type="hidden" value="{@name}" />
-									<a href="#" onclick="$('#id_{@id}').submit();return false;" class="button partialSave">Сохранить</a>
+									<a href="#" onclick="$('#id_{@ag-id}').submit();return false;" class="button partialSave">Сохранить</a>
 								</form>
 							</div>
 							

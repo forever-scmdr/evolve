@@ -456,7 +456,7 @@ public class ItemAdminServlet extends BasicAdminServlet {
 	 */
 	private void reloadModel(ItemModelFilePersistenceCommandUnit command) throws Exception {
 		try {
-			boolean updated = DataModelBuilder.newLoader().tryLockAndReloadModel();
+			boolean updated = DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
 			if (updated) {
 				PageModelBuilder.invalidate();
 			}

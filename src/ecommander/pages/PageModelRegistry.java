@@ -124,8 +124,7 @@ public class PageModelRegistry {
 	 */
 	public ExecutablePagePE getExecutablePage(String linkUrl, String urlBase, SessionContext context)
 			throws PageNotFoundException, UserNotAllowedException, UnsupportedEncodingException {
-		linkUrl = normalizeUrl(linkUrl);
-		LinkPE link = LinkPE.parseLink(linkUrl);
+		LinkPE link = normalizeAndCreateLink(linkUrl);
 		PagePE pageModel = getPageModel(link.getPageName());
 		// Если не найдена страница - выбросить исключение
 		if (pageModel == null) {
@@ -143,9 +142,9 @@ public class PageModelRegistry {
 	 * @param urlString
 	 * @return
 	 */
-	public String normalizeUrl(String urlString) {
+	public LinkPE normalizeAndCreateLink(String urlString) throws UnsupportedEncodingException {
 		if (StringUtils.isBlank(urlString)) {
-			return urlString;
+			return LinkPE.parseLink(urlString);
 		}
 		// Строка разбивается на path и query
 		String path = urlString;
@@ -157,11 +156,12 @@ public class PageModelRegistry {
 		}
 		String[] units = StringUtils.split(path, VariablePE.COMMON_DELIMITER);
 		if (units.length == 0) {
-			return urlString;
+			return LinkPE.parseLink(urlString);
 		}
 		String pageName = units[0];
 		PagePE pageModel = PageModelRegistry.getRegistry().getPageModel(pageName);
 		int lastTranslitPartIndex = 1;
+		boolean isExclusive = false;
 		if (pageModel == null) {
 			try {
 				for (int i = units.length - 1; i >= 0 && pageModel == null; i--) {
@@ -170,6 +170,7 @@ public class PageModelRegistry {
 						pageName = keyItem.getItemType().getDefaultPage();
 						pageModel = getPageModel(pageName);
 						lastTranslitPartIndex = i;
+						isExclusive = true;
 					}
 				}
 			} catch (Exception e) {
@@ -177,7 +178,7 @@ public class PageModelRegistry {
 			}
 		}
 		if (pageModel == null)
-			return urlString;
+			return LinkPE.parseLink(urlString);
 		StringBuilder sb = new StringBuilder();
 		Iterator<RequestVariablePE> varReverseIter = pageModel.getPathTranslitVarsReverseOrder().iterator();
 		for (int i = lastTranslitPartIndex; i >= 0 && varReverseIter.hasNext(); i--) {
@@ -190,7 +191,10 @@ public class PageModelRegistry {
 		sb.insert(0, pageName);
 		if (StringUtils.isNotBlank(query))
 			sb.append(LinkPE.QUESTION_SIGN).append(query);
-		return sb.toString();
+		LinkPE result = LinkPE.parseLink(sb.toString());
+		if (isExclusive)
+			result.setType(LinkPE.Type.exclusive);
+		return result;
 	}
 
 	/**

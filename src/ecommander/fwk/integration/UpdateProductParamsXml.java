@@ -3,6 +3,7 @@ package ecommander.fwk.integration;
 import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -16,6 +17,7 @@ public class UpdateProductParamsXml implements ItemEventCommandFactory {
 
 	private static final String PRODUCT = "described_product";
 	private static final String PARAMS_XML = "params_xml";
+	private static final String XML = "xml";
 
 	private static final String PARAMETER = "parameter";
 	private static final String NAME = "name";
@@ -43,8 +45,12 @@ public class UpdateProductParamsXml implements ItemEventCommandFactory {
 						xml.endElement();
 					}
 				}
-				product.setValue(PARAMS_XML, xml.toString());
-				executeCommandInherited(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
+				Item paramsXml = new ItemQuery(PARAMS_XML).setParentId(product.getId(), false).loadFirstItem();
+				if (paramsXml == null) {
+					paramsXml = Item.newChildItem(ItemTypeRegistry.getItemType(PARAMS_XML), product);
+				}
+				paramsXml.setValue(XML, xml.toString());
+				executeCommandInherited(SaveItemDBUnit.get(paramsXml).noFulltextIndex().noTriggerExtra());
 			}
 		}
 	}

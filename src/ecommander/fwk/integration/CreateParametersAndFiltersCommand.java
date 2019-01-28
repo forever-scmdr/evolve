@@ -153,11 +153,14 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
 						Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
 						for (Element paramEl : paramEls) {
-							String caption = StringUtils.trim(paramEl.getElementsByTag(NAME).first().ownText());
-							if (StringUtils.isNotBlank(caption)) {
-								Elements values = paramEl.getElementsByTag(VALUE);
-								for (Element value : values) {
-									params.addParameter(caption, StringUtils.trim(value.ownText()), values.size() > 1);
+							Elements nameElements = paramEl.getElementsByTag(NAME);
+							if (!nameElements.isEmpty()) {
+								String caption = StringUtils.trim(nameElements.first().ownText());
+								if (StringUtils.isNotBlank(caption)) {
+									Elements values = paramEl.getElementsByTag(VALUE);
+									for (Element value : values) {
+										params.addParameter(caption, StringUtils.trim(value.ownText()), values.size() > 1);
+									}
 								}
 							}
 						}
@@ -228,20 +231,23 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 						Elements paramEls = paramsTree.getElementsByTag("parameter");
 						Item params = Item.newChildItem(paramDesc, product);
 						for (Element paramEl : paramEls) {
-							String name = StringUtils.trim(paramEl.getElementsByTag("name").first().ownText());
-							name = Strings.createXmlElementName(name);
-							if (paramDesc.hasParameter(name)) {
-								Elements values = paramEl.getElementsByTag("value");
-								for (Element valueEl : values) {
-									String value = StringUtils.trim(valueEl.ownText());
-									Pair<DataType.Type, String> valuePair = Params.testValueHasUnit(value);
-									if (StringUtils.isNotBlank(valuePair.getRight())) {
-										value = value.split("\\s")[0];
+							Elements nameElements = paramEl.getElementsByTag(NAME);
+							if (!nameElements.isEmpty()) {
+								String name = nameElements.first().ownText();
+								name = Strings.createXmlElementName(name);
+								if (paramDesc.hasParameter(name)) {
+									Elements values = paramEl.getElementsByTag("value");
+									for (Element valueEl : values) {
+										String value = StringUtils.trim(valueEl.ownText());
+										Pair<DataType.Type, String> valuePair = Params.testValueHasUnit(value);
+										if (StringUtils.isNotBlank(valuePair.getRight())) {
+											value = value.split("\\s")[0];
+										}
+										params.setValueUI(name, value);
 									}
-									params.setValueUI(name, value);
+								} else {
+									info.pushLog("No parameter {} in section {}", name, section.getStringValue("name"));
 								}
-							} else {
-								info.pushLog("No parameter {} in section {}", name, section.getStringValue("name"));
 							}
 						}
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(params).noFulltextIndex().noTriggerExtra());
