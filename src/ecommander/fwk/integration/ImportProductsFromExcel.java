@@ -9,7 +9,6 @@ import ecommander.model.filter.FilterDefinition;
 import ecommander.model.filter.InputDef;
 import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -25,7 +24,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 /**
- * Created by user on 12.12.2018.
+ * Created by Anton on 12.12.2018.
  */
 public class ImportProductsFromExcel extends IntegrateBase implements CatalogConst {
 	ExcelPriceList priceWB;
@@ -41,13 +40,14 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 	private static final String IF_BLANK = "if_blank"; // what to do if the cell is blank; (IGNORE, CLEAR)
 	private static final String WITH_PICS = "with_pics"; // where to look for product files (SEARCH_BY_CODE, SEARCH_BY_CELL_VALUE, DOWNLOAD)
 	private static final String DIGITS = "0123456789.,";
+	private static final ItemType PRODUCT_ITEM_TYPE = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
 
 	//default page var values
 	private enum varValues {
 		UPDATE, COPY, CREATE, COPY_IF_PARENT_DIFFERS, MOVE_IF_PARENT_DIFFERS, DELETE, IGNORE, CLEAR, SEARCH_BY_CODE,
 		UPDATE_IF_DIFFER, SEARCH_BY_CELL_VALUE, DOWNLOAD
 	}
-
+@SuppressWarnings("unchecked")
 	private static HashMap<String, String> HEADER_PARAM = new HashMap() {{
 		put(CreateExcelPriceList.CODE_FILE.toLowerCase(), CODE_PARAM);
 		put(CreateExcelPriceList.NAME_FILE.toLowerCase(), NAME_PARAM);
@@ -73,9 +73,9 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 		Path contextPath = Paths.get(AppContext.getContextPath(), "upload");
 		Collection<File> files = FileUtils.listFiles(contextPath.toFile(), new String[]{"xls", "xlsx"}, false);
 
-		ItemType productItemType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
+
 		ItemType paramsXMLItemType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
-		for (ParameterDescription param : productItemType.getParameterList()) {
+		for (ParameterDescription param : PRODUCT_ITEM_TYPE.getParameterList()) {
 			if (HEADER_PARAM.containsValue(param.getName())) continue;
 			HEADER_PARAM.put(param.getCaption().toLowerCase(), param.getName());
 		}
@@ -192,12 +192,12 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 					if (product == null) {
 						Item parent = (code.indexOf('@') == -1) ? currentSubsection : new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, StringUtils.substringAfter(code, "@"), "=", null, Compare.SOME).loadFirstItem();
 //						ItemType itemType = (code.indexOf('@') == -1) ? ItemTypeRegistry.getItemType(PRODUCT_ITEM) : ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM);
-						product = Item.newChildItem(ItemTypeRegistry.getItemType(PRODUCT_ITEM), parent);
+						product = Item.newChildItem(PRODUCT_ITEM_TYPE, parent);
 						code = (code.indexOf('@') == -1) ? code : StringUtils.substringBefore(code, "@");
 						//set product params
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
-							if (!productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+							if (!PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
 								continue;
 							String cellValue = getValue(header);
 							if (CODE_PARAM.equals(paramName)) {
@@ -274,7 +274,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								}
 							} else {
 								if (StringUtils.isBlank(cellValue)) continue;
-								ParameterDescription pd = productItemType.getParameter(paramName);
+								ParameterDescription pd = PRODUCT_ITEM_TYPE.getParameter(paramName);
 								if (pd.isMultiple()) {
 									String[] values = cellValue.split(";");
 									for (String val : values) {
@@ -326,7 +326,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						//set product params
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
-							if (!productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+							if (!PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
 								continue;
 							String cellValue = getValue(header);
 							varValues ifBlank = settings.get(IF_BLANK);
@@ -437,7 +437,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 //							}
 							else {
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
-								ParameterDescription pd = productItemType.getParameter(paramName);
+								ParameterDescription pd = PRODUCT_ITEM_TYPE.getParameter(paramName);
 								if (pd.isMultiple()) {
 									String[] values = cellValue.split(";");
 									for (String val : values) {
@@ -510,7 +510,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						}
 					}
 					//process auxType
-					if (headers.contains(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase())) {
+					if (hasAuxParams(headers)) {
+
 						String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
 						ItemType auxType = null;
 						Item paramsXML = new ItemQuery(paramsXMLItemType).setParentId(product.getId(), false).loadFirstItem();
@@ -534,7 +535,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
-							if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+							if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
 								continue;
 							String cellValue = getValue(header);
 							xml.startElement("parameter")
@@ -608,6 +609,18 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 			}
 		};
 		return true;
+	}
+
+	private boolean hasAuxParams(Collection<String> headers){
+		if(!headers.contains(CreateExcelPriceList.AUX_TYPE_FILE)) return false;
+
+		for(String header : headers){
+			String paramName = HEADER_PARAM.get(header);
+			if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+				continue;
+			return true;
+		}
+		return false;
 	}
 
 	private void processSubsection(String[] secInfo) throws Exception {
@@ -847,8 +860,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
 		//indexation
-		info.setOperation("Индексация названий товаров");
-		LuceneIndexMapper.getSingleton().reindexAll();
+		//info.setOperation("Индексация названий товаров");
+		//LuceneIndexMapper.getSingleton().reindexAll();
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Интеграция завершена");
 	}
