@@ -2,10 +2,12 @@ package ecommander.fwk;
 
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.model.datatypes.DoubleDataType;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,28 +24,26 @@ public class TabTxtTableData implements TableDataSource {
 	private String[] currentRow;
 	private int currentRowNum = -1;
 	private int headerRow = -1;
-	private String fileName;
+	private File file;
 	private ArrayList<String> missingColumns = null;
 
 	public TabTxtTableData(String fileName, String... mandatoryCols) {
-		this.fileName = Strings.getFileName(fileName);
+		this.file = new File(fileName);
 		init(mandatoryCols);
 	}
 
 	public TabTxtTableData(File file, String... mandatoryCols) {
-		this.fileName = file.getName();
+		this.file = file;
 		init(mandatoryCols);
 	}
 
 	public TabTxtTableData(Path path, String... mandatoryCols) {
-		this.fileName = path.getFileName().toString();
+		this.file = path.toFile();
 		init(mandatoryCols);
 	}
 
 	private void init(String... mandatoryCols) {
-		if (StringUtils.isBlank(fileName))
-			return;
-		if (!Files.exists(Paths.get(fileName)))
+		if (!file.exists())
 			return;
 
 		ArrayList<String> missingColumnsTest;
@@ -53,11 +53,11 @@ public class TabTxtTableData implements TableDataSource {
 		String line;
 		String[] cols = {};
 		if (mandatoryCols.length > 0) {
-			try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "UTF-8"))) {
+			try (BufferedReader br = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_16)) {
 				line = br.readLine();
 				while (line != null && headerRow < 1000 && !rowChecked) {
 					headerRow++;
-					cols = StringUtils.split(line, '\t');
+					cols = StringUtils.splitPreserveAllTokens(line, '\t');
 					missingColumnsTest = new ArrayList<>();
 					rowChecked = true;
 					for (String checkCol : mandatoryCols) {
@@ -135,14 +135,14 @@ public class TabTxtTableData implements TableDataSource {
 			}
 			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, message);
 		}
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "UTF-8"))) {
-			for (int i = 0; i < headerRow; i++) {
+		try (BufferedReader br = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_16)) {
+			for (int i = 0; i <= headerRow; i++) {
 				br.readLine();
 			}
 			currentRowNum = headerRow;
 			String line;
 			while ((line = br.readLine()) != null) {
-				currentRow = StringUtils.split(line, '\t');
+				currentRow = StringUtils.splitPreserveAllTokens(line, '\t');
 				processor.processRow(this);
 				currentRowNum++;
 			}
