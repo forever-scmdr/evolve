@@ -111,8 +111,7 @@ function confirmAjaxViewCustom(el, title, onConfirm) {
  * */
 function postFormViewWithAction(el, action, lockElementIds, totalRefresh){
 	$("#"+el).attr({"action" : action});
-	console.log(lockElementIds);
-
+	lock(lockElementIds);
     postForm(el, lockElementIds, function () {
         if (!totalRefresh == true) {
             highlightSelected("#pasteBuffer", "#multi-item-action-form-ids-buffer");

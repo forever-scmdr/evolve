@@ -935,22 +935,6 @@
 
 <!--START_p2-->
 <item name="p2" caption="Навесные замки" key="" ag-id="0" ag-hash="3522" virtual="false" user-def="true" description="" super="params *">
-	<parameter name="tip_izdeliya" caption="Тип изделия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-179492645" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="naznachenie" caption="Назначение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1886637308" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="material_ruchki" caption="Материал ручки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-546924706" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="material_rozetki" caption="Материал розетки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="74588818" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="pokrytie" caption="Покрытие" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="527242781" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tsvetovaya_gamma" caption="Цветовая гамма" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1772529796" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="resurs_raboty" caption="Ресурс работы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-505785910" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="forma_rozetki" caption="Форма розетки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1129516152" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="razmery_rozetki" caption="Размеры розетки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="75590389" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="razmery_kvadrata" caption="Размеры квадрата" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-65598273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_v_maloi_upakovke" caption="Количество в малой упаковке" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-301761182" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_v_bolshoi_upakovke" caption="Количество в большой упаковке" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1981273382" description="шт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="krepeg_v_komplekte" caption="Крепеж в комплекте" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-394421624" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="лет" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="klass_dovodchika" caption="Класс доводчика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-665008967" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ves_dveri_kg" caption="Вес двери, кг" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1251625876" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_rychaga" caption="Длина рычага" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1868657244" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="temperaturnyi_regim_s" caption="Температурный режим, С" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-780525126" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -959,8 +943,11 @@
 	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="skorost_zakryvaniya_reguliruetsya_dvumya_nezavisimymi_klapanami" caption="Скорость закрывания регулируется двумя независимыми клапанами" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="642585657" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="posadochnye_razmery_mm" caption="Посадочные размеры, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1891191721" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tsvetovaya_gamma" caption="Цветовая гамма" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1772529796" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="sertifikatsiya" caption="Сертификация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="505949540" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="лет" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="morozostoikost" caption="Морозостойкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1391607788" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pokrytie" caption="Покрытие" type="string" multiple="true" domain="" format="" ag-id="0" ag-hash="527242781" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p2-->
 <!--EXP--></model>

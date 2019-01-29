@@ -26,4 +26,4 @@
 https?:\/\/(www\.)?nora-m\.ru\/catalog.*     nora.xsl    http://nora-m.ru/catalog/seriia-deluxe/ruchki-de-luxe/ruchka-dvernaia-galisiia
 https?:\/\/(www\.)?petronik\.ru\/catalog.*     petronik.xsl    http://petronik.ru/catalog/id/14932/
 https?:\/\/(www\.)?zamki\.biz\/catalog.*     zamki.xsl    http://www.zamki.biz/catalog/1_zamki/vreznye_zamki/dlya_derevyannyh_dverei_s_ruchkami/allyur_zv_4132_cp_hrom_zamok_vreznoi_sruch__item/
-https?:\/\/(www\.)?trodos\.net\/item.*     trodos.xsl    http://trodos.net/item/-/id/202046/
+https?:\/\/(www\.)?metallist\.org\/catalogue.*     metallist.xsl    http://www.metallist.org/catalogue/show/10009/#product
