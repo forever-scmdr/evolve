@@ -156,7 +156,7 @@
 				<xsl:choose>
 					<xsl:when test="image_code and not(image_code = '')"><xsl:value-of select="image_code" disable-output-escaping="yes" /></xsl:when>
 					<xsl:otherwise>
-						<xsl:if test="image_pic and not(image_pic = '')"><img src="{@path}{image_pic}"/></xsl:if>
+						<xsl:if test="image_pic and not(image_pic = '')"><img src="http://aquacom.must.by/{@path}{image_pic}"/></xsl:if>
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
@@ -168,139 +168,228 @@
 	<xsl:template name="BANNERS">
 		<section class="hero pb">
 			<div class="container">
-				<div class="fotorama" data-width="100%" data-height="315px">
+				<div class="fotorama" data-width="100%" data-height="284px" data-fit="cover">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<!-- <img src="{@path}{pic}" alt="{name}"/> -->
-						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+						<!-- <img src="http://aquacom.must.by/{@path}{pic}" alt="{name}"/> -->
+						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url(http://aquacom.must.by/{@path}{pic});">
 							<div class="slider-item__block fotorama__select">
 								<div class="slider-item__wrapper">
 									<div class="slider-item__title"><xsl:value-of select="name" /></div>
 									<!-- <div class="slider-item__text">
 										<xsl:value-of select="text" disable-output-escaping="yes"/>
 									</div> -->
-									<!-- <a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a> -->
+									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
 								</div>
 							</div>
 						</div>
 					</xsl:for-each>
 				</div>
-			</div>
-		</section>
-		<section>
-			<div class="container">
-				<div class="block-title">Каталог продукции</div>
-				<div class="catalog-items">
-					<xsl:for-each select="/page/catalog/section">
-						<div class="catalog-item">
-							<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
-							<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
-							<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
-							<a href="{show_products}" class="image-container" style="background-image: url({$pic})"><!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}"/> --></a>
-							<div>
-								<a href="{show_products}" style="height: unset;"><xsl:value-of select="name"/></a>
-								<xsl:value-of select="short" disable-output-escaping="yes"/>
-							</div>
-						</div>
-					</xsl:for-each>
+				<div class="banner hero__banner" style="background-color: #f26522;">
+					<div class="banner__title">Акции</div>
+					<div class="banner__text">Более 200 товаров на выгодных условиях</div>
+					<a href="/" class="banner__link"></a>
+				</div>
+				<div class="banner hero__banner" style="background-color: #154990;">
+					<div class="banner__title">Уценка</div>
+					<div class="banner__text">Хорошая возможность сэкономить до 50% от стоимости</div>
+					<a href="/" class="banner__link"></a>
 				</div>
 			</div>
 		</section>
-		<section class="special-items ptb" style="background-color: #f2f2f2;">
+		<section class="catalog-map">
 			<div class="container">
-				<div class="block-title">Новинки и акции</div>
-				<div class="special-items__devices slick-slider">
-					<xsl:apply-templates select="page/main_page/product[tag='Новинка']"/>
+				<div class="title_2">
+					Каталог продукции
 				</div>
-			</div>
-		</section>
-		<section class="ptb">
-			<div class="container">
-				<div class="banners-horizontal">
-					<xsl:apply-templates select="page/banner_section[1]/banner"/>
-				</div>
-			</div>
-		</section>
-		<section class="news">
-			<div class="container">
-				<div class="block-title">
-					Новости
-				</div>
-				<div class="wrap">
-					<xsl:for-each select="page//news_item">
-						<div class="news__item">
-							<a class="news__image-container" href="{show_news_item}"><img src="{@path}{main_pic}" alt="{name}" /></a>
-							<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
-							<a class="news__title" href="{show_news_item}"><xsl:value-of select="header" /></a>
-						</div>
-					</xsl:for-each>
-				</div>
-			</div>
-		</section>
-		<section class="ptb mtb" style="background-color: #f2f2f2;">
-			<div class="container">
-				<div class="banners-big-icons">
-					<xsl:apply-templates select="page/banner_section[2]/banner"/>
+				<div class="grid">
+					<div class="catalog-map__item">
+						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
+						<ul class="catalog-map__list">
+							<li><a href="">Насосы и насосные станции</a></li>
+							<li><a href="">Циркуляционные</a></li>
+							<li><a href="">Скважинные</a></li>
+							<li><a href="">Колодезные (погружные)</a></li>
+							<li><a href="">Канализационные погружные</a></li>
+						</ul>
+						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
+					</div>
+					<div class="catalog-map__item">
+						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
+						<ul class="catalog-map__list">
+							<li><a href="">Насосы и насосные станции</a></li>
+							<li><a href="">Циркуляционные</a></li>
+							<li><a href="">Скважинные</a></li>
+							<li><a href="">Колодезные (погружные)</a></li>
+							<li><a href="">Канализационные погружные</a></li>
+							<li><a href="">Дренажные</a></li>
+							<li><a href="">Фекальные с измельчителем</a></li>
+							<li><a href="">Насосы и насосные станции</a></li>
+							<li><a href="">Циркуляционные</a></li>
+							<li><a href="">Скважинные</a></li>
+							<li><a href="">Колодезные (погружные)</a></li>
+							<li><a href="">Канализационные погружные</a></li>
+							<li><a href="">Дренажные</a></li>
+							<li><a href="">Фекальные с измельчителем</a></li>
+						</ul>
+						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
+					</div>
+					<div class="catalog-map__item">
+						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
+						<ul class="catalog-map__list">
+							<li><a href="">Насосы и насосные станции</a></li>
+							<li><a href="">Циркуляционные</a></li>
+							<li><a href="">Скважинные</a></li>
+							<li><a href="">Колодезные (погружные)</a></li>
+							<li><a href="">Канализационные погружные</a></li>
+							<li><a href="">Дренажные</a></li>
+							<li><a href="">Фекальные с измельчителем</a></li>
+						</ul>
+						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
+					</div>
+					<div class="catalog-map__item">
+						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
+						<ul class="catalog-map__list">
+							<li><a href="">Насосы и насосные станции</a></li>
+							<li><a href="">Циркуляционные</a></li>
+							<li><a href="">Скважинные</a></li>
+							<li><a href="">Колодезные (погружные)</a></li>
+							<li><a href="">Канализационные погружные</a></li>
+							<li><a href="">Дренажные</a></li>
+							<li><a href="">Фекальные с измельчителем</a></li>
+						</ul>
+						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
+					</div>
+					<div class="catalog-map__item">
+						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
+						<ul class="catalog-map__list">
+							<li><a href="">Насосы и насосные станции</a></li>
+							<li><a href="">Циркуляционные</a></li>
+							<li><a href="">Скважинные</a></li>
+							<li><a href="">Колодезные (погружные)</a></li>
+							<li><a href="">Канализационные погружные</a></li>
+							<li><a href="">Дренажные</a></li>
+							<li><a href="">Фекальные с измельчителем</a></li>
+						</ul>
+						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
+					</div>
+					<div class="catalog-map__item">
+						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
+						<ul class="catalog-map__list">
+							<li><a href="">Насосы и насосные станции</a></li>
+							<li><a href="">Циркуляционные</a></li>
+							<li><a href="">Скважинные</a></li>
+							<li><a href="">Колодезные (погружные)</a></li>
+							<li><a href="">Канализационные погружные</a></li>
+							<li><a href="">Дренажные</a></li>
+							<li><a href="">Фекальные с измельчителем</a></li>
+						</ul>
+						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
+					</div>
+					<div class="catalog-map__item">
+						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
+						<ul class="catalog-map__list">
+							<li><a href="">Насосы и насосные станции</a></li>
+							<li><a href="">Циркуляционные</a></li>
+							<li><a href="">Скважинные</a></li>
+							<li><a href="">Колодезные (погружные)</a></li>
+							<li><a href="">Канализационные погружные</a></li>
+							<li><a href="">Дренажные</a></li>
+							<li><a href="">Фекальные с измельчителем</a></li>
+						</ul>
+						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
+					</div>
+					<div class="catalog-map__item">
+						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
+						<ul class="catalog-map__list">
+							<li><a href="">Насосы и насосные станции</a></li>
+							<li><a href="">Циркуляционные</a></li>
+							<li><a href="">Скважинные</a></li>
+							<li><a href="">Колодезные (погружные)</a></li>
+							<li><a href="">Канализационные погружные</a></li>
+							<li><a href="">Дренажные</a></li>
+							<li><a href="">Фекальные с измельчителем</a></li>
+						</ul>
+						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
+					</div>
 				</div>
 			</div>
 		</section>
 		<section class="brands ptb">
 			<div class="container">
-				<div class="block-title">Производители</div>
-				<div class="slick-slider" style="margin: 0 -12px;">
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (1).jpg" />
-						</div>
+				<div class="block-title">Бренды</div>
+				<div class="grid">
+					<div class="brand-item">
+						<img src="img/brand-logo-01.jpg" />
 					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (2).jpg" />
-						</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-02.jpg" />
 					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (3).jpg" />
-						</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-03.jpg" />
 					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (4).jpg" />
-						</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-04.jpg" />
 					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (5).jpg" />
-						</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-05.jpg" />
 					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (6).jpg" />
-						</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-06.jpg" />
 					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (7).jpg" />
-						</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-07.jpg" />
 					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (1).jpg" />
-						</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-08.jpg" />
 					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (2).jpg" />
-						</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-09.jpg" />
+					</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-10.jpg" />
+					</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-11.jpg" />
+					</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-12.jpg" />
+					</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-13.jpg" />
+					</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-14.jpg" />
+					</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-15.jpg" />
+					</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-16.jpg" />
+					</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-17.jpg" />
+					</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-18.jpg" />
+					</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-19.jpg" />
+					</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-20.jpg" />
+					</div>
+					<div class="brand-item">
+						<img src="img/brand-logo-21.jpg" />
 					</div>
 				</div>
 			</div>
 		</section>
-		<section class="s-info">
+		<!-- <section class="s-info">
 			<div class="container">
 				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
 			</div>
-		</section>
-		<section class="ptb">
+		</section> -->
+		<!-- <section class="ptb">
 			<div class="container">
 				<div class="page-map" id="contacts">
 					<div class="page-map__map"><script type="text/javascript" charset="utf-8" async="async" src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2f9a2f790522d006537ede412d3d2eeb312795427a599cbbdfdab5140aa849b4&amp;width=100%25&amp;height=300&amp;lang=ru_RU&amp;scroll=true"></script></div>
@@ -317,7 +406,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
+		</section> -->
 
 	</xsl:template>
 

@@ -46,7 +46,7 @@
 								<div class="order-item">
 									<div class="image-container">
 										<xsl:if test="$prod">
-											<a href="{$prod/show_product}"><img src="{$prod/@path}{$prod/main_pic}" alt=""/></a>
+											<a href="{$prod/show_product}"><img src="http://aquacom.must.by/{$prod/@path}{$prod/main_pic}" alt=""/></a>
 										</xsl:if>
 									</div>
 									<div class="info-container">

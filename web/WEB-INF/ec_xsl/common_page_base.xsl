@@ -50,12 +50,25 @@
 
 
 	<xsl:template name="INC_DESKTOP_HEADER">
+		<section class="top-menu">
+			<div class="container">
+				<a href="" class="top-menu__item">О компании</a>
+				<a href="" class="top-menu__item">Новости</a>
+				<a href="" class="top-menu__item">Оплата и доставка</a>
+				<a href="" class="top-menu__item">Новинки</a>
+				<a href="" class="top-menu__item active">Распродажа</a>
+				<a href="" class="top-menu__item">Контакты</a>
+			</div>
+		</section>
 		<section class="top-stripe desktop">
 			<div class="container">
-				<!-- <div class="top-stripe__phone"><img src="img/phone_logo.svg" />(+375 17) 123-45-67;</div> -->
-				<div class="top-stripe__phone"><img src="img/velcom_logo.svg" />(+375 17) 123-45-67 - отдел продаж;</div>
-				<div class="top-stripe__phone"><img src="img/mts_logo.svg" />(+375 17) 123-45-67 - отдел сервиса;</div>
-				<div class="top-stripe__address">г. Орша Ул. 1 Мая 81В-2; Время работы: пн. - пт. с 9 до 18;</div>
+				<div>
+					<div class="top-stripe__phone"><img src="img/phone_logo.svg" />(+375 17) 123-45-67;</div>
+					<div class="top-stripe__phone"><img src="img/phone_logo.svg" />(+375 17) 123-45-67;</div>
+					<div class="top-stripe__phone"><img src="img/velcom_logo.svg" />(+375 17) 123-45-67;</div>
+					<div class="top-stripe__phone"><img src="img/mts_logo.svg" />(+375 17) 123-45-67 <img src="img/viber.svg" alt=""/><img src="img/whatsapp.svg" alt=""/><img src="img/telegram.svg" alt=""/></div>
+					<div class="top-stripe__address">Время работы: пн.-пт.: 9:00 - 20:00; сб., вс.: 8:00 - 20:00 </div>
+				</div>
 			</div>
 		</section>
 		<section class="header desktop">
@@ -65,11 +78,7 @@
 					<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" />
 					<input type="submit" class="button header__button" value="Поиск" />
 				</form>
-				<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-					<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
-					<!-- <div>Товаров: <strong>2</strong></div>
-					<div>Cумма: <strong>1250 руб.</strong></div> -->
-				</div>
+				<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no"></div>
 				<div class="user-links header__column">
 					<xsl:call-template name="PERSONAL_DESKTOP"/>
 					<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
@@ -80,7 +89,18 @@
 					</div>
 				</div>
 				<div class="main-menu">
-					<div class="main-menu__item main-menu__special" style="position: relative;">
+					<div class="main-menu__item"><a href=""><span>Все для ванной</span></a></div>
+					<div class="main-menu__item"><a href=""><span>Унитазы и комплектующие</span></a></div>
+					<div class="main-menu__item"><a href=""><span>Смесители</span></a></div>
+					<div class="main-menu__item"><a href=""><span>Мойки</span></a></div>
+					<div class="main-menu__item"><a href=""><span>Фильтры</span></a></div>
+					<div class="main-menu__item"><a href=""><span>Насосы</span></a></div>
+					<div class="main-menu__item"><a href=""><span>Водопровод</span></a></div>
+					<div class="main-menu__item"><a href=""><span>Канализация</span></a></div>
+					<div class="main-menu__item"><a href=""><span>Отопление</span></a></div>
+				</div>
+				<!-- <div class="main-menu">
+					<div class="main-menu__item" style="position: relative;">
 						<a href="{page/catalog_link}" class="{'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><span><i class="fas fa-bars"></i> Каталог</span></a>
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 							<div class="sections">
@@ -112,8 +132,7 @@
 						<xsl:variable name="sel" select="page/varibles/sel"/>
 						<div class="main-menu__item">
 							<a href="{show_page}" class="{'active'[$sel = $key]}">
-								<span>
-									<xsl:value-of select="name"/></span>
+								<span><xsl:value-of select="name"/></span>
 							</a>
 						</div>
 					</xsl:for-each>
@@ -146,10 +165,9 @@
 					<div class="main-menu__item">
 						<a href="{page/contacts_link}"><span>Контакты</span></a>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</section>
-		
 	</xsl:template>
 
 
@@ -189,14 +207,14 @@
 			<div class="container">
 				<div>
 					<p>
-						<strong>© ООО «Скобяной трейд», 2018</strong>
+						<strong>© ЧП «Акваком», 2018</strong>
 					</p>
 					<div class="footer__forever">
 						<a href="http://forever.by">Разработка сайта — студия веб-дизайна Forever</a>
 					</div>
 				</div>
 				<!-- Эти блоки сделать редактируемыми через админку (произвольное количество блоков) -->
-				<div>
+				<!-- <div>
 					<p>
 						<strong>Заказ и констультация</strong>
 					</p>
@@ -213,7 +231,7 @@
 				</div>
 				<div>
 					<p>Работаем только с юридическими лицами и индивидуальными предпринимателями по безналичному расчету</p>
-				</div>
+				</div> -->
 			</div>
 		</footer>
 		<!-- FOOTER END -->
@@ -439,36 +457,9 @@
 
 
 	<xsl:template name="COMMON_LEFT_COLOUMN">
-		<!-- <div class="actions">
-			<h3>Акции</h3>
-			<div class="actions-container">
-				<a href="{$common/link_link}"><xsl:value-of select="$common/link_text"/></a>
-			</div>
-		</div> -->
 		<div class="contacts">
 			<div class="block-title block-title_normal">Заказ и консультация</div>
 			<xsl:value-of select="$common/left" disable-output-escaping="yes"/>
-			<!-- <strong>Принимаем к оплате</strong>
-			<div class="pay-cards">
-				<div class="pay-cards__item">
-					<img src="img/card1.jpg" />
-				</div>
-				<div class="pay-cards__item">
-					<img src="img/card2.jpg" />
-				</div>
-				<div class="pay-cards__item">
-					<img src="img/card3.jpg" />
-				</div>
-				<div class="pay-cards__item">
-					<img src="img/card4.jpg" />
-				</div>
-				<div class="pay-cards__item">
-					<img src="img/card5.jpg" />
-				</div>
-				<div class="pay-cards__item">
-					<img src="img/card6.jpg" />
-				</div>
-			</div> -->
 		</div>
 	</xsl:template>
 
@@ -478,7 +469,6 @@
 		<xsl:call-template name="INC_SIDE_MENU_INTERNAL"/>
 		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
 	</xsl:template>
-
 
 
 	<xsl:template name="ACTIONS_MOBILE">
@@ -500,10 +490,10 @@
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat('http://shop2.must.by/', @path, $main_pic) else 'img/no_image.png'"/>
 
 			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
+				<a href="{concat('http://shop2.must.by/', @path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if>
@@ -540,12 +530,12 @@
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
 			</div>
-			<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+			<!-- <xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
 				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div>
 			</xsl:if>
 			<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
 				<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div>
-			</xsl:if>
+			</xsl:if> -->
 			<div class="device__actions">
 				<xsl:if test="not($is_compare)">
 					<div id="compare_list_{@id}">
@@ -577,7 +567,6 @@
 	</xsl:template>
 
 
-
 	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
@@ -585,9 +574,9 @@
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat('http://shop2.must.by/', @path, $main_pic) else 'img/no_image.png'"/>
 			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
+				<a href="{concat('http://shop2.must.by/', @path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if>
@@ -652,19 +641,18 @@
 				<xsl:if test="$has_lines">
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
-				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+				<!-- <xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии</div>
 				</xsl:if>
 				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> под заказ</div>
-				</xsl:if>
+				</xsl:if> -->
 			</div>
 			<xsl:for-each select="tag">
 				<div class="device__tag device_row__tag"><xsl:value-of select="." /></div>
 			</xsl:for-each>
 		</div>
 	</xsl:template>
-
 
 
 	<xsl:template name="CART_SCRIPT">
@@ -714,15 +702,6 @@
 
 
 	<xsl:template name="LEFT_COLOUMN">
-		<!-- <div class="side-menu">
-			<xsl:for-each select="page/catalog/section">
-				<div class="level-1">
-					<div class="capsule">
-						<a href="{show_products}"><xsl:value-of select="name"/></a>
-					</div>
-				</div>
-			</xsl:for-each>
-		</div> -->
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 	<xsl:template name="CONTENT"/>
@@ -772,19 +751,11 @@
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 				<script defer="defer" src="js/font_awesome_all.js"/>
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
-				<xsl:if test="$seo/extra_style">
-					<style>
-						<xsl:value-of select="$seo/extra_style" disable-output-escaping="yes"/>
-					</style>
-				</xsl:if>
 				<xsl:for-each select="$head-end-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 			</head>
 			<body>
-				<xsl:if test="$seo/body_class">
-					<xsl:attribute name="class" select="$seo/body_class"/>
-				</xsl:if>
 				<xsl:for-each select="$body-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
@@ -823,7 +794,7 @@
 						}
 					});
 					var oh = $(".footer").outerHeight();
-					$(".footer-placeholder").height(oh+40);
+					$(".footer-placeholder").height(oh+110);
 					$(".footer").css("margin-top", -1*oh);
 					$('.slick-slider').slick({
 					infinite: true,
@@ -921,7 +892,7 @@
 	<xsl:template match="gallery_part" mode="content">
 		<div class="fotorama" data-fit="cover">
 			<xsl:for-each select="picture_pair">
-				<img src="{@path}{big}" alt="{name}" data-caption="{name}"/>
+				<img src="http://shop2.must.by/{@path}{big}" alt="{name}" data-caption="{name}"/>
 			</xsl:for-each>
 		</div>
 	</xsl:template>
@@ -929,7 +900,7 @@
 
 	<xsl:template name="PAGE_TITLE">
 		<xsl:param name="page"/>
-		<xsl:if test="$page/header_pic != ''"><h1><img src="{$page/@path}{$page/header_pic}" alt="{$page/header}"/></h1></xsl:if>
+		<xsl:if test="$page/header_pic != ''"><h1><img src="http://shop2.must.by/{$page/@path}{$page/header_pic}" alt="{$page/header}"/></h1></xsl:if>
 		<xsl:if test="not($page/header_pic) or $page/header_pic = ''"><h1><xsl:value-of select="$page/header"/></h1></xsl:if>
 	</xsl:template>
 

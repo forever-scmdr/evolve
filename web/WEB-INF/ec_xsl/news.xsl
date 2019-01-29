@@ -24,7 +24,7 @@
 			<div class="catalog-items info">
 				<xsl:for-each select="page/selected_news/news_item">
 					<div class="catalog-item">
-						<a href="{show_news_item}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="http://shop4.must.by/{@path}{main_pic}" alt=""/> --></a>
+						<a href="{show_news_item}" class="image-container" style="background-image: url('http://aquacom.must.by/{@path}{main_pic}');"><!-- <img src="http://aquacom.must.by/{@path}{main_pic}" alt=""/> --></a>
 						<div class="text">
 							<a href="{show_news_item}"><xsl:value-of select="header"/></a>
 							<div class="date"><xsl:value-of select="date"/></div>

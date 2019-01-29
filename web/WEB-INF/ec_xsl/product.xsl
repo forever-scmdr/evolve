@@ -15,7 +15,7 @@
 
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
-	<xsl:variable name="p_big" select="if (index-of($p/text, 'img src') &gt; -1 or string-length($p/text) &gt; 500) then $p/text else ''"/>
+	<xsl:variable name="p_big" select="if (index-of($p/description, 'img src') &gt; -1 or string-length($p/description) &gt; 500) then $p/description else ''"/>
 	<xsl:variable name="is_big" select="$p_big and not($p_big = '')"/>
 
 	<xsl:template name="MARKUP">
@@ -47,6 +47,10 @@
 
 	<xsl:template name="CONTENT">
 
+
+
+
+
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
@@ -62,15 +66,12 @@
 		<p class="subtitle">арт. <xsl:value-of select="$p/code"/></p>
 		<div class="catalog-item-container">
 			<div class="gallery">
-				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-width="100%" data-allowfullscreen="native">
+				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="native">
 					<xsl:for-each select="$p/gallery">
-						<img src="{$p/@path}{.}" alt="{$p/name}"/>
+						<img src="http://aquacom.must.by/{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
-					<!--<xsl:for-each-group select="$p/gallery" group-by="f:substring-before-last(name, '_')">-->
-						<!--<img src="{$p/@path}{current-group()[1]/.}" alt="{$p/name}"/>-->
-					<!--</xsl:for-each-group>-->
 					<xsl:if test="not($p/gallery)">
-						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
+						<img src="{concat('http://aquacom.must.by/', $p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
 				</div>
 			</div>
@@ -114,15 +115,15 @@
 								</a>
 							</div>
 						</div>
-						<xsl:choose>
+						<!-- <xsl:choose>
 							<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
 							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
-						</xsl:choose>
+						</xsl:choose> -->
 					</div>
 				</xsl:if>
 
 				<xsl:if test="$has_lines">
-					<div class="multi-device">
+					<div class="multi-device" style="grid-template-columns: repeat(3, auto);">
 						<div style="padding-left: 0;">Размер</div>
 						<div>Цена</div>
 						<div></div>
@@ -168,8 +169,18 @@
 					</div>
 				</xsl:if>
 				<div class="extra-info">
+					<p><strong>Способы доставки</strong></p>
+					<p>Самовывоз. Доставка курьером - 5 руб. Доставка почтой - от 5,4 руб.</p>
+					<a href="">Подробнее о доставке</a>
+				</div>
+				<div class="extra-info">
+					<p><strong>Способы оплаты</strong></p>
+					<p>Наложенный платеж. Безналичный расчет. Наличными. ЕРИП.</p>
+					<a href="">Подробнее об оплате</a>
+				</div>
+				<div class="extra-info">
 					<xsl:if test="not($is_big)">
-						<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 					</xsl:if>
 				</div>
 			</div>
@@ -178,9 +189,9 @@
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
 						<xsl:if test="$p/params">
-							<li role="presentation" class="active">
-								<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
-							</li>
+						<li role="presentation" class="active">
+							<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
+						</li>
 						</xsl:if>
 						<xsl:if test="$is_big">
 							<li role="presentation" class="{'active'[not($p/params)]}">
@@ -197,14 +208,44 @@
 					<xsl:if test="$p/params">
 						<div role="tabpanel" class="tab-pane active" id="tab1">
 							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
-							<table>
+							<table class="parameters">
 								<colgroup>
 									<col style="width: 40%"/>
 								</colgroup>
+								<xsl:if test="$p/vendor">
+									<tr>
+										<td>
+											<p>Производитель</p>
+										</td>
+										<td>
+											<p><xsl:value-of select="$p/vendor"/></p>
+										</td>
+									</tr>
+								</xsl:if>
+								<xsl:if test="$p/vendor_code">
+									<tr>
+										<td>
+											<p>Артикул производителя</p>
+										</td>
+										<td>
+											<p><xsl:value-of select="$p/vendor_code"/></p>
+										</td>
+									</tr>
+								</xsl:if>
+								<xsl:if test="$p/country">
+									<tr>
+										<td>
+											<p>Страна происхождения</p>
+										</td>
+										<td>
+											<p><xsl:value-of select="$p/country"/></p>
+										</td>
+									</tr>
+								</xsl:if>
 								<xsl:for-each select="$p/params/param">
 									<tr>
 										<td>
-											<p><strong><xsl:value-of select="@caption"/></strong></p>
+											<p><xsl:value-of select="@caption"/></p>
 										</td>
 										<td>
 											<p><xsl:value-of select="."/></p>
