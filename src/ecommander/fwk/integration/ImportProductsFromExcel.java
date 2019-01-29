@@ -855,6 +855,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 		//parsing from Excel
 		info.setToProcess(priceWB.getLinesCount());
 		priceWB.iterate();
+
 		priceWB.close();
 		//creating filters and item types
 		createFiltersAndItemTypes();
