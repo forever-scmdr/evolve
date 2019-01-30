@@ -6844,4 +6844,16 @@
 	<parameter name="elektricheskoe_podklyuchenie" caption="Электрическое подключение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1036193789" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p128-->
+
+<!--START_p222995-->
+<item name="p222995" caption="PMIC - RMS to DC Converters" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1238" ag-hash="2095344211">
+	<parameter name="current___supply" caption="Current - supply" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-893986603" description="µA" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mounting_type" caption="Mounting type" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="577003664" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="package___case" caption="Package / case" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-501209815" description="-WFQFN Exposed Pad, CSP" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="packaging" caption="Packaging" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1802065795" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="part_status" caption="Part status" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="950116798" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="supplier_device_package" caption="Supplier device package" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-249862608" description="-SOIC" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="voltage___supply" caption="Voltage - supply" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2112097424" description="V" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p222995-->
 <!--EXP--></model>

@@ -18,6 +18,7 @@ import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -251,7 +252,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								if (withPictures == varValues.IGNORE || withPictures == varValues.SEARCH_BY_CODE)
 									continue;
 								if (StringUtils.isBlank(cellValue)) continue;
-								String[] arr = cellValue.split(";");
+								String[] arr = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
 								for (String s : arr) {
 									s = s.trim();
 									switch (withPictures) {
@@ -276,7 +277,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								if (StringUtils.isBlank(cellValue)) continue;
 								ParameterDescription pd = PRODUCT_ITEM_TYPE.getParameter(paramName);
 								if (pd.isMultiple()) {
-									String[] values = cellValue.split(";");
+									String[] values = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
 									for (String val : values) {
 										product.setValueUI(paramName, val);
 									}
@@ -291,7 +292,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 						for (String header : headers) {
 							if (CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) {
 								String cellValue = getValue(header);
-								String[] m = cellValue.split(";");
+								if(StringUtils.isBlank(cellValue)) continue;
+								String[] m = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
 								for (String manual : m) {
 									Item manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
 									;
@@ -439,7 +441,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
 								ParameterDescription pd = PRODUCT_ITEM_TYPE.getParameter(paramName);
 								if (pd.isMultiple()) {
-									String[] values = cellValue.split(";");
+									String[] values = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
 									for (String val : values) {
 										product.setValueUI(paramName, val.trim());
 									}
@@ -465,7 +467,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 									commitCommandUnits();
 									continue;
 								}
-								String[] m = cellValue.split(";");
+								String[] m = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
 								for (String manual : m) {
 									Item manualItem = null;
 									if (manual.indexOf('|') == -1) {
@@ -564,21 +566,26 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 
 			}
 
-			private Item setMultipleFileParam(Item item, String paramName, String values, Path folder) {
-				String[] apv = values.split(";");
-				LinkedHashSet<File> existingFiles = new LinkedHashSet<>();
+			private Item setMultipleFileParam(Item item, String paramName, String values, Path folder) throws MalformedURLException {
+				String[] apv = values.split(CreateExcelPriceList.VALUE_SEPARATOR);
+				LinkedHashSet<Object> existingFiles = new LinkedHashSet<>();
 				for (String s : apv) {
 					if (StringUtils.isBlank(s)) continue;
 					s = s.replace(";", "").trim();
 					if (StringUtils.isBlank(s)) continue;
-					File f = folder.resolve(s).toFile();
-					if (f.exists()) {
-						existingFiles.add(f);
+					if(StringUtils.startsWith(s,"https://") || StringUtils.startsWith(s,"http://")){
+						URL url = new URL(s);
+						existingFiles.add(url);
+					}
+					else{File f = folder.resolve(s).toFile();
+						if (f.exists()) {
+							existingFiles.add(f);
+						}
 					}
 				}
 				if (existingFiles.size() > 0) {
 					item.clearParameter(paramName);
-					for (File f : existingFiles) {
+					for (Object f : existingFiles) {
 						item.setValue(paramName, f);
 					}
 				}
@@ -612,7 +619,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 	}
 
 	private boolean hasAuxParams(Collection<String> headers){
-		if(!headers.contains(CreateExcelPriceList.AUX_TYPE_FILE)) return false;
+		if(!headers.contains(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase())) return false;
 
 		for(String header : headers){
 			String paramName = HEADER_PARAM.get(header);
