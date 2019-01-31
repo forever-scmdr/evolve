@@ -89,15 +89,9 @@
 					</div>
 				</div>
 				<div class="main-menu">
-					<div class="main-menu__item"><a href=""><span>Все для ванной</span></a></div>
-					<div class="main-menu__item"><a href=""><span>Унитазы и комплектующие</span></a></div>
-					<div class="main-menu__item"><a href=""><span>Смесители</span></a></div>
-					<div class="main-menu__item"><a href=""><span>Мойки</span></a></div>
-					<div class="main-menu__item"><a href=""><span>Фильтры</span></a></div>
-					<div class="main-menu__item"><a href=""><span>Насосы</span></a></div>
-					<div class="main-menu__item"><a href=""><span>Водопровод</span></a></div>
-					<div class="main-menu__item"><a href=""><span>Канализация</span></a></div>
-					<div class="main-menu__item"><a href=""><span>Отопление</span></a></div>
+					<xsl:for-each select="page/catalog/section">
+						<div class="main-menu__item"><a href="{show_products}"><span><xsl:value-of select="name" /></span></a></div>
+					</xsl:for-each>
 				</div>
 				<!-- <div class="main-menu">
 					<div class="main-menu__item" style="position: relative;">
@@ -490,10 +484,10 @@
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat('http://shop2.must.by/', @path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 
 			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-				<a href="{concat('http://shop2.must.by/', @path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
+				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if>
@@ -567,6 +561,7 @@
 	</xsl:template>
 
 
+
 	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
@@ -574,9 +569,9 @@
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat('http://shop2.must.by/', @path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-				<a href="{concat('http://shop2.must.by/', @path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
+				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if>
@@ -653,6 +648,7 @@
 			</xsl:for-each>
 		</div>
 	</xsl:template>
+
 
 
 	<xsl:template name="CART_SCRIPT">
@@ -751,11 +747,19 @@
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 				<script defer="defer" src="js/font_awesome_all.js"/>
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
+				<xsl:if test="$seo/extra_style">
+					<style>
+						<xsl:value-of select="$seo/extra_style" disable-output-escaping="yes"/>
+					</style>
+				</xsl:if>
 				<xsl:for-each select="$head-end-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 			</head>
 			<body>
+				<xsl:if test="$seo/body_class">
+					<xsl:attribute name="class" select="$seo/body_class"/>
+				</xsl:if>
 				<xsl:for-each select="$body-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
@@ -892,7 +896,7 @@
 	<xsl:template match="gallery_part" mode="content">
 		<div class="fotorama" data-fit="cover">
 			<xsl:for-each select="picture_pair">
-				<img src="http://shop2.must.by/{@path}{big}" alt="{name}" data-caption="{name}"/>
+				<img src="{@path}{big}" alt="{name}" data-caption="{name}"/>
 			</xsl:for-each>
 		</div>
 	</xsl:template>
@@ -900,7 +904,7 @@
 
 	<xsl:template name="PAGE_TITLE">
 		<xsl:param name="page"/>
-		<xsl:if test="$page/header_pic != ''"><h1><img src="http://shop2.must.by/{$page/@path}{$page/header_pic}" alt="{$page/header}"/></h1></xsl:if>
+		<xsl:if test="$page/header_pic != ''"><h1><img src="{$page/@path}{$page/header_pic}" alt="{$page/header}"/></h1></xsl:if>
 		<xsl:if test="not($page/header_pic) or $page/header_pic = ''"><h1><xsl:value-of select="$page/header"/></h1></xsl:if>
 	</xsl:template>
 

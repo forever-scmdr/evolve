@@ -160,6 +160,7 @@
 		<child item="section" />
 		<child item="product"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
+		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
 		<parameter name="show_subs" type="byte" domain="0-1" caption="Показать подразделы"/>
 		<parameter name="sub_view" type="string" domain="sub_view" caption="Тип отображения подразделов" description="tags - тегами, pics - с картинками"/>
 		<parameter name="show_devices" type="byte" domain="0-1" caption="Показать товары"/>
@@ -561,10 +562,16 @@
 	</item>
 
 	<item name="custom_pages" caption="Информационные разделы" ag-id="48" ag-hash="727106934">
-		<child item="custom_page"/>
+		<child item="menu_item"/>
 	</item>
 
-	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" default-page="page" ag-id="49" ag-hash="-1777660259">
+	<item name="menu_item" caption="Элемент меню" virtual="true"/>
+
+	<item name="page_link" caption="Ссылка" key="link">
+		<parameter name="link" type="string" caption="Ссылка" description="относительная ссылка (без http:// и домена сайта)"/>
+	</item>
+
+	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" super="menu_item" default-page="page" ag-id="49" ag-hash="-1777660259">
 		<child item="seo" single="true"/>
 		<child item="custom_page"/>
 		<parameter name="header" type="string" caption="Заголовок"/>

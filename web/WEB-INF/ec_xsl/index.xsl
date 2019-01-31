@@ -156,7 +156,7 @@
 				<xsl:choose>
 					<xsl:when test="image_code and not(image_code = '')"><xsl:value-of select="image_code" disable-output-escaping="yes" /></xsl:when>
 					<xsl:otherwise>
-						<xsl:if test="image_pic and not(image_pic = '')"><img src="http://aquacom.must.by/{@path}{image_pic}"/></xsl:if>
+						<xsl:if test="image_pic and not(image_pic = '')"><img src="{@path}{image_pic}"/></xsl:if>
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
@@ -170,30 +170,17 @@
 			<div class="container">
 				<div class="fotorama" data-width="100%" data-height="284px" data-fit="cover">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<!-- <img src="http://aquacom.must.by/{@path}{pic}" alt="{name}"/> -->
-						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url(http://aquacom.must.by/{@path}{pic});">
+						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
 							<div class="slider-item__block fotorama__select">
 								<div class="slider-item__wrapper">
 									<div class="slider-item__title"><xsl:value-of select="name" /></div>
-									<!-- <div class="slider-item__text">
-										<xsl:value-of select="text" disable-output-escaping="yes"/>
-									</div> -->
 									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
 								</div>
 							</div>
 						</div>
 					</xsl:for-each>
 				</div>
-				<div class="banner hero__banner" style="background-color: #f26522;">
-					<div class="banner__title">Акции</div>
-					<div class="banner__text">Более 200 товаров на выгодных условиях</div>
-					<a href="/" class="banner__link"></a>
-				</div>
-				<div class="banner hero__banner" style="background-color: #154990;">
-					<div class="banner__title">Уценка</div>
-					<div class="banner__text">Хорошая возможность сэкономить до 50% от стоимости</div>
-					<a href="/" class="banner__link"></a>
-				</div>
+				<xsl:apply-templates select="page/banner_section[1]/banner"/>
 			</div>
 		</section>
 		<section class="catalog-map">
@@ -202,115 +189,17 @@
 					Каталог продукции
 				</div>
 				<div class="grid">
-					<div class="catalog-map__item">
-						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
-						<ul class="catalog-map__list">
-							<li><a href="">Насосы и насосные станции</a></li>
-							<li><a href="">Циркуляционные</a></li>
-							<li><a href="">Скважинные</a></li>
-							<li><a href="">Колодезные (погружные)</a></li>
-							<li><a href="">Канализационные погружные</a></li>
-						</ul>
-						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
-					</div>
-					<div class="catalog-map__item">
-						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
-						<ul class="catalog-map__list">
-							<li><a href="">Насосы и насосные станции</a></li>
-							<li><a href="">Циркуляционные</a></li>
-							<li><a href="">Скважинные</a></li>
-							<li><a href="">Колодезные (погружные)</a></li>
-							<li><a href="">Канализационные погружные</a></li>
-							<li><a href="">Дренажные</a></li>
-							<li><a href="">Фекальные с измельчителем</a></li>
-							<li><a href="">Насосы и насосные станции</a></li>
-							<li><a href="">Циркуляционные</a></li>
-							<li><a href="">Скважинные</a></li>
-							<li><a href="">Колодезные (погружные)</a></li>
-							<li><a href="">Канализационные погружные</a></li>
-							<li><a href="">Дренажные</a></li>
-							<li><a href="">Фекальные с измельчителем</a></li>
-						</ul>
-						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
-					</div>
-					<div class="catalog-map__item">
-						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
-						<ul class="catalog-map__list">
-							<li><a href="">Насосы и насосные станции</a></li>
-							<li><a href="">Циркуляционные</a></li>
-							<li><a href="">Скважинные</a></li>
-							<li><a href="">Колодезные (погружные)</a></li>
-							<li><a href="">Канализационные погружные</a></li>
-							<li><a href="">Дренажные</a></li>
-							<li><a href="">Фекальные с измельчителем</a></li>
-						</ul>
-						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
-					</div>
-					<div class="catalog-map__item">
-						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
-						<ul class="catalog-map__list">
-							<li><a href="">Насосы и насосные станции</a></li>
-							<li><a href="">Циркуляционные</a></li>
-							<li><a href="">Скважинные</a></li>
-							<li><a href="">Колодезные (погружные)</a></li>
-							<li><a href="">Канализационные погружные</a></li>
-							<li><a href="">Дренажные</a></li>
-							<li><a href="">Фекальные с измельчителем</a></li>
-						</ul>
-						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
-					</div>
-					<div class="catalog-map__item">
-						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
-						<ul class="catalog-map__list">
-							<li><a href="">Насосы и насосные станции</a></li>
-							<li><a href="">Циркуляционные</a></li>
-							<li><a href="">Скважинные</a></li>
-							<li><a href="">Колодезные (погружные)</a></li>
-							<li><a href="">Канализационные погружные</a></li>
-							<li><a href="">Дренажные</a></li>
-							<li><a href="">Фекальные с измельчителем</a></li>
-						</ul>
-						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
-					</div>
-					<div class="catalog-map__item">
-						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
-						<ul class="catalog-map__list">
-							<li><a href="">Насосы и насосные станции</a></li>
-							<li><a href="">Циркуляционные</a></li>
-							<li><a href="">Скважинные</a></li>
-							<li><a href="">Колодезные (погружные)</a></li>
-							<li><a href="">Канализационные погружные</a></li>
-							<li><a href="">Дренажные</a></li>
-							<li><a href="">Фекальные с измельчителем</a></li>
-						</ul>
-						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
-					</div>
-					<div class="catalog-map__item">
-						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
-						<ul class="catalog-map__list">
-							<li><a href="">Насосы и насосные станции</a></li>
-							<li><a href="">Циркуляционные</a></li>
-							<li><a href="">Скважинные</a></li>
-							<li><a href="">Колодезные (погружные)</a></li>
-							<li><a href="">Канализационные погружные</a></li>
-							<li><a href="">Дренажные</a></li>
-							<li><a href="">Фекальные с измельчителем</a></li>
-						</ul>
-						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
-					</div>
-					<div class="catalog-map__item">
-						<div class="catalog-map__icon"><img src="img/icon-section-01.png" alt="" /></div>
-						<ul class="catalog-map__list">
-							<li><a href="">Насосы и насосные станции</a></li>
-							<li><a href="">Циркуляционные</a></li>
-							<li><a href="">Скважинные</a></li>
-							<li><a href="">Колодезные (погружные)</a></li>
-							<li><a href="">Канализационные погружные</a></li>
-							<li><a href="">Дренажные</a></li>
-							<li><a href="">Фекальные с измельчителем</a></li>
-						</ul>
-						<a href="" class="catalog-map__toggle">Раскрыть полный список</a>
-					</div>
+					<xsl:for-each select="page/catalog/section">
+						<div class="catalog-map__item">
+							<div class="catalog-map__icon"><img src="{@path}{icon}" alt="" /></div>
+							<ul class="catalog-map__list">
+								<xsl:for-each select="section">
+									<li><a href="{show_products}"><xsl:value-of select="name"/></a></li>
+								</xsl:for-each>
+							</ul>
+							<a href="#" class="catalog-map__toggle">Раскрыть полный список</a>
+						</div>
+					</xsl:for-each>
 				</div>
 			</div>
 		</section>
@@ -318,69 +207,11 @@
 			<div class="container">
 				<div class="block-title">Бренды</div>
 				<div class="grid">
-					<div class="brand-item">
-						<img src="img/brand-logo-01.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-02.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-03.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-04.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-05.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-06.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-07.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-08.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-09.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-10.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-11.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-12.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-13.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-14.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-15.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-16.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-17.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-18.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-19.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-20.jpg" />
-					</div>
-					<div class="brand-item">
-						<img src="img/brand-logo-21.jpg" />
-					</div>
+					<xsl:for-each select="page/banner_section[2]/banner">
+						<div class="brand-item">
+							<img src="{@path}{image_pic}" />
+						</div>
+					</xsl:for-each>
 				</div>
 			</div>
 		</section>
@@ -412,6 +243,18 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript" src="fotorama/fotorama.js"/>
+		<script>
+			$(document).ready(function() {
+				$('.catalog-map__toggle').click(function(e) {
+					e.preventDefault();
+					$(this).closest('.catalog-map__item').find('ul').toggleClass('show', 200);
+					if ($(this).html() == 'Свернуть')
+						$(this).html('Раскрыть полный список');
+					else
+						$(this).html('Свернуть');
+				});
+			});
+		</script>
 	</xsl:template>
 
 </xsl:stylesheet>
