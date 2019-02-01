@@ -25,7 +25,7 @@
 		</single>
 
 		<single item="custom_pages" id="custom_pages" cacheable="false" >
-			<tree item="custom_page" id="custom_page" tag="menu_custom">
+			<tree item="menu_item" id="custom_page">
 				<link name="show_page" target="page" type="exclusive">
 					<var name="p" ref="custom_page" style="translit"/>
 				</link>
@@ -323,7 +323,7 @@
 
 
 
-	<page name="product" template="product" cacheable="false">
+	<page name="product" template="" cacheable="false">
 		<request>
 			<var name="prod" style="translit"/>
 		</request>
@@ -353,6 +353,7 @@
 			</link>
 
 			<list item="line_product" id="lprod">
+				<list item="params"/>
 				<link name="to_cart" target="cart_action">
 					<var name="action" value="addToCart"/>
 					<var name="code" ref="lprod" parameter="code"/>

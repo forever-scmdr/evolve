@@ -123,14 +123,24 @@
 				</xsl:if>
 
 				<xsl:if test="$has_lines">
-					<div class="multi-device" style="grid-template-columns: repeat(3, auto);">
-						<div style="padding-left: 0;">Размер</div>
+					<xsl:variable name="param_names" select="distinct-values($p/line_product/param/@name)"/>
+					<xsl:variable name="col_qty" select="count($param_names) + 4"/>
+					<div class="multi-device" style="grid-template-columns: repeat({$col_qty}, auto);">
+						<div style="padding-left: 0;">Название</div>
+						<div>Артикул</div>
+						<xsl:for-each select="$param_names">
+							<div><xsl:value-of select="$p/line_product/param[@name = current()][1]/@caption" /></div>
+						</xsl:for-each>
 						<div>Цена</div>
 						<div></div>
 
 						<xsl:for-each select="$p/line_product">
 							<xsl:variable name="has_price" select="price and price != '0'"/>
 							<div class="multi-device__name"><xsl:value-of select="name" /></div>
+							<div class="multi-device__name"><xsl:value-of select="vendor_code" /></div>
+							<xsl:for-each select="$param_names">
+								<div><xsl:value-of select="." />|</div>
+							</xsl:for-each>
 							<div class="multi-device__price">
 								<xsl:if test="$has_price">
 									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="price_old"/> руб.</div></xsl:if>

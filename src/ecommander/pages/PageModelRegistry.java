@@ -181,7 +181,7 @@ public class PageModelRegistry {
 			return LinkPE.parseLink(urlString);
 		StringBuilder sb = new StringBuilder();
 		Iterator<RequestVariablePE> varReverseIter = pageModel.getPathTranslitVarsReverseOrder().iterator();
-		for (int i = lastTranslitPartIndex; i >= 0 && varReverseIter.hasNext(); i--) {
+		for (int i = lastTranslitPartIndex; i >= 0 && varReverseIter.hasNext() && i < units.length; i--) {
 			String varName = varReverseIter.next().getName();
 			sb.insert(0, VariablePE.COMMON_DELIMITER + varName + VariablePE.COMMON_DELIMITER + units[i]);
 		}

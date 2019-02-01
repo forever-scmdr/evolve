@@ -197,7 +197,9 @@
 									<li><a href="{show_products}"><xsl:value-of select="name"/></a></li>
 								</xsl:for-each>
 							</ul>
-							<a href="#" class="catalog-map__toggle">Раскрыть полный список</a>
+							<xsl:if test="count(section) &gt; 4">
+								<a href="#" class="catalog-map__toggle">Раскрыть полный список</a>
+							</xsl:if>
 						</div>
 					</xsl:for-each>
 				</div>
@@ -209,7 +211,7 @@
 				<div class="grid">
 					<xsl:for-each select="page/banner_section[2]/banner">
 						<div class="brand-item">
-							<img src="{@path}{image_pic}" />
+							<a href="{link}"><img src="{@path}{image_pic}" /></a>
 						</div>
 					</xsl:for-each>
 				</div>

@@ -11,6 +11,7 @@
 	<xsl:variable name="common" select="page/common"/>
 
 
+
 	<!-- ****************************    SEO    ******************************** -->
 
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
@@ -31,7 +32,7 @@
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
 
-	<xsl:variable name="active_menu_item"/>
+
 
 
 	<!-- ****************************    ПОЛЬЗОВАТЕЛЬСКИЕ МОДУЛИ    ******************************** -->
@@ -45,30 +46,40 @@
 	<xsl:variable name="body-end-modules" select="$modules[not(place != '') or place = 'body_end']"/>
 
 
-	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
+
+
+	<!-- ****************************    ГЛАВНОЕ МЕНЮ    ******************************** -->
+
+	<xsl:variable name="active_menu_item"/>
+
+	<xsl:template match="page_link" mode="menu">
+		<xsl:variable name="page" select="tokenize(link, '/')"/>
+		<a href="{link}" class="top-menu__item{' active'[$page = $active_menu_item]}"><xsl:value-of select="name" /></a>
+	</xsl:template>
+
+	<xsl:template match="custom_page" mode="menu">
+		<a href="{show_page}" class="top-menu__item{' active'[current()/@key = $active_menu_item]}"><xsl:value-of select="header" /></a>
+	</xsl:template>
+
+	<xsl:template name="MAIN_MENU">
+		<section class="top-menu">
+			<div class="container">
+				<xsl:apply-templates select="page/custom_pages/page_link | page/custom_pages/custom_page" mode="menu"/>
+			</div>
+		</section>
+	</xsl:template>
+
+
+
+	<!-- ****************************    ВЕРХНЯЯ ЧАСТЬ    ******************************** -->
 
 
 
 	<xsl:template name="INC_DESKTOP_HEADER">
-		<section class="top-menu">
-			<div class="container">
-				<a href="" class="top-menu__item">О компании</a>
-				<a href="" class="top-menu__item">Новости</a>
-				<a href="" class="top-menu__item">Оплата и доставка</a>
-				<a href="" class="top-menu__item">Новинки</a>
-				<a href="" class="top-menu__item active">Распродажа</a>
-				<a href="" class="top-menu__item">Контакты</a>
-			</div>
-		</section>
+		<xsl:call-template name="MAIN_MENU"/>
 		<section class="top-stripe desktop">
 			<div class="container">
-				<div>
-					<div class="top-stripe__phone"><img src="img/phone_logo.svg" />(+375 17) 123-45-67;</div>
-					<div class="top-stripe__phone"><img src="img/phone_logo.svg" />(+375 17) 123-45-67;</div>
-					<div class="top-stripe__phone"><img src="img/velcom_logo.svg" />(+375 17) 123-45-67;</div>
-					<div class="top-stripe__phone"><img src="img/mts_logo.svg" />(+375 17) 123-45-67 <img src="img/viber.svg" alt=""/><img src="img/whatsapp.svg" alt=""/><img src="img/telegram.svg" alt=""/></div>
-					<div class="top-stripe__address">Время работы: пн.-пт.: 9:00 - 20:00; сб., вс.: 8:00 - 20:00 </div>
-				</div>
+				<xsl:value-of select="$common/top" disable-output-escaping="yes"/>
 			</div>
 		</section>
 		<section class="header desktop">
@@ -93,73 +104,6 @@
 						<div class="main-menu__item"><a href="{show_products}"><span><xsl:value-of select="name" /></span></a></div>
 					</xsl:for-each>
 				</div>
-				<!-- <div class="main-menu">
-					<div class="main-menu__item" style="position: relative;">
-						<a href="{page/catalog_link}" class="{'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><span><i class="fas fa-bars"></i> Каталог</span></a>
-						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
-							<div class="sections">
-								<xsl:for-each select="page/catalog/section">
-									<xsl:if test="section">
-										<a href="{show_products}" class="cat_menu_item_1" rel="#sub_{@id}">
-											<xsl:value-of select="name" />
-										</a>
-									</xsl:if>
-									<xsl:if test="not(section)">
-										<a href="{show_products}" class="cat_menu_item_1">
-											<xsl:value-of select="name" />
-										</a>
-									</xsl:if>
-								</xsl:for-each>
-							</div>
-
-							<xsl:for-each select="page/catalog/section">
-								<div class="subsections" style="display: none" id="sub_{@id}">
-									<xsl:for-each select="section">
-										<a href="{show_products}"><xsl:value-of select="name" /></a>
-									</xsl:for-each>
-								</div>
-							</xsl:for-each>
-						</div>
-					</div>
-					<xsl:for-each select="page/news">
-						<xsl:variable name="key" select="@key"/>
-						<xsl:variable name="sel" select="page/varibles/sel"/>
-						<div class="main-menu__item">
-							<a href="{show_page}" class="{'active'[$sel = $key]}">
-								<span><xsl:value-of select="name"/></span>
-							</a>
-						</div>
-					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да']">
-						<xsl:variable name="key" select="@key"/>
-						<xsl:if test="not(menu_custom)">
-							<div class="main-menu__item">
-								<a href="{show_page}" class="{'active'[$active_menu_item = $key]}">
-									<xsl:value-of select="header"/>
-								</a>
-							</div>
-						</xsl:if>
-						<xsl:if test="menu_custom">
-							<div class="main-menu__item" style="position: relative;">
-								<a href="#ts-{@id}" class="show-sub{' active'[$active_menu_item = $key]}">
-									<span><xsl:value-of select="header"/></span>
-								</a>
-								<div id="ts-{@id}" class="popup-text-menu" style="position: absolute; z-index: 2; display: none;">
-									<div class="sections">
-										<xsl:for-each select="menu_custom">
-											<a href="{show_page}">
-												<xsl:value-of select="header"/>
-											</a>
-										</xsl:for-each>
-									</div>
-								</div>
-							</div>
-						</xsl:if>
-					</xsl:for-each>
-					<div class="main-menu__item">
-						<a href="{page/contacts_link}"><span>Контакты</span></a>
-					</div>
-				</div> -->
 			</div>
 		</section>
 	</xsl:template>
@@ -207,25 +151,6 @@
 						<a href="http://forever.by">Разработка сайта — студия веб-дизайна Forever</a>
 					</div>
 				</div>
-				<!-- Эти блоки сделать редактируемыми через админку (произвольное количество блоков) -->
-				<!-- <div>
-					<p>
-						<strong>Заказ и констультация</strong>
-					</p>
-					<p>(+375 17) 123-45-67 - городской;</p>
-					<p>(+375 17) 123-45-67 - велком;</p>
-					<p>(+375 17) 123-45-67 - МТС;</p>
-					<p>email: <a href="mailto:skobtrade@mail.ru">skobtrade@mail.ru</a></p>
-				</div>
-				<div>
-					<p>Республика Беларусь Витебская обл., 211394 г. Орша Ул. 1 Мая 81В-2</p>
-					<p>email: <a href="mailto:skobtrade@mail.ru">skobtrade@mail.ru</a></p>
-					<p><strong>Режим работы</strong></p>
-					<p>Пн.-пт.: с 9:00 до 20:00</p>
-				</div>
-				<div>
-					<p>Работаем только с юридическими лицами и индивидуальными предпринимателями по безналичному расчету</p>
-				</div> -->
 			</div>
 		</footer>
 		<!-- FOOTER END -->
@@ -493,7 +418,7 @@
 			</xsl:if>
 			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
-			<div class="device__article-number"><xsl:value-of select="code"/></div>
+			<div class="device__article-number"><xsl:value-of select="vendor_code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
 					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
@@ -582,7 +507,7 @@
 					<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 				</div>
 			</div>
-			<div class="device__article-number"><xsl:value-of select="code"/></div>
+			<div class="device__article-number"><xsl:value-of select="vendor_code"/></div>
 			<div class="device__actions device_row__actions">
 				<xsl:if test="not($is_compare)">
 					<div id="compare_list_{@id}">

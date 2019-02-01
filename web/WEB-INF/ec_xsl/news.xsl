@@ -5,7 +5,8 @@
 
 	<xsl:variable name="title" select="page/selected_news/name" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
-	<xsl:variable name="active_menu_item" select="'news'"/>
+	<!--<xsl:variable name="active_menu_item" select="'news'"/>-->
+	<xsl:variable name="active_menu_item" select="page/selected_news/@key"/>
 
 	<xsl:variable name="p" select="page/product"/>
 
