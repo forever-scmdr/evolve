@@ -456,6 +456,7 @@
 		<parameter name="google_verification" type="string" caption="google verification code"/>
 		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
 		<child item="delivery" single="true"/>
+		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
 	</item>
@@ -469,9 +470,12 @@
 		<child item="block" inline="true"/>
 	</item>
 
-
 	<item name="delivery" caption="Доставка" ag-id="827" ag-hash="823466996">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
+	</item>
+
+	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1788" ag-hash="-1220416192">
+		<parameter name="payment" type="text" caption="Оплата и доставка" description="выводится на странице товара в блоке справа"/>
 	</item>
 
 	<item name="footer" caption="Футер (низ)" super="block_array" ag-id="907" ag-hash="-1268861541"/>

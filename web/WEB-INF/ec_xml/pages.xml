@@ -41,6 +41,7 @@
 			<list item="block_array">
 				<list item="block"/>
 			</list>
+			<single item="catalog_texts"/>
 		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
@@ -323,7 +324,7 @@
 
 
 
-	<page name="product" template="" cacheable="false">
+	<page name="product" template="product" cacheable="false">
 		<request>
 			<var name="prod" style="translit"/>
 		</request>

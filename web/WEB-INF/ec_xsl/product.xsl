@@ -123,23 +123,25 @@
 				</xsl:if>
 
 				<xsl:if test="$has_lines">
-					<xsl:variable name="param_names" select="distinct-values($p/line_product/param/@name)"/>
+					<xsl:variable name="param_names" select="distinct-values($p/line_product/params/param/@name)"/>
+					<xsl:variable name="param_captions" select="distinct-values($p/line_product/params/param/@caption)"/>
 					<xsl:variable name="col_qty" select="count($param_names) + 4"/>
 					<div class="multi-device" style="grid-template-columns: repeat({$col_qty}, auto);">
 						<div style="padding-left: 0;">Название</div>
 						<div>Артикул</div>
-						<xsl:for-each select="$param_names">
-							<div><xsl:value-of select="$p/line_product/param[@name = current()][1]/@caption" /></div>
+						<xsl:for-each select="$param_captions">
+							<div><xsl:value-of select="." /></div>
 						</xsl:for-each>
 						<div>Цена</div>
 						<div></div>
 
 						<xsl:for-each select="$p/line_product">
+							<xsl:variable name="lp" select="."/>
 							<xsl:variable name="has_price" select="price and price != '0'"/>
 							<div class="multi-device__name"><xsl:value-of select="name" /></div>
 							<div class="multi-device__name"><xsl:value-of select="vendor_code" /></div>
 							<xsl:for-each select="$param_names">
-								<div><xsl:value-of select="." />|</div>
+								<div><xsl:value-of select="$lp/params/param[@name = current()]" /></div>
 							</xsl:for-each>
 							<div class="multi-device__price">
 								<xsl:if test="$has_price">
@@ -178,16 +180,7 @@
 						</div>
 					</div>
 				</xsl:if>
-				<div class="extra-info">
-					<p><strong>Способы доставки</strong></p>
-					<p>Самовывоз. Доставка курьером - 5 руб. Доставка почтой - от 5,4 руб.</p>
-					<a href="">Подробнее о доставке</a>
-				</div>
-				<div class="extra-info">
-					<p><strong>Способы оплаты</strong></p>
-					<p>Наложенный платеж. Безналичный расчет. Наличными. ЕРИП.</p>
-					<a href="">Подробнее об оплате</a>
-				</div>
+				<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
 				<div class="extra-info">
 					<xsl:if test="not($is_big)">
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>

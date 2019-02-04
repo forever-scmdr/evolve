@@ -140,6 +140,9 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
 			if (products.size() > 0) {
 
+				// Загрузить и добавить все строковые товары
+				products.addAll(new ItemQuery(LINE_PRODUCT_ITEM).setParentId(section.getId(), true).loadItems());
+
 				// Анализ параметров продуктов
 				Params params = new Params(section.getStringValue(NAME_PARAM), "s" + section.getId());
 				for (Item product : products) {
@@ -223,6 +226,10 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			ItemType paramDesc = ItemTypeRegistry.getItemType(className);
 			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
 			if (products.size() > 0) {
+
+				// Загрузить и добавить все строковые товары
+				products.addAll(new ItemQuery(LINE_PRODUCT_ITEM).setParentId(section.getId(), true).loadItems());
+
 				for (Item product : products) {
 					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
 					if (paramsXml != null) {
