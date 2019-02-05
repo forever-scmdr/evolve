@@ -19,7 +19,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
- * Created by user on 05.12.2018.
+ * Created by Anton on 05.12.2018.
  */
 public class CreateExcelPriceList extends IntegrateBase implements CatalogConst {
 	//workbook styles
@@ -39,6 +39,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	protected static final String AVAILABLE_FILE = "Наличие";
 	protected static final String AUX_TYPE_FILE = "ID типа товара";
 	protected static final String MANUAL = "Документация";
+	protected static final String VALUE_SEPARATOR = ";\\};\\{;";
+
 
 	private static final LinkedHashSet<String> BUILT_IN_PARAMS = new LinkedHashSet<String>() {{
 		add(CODE_PARAM);
@@ -130,8 +132,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		String[]secInfo = getSectionName(section);
 		String sheetName = secInfo[2];
 		setOperation(section.getValue(NAME_PARAM) + ". Обработка подразделов.");
-		Sheet sh = workBook.createSheet(sheetName);
-		return sh;
+		return workBook.createSheet(sheetName);
 	}
 
 	private String[] getSectionName(Item section) throws Exception {
@@ -208,13 +209,15 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			row.getCell(colIdx).setCellStyle(headerStyle);
 		}
 
+		//Write AUX_TYPE_FILE column header anyway. for users to know it's mandatory
+		row.createCell(++colIdx).setCellValue(AUX_TYPE_FILE);
+		row.getCell(colIdx).setCellStyle(auxHeaderStyle);
+		sh.setColumnWidth(colIdx, 10 * 256);
+
 		//Write aux params
 		if(auxType.length > 0 && writeAuxParams){
 			ItemType aux = auxType[0];
 			if(aux != null) {
-				row.createCell(++colIdx).setCellValue(AUX_TYPE_FILE);
-				row.getCell(colIdx).setCellStyle(auxHeaderStyle);
-				sh.setColumnWidth(colIdx, 10 * 256);
 				for (ParameterDescription auxParam : aux.getParameterList()) {
 					String caption = auxParam.getCaption();
 					row.createCell(++colIdx).setCellValue(caption);
@@ -291,7 +294,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			}
 
 			if(writeAuxParams) {
-				writeAux(row, aux, colIdx, paramsType);
+				writeAux(row, aux, colIdx);
 			}
 
 			info.increaseProcessed();
@@ -356,7 +359,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		return colIdx;
 	}
 
-	private void writeAux(Row row, Item aux, int colIdx, ItemType auxType){
+	private void writeAux(Row row, Item aux, int colIdx){
 		if(aux == null) return;
 		row.createCell(++colIdx).setCellValue(aux.getTypeId());
 		row.getCell(colIdx).setCellStyle(auxStyle);
@@ -370,9 +373,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 	protected static String join(ArrayList<Object> pv) {
 		StringBuilder sb = new StringBuilder();
-		final String sep = ";";
 		for(int i = 0; i < pv.size(); i++){
-			if(i>0)sb.append(sep);
+			if(i>0)sb.append(VALUE_SEPARATOR);
 			String os = pv.get(i).toString();
 			sb.append(os);
 		}
@@ -483,10 +485,10 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-		writeAllProductParams = (YES.equals(getVarSingleValue(PROD_PARAMS_VAR))) ? true : writeAllProductParams;
-		writeAuxParams = (YES.equals(getVarSingleValue(AUX_PARAMS_VAR))) ? true : writeAuxParams;
-		writeProducts = (YES.equals(getVarSingleValue(PRODUCTS_VAR))) ? true : writeProducts;
-		writeManuals = (YES.equals(getVarSingleValue(MANUALS_VAR))) ? true : writeManuals;
+		writeAllProductParams = (YES.equals(getVarSingleValue(PROD_PARAMS_VAR))) || writeAllProductParams;
+		writeAuxParams = (YES.equals(getVarSingleValue(AUX_PARAMS_VAR))) || writeAuxParams;
+		writeProducts = (YES.equals(getVarSingleValue(PRODUCTS_VAR))) || writeProducts;
+		writeManuals = (YES.equals(getVarSingleValue(MANUALS_VAR))) || writeManuals;
 		String sectionId = getVarSingleValue(SECTION_VAR);
 		if (StringUtils.isNotBlank(sectionId)) secId = Long.parseLong(sectionId);
 		return true;
