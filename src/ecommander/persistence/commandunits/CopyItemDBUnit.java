@@ -142,7 +142,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 		try (PreparedStatement pstmt = allSubitems.prepareQuery(getTransactionContext().getConnection())) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				subitems.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), baseItem.getId()));
+				subitems.add(ItemMapper.buildItem(rs, baseItem.getId()));
 			}
 		}
 		for (Item subitem : subitems) {

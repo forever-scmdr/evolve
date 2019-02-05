@@ -592,7 +592,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			ResultSet rs = pstmt.executeQuery();
 			// Создание айтемов
 			while (rs.next()) {
-				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), 0L));
+				result.add(ItemMapper.buildItem(rs, 0L));
 			}
 		}
 		return result;

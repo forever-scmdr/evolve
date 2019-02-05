@@ -457,7 +457,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 
 								if(StringUtils.isBlank(cellValue)){
 									if(settings.get(IF_BLANK) != varValues.CLEAR) continue;
-									List<Item> items = ItemQuery.loadByParentId(product.getId(), ItemTypeRegistry.getPrimaryAssocId());
+									List<Item> items = ItemQuery.loadByParentId(product.getId(), null);
 									for(Item item : items){
 										executeCommandUnit(ItemStatusDBUnit.delete(item.getId()).noFulltextIndex());
 									}

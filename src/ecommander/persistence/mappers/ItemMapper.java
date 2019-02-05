@@ -5,6 +5,7 @@ import ecommander.fwk.ErrorCodes;
 import ecommander.model.*;
 import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.common.TemplateQuery;
+import ecommander.persistence.itemquery.ItemQuery;
 
 import java.sql.*;
 
@@ -13,7 +14,7 @@ import java.sql.*;
  * @author EEEE
  *
  */
-public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
+public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.Const {
 
 	public enum Mode {
 		INSERT, // вставка в таблицу (без изменения и удаления)
@@ -142,13 +143,12 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 	/**
 	 * Создать айтем из резалт сета
 	 * @param rs
-	 * @param contextAssocId
 	 * @param contextParentId
 	 * @return
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public static Item buildItem(ResultSet rs, byte contextAssocId, long contextParentId) throws Exception {
+	public static Item buildItem(ResultSet rs, long contextParentId) throws Exception {
 		long itemId = rs.getLong(I_ID);
 		int itemTypeId = rs.getInt(I_TYPE_ID);
 		String key = rs.getString(I_KEY);
@@ -159,20 +159,26 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 		int userId = rs.getByte(I_USER);
 		boolean filesProtected = rs.getBoolean(I_PROTECTED);
 		String params = rs.getString(I_PARAMS);
+		byte assocId;
+		try {
+			assocId = rs.getByte(PARENT_ASSOC_COL);
+		} catch (SQLException e) {
+			// значит primaryAssocId
+			assocId = ItemTypeRegistry.getPrimaryAssocId();
+		}
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemTypeId);
-		return Item.existingItem(itemDesc, itemId, ItemTypeRegistry.getAssoc(contextAssocId), contextParentId, userId, groupId, status,
+		return Item.existingItem(itemDesc, itemId, ItemTypeRegistry.getAssoc(assocId), contextParentId, userId, groupId, status,
 				key, params, keyUnique, timeUpdated.getTime(), filesProtected);
 	}
 
 	/**
 	 * Создать айтем из резалт сета
 	 * @param rs
-	 * @param contextAssocId
 	 * @param contextParentIdColName
 	 * @return
 	 * @throws Exception
 	 */
-	public static Item buildItem(ResultSet rs, byte contextAssocId, String contextParentIdColName) throws Exception {
-		return buildItem(rs, contextAssocId, rs.getLong(contextParentIdColName));
+	public static Item buildItem(ResultSet rs, String contextParentIdColName) throws Exception {
+		return buildItem(rs, rs.getLong(contextParentIdColName));
 	}
 }

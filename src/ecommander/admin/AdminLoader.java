@@ -122,7 +122,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 		     PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next())
-				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), Item.DEFAULT_ID));
+				result.add(ItemMapper.buildItem(rs, Item.DEFAULT_ID));
 		}
 		return result;
 	}
@@ -364,7 +364,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 			PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next())
-				item = ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), Item.DEFAULT_ID);
+				item = ItemMapper.buildItem(rs, Item.DEFAULT_ID);
 		}
 		if (item != null)
 			Security.testPrivileges(user, item);
