@@ -131,6 +131,7 @@
 	<!--/////////////                             КАТАЛОГ                                  ////////////-->
 	<!--/////////////                                                                      ////////////-->
 
+	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true"/>
 
 	<item name="original_gallery" caption="Исходная галерея" ag-id="1209" ag-hash="743720676" >
 		<parameter name="watermark_filename"  type="string" caption="Название файла водяного знака"/>
@@ -159,6 +160,8 @@
 		<child item="parse_section" single="true"/>
 		<child item="section" />
 		<child item="product"/>
+		<child item="section" assoc="catalog_link"/>
+		<child item="product" assoc="catalog_link"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
 		<parameter name="show_subs" type="byte" domain="0-1" caption="Показать подразделы"/>
@@ -168,6 +171,8 @@
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
+		<on-update class="ecommander.fwk.CreateCatalogLink"/>
+		<on-create class="ecommander.fwk.CreateCatalogLink"/>
 	</item>
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
@@ -209,6 +214,8 @@
 		<child item="params" single="true"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
+		<on-update class="ecommander.fwk.CreateCatalogLink"/>
+		<on-create class="ecommander.fwk.CreateCatalogLink"/>
 	</item>
 
 
@@ -474,7 +481,7 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="catalog_texts" caption="Общие тексты в каталоге">
+	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1788" ag-hash="-1220416192">
 		<parameter name="payment" type="text" caption="Оплата и доставка" description="выводится на странице товара в блоке справа"/>
 	</item>
 

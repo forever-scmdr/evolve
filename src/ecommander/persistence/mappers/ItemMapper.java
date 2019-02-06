@@ -2,10 +2,10 @@ package ecommander.persistence.mappers;
 
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
-import ecommander.fwk.MysqlConnector;
 import ecommander.model.*;
 import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.common.TemplateQuery;
+import ecommander.persistence.itemquery.ItemQuery;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author EEEE
  *
  */
-public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
+public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.Const {
 
 	public enum Mode {
 		INSERT, // вставка в таблицу (без изменения и удаления)
@@ -144,13 +144,12 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 	/**
 	 * Создать айтем из резалт сета
 	 * @param rs
-	 * @param contextAssocId
 	 * @param contextParentId
 	 * @return
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public static Item buildItem(ResultSet rs, byte contextAssocId, long contextParentId) throws Exception {
+	public static Item buildItem(ResultSet rs, byte assocId, long contextParentId) throws Exception {
 		long itemId = rs.getLong(I_ID);
 		int itemTypeId = rs.getInt(I_TYPE_ID);
 		String key = rs.getString(I_KEY);
@@ -162,20 +161,19 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 		boolean filesProtected = rs.getBoolean(I_PROTECTED);
 		String params = rs.getString(I_PARAMS);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemTypeId);
-		return Item.existingItem(itemDesc, itemId, ItemTypeRegistry.getAssoc(contextAssocId), contextParentId, userId, groupId, status,
+		return Item.existingItem(itemDesc, itemId, ItemTypeRegistry.getAssoc(assocId), contextParentId, userId, groupId, status,
 				key, params, keyUnique, timeUpdated.getTime(), filesProtected);
 	}
 
 	/**
 	 * Создать айтем из резалт сета
 	 * @param rs
-	 * @param contextAssocId
 	 * @param contextParentIdColName
 	 * @return
 	 * @throws Exception
 	 */
-	public static Item buildItem(ResultSet rs, byte contextAssocId, String contextParentIdColName) throws Exception {
-		return buildItem(rs, contextAssocId, rs.getLong(contextParentIdColName));
+	public static Item buildItem(ResultSet rs, byte assocId, String contextParentIdColName) throws Exception {
+		return buildItem(rs, assocId, rs.getLong(contextParentIdColName));
 	}
 
 	/**
@@ -200,7 +198,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants {
 			ResultSet rs = pstmt.executeQuery();
 			// Создание айтемов
 			while (rs.next()) {
-				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), 0L));
+				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssocId(), 0L));
 			}
 		}
 		return result;

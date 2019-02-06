@@ -111,7 +111,7 @@ public final class FilterSQLCreator implements FilterCriteria, ItemQuery.Const {
 	 * @param type
 	 * @return
 	 */
-	public void startAssociatedGroup(ItemType item, byte assocId, AssociatedItemCriteriaGroup.Type type) {
+	public void startAssociatedGroup(ItemType item, Byte[] assocId, AssociatedItemCriteriaGroup.Type type) {
 		AssociatedItemCriteriaGroup newCrit = currentGroup.peek().addAssociatedCriteria(item, assocId, type);
 		currentGroup.push(newCrit);
 	}

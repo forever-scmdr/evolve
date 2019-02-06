@@ -277,8 +277,8 @@
 	</xsl:template>
 
 	<xsl:template match="section" mode="pic">
-		<xsl:variable name="sec_pic" select="if (main_pic != '') then concat('http://aquacom.must.by/', @path, main_pic) else ''"/>
-		<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat('http://aquacom.must.by/', product/@path, product/main_pic) else ''"/>
+		<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
+		<xsl:variable name="product_pic" select="if (product[1]/main_pic != '') then concat(product[1]/@path, product[1]/main_pic) else ''"/>
 		<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 		<div class="device items-catalog__section">
 			<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
