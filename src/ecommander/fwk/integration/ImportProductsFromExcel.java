@@ -846,7 +846,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 
 	@Override
 	protected void terminate() throws Exception {
-
+		System.out.println("fcku");
 	}
 
 	private String firstUpperCase(String s) {
