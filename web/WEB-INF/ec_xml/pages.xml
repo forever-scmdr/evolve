@@ -927,7 +927,7 @@
 		</command>
 	</page>
 
-	<page name="section_list" template="integration/section_list">
+	<page name="section_list" template="integration/section_list" authority-groups="common">
 		<request>
 			<var name="page" value="1"/>
 		</request>
@@ -957,7 +957,7 @@
 		</single>
 	</page>
 
-	<page name="create_excel_pricelist" template="integration/create_excel"  authority-groups="common">
+	<page name="create_excel_pricelist" template="integration/create_excel">
 		<request>
 			<var name="action"/>
 			<var name="sec"/>
