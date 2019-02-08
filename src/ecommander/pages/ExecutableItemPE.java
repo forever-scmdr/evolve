@@ -4,6 +4,7 @@ import ecommander.controllers.AppContext;
 import ecommander.controllers.SessionContext;
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
+import ecommander.fwk.IteratorCurrent;
 import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.model.filter.CriteriaDef;
@@ -68,8 +69,9 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				if (currentItem != null) {
 					long parentId = currentItem.getId();
 					ArrayList<Item> foundItems = itemPE.getFoundItemsByParent(parentId);
-					if (!foundItems.isEmpty())
+					if (!foundItems.isEmpty()) {
 						iterators.push(foundItems.iterator());
+					}
 				}
 				// если в текущем СТРАНИЧНОМ айтеме не найдены айтемы, вложенные в текущий айтем,
 				// то уже в этом случае ищутся айтемы во вложенном страничном айтеме
@@ -92,10 +94,6 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 					iterators.pop();
 				}
 				return true;
-			} else {
-				while (!iterators.isEmpty() && !iterators.peek().hasNext()) {
-					iterators.pop();
-				}
 			}
 			// переинициализация
 			init();
@@ -106,8 +104,6 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		 * @return
 		 */
 		public Item getCurrentItem() {
-//			if (currentItem == null)
-//				next();
 			return currentItem;
 		}
 

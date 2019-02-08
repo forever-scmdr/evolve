@@ -10,6 +10,7 @@ import ecommander.pages.ValidationResults;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Переменная, которая представляет айтем (ID айтема) или параметр айтема (значение параметра)
@@ -84,14 +85,30 @@ public class ItemVariable extends Variable {
 
 	@Override
 	public ArrayList<String> getLocalValues() {
-		Item item = parentPage.getItemPEById(itemPageId).getParentRelatedFoundItemIterator().getCurrentItem();
-		if (StringUtils.isNotBlank(paramName)) {
-			return item.outputValues(paramName);
-		} else {
-			ArrayList<String> result = new ArrayList<>(1);
-			result.add(isTranslit ? item.getKeyUnique() : item.getId() + "");
-			return result;
-		}
+//		boolean isTree = parentPage.getItemPEById(itemPageId).getQueryType() == ItemPE.Type.TREE;
+//		if (isTree) {
+//			List<Item> path = parentPage.getItemPEById(itemPageId).getParentRelatedFoundItemIterator().getCurrentItemPath();
+//			ArrayList<String> result = new ArrayList<>();
+//			if (StringUtils.isNotBlank(paramName)) {
+//				for (Item item : path) {
+//					result.addAll(item.outputValues(paramName));
+//				}
+//			} else {
+//				for (Item item : path) {
+//					result.add(isTranslit ? item.getKeyUnique() : item.getId() + "");
+//				}
+//			}
+//			return result;
+//		} else {
+			Item item = parentPage.getItemPEById(itemPageId).getParentRelatedFoundItemIterator().getCurrentItem();
+			if (StringUtils.isNotBlank(paramName)) {
+				return item.outputValues(paramName);
+			} else {
+				ArrayList<String> result = new ArrayList<>(1);
+				result.add(isTranslit ? item.getKeyUnique() : item.getId() + "");
+				return result;
+			}
+//		}
 	}
 
 	@Override

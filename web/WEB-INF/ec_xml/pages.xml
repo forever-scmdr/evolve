@@ -9,6 +9,7 @@
 
 
 	<include-definition name="COMMON">
+
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
@@ -68,13 +69,13 @@
 		</single>
 	</include-definition>
 
-<!--
+
 	<page name="test">
-		<request>
-			<var name="sec" style="translit" value="vse_dlyavannu"/>
-		</request>
-		<single item="section" var="sec" tag="current_section">
-			<tree item="section" assoc="* catalog_link" transit="true">
+		<single item="catalog" id="catalog_main">
+			<tree item="section" id="sec" assoc="* catalog_link">
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="sec" style="translit"/>
+				</link>
 				<list item="product"  transit="true">
 					<filter>
 						<limit>
@@ -85,7 +86,7 @@
 			</tree>
 		</single>
 	</page>
--->
+
 
 
 
