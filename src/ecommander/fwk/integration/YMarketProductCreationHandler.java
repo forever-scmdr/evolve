@@ -9,18 +9,40 @@ import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.ItemMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.util.*;
 
 public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
 
 	private static final HashSet<String> COMMON_PARAMS = new HashSet<>();
+
+	private static final String TITLE = "title";
+	private static final String ARTIST = "artist";
+	private static final String STARRING = "starring";
+	private static final String DIRECTOR = "director";
+	private static final String AUTHOR = "author";
+	private static final String SERIES = "series";
+	private static final String MEDIA = "media";
+	private static final String YEAR = "year";
+	private static final String ORIGINAL_NAME = "originalName";
+	private static final String COUNTRY_OF_ORIGIN = "country_of_origin";
+	private static final String COUNTRY = "country";
+	private static final String PUBLISHER = "publisher";
+	private static final String PAGE_EXTENT = "page_extent";
+	private static final String LANGUAGE = "language";
+	private static final String ISBN = "ISBN";
+	private static final String PICTURE = "picture";
+	private static final String BARCODE = "barcode";
+
 	static {
 		COMMON_PARAMS.add(URL_ELEMENT);
 		COMMON_PARAMS.add(PRICE_ELEMENT);
@@ -31,6 +53,23 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		COMMON_PARAMS.add(DESCRIPTION_ELEMENT);
 		COMMON_PARAMS.add(COUNTRY_OF_ORIGIN_ELEMENT);
 		COMMON_PARAMS.add(MODEL_ELEMENT);
+
+		COMMON_PARAMS.add(ARTIST);
+		COMMON_PARAMS.add(STARRING);
+		COMMON_PARAMS.add(DIRECTOR);
+		COMMON_PARAMS.add(AUTHOR);
+		COMMON_PARAMS.add(SERIES);
+		COMMON_PARAMS.add(MEDIA);
+		COMMON_PARAMS.add(YEAR);
+		COMMON_PARAMS.add(ORIGINAL_NAME);
+		COMMON_PARAMS.add(COUNTRY_OF_ORIGIN);
+		COMMON_PARAMS.add(COUNTRY);
+		COMMON_PARAMS.add(PUBLISHER);
+		COMMON_PARAMS.add(PAGE_EXTENT);
+		COMMON_PARAMS.add(LANGUAGE);
+		COMMON_PARAMS.add(ISBN);
+		COMMON_PARAMS.add(BARCODE);
+		COMMON_PARAMS.add(TITLE);
 	}
 
 
@@ -50,14 +89,25 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private User initiator;
 	private boolean isInsideOffer = false;
 	private boolean getPrice = false;
+	private BigDecimal level_1, level_2, from_3, quotient_1, quotient_2, quotient_3;
 
 	
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
 		this.info = info;
 		this.sections = sections;
-		this.productType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
+		this.productType = ItemTypeRegistry.getItemType("book");
 		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
+		try {
+			Item course = new ItemQuery("course").loadFirstItem();
+			level_1 = course.getDecimalValue("level_1");
+			quotient_1 = course.getDecimalValue("quotient_1");
+			level_2 = course.getDecimalValue("level_2");
+			quotient_2 = course.getDecimalValue("quotient_2");
+			quotient_3 = course.getDecimalValue("quotient_3");
+		} catch (Exception e) {
+			info.addError("Не задан курс российского рубля", "Каталог продукции");
+		}
 	}
 
 	@Override
@@ -67,9 +117,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				String code = commonParams.get(ID_ATTR);
 				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
-				boolean isProductNotNew = true;
 				if (product == null) {
-					isProductNotNew = false;
 					Item section = sections.get(secCode);
 					if (section != null) {
 						product = Item.newChildItem(productType, section);
@@ -88,63 +136,54 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				product.setValue(CATEGORY_ID_PARAM, commonParams.get(CATEGORY_ID_ELEMENT));
 				product.setValue(NAME_PARAM, commonParams.get(NAME_ELEMENT));
 				if (product.isValueEmpty(NAME_PARAM))
-					product.setValue(NAME_PARAM, commonParams.get(MODEL_ELEMENT));
-				product.setValue(VENDOR_CODE_PARAM, commonParams.get(VENDOR_CODE_ELEMENT));
+					product.setValue(NAME_PARAM, commonParams.get(TITLE));
 				product.setValue(DESCRIPTION_PARAM, commonParams.get(DESCRIPTION_ELEMENT));
 				product.setValue(VENDOR_PARAM, commonParams.get(VENDOR_ELEMENT));
-				product.setValue(COUNTRY_PARAM, commonParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
 
-				if (getPrice)
-					product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
-				else
-					product.setValueUI(PRICE_PARAM, "0");
+				product.setValue(ARTIST, commonParams.get(ARTIST));
+				product.setValue(STARRING, commonParams.get(STARRING));
+				product.setValue(DIRECTOR, commonParams.get(DIRECTOR));
+				product.setValue(AUTHOR, commonParams.get(AUTHOR));
+				product.setValue(SERIES, commonParams.get(SERIES));
+				product.setValue(MEDIA, commonParams.get(MEDIA));
+				product.setValue(YEAR, commonParams.get(YEAR));
+				product.setValue(ORIGINAL_NAME, commonParams.get(ORIGINAL_NAME));
+				product.setValue(COUNTRY_OF_ORIGIN, commonParams.get(COUNTRY_OF_ORIGIN));
+				product.setValue(COUNTRY, commonParams.get(COUNTRY));
+				product.setValue(PUBLISHER, commonParams.get(PUBLISHER));
+				product.setValue(PAGE_EXTENT, commonParams.get(PAGE_EXTENT));
+				product.setValue(LANGUAGE, commonParams.get(LANGUAGE));
+				product.setValue(ISBN, commonParams.get(ISBN));
+				product.setValue(VENDOR_CODE_PARAM, commonParams.get(BARCODE));
+				product.setValue("tag", commonParams.get(MEDIA));
+
+				//if (getPrice)
+				product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
+				BigDecimal price = product.getDecimalValue(PRICE_PARAM);
+				product.setValue(PRICE_PARAM, getCorrectPrice(price).setScale(2, RoundingMode.CEILING));
+				//else
+				//	product.setValueUI(PRICE_PARAM, "0");
 
 				// Качать картинки только для новых товаров
-				if (product.isNew()) {
-					for (String picUrl : picUrls) {
-						product.setValue(GALLERY_PARAM, new URL(picUrl));
-					}
+				for (String picUrl : picUrls) {
+					product.setValue(PICTURE, picUrl);
 				}
 
-				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
 
-				// Генерация маленького изображения
-				if (noMainPic) {
-					if (picUrls.size() > 0) {
-						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.get(0)));
-					}
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-					try {
-						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-					} catch (Exception e) {
-						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-					}
-				}
-
 				// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
-				if (isProductNotNew) {
-					List<Item> paramsXmls = new ItemQuery(paramsXmlType.getName()).setParentId(product.getId(), false).loadItems();
-					for (Item paramsXml : paramsXmls) {
-						DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(paramsXml));
-					}
-				}
+				Item paramsXml = ItemUtils.ensureSingleItem(PARAMS_XML_ITEM, initiator, product.getId(), product.getOwnerGroupId(), product.getOwnerUserId());
 				// Создать айтем с параметрами продукта
-				if (specialParams.size() > 0) {
-					XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
-					for (String name : specialParams.keySet()) {
-						String value = specialParams.get(name);
-						xml.startElement(PARAMETER)
-								.startElement(NAME).addText(name).endElement()
-								.startElement(VALUE).addText(value).endElement()
-								.endElement();
-					}
-
-					Item paramsXml = Item.newChildItem(paramsXmlType, product);
-					paramsXml.setValue(XML_PARAM, xml.toString());
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreFileErrors());
+				XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+				for (String name : specialParams.keySet()) {
+					String value = specialParams.get(name);
+					xml.startElement(PARAMETER)
+							.startElement(NAME).addText(name).endElement()
+							.startElement(VALUE).addText(value).endElement()
+							.endElement();
 				}
+				paramsXml.setValue(XML_PARAM, xml.toString());
+				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreFileErrors());
 
 				info.increaseProcessed();
 				isInsideOffer = false;
@@ -204,6 +243,16 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			paramName = attributes.getValue(NAME_ATTR);
 			parameterReady = true;
 		}
+	}
+
+	private BigDecimal getCorrectPrice(BigDecimal price) {
+		if (price.compareTo(level_1) < 0) {
+			return price.multiply(quotient_1);
+		}
+		if (price.compareTo(level_2) < 0) {
+			return price.multiply(quotient_2);
+		}
+		return price.multiply(quotient_3);
 	}
 
 	public void getPrice(boolean getPrice) {

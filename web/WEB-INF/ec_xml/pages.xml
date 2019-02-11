@@ -11,7 +11,7 @@
 	<include-definition name="COMMON">
 
 		<single item="catalog" id="catalog_main" cacheable="true">
-			<tree item="section" id="sec" assoc="* catalog_link">
+			<tree item="section" id="sec">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
@@ -68,24 +68,6 @@
 			<list item="url_seo"/>
 		</single>
 	</include-definition>
-
-
-	<page name="test">
-		<single item="catalog" id="catalog_main">
-			<tree item="section" id="sec" assoc="* catalog_link">
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="sec" style="translit"/>
-				</link>
-				<list item="product"  transit="true">
-					<filter>
-						<limit>
-							<var value="1"/>
-						</limit>
-					</filter>
-				</list>
-			</tree>
-		</single>
-	</page>
 
 
 
@@ -186,7 +168,7 @@
 				<var name="sec" item="cur_sec" style="translit"/>
 			</link>
 			<single item="seo" assoc="seo"/>
-			<list item="product" id="prod" transit="true" assoc="* catalog_link">
+			<list item="product" id="prod" transit="true" tag="product">
 				<filter>
 					 <child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
@@ -228,17 +210,17 @@
 				</link>
 				<single item="params"/>
 			</list>
-			<list item="product" tag="tag" id="tag" assoc="* catalog_link">
+			<list item="product" tag="tag" id="tag">
 				<aggregation parameter="tag"/>
 				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
 					<var name="sec" style="translit" var="sec"/>
 					<var name="tag" parameter="tag" ref="tag"/>
 				</link>
 			</list>
-			<list item="product" tag="min" assoc="* catalog_link">
+			<list item="product" tag="min">
 				<aggregation parameter="price" function="MIN"/>
 			</list>
-			<list item="product" tag="max" assoc="* catalog_link">
+			<list item="product" tag="max">
 				<aggregation parameter="price" function="MAX"/>
 			</list>
 		</single>
@@ -349,7 +331,7 @@
 		<request>
 			<var name="prod" style="translit"/>
 		</request>
-		<single item="product" id="prod" var="prod">
+		<single item="product" id="prod" var="prod" tag="product">
 			<link name="canonical_link" target="product" type="exclusive">
 				<var name="prod" item="prod" style="translit"/>
 			</link>
