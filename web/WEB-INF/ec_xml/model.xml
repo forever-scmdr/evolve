@@ -398,12 +398,12 @@
 		<child item="footer" single="true"/>
 	</item>
 
-	<item name="block" caption="Блок текста (кода)" key="header" ag-id="1341" ag-hash="93832333">
+	<item name="block" caption="Блок текста (кода)" key="header" ag-id="1629" ag-hash="93832333">
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="text" type="short-text" caption="Текст (код)"/>
 	</item>
 
-	<item name="block_array" caption="Массив блоков" virtual="true" ag-id="1342" ag-hash="1210858535">
+	<item name="block_array" caption="Массив блоков" virtual="true" ag-id="1630" ag-hash="1210858535">
 		<child item="block" inline="true"/>
 	</item>
 
@@ -412,9 +412,9 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="footer" caption="Футер (низ)" super="block_array" ag-id="1343" ag-hash="-1268861541"/>
+	<item name="footer" caption="Футер (низ)" super="block_array" ag-id="1631" ag-hash="-1268861541"/>
 
-	<item name="topper" caption="Топпер (верх)" super="block_array" ag-id="1344" ag-hash="-868027480"/>
+	<item name="topper" caption="Топпер (верх)" super="block_array" ag-id="1632" ag-hash="-868027480"/>
 
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                     END ОБЩЕЕ ДЛЯ ВСЕХ СТРАНИЦ                       ////////////-->
