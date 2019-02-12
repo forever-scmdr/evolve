@@ -94,6 +94,7 @@
 		<on-create class="ecommander.fwk.integration.CreateSeoItemFactory"/>
 	</item>
 
+
 	<item name="url_seo" key="name" caption="SEO" super="* base_seo" ag-id="5" ag-hash="-169844339">
 		<parameter name="name" type="string" caption="Название" description="для поиска в CMS"/>
 		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>

@@ -15,7 +15,12 @@
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
-				<list item="product"  transit="true">
+				<!-- TMP FIX DELETE -->
+				<link name="show_sub" target="sub">
+					<var name="sec" ref="sec" style="translit"/>
+				</link>
+				<!-- END_TMP FIX -->
+ 				<list item="product" transit="true" tag="product">
 					<filter>
 						<limit>
 							<var value="1"/>
@@ -25,7 +30,7 @@
 			</tree>
 		</single>
 
-		<single item="custom_pages" id="custom_pages" cacheable="false" >
+		<single item="custom_pages" id="custom_pages" cacheable="true" >
 			<tree item="menu_item" id="custom_page">
 				<link name="show_page" target="page" type="exclusive">
 					<var name="p" ref="custom_page" style="translit"/>
@@ -149,6 +154,14 @@
 		</single>
 	</page>
 
+	<!-- TMP FIX DELETE -->
+	<page name="sub" template="sub" cacheable="false">
+		<request>
+			<var name="sec" style="translit"/>
+		</request>
+		<include name="COMMON"/>
+	</page>
+	<!-- END_TMP FIX -->
 
 
 	<page name="section" template="section" cacheable="true" critical-item="cur_sec" >
@@ -481,7 +494,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="zakaz@mystery.by"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -543,7 +556,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="zakaz@mystery.by"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
