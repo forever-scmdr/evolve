@@ -69,6 +69,8 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	private LinkedHashMap<String, VariablePE> variables = new LinkedHashMap<>();
 	// счетчик для создания фиктивных названий переменных в случае если у переменной нет имени
 	private int counter = 0;
+	// Изначальный вид ссылки до приведения ее к нормальному виду (до парсинга, как она приходит из браузера)
+	private String originalUrl = null;
 	/**
 	 * Ссылка в модели страницы с неизвестными параметрами
 	 * @param linkName
@@ -90,6 +92,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	 * @throws UnsupportedEncodingException
 	 */
 	private LinkPE(String urlString) throws UnsupportedEncodingException {
+		originalUrl = urlString;
 		if (StringUtils.isBlank(urlString)) {
 			return;
 		}
@@ -363,4 +366,11 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		return serialize();
 	}
 
+	public String getOriginalUrl() {
+		return originalUrl;
+	}
+
+	public void setOriginalUrl(String originalUrl) {
+		this.originalUrl = originalUrl;
+	}
 }

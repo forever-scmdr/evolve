@@ -28,7 +28,7 @@
 			"@type": "Product",
 			"name": <xsl:value-of select="concat($quote, replace($sel_sec/name, $quote, ''), $quote)"/>,
 			<xsl:if test="$sel_sec/main_pic != ''">
-				"image": <xsl:value-of select="concat('http://aquacom.must.by/', $quote, $main_host, '/', $sel_sec/@path, $sel_sec/main_pic, $quote)"/>,
+				"image": <xsl:value-of select="concat($quote, $main_host, '/', $sel_sec/@path, $sel_sec/main_pic, $quote)"/>,
 			</xsl:if>
 			"offers": {
 				"@type": "AggregateOffer",
@@ -70,7 +70,7 @@
 		<div class="path-container">
 			<div class="path">
 				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
-				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
+				<xsl:for-each select="page/catalog//section[.//show_products = $sel_sec_link and show_products != $sel_sec_link]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}">
 						<xsl:value-of select="name"/>

@@ -30,6 +30,7 @@
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
+	<xsl:variable name="sel_sec_link" select="page/source_link"/>
 
 
 
@@ -50,7 +51,7 @@
 
 	<!-- ****************************    ГЛАВНОЕ МЕНЮ    ******************************** -->
 
-	<xsl:variable name="active_menu_item"/>
+	<xsl:variable name="active_menu_item" select="'index'"/>
 
 	<xsl:template match="page_link" mode="menu">
 		<xsl:variable name="page" select="tokenize(link, '/')"/>
@@ -332,23 +333,23 @@
 		<div class="block-title block-title_normal">Каталог</div>
 		<div class="side-menu">
 			<xsl:for-each select="page/catalog/section">
-				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
+				<xsl:variable name="l1_active" select="show_products = $sel_sec_link"/>
 				<div class="level-1{' active'[$l1_active]}">
 					<div class="capsule">
 						<a href="{show_products}"><xsl:value-of select="name"/> </a>
 					</div>
 				</div>
-				<xsl:if test=".//@id = $sel_sec_id">
+				<xsl:if test=".//show_products = $sel_sec_link">
 					<xsl:for-each select="section">
-						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
+						<xsl:variable name="l2_active" select="show_products = $sel_sec_link"/>
 						<div class="level-2{' active'[$l2_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
-						<xsl:if test=".//@id = $sel_sec_id">
+						<xsl:if test=".//show_products = $sel_sec_link">
 							<xsl:for-each select="section">
-								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
+								<xsl:variable name="l3_active" select="show_products = $sel_sec_link"/>
 								<div class="level-3{' active'[$l3_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
-								<xsl:if test=".//@id = $sel_sec_id">
+								<xsl:if test=".//show_products = $sel_sec_link">
 									<xsl:for-each select="section">
-										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
+										<xsl:variable name="l4_active" select="show_products = $sel_sec_link"/>
 										<div class="level-4{' active'[$l4_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 									</xsl:for-each>
 								</xsl:if>
@@ -407,6 +408,7 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+		<xsl:variable name="product_link" select="concat($sel_sec_link, substring(show_product, 2))"/>
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
@@ -416,8 +418,8 @@
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if>
-			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
-			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
+			<a href="{$product_link}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
+			<a href="{$product_link}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
 			<div class="device__article-number"><xsl:value-of select="vendor_code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
@@ -446,7 +448,7 @@
 					</div>
 				</xsl:if>
 				<xsl:if test="$has_lines">
-					<a class="button" href="{show_product}">Подробнее</a>
+					<a class="button" href="{$product_link}">Подробнее</a>
 				</xsl:if>
 			</div>
 			<!-- <xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
@@ -491,6 +493,7 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+		<xsl:variable name="product_link" select="concat($sel_sec_link, substring(show_product, 2))"/>
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
@@ -500,9 +503,9 @@
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if>
-			<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}">&#160;</a>
+			<a href="{$product_link}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}">&#160;</a>
 			<div class="device__info">
-				<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
+				<a href="{$product_link}" class="device__title"><xsl:value-of select="name"/></a>
 				<div class="device__description">
 					<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 				</div>
@@ -559,7 +562,7 @@
 					</div>
 				</xsl:if>
 				<xsl:if test="$has_lines">
-					<a class="button" href="{show_product}">Подробнее</a>
+					<a class="button" href="{$product_link}">Подробнее</a>
 				</xsl:if>
 				<!-- <xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии</div>

@@ -193,6 +193,7 @@
 						<div class="catalog-map__item">
 							<div class="catalog-map__icon"><img src="{@path}{icon}" alt="" /></div>
 							<ul class="catalog-map__list">
+								<li><a href="{show_products}"><xsl:value-of select="name"/></a></li>
 								<xsl:for-each select="section">
 									<li><a href="{show_products}"><xsl:value-of select="name"/></a></li>
 								</xsl:for-each>

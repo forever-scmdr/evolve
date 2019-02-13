@@ -192,6 +192,9 @@ public class PageModelRegistry {
 		if (StringUtils.isNotBlank(query))
 			sb.append(LinkPE.QUESTION_SIGN).append(query);
 		LinkPE result = LinkPE.parseLink(sb.toString());
+		if (urlString.length() == 0 || urlString.charAt(0) != '/')
+			urlString = '/' + urlString;
+		result.setOriginalUrl(urlString);
 		if (isExclusive)
 			result.setType(LinkPE.Type.exclusive);
 		return result;

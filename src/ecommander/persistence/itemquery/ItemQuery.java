@@ -22,7 +22,10 @@ import org.apache.lucene.search.TermQuery;
 
 import javax.naming.NamingException;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -50,6 +53,8 @@ import java.util.*;
  */
 public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants.UniqueItemKeys, DBConstants.ItemIndexes {
 
+	public static final int MAX_PAGE = 20;
+
 	public interface Const {
 		String DISTINCT = "<<DISTINCT>>";
 		String JOIN = "<<JOIN_PART>>";
@@ -57,13 +62,17 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		String WHERE = "<<WHERE_PART>>";
 		String ORDER = "<<ORDER_PART>>";
 		String LIMIT = "<<LIMIT_PART>>";
+		String DEFINITE_LIMIT = "<<DEF_LIMIT_PART>>";
 		String GROUP_PARAMS_SELECT = "<<GROUP_PARAMS_PART>>";
 		String GROUP = "<<GROUP_PART>>";
 		String PARENT_ID = "<<PARENT_ID_PART>>";
+		String DEFINITE_PARENT_ID = "<<DEF_PARENT_ID_PART>>";
+		String COUNT_TABLE_PART = "<<COUNT_TABLE>>";
 
 		String GROUP_PARAM_COL = "GV";
 		String GROUP_MAIN_TABLE = "G";
 		String PARENT_ID_COL = "PID";
+		String DEFINITE_PARENT_ID_COL = "DPID";
 		String PARENT_ASSOC_COL = "PAS";
 		String PARENT_TABLE = "P.";
 		String TREE_PARENT_TABLE = "TP.";
@@ -101,6 +110,14 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
 			+ "<<WHERE_PART>> GROUP BY PID";
 
+	private static final String SINGLE_QUANTITY_QUERY
+			= "SELECT COUNT(*), <<DEF_PARENT_ID_PART>> AS DPID FROM ( "
+			+ "SELECT <<DISTINCT>> I." + I_ID + ", <<PARENT_ID_PART>> AS PID "
+			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
+			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
+			+ "<<WHERE_PART>> <<DEF_LIMIT_PART>>) AS <<COUNT_TABLE>>";
+
+
 	private boolean hasParent = false; // Есть ли критерий предка у искомого айтема (нужно ли искать потомков определенных предков)
 	private LinkedList<ItemType> itemDescStack = new LinkedList<>(); // Искомый айтем (стек используется при фильтрации по ассоциированным айтемам)
 
@@ -113,7 +130,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private boolean isParent = false; // искомый айтем ялвяется не потомком, а предком загруженных ранее айтемов
 	private User user = null; // критерий пользователя-владельца айтема (для персональных айтемов)
 	private String userGroupName = null; // критерий группы, которой принадлежит айтем
-	private Byte[] status = null; // саттус айтема (нормальный, скрытый, удаленный)
+	private Byte[] status = null; // статус айтема (нормальный, скрытый, удаленный)
 	private boolean isTree = false; // результат загрузки должен быть деревом (true) или списком (false)
 
 	
@@ -1140,7 +1157,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @throws IOException 
 	 * @throws EcommanderException 
 	 */
-	public HashMap<Long, Integer> loadTotalQuantities(Connection... conn) throws SQLException, NamingException, IOException, EcommanderException {
+	public HashMap<Long, Integer> oldLoadTotalQuantities(Connection... conn) throws SQLException, NamingException, IOException, EcommanderException {
 		if (isEmptySet())
 			return new HashMap<>();
 		// Если был полнотекстовый поиск - выполнить сначала его (посмотреть, вернет ли он какие-нибудь результаты)
@@ -1169,6 +1186,72 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			connection = conn[0];
 		}
 		try (PreparedStatement pstmt = query.prepareQuery(connection)){
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result.put(rs.getLong(2), rs.getInt(1));
+			}
+			rs.close();
+			queryFinished(connection);
+		} finally {
+			if (isOwnConnection) MysqlConnector.closeConnection(connection);
+		}
+		return result;
+	}
+	/**
+	 * Загружает общие количества айтемов, сответствующих фильтру и родителю
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 * @throws IOException
+	 * @throws EcommanderException
+	 */
+	public HashMap<Long, Integer> loadTotalQuantities(Connection... conn) throws SQLException, NamingException, IOException, EcommanderException {
+		if (isEmptySet())
+			return new HashMap<>();
+		// Если был полнотекстовый поиск - выполнить сначала его (посмотреть, вернет ли он какие-нибудь результаты)
+		if (hasFulltext())
+			loadFulltextIds();
+		// Выбрать нужный запрос
+		TemplateQuery baseQuery = TemplateQuery.createFromString(SINGLE_QUANTITY_QUERY, "Single qty query");
+		// Установить критерий статуса айтема
+		baseQuery.getSubquery(Const.STATUS).byteArray(status);
+		// Если был полнотекстовый поиск, выполнить его и добавить критерий найденных ID
+		if (hasFulltext())
+			baseQuery.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_ID).longIN(fulltext.getLoadedIds());
+		// Добавить фильтр
+		if (hasFilter())
+			filter.appendQuery(baseQuery);
+
+		int limitQty = 0;
+		if (hasLimit()) {
+			limitQty = limit.getPage() + limit.getLimit() + limit.getLimit() * MAX_PAGE;
+		}
+		TemplateQuery unionQuery = new TemplateQuery("Qty query");
+		for (Long ancestorId : ancestorIds) {
+			if (!unionQuery.isEmpty())
+				unionQuery.sql(" UNION ALL ");
+			String tableName = "QTY_" + ancestorId;
+			TemplateQuery clone = (TemplateQuery) baseQuery.createClone();
+			createParentTypeUserCriteria(clone, ancestorId);
+			clone.getSubquery(Const.DEFINITE_PARENT_ID).long_(ancestorId);
+			clone.getSubquery(Const.COUNT_TABLE_PART).sql(tableName);
+			if (hasLimit()) {
+				clone.getSubquery(Const.DEFINITE_LIMIT).sql(" LIMIT " + limitQty);
+			}
+			unionQuery.subquery(tableName).replace(clone);
+		}
+
+		// Выполнение запроса к БД
+		HashMap<Long, Integer> result = new HashMap<>();
+		boolean isOwnConnection = false;
+		Connection connection;
+		if (conn == null || conn.length == 0) {
+			isOwnConnection = true;
+			connection = MysqlConnector.getConnection();
+		} else {
+			connection = conn[0];
+		}
+		try (PreparedStatement pstmt = unionQuery.prepareQuery(connection)){
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				result.put(rs.getLong(2), rs.getInt(1));

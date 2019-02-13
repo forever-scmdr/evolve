@@ -85,21 +85,21 @@ public class ItemVariable extends Variable {
 
 	@Override
 	public ArrayList<String> getLocalValues() {
-//		boolean isTree = parentPage.getItemPEById(itemPageId).getQueryType() == ItemPE.Type.TREE;
-//		if (isTree) {
-//			List<Item> path = parentPage.getItemPEById(itemPageId).getParentRelatedFoundItemIterator().getCurrentItemPath();
-//			ArrayList<String> result = new ArrayList<>();
-//			if (StringUtils.isNotBlank(paramName)) {
-//				for (Item item : path) {
-//					result.addAll(item.outputValues(paramName));
-//				}
-//			} else {
-//				for (Item item : path) {
-//					result.add(isTranslit ? item.getKeyUnique() : item.getId() + "");
-//				}
-//			}
-//			return result;
-//		} else {
+		boolean isTree = parentPage.getItemPEById(itemPageId).getQueryType() == ItemPE.Type.TREE;
+		if (isTree) {
+			List<Item> path = parentPage.getItemPEById(itemPageId).getParentRelatedFoundItemIterator().getCurrentItemPath();
+			ArrayList<String> result = new ArrayList<>();
+			if (StringUtils.isNotBlank(paramName)) {
+				for (Item item : path) {
+					result.addAll(item.outputValues(paramName));
+				}
+			} else {
+				for (Item item : path) {
+					result.add(isTranslit ? item.getKeyUnique() : item.getId() + "");
+				}
+			}
+			return result;
+		} else {
 			Item item = parentPage.getItemPEById(itemPageId).getParentRelatedFoundItemIterator().getCurrentItem();
 			if (StringUtils.isNotBlank(paramName)) {
 				return item.outputValues(paramName);
@@ -108,7 +108,7 @@ public class ItemVariable extends Variable {
 				result.add(isTranslit ? item.getKeyUnique() : item.getId() + "");
 				return result;
 			}
-//		}
+		}
 	}
 
 	@Override

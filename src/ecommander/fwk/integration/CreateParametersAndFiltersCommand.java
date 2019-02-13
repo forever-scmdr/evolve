@@ -187,7 +187,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
 				}
 				section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
 
 				// Создать класс для продуктов из этого раздела
 				ItemType newClass = new ItemType(className, 0, classCaption, "", "",
@@ -204,7 +204,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 			} else {
 				section.clearValue(PARAMS_FILTER_PARAM);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
 			}
 			info.increaseProcessed();
 		}
