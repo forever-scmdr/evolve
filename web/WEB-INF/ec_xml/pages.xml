@@ -25,7 +25,7 @@
 			</tree>
 		</single>
 
-		<single item="custom_pages" id="custom_pages" cacheable="false" >
+		<single item="custom_pages" id="custom_pages" cacheable="true" >
 			<tree item="menu_item" id="custom_page">
 				<link name="show_page" target="page" type="exclusive">
 					<var name="p" ref="custom_page" style="translit"/>
@@ -33,7 +33,7 @@
 			</tree>
 		</single>
  
-		<list item="news" id="news" cacheable="false">
+		<list item="news" id="news" cacheable="true">
 			<link name="show_page" target="news" type="exclusive">
 				<var name="sel" ref="news" style="translit"/>
 			</link>
@@ -61,10 +61,10 @@
 		</link>
 		<link name="personal_ajax_link" target="personal_ajax"/>
 
-		<single item="modules">
+		<single item="modules" cacheable="true">
 			<list item="named_code"/>
 		</single>
-		<single item="url_seo_wrap">
+		<single item="url_seo_wrap" cacheable="true">
 			<list item="url_seo"/>
 		</single>
 	</include-definition>
@@ -169,7 +169,7 @@
 
 
 
-	<page name="section" template="" cacheable="true" critical-item="cur_sec" >
+	<page name="section" template="section" cacheable="false" critical-item="cur_sec" >
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
@@ -188,7 +188,7 @@
 			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" transit="true" assoc="* catalog_link">
 				<filter>
-					 <child item="params" transit="false"
+					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
 					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 					<sorting direction-var="direction">
