@@ -13,7 +13,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileOutputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -315,6 +314,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 					info.pushLog(product.getStringValue(NAME_PARAM) + ". Обнаружено вложенных товаров: " + lineProducts.size());
 					String parentCode = product.getStringValue(CODE_PARAM, "");
 					for (Item lineProduct : lineProducts) {
+						colIdx = -1;
 						//write aux params
 						if (writeAuxParams) {
 							aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
@@ -400,7 +400,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 	private CellStyle chooseCellStyle(Item product) {
 		if (StringUtils.isBlank(product.getStringValue(CODE_PARAM))) return noCodeStyle;
-		if (product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).doubleValue() < 0.001) return noPriceStyle;
+		if (StringUtils.isBlank(product.outputValue(PRICE_PARAM))) return noPriceStyle;
 		return null;
 	}
 
@@ -506,11 +506,13 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		String auxParamsVar = getVarSingleValue(AUX_PARAMS_VAR);
 		String productsVar = getVarSingleValue(PRODUCTS_VAR);
 		String manualsVar = getVarSingleValue(MANUALS_VAR);
+		String lineProductsVar = getVarSingleValue(LINE_PRODUCTS_VAR);
 
 		writeAllProductParams = (YES.equals(prodParamsVar)) || writeAllProductParams && !NO.equals(prodParamsVar);
 		writeAuxParams = (YES.equals(auxParamsVar)) || writeAuxParams && !NO.equals(auxParamsVar);
 		writeProducts = (YES.equals(productsVar)) || writeProducts && !NO.equals(productsVar);
 		writeManuals = (YES.equals(manualsVar)) || writeManuals && !NO.equals(manualsVar);
+		writeLineProducts = (YES.equals(lineProductsVar)) || writeLineProducts && !NO.equals(lineProductsVar);
 
 		writeManuals = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter(MANUAL_PARAM) != null && writeManuals;
 		hasUnits = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter("unit") != null;

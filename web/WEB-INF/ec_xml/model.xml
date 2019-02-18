@@ -151,7 +151,7 @@
 		<child item="section" />
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
-		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
+		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
 	</item>
 
 	<!--Является также и разделом для парсинга-->
