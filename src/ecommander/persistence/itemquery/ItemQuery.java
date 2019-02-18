@@ -132,6 +132,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private String userGroupName = null; // критерий группы, которой принадлежит айтем
 	private Byte[] status = null; // статус айтема (нормальный, скрытый, удаленный)
 	private boolean isTree = false; // результат загрузки должен быть деревом (true) или списком (false)
+	private boolean isVeryLargeResult = false; // ожидается ли очень длинный результат (после загрузки количества)
 
 	
 	public ItemQuery(ItemType itemDesc, Byte... status) {
@@ -674,7 +675,11 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				query.getSubquery(Const.WHERE).AND().col_IN(P_DOT + IP_CHILD_ID).longIN(parentIds)
 						.AND().col_IN(P_DOT + IP_ASSOC_ID).byteIN(assocId)
 						.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()));
-				query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_CHILD_ID);
+				if (parentIds.length == 1) {
+					query.getSubquery(Const.PARENT_ID).long_(parentIds[0]);
+				} else {
+					query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_CHILD_ID);
+				}
 			} else {
 				query.getSubquery(Const.JOIN).INNER_JOIN(ITEM_PARENT_TBL + " AS P", P_DOT + IP_CHILD_ID, I_DOT + I_ID);
 				query.getSubquery(Const.WHERE).AND().col_IN(P_DOT + IP_PARENT_ID).longIN(parentIds)
@@ -688,13 +693,21 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 							.AND().col(TP_DOT + IP_PARENT_DIRECT).byte_((byte)1);
 					query.getSubquery(Const.PARENT_ID).sql(TP_DOT + IP_PARENT_ID);
 				} else {
-					query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_PARENT_ID);
+					if (parentIds.length == 1) {
+						query.getSubquery(Const.PARENT_ID).long_(parentIds[0]);
+					} else {
+						query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_PARENT_ID);
+					}
 				}
 			}
-			if (!isTransitive)
-				query.getSubquery(Const.WHERE).AND().col(P_DOT + IP_PARENT_DIRECT).byte_((byte)1);
+			if (isTransitive) {
+				query.getSubquery(Const.WHERE).AND().col_IN(P_DOT + IP_PARENT_DIRECT).byteIN((byte) 1, (byte) 0);
+			} else {
+				query.getSubquery(Const.WHERE).AND().col(P_DOT + IP_PARENT_DIRECT).byte_((byte) 1);
+			}
 			// Добавить DISTINCT если загрузка сразу по нескольким ассоциациям
-			if (assocId.length > 1) {
+			// DISTINCT добавляется только если результат не ожидается очень большим (для оптимизации)
+			if (assocId.length > 1 && !isVeryLargeResult) {
 				TemplateQuery distinct = query.getSubquery(Const.DISTINCT);
 				if (distinct != null && distinct.isEmpty())
 					distinct.sql("DISTINCT");
@@ -789,6 +802,12 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 						orderBy.sql(TP_DOT + IP_WEIGHT);
 					} else {
 						orderBy.sql(P_DOT + IP_WEIGHT);
+						// Оптимизация извлечения - если есть лимит и если он небольшой, ограничить
+						// только первыми несколькими записями (чтобы был задействован весь мндекс для сортировки)
+						if (hasLimit() && limit.getPage() == 1 && limit.getLimit() < 5) {
+							query.getSubquery(Const.WHERE).AND()
+									.col(P_DOT + IP_WEIGHT, " < ").int_(Item.WEIGHT_STEP * limit.getLimit() * 2);
+						}
 					}
 				} else {
 					orderBy.sql(I_DOT + I_ID);
@@ -1224,7 +1243,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 
 		int limitQty = 0;
 		if (hasLimit()) {
-			limitQty = limit.getPage() + limit.getLimit() + limit.getLimit() * MAX_PAGE;
+			limitQty = limit.getPage() * limit.getLimit() + limit.getLimit() * MAX_PAGE;
 		}
 		TemplateQuery unionQuery = new TemplateQuery("Qty query");
 		for (Long ancestorId : ancestorIds) {
@@ -1254,7 +1273,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		try (PreparedStatement pstmt = unionQuery.prepareQuery(connection)){
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				result.put(rs.getLong(2), rs.getInt(1));
+				int qty = rs.getInt(1);
+				if (qty == limitQty)
+					isVeryLargeResult = true;
+				result.put(rs.getLong(2), qty);
 			}
 			rs.close();
 			queryFinished(connection);
