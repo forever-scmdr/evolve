@@ -131,7 +131,7 @@
 	<!--/////////////                             КАТАЛОГ                                  ////////////-->
 	<!--/////////////                                                                      ////////////-->
 
-	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true"/>
+	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true" ag-id="6" ag-hash="-1147981728"/>
 
 	<item name="original_gallery" caption="Исходная галерея" ag-id="1209" ag-hash="743720676" >
 		<parameter name="watermark_filename"  type="string" caption="Название файла водяного знака"/>
@@ -151,7 +151,7 @@
 		<child item="section" />
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
-		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
+		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
 	</item>
 
 	<!--Является также и разделом для парсинга-->
