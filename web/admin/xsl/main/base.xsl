@@ -151,6 +151,7 @@
 										</div>
 										<div class="actions pale" id="buffer-actions">
 											<span>С буфером:</span>
+											<a href="admin_paste_selected.action{$base-vars}&amp;preserve_buffer_content=yes" class="copy paste-preserve set-action total-replace" rel="multi-item-action-form" title="вставить выделенное, НЕ очищать буфер"></a>
 											<a href="admin_paste_selected.action{$base-vars}" class="copy paste set-action total-replace" rel="multi-item-action-form" title="вставить выделенное"></a>
 											<a href="admin_move_selected.action{$base-vars}" class="copy move set-action total-replace" rel="multi-item-action-form" title="переместить выделенное"></a>
 											<a href="admin_delete_selected_from_buffer.action{$base-vars}" class="delete set-action" rel="multi-item-action-form" title="удалить из буфера"></a>
