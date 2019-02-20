@@ -1013,16 +1013,20 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 
 	/**
 	 * Загрузить один айтем по уникальному ключу
-	 * @param key
-	 * @param conn
+	 * @param keys
 	 * @return
 	 * @throws Exception
 	 */
-	public static Item loadByUniqueKey(String key, Connection... conn) throws Exception {
-		ArrayList<Item> items = loadByUniqueKey(Arrays.asList(key), conn);
-		if (items.size() > 0)
-			return items.get(0);
-		return null;
+	public static LinkedHashMap<String, Item> loadByUniqueKey(String... keys) throws Exception {
+		LinkedHashMap<String, Item> result = new LinkedHashMap<>();
+		for (String key : keys) {
+			result.put(key, null);
+		}
+		ArrayList<Item> items = loadByUniqueKey(Arrays.asList(keys));
+		for (Item item : items) {
+			result.put(item.getKeyUnique(), item);
+		}
+		return result;
 	}
 	/**
 	 * Загрузить айтем по значению одного параметра

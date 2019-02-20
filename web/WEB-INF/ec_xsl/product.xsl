@@ -7,9 +7,6 @@
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
-	<xsl:variable name="link_parts" select="tokenize(page/source_link, '/')"/>
-	<xsl:variable name="sel_sec_link" select="string-join($link_parts[position() != last() - 1], '/')"/>
-
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -58,7 +55,7 @@
 		<div class="path-container">
 			<div class="path">
 				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
-				<xsl:for-each select="page/catalog//section[.//show_products = $sel_sec_link]">
+				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
