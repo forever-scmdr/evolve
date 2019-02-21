@@ -99,6 +99,7 @@
 		<child item="section" />
 		<child item="product"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
+		<parameter name="show_devices" type="byte" caption="Показать товары" domain="0-1"/>
 		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
@@ -293,8 +294,7 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
-	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" default-page="news_item" ag-id="11" ag-hash="300774655">
-		<child item="seo" single="true"/>
+	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" default-page="news_item" super="seo_container" ag-id="11" ag-hash="300774655">
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
@@ -303,8 +303,7 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="news" caption="Новости раздел" default-page="news" ag-id="12" ag-hash="3377875">
-		<child item="seo" single="true"/>
+	<item name="news" caption="Новости раздел" default-page="news"  super="seo_container" ag-id="12" ag-hash="3377875">
 		<child item="news_item"/>
 	</item>
 
@@ -321,11 +320,12 @@
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
-	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="15" ag-hash="-251149995">
-		<child item="seo" single="true"/>
+	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" super="seo_container" ag-id="2901" ag-hash="-251149995">
+		<!-- <child item="seo" single="true"/> -->
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
 	</item>
+
 
 	<item name="contacts" caption="Контакты" ag-id="21" ag-hash="-567451565">
 		<child item="seo" single="true"/>
@@ -358,8 +358,8 @@
 		<child item="custom_page"/>
 	</item>
 
-	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" default-page="page" ag-id="27" ag-hash="-1777660259">
-		<child item="seo" single="true"/>
+	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" default-page="page" super="seo_container" ag-id="27" ag-hash="-1777660259">
+	<!-- 	<child item="seo" single="true"/> -->
 		<child item="custom_page"/>
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей"/>

@@ -9,7 +9,7 @@
 
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
-	<xsl:variable name="view" select="page/variables/view"/>
+	<xsl:variable name="view" select="if(page/variables/view) then page/variables/view else 'table'"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
@@ -18,8 +18,8 @@
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
-	<xsl:variable name="title" select="concat($sel_sec/name, ' купить в Минске с доставкой - интернет магазин SakuraBel')"/>
-	<xsl:variable name="meta_description" select="concat('Купить ', $sel_sec/name, ' в Минске ✅ Доставка во все регионы Беларуси. Хорошая цена! Звоните ☎☎☎  +375 17 396 44 29, +375 29 311 44 29 Консультация и установка')"/>
+	<xsl:variable name="title" select="concat($sel_sec/name, ' купить в Минске с доставкой - интернет магазин САКУРА БЕЛ')"/>
+	<xsl:variable name="meta_description" select="concat($sel_sec/name, ' в Минске ✅ Доставка по Беларуси. Хорошая цена! Звоните ☎☎☎  +375 17 396 44 29 и заказывайте')"/>
 	<xsl:variable name="default_h1" select="$sel_sec/name"/>
 
 	<xsl:template name="CONTENT">
@@ -30,7 +30,7 @@
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:if test="current()/@id != $sel_sec_id">
 						<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-						<a href="{if (position() = 1) then show_section else show_products}">
+						<a href="{if (section) then show_section else show_products}">
 							<xsl:value-of select="name"/>
 						</a>
 					</xsl:if>
@@ -39,6 +39,7 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1><xsl:value-of select="$h1"/></h1>
+		<xsl:call-template name="SEO_TEXT"/>
 		<div class="page-content m-t">
 			<xsl:if test="$sel_sec/params_filter/filter">
 				<div class="toggle-filters">
@@ -95,7 +96,7 @@
 						<!--</div>-->
 						<span>
 							<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
-							        onchange="window.location.href = $(this).find(':selected').attr('link')">
+							        onchange="window.location.replace($(this).find(':selected').attr('link'))">
 								<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
 								<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
 								<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
@@ -108,7 +109,7 @@
 						<span>Кол-во на странице:</span>
 						<span>
 							<select class="form-control" value="{page/variables/limit}"
-							        onchange="window.location.replace = $(this).find(':selected').attr('link')">
+							        onchange="window.location.replace($(this).find(':selected').attr('link'))">
 								<option value="12" link="{page/set_limit_12}">12</option>
 								<option value="24" link="{page/set_limit_24}">24</option>
 								<option value="10000" link="{page/set_limit_all}">все</option>
@@ -129,7 +130,7 @@
 
 		<xsl:if test="$sel_sec/product_pages">
 		<div class="pagination">
-			<span>Странциы:</span>
+			<span>Страницы:</span>
 			<div class="pagination-container">
 				<xsl:for-each select="$sel_sec/product_pages/page">
 					<a href="{link}" class="{'active'[current()/@current]}"><xsl:value-of select="number"/></a>
@@ -137,7 +138,7 @@
 			</div>
 		</div>
 		</xsl:if>
-		<xsl:call-template name="SEO_TEXT"/>
+		
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 

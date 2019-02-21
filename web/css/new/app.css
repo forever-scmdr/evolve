@@ -5929,7 +5929,7 @@ img {
   flex-wrap: wrap;
   margin-bottom: 3rem; }
   .desktop .header-container > div {
-    padding-top: 2rem; }
+    padding-top: 1rem; }
     .desktop .header-container > div p {
       margin-bottom: .5rem; }
   .desktop .header-container .logo img {
@@ -5955,7 +5955,7 @@ img {
         padding-left: 1rem;
         padding-right: 1rem; }
       .desktop .header-container .search form input[type="submit"] {
-        padding: .8rem 2rem;
+        padding: .3rem 2rem;
         margin-left: 1rem;
         height: unset;
         font-size: 1.2em; }
@@ -5964,7 +5964,7 @@ img {
     display: flex; }
     .desktop .header-container .main-menu a {
       text-align: center;
-      padding: 14px 10px;
+      padding: 10px 10px;
       flex: auto;
       white-space: nowrap; }
 
@@ -6104,7 +6104,7 @@ img {
       top: 3.6rem;
       left: 0;
       background-color: #B21010; }
-  .banners-container h4 {
+  .banners-container h4,.banners-container .h4 {
     margin-top: 0;
     font-size: 1em;
     font-weight: bold;
@@ -6155,12 +6155,15 @@ img {
   margin-bottom: 2rem;
   border: 1px solid #eeeeee; }
   .filters > div {
-    flex-basis: 24%;
+    flex-basis: 32%;
     margin-bottom: 1rem;
     background-color: #eeeeee;
     padding: .5rem;
     overflow: hidden;
-    margin-right: 1rem; }
+    margin-right: 2%; }
+  .filters > div:nth-child(3n+0) {
+    margin-right: 0;
+  }
   .filters .toggle-filters {
     flex-basis: 100%;
     background-color: transparent; }
@@ -6173,7 +6176,7 @@ img {
       font-size: 1.3rem; }
   .filters .values {
     overflow-y: auto;
-    height: 10rem;
+    height: 15rem;
     background-color: #fff;
     padding: 0 1rem; }
     .filters .values .range {
@@ -7047,7 +7050,7 @@ input.submit {
 
 
 .popup-catalog-menu {
-  top: 17rem;
+  top: 14.3rem;
 }
 .popup-text-menu {
   background-color: #fff;
@@ -7074,3 +7077,46 @@ input.submit {
       color: #000;
       background-color: #fff;
       font-weight: bold; }
+
+
+
+.has-top-stripe img {
+    margin-left: 1rem;
+}
+.filters label {
+  font-size: .9em;
+  line-height: 1;
+}
+
+
+/* more-info */
+.more-info {
+  font-size: 14px;
+}
+.more-info__title {
+    font-weight: bold;
+    /*margin-top: 16px;*/
+    margin-bottom: 8px;
+    display: block;
+}
+.more-info ul {
+    padding-left: 18px;
+    list-style-type: square;
+}
+.more-info__phones {
+  list-style-type: none;
+  padding-left: 2px !important;
+}
+.more-info__phones li {
+  list-style-type: none;
+}
+.phone-logo {
+  display: inline-block;
+  height: 14px;
+  width: 14px;
+  text-align: center;
+  margin-right: 8px;
+}
+/* more-info end */
+.spoiler-text{display: none;}
+.spoiler-toggle{text-decoration: underline; cursor: pointer;}

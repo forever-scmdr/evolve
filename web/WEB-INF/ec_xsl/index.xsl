@@ -147,7 +147,7 @@
 		<div class="has-items-carousel">
 			<div class="container">
 				<div class="more-products">
-					<div class="big-title h4">Лидеры продаж</div>
+					<div class="big-title h4">Рождественская распродажа</div>
 					<div class="slick-slider catalog-items">
 						<xsl:apply-templates select="page/product"/>
 					</div>
@@ -155,6 +155,11 @@
 			</div>
 		</div>
 		
+		<div class="has-news">
+			<div class="container">
+				<xsl:call-template name="SEO_TEXT"/>
+			</div>
+		</div>
 		
 		<div class="has-news">
 			<div class="container">

@@ -4,8 +4,8 @@
 <!-- ******************************* Включение для разделов каталога ****************************** -->
 
 	<include-definition name="COMMON">
-        <single item="catalog" id="catalog_main" cacheable="true">
-            <tree item="section" id="sec" tag="section">
+		<single item="catalog" id="catalog_main" cacheable="true">
+			<tree item="section" id="sec" tag="section">
 				<link name="show_section" target="sub">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
@@ -35,10 +35,10 @@
 		<link name="register_link" target="register"/>
 		<link name="login_form_link" target="login_form_ajax"/>
 		<link name="personal_ajax_link" target="personal_ajax"/>
-        <single item="modules" cacheable="true">
+		<single item="modules" cacheable="true">
 			<list item="named_code"/>
 		</single>
-        <single item="url_seo_wrap" cacheable="true">
+		<single item="url_seo_wrap" cacheable="true">
 			<list item="url_seo"/>
 		</single>
 	</include-definition>
@@ -48,7 +48,7 @@
 		<single item="main_page" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
-			<single item="seo" assoc="seo"/>
+			<single item="seo" assoc="seo"/><single item="seo"/>
 		</single>
 		<single item="news">
 			<list item="news_item" id="ni" transit="true">
@@ -91,15 +91,15 @@
 	</page>
 
 
-    <page name="catalog" template="catalog" cacheable="true">
-        <include name="COMMON"/>
-        <single item="catalog">
-            <single item="seo" assoc="seo"/>
-        </single>
-    </page>
+	<page name="catalog" template="catalog" cacheable="true">
+		<include name="COMMON"/>
+		<single item="catalog">
+			<single item="seo" assoc="seo"/><single item="seo"/>
+		</single>
+	</page>
 
 
-    <page name="section" template="section" cacheable="true" critical-item="cur_sec">
+	<page name="section" template="section" cacheable="true" critical-item="cur_sec">
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
@@ -111,10 +111,11 @@
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<single item="seo" assoc="seo"/>
+			<single item="seo"/>
 			<list item="product" id="prod" transit="true">
 				<filter>
 					<child item="params" transit="false"
-					       ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
+						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
 					<sorting direction-var="direction"><var var="sort"/></sorting>
 					<limit><var var="limit"/></limit>
 					<pages><var var="page"/></pages>
@@ -148,6 +149,9 @@
 			<list item="product" tag="max">
 				<aggregation parameter="price" function="MAX"/>
 			</list>
+			<link name="canonical_link" type="exclusive" target="section">
+				<var name="sec" var="sec" style="translit"/>
+			</link>
 		</single>
 		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="table"/>
@@ -198,14 +202,20 @@
 	</page>
 
 
-    <page name="sub" template="sub" cacheable="true">
-        <request>
-            <var name="sec" style="translit"/>
-        </request>
-        <single item="section" var="sec" cacheable="true" cache-vars="sec" tag="current_section">
-            <single item="seo" assoc="seo"/>
-            <list item="section" id="subsec">
-                <list item="product" transit="true">
+	<page name="sub" template="sub" cacheable="true">
+		<request>
+			<var name="sec" style="translit"/>
+			<var name="page" value="1"/>
+			<!-- <var name="view" value="table" scope="cookie"/> -->
+			<var name="limit" value="12" scope="cookie"/>
+			<var name="sort" scope="cookie"/>
+			<var name="direction" value="ASC" scope="cookie"/>
+		</request>
+		<single item="section" var="sec" cacheable="true" id="cur_sec" cache-vars="sec page limit sort direction" tag="current_section">
+			<single item="seo" assoc="seo"/>
+			<single item="seo"/>
+			<list item="section" id="subsec">
+				<list item="product" transit="true">
 					<filter>
 						<limit><var value="1" /></limit>
 					</filter>
@@ -218,6 +228,34 @@
 					<var name="sec" ref="subsec" style="translit"/>
 				</link>
 			</list>
+			<list item="product" id="prod" transit="true">
+				<filter>
+					<limit><var var="limit"/></limit>
+					<pages><var var="page"/></pages>
+				</filter>
+				<link name="show_product" target="product">
+					<var name="prod" ref="prod" style="translit"/>
+				</link>
+				<link name="to_cart" target="cart_action">
+					<var name="action" value="addToCart"/>
+					<var name="code" ref="prod" parameter="code"/>
+				</link>
+				<link name="to_fav" target="cookie_list_action">
+					<var name="update_cookie_name" value="favourites"/>
+					<var name="update_cookie_value" ref="prod" parameter="code"/>
+					<var name="action" value="add"/>
+					<var name="src_page" value="fav_ajax"/>
+				</link>
+				<link name="to_compare" target="cookie_list_action">
+					<var name="update_cookie_name" value="compare"/>
+					<var name="update_cookie_value" ref="prod" parameter="code"/>
+					<var name="action" value="add"/>
+					<var name="src_page" value="compare_ajax"/>
+				</link>
+			</list>
+			<!-- <link name="canonical_link" target="sub">
+				<var name="sec" var="sec" style="translit"/>
+			</link> -->
 		</single>
 		<include name="COMMON"/>
 	</page>
@@ -270,14 +308,14 @@
 
 
 
-    <page name="product" template="product" cacheable="true">
+	<page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="translit"/>
 		</request>
-        <single item="product" id="prod" var="prod" cacheable="true" cache-vars="prod">
-			<single item="seo" assoc="seo"/>
+		<single item="product" id="prod" var="prod" cacheable="true" cache-vars="prod">
+			<single item="seo" assoc="seo"/><single item="seo"/>
 			<single item="params"/>
-	        <single item="product_extra"/>
+			<single item="product_extra"/>
 			<ancestor item="section" transit="false" tag="product_section"/>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
@@ -295,52 +333,55 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
+			<link name="canonical_link" type="exclusive" target="product">
+				<var name="prod" var="prod" style="translit"/>
+			</link>
 		</single>
 		<include name="COMMON"/>
 	</page>
 
 
-    <page name="news" template="news" cacheable="true">
-        <request>
-            <var name="p" value="1"/>
-        </request>
-        <single item="news">
-            <single item="seo" assoc="seo"/>
-            <list item="news_item" id="ni">
-                <filter>
-                    <sorting direction="DESC">
-                        <var value="date"/>
-                    </sorting>
-                    <limit>
-                        <var value="12"/>
-                    </limit>
-                    <pages>
-                        <var var="p"/>
-                    </pages>
-                </filter>
-                <link name="show_news_item" target="news_item" type="exclusive">
-                    <var name="ni" ref="ni" style="translit"/>
-                </link>
-            </list>
-        </single>
-        <include name="COMMON"/>
-    </page>
+	<page name="news" template="news" cacheable="true">
+		<request>
+			<var name="p" value="1"/>
+		</request>
+		<single item="news">
+			<single item="seo" assoc="seo"/><single item="seo"/>
+			<list item="news_item" id="ni">
+				<filter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<limit>
+						<var value="12"/>
+					</limit>
+					<pages>
+						<var var="p"/>
+					</pages>
+				</filter>
+				<link name="show_news_item" target="news_item" type="exclusive">
+					<var name="ni" ref="ni" style="translit"/>
+				</link>
+			</list>
+		</single>
+		<include name="COMMON"/>
+	</page>
 
-    <page name="news_item" template="news_item" cacheable="true">
-        <request>
-            <var name="ni" style="translit"/>
-        </request>
-        <single item="news_item" var="ni" cacheable="true" cache-vars="ni">
-            <single item="seo" assoc="seo"/>
-            <ancestor item="news"/>
-        </single>
-        <include name="COMMON"/>
-    </page>
+	<page name="news_item" template="news_item" cacheable="true">
+		<request>
+			<var name="ni" style="translit"/>
+		</request>
+		<single item="news_item" var="ni" cacheable="true" cache-vars="ni">
+			<single item="seo" assoc="seo"/><single item="seo"/>
+			<ancestor item="news"/>
+		</single>
+		<include name="COMMON"/>
+	</page>
 
 
 	<page name="contacts" template="contacts" cacheable="false">
 		<single item="contacts" cacheable="false">
-			<single item="seo" assoc="seo"/>
+			<single item="seo" assoc="seo"/><single item="seo"/>
 		</single>
 		<include name="COMMON"/>
 	</page>
@@ -353,25 +394,25 @@
 	</page>
 
 
-    <page name="page" cacheable="true" template="page">
-        <request>
-            <var name="p" style="translit"/>
-        </request>
-        <single item="custom_page" var="p" cacheable="true" cache-vars="p">
-            <single item="seo" assoc="seo"/>
-            <list item="custom_page" id="child">
-                <link target="page" type="exclusive" name="show_page">
-                    <var ref="child" style="translit" name="p"/>
-                </link>
-            </list>
-            <ancestor item="custom_page" id="parents" tag="parent" transit="true">
-                <link target="page" type="exclusive" name="show_page">
-                    <var ref="parents" style="translit" name="p"/>
-                </link>
-            </ancestor>
-        </single>
-        <include name="COMMON"/>
-    </page>
+	<page name="page" cacheable="true" template="page">
+		<request>
+			<var name="p" style="translit"/>
+		</request>
+		<single item="custom_page" var="p" cacheable="true" cache-vars="p">
+			<single item="seo" assoc="seo"/><single item="seo"/>
+			<list item="custom_page" id="child">
+				<link target="page" type="exclusive" name="show_page">
+					<var ref="child" style="translit" name="p"/>
+				</link>
+			</list>
+			<ancestor item="custom_page" id="parents" tag="parent" transit="true">
+				<link target="page" type="exclusive" name="show_page">
+					<var ref="parents" style="translit" name="p"/>
+				</link>
+			</ancestor>
+		</single>
+		<include name="COMMON"/>
+	</page>
 
 
 	<page name="feedback_ajax" template="feedback_ajax">
@@ -573,9 +614,9 @@
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<list item="product" id="prod">
 			<filter>
-                <parameter name="code" compare="SOME">
-                    <var var="favourites"/>
-                </parameter>
+				<parameter name="code" compare="SOME">
+					<var var="favourites"/>
+				</parameter>
 			</filter>
 			<link name="from_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
@@ -596,9 +637,9 @@
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<list item="product" id="prod">
 			<filter>
-                <parameter name="code" compare="SOME">
-                    <var var="compare"/>
-                </parameter>
+				<parameter name="code" compare="SOME">
+					<var var="compare"/>
+				</parameter>
 			</filter>
 			<link name="from_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
@@ -631,9 +672,9 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-                <parameter name="code" compare="SOME">
-                    <var var="favourites"/>
-                </parameter>
+				<parameter name="code" compare="SOME">
+					<var var="favourites"/>
+				</parameter>
 			</filter>
 			<link name="from_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
@@ -669,9 +710,9 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-                <parameter name="code" compare="SOME">
-                    <var var="compare"/>
-                </parameter>
+				<parameter name="code" compare="SOME">
+					<var var="compare"/>
+				</parameter>
 			</filter>
 			<link name="from_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
@@ -949,6 +990,7 @@
 		</command>
 	</page>
 
+	
 	<!--
 		Создать файл YML формата со всеми разделами и товарами каталога
 	-->
@@ -963,5 +1005,4 @@
 			<result name="error" type="redirect"/>
 		</command>
 	</page>
-
 </site>

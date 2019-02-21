@@ -96,7 +96,6 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 		}
 	);
 }
-
 $(document).on('click', '.show-sub',function(e){
 	e.preventDefault();
 	var href = $(this).attr("href");
@@ -112,4 +111,8 @@ $(document).on("click", "body", function(e){
 	if(trg.closest(".popup-text-menu").length == 0 && !trg.is(".show-sub")){
 		$(".popup-text-menu").hide();
 	}
+});
+$(document).on("click", ".spoiler-toggle", function(e){
+	e.preventDefault();
+	$(this).closest(".spoiler").find(".spoiler-text").toggle();
 });

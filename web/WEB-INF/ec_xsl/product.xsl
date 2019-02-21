@@ -5,8 +5,8 @@
 
 	<xsl:variable name="p" select="page/product"/>
 
-	<xsl:variable name="title" select="concat($p/name, ' купить в Минске - интернет магазин SakuraBel')"/>
-	<xsl:variable name="meta_description" select="concat('Купить недорого ', $p/name, ' в магазине SakuraBel в Минске ✅ Доставка во все регионы Беларуси. Доступная цена! ☎☎☎  +375 17 396 44 29, +375 29 311 44 29')"/>
+	<xsl:variable name="title" select="concat($p/name, ' купить в Минске в розницу и оптом - Сакура Бел')"/>
+	<xsl:variable name="meta_description" select="concat('', $p/name, ' в магазине SakuraBel в Минске ✅ Доставка во все регионы Беларуси. Доступная цена! ☎☎☎  +375 17 396 44 29, +375 29 311 44 29')"/>
 
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -14,7 +14,7 @@
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
-	<xsl:variable name="default_h1" select="concat($p/vendor_code, ' ', $p/name)"/>
+	<xsl:variable name="default_h1" select="if($p/vendor_code != '') then concat($p/vendor_code, ' ', $p/name) else $p/name"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -50,7 +50,7 @@
 				<a href="/">Главная страница</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{if (position() = 1) then show_section else show_products}"><xsl:value-of select="name"/></a>
+					<a href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -69,10 +69,10 @@
 			<div class="gallery">
 				<div class="fotorama" data-width="100%" data-maxwidth="100%" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
 					<xsl:for-each select="$p/gallery">
-						<img src="{$p/@path}{.}"/>
+						<img src="{$p/@path}{.}" alt="{$h1}{if(count($p/gallery) &gt; 1) then concat(' ',current()/position()) else ''}"/>
 					</xsl:for-each>
 					<xsl:if test="not($p/gallery)">
-						<img src="img/no_image.png"/>
+						<img src="img/no_image.png" alt="{$h1}"/>
 					</xsl:if>
 				</div>
 			</div>
@@ -121,10 +121,10 @@
 				</div>
 				-->
 				<div class="info-blocks">
-					<div class="info-block">
-						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
+					<!--<div class="info-block">
+						<xsl:value-of select="$p/description" disable-output-escaping="yes"/> 
 					</div>
-					<!--
+					
 					<div class="info-block">
 						<h4>Рассрочка от 3 до 12 месяцев</h4>
 						<p><a href="">Условия рассрочки</a></p>
@@ -134,6 +134,41 @@
 						<p>При сумме заказа до 100 рублей, доставка — 5 рублей.</p>
 					</div>
 					-->
+					<div class="more-info">
+						<div class="more-info__title">Заказать по телефону</div>
+						<ul class="more-info__phones">
+							<li><div class="phone-logo"><img src="img/phone_logo.svg" alt=""/></div><span>(+375 17) 396-44-29 - многоканальный;</span></li>
+							<li><div class="phone-logo"><img class="phone-logo" src="img/velcom_logo.svg" alt="velcom-logo"/></div><span>(+375 29) 311-44-29 - velcom;</span></li>
+							<li><div class="phone-logo"><img class="phone-logo" src="img/velcom_logo.svg" alt="velcom-logo"/></div><span>(+375 29) 333-44-29 - velcom;</span></li>
+							<li><div class="phone-logo"><img class="phone-logo" src="img/mts_logo.svg" alt="mts-logo"/></div><span>(+375 29) 555-44-29 - МТС.</span></li>
+						</ul>
+						<a class="more-info__title" data-toggle="collapse" href="#info-pay">Оплата</a>
+						<div class="collapse" id="info-pay">
+							<ul>
+								<li>через расчетный счет (для юр. лиц)</li>
+								<li>наличными в офисе продаж (для физ. лиц)</li>
+								<li>банковской картой в офисе продаж (для физ. лиц)</li>
+							</ul>
+						</div>
+						<a class="more-info__title" data-toggle="collapse" href="#info-delivery">Доставка</a>
+						<div class="collapse" id="info-delivery">
+							<ul>
+								<li>самовывоз из офиса отдела продаж по адресу: Минск, ул. Беломорская 4А, офис 2А.</li>
+								<li>транспортом Поставщика и/или Курьерской службой. Минимальная сумма для доставки 500.00 р.</li>
+							</ul>
+						</div>
+						<a class="more-info__title" data-toggle="collapse" href="#info-discount">Скидки</a>
+						<div class="collapse" id="info-discount">
+							<ul>
+								<li>Смотрите товар в разделе - <a href="https://www.sakurabel.com/sub/rasprodaga/" target="_blank" rel="nofollow"><strong>Распродажа</strong></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="share-block">
+						<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
+						<script src="//yastatic.net/share2/share.js"></script>
+						<div class="ya-share2" data-services="facebook,viber,whatsapp,skype,telegram"></div>
+					</div>
 				</div>
 			</div>
 			<div class="description">
@@ -175,7 +210,9 @@
 								</tr>
 							</xsl:for-each>
 						</table>
-
+						<div class="info-block">
+						<xsl:value-of select="$p/description" disable-output-escaping="yes"/> 
+						</div>
 					</div>
 					<!--<div role="tabpanel" class="tab-pane" id="tab2">-->
 						<!--<h4>Технические данные</h4>-->

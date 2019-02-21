@@ -15,9 +15,8 @@
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $default_h1"/>
 
 	<xsl:variable name="meta_description" select="''" />
-	<xsl:variable name="base" select="'http://www.sakurabel.com'" />
+	<xsl:variable name="base" select="'https://www.sakurabel.com'" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
-	<xsl:variable name="canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''"/>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
@@ -45,7 +44,7 @@
 		<div class="container header desktop">
 			<div class="header-container" style="position: relative;">
 				<div class="logo">
-					<a href="{$base}"><img src="img/logo.png" alt="" /></a>
+					<a href="{$base}"><img src="img/logo.png" alt="sakurabel.com" /></a>
 				</div>
 				<div class="search">
 					<form action="{page/search_link}" method="post">
@@ -122,7 +121,7 @@
 		<div class="header mobile">
 			<div class="header-container">
 				<a href="{$base}" class="logo">
-					<img src="img/logo.png" alt="" style="height: 1.5em; max-width: 100%;"/>
+					<img src="img/logo.png" alt="sakurabel.com" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
 					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
@@ -162,9 +161,9 @@
 							</div>
 							<div class="rating" itemscope="" itemtype="http://data-vocabulary.org/Review-aggregate">
 				<p>
-					<span itemprop="itemreviewed">Наш рейтинг</span> 4,8
+					<span itemprop="itemreviewed">Наш рейтинг</span> 4,9
 					<br />
-					голосов: <span itemprop="votes">178</span>
+					голосов: <span itemprop="votes">250</span>
 					<span itemprop="rating" itemscope="" itemtype="http://data-vocabulary.org/Rating">
                         <meta itemprop="value" content="4.8"/>
                         <meta itemprop="best" content="5"/>
@@ -181,8 +180,8 @@
 							<div class="block">
 								<p>Принимаем к оплате<xsl:call-template name="BR"/> пластиковые карточки</p>
 								<div class="cards">
-									<img src="img/mastercard.svg" alt=""/>
-									<img src="img/visa.svg" alt=""/>
+									<img src="img/mastercard.svg" alt="mastercard"/>
+									<img src="img/visa.svg" alt="visa"/>
 								</div>
 							</div>
 							<div class="block contacts">
@@ -552,7 +551,7 @@
 
 
 <xsl:template match="/">
-	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
+	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
 	</xsl:text>
 	<html lang="ru">
 		<head>
@@ -694,7 +693,6 @@
 
 	<xsl:template name="SEO">
 		<xsl:variable name="quote">"</xsl:variable>
-		<link rel="canonical" href="{concat($main_host, $canonical)}" />
 		<xsl:if test="$seo">
 			<xsl:apply-templates select="$seo"/>
 		</xsl:if>
@@ -704,10 +702,11 @@
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
+		<link rel="canonical" href="{if(page/@name = 'index') then $base else if(//canonical_link != '') then concat($base, //canonical_link) else concat($base, '/', /page/source_link)}" />
 		<xsl:value-of select="page/common/google_verification" disable-output-escaping="yes"/>
 		<xsl:value-of select="page/common/yandex_verification" disable-output-escaping="yes"/>
 		<xsl:call-template name="MARKUP" />
-
+		<xsl:call-template name="PAGINATION_LINKS" />
 	</xsl:template>
 
 	<xsl:template name="MARKUP"/>
@@ -724,10 +723,28 @@
 	<xsl:template name="SEO_TEXT">
 		<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
 		<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
-		<xsl:if test="$seo[1]/text != ''">
+		<xsl:if test="$seo[1]/text != '' and (page/variables/page = '1' or not(page/variables/page))">
 			<div class="page-content m-t">
-				<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
 			</div>
 		</xsl:if>
 	</xsl:template>
+
+	<xsl:template name="PAGINATION_LINKS">
+		<xsl:variable name="pages" select="//*[ends-with(name(), '_pages')]"/>
+		<xsl:if test="$pages">
+			<xsl:variable name="current_page" select="if(page/variables/page) then number(page/variables/page) else 1"/>
+			
+			<xsl:variable name="prev" select="$pages/page[$current_page - 1]"/>
+			<xsl:variable name="next" select="$pages/page[$current_page + 1]"/>
+			
+			<xsl:if test="$prev">
+				<link rel="prev" href="{$prev/link}" />
+			</xsl:if>
+			<xsl:if test="$next">
+				<link rel="next" href="{$next/link}" />
+			</xsl:if>
+		</xsl:if>
+	</xsl:template>
+
 </xsl:stylesheet>
