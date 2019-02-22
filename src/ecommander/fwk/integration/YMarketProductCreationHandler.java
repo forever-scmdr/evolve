@@ -117,6 +117,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				String code = commonParams.get(ID_ATTR);
 				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
+				boolean isProductNotNew = true;
 				if (product == null) {
 					Item section = sections.get(secCode);
 					if (section != null) {

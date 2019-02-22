@@ -20,7 +20,7 @@ import java.util.*;
 	<var name="device" item="device" parameter="producer"/> // переменная с динамическим значением - Значение параметра айтема
 	<var name="filter_parameter_value_2" var="filter_parameter_value_1"/> // переменная с динамическим значением - Другая переменная
 	
-	<var ... style="translit"/> // Такая переменная может передаваться в формате транслита
+	<var ... style="key"/> // Такая переменная может передаваться в формате транслита
 	<var ... style="query"/> // Название и значение переменной передается в URL query (в формате page?name=value)
 </link>
 
@@ -69,6 +69,8 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	private LinkedHashMap<String, VariablePE> variables = new LinkedHashMap<>();
 	// счетчик для создания фиктивных названий переменных в случае если у переменной нет имени
 	private int counter = 0;
+	// Изначальный вид ссылки до приведения ее к нормальному виду (до парсинга, как она приходит из браузера)
+	private String originalUrl = null;
 	/**
 	 * Ссылка в модели страницы с неизвестными параметрами
 	 * @param linkName
@@ -85,11 +87,12 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	/**
 	 * Создание ссылки из строки. пришедшей от клиента в виде URL
 	 * Подразумевается, что у страницы есть название и
-	 * у каждой переменной path (включая translit) также есть название
+	 * у каждой переменной path (включая key) также есть название
 	 * @param urlString
 	 * @throws UnsupportedEncodingException
 	 */
 	private LinkPE(String urlString) throws UnsupportedEncodingException {
+		originalUrl = urlString;
 		if (StringUtils.isBlank(urlString)) {
 			return;
 		}
@@ -204,9 +207,9 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		// Все переменные по порядку
 		try {
 			for (VariablePE var : variables.values()) {
-				if ((var.getStyle() == VariablePE.Style.path || var.getStyle() == VariablePE.Style.translit) && !var.isEmpty())
+				if ((var.isStylePath() || var.isStyleKey()) && !var.isEmpty())
 					path.append(VariablePE.COMMON_DELIMITER).append(var.writeInAnUrlFormat());
-				else if (var.getStyle() == VariablePE.Style.query/* && !var.isEmpty()*/)
+				else if (var.isStyleQuery()/* && !var.isEmpty()*/)
 					query.append(VariablePE.AMP_SIGN).append(var.writeInAnUrlFormat());
 			}
 		} catch (UnsupportedEncodingException e) {
@@ -363,4 +366,11 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		return serialize();
 	}
 
+	public String getOriginalUrl() {
+		return originalUrl;
+	}
+
+	public void setOriginalUrl(String originalUrl) {
+		this.originalUrl = originalUrl;
+	}
 }

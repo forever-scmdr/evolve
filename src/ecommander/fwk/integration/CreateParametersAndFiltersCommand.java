@@ -136,8 +136,16 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		info.setOperation("Создание классов и фильтров");
 		info.setToProcess(sections.size());
 		info.setProcessed(0);
+		ArrayList<String> assocNames = new ArrayList<>();
+		assocNames.add(ItemTypeRegistry.getPrimaryAssoc().getName());
+		List<Object> extraAssocNames = getVarValues("assoc");
+		for (Object extraAssocName : extraAssocNames) {
+			Assoc extraAssoc = ItemTypeRegistry.getAssoc((String) extraAssocName);
+			if (extraAssoc != null)
+				assocNames.add(extraAssoc.getName());
+		}
 		for (Item section : sections) {
-			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
+			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false, assocNames.toArray(new String[0])).loadItems();
 			if (products.size() > 0) {
 
 				// Загрузить и добавить все строковые товары
@@ -187,7 +195,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
 				}
 				section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
 
 				// Создать класс для продуктов из этого раздела
 				ItemType newClass = new ItemType(className, 0, classCaption, "", "",
@@ -204,7 +212,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 			} else {
 				section.clearValue(PARAMS_FILTER_PARAM);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
 			}
 			info.increaseProcessed();
 		}

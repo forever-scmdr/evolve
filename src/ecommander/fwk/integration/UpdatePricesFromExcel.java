@@ -30,7 +30,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 			@Override
 			protected void processRow() throws Exception {
 				String code = getValue(CreateExcelPriceList.CODE_FILE);
-				if(StringUtils.isBlank(code) || CreateExcelPriceList.CODE_FILE.equalsIgnoreCase(code)) return;
+				if(StringUtils.isBlank(code) || CreateExcelPriceList.CODE_FILE.equalsIgnoreCase(code) || StringUtils.startsWith(code,"разд:")) return;
 				boolean isLineProduct = code.indexOf('@') != -1;
 				code = (isLineProduct)? code.substring(0, code.indexOf('@')) : code;
 				String price = getValue(CreateExcelPriceList.PRICE_FILE);
@@ -41,7 +41,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 					product.setValueUI(PRICE_PARAM, price);
 					product.setValueUI(QTY_PARAM, qty);
 					product.setValueUI(AVAILABLE_PARAM, av);
-					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().ingoreComputed());
+					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
 					setProcessed(rowNum++);
 				}
 			}
@@ -54,7 +54,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 
 	@Override
 	protected void integrate() throws Exception {
-		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte)1);
+		//catalog.setValue(INTEGRATION_PENDING_PARAM, (byte)1);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex());
 		info.setOperation("Обновлние цен");
 		info.setProcessed(0);
@@ -63,7 +63,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 		priceWB.iterate();
 		info.setOperation("Интеграция завершена");
 		priceWB.close();
-		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte)0);
+	//	catalog.setValue(INTEGRATION_PENDING_PARAM, (byte)0);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex());
 	}
 

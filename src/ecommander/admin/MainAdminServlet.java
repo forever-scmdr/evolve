@@ -296,6 +296,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * Также загрузить все айтемы и сохранить их заново для того, чтобы
 	 * ко всем айтемам применились изменения в параметрах (model.xml, model_custom.xml)
 	 *
+	 * TODO переделать команду
+	 *
 	 * @param pageCreator
 	 * @return
 	 * @throws Exception
