@@ -46,6 +46,7 @@ public interface CatalogConst {
 	String PIC_PARAM = "pic";
 	String LINK_PARAM = "link";
 	String ASSOC_PARAM = "assoc";
+	String ALSO_PARAM = "also_code";
 
 
 	String PARAMETER = "parameter";
