@@ -169,6 +169,10 @@
 							<div class="list additional">
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
+									<li class="visible" title="Список разделов для формирования прайс-листов" style="background: #0c609d;">
+										<a href="section_list" style="color: #fff;">Список разделов</a>
+									</li>
+
 									<li class="visible" title="Загрзить товары из Yandex Market">
 										<a href="integrate/?action=start">Интеграция каталога</a>
 									</li>
