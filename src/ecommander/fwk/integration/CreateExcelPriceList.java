@@ -13,7 +13,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileOutputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -134,8 +133,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		String[]secInfo = getSectionName(section);
 		String sheetName = secInfo[2];
 		setOperation(section.getValue(NAME_PARAM) + ". Обработка подразделов.");
-		Sheet sh = workBook.createSheet(sheetName);
-		return sh;
+		return workBook.createSheet(sheetName);
 	}
 
 	private String[] getSectionName(Item section) throws Exception {
@@ -258,9 +256,15 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			Row row = sh.createRow(++rowI);
 			int colIdx = -1;
 			CellStyle cellStyle = chooseCellStyle(product);
-			BigDecimal price = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
-			String priceValue = (price.doubleValue() > 0.001) ? price.toString() : "";
-			String qtyValue = (product.getDecimalValue(QTY_PARAM) != null) ? String.valueOf(product.getDecimalValue(QTY_PARAM)) : "";
+//			double price;
+//			if(priceType == DataType.Type.DECIMAL || priceType == DataType.Type.CURRENCY || priceType == DataType.Type.CURRENCY_PRECISE) {
+//				price = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).doubleValue();
+//			}else{
+//				price = product.getDoubleValue(PRICE_PARAM,0d);
+//			}
+
+			String priceValue = product.outputValue(PRICE_PARAM);//(price > 0.001) ? String.valueOf(Math.round(price*100d)/100d) : "";
+			String qtyValue = product.outputValue(QTY_PARAM);//(product.getDecimalValue(QTY_PARAM) != null) ? String.valueOf(product.getDecimalValue(QTY_PARAM)) : "";
 
 			row.createCell(++colIdx).setCellValue(product.getStringValue(CODE_PARAM, ""));
 			row.createCell(++colIdx).setCellValue(product.getStringValue(NAME_PARAM, ""));
@@ -296,7 +300,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 				}
 			}
 			if (writeAuxParams) {
-				writeAux(row, aux, colIdx, paramsType);
+				writeAux(row, aux, colIdx);
 			}
 
 			info.increaseProcessed();
@@ -307,6 +311,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 					info.pushLog(product.getStringValue(NAME_PARAM) + ". Обнаружено вложенных товаров: " + lineProducts.size());
 					String parentCode = product.getStringValue(CODE_PARAM, "");
 					for (Item lineProduct : lineProducts) {
+						colIdx = -1;
 						//write aux params
 						if (writeAuxParams) {
 							aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
@@ -317,9 +322,13 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						}
 						row = sh.createRow(++rowI);
 						cellStyle = chooseCellStyle(lineProduct);
-						price = lineProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
-						priceValue = (price.doubleValue() > 0.001) ? price.toString() : "";
-						qtyValue = (lineProduct.getDoubleValue(QTY_PARAM) != null) ? String.valueOf(lineProduct.getDoubleValue(QTY_PARAM)) : "";
+//						if(priceType == DataType.Type.DECIMAL || priceType == DataType.Type.CURRENCY || priceType == DataType.Type.CURRENCY_PRECISE) {
+//							price = lineProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).doubleValue();
+//						}else{
+//							price = lineProduct.getDoubleValue(PRICE_PARAM,0d);
+//						}
+						priceValue = lineProduct.outputValue(PRICE_PARAM);//(price > 0.001) ? String.valueOf(price) : "";
+						qtyValue = lineProduct.outputValue(QTY_PARAM);//(lineProduct.getDoubleValue(QTY_PARAM) != null) ? String.valueOf(lineProduct.getDoubleValue(QTY_PARAM)) : "";
 
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(CODE_PARAM + "@" + parentCode, ""));
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(NAME_PARAM, ""));
@@ -342,7 +351,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						//write aux params
 						if (writeAuxParams) {
 							aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
-							writeAux(row, aux, colIdx, paramsType);
+							writeAux(row, aux, colIdx);
 						}
 						info.increaseProcessed();
 					}
@@ -363,7 +372,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		return colIdx;
 	}
 
-	private void writeAux(Row row, Item aux, int colIdx, ItemType auxType){
+	private void writeAux(Row row, Item aux, int colIdx){
 		if(aux == null) return;
 		row.createCell(++colIdx).setCellValue(aux.getTypeId());
 		row.getCell(colIdx).setCellStyle(auxStyle);
@@ -388,7 +397,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 	private CellStyle chooseCellStyle(Item product) {
 		if (StringUtils.isBlank(product.getStringValue(CODE_PARAM))) return noCodeStyle;
-		if (product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).doubleValue() < 0.001) return noPriceStyle;
+		if (StringUtils.isBlank(product.outputValue(PRICE_PARAM))) return noPriceStyle;
 		return null;
 	}
 
@@ -496,11 +505,13 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		String auxParamsVar = getVarSingleValue(AUX_PARAMS_VAR);
 		String productsVar = getVarSingleValue(PRODUCTS_VAR);
 		String manualsVar = getVarSingleValue(MANUALS_VAR);
+		String lineProductsVar = getVarSingleValue(LINE_PRODUCTS_VAR);
 
 		writeAllProductParams = (YES.equals(prodParamsVar)) || writeAllProductParams && !NO.equals(prodParamsVar);
 		writeAuxParams = (YES.equals(auxParamsVar)) || writeAuxParams && !NO.equals(auxParamsVar);
 		writeProducts = (YES.equals(productsVar)) || writeProducts && !NO.equals(productsVar);
 		writeManuals = (YES.equals(manualsVar)) || writeManuals && !NO.equals(manualsVar);
+		writeLineProducts = (YES.equals(lineProductsVar)) || writeLineProducts && !NO.equals(lineProductsVar);
 
 		writeManuals = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter(MANUAL_PARAM) != null && writeManuals;
 		hasUnits = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter("unit") != null;
