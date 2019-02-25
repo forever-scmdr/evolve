@@ -52,7 +52,9 @@
 		<link name="search_link" target="search"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
+		<link name="fav_link" target="fav"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
+		<link name="compare_link" target="compare"/>
 
 		<!-- REGISTRATION -->
 		<link name="register_link" target="register"/>
@@ -351,38 +353,38 @@
 			</link>
 			<single item="params"/>
 		</list>
-		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_view_table" target="tag_section" copy-page-vars="yes">
 			<var name="view" value="table"/>
 		</link>
-		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_view_list" target="tag_section" copy-page-vars="yes">
 			<var name="view" value="list"/>
 		</link>
-		<link name="set_limit_48" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_limit_48" target="tag_section" copy-page-vars="yes">
 			<var name="limit" value="48"/>
 		</link>
-		<link name="set_limit_96" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_limit_96" target="tag_section" copy-page-vars="yes">
 			<var name="limit" value="96"/>
 		</link>
-		<link name="set_limit_144" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_limit_144" target="tag_section" copy-page-vars="yes">
 			<var name="limit" value="144"/>
 		</link>
-		<link name="set_sort_name_asc" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_sort_name_asc" target="tag_section" copy-page-vars="yes">
 			<var name="sort" value="name"/>
 			<var name="direction" value="ASC"/>
 		</link>
-		<link name="set_sort_name_desc" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_sort_name_desc" target="tag_section" copy-page-vars="yes">
 			<var name="sort" value="name"/>
 			<var name="direction" value="DESC"/>
 		</link>
-		<link name="set_sort_price_asc" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_sort_price_asc" target="tag_section" copy-page-vars="yes">
 			<var name="sort" value="price"/>
 			<var name="direction" value="ASC"/>
 		</link>
-		<link name="set_sort_price_desc" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_sort_price_desc" target="tag_section" copy-page-vars="yes">
 			<var name="sort" value="price"/>
 			<var name="direction" value="DESC"/>
 		</link>
-		<link name="set_sort_default" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_sort_default" target="tag_section" copy-page-vars="yes">
 			<var name="sort" value=""/>
 		</link>
 		<include name="COMMON"/>
@@ -1409,6 +1411,21 @@
 		</request>
 		<command class="ecommander.fwk.CreateWaterMarks" clear-cache="yes">
 			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<!--
+		Создать файл YML формата со всеми разделами и товарами каталога
+	-->
+	<page name="create_yml_file">
+		<headers content-type="text/xml"/>
+		<request>
+			<var name="name" value="Акваком"/>
+			<var name="company" value="Частное предприятие «Акваком»"/>
+		</request>
+		<command class="ecommander.fwk.integration.YMarketCreateXMLFile">
+			<result name="success" type="redirect"/>
+			<result name="error" type="redirect"/>
 		</command>
 	</page>
 
