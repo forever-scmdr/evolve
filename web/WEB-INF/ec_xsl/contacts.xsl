@@ -12,7 +12,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
+				<a href="{$main_host}">Главная страница</a> &gt;
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -20,10 +20,12 @@
 
 		<div class="page-content m-t">
 			<xsl:value-of select="page/contacts/text" disable-output-escaping="yes"/>
-			<h3>Расположение нашего офиса на карте</h3>
-			<div class="map-container">
-				<xsl:value-of select="page/contacts/map" disable-output-escaping="yes"/>
-			</div>
+			<xsl:if test="page/contacts/map != ''">
+				<h3>Расположение нашего офиса на карте</h3>
+				<div class="map-container">
+					<xsl:value-of select="page/contacts/map" disable-output-escaping="yes"/>
+				</div>
+			</xsl:if>	
 			<xsl:value-of select="page/contacts/bottom_text" disable-output-escaping="yes"/>
 		</div>
 

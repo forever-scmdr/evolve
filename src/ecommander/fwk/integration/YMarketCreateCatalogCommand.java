@@ -23,13 +23,11 @@ import java.util.List;
  */
 public class YMarketCreateCatalogCommand extends IntegrateBase implements CatalogConst {
 	private static final String INTEGRATION_DIR = "ym_integrate";
-	private static final String GET_PRICE_PARAM = "get_price";
 
 	private static boolean getPrice = false;
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-		getPrice = StringUtils.equalsAnyIgnoreCase(getVarSingleValueDefault(GET_PRICE_PARAM, "no"), "yes", "true");
 		return true;
 	}
 
@@ -67,42 +65,12 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 			}
 		}
 
-		// Удаление всех пользовательских параметров товаров (айтемов и типов)
-		info.pushLog("Удаление параметров товаров");
-		int processed = 0;
-		info.setProcessed(processed);
-		ItemQuery paramsQuery = new ItemQuery(PARAMS_ITEM);
-		paramsQuery.setLimit(10);
-		List<Item> itemsToDelete = paramsQuery.loadItems();
-		while (itemsToDelete.size() > 0) {
-			for (Item item : itemsToDelete) {
-				executeCommandUnit(ItemStatusDBUnit.delete(item));
-			}
-			commitCommandUnits();
-			processed += itemsToDelete.size();
-			info.setProcessed(processed);
-			itemsToDelete = paramsQuery.loadItems();
-		}
-		info.pushLog("Очистка корзины");
-		info.setProcessed(0);
-		executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10,
-				deletedCount -> info.increaseProcessed(deletedCount)).noFulltextIndex());
-
-		LinkedHashSet<String> typesToDelete = ItemTypeRegistry.getItemExtenders(PARAMS_ITEM);
-		typesToDelete.remove(PARAMS_ITEM);
-		for (String typeToDelete : typesToDelete) {
-			executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(ItemTypeRegistry.getItemType(typeToDelete).getTypeId()));
-		}
-
-		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
-
 		// Создание самих товаров
 		info.pushLog("Подготовка каталога и типов завершена.");
 		info.pushLog("Создание товаров");
 		info.setOperation("Создание товаров");
 		info.setProcessed(0);
 		YMarketProductCreationHandler prodHandler = new YMarketProductCreationHandler(secHandler.getSections(), info, getInitiator());
-		prodHandler.getPrice(getPrice);
 		for (File xml : xmls) {
 			parser.parse(xml, prodHandler);
 		}

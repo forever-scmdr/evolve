@@ -178,7 +178,8 @@
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
 	<item name="abstract_product" caption="Абстрактный товар" key="name" virtual="true" ag-id="13" ag-hash="1636704722">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
-		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
+		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id"
+		           text-index-parameter="name" text-index="fulltext"/>
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
@@ -187,9 +188,10 @@
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
 	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product * gallery" virtual="true" ag-id="14" ag-hash="1523682729">
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
-		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
-		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
-		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
+		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc"
+		           text-index="fulltext" text-index-parameter="type"/>
+		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" text-index-parameter="type" />
+		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" text-index-parameter="type" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
@@ -202,9 +204,9 @@
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
 		<parameter name="small_pic" type="picture" format="width: 200; src: main_pic;" caption="Маленькая картинка"/>
-		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
-		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
-		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
+		<parameter name="description" type="text" caption="Описание" text-index="fulltext" text-index-parameter="type"/>
+		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" text-index-parameter="type"/>
+		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" text-index-parameter="type"/>
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
 		<parameter name="tag" type="string" caption="Тэг" multiple="true"/>
@@ -215,20 +217,20 @@
 
 
 	<item name="book" super="product" caption="Книга" ag-id="15" ag-hash="3029737">
-		<parameter name="artist" type="string" caption="Исполнитель"/>
-		<parameter name="starring" type="string" caption="Исполнители ролей"/>
-		<parameter name="director" type="string" caption="Режиссер"/>
-		<parameter name="author" type="string" caption="Автор"/>
-		<parameter name="series" type="string" caption="Cерия"/>
-		<parameter name="media" type="string" caption="Тип медиа-носителя"/>
-		<parameter name="year" type="string" caption="Год"/>
-		<parameter name="originalName" type="string" caption="Оригинальное название"/>
-		<parameter name="country_of_origin" type="string" caption="Страна производства товара"/>
-		<parameter name="country" type="string" caption="Страна производства произведения"/>
-		<parameter name="publisher" type="string" caption="Издатель"/>
-		<parameter name="page_extent" type="string" caption="Количество страниц"/>
-		<parameter name="language" type="string" caption="Язык"/>
-		<parameter name="ISBN" type="string" caption="ISBN" text-index="fulltext"/>
+		<parameter name="artist" type="string" caption="Исполнитель" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="starring" type="string" caption="Исполнители ролей" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="director" type="string" caption="Режиссер" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="author" type="string" caption="Автор" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="series" type="string" caption="Cерия" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="media" type="string" caption="Тип медиа-носителя" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="year" type="string" caption="Год" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="originalName" type="string" caption="Оригинальное название" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="country_of_origin" type="string" caption="Страна производства товара" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="country" type="string" caption="Страна производства произведения" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="publisher" type="string" caption="Издатель" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="page_extent" type="string" caption="Количество страниц" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="language" type="string" caption="Язык" text-index="fulltext" text-index-parameter="name"/>
+		<parameter name="ISBN" type="string" caption="ISBN" text-index="fulltext" text-index-parameter="name"/>
 		<parameter name="picture" type="string" multiple="true" caption="Урл картинки"/>
 	</item>
 

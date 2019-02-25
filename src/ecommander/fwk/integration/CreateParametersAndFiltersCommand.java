@@ -239,6 +239,12 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				products.addAll(new ItemQuery(LINE_PRODUCT_ITEM).setParentId(section.getId(), true).loadItems());
 
 				for (Item product : products) {
+					// Удалить старый айтем params
+					List<Item> paramsList = new ItemQuery(PARAMS_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN).setParentId(product.getId(), false).loadItems();
+					for (Item param : paramsList) {
+						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(param));
+					}
+					// Создать новый айтем params
 					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
 					if (paramsXml != null) {
 						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
@@ -268,6 +274,9 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(params).noFulltextIndex().noTriggerExtra());
 					}
 				}
+
+				// Очистить корзину
+				executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null));
 			}
 			info.increaseProcessed();
 		}

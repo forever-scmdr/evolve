@@ -7,6 +7,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -16,10 +17,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Создание разделов каталога
@@ -87,6 +85,18 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 						categories.put(code, currentSection);
 					}
 				}
+
+				// Скрыть все товары раздела
+				ItemQuery visibleProudctsQuery = new ItemQuery(PRODUCT_ITEM).setParentId(currentSection.getId(), false).setLimit(20);
+				List<Item> visibleProducts;
+				DelayedTransaction transaction = new DelayedTransaction(owner);
+				do {
+					visibleProducts = visibleProudctsQuery.loadItems();
+					for (Item visibleProduct : visibleProducts) {
+						transaction.addCommandUnit(ItemStatusDBUnit.hide(visibleProduct));
+					}
+					transaction.execute();
+				} while (visibleProducts.size() > 0);
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Integration error", e);
