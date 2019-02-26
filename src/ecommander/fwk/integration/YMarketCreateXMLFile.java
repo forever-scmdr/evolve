@@ -138,9 +138,15 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 				}
 
 				// Галерея
+				boolean hasGallery = false;
 				for (String picName : baseProduct.outputValues(GALLERY_PARAM)) {
 					xml.startElement("picture").addText(getUrlBase() + "/" + AppContext.getFilesUrlPath(false) +
 							Item.createItemFilesPath(baseProduct.getId()) + picName).endElement();
+					hasGallery = true;
+				}
+				if (!hasGallery && baseProduct.isValueNotEmpty(MAIN_PIC_PARAM)) {
+					xml.startElement("picture").addText(getUrlBase() + "/" + AppContext.getFilesUrlPath(false) +
+							Item.createItemFilesPath(baseProduct.getId()) + baseProduct.outputValue(MAIN_PIC_PARAM)).endElement();
 				}
 
 				Item subParams = null;
