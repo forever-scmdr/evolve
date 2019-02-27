@@ -1281,4 +1281,10 @@
 		</command>
 	</page>
 
+	<page name="remove_hidden" authority-groups="common">
+		<command class="extra.RemoveInvisibleCommand" clear-cache="no">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 </site>

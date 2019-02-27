@@ -12,6 +12,7 @@ import javax.naming.NamingException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Выполняет различные операции с Item и БД
@@ -141,6 +142,33 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 			} else {
 				return null;
 			}
+		}
+	}
+
+	/**
+	 * Загрузить айтемы по статусу
+	 * @param status
+	 * @param limit
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 */
+	public static List<ItemBasics> loadStatusItemBasics(byte status, int limit, Connection conn) throws SQLException {
+		TemplateQuery query = new TemplateQuery("Select item basics by status");
+		query.SELECT(I_ID, I_TYPE_ID, I_KEY, I_GROUP, I_USER, I_STATUS, I_PROTECTED)
+				.FROM(ITEM_TBL).WHERE().col(I_STATUS).byte_(status);
+		if (limit > 0)
+			query.LIMIT(limit);
+		ArrayList<ItemBasics> result = new ArrayList<>();
+		try (PreparedStatement pstmt = query.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result.add(new DefaultItemBasics(
+						rs.getLong(1), rs.getInt(2), rs.getString(3),
+						rs.getByte(4), rs.getInt(5), rs.getByte(6),
+						rs.getBoolean(7)));
+			}
+			return result;
 		}
 	}
 
