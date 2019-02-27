@@ -115,11 +115,14 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 				String code = commonParams.get(ID_ATTR);
 				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
+				Item section = sections.get(secCode);
+				// пропустить некоторые разделы
+				if (section == null)
+					return;
 				//Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
 				Item product = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN)
 						.addParameterEqualsCriteria(OFFER_ID_PARAM, code).loadFirstItem();
 				boolean isProductNew = false;
-				Item section = sections.get(secCode);
 				if (product == null) {
 					if (section != null) {
 						product = Item.newChildItem(productType, section);

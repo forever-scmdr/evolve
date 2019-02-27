@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `item` (
   `i_params` longtext,
   PRIMARY KEY (`i_id`),
   KEY `MAIN` (`i_status`,`i_id`,`i_group`,`i_user`) USING BTREE,
-  KEY `GROUP_AND_TYPE` (`i_group`,`i_supertype`,`i_user`,`i_status`) USING BTREE
+  KEY `GROUP_AND_TYPE` (`i_group`,`i_supertype`,`i_user`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

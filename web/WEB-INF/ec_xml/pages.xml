@@ -1024,6 +1024,8 @@
 	<page name="integrate" template="integrate" authority-groups="common">
 		<request>
 			<var name="action"/>
+			<var name="ignore" value="16549"/>
+			<var name="ignore" value="30963"/>
 		</request>
 		<command class="ecommander.fwk.integration.YMarketCreateCatalogCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>

@@ -37,12 +37,14 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 	private Item currentSection;
 	private String code;
 	private ItemType sectionDesc;
+	private HashSet<String> ignoreCodes;
 
-	public YMarketCatalogCreationHandler(Item catalog, IntegrateBase.Info info, User owner) {
+	public YMarketCatalogCreationHandler(Item catalog, IntegrateBase.Info info, User owner, HashSet<String> ignoreCodes) {
 		this.catalog = catalog;
 		this.sectionDesc = ItemTypeRegistry.getItemType(SECTION_ITEM);
 		this.owner = owner;
 		this.info = info;
+		this.ignoreCodes = ignoreCodes;
 	}
 
 	@Override
@@ -56,6 +58,11 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 			// Раздел
 			if (StringUtils.equalsIgnoreCase(CATEGORY_ELEMENT, qName) && categoryReady) {
 				code = attributes.getValue(ID_ATTR);
+				// пропустить некоторые разделы
+				if (ignoreCodes.contains(code)) {
+					currentSection = null;
+					return;
+				}
 				String parentCode = attributes.getValue(PARENT_ID_ATTR);
 				currentSection = categories.get(code);
 				if (currentSection == null) {
@@ -138,6 +145,9 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 					currentSection = null;
 					code = null;
 				} else {
+					// пропустить некоторые разделы
+					if (ignoreCodes.contains(code))
+						return;
 					Pair<String, String> secParent = newSectionParent.get(code);
 					if (secParent != null) {
 						secParent.setLeft(StringUtils.trimToEmpty(chars.toString()));

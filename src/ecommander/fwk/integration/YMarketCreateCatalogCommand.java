@@ -3,6 +3,7 @@ package ecommander.fwk.integration;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
+import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -14,6 +15,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -23,8 +25,6 @@ import java.util.List;
  */
 public class YMarketCreateCatalogCommand extends IntegrateBase implements CatalogConst {
 	private static final String INTEGRATION_DIR = "ym_integrate";
-
-	private static boolean getPrice = false;
 
 	@Override
 	protected boolean makePreparations() throws Exception {
@@ -50,19 +50,24 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		SAXParser parser = factory.newSAXParser();
 
 		// Создание (обновление) каталога товаров
+		List<Object> ignoreList = getVarValues("ignore");
+		HashSet<String> ignore = new HashSet<>();
+		for (Object code : ignoreList) {
+			ignore.add((String) code);
+		}
 		info.setOperation("Создание разделов каталога и типов товаров");
 		info.pushLog("Создание разделов");
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator());
+		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator(), ignore);
 		info.setProcessed(0);
 		for (File xml : xmls) {
 			// Удалить DOCTYPE
-			if (removeDoctype(xml)) {
-				parser.parse(xml, secHandler);
-				info.increaseProcessed();
-			} else {
-				addError("Невозможно удалить DOCTYPE " + xml, xml.getName());
-			}
+//			if (removeDoctype(xml)) {
+			parser.parse(xml, secHandler);
+			info.increaseProcessed();
+//			} else {
+//				addError("Невозможно удалить DOCTYPE " + xml, xml.getName());
+//			}
 		}
 
 		// Создание самих товаров
@@ -92,8 +97,9 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		File tempFile = new File("__temp__.xml");
 		final String DOCTYPE = "!DOCTYPE";
 		boolean containsDoctype = false;
+		final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Strings.SYSTEM_ENCODING))) {
 			int i = 0;
 			String currentLine;
 			while ((currentLine = reader.readLine()) != null && i < 5) {
@@ -109,8 +115,8 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		if (!containsDoctype)
 			return true;
 
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-		     BufferedReader reader = new BufferedReader(new FileReader(file))) {
+		try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(tempFile), Strings.SYSTEM_ENCODING);
+		     BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Strings.SYSTEM_ENCODING))) {
 			String currentLine;
 			boolean doctypeNotRemoved = true;
 			while((currentLine = reader.readLine()) != null) {
@@ -119,7 +125,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 					continue;
 				}
 				writer.write(currentLine);
-				writer.newLine();
+				writer.write(LINE_SEPARATOR);
 			}
 		} catch (IOException e) {
 			info.addError("Невозможно удалить DOCTYPE " + file.getName(), file.getName());
