@@ -262,7 +262,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Начало работы с CMS, выбран корневой айтем
-	 * <p>
+	 *
 	 * Параметры
 	 * - не требуются
 	 *
@@ -298,6 +298,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * Сбросить все кеши.
 	 * Также загрузить все айтемы и сохранить их заново для того, чтобы
 	 * ко всем айтемам применились изменения в параметрах (model.xml, model_custom.xml)
+	 *
+	 * TODO переделать команду
 	 *
 	 * @param pageCreator
 	 * @return
@@ -343,7 +345,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Переключить на другой режим редактирования
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового айтема
 	 * itemTypeId - ID типа базового айтема
@@ -378,7 +380,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Выбор айтема для редактирования
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового айтема
 	 * itemTypeId - тип базового айтема
@@ -398,7 +400,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Создать форму для нового айтемы
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemTypeId - тип создаваемого айтема
 	 * parentId - ID родительского айтема
@@ -416,7 +418,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Сохраняет айтем
-	 * <p>
+	 *
 	 * Параметры:
 	 * html форма айтема (SingleItemHttpPostFormDeprecated)
 	 *
@@ -505,7 +507,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Удаление айтема
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID удаляемого айтема
 	 * parentId - ID родительского айтема (сабайтем которого удаляется)
@@ -538,7 +540,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Сделать элемент видимым или скрытым
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID айтема
 	 * parentId - ID родительского айтема
@@ -560,7 +562,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Массово скарыть элементы
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID айтемов
 	 * parentId - ID родительского айтема
@@ -583,7 +585,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Массово показать элементы
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID айтемов
 	 * parentId - ID родительского айтема
@@ -606,7 +608,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Устанавливает новый порядковый номер айтема
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID айтема, который переставляется
 	 * parentId - ID родительского айтема (порядок следования сабайтемов которого меняется)
@@ -631,7 +633,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Добавить множественный параметр
-	 * <p>
+	 *
 	 * Параметры:
 	 * параметр запроса itemId - ID айтема владельца параметра
 	 * параметр запроса multipleParamId - ID параметра
@@ -684,7 +686,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Загрузка картинки (плагин tinyMCE)
-	 * <p>
+	 *
 	 * Параметры (все параметры запроса):
 	 * itemId - ID айтема владельца параметра
 	 * multipleParamId - ID параметра картинки
@@ -741,7 +743,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Удалить множественный параметр
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID айтема владельца параметра
 	 * multipleParamId - ID параметра
@@ -769,7 +771,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Установить текущий родительский айтем для айтемов, в которых может быть созадна ссылка на текущий айтем
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * itemTypeId - ID типа базового (выбранного) айтема
@@ -787,7 +789,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Установить текущий родительский айтем для айтемов, ссылки на которые можно создавать в текущем айтеме
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * itemTypeId - ID типа базового (выбранного) айтема
@@ -805,7 +807,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Установить текущий родительский айтем для айтемов, ассоциации с которыми можно создавать в текущем айтеме
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * itemTypeId - ID типа базового (выбранного) айтема
@@ -823,7 +825,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Установить текущий родительский айтем для айтемов, в которые можно перемещать текущий айтем
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * itemTypeId - ID типа базового (выбранного) айтема
@@ -840,7 +842,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Установить текущий родительский айтем для айтемов, которые можно перемещать текущем айтем
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * itemTypeId - ID типа базового (выбранного) айтема
@@ -857,7 +859,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Создать ссылки на текущий айтем в выбранных айтемах
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
@@ -882,7 +884,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Создать ссылки на выбранные айтемы в текущем айтеме
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
@@ -908,7 +910,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Переместить текущий айтем в выбранный айтем
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
@@ -949,7 +951,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Переместить выбранный айтем в текущий айтем
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
@@ -972,7 +974,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Копировать айтем
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID копируемого айтема
 	 * parentId - ID айтема, в который вставляется копируемый
@@ -1006,7 +1008,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Произвести копирование айтема
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID копируемого айтема
 	 * parentId - ID айтема, в который вставляется копируемый
@@ -1158,7 +1160,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Удалить какую-либо ссылку
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
@@ -1185,7 +1187,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Удалить какую-либо ссылку
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * parentId - ID родительского айтема для списка потенциальных ссылок
@@ -1212,7 +1214,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Удалить ссылку из списка сабайтемов
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID удаляемого айтема
 	 * parentId - ID родительского айтема (сабайтем которого удаляется)
@@ -1238,7 +1240,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Поменять пользователя-владельца или группу-владельца айтема
-	 * <p>
+	 *
 	 * Параметры:
 	 * itemId - ID базового (выбранного) айтема
 	 * paramId - ID группы или пользователя
@@ -1276,7 +1278,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Включить или выключить защиту файлов айтема
-	 * <p>
+	 *
 	 * Параметры
 	 * itemId - ID защищаемого айтема
 	 *

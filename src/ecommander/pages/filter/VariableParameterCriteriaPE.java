@@ -25,7 +25,7 @@ class VariableParameterCriteriaPE extends ParameterCriteriaPE {
 	
 	private VariableParameterCriteriaPE(VariableParameterCriteriaPE template, ExecutablePagePE parentPage) {
 		super(template, parentPage);
-		this.paramNameVar = ((VariableParameterCriteriaPE) template).paramNameVar;
+		this.paramNameVar = template.paramNameVar;
 		pageModel = parentPage;
 	}
 	
@@ -37,7 +37,7 @@ class VariableParameterCriteriaPE extends ParameterCriteriaPE {
 		for (Variable var : values) {
 			var.validate(elementPath, results);
 		}
-		if (pageModel.getVariable(paramNameVar) == null) {
+		if (!paramNameVar.startsWith("$") && pageModel.getInitVariablePE(paramNameVar) == null) {
 			results.addError(elementPath + " > " + getKey(), "There is no '" + paramNameVar + "' variable in current page");
 		}
 	}

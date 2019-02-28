@@ -1,6 +1,5 @@
 package ecommander.pages.var;
 
-import ecommander.fwk.Strings;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.pages.ExecutableItemPE;
 import ecommander.pages.ExecutablePagePE;
@@ -58,8 +57,8 @@ public class LinkVariablePE extends VariablePE {
 		// Ссылка на айтем
 		else if (StringUtils.isNotBlank(refItem)) {
 			clone.var = new ItemVariable(refItem, refParam, parentPage);
-			if (style == Style.translit)
-				((ItemVariable) clone.var).setTranslit(true);
+			if (isStyleKey())
+				((ItemVariable) clone.var).setKeyPath(true, isStyleKeyPath());
 		}
 		// Статическое значение
 		else if (StringUtils.isNotBlank(value)) {

@@ -12,10 +12,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -174,10 +171,14 @@ public class PageController {
 				// Выполняем страницу
 				String redirectUrl = processSimplePage(true);
 				Timer.getTimer().start(Timer.GENERATE_CACHE);
-				FileOutputStream fos = new FileOutputStream(cachedFile);
+				try {
+					FileOutputStream fos = new FileOutputStream(cachedFile, false);
 				out.writeTo(fos);
 				fos.flush();
 				fos.close();
+				} catch (FileNotFoundException fnf) {
+					ServerLogger.error("File " + cachedFile + " can not be created", fnf);
+				}
 				Timer.getTimer().stop(Timer.GET_FROM_CACHE);
 				ServerLogger.debug("DYNAMIC: " + requestUrl + " GENERATED IN " + (System.currentTimeMillis() - timeStart) + " MILLIS");
 				// Редирект в случае если он нужен

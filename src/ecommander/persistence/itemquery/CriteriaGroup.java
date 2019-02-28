@@ -105,7 +105,7 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	 * @param type
 	 * @return
 	 */
-	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, byte assocId, AssociatedItemCriteriaGroup.Type type) {
+	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, Byte[] assocId, AssociatedItemCriteriaGroup.Type type) {
 		String critId = (type == AssociatedItemCriteriaGroup.Type.CHILD ? "C" : "P") + assocCriterias.size() + groupId;
 		AssociatedItemCriteriaGroup newCrit = new AssociatedItemCriteriaGroup(critId, item, assocId, type, null, this.item);
 		assocCriterias.add(newCrit);

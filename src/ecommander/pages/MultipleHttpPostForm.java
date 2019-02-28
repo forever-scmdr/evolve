@@ -2,7 +2,10 @@ package ecommander.pages;
 
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
-import ecommander.model.*;
+import ecommander.model.Item;
+import ecommander.model.ItemTreeNode;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -14,7 +17,10 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,6 +106,10 @@ public class MultipleHttpPostForm implements Serializable {
 
 	public String getSingleStringExtra(String key) {
 		return (String) extras.get(key);
+	}
+
+	public FileItem getSingleFileExtra(String key) {
+		return (FileItem) extras.get(key);
 	}
 
 	InputValues getItemInput(long itemId) {

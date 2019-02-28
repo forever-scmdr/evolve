@@ -10,6 +10,7 @@ import ecommander.pages.ValidationResults;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Переменная, которая представляет айтем (ID айтема) или параметр айтема (значение параметра)
@@ -21,7 +22,8 @@ public class ItemVariable extends Variable {
 
 	private String itemPageId;
 	private String paramName;
-	boolean isTranslit = false;
+	boolean isKey = false;
+	boolean needPath = false;
 
 	private ArrayList<Object> valuesCache = null;
 
@@ -39,10 +41,12 @@ public class ItemVariable extends Variable {
 
 	/**
 	 * Нужно ли использовать уникальный текстовый ключ при ссылке не айтем в локальных значениях
-	 * @param translit
+	 * @param key
+	 * @param path
 	 */
-	public void setTranslit(boolean translit) {
-		isTranslit = translit;
+	public void setKeyPath(boolean key, boolean path) {
+		isKey = key;
+		needPath = path;
 	}
 
 	@Override
@@ -62,7 +66,7 @@ public class ItemVariable extends Variable {
 						}
 					}
 				} else {
-					valuesCache.add(isTranslit ? item.getKeyUnique() : item.getId());
+					valuesCache.add(isKey ? item.getKeyUnique() : item.getId());
 				}
 			}
 		}
@@ -84,14 +88,30 @@ public class ItemVariable extends Variable {
 
 	@Override
 	public ArrayList<String> getLocalValues() {
+		boolean isTree = parentPage.getItemPEById(itemPageId).getQueryType() == ItemPE.Type.TREE;
+		if (isTree && needPath) {
+			List<Item> path = parentPage.getItemPEById(itemPageId).getParentRelatedFoundItemIterator().getCurrentItemPath();
+			ArrayList<String> result = new ArrayList<>();
+			if (StringUtils.isNotBlank(paramName)) {
+				for (Item item : path) {
+					result.addAll(item.outputValues(paramName));
+				}
+			} else {
+				for (Item item : path) {
+					result.add(isKey ? item.getKeyUnique() : item.getId() + "");
+				}
+			}
+			return result;
+		} else {
 		Item item = parentPage.getItemPEById(itemPageId).getParentRelatedFoundItemIterator().getCurrentItem();
 		if (StringUtils.isNotBlank(paramName)) {
 			return item.outputValues(paramName);
 		} else {
 			ArrayList<String> result = new ArrayList<>(1);
-			result.add(isTranslit ? item.getKeyUnique() : item.getId() + "");
+				result.add(isKey ? item.getKeyUnique() : item.getId() + "");
 			return result;
 		}
+	}
 	}
 
 	@Override
@@ -100,7 +120,7 @@ public class ItemVariable extends Variable {
 		if (StringUtils.isNotBlank(paramName)) {
 			return StringUtils.join(item.outputValues(paramName), ',');
 		}
-		return isTranslit ? item.getKeyUnique() : item.getId() + "";
+		return isKey ? item.getKeyUnique() : item.getId() + "";
 	}
 
 	@Override
@@ -110,11 +130,11 @@ public class ItemVariable extends Variable {
 
 	private String outputSingleItem(Item item) {
 		if (item != null) {
-			if (isTranslit)
+			if (isKey)
 				return item.getKeyUnique();
 			return ((Long)item.getId()).toString();
 		} else {
-			if (isTranslit)
+			if (isKey)
 				return "none";
 			return "0";
 		}

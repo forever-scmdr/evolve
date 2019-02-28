@@ -72,7 +72,7 @@ public class ItemUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Item ensureSingleRootAnonymousItem(String itemName, User initiator) throws Exception {
+	public static Item ensuteSingleRootAnonymousItem(String itemName, User initiator) throws Exception {
 		return ensureSingleRootItem(itemName, initiator, UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 	}
 	/**

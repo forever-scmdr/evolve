@@ -3,11 +3,11 @@ package ecommander.pages.output;
 import ecommander.fwk.FilterProcessException;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.model.User;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElement;
 import ecommander.pages.var.FilterStaticVariable;
 import ecommander.pages.var.Variable;
-import ecommander.model.User;
 
 /**
  * Создает XML для страницы
@@ -137,7 +137,7 @@ public class PageWriter {
 		// <page>
 		xml.startElement(ROOT_ELEMENT, NAME_ATTRIBUTE, page.getPageName());
 		// <source_link>catalog/device_type:v:/device_field:v:Маркировка шита/manufacturer:v:Markem</source_link>
-		xml.startElement(SOURCE_LINK_ELEMENT).addText(page.getRequestLink().serialize()).endElement();
+		xml.startElement(SOURCE_LINK_ELEMENT).addText(page.getRequestLink().getOriginalUrl()).endElement();
 		// <user id="4455">
 		//      <group name="common" id="0" admin="1"/>
 		//      ...

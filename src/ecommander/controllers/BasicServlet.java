@@ -2,7 +2,6 @@ package ecommander.controllers;
 
 import ecommander.fwk.*;
 import ecommander.pages.LinkPE;
-import ecommander.pages.var.VariablePE;
 import org.apache.catalina.connector.ClientAbortException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -196,7 +195,7 @@ public abstract class BasicServlet extends HttpServlet {
 			for (FileItem fileItem : values) {
 				List<String> vals = params.get(fileItem.getFieldName());
 				if (vals == null) {
-					vals = new ArrayList<String>();
+					vals = new ArrayList<>();
 					params.put(fileItem.getFieldName(), vals);
 				}
 	    		if (fileItem.isFormField())
@@ -307,7 +306,9 @@ public abstract class BasicServlet extends HttpServlet {
 		if (!StringUtils.endsWith(contextPath, "/"))
 			contextPath += "/";
 
-		response.sendRedirect(contextPath + userUrl);
+		//response.sendRedirect(contextPath + userUrl);
+		response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+		response.setHeader("Location", contextPath + userUrl);
 		return false;
 	}
 }

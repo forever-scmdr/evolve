@@ -1,22 +1,14 @@
 package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.*;
+import ecommander.fwk.ExcelPriceList;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
-import ecommander.model.datatypes.DataType;
-import ecommander.model.filter.CriteriaDef;
-import ecommander.model.filter.FilterDefinition;
-import ecommander.model.filter.InputDef;
 import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
-import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.net.URL;
@@ -27,7 +19,7 @@ import java.util.*;
 /**
  * Created by user on 12.12.2018.
  */
-public class ImportProductsFromExcel extends IntegrateBase implements CatalogConst {
+public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand implements CatalogConst {
 	ExcelPriceList priceWB;
 	Item catalog;
 	Item currentSection;
@@ -191,7 +183,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 					// product NOT exists
 					if (product == null) {
 						Item parent = (code.indexOf('@') == -1) ? currentSubsection : new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, StringUtils.substringAfter(code, "@"), "=", null, Compare.SOME).loadFirstItem();
-						ItemType itemType = (code.indexOf('@') == -1) ? ItemTypeRegistry.getItemType(PRODUCT_ITEM) : ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM);
+//						ItemType itemType = (code.indexOf('@') == -1) ? ItemTypeRegistry.getItemType(PRODUCT_ITEM) : ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM);
 						product = Item.newChildItem(ItemTypeRegistry.getItemType(PRODUCT_ITEM), parent);
 						code = (code.indexOf('@') == -1) ? code : StringUtils.substringBefore(code, "@");
 						//set product params
@@ -348,8 +340,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 									File mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
 									if (mainPicFile.exists()) {
 										product.setValue(MAIN_PIC_PARAM, mainPicFile);
-										product.clearParameter("medium_pic");
-										product.clearParameter("small_pic");
+										product.clearValue("medium_pic");
+										product.clearValue("small_pic");
 									}
 								} else if (StringUtils.isBlank(mainPic.toString())) {
 									switch (withPictures) {
@@ -357,8 +349,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 											File mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
 											if (mainPicFile.exists()) {
 												product.setValue(MAIN_PIC_PARAM, mainPicFile);
-												product.clearParameter("medium_pic");
-												product.clearParameter("small_pic");
+												product.clearValue("medium_pic");
+												product.clearValue("small_pic");
 											}
 											break;
 										case SEARCH_BY_CELL_VALUE:
@@ -366,8 +358,8 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 											mainPicFile = picsFolder.resolve(cellValue).toFile();
 											if (mainPicFile.exists()) {
 												product.setValue(MAIN_PIC_PARAM, mainPicFile);
-												product.clearParameter("medium_pic");
-												product.clearParameter("small_pic");
+												product.clearValue("medium_pic");
+												product.clearValue("small_pic");
 											}
 											break;
 										default:
@@ -378,7 +370,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								String currVa = getStr(product, paramName);
 								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
 								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
-									product.clearParameter(paramName);
+									product.clearValue(paramName);
 									if (withPictures == varValues.SEARCH_BY_CODE) {
 										Path filesPath = picsFolder.resolve(code);
 										File additionalFiles = filesPath.toFile();
@@ -397,7 +389,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 								String currVa = getStr(product, paramName);
 								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
 								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
-									product.clearParameter(paramName);
+									product.clearValue(paramName);
 									if (withPictures == varValues.SEARCH_BY_CODE) {
 										Path filesPath = picsFolder.resolve(code);
 										File additionalFiles = filesPath.toFile();
@@ -456,7 +448,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 
 								if(StringUtils.isBlank(cellValue)){
 									if(settings.get(IF_BLANK) != varValues.CLEAR) continue;
-									List<Item> items = ItemQuery.loadByParentId(product.getId(), ItemTypeRegistry.getPrimaryAssocId());
+									List<Item> items = ItemQuery.loadByParentId(product.getId(), null);
 									for(Item item : items){
 										executeCommandUnit(ItemStatusDBUnit.delete(item.getId()).noFulltextIndex());
 									}
@@ -574,7 +566,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 					}
 				}
 				if (existingFiles.size() > 0) {
-					item.clearParameter(paramName);
+					item.clearValue(paramName);
 					for (File f : existingFiles) {
 						item.setValue(paramName, f);
 					}
@@ -589,14 +581,14 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 
 			private Item getExistingProduct(String code) throws Exception {
 				Item prod;
-				if (code.indexOf('@') == -1) {
+//				if (code.indexOf('@') == -1) {
 					prod = new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME).loadFirstItem();
-				}
-				else {
-					String[] codes = code.split("@");
-					Item parent = new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, codes[1], "=", null, Compare.SOME).loadFirstItem();
-					prod = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(parent.getId(), false).addParameterCriteria(CODE_PARAM, codes[0], "=", null, Compare.SOME).loadFirstItem();
-				}
+//				}
+//				else {
+//					String[] codes = code.split("@");
+//					Item parent = new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, codes[1], "=", null, Compare.SOME).loadFirstItem();
+//					prod = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(parent.getId(), false).addParameterCriteria(CODE_PARAM, codes[0], "=", null, Compare.SOME).loadFirstItem();
+//				}
 				return prod;
 			}
 
@@ -720,107 +712,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 		if (sectionsWithNewItemTypes.size() == 0) return;
 		setOperation("Создание классов и фильтров");
 		List<Item> sections = ItemQuery.loadByIdsLong(sectionsWithNewItemTypes);
-		for (Item section : sections) {
-			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
-			if (products.size() > 0) {
-
-				// Анализ параметров продуктов
-				CreateParametersAndFiltersCommand.Params params = new CreateParametersAndFiltersCommand.Params(section.getStringValue(NAME_PARAM), "s" + section.getId());
-				for (Item product : products) {
-					List<Item> oldParams = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadItems();
-					for (Item oldParam : oldParams) {
-						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldParam));
-					}
-					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
-					if (paramsXml != null) {
-						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
-						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
-						Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
-						for (Element paramEl : paramEls) {
-							String caption = StringUtils.trim(paramEl.getElementsByTag(NAME).first().ownText());
-							String value = StringUtils.trim(paramEl.getElementsByTag(VALUE).first().ownText());
-							if (StringUtils.isNotBlank(caption)) {
-								params.addParameter(caption, value);
-							}
-						}
-					}
-				}
-				executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
-
-				// Создание фильтра
-				String className = "p" + section.getId();
-				String classCaption = section.getStringValue(NAME_PARAM);
-				// Создать фильтр и установить его в айтем
-				FilterDefinition filter = FilterDefinition.create("");
-				filter.setRoot(className);
-				for (String paramName : params.paramTypes.keySet()) {
-					if (params.notInFilter.contains(paramName))
-						continue;
-					String caption = params.paramCaptions.get(paramName);
-					String unit = params.paramUnits.get(paramName);
-					InputDef input = new InputDef("droplist", caption, unit, "");
-					filter.addPart(input);
-					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
-				}
-				section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
-
-				// Создать класс для продуктов из этого раздела
-				ItemType newClass = new ItemType(className, 0, classCaption, "", "",
-						PARAMS_ITEM, null, false, true, false, false);
-				for (String paramName : params.paramTypes.keySet()) {
-					String type = params.paramTypes.get(paramName).toString();
-					String caption = params.paramCaptions.get(paramName);
-					String unit = params.paramUnits.get(paramName);
-					newClass.putParameter(new ParameterDescription(paramName, 0, type, false, 0,
-							"", caption, unit, "", false, false, null, null));
-				}
-				executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
-
-			} else {
-				section.clearParameter(PARAMS_FILTER_PARAM);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
-			}
-			info.increaseProcessed();
-		}
-		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
-
-		info.setOperation("Заполнение параметров товаров");
-		info.setToProcess(sections.size());
-		info.setProcessed(0);
-		for (Item section : sections) {
-			String className = "p" + section.getId();
-			ItemType paramDesc = ItemTypeRegistry.getItemType(className);
-			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
-			if (products.size() > 0) {
-				for (Item product : products) {
-					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
-					if (paramsXml != null) {
-						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
-						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
-						Elements paramEls = paramsTree.getElementsByTag("parameter");
-						Item params = Item.newChildItem(paramDesc, product);
-						for (Element paramEl : paramEls) {
-							String name = StringUtils.trim(paramEl.getElementsByTag("name").first().ownText());
-							name = Strings.createXmlElementName(name);
-							String value = StringUtils.trim(paramEl.getElementsByTag("value").first().ownText());
-							Pair<DataType.Type, String> valuePair = CreateParametersAndFiltersCommand.Params.testValueHasUnit(value);
-							if (StringUtils.isNotBlank(valuePair.getRight())) {
-								value = value.split("\\s")[0];
-							}
-							if (paramDesc.hasParameter(name)) {
-								params.setValueUI(name, value);
-							} else {
-								info.pushLog("No parameter {} in section {}", name, section.getStringValue("name"));
-							}
-						}
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(params));
-					}
-				}
-			}
-			info.increaseProcessed();
-		}
-
+		doCreate(sections);
 	}
 
 	@Override

@@ -121,6 +121,9 @@ public class Item implements ItemBasics {
 		this.areFilesProtected = src.areFilesProtected;
 		this.timeUpdated = src.timeUpdated;
 		this.paramMap.putAll(src.paramMap);
+		for (Parameter parameter : paramMap.values()) {
+			parameter.item = this;
+		}
 		this.state = src.state;
 		setFilesPath();
 	}
@@ -288,7 +291,7 @@ public class Item implements ItemBasics {
 			if (itemType.getParameter(paramId).isMultiple())
 				return false;
 			// Удалить параметр, если значение равно null
-			modified = clearParameter(paramId);
+			modified = clearValue(paramId);
 		} else {
 			modified = getParameter(paramId).setValue(value, false);
 		}
@@ -516,7 +519,7 @@ public class Item implements ItemBasics {
 	 * Удаляет параметр с заданным ID
 	 * @param paramId
 	 */
-	public final boolean clearParameter(int paramId) {
+	public final boolean clearValue(int paramId) {
 		populateMap();
 		if (getParameterFromMap(paramId).clear()) {
 		state = State.modified_NO_xml;
@@ -528,8 +531,8 @@ public class Item implements ItemBasics {
 	 * Удалить все значения определенного параметра по его названию
 	 * @param paramName
 	 */
-	public final void clearParameter(String paramName) {
-		clearParameter(itemType.getParameter(paramName).getId());
+	public final void clearValue(String paramName) {
+		clearValue(itemType.getParameter(paramName).getId());
 	}
 	/**
 	 * Удалить определенное значение параметра
@@ -543,7 +546,7 @@ public class Item implements ItemBasics {
 			((MultipleParameter) param).deleteValue(paramValue);
 		} else {
 			if (param.containsValue(paramValue))
-				clearParameter(paramId);
+				clearValue(paramId);
 		}
 		state = State.modified_NO_xml;
 	}
@@ -635,15 +638,6 @@ public class Item implements ItemBasics {
 	 */
 	public final String getOldKeyUnique() {
 		return oldKeyUnique;
-	}
-	/**
-	 * Принудительно разобрать содержимое строки параметров и установить флаг о том,
-	 * что айтем был обновлен (хотя он не был)
-	 * @return
-	 */
-	public final void forceInitialInconsistent() {
-		populateMap();
-		state = State.modified_NO_xml;
 	}
 	/**
 	 * Получить XML со всеми параметрами айтема
