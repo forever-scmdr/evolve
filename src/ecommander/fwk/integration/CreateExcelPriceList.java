@@ -211,10 +211,11 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		}
 
 		//Write aux params
+		row.createCell(++colIdx).setCellValue(AUX_TYPE_FILE);
 		if(auxType.length > 0 && writeAuxParams){
 			ItemType aux = auxType[0];
 			if(aux != null) {
-				row.createCell(++colIdx).setCellValue(AUX_TYPE_FILE);
+
 				row.getCell(colIdx).setCellStyle(auxHeaderStyle);
 				sh.setColumnWidth(colIdx, 10 * 256);
 				for (ParameterDescription auxParam : aux.getParameterList()) {
