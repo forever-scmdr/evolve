@@ -212,10 +212,11 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		}
 
 		//Write aux params
+		row.createCell(++colIdx).setCellValue(AUX_TYPE_FILE);
 		if(auxType.length > 0 && writeAuxParams){
 			ItemType aux = auxType[0];
 			if(aux != null) {
-				row.createCell(++colIdx).setCellValue(AUX_TYPE_FILE);
+
 				row.getCell(colIdx).setCellStyle(auxHeaderStyle);
 				sh.setColumnWidth(colIdx, 10 * 256);
 				for (ParameterDescription auxParam : aux.getParameterList()) {
@@ -303,7 +304,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			}
 
 			if(writeAuxParams) {
-				writeAux(row, aux, colIdx, paramsType);
+				writeAux(row, aux, colIdx);
 			}
 
 			info.increaseProcessed();
@@ -354,7 +355,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						//write aux params
 						if (writeAuxParams) {
 							aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
-							writeAux(row, aux, colIdx, paramsType);
+							writeAux(row, aux, colIdx);
 						}
 						info.increaseProcessed();
 					}
@@ -375,7 +376,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		return colIdx;
 	}
 
-	private void writeAux(Row row, Item aux, int colIdx, ItemType auxType){
+	private void writeAux(Row row, Item aux, int colIdx){
 		if(aux == null) return;
 		row.createCell(++colIdx).setCellValue(aux.getTypeId());
 		row.getCell(colIdx).setCellStyle(auxStyle);
