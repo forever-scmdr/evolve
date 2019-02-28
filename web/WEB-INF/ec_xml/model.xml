@@ -221,8 +221,8 @@
 
 	<!--Товар, который вложен в другой товар-->
 	<!--Обновляет цену ОТ (минимальная цена) своего родительского товара при сохранении-->
-	<item name="line_product" caption="Товар-строка" description="содержится в товаре, как один из видов этого товара" super="described_product" ag-id="866" ag-hash="1097527204">
-		<on-update class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/>
+	<item name="line_product" caption="Товар-строка" description="содержится в товаре, какн из видов этого товара" super="described_product" ag-id="866" ag-hash="1097527204">
+		<on-update class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/> оди
 		<on-create class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/>
 		<on-delete class="ecommander.fwk.integration.UpdateProductMinPriceDeletedFactory"/>
 	</item>

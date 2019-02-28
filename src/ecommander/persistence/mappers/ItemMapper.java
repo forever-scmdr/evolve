@@ -2,20 +2,23 @@ package ecommander.persistence.mappers;
 
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
+import ecommander.fwk.MysqlConnector;
 import ecommander.model.*;
 import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.itemquery.ItemQuery;
 
+import javax.naming.NamingException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Выполняет различные операции с Item и БД
  * @author EEEE
  *
  */
-public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.Const {
+public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.Const, DBConstants.UniqueItemKeys {
 
 	public enum Mode {
 		INSERT, // вставка в таблицу (без изменения и удаления)
@@ -217,5 +220,30 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 	 */
 	public static ArrayList<Item> loadByName(String itemName, int limit, long startFromId, Connection conn) throws Exception {
 		return loadByTypeId(ItemTypeRegistry.getItemType(itemName).getTypeId(), limit, startFromId, conn);
+	}
+
+	/**
+	 * Загрузить ID айтемов по переданным уникальным текстовым ключам в порядке переданных ключей
+	 * Если айтем не найден, то в отображении по его ключу хранится null
+	 * @param keys
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public static LinkedHashMap<String, Long> loadItemIdsByKey(String...keys) throws SQLException, NamingException {
+		LinkedHashMap<String, Long> result = new LinkedHashMap<>();
+		for (String key : keys) {
+			result.put(key, null);
+		}
+		TemplateQuery select= new TemplateQuery("Select ids by string unique keys");
+		select.SELECT(UK_KEY, UK_ID).FROM(UNIQUE_KEY_TBL).WHERE().col_IN(UK_KEY).stringIN(keys);
+		try(Connection conn = MysqlConnector.getConnection();
+			PreparedStatement pstmt = select.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result.put(rs.getString(1), rs.getLong(2));
+			}
+		}
+		return result;
 	}
 }

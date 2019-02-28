@@ -11,6 +11,7 @@ import ecommander.model.Item;
 import ecommander.pages.var.RequestVariablePE;
 import ecommander.pages.var.VariablePE;
 import ecommander.persistence.itemquery.ItemQuery;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -138,7 +139,7 @@ public class PageModelRegistry {
 
 	/**
 	 * Приводит URL к нормальному виду. Т.е. добавляет название страницы, если его нет, и
-	 * добавляет названия переменных ко всем параметрам translit
+	 * добавляет названия переменных ко всем параметрам key
 	 * @param urlString
 	 * @return
 	 */
@@ -160,14 +161,15 @@ public class PageModelRegistry {
 		}
 		String pageName = units[0];
 		PagePE pageModel = PageModelRegistry.getRegistry().getPageModel(pageName);
-		int lastTranslitPartIndex = 1;
+		int lastTranslitPartIndex = -1;
 		boolean isExclusive = false;
 		if (pageModel == null) {
 			try {
+				LinkedHashMap<String, Item> items = ItemQuery.loadByUniqueKey(units);
 				for (int i = units.length - 1; i >= 0 && pageModel == null; i--) {
-					Item keyItem = ItemQuery.loadByUniqueKey(units[i]);
-					if (keyItem != null && keyItem.getItemType().hasDefaultPage()) {
-						pageName = keyItem.getItemType().getDefaultPage();
+					Item lastItem = items.get(units[i]);
+					if (lastItem != null && lastItem.getItemType().hasDefaultPage()) {
+						pageName = lastItem.getItemType().getDefaultPage();
 						pageModel = getPageModel(pageName);
 						lastTranslitPartIndex = i;
 						isExclusive = true;
@@ -176,22 +178,41 @@ public class PageModelRegistry {
 			} catch (Exception e) {
 				ServerLogger.error("Unable to load item by unique key", e);
 			}
+		} else {
+			units = Arrays.copyOfRange(units, 1, units.length);
+			if (units.length > 0) {
+				HashSet<String> nonKeyPathVarNames = new HashSet<>();
+				for (RequestVariablePE var : pageModel.getInitVariablesPEList()) {
+					if (var.isStylePath())
+						nonKeyPathVarNames.add(var.getName());
+				}
+				for (String unit : units) {
+					if (!nonKeyPathVarNames.contains(unit))
+						lastTranslitPartIndex++;
+					else
+						break;
+				}
+			}
 		}
 		if (pageModel == null)
 			return LinkPE.parseLink(urlString);
-		StringBuilder sb = new StringBuilder();
+		StringBuilder normalUrl = new StringBuilder();
 		Iterator<RequestVariablePE> varReverseIter = pageModel.getPathTranslitVarsReverseOrder().iterator();
-		for (int i = lastTranslitPartIndex; i >= 0 && varReverseIter.hasNext() && i < units.length; i--) {
+		if (varReverseIter.hasNext()) {
 			String varName = varReverseIter.next().getName();
-			sb.insert(0, VariablePE.COMMON_DELIMITER + varName + VariablePE.COMMON_DELIMITER + units[i]);
+			for (int i = 0; i <= lastTranslitPartIndex && i < units.length; i++) {
+				normalUrl.append(VariablePE.COMMON_DELIMITER).append(varName).append(VariablePE.COMMON_DELIMITER).append(units[i]);
+				if (varReverseIter.hasNext())
+					varName = varReverseIter.next().getName();
+			}
 		}
 		for (int i = lastTranslitPartIndex + 1; i < units.length; i++) {
-			sb.append(VariablePE.COMMON_DELIMITER + units[i]);
+			normalUrl.append(VariablePE.COMMON_DELIMITER + units[i]);
 		}
-		sb.insert(0, pageName);
+		normalUrl.insert(0, pageName);
 		if (StringUtils.isNotBlank(query))
-			sb.append(LinkPE.QUESTION_SIGN).append(query);
-		LinkPE result = LinkPE.parseLink(sb.toString());
+			normalUrl.append(LinkPE.QUESTION_SIGN).append(query);
+		LinkPE result = LinkPE.parseLink(normalUrl.toString());
 		if (urlString.length() == 0 || urlString.charAt(0) != '/')
 			urlString = '/' + urlString;
 		result.setOriginalUrl(urlString);

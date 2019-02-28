@@ -10,6 +10,8 @@ import ecommander.model.datatypes.DataType;
 import ecommander.model.datatypes.FileDataType;
 import ecommander.pages.ExecutableItemPE;
 import ecommander.pages.PageElement;
+import ecommander.pages.var.VariablePE;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -24,6 +26,7 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 	public static final String TYPE_ATTRIBUTE = "type";
 	public static final String PATH_ATTRIBUTE = "path";
 	public static final String KEY_ATTRIBUTE = "key";
+	public static final String KEYPATH_ATTRIBUTE = "keypath";
 	
 	public static final String ADMIN_PARAMETERS_ATTRIBUTE = "adm-params";
 	public static final String ADMIN_FULL_ATTRIBUTE = "adm-full";
@@ -54,9 +57,22 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 				tagName = findTag(item.getTypeName());
 			}
 		}
+		// Создать путь к текущему айтему
+		ArrayList<String> keyPath = new ArrayList<>();
+		if (itemToWrite.hasReference() && itemToWrite.getReference().isUrlKeyUnique()) {
+			keyPath.addAll(itemToWrite.getReference().getValuesArray());
+		} else {
+			for (Item pathItem : iter.getCurrentItemPath()) {
+				keyPath.add(pathItem.getKeyUnique());
+			}
+		}
 		// <item id="123" path="sitefiles/1/20/255/4055" updated="190456373"> (ID айтема, путь к файлам айтема)
-		xml.startElement(tagName, TYPE_ATTRIBUTE, item.getTypeName(), ID_ATTRIBUTE, item.getId(), PATH_ATTRIBUTE,
-				FileDataType.getItemFileUrl(item), KEY_ATTRIBUTE, item.getKeyUnique());
+		xml.startElement(tagName,
+				TYPE_ATTRIBUTE, item.getTypeName(),
+				ID_ATTRIBUTE, item.getId(),
+				PATH_ATTRIBUTE,	FileDataType.getItemFileUrl(item),
+				KEY_ATTRIBUTE, item.getKeyUnique(),
+				KEYPATH_ATTRIBUTE, StringUtils.join(keyPath, VariablePE.COMMON_DELIMITER));
 		// Если включен режим визуального редактирования
 		if (isVisualEditing)
 			addConentUpdateAttrs(xml, item);

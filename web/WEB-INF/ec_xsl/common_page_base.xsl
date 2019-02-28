@@ -17,7 +17,7 @@
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
 	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 
-	<xsl:variable name="title" select="'Мизида'" />
+	<xsl:variable name="title" select="'Акваком'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
@@ -30,7 +30,6 @@
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
-	<xsl:variable name="sel_sec_link" select="page/source_link"/>
 
 
 
@@ -66,8 +65,31 @@
 		<section class="top-menu">
 			<div class="container">
 				<xsl:apply-templates select="page/custom_pages/page_link | page/custom_pages/custom_page" mode="menu"/>
+				<a href="{page/contacts_link}" class="top-menu__item{' active'['contacts' = $active_menu_item]}">
+					Контакты
+				</a>
 			</div>
 		</section>
+	</xsl:template>
+
+
+
+
+	<xsl:template match="page_link" mode="mobile">
+		<li><a href="{link}"><xsl:value-of select="name" /></a></li>
+	</xsl:template>
+
+	<xsl:template match="custom_page" mode="mobile">
+		<li><a href="{show_page}"><xsl:value-of select="header" /></a></li>
+	</xsl:template>
+
+	<xsl:template name="MOBILE_MENU">
+		<ul>
+			<xsl:apply-templates select="page/custom_pages/page_link | page/custom_pages/custom_page" mode="mobile"/>
+			<li>
+				<a href="{page/contacts_link}">Контакты</a>
+			</li>
+		</ul>
 	</xsl:template>
 
 
@@ -146,8 +168,12 @@
 			<div class="container">
 				<div>
 					<p>
-						<strong>© ЧП «Акваком», 2018</strong>
+						<strong>© Частное предприятие «Акваком», 2018, УНП 190809856</strong>
 					</p>
+				</div>
+				<div><a href="">Информация для покупателей</a></div>
+				<div><a href="">Обмен и возврат товара</a></div>
+				<div>
 					<div class="footer__forever">
 						<a href="http://forever.by">Разработка сайта — студия веб-дизайна Forever</a>
 					</div>
@@ -203,23 +229,11 @@
 					<li><i class="fas fa-th-list"></i> <a href="#" onclick="showMobileCatalogMenu(); return false">Каталог продукции</a></li>
 				</ul>
 				<ul>
-					<li><i class="fas fa-shopping-cart"></i> <a href="{page/cart_link}" rel="nofolow">Заявки</a></li>
+					<li><i class="fas fa-shopping-cart"></i> <a href="{page/cart_link}" rel="nofolow">Корзина</a></li>
 					<li><i class="fas fa-star"></i> <a href="{page/fav_link}">Избранное</a></li>
 					<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>
 				</ul>
-				<ul>
-					<xsl:for-each select="page/news">
-						<li><a href="{show_page}">
-							<xsl:value-of select="name"/>
-						</a></li>
-					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/menu_custom">
-						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
-					</xsl:for-each>
-					<li>
-						<a href="{page/contacts_link}">Контакты</a>
-					</li>
-				</ul>
+				<xsl:call-template name="MOBILE_MENU"/>
 			</div>
 		</div>
 		<script>
@@ -333,23 +347,23 @@
 		<div class="block-title block-title_normal">Каталог</div>
 		<div class="side-menu">
 			<xsl:for-each select="page/catalog/section">
-				<xsl:variable name="l1_active" select="show_products = $sel_sec_link"/>
+				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="level-1{' active'[$l1_active]}">
 					<div class="capsule">
 						<a href="{show_products}"><xsl:value-of select="name"/> </a>
 					</div>
 				</div>
-				<xsl:if test=".//show_products = $sel_sec_link">
+				<xsl:if test=".//@id = $sel_sec_id">
 					<xsl:for-each select="section">
-						<xsl:variable name="l2_active" select="show_products = $sel_sec_link"/>
+						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
 						<div class="level-2{' active'[$l2_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
-						<xsl:if test=".//show_products = $sel_sec_link">
+						<xsl:if test=".//@id = $sel_sec_id">
 							<xsl:for-each select="section">
-								<xsl:variable name="l3_active" select="show_products = $sel_sec_link"/>
+								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
 								<div class="level-3{' active'[$l3_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
-								<xsl:if test=".//show_products = $sel_sec_link">
+								<xsl:if test=".//@id = $sel_sec_id">
 									<xsl:for-each select="section">
-										<xsl:variable name="l4_active" select="show_products = $sel_sec_link"/>
+										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
 										<div class="level-4{' active'[$l4_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 									</xsl:for-each>
 								</xsl:if>
@@ -408,7 +422,6 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
-		<xsl:variable name="product_link" select="concat($sel_sec_link, substring(show_product, 2))"/>
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
@@ -418,8 +431,8 @@
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if>
-			<a href="{$product_link}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
-			<a href="{$product_link}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
+			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
+			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
 			<div class="device__article-number"><xsl:value-of select="vendor_code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
@@ -448,7 +461,7 @@
 					</div>
 				</xsl:if>
 				<xsl:if test="$has_lines">
-					<a class="button" href="{$product_link}">Подробнее</a>
+					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
 			</div>
 			<!-- <xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
@@ -493,7 +506,6 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
-		<xsl:variable name="product_link" select="concat($sel_sec_link, substring(show_product, 2))"/>
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
@@ -503,9 +515,9 @@
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if>
-			<a href="{$product_link}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}">&#160;</a>
+			<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}">&#160;</a>
 			<div class="device__info">
-				<a href="{$product_link}" class="device__title"><xsl:value-of select="name"/></a>
+				<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
 				<div class="device__description">
 					<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 				</div>
@@ -562,7 +574,7 @@
 					</div>
 				</xsl:if>
 				<xsl:if test="$has_lines">
-					<a class="button" href="{$product_link}">Подробнее</a>
+					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
 				<!-- <xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии</div>

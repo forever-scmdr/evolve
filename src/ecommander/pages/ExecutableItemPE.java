@@ -262,7 +262,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		return parentItem != null;
 	}
 
-	private boolean hasReference() {
+	public boolean hasReference() {
 		return reference != null;
 	}
 	
@@ -361,8 +361,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * @param quantity
 	 */
 	private void setFoundItemQuantity(long parentId, int quantity) {
-		if (!foundItemsByParent.containsKey(parentId))
-			foundItemsByParent.put(parentId, new FoundItemBundle());
+		foundItemsByParent.putIfAbsent(parentId, new FoundItemBundle());
 		foundItemsByParent.get(parentId).totalQuantity = quantity;
 	}
 
@@ -529,10 +528,10 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		if (!isSession()) {
 			// Если есть ссылка, то нет нужды в конструировании запроса
 			if (hasReference()) {
-				List<String> values = getReference().getValuesArray();
 				if (getReference().isUrlKeyUnique()) {
-					return ItemQuery.loadByUniqueKey(values, getSessionContext().getDBConnection());
+					return ItemQuery.loadByUniqueKey(getReference().getKeysUnique(), getSessionContext().getDBConnection());
 				} else {
+					List<String> values = getReference().getValuesArray();
 					if (getReference().isVarParamReference())
 						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), values, getSessionContext()
 								.getDBConnection());

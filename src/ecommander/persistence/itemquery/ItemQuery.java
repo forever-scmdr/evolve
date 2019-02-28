@@ -906,7 +906,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				.FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID)
 				.WHERE().col(I_GROUP).byte_(userGroupId)
 				.AND().col(I_USER).int_(userId)
-				.AND().col(I_TYPE_ID).int_(type.getTypeId())
+				.AND().col_IN(I_SUPERTYPE).intIN(ItemTypeRegistry.getItemExtendersIds(type.getTypeId()))
 				.AND().col(IP_CHILD_ID).sql(IP_PARENT_ID);
 		ArrayList<Item> result = loadByQuery(query, "PID", null, null, conn);
 		if (result.size() > 0)
@@ -1013,16 +1013,20 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 
 	/**
 	 * Загрузить один айтем по уникальному ключу
-	 * @param key
-	 * @param conn
+	 * @param keys
 	 * @return
 	 * @throws Exception
 	 */
-	public static Item loadByUniqueKey(String key, Connection... conn) throws Exception {
-		ArrayList<Item> items = loadByUniqueKey(Arrays.asList(key), conn);
-		if (items.size() > 0)
-			return items.get(0);
-		return null;
+	public static LinkedHashMap<String, Item> loadByUniqueKey(String... keys) throws Exception {
+		LinkedHashMap<String, Item> result = new LinkedHashMap<>();
+		for (String key : keys) {
+			result.put(key, null);
+		}
+		ArrayList<Item> items = loadByUniqueKey(Arrays.asList(keys));
+		for (Item item : items) {
+			result.put(item.getKeyUnique(), item);
+		}
+		return result;
 	}
 	/**
 	 * Загрузить айтем по значению одного параметра
@@ -1246,7 +1250,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			limitQty = limit.getPage() * limit.getLimit() + limit.getLimit() * MAX_PAGE;
 		}
 		TemplateQuery unionQuery = new TemplateQuery("Qty query");
-		for (Long ancestorId : ancestorIds) {
+		Long[] ancIds = {new Long(0)};
+		if (ancestorIds != null)
+			ancIds = ancestorIds;
+		for (Long ancestorId : ancIds) {
 			if (!unionQuery.isEmpty())
 				unionQuery.sql(" UNION ALL ");
 			String tableName = "QTY_" + ancestorId;
