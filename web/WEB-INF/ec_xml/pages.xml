@@ -15,17 +15,15 @@
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
-				<list item="product"  transit="true">
-					<filter>
-						<limit>
-							<var value="1"/>
-						</limit>
-					</filter>
-				</list>
+				<!-- TMP FIX DELETE -->
+				<link name="show_sub" target="sub">
+					<var name="sec" ref="sec" style="translit"/>
+				</link>
+				<!-- END_TMP FIX -->
 			</tree>
 		</single>
 
-		<single item="custom_pages" id="custom_pages" cacheable="false" >
+		<single item="custom_pages" id="custom_pages" cacheable="true" >
 			<tree item="menu_item" id="custom_page">
 				<link name="show_page" target="page" type="exclusive">
 					<var name="p" ref="custom_page" style="translit"/>
@@ -33,7 +31,7 @@
 			</tree>
 		</single>
  
-		<list item="news" id="news" cacheable="false">
+		<list item="news" id="news" cacheable="true">
 			<link name="show_page" target="news" type="exclusive">
 				<var name="sel" ref="news" style="translit"/>
 			</link>
@@ -61,10 +59,10 @@
 		</link>
 		<link name="personal_ajax_link" target="personal_ajax"/>
 
-		<single item="modules">
+		<single item="modules" cacheable="true">
 			<list item="named_code"/>
 		</single>
-		<single item="url_seo_wrap">
+		<single item="url_seo_wrap" cacheable="true">
 			<list item="url_seo"/>
 		</single>
 	</include-definition>
@@ -86,7 +84,7 @@
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
 			<single item="seo"/>
-			<list item="product" id="prod" assoc="general">
+			<list item="product" id="prod" assoc="general" tag="product">
 				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="translit"/>
 				</link>
@@ -144,11 +142,34 @@
 
     <page name="catalog" template="catalog" cacheable="true">
 		<include name="COMMON"/>
-		<single item="catalog">
+		<single item="catalog" cacheable="true" tag="subsec_pics" id="subsec_pics_catalog">
 			<single item="seo"/>
+			<list item="section" id="sec_pics">
+ 				<list item="product" transit="true" tag="product">
+					<filter>
+						<limit>
+							<var value="1"/>
+						</limit>
+					</filter>
+				</list>
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="sec_pics" style="translit"/>
+				</link>
+				<link name="show_sub" target="sub">
+					<var name="sec" ref="sec_pics" style="translit"/>
+				</link>
+			</list>
 		</single>
 	</page>
 
+	<!-- TMP FIX DELETE -->
+	<page name="sub" template="sub" cacheable="false">
+		<request>
+			<var name="sec" style="translit"/>
+		</request>
+		<include name="COMMON"/>
+	</page>
+	<!-- END_TMP FIX -->
 
 
 	<page name="section" template="section" cacheable="true" critical-item="cur_sec" >
@@ -163,15 +184,15 @@
 			<var name="fil"/>
 			<var name="tag"/>
 		</request>
-		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
+		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view page">
 			<link name="canonical_link" target="section" type="exclusive">
 				<var name="sec" item="cur_sec" style="translit"/>
 			</link>
 			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" transit="true" tag="product">
 				<filter>
-					 <child item="params" transit="false"
-						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
+<!-- 					 <child item="params" transit="false"
+						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/> -->
 					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 					<sorting direction-var="direction">
 						<var var="sort"/>
@@ -217,12 +238,27 @@
 					<var name="tag" parameter="tag" ref="tag"/>
 				</link>
 			</list>
-			<list item="product" tag="min">
+			<list item="section" id="subsec_pics">
+ 				<list item="product" transit="true" tag="product">
+					<filter>
+						<limit>
+							<var value="1"/>
+						</limit>
+					</filter>
+				</list>
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="subsec_pics" style="translit"/>
+				</link>
+				<link name="show_sub" target="sub">
+					<var name="sec" ref="subsec_pics" style="translit"/>
+				</link>
+			</list>
+<!-- 			<list item="product" tag="min">
 				<aggregation parameter="price" function="MIN"/>
 			</list>
 			<list item="product" tag="max">
 				<aggregation parameter="price" function="MAX"/>
-			</list>
+			</list> -->
 		</single>
 		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="table"/>
@@ -280,7 +316,7 @@
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 		</request>
-		<list item="product" id="prod">
+		<list item="product" id="prod" tag="product">
 			<filter>
 				<fulltext limit="48" compare="EVERY">
 					<var var="q"/>
@@ -337,6 +373,7 @@
 			</link>
 			<single item="seo" assoc="seo"/>
 			<single item="params"/>
+			<single item="params_xml"/>
 			<single item="product_extra"/>
 			<ancestor item="section" transit="false" tag="product_section"/>
 			<link name="to_cart" target="cart_action">
@@ -481,7 +518,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="zakaz@mystery.by"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -543,7 +580,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="zakaz@mystery.by"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -637,7 +674,7 @@
 		<session>
 			<single item="cart">
 				<list item="bought">
-					<list item="product" tag="product"/>
+					<list item="abstract_product" tag="product"/>
 				</list>
 			</single>
 		</session>
@@ -652,7 +689,7 @@
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
-					<single item="product" tag="product" id="prod">
+					<single item="abstract_product" tag="product" id="prod">
 						<filter>
 							<parameter name="code" compare="SOME" sign="=">
 								<var ref="bought" parameter="code"/>
@@ -680,7 +717,7 @@
 			<var name="favourites" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
-		<list item="product" id="prod">
+		<list item="product" id="prod" tag="product">
 			<filter>
 				<parameter name="code" compare="SOME">
 					<var var="favourites"/>
@@ -702,7 +739,7 @@
 			<var name="compare" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
-		<list item="product" id="prod">
+		<list item="product" id="prod" tag="product">
 			<filter>
 				<parameter name="code" compare="SOME">
 					<var var="compare"/>
@@ -737,7 +774,7 @@
 		<request>
 			<var name="favourites" scope="cookie"/>
 		</request>
-		<list item="product" id="prod">
+		<list item="product" id="prod" tag="product">
 			<filter>
 				<parameter name="code" compare="SOME">
 					<var var="favourites"/>
@@ -777,7 +814,7 @@
 		<request>
 			<var name="compare" scope="cookie"/>
 		</request>
-		<list item="product" id="prod">
+		<list item="product" id="prod" tag="product">
 			<filter>
 				<parameter name="code" compare="SOME">
 					<var var="compare"/>

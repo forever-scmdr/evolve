@@ -7,8 +7,8 @@
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
-	<xsl:variable name="subs" select="$main_menu_section/section"/>
-	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
+	<xsl:variable name="subs" select="$sel_sec/section"/>
+	<xsl:variable name="show_devices" select="true()"/>
 
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
 
@@ -151,25 +151,20 @@
 
 	<xsl:template name="TAGS">
 	   <xsl:if test="$subs or $sel_sec/tag">
-				<xsl:if test="not($subs)">
+			<xsl:if test="not($subs)">
+				<div class="tags">
+					<form method="GET" action="{page/source_link}">
+						<xsl:apply-templates select="$sel_sec/tag"/>
+					</form>
+				</div>
+			</xsl:if>
+			<xsl:if test="not($sel_sec/show_subs = '0')">
+				<xsl:if test="$subs">
 					<div class="tags">
-						<form method="GET" action="{page/source_link}">
-							<xsl:apply-templates select="$sel_sec/tag"/>
-						</form>
+						<xsl:apply-templates select="$subs" mode="tag"/>
 					</div>
 				</xsl:if>
-				<xsl:if test="not($sel_sec/show_subs = '0')">
-					<xsl:if test="$subs and $sub_view = 'tags'">
-						<div class="tags">
-							<xsl:apply-templates select="$subs" mode="tag"/>
-						</div>
-					</xsl:if>
-					<xsl:if test="$subs and $sub_view = 'pics'">
-						<div class="catalog-items">
-							<xsl:apply-templates select="$subs" mode="pic"/>
-						</div>
-					</xsl:if>
-				</xsl:if>
+			</xsl:if>
 		</xsl:if>
 	</xsl:template>
 
@@ -227,19 +222,6 @@
 						<i class="fas fa-th-list"></i>
 						<a href="{page/set_view_list}">Строками</a>
 					</span>
-				</div>
-				<div class="checkbox">
-					<label>
-						<xsl:if test="not($only_available)">
-							<input type="checkbox"
-								   onclick="window.location.href = '{page/show_only_available}'"/>
-						</xsl:if>
-						<xsl:if test="$only_available">
-							<input type="checkbox" checked="checked"
-								   onclick="window.location.href = '{page/show_all}'"/>
-						</xsl:if>
-						в наличии на складе
-					</label>
 				</div>
 				<span>
 					<select class="form-control" value="{page/variables/sort}{page/variables/direction}"

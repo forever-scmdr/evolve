@@ -5,6 +5,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemBasics;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
+import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.common.TemplateQuery;
@@ -32,6 +33,7 @@ public class RemoveInvisibleCommand extends Command implements DBConstants.ItemT
 				DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.delete(itemBasics));
 			}
 		} while (invisible.size() > 0);
+		DelayedTransaction.executeSingle(getInitiator(), new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
 		return null;
 	}
 }

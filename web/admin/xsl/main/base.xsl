@@ -207,6 +207,9 @@
 											Управление классами объектов
 										</a>
 									</li>
+									<li class="visible" title="Удалить скрытые (долго)">
+										<a href="remove_hidden" target="_blank">Удалить скрытые (долго)</a>
+									</li>
 								</ul>
 							</div>
 						</div>

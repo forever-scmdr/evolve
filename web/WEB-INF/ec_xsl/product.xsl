@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="3.0">
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -219,32 +219,33 @@
 
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-							<xsl:if test="$p/params">
-							<li role="presentation" class="active">
-								<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
+						<xsl:if test="$p/params_xml">
+						<li role="presentation" class="active">
+							<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
+						</li>
+						</xsl:if>
+						<xsl:for-each select="$p/product_extra">
+							<li role="presentation">
+								<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a>
 							</li>
-							</xsl:if>
-							<xsl:for-each select="$p/product_extra">
-								<li role="presentation">
-									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a>
-								</li>
-							</xsl:for-each>
+						</xsl:for-each>
 					</ul>
 				<div class="tab-content">
-					<xsl:if test="$p/params">
+					<xsl:if test="$p/params_xml">
+						<xsl:variable name="params" select="parse-xml(concat('&lt;xml&gt;', $p/params_xml/xml, '&lt;/xml&gt;'))"/>
 						<div role="tabpanel" class="tab-pane active" id="tab1">
 							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
 							<table>
 								<colgroup>
 									<col style="width: 40%"/>
 								</colgroup>
-								<xsl:for-each select="$p/params/param">
+								<xsl:for-each select="$params/xml/parameter">
 									<tr>
 										<td>
-											<p><strong><xsl:value-of select="@caption"/></strong></p>
+											<p><strong><xsl:value-of select="name"/></strong></p>
 										</td>
 										<td>
-											<p><xsl:value-of select="."/></p>
+											<p><xsl:value-of select="value"/></p>
 										</td>
 									</tr>
 								</xsl:for-each>

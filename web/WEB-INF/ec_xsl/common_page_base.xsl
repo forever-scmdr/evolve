@@ -211,12 +211,14 @@
 		<section class="footer">
 		    <div class="container">
 		        <div class="footer__menu">
-		            <a href="">Каталог</a>
-		            <a href="">Новости</a>
-		            <a href="">О компании</a>
-		            <a href="">Оплата</a>
-		            <a href="">Доставка</a>
-		            <a href="">Контакты</a>
+		            <a href="{page/catalog_link}">Каталог</a>
+			        <xsl:for-each select="page/news">
+						<a href="{show_page}"><xsl:value-of select="name"/></a>
+			        </xsl:for-each>
+			        <xsl:for-each select="page/custom_pages/custom_page[in_main_menu = 'да']">
+						<a href="{show_page}"><xsl:value-of select="header"/></a>
+			        </xsl:for-each>
+		            <a href="{page/contacts_link}">Контакты</a>
 		        </div>
 		        <div class="footer__content">
 			        <xsl:variable name="footer" select="page/common/footer"/>
