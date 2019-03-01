@@ -34,6 +34,9 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				boolean isLineProduct = code.indexOf('@') != -1;
 				code = (isLineProduct)? code.substring(0, code.indexOf('@')) : code;
 				String price = getValue(CreateExcelPriceList.PRICE_FILE);
+				String oldPrice = getValue(CreateExcelPriceList.PRICE_OLD_FILE);
+				String originalPrice = getValue(CreateExcelPriceList.PRICE_ORIGINAL_FILE);
+				String currencyId = getValue(CreateExcelPriceList.CURRENCY_ID_FILE);
 				String qty = getValue(CreateExcelPriceList.QTY_FILE);
 				String av = getValue(CreateExcelPriceList.AVAILABLE_FILE);
 				Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code);
@@ -41,6 +44,9 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 					product.setValueUI(PRICE_PARAM, price);
 					product.setValueUI(QTY_PARAM, qty);
 					product.setValueUI(AVAILABLE_PARAM, av);
+					product.setValueUI(PRICE_OLD_PARAM, oldPrice);
+					product.setValueUI(PRICE_ORIGINAL_PARAM, originalPrice);
+					product.setValueUI(CURRENCY_ID_PARAM, currencyId);
 					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().ingoreComputed());
 					setProcessed(rowNum++);
 				}

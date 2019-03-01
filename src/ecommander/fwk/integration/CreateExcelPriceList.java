@@ -33,6 +33,9 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	protected static final String CODE_FILE = "Код";
 	protected static final String NAME_FILE = "Название";
 	protected static final String PRICE_FILE = "Цена";
+	protected static final String PRICE_OLD_FILE = "Старая цена";
+	protected static final String PRICE_ORIGINAL_FILE = "Цена в оригинале";
+	protected static final String CURRENCY_ID_FILE = "Код валюты цены";
 	protected static final String QTY_FILE = "Количество";
 	protected static final String UNIT_FILE = "Единица измерения";
 	protected static final String AVAILABLE_FILE = "Наличие";
@@ -43,6 +46,9 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		add(CODE_PARAM);
 		add(NAME_PARAM);
 		add(PRICE_PARAM);
+		add(PRICE_OLD_PARAM);
+		add(PRICE_ORIGINAL_PARAM);
+		add(CURRENCY_ID_PARAM);
 		add(QTY_PARAM);
 		add(AVAILABLE_PARAM);
 		add("small_pic");
