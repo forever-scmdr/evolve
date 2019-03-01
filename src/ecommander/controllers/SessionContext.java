@@ -52,7 +52,6 @@ public class SessionContext implements AutoCloseable {
 
 	@Override
 	public void close() throws Exception {
-		closeDBConnection();
 		if (hasSession()) {
 			storage = (SessionObjectStorage) forceGetSession().getAttribute(STORAGE_SESSION_NAME);
 			if (storage != null && storage.isEmpty())
@@ -80,7 +79,6 @@ public class SessionContext implements AutoCloseable {
 	}
 	
 	private HttpServletRequest request;
-	private Connection dbConnection;
 	private SessionObjectStorage storage = null;
 	private User user = null;
 	private HashMap<String, String> cookies = null;
@@ -364,26 +362,6 @@ public class SessionContext implements AutoCloseable {
 	 */
 	private HttpSession forceGetSession() {
 		return request.getSession(true);
-	}
-	/**
-	 * Получить подключение к базе данных
-	 * @return
-	 */
-	public Connection getDBConnection() {
-		try {
-			if (dbConnection == null || dbConnection.isClosed())
-				dbConnection = MysqlConnector.getConnection(request);
-		} catch (Exception e) {
-			ServerLogger.error("Unable to get new MySQL connection", e);
-		}
-		return dbConnection;
-	}
-	/**
-	 * Закрыть подключение
-	 */
-	private void closeDBConnection() {
-		MysqlConnector.closeConnection(dbConnection);
-		dbConnection = null;
 	}
 	/**
 	 * Установить режим визуального редактирования сайта

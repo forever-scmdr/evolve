@@ -213,13 +213,11 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 			}
 			// Апдейт базы данных (сохранение новых параметров айтема)
 			if (item.hasChanged()) {
-				PreparedStatement pstmt = null;
-				try {
-					Connection conn = getTransactionContext().getConnection();
-					// Сохранить новое ключевое значение и параметры в основную таблицу
-					String sql = "UPDATE " + ITEM_TBL + " SET " + I_KEY + "=?, " + I_T_KEY + "=?, " + I_PARAMS + "=?, "
-							+ I_UPDATED + "=NULL WHERE " + I_ID + "=" + item.getId();
-					pstmt = conn.prepareStatement(sql);
+				Connection conn = getTransactionContext().getConnection();
+				// Сохранить новое ключевое значение и параметры в основную таблицу
+				String sql = "UPDATE " + ITEM_TBL + " SET " + I_KEY + "=?, " + I_T_KEY + "=?, " + I_PARAMS + "=?, "
+						+ I_UPDATED + "=NULL WHERE " + I_ID + "=" + item.getId();
+				try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 					pstmt.setString(1, item.getKey());
 					pstmt.setString(2, item.getKeyUnique());
 					pstmt.setString(3, item.outputValues());
@@ -228,8 +226,6 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 					
 					// Выполнить запросы для сохранения параметров
 					ItemMapper.insertItemParametersToIndex(item, ItemMapper.Mode.UPDATE, getTransactionContext());
-				} finally {
-					MysqlConnector.closeStatement(pstmt);
 				}
 			}
 		}

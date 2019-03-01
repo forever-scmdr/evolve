@@ -5,15 +5,11 @@ import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.model.ParameterDescription;
-import ecommander.model.datatypes.DataType;
 import ecommander.model.datatypes.FileDataType;
 import ecommander.pages.ExecutableItemPE;
 import ecommander.pages.PageElement;
 import ecommander.pages.var.VariablePE;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.ArrayList;
 

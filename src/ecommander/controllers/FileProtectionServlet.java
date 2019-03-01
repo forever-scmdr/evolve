@@ -7,10 +7,10 @@ import ecommander.model.Security;
 import ecommander.persistence.mappers.ItemMapper;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.HashSet;
 
 /**
@@ -44,7 +44,9 @@ public class FileProtectionServlet extends BasicServlet {
 				HashSet<Long> checkedIds = (HashSet<Long>) sess.getVariableObject(SECURITY_CHECKED_ITEM_IDS);
 				ItemBasics item;
 				if (checkedIds == null || !checkedIds.contains(itemId)) {
-					item = ItemMapper.loadItemBasics(itemId, MysqlConnector.getConnection());
+					try (Connection conn = MysqlConnector.getConnection()) {
+						item = ItemMapper.loadItemBasics(itemId, conn);
+					}
 					Security.testPrivileges(sess.getUser(), item);
 					if (checkedIds == null) {
 						checkedIds = new HashSet<>();
