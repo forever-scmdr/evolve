@@ -13,7 +13,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileOutputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -57,15 +56,19 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	//page vars
 	private static final String PROD_PARAMS_VAR = "prod_params";
 	private static final String AUX_PARAMS_VAR = "aux_params";
+	private static final String LINE_PRODUCTS_VAR = "line_products";
 	private static final String PRODUCTS_VAR = "existing_products";
 	private static final String SECTION_VAR = "sec";
 	private static final String MANUALS_VAR = "manuals";
 	private static final String YES = "yes";
+	private static final String NO = "no";
 
 	private boolean writeAllProductParams = false;
 	private boolean writeAuxParams = false;
 	private boolean writeProducts = true;
 	private boolean writeManuals = true;
+	private boolean writeLineProducts = true;
+	private boolean hasUnits = false;
 	private long secId = 0L;
 
 
@@ -209,10 +212,10 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		}
 
 		//Write aux params
+		row.createCell(++colIdx).setCellValue(AUX_TYPE_FILE);
 		if(auxType.length > 0 && writeAuxParams){
 			ItemType aux = auxType[0];
 			if(aux != null) {
-				row.createCell(++colIdx).setCellValue(AUX_TYPE_FILE);
 				row.getCell(colIdx).setCellStyle(auxHeaderStyle);
 				sh.setColumnWidth(colIdx, 10 * 256);
 				for (ParameterDescription auxParam : aux.getParameterList()) {
@@ -254,15 +257,23 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			Row row = sh.createRow(++rowI);
 			int colIdx = -1;
 			CellStyle cellStyle = chooseCellStyle(product);
-			BigDecimal price = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
-			String priceValue = (price.doubleValue() > 0.001) ? price.toString() : "";
-			String qtyValue = (product.getDecimalValue(QTY_PARAM) != null) ? String.valueOf(product.getDecimalValue(QTY_PARAM)) : "";
+//			double price;
+//			if(priceType == DataType.Type.DECIMAL || priceType == DataType.Type.CURRENCY || priceType == DataType.Type.CURRENCY_PRECISE) {
+//				price = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).doubleValue();
+//			}else{
+//				price = product.getDoubleValue(PRICE_PARAM,0d);
+//			}
+
+			String priceValue = product.outputValue(PRICE_PARAM);//(price > 0.001) ? String.valueOf(Math.round(price*100d)/100d) : "";
+			String qtyValue = product.outputValue(QTY_PARAM);//(product.getDecimalValue(QTY_PARAM) != null) ? String.valueOf(product.getDecimalValue(QTY_PARAM)) : "";
 
 			row.createCell(++colIdx).setCellValue(product.getStringValue(CODE_PARAM, ""));
 			row.createCell(++colIdx).setCellValue(product.getStringValue(NAME_PARAM, ""));
 			row.createCell(++colIdx).setCellValue(priceValue);
 			row.createCell(++colIdx).setCellValue(qtyValue);
+			if(hasUnits) {
 			row.createCell(++colIdx).setCellValue(product.getStringValue("unit", ""));
+			}
 			row.createCell(++colIdx).setCellValue(String.valueOf(product.getByteValue(AVAILABLE_PARAM, (byte) 0)));
 
 
@@ -291,56 +302,63 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			}
 
 			if(writeAuxParams) {
-				writeAux(row, aux, colIdx, paramsType);
+				writeAux(row, aux, colIdx);
 			}
 
 			info.increaseProcessed();
-//			if (product.getByteValue(HAS_LINE_PRODUCTS, (byte) 0) == 1) {
-//				List<Item> lineProducts = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(product.getId(), false).loadItems();
-//				info.setToProcess(info.getToProcess() + lineProducts.size());
-//				info.pushLog(product.getStringValue(NAME_PARAM) + ". Обнаружено вложенных товаров: " + lineProducts.size());
-//				String parentCode = product.getStringValue(CODE_PARAM, "");
-//				for(Item lineProduct : lineProducts){
-//					//write aux params
-//					if(writeAuxParams) {
-//						aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
-//						if(aux != null && !aux.getItemType().equals(paramsType)){
-//							paramsType = aux.getItemType();
-//							rowI = initializeHeader(sh, rowI, paramsType);
+			if (writeLineProducts) {
+				if (product.getByteValue(HAS_LINE_PRODUCTS, (byte) 0) == 1) {
+					List<Item> lineProducts = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(product.getId(), false).loadItems();
+					info.setToProcess(info.getToProcess() + lineProducts.size());
+					info.pushLog(product.getStringValue(NAME_PARAM) + ". Обнаружено вложенных товаров: " + lineProducts.size());
+					String parentCode = product.getStringValue(CODE_PARAM, "");
+					for (Item lineProduct : lineProducts) {
+						colIdx = -1;
+						//write aux params
+						if (writeAuxParams) {
+							aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
+							if (aux != null && !aux.getItemType().equals(paramsType)) {
+								paramsType = aux.getItemType();
+								rowI = initializeHeader(sh, rowI, paramsType);
+							}
+						}
+						row = sh.createRow(++rowI);
+						cellStyle = chooseCellStyle(lineProduct);
+//						if(priceType == DataType.Type.DECIMAL || priceType == DataType.Type.CURRENCY || priceType == DataType.Type.CURRENCY_PRECISE) {
+//							price = lineProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).doubleValue();
+//						}else{
+//							price = lineProduct.getDoubleValue(PRICE_PARAM,0d);
 //						}
-//					}
-//					row = sh.createRow(++rowI);
-//					cellStyle = chooseCellStyle(lineProduct);
-//					price = lineProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
-//					priceValue = (price.doubleValue() > 0.001) ? price.toString() : "";
-//					qtyValue = (lineProduct.getDoubleValue(QTY_PARAM) != null) ? String.valueOf(lineProduct.getDoubleValue(QTY_PARAM)) : "";
-//
-//					row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(CODE_PARAM + "@" + parentCode, ""));
-//					row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(NAME_PARAM, ""));
-//					row.createCell(++colIdx).setCellValue(priceValue);
-//					row.createCell(++colIdx).setCellValue(qtyValue);
-//					row.createCell(++colIdx).setCellValue(lineProduct.getStringValue("unit", ""));
-//					row.createCell(++colIdx).setCellValue(String.valueOf(lineProduct.getByteValue(AVAILABLE_PARAM, (byte) 0)));
-//
-//					//write all product params
-//					if(writeAllProductParams){
-//						colIdx = writeParams(row, lineProduct, colIdx, productItemType);
-//					}
-//
-//					if (cellStyle != null) {
-//						for (int i = 0; i < colIdx + 1; i++) {
-//							row.getCell(i).setCellStyle(cellStyle);
-//						}
-//					}
-//
-//					//write aux params
-//					if(writeAuxParams) {
-//						aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
-//						writeAux(row, aux, colIdx, paramsType);
-//					}
-//					info.increaseProcessed();
-//				}
-//			}
+						priceValue = lineProduct.outputValue(PRICE_PARAM);//(price > 0.001) ? String.valueOf(price) : "";
+						qtyValue = lineProduct.outputValue(QTY_PARAM);//(lineProduct.getDoubleValue(QTY_PARAM) != null) ? String.valueOf(lineProduct.getDoubleValue(QTY_PARAM)) : "";
+
+						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(CODE_PARAM, "")+ "@" + parentCode);
+						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(NAME_PARAM, ""));
+						row.createCell(++colIdx).setCellValue(priceValue);
+						row.createCell(++colIdx).setCellValue(qtyValue);
+						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue("unit", ""));
+						row.createCell(++colIdx).setCellValue(String.valueOf(lineProduct.getByteValue(AVAILABLE_PARAM, (byte) 0)));
+
+						//write all product params
+						if (writeAllProductParams) {
+							colIdx = writeParams(row, lineProduct, colIdx, productItemType);
+						}
+
+						if (cellStyle != null) {
+							for (int i = 0; i < colIdx + 1; i++) {
+								row.getCell(i).setCellStyle(cellStyle);
+							}
+						}
+
+						//write aux params
+						if (writeAuxParams) {
+							aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
+							writeAux(row, aux, colIdx);
+						}
+						info.increaseProcessed();
+					}
+				}
+			}
 		}
 		return rowI;
 	}
@@ -356,7 +374,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		return colIdx;
 	}
 
-	private void writeAux(Row row, Item aux, int colIdx, ItemType auxType){
+	private void writeAux(Row row, Item aux, int colIdx){
 		if(aux == null) return;
 		row.createCell(++colIdx).setCellValue(aux.getTypeId());
 		row.getCell(colIdx).setCellStyle(auxStyle);
@@ -381,7 +399,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 	private CellStyle chooseCellStyle(Item product) {
 		if (StringUtils.isBlank(product.getStringValue(CODE_PARAM))) return noCodeStyle;
-		if (product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).doubleValue() < 0.001) return noPriceStyle;
+		if (StringUtils.isBlank(product.outputValue(PRICE_PARAM))) return noPriceStyle;
 		return null;
 	}
 
@@ -483,10 +501,22 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-		writeAllProductParams = (YES.equals(getVarSingleValue(PROD_PARAMS_VAR))) ? true : writeAllProductParams;
-		writeAuxParams = (YES.equals(getVarSingleValue(AUX_PARAMS_VAR))) ? true : writeAuxParams;
-		writeProducts = (YES.equals(getVarSingleValue(PRODUCTS_VAR))) ? true : writeProducts;
-		writeManuals = (YES.equals(getVarSingleValue(MANUALS_VAR))) ? true : writeManuals;
+		String prodParamsVar = getVarSingleValue(PROD_PARAMS_VAR);
+		String auxParamsVar = getVarSingleValue(AUX_PARAMS_VAR);
+		String productsVar = getVarSingleValue(PRODUCTS_VAR);
+		String manualsVar = getVarSingleValue(MANUALS_VAR);
+		String lineProductsVar = getVarSingleValue(LINE_PRODUCTS_VAR);
+
+		writeAllProductParams = (YES.equals(prodParamsVar)) || writeAllProductParams && !NO.equals(prodParamsVar);
+		writeAuxParams = (YES.equals(auxParamsVar)) || writeAuxParams && !NO.equals(auxParamsVar);
+		writeProducts = (YES.equals(productsVar)) || writeProducts && !NO.equals(productsVar);
+		writeManuals = (YES.equals(manualsVar)) || writeManuals && !NO.equals(manualsVar);
+		writeLineProducts = (YES.equals(lineProductsVar)) || writeLineProducts && !NO.equals(lineProductsVar);
+
+		writeManuals = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter(MANUAL_PARAM) != null && writeManuals;
+		hasUnits = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter("unit") != null;
+		writeLineProducts = ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM) != null && writeLineProducts;
+
 		String sectionId = getVarSingleValue(SECTION_VAR);
 		if (StringUtils.isNotBlank(sectionId)) secId = Long.parseLong(sectionId);
 		return true;
