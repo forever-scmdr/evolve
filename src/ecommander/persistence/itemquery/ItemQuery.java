@@ -989,15 +989,15 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		idsSelect.SELECT(UK_ID).FROM(UNIQUE_KEY_TBL).WHERE().col_IN(UK_KEY).stringIN(keys.toArray(new String[0]));
 		boolean isOwnConnection = false;
 		Connection connection = null;
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
 		ArrayList<Long> ids = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
 			pstmt = idsSelect.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next())
@@ -1123,16 +1123,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private static ArrayList<Item> loadByQuery(TemplateQuery query, String parentIdCol, Long[] order,
 	                                           FulltextCriteria fulltext, Connection... conn) throws Exception {
 		boolean isOwnConnection = false;
-		Connection connection;
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
+		Connection connection = null;
 		ArrayList<Item> result = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
 			pstmt = query.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			if (order == null) {
@@ -1201,14 +1201,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Выполнение запроса к БД
 		HashMap<Long, Integer> result = new HashMap<>();
 		boolean isOwnConnection = false;
-		Connection connection;
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
-		try (PreparedStatement pstmt = query.prepareQuery(connection)){
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
+			pstmt = query.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				result.put(rs.getLong(2), rs.getInt(1));
@@ -1216,6 +1218,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			rs.close();
 			queryFinished(connection);
 		} finally {
+			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection) MysqlConnector.closeConnection(connection);
 		}
 		return result;
@@ -1270,14 +1273,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Выполнение запроса к БД
 		HashMap<Long, Integer> result = new HashMap<>();
 		boolean isOwnConnection = false;
-		Connection connection;
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
-		try (PreparedStatement pstmt = unionQuery.prepareQuery(connection)){
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
+			pstmt = unionQuery.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				int qty = rs.getInt(1);
@@ -1288,6 +1293,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			rs.close();
 			queryFinished(connection);
 		} finally {
+			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection) MysqlConnector.closeConnection(connection);
 		}
 		return result;
@@ -1302,18 +1308,19 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Выполнение запроса к БД
 		ArrayList<Item> result = new ArrayList<>();
 		boolean isOwnConnection = false;
-		Connection connection;
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
-
+		Connection connection = null;
+		PreparedStatement pstmt = null;
 		final int PARENT_COL = 1;
 		final int MAIN_COL = 2;
 		final int ADDITIONAL_COL = 3;
-		try (PreparedStatement pstmt = query.prepareQuery(connection)) {
+		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
+			pstmt = query.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Item item = Item.existingItem(getItemDesc(), -1, ItemTypeRegistry.getPrimaryAssoc(),
@@ -1332,6 +1339,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			rs.close();
 			queryFinished(connection);
 		} finally {
+			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection)
 				MysqlConnector.closeConnection(connection);
 		}
@@ -1359,17 +1367,20 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				.AND().col(IP_PARENT_ID).long_(parentId)
 				.AND().col(IP_ASSOC_ID).byte_(assocId);
 		boolean isOwnConnection = false;
-		Connection connection;
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
-		try (PreparedStatement pstmt = query.prepareQuery(connection)) {
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
+			pstmt = query.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
 		} finally {
+			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection)
 				MysqlConnector.closeConnection(connection);
 		}
@@ -1392,16 +1403,18 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				.sql(" GROUP BY " + II_VALUE)
 				.ORDER_BY(II_VALUE);
 		boolean isOwnConnection = false;
-		Connection connection;
+		Connection connection = null;
+		PreparedStatement pstmt = null;
 		ArrayList<String> result = new ArrayList<>();
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
 		DataType paramType = DataTypeRegistry.getType(param.getType());
-		try (PreparedStatement pstmt = query.prepareQuery(connection)) {
+		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
+			pstmt = query.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				Object value = DataTypeMapper.createValue(param.getType(), rs);
@@ -1409,6 +1422,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			}
 			return result;
 		} finally {
+			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection)
 				MysqlConnector.closeConnection(connection);
 		}

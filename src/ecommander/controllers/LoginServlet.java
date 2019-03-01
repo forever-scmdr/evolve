@@ -1,11 +1,13 @@
 package ecommander.controllers;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ecommander.fwk.MysqlConnector;
 import ecommander.model.User;
 import ecommander.model.UserMapper;
 
@@ -42,11 +44,12 @@ public class LoginServlet extends BasicServlet {
 		String password = request.getParameter(PASSWORD_INPUT);
 		String target = request.getParameter(TARGET_INPUT);
 		String action = request.getServletPath().replaceFirst("/", "").replaceFirst("\\..*", "");
-		try (SessionContext sessionCtx = SessionContext.createSessionContext(request)) {
+		try (Connection conn = MysqlConnector.getConnection();
+		     SessionContext sessionCtx = SessionContext.createSessionContext(request)) {
 			if (action.equalsIgnoreCase(LOGOUT_ACTION)) {
 				sessionCtx.userExit();
 			} else if (action.equalsIgnoreCase(LOGIN_ACTION)) {
-				User user = UserMapper.getUser(name, password, sessionCtx.getDBConnection());
+				User user = UserMapper.getUser(name, password, conn);
 				if (user != null)
 					sessionCtx.setUser(user);
 			}
