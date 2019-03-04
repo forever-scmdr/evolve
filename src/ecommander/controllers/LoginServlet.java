@@ -1,15 +1,14 @@
 package ecommander.controllers;
 
-import java.io.IOException;
-import java.sql.Connection;
+import ecommander.fwk.MysqlConnector;
+import ecommander.model.User;
+import ecommander.model.UserMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import ecommander.fwk.MysqlConnector;
-import ecommander.model.User;
-import ecommander.model.UserMapper;
+import java.io.IOException;
+import java.sql.Connection;
 
 /**
  * Отвечает за аутентификацию пользователя

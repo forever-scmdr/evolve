@@ -1,9 +1,9 @@
 package ecommander.fwk;
 
-import java.util.Stack;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
+
+import java.util.Stack;
 
 /**
  * Экземпляр этого класса передается по цепочке всем методам, которые осуществляют

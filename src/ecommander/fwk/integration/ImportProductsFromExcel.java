@@ -1,22 +1,14 @@
 package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.*;
+import ecommander.fwk.ExcelPriceList;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
-import ecommander.model.datatypes.DataType;
-import ecommander.model.filter.CriteriaDef;
-import ecommander.model.filter.FilterDefinition;
-import ecommander.model.filter.InputDef;
 import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
-import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.net.URL;
@@ -52,6 +44,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 		put(CreateExcelPriceList.CODE_FILE.toLowerCase(), CODE_PARAM);
 		put(CreateExcelPriceList.NAME_FILE.toLowerCase(), NAME_PARAM);
 		put(CreateExcelPriceList.PRICE_FILE.toLowerCase(), PRICE_PARAM);
+		put(CreateExcelPriceList.PRICE_OLD_FILE.toLowerCase(), PRICE_OLD_PARAM);
+		put(CreateExcelPriceList.PRICE_ORIGINAL_FILE.toLowerCase(), PRICE_ORIGINAL_PARAM);
+		put(CreateExcelPriceList.CURRENCY_ID_FILE.toLowerCase(), CURRENCY_ID_PARAM);
 		put(CreateExcelPriceList.QTY_FILE.toLowerCase(), QTY_PARAM);
 		put(CreateExcelPriceList.AVAILABLE_FILE.toLowerCase(), AVAILABLE_PARAM);
 
@@ -370,7 +365,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 												product.clearValue("small_pic");
 											}
 											break;
-
 										default:
 											break;
 									}
@@ -549,8 +543,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							if (auxType == null) continue;
 							String param = auxParams.get(header.toLowerCase());
 							if (!auxType.getParameterNames().contains(param)) continue;
-							if (StringUtils.isNotBlank(auxParams.get(param)))
-								aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
+							if (StringUtils.isNotBlank(auxParams.get(param))) aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
 						}
 						paramsXML.setValueUI(XML_PARAM, xml.toString());
 						executeCommandUnit(SaveItemDBUnit.get(paramsXML).noFulltextIndex());
@@ -746,11 +739,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 		setOperation("Интеграция завершена");
 	}
 
-
 	@Override
-	protected void terminate() throws Exception {
-
-	}
+	protected void terminate() throws Exception {}
 
 	private String firstUpperCase(String s) {
 		return s.substring(0, 1).toUpperCase() + s.substring(1);

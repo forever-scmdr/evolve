@@ -1,6 +1,9 @@
 package ecommander.fwk.integration;
 
-import ecommander.fwk.*;
+import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ResizeImagesFactory;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;

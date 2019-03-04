@@ -151,6 +151,7 @@
 										</div>
 										<div class="actions pale" id="buffer-actions">
 											<span>С буфером:</span>
+											<a href="admin_paste_selected.action{$base-vars}&amp;preserve_buffer_content=yes" class="copy paste-preserve set-action total-replace" rel="multi-item-action-form" title="вставить выделенное, НЕ очищать буфер"></a>
 											<a href="admin_paste_selected.action{$base-vars}" class="copy paste set-action total-replace" rel="multi-item-action-form" title="вставить выделенное"></a>
 											<a href="admin_move_selected.action{$base-vars}" class="copy move set-action total-replace" rel="multi-item-action-form" title="переместить выделенное"></a>
 											<a href="admin_delete_selected_from_buffer.action{$base-vars}" class="delete set-action" rel="multi-item-action-form" title="удалить из буфера"></a>
@@ -171,6 +172,7 @@
 									<li class="visible" title="Список разделов для формирования прайс-листов" style="background: #0c609d;">
 										<a href="section_list" style="color: #fff;">Список разделов</a>
 									</li>
+
 									<li class="visible" title="Загрзить товары из Yandex Market">
 										<a href="integrate/?action=start">Интеграция Yandex Market</a>
 									</li>

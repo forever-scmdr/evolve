@@ -33,6 +33,9 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	protected static final String CODE_FILE = "Код";
 	protected static final String NAME_FILE = "Название";
 	protected static final String PRICE_FILE = "Цена";
+	protected static final String PRICE_OLD_FILE = "Старая цена";
+	protected static final String PRICE_ORIGINAL_FILE = "Цена в оригинале";
+	protected static final String CURRENCY_ID_FILE = "Код валюты цены";
 	protected static final String QTY_FILE = "Количество";
 	protected static final String UNIT_FILE = "Единица измерения";
 	protected static final String AVAILABLE_FILE = "Наличие";
@@ -43,6 +46,9 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		add(CODE_PARAM);
 		add(NAME_PARAM);
 		add(PRICE_PARAM);
+		add(PRICE_OLD_PARAM);
+		add(PRICE_ORIGINAL_PARAM);
+		add(CURRENCY_ID_PARAM);
 		add(QTY_PARAM);
 		add(AVAILABLE_PARAM);
 		add("small_pic");
@@ -133,8 +139,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		String[]secInfo = getSectionName(section);
 		String sheetName = secInfo[2];
 		setOperation(section.getValue(NAME_PARAM) + ". Обработка подразделов.");
-		Sheet sh = workBook.createSheet(sheetName);
-		return sh;
+		return workBook.createSheet(sheetName);
 	}
 
 	private String[] getSectionName(Item section) throws Exception {
@@ -213,6 +218,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 		//Write aux params
 		row.createCell(++colIdx).setCellValue(AUX_TYPE_FILE);
+		row.getCell(colIdx).setCellStyle(auxStyle);
 		if(auxType.length > 0 && writeAuxParams){
 			ItemType aux = auxType[0];
 			if(aux != null) {
@@ -242,7 +248,6 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 		ItemType productItemType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
 		ItemType paramsType = getAuxType(sectionId);
-
 
 		for (Item product : products) {
 			Item aux = null;
@@ -302,7 +307,6 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 					row.getCell(i).setCellStyle(cellStyle);
 				}
 			}
-
 			if(writeAuxParams) {
 				writeAux(row, aux, colIdx);
 			}
@@ -499,7 +503,9 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	}
 
 	@Override
-	protected void terminate() throws Exception {}
+	protected void terminate() throws Exception {
+
+	}
 
 	@Override
 	protected boolean makePreparations() throws Exception {

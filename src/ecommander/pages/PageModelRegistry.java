@@ -11,7 +11,6 @@ import ecommander.model.Item;
 import ecommander.pages.var.RequestVariablePE;
 import ecommander.pages.var.VariablePE;
 import ecommander.persistence.itemquery.ItemQuery;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;

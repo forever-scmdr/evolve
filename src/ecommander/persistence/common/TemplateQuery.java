@@ -1,5 +1,9 @@
 package ecommander.persistence.common;
 
+import ecommander.fwk.ServerLogger;
+import ecommander.persistence.mappers.DBConstants;
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,11 +11,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.fwk.ServerLogger;
-import ecommander.persistence.mappers.DBConstants;
 /**
  * Последовательность частей запроса
  * Представляет как весь запрос с поддержкой шаблонов, так и его часть.

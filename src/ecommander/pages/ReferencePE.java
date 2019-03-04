@@ -1,9 +1,10 @@
 package ecommander.pages;
 
 import ecommander.pages.var.Variable;
-import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Элемент - референс <reference>

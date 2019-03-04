@@ -4,8 +4,8 @@ import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
 import ecommander.fwk.MysqlConnector;
 import ecommander.model.*;
-import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.common.TemplateQuery;
+import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.itemquery.ItemQuery;
 
 import javax.naming.NamingException;

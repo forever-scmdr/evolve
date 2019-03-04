@@ -2,7 +2,6 @@ package ecommander.controllers;
 
 import ecommander.fwk.*;
 import ecommander.pages.LinkPE;
-import ecommander.pages.var.VariablePE;
 import org.apache.catalina.connector.ClientAbortException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;

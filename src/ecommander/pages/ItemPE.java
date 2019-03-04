@@ -1,6 +1,5 @@
 package ecommander.pages;
 
-import ecommander.model.Assoc;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import org.apache.commons.lang3.StringUtils;

@@ -290,6 +290,8 @@ a, button, *[type="submit"], label.file, input[type="file"] {
     text-indent: 10000px;
     overflow: hidden;
     top: 0;
+    font-size: 0;
+    color: transparent;
 }
 
 .selection-actions.edit .actions .select-all{
@@ -333,6 +335,11 @@ a, button, *[type="submit"], label.file, input[type="file"] {
 .edit a.copy.paste {
     background-image: url(../img/paste.png);
     background-size: 20px auto;
+}
+.edit a.copy.paste-preserve{
+    hight: 20px; overflow: hidden;
+    opacity: .5;
+    background-color: green;
 }
 
 .edit a.copy.move {

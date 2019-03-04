@@ -7,7 +7,6 @@ import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.commandunits.DeleteAssocDBUnit;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.ItemMapper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
