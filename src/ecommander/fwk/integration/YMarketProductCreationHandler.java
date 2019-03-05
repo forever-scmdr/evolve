@@ -1,6 +1,9 @@
 package ecommander.fwk.integration;
 
-import ecommander.fwk.*;
+import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ResizeImagesFactory;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
@@ -8,7 +11,10 @@ import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.nodes.Element;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -47,7 +53,6 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private HashMap<String, String> commonParams;
 	private LinkedHashMap<String, String> specialParams;
 	private ItemType productType;
-	private ItemType paramsXmlType;
 	private ArrayList<String> picUrls;
 	private User initiator;
 	boolean isInsideOffer = false;
@@ -58,7 +63,6 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		this.info = info;
 		this.sections = sections;
 		this.productType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
-		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
 	}
 
@@ -117,29 +121,20 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					if (picUrls.size() > 0) {
 						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.get(0)));
 					}
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-					try {
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
 						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
 						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-					} catch (Exception e) {
-						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-					}
 				}
 
 				// Создать айтем с параметрами продукта
-				if (specialParams.size() > 0) {
-					XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
-					for (String name : specialParams.keySet()) {
-						String value = specialParams.get(name);
-						xml.startElement(PARAMETER)
-								.startElement(NAME).addText(name).endElement()
-								.startElement(VALUE).addText(value).endElement()
-								.endElement();
+				String paramClassName = "p" + secCode;
+				ItemType paramType = ItemTypeRegistry.getItemType(paramClassName);
+				if (paramType != null) {
+					Item params = Item.newChildItem(paramType, product);
+					for (String paramName : specialParams.keySet()) {
+						params.setValueUI(paramName, specialParams.get(paramName));
 					}
-
-					Item paramsXml = Item.newChildItem(paramsXmlType, product);
-					paramsXml.setValue(XML_PARAM, xml.toString());
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreFileErrors());
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(params));
 				}
 
 				info.increaseProcessed();
