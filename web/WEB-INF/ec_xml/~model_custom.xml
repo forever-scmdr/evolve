@@ -2,7 +2,7 @@
 <model>
 
 <!--START_p117835-->
-<item name="p117835" caption="Парогенераторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1154" ag-hash="2065939347">
+<item name="p117835" caption="Парогенераторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1782" ag-hash="2065939347">
 	<parameter name="obem_boilera" caption="Объем бойлера" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1741065888" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_boilera" caption="Мощность бойлера" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="465061885" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochee_davlenie" caption="Рабочее давление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1456315402" description="bar" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -23,7 +23,7 @@
 <!--END_p117835-->
 
 <!--START_p117866-->
-<item name="p117866" caption="Столы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1155" ag-hash="2065939441">
+<item name="p117866" caption="Столы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1783" ag-hash="2065939441">
 	<parameter name="elektricheskoe_podklyuchenie" caption="Электрическое подключение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1036193789" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="yomkost_boilera" caption="Ёмкость бойлера" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="942255937" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_tenov" caption="Мощность тенов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1500611549" description="КВт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -48,7 +48,7 @@
 <!--END_p117866-->
 
 <!--START_p117921-->
-<item name="p117921" caption="Гладильные доски" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1156" ag-hash="2065940273">
+<item name="p117921" caption="Гладильные доски" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1784" ag-hash="2065940273">
 	<parameter name="elektricheskoe_podklyuchenie" caption="Электрическое подключение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1036193789" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="yomkost_boilera" caption="Ёмкость бойлера" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="942255937" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_tenov" caption="Мощность тенов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1500611549" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -64,7 +64,7 @@
 <!--END_p117921-->
 
 <!--START_p117934-->
-<item name="p117934" caption="Пресс" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1157" ag-hash="2065940307">
+<item name="p117934" caption="Пресс" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1785" ag-hash="2065940307">
 	<parameter name="razmer_rabochei_poverhnosti" caption="Размер рабочей поверхности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-580790439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_tena" caption="Мощность тена" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="741143467" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="davlenie_sgatogo_vozduha" caption="Давление сжатого воздуха" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1192202539" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -81,7 +81,7 @@
 <!--END_p117934-->
 
 <!--START_p118051-->
-<item name="p118051" caption="Машины цепного стежка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1158" ag-hash="2065961508">
+<item name="p118051" caption="Машины цепного стежка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1786" ag-hash="2065961508">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tolschina_skreplyaemyh_materialov" caption="Толщина скрепляемых материалов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1642814211" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -104,7 +104,7 @@
 <!--END_p118051-->
 
 <!--START_p118054-->
-<item name="p118054" caption="Подшивочные швейные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1159" ag-hash="2065961511">
+<item name="p118054" caption="Подшивочные швейные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1787" ag-hash="2065961511">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -122,7 +122,7 @@
 <!--END_p118054-->
 
 <!--START_p118056-->
-<item name="p118056" caption="Двухигольные швейные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1160" ag-hash="2065961513">
+<item name="p118056" caption="Двухигольные швейные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1788" ag-hash="2065961513">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="Длина стежка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -143,7 +143,7 @@
 <!--END_p118056-->
 
 <!--START_p118057-->
-<item name="p118057" caption="Прямострочные швейные машины с электронным управлением" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1161" ag-hash="2065961514">
+<item name="p118057" caption="Прямострочные швейные машины с электронным управлением" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1789" ag-hash="2065961514">
 	<parameter name="tip_prodvigeniya" caption="Тип продвижения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="815865295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="Длина стежка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -169,7 +169,7 @@
 <!--END_p118057-->
 
 <!--START_p118061-->
-<item name="p118061" caption="Прямострочные швейные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1162" ag-hash="2065961539">
+<item name="p118061" caption="Прямострочные швейные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1790" ag-hash="2065961539">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="Длина стежка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -183,7 +183,7 @@
 <!--END_p118061-->
 
 <!--START_p118083-->
-<item name="p118083" caption="Закрепочные промышленные швейные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1163" ag-hash="2065961603">
+<item name="p118083" caption="Закрепочные промышленные швейные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1791" ag-hash="2065961603">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_platformy" caption="Тип платформы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904567358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tkani" caption="Тип ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1748449439" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -202,7 +202,7 @@
 <!--END_p118083-->
 
 <!--START_p118085-->
-<item name="p118085" caption="Пуговичные промышленные швейные машины JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1164" ag-hash="2065961605">
+<item name="p118085" caption="Пуговичные промышленные швейные машины JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1792" ag-hash="2065961605">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="yazyki_interfeisa" caption="Языки интерфейса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-416484202" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vvod___vyvod_dannyh" caption="Ввод / вывод данных" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-539454323" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -238,7 +238,7 @@
 <!--END_p118085-->
 
 <!--START_p118086-->
-<item name="p118086" caption="Плоскошовные швейные машины JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1165" ag-hash="2065961606">
+<item name="p118086" caption="Плоскошовные швейные машины JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1793" ag-hash="2065961606">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="Длина стежка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -262,7 +262,7 @@
 <!--END_p118086-->
 
 <!--START_p118087-->
-<item name="p118087" caption="Закрепочные промышленные швейные машины JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1166" ag-hash="2065961607">
+<item name="p118087" caption="Закрепочные промышленные швейные машины JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1794" ag-hash="2065961607">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="yazyki_interfeisa" caption="Языки интерфейса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-416484202" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -296,7 +296,7 @@
 <!--END_p118087-->
 
 <!--START_p118088-->
-<item name="p118088" caption="Пуговичные промышленные швейные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1167" ag-hash="2065961608">
+<item name="p118088" caption="Пуговичные промышленные швейные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1795" ag-hash="2065961608">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="skorost_shitya" caption="Скорость шитья" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-814076462" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -314,7 +314,7 @@
 <!--END_p118088-->
 
 <!--START_p118089-->
-<item name="p118089" caption="Промышленные швейные машины для тяжёлых материалов JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1168" ag-hash="2065961609">
+<item name="p118089" caption="Промышленные швейные машины для тяжёлых материалов JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1796" ag-hash="2065961609">
 	<parameter name="tip_prodvigeniya" caption="Тип продвижения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="815865295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vylet_rukava" caption="Вылет рукава" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-157687573" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -338,15 +338,15 @@
 <!--END_p118089-->
 
 <!--START_p118090-->
-<item name="p118090" caption="Одноголовочные вышивальные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1169" ag-hash="2065961631"></item>
+<item name="p118090" caption="Одноголовочные вышивальные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1797" ag-hash="2065961631"></item>
 <!--END_p118090-->
 
 <!--START_p118091-->
-<item name="p118091" caption="Многоголовочные вышивальные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1170" ag-hash="2065961632"></item>
+<item name="p118091" caption="Многоголовочные вышивальные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1798" ag-hash="2065961632"></item>
 <!--END_p118091-->
 
 <!--START_p118093-->
-<item name="p118093" caption="Промышленные прямострочные швейные машины JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1171" ag-hash="2065961634">
+<item name="p118093" caption="Промышленные прямострочные швейные машины JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1799" ag-hash="2065961634">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="Длина стежка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_podema_lapki" caption="Высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -382,7 +382,7 @@
 <!--END_p118093-->
 
 <!--START_p118097-->
-<item name="p118097" caption="Промышленные стачивающе-обмёточные оверлоки JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1172" ag-hash="2065961638">
+<item name="p118097" caption="Промышленные стачивающе-обмёточные оверлоки JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1800" ag-hash="2065961638">
 	<parameter name="tipy_tkani" caption="Типы ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1654680636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_obmetki" caption="Ширина обметки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1046749210" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -416,7 +416,7 @@
 <!--END_p118097-->
 
 <!--START_p118099-->
-<item name="p118099" caption="Промышленные петельные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1173" ag-hash="2065961640">
+<item name="p118099" caption="Промышленные петельные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1801" ag-hash="2065961640">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_petli" caption="Длина петли" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1591158065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_petli" caption="Ширина петли" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1175348283" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -438,7 +438,7 @@
 <!--END_p118099-->
 
 <!--START_p118100-->
-<item name="p118100" caption="Промышленные петельные машины  JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1174" ag-hash="2065962313">
+<item name="p118100" caption="Промышленные петельные машины  JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1802" ag-hash="2065962313">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="avtomaticheskie_funktsii" caption="Автоматические функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-810441489" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -501,7 +501,7 @@
 <!--END_p118100-->
 
 <!--START_p118102-->
-<item name="p118102" caption="Промышленные прямострочные швейные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1175" ag-hash="2065962315">
+<item name="p118102" caption="Промышленные прямострочные швейные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1803" ag-hash="2065962315">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="Длина стежка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -533,7 +533,7 @@
 <!--END_p118102-->
 
 <!--START_p118104-->
-<item name="p118104" caption="Пресс для установки фурнитуры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1176" ag-hash="2065962317">
+<item name="p118104" caption="Пресс для установки фурнитуры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1804" ag-hash="2065962317">
 	<parameter name="pitanie" caption="Питание" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-562614748" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="velichina_hoda_proboinika" caption="Величина хода пробойника" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1609817017" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -542,7 +542,7 @@
 <!--END_p118104-->
 
 <!--START_p118105-->
-<item name="p118105" caption="Промышленные стачивающе-обмёточные оверлоки GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1177" ag-hash="2065962318">
+<item name="p118105" caption="Промышленные стачивающе-обмёточные оверлоки GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1805" ag-hash="2065962318">
 	<parameter name="tipy_tkani" caption="Типы ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1654680636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -561,7 +561,7 @@
 <!--END_p118105-->
 
 <!--START_p118111-->
-<item name="p118111" caption="Промышленные обмёточные оверлоки JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1178" ag-hash="2065962345">
+<item name="p118111" caption="Промышленные обмёточные оверлоки JUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1806" ag-hash="2065962345">
 	<parameter name="tipy_tkani" caption="Типы ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1654680636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_platformy" caption="Тип платформы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904567358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -590,7 +590,7 @@
 <!--END_p118111-->
 
 <!--START_p118112-->
-<item name="p118112" caption="Плоскошовные швейные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1179" ag-hash="2065962346">
+<item name="p118112" caption="Плоскошовные швейные машины GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1807" ag-hash="2065962346">
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -612,7 +612,7 @@
 <!--END_p118112-->
 
 <!--START_p118113-->
-<item name="p118113" caption="Промышленные швейные машины для тяжёлых материалов GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1180" ag-hash="2065962347">
+<item name="p118113" caption="Промышленные швейные машины для тяжёлых материалов GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1808" ag-hash="2065962347">
 	<parameter name="tip_prodvigeniya" caption="Тип продвижения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="815865295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="igla" caption="Игла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="3230483" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_platformy" caption="Тип платформы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904567358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -634,7 +634,7 @@
 <!--END_p118113-->
 
 <!--START_p118114-->
-<item name="p118114" caption="Промышленные обмёточные оверлоки GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1181" ag-hash="2065962348">
+<item name="p118114" caption="Промышленные обмёточные оверлоки GEMSY" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1809" ag-hash="2065962348">
 	<parameter name="tipy_tkani" caption="Типы ткани" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1654680636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_mashiny" caption="Тип машины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1179867335" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -649,7 +649,7 @@
 <!--END_p118114-->
 
 <!--START_p119629-->
-<item name="p119629" caption="Консольные гладильные столы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1254" ag-hash="2065996980">
+<item name="p119629" caption="Консольные гладильные столы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1810" ag-hash="2065996980">
 	<parameter name="napryagenie_elektropitaniya_v" caption="Напряжение электропитания, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1040022924" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_nagrevatelya_stola_kvt" caption="Мощность нагревателя стола, кВт" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-994126842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_elektrodvigatelya_ventilyatora_kvt" caption="Мощность электродвигателя вентилятора, кВт" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1222490876" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -658,7 +658,7 @@
 <!--END_p119629-->
 
 <!--START_p119630-->
-<item name="p119630" caption="Прямоугольные гладильные столы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1255" ag-hash="2065997002">
+<item name="p119630" caption="Прямоугольные гладильные столы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1811" ag-hash="2065997002">
 	<parameter name="napryagenie_elektropitaniya_v" caption="Напряжение электропитания, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1040022924" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_nagrevatelya_stola_kvt" caption="Мощность нагревателя стола, кВт" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-994126842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_elektrodvigatelya_ventilyatora_kvt" caption="Мощность электродвигателя вентилятора, кВт" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1222490876" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -668,7 +668,7 @@
 <!--END_p119630-->
 
 <!--START_p119631-->
-<item name="p119631" caption="Гладильные доски" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1256" ag-hash="2065997003">
+<item name="p119631" caption="Гладильные доски" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1812" ag-hash="2065997003">
 	<parameter name="napryagenie_elektropitaniya_v" caption="Напряжение электропитания, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1040022924" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_nagrevatelya_stola_kvt" caption="Мощность нагревателя стола, кВт" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-994126842" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_elektrodvigatelya_ventilyatora_kvt" caption="Мощность электродвигателя вентилятора, кВт" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1222490876" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -685,7 +685,7 @@
 <!--END_p119631-->
 
 <!--START_p119632-->
-<item name="p119632" caption="Парогенераторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1257" ag-hash="2065997004">
+<item name="p119632" caption="Парогенераторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1813" ag-hash="2065997004">
 	<parameter name="napryagenie_elektropitaniya_v" caption="Напряжение электропитания, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1040022924" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_nagrevatelya_kvt" caption="Мощность нагревателя, кВт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2113172706" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_nagrevatelya_utyuga_kvt" caption="Мощность нагревателя утюга, кВт" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1327101274" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -707,7 +707,7 @@
 <!--END_p119632-->
 
 <!--START_p119633-->
-<item name="p119633" caption="Электропаровые утюги, щетки, паровые пистолеты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1258" ag-hash="2065997005">
+<item name="p119633" caption="Электропаровые утюги, щетки, паровые пистолеты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1814" ag-hash="2065997005">
 	<parameter name="napryagenie_v" caption="Напряжение, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1086051834" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost_nagrevatelya_kvt" caption="Мощность нагревателя, кВт" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="2113172706" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ves_kg" caption="Вес, кг" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -716,11 +716,11 @@
 <!--END_p119633-->
 
 <!--START_p120032-->
-<item name="p120032" caption="Иглы для бытовых швейных машин" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1259" ag-hash="2066646640"></item>
+<item name="p120032" caption="Иглы для бытовых швейных машин" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1815" ag-hash="2066646640"></item>
 <!--END_p120032-->
 
 <!--START_p120034-->
-<item name="p120034" caption="Промышленные швейные столы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1260" ag-hash="2066646642">
+<item name="p120034" caption="Промышленные швейные столы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1816" ag-hash="2066646642">
 	<parameter name="metall" caption="Металл" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1077561787" description="мм." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="regulirovka_po_vysote" caption="Регулировка по высоте" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1470514526" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlinna" caption="длинна" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1329074656" description="см" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -730,7 +730,7 @@
 <!--END_p120034-->
 
 <!--START_p120035-->
-<item name="p120035" caption="Машины цепного стежка с плоской платформой" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1261" ag-hash="2066646643">
+<item name="p120035" caption="Машины цепного стежка с плоской платформой" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1817" ag-hash="2066646643">
 	<parameter name="dlina_stegka" caption="длина стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="podem_prigimnoi_lapki" caption="подъем прижимной лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-462873044" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rasstoyanie_megdu_iglami" caption="Расстояние между иглами" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="2082628245" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -748,7 +748,7 @@
 <!--END_p120035-->
 
 <!--START_p120036-->
-<item name="p120036" caption="Многоигольные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1262" ag-hash="2066646644">
+<item name="p120036" caption="Многоигольные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1818" ag-hash="2066646644">
 	<parameter name="kolichestvo_igl" caption="Количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rasstoyanie_megdu_iglami" caption="Расстояние между иглами" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2082628245" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -772,7 +772,7 @@
 <!--END_p120036-->
 
 <!--START_p120038-->
-<item name="p120038" caption="Краевки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1263" ag-hash="2066646646">
+<item name="p120038" caption="Краевки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1819" ag-hash="2066646646">
 	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_obmetki" caption="Ширина обметки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1046749210" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="Длина стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -789,7 +789,7 @@
 <!--END_p120038-->
 
 <!--START_p120039-->
-<item name="p120039" caption="3-х ниточные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1264" ag-hash="2066646647">
+<item name="p120039" caption="3-х ниточные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1820" ag-hash="2066646647">
 	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_obmetki" caption="Ширина обметки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1046749210" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="Длина стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -806,7 +806,7 @@
 <!--END_p120039-->
 
 <!--START_p120040-->
-<item name="p120040" caption="4-х ниточные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1265" ag-hash="2066646669">
+<item name="p120040" caption="4-х ниточные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1821" ag-hash="2066646669">
 	<parameter name="kolichestvo_nitei" caption="количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_podema_lapki" caption="высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -825,7 +825,7 @@
 <!--END_p120040-->
 
 <!--START_p120041-->
-<item name="p120041" caption="5-и ниточные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1266" ag-hash="2066646670">
+<item name="p120041" caption="5-и ниточные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1822" ag-hash="2066646670">
 	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rasstoyanie_megdu_iglami" caption="Расстояние между иглами" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2082628245" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_obmetki" caption="Ширина обметки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1046749210" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -843,7 +843,7 @@
 <!--END_p120041-->
 
 <!--START_p120042-->
-<item name="p120042" caption="6-и ниточные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1267" ag-hash="2066646671">
+<item name="p120042" caption="6-и ниточные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1823" ag-hash="2066646671">
 	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rasstoyanie_megdu_iglami" caption="Расстояние между иглами" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2082628245" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_obmetki" caption="Ширина обметки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1046749210" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -854,7 +854,7 @@
 <!--END_p120042-->
 
 <!--START_p120043-->
-<item name="p120043" caption="Специальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1268" ag-hash="2066646672">
+<item name="p120043" caption="Специальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1824" ag-hash="2066646672">
 	<parameter name="kolichestvo_nitei" caption="Количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_obmetki" caption="Ширина обметки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1046749210" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="Длина стежка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -872,7 +872,7 @@
 <!--END_p120043-->
 
 <!--START_p120044-->
-<item name="p120044" caption="Плоскошовные для трикотажа" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1269" ag-hash="2066646673">
+<item name="p120044" caption="Плоскошовные для трикотажа" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1825" ag-hash="2066646673">
 	<parameter name="kolichestvo_nitei" caption="количество нитей" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="длина стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -903,7 +903,7 @@
 <!--END_p120044-->
 
 <!--START_p120045-->
-<item name="p120045" caption="Колонковые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1270" ag-hash="2066646674">
+<item name="p120045" caption="Колонковые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1826" ag-hash="2066646674">
 	<parameter name="maks._skorost_shitya" caption="Макс. скорость шитья" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1562638337" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="maks._dlina_stegka" caption="Макс. длина стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2106259183" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="podem_prigimnoi_lapki" caption="Подъем прижимной лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-462873044" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -929,11 +929,11 @@
 <!--END_p120045-->
 
 <!--START_p120046-->
-<item name="p120046" caption="Двигатели" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1271" ag-hash="2066646675"></item>
+<item name="p120046" caption="Двигатели" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1827" ag-hash="2066646675"></item>
 <!--END_p120046-->
 
 <!--START_p120047-->
-<item name="p120047" caption="Подшивочные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1272" ag-hash="2066646676">
+<item name="p120047" caption="Подшивочные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1828" ag-hash="2066646676">
 	<parameter name="tip_stegka" caption="Тип стежка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1612437373" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="skorost" caption="Скорость" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2141922571" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="Длина стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -943,15 +943,15 @@
 <!--END_p120047-->
 
 <!--START_p120049-->
-<item name="p120049" caption="15. Запчасти" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1273" ag-hash="2066646678"></item>
+<item name="p120049" caption="15. Запчасти" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1829" ag-hash="2066646678"></item>
 <!--END_p120049-->
 
 <!--START_p120050-->
-<item name="p120050" caption="Специальные приспособления" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1274" ag-hash="2066646700"></item>
+<item name="p120050" caption="Специальные приспособления" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1830" ag-hash="2066646700"></item>
 <!--END_p120050-->
 
 <!--START_p120052-->
-<item name="p120052" caption="Плоттеры и принтеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1275" ag-hash="2066646702">
+<item name="p120052" caption="Плоттеры и принтеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1831" ag-hash="2066646702">
 	<parameter name="effektivnaya_shirina_pechati" caption="Эффективная ширина печати" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1233469197" description="см" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="maksimalnaya_skorost_pechati" caption="Максимальная скорость печати" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1000314759" description="м2/ч" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_golov" caption="Количество голов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1837946331" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -985,7 +985,7 @@
 <!--END_p120052-->
 
 <!--START_p120053-->
-<item name="p120053" caption="Дигитайзеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1276" ag-hash="2066646703">
+<item name="p120053" caption="Дигитайзеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1832" ag-hash="2066646703">
 	<parameter name="razmer" caption="Размер" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-937920049" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tochnost" caption="Точность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1330051070" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razreshenie" caption="Разрешение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1904879736" description="LPI" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -997,7 +997,7 @@
 <!--END_p120053-->
 
 <!--START_p120054-->
-<item name="p120054" caption="Специальные машины с программным управлением" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1277" ag-hash="2066646704">
+<item name="p120054" caption="Специальные машины с программным управлением" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1833" ag-hash="2066646704">
 	<parameter name="shirina_karmana_menyaetsya_s_pomoschyu_smeny_komplekta" caption="Ширина кармана (меняется с помощью смены комплекта)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1059813373" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_karmana" caption="Длина кармана" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-164346056" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="proizvoditelnost" caption="Производительность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-549296031" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1024,11 +1024,11 @@
 <!--END_p120054-->
 
 <!--START_p120055-->
-<item name="p120055" caption="Запчасти к ПШМ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1278" ag-hash="2066646705"></item>
+<item name="p120055" caption="Запчасти к ПШМ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1834" ag-hash="2066646705"></item>
 <!--END_p120055-->
 
 <!--START_p120056-->
-<item name="p120056" caption="Одноигольные прямострочные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1279" ag-hash="2066646706">
+<item name="p120056" caption="Одноигольные прямострочные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1835" ag-hash="2066646706">
 	<parameter name="odnoigolnaya_mashina_chelnochnogo_stegka_dlya_tyagelyh_materialov_mashina_troinogo_prodvigeniya_uvelichennyi_chelnok_s_elektrodvigatelemkolichestvo_nitok" caption="Одноигольная машина челночного стежка для тяжелых материалов, машина тройного продвижения, увеличенный челнок, (с электродвигателем)количество ниток" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1608517939" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="длина стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1045,7 +1045,7 @@
 <!--END_p120056-->
 
 <!--START_p120057-->
-<item name="p120057" caption="Двухигольные прямострочные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1280" ag-hash="2066646707">
+<item name="p120057" caption="Двухигольные прямострочные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1836" ag-hash="2066646707">
 	<parameter name="kolichestvo_nitei" caption="количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="длина стежка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1061,7 +1061,7 @@
 <!--END_p120057-->
 
 <!--START_p120058-->
-<item name="p120058" caption="Зигзаг" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1281" ag-hash="2066646708">
+<item name="p120058" caption="Зигзаг" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1837" ag-hash="2066646708">
 	<parameter name="kolichestvo_nitei" caption="количество нитей" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="количество игл" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_igly" caption="тип иглы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1996395441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1076,7 +1076,7 @@
 <!--END_p120058-->
 
 <!--START_p120059-->
-<item name="p120059" caption="Мешкозашивочные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1282" ag-hash="2066646709">
+<item name="p120059" caption="Мешкозашивочные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1838" ag-hash="2066646709">
 	<parameter name="kolichestvo_nitei" caption="количество нитей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1831653065" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_igl" caption="количество игл" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="141105736" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_stegka" caption="длина стежка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114418780" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1090,14 +1090,14 @@
 <!--END_p120059-->
 
 <!--START_p120060-->
-<item name="p120060" caption="Закрепочные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1283" ag-hash="2066646731">
+<item name="p120060" caption="Закрепочные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1839" ag-hash="2066646731">
 	<parameter name="avtomaticheskaya_funktsii" caption="Автоматическая функции" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-968758112" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="maks._skorost" caption="Макс. скорость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="568224104" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p120060-->
 
 <!--START_p120061-->
-<item name="p120061" caption="Пуговичные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1284" ag-hash="2066646732">
+<item name="p120061" caption="Пуговичные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1840" ag-hash="2066646732">
 	<parameter name="ametry_zakrepki__prodolnaya_poperechnaya_kruglaya__kotorye_mogno_modifitsirovat_pri_pomoschi_vstroennoi_paneli_upravleniya_sovremennaya_sistema_obrezki_niti_datchik_obryva_nit_svetodiod._maks._skorost" caption="Преимущества:Современный дизайн, интуитивное управление ЖК панелей управления с непосредственной, плавной регулировкой шитья-Параметры закрепки – продольная, поперечная, круглая – которые можно модифицировать при помощи встроенной панели управления-Современная система обрезки нити-Датчик обрыва нит-Светодиод.-Макс. скорость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="27072043" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="_maksim.razmer_pugovitsy" caption="-максим.размер пуговицы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="81661721" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rastoyanie_megdu_otverstiyami_pugovitsy" caption="растояние между отверстиями пуговицы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1243631780" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1107,7 +1107,7 @@
 <!--END_p120061-->
 
 <!--START_p120062-->
-<item name="p120062" caption="Петельные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1285" ag-hash="2066646733">
+<item name="p120062" caption="Петельные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1841" ag-hash="2066646733">
 	<parameter name="petelnyi_poluavtomatpryamaya_petlya_s_zakrepkami_na_kontsahdlina_petli" caption="Петельный полуавтомат,прямая петля с закрепками на концахдлина петли" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="736045783" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_noga" caption="размер ножа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1744090827" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_podema_lapki" caption="высота подъема лапки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1443516129" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1124,23 +1124,23 @@
 <!--END_p120062-->
 
 <!--START_p120063-->
-<item name="p120063" caption="Двигатели ткани" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1286" ag-hash="2066646734"></item>
+<item name="p120063" caption="Двигатели ткани" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1842" ag-hash="2066646734"></item>
 <!--END_p120063-->
 
 <!--START_p120064-->
-<item name="p120064" caption="Запчасти для ВТО" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1287" ag-hash="2066646735"></item>
+<item name="p120064" caption="Запчасти для ВТО" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1843" ag-hash="2066646735"></item>
 <!--END_p120064-->
 
 <!--START_p120065-->
-<item name="p120065" caption="Запчасти для плоттеров" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1288" ag-hash="2066646736"></item>
+<item name="p120065" caption="Запчасти для плоттеров" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1844" ag-hash="2066646736"></item>
 <!--END_p120065-->
 
 <!--START_p120066-->
-<item name="p120066" caption="Запчасти для электродвигателей" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1289" ag-hash="2066646737"></item>
+<item name="p120066" caption="Запчасти для электродвигателей" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1845" ag-hash="2066646737"></item>
 <!--END_p120066-->
 
 <!--START_p120067-->
-<item name="p120067" caption="Запчасти к бытовым машинам" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1290" ag-hash="2066646738">
+<item name="p120067" caption="Запчасти к бытовым машинам" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1846" ag-hash="2066646738">
 	<parameter name="material" caption="материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tsokol" caption="цоколь" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-864367688" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="strana_proizvoditel" caption="страна производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1685875525" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1149,31 +1149,31 @@
 <!--END_p120067-->
 
 <!--START_p120068-->
-<item name="p120068" caption="Запчасти к раскройному оборудованию" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1291" ag-hash="2066646739"></item>
+<item name="p120068" caption="Запчасти к раскройному оборудованию" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1847" ag-hash="2066646739"></item>
 <!--END_p120068-->
 
 <!--START_p120069-->
-<item name="p120069" caption="Лапки специальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1292" ag-hash="2066646740"></item>
+<item name="p120069" caption="Лапки специальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1848" ag-hash="2066646740"></item>
 <!--END_p120069-->
 
 <!--START_p120070-->
-<item name="p120070" caption="Лезвия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1293" ag-hash="2066646762"></item>
+<item name="p120070" caption="Лезвия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1849" ag-hash="2066646762"></item>
 <!--END_p120070-->
 
 <!--START_p120071-->
-<item name="p120071" caption="Ножи" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1294" ag-hash="2066646763"></item>
+<item name="p120071" caption="Ножи" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1850" ag-hash="2066646763"></item>
 <!--END_p120071-->
 
 <!--START_p120072-->
-<item name="p120072" caption="Петлители" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1295" ag-hash="2066646764"></item>
+<item name="p120072" caption="Петлители" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1851" ag-hash="2066646764"></item>
 <!--END_p120072-->
 
 <!--START_p120073-->
-<item name="p120073" caption="Пластины игольные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1296" ag-hash="2066646765"></item>
+<item name="p120073" caption="Пластины игольные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1852" ag-hash="2066646765"></item>
 <!--END_p120073-->
 
 <!--START_p120074-->
-<item name="p120074" caption="Подшипники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1297" ag-hash="2066646766">
+<item name="p120074" caption="Подшипники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1853" ag-hash="2066646766">
 	<parameter name="vnutrennii_diametr_podshipnika_d" caption="Внутренний диаметр подшипника d" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1336101003" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="narugnyi_diametr_podshipnika_d" caption="Наружный диаметр подшипника D" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="548095992" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_podshipnika_v" caption="Ширина подшипника В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-648604760" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1188,27 +1188,27 @@
 <!--END_p120074-->
 
 <!--START_p120075-->
-<item name="p120075" caption="Ремни" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1298" ag-hash="2066646767"></item>
+<item name="p120075" caption="Ремни" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1854" ag-hash="2066646767"></item>
 <!--END_p120075-->
 
 <!--START_p120076-->
-<item name="p120076" caption="Сопутствующие товары" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1299" ag-hash="2066646768"></item>
+<item name="p120076" caption="Сопутствующие товары" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1855" ag-hash="2066646768"></item>
 <!--END_p120076-->
 
 <!--START_p120077-->
-<item name="p120077" caption="Челноки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1300" ag-hash="2066646769"></item>
+<item name="p120077" caption="Челноки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1856" ag-hash="2066646769"></item>
 <!--END_p120077-->
 
 <!--START_p120078-->
-<item name="p120078" caption="Шпули" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1301" ag-hash="2066646770"></item>
+<item name="p120078" caption="Шпули" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1857" ag-hash="2066646770"></item>
 <!--END_p120078-->
 
 <!--START_p120079-->
-<item name="p120079" caption="Шпульные колпачки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1302" ag-hash="2066646771"></item>
+<item name="p120079" caption="Шпульные колпачки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1858" ag-hash="2066646771"></item>
 <!--END_p120079-->
 
 <!--START_p120080-->
-<item name="p120080" caption="Утюги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1303" ag-hash="2066646793">
+<item name="p120080" caption="Утюги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1859" ag-hash="2066646793">
 	<parameter name="ves" caption="Вес" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="Кг" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="parametry_seti" caption="Параметры сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-13654589" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1241,150 +1241,172 @@
 <!--END_p120080-->
 
 <!--START_p120081-->
-<item name="p120081" caption="Иглы для промышленных швейных машин" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1304" ag-hash="2066646794"></item>
+<item name="p120081" caption="Иглы для промышленных швейных машин" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1860" ag-hash="2066646794"></item>
 <!--END_p120081-->
 
 <!--START_p140133-->
-<item name="p140133" caption="САПР Gemini для одежды" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1305" ag-hash="2068494644"></item>
+<item name="p140133" caption="САПР Gemini для одежды" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1861" ag-hash="2068494644"></item>
 <!--END_p140133-->
 
 <!--START_p140153-->
-<item name="p140153" caption="Плоттер" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1306" ag-hash="2068494706"></item>
+<item name="p140153" caption="Плоттер" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1862" ag-hash="2068494706"></item>
 <!--END_p140153-->
 
 <!--START_p140168-->
-<item name="p140168" caption="Манекены" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1307" ag-hash="2068494742"></item>
+<item name="p140168" caption="Манекены" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1863" ag-hash="2068494742"></item>
 <!--END_p140168-->
 
 <!--START_p140189-->
-<item name="p140189" caption="Бумага плоттерная, перфорированная" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1308" ag-hash="2068494805"></item>
+<item name="p140189" caption="Бумага плоттерная, перфорированная" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1864" ag-hash="2068494805"></item>
 <!--END_p140189-->
 
 <!--START_p140202-->
-<item name="p140202" caption="Ленты тефлоновые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1309" ag-hash="2068495511"></item>
+<item name="p140202" caption="Ленты тефлоновые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1865" ag-hash="2068495511"></item>
 <!--END_p140202-->
 
 <!--START_p140212-->
-<item name="p140212" caption="Пресса для дублирования" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1310" ag-hash="2068495542"></item>
+<item name="p140212" caption="Пресса для дублирования" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1866" ag-hash="2068495542"></item>
 <!--END_p140212-->
 
 <!--START_p140220-->
-<item name="p140220" caption="Запасные части к прессам" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1311" ag-hash="2068495571"></item>
+<item name="p140220" caption="Запасные части к прессам" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1867" ag-hash="2068495571"></item>
 <!--END_p140220-->
 
 <!--START_p140237-->
-<item name="p140237" caption="SILTER Утюжильное оборудование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1312" ag-hash="2068495609"></item>
+<item name="p140237" caption="SILTER Утюжильное оборудование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1868" ag-hash="2068495609"></item>
 <!--END_p140237-->
 
 <!--START_p140249-->
-<item name="p140249" caption="Парогенераторы COMEL" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1313" ag-hash="2068495642"></item>
+<item name="p140249" caption="Парогенераторы COMEL" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1869" ag-hash="2068495642"></item>
 <!--END_p140249-->
 
 <!--START_p140263-->
-<item name="p140263" caption="Утюги, паровые щётки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1314" ag-hash="2068495698"></item>
+<item name="p140263" caption="Утюги, паровые щётки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1870" ag-hash="2068495698"></item>
 <!--END_p140263-->
 
 <!--START_p140272-->
-<item name="p140272" caption="Столы гладильные Primula" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1315" ag-hash="2068495728"></item>
+<item name="p140272" caption="Столы гладильные Primula" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1871" ag-hash="2068495728"></item>
 <!--END_p140272-->
 
 <!--START_p140282-->
-<item name="p140282" caption="Покрытия гладильных столов/ Провода" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1316" ag-hash="2068495759"></item>
+<item name="p140282" caption="Покрытия гладильных столов/ Провода" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1872" ag-hash="2068495759"></item>
 <!--END_p140282-->
 
 <!--START_p140301-->
-<item name="p140301" caption="Тефлоновые подошвы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1317" ag-hash="2068496471"></item>
+<item name="p140301" caption="Тефлоновые подошвы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1873" ag-hash="2068496471"></item>
 <!--END_p140301-->
 
 <!--START_p140322-->
-<item name="p140322" caption="Двигатели и з/ч к ним" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1318" ag-hash="2068496534"></item>
+<item name="p140322" caption="Двигатели и з/ч к ним" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1874" ag-hash="2068496534"></item>
 <!--END_p140322-->
 
 <!--START_p140338-->
-<item name="p140338" caption="Масло для швейных машин" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1319" ag-hash="2068496571"></item>
+<item name="p140338" caption="Масло для швейных машин" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1875" ag-hash="2068496571"></item>
 <!--END_p140338-->
 
 <!--START_p140343-->
-<item name="p140343" caption="Принадлежности к швейным машинам" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1320" ag-hash="2068496597"></item>
+<item name="p140343" caption="Принадлежности к швейным машинам" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1876" ag-hash="2068496597"></item>
 <!--END_p140343-->
 
 <!--START_p140373-->
-<item name="p140373" caption="СПЕЦИАЛЬНОЕ ШВЕЙНОЕ ОБОРУДОВАНИЕ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1321" ag-hash="2068496690"></item>
+<item name="p140373" caption="СПЕЦИАЛЬНОЕ ШВЕЙНОЕ ОБОРУДОВАНИЕ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1877" ag-hash="2068496690"></item>
 <!--END_p140373-->
 
 <!--START_p140382-->
-<item name="p140382" caption="Станины для швейных машин" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1322" ag-hash="2068496720"></item>
+<item name="p140382" caption="Станины для швейных машин" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1878" ag-hash="2068496720"></item>
 <!--END_p140382-->
 
 <!--START_p140389-->
-<item name="p140389" caption="Линейки ограничительные на швейные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1323" ag-hash="2068496727"></item>
+<item name="p140389" caption="Линейки ограничительные на швейные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1879" ag-hash="2068496727"></item>
 <!--END_p140389-->
 
 <!--START_p140402-->
-<item name="p140402" caption="Вышивальные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1324" ag-hash="2068497433"></item>
+<item name="p140402" caption="Вышивальные машины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1880" ag-hash="2068497433"></item>
 <!--END_p140402-->
 
 <!--START_p140414-->
-<item name="p140414" caption="Вышивальные машины TAJIMA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1325" ag-hash="2068497466"></item>
+<item name="p140414" caption="Вышивальные машины TAJIMA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1881" ag-hash="2068497466"></item>
 <!--END_p140414-->
 
 <!--START_p140423-->
-<item name="p140423" caption="Вышивальные машины Haftex" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1326" ag-hash="2068497496"></item>
+<item name="p140423" caption="Вышивальные машины Haftex" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1882" ag-hash="2068497496"></item>
 <!--END_p140423-->
 
 <!--START_p140433-->
-<item name="p140433" caption="Стегальное оборудование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1327" ag-hash="2068497527"></item>
+<item name="p140433" caption="Стегальное оборудование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1883" ag-hash="2068497527"></item>
 <!--END_p140433-->
 
 <!--START_p140437-->
-<item name="p140437" caption="Этикетирование/Декорирование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1328" ag-hash="2068497531"></item>
+<item name="p140437" caption="Этикетирование/Декорирование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1884" ag-hash="2068497531"></item>
 <!--END_p140437-->
 
 <!--START_p140441-->
-<item name="p140441" caption="Пресса для установки металлофурнитуры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1329" ag-hash="2068497556"></item>
+<item name="p140441" caption="Пресса для установки металлофурнитуры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1885" ag-hash="2068497556"></item>
 <!--END_p140441-->
 
 <!--START_p140448-->
-<item name="p140448" caption="Нумератор кроя и комплектующие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1330" ag-hash="2068497563"></item>
+<item name="p140448" caption="Нумератор кроя и комплектующие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1886" ag-hash="2068497563"></item>
 <!--END_p140448-->
 
 <!--START_p140460-->
-<item name="p140460" caption="Этикет-пистолет и комплектующие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1331" ag-hash="2068497617"></item>
+<item name="p140460" caption="Этикет-пистолет и комплектующие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1887" ag-hash="2068497617"></item>
 <!--END_p140460-->
 
 <!--START_p140483-->
-<item name="p140483" caption="Декорирование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1332" ag-hash="2068497682"></item>
+<item name="p140483" caption="Декорирование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1888" ag-hash="2068497682"></item>
 <!--END_p140483-->
 
 <!--START_p140487-->
-<item name="p140487" caption="Химия промышленная" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1333" ag-hash="2068497686"></item>
+<item name="p140487" caption="Химия промышленная" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1889" ag-hash="2068497686"></item>
 <!--END_p140487-->
 
 <!--START_p140516-->
-<item name="p140516" caption="Инструмент" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1334" ag-hash="2068498429"></item>
+<item name="p140516" caption="Инструмент" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1890" ag-hash="2068498429"></item>
 <!--END_p140516-->
 
 <!--START_p140531-->
-<item name="p140531" caption="Светильники/Стулья швейные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1335" ag-hash="2068498486"></item>
+<item name="p140531" caption="Светильники/Стулья швейные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1891" ag-hash="2068498486"></item>
 <!--END_p140531-->
 
 <!--START_p140546-->
-<item name="p140546" caption="Мерильно-браковочное оборудование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1336" ag-hash="2068498522"></item>
+<item name="p140546" caption="Мерильно-браковочное оборудование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1892" ag-hash="2068498522"></item>
 <!--END_p140546-->
 
 <!--START_p140555-->
-<item name="p140555" caption="Тележки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1337" ag-hash="2068498552"></item>
+<item name="p140555" caption="Тележки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1893" ag-hash="2068498552"></item>
 <!--END_p140555-->
 
 <!--START_p140561-->
-<item name="p140561" caption="Пресса для обивки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1338" ag-hash="2068498579"></item>
+<item name="p140561" caption="Пресса для обивки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1894" ag-hash="2068498579"></item>
 <!--END_p140561-->
 
 <!--START_p140601-->
-<item name="p140601" caption="Сублимационные принтеры печати на ткани" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1339" ag-hash="2068499354"></item>
+<item name="p140601" caption="Сублимационные принтеры печати на ткани" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1895" ag-hash="2068499354"></item>
 <!--END_p140601-->
 
 <!--START_p140607-->
-<item name="p140607" caption="Принтеры прямой печати на ткани" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1340" ag-hash="2068499360"></item>
+<item name="p140607" caption="Принтеры прямой печати на ткани" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1896" ag-hash="2068499360"></item>
 <!--END_p140607-->
+
+<!--START_p216676-->
+<item name="p216676" caption="Тестовый подраздел раздела &quot;Болты&quot;" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1897" ag-hash="2094536910">
+	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rezba" caption="Резьба" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="108410662" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p216676-->
+
+<!--START_p174122-->
+<item name="p174122" caption="Болты" key="" ag-id="0" ag-hash="2071384339" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer" caption="Размер" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-937920049" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tsvet" caption="Цвет" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="110671046" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174122-->
+
+<!--START_p217426-->
+<item name="p217426" caption="Тестовый подраздел раздела &quot;Болты&quot;" key="" ag-id="0" ag-hash="2094564624" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rezba" caption="Резьба" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="108410662" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p217426-->
 <!--EXP--></model>
