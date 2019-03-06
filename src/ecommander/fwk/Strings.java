@@ -1,13 +1,15 @@
 package ecommander.fwk;
 
+import com.ibm.icu.text.RuleBasedNumberFormat;
+import org.apache.commons.lang3.StringUtils;
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.PrettyXmlSerializer;
+import org.htmlcleaner.TagNode;
+
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Locale;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.ibm.icu.text.RuleBasedNumberFormat;
-
 
 
 /**
@@ -84,9 +86,10 @@ public class Strings
     	if (StringUtils.isBlank(halfValid))
     		return null;
     	if (StringUtils.contains(DIGITS, halfValid.charAt(0)) || halfValid.charAt(0) == '.')
-    		return "_" + halfValid;
-    	return halfValid;
+    		return StringUtils.substring("_" + halfValid, 0, 254);
+    	return StringUtils.substring(halfValid, 0, 254);
     }
+
     /**
      * Проверяет, является ли строка 
      * @param string
@@ -162,6 +165,36 @@ public class Strings
     public static String numberToRusWords(double number) {
 		RuleBasedNumberFormat nf = new RuleBasedNumberFormat(Locale.forLanguageTag("ru"), RuleBasedNumberFormat.SPELLOUT);
 		return nf.format(number);
+    }
+
+	/**
+	 * Очистить HTML от невалидных частей
+	 * @param html
+	 * @return
+	 */
+    public static String cleanHtml(String html) {
+	    CleanerProperties props = new CleanerProperties();
+
+		// set some properties to non-default values
+	    props.setTranslateSpecialEntities(true);
+	    props.setTransResCharsToNCR(true);
+	    props.setOmitComments(true);
+	    props.setOmitDoctypeDeclaration(true);
+	    props.setOmitCdataOutsideScriptAndStyle(true);
+	    props.setPruneTags("script");
+	    props.setNamespacesAware(false);
+	    //props.setDeserializeEntities(true);
+	    //props.setRecognizeUnicodeChars(true);
+	    //props.setTranslateSpecialEntities(true);
+	    //props.setTransSpecialEntitiesToNCR(true);
+	    props.setOmitXmlDeclaration(true);
+
+		// do parsing
+	    TagNode tagNode = new HtmlCleaner(props).clean(html);
+
+		// serialize to xml file
+	    return new PrettyXmlSerializer(props).getAsString(tagNode);
+	    //return new PrettyHtmlSerializer(props).getAsString(tagNode);
     }
 
 	/**

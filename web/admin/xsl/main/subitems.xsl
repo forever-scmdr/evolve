@@ -38,9 +38,6 @@
 				</xsl:choose>
 			</xsl:variable>
 			<a href="#" onclick="{$link}; return false;" >
-				<xsl:if test="@description != ''">
-					<span class="@description">[<xsl:value-of select="description"/>]</span>
-				</xsl:if>
 				<span class="name"><xsl:value-of select="@caption"/></span>
 			</a>
 		</li>
@@ -119,9 +116,6 @@
 								<a href="{edit-link}" class="name" title="редактировать">
 									<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
 										<span class="description">[<xsl:value-of select="@type-caption"/>] </span>
-									</xsl:if>
-									<xsl:if test="@description != ''">
-										<span class="description">[<xsl:value-of select="@description"/>]</span>
 									</xsl:if>
 									<xsl:if test="@user-group-name != 'common'">
 										<span class="description" style="color: #7777bb">[<xsl:value-of select="@user-group-name"/>] </span>

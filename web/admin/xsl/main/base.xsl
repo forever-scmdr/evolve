@@ -179,7 +179,7 @@
 										</a>
 									</li>
 									<li class="visible" title="Создать YML-файл">
-										<a href="create_yml_file" target="_blank" download="yml_catalog.xml">
+										<a href="create_yml_file" target="_blank">
 											Создать YML-файл
 										</a>
 									</li>

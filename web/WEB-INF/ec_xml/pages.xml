@@ -1101,7 +1101,6 @@
 	<!--//                                                                          -->
 	<!--// Интеграция полученных данных, хранящихся в айтемах parse_item на сайт    -->
 	<!--//                                                                          -->
-	<!--
 	<page name="deploy_parsed" template="deploy_parsed" authority-groups="common">
 		<request>
 			<var name="action"/>
@@ -1109,11 +1108,11 @@
 		<list item="section" id="sec">
 			<list item="parse_item" id="pi"/>
 		</list>
-		<command class="extra.DeployParsed" clear-cache="yes">
+		<command class="ecommander.fwk.integration.DeployParsedSingle" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
-	-->
+
 	<!--
 	Создать файл YML формата со всеми разделами и товарами каталога
 -->

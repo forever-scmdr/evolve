@@ -1,10 +1,7 @@
 package lunacrawler.fwk;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.JsoupUtils;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.WebClient;
+import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
@@ -458,7 +455,7 @@ public class SingleItemCrawlerController {
 				protected void processItem(Parse_item item, String proxy) throws Exception {
 					String html;
 					try {
-						html = WebClient.getString(item.get_url(), proxy);
+						html = WebClient.getCleanHtml(item.get_url(), proxy);
 					} catch (HttpResponseException re) {
 						info.addError("Url status code " + re.getStatusCode(), item.get_url());
 						return;
@@ -517,8 +514,9 @@ public class SingleItemCrawlerController {
 						transformer = factory.newTransformer(new StreamSource(xslFile));
 
 						// Подготовка HTML (убирание необъявленных сущностей и т.д.)
-						Document jsoupDoc = Jsoup.parse(item.get_html());
-						String html = JsoupUtils.outputHtmlDoc(jsoupDoc);
+						//Document jsoupDoc = Jsoup.parse(item.get_html());
+						//String html = JsoupUtils.outputHtmlDoc(jsoupDoc);
+						String html = Strings.cleanHtml(item.get_html());
 
 						// Преборазование очищенного HTML
 						Reader reader = new StringReader(html);
