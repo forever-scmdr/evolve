@@ -41,7 +41,6 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 	private static final String WITH_EXISTING_PRODUCTS = "with_existing_products"; // what to do with existing products (UPDATE)
 	private static final String IF_BLANK = "if_blank"; // what to do if the cell is blank; (IGNORE, CLEAR)
 	private static final String WITH_PICS = "with_pics"; // where to look for product files (SEARCH_BY_CODE, SEARCH_BY_CELL_VALUE, DOWNLOAD)
-	private static final String DIGITS = "0123456789.,";
 	private static final ItemType PRODUCT_ITEM_TYPE = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
 
 	//default page var values
@@ -101,7 +100,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 					String parentCode = name;
 					name = getValue(CreateExcelPriceList.PRICE_FILE);
 					String[] secInfo = new String[]{name, code, parentCode};
-					if (currentSection != null && !catalog.equals(currentSection) && currentSection.getStringValue(CATEGORY_ID_PARAM,"").equals(secInfo[2])) {
+					if (currentSection != null) {
 						processSubsection(secInfo);
 					} else {
 						Item existingSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code);
@@ -205,6 +204,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 							if (!productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
 								continue;
 							String cellValue = getValue(header);
+							cellValue = StringUtils.isAllBlank(cellValue)? "" : cellValue;
 							if (CODE_PARAM.equals(paramName)) {
 								product.setValue(CODE_PARAM, code);
 								product.setValue(VENDOR_CODE_PARAM, code);
@@ -543,6 +543,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 							if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
 								continue;
 							String cellValue = getValue(header);
+							cellValue = StringUtils.isAllBlank(cellValue)? "" : cellValue;
 							xml.startElement("parameter")
 									.startElement("name")
 									.addText(firstUpperCase(header))
@@ -616,6 +617,7 @@ public class ImportProductsFromExcel extends IntegrateBase implements CatalogCon
 			@Override
 			protected void processSheet() throws Exception {
 				currentSection = null;
+				currentSubsection = null;
 			}
 		};
 		return true;

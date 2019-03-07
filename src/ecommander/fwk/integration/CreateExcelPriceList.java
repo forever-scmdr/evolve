@@ -409,7 +409,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		row.getCell(colIdx).setCellStyle(auxStyle);
 		for (ParameterDescription param : aux.getItemType().getParameterList()){
 			ArrayList<Object> pv = aux.getValues(param.getName());
-			String value = (pv.size() == 0)? "" : (pv.size() == 1)? pv.get(0).toString() : join(pv);
+			String value = (pv.size() == 0)? "" : (pv.size() == 1)? (pv.get(0) == null)? "" : pv.get(0).toString() : join(pv);
 			row.createCell(++colIdx).setCellValue(value);
 			row.getCell(colIdx).setCellStyle(auxStyle);
 		}
@@ -420,6 +420,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			for(int i = 0; i < pv.size(); i++){
 			if(i>0)sb.append(VALUE_SEPARATOR);
 			String os = pv.get(i).toString();
+			os = (StringUtils.isAllBlank(os))? "" : os;
 			sb.append(os);
 		}
 		return sb.toString();

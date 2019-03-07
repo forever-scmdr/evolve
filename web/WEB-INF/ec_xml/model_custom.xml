@@ -1400,13 +1400,231 @@
 	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer" caption="Размер" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-937920049" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tsvet" caption="Цвет" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="110671046" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rezba" caption="Резьба" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="108410662" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_kg" caption="Вес, кг" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p174122-->
 
-<!--START_p217426-->
-<item name="p217426" caption="Тестовый подраздел раздела &quot;Болты&quot;" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1898" ag-hash="2094564624">
+<!--START_p232188-->
+<item name="p232188" caption="Болты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1900" ag-hash="2096260016">
+	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rezba" caption="Резьба" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="108410662" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p232188-->
+
+<!--START_p174123-->
+<item name="p174123" caption="Винты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1901" ag-hash="2071384340">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174123-->
+
+<!--START_p174124-->
+<item name="p174124" caption="Саморезы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1902" ag-hash="2071384341">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174124-->
+
+<!--START_p174125-->
+<item name="p174125" caption="Гайки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1903" ag-hash="2071384342">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174125-->
+
+<!--START_p174126-->
+<item name="p174126" caption="Заклепки для металла" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1904" ag-hash="2071384343">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174126-->
+
+<!--START_p174127-->
+<item name="p174127" caption="Шайбы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1905" ag-hash="2071384344">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174127-->
+
+<!--START_p174128-->
+<item name="p174128" caption="Шпильки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1906" ag-hash="2071384345">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174128-->
+
+<!--START_p174129-->
+<item name="p174129" caption="Крюки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1907" ag-hash="2071384346">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174129-->
+
+<!--START_p174130-->
+<item name="p174130" caption="Гвозди" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1908" ag-hash="2071384368">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174130-->
+
+<!--START_p174131-->
+<item name="p174131" caption="Шайбы стопорные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1909" ag-hash="2071384369">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174131-->
+
+<!--START_p174132-->
+<item name="p174132" caption="Шпонка, шпоночный материал" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1910" ag-hash="2071384370">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174132-->
+
+<!--START_p174133-->
+<item name="p174133" caption="Станочные нормали" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1911" ag-hash="2071384371">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174133-->
+
+<!--START_p174134-->
+<item name="p174134" caption="Стопорные кольца" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1912" ag-hash="2071384372">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174134-->
+
+<!--START_p174135-->
+<item name="p174135" caption="Шурупы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1913" ag-hash="2071384373">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174135-->
+
+<!--START_p174136-->
+<item name="p174136" caption="Хомуты стальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1916" ag-hash="2071384374"></item>
+<!--END_p174136-->
+
+<!--START_p174137-->
+<item name="p174137" caption="Скобы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1914" ag-hash="2071384375">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174137-->
+
+<!--START_p174139-->
+<item name="p174139" caption="Высокопрочные винты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1917" ag-hash="2071384377"></item>
+<!--END_p174139-->
+
+<!--START_p174140-->
+<item name="p174140" caption="Высокопрочные болты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1918" ag-hash="2071384399"></item>
+<!--END_p174140-->
+
+<!--START_p174141-->
+<item name="p174141" caption="Высокопрочные шпильки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1919" ag-hash="2071384400"></item>
+<!--END_p174141-->
+
+<!--START_p174142-->
+<item name="p174142" caption="Высокопрочные гайки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1920" ag-hash="2071384401"></item>
+<!--END_p174142-->
+
+<!--START_p174144-->
+<item name="p174144" caption="Сверла по металлу" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1921" ag-hash="2071384403"></item>
+<!--END_p174144-->
+
+<!--START_p174145-->
+<item name="p174145" caption="Пильные диски" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1922" ag-hash="2071384404"></item>
+<!--END_p174145-->
+
+<!--START_p174146-->
+<item name="p174146" caption="Биты BOSСH" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1923" ag-hash="2071384405"></item>
+<!--END_p174146-->
+
+<!--START_p174147-->
+<item name="p174147" caption="Сверлильные коронки алмазные и биметаллические" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1924" ag-hash="2071384406"></item>
+<!--END_p174147-->
+
+<!--START_p174148-->
+<item name="p174148" caption="Сверла по древесине" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1925" ag-hash="2071384407"></item>
+<!--END_p174148-->
+
+<!--START_p174149-->
+<item name="p174149" caption="Алмазные отрезные круги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1926" ag-hash="2071384408"></item>
+<!--END_p174149-->
+
+<!--START_p174150-->
+<item name="p174150" caption="Пильные полотна для лобзиков по металлу" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1927" ag-hash="2071384430"></item>
+<!--END_p174150-->
+
+<!--START_p174151-->
+<item name="p174151" caption="Пильные полотна для лобзиков  универсального назначения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1928" ag-hash="2071384431"></item>
+<!--END_p174151-->
+
+<!--START_p174152-->
+<item name="p174152" caption="Пильные полотна для лобзиков cпециального назначения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1929" ag-hash="2071384432"></item>
+<!--END_p174152-->
+
+<!--START_p174153-->
+<item name="p174153" caption="Сверло по бетону" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1930" ag-hash="2071384433"></item>
+<!--END_p174153-->
+
+<!--START_p174154-->
+<item name="p174154" caption="Сверла по плитке, стеклу и керамике" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1931" ag-hash="2071384434"></item>
+<!--END_p174154-->
+
+<!--START_p174155-->
+<item name="p174155" caption="Буры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1932" ag-hash="2071384435"></item>
+<!--END_p174155-->
+
+<!--START_p174156-->
+<item name="p174156" caption="Насадки для кровельных саморезов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1933" ag-hash="2071384436"></item>
+<!--END_p174156-->
+
+<!--START_p174157-->
+<item name="p174157" caption="Пилки, лопаты, долота" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1934" ag-hash="2071384437"></item>
+<!--END_p174157-->
+
+<!--START_p174158-->
+<item name="p174158" caption="Абразивы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1935" ag-hash="2071384438"></item>
+<!--END_p174158-->
+
+<!--START_p174195-->
+<item name="p174195" caption="Нержавеющие винты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1936" ag-hash="2071384559"></item>
+<!--END_p174195-->
+
+<!--START_p174196-->
+<item name="p174196" caption="Нержавеющие болты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1937" ag-hash="2071384560"></item>
+<!--END_p174196-->
+
+<!--START_p174197-->
+<item name="p174197" caption="Нержавеющие саморезы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1938" ag-hash="2071384561"></item>
+<!--END_p174197-->
+
+<!--START_p174198-->
+<item name="p174198" caption="Нержавеющие шпонки и шпоночный материал" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1939" ag-hash="2071384562"></item>
+<!--END_p174198-->
+
+<!--START_p174200-->
+<item name="p174200" caption="Анкер болты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1940" ag-hash="2071385236">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174200-->
+
+<!--START_p174202-->
+<item name="p174202" caption="Хомуты TORK" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1941" ag-hash="2071385238">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174202-->
+
+<!--START_p174203-->
+<item name="p174203" caption="Хомуты NORMA" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1942" ag-hash="2071385239">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174203-->
+
+<!--START_p227053-->
+<item name="p227053" caption="Дюбеля" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1899" ag-hash="2095484391">
+	<parameter name="ves_kg" caption="Вес, кг" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p227053-->
+
+<!--START_p245358-->
+<item name="p245358" caption="Тестовый подраздел раздела &quot;Болты&quot;" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1915" ag-hash="2097274739">
 	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rezba" caption="Резьба" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="108410662" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p217426-->
+<!--END_p245358-->
 <!--EXP--></model>
