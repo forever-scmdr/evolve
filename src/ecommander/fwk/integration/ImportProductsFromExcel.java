@@ -193,7 +193,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 						//set product params
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
-							if (!productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+							if (!itemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
 								continue;
 							String cellValue = getValue(header);
 							cellValue = StringUtils.isAllBlank(cellValue)? "" : cellValue;
@@ -278,8 +278,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 										product.setValueUI(paramName, val);
 									}
 
+								}else {
+									product.setValueUI(paramName, cellValue);
 								}
-								product.setValueUI(paramName, cellValue);
 							}
 						}
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
