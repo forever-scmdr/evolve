@@ -10,7 +10,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> <i class="fas fa-angle-right"></i>
+				<a href="/">Главная страница</a> &gt;
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -46,7 +46,7 @@
 								<div class="order-item">
 									<div class="image-container">
 										<xsl:if test="$prod">
-											<a href="{$prod/show_product}"><img src="http://aquacom.must.by/{$prod/@path}{$prod/main_pic}" alt=""/></a>
+											<a href="{$prod/show_product}"><img src="{$prod/@path}{$prod/main_pic}" alt=""/></a>
 										</xsl:if>
 									</div>
 									<div class="info-container">

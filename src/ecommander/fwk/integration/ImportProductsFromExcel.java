@@ -184,12 +184,16 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					TreeSet<String> headers = getHeaders();
 					Path picsFolder = contextPath.resolve("product_pics");
 					varValues withPictures = settings.get(WITH_PICS);
+
+
+
 					// product NOT exists
 					if (product == null) {
 						Item parent = (code.indexOf('@') == -1) ? currentSubsection : new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, StringUtils.substringAfter(code, "@"), "=", null, Compare.SOME).loadFirstItem();
 						ItemType itemType = (code.indexOf('@') == -1) ? ItemTypeRegistry.getItemType(PRODUCT_ITEM) : ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM);
 						product = Item.newChildItem(itemType, parent);
 						code = (code.indexOf('@') == -1) ? code : StringUtils.substringBefore(code, "@");
+
 						//set product params
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
@@ -387,9 +391,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 												}
 											}
 										}
+									} else {
+										product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
 									}
-								} else {
-									product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
 								}
 							} else if (TEXT_PICS_PARAM.equals(paramName)) {
 								String currVa = getStr(product, paramName);
@@ -408,8 +412,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 											}
 										}
 									}
-								} else {
-									product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
+									else {
+										product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
+									}
 								}
 							}
 //							else if (FILES_PARAM.equals(paramName)) {
@@ -441,8 +446,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 										product.setValueUI(paramName, val.trim());
 									}
 
+								}else {
+									product.setValueUI(paramName, cellValue);
 								}
-								product.setValueUI(paramName, cellValue);
 							}
 
 						}

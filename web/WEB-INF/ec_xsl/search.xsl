@@ -18,7 +18,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -29,29 +29,30 @@
 			<xsl:if test="$products">
 				<div class="view-container desktop">
 					<div class="view">
-						<span class="{'active'[not($view = 'list')]}">
-							<i class="fas fa-th-large"></i>
-							<a href="{page/set_view_table}">Плиткой</a>
-						</span>
-						<span class="{'active'[$view = 'list']}">
-							<i class="fas fa-th-list"></i>
-							<a href="{page/set_view_list}">Строками</a>
-						</span>
+						<span>Показывать:</span>
+						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
+						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
+						<!-- <div class="checkbox">
+							<label>
+								<xsl:if test="not($only_available)">
+									<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
+								</xsl:if>
+								<xsl:if test="$only_available">
+									<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
+								</xsl:if>
+								в наличии
+							</label>
+						</div> -->
 					</div>
 				</div>
 			</xsl:if>
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
-					<xsl:if test="$view = 'table'">
-						<xsl:apply-templates select="$products"/>
-					</xsl:if>
-					<xsl:if test="$view = 'list'">
-						<xsl:apply-templates select="$products" mode="lines"/>
-					</xsl:if>
-				</div>
-			<xsl:if test="not($products)">
-				<h4>По заданным критериям товары не найдены</h4>
-			</xsl:if>
+				<xsl:apply-templates select="$products"/>
+				<xsl:if test="not($products)">
+					<h4>По заданным критериям товары не найдены</h4>
+				</xsl:if>
+			</div>
 
 		</div>
 

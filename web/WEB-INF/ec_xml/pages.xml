@@ -1069,6 +1069,7 @@
 		</request>
 		<link name="create_pricelist" target="create_excel_pricelist">
 			<var name="action" value="start"/>
+			<var name="prod_params" value="yes"/>
 			<var name="aux_params" value="yes"/>
 		</link>
 		<single item="catalog" id="catalog_main">

@@ -148,7 +148,7 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
-		<parameter name="integration" type="file" caption="Excel обновление цены" description="обновление цены" />
+		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="integration_pending" type="byte" caption="Идет интеграция" domain="0-1" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
@@ -157,7 +157,7 @@
 
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
-	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" super="seo_container" ag-id="3" ag-hash="1970241253">
+	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" super="seo_container" children-per-page="250" ag-id="3" ag-hash="1970241253">
 		<child item="parse_section" single="true"/>
 		<child item="section" />
 		<child item="product"/>
@@ -470,6 +470,7 @@
 	<item name="block_array" caption="Массив блоков" virtual="true" ag-id="1342" ag-hash="1210858535">
 		<child item="block" inline="true"/>
 	</item>
+
 
 	<item name="delivery" caption="Доставка" ag-id="827" ag-hash="823466996">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
