@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -559,21 +560,26 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 			}
 
-			private Item setMultipleFileParam(Item item, String paramName, String values, Path folder) {
+			private Item setMultipleFileParam(Item item, String paramName, String values, Path folder) throws MalformedURLException {
 				String[] apv = values.split(CreateExcelPriceList.VALUE_SEPARATOR);
-				LinkedHashSet<File> existingFiles = new LinkedHashSet<>();
+				LinkedHashSet<Object> existingFiles = new LinkedHashSet<>();
 				for (String s : apv) {
 					if (StringUtils.isBlank(s)) continue;
 					s = s.replace(";", "").trim();
 					if (StringUtils.isBlank(s)) continue;
-					File f = folder.resolve(s).toFile();
+					if(StringUtils.startsWith(s,"https://") || StringUtils.startsWith(s,"http://")){
+						URL url = new URL(s);
+						existingFiles.add(url);
+					}
+					else{File f = folder.resolve(s).toFile();
 					if (f.exists()) {
 						existingFiles.add(f);
 					}
 				}
+				}
 				if (existingFiles.size() > 0) {
 					item.clearValue(paramName);
-					for (File f : existingFiles) {
+					for (Object f : existingFiles) {
 						item.setValue(paramName, f);
 					}
 				}
@@ -587,20 +593,21 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 			private Item getExistingProduct(String code) throws Exception {
 				Item prod;
-//				if (code.indexOf('@') == -1) {
+				if (code.indexOf('@') == -1) {
 				prod = new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME).loadFirstItem();
-//				}
-//				else {
-//					String[] codes = code.split("@");
-//					Item parent = new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, codes[1], "=", null, Compare.SOME).loadFirstItem();
-//					prod = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(parent.getId(), false).addParameterCriteria(CODE_PARAM, codes[0], "=", null, Compare.SOME).loadFirstItem();
-//				}
+				}
+				else {
+					String[] codes = code.split("@");
+					Item parent = new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, codes[1], "=", null, Compare.SOME).loadFirstItem();
+					prod = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(parent.getId(), false).addParameterCriteria(CODE_PARAM, codes[0], "=", null, Compare.SOME).loadFirstItem();
+				}
 				return prod;
 			}
 
 			@Override
 			protected void processSheet() throws Exception {
 				currentSection = null;
+				currentSubsection = null;
 			}
 		};
 		return true;
