@@ -546,7 +546,12 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 							if (auxType == null) continue;
 							String param = auxParams.get(header.toLowerCase());
-							if (!auxType.getParameterNames().contains(param)) continue;
+							//Если добавился новый параметр
+							if (!auxType.getParameterNames().contains(param)){
+								newItemTypes = true;
+								sectionsWithNewItemTypes.add(currentSubsection.getId());
+								continue;
+							}
 							if (StringUtils.isNotBlank(auxParams.get(param))) aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
 						}
 						paramsXML.setValueUI(XML_PARAM, xml.toString());
@@ -701,7 +706,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 	private Item createSection(String[] secInfo) throws Exception {
 		String sectionName = secInfo[0].trim();
-		info.pushLog("Найден раздел: " + sectionName);
+		//info.pushLog("Найден раздел: " + sectionName);
 		String sectionParentId = (secInfo.length == 3) ? secInfo[2].trim() : "";
 		Item parent = getDeclaredParent(sectionParentId);
 		Item newSection = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), parent);
@@ -709,6 +714,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 		newSection.setValue(CATEGORY_ID_PARAM, secInfo[1].trim());
 		newSection.setValue(PARENT_ID_PARAM, sectionParentId);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(newSection).noTriggerExtra().noFulltextIndex());
+		sectionsWithNewItemTypes.add(newSection.getId());
 		info.pushLog("Создан раздел: " + sectionName);
 		return newSection;
 	}
