@@ -32,7 +32,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 	private static final String WITH_EXISTING_PRODUCTS = "with_existing_products"; // what to do with existing products (UPDATE)
 	private static final String IF_BLANK = "if_blank"; // what to do if the cell is blank; (IGNORE, CLEAR)
 	private static final String WITH_PICS = "with_pics"; // where to look for product files (SEARCH_BY_CODE, SEARCH_BY_CELL_VALUE, DOWNLOAD)
-	private static final String DIGITS = "0123456789.,";
+	private static final ItemType PRODUCT_ITEM_TYPE = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
 
 	//default page var values
 	private enum varValues {
@@ -85,7 +85,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 				info.setLineNumber(getRowNum() + 1);
 				String code = getValue(CreateExcelPriceList.CODE_FILE);
 				String name = getValue(CreateExcelPriceList.NAME_FILE);
-				if (StringUtils.isBlank(name) || StringUtils.isBlank(code)) return;
+				if (StringUtils.isBlank(code)) return;
 				else if (StringUtils.startsWith(code, "разд:")) {
 					code = StringUtils.substringAfter(code, "разд:").trim();
 					String parentCode = name;
@@ -186,8 +186,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					// product NOT exists
 					if (product == null) {
 						Item parent = (code.indexOf('@') == -1) ? currentSubsection : new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, StringUtils.substringAfter(code, "@"), "=", null, Compare.SOME).loadFirstItem();
-//						ItemType itemType = (code.indexOf('@') == -1) ? ItemTypeRegistry.getItemType(PRODUCT_ITEM) : ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM);
-						product = Item.newChildItem(ItemTypeRegistry.getItemType(PRODUCT_ITEM), parent);
+						ItemType itemType = (code.indexOf('@') == -1) ? ItemTypeRegistry.getItemType(PRODUCT_ITEM) : ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM);
+						product = Item.newChildItem(itemType, parent);
 						code = (code.indexOf('@') == -1) ? code : StringUtils.substringBefore(code, "@");
 						//set product params
 						for (String header : headers) {
@@ -195,6 +195,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							if (!productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
 								continue;
 							String cellValue = getValue(header);
+							cellValue = StringUtils.isAllBlank(cellValue)? "" : cellValue;
 							if (CODE_PARAM.equals(paramName)) {
 								product.setValue(CODE_PARAM, code);
 								product.setValue(VENDOR_CODE_PARAM, code);
@@ -246,7 +247,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								if (withPictures == varValues.IGNORE || withPictures == varValues.SEARCH_BY_CODE)
 									continue;
 								if (StringUtils.isBlank(cellValue)) continue;
-								String[] arr = cellValue.split(";");
+								String[] arr = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
 								for (String s : arr) {
 									s = s.trim();
 									switch (withPictures) {
@@ -271,7 +272,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								if (StringUtils.isBlank(cellValue)) continue;
 								ParameterDescription pd = productItemType.getParameter(paramName);
 								if (pd.isMultiple()) {
-									String[] values = cellValue.split(";");
+									String[] values = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
 									for (String val : values) {
 										product.setValueUI(paramName, val);
 									}
@@ -286,7 +287,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 						for (String header : headers) {
 							if (CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) {
 								String cellValue = getValue(header);
-								String[] m = cellValue.split(";");
+								String[] m = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
 								for (String manual : m) {
 									Item manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
 									;
@@ -433,7 +434,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
 								ParameterDescription pd = productItemType.getParameter(paramName);
 								if (pd.isMultiple()) {
-									String[] values = cellValue.split(";");
+									String[] values = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
 									for (String val : values) {
 										product.setValueUI(paramName, val.trim());
 									}
@@ -459,7 +460,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									commitCommandUnits();
 									continue;
 								}
-								String[] m = cellValue.split(";");
+								String[] m = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
 								for (String manual : m) {
 									Item manualItem = null;
 									if (manual.indexOf('|') == -1) {
@@ -504,7 +505,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 						}
 					}
 					//process auxType
-					if (headers.contains(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase())) {
+					if (hasAuxParams(headers)) {
+
 						String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
 						ItemType auxType = null;
 						Item paramsXML = new ItemQuery(paramsXMLItemType).setParentId(product.getId(), false).loadFirstItem();
@@ -531,6 +533,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
 								continue;
 							String cellValue = getValue(header);
+							cellValue = StringUtils.isAllBlank(cellValue)? "" : cellValue;
 							xml.startElement("parameter")
 									.startElement("name")
 									.addText(firstUpperCase(header))
@@ -557,7 +560,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			}
 
 			private Item setMultipleFileParam(Item item, String paramName, String values, Path folder) {
-				String[] apv = values.split(";");
+				String[] apv = values.split(CreateExcelPriceList.VALUE_SEPARATOR);
 				LinkedHashSet<File> existingFiles = new LinkedHashSet<>();
 				for (String s : apv) {
 					if (StringUtils.isBlank(s)) continue;
@@ -601,6 +604,18 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			}
 		};
 		return true;
+	}
+
+	private boolean hasAuxParams(Collection<String> headers){
+		if(!headers.contains(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase())) return false;
+
+		for(String header : headers){
+			String paramName = HEADER_PARAM.get(header);
+			if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+				continue;
+			return true;
+		}
+		return false;
 	}
 
 	private void processSubsection(String[] secInfo) throws Exception {
