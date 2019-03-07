@@ -345,7 +345,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue("unit", ""));
 						row.createCell(++colIdx).setCellValue(String.valueOf(lineProduct.getByteValue(AVAILABLE_PARAM, (byte) 0)));
 
-						//write all product params
+						//write all product params/
 						if (writeAllProductParams) {
 							colIdx = writeParams(row, lineProduct, colIdx, productItemType);
 						}
