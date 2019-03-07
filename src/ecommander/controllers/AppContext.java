@@ -1,6 +1,7 @@
 package ecommander.controllers;
 
 import ecommander.model.datatypes.DateDataType;
+import ecommander.persistence.commandunits.DeleteComplex;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletContext;
@@ -86,6 +87,8 @@ public class AppContext {
 		else
 			_REAL_BASE_PATH = contextRoot;
 		LOG_FILE = _REAL_BASE_PATH + "WEB-INF/log4j.properties";
+		// Удаления
+		DeleteComplex.startDeletions();
 	}
 
 	public static String getContextPath() {

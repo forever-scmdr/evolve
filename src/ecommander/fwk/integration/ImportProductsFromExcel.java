@@ -111,7 +111,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									break;
 								case DELETE:
 									executeCommandUnit(ItemStatusDBUnit.delete(existingSection.getId()).noFulltextIndex());
-									executeCommandUnit(new CleanAllDeletedItemsDBUnit(20, null));
 									currentSection = createSection(secInfo);
 									break;
 								case COPY:
@@ -459,7 +458,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									for (Item item : items) {
 										executeCommandUnit(ItemStatusDBUnit.delete(item.getId()).noFulltextIndex());
 									}
-									executeCommandUnit(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
 									commitCommandUnits();
 									continue;
 								}
@@ -645,7 +643,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			switch (v) {
 				case DELETE:
 					executeCommandUnit(ItemStatusDBUnit.delete(existingSection.getId()).noFulltextIndex());
-					executeCommandUnit(new CleanAllDeletedItemsDBUnit(20, null));
 					Item newSection = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), declaredParent);
 					newSection.setValue(NAME_PARAM, sName);
 					newSection.setValue(CATEGORY_ID_PARAM, sCode);
