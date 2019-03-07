@@ -76,7 +76,6 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 		if(oldBigSection != null){
 			ServerLogger.debug("Adding delete commands.");
 			executeCommandUnit(ItemStatusDBUnit.delete(oldBigSection.getId()).noFulltextIndex());
-			executeCommandUnit(new CleanAllDeletedItemsDBUnit(20, null));
 			ServerLogger.debug("delete commands added");
 			commitCommandUnits();
 			ServerLogger.debug("delete commands executed");

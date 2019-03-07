@@ -85,10 +85,6 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 			info.setProcessed(processed);
 			itemsToDelete = paramsQuery.loadItems();
 		}
-		info.pushLog("Очистка корзины");
-		info.setProcessed(0);
-		executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10,
-				deletedCount -> info.increaseProcessed(deletedCount)).noFulltextIndex());
 
 		LinkedHashSet<String> typesToDelete = ItemTypeRegistry.getItemExtenders(PARAMS_ITEM);
 		typesToDelete.remove(PARAMS_ITEM);
@@ -108,7 +104,6 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		for (File xml : xmls) {
 			parser.parse(xml, prodHandler);
 		}
-		executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(20, null).noFulltextIndex());
 
 		info.pushLog("Создание товаров завершено");
 		info.pushLog("Индексация");

@@ -309,9 +309,6 @@ public class SingleItemCrawlerController {
 					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pitem).noFulltextIndex());
 					info.setProcessed(++i);
 				}
-				if (state == State.PREPARE_URLS) {
-					DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
-				}
 				info.setLineNumber(--secCount);
 			}
 		}
@@ -404,7 +401,6 @@ public class SingleItemCrawlerController {
 			}
 			info.setProcessed(++processedCount);
 		}
-		DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
 
 		// Создание новых айтемов для разбора
 		info.setOperation("Подготовка нового списка урлов");
