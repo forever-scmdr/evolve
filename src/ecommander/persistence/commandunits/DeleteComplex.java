@@ -1,6 +1,5 @@
 package ecommander.persistence.commandunits;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
@@ -8,14 +7,12 @@ import ecommander.model.User;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
-import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
