@@ -4,7 +4,10 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.*;
+import ecommander.persistence.commandunits.CopyItemDBUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.commandunits.MoveItemDBUnit;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
@@ -27,6 +30,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 	Item currentSubsection;
 	private boolean newItemTypes = false;
 	private HashSet<Long> sectionsWithNewItemTypes = new HashSet<>();
+	private HashSet<String> duplicateCodes = new HashSet<>();
 	//page vars
 	//private static final String SEC_VAR = "sec";
 	private static final String WITH_EXISTING_SECS = "with_existing_sections"; // what to do with existing sections (UPDATE, COPY, CREATE, COPY_IF_PARENT_DIFFERS, MOVE_IF_PARENT_DIFFERS, DELETE)
@@ -87,7 +91,15 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 				String code = getValue(CreateExcelPriceList.CODE_FILE);
 				String name = getValue(CreateExcelPriceList.NAME_FILE);
 				if (StringUtils.isBlank(code)) return;
-				else if (StringUtils.startsWith(code, "разд:")) {
+
+				//check duplicate codes
+				if(duplicateCodes.contains(code)){
+					info.addError("Повторяющийся артикул", code);
+				}else{
+					duplicateCodes.add(code);
+				}
+
+				if (StringUtils.startsWith(code, "разд:")) {
 					code = StringUtils.substringAfter(code, "разд:").trim();
 					String parentCode = name;
 					name = getValue(CreateExcelPriceList.PRICE_FILE);
