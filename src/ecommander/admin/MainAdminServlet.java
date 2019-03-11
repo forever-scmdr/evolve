@@ -527,8 +527,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 		transaction.execute();
 		// Очистить корзину
 		LuceneIndexMapper.getSingleton().startUpdate();
-		transaction.addCommandUnit(new CleanAllDeletedItemsDBUnit(20, null));
-		transaction.execute();
 		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
 		// Удалить айтем из индекса Lucene
 		LuceneIndexMapper.getSingleton().finishUpdate();

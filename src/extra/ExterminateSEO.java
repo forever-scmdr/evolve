@@ -26,7 +26,6 @@ public class ExterminateSEO extends Command{
 			for (Item item : loadedItems) {
 				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(item));
 			}
-			executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null));
 			return getResult("success");
 		}catch (Exception e){
 			StringWriter sw = new StringWriter();

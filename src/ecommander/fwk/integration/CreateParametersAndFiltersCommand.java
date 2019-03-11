@@ -177,7 +177,6 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 						}
 					}
 				}
-				executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
 
 				// Создание фильтра
 				String className = "p" + section.getId();
