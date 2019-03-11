@@ -208,7 +208,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							if (CODE_PARAM.equals(paramName)) {
 								product.setValue(CODE_PARAM, code);
 								product.setValue(VENDOR_CODE_PARAM, code);
-								product.setValue(OFFER_ID_PARAM, code);
+								product.setValue(OFFER_ID_PARAM, code);//x
 
 							} else if (MAIN_PIC_PARAM.equals(paramName)) {
 								if (withPictures == varValues.IGNORE) continue;
