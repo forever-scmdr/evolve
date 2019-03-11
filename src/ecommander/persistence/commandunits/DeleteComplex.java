@@ -16,6 +16,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Планировщик с потоком для фонового физического удаления айтемов из БД (помеченных удаленными)
  * Created by E on 6/3/2019.
  */
 public class DeleteComplex implements DBConstants.ItemTbl {
@@ -23,11 +24,11 @@ public class DeleteComplex implements DBConstants.ItemTbl {
 	private static final int AVERAGE = 50000;
 	private static final int MANY = 500000;
 
-	private static final int MAX_DELETE_TIME  = 60;
+	private static final int MAX_DELETE_SECONDS  = 60;
 
-	private static final int FREQUENT = 120;
-	private static final int NORMAL = 1200;
-	private static final int RARE = 14400;
+	private static final int FREQUENT_SECONDS = 120;
+	private static final int NORMAL_SECONDS = 1200;
+	private static final int RARE_SECONDS = 7200;
 
 	private class DeleteThread implements Runnable {
 
@@ -35,7 +36,7 @@ public class DeleteComplex implements DBConstants.ItemTbl {
 		public void run() {
 			try {
 				DelayedTransaction.executeSingle(User.getDefaultUser(),
-						new PerformDeletedCleaningDBUnit(8, MAX_DELETE_TIME).ignoreUser());
+						new PerformDeletedCleaningDBUnit(8, MAX_DELETE_SECONDS).ignoreUser());
 				TemplateQuery countQuery = new TemplateQuery("Count query");
 				countQuery.SELECT("count(*)").FROM(ITEM_TBL).WHERE().col(I_STATUS).byte_(Item.STATUS_DELETED);
 				try (Connection conn = MysqlConnector.getConnection();
@@ -67,13 +68,13 @@ public class DeleteComplex implements DBConstants.ItemTbl {
 	public void schedule() {
 		int delay;
 		if (remaining < 0)
-			delay = (int) (Math.random() * NORMAL);
+			delay = (int) (Math.random() * NORMAL_SECONDS);
 		else if (remaining < AVERAGE)
-			delay = RARE;
+			delay = RARE_SECONDS + (int)(Math.random() * RARE_SECONDS);
 		else if (remaining < MANY)
-			delay = NORMAL;
+			delay = NORMAL_SECONDS;
 		else
-			delay = FREQUENT;
+			delay = FREQUENT_SECONDS;
 		executor.schedule(new DeleteThread(), delay, TimeUnit.SECONDS);
 	}
 
