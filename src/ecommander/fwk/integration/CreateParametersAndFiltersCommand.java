@@ -236,7 +236,8 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			if (products.size() > 0) {
 
 				// Загрузить и добавить все строковые товары
-				products.addAll(new ItemQuery(LINE_PRODUCT_ITEM).setParentId(section.getId(), true).loadItems());
+				if (ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM) != null)
+					products.addAll(new ItemQuery(LINE_PRODUCT_ITEM).setParentId(section.getId(), true).loadItems());
 
 				for (Item product : products) {
 					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
