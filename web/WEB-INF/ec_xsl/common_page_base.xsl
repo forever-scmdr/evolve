@@ -399,7 +399,7 @@
 		<div class="actions">
 			<p><strong><span style="font-size: 18px;">Акции</span></strong></p>
 			<div class="actions-container">
-				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
+				<a href="{page/common/link_link}" rel="nofollow"><xsl:value-of select="page/common/link_text"/></a>
 			</div>
 		</div>
 		<div class="contacts">
@@ -498,8 +498,8 @@
 					<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
 				<!--</xsl:choose>-->
 				<div class="extra-links">
-					<a href="{my_price_link}" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
-					<a href="{one_click_link}" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+					<a href="{my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
+					<a href="{one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
 				</div>
 				<div class="links">
 					<div id="{if(/page/@name != 'compare') then concat('compare_list_', code) else ''}">
@@ -658,6 +658,7 @@
 	</xsl:text>
 	<html lang="ru">
 		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 							<xsl:text disable-output-escaping="yes">
 &lt;!--
 				</xsl:text>
@@ -813,8 +814,28 @@
 		</xsl:if>
 		<xsl:value-of select="page/common/google_verification" disable-output-escaping="yes"/>
 		<xsl:value-of select="page/common/yandex_verification" disable-output-escaping="yes"/>
-		<xsl:call-template name="MARKUP" />
+		
+		<xsl:call-template name="PAGINATION_SEO"/>
 
+		<xsl:call-template name="MARKUP" />
+	</xsl:template>
+
+	<xsl:template name="PAGINATION_SEO">
+		<xsl:variable name="pagination" select="//*[ends-with(name(), '_pages')]"/>
+		<xsl:variable name="current_page" select="f:num(page/variables/page)"/>
+		<xsl:variable name="has_pagination" select="$pagination/page/link"/>
+
+		<xsl:if test="$has_pagination">
+			<xsl:variable name="next" select="$pagination/page[$current_page + 1]"/>
+			<xsl:variable name="prev" select="$pagination/page[$current_page - 1]"/>
+
+			<xsl:if test="$prev/link">
+				<link rel="prev" href="{concat($main_host, replace($prev/link, 'section',''))}" />
+			</xsl:if>
+			<xsl:if test="$next/link">
+				<link rel="next" href="{concat($main_host, replace($next/link, 'section',''))}" />
+			</xsl:if>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="MARKUP"/>

@@ -41,14 +41,14 @@
 	<!--/////////////                                                                      ////////////-->
 
 
-	<item name="original_gallery" caption="Исходная галерея" ag-id="2433" ag-hash="743720676">
+	<item name="original_gallery" caption="Исходная галерея" ag-id="2440" ag-hash="743720676">
 		<parameter name="watermark_filename"  type="string" caption="Название файла водяного знака"/>
 		<parameter name="watermark_file_modified"  type="long" caption="Дата изменения файла водяного знака"/>
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 	</item>
 
 
-	<item name="gallery" caption="Галерея" ag-id="2434" ag-hash="-196315310">
+	<item name="gallery" caption="Галерея" ag-id="2441" ag-hash="-196315310">
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 		<child item="original_gallery" single="true"/>
 	</item>
@@ -131,12 +131,12 @@
 	</item>
 
 	<!-- Каталог подарков -->
-	<item name="present_catalog" caption="Каталог подарков" ag-id="1667" ag-hash="96179349">
+	<item name="present_catalog" caption="Каталог подарков" ag-id="1671" ag-hash="96179349">
 		<child item="present"/>
 	</item>
 
 	<!-- Подарок -->
-	<item name="present" caption="Подарок" key="name code" ag-id="1668" ag-hash="-318277445">
+	<item name="present" caption="Подарок" key="name code" ag-id="1672" ag-hash="-318277445">
 		<parameter name="name" type="string" caption="Наименование" />
 		<parameter name="code" type="string" caption="Код подарка" />
 		<parameter name="main_pic" type="picture" format="width: 300" caption="Главная картинка"/>
@@ -145,14 +145,14 @@
 	</item>
 
 	<!-- Соотношение подарков и товаров -->
-	<item name="product_present" caption="Соответствие товара подарку" virtual="true" ag-id="1669" ag-hash="2122091883">
+	<item name="product_present" caption="Соответствие товара подарку" virtual="true" ag-id="1673" ag-hash="2122091883">
 		<parameter name="product_code" type="string" caption="Код продукта"/>
 		<parameter name="present_code" type="string" caption="Код подарка"/>
 		<parameter name="qty" type="string" caption="Количество"/>
 	</item>
 
 
-	<item name="product_present_catalog" caption="Соответствие товаров подаркам" ag-id="1670" ag-hash="-1712785083">
+	<item name="product_present_catalog" caption="Соответствие товаров подаркам" ag-id="1674" ag-hash="-1712785083">
 		<child item="product_present"/>
 	</item>
 
@@ -350,11 +350,11 @@
         <child item="payment" single="true"/>
     </item>
 
-	<item name="delivery" caption="Доставка" ag-id="1658" ag-hash="823466996">
+	<item name="delivery" caption="Доставка" ag-id="1667" ag-hash="823466996">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="payment" caption="Оплата" ag-id="1666" ag-hash="-786681338">
+	<item name="payment" caption="Оплата" ag-id="1668" ag-hash="-786681338">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
@@ -365,7 +365,7 @@
 		<parameter name="message" type="string" caption="Сообщение" />
 	</item>
 
-	<item name="my_price_form" caption="Форма для предложения своей цены" virtual="true" ag-id="1275" ag-hash="442678893">
+	<item name="my_price_form" caption="Форма для предложения своей цены" virtual="true" ag-id="1669" ag-hash="442678893">
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="email" type="string" caption="E-mail"/>
@@ -375,7 +375,7 @@
 		<parameter name="message" type="string" caption="Комментарий" />
 	</item>
 
-	<item name="one_click_form" caption="Форма заказа в один клик" virtual="true" ag-id="1276" ag-hash="-2028535660">
+	<item name="one_click_form" caption="Форма заказа в один клик" virtual="true" ag-id="1670" ag-hash="-2028535660">
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="product_code" type="string" caption="Артикул товара"/>
 		<parameter name="product_name" type="string" caption="Название товара"/>

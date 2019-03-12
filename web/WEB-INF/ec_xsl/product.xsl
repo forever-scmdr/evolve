@@ -3,9 +3,9 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="concat($p/type, '  Метабо ', $p/name, ' купить в Минске: цена, фото, рассрочка - интернет магазин Метабо.бел')"/>
-	<xsl:variable name="meta_description" select="concat($p/type, ' Метабо от официального дилера №1 ✅ Доставка по Беларуси ☎☎☎ +375 29 566 61 16 Хорошая цена, рассрочка, гарантия 3 года!')"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($p/type,' ' ,$p/name)"/>
+	<xsl:variable name="title" select="concat(if($p/type != '') then concat($p/type, ' ') else '', 'Метабо ', $p/name, ' купить в Минске: цена, рассрочка')"/>
+	<xsl:variable name="meta_description" select="concat(if($p/type != '') then $p/type else $p/name, ' Метабо от официального дилера №1 ✅ Доставка по Беларуси ☎☎☎ +375 29 566 61 16 Хорошая цена, рассрочка, гарантия 3 года!')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($p/type,' Metabo ' ,$p/name)"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
@@ -51,7 +51,7 @@
 				<a href="/">Главная страница</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/></a>
+					<a href="{show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -124,8 +124,8 @@
 					№ для заказа: <xsl:value-of select="$p/code" />
 				</div>
 				<div class="extra-links">
-					<a href="{$p/my_price_link}" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
-					<a href="{$p/one_click_link}" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+					<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
+					<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
 				</div>
 				<div class="links">
 					<div id="compare_list_{$p/code}">
@@ -185,7 +185,9 @@
 								<i class="fas fa-file-alt"></i><a href="{$extra_xml/parts}" target="_blank" rel="nofollow"><strong>Список запчастей</strong></a>
 							</div>
 						</xsl:if>
+						<!--
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
+						-->
 					</div>
 					<!--
 					<div class="info-block">

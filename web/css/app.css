@@ -7255,7 +7255,7 @@ input.submit {
     padding: 0px;
     list-style: none;
     margin-bottom: 16px;
-    break-inside: avoid-column;
+    /*break-inside: avoid-column;*/
 }
 .new-list a {
   color: inherit;
@@ -7289,4 +7289,32 @@ a.toggle-list {
   padding: 4px 16px;
   margin: auto;
   border-radius: 20px;
+}
+
+.new-text {
+  display: flex;
+}
+.new-text > div {
+  flex: 1;
+}
+.new-text > div:first-child {
+  margin-right: 12px;
+}
+.new-text > div:last-child {
+  margin-left: 12px;
+}
+.new-text ol {
+  padding-left: 16px;
+}
+.new-text li {
+  margin-bottom: 8px;
+}
+@media (max-width: 767px) {
+  .new-text {
+    flex-direction: column;
+  }
+  .new-text > div:first-child,
+  .new-text > div:last-child {
+    margin: unset !important;
+  }
 }
