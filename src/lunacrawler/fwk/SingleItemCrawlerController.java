@@ -470,9 +470,11 @@ public class SingleItemCrawlerController {
 					try {
 						html = WebClient.getCleanHtml(item.get_url(), proxy);
 					} catch (HttpResponseException re) {
+						ServerLogger.error("Web client exception", re);
 						info.addError("Url status code " + re.getStatusCode(), item.get_url());
 						return;
 					} catch (Exception e) {
+						ServerLogger.error("Unknown download problem", e);
 						info.addError("Unknown download problem: " + e.getMessage(), item.get_url());
 						return;
 					}
@@ -494,7 +496,9 @@ public class SingleItemCrawlerController {
 				}
 			};
 			workers.add(worker);
-			new Thread(worker).start();
+			Thread downloader = new Thread(worker);
+			downloader.setDaemon(true);
+			downloader.start();
 		}
 	}
 
@@ -562,7 +566,9 @@ public class SingleItemCrawlerController {
 				}
 			};
 			workers.add(worker);
-			new Thread(worker).start();
+			Thread parser = new Thread(worker);
+			parser.setDaemon(true);
+			parser.start();
 		}
 	}
 
@@ -608,7 +614,9 @@ public class SingleItemCrawlerController {
 				}
 			};
 			workers.add(worker);
-			new Thread(worker).start();
+			Thread downloader = new Thread(worker);
+			downloader.setDaemon(true);
+			downloader.start();
 		}
 	}
 
