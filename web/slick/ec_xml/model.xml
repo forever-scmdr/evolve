@@ -74,10 +74,6 @@
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
 	</item>
 
-
-
-
-
 	<!--Товар из магазина yandex market-->
 	<item name="product" key="name vendor_code" caption="Продукт" super="* gallery" extendable="false" key-unique="true" default-page="product" ag-id="6" ag-hash="-309474065">
 		<child item="seo" single="true"/>
@@ -259,6 +255,15 @@
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
+	<item name="orders_with_discount" caption="заказы со скидкой" description="удаляется каждые сутки.">
+		<child name="lucky_order"/>
+	</item>
+
+	<item name="lucky_order" caption="заказ со скидкой" key="phone email">
+		<parameter name="phone" type="integer" caption="телефон"/>
+		<parameter name="email" type="string" caption="email"/>
+		<parameter name="user_id" type="integer" caption="random promo code" />
+	</item>
 
 	<item name="registered_catalog" caption="Каталог пользователей" ag-id="892" ag-hash="-755203236">
 		<child item="user"/>
@@ -425,6 +430,7 @@
 		<child item="url_seo_wrap" single="true"/>
 		<child item="present_catalog" single="true"/>
 		<child item="product_present_catalog" single="true" virtual="true"/>
+		<child item="orders_with_discount" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 
