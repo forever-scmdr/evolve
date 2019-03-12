@@ -1127,6 +1127,7 @@
 	<page name="parse_excel" template="integration/create_excel" authority-groups="common">
 		<request>
 			<var name="action"/>
+			<var name="if_blank" value="clear"/>
 			<!--<var name="with_existing_sections" value="copy"/>-->
 		</request>
 		<command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">

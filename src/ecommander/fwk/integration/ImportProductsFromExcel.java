@@ -243,7 +243,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									case DOWNLOAD: {
 										if (StringUtils.isNotBlank(cellValue)) {
 											try {
-												URL url = new URL(cellValue.trim());
+												URL url = new URL(cellValue);
 												product.setValue(paramName, url);
 											} catch (Exception e) {
 											}
@@ -386,7 +386,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								}
 							} else if (GALLERY_PARAM.equals(paramName)) {
 								String currVa = getStr(product, paramName);
-								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
+								if (currVa.equals(cellValue) && StringUtils.isNotBlank(currVa)) continue;
 								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
 									product.clearValue(paramName);
 									if (withPictures == varValues.SEARCH_BY_CODE) {
@@ -399,13 +399,13 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 												}
 											}
 										}
-									} else {
+									} else{
 										product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
 									}
 								}
 							} else if (TEXT_PICS_PARAM.equals(paramName)) {
 								String currVa = getStr(product, paramName);
-								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
+								if (currVa.equals(cellValue) && StringUtils.isNotBlank(currVa)) continue;
 								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
 									product.clearValue(paramName);
 									if (withPictures == varValues.SEARCH_BY_CODE) {
@@ -426,15 +426,20 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							}
 							else {
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
-								ParameterDescription pd = productItemType.getParameter(paramName);
-								if (pd.isMultiple()) {
-									String[] values = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
-									for (String val : values) {
-										product.setValueUI(paramName, val.trim());
-									}
+								else if(StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR){
+									product.clearValue(paramName);
+								}
+								else {
+									ParameterDescription pd = productItemType.getParameter(paramName);
+									if (pd.isMultiple()) {
+										String[] values = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
+										for (String val : values) {
+											product.setValueUI(paramName, val.trim());
+										}
 
-								}else {
-									product.setValueUI(paramName, cellValue);
+									} else {
+										product.setValueUI(paramName, cellValue);
+									}
 								}
 							}
 
@@ -451,7 +456,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									for(Item item : items){
 										executeCommandUnit(ItemStatusDBUnit.delete(item.getId()).noFulltextIndex());
 									}
-									executeCommandUnit(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
+									//executeCommandUnit(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
 									commitCommandUnits();
 									continue;
 								}
@@ -560,6 +565,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			}
 
 			private Item setMultipleFileParam(Item item, String paramName, String values, Path folder) throws MalformedURLException {
+				if(StringUtils.isBlank(values)) return item;
 				String[] apv = values.split(CreateExcelPriceList.VALUE_SEPARATOR);
 				LinkedHashSet<Object> existingFiles = new LinkedHashSet<>();
 				for (String s : apv) {
