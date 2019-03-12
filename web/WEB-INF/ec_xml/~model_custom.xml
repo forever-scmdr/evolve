@@ -373,12 +373,6 @@
 </item>
 <!--END_p284871-->
 
-<!--START_p174123-->
-<item name="p174123" caption="Винты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1901" ag-hash="2071384340">
-	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p174123-->
-
 <!--START_p285313-->
 <item name="p285313" caption="Анкеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2037" ag-hash="2100968694"></item>
 <!--END_p285313-->
@@ -531,10 +525,108 @@
 <!--END_p259708-->
 
 <!--START_p259750-->
-<item name="p259750" caption="sub mega test 1" key="" ag-id="0" ag-hash="2098321260" virtual="false" user-def="true" description="" super="params *">
+<item name="p259750" caption="sub mega test 1" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2067" ag-hash="2098321260">
 	<parameter name="diametr_mm" caption="Диаметр, мм" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-770943891" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_mm" caption="Длина, мм" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1635843221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tsvet" caption="Цвет" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="110671046" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p259750-->
+
+<!--START_p174123-->
+<item name="p174123" caption="Винты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1901" ag-hash="2071384340">
+	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p174123-->
+
+<!--START_p257260-->
+<item name="p257260" caption="Анкеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2068" ag-hash="2098256904"></item>
+<!--END_p257260-->
+
+<!--START_p257279-->
+<item name="p257279" caption="Химические анкера и комплектующие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2069" ag-hash="2098256944"></item>
+<!--END_p257279-->
+
+<!--START_p257291-->
+<item name="p257291" caption="Дюбеля" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2070" ag-hash="2098256998"></item>
+<!--END_p257291-->
+
+<!--START_p257360-->
+<item name="p257360" caption="Крепление фасадной, гидро и теплоизоляции" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2071" ag-hash="2098257865"></item>
+<!--END_p257360-->
+
+<!--START_p257372-->
+<item name="p257372" caption="Метрический крепеж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2072" ag-hash="2098257898"></item>
+<!--END_p257372-->
+
+<!--START_p257391-->
+<item name="p257391" caption="Заклепки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2073" ag-hash="2098257959"></item>
+<!--END_p257391-->
+
+<!--START_p257400-->
+<item name="p257400" caption="Саморезы, шурупы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2074" ag-hash="2098258640"></item>
+<!--END_p257400-->
+
+<!--START_p257459-->
+<item name="p257459" caption="Крепеж из нержавеющей стали" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2075" ag-hash="2098258804"></item>
+<!--END_p257459-->
+
+<!--START_p257475-->
+<item name="p257475" caption="Главная страница Крепеж Сантехнический" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2076" ag-hash="2098258862"></item>
+<!--END_p257475-->
+
+<!--START_p257484-->
+<item name="p257484" caption="Крюки и кольца ввертные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2077" ag-hash="2098258892"></item>
+<!--END_p257484-->
+
+<!--START_p257492-->
+<item name="p257492" caption="Такелаж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2078" ag-hash="2098258921"></item>
+<!--END_p257492-->
+
+<!--START_p257508-->
+<item name="p257508" caption="Электротехнический (кабельный) крепеж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2079" ag-hash="2098259609"></item>
+<!--END_p257508-->
+
+<!--START_p257514-->
+<item name="p257514" caption="Перфорированный крепеж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2080" ag-hash="2098259636"></item>
+<!--END_p257514-->
+
+<!--START_p257542-->
+<item name="p257542" caption="Сверла" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2081" ag-hash="2098259727"></item>
+<!--END_p257542-->
+
+<!--START_p257555-->
+<item name="p257555" caption="Диски и полотна для электроинструмента" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2082" ag-hash="2098259761"></item>
+<!--END_p257555-->
+
+<!--START_p257577-->
+<item name="p257577" caption="Сменные насадки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2083" ag-hash="2098259825"></item>
+<!--END_p257577-->
+
+<!--START_p257585-->
+<item name="p257585" caption="Ручной инструмент" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2084" ag-hash="2098259854"></item>
+<!--END_p257585-->
+
+<!--START_p257603-->
+<item name="p257603" caption="Ручной строительный инструмент STARTUL/TOPTUL" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2085" ag-hash="2098260565"></item>
+<!--END_p257603-->
+
+<!--START_p257630-->
+<item name="p257630" caption="Пена, герметики" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2086" ag-hash="2098260655"></item>
+<!--END_p257630-->
+
+<!--START_p257644-->
+<item name="p257644" caption="Электроинструмент" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2087" ag-hash="2098260690"></item>
+<!--END_p257644-->
+
+<!--START_p257653-->
+<item name="p257653" caption="Гвозди" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2088" ag-hash="2098260720"></item>
+<!--END_p257653-->
+
+<!--START_p257657-->
+<item name="p257657" caption="Проволока вязальная оцинкованная" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2089" ag-hash="2098260724"></item>
+<!--END_p257657-->
+
+<!--START_p257659-->
+<item name="p257659" caption="Скоба строительная" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2090" ag-hash="2098260726"></item>
+<!--END_p257659-->
 <!--EXP--></model>
