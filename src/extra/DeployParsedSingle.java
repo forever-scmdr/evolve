@@ -4,7 +4,6 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CopyItemDBUnit;
-import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
@@ -19,7 +18,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
