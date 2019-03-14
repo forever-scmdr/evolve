@@ -14,6 +14,7 @@ import org.apache.http.client.HttpResponseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import javax.xml.transform.*;
@@ -592,7 +593,10 @@ public class SingleItemCrawlerController {
 						// HTML с картинками (img)
 						Elements htmls = result.getElementsByAttributeValue(TYPE, HTML);
 						for (Element html : htmls) {
-							Elements imgs = html.getElementsByTag("img");
+							String xml = Parser.unescapeEntities(html.toString(), true);
+							xml = Strings.cleanHtml(xml);
+							Document xmlDoc = Jsoup.parse(xml);
+							Elements imgs = xmlDoc.getElementsByTag("img");
 							for (Element img : imgs) {
 								URL url = new URL(normalizeDownloadUrl(img.attr("src"), item.get_url()));
 								item.setValue(Parse_item.HTML_PIC, url);
