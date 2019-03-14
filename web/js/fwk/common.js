@@ -96,3 +96,4 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 		}
 	);
 }
+

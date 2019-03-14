@@ -5,8 +5,8 @@ import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.mail.Multipart;
@@ -366,6 +366,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 */
 	public ResultPE restoreFromCookie() throws Exception {
 		loadCart();
+		buyNow();
 		if (cart != null)
 			return null;
 		String cookie = getVarSingleValue(CART_COOKIE);
@@ -378,8 +379,37 @@ public abstract class BasicCartManageCommand extends Command {
 			addProduct(pair[0], qty);
 		}
 		recalculateCart();
+
 		return null;
 	}
+
+	/**
+	 * Записывает в куки дату входа на сайт, дату показа окна, дату истечения скидки.
+	 * @throws Exception
+	 */
+	public void buyNow() throws Exception {
+		String discountUsed = getVarSingleValue("discount_used");
+		if("yes".equals(discountUsed)) return;
+
+		final long hour = 60*60*1000;
+		final long fiveMinutes = 5*60*1000;
+		String start = getVarSingleValue("site_visit");
+
+		long now = new Date().getTime();
+		long startTime = (StringUtils.isBlank(start))? -1 : Long.parseLong(start);
+
+		if(StringUtils.isBlank(start) || now - startTime > hour){
+			setCookieVariable("site_visit", String.valueOf(now));
+			startTime = now;
+		}
+
+		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
+		int duration = common.getIntValue("discount_last", 60) * 1000;
+		long discountExpires = startTime + fiveMinutes + duration;
+		setCookieVariable("expires", discountExpires);
+		setCookieVariable("current_time", String.valueOf(now));
+	}
+
 
 	/**
 	 * Пересчитывает данные для одного enterprise_bought, когда в корзине произошли какие-то изменения
