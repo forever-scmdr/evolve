@@ -68,10 +68,10 @@
 			<div class="gallery">
 				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="native">
 					<xsl:for-each select="$p/gallery">
-						<img src="http://aquacom.must.by/{$p/@path}{.}" alt="{$p/name}"/>
+						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
 					<xsl:if test="not($p/gallery)">
-						<img src="{concat('http://aquacom.must.by/', $p/@path, $p/main_pic)}" alt="{$p/name}"/>
+						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
 				</div>
 			</div>

@@ -23,7 +23,4 @@
 
 #https:\/\/www\.tme\.eu\/ru\/details\/(?!print\/).+    product.xsl     https://www.tme.eu/ru/details/a10-lime-n8gb/odnoplatnye-kompiutery/olimex/a10-olinuxino-lime-n8gb/
 
-https?:\/\/(www\.)?nora-m\.ru\/catalog.*     nora.xsl    http://nora-m.ru/catalog/seriia-deluxe/ruchki-de-luxe/ruchka-dvernaia-galisiia
-https?:\/\/(www\.)?petronik\.ru\/catalog.*     petronik.xsl    http://petronik.ru/catalog/id/14932/
-https?:\/\/(www\.)?zamki\.biz\/catalog.*     zamki.xsl    http://www.zamki.biz/catalog/1_zamki/vreznye_zamki/dlya_derevyannyh_dverei_s_ruchkami/allyur_zv_4132_cp_hrom_zamok_vreznoi_sruch__item/
-https?:\/\/(www\.)?metallist\.org\/catalogue.*     metallist.xsl    http://www.metallist.org/catalogue/show/10009/#product
+https?:\/\/(www\.)?shop\.dadget\.ru\/catalog.*     dadget.xsl    https://shop.dadget.ru/catalog/parents/3d_start/

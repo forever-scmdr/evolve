@@ -58,6 +58,7 @@ public class DeployParsedSingle extends IntegrateBase {
 	protected final String PARAMETER = "parameter";
 	protected final String VALUE = "value";
 	protected final String PARAMS_XML = "params_xml";
+	protected final String DESCRIPTION = "description";
 
 	private final String CONTAINS = "contains";
 
@@ -167,7 +168,7 @@ public class DeployParsedSingle extends IntegrateBase {
 			prod.set_code(code);
 			prod.set_vendor_code(JsoupUtils.nodeText(prodEl, VENDOR_CODE));
 			prod.set_name(JsoupUtils.nodeText(prodEl, NAME));
-			//prod.set_short(RF_to_RB(JsoupUtils.nodeHtml(doc, SHORT)));
+			prod.set_description(RF_to_RB(JsoupUtils.nodeHtml(doc, DESCRIPTION)));
 			prod.set_text(RF_to_RB(JsoupUtils.nodeHtml(prodEl, TEXT)));
 			//prod.set_tech(RF_to_RB(JsoupUtils.nodeHtml(doc, TECH)));
 			//prod.set_apply(RF_to_RB(JsoupUtils.nodeHtml(doc, APPLY)));
@@ -265,7 +266,7 @@ public class DeployParsedSingle extends IntegrateBase {
 
 			// Исправить адреса картинок в HTML
 			updatePics(prod, ItemNames.product_.TEXT, ItemNames.product_.TEXT_PICS);
-			//updatePics(prod, ItemNames.product.APPLY, ItemNames.product.TEXT_PICS);
+			updatePics(prod, ItemNames.product_.DESCRIPTION, ItemNames.product_.TEXT_PICS);
 			executeCommandUnit(SaveItemDBUnit.get(prod));
 		}
 
