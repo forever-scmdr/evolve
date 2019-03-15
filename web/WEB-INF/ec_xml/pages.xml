@@ -394,7 +394,7 @@
 		<include name="COMMON"/>
 	</page>
 
-	<page name="page" cacheable="false" template="page">
+<page name="page" cacheable="false" template="page">
 		<request>
 			<var name="p" style="translit"/>
 		</request>
