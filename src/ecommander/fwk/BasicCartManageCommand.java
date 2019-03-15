@@ -422,7 +422,7 @@ public abstract class BasicCartManageCommand extends Command {
 	public void buyNow() throws Exception {
 		if(discountUsed()){recalculateCart(); return;}
 		final long hour = 60*60*1000;
-		final long fiveMinutes = 60*1000;
+		final long fiveMinutes = 5*60*1000;
 		String start = getVarSingleValue("site_visit");
 
 		long now = new Date().getTime();
@@ -496,7 +496,7 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 
 		final long hour = 60*60*1000;
-		final long fiveMinutes = 60*1000;
+		final long fiveMinutes = 5*60*1000;
 		String start = getVarSingleValue("site_visit");
 		long now = new Date().getTime();
 		long startTime = (StringUtils.isBlank(start))? -1 : Long.parseLong(start);

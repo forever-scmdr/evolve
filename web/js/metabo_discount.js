@@ -30,7 +30,7 @@ function discount() {
         }
         // console.log(time - start);
         var delta = expires - time;
-        if(!windowClosed && time - start > 60*1000){
+        if(!windowClosed && time - start > 5*60*1000){
             showWindow();
         }
         time += 1000;
