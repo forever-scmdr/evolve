@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Управление корзиной
@@ -107,6 +108,15 @@ public abstract class BasicCartManageCommand extends Command {
 		final String TRUE = "true";
 		final String FALSE = "false";
 		loadCart();
+		// Была ли использована скидка
+		if(discountUsed()){
+			BigDecimal simpleSum = cart.getDecimalValue("simple_sum");
+			if(simpleSum != null || simpleSum.compareTo(BigDecimal.ZERO) != 0){
+				recalculateCart();
+				return getResult("discount_used");
+			}
+		}
+
 		if (StringUtils.equalsIgnoreCase(cart.getStringExtra(IN_PROGRESS), TRUE)) {
 			return getResult("confirm");
 		}
@@ -174,6 +184,8 @@ public abstract class BasicCartManageCommand extends Command {
 		//counter.setValue(DATE_PARAM, newDate);
 		executeCommandUnit(SaveItemDBUnit.get(counter).ignoreUser());
 
+		setCookieVariable("discount_used", new Date().getTime());
+
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		// Сохранить историю
 		//
@@ -228,6 +240,26 @@ public abstract class BasicCartManageCommand extends Command {
 		setCookieVariable(CART_COOKIE, null);
 		getSessionMapper().saveTemporaryItem(cart);
 		return getResult("confirm");
+	}
+
+	private boolean discountUsed() {
+		String discountUsedCookie = getVarSingleValue("discount_used");
+		if(StringUtils.isBlank(discountUsedCookie)){}
+		else {
+			long discountUsed = Long.parseLong(discountUsedCookie);
+			GregorianCalendar now = new GregorianCalendar();
+			now.setTime(new Date());
+			int thisDay = now.get(GregorianCalendar.DAY_OF_YEAR);
+
+			GregorianCalendar then = new GregorianCalendar();
+			then.setTime(new Date(discountUsed));
+			int thatDay = then.get(GregorianCalendar.DAY_OF_YEAR);
+			if(thatDay != thisDay){
+				setCookieVariable("discount_used", "");
+			}
+			return thatDay == thisDay;
+		}
+		return false;
 	}
 
 	protected abstract boolean validate() throws Exception;
@@ -388,11 +420,9 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @throws Exception
 	 */
 	public void buyNow() throws Exception {
-		String discountUsed = getVarSingleValue("discount_used");
-		if("yes".equals(discountUsed)) return;
-
+		if(discountUsed()){recalculateCart(); return;}
 		final long hour = 60*60*1000;
-		final long fiveMinutes = 5*60*1000;
+		final long fiveMinutes = 60*1000;
 		String start = getVarSingleValue("site_visit");
 
 		long now = new Date().getTime();
@@ -448,12 +478,48 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().saveTemporaryItem(bought);
 			}
 		}
+		sum = applyDiscount(sum);
 		cart.setValue(SUM_PARAM, sum);
 		cart.setValue(QTY_PARAM, regularQuantity);
 		// Сохранить корзину
 		getSessionMapper().saveTemporaryItem(cart);
 		saveCookie();
 		return result && regularQuantity > 0;
+	}
+
+	private BigDecimal applyDiscount(BigDecimal sum) throws Exception{
+		String discountUsed = getVarSingleValue("discount_used");
+		if(StringUtils.isNotBlank(discountUsed)){
+			cart.clearValue("simple_sum");
+			getSessionMapper().saveTemporaryItem(cart);
+			return sum;
+		}
+
+		final long hour = 60*60*1000;
+		final long fiveMinutes = 60*1000;
+		String start = getVarSingleValue("site_visit");
+		long now = new Date().getTime();
+		long startTime = (StringUtils.isBlank(start))? -1 : Long.parseLong(start);
+		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
+		int duration = common.getIntValue("discount_last", 60) * 1000;
+		long discountExpires = startTime + fiveMinutes + duration;
+		if(StringUtils.isBlank(start) || now - startTime > hour){
+			cart.clearValue("simple_sum");
+			getSessionMapper().saveTemporaryItem(cart);
+			return sum;
+		}
+		long d = now - startTime;
+
+		if(d > fiveMinutes && now < discountExpires){
+			double discount = 1d - common.getDoubleValue("discount",0d);
+			cart.setValue("simple_sum", sum);
+			sum = sum.multiply(new BigDecimal(discount));
+
+		}else{
+			cart.clearValue("simple_sum");
+			getSessionMapper().saveTemporaryItem(cart);
+		}
+		return sum;
 	}
 
 	@Override

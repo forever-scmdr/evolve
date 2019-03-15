@@ -12,6 +12,7 @@ function discount() {
     var now = $data.attr("data-now")*1;
     var start = $data.attr("data-start")*1;
     var expires = $data.attr("data-expires")*1;
+    var discountUsed = getCookie("discount_used") != null;
     var time = now;
 
     var windowClosed = getCookie("window_closed") == "yes";
@@ -19,14 +20,17 @@ function discount() {
     step();
 
     function step() {
+        console.log(getCookie("discount_used"));
+        if(discountUsed)return;
         if(time < expires) {
+            if(typeof timeout != "undefined") clearTimeout(timeout);
             var timeout = setTimeout(step, 1000);
         }else{
             clearTimeout(timeout);
         }
         // console.log(time - start);
         var delta = expires - time;
-        if(!windowClosed && time - start > 5*60*1000){
+        if(!windowClosed && time - start > 60*1000){
             showWindow();
         }
         time += 1000;
@@ -39,7 +43,9 @@ function discount() {
         $("#dsc-timer-2").text(t);
     }
     function showWindow() {
-        $("#discount-popup").show();
+        if(windowClosed)return;
+        windowClosed = getCookie("window_closed") == "yes";
+        if(!windowClosed) $("#discount-popup").show();
     }
 
 }

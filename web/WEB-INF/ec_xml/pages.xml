@@ -569,8 +569,12 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="metabobelarus@gmail.com"/>
+			<!--<var name="email" value="metabobelarus@gmail.com"/>-->
+			<var name="email" value="bio@forever-ds.com" />
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="site_visit" scope="cookie"/>
+			<var name="current_time" scope="cookie"/>
+			<var name="discount_used" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>
@@ -578,6 +582,9 @@
 		<link name="confirm" target="confirm"/>
 		<link name="validation_failed" target="proceed">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
+		</link>
+		<link name="discount_used" target="cart">
+			<var name="message" value="Извините, использовать скидку можно не чаще одного раза в день."/>
 		</link>
 		<link name="email_send_failed" target="proceed"/>
 		<command class="extra.CartManageCommand" method-var="action">
@@ -587,6 +594,7 @@
 			<result name="confirm" type="redirect"/>
 			<result name="validation_failed" type="redirect"/>
 			<result name="email_send_failed" type="redirect"/>
+			<result name="discount_used" type="redirect"/>
 		</command>
 	</page>
 
@@ -595,6 +603,10 @@
 	<page name="cart" template="cart">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="cart_cookie" scope="cookie"/>
+			<var name="site_visit" scope="cookie"/>
+			<var name="current_time" scope="cookie"/>
+			<var name="discount_used" scope="cookie"/>
 		</request>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
