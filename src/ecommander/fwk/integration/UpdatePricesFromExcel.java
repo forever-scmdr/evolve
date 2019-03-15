@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 
 /**
- * Created by user on 06.12.2018.
+ * Created by anton on 06.12.2018.
  */
 public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst {
 	ExcelPriceList priceWB;
