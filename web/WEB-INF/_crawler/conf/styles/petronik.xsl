@@ -11,7 +11,8 @@
 			<xsl:variable name="name" select="//h1[1]"/>
 			<product id="{$code}">
 				<name><xsl:value-of select="normalize-space($name)" /></name>
-				<code><xsl:value-of select="$code" /></code>
+				<vendor_code><xsl:value-of select="$code" /></vendor_code>
+				<code><xsl:value-of select="concat($code_prefix, $code)" /></code>
 				<gallery>
 					<xsl:for-each select="//div[@class = 'item-image']//a">
 						<pic download="http://petronik.ru{@href}" link="http://petronik.ru{@href}"/>

@@ -162,6 +162,7 @@ public class SingleItemCrawlerController {
 	private int urlsPerProxy;
 	private int numberOfCrawlers = 1;
 	private String stylesDir;
+	private boolean needTotalRedo = false; // Надо ли заново парсить все уже спаршенные ранее урлы
 
 	private volatile int toProcessCount = 0;
 	private volatile int processedCount = 0;
@@ -277,7 +278,10 @@ public class SingleItemCrawlerController {
 	public State resetToStage(State state) throws Exception {
 		info.setOperation("Сброс состояния до " + state);
 		State nextState = State.INIT;
-		if (state == State.HTML || state == State.TRANSFORM || state == State.FILES) {
+		if (state == State.PREPARE_URLS) {
+			needTotalRedo = true;
+			nextState = State.INIT;
+		} else if (state == State.HTML || state == State.TRANSFORM || state == State.FILES) {
 			List<Item> sections = new ItemQuery(Parse_section._NAME).loadItems();
 			int secCount = sections.size();
 			info.setLineNumber(secCount);
@@ -415,6 +419,9 @@ public class SingleItemCrawlerController {
 			currentSection = section;
 			// Новый список урлов (параметр раздела)
 			String urlsStr = currentSection.get_item_urls();
+			if (needTotalRedo) {
+				urlsStr += '\n' + currentSection.get_item_urls_backup();
+			}
 			LinkedHashSet<String> urls = new LinkedHashSet<>();
 			String[] split = StringUtils.split(urlsStr, '\n');
 			if (split == null || split.length == 0) {
@@ -498,7 +505,9 @@ public class SingleItemCrawlerController {
 				}
 			};
 			workers.add(worker);
-			new Thread(worker).start();
+			Thread downloader = new Thread(worker);
+			downloader.setDaemon(true);
+			downloader.start();
 		}
 	}
 
@@ -566,7 +575,9 @@ public class SingleItemCrawlerController {
 				}
 			};
 			workers.add(worker);
-			new Thread(worker).start();
+			Thread parser = new Thread(worker);
+			parser.setDaemon(true);
+			parser.start();
 		}
 	}
 
@@ -612,7 +623,9 @@ public class SingleItemCrawlerController {
 				}
 			};
 			workers.add(worker);
-			new Thread(worker).start();
+			Thread downloader = new Thread(worker);
+			downloader.setDaemon(true);
+			downloader.start();
 		}
 	}
 

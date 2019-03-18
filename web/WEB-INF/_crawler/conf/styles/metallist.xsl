@@ -14,7 +14,8 @@
 		<result>
 			<product id="{$code}">
 				<name><xsl:value-of select="normalize-space($name)" /></name>
-				<code><xsl:value-of select="$code" /></code>
+				<vendor_code><xsl:value-of select="$code" /></vendor_code>
+				<code><xsl:value-of select="concat($code_prefix, $code)" /></code>
 				<!--<name_extra><xsl:value-of select="$colour" /></name_extra>-->
 				<gallery>
 					<xsl:for-each select="$pic_links">
