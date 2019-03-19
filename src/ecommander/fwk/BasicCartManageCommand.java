@@ -421,8 +421,9 @@ public abstract class BasicCartManageCommand extends Command {
 	 */
 	public void buyNow() throws Exception {
 		if(discountUsed()){recalculateCart(); return;}
+		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
 		final long hour = 60*60*1000;
-		final long fiveMinutes = 5*60*1000;
+		final long fiveMinutes = common.getIntValue("show_window", 300)*1000;
 		String start = getVarSingleValue("site_visit");
 
 		long now = new Date().getTime();
@@ -433,11 +434,12 @@ public abstract class BasicCartManageCommand extends Command {
 			startTime = now;
 		}
 
-		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
+
 		int duration = common.getIntValue("discount_last", 60) * 1000;
 		long discountExpires = startTime + fiveMinutes + duration;
-		setCookieVariable("expires", discountExpires);
+		setCookieVariable("discount_expires", String.valueOf(discountExpires));
 		setCookieVariable("current_time", String.valueOf(now));
+		setCookieVariable("show_window", String.valueOf(startTime + fiveMinutes));
 	}
 
 
@@ -495,12 +497,13 @@ public abstract class BasicCartManageCommand extends Command {
 			return sum;
 		}
 
+		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
 		final long hour = 60*60*1000;
-		final long fiveMinutes = 5*60*1000;
+		final long fiveMinutes = common.getIntValue("show_window", 300)*1000;
 		String start = getVarSingleValue("site_visit");
 		long now = new Date().getTime();
 		long startTime = (StringUtils.isBlank(start))? -1 : Long.parseLong(start);
-		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
+
 		int duration = common.getIntValue("discount_last", 60) * 1000;
 		long discountExpires = startTime + fiveMinutes + duration;
 		if(StringUtils.isBlank(start) || now - startTime > hour){

@@ -12,6 +12,7 @@ function discount() {
     var now = $data.attr("data-now")*1;
     var start = $data.attr("data-start")*1;
     var expires = $data.attr("data-expires")*1;
+    var showTime = $data.attr("data-show")*1;
     var discountUsed = getCookie("discount_used") != null;
     var time = now;
 
@@ -20,17 +21,18 @@ function discount() {
     step();
 
     function step() {
-        console.log(getCookie("discount_used"));
+        console.log(getCookie(showTime));
         if(discountUsed)return;
         if(time < expires) {
             if(typeof timeout != "undefined") clearTimeout(timeout);
             var timeout = setTimeout(step, 1000);
         }else{
             clearTimeout(timeout);
+            $("#dsc-data").remove();
         }
         // console.log(time - start);
         var delta = expires - time;
-        if(!windowClosed && time - start > 5*60*1000){
+        if(!windowClosed && time > showTime){
             showWindow();
         }
         time += 1000;
@@ -51,8 +53,9 @@ function discount() {
 }
 function closeDiscountWindow() {
     setCookie("window_closed","yes", 60*60*1000);
-    $("#discount-popup").hide();
-    $("#discount-popup-2").show();
+    document.location.reload();
+    // $("#discount-popup").hide();
+    // $("#discount-popup-2").show();
 }
 
 function setCookie(c_name, value, exMs) {

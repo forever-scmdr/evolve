@@ -126,6 +126,14 @@
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="fil"/>
+
+			<!-- discount cookies -->
+			<var name="current_time" scope="cookie"/>
+			<var name="show_window" scope="cookie"/>
+			<var name="discount_expires" scope="cookie"/>
+			<var name="discount_used" scope="cookie"/>
+			<var name="site_visit" scope="cookie"/>
+			<!-- END discount cookies -->
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<single item="seo"/>
@@ -540,8 +548,8 @@
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="site_visit" scope="cookie"/>
 			<var name="current_time" scope="cookie"/>
-			<!--<var name="show_window" scope="cookie"/>-->
-			<var name="expires" scope="cookie"/>
+			<var name="show_window" scope="cookie"/>
+			<var name="discount_expires" scope="cookie"/>
 			<var name="discount_used" scope="cookie"/>
 			<var name="window_closed" scope="cookie"/>
 		</request>
@@ -561,6 +569,7 @@
 			</single>
 		</session>
 		<link name="show_cart" target="cart"/>
+		<single item="common"/>
 	</page>
 
 
@@ -575,6 +584,7 @@
 			<var name="site_visit" scope="cookie"/>
 			<var name="current_time" scope="cookie"/>
 			<var name="discount_used" scope="cookie"/>
+			<var name="show_window" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>

@@ -25,6 +25,13 @@
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
+	<!-- discount cookies -->
+	<xsl:variable name="site_visit" select="f:num(page/variables/site_visit)" />
+	<xsl:variable name="show_window" select="f:num(page/variables/show_window)" />
+	<xsl:variable name="current_time" select="f:num(page/variables/current_time)" />
+	<xsl:variable name="discount_used" select="f:num(page/variables/discount_used)" />
+	<xsl:variable name="expires" select="f:num(page/variables/discount_expires)" />
+	<!-- -->
 
 	<xsl:variable name="active_menu_item"/>
 
@@ -434,6 +441,10 @@
 	<xsl:template match="accessory | set | probe | product | assoc">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="pres" select="$pp[product_code = current()/code]"/>
+
+		<xsl:variable name="discount_time" select="$discount_used = 0 and ($current_time &lt; $expires and $current_time &gt; $show_window)"/>
+
+
 		<div class="catalog-item">
 			<!--
 			<div class="tags">

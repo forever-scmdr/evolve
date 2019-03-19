@@ -336,6 +336,7 @@
 	</item>
 
 	<item name="common" caption="На всех страницах" ag-id="22" ag-hash="-1354814997">
+		<parameter name="show_window" type="integer" caption="Начало скидки, сек. после захода на сайт"/>
 		<parameter name="discount_last" type="integer" caption="Срок действия скидки, сек."/>
 		<parameter name="discount" type="double" caption="Скидка" description="0.1 - скидка 10%"/>
 		<parameter name="top" type="short-text" caption="Верх" description="телефоны"/>
