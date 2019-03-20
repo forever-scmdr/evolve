@@ -116,7 +116,7 @@
 	</include-definition>
 
 
-	<page name="section" template="section" cacheable="true" critical-item="cur_sec">
+	<page name="section" template="section" cacheable="false" critical-item="cur_sec">
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
@@ -128,11 +128,7 @@
 			<var name="fil"/>
 
 			<!-- discount cookies -->
-			<var name="current_time" scope="cookie"/>
-			<var name="show_window" scope="cookie"/>
-			<var name="discount_expires" scope="cookie"/>
-			<var name="discount_used" scope="cookie"/>
-			<var name="site_visit" scope="cookie"/>
+			<var name="discount_active" scope="cookie"/>
 			<!-- END discount cookies -->
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
@@ -248,6 +244,14 @@
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" scope="cookie"/>
+
+			<!-- discount cookies -->
+			<var name="current_time" scope="cookie"/>
+			<var name="show_window" scope="cookie"/>
+			<var name="discount_expires" scope="cookie"/>
+			<var name="discount_used" scope="cookie"/>
+			<var name="site_visit" scope="cookie"/>
+			<!-- END discount cookies -->
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -303,9 +307,13 @@
 
 
 
-	<page name="product" template="product" cacheable="true">
+	<page name="product" template="product" cacheable="false">
 		<request>
 			<var name="prod" style="translit"/>
+
+			<!-- discount cookies -->
+			<var name="discount_active" scope="cookie"/>
+			<!-- END discount cookies -->
 		</request>
 		<single item="product" id="prod" var="prod">
 			<single item="seo"/>
@@ -612,11 +620,12 @@
 
 	<page name="cart" template="cart">
 		<request>
-			<var name="cart_cookie" scope="cookie"/>
-			<var name="cart_cookie" scope="cookie"/>
 			<var name="site_visit" scope="cookie"/>
 			<var name="current_time" scope="cookie"/>
+			<var name="show_window" scope="cookie"/>
+			<var name="discount_expires" scope="cookie"/>
 			<var name="discount_used" scope="cookie"/>
+			<var name="window_closed" scope="cookie"/>
 		</request>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>

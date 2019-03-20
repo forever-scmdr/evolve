@@ -15,10 +15,13 @@
 
 
 	<xsl:variable name="p" select="page/product"/>
+	<xsl:variable name="price" select="if($discount_time) then format-number(f:num($p/price)*$discount, '#0.00') else $p/price"/>
+	<xsl:variable name="price_old" select="if($discount_time) then $p/price else $p/price_old"/>
+
 	<xsl:variable name="extra_xml" select="parse-xml(concat('&lt;extra&gt;', $p/extra_xml, '&lt;/extra&gt;'))/extra"/>
 
 	<xsl:template name="MARKUP">
-		<xsl:variable name="price" select="$p/price"/>
+
 		<script type="application/ld+json">
 			<xsl:variable name="quote">"</xsl:variable>
 			{
@@ -30,8 +33,8 @@
 			"offers": {
 			"@type": "Offer",
 			"priceCurrency": "BYN",
-			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
-			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>
+			<xsl:if test="f:num($p/price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($p/price), $quote)" /></xsl:if>
+			<xsl:if test="f:num($p/price) = 0">"price":"15000.00"</xsl:if>
 			}, "aggregateRating": {
 			"@type": "AggregateRating",
 			"ratingValue": "4.9",
@@ -93,11 +96,11 @@
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 				<xsl:if test="$has_price">
 					<div class="price">
-						<xsl:if test="$p/price_old and not($p/price_old = '')"><p><span>Цена</span><b>
-							<xsl:value-of select="$p/price_old"/> р.</b></p></xsl:if>
+						<xsl:if test="$price_old and not($price_old = '')"><p><span>Цена</span><b>
+							<xsl:value-of select="$price_old"/> р.</b></p></xsl:if>
 						<p>
-							<xsl:if test="$p/price_old and not($p/price_old = '')"><span>Цена со скидкой</span></xsl:if>
-							<xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.
+							<xsl:if test="$price_old and not($price_old = '')"><span>Цена со скидкой</span></xsl:if>
+							<e class="price-highlight{' red'[$discount_time]}"><xsl:value-of select="if ($price) then $price else '0'"/> р.</e>
 						</p>
 					</div>
 				</xsl:if>

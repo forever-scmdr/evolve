@@ -17,7 +17,6 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Управление корзиной
@@ -246,18 +245,8 @@ public abstract class BasicCartManageCommand extends Command {
 		String discountUsedCookie = getVarSingleValue("discount_used");
 		if(StringUtils.isBlank(discountUsedCookie)){}
 		else {
-			long discountUsed = Long.parseLong(discountUsedCookie);
-			GregorianCalendar now = new GregorianCalendar();
-			now.setTime(new Date());
-			int thisDay = now.get(GregorianCalendar.DAY_OF_YEAR);
-
-			GregorianCalendar then = new GregorianCalendar();
-			then.setTime(new Date(discountUsed));
-			int thatDay = then.get(GregorianCalendar.DAY_OF_YEAR);
-			if(thatDay != thisDay){
-				setCookieVariable("discount_used", "");
-			}
-			return thatDay == thisDay;
+			long then = new Date(Long.parseLong(discountUsedCookie)).getTime();
+			return DATE_FORMAT.format(new Date()).equals(DATE_FORMAT);
 		}
 		return false;
 	}
@@ -422,18 +411,17 @@ public abstract class BasicCartManageCommand extends Command {
 	public void buyNow() throws Exception {
 		if(discountUsed()){recalculateCart(); return;}
 		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
-		final long hour = 60*60*1000;
 		final long fiveMinutes = common.getIntValue("show_window", 300)*1000;
 		String start = getVarSingleValue("site_visit");
 
 		long now = new Date().getTime();
+		long hour = 60*60*1000;
 		long startTime = (StringUtils.isBlank(start))? -1 : Long.parseLong(start);
 
 		if(StringUtils.isBlank(start) || now - startTime > hour){
 			setCookieVariable("site_visit", String.valueOf(now));
 			startTime = now;
 		}
-
 
 		int duration = common.getIntValue("discount_last", 60) * 1000;
 		long discountExpires = startTime + fiveMinutes + duration;
@@ -490,8 +478,7 @@ public abstract class BasicCartManageCommand extends Command {
 	}
 
 	private BigDecimal applyDiscount(BigDecimal sum) throws Exception{
-		String discountUsed = getVarSingleValue("discount_used");
-		if(StringUtils.isNotBlank(discountUsed)){
+		if(discountUsed()){
 			cart.clearValue("simple_sum");
 			getSessionMapper().saveTemporaryItem(cart);
 			return sum;

@@ -15,27 +15,37 @@ function discount() {
     var showTime = $data.attr("data-show")*1;
     var discountUsed = getCookie("discount_used") != null;
     var time = now;
+    var fontSize =  $(".price-highlight").css("font-size");
+    var lineHeight =  $(".price-highlight").css("line-height");
+    var state = false;
 
     var windowClosed = getCookie("window_closed") == "yes";
 
     step();
+   // $(".price-highlight, .price").css({"line-height" : lineHeight});
 
     function step() {
-        console.log(getCookie(showTime));
+       // console.log(getCookie(showTime));
+
         if(discountUsed)return;
         if(time < expires) {
-            if(typeof timeout != "undefined") clearTimeout(timeout);
+            if(typeof timeout != "undefined"){clearTimeout(timeout);}
             var timeout = setTimeout(step, 1000);
         }else{
             clearTimeout(timeout);
             $("#dsc-data").remove();
+            deleteCookie("window_closed");
+            deleteCookie("discount_active");
         }
         // console.log(time - start);
         var delta = expires - time;
         if(!windowClosed && time > showTime){
+            activateDiscount();
             showWindow();
         }
         time += 1000;
+        setCookie("current_time", time+"", 24*60*60*1000);
+       // bounceFont();
         var secondsFromNow = Math.round((delta)/1000);
         var min = Math.floor(secondsFromNow/60);
         var seconds = secondsFromNow % 60;
@@ -44,10 +54,21 @@ function discount() {
         $("#dsc-timer-1").text(t);
         $("#dsc-timer-2").text(t);
     }
+    function activateDiscount() {
+        setCookie("discount_active", "yes",expires-now);
+    }
     function showWindow() {
         if(windowClosed)return;
         windowClosed = getCookie("window_closed") == "yes";
         if(!windowClosed) $("#discount-popup").show();
+    }
+    function bounceFont() {
+        if(state){
+            $(".price-highlight").css({"font-size": (parseFloat(fontSize)+1) +"px"});
+        }else{
+            $(".price-highlight").css({"font-size": fontSize});
+        }
+        state = !state;
     }
 
 }

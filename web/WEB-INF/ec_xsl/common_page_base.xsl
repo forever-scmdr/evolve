@@ -26,11 +26,8 @@
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
 	<!-- discount cookies -->
-	<xsl:variable name="site_visit" select="f:num(page/variables/site_visit)" />
-	<xsl:variable name="show_window" select="f:num(page/variables/show_window)" />
-	<xsl:variable name="current_time" select="f:num(page/variables/current_time)" />
-	<xsl:variable name="discount_used" select="f:num(page/variables/discount_used)" />
-	<xsl:variable name="expires" select="f:num(page/variables/discount_expires)" />
+	<xsl:variable name="discount_time" select="page/variables/discount_active = 'yes'" />
+	<xsl:variable name="discount" select="1 - f:num(page/common/discount)" />
 	<!-- -->
 
 	<xsl:variable name="active_menu_item"/>
@@ -442,7 +439,8 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="pres" select="$pp[product_code = current()/code]"/>
 
-		<xsl:variable name="discount_time" select="$discount_used = 0 and ($current_time &lt; $expires and $current_time &gt; $show_window)"/>
+		<xsl:variable name="price" select="if($discount_time) then format-number(f:num(price)*$discount, '#0.00') else price"/>
+		<xsl:variable name="price_old" select="if($discount_time) then price else price_old"/>
 
 
 		<div class="catalog-item">
@@ -480,9 +478,11 @@
 			</div>
 			<div class="price">
 				<xsl:if test="$has_price">
-					<xsl:if test="price_old and not(price_old = '')"><p><span>Цена</span><b>
-						<xsl:value-of select="price_old"/> р.</b></p></xsl:if>
-					<p><xsl:if test="price_old and not(price_old = '')"><span>Цена со скидкой</span></xsl:if><xsl:value-of select="price"/> р.</p>
+					<xsl:if test="price_old and not($price_old = '')"><p><span>Цена</span><b>
+						<xsl:value-of select="$price_old"/> р.</b></p></xsl:if>
+					<p><xsl:if test="$price_old and not($price_old = '')"><span>Цена со скидкой</span></xsl:if>
+						<e class="price-highlight{' red'[$discount_time]}"><xsl:value-of select="$price"/> р.</e>
+					</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
 					<!-- <p><span>&#160;</span>&#160;</p>
