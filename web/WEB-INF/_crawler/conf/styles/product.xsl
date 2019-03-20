@@ -1,71 +1,71 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+<xsl:stylesheet
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:f="f:f"
+	version="2.0"
+	exclude-result-prefixes="xsl f">
+	<xsl:import href="../styles_fwk/utils.xsl"/>
 	<xsl:output method="xml" encoding="UTF-8" media-type="text/xml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-
 	<xsl:template match="/">
-		<xsl:variable name="name" select="//h1[1]"/>
-		<xsl:variable name="subname" select="//h2[1]"/>
-		<xsl:variable name="symbols_line" select="//div[contains(@class, 'symbols')]"/>
-		<xsl:variable name="code" select="$symbols_line//td[starts-with(text(), 'Код')]/following-sibling::td[1]"/>
-		<xsl:variable name="paths" select="//span[@class = 'category-path']"/>
 		<result>
-			<xsl:for-each select="$paths">
-				<xsl:variable name="path" select=".//a[@href]"/>
-				<xsl:for-each select="$path">
+			<xsl:variable name="crumbs" select="html//div[@id='breadCrumb'][1]//span[@itemprop='title']"/>
+			<xsl:for-each select="$crumbs">
 					<xsl:variable name="pos" select="position()"/>
-					<section id="{@data-categoryid}">
-						<xsl:if test="$pos != 1">
-							<h_parent parent="{$path[$pos - 1]/@data-categoryid}" element="section"/>
+				<section id="{string-join($crumbs[position() &lt; $pos] | ., '_')}">
+					<xsl:if test="$crumbs[position() &lt; $pos]">
+						<h_parent parent="{string-join($crumbs[position() &lt; $pos], '_')}"/>
 						</xsl:if>
-						<name>
-							<xsl:value-of select="text()" />
-						</name>
+					<name><xsl:value-of select="." /></name>
 					</section>
 				</xsl:for-each>
-			</xsl:for-each>
+			<xsl:variable name="header" select="//h1"/>
+			<xsl:variable name="code" select="substring-before(substring-after($header, ' ('), ')')"/>
 			<product id="{$code}">
-				<name><xsl:value-of select="normalize-space($name[1])" /></name>
-				<type><xsl:value-of select="substring-before($subname[1], ';')" /></type>
+				<h_parent parent="{string-join($crumbs, '_')}"/>
+				<name><xsl:value-of select="substring-before($header, ' (')"/></name>
 				<code><xsl:value-of select="$code" /></code>
-				<name_extra><xsl:value-of select="$subname[1]/text()" /></name_extra>
-				<vendor_code><xsl:value-of select="$symbols_line//td[starts-with(text(), 'Обозначение')]/following-sibling::td[1]" /></vendor_code>
-				<vendor><xsl:value-of select="$symbols_line//td[starts-with(text(), 'Производитель')]/following-sibling::td[1]" /></vendor>
-				<!--<short><xsl:value-of select="//div[contains(@class, 'tabs')]/div[1]/p[1]" /></short>-->
+				<type><xsl:value-of select="substring-after($header, ') ')"/></type>
+				<name_extra><xsl:value-of select="//h2"/></name_extra>
+				<short>
+					<xsl:copy-of select="//div[@class='productMainInfo']//div[@class='attributes']"/>
+				</short>
+				<extra>
+					<xsl:copy-of select="//div[@class='prodinfo']/ul"/>
+				</extra>
+				<description>
+					<xsl:copy-of select="//div[@id='description']"/>
+				</description>
+				<tech>
+					<xsl:copy-of select="//div[@id='attributes']"/>
+				</tech>
+				<package>
+					<xsl:copy-of select="//div[@id='scopeofdelivery']"/>
+				</package>
+				<symbols>
+					<xsl:for-each select="//div[@class='attributeSymbol']">
+						<pic link="{.//img/@src}" download="{.//img/@src}"><xsl:value-of select=".//img/@title" /></pic>
+					</xsl:for-each>
+				</symbols>
+				<manual><xsl:value-of select="//div[@class='product-attributes-pdfs']/a[1]/@href"/></manual>
+				<parts><xsl:value-of select="//div[@class='product-attributes-pdfs']/a[2]/@href"/></parts>
+				<xsl:variable name="spins" select="//iframe[@class='degree']"/>
+				<xsl:if test="$spins">
+					<spin link="{$spins[1]/@src}"/>
+				</xsl:if>
+				<xsl:for-each select="//iframe[not(@class='degree') and @id]">
+					<video link="{@src}"/>
+				</xsl:for-each>
 				<gallery>
-					<xsl:for-each select="//meta[@name='twitter:image']">
-						<pic download="{@content}" link="{@content}"/>
+					<xsl:for-each select="//div[@id='popupGallery']//div[@class='thumbnail']//img[ends-with(@src, '.jpg') or ends-with(@src, '.jpeg')]">
+						<pic download="{@src}" link="{@src}"/>
 					</xsl:for-each>
 				</gallery>
-				<text>
-					<xsl:copy-of select="//div[@id='specification']/*[not(name() = 'table')]"/>
-				</text>
-				<params_xml>
-					<xsl:variable name="table" select="//div[@id='specification']/table"/>
-					<xsl:for-each select="$table//tr">
-						<parameter>
-							<name><xsl:value-of select="normalize-space(td[1])" /></name>
-							<value><xsl:value-of select="td[2]" /></value>
-						</parameter>
-					</xsl:for-each>
-				</params_xml>
-				<manuals>
-					<xsl:for-each select="//div[@id = 'downloads']//td[@class='filename']/a">
-						<manual>
-							<name><xsl:value-of select="span[@class='filelink']" /></name>
-							<file><xsl:value-of select="@href" /></file>
-						</manual>
-					</xsl:for-each>
-				</manuals>
 				<assoc>
-					<xsl:for-each select="//div[@id='similar-box']//a[@data-product-symbol]">
-						<assoc_code><xsl:value-of select="@data-product-symbol" /></assoc_code>
+					<xsl:for-each select="//div[@class='widgetBoxBottomRound']//a/span">
+						<code><xsl:value-of select="substring-before(substring-after(., '('), ')')"/></code>
 					</xsl:for-each>
 				</assoc>
-				<xsl:for-each select="$paths">
-					<xsl:variable name="path" select=".//a[@href]"/>
-					<h_parent parent="{$path[position() = last()]/@data-categoryid}" element="section"/>
-				</xsl:for-each>
 			</product>
 		</result>
 	</xsl:template>

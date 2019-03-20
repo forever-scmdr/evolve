@@ -6,24 +6,43 @@
 # Initial urls
 #
 
-#https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=0&searchparam=
-
-#https://www.tme.eu/ru/
-#https:\/\/www\.tme\.eu\/ru\/katalog\/.+    -   https://www.tme.eu/ru/katalog/poluprovodniki_112140/
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=0&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=1&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=2&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=3&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=4&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=5&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=6&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=7&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=8&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=9&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=10&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=11&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=12&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=13&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=14&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=15&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=16&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=17&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=18&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=19&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=20&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=21&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=22&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=23&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=24&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=25&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=26&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=27&searchparam=
+https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=28&searchparam=
 
 
 #
 # Pages to parse
 #
 
-#https://www\.metabo\.com/ru/index\.php\?cl=search(&amp;)?&?&order=?(&amp;)?&?ldtype=infogrid(&amp;)?&?_artperpage=100(&amp;)?&?pgNr=.{0,2}(&amp;)?&?searchparam=?   section.xsl
-#https://www\.metabo\.com/ru/index\.php\?cl=search(&amp;)?&?&order=?(&amp;)?&?&pgNr=1   section.xsl
+https://www\.metabo\.com/ru/index\.php\?cl=search(&amp;)?&?&order=?(&amp;)?&?ldtype=infogrid(&amp;)?&?_artperpage=100(&amp;)?&?pgNr=.{0,2}(&amp;)?&?searchparam=?   section.xsl
+https://www\.metabo\.com/ru/index\.php\?cl=search(&amp;)?&?&order=?(&amp;)?&?&pgNr=1   section.xsl
 
-#.*metabo\.com/ru/ru/(prinadlezhnosti|instrumenty).*\.html.*     product.xsl     https://www.metabo.com/ru/ru/instrumenty/akkumuljatornye-instrumenty/akkumuljatornye-dreli/be-18-ltx-6-600261890-akkumuljatornaja-drel.html?listtype=search
+.*metabo\.com/ru/ru/(prinadlezhnosti|instrumenty).*\.html.*     product.xsl     https://www.metabo.com/ru/ru/instrumenty/akkumuljatornye-instrumenty/akkumuljatornye-dreli/be-18-ltx-6-600261890-akkumuljatornaja-drel.html?listtype=search
 
-#https:\/\/www\.tme\.eu\/ru\/details\/(?!print\/).+    product.xsl     https://www.tme.eu/ru/details/a10-lime-n8gb/odnoplatnye-kompiutery/olimex/a10-olinuxino-lime-n8gb/
-
-https?:\/\/(www\.)?nora-m\.ru\/catalog.*     nora.xsl    http://nora-m.ru/catalog/seriia-deluxe/ruchki-de-luxe/ruchka-dvernaia-galisiia
-https?:\/\/(www\.)?petronik\.ru\/catalog.*     petronik.xsl    http://petronik.ru/catalog/id/14932/
-https?:\/\/(www\.)?zamki\.biz\/catalog.*     zamki.xsl    http://www.zamki.biz/catalog/1_zamki/vreznye_zamki/dlya_derevyannyh_dverei_s_ruchkami/allyur_zv_4132_cp_hrom_zamok_vreznoi_sruch__item/
-https?:\/\/(www\.)?metallist\.org\/catalogue.*     metallist.xsl    http://www.metallist.org/catalogue/show/10009/#product
