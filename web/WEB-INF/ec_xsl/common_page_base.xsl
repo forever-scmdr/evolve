@@ -37,10 +37,6 @@
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
 
 
-
-
-
-
 	<xsl:template name="INC_DESKTOP_HEADER">
 		<div class="container-fluid top-stripe desktop">
 			<div class="container">
@@ -693,6 +689,8 @@
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 		</head>
 		<body>
+			<div id="discount-popup-2" class="message" style="display: none;"></div>
+			<div id="discount-popup" class="discount-alert" style="display: none;"></div>
 			<!-- ALL CONTENT BEGIN -->
 			<div class="content-container">
 				<xsl:call-template name="INC_DESKTOP_HEADER"/>

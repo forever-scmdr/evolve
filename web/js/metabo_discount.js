@@ -15,9 +15,6 @@ function discount() {
     var showTime = $data.attr("data-show")*1;
     var discountUsed = getCookie("discount_used") != null;
     var time = now;
-    var fontSize =  $(".price-highlight").css("font-size");
-    var lineHeight =  $(".price-highlight").css("line-height");
-    var state = false;
 
     var windowClosed = getCookie("window_closed") == "yes";
 
@@ -25,23 +22,23 @@ function discount() {
    // $(".price-highlight, .price").css({"line-height" : lineHeight});
 
     function step() {
-       // console.log(getCookie(showTime));
-
         if(discountUsed)return;
         if(time < expires) {
             if(typeof timeout != "undefined"){clearTimeout(timeout);}
             var timeout = setTimeout(step, 1000);
         }else{
             clearTimeout(timeout);
-            $("#dsc-data").remove();
             deleteCookie("window_closed");
             deleteCookie("discount_active");
+            setTimeout(function(){document.location.reload();},1000);
         }
-        // console.log(time - start);
         var delta = expires - time;
         if(!windowClosed && time > showTime){
             activateDiscount();
             showWindow();
+        }else if(windowClosed && time > showTime){
+            $("#discount-popup-2").show();
+            $("#discount-popup").remove();
         }
         time += 1000;
         setCookie("current_time", time+"", 24*60*60*1000);
@@ -58,25 +55,20 @@ function discount() {
         setCookie("discount_active", "yes",expires-now);
     }
     function showWindow() {
-        if(windowClosed)return;
-        windowClosed = getCookie("window_closed") == "yes";
-        if(!windowClosed) $("#discount-popup").show();
-    }
-    function bounceFont() {
-        if(state){
-            $(".price-highlight").css({"font-size": (parseFloat(fontSize)+1) +"px"});
-        }else{
-            $(".price-highlight").css({"font-size": fontSize});
+        console.log(windowClosed);
+        if(windowClosed){
+            $("#discount-popup").remove(); return;
         }
-        state = !state;
+        windowClosed = getCookie("window_closed") == "yes";
+        if(!windowClosed){
+            $("#discount-popup").show();
+            $("#discount-popup-2").hide();
+        }
     }
-
-}
+   }
 function closeDiscountWindow() {
     setCookie("window_closed","yes", 60*60*1000);
     document.location.reload();
-    // $("#discount-popup").hide();
-    // $("#discount-popup-2").show();
 }
 
 function setCookie(c_name, value, exMs) {

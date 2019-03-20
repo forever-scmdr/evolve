@@ -54,6 +54,9 @@
 
 
 	<page name="index" template="index" cacheable="true">
+		<request>
+			<var name="discount_active" scope="cookie"/>
+		</request>
 		<single item="main_page" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
@@ -87,6 +90,9 @@
 
 
 	<page name="catalog" template="catalog" cacheable="true">
+		<request>
+			<var name="discount_active" scope="cookie"/>
+		</request>
 		<include name="COMMON"/>
 		<single item="catalog">
 			<single item="seo"/>
@@ -241,6 +247,9 @@
 
 	<page name="search" template="search">
 		<request>
+			<var name="discount_active" scope="cookie"/>
+		</request>
+		<request>
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" scope="cookie"/>
@@ -372,6 +381,7 @@
 	<page name="news" template="news" cacheable="true">
 		<request>
 			<var name="p" value="1"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="news">
 			<single item="seo"/>
@@ -393,6 +403,7 @@
 	<page name="articles" template="news" cacheable="true">
 		<request>
 			<var name="p" value="1"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="articles">
 			<list item="news_item" id="ni">
@@ -413,6 +424,7 @@
 	<page name="news_item" template="news_item" cacheable="true">
 		<request>
 			<var name="ni" style="translit"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="news_item" var="ni" cacheable="true" cache-vars="ni">
 			<single item="seo"/>
@@ -425,18 +437,27 @@
 
 
 	<page name="dealers" template="dealers" cacheable="true">
+		<request>
+			<var name="discount_active" scope="cookie"/>
+		</request>
 		<list item="dealer_coords" cacheable="true"/>
 		<include name="COMMON"/>
 	</page>
 
 
 	<page name="docs" template="docs" cacheable="true">
+		<request>
+			<var name="discount_active" scope="cookie"/>
+		</request>
 		<single item="docs" cacheable="true"/>
 		<include name="COMMON"/>
 	</page>
 
 
     <page name="contacts" template="contacts" cacheable="true">
+        <request>
+        	<var name="discount_active" scope="cookie"/>
+        </request>
         <single item="contacts" cacheable="true">
             <single item="seo"/>
         </single>
@@ -454,6 +475,7 @@
 	<page name="page" cacheable="true" template="page">
 		<request>
 			<var name="p" style="translit"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="custom_page" var="p" cacheable="true" cache-vars="p">
 			<single item="seo"/>
@@ -658,6 +680,7 @@
 	<page name="proceed" template="proceed">
 		<request>
 			<var name="message"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<new item="user_phys" id="user_phys" tag="phys_form">
 			<parameter-input ref="user_phys" form="customer_phys"/>
@@ -770,6 +793,7 @@
 	<page name="fav" template="fav">
 		<request>
 			<var name="favourites" scope="cookie"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -809,6 +833,7 @@
 	<page name="compare" template="compare">
 		<request>
 			<var name="compare" scope="cookie"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
