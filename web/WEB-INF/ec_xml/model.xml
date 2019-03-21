@@ -171,8 +171,8 @@
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
-		<on-update class="ecommander.fwk.CreateCatalogLink"/>
-		<on-create class="ecommander.fwk.CreateCatalogLink"/>
+		<!--<on-update class="ecommander.fwk.CreateCatalogLink"/>-->
+		<!--<on-create class="ecommander.fwk.CreateCatalogLink"/>-->
 	</item>
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
@@ -191,7 +191,7 @@
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
-		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
+		<parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
 		<parameter name="group_id" type="string" caption="Номер группы" description="в яндекс маркете все товары одной группы выводятся на одной странице"/>
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>

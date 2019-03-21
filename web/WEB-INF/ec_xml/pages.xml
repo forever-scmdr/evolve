@@ -1163,7 +1163,7 @@
 	</page>
 
 
-	<page name="crawl" template="crawl">
+	<page name="crawl" template="integration/crawl">
 		<request>
 			<var name="action"/>
 			<var name="job"/>
@@ -1183,7 +1183,7 @@
         </command>
     </page>
 
-	<page name="integrate_parsed" template="integrate_parsed">
+	<page name="integrate_parsed" template="integration/integrate_parsed">
 		<request>
 			<var name="action"/>
 		</request>

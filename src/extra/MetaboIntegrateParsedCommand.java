@@ -2,7 +2,6 @@ package extra;
 
 import ecommander.fwk.*;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -81,7 +80,6 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			for (Item catalog : catalogs) {
 				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(catalog));
 			}
-			executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null));
 		}
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		Document tree = infoProvider.getTree();
