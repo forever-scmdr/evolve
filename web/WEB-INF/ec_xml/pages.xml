@@ -1167,6 +1167,7 @@
 		</request>
         <link name="create_pricelist" target="create_excel_pricelist">
             <var name="action" value="start"/>
+			<var name="prod_params" value="yes"/>
             <var name="aux_params" value="yes"/>
         </link>
         <single item="catalog" id="catalog_main">
@@ -1210,18 +1211,30 @@
         </command>
     </page>
 
-    <!--<page name="update_prices_from_excel" template="integration/create_excel"  authority-groups="common">-->
-    <!--<request>-->
-    <!--<var name="action"/>-->
-    <!--</request>-->
-    <!--<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">-->
-    <!--<result name="complete" type="xml"/>-->
-    <!--</command>-->
-    <!--</page>-->
+	<page name="create_excel_pricelist_min" template="integration/create_excel" authority-groups="common">
+		<request>
+			<var name="action"/>
+			<var name="price_only" value="yes"/>
+			<var name="sec"/>
+		</request>
+		<command class="ecommander.fwk.integration.CreateExcelPriceList" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<page name="update_prices_from_excel" template="integration/create_excel"  authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
     <page name="parse_excel" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
+			<!--<var name="if_blank" value="clear"/>-->
             <!--<var name="with_existing_sections" value="copy"/>-->
         </request>
         <command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
