@@ -248,19 +248,10 @@
 	<page name="search" template="search">
 		<request>
 			<var name="discount_active" scope="cookie"/>
-		</request>
-		<request>
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" scope="cookie"/>
 
-			<!-- discount cookies -->
-			<var name="current_time" scope="cookie"/>
-			<var name="show_window" scope="cookie"/>
-			<var name="discount_expires" scope="cookie"/>
-			<var name="discount_used" scope="cookie"/>
-			<var name="site_visit" scope="cookie"/>
-			<!-- END discount cookies -->
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -642,6 +633,7 @@
 
 	<page name="cart" template="cart">
 		<request>
+			<var name="cart_cookie" scope="cookie"/>
 			<var name="site_visit" scope="cookie"/>
 			<var name="current_time" scope="cookie"/>
 			<var name="show_window" scope="cookie"/>
