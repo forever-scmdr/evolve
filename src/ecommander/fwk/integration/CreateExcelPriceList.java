@@ -60,6 +60,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		add("offer_id");
 		add("extra_xml");
 		add("unit");
+		add("text");
+		add("description");
 	}};
 
 	//page vars

@@ -1,51 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
-
-
-	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
-	<!--/////////////                                                                      ////////////-->
-	<!--/////////////                             ПАРСИНГ                                  ////////////-->
-
-	<!--
-	Каталог для парсинга содержит структуру нормального каталога, только вместо товаров в нем
-	айтемы, которые были спаршены напрямую. Эти айтемы не подготовлены для показа на сайте, для
-	того, чтобы информация из этих айтемов показывалась на сайте, они должны быть "размещены".
-	Под "размещением" понимается разбор айтемов для парсинга и создание на их базе нормальных айтемов
-	товаров (вместе с нормальными разделами и подразделами каталога).
-	Изначально пользователь создает каталог для парсинга (с разделами и подразделами) и забивает
-	в разделы урлы всех айтемов, которые необходимо спарсить.
-	-->
-
-	<item name="parse_section" caption="Урлы для парсинга" ag-id="1622" ag-hash="-814293671">
-		<parameter name="item_urls" type="plain-text" caption="Урлы вложенных товаров" />
-		<parameter name="item_urls_backup" type="plain-text" caption="Урлы вложенных товаров (backup)" />
-		<child item="parse_item"/>
-	</item>
-
-
-	<item name="parse_item" caption="Товар для парсинга" key="url downloaded parsed got_files" ag-id="1623" ag-hash="-980954849">
-		<parameter name="url" type="string" caption="URL"/>
-		<parameter name="downloaded" type="byte" caption="Downloaded" default="0"/>
-		<parameter name="parsed" type="byte" caption="Parsed" default="0"/>
-		<parameter name="got_files" type="byte" caption="Files downloaded" default="0"/>
-		<parameter name="duplicated" type="byte" caption="Урл дублирован (повторная загрузка не нужна)" default="0"/>
-		<parameter name="html" type="plain-text" caption="HTML" description="полученный с сервера"/>
-		<parameter name="xml" type="plain-text" caption="XML" description="после обработки xsl"/>
-		<parameter name="test_url" type="string" caption="Ссылка для тестирования XSL преобразования"
-		           description="должна быть соответствующая страница в pages.xml (test_parse_item)"/>
-		<parameter name="file" type="file" caption="Файл" description="скачанный файл" multiple="true"/>
-		<parameter name="html_pic" type="picture" caption="Картинка из HTML" description="скачанная картинка" multiple="true"/>
-	</item>
-
-
-	<!--/////////////                            END ПАРСИНГ                               ////////////-->
-	<!--/////////////                                                                      ////////////-->
-	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
-
-
-
-
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             SEO                                      ////////////-->
@@ -74,7 +29,10 @@
 
 	<assoc name="seo" caption="SEO" description="Связь айтемов с seo" transitive="false" ag-id="2" ag-hash="113757"/>
 
-	<item name="base_seo" caption="Информация для SEO" virtual="true" ag-id="1624" ag-hash="-1721163281">
+
+	<item name="seo" caption="SEO" key="key_unique" ag-id="814" ag-hash="113757">
+		<parameter name="key_unique" caption="Ключ страницы" type="string"
+		           description="должен совпадать с уникальным текстовым ключом соответствующего айтема"/>
 		<parameter name="title" type="string" caption="title"/>
 		<parameter name="h1" type="string" caption="h1"/>
 		<parameter name="description" type="string" caption="description"/>
@@ -84,19 +42,20 @@
 		<parameter name="bottom_text" caption="текст снизу" type="text"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<parameter name="extra_style" type="plain-text" caption="Код дополнительных стилей" description="вставляется в head, тэг style писать не надо"/>
-		<parameter name="body_class" type="plain-text" caption="Класс для тега body" description="при наличии в body добавляется этот класс"/>
-	</item>
-
-
-	<item name="seo" caption="SEO" key="key_unique" super="* base_seo" ag-id="814" ag-hash="113757">
-		<parameter name="key_unique" caption="Ключ страницы" type="string"
-		           description="должен совпадать с уникальным текстовым ключом соответствующего айтема"/>
 		<on-create class="ecommander.fwk.integration.CreateSeoItemFactory"/>
 	</item>
 
-	<item name="url_seo" key="name" caption="SEO" super="* base_seo" ag-id="816" ag-hash="-169844339">
+	<item name="url_seo" key="name" caption="SEO" ag-id="816" ag-hash="-169844339">
 		<parameter name="name" type="string" caption="Название" description="для поиска в CMS"/>
 		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
+		<parameter name="title" type="string" caption="title"/>
+		<parameter name="h1" type="string" caption="h1"/>
+		<parameter name="description" type="string" caption="description"/>
+		<parameter name="keywords" type="string" caption="keywords"/>
+		<parameter name="meta" caption="meta" type="plain-text"/>
+		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="bottom_text" caption="текст снизу" type="text"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
 	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="817" ag-hash="843192252">
@@ -131,26 +90,12 @@
 	<!--/////////////                             КАТАЛОГ                                  ////////////-->
 	<!--/////////////                                                                      ////////////-->
 
-
-	<item name="original_gallery" caption="Исходная галерея" ag-id="1625" ag-hash="743720676" >
-		<parameter name="watermark_filename"  type="string" caption="Название файла водяного знака"/>
-		<parameter name="watermark_file_modified"  type="long" caption="Дата изменения файла водяного знака"/>
-		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
-	</item>
-
-
-	<item name="gallery" caption="Галерея" ag-id="1626" ag-hash="-196315310">
-		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
-		<child item="original_gallery" single="true"/>
-	</item>
-
-
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
-		<parameter name="integration" type="file" caption="Excel обновление цены" description="обновление цены" />
-		<parameter name="integration_pending" type="byte" caption="Идет интеграция" domain="0-1" />
+		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
+		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
 		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
 		<on-update class="ecommander.fwk.CopyToUpload"/>
 	</item>
@@ -158,11 +103,9 @@
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
 	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" super="seo_container" ag-id="3" ag-hash="1970241253">
-		<child item="parse_section" single="true"/>
 		<child item="section" />
 		<child item="product"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
-		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
 		<parameter name="show_subs" type="byte" domain="0-1" caption="Показать подразделы"/>
 		<parameter name="sub_view" type="string" domain="sub_view" caption="Тип отображения подразделов" description="tags - тегами, pics - с картинками"/>
 		<parameter name="show_devices" type="byte" domain="0-1" caption="Показать товары"/>
@@ -170,6 +113,7 @@
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
+		<parameter name="hide_params" type="string" caption="скрыть параметр фильтра" multiple="true" />
 	</item>
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
@@ -182,10 +126,9 @@
 	</item>
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
-	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product * gallery" virtual="true" ag-id="1021" ag-hash="1523682729">
+	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product *" virtual="true" ag-id="1021" ag-hash="1523682729">
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
-		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
@@ -204,8 +147,9 @@
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
+		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
-		<parameter name="tag" type="string" caption="Тэг" multiple="true"/>
+		<parameter name="tag" type="string" caption="Тэг" multiple="true" text-index="fulltext"/>
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
@@ -224,7 +168,7 @@
 
 	<!--Обычный товар или товар, который содержит другие товары-->
 	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true"
-	      default-page="product" super="described_product * seo_container">
+	      default-page="product" super="described_product * seo_container" ag-id="6" ag-hash="-309474065">
 		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
 		<child item="line_product"/>
 	</item>
@@ -234,7 +178,6 @@
 		<on-update class="ecommander.fwk.integration.UpdateProductParamsXml"/><!-- Обновить параметр params_xml в продукте -->
 		<on-create class="ecommander.fwk.integration.UpdateProductParamsXml"/>
 	</item>
-
 
 	<item name="product_extra" caption="Дополнительные страницы для товара" key="name" ag-id="818" ag-hash="1373246656">
 		<parameter name="name" type="string" caption="Заголовок страницы"/>
@@ -361,7 +304,7 @@
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
-	<item name="user_phys" caption="Физическое лицо" super="user" ag-id="24" ag-hash="339407622">
+	<item name="user_phys" caption="Физическое лицо" super="user" ag-id="24" ag-hash="339407622" >
 		<parameter name="name" type="string" caption="Имя"/>
 		<!--<parameter name="phone" type="string" caption="Телефон"/>-->
 		<parameter name="address" type="string" caption="Адрес" />
@@ -564,24 +507,16 @@
 	</item>
 
 	<item name="custom_pages" caption="Информационные разделы" ag-id="26" ag-hash="727106934">
-		<child item="menu_item"/>
+		<child item="custom_page"/>
 	</item>
 
-	<item name="menu_item" caption="Элемент меню" virtual="true" ag-id="1627" ag-hash="-1527078413">
-		<parameter name="in_main_menu" type="string" domain="yes-no" caption="Выводить в главном меню"/>
-		<child item="menu_item"/>
-	</item>
-
-	<item name="page_link" caption="Ссылка" super="* menu_item" key="name link" ag-id="1628" ag-hash="883640234">
-		<parameter name="name" type="string" caption="Название" description="как выводить в пункте меню"/>
-		<parameter name="link" type="string" caption="Ссылка" description="относительная ссылка (без http:// и домена сайта)"/>
-	</item>
-
-	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" super="* menu_item" default-page="page" ag-id="27" ag-hash="-1777660259">
+	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" default-page="page" ag-id="27" ag-hash="-1777660259">
 		<child item="seo" single="true"/>
+		<child item="custom_page"/>
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей"/>
+		<parameter name="in_main_menu" type="string" domain="yes-no" caption="Выводить в главном меню"/>
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
