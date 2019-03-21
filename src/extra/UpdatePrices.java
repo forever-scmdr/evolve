@@ -19,10 +19,8 @@ import java.io.File;
  * Created by E on 1/3/2018.
  */
 public class UpdatePrices extends IntegrateBase {
-	private static final String CODE_HEADER = "Но#";
-	private static final String PRICE_OLD_HEADER = "Цена без скидки";
-	private static final String PRICE_NEW_HEADER = "Цена со скидкой";
-	private static final String AVAILABLE_HEADER = "Наличие";
+	private static final String QTY_HEADER = "кол-во";
+	private static final String PRICE_HEADER = "с НДС";
 
 	private ExcelPriceList price;
 
@@ -32,23 +30,24 @@ public class UpdatePrices extends IntegrateBase {
 		if (catalog == null)
 			return false;
 		File priceFile = catalog.getFileValue(ItemNames.catalog.INTEGRATION, AppContext.getFilesDirPath(false));
-		price = new ExcelPriceList(priceFile, CODE_HEADER, PRICE_OLD_HEADER, PRICE_NEW_HEADER, AVAILABLE_HEADER) {
+		price = new ExcelPriceList(priceFile, QTY_HEADER, PRICE_HEADER) {
 			@Override
 			protected void processRow() throws Exception {
-				String code = StringUtils.replace(getValue(0), " ", "");
+				String codeSpace = StringUtils.replace(getValue(0), " ", "");
+				String code = StringUtils.replaceAll(codeSpace, " ", "");
 				if (StringUtils.isNotBlank(code)) {
 					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code));
 					if (prod != null) {
-						String priceOld = getValue(1);
-						String priceNew = getValue(2);
-						boolean available = StringUtils.contains(getValue(3), "+");
-						if (StringUtils.isNotBlank(priceNew)) {
-							prod.setValueUI(ItemNames.product.PRICE, priceNew);
-							prod.setValueUI("price_old", priceOld);
+						String qty = getValue(QTY_HEADER);
+						if (StringUtils.isBlank(qty))
+							qty = "0";
+						prod.setValueUI(ItemNames.product.QTY, qty);
+						String price = getValue(PRICE_HEADER);
+						if (StringUtils.isNotBlank(price)) {
+							prod.setValueUI(ItemNames.product.PRICE, price);
 						} else {
-							prod.setValueUI(ItemNames.product.PRICE, priceOld);
+							prod.setValueUI(ItemNames.product.PRICE, "0");
 						}
-						prod.setValue("available", available ? (byte)1 : (byte)0);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
 						info.increaseProcessed();
 					} else {
@@ -71,7 +70,7 @@ public class UpdatePrices extends IntegrateBase {
 		info.setOperation("Обновление прайс-листа");
 		info.setProcessed(0);
 		info.setLineNumber(0);
-		info.setToProcess(price.getLinesCount());
+		//info.setToProcess(price.getLinesCount());
 		info.limitLog(500);
 		price.iterate();
 		info.setOperation("Интеграция завершена");
