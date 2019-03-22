@@ -137,7 +137,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			processSubsections(sh, rowIndex, id);
 		}
 		setOperation("Запись файла");
-		String fileName = "pricelist-" + fileSuffix + ".xls";
+		String optionsSuffix = (writeHierarchy)? "" : "min-";
+		String fileName = "pricelist-"+ optionsSuffix + fileSuffix + ".xls";
 		pushLog(fileName);
 		FileOutputStream fileOutputStream = new FileOutputStream(AppContext.getFilesDirPath(false) + "/" + fileName);
 		workBook.write(fileOutputStream);
