@@ -233,7 +233,7 @@ public abstract class IntegrateBase extends Command {
 	}
 	/**
 	 * Добавить запись в конец лога
-	 * @param message
+	 * @param message/
 	 */
 	protected static void addLog(String message) {
 		getInfo().addLog(message);
