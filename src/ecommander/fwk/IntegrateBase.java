@@ -336,6 +336,7 @@ public abstract class IntegrateBase extends Command {
 	private ResultPE buildResult() throws IOException {
 		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
 		doc.startElement("page", "name", getPageName());
+		doc.startElement("base").addText(getUrlBase()).endElement();
 		getInfo().output(doc);
 		doc.endElement();
 		ResultPE result = null;
