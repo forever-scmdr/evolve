@@ -84,7 +84,7 @@
 			<xsl:value-of select="$h1"/>
 		</h1>
 		<xsl:if test="$seo[1]/text">
-			<div class="page-content m-t">
+			<div class="page-content m-t seo-text">
 				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
 			</div>
 		</xsl:if>
