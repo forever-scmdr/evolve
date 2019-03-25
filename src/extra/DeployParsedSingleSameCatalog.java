@@ -1,27 +1,11 @@
 package extra;
 
-import ecommander.controllers.AppContext;
-import ecommander.fwk.*;
-import ecommander.model.*;
-import ecommander.model.User;
-import ecommander.persistence.commandunits.CreateAssocDBUnit;
-import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.model.Item;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
 import lunacrawler.fwk.Parse_item;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
