@@ -3,8 +3,9 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="$p/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="title" select="string-join(('Купить', $p/name, $p/artist, $p/author, $p/director, $p/starring, $p/publisher, 'c доставкой по Беларуси – Книжный интернет магазин Mystery.by'),' ')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $p/name"/>
+	<xsl:variable name="meta_description" select="string-join(('★Купить', $p/name, 'в Минске.', $p/artist, $p/author, $p/director, $p/year, 'год', $p/starring, $p/publisher, $p/series, $p/media, $p/originalName, $p/country|$p/country_of_origin, $p/page_extent, $p/language, $p/ISBN),' ')"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
@@ -66,7 +67,7 @@
 			<div class="gallery">
 				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
 					<xsl:for-each select="$p/picture">
-						<img src="{.}" alt="{$p/name}"/>
+						<img src="{.}" alt="{$h1}"/>
 					</xsl:for-each>
 				</div>
 			</div>
@@ -109,6 +110,9 @@
 									<i class="fas fa-star"></i>отложить
 								</a>
 							</div>
+						</div>
+						<div class="extra-links">
+							<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
 						</div>
 						<xsl:choose>
 							<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
@@ -166,32 +170,32 @@
 
 				<div class="device-benefits">
 					<div class="device-benefits__item">
-						<i class="fas fa-shield-alt device-benefits__icon"></i>
-						<div class="device-benefits__label">Официальная гарантия и сервис</div>
+						<i class="fas fa-truck device-benefits__icon"></i>
+						<div class="device-benefits__label">Курьерская доставка по Минску 5 рублей</div>
 					</div>
 					<div class="device-benefits__item">
-						<i class="fas fa-trophy device-benefits__icon"></i>
-						<div class="device-benefits__label">Официальные поставки</div>
+						<i class="fas fa-envelope device-benefits__icon"></i>
+						<div class="device-benefits__label">Почтой по Беларуси 5 рублей</div>
 					</div>
 					<div class="device-benefits__item">
-						<i class="far fa-thumbs-up device-benefits__icon"></i>
-						<div class="device-benefits__label">Обучение и сопровождение</div>
+						<i class="fas fa-shopping-cart device-benefits__icon"></i>
+						<div class="device-benefits__label">Самовывоз - бесплатно</div>
 					</div>
 				</div>
 				<div class="extra-contacts">
 					<div class="extra-contacts__title">Звоните, чтобы получить помощь и консультацию</div>
 					<div class="extra-contacts__items">
 						<div class="extra-contacts__item">
-							<div class="extra-contacts__number">(+375 17) 233-65-94</div>
-							<div class="extra-contacts__text">офис г. Минск</div>
+							<div class="extra-contacts__number">(+375 29) 381-08-03</div>
+							<div class="extra-contacts__text">Velcom</div>
 						</div>
 						<div class="extra-contacts__item">
-							<div class="extra-contacts__number">(+375 162) 54-54-40</div>
-							<div class="extra-contacts__text">филиал г. Брест</div>
+							<div class="extra-contacts__number">(+375 29) 257-08-03</div>
+							<div class="extra-contacts__text">МТС</div>
 						</div>
 						<div class="extra-contacts__item">
-							<div class="extra-contacts__number">(+375 152) 77-29-52</div>
-							<div class="extra-contacts__text">филиал г. Гродно</div>
+							<div class="extra-contacts__number">(+375 25) 755-08-03</div>
+							<div class="extra-contacts__text">Life</div>
 						</div>
 					</div>
 				</div>
@@ -219,7 +223,7 @@
 
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-							<xsl:if test="$p/params">
+						<xsl:if test="$p/params_xml">
 							<li role="presentation" class="active">
 								<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
 							</li>
@@ -231,20 +235,21 @@
 							</xsl:for-each>
 					</ul>
 				<div class="tab-content">
-					<xsl:if test="$p/params">
+					<xsl:if test="$p/params_xml">
+						<xsl:variable name="params" select="parse-xml(concat('&lt;xml&gt;', $p/params_xml/xml, '&lt;/xml&gt;'))"/>
 						<div role="tabpanel" class="tab-pane active" id="tab1">
 							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
 							<table>
 								<colgroup>
 									<col style="width: 40%"/>
 								</colgroup>
-								<xsl:for-each select="$p/params/param">
+								<xsl:for-each select="$params/xml/parameter">
 									<tr>
 										<td>
-											<p><strong><xsl:value-of select="@caption"/></strong></p>
+											<p><strong><xsl:value-of select="name"/></strong></p>
 										</td>
 										<td>
-											<p><xsl:value-of select="."/></p>
+											<p><xsl:value-of select="value"/></p>
 										</td>
 									</tr>
 								</xsl:for-each>

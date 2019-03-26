@@ -3,6 +3,7 @@
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
+	<xsl:import href="one_click_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
@@ -21,7 +22,7 @@
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
 
-	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''" />
+	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('', tokenize(page/source_link, '\?')[1]) else ''" />
 	<xsl:variable name="custom_canonical" select="//canonical_link[1]"/>
 
 	<xsl:variable name="canonical" select="if($custom_canonical != '') then $custom_canonical else $default_canonical"/>
@@ -53,7 +54,7 @@
 		<section class="top-stripe desktop">
 			<div class="container">
 				<xsl:variable name="topper" select="page/common/topper"/>
-				<div class="dropdown">
+				<!-- <div class="dropdown">
 					<a class="dropdown-toggle top-stripe__location" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<xsl:value-of select="$topper/block[1]/header"/>&#160;<i class="fas fa-caret-down"></i>
 					</a>
@@ -63,7 +64,7 @@
 							<a class="dropdown-item dd_menu_item" href="#" dd-id="dd_block_{@id}"><xsl:value-of select="header"/></a>
 						</xsl:for-each>
 					</div>
-				</div>
+				</div> -->
 				<xsl:for-each select="$topper/block">
 					<xsl:variable name="not_first" select="position() != 1"/>
 					<div class="dd_block" id="dd_block_{@id}" style="{'display: none'[$not_first]}">
@@ -74,7 +75,7 @@
 		</section>
 		<section class="header desktop">
 			<div class="container">
-				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
+				<a href="{$main_host}" class="logo"><img src="img/logo-big.svg" alt="" /></a>
 				<div class="header__content">
 					<div class="header__columns">
 						<form action="{page/search_link}" method="post" class="header__search header__column">
@@ -102,28 +103,16 @@
 							<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 								<div class="sections">
 									<xsl:for-each select="page/catalog/section">
-										<!-- TMP FIX-->
-										<xsl:variable name="link" select="if(section) then show_sub else show_products" />
-
-										<xsl:if test="section">
-											<a href="{$link}" class="cat_menu_item_1" rel="#sub_{@id}">
-												<xsl:value-of select="name" /> <xsl:value-of select="count(section)"/>
-											</a>
-										</xsl:if>
-										<xsl:if test="not(section)">
-											<a href="{$link}" class="cat_menu_item_1">
+										<a href="{show_products}" class="cat_menu_item_1" rel="#sub_{@id}">
 												<xsl:value-of select="name" />
 											</a>
-										</xsl:if>
-										<!-- END_TMP FIX -->
 									</xsl:for-each>
 								</div>
 
 								<xsl:for-each select="page/catalog/section">
-									<xsl:variable name="link" select="if(section) then show_sub else show_products" />
 									<div class="subsections" style="display: none" id="sub_{@id}">
 										<xsl:for-each select="section">
-											<a href="{$link}"><xsl:value-of select="name" /></a>
+											<a href="{show_products}"><xsl:value-of select="name" /></a>
 										</xsl:for-each>
 									</div>
 								</xsl:for-each>
@@ -193,7 +182,7 @@
 		<div class="header mobile">
 			<div class="header-container">
 				<a href="{$main_host}" class="logo">
-					<img src="img/logo_mobile.svg" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
+					<img src="img/logo-small.svg" alt="На главную страницу" style="height: 1.5em; max-width: 80%;"/>
 				</a>
 				<div class="icons-container">
 					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
@@ -223,14 +212,14 @@
 		<section class="footer">
 		    <div class="container">
 		        <div class="footer__menu">
-		            <a href="">Каталог</a>
-		            <a href="">Новости</a>
-		            <a href="">Акции</a>
-		            <a href="">О компании</a>
-		            <a href="">Сервис</a>
-		            <a href="">Оплата</a>
-		            <a href="">Доставка</a>
-		            <a href="">Контакты</a>
+		            <a href="{page/catalog_link}">Каталог</a>
+			        <xsl:for-each select="page/news">
+						<a href="{show_page}"><xsl:value-of select="name"/></a>
+			        </xsl:for-each>
+			        <xsl:for-each select="page/custom_pages/custom_page[in_main_menu = 'да']">
+						<a href="{show_page}"><xsl:value-of select="header"/></a>
+			        </xsl:for-each>
+		            <a href="{page/contacts_link}">Контакты</a>
 		        </div>
 		        <div class="footer__content">
 			        <xsl:variable name="footer" select="page/common/footer"/>
@@ -241,7 +230,7 @@
 				        <xsl:value-of select="$footer/block[1]/text" disable-output-escaping="yes"/>
 		                <div class="forever">
 		                    <img src="img/forever.png" alt="" />
-		                    <a href="forever.by" target="_blank">Разработка сайта студия веб-дизайна Forever</a>
+		                    <a href="http://forever.by" target="_blank">Разработка сайта студия веб-дизайна Forever</a>
 		                </div>
 		            </div>
 					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
@@ -313,7 +302,7 @@
 							<xsl:value-of select="name"/>
 						</a></li>
 					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/menu_custom">
+					<xsl:for-each select="page/custom_pages/custom_page[in_main_menu='да']">
 						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
 					</xsl:for-each>
 					<li>
@@ -386,7 +375,7 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_sub}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
@@ -413,14 +402,13 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_sub}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
 						<xsl:for-each select="section">
-							<xsl:variable name="link" select="if(section) then show_sub else show_products" />
 							<li>
-								<a href="{$link}"><xsl:value-of select="name"/></a>
+								<a href="{show_products}"><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:for-each>
 					</ul>
@@ -434,29 +422,26 @@
 	<xsl:template name="INC_SIDE_MENU_INTERNAL">
 		<div class="side-menu">
 			<xsl:for-each select="page/catalog/section">
-				<!-- TMP FIX -->
-				<xsl:variable name="link" select="if(section) then show_sub else show_products"/>
-
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="level-1{' active'[$l1_active]}">
 					<div class="capsule">
-						<a href="{$link}"><xsl:value-of select="name"/> </a>
+						<a href="{show_products}"><xsl:value-of select="name"/> </a>
 					</div>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
 					<xsl:for-each select="section">
-						<xsl:variable name="link" select="if(section) then show_sub else show_products"/>
 						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
-						<div class="level-2{' active'[$l2_active]}"><a href="{$link}"><xsl:value-of select="name"/></a></div>
+						<div class="level-2{' active'[$l2_active]}">
+							<a href="{show_products}"><xsl:value-of select="name"/></a>
+						</div>
 						<xsl:if test=".//@id = $sel_sec_id">
 							<xsl:for-each select="section">
-								<xsl:variable name="link" select="if(section) then show_sub else show_products"/>
 								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
-								<div class="level-3{' active'[$l3_active]}"><a href="{$link}"><xsl:value-of select="name"/></a></div>
+								<div class="level-3{' active'[$l3_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 								<xsl:if test=".//@id = $sel_sec_id">
 									<xsl:for-each select="section">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
-										<div class="level-4{' active'[$l4_active]}"><a href="{$link}"><xsl:value-of select="name"/></a></div>
+										<div class="level-4{' active'[$l4_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 									</xsl:for-each>
 								</xsl:if>
 							</xsl:for-each>
@@ -527,7 +512,7 @@
 			</a>
 			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
-			<div class="device__article-number"><xsl:value-of select="code"/></div>
+			<!-- <div class="device__article-number"><xsl:value-of select="code"/></div> -->
 			<xsl:if test="$has_price">
 				<div class="device__price">
 					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
@@ -558,12 +543,15 @@
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
 			</div>
-			<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+			<div class="extra-links">
+				<a href="{one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+			</div>
+			<!-- <xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
 				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div>
 			</xsl:if>
 			<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
 				<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div>
-			</xsl:if>
+			</xsl:if> -->
 			<div class="device__actions">
 				<xsl:if test="not($is_compare)">
 					<div id="compare_list_{@id}">
@@ -606,14 +594,14 @@
 			<a href="{$pic_path}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
 				<i class="fas fa-search-plus"></i>
 			</a>
-			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
+			<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			<div class="device__info">
 				<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
 				<div class="device__description">
 					<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 				</div>
 			</div>
-			<div class="device__article-number"><xsl:value-of select="code"/></div>
+			<!-- <div class="device__article-number"><xsl:value-of select="code"/></div> -->
 			<div class="device__actions device_row__actions">
 				<xsl:if test="not($is_compare)">
 					<div id="compare_list_{@id}">
@@ -667,12 +655,15 @@
 				<xsl:if test="$has_lines">
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
-				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+				<!-- <xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии</div>
 				</xsl:if>
 				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> под заказ</div>
-				</xsl:if>
+				</xsl:if> -->
+				<div class="extra-links">
+					<a href="{one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+				</div>
 			</div>
 			<xsl:for-each select="tag">
 				<div class="device__tag device_row__tag"><xsl:value-of select="." /></div>
@@ -784,7 +775,9 @@
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 				<link rel="stylesheet" href="fotorama/fotorama.css"/>
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
-				<script defer="defer" src="js/font_awesome_all.js"/>
+				<link rel="stylesheet" href="css/spoiler.css"/>
+				<!-- <script defer="defer" src="js/font_awesome_all.js"/> -->
+				<script defer="defer" src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" />
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 				<xsl:for-each select="$head-end-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
@@ -811,6 +804,8 @@
 
 				<xsl:call-template name="INC_MOBILE_MENU"/>
 				<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
+				<xsl:call-template name="ONE_CLICK_FORM"/>
+
 				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
 				<script type="text/javascript" src="js/bootstrap.js"/>
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
@@ -818,8 +813,11 @@
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/fwk/common.js"/>
 				<script type="text/javascript" src="slick/slick.min.js"></script>
+				<script type="text/javascript" src="js/spoiler.js"></script>
+				<script type="text/javascript" src="js/truncate.js"/>
 				<script type="text/javascript">
 					$(document).ready(function() {
+						$('.seo-text').truncate({length: 150;});
 						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
 							type: 'image',
 							closeOnContentClick: true,
@@ -986,7 +984,7 @@
 			<meta name="google-site-verification" content="{$common/google_verification}"/>
 		</xsl:if>
 		<xsl:if test="$common/yandex_verification">
-			<meta name="google-site-verification" content="{$common/yandex_verification}"/>
+			<meta name="yandex-verification" content="{$common/yandex_verification}"/>
 		</xsl:if>
 		<xsl:call-template name="MARKUP" />
 	</xsl:template>
