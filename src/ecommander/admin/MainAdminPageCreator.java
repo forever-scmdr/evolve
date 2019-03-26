@@ -769,7 +769,7 @@ public class MainAdminPageCreator implements AdminXML {
 		currentAssocId = -1;
 		assocWriter = new AggregateMDWriter("empty");
 		for (ItemAccessor item : toAssoc) {
-			if (ItemTypeRegistry.isDirectContainer(item.getTypeId(), baseAcc.getTypeId(), assocId) && !mountedList.contains(item)) {
+			if (ItemTypeRegistry.isDirectContainer(baseAcc.getTypeId(), item.getTypeId(), assocId) && !mountedList.contains(item)) {
 				String newAssocInput = createInputName(item.getTypeId(), item.getId(), MOUNT_INPUT_PREFIX);
 				item.addSubwriter(new LeafMDWriter(INPUT_ELEMENT, ADD_VALUE, NAME_ATTRIBUTE, newAssocInput));
 				String moveInput = createInputName(item.getTypeId(), item.getId(), MOVE_VALUE);
