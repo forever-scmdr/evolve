@@ -137,7 +137,7 @@ public class PageWriter {
 		// <page>
 		xml.startElement(ROOT_ELEMENT, NAME_ATTRIBUTE, page.getPageName());
 		// <source_link>catalog/device_type:v:/device_field:v:Маркировка шита/manufacturer:v:Markem</source_link>
-		xml.startElement(SOURCE_LINK_ELEMENT).addText(page.getRequestLink().serialize()).endElement();
+		xml.startElement(SOURCE_LINK_ELEMENT).addText(page.getRequestLink().getOriginalUrl()).endElement();
 		// <user id="4455">
 		//      <group name="common" id="0" admin="1"/>
 		//      ...

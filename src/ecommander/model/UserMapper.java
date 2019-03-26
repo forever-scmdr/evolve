@@ -138,10 +138,8 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 	public static void loadUserGroups() throws SQLException, NamingException {
 		TemplateQuery selectGroups = new TemplateQuery("Select all groups");
 		selectGroups.SELECT("*").FROM(GROUPS_TBL);
-		try (
-				Connection conn = MysqlConnector.getConnection();
-				PreparedStatement pstmt = selectGroups.prepareQuery(conn)
-		) {
+		try (Connection conn = MysqlConnector.getConnection();
+			PreparedStatement pstmt = selectGroups.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				UserGroupRegistry.addGroup(rs.getString(G_NAME), rs.getByte(G_ID));

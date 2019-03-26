@@ -4,6 +4,7 @@
 package ecommander.model;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
 
@@ -457,6 +458,21 @@ public class ItemTypeRegistry {
 				int itemId = ((ItemType) getSingleton().itemsByNames.get(childDesc.itemName)).getTypeId();
 				CollectionUtils.addAll(ids, getBasicItemExtendersIds(itemId));
 			}
+		}
+		return ids;
+	}
+
+	/**
+	 * Получить ID всех возможных базовых потомков (не пользовательских) заданного айтема
+	 * @param itemId
+	 * @return
+	 */
+	public static Integer[] getDirectChildrenBasicTypeIds(int itemId) {
+		Integer[] ids = new Integer[0];
+		ItemTypeContainer item = getSingleton().itemsByIds.get(itemId);
+		for (ItemTypeContainer.ChildDesc childDesc : item.getAllChildren()) {
+			int childId = ((ItemType) getSingleton().itemsByNames.get(childDesc.itemName)).getTypeId();
+			ids = ArrayUtils.addAll(ids, getBasicItemExtendersIds(childId));
 		}
 		return ids;
 	}

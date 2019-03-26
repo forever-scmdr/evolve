@@ -2,20 +2,24 @@ package ecommander.persistence.mappers;
 
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
+import ecommander.fwk.MysqlConnector;
 import ecommander.model.*;
 import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.itemquery.ItemQuery;
 
+import javax.naming.NamingException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Выполняет различные операции с Item и БД
  * @author EEEE
  *
  */
-public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.Const {
+public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.Const, DBConstants.UniqueItemKeys {
 
 	public enum Mode {
 		INSERT, // вставка в таблицу (без изменения и удаления)
@@ -142,6 +146,33 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 	}
 
 	/**
+	 * Загрузить айтемы по статусу
+	 * @param status
+	 * @param limit
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 */
+	public static List<ItemBasics> loadStatusItemBasics(byte status, int limit, Connection conn) throws SQLException {
+		TemplateQuery query = new TemplateQuery("Select item basics by status");
+		query.SELECT(I_ID, I_TYPE_ID, I_KEY, I_GROUP, I_USER, I_STATUS, I_PROTECTED)
+				.FROM(ITEM_TBL).WHERE().col(I_STATUS).byte_(status);
+		if (limit > 0)
+			query.LIMIT(limit);
+		ArrayList<ItemBasics> result = new ArrayList<>();
+		try (PreparedStatement pstmt = query.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result.add(new DefaultItemBasics(
+						rs.getLong(1), rs.getInt(2), rs.getString(3),
+						rs.getByte(4), rs.getInt(5), rs.getByte(6),
+						rs.getBoolean(7)));
+			}
+			return result;
+		}
+	}
+
+	/**
 	 * Создать айтем из резалт сета
 	 * @param rs
 	 * @param contextParentId
@@ -217,5 +248,30 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 	 */
 	public static ArrayList<Item> loadByName(String itemName, int limit, long startFromId, Connection conn) throws Exception {
 		return loadByTypeId(ItemTypeRegistry.getItemType(itemName).getTypeId(), limit, startFromId, conn);
+	}
+
+	/**
+	 * Загрузить ID айтемов по переданным уникальным текстовым ключам в порядке переданных ключей
+	 * Если айтем не найден, то в отображении по его ключу хранится null
+	 * @param keys
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public static LinkedHashMap<String, Long> loadItemIdsByKey(String...keys) throws SQLException, NamingException {
+		LinkedHashMap<String, Long> result = new LinkedHashMap<>();
+		for (String key : keys) {
+			result.put(key, null);
+		}
+		TemplateQuery select= new TemplateQuery("Select ids by string unique keys");
+		select.SELECT(UK_KEY, UK_ID).FROM(UNIQUE_KEY_TBL).WHERE().col_IN(UK_KEY).stringIN(keys);
+		try(Connection conn = MysqlConnector.getConnection();
+			PreparedStatement pstmt = select.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result.put(rs.getString(1), rs.getLong(2));
+			}
+		}
+		return result;
 	}
 }

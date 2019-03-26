@@ -36,9 +36,8 @@ public class CreateCatalogLink implements ItemEventCommandFactory {
 
 		@Override
 		public void execute() throws Exception {
-			List<Item> parents = new ItemQuery(SECTION)
-					.setChildId(src.getId(), false, ItemTypeRegistry.getPrimaryAssoc().getName(), CATALOG_LINK_ASSOC)
-					.loadItems();
+			List<Item> parents = new ItemQuery(SECTION).setChildId(src.getId(), false, CATALOG_LINK_ASSOC).loadItems();
+			Item directParent = new ItemQuery(SECTION).setChildId(src.getId(), false).loadFirstItem();
 			HashMap<String, Item> existingParents = new HashMap<>();
 			for (Item parent : parents) {
 				String code = parent.getStringValue(CATEGORY_ID);
@@ -60,6 +59,8 @@ public class CreateCatalogLink implements ItemEventCommandFactory {
 					requiredParentCodes.add(StringUtils.trim(code));
 				}
 			}
+			if (directParent != null) // в случае создания нового айтема
+				requiredParentCodes.remove(StringUtils.trim(directParent.getStringValue(CATEGORY_ID)));
 
 			byte catalogLinkAssocId = ItemTypeRegistry.getAssocId(CATALOG_LINK_ASSOC);
 
@@ -73,9 +74,7 @@ public class CreateCatalogLink implements ItemEventCommandFactory {
 
 			for (String deletingLink : deletingLinks) {
 				Item parent = existingParents.get(deletingLink);
-				if (parent.getContextAssoc().getId() != ItemTypeRegistry.getPrimaryAssocId()) {
-					executeCommandInherited(new DeleteAssocDBUnit(src, parent, catalogLinkAssocId));
-				}
+				executeCommandInherited(new DeleteAssocDBUnit(src, parent, catalogLinkAssocId));
 			}
 
 			for (String creatingLink : creatingLinks) {

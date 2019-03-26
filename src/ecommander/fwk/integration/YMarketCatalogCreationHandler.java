@@ -7,6 +7,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -16,10 +17,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Создание разделов каталога
@@ -39,12 +37,14 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 	private Item currentSection;
 	private String code;
 	private ItemType sectionDesc;
+	private HashSet<String> ignoreCodes;
 
-	public YMarketCatalogCreationHandler(Item catalog, IntegrateBase.Info info, User owner) {
+	public YMarketCatalogCreationHandler(Item catalog, IntegrateBase.Info info, User owner, HashSet<String> ignoreCodes) {
 		this.catalog = catalog;
 		this.sectionDesc = ItemTypeRegistry.getItemType(SECTION_ITEM);
 		this.owner = owner;
 		this.info = info;
+		this.ignoreCodes = ignoreCodes;
 	}
 
 	@Override
@@ -58,6 +58,11 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 			// Раздел
 			if (StringUtils.equalsIgnoreCase(CATEGORY_ELEMENT, qName) && categoryReady) {
 				code = attributes.getValue(ID_ATTR);
+				// пропустить некоторые разделы
+				if (ignoreCodes.contains(code)) {
+					currentSection = null;
+					return;
+				}
 				String parentCode = attributes.getValue(PARENT_ID_ATTR);
 				currentSection = categories.get(code);
 				if (currentSection == null) {
@@ -87,6 +92,18 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 						categories.put(code, currentSection);
 					}
 				}
+
+				// Скрыть все товары раздела
+				ItemQuery visibleProudctsQuery = new ItemQuery(PRODUCT_ITEM).setParentId(currentSection.getId(), false).setLimit(20);
+				List<Item> visibleProducts;
+				DelayedTransaction transaction = new DelayedTransaction(owner);
+				do {
+					visibleProducts = visibleProudctsQuery.loadItems();
+					for (Item visibleProduct : visibleProducts) {
+						transaction.addCommandUnit(ItemStatusDBUnit.hide(visibleProduct));
+					}
+					transaction.execute();
+				} while (visibleProducts.size() > 0);
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Integration error", e);
@@ -128,6 +145,9 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 					currentSection = null;
 					code = null;
 				} else {
+					// пропустить некоторые разделы
+					if (ignoreCodes.contains(code))
+						return;
 					Pair<String, String> secParent = newSectionParent.get(code);
 					if (secParent != null) {
 						secParent.setLeft(StringUtils.trimToEmpty(chars.toString()));

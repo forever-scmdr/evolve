@@ -183,7 +183,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 	}
 
 	/**
-	 * Получить список переменных PATH без названий (т.н. translit переменные)
+	 * Получить список переменных PATH без названий (т.н. key переменные)
 	 * в одратном порядке их следования. Это нужно для обработки урлов, в которых
 	 * не задана страница (exclusive урлов)
 	 * @return
@@ -193,7 +193,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 		if (varPEDefs == null)
 			return pathVars;
 		for (RequestVariablePE requestVariablePE : varPEDefs.values()) {
-			if (requestVariablePE.isStyleTranslit())
+			if (requestVariablePE.isStyleKey())
 				pathVars.push(requestVariablePE);
 		}
 		return pathVars;

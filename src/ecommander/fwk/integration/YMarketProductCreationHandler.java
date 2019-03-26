@@ -1,10 +1,8 @@
 package ecommander.fwk.integration;
 
 import ecommander.fwk.*;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.User;
+import ecommander.model.*;
+import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
@@ -88,8 +86,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private ArrayList<String> picUrls;
 	private User initiator;
 	private boolean isInsideOffer = false;
-	private boolean getPrice = false;
-	private BigDecimal level_1, level_2, from_3, quotient_1, quotient_2, quotient_3;
+	private BigDecimal level_1, level_2, quotient_1, quotient_2, quotient_3;
+	private Assoc catalogLinkAssoc;
 
 	
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
@@ -98,6 +96,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		this.productType = ItemTypeRegistry.getItemType("book");
 		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
+		this.catalogLinkAssoc = ItemTypeRegistry.getAssoc("catalog_link");
 		try {
 			Item course = new ItemQuery("course").loadFirstItem();
 			level_1 = course.getDecimalValue("level_1");
@@ -116,74 +115,103 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 				String code = commonParams.get(ID_ATTR);
 				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
-				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
+				Item section = sections.get(secCode);
+				// пропустить некоторые разделы
+				if (section == null)
+					return;
+				//Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
+				Item product = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN)
+						.addParameterEqualsCriteria(OFFER_ID_PARAM, code).loadFirstItem();
+				boolean isProductNew = false;
 				if (product == null) {
-					Item section = sections.get(secCode);
 					if (section != null) {
 						product = Item.newChildItem(productType, section);
+						isProductNew = true;
 					} else {
 						info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
 						return;
 					}
+					product.setValue(CODE_PARAM, code);
+					product.setValue(OFFER_ID_PARAM, code);
+					product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(commonParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
+					product.setValue(GROUP_ID_PARAM, commonParams.get(GROUP_ID_ATTR));
+					product.setValue(URL_PARAM, commonParams.get(URL_ELEMENT));
+					product.setValue(CURRENCY_ID_PARAM, commonParams.get(CURRENCY_ID_ELEMENT));
+					product.setValue(CATEGORY_ID_PARAM, commonParams.get(CATEGORY_ID_ELEMENT));
+					product.setValue(NAME_PARAM, commonParams.get(NAME_ELEMENT));
+					if (product.isValueEmpty(NAME_PARAM))
+						product.setValue(NAME_PARAM, commonParams.get(TITLE));
+					product.setValue(DESCRIPTION_PARAM, commonParams.get(DESCRIPTION_ELEMENT));
+					product.setValue(VENDOR_PARAM, commonParams.get(VENDOR_ELEMENT));
+
+					product.setValue(ARTIST, commonParams.get(ARTIST));
+					product.setValue(STARRING, commonParams.get(STARRING));
+					product.setValue(DIRECTOR, commonParams.get(DIRECTOR));
+					product.setValue(AUTHOR, commonParams.get(AUTHOR));
+					product.setValue(SERIES, commonParams.get(SERIES));
+					product.setValue(MEDIA, commonParams.get(MEDIA));
+					product.setValue(YEAR, commonParams.get(YEAR));
+					product.setValue(ORIGINAL_NAME, commonParams.get(ORIGINAL_NAME));
+					product.setValue(COUNTRY_OF_ORIGIN, commonParams.get(COUNTRY_OF_ORIGIN));
+					product.setValue(COUNTRY, commonParams.get(COUNTRY));
+					product.setValue(PUBLISHER, commonParams.get(PUBLISHER));
+					product.setValue(PAGE_EXTENT, commonParams.get(PAGE_EXTENT));
+					product.setValue(LANGUAGE, commonParams.get(LANGUAGE));
+					product.setValue(ISBN, commonParams.get(ISBN));
+					product.setValue(VENDOR_CODE_PARAM, commonParams.get(BARCODE));
+					product.setValue("tag", commonParams.get(MEDIA));
+
+					for (String picUrl : picUrls) {
+						product.setValue(PICTURE, picUrl);
+					}
 				}
-
-				product.setValue(CODE_PARAM, code);
-				product.setValue(OFFER_ID_PARAM, code);
-				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(commonParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
-				product.setValue(GROUP_ID_PARAM, commonParams.get(GROUP_ID_ATTR));
-				product.setValue(URL_PARAM, commonParams.get(URL_ELEMENT));
-				product.setValue(CURRENCY_ID_PARAM, commonParams.get(CURRENCY_ID_ELEMENT));
-				product.setValue(CATEGORY_ID_PARAM, commonParams.get(CATEGORY_ID_ELEMENT));
-				product.setValue(NAME_PARAM, commonParams.get(NAME_ELEMENT));
-				if (product.isValueEmpty(NAME_PARAM))
-					product.setValue(NAME_PARAM, commonParams.get(TITLE));
-				product.setValue(DESCRIPTION_PARAM, commonParams.get(DESCRIPTION_ELEMENT));
-				product.setValue(VENDOR_PARAM, commonParams.get(VENDOR_ELEMENT));
-
-				product.setValue(ARTIST, commonParams.get(ARTIST));
-				product.setValue(STARRING, commonParams.get(STARRING));
-				product.setValue(DIRECTOR, commonParams.get(DIRECTOR));
-				product.setValue(AUTHOR, commonParams.get(AUTHOR));
-				product.setValue(SERIES, commonParams.get(SERIES));
-				product.setValue(MEDIA, commonParams.get(MEDIA));
-				product.setValue(YEAR, commonParams.get(YEAR));
-				product.setValue(ORIGINAL_NAME, commonParams.get(ORIGINAL_NAME));
-				product.setValue(COUNTRY_OF_ORIGIN, commonParams.get(COUNTRY_OF_ORIGIN));
-				product.setValue(COUNTRY, commonParams.get(COUNTRY));
-				product.setValue(PUBLISHER, commonParams.get(PUBLISHER));
-				product.setValue(PAGE_EXTENT, commonParams.get(PAGE_EXTENT));
-				product.setValue(LANGUAGE, commonParams.get(LANGUAGE));
-				product.setValue(ISBN, commonParams.get(ISBN));
-				product.setValue(VENDOR_CODE_PARAM, commonParams.get(BARCODE));
-				product.setValue("tag", commonParams.get(MEDIA));
 
 				//if (getPrice)
 				product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
 				BigDecimal price = product.getDecimalValue(PRICE_PARAM);
-				product.setValue(PRICE_PARAM, getCorrectPrice(price).setScale(2, RoundingMode.CEILING));
+				product.setValue(PRICE_PARAM, getCorrectPrice(price).setScale(1, RoundingMode.CEILING));
 				//else
 				//	product.setValueUI(PRICE_PARAM, "0");
 
-				// Качать картинки только для новых товаров
-				for (String picUrl : picUrls) {
-					product.setValue(PICTURE, picUrl);
+
+				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
+
+				if (isProductNew) {
+					// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
+					Item paramsXml = ItemUtils.ensureSingleItem(PARAMS_XML_ITEM, initiator,
+							product.getId(), product.getOwnerGroupId(), product.getOwnerUserId());
+					// Создать айтем с параметрами продукта
+					XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+					for (String name : specialParams.keySet()) {
+						String value = specialParams.get(name);
+						xml.startElement(PARAMETER)
+								.startElement(NAME).addText(name).endElement()
+								.startElement(VALUE).addText(value).endElement()
+								.endElement();
+					}
+					paramsXml.setValue(XML_PARAM, xml.toString());
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).noFulltextIndex());
 				}
 
-				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-
-				// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
-				Item paramsXml = ItemUtils.ensureSingleItem(PARAMS_XML_ITEM, initiator, product.getId(), product.getOwnerGroupId(), product.getOwnerUserId());
-				// Создать айтем с параметрами продукта
-				XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
-				for (String name : specialParams.keySet()) {
-					String value = specialParams.get(name);
-					xml.startElement(PARAMETER)
-							.startElement(NAME).addText(name).endElement()
-							.startElement(VALUE).addText(value).endElement()
-							.endElement();
+				if (!isProductNew) {
+					// Сделать товар видимым
+					DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.restore(product));
+					// Загрузить разделы, содержащие товар
+					List<Item> secs = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false,
+							ItemTypeRegistry.getPrimaryAssoc().getName(), catalogLinkAssoc.getName()).loadItems();
+					// Создать ассоциацию товара с разделом, если ее еще не существует
+					boolean needLink = true;
+					for (Item sec : secs) {
+						if (sec.getId() == section.getId()) {
+							needLink = false;
+							break;
+						}
+					}
+					if (needLink) {
+						DelayedTransaction.executeSingle(initiator,
+								CreateAssocDBUnit.childExistsSoft(product, section, catalogLinkAssoc.getId()));
+					}
 				}
-				paramsXml.setValue(XML_PARAM, xml.toString());
-				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreFileErrors());
 
 				info.increaseProcessed();
 				isInsideOffer = false;
@@ -253,9 +281,5 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			return price.multiply(quotient_2);
 		}
 		return price.multiply(quotient_3);
-	}
-
-	public void getPrice(boolean getPrice) {
-		this.getPrice = getPrice;
 	}
 }
