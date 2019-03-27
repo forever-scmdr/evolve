@@ -41,6 +41,7 @@
 			<list item="block_array">
 				<list item="block"/>
 			</list>
+			<single item="delivery"/>
 		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
@@ -540,7 +541,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="design@forever-ds.com"/>
+			<var name="email" value="egor@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -842,7 +843,7 @@
 		<link name="user_exists" target="register">
 			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
 		</link>
-		<link name="success" target="register">
+		<link name="success" target="personal">
 			<var name="message" value="Вы успешно зарегистрированы, спасибо"/>
 			<var name="success" value="true"/>
 		</link>
@@ -1285,6 +1286,21 @@
 		</request>
 		<command class="ecommander.fwk.CreateWaterMarks" clear-cache="yes">
 			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<!--
+		Создать файл YML формата со всеми разделами и товарами каталога
+	-->
+	<page name="create_yml_file">
+		<headers content-type="text/xml"/>
+		<request>
+			<var name="name" value="Акваком"/>
+			<var name="company" value="ООО «Скобяной трейд»"/>
+		</request>
+		<command class="ecommander.fwk.integration.YMarketCreateXMLFile">
+			<result name="success" type="redirect"/>
+			<result name="error" type="redirect"/>
 		</command>
 	</page>
 

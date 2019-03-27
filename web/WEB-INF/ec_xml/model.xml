@@ -337,6 +337,7 @@
 		<parameter name="password" type="string" caption="Пароль"/>
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<child item="purchase"/>
+		<on-delete class="extra.DeleteRegisteredUser"/>
 	</item>
 
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
