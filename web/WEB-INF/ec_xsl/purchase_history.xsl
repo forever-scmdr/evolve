@@ -51,7 +51,7 @@
 									</div>
 									<div class="info-container">
 										<xsl:if test="$prod">
-											<div><a href="{$prod/show_product}"><xsl:value-of select="concat($prod/name, ' ', $prod/code)"/></a></div>
+											<div><a href="{$prod/show_product}"><xsl:value-of select="concat($prod/name, ' ', $prod/vendor_code)"/></a></div>
 										</xsl:if>
 										<xsl:if test="not($prod)">
 											<div><a><xsl:value-of select="concat(name, ' ', code)"/></a></div>
@@ -64,7 +64,7 @@
 												<xsl:variable name="has_price" select="$prod/price and $prod/price != '0'"/>
 												<div><xsl:if test="$has_price"><xsl:value-of select="$prod/price"/> р.</xsl:if></div>
 												<div id="cart_list_{$prod/code}" class="product_purchase_container">
-													<form action="{$prod/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$prod/code}">
+													<form action="{$prod/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$prod/vendor_code}">
 														<xsl:if test="$has_price">
 															<input type="number" name="qty" value="{qty}" min="0"/>
 															<input type="submit" value="В корзину"/>

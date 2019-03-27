@@ -148,9 +148,12 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
-		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
+		<parameter name="integration" type="file" caption="Excel файл обновление цены"/>
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
-		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
+		<parameter name="integration_pending" type="byte" caption="Идет интеграция" domain="0-1" />
+		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
+		<on-update class="ecommander.fwk.CopyToUpload"/>
+		<!-- <parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" /> -->
 	</item>
 
 	<!--Является также и разделом для парсинга-->
