@@ -4,8 +4,10 @@
 (function($){
     $.fn.truncate = function(options) {
         var TAG_OPEN = '<(\w+)\s*([\w\-]+(=".*")?\s*)*>';
-        var TAG_CLOSE = '<\/\w+>';
-        var TAG_CONTENT = ">.*?<";
+        var TAG_CLOSE = '<\/\w+\s*>|<\w+\s*\/>';
+        var TAG_CONTENT = ".*?";
+        var TAG = "("+TAG_OPEN+")"+"("+TAG_CONTENT+")"+"("+TAG_CLOSE+")";
+        var regTag = new RegExp(TAG);
 
 
         var defaults = {
@@ -24,6 +26,10 @@
 // извлекаем содержимое элемента в виде HTML разметки
             var body = obj.html();
 
+            var match;
+            while (match = regTag.exec(body)) {
+                console.log(match);
+            }
 
             if(body.length > options.length + options.minTrail) {
 
