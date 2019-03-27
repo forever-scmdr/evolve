@@ -119,9 +119,9 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		}
 	}
 
-	void deployProduct(Element productEl, Item parent) throws Exception {
+	Item deployProduct(Element productEl, Item parent) throws Exception {
 		if (needTermination)
-			return;
+			return null;
 		String code = productEl.getElementsByTag(CODE).first().ownText();
 		String name = productEl.getElementsByTag(NAME).first().ownText();
 		String type = productEl.getElementsByTag(TYPE).first().ownText();
@@ -163,7 +163,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		// Продукт
 
 		// Проверка, если айтем существует - создать копию этого продукта
-		Item product = ItemQuery.loadSingleItemByParamValue(Product._NAME, "code", code);
+		Item product = ItemQuery.loadSingleItemByParamValue(Product._NAME, CODE, code);
 		if (product != null) {
 			Item primaryParent = new ItemQuery(Section._NAME).setChildId(product.getId(), false).loadFirstItem();
 			if (primaryParent == null || primaryParent.getId() != parent.getId()) {
@@ -245,6 +245,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		}
 
 		info.increaseProcessed();
+		return product;
 	}
 
 

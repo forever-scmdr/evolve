@@ -35,7 +35,7 @@ public class DeployParsedSingleSameCatalog extends DeployParsedSingle {
 			// Создать и заполнить все товары
 			for (Item item : secPIs) {
 				Parse_item pi = Parse_item.get(item);
-				Product prod = deployParsed(pi, section, true);
+				Product prod = Product.get(deployParsed(pi, section, true));
 				if (prod == null) {
 					info.pushLog("ОШИБКА ! Товар {} НЕ ДОБАВЛЕН в раздел {}", pi.get_url(), section.getStringValue(ItemNames.section_.NAME));
 					continue;
