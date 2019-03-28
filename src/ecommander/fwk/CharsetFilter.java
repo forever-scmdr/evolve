@@ -21,16 +21,12 @@ public class CharsetFilter implements Filter {
 	
 	private String encoding = Strings.SYSTEM_ENCODING;
 
-	/**
-	 * @see Filter#void ()
-	 */
+
 	public void destroy() {
 
 	}
 
-	/**
-	 * @see Filter#void (javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
-	 */
+
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
 		req.setCharacterEncoding(encoding);
 		chain.doFilter(req, resp);
