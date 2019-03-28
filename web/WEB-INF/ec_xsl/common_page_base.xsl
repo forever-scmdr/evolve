@@ -37,10 +37,6 @@
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
 
 
-
-
-
-
 	<xsl:template name="INC_DESKTOP_HEADER">
 		<div class="container-fluid top-stripe desktop">
 			<div class="container">

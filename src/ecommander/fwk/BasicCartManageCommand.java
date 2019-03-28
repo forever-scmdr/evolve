@@ -5,8 +5,8 @@ import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.mail.Multipart;
@@ -107,6 +107,15 @@ public abstract class BasicCartManageCommand extends Command {
 		final String TRUE = "true";
 		final String FALSE = "false";
 		loadCart();
+		// Была ли использована скидка
+		if(discountUsed()){
+			BigDecimal simpleSum = cart.getDecimalValue("simple_sum");
+			if(simpleSum != null || simpleSum.compareTo(BigDecimal.ZERO) != 0){
+				recalculateCart();
+				return getResult("discount_used");
+			}
+		}
+
 		if (StringUtils.equalsIgnoreCase(cart.getStringExtra(IN_PROGRESS), TRUE)) {
 			return getResult("confirm");
 		}
@@ -174,6 +183,8 @@ public abstract class BasicCartManageCommand extends Command {
 		//counter.setValue(DATE_PARAM, newDate);
 		executeCommandUnit(SaveItemDBUnit.get(counter).ignoreUser());
 
+		setCookieVariable("discount_used", new Date().getTime());
+
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		// Сохранить историю
 		//
@@ -228,6 +239,16 @@ public abstract class BasicCartManageCommand extends Command {
 		setCookieVariable(CART_COOKIE, null);
 		getSessionMapper().saveTemporaryItem(cart);
 		return getResult("confirm");
+	}
+
+	private boolean discountUsed() {
+		String discountUsedCookie = getVarSingleValue("discount_used");
+		if(StringUtils.isBlank(discountUsedCookie)){}
+		else {
+			long then = new Date(Long.parseLong(discountUsedCookie)).getTime();
+			return DATE_FORMAT.format(new Date()).equals(DATE_FORMAT);
+		}
+		return false;
 	}
 
 	protected abstract boolean validate() throws Exception;
@@ -366,6 +387,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 */
 	public ResultPE restoreFromCookie() throws Exception {
 		loadCart();
+		buyNow();
 		if (cart != null)
 			return null;
 		String cookie = getVarSingleValue(CART_COOKIE);
@@ -378,8 +400,36 @@ public abstract class BasicCartManageCommand extends Command {
 			addProduct(pair[0], qty);
 		}
 		recalculateCart();
+
 		return null;
 	}
+
+	/**
+	 * Записывает в куки дату входа на сайт, дату показа окна, дату истечения скидки.
+	 * @throws Exception
+	 */
+	public void buyNow() throws Exception {
+		if(discountUsed()){recalculateCart(); return;}
+		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
+		final long fiveMinutes = common.getIntValue("show_window", 300)*1000;
+		String start = getVarSingleValue("site_visit");
+
+		long now = new Date().getTime();
+		long hour = 60*60*1000;
+		long startTime = (StringUtils.isBlank(start))? -1 : Long.parseLong(start);
+
+		if(StringUtils.isBlank(start) || now - startTime > hour){
+			setCookieVariable("site_visit", String.valueOf(now));
+			startTime = now;
+		}
+
+		int duration = common.getIntValue("discount_last", 60) * 1000;
+		long discountExpires = startTime + fiveMinutes + duration;
+		setCookieVariable("discount_expires", String.valueOf(discountExpires));
+		setCookieVariable("current_time", String.valueOf(now));
+		setCookieVariable("show_window", String.valueOf(startTime + fiveMinutes));
+	}
+
 
 	/**
 	 * Пересчитывает данные для одного enterprise_bought, когда в корзине произошли какие-то изменения
@@ -418,12 +468,48 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().saveTemporaryItem(bought);
 			}
 		}
+		sum = applyDiscount(sum);
 		cart.setValue(SUM_PARAM, sum);
 		cart.setValue(QTY_PARAM, regularQuantity);
 		// Сохранить корзину
 		getSessionMapper().saveTemporaryItem(cart);
 		saveCookie();
 		return result && regularQuantity > 0;
+	}
+
+	private BigDecimal applyDiscount(BigDecimal sum) throws Exception{
+		if(discountUsed()){
+			cart.clearValue("simple_sum");
+			getSessionMapper().saveTemporaryItem(cart);
+			return sum;
+		}
+
+		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
+		final long hour = 60*60*1000;
+		final long fiveMinutes = common.getIntValue("show_window", 300)*1000;
+		String start = getVarSingleValue("site_visit");
+		long now = new Date().getTime();
+		long startTime = (StringUtils.isBlank(start))? -1 : Long.parseLong(start);
+
+		int duration = common.getIntValue("discount_last", 60) * 1000;
+		long discountExpires = startTime + fiveMinutes + duration;
+		if(StringUtils.isBlank(start) || now - startTime > hour){
+			cart.clearValue("simple_sum");
+			getSessionMapper().saveTemporaryItem(cart);
+			return sum;
+		}
+		long d = now - startTime;
+
+		if(d > fiveMinutes && now < discountExpires){
+			double discount = 1d - common.getDoubleValue("discount",0d);
+			cart.setValue("simple_sum", sum);
+			sum = sum.multiply(new BigDecimal(discount));
+
+		}else{
+			cart.clearValue("simple_sum");
+			getSessionMapper().saveTemporaryItem(cart);
+		}
+		return sum;
 	}
 
 	@Override

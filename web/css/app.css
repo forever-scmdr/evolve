@@ -7255,7 +7255,7 @@ input.submit {
     padding: 0px;
     list-style: none;
     margin-bottom: 16px;
-    break-inside: avoid-column;
+    /*break-inside: avoid-column;*/
 }
 .new-list a {
   color: inherit;
@@ -7289,4 +7289,74 @@ a.toggle-list {
   padding: 4px 16px;
   margin: auto;
   border-radius: 20px;
+}
+
+.new-text {
+  display: flex;
+}
+.new-text > div {
+  flex: 1;
+}
+.new-text > div:first-child {
+  margin-right: 12px;
+}
+.new-text > div:last-child {
+  margin-left: 12px;
+}
+.new-text ol {
+  padding-left: 16px;
+}
+.new-text li {
+  margin-bottom: 8px;
+}
+@media (max-width: 767px) {
+  .new-text {
+    flex-direction: column;
+  }
+  .new-text > div:first-child,
+  .new-text > div:last-child {
+    margin: unset !important;
+  }
+}
+.red{
+  color: red;
+}
+
+
+.message {
+  text-align: center;
+  padding: 4px 0px;
+  background-color: #a7323b;
+  color: white;
+}
+.discount-alert {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 99;
+  display: flex;
+}
+.discount-alert > div {
+  background-color: #fff;
+  color: #333;
+  margin: auto;
+  padding: 32px;
+  text-align: center;
+}
+.discount-alert h2 {
+  margin-top: 0;
+}
+.discount-alert .button {
+  display: inline-block;
+  border-radius: 2px;
+  border-width: 0;
+  padding: 0 7px;
+  cursor: pointer;
+  vertical-align: bottom;
+  color: #fff;
+  background: #A7323B;
+  text-decoration: none;
+  padding: 4px 8px;
 }
