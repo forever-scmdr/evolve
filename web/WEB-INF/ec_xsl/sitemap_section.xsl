@@ -24,7 +24,7 @@
             <xsl:for-each select="/page/section/product">
                 <url>
                     <loc>
-                        <xsl:value-of select="concat($base,'/', show_product)"/>
+                        <xsl:value-of select="concat($base, show_product)"/>
                     </loc>
                     <changefreq>daily</changefreq>
                     <priority>0.80</priority>

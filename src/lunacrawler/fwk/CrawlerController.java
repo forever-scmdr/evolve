@@ -3,7 +3,6 @@ package lunacrawler.fwk;
 import java.io.*;
 import java.net.URI;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.util.*;
@@ -23,15 +22,11 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import lunacrawler.UrlModifier;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Document.OutputSettings;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Entities.EscapeMode;
 import org.jsoup.parser.Parser;
-import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
 import ecommander.controllers.AppContext;
@@ -275,6 +270,18 @@ public class CrawlerController {
 		}
 	}
 
+	private static class Download {
+		private final String id;
+		private final String url;
+		private final String fileName;
+
+		public Download(String id, String downloadUrl, String fileName) {
+			this.id = id;
+			this.url = downloadUrl;
+			this.fileName = fileName;
+		}
+	}
+
 
 	private CrawlerController() throws Exception {
 
@@ -421,7 +428,7 @@ public class CrawlerController {
 	 */
 	public static void startCrawling(Class<? extends BasicCrawler> crawlerClass, IntegrateBase.Info info, Mode mode,
 	                                 UrlModifier... modifier) throws Exception {
-		getSingleton().info = info;
+		getSingleton(true).info = info;
 		if (modifier != null && modifier.length > 0)
 			getSingleton().urlModifier = modifier[0];
 		getSingleton().start(crawlerClass, mode);
@@ -448,6 +455,7 @@ public class CrawlerController {
 				Files.write(Paths.get(resultTempSrcDir + fileName), result.getBytes(UTF_8));
 			}
 		} catch (Exception e) {
+			ServerLogger.error("Error downloading html file", e);
 			info.pushLog("Can not write parsing results to a file", e);
 		}
 		currentProxyUrlsCount++;
@@ -481,9 +489,9 @@ public class CrawlerController {
 	 * Вернуть контроллер
 	 * @return
 	 */
-	static CrawlerController getSingleton() {
+	static CrawlerController getSingleton(boolean...forceCreate) {
 		try {
-			if (singleton == null)
+			if (singleton == null || (forceCreate.length > 0 && forceCreate[0]))
 				singleton = new CrawlerController();
 			return singleton;
 		} catch (Exception e) {
@@ -499,47 +507,54 @@ public class CrawlerController {
 		info.setProcessed(0);
 		info.setOperation("Загрузка файлов");
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempCompiledDir))) {
-			final ConcurrentLinkedQueue<Element> downloadQueue = new ConcurrentLinkedQueue<>();
+			final ConcurrentLinkedQueue<Download> downloadQueue = new ConcurrentLinkedQueue<>();
 			final int NUM_THREADS = 10;
 			Thread[] threads = new Thread[NUM_THREADS];
+			info.pushLog("Creating download queue");
+			info.setProcessed(0);
 			for (Path path : stream) {
 				Document result = Jsoup.parse(path.toFile(), UTF_8);
 				Elements downloads = result.getElementsByAttribute(DOWNLOAD);
-				downloadQueue.addAll(downloads);
+				for (Element download : downloads) {
+						// Найти первого родителя с заданным ID
+						Element idOwner = download;
+						String id = null;
+						for (; idOwner != null && StringUtils.isBlank(id); idOwner = idOwner.parent()) {
+							id = idOwner.attr(ID);
+						}
+						if (!StringUtils.isBlank(id)) {
+							String fileName = download.ownText();
+							String url = download.attr(DOWNLOAD);
+							if (StringUtils.isBlank(fileName))
+								fileName = Strings.getFileName(url);
+						downloadQueue.add(new Download(id, url, fileName));
+					}
+				}
+				info.increaseProcessed();
 			}
+			info.pushLog("Queue created. Start downloading.");
+			info.setProcessed(0);
 			info.setToProcess(downloadQueue.size());
 			for (int i = 0; i < NUM_THREADS; i++) {
 				threads[i] = new Thread() {
 					@Override
 					public void run() {
-						Element download;
+						Download download;
 						while ((download = downloadQueue.poll()) != null) {
-							// Найти первого родителя с заданным ID
-							Element idOwner = download;
-							String id = null;
-							for (; idOwner != null && StringUtils.isBlank(id); idOwner = idOwner.parent()) {
-								id = idOwner.attr(ID);
-							}
-							if (!StringUtils.isBlank(id)) {
-								String fileName = download.ownText();
-								String url = download.attr(DOWNLOAD);
-								if (StringUtils.isBlank(fileName))
-									fileName = Strings.getFileName(url);
-								Path itemDir = Paths.get(resultTempFilesDir + id);
-								try {
-									if (!Files.exists(itemDir))
-										Files.createDirectories(itemDir);
-									Path file = Paths.get(resultTempFilesDir + id + "/" + fileName);
-									if (!Files.exists(file) || Files.size(file) == 0) {
-										try {
-											FileUtils.copyURLToFile(URI.create(url).toURL(), file.toFile());
-										} catch (Exception e) {
-											info.pushLog("Can not download file. Error: " + e.getMessage());
-										}
+							Path itemDir = Paths.get(resultTempFilesDir + download.id);
+							try {
+								if (!Files.exists(itemDir))
+									Files.createDirectories(itemDir);
+								Path file = Paths.get(resultTempFilesDir + download.id + "/" + download.fileName);
+								if (!Files.exists(file) || Files.size(file) == 0) {
+									try {
+										FileUtils.copyURLToFile(URI.create(download.url).toURL(), file.toFile());
+									} catch (Exception e) {
+										info.pushLog("Can not download file. Error: " + e.getMessage());
 									}
-								} catch (Exception e) {
-									info.pushLog("Error downloading: {}", download.attr(DOWNLOAD));
 								}
+							} catch (Exception e) {
+								info.pushLog("Error downloading: {}", download.url);
 							}
 							info.increaseProcessed();
 						}
@@ -558,23 +573,23 @@ public class CrawlerController {
 	 * Преобразовать все файлы из изначального вида в XML вид
 	 */
 	public void transformSource() {
+		TransformerFactory factory = TransformerFactoryImpl.newInstance();
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(resultTempSrcDir))) {
 			Path transformedDir = Paths.get(resultTempTransformedDir);
 			if (Files.exists(transformedDir))
 				FileUtils.deleteDirectory(transformedDir.toFile());
 			Files.createDirectories(transformedDir);
-			TransformerFactory factory = TransformerFactoryImpl.newInstance();
-			info.setToProcess(Paths.get(resultTempSrcDir).toFile().list().length);
+			//info.setToProcess(Paths.get(resultTempSrcDir).toFile().list().length);
 			info.setProcessed(0);
 			info.setOperation("XSLT преобразование HTML в XML");
 			// Для каждого файла из временной директории
 			for (Path entry : stream) {
 				Path resultFile = Paths.get(resultTempTransformedDir + entry.getFileName().toString());
-				Document pageDoc = Jsoup.parse(entry.toFile(), UTF_8);
+				String html = Strings.cleanHtml(new String(Files.readAllBytes(entry), UTF_8));
+				Document pageDoc = Jsoup.parse(html);
 
 				String url = pageDoc.getElementsByTag("body").first().attr("source");
 
-				String content = new String(Files.readAllBytes(entry), UTF_8);
 				File xslFile = new File(stylesDir + getStyleForUrl(url));
 				if (!xslFile.exists()) {
 					info.pushLog("No xsl file '{}' found", stylesDir + getStyleForUrl(url));
@@ -586,7 +601,7 @@ public class CrawlerController {
 					info.pushLog("Transforming: {}\tTo transform: {}", url, info.getToProcess() - info.getProcessed());
 					factory.setErrorListener(errors);
 					transformer = factory.newTransformer(new StreamSource(xslFile));
-					Reader reader = new StringReader(content);
+					Reader reader = new StringReader(html);
 					OutputStream os = Files.newOutputStream(resultFile);
 					transformer.transform(new StreamSource(reader), new StreamResult(os));
 					os.close();
@@ -619,32 +634,64 @@ public class CrawlerController {
 		try {
 			String fileName = Strings.createFileName(url);
 			Path file = Paths.get(resultTempSrcDir + fileName);
+			String content = new String(Files.readAllBytes(file), UTF_8);
+			return transformStringInt(content, url);
+		} catch (Exception e) {
+			return handleTransformationException(e);
+		}
+	}
+
+	/**
+	 * Преобразовать заданный в виде строки HTML в XML
+	 * @param source - строка HTML
+	 * @param url - для определения нужного XSL файла
+	 * @return
+	 * @throws TransformerException
+	 * @throws UnsupportedEncodingException
+	 */
+	private String transformStringInt(String source, String url) {
+		try {
 			File xslFile = new File(stylesDir + getStyleForUrl(url));
 			if (!xslFile.exists()) {
 				return "<result>NO XSL FILE FOUND</result>";
 			}
-			String content = new String(Files.readAllBytes(file), UTF_8);
 			TransformerFactory factory = TransformerFactoryImpl.newInstance();
 			Transformer transformer = factory.newTransformer(new StreamSource(xslFile));
-			Reader reader = new StringReader(content);
+			Reader reader = new StringReader(source);
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			transformer.transform(new StreamSource(reader), new StreamResult(bos));
 			return bos.toString(UTF_8);
 		} catch (Exception e) {
-			info.pushLog("Can not write parsing results to a file", e);
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			e.printStackTrace(new PrintStream(bos));
-			try {
-				return bos.toString(UTF_8);
-			} catch (UnsupportedEncodingException e1) {
-				ServerLogger.error("no encoding", e1);
-				return null;
-			}
+			return handleTransformationException(e);
 		}
 	}
 
+	/**
+	 * Обработать исключение, которое может получиться в процессе XSL трансформации
+	 * @param e
+	 * @return
+	 */
+	private String handleTransformationException(Exception e) {
+		info.pushLog("Can not write parsing results to a file", e);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		e.printStackTrace(new PrintStream(bos));
+		try {
+			return bos.toString(UTF_8);
+		} catch (UnsupportedEncodingException e1) {
+			ServerLogger.error("no encoding", e1);
+			return null;
+		}
+	}
+
+
+
 	public static String transformUrl(String url) {
 		return getSingleton().transformUrlInt(url);
+	}
+
+
+	public static String transformString(String html, String url) {
+		return getSingleton().transformStringInt(html, url);
 	}
 
 
@@ -659,7 +706,7 @@ public class CrawlerController {
 				FileUtils.deleteDirectory(joinedDir.toFile());
 			}
 			Files.createDirectories(joinedDir);
-			info.setToProcess(Paths.get(resultTempTransformedDir).toFile().list().length);
+			//info.setToProcess(Paths.get(resultTempTransformedDir).toFile().list().length);
 			info.setProcessed(0);
 			// Для каждого файла из временной директории
 			for (Path xmlFile : stream) {
@@ -695,7 +742,7 @@ public class CrawlerController {
 			}
 			Files.createDirectories(compiledDir);
 			info.setOperation("Удаление дублирующихся данных");
-			info.setToProcess(Paths.get(resultTempJoinedDir).toFile().list().length);
+			//info.setToProcess(Paths.get(resultTempJoinedDir).toFile().list().length);
 			info.setProcessed(0);
 			for (Path xmlFile : stream) {
 				// Сначала скомпилировать информацию (удалить дубли, объединить элементы)
@@ -709,6 +756,8 @@ public class CrawlerController {
 				for (Element item : data) {
 					if (newDoc == null) {
 						itemId = item.id();
+						if (StringUtils.isBlank(itemId))
+							continue;
 						String elementName = item.tagName();
 						newDoc = new Document("localhost");
 						newItemToAppend = new Element(elementName);
@@ -725,7 +774,9 @@ public class CrawlerController {
 							newItemToAppend.appendChild(property);
 						} else {
 							// Дописываение
-							if (action.equalsIgnoreCase(APPEND) || property.tagName().equalsIgnoreCase(H_PARENT)) {
+							if (action.equalsIgnoreCase(APPEND) ||
+									(property.tagName().equalsIgnoreCase(H_PARENT) &&
+											newItemToAppend.select("h_parent[parent=" + property.attr("parent") + "]").isEmpty())) {
 								newItemToAppend.appendChild(property);
 							}
 							// Дописывание, если еще нет такого значения

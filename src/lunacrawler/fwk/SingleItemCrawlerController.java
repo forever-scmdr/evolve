@@ -1,10 +1,7 @@
 package lunacrawler.fwk;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.JsoupUtils;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.WebClient;
+import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
@@ -17,12 +14,14 @@ import org.apache.http.client.HttpResponseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
 import java.util.*;
 import java.util.Map.Entry;
@@ -136,7 +135,10 @@ public class SingleItemCrawlerController {
 	}
 
 	public static final String ID = "id";
-	public static final String DOWNLOAD = "download";
+	public static final String DOWNLOAD = "download"; // в этом атрибуте указывается урл на скачивание
+	public static final String TYPE = "type"; // Если в элементе стоит type="html", то нужно парсить этот html и скачивать
+	public static final String HTML = "html"; // картинки
+	public static final String IMG = "img"; // картинки
 
 	public static final String NUMBER_OF_CRAWLERS = "parsing.number_of_crawlers"; // количество параллельных потоков запросов
 	public static final String POLITENESS = "parsing.politeness"; // количество миллисекунд между запросами
@@ -238,7 +240,7 @@ public class SingleItemCrawlerController {
 	public void startStage(State...initState) throws Exception {
 		info.pushLog("Начало работы");
 		if (sectionsToProcess.size() == 0) {
-			List<Item> items = new ItemQuery(Parse_section._ITEM_TYPE_NAME).loadItems();
+			List<Item> items = new ItemQuery(Parse_section._NAME).loadItems();
 			for (Item item : items) {
 				sectionsToProcess.add(Parse_section.get(item));
 			}
@@ -277,11 +279,11 @@ public class SingleItemCrawlerController {
 		info.setOperation("Сброс состояния до " + state);
 		State nextState = State.INIT;
 		if (state == State.HTML || state == State.TRANSFORM || state == State.FILES) {
-			List<Item> sections = new ItemQuery(Parse_section._ITEM_TYPE_NAME).loadItems();
+			List<Item> sections = new ItemQuery(Parse_section._NAME).loadItems();
 			int secCount = sections.size();
 			info.setLineNumber(secCount);
 			for (Item section : sections) {
-				List<Item> items = new ItemQuery(Parse_item._ITEM_TYPE_NAME).setParentId(section.getId(), false).loadItems();
+				List<Item> items = new ItemQuery(Parse_item._NAME).setParentId(section.getId(), false).loadItems();
 				info.setToProcess(items.size());
 				int i = 0;
 				for (Item item : items) {
@@ -307,9 +309,6 @@ public class SingleItemCrawlerController {
 					}
 					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pitem).noFulltextIndex());
 					info.setProcessed(++i);
-				}
-				if (state == State.PREPARE_URLS) {
-					DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(10, null));
 				}
 				info.setLineNumber(--secCount);
 			}
@@ -344,7 +343,7 @@ public class SingleItemCrawlerController {
 	 * Это значит загрузить айтемы для парсинга, которые соответствуют некоторому критерию (не скачаны,
 	 * не разобраны, файлы не скачаны). Критерий может быть не задан, тогда загружаются все айтемы для
 	 * парсинга.
-	 * Также в этом методе перезапускается поток, который выполняет действия с айетмами для парсинга.
+	 * Также в этом методе перезапускается поток, который выполняет действия с айтемами для парсинга.
 	 * Этот поток завершается для одного раздела и стартует новый поток для следующего раздела.
 	 * Поток может быть равным null, тогда он не стартует.
 	 * @param paramName
@@ -358,7 +357,7 @@ public class SingleItemCrawlerController {
 		sectionUniqueUrls = new ConcurrentHashMap<>();
 		while (itemsToProcess.size() == 0 && sectionsToProcess.size() > 0) {
 			currentSection = sectionsToProcess.poll();
-			ItemQuery query = new ItemQuery(Parse_item._ITEM_TYPE_NAME).setParentId(currentSection.getId(), false);
+			ItemQuery query = new ItemQuery(Parse_item._NAME).setParentId(currentSection.getId(), false);
 			if (StringUtils.isNotBlank(paramName)) {
 				query
 						.addParameterCriteria(paramName, "0", "=", null, Compare.ANY)
@@ -397,19 +396,18 @@ public class SingleItemCrawlerController {
 		// Сначала удаление ранее созданных айтемов для разбора
 		info.setToProcess(secCount);
 		for (Parse_section section : sectionsToProcess) {
-			List<Item> pis = new ItemQuery(Parse_item._ITEM_TYPE_NAME).setParentId(section.getId(), false).loadItems();
+			List<Item> pis = new ItemQuery(Parse_item._NAME).setParentId(section.getId(), false).loadItems();
 			for (Item pi : pis) {
 				DelayedTransaction.executeSingle(User.getDefaultUser(), ItemStatusDBUnit.delete(pi));
 			}
 			info.setProcessed(++processedCount);
 		}
-		DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(10, null));
 
 		// Создание новых айтемов для разбора
 		info.setOperation("Подготовка нового списка урлов");
 		processedCount = 0;
 		info.setProcessed(processedCount);
-		ItemType piType = ItemTypeRegistry.getItemType(Parse_item._ITEM_TYPE_NAME);
+		ItemType piType = ItemTypeRegistry.getItemType(Parse_item._NAME);
 		for (Parse_section section : sectionsToProcess) {
 			currentSection = section;
 			// Новый список урлов (параметр раздела)
@@ -427,18 +425,31 @@ public class SingleItemCrawlerController {
 			// Создание новых айтемов для разбора из урлов с проверкой на уникальность
 			for (String url : urls) {
 				Parse_item pi = Parse_item.get(Item.newChildItem(piType, currentSection));
-				Item original = new ItemQuery(Parse_item._ITEM_TYPE_NAME)
+				Item original = new ItemQuery(Parse_item._NAME)
 						.addParameterCriteria(Parse_item.URL, url, "=", null, Compare.SOME)
 						.loadFirstItem();
 				pi.set_duplicated(original == null ? (byte) 0 : (byte) 1);
 				pi.set_url(url);
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pi));
 				if (original == null) {
-					info.pushLog("NEW - {} - {}", currentSection.get_name(), url);
+					info.pushLog("NEW - {}", url);
 				} else {
-					info.pushLog("DUPLICATED - {} - {}", currentSection.get_name(), url);
+					info.pushLog("DUPLICATED - {}", url);
 				}
 			}
+
+			// Сохранение урлов в бекап и удаление из раздела для парсинга
+			String[] oldUrls = StringUtils.split(currentSection.get_item_urls_backup(), '\n');
+			if (!urls.isEmpty() && oldUrls != null && oldUrls.length > 0) {
+				urls.add("");
+				for (String oldUrl : oldUrls) {
+					urls.add(oldUrl);
+				}
+			}
+			currentSection.set_item_urls_backup(StringUtils.join(urls, '\n'));
+			currentSection.set_item_urls(null);
+			DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(currentSection));
+
 			info.setProcessed(++processedCount);
 		}
 
@@ -458,11 +469,13 @@ public class SingleItemCrawlerController {
 				protected void processItem(Parse_item item, String proxy) throws Exception {
 					String html;
 					try {
-						html = WebClient.getString(item.get_url(), proxy);
+						html = WebClient.getCleanHtml(item.get_url(), proxy);
 					} catch (HttpResponseException re) {
+						ServerLogger.error("Web client exception", re);
 						info.addError("Url status code " + re.getStatusCode(), item.get_url());
 						return;
 					} catch (Exception e) {
+						ServerLogger.error("Unknown download problem", e);
 						info.addError("Unknown download problem: " + e.getMessage(), item.get_url());
 						return;
 					}
@@ -484,7 +497,9 @@ public class SingleItemCrawlerController {
 				}
 			};
 			workers.add(worker);
-			new Thread(worker).start();
+			Thread downloader = new Thread(worker);
+			downloader.setDaemon(true);
+			downloader.start();
 		}
 	}
 
@@ -517,8 +532,9 @@ public class SingleItemCrawlerController {
 						transformer = factory.newTransformer(new StreamSource(xslFile));
 
 						// Подготовка HTML (убирание необъявленных сущностей и т.д.)
-						Document jsoupDoc = Jsoup.parse(item.get_html());
-						String html = JsoupUtils.outputHtmlDoc(jsoupDoc);
+						//Document jsoupDoc = Jsoup.parse(item.get_html());
+						//String html = JsoupUtils.outputHtmlDoc(jsoupDoc);
+						String html = Strings.cleanHtml(item.get_html());
 
 						// Преборазование очищенного HTML
 						Reader reader = new StringReader(html);
@@ -551,7 +567,9 @@ public class SingleItemCrawlerController {
 				}
 			};
 			workers.add(worker);
-			new Thread(worker).start();
+			Thread parser = new Thread(worker);
+			parser.setDaemon(true);
+			parser.start();
 		}
 	}
 
@@ -564,12 +582,27 @@ public class SingleItemCrawlerController {
 				@Override
 				protected void processItem(Parse_item item, String proxy) throws Exception {
 					Document result = Jsoup.parse(item.get_xml());
-					Elements downloads = result.getElementsByAttribute(DOWNLOAD);
 					try {
+						// Прямые загрузки (download="url")
+						Elements downloads = result.getElementsByAttribute(DOWNLOAD);
 						for (Element download : downloads) {
-							URL url = new URL(download.attr(DOWNLOAD));
+							URL url = new URL(normalizeDownloadUrl(download.attr(DOWNLOAD), item.get_url()));
 							item.setValue(Parse_item.FILE, url);
 						}
+
+						// HTML с картинками (img)
+						Elements htmls = result.getElementsByAttributeValue(TYPE, HTML);
+						for (Element html : htmls) {
+							String xml = Parser.unescapeEntities(html.toString(), true);
+							xml = Strings.cleanHtml(xml);
+							Document xmlDoc = Jsoup.parse(xml);
+							Elements imgs = xmlDoc.getElementsByTag("img");
+							for (Element img : imgs) {
+								URL url = new URL(normalizeDownloadUrl(img.attr("src"), item.get_url()));
+								item.setValue(Parse_item.HTML_PIC, url);
+							}
+						}
+
 						item.set_got_files((byte) 1);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(item).noFulltextIndex());
 						info.pushLog("URL {} got files", item.get_url());
@@ -585,9 +618,25 @@ public class SingleItemCrawlerController {
 				}
 			};
 			workers.add(worker);
-			new Thread(worker).start();
+			Thread downloader = new Thread(worker);
+			downloader.setDaemon(true);
+			downloader.start();
 		}
 	}
+
+	private static String normalizeDownloadUrl(String fileUrl, String mainParseUrl) {
+		if (StringUtils.startsWith(fileUrl, "//")) {
+			String protocol = StringUtils.substringBefore(mainParseUrl, "//");
+			return protocol + fileUrl;
+		}
+		URI picUri = URI.create(fileUrl);
+		if (!picUri.isAbsolute()) {
+			URI baseSiteUri = URI.create(mainParseUrl);
+			return baseSiteUri.getScheme() + "://" + baseSiteUri.getHost() + fileUrl;
+		}
+		return fileUrl;
+	}
+
 
 	/**
 	 * Выбирает нужный XSL файл для преобразования HTML, полученного с заданного урла
@@ -604,5 +653,9 @@ public class SingleItemCrawlerController {
 
 	private void setTestXSLLink(Parse_item pi) {
 		pi.set_test_url("test_parse_item?pi=" + pi.getId());
+	}
+
+	public static void main(String[] args) {
+		System.out.println(normalizeDownloadUrl("/files/megafile.xml", "http://petronik.ru/catalog/id/218/"));
 	}
 }

@@ -11,9 +11,6 @@
 						<limit><var value="1" /></limit>
 					</filter>
 				</list>
-				<link name="show_section" target="sub">
-					<var name="sec" ref="sec" style="translit"/>
-				</link>
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
@@ -57,6 +54,9 @@
 
 
 	<page name="index" template="index" cacheable="true">
+		<request>
+			<var name="discount_active" scope="cookie"/>
+		</request>
 		<single item="main_page" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
@@ -90,6 +90,9 @@
 
 
 	<page name="catalog" template="catalog" cacheable="true">
+		<request>
+			<var name="discount_active" scope="cookie"/>
+		</request>
 		<include name="COMMON"/>
 		<single item="catalog">
 			<single item="seo"/>
@@ -119,7 +122,7 @@
 	</include-definition>
 
 
-	<page name="section" template="section" cacheable="true" critical-item="cur_sec">
+	<page name="section" template="section" cacheable="false" critical-item="cur_sec">
 		<request>
 			<var name="sec" style="translit"/>
 			<var name="page" value="1"/>
@@ -129,6 +132,10 @@
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="fil"/>
+
+			<!-- discount cookies -->
+			<var name="discount_active" scope="cookie"/>
+			<!-- END discount cookies -->
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<single item="seo"/>
@@ -171,6 +178,22 @@
 					<var name="pname" ref="prod" parameter="name"/>
 					<var name="pcode" ref="prod" parameter="code"/>
 				</link>
+			</list>
+			<list item="product" tag="min" transit="true">
+				<filter>
+					<parameter name="price" sign="&gt;" compare="SOME">
+						<var value="0"/>
+					</parameter>
+				</filter>
+				<aggregation parameter="price" function="MIN"/>
+			</list>
+			<list item="product" tag="max" transit="true">
+				<filter>
+					<parameter name="price" sign="&gt;" compare="SOME">
+						<var value="0"/>
+					</parameter>
+				</filter>
+				<aggregation parameter="price" function="MAX"/>
 			</list>
 		</single>
 		<include name="PRODUCT_EXTRA"/>
@@ -222,37 +245,9 @@
 		<include name="COMMON"/>
 	</page>
 
-
-
-
-	<page name="sub" template="sub" cacheable="true" >
-		<request>
-			<var name="sec" style="translit"/>
-		</request>
-		<single item="section" var="sec" cacheable="true" cache-vars="sec" tag="current_section">
-			<single item="seo"/>
-			<list item="section" id="subsec">
-				<list item="product" transit="true">
-					<filter>
-						<limit><var value="1" /></limit>
-					</filter>
-				</list>
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="subsec" style="translit"/>
-				</link>
-				<link name="show_section" target="sub">
-					<var name="sec" ref="subsec" style="translit"/>
-				</link>
-			</list>
-		</single>
-		<include name="COMMON"/>
-	</page>
-
-
-
-
 	<page name="search" template="search">
 		<request>
+			<var name="discount_active" scope="cookie"/>
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" scope="cookie"/>
@@ -311,9 +306,13 @@
 
 
 
-	<page name="product" template="product" cacheable="true">
+	<page name="product" template="product" cacheable="false">
 		<request>
 			<var name="prod" style="translit"/>
+
+			<!-- discount cookies -->
+			<var name="discount_active" scope="cookie"/>
+			<!-- END discount cookies -->
 		</request>
 		<single item="product" id="prod" var="prod">
 			<single item="seo"/>
@@ -321,6 +320,7 @@
 			<single item="params_xml"/>
 			<list item="product_extra"/>
 			<ancestor item="section" transit="false" tag="product_section"/>
+
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
 				<var name="code" ref="prod" parameter="code"/>
@@ -371,6 +371,7 @@
 	<page name="news" template="news" cacheable="true">
 		<request>
 			<var name="p" value="1"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="news">
 			<single item="seo"/>
@@ -392,6 +393,7 @@
 	<page name="articles" template="news" cacheable="true">
 		<request>
 			<var name="p" value="1"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="articles">
 			<list item="news_item" id="ni">
@@ -412,6 +414,7 @@
 	<page name="news_item" template="news_item" cacheable="true">
 		<request>
 			<var name="ni" style="translit"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="news_item" var="ni" cacheable="true" cache-vars="ni">
 			<single item="seo"/>
@@ -424,18 +427,27 @@
 
 
 	<page name="dealers" template="dealers" cacheable="true">
+		<request>
+			<var name="discount_active" scope="cookie"/>
+		</request>
 		<list item="dealer_coords" cacheable="true"/>
 		<include name="COMMON"/>
 	</page>
 
 
 	<page name="docs" template="docs" cacheable="true">
+		<request>
+			<var name="discount_active" scope="cookie"/>
+		</request>
 		<single item="docs" cacheable="true"/>
 		<include name="COMMON"/>
 	</page>
 
 
     <page name="contacts" template="contacts" cacheable="true">
+        <request>
+        	<var name="discount_active" scope="cookie"/>
+        </request>
         <single item="contacts" cacheable="true">
             <single item="seo"/>
         </single>
@@ -453,6 +465,7 @@
 	<page name="page" cacheable="true" template="page">
 		<request>
 			<var name="p" style="translit"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="custom_page" var="p" cacheable="true" cache-vars="p">
 			<single item="seo"/>
@@ -553,6 +566,12 @@
 	<page name="cart_ajax" template="cart_ajax">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="site_visit" scope="cookie"/>
+			<var name="current_time" scope="cookie"/>
+			<var name="show_window" scope="cookie"/>
+			<var name="discount_expires" scope="cookie"/>
+			<var name="discount_used" scope="cookie"/>
+			<var name="window_closed" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
@@ -569,6 +588,7 @@
 			</single>
 		</session>
 		<link name="show_cart" target="cart"/>
+		<single item="common"/>
 	</page>
 
 
@@ -579,6 +599,10 @@
 			<var name="qty"/>
 			<var name="email" value="metabobelarus@gmail.com"/>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="site_visit" scope="cookie"/>
+			<var name="current_time" scope="cookie"/>
+			<var name="discount_used" scope="cookie"/>
+			<var name="show_window" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>
@@ -586,6 +610,9 @@
 		<link name="confirm" target="confirm"/>
 		<link name="validation_failed" target="proceed">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
+		</link>
+		<link name="discount_used" target="cart">
+			<var name="message" value="Извините, использовать скидку можно не чаще одного раза в день."/>
 		</link>
 		<link name="email_send_failed" target="proceed"/>
 		<command class="extra.CartManageCommand" method-var="action">
@@ -595,6 +622,7 @@
 			<result name="confirm" type="redirect"/>
 			<result name="validation_failed" type="redirect"/>
 			<result name="email_send_failed" type="redirect"/>
+			<result name="discount_used" type="redirect"/>
 		</command>
 	</page>
 
@@ -603,6 +631,12 @@
 	<page name="cart" template="cart">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="site_visit" scope="cookie"/>
+			<var name="current_time" scope="cookie"/>
+			<var name="show_window" scope="cookie"/>
+			<var name="discount_expires" scope="cookie"/>
+			<var name="discount_used" scope="cookie"/>
+			<var name="window_closed" scope="cookie"/>
 		</request>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
@@ -635,6 +669,7 @@
 	<page name="proceed" template="proceed">
 		<request>
 			<var name="message"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<new item="user_phys" id="user_phys" tag="phys_form">
 			<parameter-input ref="user_phys" form="customer_phys"/>
@@ -747,6 +782,7 @@
 	<page name="fav" template="fav">
 		<request>
 			<var name="favourites" scope="cookie"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -786,6 +822,7 @@
 	<page name="compare" template="compare">
 		<request>
 			<var name="compare" scope="cookie"/>
+			<var name="discount_active" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -970,6 +1007,51 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
+	<!--//                                                                                                  -->
+	<!--// Команда для получения HTML, его преобразования и скачивания файлов (в зависимости от параметров) -->
+	<!--//                                                                                                  -->
+	<!--
+	stage
+		INIT - по умолчанию, все действия
+		PREPARE_URLS - создание айтемов для парсинга (без загрузки html)
+		HTML - выгрузка html
+		TRANSFORM - преобразование html
+		FILES - выгрузка файлов
+	-->
+	<page name="get_site" template="get_site" authority-groups="common">
+		<request>
+			<var name="action"/>
+			<var name="stage" value="INIT"/>
+		</request>
+		<command class="lunacrawler.SingleCrawlerCommand" clear-cache="no">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<!--//                                                                                                  -->
+	<!--// Тестовая страница для проверки XSLT преобразования (ссылка берется из айтема parse_item в CMS)   -->
+	<!--//                                                                                                  -->
+	<page name="test_parse_item">
+		<request>
+			<var name="pi"/>
+		</request>
+		<command class="lunacrawler.CrawlCommand" method="testPI">
+			<result name="test_xsl" type="xml"/>
+		</command>
+	</page>
+
+	<!--//                                                                          -->
+	<!--// Интеграция полученных данных, хранящихся в айтемах parse_item на сайт    -->
+	<!--//                                                                          -->
+	<page name="deploy_parsed" template="deploy_parsed" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.DeployParsedSingleSameCatalog" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 
 	<!--//                                                                          -->
 	<!--//                      Разбор файлов Yandex Market                         -->
@@ -989,13 +1071,13 @@
 		<single item="url_seo_wrap"/>
 		<single item="catalog" id="catalog_main">
 			<tree item="section" id="sec">
-				<link name="show_section" target="sub">
-					<var name="sec" ref="sec" style="translit"/>
-				</link>
+			<!-- 	<link name="show_section" target="sub">
+                    <var name="sec" ref="sec" style="translit"/>
+                </link> -->
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
-				<link name="map_products" target="sitemap_section" type="exclusive">
+				<link name="map_products" target="sitemap_section">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
 			</tree>
@@ -1040,6 +1122,7 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
+
 
 	<page name="download_prices">
 		<link name="success" target="excel_complete" />
@@ -1123,6 +1206,17 @@
 			<var name="action"/>
 		</request>
 		<command class="ecommander.fwk.integration.OnlinerUploadCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<page name="watermarks" template="integration/watermarks" authority-groups="common">
+		<request>
+			<var name="action"/>
+			<var name="watermark" value="css/watermark_metabo_2.png"/>
+			<var name="force" value="no"/>
+		</request>
+		<command class="ecommander.fwk.CreateWaterMarks" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

@@ -4,6 +4,9 @@ package extra._generated;
 
 public interface ItemNames {
 
+    String PARSE_SECTION = "parse_section";
+    String PARSE_ITEM = "parse_item";
+    String BASE_SEO = "base_seo";
     String SEO = "seo";
     String URL_SEO = "url_seo";
     String URL_SEO_WRAP = "url_seo_wrap";
@@ -272,6 +275,30 @@ public interface ItemNames {
 
         String _ITEM_NAME = "params_xml";
         String XML = "xml";
+
+    }
+
+    public interface parse_item_ {
+
+        String _ITEM_NAME = "parse_item";
+        String URL = "url";
+        String DOWNLOADED = "downloaded";
+        String PARSED = "parsed";
+        String GOT_FILES = "got_files";
+        String DUPLICATED = "duplicated";
+        String HTML = "html";
+        String XML = "xml";
+        String TEST_URL = "test_url";
+        String FILE = "file";
+        String HTML_PIC = "html_pic";
+
+    }
+
+    public interface parse_section_ {
+
+        String _ITEM_NAME = "parse_section";
+        String ITEM_URLS = "item_urls";
+        String ITEM_URLS_BACKUP = "item_urls_backup";
 
     }
 

@@ -3,9 +3,9 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="if(not(section)) then concat($sel_sec/name, ' Метабо купить в Минске с доставкой: цена - интернет магазин Метабо.бел') else $sel_sec/name" />
+	<xsl:variable name="title" select="if(not(section)) then concat($sel_sec/name, ' Метабо купить в Минске: цена') else $sel_sec/name" />
 	<xsl:variable name="meta_description" select="if(not(section)) then concat($sel_sec/name, ' Метабо от официального дилера №1 ✅ Доставка по РБ ☎☎☎ +375 29 566 61 16 Отличная цена, гарантия 3 года! Рассрочка по Халве') else ''"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($sel_sec/name,' Metabo')"/>
 	<xsl:variable name="canonical" select="concat('/', $sel_sec/@key, '/')"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
@@ -70,12 +70,12 @@
 				<a href="{$main_host}">Главная страница</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{if (position() = 1) then show_section else show_products}"><xsl:value-of select="name"/></a>
+					<a href="{show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$sel_sec/name"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 		<xsl:if test="$seo/text">
 			<div class="page-content m-t">
 				<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
@@ -103,7 +103,7 @@
 			<span>Страницы:</span>
 			<div class="pagination-container">
 				<xsl:for-each select="$sel_sec/product_pages/page">
-					<a href="{link}" class="{'active'[current()/@current]}"><xsl:value-of select="number"/></a>
+					<a href="{replace(link, 'section/', '')}" class="{'active'[current()/@current]}"><xsl:value-of select="number"/></a>
 				</xsl:for-each>
 			</div>
 		</div>

@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
+
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                             ПАРСИНГ                                  ////////////-->
+
+	<!--
+	Каталог для парсинга содержит структуру нормального каталога, только вместо товаров в нем
+	айтемы, которые были спаршены напрямую. Эти айтемы не подготовлены для показа на сайте, для
+	того, чтобы информация из этих айтемов показывалась на сайте, они должны быть "размещены".
+	Под "размещением" понимается разбор айтемов для парсинга и создание на их базе нормальных айтемов
+	товаров (вместе с нормальными разделами и подразделами каталога).
+	Изначально пользователь создает каталог для парсинга (с разделами и подразделами) и забивает
+	в разделы урлы всех айтемов, которые необходимо спарсить.
+	-->
+
+	<item name="parse_section" caption="Урлы для парсинга">
+		<parameter name="item_urls" type="plain-text" caption="Урлы вложенных товаров" />
+		<parameter name="item_urls_backup" type="plain-text" caption="Урлы вложенных товаров (backup)" />
+		<child item="parse_item"/>
+	</item>
+
+
+	<item name="parse_item" caption="Товар для парсинга" key="url downloaded parsed got_files">
+		<parameter name="url" type="string" caption="URL"/>
+		<parameter name="downloaded" type="byte" caption="Downloaded" default="0"/>
+		<parameter name="parsed" type="byte" caption="Parsed" default="0"/>
+		<parameter name="got_files" type="byte" caption="Files downloaded" default="0"/>
+		<parameter name="duplicated" type="byte" caption="Урл дублирован (повторная загрузка не нужна)" default="0"/>
+		<parameter name="html" type="plain-text" caption="HTML" description="полученный с сервера"/>
+		<parameter name="xml" type="plain-text" caption="XML" description="после обработки xsl"/>
+		<parameter name="test_url" type="string" caption="Ссылка для тестирования XSL преобразования"
+		           description="должна быть соответствующая страница в pages.xml (test_parse_item)"/>
+		<parameter name="file" type="file" caption="Файл" description="скачанный файл" multiple="true"/>
+		<parameter name="html_pic" type="picture" caption="Картинка из HTML" description="скачанная картинка" multiple="true"/>
+	</item>
+
+
+	<!--/////////////                            END ПАРСИНГ                               ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             SEO                                  ////////////-->
@@ -41,14 +86,14 @@
 	<!--/////////////                                                                      ////////////-->
 
 
-	<item name="original_gallery" caption="Исходная галерея" ag-id="2433" ag-hash="743720676">
+	<item name="original_gallery" caption="Исходная галерея" ag-id="2440" ag-hash="743720676">
 		<parameter name="watermark_filename"  type="string" caption="Название файла водяного знака"/>
 		<parameter name="watermark_file_modified"  type="long" caption="Дата изменения файла водяного знака"/>
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 	</item>
 
 
-	<item name="gallery" caption="Галерея" ag-id="2434" ag-hash="-196315310">
+	<item name="gallery" caption="Галерея" ag-id="2441" ag-hash="-196315310">
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 		<child item="original_gallery" single="true"/>
 	</item>
@@ -65,6 +110,7 @@
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
 	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" ag-id="3" ag-hash="1970241253">
 		<child item="seo" single="true"/>
+		<child item="parse_section" single="true"/>
 		<child item="section" />
 		<child item="product"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
@@ -131,12 +177,12 @@
 	</item>
 
 	<!-- Каталог подарков -->
-	<item name="present_catalog" caption="Каталог подарков" ag-id="1667" ag-hash="96179349">
+	<item name="present_catalog" caption="Каталог подарков" ag-id="1671" ag-hash="96179349">
 		<child item="present"/>
 	</item>
 
 	<!-- Подарок -->
-	<item name="present" caption="Подарок" key="name code" ag-id="1668" ag-hash="-318277445">
+	<item name="present" caption="Подарок" key="name code" ag-id="1672" ag-hash="-318277445">
 		<parameter name="name" type="string" caption="Наименование" />
 		<parameter name="code" type="string" caption="Код подарка" />
 		<parameter name="main_pic" type="picture" format="width: 300" caption="Главная картинка"/>
@@ -145,14 +191,14 @@
 	</item>
 
 	<!-- Соотношение подарков и товаров -->
-	<item name="product_present" caption="Соответствие товара подарку" virtual="true" ag-id="1669" ag-hash="2122091883">
+	<item name="product_present" caption="Соответствие товара подарку" virtual="true" ag-id="1673" ag-hash="2122091883">
 		<parameter name="product_code" type="string" caption="Код продукта"/>
 		<parameter name="present_code" type="string" caption="Код подарка"/>
 		<parameter name="qty" type="string" caption="Количество"/>
 	</item>
 
 
-	<item name="product_present_catalog" caption="Соответствие товаров подаркам" ag-id="1670" ag-hash="-1712785083">
+	<item name="product_present_catalog" caption="Соответствие товаров подаркам" ag-id="1674" ag-hash="-1712785083">
 		<child item="product_present"/>
 	</item>
 
@@ -194,6 +240,7 @@
 		<parameter name="order_num" type="string" caption="Номер заказа"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="simple_sum" type="currency" caption="Сумма без скидки"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
 		<child item="bought"/>
 	</item>
@@ -335,6 +382,10 @@
 	</item>
 
 	<item name="common" caption="На всех страницах" ag-id="22" ag-hash="-1354814997">
+		<parameter name="show_window" type="integer" caption="Начало скидки, сек. после захода на сайт"/>
+		<parameter name="discount_last" type="integer" caption="Срок действия скидки, сек."/>
+		<parameter name="discount" type="double" caption="Скидка" description="0.1 - скидка 10%"/>
+		<parameter name="discount_text" type="tiny-text" caption="Текст во всплывающем окне"/>
 		<parameter name="top" type="short-text" caption="Верх" description="телефоны"/>
 		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
 		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
@@ -350,11 +401,11 @@
         <child item="payment" single="true"/>
     </item>
 
-	<item name="delivery" caption="Доставка" ag-id="1658" ag-hash="823466996">
+	<item name="delivery" caption="Доставка" ag-id="1667" ag-hash="823466996">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="payment" caption="Оплата" ag-id="1666" ag-hash="-786681338">
+	<item name="payment" caption="Оплата" ag-id="1668" ag-hash="-786681338">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
@@ -365,7 +416,7 @@
 		<parameter name="message" type="string" caption="Сообщение" />
 	</item>
 
-	<item name="my_price_form" caption="Форма для предложения своей цены" virtual="true" ag-id="1275" ag-hash="442678893">
+	<item name="my_price_form" caption="Форма для предложения своей цены" virtual="true" ag-id="1669" ag-hash="442678893">
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="email" type="string" caption="E-mail"/>
@@ -375,7 +426,7 @@
 		<parameter name="message" type="string" caption="Комментарий" />
 	</item>
 
-	<item name="one_click_form" caption="Форма заказа в один клик" virtual="true" ag-id="1276" ag-hash="-2028535660">
+	<item name="one_click_form" caption="Форма заказа в один клик" virtual="true" ag-id="1670" ag-hash="-2028535660">
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="product_code" type="string" caption="Артикул товара"/>
 		<parameter name="product_name" type="string" caption="Название товара"/>

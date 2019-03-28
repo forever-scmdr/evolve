@@ -39,10 +39,21 @@
 						</xsl:for-each>
 
 						<div class="total">
-							<p>Итого: <xsl:value-of select="page/cart/sum"/> р.</p>
+							<p>Итого:
+								<xsl:if test="page/cart/simple_sum">
+								<span style="text-decoration: line-through; padding-right: 10px; color: #ccc;"><xsl:value-of select="page/cart/simple_sum"/> р.</span>
+								</xsl:if>
+								<xsl:value-of select="page/cart/sum"/> р.</p>
+							<div>
 							<input type="submit" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
 							<input type="submit" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 						</div>
+						</div>
+						<xsl:if test="page/cart/simple_sum">
+							<div class="total">
+								<p>Сэкономьте: <xsl:value-of select="f:num(page/cart/simple_sum) - f:num(page/cart/sum)"/> р.</p>
+							</div>
+						</xsl:if>
 					</form>
 				</xsl:when>
 				<xsl:otherwise>
