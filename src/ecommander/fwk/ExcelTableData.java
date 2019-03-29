@@ -237,7 +237,14 @@ public class ExcelTableData implements TableDataSource {
 		return a;
 	}
 
-	public int getLinesCount() {
+	public int getLinesCount() throws EcommanderException {
+		if (!isValid) {
+			String message = "Excel file is not valid";
+			if (missingColumns != null && missingColumns.size() > 0) {
+				message = "Отсутствуют обязательные колонки: " + StringUtils.join(missingColumns, ", ");
+			}
+			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, message);
+		}
 		return currentSheet.getLastRowNum() - headerCell.row;
 	}
 	public int getTotalLinesCount(){
