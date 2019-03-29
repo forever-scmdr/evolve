@@ -146,7 +146,7 @@ public class DeployParsedSingle extends MetaboIntegrateParsedCommand {
 		Item prod = null;
 		Elements prodEls = doc.getElementsByTag(PRODUCT);
 		for (Element prodEl : prodEls) {
-			prod = deployProduct(prodEl, parentSection);
+			prod = deployProduct(prodEl, parentSection, pi);
 		}
 
 		return prod;

@@ -6,6 +6,7 @@ import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import lunacrawler.fwk.Parse_item;
 import lunacrawler.fwk.ParsedInfoProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
@@ -13,9 +14,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -62,12 +66,15 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 	private ItemType productExtraType;
 	private ItemType paramsXmlType;
 
-	@Override
-	protected boolean makePreparations() throws Exception {
+	public MetaboIntegrateParsedCommand() {
 		sectionType = ItemTypeRegistry.getItemType(SECTION);
 		productType = ItemTypeRegistry.getItemType(PRODUCT);
 		productExtraType = ItemTypeRegistry.getItemType(PRODUCT_EXTRA);
 		paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML);
+	}
+
+	@Override
+	protected boolean makePreparations() throws Exception {
 		infoProvider = new ParsedInfoProvider();
 		return infoProvider.isValid();
 	}
@@ -112,11 +119,11 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 				ServerLogger.error("Error parsing product xml file", e);
 				info.addError("Документ для товара '" + code + "' содержит ошибки", code);
 			}
-			deployProduct(productDoc, parent);
+			deployProduct(productDoc, parent, null);
 		}
 	}
 
-	Item deployProduct(Element productEl, Item parent) throws Exception {
+	Item deployProduct(Element productEl, Item parent, Parse_item pi) throws Exception {
 		String code = productEl.getElementsByTag(CODE).first().ownText();
 		String name = productEl.getElementsByTag(NAME).first().ownText();
 		String type = productEl.getElementsByTag(TYPE).first().ownText();
@@ -145,10 +152,26 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		}
 		ArrayList<Path> gallery = new ArrayList<>();
 		Elements pics = productEl.getElementsByTag(GALLERY).first().getElementsByTag(PIC);
-		for (Element pic : pics) {
-			Path file = infoProvider.getFile(code, pic.attr(LINK));
-			if (file != null)
-				gallery.add(file);
+		if (infoProvider != null) {
+			for (Element pic : pics) {
+				Path file =  infoProvider.getFile(code, pic.attr(LINK));
+				if (file != null)
+					gallery.add(file);
+			}
+		} else if (pi != null) {
+			HashMap<String, Path> picFiles = new HashMap<>();
+			List<File> allFiles = pi.getAll_file();
+			for (File file : allFiles) {
+				picFiles.put(file.getName(), Paths.get(file.getAbsolutePath()));
+			}
+			for (Element pic : pics) {
+				String fileName = Strings.getFileName(pic.attr("download"));
+				Path picFile = picFiles.get(fileName);
+				if (picFile != null) {
+					gallery.add(picFile);
+					picFiles.remove(fileName);
+				}
+			}
 		}
 		ArrayList<String> assocCodes = new ArrayList<>();
 		Elements codeEls = productEl.getElementsByTag(ASSOC).first().getElementsByTag(CODE);

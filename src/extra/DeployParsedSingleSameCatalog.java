@@ -45,7 +45,7 @@ public class DeployParsedSingleSameCatalog extends DeployParsedSingle {
 				info.setProcessed(++processed);
 			}
 		}
-		LuceneIndexMapper.getSingleton().finishUpdate();
+		//LuceneIndexMapper.getSingleton().finishUpdate();
 	}
 
 }
