@@ -101,7 +101,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			sections = q.loadItems();
 		} else {
 			Item section = ItemQuery.loadById(secId);
-			fileSuffix = section.getStringValue(NAME_PARAM);
+			fileSuffix = section.getStringValue(NAME_PARAM).replaceAll("/", " ");
 			sections.add(section);
 		}
 		info.pushLog("Обнаружено разделов первого уровня: " + sections.size());
