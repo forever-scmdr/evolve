@@ -99,13 +99,18 @@ public class DeployParsedSingle extends IntegrateBase {
 					info.pushLog("ОШИБКА ! Товар {} НЕ ДОБАВЛЕН в раздел {}", pi.get_url(), sec.getStringValue(ItemNames.section.NAME));
 					continue;
 				}
-				if (!ItemQuery.isAncestor(prod.getId(), sec.getId(), CONTAINS_ASSOC)) {
-					executeCommandUnit(new CreateAssocDBUnit(prod, sec, CONTAINS_ASSOC));
-					commitCommandUnits();
-					info.pushLog("Товар {} добавлен в раздел {}", prod.get_name(), sec.getStringValue(ItemNames.section.NAME));
-				} else {
+				try {
+					if (!ItemQuery.isAncestor(prod.getId(), sec.getId(), CONTAINS_ASSOC)) {
+						executeCommandUnit(new CreateAssocDBUnit(prod, sec, CONTAINS_ASSOC));
+						commitCommandUnits();
+						info.pushLog("Товар {} добавлен в раздел {}", prod.get_name(), sec.getStringValue(ItemNames.section.NAME));
+					} else {
+						rollbackCommandUnits();
+						info.pushLog("ДУБЛЬ! Товар {}, раздел {}", prod.get_name(), sec.getStringValue(ItemNames.section.NAME));
+					}
+				} catch (Exception e) {
 					rollbackCommandUnits();
-					info.pushLog("ДУБЛЬ! Товар {}, раздел {}", prod.get_name(), sec.getStringValue(ItemNames.section.NAME));
+					info.pushLog("ОШИБКА ВЛОЖЕННОСТИ (МНОГОЗНАЧНЫЕ ССЫЛКИ)! Товар {}, раздел {}", prod.get_name(), sec.getStringValue(ItemNames.section.NAME));
 				}
 				info.setProcessed(++processed);
 			}
@@ -165,6 +170,7 @@ public class DeployParsedSingle extends IntegrateBase {
 			picFiles.put(file.getName(), file);
 		}
 		Element gallery = doc.getElementsByTag(GALLERY).first();
+
 		boolean noMainPic = true;
 		for (Element picEl : gallery.getElementsByTag(PICTURE)) {
 			String fileName = Strings.getFileName(picEl.ownText());
@@ -189,7 +195,6 @@ public class DeployParsedSingle extends IntegrateBase {
 		for (File picFile : picFiles.values()) {
 			prod.setValue(ItemNames.product.TEXT_PICS, picFile);
 		}
-
 		// Заполнение видео
 		for (Element vidEl : gallery.getElementsByTag(VIDEO)) {
 			prod.setValue(ItemNames.product.VIDEO, vidEl.ownText());
@@ -218,8 +223,8 @@ public class DeployParsedSingle extends IntegrateBase {
 		}
 
 		// Исправить адреса картинок в HTML
-		updatePics(prod, ItemNames.product.TEXT, ItemNames.product.TEXT_PICS);
-		updatePics(prod, ItemNames.product.APPLY, ItemNames.product.TEXT_PICS);
+		//updatePics(prod, ItemNames.product.TEXT, ItemNames.product.TEXT_PICS);
+		//updatePics(prod, ItemNames.product.APPLY, ItemNames.product.TEXT_PICS);
 		executeCommandUnit(SaveItemDBUnit.get(prod));
 
 		return prod;

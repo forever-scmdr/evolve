@@ -8,10 +8,12 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template match="/">
-		<xsl:variable name="code" select="replace(substring-after(//p[@itemprop = 'mpn'][1], '.'), '\D', '')"/><!--//p[@itemprop = 'mpn'][1]/text()-->
+		<xsl:variable name="full_code" select="//p[@itemprop = 'mpn'][1]"/>
+		<xsl:variable name="h1" select="//h1[1]"/>
+		<xsl:variable name="code" select="replace(substring-after($full_code[1], '.'), '\D', '')"/><!--//p[@itemprop = 'mpn'][1]/text()-->
 		<product id="{$code}">
 			<code><xsl:value-of select="$code"/></code>
-			<name><xsl:value-of select="normalize-space(//h1[1])"/></name><!-- //div[contains(@class, 'breadcrumbs')]//h1 -->
+			<name><xsl:value-of select="normalize-space($h1[1])"/></name><!-- //div[contains(@class, 'breadcrumbs')]//h1 -->
 			<short><xsl:copy-of select="//section[@class, 'm-pdp-txt-position']/article[1]/*"/></short>
 			<gallery>
 				<xsl:for-each select="//div[@id = 'slider']//li/a[not(starts-with(@href, 'https://youtube.com'))]">

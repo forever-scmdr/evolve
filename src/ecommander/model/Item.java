@@ -601,6 +601,8 @@ public class Item implements ItemBasics {
 					}
 				}
 				key = key.trim();
+				if (key.length() > 100)
+					key = key.substring(0, 100);
 			} else {
 				key = itemType.getCaption();
 			}
