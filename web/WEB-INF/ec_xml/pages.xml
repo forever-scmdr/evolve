@@ -1365,8 +1365,12 @@
 		</command>
 	</page>
 
-	<page name="remove_hidden" authority-groups="common">
-		<command class="extra.RemoveInvisibleCommand" clear-cache="no">
+
+    <page name="reindex_all" template="integration/reindex" authority-groups="common">
+        <request>
+            <var name="action"/>
+        </request>
+        <command class="ecommander.fwk.integration.ReindexCommand" clear-cache="no">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

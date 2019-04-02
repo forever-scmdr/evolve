@@ -190,7 +190,7 @@
 										<a href="admin_drop_all_caches.action">Очистить все кеши</a>
 									</li>
 									<li class="visible" title="Обновить список товаров для полнотекстового поиска">
-										<a href="admin_reindex.action">Переиндексация</a>
+										<a href="reindex_all/?action=start">Переиндексация</a>
 									</li>
 									<!--<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">-->
 										<!--<a href="admin_domains_initialize.domain">-->
