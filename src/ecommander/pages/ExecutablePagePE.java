@@ -206,7 +206,8 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 				}
 			}
 		} finally {
-			sessionContext.close();
+			if (sessionContext != null)
+				sessionContext.close();
 		}
 		return result;
 	}

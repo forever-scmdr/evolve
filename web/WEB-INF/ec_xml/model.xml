@@ -335,8 +335,10 @@
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="password" type="string" caption="Пароль"/>
+		<parameter name="registered" type="byte" caption="Флаг зарегистрированности" domain="0-1" default="0"/>
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<child item="purchase"/>
+		<on-update class="extra.MakeUserRegistered"/>
 		<on-delete class="extra.DeleteRegisteredUser"/>
 	</item>
 

@@ -673,6 +673,14 @@
 	</page>
 
 
+	<page name="register_email" template="register_email">
+		<request>
+			<var name="user"/>
+		</request>
+		<single item="user" var="user" tag="user"/>
+	</page>
+
+
 	<page name="fav_ajax" template="fav_ajax">
 		<request>
 			<var name="favourites" scope="cookie"/>
@@ -825,7 +833,7 @@
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="register"/>
 		</new>
-		<link name="confirm_link" target="register_action" type="itemform">
+		<link name="confirm_link" target="just_email_register_action" type="itemform">
 			<var name="action" value="register"/>
 		</link>
 		<include name="COMMON"/>
@@ -877,6 +885,29 @@
 			<result name="success_personal" type="redirect"/>
 			<result name="not_set_personal" type="redirect"/>
 			<result name="user_exists_personal" type="redirect"/>
+		</command>
+	</page>
+
+
+	<page name="just_email_register_action">
+		<request>
+			<var name="action"/>
+			<var name="src" value="register"/>
+		</request>
+		<link name="not_set" target="register">
+			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
+		</link>
+		<link name="user_exists" target="register">
+			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
+		</link>
+		<link name="success" target="register">
+			<var name="message" value="Ваша заявка на регистрацию отправлена на согласование, спасибо"/>
+			<var name="success" value="true"/>
+		</link>
+		<command class="extra.JustEmailRegisterCommand" method-var="action">
+			<result name="not_set" type="redirect"/>
+			<result name="user_exists" type="redirect"/>
+			<result name="success" type="redirect"/>
 		</command>
 	</page>
 

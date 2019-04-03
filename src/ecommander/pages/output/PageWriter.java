@@ -142,13 +142,15 @@ public class PageWriter {
 		//      <group name="common" id="0" admin="1"/>
 		//      ...
 		// </user>
-		User user = page.getSessionContext().getUser();
-		xml.startElement(USER_ELEMENT, ID_ATTRIBUTE, user.getUserId(), NAME_ATTRIBUTE, user.getName(),
-				VISUAL_ATTRIBUTE, page.getSessionContext().isContentUpdateMode());
-		for (User.Group group : user.getGroups()) {
-			xml.addEmptyElement(GROUP_ELEMENT, NAME_ATTRIBUTE, group.name, ID_ATTRIBUTE, group.id, ROLE_ATTRIBUTE, group.role);
+		if (page.getSessionContext() != null) {
+			User user = page.getSessionContext().getUser();
+			xml.startElement(USER_ELEMENT, ID_ATTRIBUTE, user.getUserId(), NAME_ATTRIBUTE, user.getName(),
+					VISUAL_ATTRIBUTE, page.getSessionContext().isContentUpdateMode());
+			for (User.Group group : user.getGroups()) {
+				xml.addEmptyElement(GROUP_ELEMENT, NAME_ATTRIBUTE, group.name, ID_ATTRIBUTE, group.id, ROLE_ATTRIBUTE, group.role);
+			}
+			xml.endElement();
 		}
-		xml.endElement();
 		// <base>http://test.forever-ds.com</base>
 		xml.startElement(BASE_ELEMENT).addText(page.getUrlBase()).endElement();
 		// <variables>
