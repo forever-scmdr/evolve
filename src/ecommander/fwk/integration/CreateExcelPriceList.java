@@ -68,9 +68,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private static final String LINE_PRODUCTS_VAR = "line_products";
 	private static final String PRODUCTS_VAR = "existing_products";
 	private static final String SECTION_VAR = "sec";
-
-	//sets all vars to write only prices. cancels all other settings
-	private static final String PRICE_ONLY_VAR = "price_only";
+	private static final String PRICE_ONLY_VAR = "price_only";//sets all vars to write only prices. cancels all other settings
 	private static final String MANUALS_VAR = "manuals";
 	private static final String YES = "yes";
 	private static final String NO = "no";
@@ -139,7 +137,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			processSubsections(sh, rowIndex, id);
 		}
 		setOperation("Запись файла");
-		String fileName = "pricelist-" + fileSuffix + ".xls";
+		String optionsSuffix = (writeHierarchy)? "" : "min-";
+		String fileName = "pricelist-"+ optionsSuffix + fileSuffix + ".xls";
 		pushLog(fileName);
 		FileOutputStream fileOutputStream = new FileOutputStream(AppContext.getFilesDirPath(false) + "/" + fileName);
 		workBook.write(fileOutputStream);
@@ -322,7 +321,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 				StringBuilder manuals = new StringBuilder();
 				int i=0;
 				for(Item manual : new ItemQuery(MANUAL_PARAM).setParentId(product.getId(), false).loadItems()){
-					if(i>0)manuals.append("; ");
+					if(i>0)manuals.append(VALUE_SEPARATOR);
 					manuals	.append(manual.getId()).append('|')
 							.append(manual.getStringValue(NAME_PARAM)).append('|')
 							.append(manual.getStringValue(LINK_PARAM));
@@ -561,7 +560,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		writeManuals = (YES.equals(manualsVar)) || writeManuals && !NO.equals(manualsVar);
 		writeLineProducts = (YES.equals(lineProductsVar)) || writeLineProducts && !NO.equals(lineProductsVar);
 
-		writeManuals = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter(MANUAL_PARAM) != null && writeManuals;
+		writeManuals = ItemTypeRegistry.getItemType(MANUAL_PARAM) != null && writeManuals;
 		hasUnits = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter("unit") != null;
 		writeLineProducts = ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM) != null && writeLineProducts;
 

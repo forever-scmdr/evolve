@@ -95,6 +95,18 @@ public class SessionContext implements AutoCloseable {
 	}
 
 	/**
+	 * Создать контекст сеанса только с одним установленным пользователем
+	 * (без фактического сеанса, из всех данных только пользователь)
+	 * @param user
+	 * @return
+	 */
+	public static SessionContext userOnlySessionContext(User user) {
+		SessionContext context = new SessionContext(null);
+		context.user = user;
+		return context;
+	}
+
+	/**
 	 * Добавить занчение в сеанс и увеличить счетчик, если раньше в сеансе не было значения с таким именем
 	 * @param name
 	 * @param object
