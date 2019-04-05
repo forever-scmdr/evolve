@@ -152,12 +152,13 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Отправка на ящик заказчика
 		try {
-			EmailUtils.sendGmailDefault(customerEmail, regularTopic, regularMP);
+			if (StringUtils.isNotBlank(customerEmail))
+				EmailUtils.sendGmailDefault(customerEmail, regularTopic, regularMP);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra (IN_PROGRESS, null);
 			getSessionMapper().saveTemporaryItem(cart);
-			return getResult("email_send_failed").setVariable("message", "Не удалось отправить сообщение на ящик " + customerEmail);
+			return getResult("email_send_failed").setVariable("message", "Не удалось отправить сообщение на указанный ящик");
 		}
 		// Отправка на ящик магазина
 		try {
@@ -284,6 +285,12 @@ public abstract class BasicCartManageCommand extends Command {
 			// Сохраняется девайс
 			product.setContextPrimaryParentId(bought.getId());
 			getSessionMapper().saveTemporaryItem(product, PRODUCT_ITEM);
+			// Загрузка и сохранение родительского продукта (для продуктов, вложенных в другие продукты)
+			Item parent = new ItemQuery(PRODUCT_ITEM).setChildId(product.getId(), false).loadFirstItem();
+			if (parent != null) {
+				parent.setContextPrimaryParentId(product.getId());
+				getSessionMapper().saveTemporaryItem(parent);
+			}
 		} else {
 			Item bought = getSessionMapper().getItem(boughtProduct.getContextParentId(), BOUGHT_ITEM);
 			if (qty <= 0) {

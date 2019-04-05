@@ -29,10 +29,10 @@
 		testWhileIdle="true"
 		timeBetweenEvictionRunsMillis="10000"
 		minEvictableIdleTimeMillis="60000"
-		username="root"
-		password="2"
+		username="alfacomp_main"
+		password="alfacomp_main"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://localhost:3307/oboi?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
+		url="jdbc:mysql://alfacomponent.must.by:3306/alfacomp_main?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
 	/>
 
 </Context>

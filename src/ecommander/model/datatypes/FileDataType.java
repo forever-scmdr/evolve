@@ -1,5 +1,13 @@
 package ecommander.model.datatypes;
 
+import ecommander.controllers.AppContext;
+import ecommander.fwk.Strings;
+import ecommander.model.Item;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -9,16 +17,19 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 
-import ecommander.model.Item;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-
-import ecommander.fwk.Strings;
-import ecommander.controllers.AppContext;
-
 
 public class FileDataType extends StringDataType {
+
+	public static class BufferedPic {
+		public BufferedPic(BufferedImage pic, String name, String type) {
+			this.pic = pic;
+			this.name = name;
+			this.type = type;
+		}
+		public final BufferedImage pic;
+		public final String name;
+		public final String type;
+	}
 
 	private static final String SIZE_META = "size"; // размер файла
 	private static final String CREATED_META = "created"; // дата создания файла
@@ -41,6 +52,8 @@ public class FileDataType extends StringDataType {
 			return StringUtils.lowerCase(((File) value).getName());
 		else if (value instanceof URL)
 			return Strings.getFileName(((URL) value).getFile());
+		else if (value instanceof BufferedPic)
+			return Strings.getFileName(((BufferedPic) value).name);
 		return StringUtils.lowerCase(super.outputValue(value, formatter));
 	}
 
@@ -65,6 +78,10 @@ public class FileDataType extends StringDataType {
 			meta.put(EXTENSION_META, StringUtils.substringAfterLast(file.getName(), "."));
 		} else if (value instanceof URL) {
 			return meta;
+		} else if (value instanceof BufferedPic) {
+			BufferedPic file = (BufferedPic) value;
+			meta.put(CREATED_META, DateDataType.DAY_FORMATTER.print(System.currentTimeMillis()));
+			meta.put(EXTENSION_META, StringUtils.substringAfterLast(file.name, "."));
 		} else {
 			try {
 				Path file = null;
@@ -144,6 +161,9 @@ public class FileDataType extends StringDataType {
 		}
 		else if (o1 instanceof URL) {
 			return o1.equals(o2);
+		}
+		else if (o1 instanceof BufferedPic) {
+			return StringUtils.equalsIgnoreCase(((BufferedPic) o1).name, ((BufferedPic) o2).name);
 		}
 		return StringUtils.equalsIgnoreCase(o1.toString(), o2.toString());
 	}

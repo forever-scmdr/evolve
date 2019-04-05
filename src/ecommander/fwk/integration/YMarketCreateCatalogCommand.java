@@ -4,7 +4,9 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.*;
+import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
+import ecommander.persistence.commandunits.DeleteItemTypeBDUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
@@ -12,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.io.File;
+import java.io.*;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -58,8 +60,13 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator());
 		info.setProcessed(0);
 		for (File xml : xmls) {
-			parser.parse(xml, secHandler);
-			info.increaseProcessed();
+			// Удалить DOCTYPE
+			if (removeDoctype(xml)) {
+				parser.parse(xml, secHandler);
+				info.increaseProcessed();
+			} else {
+				addError("Невозможно удалить DOCTYPE " + xml, xml.getName());
+			}
 		}
 
 		// Удаление всех пользовательских параметров товаров (айтемов и типов)
@@ -78,10 +85,6 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 			info.setProcessed(processed);
 			itemsToDelete = paramsQuery.loadItems();
 		}
-		info.pushLog("Очистка корзины");
-		info.setProcessed(0);
-		executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10,
-				deletedCount -> info.increaseProcessed(deletedCount)).noFulltextIndex());
 
 		LinkedHashSet<String> typesToDelete = ItemTypeRegistry.getItemExtenders(PARAMS_ITEM);
 		typesToDelete.remove(PARAMS_ITEM);
@@ -101,7 +104,6 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		for (File xml : xmls) {
 			parser.parse(xml, prodHandler);
 		}
-		executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(20, null).noFulltextIndex());
 
 		info.pushLog("Создание товаров завершено");
 		info.pushLog("Индексация");
@@ -112,6 +114,48 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.pushLog("Индексация завершена");
 		info.pushLog("Интеграция успешно завершена");
 		info.setOperation("Интеграция завершена");
+	}
+
+
+	private static boolean removeDoctype(File file) throws FileNotFoundException {
+		File tempFile = new File("__temp__.xml");
+		final String DOCTYPE = "!DOCTYPE";
+		boolean containsDoctype = false;
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			int i = 0;
+			String currentLine;
+			while ((currentLine = reader.readLine()) != null && i < 5) {
+				i++;
+				if (StringUtils.contains(currentLine, DOCTYPE)) {
+					containsDoctype = true;
+					break;
+				}
+			}
+		} catch (IOException e) {
+			info.addError("Невозможно прочитать файл " + file.getName(), file.getName());
+		}
+		if (!containsDoctype)
+			return true;
+
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+		     BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			String currentLine;
+			boolean doctypeNotRemoved = true;
+			while((currentLine = reader.readLine()) != null) {
+				if (doctypeNotRemoved && StringUtils.contains(currentLine, DOCTYPE)) {
+					doctypeNotRemoved = false;
+					continue;
+				}
+				writer.write(currentLine);
+				writer.newLine();
+			}
+		} catch (IOException e) {
+			info.addError("Невозможно удалить DOCTYPE " + file.getName(), file.getName());
+		}
+		boolean success = file.delete();
+		success &= tempFile.renameTo(file);
+		return success;
 	}
 
 	@Override

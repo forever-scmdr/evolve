@@ -7,8 +7,8 @@
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
-	<xsl:variable name="subs" select="$main_menu_section/section"/>
-	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
+	<!--<xsl:variable name="subs" select="$main_menu_section/section"/>-->
+	<xsl:variable name="show_devices" select="1 = 1"/>
 
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
 
@@ -28,7 +28,7 @@
 			"@type": "Product",
 			"name": <xsl:value-of select="concat($quote, replace($sel_sec/name, $quote, ''), $quote)"/>,
 			<xsl:if test="$sel_sec/main_pic != ''">
-				"image": <xsl:value-of select="concat($quote, $base, '/', $sel_sec/@path, $sel_sec/main_pic, $quote)"/>,
+				"image": <xsl:value-of select="concat($quote, $main_host, '/', $sel_sec/@path, $sel_sec/main_pic, $quote)"/>,
 			</xsl:if>
 			"offers": {
 			"@type": "AggregateOffer",
@@ -95,9 +95,9 @@
 			<xsl:call-template name="FILTER"/>
 			<!-- Отображние блоками/списком, товаров на страницу, сортировка, наличие -->
 
-			<xsl:if test="$subs and $sub_view = 'pics' and $show_devices and not($sel_sec/show_subs = '0')">
-				<div class="h3">Товары</div>
-			</xsl:if>
+			<!--<xsl:if test="$subs and $sub_view = 'pics' and $show_devices and not($sel_sec/show_subs = '0')">-->
+				<!--<div class="h3">Товары</div>-->
+			<!--</xsl:if>-->
 			<xsl:call-template name="DISPLAY_CONTROL"/>
 
 			<xsl:if test="$show_devices">
@@ -150,33 +150,35 @@
 	</xsl:template>
 
 	<xsl:template name="TAGS">
-	   <xsl:if test="$subs or $sel_sec/tag">
-				<xsl:if test="not($subs)">
+	   <!--<xsl:if test="$subs or $sel_sec/tag">-->
+		<xsl:if test="$sel_sec/tag">
+				<!--<xsl:if test="not($subs)">-->
 					<div class="tags">
 						<form method="GET" action="{page/source_link}">
 							<xsl:apply-templates select="$sel_sec/tag"/>
 						</form>
 					</div>
-				</xsl:if>
-				<xsl:if test="not($sel_sec/show_subs = '0')">
-					<xsl:if test="$subs and $sub_view = 'tags'">
-						<div class="tags">
-							<xsl:apply-templates select="$subs" mode="tag"/>
-						</div>
-					</xsl:if>
-					<xsl:if test="$subs and $sub_view = 'pics'">
-						<div class="catalog-items">
-							<xsl:apply-templates select="$subs" mode="pic"/>
-						</div>
-					</xsl:if>
-				</xsl:if>
+				<!--</xsl:if>-->
+				<!--<xsl:if test="not($sel_sec/show_subs = '0')">-->
+					<!--<xsl:if test="$subs and $sub_view = 'tags'">-->
+						<!--<div class="tags">-->
+							<!--<xsl:apply-templates select="$subs" mode="tag"/>-->
+						<!--</div>-->
+					<!--</xsl:if>-->
+					<!--<xsl:if test="$subs and $sub_view = 'pics'">-->
+						<!--<div class="catalog-items">-->
+							<!--<xsl:apply-templates select="$subs" mode="pic"/>-->
+						<!--</div>-->
+					<!--</xsl:if>-->
+				<!--</xsl:if>-->
 		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="FILTER">
 		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 1]"/>
 
-		<xsl:if test="not($subs) and $valid_inputs">
+		<!--<xsl:if test="not($subs) and $valid_inputs">-->
+		<xsl:if test="$valid_inputs">
 			<div class="toggle-filters">
 				<i class="fas fa-cog"></i>
 				<a onclick="$('#filters_container').slideToggle(200);">Подбор по параметрам</a>

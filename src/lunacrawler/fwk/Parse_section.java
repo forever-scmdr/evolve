@@ -8,7 +8,9 @@ public class Parse_section
     extends Item
 {
 
-    public final static String _ITEM_TYPE_NAME = "parse_section";
+    public final static String _NAME = "parse_section";
+    public final static String ITEM_URLS = "item_urls";
+    public final static String ITEM_URLS_BACKUP = "item_urls_backup";
 
     private Parse_section(Item item) {
         super(item);
@@ -18,7 +20,7 @@ public class Parse_section
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'parse_section' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,23 +28,7 @@ public class Parse_section
     }
 
     public static Parse_section newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
-    }
-
-    public void set_name(String value) {
-        setValue("name", value);
-    }
-
-    public String get_name() {
-        return getStringValue("name");
-    }
-
-    public String getDefault_name(String defaultVal) {
-        return getStringValue("name", defaultVal);
-    }
-
-    public boolean contains_name(String value) {
-        return containsValue("name", value);
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_item_urls(String value) {
@@ -59,6 +45,22 @@ public class Parse_section
 
     public boolean contains_item_urls(String value) {
         return containsValue("item_urls", value);
+    }
+
+    public void set_item_urls_backup(String value) {
+        setValue("item_urls_backup", value);
+    }
+
+    public String get_item_urls_backup() {
+        return getStringValue("item_urls_backup");
+    }
+
+    public String getDefault_item_urls_backup(String defaultVal) {
+        return getStringValue("item_urls_backup", defaultVal);
+    }
+
+    public boolean contains_item_urls_backup(String value) {
+        return containsValue("item_urls_backup", value);
     }
 
 }

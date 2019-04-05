@@ -1,19 +1,11 @@
 package ecommander.model;
 
-import java.io.File;
-import java.io.StringReader;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.model.datatypes.DataType.Type;
 import ecommander.pages.InputValues;
+import ecommander.pages.output.UserParameterDescriptionMDWriter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.xml.sax.Attributes;
@@ -21,11 +13,13 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
-import ecommander.pages.output.UserParameterDescriptionMDWriter;
-import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.model.datatypes.DataType.Type;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
+import java.io.StringReader;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Такие действия, как добавление (или удаление) сабайтема в айтем должны происходить следующим образом:
@@ -127,6 +121,9 @@ public class Item implements ItemBasics {
 		this.areFilesProtected = src.areFilesProtected;
 		this.timeUpdated = src.timeUpdated;
 		this.paramMap.putAll(src.paramMap);
+		for (Parameter parameter : paramMap.values()) {
+			parameter.item = this;
+		}
 		this.state = src.state;
 		setFilesPath();
 	}
@@ -294,7 +291,7 @@ public class Item implements ItemBasics {
 			if (itemType.getParameter(paramId).isMultiple())
 				return false;
 			// Удалить параметр, если значение равно null
-			modified = clearParameter(paramId);
+			modified = clearValue(paramId);
 		} else {
 			modified = getParameter(paramId).setValue(value, false);
 		}
@@ -522,7 +519,7 @@ public class Item implements ItemBasics {
 	 * Удаляет параметр с заданным ID
 	 * @param paramId
 	 */
-	public final boolean clearParameter(int paramId) {
+	public final boolean clearValue(int paramId) {
 		populateMap();
 		if (getParameterFromMap(paramId).clear()) {
 			state = State.modified_NO_xml;
@@ -534,8 +531,8 @@ public class Item implements ItemBasics {
 	 * Удалить все значения определенного параметра по его названию
 	 * @param paramName
 	 */
-	public final void clearParameter(String paramName) {
-		clearParameter(itemType.getParameter(paramName).getId());
+	public final void clearValue(String paramName) {
+		clearValue(itemType.getParameter(paramName).getId());
 	}
 	/**
 	 * Удалить определенное значение параметра
@@ -549,7 +546,7 @@ public class Item implements ItemBasics {
 			((MultipleParameter) param).deleteValue(paramValue);
 		} else {
 			if (param.containsValue(paramValue))
-				clearParameter(paramId);
+				clearValue(paramId);
 		}
 		state = State.modified_NO_xml;
 	}

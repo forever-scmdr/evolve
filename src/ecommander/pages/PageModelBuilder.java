@@ -48,7 +48,7 @@ import java.util.*;
 
 	<request>
 		// Порядок следования переменных в этом блоке имеет значение при использовании транслитерации переменных
-		<var name="device" style="translit"/> // значит этот параметр передается как уникальный строковый идентификатор
+		<var name="device" style="key"/> // значит этот параметр передается как уникальный строковый идентификатор
 		<var name="list" value="100,101,102"/>
 		<var name="filter_parameter_value_1"/>
 		<var name="filter_parameter_value_2"/>
@@ -75,7 +75,7 @@ import java.util.*;
 				<var name="device" item="device"/> // переменная с динамическим значением - ID айтема
 				<var name="device" item="device" parameter="producer"/> // переменная с динамическим значением - Значение параметра айтема
 				<var name="filter_parameter_value_2" var="filter_parameter_value_1"/> // переменная с динамическим значением - Другая переменная
-				<var ... style="translit"/> // Такая переменная может передаваться в формате транслита
+				<var ... style="key"/> // Такая переменная может передаваться в формате транслита
 				<var ... style="query"/> // Название и значение переменной передается в URL query
 				
 				<var name="$now" value="yyyy.MM.dd HH.mm"/> // Переменная, которая всегда возвращает текущее время в заданном формате (имя - $now)
@@ -892,7 +892,7 @@ public class PageModelBuilder {
 		// Считвание базовых параметров страничного айтема
 		String itemNodeName = itemNode.tagName();
 		String itemName = itemNode.attr(ITEM_ATTRIBUTE);
-		String assocName = itemNode.attr(ASSOC_ATTRIBUTE);
+		String[] assocName = StringUtils.split(itemNode.attr(ASSOC_ATTRIBUTE), ' ');
 		String pageItemId = itemNode.attr(ID_ATTRIBUTE);
 		String tagName = itemNode.attr(TAG_ATTRIBUTE);
 		String referenceVar = itemNode.attr(VAR_ATTRIBUTE);
@@ -1081,8 +1081,8 @@ public class PageModelBuilder {
 			boolean isUserFiltered = StringUtils.isNotBlank(userFilterItemId)
 					&& StringUtils.isNotBlank(userFilterParamName)
 					&& StringUtils.isNotBlank(userFilterVarName);
-			AssociatedItemCriteriaPE assocCrit = new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE),
-					filterSubnode.attr(ASSOC_ATTRIBUTE), isParent, isUserFiltered);
+			AssociatedItemCriteriaPE assocCrit = new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), isParent, isUserFiltered,
+					StringUtils.split(filterSubnode.attr(ASSOC_ATTRIBUTE), ' '));
 			container.addElement(assocCrit);
 			if (isUserFiltered) {
 				filter.setUserFilter(userFilterItemId, userFilterParamName, userFilterVarName, preload, false);
@@ -1311,7 +1311,7 @@ public class PageModelBuilder {
 				String styleStr = linkSubnode.attr(STYLE_ATTRIBUTE);
 				try {
 					if (!StringUtils.isBlank(styleStr))
-						VariablePE.Style.valueOf(styleStr);
+						VariablePE.Style.getValue(styleStr);
 					// Проверка, правильно ли указан стиль переменной
 				} catch (Exception e) {
 					throw new PrimaryValidationException(page.getPageName() + " > link ", "'" + styleStr

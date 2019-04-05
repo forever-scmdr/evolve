@@ -1,7 +1,10 @@
 package ecommander.persistence.commandunits;
 
 import ecommander.fwk.ItemEventCommandFactory;
-import ecommander.model.*;
+import ecommander.model.Item;
+import ecommander.model.ItemBasics;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.itemquery.ItemQuery;

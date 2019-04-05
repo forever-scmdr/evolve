@@ -158,6 +158,7 @@ public class MainAdminPageCreator implements AdminXML {
 	/**
 	 * Разные экшены
 	 */
+	public static final String PRESERVE_PASTE_BUFFER_VAR = "preserve_buffer_content";
 	public static final String INITIALIZE_ACTION = "admin_initialize";
 	public static final String SET_ITEM_ACTION = "admin_set_item";
 	public static final String CREATE_ITEM_ACTION = "admin_create_item";
@@ -207,13 +208,15 @@ public class MainAdminPageCreator implements AdminXML {
 
 	//MASS ACTIONS
 	public static final String MASS_COPY_ACTION = "admin_copy_all";
-	public static final String MASS_PASTE_ACTION = "admin_paste_all";
-	public static final String MASS_MOVE_TO_ACTION = "admin_move_all";
+	public static final String MASS_PASTE_ACTION = "admin_paste_selected";
+	public static final String MASS_MOVE_TO_ACTION = "admin_move_selected";
 	public static final String MASS_DELETE_ACTION = "admin_delete_all";
 	public static final String MASS_HIDE_ACTION = "admin_hide_all";
 	public static final String MASS_SHOW_ACTION = "admin_show_all";
-	public static final String MASS_DELETE_FROM_BUFFER_ACTION = "admin_delete_all_from_buffer";
-
+	public static final String MASS_DELETE_FROM_BUFFER_ACTION = "admin_delete_selected_from_buffer";
+	public static final String CLEAR_BUFFER_ACTION = "admin_clear_paste_buffer";
+	public static final String PASTE_ALL_ACTION = "admin_paste_all";
+	public static final String MOVE_ALL_ACTION = "admin_move_all";
 
 	/**
 	 * Инпуты

@@ -3,15 +3,11 @@ package lunacrawler;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.JsoupUtils;
 import ecommander.fwk.Strings;
-import ecommander.model.Item;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lunacrawler.fwk.CrawlerController;
 import lunacrawler.fwk.Parse_item;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.safety.Whitelist;
 
 /**
  * Команда для парсинга сайта

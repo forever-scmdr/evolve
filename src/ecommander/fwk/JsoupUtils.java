@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Entities;
 import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 import java.nio.charset.Charset;
 
@@ -14,11 +15,17 @@ import java.nio.charset.Charset;
  */
 public class JsoupUtils {
 	public static String nodeText(Element element, String tag) {
-		return element.getElementsByTag(tag).first().ownText();
+		Elements nodes = element.getElementsByTag(tag);
+		if (nodes.isEmpty())
+			return null;
+		return nodes.first().ownText();
 	}
 
 	public static String nodeHtml(Element element, String tag) {
-		return element.getElementsByTag(tag).first().html();
+		Elements nodes = element.getElementsByTag(tag);
+		if (nodes.isEmpty())
+			return null;
+		return nodes.first().html();
 	}
 
 	public static String outputHtmlDoc(Document jsoupDoc) {

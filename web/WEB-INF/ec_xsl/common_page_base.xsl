@@ -19,6 +19,7 @@
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
+	<xsl:variable name="sel_sec_link" select="f:substring-before-last(page/source_link, '/')"/>
 
 
 	<xsl:variable name="active_menu_item"/>
@@ -47,7 +48,7 @@
 								<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
 								<input type="submit" value="Найти"/>
 							</form>
-							<a href="" data-toggle="modal" data-target="#modal-excel">Загрузка BOOM</a>
+							<a href="" data-toggle="modal" data-target="#modal-excel">Загрузка BOM</a>
 							<!-- <form action="{page/excel_search_link}" method="post" enctype="multipart/form-data">
 								<input type="file" name="file"/>
 								<input type="submit"/>
@@ -67,34 +68,7 @@
 								</div>
 							</div>
 						</div>
-						
-						<!-- <div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
-							<div class="sections">
-								<xsl:for-each select="page/catalog/section">
-									<a href="{show_products}"
-									   class="cat_menu_item_1" rel="#sub_{@id}"><xsl:value-of select="name" /></a>
-								</xsl:for-each>
-							</div>
 
-							<xsl:for-each select="page/catalog/section">
-								<div class="subsections" style="display: none" id="sub_{@id}">
-									<xsl:for-each select="section">
-										<a href="{show_products}"><xsl:value-of select="name" /></a>
-									</xsl:for-each>
-								</div>
-							</xsl:for-each>
-						</div> -->
-					<!-- 	<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да' and menu_custom]">
-							<div class="popup-text-menu" style="position: absolute; display: none;" id="ts-{@id}">
-								<div class="sections">
-									<xsl:for-each select="menu_custom">
-										<a href="{show_page}">
-											<xsl:value-of select="header"/>
-										</a>
-									</xsl:for-each>
-								</div>
-							</div>
-						</xsl:for-each> -->
 					</div>
 				</div>
 			</div>
@@ -107,8 +81,9 @@
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 							<div class="sections">
 								<xsl:for-each select="page/catalog/section">
+
 									<xsl:if test="section">
-										<a href="{show_products}" class="cat_menu_item_1" rel="#sub_{@id}">
+										<a href="{show_sub}" class="cat_menu_item_1" rel="#sub_{@id}">
 											<xsl:value-of select="name" />
 										</a>
 									</xsl:if>
@@ -120,10 +95,13 @@
 								</xsl:for-each>
 							</div>
 
-							<xsl:for-each select="page/catalog/section">
+							<xsl:for-each select="page/catalog/section">	
 								<div class="subsections" style="display: none" id="sub_{@id}">
 									<xsl:for-each select="section">
-										<a href="{show_products}"><xsl:value-of select="name" /></a>
+										<xsl:variable name="link" select="if(section) then show_sub else show_products" />
+										<a href="{$link}">
+											<xsl:value-of select="name" />
+										</a>
 									</xsl:for-each>
 								</div>
 							</xsl:for-each>
@@ -263,7 +241,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
-						<div class="modal-title h4">Загрузка BOOM</div>
+						<div class="modal-title h4">Загрузка BOM</div>
 					</div>
 					<div class="modal-body">
 						<p>Вы можете загрузить список необходимых товаров в формате Excel. Такой способ позволяет быстро нахдить большое количество товаров.</p>
@@ -378,7 +356,7 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_sub}" class="header"><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
@@ -404,13 +382,14 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_sub}" class="header"><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
 						<xsl:for-each select="section">
+							<xsl:variable name="link" select="if(section) then show_sub else show_products" />
 							<li>
-								<a href="{show_products}"><xsl:value-of select="name"/></a>
+								<a href="{$link}"><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:for-each>
 					</ul>
@@ -424,20 +403,25 @@
 	<xsl:template name="INC_SIDE_MENU_INTERNAL">
 		<div class="side-menu">
 			<xsl:for-each select="page/catalog/section">
+				<!-- TMP FIX -->
+				<xsl:variable name="link" select="if(section) then show_sub else show_products"/>
+
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="level-1{' active'[$l1_active]}">
 					<div class="capsule">
-						<a href="{show_products}"><xsl:value-of select="name"/> </a>
+						<a href="{$link}"><xsl:value-of select="name"/> </a>
 					</div>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
 					<xsl:for-each select="section">
+						<xsl:variable name="link" select="if(section) then show_sub else show_products"/>
 						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
-						<div class="level-2{' active'[$l2_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
+						<div class="level-2{' active'[$l2_active]}"><a href="{$link}"><xsl:value-of select="name"/></a></div>
 						<xsl:if test=".//@id = $sel_sec_id">
 							<xsl:for-each select="section">
+								<xsl:variable name="link" select="if(section) then show_sub else show_products"/>
 								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
-								<div class="level-3{' active'[$l3_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
+								<div class="level-3{' active'[$l3_active]}"><a href="{$link}"><xsl:value-of select="name"/></a></div>
 								<xsl:if test=".//@id = $sel_sec_id">
 									<xsl:for-each select="section">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
@@ -503,9 +487,10 @@
 	<xsl:template match="accessory | set | probe | product | assoc">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
+		<xsl:variable name="product_link" select="concat($sel_sec_link, substring(show_product, 1))"/>
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat('http://alfacomponent.must.by/', @path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 
 			<!-- <xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
 				<a href="{concat('http://alfacomponent.must.by/', @path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
@@ -513,11 +498,11 @@
 				</a>
 			</xsl:if> -->
 
-			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
-			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
+			<a href="{$product_link}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
+			<a href="{$product_link}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
 			<div class="small-text device__small-text" title="{name_extra}"><xsl:value-of select="name_extra"/></div>
 			<div class="device__small-text">
-				<a href=""><xsl:value-of select="vendor"/></a> - <a href="{show_product}">
+				<a href=""><xsl:value-of select="vendor"/></a> - <a href="{$product_link}">
 					<xsl:value-of select="vendor_code"/></a>
 			</div>
 			<!-- <div class="device__article-number"><xsl:value-of select="code"/></div> -->
@@ -585,26 +570,27 @@
 	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
+		<xsl:variable name="product_link" select="concat($sel_sec_link, substring(show_product, 1))"/>
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat('http://alfacomponent.must.by/', @path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 			<!-- <xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
 				<a href="{concat('http://alfacomponent.must.by/', @path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if> -->
-			<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}">&#160;</a>
+			<a href="{$product_link}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}">&#160;</a>
 			<div class="device__info">
 				<div style="position: relative; display: inline-block;">
-					<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
+					<a href="{$product_link}" class="device__title"><xsl:value-of select="name"/></a>
 					<xsl:variable name="device-link" select="if(starts-with(manual[1]/link, 'http://') or starts-with(manual[1]/link, 'https://')) then manual[1]/link else concat('https://tme.eu', manual[1]/link)"/>
 					<a href="{$device-link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
 				</div>
 				<div class="device__description">
 					<div class="small-text device__small-text" title="{name_extra}"><xsl:value-of select="name_extra"/></div>
 					<div class="device__small-text">
-						<a href=""><xsl:value-of select="vendor"/></a> - <a href="{show_product}"><xsl:value-of select="vendor_code"/></a>
+						<a href=""><xsl:value-of select="vendor"/></a> - <a href="{$product_link}"><xsl:value-of select="vendor_code"/></a>
 					</div>
 					
 				</div>
@@ -721,7 +707,7 @@
 			<xsl:for-each select="page/catalog/section">
 				<div class="level-1">
 					<div class="capsule">
-						<a href="{show_products}"><xsl:value-of select="name"/></a>
+						<a href="{if(section) then show_sub else show_products}"><xsl:value-of select="name"/></a>
 					</div>
 				</div>
 			</xsl:for-each>

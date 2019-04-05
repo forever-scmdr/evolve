@@ -171,10 +171,14 @@ public class PageController {
 				// Выполняем страницу
 				String redirectUrl = processSimplePage(true);
 				Timer.getTimer().start(Timer.GENERATE_CACHE);
-				FileOutputStream fos = new FileOutputStream(cachedFile);
-				out.writeTo(fos);
-				fos.flush();
-				fos.close();
+				try {
+					FileOutputStream fos = new FileOutputStream(cachedFile, false);
+					out.writeTo(fos);
+					fos.flush();
+					fos.close();
+				} catch (FileNotFoundException fnf) {
+					ServerLogger.error("File " + cachedFile + " can not be created", fnf);
+				}
 				Timer.getTimer().stop(Timer.GET_FROM_CACHE);
 				ServerLogger.debug("DYNAMIC: " + requestUrl + " GENERATED IN " + (System.currentTimeMillis() - timeStart) + " MILLIS");
 				// Редирект в случае если он нужен

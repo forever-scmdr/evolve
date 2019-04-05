@@ -4,6 +4,7 @@ import ecommander.controllers.AppContext;
 import ecommander.controllers.SessionContext;
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
+import ecommander.fwk.IteratorCurrent;
 import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.model.filter.CriteriaDef;
@@ -45,7 +46,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	public static class ParentRelatedFoundIterator {
 		private Item currentItem = null;
 		private ExecutableItemPE itemPE = null;
-		private LinkedList<Iterator<Item>> iterators = null;
+		private LinkedList<IteratorCurrent<Item>> iterators = null;
+		private LinkedList<Item> path = null;
 		private long currentParentId = DEFAULT_PARENT_ID;
 
 		ParentRelatedFoundIterator(ExecutableItemPE pageItem) {
@@ -68,8 +70,13 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				if (currentItem != null) {
 					long parentId = currentItem.getId();
 					ArrayList<Item> foundItems = itemPE.getFoundItemsByParent(parentId);
-					if (!foundItems.isEmpty())
-						iterators.push(foundItems.iterator());
+					if (!foundItems.isEmpty()) {
+						iterators.push(new IteratorCurrent<>(foundItems.iterator()));
+					} else {
+						while (!iterators.isEmpty() && !iterators.peek().hasNext()) {
+							iterators.pop();
+						}
+					}
 				}
 				// если в текущем СТРАНИЧНОМ айтеме не найдены айтемы, вложенные в текущий айтем,
 				// то уже в этом случае ищутся айтемы во вложенном страничном айтеме
@@ -78,24 +85,21 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 					if (parentId != currentParentId) {
 						currentParentId = parentId;
 						ArrayList<Item> foundItems = itemPE.getFoundItemsByParent(currentParentId);
-						iterators.push(foundItems.iterator());
+						iterators.push(new IteratorCurrent<>(foundItems.iterator()));
 					}
 				}
 			} else if (currentParentId != NO_PARENT_ID) {
 				currentParentId = NO_PARENT_ID;
 				ArrayList<Item> foundItems = itemPE.getFoundItemsByParent(NO_PARENT_ID);
-				iterators.push(foundItems.iterator());
+				iterators.push(new IteratorCurrent<>(foundItems.iterator()));
 			}
 			if (!iterators.isEmpty() && iterators.peek().hasNext()) {
 				currentItem = iterators.peek().next();
-				while (!iterators.isEmpty() && !iterators.peek().hasNext()) {
-					iterators.pop();
+				path = new LinkedList<>();
+				for (IteratorCurrent<Item> iterator : iterators) {
+					path.push(iterator.getCurrent());
 				}
 				return true;
-			} else {
-				while (!iterators.isEmpty() && !iterators.peek().hasNext()) {
-					iterators.pop();
-				}
 			}
 			// переинициализация
 			init();
@@ -106,9 +110,11 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		 * @return
 		 */
 		public Item getCurrentItem() {
-//			if (currentItem == null)
-//				next();
 			return currentItem;
+		}
+
+		public List<Item> getCurrentItemPath() {
+			return path;
 		}
 
 		/**
@@ -240,7 +246,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * @param itemPageId
 	 * @param tag
 	 */
-	protected ExecutableItemPE(Type itemType, String itemName, String assocName, String itemPageId, String parentPageId,
+	protected ExecutableItemPE(Type itemType, String itemName, String[] assocName, String itemPageId, String parentPageId,
 	                           String tag, ItemRootType itemRootType, String itemRootGroupName, boolean isSingle,
 	                           boolean isCacheable, boolean isVirtual, ArrayList<String> cacheVars,	ExecutablePagePE parentPage) {
 		super(itemType, itemName, assocName, itemPageId, parentPageId, tag, itemRootType, itemRootGroupName, isSingle, isCacheable, isVirtual, cacheVars);
@@ -256,7 +262,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		return parentItem != null;
 	}
 
-	private boolean hasReference() {
+	public boolean hasReference() {
 		return reference != null;
 	}
 	
@@ -355,8 +361,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * @param quantity
 	 */
 	private void setFoundItemQuantity(long parentId, int quantity) {
-		if (!foundItemsByParent.containsKey(parentId))
-			foundItemsByParent.put(parentId, new FoundItemBundle());
+		foundItemsByParent.putIfAbsent(parentId, new FoundItemBundle());
 		foundItemsByParent.get(parentId).totalQuantity = quantity;
 	}
 
@@ -523,15 +528,14 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		if (!isSession()) {
 			// Если есть ссылка, то нет нужды в конструировании запроса
 			if (hasReference()) {
-				List<String> values = getReference().getValuesArray();
 				if (getReference().isUrlKeyUnique()) {
-					return ItemQuery.loadByUniqueKey(values, getSessionContext().getDBConnection());
+					return ItemQuery.loadByUniqueKey(getReference().getKeysUnique());
 				} else {
+					List<String> values = getReference().getValuesArray();
 					if (getReference().isVarParamReference())
-						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), values, getSessionContext()
-								.getDBConnection());
+						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), values);
 					else
-						return ItemQuery.loadByIdsString(values, getItemName(), getSessionContext().getDBConnection());
+						return ItemQuery.loadByIdsString(values, getItemName());
 				}
 			}
 			// Создание запроса
@@ -562,12 +566,12 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				query.setUser(getSessionContext().getUser());
 			// Если есть фильтр и ограничение - загрузка общего числа айтемов
 			if (query.hasLimit() && getFilter().hasPage()) {
-				quantities.putAll(query.loadTotalQuantities(getSessionContext().getDBConnection()));
+				quantities.putAll(query.loadTotalQuantities());
 			}
 			// Выполнение запроса (если это нужно)
 			List<Item> items;
 			if (needLoading)
-				items = query.loadItems(getSessionContext().getDBConnection());
+				items = query.loadItems();
 			else
 				items = new ArrayList<>(0);
 			// Загрузка фильтра (домены полей ввода пользовательского фильтра)

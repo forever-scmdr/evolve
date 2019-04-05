@@ -1,5 +1,21 @@
 package ecommander.fwk;
 
+import ecommander.filesystem.SingleItemDirectoryFileUnit;
+import ecommander.model.Item;
+import ecommander.model.MultipleParameter;
+import ecommander.model.ParameterDescription;
+import ecommander.model.SingleParameter;
+import ecommander.model.datatypes.DataType.Type;
+import ecommander.persistence.common.PersistenceCommandUnit;
+import ecommander.persistence.common.TransactionContext;
+import ecommander.persistence.mappers.DBConstants;
+import ecommander.persistence.mappers.ItemMapper;
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -7,24 +23,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.model.datatypes.DataType.Type;
-import ecommander.model.Item;
-import ecommander.model.MultipleParameter;
-import ecommander.model.ParameterDescription;
-import ecommander.model.SingleParameter;
-import ecommander.persistence.common.PersistenceCommandUnit;
-import ecommander.persistence.common.TransactionContext;
-import ecommander.persistence.mappers.DBConstants;
-import ecommander.persistence.mappers.ItemMapper;
-import ecommander.filesystem.SingleItemDirectoryFileUnit;
-import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.geometry.Positions;
 /**
  * Команда, которая преобразует картинки айтема к определенному формату после сохранения айтема
  * Используется атрибут format определения параметра (ParameterDescription)
@@ -183,7 +181,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 							}
 							destVals.clear();
 						}
-						ArrayList<SingleParameter> vals = new ArrayList<SingleParameter>(((MultipleParameter) item.getParameter(srcParam
+						ArrayList<SingleParameter> vals = new ArrayList<>(((MultipleParameter) item.getParameter(srcParam
 								.getId())).getValues());
 						for (SingleParameter srcVal : vals) {
 							File srcFile = new File(createItemDirectoryName() + "/" + srcVal.getValue());
@@ -213,13 +211,11 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 			}
 			// Апдейт базы данных (сохранение новых параметров айтема)
 			if (item.hasChanged()) {
-				PreparedStatement pstmt = null;
-				try {
 					Connection conn = getTransactionContext().getConnection();
 					// Сохранить новое ключевое значение и параметры в основную таблицу
 					String sql = "UPDATE " + ITEM_TBL + " SET " + I_KEY + "=?, " + I_T_KEY + "=?, " + I_PARAMS + "=?, "
 							+ I_UPDATED + "=NULL WHERE " + I_ID + "=" + item.getId();
-					pstmt = conn.prepareStatement(sql);
+				try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 					pstmt.setString(1, item.getKey());
 					pstmt.setString(2, item.getKeyUnique());
 					pstmt.setString(3, item.outputValues());
@@ -228,8 +224,6 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 					
 					// Выполнить запросы для сохранения параметров
 					ItemMapper.insertItemParametersToIndex(item, ItemMapper.Mode.UPDATE, getTransactionContext());
-				} finally {
-					MysqlConnector.closeStatement(pstmt);
 				}
 			}
 		}

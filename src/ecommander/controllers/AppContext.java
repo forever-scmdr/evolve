@@ -1,16 +1,14 @@
 package ecommander.controllers;
 
+import ecommander.model.datatypes.DateDataType;
+import ecommander.persistence.commandunits.DeleteComplex;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.ServletContext;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Properties;
-
-import javax.servlet.ServletContext;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.model.datatypes.DateDataType;
 
 /**
  * Интерфейс для хранения всех сведений о работе приложения, в будущем, для влияния на работу всего приложения,
@@ -89,6 +87,8 @@ public class AppContext {
 		else
 			_REAL_BASE_PATH = contextRoot;
 		LOG_FILE = _REAL_BASE_PATH + "WEB-INF/log4j.properties";
+		// Удаления
+		DeleteComplex.startDeletions();
 	}
 
 	public static String getContextPath() {

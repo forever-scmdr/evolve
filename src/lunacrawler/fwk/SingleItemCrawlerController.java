@@ -14,12 +14,14 @@ import org.apache.http.client.HttpResponseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
 import java.util.*;
 import java.util.Map.Entry;
@@ -238,7 +240,7 @@ public class SingleItemCrawlerController {
 	public void startStage(State...initState) throws Exception {
 		info.pushLog("Начало работы");
 		if (sectionsToProcess.size() == 0) {
-			List<Item> items = new ItemQuery(Parse_section._ITEM_TYPE_NAME).loadItems();
+			List<Item> items = new ItemQuery(Parse_section._NAME).loadItems();
 			for (Item item : items) {
 				sectionsToProcess.add(Parse_section.get(item));
 			}
@@ -277,7 +279,7 @@ public class SingleItemCrawlerController {
 		info.setOperation("Сброс состояния до " + state);
 		State nextState = State.INIT;
 		if (state == State.HTML || state == State.TRANSFORM || state == State.FILES) {
-			List<Item> sections = new ItemQuery(Parse_section._ITEM_TYPE_NAME).loadItems();
+			List<Item> sections = new ItemQuery(Parse_section._NAME).loadItems();
 			int secCount = sections.size();
 			info.setLineNumber(secCount);
 			for (Item section : sections) {
@@ -302,14 +304,11 @@ public class SingleItemCrawlerController {
 						nextState = State.HTML;
 					} else if (state == State.FILES) {
 						pitem.set_got_files((byte) 0);
-						pitem.clearParameter(Parse_item.FILE);
+						pitem.clearValue(Parse_item.FILE);
 						nextState = State.TRANSFORM;
 					}
 					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pitem).noFulltextIndex());
 					info.setProcessed(++i);
-				}
-				if (state == State.PREPARE_URLS) {
-					DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
 				}
 				info.setLineNumber(--secCount);
 			}
@@ -403,7 +402,6 @@ public class SingleItemCrawlerController {
 			}
 			info.setProcessed(++processedCount);
 		}
-		DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
 
 		// Создание новых айтемов для разбора
 		info.setOperation("Подготовка нового списка урлов");
@@ -434,11 +432,24 @@ public class SingleItemCrawlerController {
 				pi.set_url(url);
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(pi));
 				if (original == null) {
-					info.pushLog("NEW - {} - {}", currentSection.get_name(), url);
+					info.pushLog("NEW - {}", url);
 				} else {
-					info.pushLog("DUPLICATED - {} - {}", currentSection.get_name(), url);
+					info.pushLog("DUPLICATED - {}", url);
 				}
 			}
+
+			// Сохранение урлов в бекап и удаление из раздела для парсинга
+			String[] oldUrls = StringUtils.split(currentSection.get_item_urls_backup(), '\n');
+			if (!urls.isEmpty() && oldUrls != null && oldUrls.length > 0) {
+				urls.add("");
+				for (String oldUrl : oldUrls) {
+					urls.add(oldUrl);
+				}
+			}
+			currentSection.set_item_urls_backup(StringUtils.join(urls, '\n'));
+			currentSection.set_item_urls(null);
+			DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(currentSection));
+
 			info.setProcessed(++processedCount);
 		}
 
@@ -458,11 +469,13 @@ public class SingleItemCrawlerController {
 				protected void processItem(Parse_item item, String proxy) throws Exception {
 					String html;
 					try {
-						html = WebClient.getString(item.get_url(), proxy);
+						html = WebClient.getCleanHtml(item.get_url(), proxy);
 					} catch (HttpResponseException re) {
+						ServerLogger.error("Web client exception", re);
 						info.addError("Url status code " + re.getStatusCode(), item.get_url());
 						return;
 					} catch (Exception e) {
+						ServerLogger.error("Unknown download problem", e);
 						info.addError("Unknown download problem: " + e.getMessage(), item.get_url());
 						return;
 					}
@@ -484,7 +497,9 @@ public class SingleItemCrawlerController {
 				}
 			};
 			workers.add(worker);
-			new Thread(worker).start();
+			Thread downloader = new Thread(worker);
+			downloader.setDaemon(true);
+			downloader.start();
 		}
 	}
 
@@ -552,7 +567,9 @@ public class SingleItemCrawlerController {
 				}
 			};
 			workers.add(worker);
-			new Thread(worker).start();
+			Thread parser = new Thread(worker);
+			parser.setDaemon(true);
+			parser.start();
 		}
 	}
 
@@ -566,7 +583,7 @@ public class SingleItemCrawlerController {
 				protected void processItem(Parse_item item, String proxy) throws Exception {
 					Document result = Jsoup.parse(item.get_xml());
 					try {
-						// Прямые загрузки (downlaod="url")
+						// Прямые загрузки (download="url")
 						Elements downloads = result.getElementsByAttribute(DOWNLOAD);
 						for (Element download : downloads) {
 							URL url = new URL(normalizeDownloadUrl(download.attr(DOWNLOAD), item.get_url()));
@@ -576,7 +593,10 @@ public class SingleItemCrawlerController {
 						// HTML с картинками (img)
 						Elements htmls = result.getElementsByAttributeValue(TYPE, HTML);
 						for (Element html : htmls) {
-							Elements imgs = html.getElementsByTag("img");
+							String xml = Parser.unescapeEntities(html.toString(), true);
+							xml = Strings.cleanHtml(xml);
+							Document xmlDoc = Jsoup.parse(xml);
+							Elements imgs = xmlDoc.getElementsByTag("img");
 							for (Element img : imgs) {
 								URL url = new URL(normalizeDownloadUrl(img.attr("src"), item.get_url()));
 								item.setValue(Parse_item.HTML_PIC, url);
@@ -598,7 +618,9 @@ public class SingleItemCrawlerController {
 				}
 			};
 			workers.add(worker);
-			new Thread(worker).start();
+			Thread downloader = new Thread(worker);
+			downloader.setDaemon(true);
+			downloader.start();
 		}
 	}
 
@@ -606,6 +628,11 @@ public class SingleItemCrawlerController {
 		if (StringUtils.startsWith(fileUrl, "//")) {
 			String protocol = StringUtils.substringBefore(mainParseUrl, "//");
 			return protocol + fileUrl;
+		}
+		URI picUri = URI.create(fileUrl);
+		if (!picUri.isAbsolute()) {
+			URI baseSiteUri = URI.create(mainParseUrl);
+			return baseSiteUri.getScheme() + "://" + baseSiteUri.getHost() + fileUrl;
 		}
 		return fileUrl;
 	}
@@ -626,5 +653,9 @@ public class SingleItemCrawlerController {
 
 	private void setTestXSLLink(Parse_item pi) {
 		pi.set_test_url("test_parse_item?pi=" + pi.getId());
+	}
+
+	public static void main(String[] args) {
+		System.out.println(normalizeDownloadUrl("/files/megafile.xml", "http://petronik.ru/catalog/id/218/"));
 	}
 }

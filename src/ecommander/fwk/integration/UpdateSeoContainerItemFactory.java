@@ -2,7 +2,6 @@ package ecommander.fwk.integration;
 
 import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.PersistenceCommandUnit;

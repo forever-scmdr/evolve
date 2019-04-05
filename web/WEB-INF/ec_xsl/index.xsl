@@ -177,9 +177,10 @@
 					<xsl:variable name="sec_pic" select="if (main_pic != '') then concat('http://alfacomponent.must.by/', @path, main_pic) else ''"/>
 					<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat('http://alfacomponent.must.by/', product/@path, product/main_pic) else ''"/>
 					<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
+					<xsl:variable name="link" select="if (section) then show_sub else show_products" />
 					<div class="device items-catalog__section">
-						<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
-						<a href="{show_products}" class="device__title"><xsl:value-of select="name"/></a>
+						<a href="{$link}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
+						<a href="{$link}" class="device__title"><xsl:value-of select="name"/></a>
 					</div>
 				</xsl:for-each>
 			</div>
