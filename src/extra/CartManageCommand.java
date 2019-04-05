@@ -22,18 +22,19 @@ public class CartManageCommand extends BasicCartManageCommand {
 		MANDATORY_PHYS.add(ItemNames.user_phys.PHONE);
 		MANDATORY_PHYS.add(ItemNames.user_phys.SHIP_TYPE);
 
-		MANDATORY_JUR.add(ItemNames.user_jur.ACCOUNT);
-		MANDATORY_JUR.add(ItemNames.user_jur.ADDRESS);
-		MANDATORY_JUR.add(ItemNames.user_jur.BANK);
-		MANDATORY_JUR.add(ItemNames.user_jur.BANK_ADDRESS);
-		MANDATORY_JUR.add(ItemNames.user_jur.BANK_CODE);
+		//MANDATORY_JUR.add(ItemNames.user_jur.ACCOUNT);
+		//MANDATORY_JUR.add(ItemNames.user_jur.ADDRESS);
+		//MANDATORY_JUR.add(ItemNames.user_jur.BANK);
+		//MANDATORY_JUR.add(ItemNames.user_jur.BANK_ADDRESS);
+		//MANDATORY_JUR.add(ItemNames.user_jur.BANK_CODE);
 		MANDATORY_JUR.add(ItemNames.user_jur.CONTACT_NAME);
-		MANDATORY_JUR.add(ItemNames.user_jur.CONTACT_PHONE);
-		MANDATORY_JUR.add(ItemNames.user_jur.DIRECTOR);
+		//MANDATORY_JUR.add(ItemNames.user_jur.CONTACT_PHONE);
+		//MANDATORY_JUR.add(ItemNames.user_jur.DIRECTOR);
 		MANDATORY_JUR.add(ItemNames.user_jur.EMAIL);
 		MANDATORY_JUR.add(ItemNames.user_jur.ORGANIZATION);
-		MANDATORY_JUR.add(ItemNames.user_jur.SHIP_TYPE);
-		MANDATORY_JUR.add(ItemNames.user_jur.UNP);
+		MANDATORY_PHYS.add(ItemNames.user_phys.PHONE);
+		//MANDATORY_JUR.add(ItemNames.user_jur.SHIP_TYPE);
+		//MANDATORY_JUR.add(ItemNames.user_jur.UNP);
 	}
 
 
