@@ -103,7 +103,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			sections = q.loadItems();
 		} else {
 			Item section = ItemQuery.loadById(secId);
-			fileSuffix = section.getStringValue(NAME_PARAM);
+			fileSuffix = section.getStringValue(NAME_PARAM).replaceAll("/", " ");
 			sections.add(section);
 		}
 		info.pushLog("Обнаружено разделов первого уровня: " + sections.size());
@@ -139,7 +139,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			processSubsections(sh, rowIndex, id);
 		}
 		setOperation("Запись файла");
-		String fileName = "pricelist-" + fileSuffix + ".xls";
+		String optionsSuffix = (writeHierarchy)? "" : "min-";
+		String fileName = "pricelist-"+ optionsSuffix + fileSuffix + ".xls";
 		pushLog(fileName);
 		FileOutputStream fileOutputStream = new FileOutputStream(AppContext.getFilesDirPath(false) + "/" + fileName);
 		workBook.write(fileOutputStream);
