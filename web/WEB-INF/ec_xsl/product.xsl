@@ -14,6 +14,8 @@
 
 
 	<xsl:variable name="p" select="page/product"/>
+	<xsl:variable name="price_intervals" select="page/price_catalog/price_interval"/>
+	<xsl:variable name="Q" select="number(page/price_catalog/quotient)"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -42,10 +44,67 @@
 		</script>
 	</xsl:template>
 
+
+	<xsl:template name="ALL_PRICES">
+		<xsl:param name="price"/>
+		<xsl:param name="min_qty"/>
+		<xsl:for-each select="$price_intervals">
+			<xsl:variable name="quotient" select="f:num(quotient)"/>
+			<xsl:variable name="unit_price" select="$price * $Q * $quotient"/>
+			<xsl:if test="$unit_price * $min_qty &lt; f:num(max)">
+				<xsl:variable name="min_number" select="ceiling(f:num(min) div $unit_price)"/>
+				<xsl:variable name="number" select="if ($min_number &gt; $min_qty) then $min_number else $min_qty"/>
+				<xsl:variable name="sum" select="$unit_price * $number"/>
+				<p><xsl:value-of select="$Q"/> * <xsl:value-of select="$quotient"/> * <xsl:value-of select="$price"/> * x<xsl:value-of select="$number"/> = <xsl:value-of select="$sum"/></p>
+			</xsl:if>
+		</xsl:for-each>
+	</xsl:template>
+
+
+	<xsl:template match="price">
+		<xsl:variable name="unit" select="if (unit) then unit else 'шт.'"/>
+		<xsl:variable name="min_qty" select="if (min_qty) then f:num(min_qty) else 1"/>
+		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<tr class="parent">
+			<td><b><xsl:value-of select="name" /></b></td>
+			<td><xsl:value-of select="name_extra" /></td>
+			<td><xsl:value-of select="vendor" /></td>
+			<!--<td><a><xsl:value-of select="code"/></a></td>-->
+			<td><xsl:value-of select="qty"/><xsl:text> </xsl:text><xsl:value-of select="$unit"/></td>
+			<td><xsl:value-of select="available"/></td>
+			<td><xsl:value-of select="$unit"/></td>
+			<td><xsl:value-of select="min_qty"/></td>
+			<td>
+				<xsl:call-template name="ALL_PRICES">
+					<xsl:with-param name="min_qty" select="$min_qty"/>
+					<xsl:with-param name="price" select="f:num(price)"/>
+				</xsl:call-template>
+			</td>
+			<td>
+				<xsl:call-template name="ALL_PRICES">
+					<xsl:with-param name="min_qty" select="$min_qty"/>
+					<xsl:with-param name="price" select="f:num(price)"/>
+				</xsl:call-template>
+			</td>
+			<td id="cart_search_{@id}">
+				<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
+					<xsl:if test="$has_price">
+						<input type="number" name="qty" value="{$min_qty}" min="0"/>
+						<input type="submit" value="Заказать"/>
+					</xsl:if>
+					<xsl:if test="not($has_price)">
+						<input type="number" name="qty" value="{$min_qty}" min="0"/>
+						<input type="submit" value="Запросить цену"/>
+					</xsl:if>
+				</form>
+			</td>
+		</tr>
+	</xsl:template>
+
+
+
+
 	<xsl:template name="CONTENT">
-
-
-
 
 
 		<!-- CONTENT BEGIN -->
@@ -145,33 +204,53 @@
 					</div>
 				</div>
 			</div>
+			<xsl:variable name="prices" select="page/price[plain_section]"/>
+			<xsl:if test="$prices">
+				<div>
+					<table class="srtable">
+						<tr>
+							<th>Название</th>
+							<th>Описание</th>
+							<th>Производитель</th>
+							<!--<th>Код производителя</th>-->
+							<th>На складе</th>
+							<th>Срок поставки</th>
+							<th>Единица</th>
+							<th>Мин. заказ</th>
+							<th>Цена (руб.)</th>
+							<th>Сумма (руб.)</th>
+							<th>Заказать</th>
+						</tr>
+						<xsl:apply-templates select="$prices"/>
+					</table>
+				</div>
+			</xsl:if>
 			<div class="description">
-				
-					<ul class="nav nav-tabs" role="tablist">
-						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-							<xsl:if test="$p/params">
-								<li role="presentation" class="active">
-									<a href="#tab1" role="tab" data-toggle="tab">Спецификация</a>
-								</li>
-							</xsl:if>
-							<xsl:if test="$p/text">
-								<li role="presentation">
-									<a href="#tab2" role="tab" data-toggle="tab">Описание</a>
-								</li>
-							</xsl:if>
-							<xsl:if test="$p/product">
-								<li role="presentation" class="{'active'[not($p/params)]}">
-									<a href="#tab2" role="tab" data-toggle="tab">
-										Другие расцветки
-									</a>
-								</li>
-							</xsl:if>
-							<xsl:for-each select="$p/product_extra">
-								<li role="presentation">
-									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a>
-								</li>
-							</xsl:for-each>
-					</ul>
+				<ul class="nav nav-tabs" role="tablist">
+					<!--<xsl:if test="string-length($p/text) &gt; 15">-->
+						<xsl:if test="$p/params">
+							<li role="presentation" class="active">
+								<a href="#tab1" role="tab" data-toggle="tab">Спецификация</a>
+							</li>
+						</xsl:if>
+						<xsl:if test="$p/text">
+							<li role="presentation">
+								<a href="#tab2" role="tab" data-toggle="tab">Описание</a>
+							</li>
+						</xsl:if>
+						<xsl:if test="$p/product">
+							<li role="presentation" class="{'active'[not($p/params)]}">
+								<a href="#tab2" role="tab" data-toggle="tab">
+									Другие расцветки
+								</a>
+							</li>
+						</xsl:if>
+						<xsl:for-each select="$p/product_extra">
+							<li role="presentation">
+								<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a>
+							</li>
+						</xsl:for-each>
+				</ul>
 				<div class="tab-content">
 					<xsl:if test="$p/params">
 						<div role="tabpanel" class="tab-pane active" id="tab1">

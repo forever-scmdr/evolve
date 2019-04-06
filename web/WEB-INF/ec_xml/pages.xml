@@ -47,11 +47,14 @@
 		<link name="login_link" target="login_form"/>
 		<link name="personal_ajax_link" target="personal_ajax"/>
 
-		<single item="modules">
+		<single item="modules" cacheable="true">
 			<list item="named_code"/>
 		</single>
-		<single item="url_seo_wrap">
+		<single item="url_seo_wrap" cacheable="true">
 			<list item="url_seo"/>
+		</single>
+		<single item="price_catalog" cacheable="true">
+			<list item="price_interval"/>
 		</single>
 	</include-definition>
 
@@ -360,6 +363,18 @@
 				<var name="src_page" value="compare_ajax"/>
 			</link>
 		</single>
+		<list item="product" tag="price" id="price">
+			<filter>
+				<fulltext name="name" limit="30">
+					<var ref="prod" parameter="name"/>
+				</fulltext>
+			</filter>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="price" parameter="code"/>
+			</link>
+			<ancestor item="plain_section"/>
+		</list>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
 				<parameter name="code" compare="SOME">

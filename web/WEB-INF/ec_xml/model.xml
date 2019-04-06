@@ -207,6 +207,17 @@
 		<parameter name="count" type="integer" caption="Счетчик"/>
 	</item>
 
+	<item name="price_interval" caption="Интервал коэффициента" key="min max quotient" ag-id="2206" ag-hash="1275971323">
+		<parameter name="min" type="currency" caption="Начало интервала (min)" description="справочное значение (включительно)"/>
+		<parameter name="max" type="currency" caption="Конец интервала (max)" description="основное значение, определяющее интервал (исключительно)"/>
+		<parameter name="quotient" type="decimal" caption="Коэффициент"/>
+	</item>
+
+	<item name="price_catalog" caption="Каталог ценовых интервалов" ag-id="2207" ag-hash="2102484771">
+		<parameter name="quotient" type="decimal" caption="Базовый коэффициент" default="1.4"/>
+		<child item="price_interval" inline="true"/>
+	</item>
+
 	<!--/////////////                            END КОРЗИНА                               ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -437,6 +448,7 @@
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<child item="plain_catalog" single="true"/>
+		<child item="price_catalog" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

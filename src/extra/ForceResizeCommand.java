@@ -44,7 +44,7 @@ public class ForceResizeCommand extends Command {
 					needResize = smallImg.getWidth() > 200;
 				}
 				if (needResize) {
-					product.clearParameter("small_pic");
+					product.clearValue("small_pic");
 					String format = StringUtils.substringAfterLast(mainPic.getName(), ".");
 					format = SUPPORTED_FROMATS.contains(format)? format : "jpg";
 					String destFileName = "small_" + product.getValue("code") + "." + format;

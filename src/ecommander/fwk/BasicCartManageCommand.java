@@ -24,35 +24,38 @@ import java.util.Date;
  */
 public abstract class BasicCartManageCommand extends Command {
 
-	private static final String PRODUCT_ITEM = "product";
-	private static final String CART_ITEM = "cart";
-	private static final String BOUGHT_ITEM = "bought";
-	private static final String PURCHASE_ITEM = "purchase";
-	private static final String USER_ITEM = "user";
-	private static final String PRICE_PARAM = "price";
-	private static final String QTY_PARAM = "qty";
-	private static final String SUM_PARAM = "sum";
-	private static final String CODE_PARAM = "code";
-	private static final String NAME_PARAM = "name";
-	private static final String PROCESSED_PARAM = "processed";
-	private static final String COUNTER_ITEM = "counter";
-	private static final String COUNT_PARAM = "count";
-	private static final String NUM_PARAM = "num";
-	private static final String DATE_PARAM = "date";
-	private static final String EMAIL_PARAM = "email";
+	protected static final String PRODUCT_ITEM = "product";
+	protected static final String CART_ITEM = "cart";
+	protected static final String BOUGHT_ITEM = "bought";
+	protected static final String PURCHASE_ITEM = "purchase";
+	protected static final String USER_ITEM = "user";
+	protected static final String PRICE_PARAM = "price";
+	protected static final String QTY_PARAM = "qty";
+	protected static final String SUM_PARAM = "sum";
+	protected static final String CODE_PARAM = "code";
+	protected static final String NAME_PARAM = "name";
+	protected static final String PROCESSED_PARAM = "processed";
+	protected static final String COUNTER_ITEM = "counter";
+	protected static final String COUNT_PARAM = "count";
+	protected static final String NUM_PARAM = "num";
+	protected static final String DATE_PARAM = "date";
+	protected static final String EMAIL_PARAM = "email";
 
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
 	public static final String REGISTERED_GROUP = "registered";
 
 
 
-	private static final String CART_COOKIE = "cart_cookie";
+	protected static final String CART_COOKIE = "cart_cookie";
 
 
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
+	protected static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
 
-	private Item cart;
+	protected static final Double MAX_QTY = 1000000000000d;
+
+
+	protected Item cart;
 
 	/**
 	 * Добавить товар в корзину
@@ -251,7 +254,7 @@ public abstract class BasicCartManageCommand extends Command {
 				} catch (NumberFormatException e) { /**/ }
 				if (quantity > 0) {
 					Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-					double maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(1000000d)).doubleValue();
+					double maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(MAX_QTY)).doubleValue();
 					if (maxQuantity > 0)
 						quantity = maxQuantity > quantity ? quantity : maxQuantity;
 					bought.setValue(QTY_PARAM, quantity);
@@ -274,7 +277,7 @@ public abstract class BasicCartManageCommand extends Command {
 				return;
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
-			double maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(1000000d)).doubleValue();
+			double maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(MAX_QTY)).doubleValue();
 			if (maxQuantity > 0)
 				qty = maxQuantity > qty ? qty : maxQuantity;
 			bought.setValue(QTY_PARAM, qty);
@@ -297,7 +300,7 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().removeItems(bought.getId());
 				return;
 			}
-			double maxQuantity = boughtProduct.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity = boughtProduct.getDoubleValue(QTY_PARAM, MAX_QTY);
 			if (maxQuantity > 0)
 				qty = maxQuantity > qty ? qty : maxQuantity;
 			bought.setValue(QTY_PARAM, qty);
@@ -338,7 +341,7 @@ public abstract class BasicCartManageCommand extends Command {
 	/**
 	 * Загрузить корзину, но не создавать в случае если корзина не найдена
 	 */
-	private void loadCart() throws Exception {
+	protected void loadCart() throws Exception {
 		if (cart == null) {
 			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 		}
@@ -349,7 +352,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * Сохранить корзину в куки на всякий случай (если будет разрыв сеанса, корзину можно восстановить)
 	 * @throws Exception
 	 */
-	private void saveCookie() throws Exception {
+	protected void saveCookie() throws Exception {
 		ensureCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		ArrayList<String> codeQtys = new ArrayList<>();
@@ -392,7 +395,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * Пересчитывает данные для одного enterprise_bought, когда в корзине произошли какие-то изменения
 	 * @throws Exception
 	 */
-	private boolean recalculateCart() throws Exception {
+	protected boolean recalculateCart() throws Exception {
 		loadCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal sum = new BigDecimal(0); // полная сумма
@@ -403,7 +406,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// Обычные заказы и заказы с нулевым количеством на складе
 		for (Item bought : boughts) {
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-			double maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(1000000d)).doubleValue();
+			double maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(MAX_QTY)).doubleValue();
 			double quantity = bought.getDoubleValue(QTY_PARAM);
 			if (quantity <= 0) {
 				getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);

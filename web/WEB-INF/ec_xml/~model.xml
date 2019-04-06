@@ -4,7 +4,7 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             SEO                                  ////////////-->
-	<assoc name="other_colors" transitive="false" caption="Другие варианты расцветки" ag-id="6" ag-hash="494020991"/>
+	<assoc name="other_colors" transitive="false" caption="Другие варианты расцветки" ag-id="1" ag-hash="494020991"/>
 
 	<item name="seo" caption="SEO" ag-id="814" ag-hash="113757">
 		<parameter name="title" type="string" caption="title"/>
@@ -50,12 +50,12 @@
 	</item>
 
 
-	<item name="plain_catalog" caption="Список товаров" children-per-page="30" children-sorting="DESC" ag-id="902" ag-hash="-1742571868">
+	<item name="plain_catalog" caption="Список товаров" children-per-page="30" children-sorting="DESC" ag-id="2126" ag-hash="-1742571868">
 		<child item="plain_section"/>
 	</item>
 
 
-	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="30" children-sorting="ASC" ag-id="903" ag-hash="-328034960">
+	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="30" children-sorting="ASC" ag-id="2127" ag-hash="-328034960">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="date" type="date" caption="Дата"/>
 		<child item="product"/>
@@ -155,12 +155,12 @@
 		<parameter name="xml" type="xml" caption="Параметры" />
 	</item>
 
-	<item name="price" caption="Цена" key="qty price" ag-id="904" ag-hash="106934601">
+	<item name="price" caption="Цена" key="qty price" ag-id="880" ag-hash="106934601">
 		<parameter name="qty" type="decimal" caption="Количество"/>
 		<parameter name="price" type="currency" caption="Цена"/>
 	</item>
 
-	<item name="manual" caption="Документация" key="name" ag-id="905" ag-hash="-1081415738">
+	<item name="manual" caption="Документация" key="name" ag-id="881" ag-hash="-1081415738">
 		<parameter name="name" type="string" caption="Название документа"/>
 		<parameter name="link" type="string" caption="Ссылка на документ"/>
 	</item>
@@ -205,6 +205,17 @@
 
 	<item name="counter" caption="Счетчик номера договора" ag-id="29" ag-hash="957830652">
 		<parameter name="count" type="integer" caption="Счетчик"/>
+	</item>
+
+	<item name="price_interval" caption="Интервал коэффициента" key="min max quotient">
+		<parameter name="min" type="currency" caption="Начало интервала (min)" description="основное значение, определяющее интервал (включительно)"/>
+		<parameter name="max" type="currency" caption="Конец интервала (max)" description="справочное значение (исключительно)"/>
+		<parameter name="quotient" type="decimal" caption="Коэффициент"/>
+	</item>
+
+	<item name="price_catalog" caption="Каталог ценовых интервалов">
+		<parameter name="quotient" type="decimal" caption="Базовый коэффициент" default="1.4"/>
+		<child item="price_interval" inline="true"/>
 	</item>
 
 	<!--/////////////                            END КОРЗИНА                               ////////////-->
@@ -312,11 +323,11 @@
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
-	<item name="main_logos" caption="Логотипы" ag-id="906" ag-hash="801008162">
+	<item name="main_logos" caption="Логотипы" ag-id="2130" ag-hash="801008162">
 		<child item="main_logo" inline="true"/>
 	</item>
 
-	<item name="main_logo" caption="Логотип" key="name" ag-id="907" ag-hash="-251255695">
+	<item name="main_logo" caption="Логотип" key="name" ag-id="2131" ag-hash="-251255695">
 		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
@@ -437,6 +448,7 @@
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<child item="plain_catalog" single="true"/>
+		<child item="price_catalog" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

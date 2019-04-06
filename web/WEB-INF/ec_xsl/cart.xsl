@@ -22,7 +22,7 @@
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat($p/price, ' p.') else 'по запросу'"/>
-							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(sum, ' p.') else ''"/>
+							<xsl:variable name="sum" select="if (f:num(sum) != 0) then concat(sum, ' p.') else ''"/>
 							<div class="item">
 								<a href="{$p/show_product}" class="image-container">
 									
@@ -37,7 +37,11 @@
 								</div>
 								<div class="quantity">
 									<span>Кол-во</span>
-									<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
+									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" min="0"/>
+								</div>
+								<div class="quantity">
+									<span>Сумма позиции</span>
+									<xsl:value-of select="$sum"/>
 								</div>
 								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
 								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
