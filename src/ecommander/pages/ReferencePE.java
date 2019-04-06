@@ -84,7 +84,7 @@ public class ReferencePE implements PageElement {
 		}
 		return new ArrayList<>(0);
 	}
-	
+
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
 		ReferencePE clone = new ReferencePE(pageVarName, paramName, pageItemId, parentPage);
 		if (container != null)

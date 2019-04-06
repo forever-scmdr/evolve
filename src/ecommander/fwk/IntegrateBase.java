@@ -302,7 +302,7 @@ public abstract class IntegrateBase extends Command {
 					} catch (Exception se) {
 						setOperation("Интеграция завершена с ошибками");
 						ServerLogger.error("Integration error", se);
-						getInfo().addError(se.toString() +" says ["+se.getMessage()+"]", info.lineNumber, info.position);
+						getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
 					} finally {
 						isInProgress = false;
 						getInfo().setInProgress(false);

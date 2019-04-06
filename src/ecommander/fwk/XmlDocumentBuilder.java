@@ -169,7 +169,7 @@ public class XmlDocumentBuilder {
 			xml.append(tags);
 		return this;
 	}
-	
+
 	@Override
 	public String toString() {
 		return xml.toString();

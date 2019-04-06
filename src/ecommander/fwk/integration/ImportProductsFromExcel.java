@@ -431,11 +431,11 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								}
 								else {
 									ParameterDescription pd = productItemType.getParameter(paramName);
-								if (pd.isMultiple()) {
-									String[] values = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
-									for (String val : values) {
-										product.setValueUI(paramName, val.trim());
-									}
+									if (pd.isMultiple()) {
+										String[] values = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
+										for (String val : values) {
+											product.setValueUI(paramName, val.trim());
+										}
 
 									} else {
 										product.setValueUI(paramName, cellValue);
@@ -450,10 +450,10 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							if (CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) {
 								String cellValue = getValue(header);
 
-								if(StringUtils.isBlank(cellValue)){
-									if(settings.get(IF_BLANK) != varValues.CLEAR) continue;
+								if (StringUtils.isBlank(cellValue)) {
+									if (settings.get(IF_BLANK) != varValues.CLEAR) continue;
 									List<Item> items = ItemQuery.loadByParentId(product.getId(), null);
-									for(Item item : items){
+									for (Item item : items) {
 										executeCommandUnit(ItemStatusDBUnit.delete(item.getId()).noFulltextIndex());
 									}
 									//executeCommandUnit(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
@@ -470,8 +470,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 									} else {
 										String[] x = manual.split("[|]");
-										for(int i =0; i<x.length; i++) {
-											if(StringUtils.isBlank(x[i])) continue;
+										for (int i = 0; i < x.length; i++) {
+											if (StringUtils.isBlank(x[i])) continue;
 											x[i] = x[i].replace(";", "").trim();
 										}
 										switch (x.length) {
@@ -572,7 +572,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					if (StringUtils.isBlank(s)) continue;
 					s = s.replace(";", "").trim();
 					if (StringUtils.isBlank(s)) continue;
-					if(StringUtils.startsWith(s,"https://") || StringUtils.startsWith(s,"http://")){
+					if (StringUtils.startsWith(s, "https://") || StringUtils.startsWith(s, "http://")) {
 						URL url = new URL(s);
 						existingFiles.add(url);
 					}
@@ -617,10 +617,10 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 		return true;
 	}
 
-	private boolean hasAuxParams(Collection<String> headers){
-		if(!headers.contains(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase())) return false;
+	private boolean hasAuxParams(Collection<String> headers) {
+		if (!headers.contains(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase())) return false;
 
-		for(String header : headers){
+		for (String header : headers) {
 			String paramName = HEADER_PARAM.get(header);
 			if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
 				continue;

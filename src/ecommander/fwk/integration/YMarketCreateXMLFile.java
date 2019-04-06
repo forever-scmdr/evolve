@@ -130,7 +130,7 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 				xml.startElement(MODEL_ELEMENT).addText(baseProduct.getStringValue(NAME_PARAM)).endElement();
 				String text = baseProduct.getStringValue(TEXT_PARAM);
 				if (StringUtils.isBlank(text))
-						text = baseProduct.getStringValue(DESCRIPTION_PARAM);
+					text = baseProduct.getStringValue(DESCRIPTION_PARAM);
 				if (StringUtils.isNotBlank(text)) {
 					Document doc = Jsoup.parse(text);
 					xml.startElement(DESCRIPTION_ELEMENT).addText(doc.body().text()).endElement();
@@ -139,7 +139,7 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 				// Галерея
 				boolean hasGallery = false;
 				for (String picName : baseProduct.outputValues(GALLERY_PARAM)) {
-				xml.startElement("picture").addText(getUrlBase() + "/" + AppContext.getFilesUrlPath(false) +
+					xml.startElement("picture").addText(getUrlBase() + "/" + AppContext.getFilesUrlPath(false) +
 							Item.createItemFilesPath(baseProduct.getId()) + picName).endElement();
 					hasGallery = true;
 				}

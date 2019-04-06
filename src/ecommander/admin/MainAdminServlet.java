@@ -223,46 +223,46 @@ public class MainAdminServlet extends BasicAdminServlet {
 				//input.itemId = itemId;
 			}
 		}
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT)))
-				input.itemId = Long.parseLong(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_TYPE_INPUT)))
-				input.itemTypeId = Integer.parseInt(req.getParameter(MainAdminPageCreator.ITEM_TYPE_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PARENT_ID_INPUT)))
-				input.parentId = Long.parseLong(req.getParameter(MainAdminPageCreator.PARENT_ID_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT)))
-				input.assocId = Byte.parseByte(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.INDEX_INPUT)))
-				input.index = Integer.parseInt(req.getParameter(MainAdminPageCreator.INDEX_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.NEW_ITEM_POSITION)))
-				input.newItemPosition = Integer.parseInt(req.getParameter(MainAdminPageCreator.NEW_ITEM_POSITION));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PARAM_ID_INPUT)))
-				input.paramId = Integer.parseInt(req.getParameter(MainAdminPageCreator.PARAM_ID_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.VIEW_TYPE_INPUT)))
-				input.viewType = req.getParameter(MainAdminPageCreator.VIEW_TYPE_INPUT);
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.VISUAL_INPUT)))
-				input.isVisual = Boolean.parseBoolean(req.getParameter(MainAdminPageCreator.VISUAL_INPUT));
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.SEARCH_INPUT)))
-				input.searchQuery = req.getParameter(MainAdminPageCreator.SEARCH_INPUT);
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PAGE_INPUT)))
-				input.page = NumberUtils.toInt(req.getParameter(MainAdminPageCreator.PAGE_INPUT), 1);
-			if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.MESSAGE_INPUT)))
-				input.message = URLDecoder.decode(req.getParameter(MainAdminPageCreator.MESSAGE_INPUT), "utf-8");
-			input.clearPasteBuffer = (!"yes".equalsIgnoreCase(req.getParameter(MainAdminPageCreator.PRESERVE_PASTE_BUFFER_VAR)));
-			// Создание ссылок
-			Enumeration<String> paramNames = req.getParameterNames();
-			while (paramNames.hasMoreElements()) {
-				String inputName = paramNames.nextElement();
-				if (inputName.startsWith(MainAdminPageCreator.MOUNT_INPUT_PREFIX) || inputName.startsWith(MainAdminPageCreator.UNMOUNT_INPUT_PREFIX))
-					input.mount.put(inputName, req.getParameter(inputName));
-			}
-			input.session = req.getSession();
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT)))
+			input.itemId = Long.parseLong(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_TYPE_INPUT)))
+			input.itemTypeId = Integer.parseInt(req.getParameter(MainAdminPageCreator.ITEM_TYPE_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PARENT_ID_INPUT)))
+			input.parentId = Long.parseLong(req.getParameter(MainAdminPageCreator.PARENT_ID_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT)))
+			input.assocId = Byte.parseByte(req.getParameter(MainAdminPageCreator.ASSOC_ID_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.INDEX_INPUT)))
+			input.index = Integer.parseInt(req.getParameter(MainAdminPageCreator.INDEX_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.NEW_ITEM_POSITION)))
+			input.newItemPosition = Integer.parseInt(req.getParameter(MainAdminPageCreator.NEW_ITEM_POSITION));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PARAM_ID_INPUT)))
+			input.paramId = Integer.parseInt(req.getParameter(MainAdminPageCreator.PARAM_ID_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.VIEW_TYPE_INPUT)))
+			input.viewType = req.getParameter(MainAdminPageCreator.VIEW_TYPE_INPUT);
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.VISUAL_INPUT)))
+			input.isVisual = Boolean.parseBoolean(req.getParameter(MainAdminPageCreator.VISUAL_INPUT));
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.SEARCH_INPUT)))
+			input.searchQuery = req.getParameter(MainAdminPageCreator.SEARCH_INPUT);
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.PAGE_INPUT)))
+			input.page = NumberUtils.toInt(req.getParameter(MainAdminPageCreator.PAGE_INPUT), 1);
+		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.MESSAGE_INPUT)))
+			input.message = URLDecoder.decode(req.getParameter(MainAdminPageCreator.MESSAGE_INPUT), "utf-8");
+		input.clearPasteBuffer = (!"yes".equalsIgnoreCase(req.getParameter(MainAdminPageCreator.PRESERVE_PASTE_BUFFER_VAR)));
+		// Создание ссылок
+		Enumeration<String> paramNames = req.getParameterNames();
+		while (paramNames.hasMoreElements()) {
+			String inputName = paramNames.nextElement();
+			if (inputName.startsWith(MainAdminPageCreator.MOUNT_INPUT_PREFIX) || inputName.startsWith(MainAdminPageCreator.UNMOUNT_INPUT_PREFIX))
+				input.mount.put(inputName, req.getParameter(inputName));
+		}
+		input.session = req.getSession();
 //		}
 		return input;
 	}
 
 	/**
 	 * Начало работы с CMS, выбран корневой айтем
-	 * 
+	 *
 	 * Параметры
 	 *  - не требуются
 	 *  
@@ -322,7 +322,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 				if (item == null)
 					continue;
 				tr.addCommandUnit(SaveItemDBUnit.forceUpdate(item).ignoreUser().ignoreFileErrors());
-					tr.execute();
+				tr.execute();
 				count++;
 				if (count % 500 == 0)
 					ServerLogger.warn("Updated " + count + " items");
@@ -380,7 +380,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Выбор айтема для редактирования
-	 * 
+	 *
 	 * Параметры:
 	 * itemId - ID базового айтема
 	 * itemTypeId - тип базового айтема
@@ -400,7 +400,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	/**
 	 * Создать форму для нового айтемы
-	 * 
+	 *
 	 * Параметры:
 	 * itemTypeId - тип создаваемого айтема
 	 * parentId - ID родительского айтема
@@ -924,7 +924,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			for (long id : in.bufferedItemIds) {
 				transaction.addCommandUnit(new MoveItemDBUnit(id, in.parentId));
 			}
-		transaction.execute();
+			transaction.execute();
 			@SuppressWarnings("unchecked")
 			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
 			if (buffer != null && in.clearPasteBuffer) {
@@ -1022,7 +1022,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			@SuppressWarnings("unchecked")
 			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
 			if (in.itemId > 0) {
-				transaction.addCommandUnit(new CopyItemDBUnit(in.itemId, in.parentId));
+			transaction.addCommandUnit(new CopyItemDBUnit(in.itemId, in.parentId));
 			}
 			for (long id : in.bufferedItemIds) {
 				transaction.addCommandUnit(new CopyItemDBUnit(id, in.parentId));

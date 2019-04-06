@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS `item` (
   `i_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `i_supertype` int(10) unsigned NOT NULL,
   `i_type_id` int(10) unsigned NOT NULL,
-  `i_key` varchar(100) NOT NULL,
-  `i_t_key` varchar(100) NOT NULL,
+  `i_key` varchar(250) NOT NULL,
+  `i_t_key` varchar(250) NOT NULL,
   `i_status` tinyint(3) unsigned NOT NULL,
   `i_user` int(10) unsigned NOT NULL,
   `i_group` tinyint(3) unsigned NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `item` (
   `i_params` longtext,
   PRIMARY KEY (`i_id`),
   KEY `MAIN` (`i_status`,`i_id`,`i_group`,`i_user`) USING BTREE,
-  KEY `GROUP_AND_TYPE` (`i_group`,`i_supertype`,`i_user`,`i_status`) USING BTREE
+  KEY `GROUP_AND_TYPE` (`i_group`,`i_supertype`,`i_user`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -68,7 +68,6 @@ CREATE TABLE IF NOT EXISTS `item_parent` (
   `ip_weight` int(11) unsigned NOT NULL,
   PRIMARY KEY (`ip_child_id`,`ip_assoc_id`,`ip_parent_direct`,`ip_parent_id`) USING BTREE,
   KEY `MAIN` (`ip_parent_id`,`ip_assoc_id`,`ip_child_supertype`,`ip_parent_direct`,`ip_weight`) USING BTREE,
-  KEY `MAX_WEIGHT` (`ip_parent_id`,`ip_assoc_id`,`ip_weight`) USING BTREE,
   CONSTRAINT `CHILD` FOREIGN KEY (`ip_child_id`) REFERENCES `item` (`i_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `PARENT` FOREIGN KEY (`ip_parent_id`) REFERENCES `item` (`i_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -129,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `int_index` (
 
 CREATE TABLE IF NOT EXISTS `unique_key` (
   `uk_item_id` bigint(20) unsigned NOT NULL,
-  `uk_key` varchar(100) NOT NULL,
+  `uk_key` varchar(250) NOT NULL,
   PRIMARY KEY (`uk_item_id`),
   UNIQUE `MAIN` (`uk_key`),
   CONSTRAINT `ITEM` FOREIGN KEY (`uk_item_id`) REFERENCES `item` (`i_id`) ON DELETE CASCADE ON UPDATE CASCADE

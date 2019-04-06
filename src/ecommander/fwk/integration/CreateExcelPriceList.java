@@ -117,14 +117,14 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			rowIndex = initializeHeader(sh,rowIndex);
 			if(writeHierarchy) {
 
-			Row row = sh.createRow(++rowIndex);
-			String[]secInfo = getSectionName(section);
-			row.createCell(++colIdx).setCellValue("разд:"+secInfo[0]);
-			row.getCell(colIdx).setCellStyle(sectionStyle);
-			row.createCell(++colIdx).setCellValue(secInfo[1]);
-			row.getCell(colIdx).setCellStyle(sectionStyle);
-			row.createCell(++colIdx).setCellValue(secInfo[2]);
-			row.getCell(colIdx).setCellStyle(sectionStyle);
+				Row row = sh.createRow(++rowIndex);
+				String[]secInfo = getSectionName(section);
+				row.createCell(++colIdx).setCellValue("разд:"+secInfo[0]);
+				row.getCell(colIdx).setCellStyle(sectionStyle);
+				row.createCell(++colIdx).setCellValue(secInfo[1]);
+				row.getCell(colIdx).setCellStyle(sectionStyle);
+				row.createCell(++colIdx).setCellValue(secInfo[2]);
+				row.getCell(colIdx).setCellStyle(sectionStyle);
 			}
 			boolean isEmpty = new ItemQuery(PRODUCT_ITEM).setParentId(id, false).loadFirstItem() == null;
 			if(!isEmpty) {
