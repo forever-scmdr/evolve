@@ -307,7 +307,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			row.createCell(++colIdx).setCellValue(currencyID);
 			row.createCell(++colIdx).setCellValue(qtyValue);
 			if(hasUnits) {
-			row.createCell(++colIdx).setCellValue(product.getStringValue("unit", ""));
+				row.createCell(++colIdx).setCellValue(product.getStringValue("unit", ""));
 			}
 			row.createCell(++colIdx).setCellValue(String.valueOf(product.getByteValue(AVAILABLE_PARAM, (byte) 0)));
 
