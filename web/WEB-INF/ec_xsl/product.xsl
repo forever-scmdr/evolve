@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="3.0">
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -45,11 +45,6 @@
 	</xsl:template>
 
 	<xsl:template name="CONTENT">
-
-
-
-
-
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
@@ -91,7 +86,7 @@
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
-									<input type="submit" class="button" value="Заказать" />
+									<input type="submit" class="button" value="В корзину" />
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
@@ -224,15 +219,15 @@
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
 						<xsl:if test="$p/params_xml">
-							<li role="presentation" class="active">
-								<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
+						<li role="presentation" class="active">
+							<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
+						</li>
+						</xsl:if>
+						<xsl:for-each select="$p/product_extra">
+							<li role="presentation">
+								<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a>
 							</li>
-							</xsl:if>
-							<xsl:for-each select="$p/product_extra">
-								<li role="presentation">
-									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a>
-								</li>
-							</xsl:for-each>
+						</xsl:for-each>
 					</ul>
 				<div class="tab-content">
 					<xsl:if test="$p/params_xml">

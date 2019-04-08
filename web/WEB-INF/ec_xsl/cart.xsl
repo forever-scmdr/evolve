@@ -25,12 +25,14 @@
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' p.') else ''"/>
 							<div class="item">
 								<xsl:if test="not($p/product)">
+									<xsl:variable name="pic_path" select="if ($p/picture) then $p/picture[1] else 'img/no_image.png'"/>
 									<a href="{$p/show_product}" class="image-container">
-										<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
+										<img src="{$pic_path}" alt="{$p/name}"/>
 									</a>
 									<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
 								</xsl:if>
 								<xsl:if test="$p/product">
+									<xsl:variable name="pic_path" select="if ($p/product/picture) then $p/product/picture[1] else 'img/no_image.png'"/>
 									<a href="{$p/product/show_product}" class="image-container">
 										<img src="{$p/product/@path}{$p/product/main_pic}" alt="{$p/name}"/>
 									</a>

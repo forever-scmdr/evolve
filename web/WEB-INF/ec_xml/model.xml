@@ -94,7 +94,6 @@
 		<on-create class="ecommander.fwk.integration.CreateSeoItemFactory"/>
 	</item>
 
-
 	<item name="url_seo" key="name" caption="SEO" super="* base_seo" ag-id="5" ag-hash="-169844339">
 		<parameter name="name" type="string" caption="Название" description="для поиска в CMS"/>
 		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
@@ -157,7 +156,7 @@
 
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
-	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" super="seo_container" ag-id="12" ag-hash="1970241253">
+	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" super="seo_container" children-per-page="50" ag-id="12" ag-hash="1970241253">
 		<child item="parse_section" single="true"/>
 		<child item="section" />
 		<child item="product"/>
@@ -499,11 +498,11 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="payment" caption="Оплата">
+	<item name="payment" caption="Оплата" ag-id="61" ag-hash="-786681338">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1633" ag-hash="-1220416192">
+	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="39" ag-hash="-1220416192">
 		<parameter name="payment" type="text" caption="Оплата и доставка" description="выводится на странице товара в блоке справа"/>
 	</item>
 
@@ -590,6 +589,7 @@
 
 	<item name="one_click_form" caption="Форма заказа в один клик" virtual="true" ag-id="52" ag-hash="-2028535660">
 		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="name" type="string" caption="Имя покупателя"/>
 		<parameter name="product_code" type="string" caption="Артикул товара"/>
 		<parameter name="product_name" type="string" caption="Название товара"/>
 	</item>

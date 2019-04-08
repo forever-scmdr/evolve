@@ -3,12 +3,13 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<!-- <xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/> -->
+	<xsl:variable name="title" select="string-join(('Купить', $sel_sec/name, 'в Минске с доставкой по РБ - Интернет-магазин Mystery.by'), ' ')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $sel_sec/name"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
-	<xsl:variable name="subs" select="$main_menu_section/section"/>
-	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
+	<xsl:variable name="subs" select="$sel_sec/section"/>
+	<xsl:variable name="show_devices" select="true()"/>
 
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
 
@@ -53,19 +54,20 @@
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="tag" select="page/variables/tag"/>
-	<xsl:variable name="title" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
+	<!-- <xsl:variable name="title" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/> -->
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
-	<xsl:variable name="canonical"
-				  select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/>
+<!-- 	<xsl:variable name="canonical"
+				  select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/> -->
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
 
 	<xsl:template name="CONTENT">
+		<!-- <xsl:value-of select="//canonical_link"/> -->
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
@@ -84,7 +86,7 @@
 			<xsl:value-of select="$h1"/>
 		</h1>
 		<xsl:if test="$seo[1]/text">
-			<div class="page-content m-t">
+			<div class="page-content m-t seo-text">
 				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
 			</div>
 		</xsl:if>
@@ -151,25 +153,20 @@
 
 	<xsl:template name="TAGS">
 	   <xsl:if test="$subs or $sel_sec/tag">
-				<xsl:if test="not($subs)">
+			<xsl:if test="not($subs)">
+				<div class="tags">
+					<form method="GET" action="{page/source_link}">
+						<xsl:apply-templates select="$sel_sec/tag"/>
+					</form>
+				</div>
+			</xsl:if>
+			<xsl:if test="not($sel_sec/show_subs = '0')">
+				<xsl:if test="$subs">
 					<div class="tags">
-						<form method="GET" action="{page/source_link}">
-							<xsl:apply-templates select="$sel_sec/tag"/>
-						</form>
+						<xsl:apply-templates select="$subs" mode="tag"/>
 					</div>
 				</xsl:if>
-				<xsl:if test="not($sel_sec/show_subs = '0')">
-					<xsl:if test="$subs and $sub_view = 'tags'">
-						<div class="tags">
-							<xsl:apply-templates select="$subs" mode="tag"/>
-						</div>
-					</xsl:if>
-					<xsl:if test="$subs and $sub_view = 'pics'">
-						<div class="catalog-items">
-							<xsl:apply-templates select="$subs" mode="pic"/>
-						</div>
-					</xsl:if>
-				</xsl:if>
+			</xsl:if>
 		</xsl:if>
 	</xsl:template>
 
@@ -227,19 +224,6 @@
 						<i class="fas fa-th-list"></i>
 						<a href="{page/set_view_list}">Строками</a>
 					</span>
-				</div>
-				<div class="checkbox">
-					<label>
-						<xsl:if test="not($only_available)">
-							<input type="checkbox"
-								   onclick="window.location.href = '{page/show_only_available}'"/>
-						</xsl:if>
-						<xsl:if test="$only_available">
-							<input type="checkbox" checked="checked"
-								   onclick="window.location.href = '{page/show_all}'"/>
-						</xsl:if>
-						в наличии на складе
-					</label>
 				</div>
 				<span>
 					<select class="form-control" value="{page/variables/sort}{page/variables/direction}"

@@ -104,8 +104,8 @@
 								<div class="sections">
 									<xsl:for-each select="page/catalog/section">
 										<a href="{show_products}" class="cat_menu_item_1" rel="#sub_{@id}">
-												<xsl:value-of select="name" />
-											</a>
+											<xsl:value-of select="name" />
+										</a>
 									</xsl:for-each>
 								</div>
 
@@ -303,7 +303,11 @@
 						</a></li>
 					</xsl:for-each>
 					<xsl:for-each select="page/custom_pages/custom_page[in_main_menu='да']">
-						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
+						<li>
+							<a href="{show_page}">
+								<xsl:value-of select="header"/>
+							</a>
+						</li>
 					</xsl:for-each>
 					<li>
 						<a href="{page/contacts_link}">Контакты</a>
@@ -507,7 +511,7 @@
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device items-catalog__device">
 			<xsl:variable name="pic_path" select="if (picture) then picture[1] else 'img/no_image.png'"/>
-			<a href="{$pic_path}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
+			<a href="{$pic_path}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow" style="max-width: 20px;">
 				<i class="fas fa-search-plus"></i>
 			</a>
 			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
@@ -530,7 +534,7 @@
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button" value="Заказать"/>
+								<input type="submit" class="button" value="В корзину"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
@@ -591,7 +595,7 @@
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable name="pic_path" select="if (picture) then picture[1] else 'img/no_image.png'"/>
-			<a href="{$pic_path}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
+			<a href="{$pic_path}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow" style="max-width: 20px;">
 				<i class="fas fa-search-plus"></i>
 			</a>
 			<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
@@ -817,7 +821,7 @@
 				<script type="text/javascript" src="js/truncate.js"/>
 				<script type="text/javascript">
 					$(document).ready(function() {
-						$('.seo-text').truncate({length: 150;});
+						$('.seo-text').truncate({length: 300});
 						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
 							type: 'image',
 							closeOnContentClick: true,
@@ -975,9 +979,7 @@
 			<xsl:apply-templates select="$seo"/>
 		</xsl:if>
 		<xsl:if test="not($seo) or $seo = ''">
-			<title>
-				<xsl:value-of select="$title"/>
-			</title>
+			<title><xsl:value-of select="$title"/></title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
 		<xsl:if test="$common/google_verification">

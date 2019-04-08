@@ -31,7 +31,15 @@
 							</div>
 						</xsl:if>
 						<xsl:if test="not($success)">
-							<form action="{page/submit_link}" method="post" ajax="true" ajax-loader-id="modal-one_click">
+							<form action="{page/submit_link}" method="post" ajax="true" ajax-loader-id="modal-one_click" id="one-click-form">
+								<div class="form-group">
+									<label>Телефон:</label>
+									<input type="text" id="one-click-phone"  class="form-control" name="{$form/input/phone/@input}" value="{$form/input/phone}"/>
+								</div>
+								<div class="form-group">
+									<label>Имя:</label>
+									<input type="text" id="one-click-name" class="form-control" name="{$form/input/name/@input}" value="{$form/input/name}"/>
+								</div>
 								<div class="form-group">
 									<label>Товар:</label>
 									<input type="text" class="form-control"
@@ -39,10 +47,7 @@
 									<input type="text" class="form-control"
 									       name="{$form/input/product_code/@input}" value="{$pcode}" readonly="readonly"/>
 								</div>
-								<div class="form-group">
-									<label>Телефон:</label>
-									<input type="text" class="form-control" name="{$form/input/phone/@input}" value="{$form/input/phone}"/>
-								</div>
+								<input name="topic" value="{concat('Заказ в 1 клик. ', $pname, '. Арт: ', $pcode)}" />
 								<input type="submit" value="Заказать"/>
 							</form>
 						</xsl:if>

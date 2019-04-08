@@ -190,10 +190,10 @@
 			<var name="fil"/>
 			<var name="tag"/>
 		</request>
-			<link name="canonical_link" target="section" type="exclusive">
+		<link name="canonical_link" target="section" type="exclusive">
 			<var name="sec" var="sec" style="translit"/>
-			</link>
-		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view page">
+		</link>
+		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view page">	
 			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" transit="true" tag="product">
 				<filter>
@@ -328,7 +328,7 @@
 		</request>
 		<list item="product" id="prod" tag="product">
 			<filter>
-				<fulltext limit="48" compare="EVERY">
+				<fulltext limit="199" compare="EVERY">
 					<var var="q"/>
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
@@ -381,9 +381,9 @@
 		<request>
 			<var name="prod" style="translit"/>
 		</request>
-			<link name="canonical_link" target="product" type="exclusive">
+		<link name="canonical_link" target="product" type="exclusive">
 			<var name="prod" var="prod" style="translit"/>
-			</link>
+		</link>
 		<single item="product" id="prod" var="prod" tag="product">
 			<single item="seo" assoc="seo"/>
 			<single item="params"/>
@@ -557,7 +557,7 @@
 			<var name="form_name" value="one_click"/>
 			<var name="source_page" value="one_click_ajax"/>
 			<var name="required" value="phone"/>
-			<var name="topic" value="Заказ в один клик"/>
+			<!--<var name="topic" value="Заказ в один клик"/>-->
 		</link>
 	</page>
 
@@ -565,6 +565,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
+			<!-- <var name="email" value="bio@forever-ds.com"/> -->
 			<var name="email" value="zakaz@mystery.by"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
@@ -1365,8 +1366,13 @@
 		</command>
 	</page>
 
+	<page name="remove_hidden" authority-groups="common">
+		<command class="extra.RemoveInvisibleCommand" clear-cache="no">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
-    <page name="reindex_all" template="integration/reindex" authority-groups="common">
+	<page name="reindex_all" template="integration/reindex" authority-groups="common">
         <request>
             <var name="action"/>
         </request>

@@ -201,15 +201,7 @@
 			<div class="container">
 				<div class="block-title">Новинки</div>
 				<div class="special-items__devices slick-slider">
-					<xsl:apply-templates select="page/main_page/product[tag='Новинка']"/>
-				</div>
-			</div>
-		</section>
-		<section class="special-items">
-			<div class="container">
-				<div class="block-title">Акции</div>
-				<div class="special-items__devices slick-slider zu">
-					<xsl:apply-templates select="page/main_page/product[tag='Акция']"/>
+					<xsl:apply-templates select="page/main_page/product"/>
 				</div>
 			</div>
 		</section>
