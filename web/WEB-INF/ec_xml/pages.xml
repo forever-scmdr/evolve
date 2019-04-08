@@ -1224,4 +1224,13 @@
 		</command>
 	</page>
 
+	<page name="create_metabo_price" template="integration/create_excel">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.CreatePriceUpdateFile" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 </site>

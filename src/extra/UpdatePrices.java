@@ -22,11 +22,11 @@ import java.util.List;
  * Created by E on 1/3/2018.
  */
 public class UpdatePrices extends IntegrateBase implements ItemNames {
-	private static final String CODE_HEADER = "Но#";
-	private static final String PRICE_OLD_HEADER = "Цена без скидки";
-	private static final String PRICE_NEW_HEADER = "Цена со скидкой";
-	private static final String AVAILABLE_HEADER = "Наличие";
-	private static final String PRESENT_HEADER = "Подарок";
+	protected static final String CODE_HEADER = "Но#";
+	protected static final String PRICE_OLD_HEADER = "Цена без скидки";
+	protected static final String PRICE_NEW_HEADER = "Цена со скидкой";
+	protected static final String AVAILABLE_HEADER = "Наличие";
+	protected static final String PRESENT_HEADER = "Подарок";
 
 	private ExcelPriceList price;
 
@@ -55,10 +55,10 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 						String priceNew = getValue(2);
 						boolean available = StringUtils.contains(getValue(3), "+");
 						if (StringUtils.isNotBlank(priceNew)) {
-							prod.setValueUI(product.PRICE, priceNew);
-							prod.setValueUI("price_old", priceOld);
+							prod.setValueUI(product.PRICE, priceNew.replaceAll("\\s", ""));
+							prod.setValueUI("price_old", priceOld.replaceAll("\\s", ""));
 						} else {
-							prod.setValueUI(product.PRICE, priceOld);
+							prod.setValueUI(product.PRICE, priceOld.replaceAll("\\s", ""));
 						}
 						prod.setValue("available", available ? (byte)1 : (byte)0);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
