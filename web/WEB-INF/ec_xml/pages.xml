@@ -557,7 +557,7 @@
 			<var name="form_name" value="one_click"/>
 			<var name="source_page" value="one_click_ajax"/>
 			<var name="required" value="phone"/>
-			<!--<var name="topic" value="Заказ в один клик"/>-->
+			<!-- <var name="topic" value="Заказ в один клик"/> -->
 		</link>
 	</page>
 
@@ -565,8 +565,8 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<!-- <var name="email" value="bio@forever-ds.com"/> -->
-			<var name="email" value="zakaz@mystery.by"/>
+			<var name="email" value="bio@forever-ds.com"/>
+			<!-- <var name="email" value="zakaz@mystery.by"/> -->
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>

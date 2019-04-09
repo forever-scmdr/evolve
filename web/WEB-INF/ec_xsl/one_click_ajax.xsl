@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE stylesheet [<!ENTITY nbsp "&#160;"><!ENTITY copy "&#x000A9;" >]>
 <xsl:stylesheet
-		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-		xmlns="http://www.w3.org/1999/xhtml"
-		xmlns:f="f:f"
-		version="2.0">
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="f:f"
+        version="2.0">
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/html" indent="yes" omit-xml-declaration="yes" exclude-result-prefixes="#all"/>
 
 	<xsl:variable name="message" select="page/variables/message"/>
@@ -47,7 +47,7 @@
 									<input type="text" class="form-control"
 									       name="{$form/input/product_code/@input}" value="{$pcode}" readonly="readonly"/>
 								</div>
-								<input name="topic" value="{concat('Заказ в 1 клик. ', $pname, '. Арт: ', $pcode)}" />
+								<input name="topic" value="{concat($pname, '. Арт: ', $pcode)}" type="hidden"/>
 								<input type="submit" value="Заказать"/>
 							</form>
 						</xsl:if>

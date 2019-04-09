@@ -57,7 +57,7 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
-		<p>арт. <xsl:value-of select="$p/code"/></p>
+		<p>арт. <a target="_blank" rel="nofollow" href="{concat('https://www.ozon.ru/context/detail/id/', $p/code, '/?partner=mysteryby')}"><xsl:value-of select="$p/code"/></a></p>
 		<div class="catalog-item-container">
 			<div class="gallery">
 				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
@@ -178,7 +178,7 @@
 					</div>
 				</div>
 				<div class="extra-contacts">
-					<div class="extra-contacts__title">Звоните, чтобы получить помощь и консультацию</div>
+					<div class="extra-contacts__title">Заказать или получить помощь и консультацию:</div>
 					<div class="extra-contacts__items">
 						<div class="extra-contacts__item">
 							<div class="extra-contacts__number">(+375 29) 381-08-03</div>
@@ -196,6 +196,8 @@
 				</div>
 				<div class="extra-info">
 					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
+					<p></p>
+					<p><b>ОПИСАНИЕ</b></p>
 					<ul>
 						<xsl:if test="$p/artist"><li>Исполнитель: <xsl:value-of select="$p/artist"/></li></xsl:if>
 						<xsl:if test="$p/starring"><li>Исполнители ролей: <xsl:value-of select="$p/starring"/></li></xsl:if>
