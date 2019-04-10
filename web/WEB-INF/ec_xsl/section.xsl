@@ -4,7 +4,17 @@
 	<xsl:strip-space elements="*"/>
 
 	<!-- <xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/> -->
-	<xsl:variable name="title" select="string-join(('Купить', $sel_sec/name, 'в Минске с доставкой по РБ - Интернет-магазин Mystery.by'), ' ')"/>
+	<xsl:variable name="cities" as="element()*">
+		<item>Минске</item>
+		<item>Витебске</item>
+		<item>Могилеве</item>
+		<item>Гомеле</item>
+		<item>Бресте</item>
+		<item>Гродно</item>
+	</xsl:variable>
+	<xsl:variable name="x" select="f:num(page/variables/page) mod count($cities)" />
+
+	<xsl:variable name="title" select="string-join(('Купить', lower-case($sel_sec/name), 'в',$cities[$x],'с доставкой по РБ - Интернет-магазин Mystery.by'), ' ')"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $sel_sec/name"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
@@ -177,7 +187,7 @@
 		<xsl:if test="not($subs) and $valid_inputs">
 			<div class="toggle-filters">
 				<i class="fas fa-cog"></i>
-				<a onclick="$('#filters_container').slideToggle(200);">Подбор по параметрам</a>
+				<a onclick="$('#filters_container').slideToggle(200);" rel="nofollow">Подбор по параметрам</a>
 			</div>
 			<form method="post" action="{$sel_sec/filter_base_link}">
 				<div class="filters" style="{'display: none'[not($user_filter)]}" id="filters_container">
@@ -218,11 +228,11 @@
 				<div class="view">
 					<span class="{'active'[not($view = 'list')]}">
 						<i class="fas fa-th-large"></i>
-						<a href="{page/set_view_table}">Плиткой</a>
+						<a href="{page/set_view_table}" rel="nofollow">Плиткой</a>
 					</span>
 					<span class="{'active'[$view = 'list']}">
 						<i class="fas fa-th-list"></i>
-						<a href="{page/set_view_list}">Строками</a>
+						<a href="{page/set_view_list}" rel="nofollow">Строками</a>
 					</span>
 				</div>
 				<span>

@@ -53,6 +53,7 @@
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
+		<link name="compare_link" target="compare"/>
 
 		<!-- REGISTRATION -->
 		<link name="register_link" target="register"/>

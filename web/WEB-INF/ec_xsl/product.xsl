@@ -3,9 +3,32 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="string-join(('Купить', $p/name, $p/artist, $p/author, $p/director, $p/starring, $p/publisher, 'c доставкой по Беларуси – Книжный интернет магазин Mystery.by'),' ')"/>
+	<xsl:variable name="path" select="page/catalog//section[.//@id = $sel_sec_id]"/>
+	<xsl:variable name="is_video" select="$path/name = 'Видео'"/>
+	<xsl:variable name="is_music" select="$path/name = 'Музыка'"/>
+	<xsl:variable name="is_book" select="$path/name = 'Книги'"/>
+
+	<xsl:variable name="video_prefix"><xsl:choose>
+		<xsl:when test="$path/name = 'Художественные фильмы'">Фильм</xsl:when>
+		<xsl:when test="$path/name = 'Сериалы'">Сериал</xsl:when>
+		<xsl:when test="$path/name = 'Мультфильмы'">Мультфильм</xsl:when>
+		<xsl:when test="$path/name = 'Документальные фильмы'">Документальный фильм</xsl:when>
+		<xsl:otherwise>Видео</xsl:otherwise>
+	</xsl:choose></xsl:variable>
+
+	<xsl:variable name="video_title" select="string-join(('Купить', lower-case($video_prefix) ,$p/name,'в Минске - интернет магазин Mystery.by, Беларусь'), ' ')"/>
+	<xsl:variable name="video_description" select="string-join(($video_prefix, $p/name, 'от Мистери недорого. Доставка по Беларуси. ЗАКАЗЫВАЙТЕ по ☎☎☎ +375 29 257 08 03!'), ' ')"/>
+
+	<xsl:variable name="music_title" select="string-join(('Купить музыку', $p/name,',', $p/artist,'в Минске - интернет магазин Mystery.by, Беларусь'), ' ')"/>
+	<xsl:variable name="music_description" select="string-join(('Музыка: альбом', $p/name,',', $p/artist, 'в магазине Мистери недорого. Доставка по Беларуси. ЗАКАЗЫВАЙТЕ по ☎☎☎ +375 29 257 08 03!'), ' ')"/>
+
+	<xsl:variable name="book_title" select="string-join(('Купить книгу', $p/name,',', $p/author, ': цена ', $p/price,'byn в Минске - интернет магазин Mystery.by, Беларусь'),' ')"/>
+	<xsl:variable name="book_description" select="string-join(('Книга', $p/name,',', $p/author, 'в магазине Мистери недорого. Доставка по Беларуси. ЗАКАЗЫВАЙТЕ по ☎☎☎ +375 29 257 08 03!'),' ')"/>
+
+
+	<xsl:variable name="title" select="if($is_video) then $video_title else if($is_book) then $book_title else $music_title"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $p/name"/>
-	<xsl:variable name="meta_description" select="string-join(('★Купить', $p/name, 'в Минске.', $p/artist, $p/author, $p/director, $p/year, 'год', $p/starring, $p/publisher, $p/series, $p/media, $p/originalName, $p/country|$p/country_of_origin, $p/page_extent, $p/language, $p/ISBN),' ')"/>
+	<xsl:variable name="meta_description" select="if($is_video) then $video_description else if($is_book) then $book_description else $music_description"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
@@ -49,7 +72,7 @@
 		<div class="path-container">
 			<div class="path">
 				<a href="{$main_host}">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
-				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
+				<xsl:for-each select="$path">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
 					<a href="{show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
@@ -96,12 +119,12 @@
 						</div>
 						<div class="device__actions device__actions_device-page">
 							<div id="compare_list_{$p/@id}">
-								<a href="{$p/to_compare}" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
+								<a href="{$p/to_compare}" rel="nofollow" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
 									<i class="fas fa-balance-scale"></i>сравнить
 								</a>
 							</div>
 							<div id="fav_list_{$p/@id}">
-								<a href="{$p/to_fav}" class="device__action-link icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
+								<a href="{$p/to_fav}" rel="nofollow" class="device__action-link icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
 									<i class="fas fa-star"></i>отложить
 								</a>
 							</div>

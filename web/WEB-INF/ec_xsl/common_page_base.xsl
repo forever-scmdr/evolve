@@ -83,17 +83,17 @@
 							<input type="submit" class="button header__button" value="Найти" />
 						</form>
 						<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-							<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
+							<a><i class="fas fa-shopping-cart"></i>Корзина</a>
 							<!-- <div>Товаров: <strong>2</strong></div>
 							<div>Cумма: <strong>1250 руб.</strong></div> -->
 						</div>
 						<div class="user-links header__column">
 							<xsl:call-template name="PERSONAL_DESKTOP"/>
 							<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
-								<a href=""><i class="fas fa-star"/>Избранное</a>
+								<a rel="nofollow"><i class="fas fa-star"/>Избранное</a>
 							</div>
 							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}">
-								<a href="compare.html"><i class="fas fa-balance-scale"/>Сравнение</a>
+								<a href="{page/compare_link}" rel="nofollow"><i class="fas fa-balance-scale"/>Сравнение</a>
 							</div>
 						</div>
 					</div>
@@ -559,21 +559,21 @@
 			<div class="device__actions">
 				<xsl:if test="not($is_compare)">
 					<div id="compare_list_{@id}">
-						<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
+						<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}"  rel="nofollow">
 							<i class="fas fa-balance-scale"></i>сравнить
 						</a>
 					</div>
 				</xsl:if>
 				<xsl:if test="$is_compare">
-					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
+					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}"  rel="nofollow">убрать</a></span>
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="$is_fav">
-						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
+						<a href="{from_fav}" class="icon-link device__action-link" rel="nofollow"><i class="fas fa-star"></i>убрать</a>
 					</xsl:when>
 					<xsl:otherwise>
 						<div id="fav_list_{@id}">
-							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
+							<a href="{to_fav}" class="icon-link device__action-link" rel="nofollow" ajax="true" ajax-loader-id="fav_list_{@id}">
 								<i class="fas fa-star"></i>отложить
 							</a>
 						</div>
@@ -759,7 +759,6 @@
 				<xsl:text disable-output-escaping="yes">
 --&gt;
 				</xsl:text>
-				<!--<base href="https://ttd.by"/> -->
 				<base href="{$main_host}"/>
 				<meta charset="utf-8"/>
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -974,7 +973,9 @@
 
 	<xsl:template name="SEO">
 		<xsl:variable name="quote">"</xsl:variable>
-		<link rel="canonical" href="{concat($main_host, $canonical)}" />
+		<xsl:if test="/page/variables/page = '1' or not(/page/variables/page)">
+			<link rel="canonical" href="{concat($main_host, $canonical)}" />
+		</xsl:if>
 		<xsl:if test="$seo">
 			<xsl:apply-templates select="$seo"/>
 		</xsl:if>
