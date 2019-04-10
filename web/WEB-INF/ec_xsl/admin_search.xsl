@@ -80,6 +80,9 @@
 							<th>Мин. заказ</th>
 							<th>Цена (руб.)</th>
 							<th>Сумма (руб.)</th>
+							<th>Начальная цена</th>
+							<th>Склад</th>
+							<th>Обновлено</th>
 							<th>Заказать</th>
 							<xsl:if test="$multiple">
 								<th></th>
@@ -191,6 +194,9 @@
 					</xsl:call-template>
 				</xsl:if>
 			</td>
+			<td><xsl:value-of select="price"/></td>
+			<td><xsl:value-of select="plain_section/name"/></td>
+			<td><xsl:value-of select="plain_section/date"/></td>
 			<td id="cart_search_{@id}">
 				<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
 					<xsl:if test="$has_price">

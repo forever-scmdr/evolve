@@ -44,7 +44,7 @@
 							<a href="{$main_host}"><img src="img/logo.png" alt="На главную страницу" /></a>
 						</div>
 						<div class="search">
-							<form action="{page/search_link}" method="post">
+							<form action="{page/search_link[1]}" method="post">
 								<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
 								<input type="submit" value="Найти"/>
 							</form>
@@ -164,7 +164,7 @@
 					<a href="javascript:showMobileMainMenu()"><i class="fas fa-bars"></i></a>
 				</div>
 				<div class="search-container">
-					<form action="{page/search_link}" method="post">
+					<form action="{page/search_link[1]}" method="post">
 						<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
 					</form>
 				</div>

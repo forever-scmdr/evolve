@@ -3,7 +3,9 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="if (starts-with($p/name, $p/vendor)) then $p/name else concat($p/vendor, ' ', $p/name)"/>
+	<xsl:variable name="p" select="page/product[1]"/>
+
+	<xsl:variable name="title" select="if (starts-with($p[1]/name, $p/vendor)) then $p/name else concat($p/vendor, ' ', $p/name)"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -13,9 +15,8 @@
 	</xsl:template>
 
 
-	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="price_intervals" select="page/price_catalog/price_interval"/>
-	<xsl:variable name="Q" select="number(page/price_catalog/quotient)"/>
+	<xsl:variable name="Q" select="f:num(page/price_catalog/quotient)"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -48,14 +49,19 @@
 	<xsl:template name="ALL_PRICES">
 		<xsl:param name="price"/>
 		<xsl:param name="min_qty"/>
+		<xsl:param name="need_sum"/>
 		<xsl:for-each select="$price_intervals">
 			<xsl:variable name="quotient" select="f:num(quotient)"/>
 			<xsl:variable name="unit_price" select="$price * $Q * $quotient"/>
-			<xsl:if test="$unit_price * $min_qty &lt; f:num(max)">
-				<xsl:variable name="min_number" select="ceiling(f:num(min) div $unit_price)"/>
+			<xsl:if test="$price * $min_qty &lt; f:num(max)">
+				<xsl:variable name="min_number" select="ceiling(f:num(min) div $price)"/>
 				<xsl:variable name="number" select="if ($min_number &gt; $min_qty) then $min_number else $min_qty"/>
 				<xsl:variable name="sum" select="$unit_price * $number"/>
-				<p><xsl:value-of select="$Q"/> * <xsl:value-of select="$quotient"/> * <xsl:value-of select="$price"/> * x<xsl:value-of select="$number"/> = <xsl:value-of select="$sum"/></p>
+				<p>
+					<!--|<xsl:value-of select="$Q"/> * <xsl:value-of select="$quotient"/> * <xsl:value-of select="$price"/>|-->
+					<xsl:if test="$need_sum">x<xsl:value-of select="$number"/>&#160;=&#160;<xsl:value-of select="f:format_currency($sum)"/></xsl:if>
+					<xsl:if test="not($need_sum)"><xsl:value-of select="f:format_currency($unit_price)"/></xsl:if>
+				</p>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
@@ -75,16 +81,22 @@
 			<td><xsl:value-of select="$unit"/></td>
 			<td><xsl:value-of select="min_qty"/></td>
 			<td>
-				<xsl:call-template name="ALL_PRICES">
-					<xsl:with-param name="min_qty" select="$min_qty"/>
-					<xsl:with-param name="price" select="f:num(price)"/>
-				</xsl:call-template>
+				<xsl:if test="price and f:num(price) &gt; 0.001">
+					<xsl:call-template name="ALL_PRICES">
+						<xsl:with-param name="min_qty" select="$min_qty"/>
+						<xsl:with-param name="price" select="f:num(price)"/>
+						<xsl:with-param name="need_sum" select="false()"/>
+					</xsl:call-template>
+				</xsl:if>
 			</td>
 			<td>
-				<xsl:call-template name="ALL_PRICES">
-					<xsl:with-param name="min_qty" select="$min_qty"/>
-					<xsl:with-param name="price" select="f:num(price)"/>
-				</xsl:call-template>
+				<xsl:if test="price and f:num(price) &gt; 0.001">
+					<xsl:call-template name="ALL_PRICES">
+						<xsl:with-param name="min_qty" select="$min_qty"/>
+						<xsl:with-param name="price" select="f:num(price)"/>
+						<xsl:with-param name="need_sum" select="true()"/>
+					</xsl:call-template>
+				</xsl:if>
 			</td>
 			<td id="cart_search_{@id}">
 				<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
@@ -139,10 +151,10 @@
 			<div class="gallery">
 				<div class="fotorama" data-width="100%" data-maxwidth="100%" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
 					<xsl:for-each select="$p/gallery">
-						<img src="http://alfacomponent.must.by/{$p/@path}{.}" alt="{$p/name}"/>
+						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
 					<xsl:if test="not($p/gallery)">
-						<img src="http://alfacomponent.must.by/{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
+						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
 				</div>
 			</div>
@@ -160,19 +172,6 @@
 					</div>
 				</xsl:if>
 				<div class="order">
-					<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
-					<div id="cart_list_{replace($p/code, '[)()]', '-')}" class="product_purchase_container">
-						<form action="{$p/to_cart}" method="post" ajax="true">
-							<xsl:if test="$has_price">
-								<input type="number" name="qty" value="1" min="0"/>
-								<input type="submit" value="Заказать"/>
-							</xsl:if>
-							<xsl:if test="not($has_price)">
-								<input type="hidden" name="qty" value="1" min="0"/>
-								<input type="submit" class="not_available" value="Запросить цену"/>
-							</xsl:if>
-						</form>
-					</div>
 					<xsl:choose>
 						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>
 						<xsl:otherwise><!-- <div class="quantity">Нет на складе</div> --></xsl:otherwise>
@@ -189,8 +188,8 @@
 				<div class="info-blocks">
 					<strong>Информация о продукте</strong>
 					<div class="some-parameters">
-						<div>Код:</div><div class="value"><xsl:value-of select="$p/code"/></div>
-						<div>Обозначение производителя:</div><div class="value"><xsl:value-of select="$p/vendor_code"/></div>
+						<!--<div>Код:</div><div class="value"><xsl:value-of select="$p/code"/></div>-->
+						<div>Обозначение производителя:</div><div class="value"><xsl:value-of select="$p/name"/></div>
 						<div>Производитель:</div><div class="value"><xsl:value-of select="$p/vendor"/></div>
 						<xsl:for-each select="$p/manual">
 							
