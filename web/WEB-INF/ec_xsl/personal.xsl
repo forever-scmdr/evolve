@@ -14,11 +14,11 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> <i class="fas fa-angle-right"></i>
+				<a href="/">Главная страница</a> &gt;
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Анкета заказчика</h1>
+		<h1 class="page-title">Анкета заказчика</h1>
 
 		<div class="page-content m-t">
 			<xsl:if test="$message and not($success)">

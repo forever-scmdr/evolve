@@ -17,14 +17,14 @@
 	в разделы урлы всех айтемов, которые необходимо спарсить.
 	-->
 
-	<item name="parse_section" caption="Урлы для парсинга" ag-id="903" ag-hash="-814293671">
+	<item name="parse_section" caption="Урлы для парсинга" ag-id="1622" ag-hash="-814293671">
 		<parameter name="item_urls" type="plain-text" caption="Урлы вложенных товаров" />
 		<parameter name="item_urls_backup" type="plain-text" caption="Урлы вложенных товаров (backup)" />
 		<child item="parse_item"/>
 	</item>
 
 
-	<item name="parse_item" caption="Товар для парсинга" key="url downloaded parsed got_files" ag-id="904" ag-hash="-980954849">
+	<item name="parse_item" caption="Товар для парсинга" key="url downloaded parsed got_files" ag-id="1623" ag-hash="-980954849">
 		<parameter name="url" type="string" caption="URL"/>
 		<parameter name="downloaded" type="byte" caption="Downloaded" default="0"/>
 		<parameter name="parsed" type="byte" caption="Parsed" default="0"/>
@@ -72,9 +72,9 @@
 
 	-->
 
-	<assoc name="seo" caption="SEO" description="Связь айтемов с seo" transitive="false" ag-id="4" ag-hash="113757"/>
+	<assoc name="seo" caption="SEO" description="Связь айтемов с seo" transitive="false" ag-id="2" ag-hash="113757"/>
 
-	<item name="base_seo" caption="Информация для SEO" virtual="true" ag-id="1208" ag-hash="-1721163281">
+	<item name="base_seo" caption="Информация для SEO" virtual="true" ag-id="1624" ag-hash="-1721163281">
 		<parameter name="title" type="string" caption="title"/>
 		<parameter name="h1" type="string" caption="h1"/>
 		<parameter name="description" type="string" caption="description"/>
@@ -104,11 +104,11 @@
 		<child item="url_seo" />
 	</item>
 
-	<item name="seo_catalog" caption="Каталог SEO" description="невидимый" ag-id="862" ag-hash="990975543">
+	<item name="seo_catalog" caption="Каталог SEO" description="невидимый" ag-id="1018" ag-hash="990975543">
 		<child item="seo"/>
 	</item>
 
-	<item name="seo_container" caption="Контейнер для сео айтемов" virtual="true" key-unique="true" ag-id="863" ag-hash="1272836895">
+	<item name="seo_container" caption="Контейнер для сео айтемов" virtual="true" key-unique="true" ag-id="1019" ag-hash="1272836895">
 		<child item="seo" single="true" assoc="seo" virtual="true"/><!-- Связь с сео айтемом из сао каталога -->
 		<child item="seo" single="true"/><!-- Для создания нового сео -->
 		<on-update class="ecommander.fwk.integration.UpdateSeoContainerItemFactory"/><!-- Обновить параметр key_unique в seo -->
@@ -131,16 +131,16 @@
 	<!--/////////////                             КАТАЛОГ                                  ////////////-->
 	<!--/////////////                                                                      ////////////-->
 
-	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true" ag-id="6" ag-hash="-1147981728"/>
+	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true" ag-id="4" ag-hash="-1147981728"/>
 
-	<item name="original_gallery" caption="Исходная галерея" ag-id="1209" ag-hash="743720676" >
+	<item name="original_gallery" caption="Исходная галерея" ag-id="1625" ag-hash="743720676" >
 		<parameter name="watermark_filename"  type="string" caption="Название файла водяного знака"/>
 		<parameter name="watermark_file_modified"  type="long" caption="Дата изменения файла водяного знака"/>
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 	</item>
 
 
-	<item name="gallery" caption="Галерея" ag-id="1210" ag-hash="-196315310">
+	<item name="gallery" caption="Галерея" ag-id="1626" ag-hash="-196315310">
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 		<child item="original_gallery" single="true"/>
 	</item>
@@ -171,12 +171,10 @@
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
-		<!--<on-update class="ecommander.fwk.CreateCatalogLink"/>-->
-		<!--<on-create class="ecommander.fwk.CreateCatalogLink"/>-->
 	</item>
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
-	<item name="abstract_product" caption="Абстрактный товар" key="name" virtual="true" ag-id="864" ag-hash="1636704722">
+	<item name="abstract_product" caption="Абстрактный товар" key="name" virtual="true" ag-id="1020" ag-hash="1636704722">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
@@ -185,7 +183,7 @@
 	</item>
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
-	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product * gallery" virtual="true" ag-id="865" ag-hash="1523682729">
+	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product * gallery" virtual="true" ag-id="1021" ag-hash="1523682729">
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
@@ -214,14 +212,12 @@
 		<child item="params" single="true"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
-		<on-update class="ecommander.fwk.CreateCatalogLink"/>
-		<on-create class="ecommander.fwk.CreateCatalogLink"/>
 	</item>
 
 
 	<!--Товар, который вложен в другой товар-->
 	<!--Обновляет цену ОТ (минимальная цена) своего родительского товара при сохранении-->
-	<item name="line_product" caption="Товар-строка" description="содержится в товаре, какн из видов этого товара" super="described_product" ag-id="866" ag-hash="1097527204">
+	<item name="line_product" caption="Товар-строка" description="содержится в товаре, какн из видов этого товара" super="described_product" ag-id="1022" ag-hash="1097527204">
 		<on-update class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/> оди
 		<on-create class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/>
 		<on-delete class="ecommander.fwk.integration.UpdateProductMinPriceDeletedFactory"/>
@@ -395,7 +391,7 @@
 	<!--/////////////                          ГЛАВНАЯ СТРАНИЦА                            ////////////-->
 	<!--/////////////                                                                      ////////////-->
 
-	<assoc name="general" caption="Ассоциация общего назначения" description="для связи разных несвязанных напрямую айтемов" ag-id="5" ag-hash="-80148248"/>
+	<assoc name="general" caption="Ассоциация общего назначения" description="для связи разных несвязанных напрямую айтемов" ag-id="3" ag-hash="-80148248"/>
 
 	<item name="main_promo_bottom" caption="Промо-блок на главной" key="text_big" ag-id="14" ag-hash="1303283745">
 		<parameter name="text_big" type="string" caption="Текст крупным шрифтом"/>
@@ -412,7 +408,7 @@
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
-	<item name="banner" caption="Баннер" key="header" ag-id="867" ag-hash="-1396342996">
+	<item name="banner" caption="Баннер" key="header" ag-id="1023" ag-hash="-1396342996">
 		<parameter name="background" type="string" caption="background" description="baner__background"/>
 		<parameter name="header" type="string" caption="Заголовок" description="banner__title"/>
 		<parameter name="text" type="tiny-text" caption="Текст" description="banner__text"/>
@@ -423,7 +419,7 @@
 	</item>
 
 
-	<item name="banner_section" caption="Секция баннеров" key="name" ag-id="868" ag-hash="-2003257134">
+	<item name="banner_section" caption="Секция баннеров" key="name" ag-id="1024" ag-hash="-2003257134">
 		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
 		<child item="banner" inline="true"/>
 	</item>
@@ -468,12 +464,12 @@
 		<child item="footer" single="true"/>
 	</item>
 
-	<item name="block" caption="Блок текста (кода)" key="header" ag-id="905" ag-hash="93832333">
+	<item name="block" caption="Блок текста (кода)" key="header" ag-id="1341" ag-hash="93832333">
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="text" type="short-text" caption="Текст (код)"/>
 	</item>
 
-	<item name="block_array" caption="Массив блоков" virtual="true" ag-id="906" ag-hash="1210858535">
+	<item name="block_array" caption="Массив блоков" virtual="true" ag-id="1342" ag-hash="1210858535">
 		<child item="block" inline="true"/>
 	</item>
 
@@ -481,13 +477,13 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1788" ag-hash="-1220416192">
+	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1731" ag-hash="-1220416192">
 		<parameter name="payment" type="text" caption="Оплата и доставка" description="выводится на странице товара в блоке справа"/>
 	</item>
 
-	<item name="footer" caption="Футер (низ)" super="block_array" ag-id="907" ag-hash="-1268861541"/>
+	<item name="footer" caption="Футер (низ)" super="block_array" ag-id="1343" ag-hash="-1268861541"/>
 
-	<item name="topper" caption="Топпер (верх)" super="block_array" ag-id="908" ag-hash="-868027480"/>
+	<item name="topper" caption="Топпер (верх)" super="block_array" ag-id="1344" ag-hash="-868027480"/>
 
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                     END ОБЩЕЕ ДЛЯ ВСЕХ СТРАНИЦ                       ////////////-->
@@ -576,12 +572,12 @@
 		<child item="menu_item"/>
 	</item>
 
-	<item name="menu_item" caption="Элемент меню" virtual="true" ag-id="1372" ag-hash="-1527078413">
+	<item name="menu_item" caption="Элемент меню" virtual="true" ag-id="1627" ag-hash="-1527078413">
 		<parameter name="in_main_menu" type="string" domain="yes-no" caption="Выводить в главном меню"/>
 		<child item="menu_item"/>
 	</item>
 
-	<item name="page_link" caption="Ссылка" super="* menu_item" key="name link" ag-id="1373" ag-hash="883640234">
+	<item name="page_link" caption="Ссылка" super="* menu_item" key="name link" ag-id="1628" ag-hash="883640234">
 		<parameter name="name" type="string" caption="Название" description="как выводить в пункте меню"/>
 		<parameter name="link" type="string" caption="Ссылка" description="относительная ссылка (без http:// и домена сайта)"/>
 	</item>

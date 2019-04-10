@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>                     
+<?xml version="1.0" encoding="UTF-8"?>                                      
 <site>
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -139,7 +139,7 @@
 						<var value="date"/>
 					</sorting>
 					<limit>
-						<var value="2"/>
+						<var value="4"/>
 					</limit>
 				</filter>
 				<link name="show_news_item" target="news_item" type="exclusive">
@@ -603,7 +603,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="design@forever-ds.com"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -665,7 +665,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="design@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>

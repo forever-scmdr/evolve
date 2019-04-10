@@ -166,98 +166,71 @@
 
 
 	<xsl:template name="BANNERS">
-		<section class="hero pb">
+		<section class="hero">
 			<div class="container">
-				<div class="fotorama" data-width="100%" data-height="284px" data-fit="cover">
+				<div class="fotorama" data-width="100%">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
-							<div class="slider-item__block fotorama__select">
-								<div class="slider-item__wrapper">
-									<div class="slider-item__title"><xsl:value-of select="name" /></div>
-									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
-								</div>
+						<img src="{@path}{pic}" alt="{name}"/>
+					</xsl:for-each>
+				</div>
+				<div class="hero__banners">
+					<xsl:apply-templates select="page/banner_section[1]/banner"/>
+				</div>
+			</div>
+		</section>
+		<section class="events">
+			<div class="container">
+				<div>
+					<div class="events__banners">
+						<xsl:apply-templates select="page/banner_section[2]/banner"/>
+					</div>
+					<div class="block-title events__title">Новости</div>
+					<div class="events__news">
+						<xsl:for-each select="page//news_item">
+							<div class="news-item events__news-item">
+								<div class="small-text"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
+								<a href="{show_news_item}"><xsl:value-of select="header" /></a>
 							</div>
-						</div>
-					</xsl:for-each>
+						</xsl:for-each>
+					</div>
 				</div>
-				<xsl:apply-templates select="page/banner_section[1]/banner"/>
+				<xsl:apply-templates select="page/banner_section[3]/banner"/>
 			</div>
 		</section>
-		<section class="catalog-map">
+		<section class="special-items">
 			<div class="container">
-				<div class="title_2">
-					Каталог продукции
-				</div>
-				<div class="grid">
-					<xsl:for-each select="page/catalog/section">
-						<div class="catalog-map__item">
-							<div class="catalog-map__icon"><img src="{@path}{icon}" alt="" /></div>
-							<ul class="catalog-map__list">
-								<li><a href="{show_products}"><xsl:value-of select="name"/></a></li>
-								<xsl:for-each select="section">
-									<li><a href="{show_products}"><xsl:value-of select="name"/></a></li>
-								</xsl:for-each>
-							</ul>
-							<xsl:if test="count(section) &gt; 4">
-								<a href="#" class="catalog-map__toggle">Раскрыть полный список</a>
-							</xsl:if>
-						</div>
-					</xsl:for-each>
+				<div class="block-title">Новинки</div>
+				<div class="special-items__devices slick-slider">
+					<xsl:apply-templates select="page/main_page/product[tag='Новинка']"/>
 				</div>
 			</div>
 		</section>
-		<section class="brands ptb">
+		<section class="special-items">
 			<div class="container">
-				<div class="block-title">Бренды</div>
-				<div class="grid">
-					<xsl:for-each select="page/banner_section[2]/banner">
-						<div class="brand-item">
-							<a href="{link}"><img src="{@path}{image_pic}" /></a>
-						</div>
-					</xsl:for-each>
+				<div class="block-title">Акции</div>
+				<div class="special-items__devices slick-slider zu">
+					<xsl:apply-templates select="page/main_page/product[tag='Акция']"/>
 				</div>
 			</div>
 		</section>
-		<!-- <section class="s-info">
+		<section class="benefits">
+			<div class="container">
+				<div class="block-title">Почему нас выбирают клиенты</div>
+				<div class="benefits__banners">
+					<xsl:apply-templates select="page/banner_section[4]/banner"/>
+				</div>
+			</div>
+		</section>
+		<section class="s-info pt-4">
 			<div class="container">
 				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
 			</div>
-		</section> -->
-		<!-- <section class="ptb">
-			<div class="container">
-				<div class="page-map" id="contacts">
-					<div class="page-map__map"><script type="text/javascript" charset="utf-8" async="async" src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2f9a2f790522d006537ede412d3d2eeb312795427a599cbbdfdab5140aa849b4&amp;width=100%25&amp;height=300&amp;lang=ru_RU&amp;scroll=true"></script></div>
-					<div class="page-map__text">
-						<div class="block-title">
-							Схема проезда и контакты
-						</div>
-						<p>Республика Беларусь, Витебская обл., 211394, г. Орша, ул. 1 Мая, 81Б-2.</p>
-						<p>(+375 17) 123-45-67 - тел./факс;</p>
-						<p>(+375 17) 123-45-67 - тел./факс;</p>
-						<p>(+375 29) 123-45-67 - Велком;</p>
-						<p>(+375 33) 123-45-67 - МТС;</p>
-						<p><a href="mailto:skobtrade@mail.ru">skobtrade@mail.ru</a></p>
-					</div>
-				</div>
-			</div>
-		</section> -->
+		</section>
 
 	</xsl:template>
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript" src="fotorama/fotorama.js"/>
-		<script>
-			$(document).ready(function() {
-				$('.catalog-map__toggle').click(function(e) {
-					e.preventDefault();
-					$(this).closest('.catalog-map__item').find('ul').toggleClass('show', 200);
-					if ($(this).html() == 'Свернуть')
-						$(this).html('Раскрыть полный список');
-					else
-						$(this).html('Свернуть');
-				});
-			});
-		</script>
 	</xsl:template>
 
 </xsl:stylesheet>

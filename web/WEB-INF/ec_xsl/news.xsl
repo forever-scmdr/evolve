@@ -5,8 +5,7 @@
 
 	<xsl:variable name="title" select="page/selected_news/name" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
-	<!--<xsl:variable name="active_menu_item" select="'news'"/>-->
-	<xsl:variable name="active_menu_item" select="page/selected_news/@key"/>
+	<xsl:variable name="active_menu_item" select="'news'"/>
 
 	<xsl:variable name="p" select="page/product"/>
 
@@ -15,7 +14,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
+				<a href="{$main_host}">Главная страница</a> &gt;
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -25,10 +24,10 @@
 			<div class="catalog-items info">
 				<xsl:for-each select="page/selected_news/news_item">
 					<div class="catalog-item">
-						<a href="{show_news_item}" class="image-container" style="background-image: url('http://aquacom.must.by/{@path}{main_pic}');"><!-- <img src="http://aquacom.must.by/{@path}{main_pic}" alt=""/> --></a>
+						<a href="{show_news_item}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="{@path}{main_pic}" alt=""/> --></a>
 						<div class="text">
-							<a href="{show_news_item}"><xsl:value-of select="header"/></a>
 							<div class="date"><xsl:value-of select="date"/></div>
+							<a href="{show_news_item}"><xsl:value-of select="header"/></a>
 							<xsl:value-of select="short" disable-output-escaping="yes"/>
 						</div>
 					</div>
