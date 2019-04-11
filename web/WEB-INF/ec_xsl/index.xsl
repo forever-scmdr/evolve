@@ -20,7 +20,7 @@
 								</div>
 								<xsl:for-each select="/page/small_news_item">
 									<div class="brief-news">
-										<div class="date">
+										<div class="date" data-utc="{date/@millis}">
 											<xsl:value-of select="date"/>
 										</div>
 										<div>
@@ -76,7 +76,7 @@
 											<!--<span>Источник</span> <a href="{source_link}"><xsl:value-of select="source"/></a>-->
 										<!--</span>-->
 									</xsl:if>
-									<span class="popular__date"><time datetime="{date}"><xsl:value-of select="date"/></time></span>
+									<span class="popular__date"><time datetime="{date}" data-utc="{date/@millis}"><xsl:value-of select="date"/></time></span>
 								</section>
 							</article>
 						</xsl:for-each>
@@ -113,18 +113,18 @@
 	<xsl:template match="featured">
 		<div class="entry" style="background-image:url('{concat(@path,main_pic)}')">
 			<div class="entry__content">
-				<xsl:for-each select="tag">
+				
 					<span class="entry__category">
-						<a href="{cat_link}">
-							<xsl:value-of select="."/>
+						<a href="{cat_link}"  style="{style}">
+							<xsl:value-of select="tag"/>
 						</a>
 					</span>
-				</xsl:for-each>
+			
 				<h1><a href="{link}" title="name"><xsl:value-of select="name"/></a></h1>
 
 				<div class="entry__info">
 					<ul class="entry__meta" style="margin-left:0;">
-						<li style="margin-left:0;"><xsl:value-of select="date"/></li>
+						<li style="margin-left:0;" data-utc="{date/@millis}"><xsl:value-of select="date"/></li>
 					</ul>
 				</div>
 			</div>

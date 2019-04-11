@@ -13,9 +13,24 @@
 	<xsl:variable name="canonical" select="concat('/', $ni/@key, '/')"/>
 	<xsl:variable name="format" select="if($ni/video_url != '') then 'video' else if($ni/top_gal/main_pic != '') then 'gallery' else 'standard'"/>
 
+	<xsl:template name="TWITTER_MARKUP">
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:image:alt" content="{$h1}" />
+	</xsl:template>
+
+	<xsl:template name="FACEBOOK_MARKUP">
+		<meta property="og:url" content="{concat($main_host, $canonical)}" />
+		<!-- <meta property="og:type" content="article" /> -->
+		<meta property="og:locale" content="ru_RU" />
+		<meta property="og:title" content="{$h1}" />
+		<meta property="og:description" content="{$ni/twitter_description}" />
+		<meta property="og:image" content="{concat($main_host, '/',$ni/@path, $ni/small_pic)}" />
+		<meta name="og:app_id" content="552626568232392" />
+	</xsl:template>
+
 
 	<xsl:template name="CONTENT">
-		<section class="s-content s-content--narrow s-content--no-padding-bottom">
+		<section class="s-content s-content--narrow s-content--no-padding-bottom white">
 			<article class="row format-{$format}">
 				<div class="s-content__header col-full">
 					<h1 class="s-content__header-title">
@@ -29,7 +44,7 @@
 								</a>
 							</li>
 						</xsl:if>
-						<li class="date"><xsl:value-of select="$ni/date"/></li>
+						<li class="date" data-utc="{$ni/date/@millis}"><xsl:value-of select="$ni/date"/></li>
 						<li class="cat">
 							Категория:	<a href="{$parent/show_page}" >
 								<xsl:value-of select="$parent/name"/>
@@ -134,30 +149,13 @@
 									</a>
 								</xsl:for-each>
 							</span>
+
 						</p>
 					</xsl:if>
-					<xsl:if test="$ni/news/prev|$ni/news/next">
-						<div class="s-content__pagenav">
-							<div class="s-content__nav">
-								<xsl:if test="$ni/news/prev">
-									<div class="s-content__prev">
-										<a href="{$ni/news/show_page}" rel="next">
-											<span>Предыдущая новость</span>
-											<xsl:value-of select="$ni/news/prev/name"/>
-										</a>
-									</div>
-								</xsl:if>
-								<xsl:if test="$ni/news/next">
-									<div class="s-content__next">
-										<a href="{$ni/news/next/show_page}" rel="next">
-											<span>Следующая новость</span>
-											<xsl:value-of select="$ni/news/next/name"/>
-										</a>
-									</div>
-								</xsl:if>
-							</div>
-						</div>
-					</xsl:if>
+					<div class="ya-share2" data-services="vkontakte,facebook,twitter" data-limit="3"></div>
+
+					<xsl:call-template name="ALSO"/>
+					<xsl:call-template name="PREV-NEXT" />
 				</div>
 			</article>
 
@@ -221,6 +219,54 @@
 			</div>
 		</li>
 
+	</xsl:template>
+
+	<xsl:template name="ALSO">
+		<xsl:if test="$ni/news/news_item">
+			<div class="also">
+				<div class="also-header">
+					Читайте также:
+				</div>
+				<xsl:for-each-group select="$ni/news/news_item" group-by="@id">
+					<xsl:if test="position() &lt; 4">
+						<a href="{current-group()[1]/show_page}">
+							<xsl:value-of select="current-group()[1]/name"/>
+						</a>
+					</xsl:if>
+				</xsl:for-each-group>
+			</div>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="PREV-NEXT">
+		<xsl:if test="$ni/news/prev|$ni/news/next">
+			<div class="s-content__pagenav">
+				<div class="s-content__nav">
+					<xsl:if test="$ni/news/prev">
+						<div class="s-content__prev">
+							<a href="{$ni/news/prev/show_page}" rel="prev">
+								<span>Предыдущая статья</span>
+								<xsl:value-of select="$ni/news/prev/name"/>
+							</a>
+						</div>
+					</xsl:if>
+					<xsl:if test="$ni/news/next">
+						<div class="s-content__next">
+							<a href="{$ni/news/next/show_page}" rel="next">
+								<span>Следующая статья</span>
+								<xsl:value-of select="$ni/news/next/name"/>
+							</a>
+						</div>
+					</xsl:if>
+				</div>
+			</div>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="EXTRA_SCRIPTS">
+		<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
+		<script src="//yastatic.net/share2/share.js"></script>
+		
 	</xsl:template>
 
 </xsl:stylesheet>

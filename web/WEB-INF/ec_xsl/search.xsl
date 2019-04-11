@@ -19,7 +19,7 @@
 			<div class="row narrow">
 				<div class="col-full s-content__header" data-aos="fade-up">
 					<h1>
-						Новости по заппросу "<xsl:value-of select="page/variables/q"/>"
+						Статьи по запросу "<xsl:value-of select="page/variables/q"/>"
 					</h1>
 				</div>
 			</div>
@@ -38,6 +38,67 @@
 		<xsl:if test="not($news_items[@id = $nid])">
 			<xsl:apply-templates select="news_item" mode="masonry"/>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="news_item" mode="masonry">
+
+		<xsl:variable name="category" select="if(../name() = 'text_part') then ../news else news" />
+		<xsl:variable name="format" select="if(video_url != '') then 'video' else if(top_gal/main_pic != '') then 'gallery' else 'standard'"/>
+
+		<article class="masonry__brick entry format-{$format}" data-aos="fade-up">
+			<!-- STANDARD -->
+			<xsl:if test="$format = 'standard'">
+				<div class="entry__thumb">
+					<a href="{show_news_item}" class="entry__thumb-link">
+						<img src="{concat(@path, small_pic)}" srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
+					</a>
+				</div>
+			</xsl:if>
+
+			<!-- VIDEO -->
+			<xsl:if test="$format = 'video'">
+				<div class="entry__thumb video-image">
+					<a href="{video_url}" data-lity="">
+						<img src="{concat(@path, small_pic)}" srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
+					</a>
+				</div>
+			</xsl:if>
+
+			<xsl:if test="$format = 'gallery'">
+				<div class="entry__thumb slider">
+					<div class="slider__slides">
+						<xsl:variable name="path" select="top_gal/@path"/>
+						<xsl:for-each select="top_gal/small_pic">
+							<xsl:variable name="p" select="position()"/>
+							<div class="slider__slide">
+								<img src="{concat($path,.)}" srcset="{concat($path,.)} 1x, {concat($path,../medium_pic[$p])} 2x" alt=""/>
+							</div>
+						</xsl:for-each>
+					</div>
+				</div>
+			</xsl:if>
+
+			<!-- TEXT -->
+			<div class="entry__text">
+				<div class="entry__header">
+					<div class="entry__date">
+						<a href="{show_news_item}" data-utc="{date/@millis}"><xsl:value-of select="date"/></a>
+					</div>
+					<div class="h1 entry__title"><a href="{show_news_item}"><xsl:value-of select="name"/></a></div>
+				</div>
+				<div class="entry__excerpt">
+					<xsl:value-of select="short" disable-output-escaping="yes"/>
+				</div>
+				<div class="entry__meta">
+					<span class="entry__meta-links">
+						<a href="{$category/show_page}">
+							<xsl:value-of select="$category/name"/>
+						</a>
+					</span>
+				</div>
+			</div>
+
+		</article>
 	</xsl:template>
 
 

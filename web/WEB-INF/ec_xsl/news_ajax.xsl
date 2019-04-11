@@ -3,17 +3,20 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="pages" select="//news_item_pages"/>
+	<xsl:variable name="p" select="number(page/variables/page)+1"/>
+	
 	<xsl:template match="/">
 		<div>
 			<xsl:apply-templates select="/page/news_wrap/news_item" mode="masonry"/>
-			<xsl:if test="/page/news_wrap/news_item_pages/page[number(page/variables/page)+1]">
+			<xsl:if test="$pages/next">
 				<div class="row">
 					<div class="col-full">
 						<nav class="pgn">
 							<ul>
 								<li id="load_more">
 									<a class="pgn__num" id="load-more-link"
-									   href="{page/load_more}?page={number(page/variables/page)+1}">Загрузить еще
+									   href="{$pages/page[$p]/link}">Загрузить еще
 									</a>
 								</li>
 							</ul>

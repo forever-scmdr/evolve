@@ -22,11 +22,18 @@
 				</div>
 				<div class="col-full s-content__main">
 					<xsl:apply-templates select="$p" mode="content"/>
+					<div class="ya-share2" data-services="vkontakte,facebook,twitter" data-limit="3"></div>
 					<div style="height: 3rem;"></div>
 				</div>
 
 			</div>
 		</section>
+	</xsl:template>
+
+	<xsl:template name="EXTRA_SCRIPTS">
+		<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
+		<script src="//yastatic.net/share2/share.js"></script>
+		
 	</xsl:template>
 
 </xsl:stylesheet>

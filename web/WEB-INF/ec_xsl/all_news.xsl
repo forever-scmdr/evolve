@@ -6,13 +6,15 @@
 	<xsl:variable name="quot">"</xsl:variable>
 	<xsl:variable name="dt" select="if(page/variables/min_date != '') then concat(' за', f:day_month_year(f:millis_to_date(page/variables/min_date))) else ''"/>
 	<xsl:variable name="postfix" select="if(page/variables/tag != '') then concat($dt, ' по тегу ',$quot, page/variables/tag, $quot) else ''" />
-	<xsl:variable name="title" select="concat('Новости', $postfix)" />
+	<xsl:variable name="title" select="concat('Статьи', $postfix)" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'news'"/>
 
 	<xsl:variable name="pagination" select="/page/news_wrap/news_item_pages"/>
 	<xsl:variable name="prev" select="$pagination/page[number(/page/variables/p)-1]"/>
 	<xsl:variable name="next" select="$pagination/page[number(/page/variables/p)+1]"/>
+	<xsl:variable name="quote">"</xsl:variable>
+	<xsl:variable name="pl" select="//page_link"/>
 
 	<xsl:template name="CONTENT">
 		<section class="s-content">
@@ -22,7 +24,22 @@
 						<xsl:value-of select="$h1"/>
 					</h1>
 					<xsl:if test="page/tag">
-						<div class="tags">
+							<a href="all_news" class="all" >
+								Все статьи
+							</a>
+							<p class="s-content__tags" style="margin-top:0;text-align: left;">
+								<!-- <span>Теги</span> -->
+								<!-- <span class="s-content__tag-list" > -->
+									
+									<!-- <xsl:for-each select="page/tag">
+										<a href="{show_tag}">
+											<xsl:value-of select="tag"/>
+										</a>
+									</xsl:for-each> -->
+								<!-- </span> -->
+							</p>
+						
+						<!-- <div class="tags">
 							<span class="entry__category gray">
 								<a href="all_news">
 									Все
@@ -46,7 +63,7 @@
 									</a>
 								</span>
 							</xsl:for-each>
-						</div>
+						</div> -->
 					</xsl:if>
 					<div class="lead">
 						<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
@@ -60,7 +77,7 @@
 				</div>
 			</div>
 			<xsl:if test="$pagination">
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-full">
 						<nav class="pgn">
 							<ul>
@@ -81,7 +98,10 @@
 							</ul>
 						</nav>
 					</div>
-				</div>
+				</div> -->
+				<script>
+					window.pagination = <xsl:value-of select="concat('[',string-join($pagination/page[position() &gt; 1]/concat($quote, $pl,'&amp;page=', number, $quote), ','),']')" />;
+				</script>
 			</xsl:if>
 		</section>
 	</xsl:template>

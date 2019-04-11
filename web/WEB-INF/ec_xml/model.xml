@@ -104,6 +104,7 @@
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000"/>
 		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;"/>
 		<parameter name="small_pic" type="picture" caption="Маленькое изображение" description="500" format="width: 500; src: main_pic;"/>
+		<parameter name="twitter_description" type="string" caption="Описание для твиттера"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags"/>
@@ -114,7 +115,7 @@
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
-	<item name="news" caption="Новостной раздел" key="name" key-unique="true" default-page="news" ag-id="15" ag-hash="3377875">
+	<item name="news" caption="Новостной раздел" children-sorting="DESC" key="name" key-unique="true" default-page="news_section" ag-id="15" ag-hash="3377875">
 		<parameter name="name" type="string" caption="Название"/>
 		<!--<parameter name="on_main" type="string" domain="yes-no" caption="Показать на главной странице?"/>-->
 		<child item="seo" single="true"/>
@@ -122,9 +123,15 @@
 	</item>
 
 	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="16" ag-hash="-251149995">
-		<!--<parameter name="product" type="string" caption="Код продукта" description="для вывода на главной странице" multiple="true"/>-->
+		<parameter name="padding" type="integer" caption="высота шапки сайта"/>
 		<child item="seo" single="true"/>
 		<child item="featured" multiple="true"/>
+		<child item="informer" multiple="true"/>
+	</item>
+
+	<item name="informer" caption="Информер" key="name" ag-id="30" ag-hash="178836950">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
 	</item>
 
 	<item name="featured" caption="слайд" key="name" ag-id="17" ag-hash="-290659282">
@@ -132,7 +139,8 @@
 		<parameter name="link" type="string" caption="Ссылка"/>
 		<parameter name="cat_link" type="string" caption="Ссылка на категорию"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
-		<parameter name="tag" type="string" caption="теги" multiple="true" domain="tags"/>
+		<parameter name="tag" type="string" caption="тег" domain="tags"/>
+		<parameter name="style" type="string" caption="доп. CSS" description="атрибут style"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
 	</item>
 
@@ -150,8 +158,7 @@
 		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
 		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
-		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
-		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
+		<parameter name="bottom" type="short-text" caption="Текст внизу"/>
 		<child item="soc_link"/>
 	</item>
 
@@ -167,7 +174,7 @@
 		<parameter name="message" type="string" caption="Сообщение" />
 	</item>
 
-	<item name="small_news" caption="Новости" description="без рисунков" ag-id="27" ag-hash="1229830923">
+	<item name="small_news" caption="Новости" children-sorting="DESC" description="без рисунков" ag-id="27" ag-hash="1229830923">
 		<child item="seo" single="true"/>
 		<child item="small_news_item"/>
 	</item>
@@ -177,6 +184,9 @@
 		<parameter name="date" type="date" caption="Дата публикации" description="UTC"/>
 		<parameter name="source" type="string" caption="Источник"/>
 		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
+		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
+		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
+		<parameter name="size" type="string" caption="Размер" domain="size"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags"/>
 	</item>

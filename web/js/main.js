@@ -198,7 +198,8 @@
             containerBricks.masonry({
                 itemSelector: '.masonry__brick',
                 percentPosition: true,
-                resize: true
+                resize: true,
+                horizontalOrder: true
             });
         });
 
@@ -395,8 +396,7 @@
 
             // map style
             var style = [ 
-                {
-                    // set saturation for the labels on the map
+                {// set saturation for the labels on the map
                     elementType: "labels",
                     stylers: [
                         { saturation: saturation_value }
@@ -605,7 +605,8 @@
     /* loadMoreNews
      * ------------------------------------------------------ */
     var  loadMoreNews = function () {
-       $("#load-more-link").on("click", function (e) {
+        clMasonryFolio();
+       $(document).on("click", "#load-more-link", function (e) {
           e.preventDefault();
           var href = $(this).attr("href");
           $.ajax({
@@ -628,17 +629,77 @@
                       }
                       //reloading masonry
                       var gridContainer = $("#add-content");
-                      gridContainer.append(articles).masonry('appended', articles);
-                      gridContainer.masonry('reloadItems');
-                      //gridContainer.masonry('layout');
-                      //layout Masonry after each image loads
-                      $(".masonry").imagesLoaded().progress( function() {
-                          $(".masonry").masonry("layout");
-                      });
+                      
+                          gridContainer.append(articles).masonry('appended', articles);
+                          gridContainer.masonry('reloadItems');
+                       
+                          //layout Masonry after each image loads
+                          $(".masonry").imagesLoaded().progress( function() {
+                              $(".masonry").masonry("layout");
+                          });
                   }
               }
           });
        });
+    };
+
+    var infiniteScroll = function () {
+        clMasonryFolio();
+        var counter = 0;
+        var pagination = window.pagination;
+        var flag = true;
+        if (typeof pagination == "undefined") return;
+        window.addEventListener("scroll", function(){
+
+            var block = document.getElementById('add-content');
+
+
+            var contentHeight = block.offsetHeight;      // 1) высота блока контента вместе с границами
+            var yOffset       = window.pageYOffset;      // 2) текущее положение скролбара
+            var window_height = window.innerHeight;      // 3) высота внутренней области окна документа
+            var y             = yOffset + window_height;
+
+            // если пользователь достиг конца
+            if(y >= contentHeight-100 && flag)
+            {
+                addContent();
+            }
+            function addContent() {
+                console.log(counter);
+                flag = false;
+                if(counter != pagination.length) {
+                    var href = pagination[counter];
+                    $.ajax({
+                        url: href
+                        ,dataType: "html"
+                        ,cache: false
+                        ,error: function(arg1, errorType, arg3) {
+                            alert("ajax error");
+                        }
+                        ,success: function(data, status, arg3) {
+                            if (data.indexOf('<') == 0) {
+                                var parsedData = $("<div>" + data + "</div>");
+                                //var articles = $("#add-content").find("article");
+                                var articles = parsedData.find("article");
+                                var gridContainer = $("#add-content");
+
+                                gridContainer.append(articles).masonry('appended', articles);
+                                gridContainer.masonry('reloadItems');
+
+                                //layout Masonry after each image loads
+                                $(".masonry").imagesLoaded().progress( function() {
+                                    $(".masonry").masonry("layout");
+                                });
+
+                                flag = true;
+                                counter++;
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
     };
 
     /* Reply
@@ -650,6 +711,30 @@
             $("#reply-to").val(href);
             var nm = $("#nm-"+href).html();
             $("#reply-name").html("Ответ для: " + nm);
+        });
+    };
+
+    var fromUTC = function(){
+        //var TZO = new Date().getTimezoneOffset() * 60 * 1000;
+        var TZO = 0;
+        $("[data-utc]").each(function(){
+            var utc = $(this).attr("data-utc")*1;
+            if(typeof utc == "number"){
+                var date = new Date(utc);
+                var year = date.getFullYear();
+                var month = date.getMonth()+1;
+                var day = date.getDate();
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+
+                month = (month < 10)? "0"+month:month;
+                day = (day < 10)? "0"+day:day;
+                hours = (hours < 10)? "0"+hours:hours;
+                minutes = (minutes < 10)? "0"+minutes:minutes;
+            
+                $(this).text(day+'.'+month+'.'+year+' '+hours+':'+minutes);
+            }
+
         });
     };
 
@@ -676,7 +761,9 @@
         clBackToTop();
        // clGoogleMap();
         loadMoreNews();
+        infiniteScroll();
         reply();
+        fromUTC();
       //  newsItemLength();
     })();
         

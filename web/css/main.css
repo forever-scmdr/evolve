@@ -85,9 +85,10 @@ html, body {
 }
 
 body {
-   background: #19191b;
-   font-family: "metropolis-regular", sans-serif;
-   font-size: 1.6rem;
+   background: #fe6f61;
+   /*font-family: "metropolis-regular", sans-serif;*/
+   font-family: "georgia", sans-serif;
+   font-size: 1.75rem;
    font-style: normal;
    font-weight: normal;
    line-height: 1.875;
@@ -101,7 +102,7 @@ body {
  * ## links
  * ------------------------------------------------------------------- */
 a {
-   color: #0054a5;
+   color: #403030;
    -webkit-transition: all 0.3s ease-in-out;
    transition: all 0.3s ease-in-out;
 }
@@ -122,7 +123,8 @@ a:hover, a:active {
  * ------------------------------------------------------------------- */
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
    /*font-family: "librebaskerville-bold", serif;*/
-   font-family: "metropolis", sans-serif;
+   /*font-family: "metropolis", sans-serif;*/
+   font-family: "times new roman", sans-serif;
    color: #000000;
    font-style: normal;
    font-weight: normal;
@@ -207,7 +209,8 @@ p img {
 }
 
 p.lead {
-   font-family: "metropolis-medium", sans-serif;
+   /*font-family: "metropolis-medium", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 2rem;
    line-height: 1.8;
    margin-bottom: 3.6rem;
@@ -229,11 +232,15 @@ em, i, strong, b {
 }
 
 em, i {
-   font-family: "metropolis-italic", sans-serif;
+   /*font-family: "metropolis-italic", sans-serif;*/
+   font-family: "georgia", sans-serif;
+   font-style: italic;
 }
 
 strong, b {
-   font-family: "metropolis-bold", sans-serif;
+   /*font-family: "metropolis-bold", sans-serif;*/
+   font-family: "georgia", sans-serif;
+   font-weight: bold;
 }
 
 small {
@@ -253,14 +260,16 @@ blockquote:before {
    line-height: 0px;
    margin: 0;
    color: rgba(0, 0, 0, 0.25);
-   font-family: arial, sans-serif;
+   /*font-family: arial, sans-serif;*/
+   font-family: "georgia", sans-serif;
    position: absolute;
    top: 3.6rem;
    left: 0;
 }
 
 blockquote p {
-   font-family: "metropolis-medium", sans-serif;
+   /*font-family: "metropolis-medium", sans-serif;*/
+   font-family: "georgia", sans-serif;
    padding: 0;
    font-size: 2.1rem;
    line-height: 1.857;
@@ -269,7 +278,8 @@ blockquote p {
 
 blockquote cite {
    display: block;
-   font-family: "metropolis-medium", sans-serif;
+   /*font-family: "metropolis-medium", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.5rem;
    font-style: normal;
    line-height: 1.4;
@@ -285,7 +295,8 @@ blockquote cite a, blockquote cite a:visited {
 }
 
 abbr {
-   font-family: "metropolis-bold", sans-serif;
+   /*font-family: "metropolis-bold", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-variant: small-caps;
    text-transform: lowercase;
    letter-spacing: .05rem;
@@ -446,7 +457,8 @@ table {
    border-width: 0;
    width: 100%;
    max-width: 100%;
-   font-family: "metropolis-regular", sans-serif;
+   /*font-family: "metropolis-regular", sans-serif;*/
+   font-family: "georgia", sans-serif;
 }
 
 th, td {
@@ -457,7 +469,9 @@ th, td {
 
 th {
    color: #000000;
-   font-family: "metropolis-bold", sans-serif;
+   /*font-family: "metropolis-bold", sans-serif;*/
+   font-family: "georgia", sans-serif;
+   font-weight: bold;
 }
 
 td {
@@ -503,7 +517,8 @@ dl,
 form,
 .video-container,
 .cl-custom-select {
-   margin-bottom: 3rem;
+   /*margin-bottom: 3rem;*/
+   margin-bottom: 1.5rem;
 }
 
 
@@ -661,8 +676,9 @@ select {
    padding: 1.5rem 0;
    border: 0;
    outline: none;
-   color: #151515;
-   font-family: "metropolis-regular", sans-serif;
+   color: #fe6f61;
+   /*font-family: "metropolis-regular", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.6rem;
    line-height: 3rem;
    max-width: 100%;
@@ -744,7 +760,8 @@ select:focus {
 }
 
 label, legend {
-   font-family: "metropolis-regular", sans-serif;
+   /*font-family: "metropolis-regular", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.4rem;
    font-weight: bold;
    margin-bottom: .9rem;
@@ -760,7 +777,8 @@ input[type="checkbox"], input[type="radio"] {
 label > .label-text {
    display: inline-block;
    margin-left: 1rem;
-   font-family: "librebaskerville-regular", serif;
+   /*font-family: "librebaskerville-regular", serif;*/
+   font-family: "georgia", sans-serif;
    font-weight: normal;
    line-height: inherit;
 }
@@ -818,7 +836,8 @@ input[type="submit"],
 input[type="reset"],
 input[type="button"] {
    display: inline-block;
-   font-family: "metropolis-bold", sans-serif;
+   /*font-family: "metropolis-bold", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.2rem;
    text-transform: uppercase;
    letter-spacing: .3rem;
@@ -934,7 +953,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
    position: relative;
    margin-bottom: 3rem;
    border-radius: 3px;
-   font-family: "metropolis-semibold", sans-serif;
+   /*font-family: "metropolis-semibold", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.5rem;
    line-height: 1.6;
 }
@@ -982,7 +1002,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
    margin: 0;
    padding: 1.5rem .6rem 0 0;
    font-size: 8.4rem;
-   font-family: "metropolis-extrabold", sans-serif;
+   /*font-family: "metropolis-extrabold", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-weight: bold;
    line-height: 6rem;
    text-indent: 0;
@@ -1114,7 +1135,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 .stats-tabs li a {
    display: inline-block;
    font-size: 2.5rem;
-   font-family: "metropolis-bold", sans-serif;
+   /*font-family: "metropolis-bold", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-weight: bold;
    border: none;
    color: #000000;
@@ -1128,7 +1150,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
    display: block;
    margin: .6rem 0 0 0;
    font-size: 1.5rem;
-   font-family: "metropolis-regular", sans-serif;
+   /*font-family: "metropolis-regular", sans-serif;*/
+   font-family: "georgia", sans-serif;
    color: #727272;
 }
 
@@ -1156,7 +1179,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 }
 
 .pgn__num {
-   font-family: "metropolis-bold", sans-serif;
+   /*font-family: "metropolis-bold", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.5rem;
    line-height: 2.4rem;
    display: inline-block;
@@ -1302,7 +1326,9 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 
 .audio-wrap .mejs__container {
    background-color: rgba(0, 0, 0, 0.8) !important;
-   font-family: "metropolis-light", sans-serif;
+   /*font-family: "metropolis-light", sans-serif;*/
+   font-family: "georgia", sans-serif;
+   font-weight: lighter;
 }
 
 .audio-wrap .mejs__time-buffering,
@@ -1370,7 +1396,7 @@ button::-moz-focus-inner, input::-moz-focus-inner {
    height: 20px;
    top: 12px;
    left: 22px;
-   background-color: #FFFFFF;
+   background-color: #000000;
 }
 
 .header__overlay-close::before {
@@ -1546,7 +1572,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 }
 
 .masonry .entry__date {
-   font-family: "metropolis-medium", sans-serif;
+   /*font-family: "metropolis-medium", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.4rem;
    line-height: 1.714;
    margin-bottom: .6rem;
@@ -1562,13 +1589,14 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 }
 
 .masonry .entry__meta {
-   font-family: "metropolis-semibold", sans-serif;
+   /*font-family: "metropolis-semibold", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.5rem;
    margin-bottom: 0;
 }
 
 .masonry .entry__meta a {
-   color: #0054a5;
+   color: #403030;
 }
 
 .masonry .entry__meta a:hover, .masonry .entry__meta a:focus {
@@ -1635,7 +1663,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 }
 
 .format-quote blockquote p, .format-link .link-wrap p {
-   font-family: "librebaskerville-bold", serif;
+   /*font-family: "librebaskerville-bold", serif;*/
+   font-family: "georgia", serif;
    color: #000000;
    padding: 7.8rem 0 0 0;
    margin-bottom: 3.3rem;
@@ -1645,7 +1674,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 
 .format-quote cite, .format-link cite {
    display: block;
-   font-family: "metropolis-regular", sans-serif;
+   /*font-family: "metropolis-regular", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.5rem;
    font-style: normal;
    line-height: 1.6;
@@ -1738,7 +1768,7 @@ button::-moz-focus-inner, input::-moz-focus-inner {
    left: 0;
    width: 100%;
    height: 100%;
-   background-color: #151515;
+   background-color: #fe6f61;
    opacity: .95;
 }
 
@@ -1787,8 +1817,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 }
 
 .header__logo img {
-   width: 265px;
-   height: 48px;
+   width: 320px;
+   height: 60px;
 }
 
 
@@ -1843,7 +1873,7 @@ button::-moz-focus-inner, input::-moz-focus-inner {
    top: 50%;
    bottom: auto;
    left: auto;
-   background-color: white;
+   background-color: black;
    -webkit-transition: background 0.2s ease-in-out;
    transition: background 0.2s ease-in-out;
    font: 0/0 a;
@@ -1918,7 +1948,8 @@ button::-moz-focus-inner, input::-moz-focus-inner {
    color: #fff;
    height: auto;
    width: 100%;
-   font-family: "metropolis-semibold", sans-serif;
+   /*font-family: "metropolis-semibold", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 6rem;
    line-height: 1.5;
    border: none;
@@ -1993,7 +2024,8 @@ body.search-is-visible {
 }
 
 .header__search-trigger::before {
-   font-family: "metropolis-semibold", sans-serif;
+   /*font-family: "metropolis-semibold", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 12px;
    text-transform: uppercase;
    letter-spacing: 2px;
@@ -2140,7 +2172,8 @@ body.search-is-visible {
 
 .header__nav-wrap .header__nav-heading {
    text-align: center;
-   font-family: "metropolis-semibold", sans-serif;
+   /*font-family: "metropolis-semibold", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.4rem;
    color: #FFFFFF;
    text-transform: uppercase;
@@ -2157,7 +2190,8 @@ body.search-is-visible {
    list-style: none;
    margin: 0;
    padding: 0;
-   font-family: "metropolis-medium", sans-serif;
+   /*font-family: "metropolis-medium", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 15px;
 }
 
@@ -2173,7 +2207,7 @@ body.search-is-visible {
 
 .header__nav li a {
    display: block;
-   color: rgba(255, 255, 255, 0.6);
+   color: rgba(255, 255, 255, 0.8);
    line-height: 39px;
 }
 
@@ -2208,7 +2242,7 @@ body.search-is-visible {
 }
 
 .header__nav li.current > a {
-   color: #FFFFFF;
+   color: #ffffff;
 }
 
 .header__nav li ul {
@@ -2252,7 +2286,8 @@ body.search-is-visible {
    display: block;
    white-space: nowrap;
    padding: 7.5px 3rem 7.5px 2rem;
-   font-family: "metropolis-regular", sans-serif;
+   /*font-family: "metropolis-regular", sans-serif;*/
+   font-family: "georgia", sans-serif;
    line-height: 18px;
    color: rgba(255, 255, 255, 0.6);
 }
@@ -2313,7 +2348,8 @@ body.search-is-visible {
    .header__nav {
       margin: 4.8rem 6rem 3rem 6rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-      font-family: "metropolis-semibold", sans-serif;
+      /*font-family: "metropolis-semibold", sans-serif;*/
+      font-family: "georgia", sans-serif;
       font-size: 16px;
    }
 
@@ -2465,7 +2501,8 @@ body.search-is-visible {
 
 .featured .entry__category, .tags .entry__category{
    display: inline-block;
-   font-family: "metropolis-bold", sans-serif;
+   /*font-family: "metropolis-bold", sans-serif;*/
+   font-family: "arial", sans-serif;
    font-size: 1.1rem;
    line-height: 2.4rem;
    text-transform: uppercase;
@@ -2530,7 +2567,8 @@ body.search-is-visible {
    list-style: none;
    margin: 0 0 0 6rem;
    padding: 0;
-   font-family: "metropolis-semibold", sans-serif;
+   /*font-family: "metropolis-semibold", sans-serif;*/
+   font-family: "georgia", sans-serif;
    color: rgba(255, 255, 255, 0.5);
    line-height: 1.5;
 }
@@ -2597,7 +2635,7 @@ body.search-is-visible {
 }
 
 .featured__column--small .entry__category a {
-   background-color: #679a23;
+   background-color: #fe213b;
 }
 
 .featured__column--small .entry__profile-pic {
@@ -2803,7 +2841,7 @@ html.no-csstransitions .featured {
    }
 
    .featured__column--small .entry:last-child {
-      display: none;
+      /*display: none;*/
    }
 
    .featured__column--small .entry__category {
@@ -2911,6 +2949,9 @@ html.no-csstransitions .featured {
    padding-top: 8.4rem;
    padding-bottom: 7.2rem;
 }
+.s-content.white{
+   background: #fff;
+}
 
 .s-content--no-padding-bottom {
    padding-bottom: 0;
@@ -2926,7 +2967,7 @@ html.no-csstransitions .featured {
 }
 
 .s-content__header h1 {
-   font-size: 4.8rem;
+   font-size: 3.8rem;
    line-height: 1.25;
    margin-top: 0;
    letter-spacing: -.15rem;
@@ -3094,7 +3135,8 @@ html.no-csstransitions .featured {
    background-color: #FFFFFF;
    padding-top: 7.8rem;
    padding-bottom: 9rem;
-   font-family: "metropolis-regular", sans-serif;
+   /*font-family: "metropolis-regular", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.5rem;
    line-height: 1.8;
 }
@@ -3118,7 +3160,8 @@ html.no-csstransitions .featured {
 }
 
 .s-extra h5 {
-   font-family: "metropolis", sans-serif;
+   /*font-family: "metropolis", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.6rem;
    line-height: 1.3125;
    margin-bottom: .6rem;
@@ -3198,7 +3241,9 @@ html.no-csstransitions .featured {
 
 .s-extra .tagcloud a {
    display: inline-block;
-   font-family: "metropolis-extrabold", sans-serif;
+   /*font-family: "metropolis-extrabold", sans-serif;*/
+   font-family: "georgia", sans-serif;
+   font-weight: bold;
    font-size: 1.3rem;
    line-height: 3.6rem;
    text-transform: uppercase;
@@ -3264,8 +3309,8 @@ html.no-csstransitions .featured {
    }
 
    .s-extra .popular__thumb img {
-      height: 6.6rem;
-      width: 6.6rem;
+      /*height: 6.6rem;
+      width: 6.6rem;*/
    }
 
    .s-extra .about {
@@ -3284,8 +3329,8 @@ html.no-csstransitions .featured {
    }
 
    .s-extra .popular__thumb img {
-      height: 6.3rem;
-      width: 6.3rem;
+      /*height: 6.3rem;
+      width: 6.3rem;*/
    }
 
    .s-extra .about {
@@ -3305,21 +3350,23 @@ footer {
    padding-bottom: 6rem;
    font-size: 1.5rem;
    line-height: 2;
-   color: rgba(255, 255, 255, 0.4);
+   color: rgba(0, 0, 0, 0.8);
 }
 
 footer a {
-   color: #FFFFFF;
+   color: #000000;
 }
 
 footer h4 {
-   font-family: "metropolis-bold", sans-serif;
+   /*font-family: "metropolis-bold", sans-serif;*/
+   font-family: "georgia", sans-serif;
+   font-weight: bold;
    font-size: 1.4rem;
    line-height: 1.286;
    text-transform: uppercase;
    letter-spacing: .25rem;
    padding-bottom: 4.2rem;
-   color: #FFFFFF;
+   color: #000000;
    margin-top: 0;
    position: relative;
 }
@@ -3349,7 +3396,7 @@ footer h4::after {
 }
 
 .s-footer__linklist a {
-   color: rgba(255, 255, 255, 0.4);
+   color: rgba(0, 0, 0,);
 }
 
 .s-footer__linklist li {
@@ -3412,7 +3459,7 @@ footer h4::after {
    position: absolute;
    top: 0;
    right: 0;
-   color: #FFFFFF;
+   color: #000000;
    background: #0054a5;
    border-color: #0054a5;
    padding: 0 15px;
@@ -3421,7 +3468,8 @@ footer h4::after {
 
 .s-footer__subscribe #mc-form label {
    color: #FFFFFF;
-   font-family: "metropolis-regular", sans-serif, sans-serif;
+   /*font-family: "metropolis-regular", sans-serif, sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.3rem;
    padding: 0 2rem;
 }
@@ -3442,7 +3490,7 @@ footer h4::after {
    content: "|";
    display: inline-block;
    padding: 0 1rem 0 1.2rem;
-   color: rgba(255, 255, 255, 0.1);
+   color: rgba(0, 0, 0, 0.4);
 }
 
 .s-footer__bottom .s-footer__copyright span:last-child::after {
@@ -3476,7 +3524,7 @@ footer h4::after {
    line-height: 5.4rem;
    text-align: center;
    background-image: url(../images/icons/icon-arrow-up.svg);
-   background-color: #000000;
+   background-color: #fe6f61;
    background-repeat: no-repeat;
    background-position: center center;
    background-size: 10px 16px;
@@ -3490,7 +3538,7 @@ footer h4::after {
 
 .go-top a:hover, .go-top a:focus {
    color: #FFFFFF;
-   background-color: #0054a5;
+   background-color: #fe6f61;
 }
 
 .go-top.link-is-visible {
@@ -3613,7 +3661,8 @@ footer h4::after {
    list-style: none;
    margin-left: 0;
    margin-bottom: 1.2rem;
-   font-family: "metropolis-medium", sans-serif;
+   /*font-family: "metropolis-medium", sans-serif;*/
+   font-family: "georgia", sans-serif;
    font-size: 1.5rem;
    line-height: 1.8;
    position: relative;
@@ -3677,6 +3726,7 @@ footer h4::after {
 .s-content__tags {
    margin-top: 6rem;
    font-family: "metropolis-regular", sans-serif;
+
 }
 
 .s-content__tags span {
@@ -3721,9 +3771,15 @@ footer h4::after {
    margin-bottom: 6px;
    padding: 0 10px;
 }
+.s-content__tags .s-content__tag-list a.all{
+   background-color: #ccc;
+}
 
 .s-content__tags .s-content__tag-list a:hover, 
-.s-content__tags .s-content__tag-list a:focus {
+.s-content__tags .s-content__tag-list a:focus,
+.s-content__tags .s-content__tag-list a.all:focus,
+.s-content__tags .s-content__tag-list a.all:hover
+ {
    background-color: #000000;
    border-color: #000000;
    color: #ffffff;
@@ -3768,7 +3824,9 @@ footer h4::after {
 .s-content__author-social {
    list-style: none;
    margin-left: 0;
-   font-family: "metropolis-bold", sans-serif;
+   /*font-family: "metropolis-bold", sans-serif;*/
+   font-family: "georgia", sans-serif;
+   font-weight: bold;
    font-size: 12px;
    text-transform: uppercase;
    letter-spacing: 1px;
@@ -3788,11 +3846,46 @@ footer h4::after {
 /* -------------------------------------------------------------------
  * ## blog single page navigation
  * ------------------------------------------------------------------- */
-.s-content__pagenav {
-   margin-top: 10.2rem;
+.s-content__pagenav, .also {
+   margin-top: 5.2rem;
    padding-top: 1.8rem;
    border-top: 1px solid rgba(0, 0, 0, 0.1);
    position: relative;
+}
+
+.also-header{
+   display: block;
+   font-family: "metropolis-medium", sans-serif;
+   font-size: 12px;
+   text-transform: uppercase;
+   letter-spacing: 2.5px;
+   color: #7f7f7f;
+   margin-bottom: 1.2rem;
+   -webkit-transition: all 0.3s ease-in-out;
+   transition: all 0.3s ease-in-out;
+}
+
+.also a{
+   display: block;
+   font-family: "metropolis-regular", sans-serif;
+   font-size: 1.5rem;
+   line-height: inherit;
+   position: relative;
+   padding-left: 2rem;
+   /*color: #7f7f7f;*/
+}
+.also a:before{
+   content: ">";
+   display: inline-block;
+   text-decoration: none;
+   /*margin-right: 1.5rem;*/
+   position: absolute;
+   color: #7f7f7f;
+   font-family: "georgia", sans-serif;
+   left:0;
+}
+.also a:hover{
+   text-decoration: underline;
 }
 
 .s-content__nav:after {
@@ -4296,7 +4389,7 @@ footer h4::after {
 }
 .entry__meta.caps a{
    display: block;
-   border: 1px solid #0054a5;
+   border: 1px solid #403030;
    text-decoration: none;
 
 }
@@ -4304,4 +4397,7 @@ footer h4::after {
 .about .h1, .about .h2, .about .h3, .about .h4, .about .h5, .about .h6
 {
    margin-top: 0;
+}
+.f2{
+   background: #f2f2f2;
 }

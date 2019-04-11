@@ -15,14 +15,41 @@
 	<xsl:variable name="next" select="$pagination/page[number(/page/variables/p)+1]"/>
 
 	<xsl:template name="CONTENT">
-		<section class="s-content">
+		<section class="s-content f2">
 			<div class="row narrow">
 				<div class="col-full s-content__header" data-aos="fade-up">
 					<h1>
 						<xsl:value-of select="$h1"/>
 					</h1>
-					<xsl:if test="page/tag">
-						<div class="tags">
+					<xsl:if test="page/variables/tag">
+						<p class="s-content__tags" style="margin-top:0;">
+								<!-- <span>Теги</span> -->
+								<!-- <span class="s-content__tag-list" > -->
+									<a href="news" class="all" >
+										Все новости
+									</a>
+								<!-- 	<xsl:for-each select="page/tag[position() &lt; 7]">
+										<a href="{show_tag}">
+											<xsl:value-of select="tag"/>
+										</a>
+									</xsl:for-each>
+									<xsl:if test="page/tag[position() &lt; 7]">
+										<a title="еще" onclick="$('#all-tags-container').toggle()">...</a>	
+									</xsl:if> -->
+								<!-- </span> -->
+							</p>
+							<!-- <div id="all-tags-container" style="display:none;">
+								<p class="s-content__tags" style="margin-top:-26px;text-align: left;">
+									<span class="s-content__tag-list" >
+										<xsl:for-each select="page/tag[position() &gt; 7]">
+											<a href="{show_tag}">
+												<xsl:value-of select="tag"/>
+											</a>
+										</xsl:for-each>
+									</span>
+								</p>
+							</div> -->
+						<!-- <div class="tags">
 							<span class="entry__category gray">
 								<a href="{page/news_link}">
 									Все
@@ -46,7 +73,7 @@
 									</a>
 								</span>
 							</xsl:for-each>
-						</div>
+						</div> -->
 					</xsl:if>
 					<div class="lead">
 						<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
@@ -54,31 +81,33 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<xsl:for-each select="page/small_news/small_news_item">
-					<div class="col-four tab-full small-news-item">
-						<p class="date">
-							<xsl:value-of select="date"/>
-						</p>
-						<p class="name{if(not(tag)) then ' botmar' else ' mar-0'}">
-							<a href="{show_page}">
-								<xsl:value-of select="name"/>
-							</a>
-						</p>
-						<xsl:if test="tag">
-						<p class="tags botmar">
-							Теги: <xsl:for-each select="tag">
-								<xsl:if test="position() &gt; 1">
-									<xsl:text>, </xsl:text>
-								</xsl:if>
-								<a href="{concat('small_news/?tag=', .)}">
-									<xsl:value-of select="."/>
+			<div class="row masonry-wrap">
+				<div class="masonry">
+					<xsl:for-each select="page/small_news/small_news_item">
+						<div class="col-four tab-full small-news-item masonry__brick" data-aos="fade-up">
+							<p class="date" data-utc="{date/@millis}">
+								<xsl:value-of select="date"/>
+							</p>
+							<p class="name{if(not(tag)) then ' botmar' else ' mar-0'}">
+								<a href="{show_page}">
+									<xsl:value-of select="name"/>
 								</a>
-							</xsl:for-each>
-						</p>
-						</xsl:if>
-					</div>
-				</xsl:for-each>
+							</p>
+							<xsl:if test="tag">
+							<p class="tags botmar">
+								Теги: <xsl:for-each select="tag">
+									<xsl:if test="position() &gt; 1">
+										<xsl:text>, </xsl:text>
+									</xsl:if>
+									<a href="{concat('news/?tag=', .)}">
+										<xsl:value-of select="."/>
+									</a>
+								</xsl:for-each>
+							</p>
+							</xsl:if>
+						</div>
+					</xsl:for-each>
+				</div>
 			</div>
 
 			<xsl:if test="$pagination">
