@@ -135,7 +135,7 @@
 
 				<div class="extra-buttons">
 					<a class="button secondary" data-toggle="modal" data-target="#cheaper">Нашли дешевле?</a> 
-					<!-- <a class="button secondary" data-toggle="modal" data-target="#warranty">XXL-гарантия</a> -->
+					<a class="button secondary" data-toggle="modal" data-target="#warranty">XXL-гарантия</a>
 				</div>
 
 				<div class="extra-block">

@@ -26,7 +26,7 @@
 		</single>
 
 		<single item="custom_pages" id="custom_pages" cacheable="true" >
-			<tree item="menu_item" id="custom_page">
+			<tree item="menu_item" id="custom_page" tag="menu_custom">
 				<link name="show_page" target="page" type="exclusive">
 					<var name="p" ref="custom_page" style="key"/>
 				</link>
