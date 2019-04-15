@@ -300,30 +300,32 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 						for (String header : headers) {
 							if (CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) {
 								String cellValue = getValue(header);
-								String[] m = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
-								for (String manual : m) {
-									Item manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
-									;
-									if (manual.indexOf('|') == -1) {
-										manualItem.setValue(NAME_PARAM, "Документ");
-										manualItem.setValue(LINK_PARAM, manual);
-									} else {
-										String[] x = manual.split("[|]");
-										switch (x.length) {
-											case 1:
-												manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
-												manualItem.setValue(NAME_PARAM, "Документ");
-												manualItem.setValue(LINK_PARAM, x[0]);
-												break;
-											case 2:
-												manualItem.setValue(NAME_PARAM, x[0]);
-												manualItem.setValue(LINK_PARAM, x[1]);
-												break;
-											default:
-												break;
+								String[] m = StringUtils.split(cellValue, CreateExcelPriceList.VALUE_SEPARATOR);
+								if (m != null) {
+									for (String manual : m) {
+										Item manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
+										;
+										if (manual.indexOf('|') == -1) {
+											manualItem.setValue(NAME_PARAM, "Документ");
+											manualItem.setValue(LINK_PARAM, manual);
+										} else {
+											String[] x = manual.split("[|]");
+											switch (x.length) {
+												case 1:
+													manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
+													manualItem.setValue(NAME_PARAM, "Документ");
+													manualItem.setValue(LINK_PARAM, x[0]);
+													break;
+												case 2:
+													manualItem.setValue(NAME_PARAM, x[0]);
+													manualItem.setValue(LINK_PARAM, x[1]);
+													break;
+												default:
+													break;
+											}
 										}
+										executeCommandUnit(SaveItemDBUnit.get(manualItem).noFulltextIndex().noTriggerExtra());
 									}
-									executeCommandUnit(SaveItemDBUnit.get(manualItem).noFulltextIndex().noTriggerExtra());
 								}
 								commitCommandUnits();
 								if(isProduct) currentProduct = product;
