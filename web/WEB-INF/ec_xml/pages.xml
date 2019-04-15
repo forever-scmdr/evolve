@@ -1233,4 +1233,13 @@
 		</command>
 	</page>
 
+	<page name="refresh_keys" template="integrate">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.SaveAllProductsCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 </site>
