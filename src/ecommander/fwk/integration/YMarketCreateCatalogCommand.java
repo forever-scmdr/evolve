@@ -4,11 +4,9 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.DeleteItemTypeBDUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -106,13 +104,13 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		}
 
 		info.pushLog("Создание товаров завершено");
-		info.pushLog("Индексация");
-		info.setOperation("Индексация");
-
-		LuceneIndexMapper.getSingleton().reindexAll();
-
-		info.pushLog("Индексация завершена");
-		info.pushLog("Интеграция успешно завершена");
+//		info.pushLog("Индексация");
+//		info.setOperation("Индексация");
+//
+//		LuceneIndexMapper.getSingleton().reindexAll();
+//
+//		info.pushLog("Индексация завершена");
+//		info.pushLog("Интеграция успешно завершена");
 		info.setOperation("Интеграция завершена");
 	}
 

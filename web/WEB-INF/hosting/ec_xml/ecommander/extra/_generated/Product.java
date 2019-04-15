@@ -34,6 +34,7 @@ public class Product
     public final static String SMALL_PIC = "small_pic";
     public final static String MIN_QTY = "min_qty";
     public final static String QUOTIENT = "quotient";
+    public final static String UNIT = "unit";
     public final static String DESCRIPTION = "description";
     public final static String TEXT = "text";
     public final static String EXTRA_XML = "extra_xml";
@@ -429,6 +430,22 @@ public class Product
 
     public boolean contains_quotient(BigDecimal value) {
         return containsValue("quotient", value);
+    }
+
+    public void set_unit(String value) {
+        setValue("unit", value);
+    }
+
+    public String get_unit() {
+        return getStringValue("unit");
+    }
+
+    public String getDefault_unit(String defaultVal) {
+        return getStringValue("unit", defaultVal);
+    }
+
+    public boolean contains_unit(String value) {
+        return containsValue("unit", value);
     }
 
     public void set_description(String value) {

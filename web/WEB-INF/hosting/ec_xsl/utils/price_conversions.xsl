@@ -16,9 +16,13 @@
     </xsl:function>
 
     <xsl:function name="f:currency_decimal">
-
-        <xsl:param name="str" as="xs:string?"/>
+       <xsl:param name="str" as="xs:string?"/>
         <xsl:value-of select="format-number(f:num($str), '#0.00')"/>
+    </xsl:function>
+
+    <xsl:function name="f:format_currency">
+        <xsl:param name="num"/>
+        <xsl:value-of select="format-number($num, '#0.00')"/>
     </xsl:function>
 
     <xsl:function name="f:rub_kop" as="xs:string">
@@ -71,6 +75,28 @@
             </xsl:if>
         </div>
     </xsl:template>
+
+
+    <xsl:function name="f:substring-before-last" as="xs:string">
+        <xsl:param name="arg" as="xs:string?"/>
+        <xsl:param name="delim" as="xs:string"/>
+        <xsl:sequence select="
+           if (matches($arg, f:escape-for-regex($delim)))
+           then replace($arg,
+                    concat('^(.*)', f:escape-for-regex($delim),'.*'),
+                    '$1')
+           else ''
+        "/>
+    </xsl:function>
+
+    <xsl:function name="f:escape-for-regex" as="xs:string">
+        <xsl:param name="arg" as="xs:string?"/>
+        <xsl:sequence select="
+            replace($arg,
+           '(\.|\[|\]|\\|\||\-|\^|\$|\?|\*|\+|\{|\}|\(|\))','\\$1')
+        "/>
+   </xsl:function>
+
 
     <xsl:template match="/">
         <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;

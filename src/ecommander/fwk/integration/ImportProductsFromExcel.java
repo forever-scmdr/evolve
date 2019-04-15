@@ -4,9 +4,11 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.*;
+import ecommander.persistence.commandunits.CopyItemDBUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.commandunits.MoveItemDBUnit;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -760,8 +762,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
 		//indexation
-		info.setOperation("Индексация названий товаров");
-		LuceneIndexMapper.getSingleton().reindexAll();
+		//info.setOperation("Индексация названий товаров");
+		//LuceneIndexMapper.getSingleton().reindexAll();
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Интеграция завершена");
 	}

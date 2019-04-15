@@ -8,6 +8,8 @@ public interface ItemNames {
     String URL_SEO = "url_seo";
     String URL_SEO_WRAP = "url_seo_wrap";
     String CATALOG = "catalog";
+    String PLAIN_CATALOG = "plain_catalog";
+    String PLAIN_SECTION = "plain_section";
     String SECTION = "section";
     String PRODUCT = "product";
     String PARAMS = "params";
@@ -19,6 +21,8 @@ public interface ItemNames {
     String BOUGHT = "bought";
     String CART = "cart";
     String COUNTER = "counter";
+    String PRICE_INTERVAL = "price_interval";
+    String PRICE_CATALOG = "price_catalog";
     String PURCHASE = "purchase";
     String USER = "user";
     String USER_JUR = "user_jur";
@@ -30,6 +34,8 @@ public interface ItemNames {
     String ARTICLES = "articles";
     String MAIN_PROMO_BOTTOM = "main_promo_bottom";
     String MAIN_SLIDER_FRAME = "main_slider_frame";
+    String MAIN_LOGOS = "main_logos";
+    String MAIN_LOGO = "main_logo";
     String MAIN_PAGE = "main_page";
     String DEALER_COORDS = "dealer_coords";
     String DEALERS_PAGE = "dealers_page";
@@ -76,6 +82,7 @@ public interface ItemNames {
     public interface catalog_ {
 
         String _ITEM_NAME = "catalog";
+        String INTEGRATION_PENDING = "integration_pending";
         String INTEGRATION = "integration";
         String DATE = "date";
 
@@ -176,6 +183,20 @@ public interface ItemNames {
         String SERVER_FROM = "server_from";
         String EMAIL_FROM = "email_from";
         String EMAIL_FROM_PASSWORD = "email_from_password";
+
+    }
+
+    public interface main_logos_ {
+
+        String _ITEM_NAME = "main_logos";
+
+    }
+
+    public interface main_logo_ {
+
+        String _ITEM_NAME = "main_logo";
+        String NAME = "name";
+        String PIC = "pic";
 
     }
 
@@ -290,11 +311,41 @@ public interface ItemNames {
 
     }
 
+    public interface plain_catalog_ {
+
+        String _ITEM_NAME = "plain_catalog";
+
+    }
+
+    public interface plain_section_ {
+
+        String _ITEM_NAME = "plain_section";
+        String NAME = "name";
+        String DATE = "date";
+
+    }
+
     public interface price_ {
 
         String _ITEM_NAME = "price";
         String QTY = "qty";
         String PRICE = "price";
+
+    }
+
+    public interface price_catalog_ {
+
+        String _ITEM_NAME = "price_catalog";
+        String QUOTIENT = "quotient";
+
+    }
+
+    public interface price_interval_ {
+
+        String _ITEM_NAME = "price_interval";
+        String MIN = "min";
+        String MAX = "max";
+        String QUOTIENT = "quotient";
 
     }
 
@@ -322,6 +373,7 @@ public interface ItemNames {
         String SMALL_PIC = "small_pic";
         String MIN_QTY = "min_qty";
         String QUOTIENT = "quotient";
+        String UNIT = "unit";
         String DESCRIPTION = "description";
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";

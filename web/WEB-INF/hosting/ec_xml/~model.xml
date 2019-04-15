@@ -44,13 +44,27 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
+		<parameter name="integration_pending" type="byte" caption="Интеграция в процессе" domain="0-1"/>
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 	</item>
 
+
+	<item name="plain_catalog" caption="Список товаров" children-per-page="30" children-sorting="DESC" ag-id="2126" ag-hash="-1742571868">
+		<child item="plain_section"/>
+	</item>
+
+
+	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="50" children-sorting="ASC" ag-id="2127" ag-hash="-328034960">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="date" type="date" caption="Дата"/>
+		<child item="product"/>
+	</item>
+
+
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
-	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" ag-id="3" ag-hash="1970241253">
+	<item name="section" default-page="section" key="name" caption="Раздел" children-per-page="50" key-unique="true" ag-id="3" ag-hash="1970241253">
 		<child item="seo" single="true"/>
 		<child item="section" />
 		<child item="product"/>
@@ -91,6 +105,7 @@
 		<parameter name="small_pic" type="picture" format="width: 200; src: main_pic;" caption="Маленькая картинка"/>
 		<parameter name="min_qty" type="decimal" caption="Минимальное количесво заказа"/>
 		<parameter name="quotient" type="decimal" caption="Кратность заказа"/>
+		<parameter name="unit" type="string" caption="Единица измерения"/>
 		<parameter name="description" type="text" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
@@ -192,6 +207,17 @@
 		<parameter name="count" type="integer" caption="Счетчик"/>
 	</item>
 
+	<item name="price_interval" caption="Интервал коэффициента" key="min max quotient" ag-id="2206" ag-hash="1275971323">
+		<parameter name="min" type="currency" caption="Начало интервала (min)" description="справочное значение (включительно)"/>
+		<parameter name="max" type="currency" caption="Конец интервала (max)" description="основное значение, определяющее интервал (исключительно)"/>
+		<parameter name="quotient" type="decimal" caption="Коэффициент"/>
+	</item>
+
+	<item name="price_catalog" caption="Каталог ценовых интервалов" ag-id="2207" ag-hash="2102484771">
+		<parameter name="quotient" type="decimal" caption="Базовый коэффициент" default="1.4"/>
+		<child item="price_interval" inline="true"/>
+	</item>
+
 	<!--/////////////                            END КОРЗИНА                               ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -289,11 +315,20 @@
 		<parameter name="link" type="string" caption="Ссылка" description="начиная с http://"/>
 	</item>
 
-	<item name="main_slider_frame" caption="Кадр для слайдера" key="name" ag-id="807" ag-hash="-806170283" >
+	<item name="main_slider_frame" caption="Кадр для слайдера" key="name" ag-id="807" ag-hash="-806170283">
 		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
 		<parameter name="text" type="tiny-text" caption="Текст" description="на слайде"/>
 		<parameter name="link_name" type="string" caption="Текст на ссылке" description="выводится как текст кнопки"/>
 		<parameter name="link" type="string" caption="Ссылка" description="в формате http://..."/>
+		<parameter name="pic" type="picture" caption="Картинка"/>
+	</item>
+
+	<item name="main_logos" caption="Логотипы" ag-id="2130" ag-hash="801008162">
+		<child item="main_logo" inline="true"/>
+	</item>
+
+	<item name="main_logo" caption="Логотип" key="name" ag-id="2131" ag-hash="-251255695">
+		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
@@ -302,6 +337,7 @@
 		<child item="seo" single="true"/>
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
+		<child item="main_logos" single="true"/>
 	</item>
 
 	<item name="dealer_coords" caption="Дилер" key="name" ag-id="824" ag-hash="-1075960572">
@@ -319,7 +355,7 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="contacts" caption="Контакты" ag-id="21" ag-hash="-567451565" >
+	<item name="contacts" caption="Контакты" ag-id="21" ag-hash="-567451565">
 		<child item="seo" single="true"/>
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="map" type="plain-text" caption="Код карты" format="height: 50px"/>
@@ -411,6 +447,8 @@
 		<child item="counter" single="true" virtual="true"/>
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
+		<child item="plain_catalog" single="true"/>
+		<child item="price_catalog" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

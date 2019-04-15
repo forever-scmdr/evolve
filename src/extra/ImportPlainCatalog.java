@@ -7,7 +7,6 @@ import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
 import extra._generated.Product;
 import org.apache.commons.io.FileUtils;
@@ -121,13 +120,13 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 		}
 
 		info.pushLog("Создание товаров завершено");
-		info.pushLog("Индексация");
-		info.setOperation("Индексация");
-
-		LuceneIndexMapper.getSingleton().reindexAll();
-
-		info.pushLog("Индексация завершена");
-		info.pushLog("Интеграция успешно завершена");
+//		info.pushLog("Индексация");
+//		info.setOperation("Индексация");
+//
+//		LuceneIndexMapper.getSingleton().reindexAll();
+//
+//		info.pushLog("Индексация завершена");
+//		info.pushLog("Интеграция успешно завершена");
 		info.setOperation("Интеграция завершена");
 	}
 

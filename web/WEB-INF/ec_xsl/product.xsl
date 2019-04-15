@@ -3,9 +3,9 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="p" select="page/product[1]"/>
+	<xsl:variable name="p" select="if (page/product[params]) then page/product[params] else page/product[1]"/>
 
-	<xsl:variable name="title" select="if (starts-with($p[1]/name, $p/vendor)) then $p/name else concat($p/vendor, ' ', $p/name)"/>
+	<xsl:variable name="title" select="if (starts-with($p[1]/name, $p[1]/vendor)) then $p/name else concat($p[1]/vendor, ' ', $p[1]/name)"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -14,6 +14,8 @@
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
+
+	<xsl:variable name="price_items" select="page/price[plain_section]"/>
 
 	<xsl:variable name="price_intervals" select="page/price_catalog/price_interval"/>
 	<xsl:variable name="Q" select="f:num(page/price_catalog/quotient)"/>
@@ -172,6 +174,21 @@
 					</div>
 				</xsl:if>
 				<div class="order">
+					<xsl:if test="not($price_items)">
+						<div style="width: 100%"><p><b>Товар отсутствует на складе.</b></p><p><b>Товар можно оформить под заказ.</b></p></div>
+						<div id="cart_list_{$p/@id}" class="product_purchase_container">
+							<form action="{$p/to_cart}" method="post" ajax="true">
+								<xsl:if test="$has_price">
+									<input type="number" name="qty" value="1" min="0"/>
+									<input type="submit" value="Заказать"/>
+								</xsl:if>
+								<xsl:if test="not($has_price)">
+									<input type="hidden" name="qty" value="1" min="0"/>
+									<input type="submit" class="not_available" value="Запросить цену"/>
+								</xsl:if>
+							</form>
+						</div>
+					</xsl:if>
 					<xsl:choose>
 						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>
 						<xsl:otherwise><!-- <div class="quantity">Нет на складе</div> --></xsl:otherwise>
@@ -203,8 +220,7 @@
 					</div>
 				</div>
 			</div>
-			<xsl:variable name="prices" select="page/price[plain_section]"/>
-			<xsl:if test="$prices">
+			<xsl:if test="$price_items">
 				<div>
 					<table class="srtable">
 						<tr>
@@ -220,7 +236,9 @@
 							<th>Сумма (руб.)</th>
 							<th>Заказать</th>
 						</tr>
-						<xsl:apply-templates select="$prices"/>
+						<xsl:for-each-group select="$price_items" group-by="@id">
+							<xsl:apply-templates select="current-group()[1]"/>
+						</xsl:for-each-group>
 					</table>
 				</div>
 			</xsl:if>

@@ -151,7 +151,7 @@
 			<div class="container">
 				<div class="fotorama" style="width: 100%;" data-width="100%" data-height="301px" data-transition="crossfade" data-autoplay="true" data-loop="true" data-fit="cover">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<img src="{@path}{pic}" alt="{name}"/>
+						<img src="http://alfacomponent.must.by/{@path}{pic}" alt="{name}"/>
 						<!-- <div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url(http://alfacomponent.must.by/{@path}{pic});">
 							<div class="container">
 								<div class="slider-item__block fotorama__select">
@@ -174,12 +174,13 @@
 			<div class="title_2">Каталог продукции</div>
 			<div class="catalog-items">
 				<xsl:for-each select="/page/catalog/section">
-					<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
-					<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
+					<xsl:variable name="sec_pic" select="if (main_pic != '') then concat('http://alfacomponent.must.by/', @path, main_pic) else ''"/>
+					<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat('http://alfacomponent.must.by/', product/@path, product/main_pic) else ''"/>
 					<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
+					<xsl:variable name="link" select="if (section) then show_sub else show_products" />
 					<div class="device items-catalog__section">
-						<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
-						<a href="{show_products}" class="device__title"><xsl:value-of select="name"/></a>
+						<a href="{$link}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
+						<a href="{$link}" class="device__title"><xsl:value-of select="name"/></a>
 					</div>
 				</xsl:for-each>
 			</div>
@@ -194,7 +195,7 @@
 				<div class="catalog-items info">
 					<xsl:for-each select="page//news_item">
 						<div class="catalog-item">
-							<a href="{show_news_item}" class="image-container" style="background-image: url({@path}{main_pic}');"><!-- <img src="http://alfacomponent.must.by/{@path}{main_pic}" alt=""/> --></a>
+							<a href="{show_news_item}" class="image-container" style="background-image: url('http://alfacomponent.must.by/{@path}{main_pic}');"><!-- <img src="http://alfacomponent.must.by/{@path}{main_pic}" alt=""/> --></a>
 							<div class="text">
 								<a href="{show_news_item}"><xsl:value-of select="header"/></a>
 								<div class="date"><xsl:value-of select="date"/></div>
@@ -209,170 +210,15 @@
 
 
 
-		<!-- <div class="has-items-carousel">
-			<div class="container">
-				<div class="more-products">
-					<div class="title_2">Лидеры продаж</div>
-					<div class="slick-slider catalog-items">
-						<xsl:apply-templates select="page/product"/>
-					</div>
-				</div>
-			</div>
-		</div> -->
-
-
-
-		<!-- <div class="container container-tb">
-			<div class="hero hero_center">
-				<div class="hero-block hero-block_center">
-					<div class="hero-block__icon"></div>
-					<div class="hero-block__title">1972</div>
-					<div class="hero-block__text">год начала работы</div>
-				</div>
-				<div class="hero-block hero-block_center">
-					<div class="hero-block__icon"></div>
-					<div class="hero-block__title">более 180</div>
-					<div class="hero-block__text">довольных клиентов</div>
-				</div>
-				<div class="hero-block hero-block_center">
-					<div class="hero-block__icon"></div>
-					<div class="hero-block__title">46 лет</div>
-					<div class="hero-block__text">безупречной работы</div>
-				</div>
-			</div>
-		</div> -->
-
-
-
-		<!-- <div class="separator"></div>
-		<div class="container container-tb">
-			<div class="quote quote_center">
-				<p>Основное направление компании Тексимат — кожа оптом и в розницу. Мы любим свое дело и ценим наших клиентов, поэтому предлагаем только лучшие материалы от ведущих европейских производителей.</p>
-			</div>
-		</div> -->
-
-
-
-		<!-- <div class="container-fluid contaner-tb">
-			<div class="photo-stripe">
-				<div class="photo-stripe__item">
-					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
-					<div class="photo-stripe__image" style="background-image: url(../img/bp1_small.jpg);"></div>
-					<div class="photo-stripe__text">Подпись к фото</div>
-				</div>
-				<div class="photo-stripe__item">
-					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
-					<div class="photo-stripe__image" style="background-image: url(../img/bp2_small.jpg);"></div>
-					<div class="photo-stripe__text">Подпись к фото</div>
-				</div>
-				<div class="photo-stripe__item">
-					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
-					<div class="photo-stripe__image" style="background-image: url(../img/bp3_small.jpg);"></div>
-					<div class="photo-stripe__text">Подпись к фото</div>
-				</div>
-				<div class="photo-stripe__item">
-					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
-					<div class="photo-stripe__image" style="background-image: url(../img/bp4_small.jpg);"></div>
-					<div class="photo-stripe__text">Подпись к фото</div>
-				</div>
-				<div class="photo-stripe__item">
-					<a href="" class="photo-stripe__link photo-stripe__link_darken" data-toggle="modal" data-target="#modal-photo"></a>
-					<div class="photo-stripe__image" style="background-image: url(../img/bp5_small.jpg);"></div>
-					<div class="photo-stripe__text">Подпись к фото</div>
-				</div>
-			</div>
-		</div> -->
-
-		<!-- BANNERS -->
-		<!-- <div class="container-fluid" style="background-color: #fff; padding: 50px 0;">
-			<div class="container .container-tb">
-				<div class="banners-container">
-					<xsl:for-each select="page/main_page/main_promo_bottom">
-						<div class="banner">
-							<div class="banner__image" style="background-image: url(http://alfacomponent.must.by/{@path}{pic})"></div>
-							<div class="banner__title"><xsl:value-of select="text_big"/></div>
-							<div class="banner__text"><xsl:value-of select="text_small"/></div>
-							<a class="banner__link" href="{link}"></a>
-						</div>
-					</xsl:for-each>
-				</div>
-			</div>
-		</div> -->
-		<!-- BANNERS END -->
-
-
-		<!-- TEXT -->
-		<!-- <div class="container">
-			<div class="about">
-				<div class="about__text">
-					<div class="title_2">О нас</div>
-					<p>Начиная с 2006 года Общество с ограниченной ответственностью «М-Тех» успешно работает в сельскохозяйственном секторе.</p>
-					<p>Основные направления деятельности нашей компании - это реализация импортного оборудования и комплектующих, гарантийное и послегарантийное обслуживание молочно-доильного оборудования, оборудования для свиноводческих комплексов, биогазовых установок.</p>
-					<p>Прямое сотрудничество с европейскими производителями, позволяет нам поставлять качественную продукцию по оптимальной стоимости.</p>
-				</div>
-				<div class="about__blocks">
-					<div class="about__block">
-						<i class="fas fa-award about__icon"></i>
-						<strong>Качественное оборудование от производителя по приемлемым ценам</strong>
-					</div>
-					<div class="about__block">
-						<i class="fas fa-user-cog about__icon"></i>
-						<strong>Гарантийное и послегарантийное обслуживание</strong>
-					</div>
-					<div class="about__block">
-						<i class="fas fa-percent about__icon"></i>
-						<strong>Гибкая система скидок</strong>
-					</div>
-				</div>
-			</div>
-		</div> -->
-		<!-- TEXT END -->
-
-
-
 		<div class="container-fluid" style="padding-top: 32px;">
 			<div class="container">
 				<div class="title_2">Производители</div>
 				<div class="brand-logos">
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand.jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-1.jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-2.jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-3.jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-4.jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-5.jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-6.jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-7.jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-8.jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-9.jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-10.jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-11.jpg" alt=""/>
-					</div>
-					<div class="brand-logos__item">
-						<img class="brand-logos__image" src="img/brand-12.jpg" alt=""/>
-					</div>
+					<xsl:for-each select="page/main_page/main_logos/main_logo">
+						<div class="brand-logos__item">
+							<img class="brand-logos__image" src="{@path}{pic}" alt=""/>
+						</div>
+					</xsl:for-each>
 				</div>
 			</div>
 		</div>

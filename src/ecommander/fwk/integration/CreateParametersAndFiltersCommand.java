@@ -146,6 +146,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		}
 		for (Item section : sections) {
 			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false, assocNames.toArray(new String[0])).loadItems();
+
 			if (products.size() > 0) {
 
 				// Загрузить и добавить все строковые товары
@@ -209,6 +210,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 							"", caption, unit, "", false, false, null, null));
 				}
 				executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
+
 
 			} else {
 				section.clearValue(PARAMS_FILTER_PARAM);
