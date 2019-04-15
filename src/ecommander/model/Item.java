@@ -1,23 +1,11 @@
 package ecommander.model;
 
-import java.io.File;
-import java.io.StringReader;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.model.datatypes.DataType.Type;
 import ecommander.pages.InputValues;
+import ecommander.pages.output.UserParameterDescriptionMDWriter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.xml.sax.Attributes;
@@ -25,11 +13,16 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
-import ecommander.pages.output.UserParameterDescriptionMDWriter;
-import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.model.datatypes.DataType.Type;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
+import java.io.StringReader;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Такие действия, как добавление (или удаление) сабайтема в айтем должны происходить следующим образом:
@@ -905,11 +898,13 @@ public class Item implements ItemBasics {
 						if (param.getType().isFile() && param.isEmpty())
 							continue;
 					}
-					Pattern urlP = Pattern.compile(URL_PATTERN);
-					Matcher urlM = urlP.matcher(param.getValue().toString());
-					if(param.getType().isFile() && urlM.matches()){
-						destination.setValue(paramDesc.getId(), new URL(param.getValue().toString()));
-						continue;
+					if(param.getValue() != null) {
+						Pattern urlP = Pattern.compile(URL_PATTERN);
+						Matcher urlM = urlP.matcher(param.getValue().toString());
+						if(param.getType().isFile() && urlM.matches()){
+							destination.setValue(paramDesc.getId(), new URL(param.getValue().toString()));
+							continue;
+						}
 					}
 					// Одиночные параметры
 					if (param instanceof SingleParameter) {

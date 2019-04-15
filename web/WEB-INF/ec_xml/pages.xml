@@ -1031,23 +1031,23 @@
 	</page>
 
 
-	<page name="create_excel_pricelist" template="integration/create_excel"  authority-groups="common">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="ecommander.fwk.integration.CreateExcelPriceList" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
+	<!--<page name="create_excel_pricelist" template="integration/create_excel"  authority-groups="common">-->
+		<!--<request>-->
+			<!--<var name="action"/>-->
+		<!--</request>-->
+		<!--<command class="ecommander.fwk.integration.CreateExcelPriceList" clear-cache="yes">-->
+			<!--<result name="complete" type="xml"/>-->
+		<!--</command>-->
+	<!--</page>-->
 
-	<page name="parse_excel_pricelist" template="integration/create_excel"  authority-groups="common">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="ecommander.fwk.integration.ParseExcelPriceList" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
+	<!--<page name="parse_excel_pricelist" template="integration/create_excel"  authority-groups="common">-->
+		<!--<request>-->
+			<!--<var name="action"/>-->
+		<!--</request>-->
+		<!--<command class="ecommander.fwk.integration.ParseExcelPriceList" clear-cache="yes">-->
+			<!--<result name="complete" type="xml"/>-->
+		<!--</command>-->
+	<!--</page>-->
 
 
 

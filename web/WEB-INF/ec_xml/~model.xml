@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
+	<assoc name="general" caption="Ассоциация общего назначения" description="для связи разных несвязанных напрямую айтемов" ag-id="2" ag-hash="-80148248" />
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -177,9 +178,9 @@
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
 		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
-		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
-		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
-		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
+		<parameter name="price_original" default="0" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
+		<parameter name="price" default="0" type="currency" caption="Цена" description="в валюте текущего сайта"/>
+		<parameter name="price_old" default="0" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" format="width: 300" caption="Главная картинка"/>
@@ -383,6 +384,7 @@
 		<parameter name="text_right" type="text" caption="Текст справа"/>
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
+		<child item="product" assoc="general"/>
 	</item>
 
 	<item name="dealer_coords" caption="Дилер" key="name" ag-id="26" ag-hash="-1075960572">
