@@ -79,7 +79,7 @@ public class TabTxtTableData implements TableDataSource {
 			if (rowChecked) {
 				for (int i = 0; i < cols.length; i++) {
 					if (StringUtils.isNotBlank(cols[i])) {
-						header.put(StringUtils.lowerCase(cols[i]), i);
+						header.put(StringUtils.trim(StringUtils.lowerCase(cols[i])), i);
 					}
 				}
 				isValid = true;

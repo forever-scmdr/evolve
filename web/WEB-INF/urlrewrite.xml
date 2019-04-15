@@ -22,12 +22,22 @@
     <!--Обработчики для администратора (.action)-->
     <rule>
         <from>.*\.action.*</from>
-        <to type="forward" last="true">/$0</to>
+        <to type="forward" last="true">-</to>
+    </rule>
+    <rule>
+        <from>.*\.afilter.*</from>
+        <to type="forward" last="true">-</to>
     </rule>
     <!--Обычные файлы-->
+    <!--
     <rule>
         <from>^(?!\?).*\..{1,5}$</from>
         <to type="forward" last="true">$0</to>
+    </rule>
+    -->
+    <rule match-type="wildcard" enabled="true">
+        <from>/**.*</from>
+        <to type="forward" last="true">-</to>
     </rule>
     <!--Страницы сайта (основная работа CMS)-->
     <rule match-type="wildcard" enabled="true">
