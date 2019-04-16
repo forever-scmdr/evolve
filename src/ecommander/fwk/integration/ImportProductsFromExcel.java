@@ -189,7 +189,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					reInit(CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE);
 				} else {
 					if (currentSubsection == null) currentSubsection = currentSection;
-					boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
+					boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE)) || !getHeaders().contains(CreateExcelPriceList.IS_DEVICE_FILE.toLowerCase());
 					Item product = getExistingProduct(code, isProduct);
 					TreeSet<String> headers = getHeaders();
 					Path picsFolder = contextPath.resolve("product_pics");
