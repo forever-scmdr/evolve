@@ -48,7 +48,7 @@ public class CreatePriceUpdateFile extends IntegrateBase implements CatalogConst
 			CellStyle cellStyle = (StringUtils.isBlank(code))? noCodeStyle : (StringUtils.isBlank(price))? noPriceStyle : null;
 			int colIdx = -1;
 			row.createCell(++colIdx).setCellValue(code);
-			row.createCell(++colIdx).setCellValue(product.outputValue("price_old"));
+			row.createCell(++colIdx).setCellValue(product.outputValue("price_old").replaceAll("\\s", ""));
 			row.createCell(++colIdx).setCellValue(price);
 			row.createCell(++colIdx).setCellValue(product.getByteValue(AVAILABLE_PARAM, (byte)0) == 1? "+" : "-");
 			List<Item> presents = ItemQuery.loadByParamValue(PRODUCT_PRESENT, product_present.PRODUCT_CODE, code);
