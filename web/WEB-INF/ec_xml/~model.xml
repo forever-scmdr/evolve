@@ -131,6 +131,7 @@
 	<!--/////////////                             КАТАЛОГ                                  ////////////-->
 	<!--/////////////                                                                      ////////////-->
 
+	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true" ag-id="4" ag-hash="-1147981728"/>
 
 	<item name="original_gallery" caption="Исходная галерея" ag-id="1625" ag-hash="743720676" >
 		<parameter name="watermark_filename"  type="string" caption="Название файла водяного знака"/>
@@ -148,11 +149,9 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
-		<parameter name="integration" type="file" caption="Excel обновление цены" description="обновление цены" />
-		<parameter name="integration_pending" type="byte" caption="Идет интеграция" domain="0-1" />
+		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
-		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
-		<on-update class="ecommander.fwk.CopyToUpload"/>
+		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
 	</item>
 
 	<!--Является также и разделом для парсинга-->
@@ -161,6 +160,8 @@
 		<child item="parse_section" single="true"/>
 		<child item="section" />
 		<child item="product"/>
+		<child item="section" assoc="catalog_link"/>
+		<child item="product" assoc="catalog_link"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
 		<parameter name="show_subs" type="byte" domain="0-1" caption="Показать подразделы"/>
@@ -188,7 +189,7 @@
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
-		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
+		<parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
 		<parameter name="group_id" type="string" caption="Номер группы" description="в яндекс маркете все товары одной группы выводятся на одной странице"/>
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
@@ -455,9 +456,11 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
-		<parameter name="google_verification" type="string" caption="google verification code"/>
-		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
+		<parameter name="google_verification" type="string" caption="GOOGLE verification code"/>
+		<parameter name="yandex_verification" type="string" caption="YANDEX verification code"/>
 		<child item="delivery" single="true"/>
+		<child item="payment" single="true"/>
+		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
 	</item>
@@ -473,6 +476,14 @@
 
 	<item name="delivery" caption="Доставка" ag-id="827" ag-hash="823466996">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
+	</item>
+
+	<item name="payment" caption="Оплата">
+		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
+	</item>
+
+	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1633" ag-hash="-1220416192">
+		<parameter name="payment" type="text" caption="Оплата и доставка" description="выводится на странице товара в блоке справа"/>
 	</item>
 
 	<item name="footer" caption="Футер (низ)" super="block_array" ag-id="1343" ag-hash="-1268861541"/>
@@ -558,6 +569,7 @@
 
 	<item name="one_click_form" caption="Форма заказа в один клик" virtual="true" ag-id="829" ag-hash="-2028535660">
 		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="name" type="string" caption="Имя покупателя"/>
 		<parameter name="product_code" type="string" caption="Артикул товара"/>
 		<parameter name="product_name" type="string" caption="Название товара"/>
 	</item>

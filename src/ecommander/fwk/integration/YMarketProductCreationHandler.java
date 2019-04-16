@@ -4,10 +4,8 @@ import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ResizeImagesFactory;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.User;
+import ecommander.model.*;
+import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
@@ -53,6 +51,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private User initiator;
 	private boolean isInsideOffer = false;
 	private boolean getPrice = false;
+	private Assoc catalogLinkAssoc;
 
 	
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
@@ -61,6 +60,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		this.productType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
 		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
+		this.catalogLinkAssoc = ItemTypeRegistry.getAssoc("catalog_link");
 	}
 
 	@Override
@@ -71,9 +71,9 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
 				boolean isProductNotNew = true;
+				Item section = sections.get(secCode);
 				if (product == null) {
 					isProductNotNew = false;
-					Item section = sections.get(secCode);
 					if (section != null) {
 						product = Item.newChildItem(productType, section);
 					} else {
@@ -147,6 +147,24 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					Item paramsXml = Item.newChildItem(paramsXmlType, product);
 					paramsXml.setValue(XML_PARAM, xml.toString());
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreFileErrors());
+				}
+
+				if (isProductNotNew) {
+					// Загрузить разделы, содержащие товар
+					List<Item> secs = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false,
+							ItemTypeRegistry.getPrimaryAssoc().getName(), catalogLinkAssoc.getName()).loadItems();
+					// Создать ассоциацию товара с разделом, если ее еще не существует
+					boolean needLink = true;
+					for (Item sec : secs) {
+						if (sec.getId() == section.getId()) {
+							needLink = false;
+							break;
+						}
+					}
+					if (needLink) {
+						DelayedTransaction.executeSingle(initiator,
+								CreateAssocDBUnit.childExistsSoft(product, section, catalogLinkAssoc.getId()));
+					}
 				}
 
 				info.increaseProcessed();

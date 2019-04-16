@@ -136,8 +136,8 @@
 							<xsl:variable name="key" select="@key"/>
 							<xsl:if test="not(menu_custom)">
 								<div class="main-menu__item">
-									<a href="{show_page}" class="{'active'[$active_menu_item = $key]}">
-										<xsl:value-of select="header"/>
+									<a href="{if (name) then link else show_page}" class="{'active'[$active_menu_item = $key]}">
+										<xsl:value-of select="if (name) then name else header"/>
 									</a>
 								</div>
 							</xsl:if>
@@ -277,14 +277,34 @@
 						<div class="modal-title h4">XXL-гарантия на инструмент</div>
 					</div>
 					<div class="modal-body">
-						<p>Зарегистрируйте свой инструмент в течение 30 дней после покупки и получите расширенную XXL-гарантию на 36 месяцев. <a href="/">Узнать подробнее об XXL-гарантии</a></p>
+						<p>Зарегистрируйте свой инструмент в течение 30 дней после покупки и получите расширенную XXL-гарантию на 36 месяцев.</p>
 						<form action="" method="post">
+							<div class="form-group">
+								<label for="">Артикул изделия:</label>
+								<input type="text" class="form-control" />
+							</div>
 							<div class="form-group">
 								<label for="">Серийный номер изделия:</label>
 								<input type="text" class="form-control" />
 							</div>
 							<div class="form-group">
 								<label for="">Дата покупки:</label>
+								<input type="text" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label for="">Продавец:</label>
+								<input type="text" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label for="">Имя владельца:</label>
+								<input type="text" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label for="">Эл. почта владельца:</label>
+								<input type="text" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label for="">Номер телефона владельца:</label>
 								<input type="text" class="form-control" />
 							</div>
 							<input type="submit" class="button" name="" value="Отправить заявку"/>
@@ -844,11 +864,19 @@
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 				<script defer="defer" src="js/font_awesome_all.js"/>
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
+				<xsl:if test="$seo/extra_style">
+					<style>
+						<xsl:value-of select="$seo/extra_style" disable-output-escaping="yes"/>
+					</style>
+				</xsl:if>
 				<xsl:for-each select="$head-end-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 			</head>
 			<body>
+				<xsl:if test="$seo/body_class">
+					<xsl:attribute name="class" select="$seo/body_class"/>
+				</xsl:if>
 				<xsl:for-each select="$body-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>

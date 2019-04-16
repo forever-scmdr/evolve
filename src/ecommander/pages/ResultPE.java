@@ -128,7 +128,7 @@ public class ResultPE implements PageElement {
 	public String getElementName() {
 		return ELEMENT_NAME;
 	}
-	
+
 	public static final boolean isResultInline(ResultPE result) {
 		return result == null || result.type == ResultType.none || result.type == ResultType.inline_xml || result.type == ResultType.inline_text;
 	}

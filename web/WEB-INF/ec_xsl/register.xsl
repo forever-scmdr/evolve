@@ -7,8 +7,8 @@
 
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
-	<xsl:variable name="is_jur" select="page/user_jur//@validation-error"/>
 	<xsl:variable name="is_login" select="page/variables/login = 'true'"/>
+	<xsl:variable name="is_jur" select="not($is_login) and (page/user_jur//@validation-error or page/user_jur/organization != '')"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->

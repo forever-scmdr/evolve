@@ -108,7 +108,7 @@
 					<xsl:if test="$view = 'list'">
 						<xsl:apply-templates select="$sel_sec/product" mode="lines"/>
 					</xsl:if>
-					<xsl:if test="$not_found">
+					<xsl:if test="not($sel_sec/product)">
 						<h4>По заданным критериям товары не найдены</h4>
 					</xsl:if>
 				</div>
@@ -216,7 +216,7 @@
 	</xsl:template>
 
 	<xsl:template name="DISPLAY_CONTROL">
-		<xsl:if test="$show_devices and not($not_found) and $sel_sec/product">
+		<xsl:if test="$show_devices">
 			<div class="view-container desktop">
 				<div class="view">
 					<span class="{'active'[not($view = 'list')]}">

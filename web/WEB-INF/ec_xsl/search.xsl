@@ -48,7 +48,12 @@
 			</xsl:if>
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
-				<xsl:apply-templates select="$products"/>
+				<xsl:if test="$view = 'list'">
+					<xsl:apply-templates select="$products" mode="lines"/>
+				</xsl:if>
+				<xsl:if test="not($view = 'list')">
+					<xsl:apply-templates select="$products"/>
+				</xsl:if>
 				<xsl:if test="not($products)">
 					<h4>По заданным критериям товары не найдены</h4>
 				</xsl:if>

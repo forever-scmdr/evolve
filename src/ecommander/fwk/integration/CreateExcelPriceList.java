@@ -31,6 +31,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private CellStyle auxHeaderStyle;
 	//file Constants
 	protected static final String CODE_FILE = "Код";
+	protected static final String IS_DEVICE_FILE = "Отдельный товар";
 	protected static final String NAME_FILE = "Название";
 	protected static final String PRICE_FILE = "Цена";
 	protected static final String PRICE_OLD_FILE = "Старая цена";
@@ -67,6 +68,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private static final String LINE_PRODUCTS_VAR = "line_products";
 	private static final String PRODUCTS_VAR = "existing_products";
 	private static final String SECTION_VAR = "sec";
+	private static final String PRICE_ONLY_VAR = "price_only";//sets all vars to write only prices. cancels all other settings
 	private static final String MANUALS_VAR = "manuals";
 	private static final String YES = "yes";
 	private static final String NO = "no";
@@ -76,6 +78,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private boolean writeProducts = true;
 	private boolean writeManuals = true;
 	private boolean writeLineProducts = true;
+	private boolean writeLineProductsHeader = true;
+	private boolean writeHierarchy = true;
 	private boolean hasUnits = false;
 	private long secId = 0L;
 
@@ -108,28 +112,33 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		for (Item section : sections) {
 			Sheet sh = initializeSheet(section);
 			int rowIndex = -1;
-			rowIndex = initializeHeader(sh,rowIndex);
 			long id = section.getId();
 			int colIdx = -1;
-			Row row = sh.createRow(++rowIndex);
-			String[]secInfo = getSectionName(section);
-			row.createCell(++colIdx).setCellValue("разд:"+secInfo[0]);
-			row.getCell(colIdx).setCellStyle(sectionStyle);
-			row.createCell(++colIdx).setCellValue(secInfo[1]);
-			row.getCell(colIdx).setCellStyle(sectionStyle);
-			row.createCell(++colIdx).setCellValue(secInfo[2]);
-			row.getCell(colIdx).setCellStyle(sectionStyle);
+			rowIndex = initializeHeader(sh,rowIndex);
+			if(writeHierarchy) {
 
+				Row row = sh.createRow(++rowIndex);
+				String[]secInfo = getSectionName(section);
+				row.createCell(++colIdx).setCellValue("разд:"+secInfo[0]);
+				row.getCell(colIdx).setCellStyle(sectionStyle);
+				row.createCell(++colIdx).setCellValue(secInfo[1]);
+				row.getCell(colIdx).setCellStyle(sectionStyle);
+				row.createCell(++colIdx).setCellValue(secInfo[2]);
+				row.getCell(colIdx).setCellStyle(sectionStyle);
+			}
 			boolean isEmpty = new ItemQuery(PRODUCT_ITEM).setParentId(id, false).loadFirstItem() == null;
 			if(!isEmpty) {
 				ItemType auxType = getAuxType(section.getId());
-				rowIndex = (auxType == null)? initializeHeader(sh, rowIndex) : initializeHeader(sh, rowIndex, auxType);
+				if(writeHierarchy) {
+					rowIndex = (auxType == null)? initializeHeader(sh, rowIndex) : initializeHeader(sh, rowIndex, auxType);
+				}
 				rowIndex = processProducts(sh, rowIndex, id);
 			}
 			processSubsections(sh, rowIndex, id);
 		}
 		setOperation("Запись файла");
-		String fileName = "pricelist-" + fileSuffix + ".xls";
+		String optionsSuffix = (writeHierarchy)? "" : "min-";
+		String fileName = "pricelist-"+ optionsSuffix + fileSuffix + ".xls";
 		pushLog(fileName);
 		FileOutputStream fileOutputStream = new FileOutputStream(AppContext.getFilesDirPath(false) + "/" + fileName);
 		workBook.write(fileOutputStream);
@@ -181,31 +190,26 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		//built-in params
 		Row row = sh.createRow(++rowIdx);
 		row.createCell(++colIdx).setCellValue(CODE_FILE);
-		row.getCell(colIdx).setCellStyle(headerStyle);
 		sh.setColumnWidth(colIdx, 20 * 256);
+		if(writeLineProducts && writeLineProductsHeader) {
+			row.createCell(++colIdx).setCellValue(IS_DEVICE_FILE);
+			sh.setColumnWidth(colIdx, 20 * 256);
+		}
 		row.createCell(++colIdx).setCellValue(NAME_FILE);
-		row.getCell(colIdx).setCellStyle(headerStyle);
 		sh.setColumnWidth(colIdx, 75 * 256);
 		row.createCell(++colIdx).setCellValue(PRICE_FILE);
-		row.getCell(colIdx).setCellStyle(headerStyle);
 		sh.setColumnWidth(colIdx, 25 * 256);
 		row.createCell(++colIdx).setCellValue(PRICE_OLD_FILE);
-		row.getCell(colIdx).setCellStyle(headerStyle);
 		sh.setColumnWidth(colIdx, 25 * 256);
 		row.createCell(++colIdx).setCellValue(PRICE_ORIGINAL_FILE);
-		row.getCell(colIdx).setCellStyle(headerStyle);
 		sh.setColumnWidth(colIdx, 25 * 256);
 		row.createCell(++colIdx).setCellValue(CURRENCY_ID_FILE);
-		row.getCell(colIdx).setCellStyle(headerStyle);
 		sh.setColumnWidth(colIdx, 25 * 256);
 		row.createCell(++colIdx).setCellValue(QTY_FILE);
-		row.getCell(colIdx).setCellStyle(headerStyle);
 		sh.setColumnWidth(colIdx, 25 * 256);
 		row.createCell(++colIdx).setCellValue(UNIT_FILE);
-		row.getCell(colIdx).setCellStyle(headerStyle);
 		sh.setColumnWidth(colIdx, 20 * 256);
 		row.createCell(++colIdx).setCellValue(AVAILABLE_FILE);
-		row.getCell(colIdx).setCellStyle(headerStyle);
 		sh.setColumnWidth(colIdx, 20 * 256);
 
 		//Write all product params
@@ -217,7 +221,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 				String caption = param.getCaption();
 				row.createCell(++colIdx).setCellValue(caption);
 				row.getCell(colIdx).setCellStyle(headerStyle);
-				//sh.setColumnWidth(colIdx, 20 * 256);
+				sh.setColumnWidth(colIdx, 20 * 256);
 			}
 		}
 
@@ -225,6 +229,10 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		if(writeManuals){
 			row.createCell(++colIdx).setCellValue(MANUAL);
 			row.getCell(colIdx).setCellStyle(headerStyle);
+		}
+
+		for (int i = 0; i < colIdx+1; i++) {
+			row.getCell(i).setCellStyle(headerStyle);
 		}
 
 		//Write aux params
@@ -289,6 +297,9 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			String currencyID = product.outputValue(CURRENCY_ID_PARAM);
 
 			row.createCell(++colIdx).setCellValue(product.getStringValue(CODE_PARAM, ""));
+			if(writeLineProducts && writeLineProductsHeader) {
+				row.createCell(++colIdx).setCellValue("+");
+			}
 			row.createCell(++colIdx).setCellValue(product.getStringValue(NAME_PARAM, ""));
 			row.createCell(++colIdx).setCellValue(priceValue);
 			row.createCell(++colIdx).setCellValue(priceOldValue);
@@ -296,7 +307,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			row.createCell(++colIdx).setCellValue(currencyID);
 			row.createCell(++colIdx).setCellValue(qtyValue);
 			if(hasUnits) {
-			row.createCell(++colIdx).setCellValue(product.getStringValue("unit", ""));
+				row.createCell(++colIdx).setCellValue(product.getStringValue("unit", ""));
 			}
 			row.createCell(++colIdx).setCellValue(String.valueOf(product.getByteValue(AVAILABLE_PARAM, (byte) 0)));
 
@@ -310,7 +321,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 				StringBuilder manuals = new StringBuilder();
 				int i=0;
 				for(Item manual : new ItemQuery(MANUAL_PARAM).setParentId(product.getId(), false).loadItems()){
-					if(i>0)manuals.append("; ");
+					if(i>0)manuals.append(VALUE_SEPARATOR);
 					manuals	.append(manual.getId()).append('|')
 							.append(manual.getStringValue(NAME_PARAM)).append('|')
 							.append(manual.getStringValue(LINK_PARAM));
@@ -358,7 +369,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						priceOrigValue = lineProduct.outputValue(PRICE_ORIGINAL_PARAM);
 						currencyID = lineProduct.outputValue(CURRENCY_ID_PARAM);
 
-						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(CODE_PARAM, "")+ "@" + parentCode);
+						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(CODE_PARAM, ""));
+						row.createCell(++colIdx).setCellValue("");
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(NAME_PARAM, ""));
 						row.createCell(++colIdx).setCellValue(priceValue);
 						row.createCell(++colIdx).setCellValue(priceOldValue);
@@ -438,20 +450,23 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		for (Item section : sections) {
 			info.pushLog(section.getStringValue(NAME_PARAM));
 			info.setProcessed(0);
-			Row row = sh.createRow(++rowI);
-			int colIdx = -1;
-			String[]secInfo = getSectionName(section);
-			row.createCell(++colIdx).setCellValue("разд:"+secInfo[0]);
-			row.getCell(colIdx).setCellStyle(sectionStyle);
-			row.createCell(++colIdx).setCellValue(secInfo[1]);
-			row.getCell(colIdx).setCellStyle(sectionStyle);
-			row.createCell(++colIdx).setCellValue(secInfo[2]);
-			row.getCell(colIdx).setCellStyle(sectionStyle);
-
+			if(writeHierarchy) {
+				Row row = sh.createRow(++rowI);
+				int colIdx = -1;
+				String[]secInfo = getSectionName(section);
+				row.createCell(++colIdx).setCellValue("разд:"+secInfo[0]);
+				row.getCell(colIdx).setCellStyle(sectionStyle);
+				row.createCell(++colIdx).setCellValue(secInfo[1]);
+				row.getCell(colIdx).setCellStyle(sectionStyle);
+				row.createCell(++colIdx).setCellValue(secInfo[2]);
+				row.getCell(colIdx).setCellStyle(sectionStyle);
+			}
 			boolean noSubs = new ItemQuery(SECTION_ITEM).setParentId(section.getId(), false).loadFirstItem() == null;
 			ItemType auxType = getAuxType(section.getId());
 			if(noSubs){
-				rowI = (auxType == null) ? initializeHeader(sh, rowI) : initializeHeader(sh, rowI, auxType);
+				if(writeHierarchy) {
+					rowI = (auxType == null) ? initializeHeader(sh, rowI) : initializeHeader(sh, rowI, auxType);
+				}
 				rowI = processProducts(sh, rowI, section.getId());
 				continue;
 			}
@@ -537,6 +552,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		String productsVar = getVarSingleValue(PRODUCTS_VAR);
 		String manualsVar = getVarSingleValue(MANUALS_VAR);
 		String lineProductsVar = getVarSingleValue(LINE_PRODUCTS_VAR);
+		String priceOnlyVar = getVarSingleValue(PRICE_ONLY_VAR);
 
 		writeAllProductParams = (YES.equals(prodParamsVar)) || writeAllProductParams && !NO.equals(prodParamsVar);
 		writeAuxParams = (YES.equals(auxParamsVar)) || writeAuxParams && !NO.equals(auxParamsVar);
@@ -544,9 +560,18 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		writeManuals = (YES.equals(manualsVar)) || writeManuals && !NO.equals(manualsVar);
 		writeLineProducts = (YES.equals(lineProductsVar)) || writeLineProducts && !NO.equals(lineProductsVar);
 
-		writeManuals = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter(MANUAL_PARAM) != null && writeManuals;
+		writeManuals = ItemTypeRegistry.getItemType(MANUAL_PARAM) != null && writeManuals;
 		hasUnits = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter("unit") != null;
 		writeLineProducts = ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM) != null && writeLineProducts;
+
+		//write prices only
+		if (YES.equalsIgnoreCase(priceOnlyVar)) {
+			writeAllProductParams = false;
+			writeAuxParams = false;
+			writeHierarchy = false;
+			writeLineProductsHeader = false;
+			writeManuals = false;
+		}
 
 		String sectionId = getVarSingleValue(SECTION_VAR);
 		if (StringUtils.isNotBlank(sectionId)) secId = Long.parseLong(sectionId);

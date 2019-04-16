@@ -51,7 +51,10 @@ public abstract class BasicCartManageCommand extends Command {
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
 
-	private Item cart;
+	protected static final Double MAX_QTY = 1000000000000d;
+
+
+	protected Item cart;
 
 	/**
 	 * Добавить товар в корзину

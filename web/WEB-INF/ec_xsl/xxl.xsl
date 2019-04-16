@@ -7,7 +7,7 @@
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="p" select="page/custom_page"/>
 
-	<xsl:variable name="active_menu_item" select="$p/@key"/>
+	<xsl:variable name="active_menu_item" select="'garantiya_xxl_xxl'"/>
 
 	<xsl:variable name="canonical" select="concat('/', $active_menu_item, '/')"/>
 
@@ -26,19 +26,14 @@
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
-			<div class="catalog-items info">
-				<xsl:for-each select="$p/custom_page">
-					<div class="catalog-item">
-						<a href="{show_page}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="{@path}{main_pic}" alt=""/> --></a>
-						<div class="text">
-							<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]"/></div>
-							<a href="{show_page}"><xsl:value-of select="header"/></a>
-							<xsl:value-of select="short" disable-output-escaping="yes"/>
-						</div>
-					</div>
-				</xsl:for-each>
+			<a class="button" data-toggle="modal" data-target="#warranty">XXL-гарантия</a>
+			<p>Сертифика отправлен вам на ящик usermail@mail.com</p>
+			<div>
+				<a href="">Распечатать сертификат</a>
 			</div>
-			<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+			<div>
+				<img src="img/warranty-template-1.jpg" style="max-width: 600px; box-shadow: 0 0 15px gray;" alt=""/>
+			</div>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>

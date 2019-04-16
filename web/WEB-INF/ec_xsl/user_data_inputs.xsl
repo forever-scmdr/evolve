@@ -14,15 +14,23 @@
 			<input type="text" class="form-control" name="{$inp/address/@input}" value="{$inp/address}" error="{$inp/address/@validation-error}"/>
 		</div>
 		<div class="form-group">
-			<label>Способ доставки <a href="oplata_i_dostavka">Подробнее об условиях доставки</a></label>
+			<label>Способ доставки <a href="dostavka">Подробнее об условиях доставки</a></label>
 			<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">
-				<option>Самовывоз из офиса отдела продаж.<!--  Бесплатно. --></option>
-				<option>Доставка транспортом Поставщика.<!--  От 250р бесплатно. Менее - 5р. --></option>
-				<option>Доставка курьерской службой. <!-- Сумма заказа от 500р. --></option>
+				<xsl:for-each select="page/common/delivery/option">
+					<option><xsl:value-of select="."/></option>
+				</xsl:for-each>
 			</select>
 		</div>
 		<div class="form-group">
-			<label>Телефон *:</label>
+			<label>Способ оплаты</label>
+			<select class="form-control" name="{$inp/pay_type/@input}" value="{$inp/pay_type}" error="{$inp/pay_type/@validation-error}">
+				<xsl:for-each select="page/common/payment/option">
+					<option><xsl:value-of select="."/></option>
+				</xsl:for-each>
+			</select>
+		</div>
+		<div class="form-group">
+			<label>Телефон:</label>
 			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}" error="{$inp/phone/@validation-error}"/>
 		</div>
 		<div class="form-group">
@@ -48,11 +56,19 @@
 			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}"/>
 		</div>
 		<div class="form-group">
-			<label>Способ доставки <a href="oplata_i_dostavka">Подробнее об условиях доставки</a></label>
+			<label>Способ доставки <a href="dostavka">Подробнее об условиях доставки</a></label>
 			<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}">
-				<option>Самовывоз из офиса отдела продаж.<!--  Бесплатно. --></option>
-				<option>Доставка транспортом Поставщика.<!--  От 250р бесплатно. Менее - 5р. --></option>
-				<option>Доставка курьерской службой.<!--  Сумма заказа от 500р. --></option>
+				<xsl:for-each select="page/common/delivery/option">
+					<option><xsl:value-of select="."/></option>
+				</xsl:for-each>
+			</select>
+		</div>
+		<div class="form-group">
+			<label>Способ оплаты</label>
+			<select class="form-control" name="{$inp/pay_type/@input}" value="{$inp/pay_type}">
+				<xsl:for-each select="page/common/payment/option">
+					<option><xsl:value-of select="."/></option>
+				</xsl:for-each>
 			</select>
 		</div>
 		<div class="form-group">
@@ -94,6 +110,10 @@
 		<div class="form-group">
 			<label>Ф.И.О директора:</label>
 			<input type="text" class="form-control" name="{$inp/director/@input}" value="{$inp/director}"/>
+		</div>
+		<div class="form-group">
+			<label>Действует на основании:</label>
+			<input type="text" class="form-control" name="{$inp/base/@input}" value="{$inp/base}"/>
 		</div>
 	</xsl:template>
 

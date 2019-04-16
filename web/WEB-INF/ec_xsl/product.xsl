@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="$p/name"/>
+	<xsl:variable name="title" select="concat($p/type, ' ', $p/name)"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -12,6 +12,10 @@
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
+	<xsl:function name="f:tab_name">
+		<xsl:param name="name"/>
+		<xsl:value-of select="if ($name = 'tech') then 'Характеристики' else if ($name = 'package') then 'Комплектация' else $name"/>
+	</xsl:function>
 
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
@@ -135,7 +139,7 @@
 
 				<div class="extra-buttons">
 					<a class="button secondary" data-toggle="modal" data-target="#cheaper">Нашли дешевле?</a> 
-					<a class="button secondary" data-toggle="modal" data-target="#warranty">XXL-гарантия</a>
+					<!-- <a class="button secondary" data-toggle="modal" data-target="#warranty">XXL-гарантия</a> -->
 				</div>
 
 				<div class="extra-block">
@@ -269,7 +273,7 @@
 							</xsl:if>
 							<xsl:for-each select="$p/product_extra">
 								<li role="presentation">
-									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a>
+									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="f:tab_name(name)"/></a>
 								</li>
 							</xsl:for-each>
 					</ul>
@@ -312,7 +316,7 @@
 		<xsl:if test="page/assoc">
 			<h3 style="margin-bottom: 16px; margin-top: 0"><strong>Вас также может заинтересовать</strong></h3>
 			<div class="catalog-items">
-				<xsl:apply-templates select="page/assoc" mode="lines"/>
+				<xsl:apply-templates select="page/assoc"/>
 			</div>
 		</xsl:if>
 

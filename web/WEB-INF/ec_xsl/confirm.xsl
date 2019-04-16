@@ -125,24 +125,25 @@
 					</tr>
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
+						<xsl:variable name="product" select="//page/product[code = current()/code]"/>
 						<tr>
 							<td>
-								<xsl:value-of select="product/code"/>
+								<xsl:value-of select="$product/code"/>
 							</td>
 							<td valign="top">
-								<strong><xsl:value-of select="product/name"/></strong>
+								<strong><xsl:value-of select="$product/name"/></strong>
 							</td>
 							<td valign="top">
 								<xsl:value-of select="qty"/>
 							</td>
 							<td>
-								<xsl:value-of select="product/price"/>
+								<xsl:value-of select="$product/price"/>
 							</td>
 							<td>
 								<xsl:value-of select="sum"/>
 							</td>
 							<!-- <td>
-								<xsl:value-of select="product/qty"/>
+								<xsl:value-of select="$product/qty"/>
 							</td> -->
 						</tr>
 					</xsl:for-each>

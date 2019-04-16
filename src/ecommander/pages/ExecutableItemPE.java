@@ -110,6 +110,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		 * @return
 		 */
 		public Item getCurrentItem() {
+			if (itemPE.getQueryType() == Type.SINGLE)
+				return itemPE.getSingleFoundItem();
 			return currentItem;
 		}
 

@@ -26,7 +26,7 @@
 					<div class="catalog-item">
 						<a href="{show_news_item}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="{@path}{main_pic}" alt=""/> --></a>
 						<div class="text">
-							<div class="date"><xsl:value-of select="date"/></div>
+							<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]"/></div>
 							<a href="{show_news_item}"><xsl:value-of select="header"/></a>
 							<xsl:value-of select="short" disable-output-escaping="yes"/>
 						</div>

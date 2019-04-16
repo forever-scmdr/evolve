@@ -158,7 +158,7 @@ public class XmlDocumentBuilder {
 		xml.append('\n').append(tags);
 		return this;
 	}
-	
+
 	/**
 	 * Добавляет тэги к текущему открытому элементу (кусок XML)
 	 * но делает это без перехода на новую строку

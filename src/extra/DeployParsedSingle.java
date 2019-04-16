@@ -1,16 +1,14 @@
 package extra;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.*;
+import ecommander.fwk.ItemUtils;
+import ecommander.fwk.JsoupUtils;
+import ecommander.fwk.Strings;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CopyItemDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import extra._generated.ItemNames;
-import extra._generated.Section;
 import lunacrawler.fwk.Parse_item;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,11 +16,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * Размещает на сайте информацию, полученную с помощью парсинга
