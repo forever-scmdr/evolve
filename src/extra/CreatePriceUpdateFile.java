@@ -44,11 +44,11 @@ public class CreatePriceUpdateFile extends IntegrateBase implements CatalogConst
 		for(Item product : products){
 			Row row = sheet.createRow(++rowIndex);
 			String code = product.getStringValue(CODE_PARAM);
-			String price = product.outputValue(PRICE_PARAM);
+			String price = product.outputValue(PRICE_PARAM).replaceAll("[^\\d,.]", "");
 			CellStyle cellStyle = (StringUtils.isBlank(code))? noCodeStyle : (StringUtils.isBlank(price))? noPriceStyle : null;
 			int colIdx = -1;
 			row.createCell(++colIdx).setCellValue(code);
-			row.createCell(++colIdx).setCellValue(product.outputValue("price_old").replaceAll("\\s", ""));
+			row.createCell(++colIdx).setCellValue(product.outputValue("price_old").replaceAll("[^\\d,.]", ""));
 			row.createCell(++colIdx).setCellValue(price);
 			row.createCell(++colIdx).setCellValue(product.getByteValue(AVAILABLE_PARAM, (byte)0) == 1? "+" : "-");
 			List<Item> presents = ItemQuery.loadByParamValue(PRODUCT_PRESENT, product_present.PRODUCT_CODE, code);
