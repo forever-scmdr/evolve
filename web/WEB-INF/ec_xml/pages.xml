@@ -260,7 +260,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="48" compare="EVERY" threshold="0.3">
+				<fulltext limit="200" threshold="0.1" type="prefix">
 					<var var="q"/>
 				</fulltext>
 			</filter>
