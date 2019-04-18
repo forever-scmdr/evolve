@@ -588,6 +588,9 @@
 
 
 	<page name="xxl" cacheable="true" template="xxl">
+		<request>
+			<var name="serial"/>
+		</request>
 		<include name="COMMON"/>
 	</page>
 
@@ -734,11 +737,11 @@
 
 	<page name="proceed" template="proceed">
 		<request>
-			<var name="message"/>
+			<var name="message" />
 		</request>
 		<session>
-			<single item="user_phys" tag="phys"/>
-			<single item="user_jur" tag="jur"/>
+			<single item="user_phys" id="phys" tag="phys"/>
+			<single item="user_jur" id="jur" tag="jur"/>
 		</session>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="customer_phys"/>
@@ -810,13 +813,6 @@
 		<include name="COMMON"/>
 	</page>
 
-
-	<page name="register_email" template="register_email">
-		<request>
-			<var name="user"/>
-		</request>
-		<single item="user" var="user" tag="user"/>
-	</page>
 
 
 	<page name="fav_ajax" template="fav_ajax">
@@ -1027,6 +1023,15 @@
 	</page>
 
 
+	<page name="register_email" template="register_email">
+		<request>
+			<var name="user"/>
+			<var name="base"/>
+		</request>
+		<single item="user" var="user" tag="user"/>
+	</page>
+
+
 	<page name="login_form_ajax" template="login_form_ajax">
 		<request>
 			<var name="message"/>
@@ -1108,6 +1113,27 @@
 		</list>
 		<include name="COMMON"/>
 	</page>
+
+
+	<page name="warranty_form">
+		<request>
+			<var name="message"/>
+		</request>
+		<new item="warranty_form" id="warranty">
+			<parameter-input ref="warranty" form="warranty"/>
+		</new>
+	</page>
+
+
+	<page name="warranty_action">
+		<link name="error" target="warranty_form"/>
+		<link name="success" target="xxl"/>
+		<command class="extra.CreateCertificate">
+			<result name="error" type="redirect"/>
+			<result name="success" type="redirect"/>
+		</command>
+	</page>
+
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->

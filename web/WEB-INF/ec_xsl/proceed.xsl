@@ -6,7 +6,7 @@
 
 
 	<xsl:variable name="message" select="page/variables/message"/>
-	<xsl:variable name="is_jur" select="page/user_jur"/>
+	<xsl:variable name="is_jur" select="page/user_jur//@validation-error or page/user_jur/organization != '' or page/jur"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -35,9 +35,10 @@
 				<div role="tabpanel" class="tab-pane{' active'[not($is_jur)]}" id="tab_phys">
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заказа.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
-						<xsl:variable name="inp" select="if (page/user_phys) then page/user_phys/input else page/phys_form/input"/>
+						<xsl:variable name="inp" select="page/user_phys/input"/>
 						<xsl:call-template name="USER_PHYS_INPUTS">
 							<xsl:with-param name="inp" select="$inp"/>
+							<xsl:with-param name="vals" select="page/phys"/>
 						</xsl:call-template>
 						<div class="form-group">
 							<label>Комментарий:</label>
@@ -50,9 +51,10 @@
 				<div role="tabpanel" class="tab-pane{' active'[$is_jur]}" id="tab_jur">
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заказа.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
-						<xsl:variable name="inp" select="if (page/user_jur) then page/user_jur/input else page/jur_form/input"/>
+						<xsl:variable name="inp" select="page/user_jur/input"/>
 						<xsl:call-template name="USER_JUR_INPUTS">
 							<xsl:with-param name="inp" select="$inp"/>
+							<xsl:with-param name="vals" select="page/jur"/>
 						</xsl:call-template>
 						<div class="form-group">
 							<label>Комментарий:</label>

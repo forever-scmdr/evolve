@@ -338,6 +338,9 @@
 		<parameter name="password" type="string" caption="Пароль"/>
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<child item="purchase"/>
+		<on-create class="ecommander.fwk.ManageUsers$OnCreate"/>
+		<on-update class="ecommander.fwk.ManageUsers$OnUpdate"/>
+		<on-delete class="ecommander.fwk.ManageUsers$OnDelete"/>
 	</item>
 
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
@@ -478,11 +481,11 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="payment" caption="Оплата">
+	<item name="payment" caption="Оплата" ag-id="1732" ag-hash="-786681338">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1633" ag-hash="-1220416192">
+	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1731" ag-hash="-1220416192">
 		<parameter name="payment" type="text" caption="Оплата и доставка" description="выводится на странице товара в блоке справа"/>
 	</item>
 

@@ -39,7 +39,6 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 
 	public static final String EMAIL_PARAM = "email";
 	public static final String PASSWORD_PARAM = "password";
-	public static final String MANAGER_GROUP = "manager";
 	public static final String REGISTERED_GROUP = "registered";
 
 
@@ -61,14 +60,12 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 			String userName = userItem.getStringValue(EMAIL_PARAM);
 			String password = userItem.getStringValue(PASSWORD_PARAM);
 			User newUser = new User(userName, password, "manager", User.ANONYMOUS_ID);
-			newUser.addGroup(MANAGER_GROUP, UserGroupRegistry.getGroup(MANAGER_GROUP), User.SIMPLE);
 			newUser.addGroup(REGISTERED_GROUP, UserGroupRegistry.getGroup(REGISTERED_GROUP), User.ADMIN);
 			try {
 				executeCommand(new SaveNewUserDBUnit(newUser));
 			} catch (UserExistsExcepion e) {
 				throw new EcommanderException(VALIDATION_FAILED, "Пользователь с таким именем уже существует");
 			}
-			executeCommand(ChangeItemOwnerDBUnit.newUser(userItem, newUser.getUserId(), UserGroupRegistry.getGroup(MANAGER_GROUP)));
 		} else if (mode == UPDATE) {
 			String initialEmail = (String)((SingleParameter)userItem.getParameterByName(EMAIL_PARAM)).getInitialValue();
 			String initialPass = (String)((SingleParameter)userItem.getParameterByName(PASSWORD_PARAM)).getInitialValue();

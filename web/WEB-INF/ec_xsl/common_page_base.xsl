@@ -280,6 +280,10 @@
 						<p>Зарегистрируйте свой инструмент в течение 30 дней после покупки и получите расширенную XXL-гарантию на 36 месяцев.</p>
 						<form action="" method="post">
 							<div class="form-group">
+								<label for="">Website url</label>
+								<input type="text" class="form-control" />
+							</div>
+							<div class="form-group">
 								<label for="">Артикул изделия:</label>
 								<input type="text" class="form-control" />
 							</div>
@@ -987,7 +991,7 @@
 					function initDropDownHeader() {
 						$('.dd_menu_item').click(function() {
 							var mi = $(this);
-							$('#dropdownMenuLink').html(mi.html() + ' <i class="fas fa-caret-down"></i>');
+							$('#dropdownMenuLink').html(mi.html() + '<i class="fas fa-caret-down"></i>');
 							$('.dd_block').hide();
 							$('#' + mi.attr('dd-id')).show();
 						});
