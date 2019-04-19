@@ -163,7 +163,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 		ByteArrayOutputStream sellerBos = new ByteArrayOutputStream();
 		PageController.newSimple().executePage(sellerTemplate, sellerBos);
-		customerTextPart.setContent(sellerBos.toString("UTF-8"), sellerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+		sellerTextPart.setContent(sellerBos.toString("UTF-8"), sellerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 				+ ";charset=UTF-8");
 
 		// Отправка на ящик заказчика
