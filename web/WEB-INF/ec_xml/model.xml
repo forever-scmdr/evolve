@@ -308,6 +308,7 @@
 
 	<item name="counter" caption="Счетчик номера договора" ag-id="29" ag-hash="957830652">
 		<parameter name="count" type="integer" caption="Счетчик"/>
+		<parameter name="warranty_count" type="integer" caption="Счетчик " default="505"/>
 	</item>
 
 	<!--/////////////                                                                      ////////////-->
@@ -380,16 +381,24 @@
 	</item>
 
 
-	<item name="warranty_form" caption="Форма гарантии XXL" virtual="true">
+	<item name="warranty_form" caption="Форма гарантии XXL" virtual="true" ag-id="1733" ag-hash="2091581991">
 		<parameter name="code" type="string" caption="Уникальный артикул товара"/>
 		<parameter name="serial" type="string" caption="Серийный номер изделия"/>
 		<parameter name="date" type="date" caption="Дата покупки"/>
 		<parameter name="seller" type="string" caption="Продавец"/>
 		<parameter name="owner" type="string" caption="Имя владельца" />
-		<parameter name="email" type="string" caption="Способ доставки" />
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="url" type="string" caption="Проверочное поле" description="против спама"/>
+	</item>
+
+
+	<item name="cheaper_form" caption="Форма нашли дешевле" virtual="true" ag-id="1734" ag-hash="516915559">
+		<parameter name="product" type="string" caption="Товар, который нашли дешевле"/>
+		<parameter name="name" type="string" caption="Имя"/>
+		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="url" type="string" caption="Ссылка на страницу где дешевле"/>
+		<parameter name="url_check" type="string" caption="Проверочное поле" description="против спама"/>
 	</item>
 
 

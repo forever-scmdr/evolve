@@ -15,9 +15,9 @@ public class Custom_page
     public final static String HEADER = "header";
     public final static String MAIN_PIC = "main_pic";
     public final static String SHORT = "short";
-    public final static String IN_MAIN_MENU = "in_main_menu";
     public final static String TEXT = "text";
     public final static String TEXT_PIC = "text_pic";
+    public final static String IN_MAIN_MENU = "in_main_menu";
 
     private Custom_page(Item item) {
         super(item);
@@ -82,22 +82,6 @@ public class Custom_page
         return containsValue("short", value);
     }
 
-    public void set_in_main_menu(String value) {
-        setValue("in_main_menu", value);
-    }
-
-    public String get_in_main_menu() {
-        return getStringValue("in_main_menu");
-    }
-
-    public String getDefault_in_main_menu(String defaultVal) {
-        return getStringValue("in_main_menu", defaultVal);
-    }
-
-    public boolean contains_in_main_menu(String value) {
-        return containsValue("in_main_menu", value);
-    }
-
     public void set_text(String value) {
         setValue("text", value);
     }
@@ -128,6 +112,22 @@ public class Custom_page
 
     public boolean contains_text_pic(File value) {
         return containsValue("text_pic", value);
+    }
+
+    public void set_in_main_menu(String value) {
+        setValue("in_main_menu", value);
+    }
+
+    public String get_in_main_menu() {
+        return getStringValue("in_main_menu");
+    }
+
+    public String getDefault_in_main_menu(String defaultVal) {
+        return getStringValue("in_main_menu", defaultVal);
+    }
+
+    public boolean contains_in_main_menu(String value) {
+        return containsValue("in_main_menu", value);
     }
 
 }

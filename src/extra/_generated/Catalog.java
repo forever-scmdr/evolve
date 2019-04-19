@@ -13,6 +13,7 @@ public class Catalog
     public final static String _NAME = "catalog";
     public final static String INTEGRATION = "integration";
     public final static String DATE = "date";
+    public final static String INTEGRATION_PENDING = "integration_pending";
 
     private Catalog(Item item) {
         super(item);
@@ -65,6 +66,28 @@ public class Catalog
 
     public boolean contains_date(Long value) {
         return containsValue("date", value);
+    }
+
+    public void set_integration_pending(Byte value) {
+        setValue("integration_pending", value);
+    }
+
+    public void setUI_integration_pending(String value)
+        throws Exception
+    {
+        setValueUI("integration_pending", value);
+    }
+
+    public Byte get_integration_pending() {
+        return getByteValue("integration_pending");
+    }
+
+    public Byte getDefault_integration_pending(Byte defaultVal) {
+        return getByteValue("integration_pending", defaultVal);
+    }
+
+    public boolean contains_integration_pending(Byte value) {
+        return containsValue("integration_pending", value);
     }
 
 }

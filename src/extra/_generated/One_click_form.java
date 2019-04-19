@@ -10,6 +10,7 @@ public class One_click_form
 
     public final static String _NAME = "one_click_form";
     public final static String PHONE = "phone";
+    public final static String NAME = "name";
     public final static String PRODUCT_CODE = "product_code";
     public final static String PRODUCT_NAME = "product_name";
 
@@ -46,6 +47,22 @@ public class One_click_form
 
     public boolean contains_phone(String value) {
         return containsValue("phone", value);
+    }
+
+    public void set_name(String value) {
+        setValue("name", value);
+    }
+
+    public String get_name() {
+        return getStringValue("name");
+    }
+
+    public String getDefault_name(String defaultVal) {
+        return getStringValue("name", defaultVal);
+    }
+
+    public boolean contains_name(String value) {
+        return containsValue("name", value);
     }
 
     public void set_product_code(String value) {

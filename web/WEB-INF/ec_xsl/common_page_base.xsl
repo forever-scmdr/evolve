@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
+	<xsl:import href="cheaper_form.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
+	<xsl:import href="warranty_form.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
 
@@ -269,84 +271,9 @@
 			</div>
 		</div>
 		<!-- modal XXL-warranty -->
-		<div class="modal fade" tabindex="-1" role="dialog" id="warranty">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-						<div class="modal-title h4">XXL-гарантия на инструмент</div>
-					</div>
-					<div class="modal-body">
-						<p>Зарегистрируйте свой инструмент в течение 30 дней после покупки и получите расширенную XXL-гарантию на 36 месяцев.</p>
-						<form action="" method="post">
-							<div class="form-group">
-								<label for="">Website url</label>
-								<input type="text" class="form-control" />
-							</div>
-							<div class="form-group">
-								<label for="">Артикул изделия:</label>
-								<input type="text" class="form-control" />
-							</div>
-							<div class="form-group">
-								<label for="">Серийный номер изделия:</label>
-								<input type="text" class="form-control" />
-							</div>
-							<div class="form-group">
-								<label for="">Дата покупки:</label>
-								<input type="text" class="form-control" />
-							</div>
-							<div class="form-group">
-								<label for="">Продавец:</label>
-								<input type="text" class="form-control" />
-							</div>
-							<div class="form-group">
-								<label for="">Имя владельца:</label>
-								<input type="text" class="form-control" />
-							</div>
-							<div class="form-group">
-								<label for="">Эл. почта владельца:</label>
-								<input type="text" class="form-control" />
-							</div>
-							<div class="form-group">
-								<label for="">Номер телефона владельца:</label>
-								<input type="text" class="form-control" />
-							</div>
-							<input type="submit" class="button" name="" value="Отправить заявку"/>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+		<xsl:call-template name="WARRANTY_FORM"/>
 		<!-- modal XXL-warranty -->
-		<div class="modal fade" tabindex="-1" role="dialog" id="cheaper">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-						<div class="modal-title h4">Нашли этот же инструмент дешевле? Мы сделаем скидку!</div>
-					</div>
-					<div class="modal-body">
-						<p>Пожалуйста, укажите, где вы нашли такой же товар по более низкой цене и оставьте свой телефонный номер для связи</p>
-						<form action="" method="post">
-							<div class="form-group">
-								<label for="">Ваше имя:</label>
-								<input type="text" class="form-control" />
-							</div>
-							<div class="form-group">
-								<label for="">Ваш номер телефона:</label>
-								<input type="text" class="form-control" />
-							</div>
-							<div class="form-group">
-								<label for="">Ссылка на товар в интернет-магазине:</label>
-								<input type="text" class="form-control" />
-							</div>
-							<input type="submit" class="button" name="" value="Отправить"/>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-
+		<xsl:call-template name="CHEAPER_FORM"/>
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
 		<!-- MODALS END -->

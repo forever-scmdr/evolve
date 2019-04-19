@@ -8,9 +8,13 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -164,6 +168,20 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 		// Отправка на ящик магазина
 		try {
+			// Добавить XML файл
+			LinkPE xmlLink = LinkPE.newDirectLink("link", "cart_xml", false);
+			ExecutablePagePE xmlTemplate = getExecutablePage(xmlLink.serialize());
+			ByteArrayOutputStream xmlBos = new ByteArrayOutputStream();
+			PageController.newSimple().executePage(xmlTemplate, xmlBos);
+
+			DataSource dataSource = new ByteArrayDataSource(new ByteArrayInputStream(xmlBos.toByteArray()), "application/xml;charset=UTF-8");
+			MimeBodyPart filePart = new MimeBodyPart();
+			filePart.setDataHandler(new DataHandler(dataSource));
+			filePart.setFileName("order" + orderNumber + ".xml");
+			regularMP.addBodyPart(filePart);
+
+			regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+					+ ";charset=UTF-8");
 			EmailUtils.sendGmailDefault(shopEmail, regularTopic, regularMP);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);

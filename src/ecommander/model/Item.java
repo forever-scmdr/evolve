@@ -1236,7 +1236,16 @@ public class Item implements ItemBasics {
 	 * @return
 	 */
 	public final File getFileValue(String paramName, String filesRepositoryPath) {
-		String fileName = ((SingleParameter)getParameterByName(paramName)).outputValue();
+		SingleParameter param;
+		if (getParameterByName(paramName).isMultiple()) {
+			Collection<SingleParameter> sp = ((MultipleParameter) getParameterByName(paramName)).getValues();
+			if (sp.size() == 0)
+				return null;
+			param = sp.iterator().next();
+		} else {
+			param = (SingleParameter) getParameterByName(paramName);
+		}
+		String fileName = param.outputValue();
 		return new File(getParamFileName(filesRepositoryPath, id, fileName));
 	}
 	/**

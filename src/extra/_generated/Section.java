@@ -12,6 +12,7 @@ public class Section
 
     public final static String _NAME = "section";
     public final static String NAME = "name";
+    public final static String ICON = "icon";
     public final static String SHOW_SUBS = "show_subs";
     public final static String SUB_VIEW = "sub_view";
     public final static String SHOW_DEVICES = "show_devices";
@@ -53,6 +54,18 @@ public class Section
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
+    }
+
+    public void set_icon(File value) {
+        setValue("icon", value);
+    }
+
+    public File get_icon() {
+        return getFileValue("icon", AppContext.getCommonFilesDirPath());
+    }
+
+    public boolean contains_icon(File value) {
+        return containsValue("icon", value);
     }
 
     public void set_show_subs(Byte value) {

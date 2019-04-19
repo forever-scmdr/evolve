@@ -54,7 +54,7 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 	@Override
 	public void execute() throws Exception {
 		if (mode == CREATE) {
-			if (userItem.isValueEmpty(PASSWORD_PARAM) || userItem.isValueEmpty(EMAIL_PARAM)) {
+			if (userItem.isValueEmpty(EMAIL_PARAM)) {
 				throw new EcommanderException(VALIDATION_FAILED, "Не заполнены обязательные поля");
 			}
 			String userName = userItem.getStringValue(EMAIL_PARAM);

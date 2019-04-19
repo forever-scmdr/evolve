@@ -53,6 +53,7 @@
 		<link name="cart_link" target="cart"/>
 		<link name="search_link" target="search"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
+		<link name="warranty_form_link" target="warranty_form"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="fav_link" target="fav"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
@@ -479,6 +480,9 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
+			<link name="cheaper_link" target="cheaper_form">
+				<var name="prod" ref="prod"/>
+			</link>
 
 			<list item="line_product" id="lprod">
 				<list item="params"/>
@@ -590,6 +594,8 @@
 	<page name="xxl" cacheable="true" template="xxl">
 		<request>
 			<var name="serial"/>
+			<var name="message"/>
+			<var name="not_found"/>
 		</request>
 		<include name="COMMON"/>
 	</page>
@@ -733,6 +739,35 @@
 		</link>
 		<include name="COMMON"/>
 	</page>
+
+
+
+	<page name="cart_xml" template="cart_xml">
+		<headers Content-Type="application/xml;charset=UTF-8"/>
+		<session>
+			<single item="cart" id="cart">
+				<list item="bought" id="bought">
+					<list item="abstract_product" id="prod" tag="product">
+						<single item="product" id="parent"/>
+					</list>
+				</list>
+			</single>
+		</session>
+		<list item="product" tag="product">
+			<filter>
+				<parameter name="code" compare="SOME" sign="=">
+					<var ref="bought" parameter="code"/>
+				</parameter>
+			</filter>
+		</list>
+		<new item="user_phys" id="user_phys">
+			<parameter-input ref="user_phys" form="customer_phys"/>
+		</new>
+		<new item="user_jur" id="user_jur">
+			<parameter-input ref="user_jur" form="customer_jur"/>
+		</new>
+	</page>
+
 
 
 	<page name="proceed" template="proceed">
@@ -1115,24 +1150,82 @@
 	</page>
 
 
-	<page name="warranty_form">
+	<page name="warranty_form" template="warranty_form">
 		<request>
 			<var name="message"/>
 		</request>
 		<new item="warranty_form" id="warranty">
 			<parameter-input ref="warranty" form="warranty"/>
 		</new>
+		<link name="submit_link" target="warranty_action" type="itemform">
+			<var name="form_name" value="feedback"/>
+		</link>
 	</page>
 
 
 	<page name="warranty_action">
 		<link name="error" target="warranty_form"/>
 		<link name="success" target="xxl"/>
+		<link name="not_found" target="xxl">
+			<var name="not_found" value="true"/>
+		</link>
 		<command class="extra.CreateCertificate">
 			<result name="error" type="redirect"/>
 			<result name="success" type="redirect"/>
+			<result name="not_found" type="redirect"/>
 		</command>
 	</page>
+
+
+
+	<page name="cheaper_form" template="cheaper_form">
+		<request>
+			<var name="message"/>
+			<var name="success"/>
+			<var name="prod"/>
+		</request>
+		<single item="product" var="prod"/>
+		<new item="cheaper_form" id="cheaper">
+			<parameter-input ref="cheaper" form="cheaper"/>
+		</new>
+		<link name="submit_link" target="cheaper_action" type="itemform">
+			<var name="form_name" value="cheaper"/>
+			<var name="prod" var="prod"/>
+		</link>
+	</page>
+
+
+
+	<page name="cheaper_action">
+		<request>
+			<var name="topic" value="Нашли дешевле"/>
+			<var name="email" value="forever@forever-ds.com"/>
+			<var name="required" value="product, name, phone, url"/>
+			<var name="spam" value="url_check"/>
+			<var name="prod"/>
+		</request>
+		<link name="success" target="cheaper_form">
+			<var name="message" value="Ваше сообщение отправлено. Спасибо."/>
+			<var name="success" value="true"/>
+			<var name="prod" var="prod"/>
+		</link>
+		<link name="general_error" target="cheaper_form">
+			<var name="message" value="Ошибка отправки сообщение, попробуйте позже"/>
+			<var name="success" value="false"/>
+			<var name="prod" var="prod"/>
+		</link>
+		<link name="error_not_set" target="cheaper_form">
+			<var name="message" value="Заполните, пожалуйста, все поля формы"/>
+			<var name="success" value="false"/>
+			<var name="prod" var="prod"/>
+		</link>
+		<command class="ecommander.fwk.NonemptyEmailCommand">
+			<result name="error_not_set" type="redirect"/>
+			<result name="success" type="redirect"/>
+			<result name="general_error" type="redirect"/>
+		</command>
+	</page>
+
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->

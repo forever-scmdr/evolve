@@ -20,8 +20,10 @@ public class Product
     public final static String UNIT = "unit";
     public final static String TYPE = "type";
     public final static String NAME_EXTRA = "name_extra";
+    public final static String VENDOR = "vendor";
     public final static String VENDOR_CODE = "vendor_code";
     public final static String OFFER_ID = "offer_id";
+    public final static String SHORT = "short";
     public final static String AVAILABLE = "available";
     public final static String GROUP_ID = "group_id";
     public final static String URL = "url";
@@ -184,6 +186,22 @@ public class Product
         return containsValue("name_extra", value);
     }
 
+    public void set_vendor(String value) {
+        setValue("vendor", value);
+    }
+
+    public String get_vendor() {
+        return getStringValue("vendor");
+    }
+
+    public String getDefault_vendor(String defaultVal) {
+        return getStringValue("vendor", defaultVal);
+    }
+
+    public boolean contains_vendor(String value) {
+        return containsValue("vendor", value);
+    }
+
     public void set_vendor_code(String value) {
         setValue("vendor_code", value);
     }
@@ -214,6 +232,22 @@ public class Product
 
     public boolean contains_offer_id(String value) {
         return containsValue("offer_id", value);
+    }
+
+    public void set_short(String value) {
+        setValue("short", value);
+    }
+
+    public String get_short() {
+        return getStringValue("short");
+    }
+
+    public String getDefault_short(String defaultVal) {
+        return getStringValue("short", defaultVal);
+    }
+
+    public boolean contains_short(String value) {
+        return containsValue("short", value);
     }
 
     public void set_available(Byte value) {

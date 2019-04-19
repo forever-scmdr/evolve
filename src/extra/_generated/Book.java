@@ -8,11 +8,11 @@ import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Line_product
+public class Book
     extends Item
 {
 
-    public final static String _NAME = "line_product";
+    public final static String _NAME = "book";
     public final static String NAME = "name";
     public final static String CODE = "code";
     public final static String PRICE = "price";
@@ -23,7 +23,6 @@ public class Line_product
     public final static String VENDOR = "vendor";
     public final static String VENDOR_CODE = "vendor_code";
     public final static String OFFER_ID = "offer_id";
-    public final static String SHORT = "short";
     public final static String AVAILABLE = "available";
     public final static String GROUP_ID = "group_id";
     public final static String URL = "url";
@@ -31,7 +30,6 @@ public class Line_product
     public final static String CURRENCY_ID = "currency_id";
     public final static String PRICE_ORIGINAL = "price_original";
     public final static String PRICE_OLD = "price_old";
-    public final static String COUNTRY = "country";
     public final static String MAIN_PIC = "main_pic";
     public final static String SMALL_PIC = "small_pic";
     public final static String DESCRIPTION = "description";
@@ -41,23 +39,39 @@ public class Line_product
     public final static String ASSOC_CODE = "assoc_code";
     public final static String TAG = "tag";
     public final static String GALLERY = "gallery";
+    public final static String HAS_LINES = "has_lines";
+    public final static String ARTIST = "artist";
+    public final static String STARRING = "starring";
+    public final static String DIRECTOR = "director";
+    public final static String AUTHOR = "author";
+    public final static String SERIES = "series";
+    public final static String MEDIA = "media";
+    public final static String YEAR = "year";
+    public final static String ORIGINALNAME = "originalName";
+    public final static String COUNTRY_OF_ORIGIN = "country_of_origin";
+    public final static String COUNTRY = "country";
+    public final static String PUBLISHER = "publisher";
+    public final static String PAGE_EXTENT = "page_extent";
+    public final static String LANGUAGE = "language";
+    public final static String ISBN = "ISBN";
+    public final static String PICTURE = "picture";
 
-    private Line_product(Item item) {
+    private Book(Item item) {
         super(item);
     }
 
-    public static Line_product get(Item item) {
+    public static Book get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'line_product' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'book' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Line_product(item);
+        return new Book(item);
     }
 
-    public static Line_product newChild(Item parent) {
+    public static Book newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
@@ -233,22 +247,6 @@ public class Line_product
         return containsValue("offer_id", value);
     }
 
-    public void set_short(String value) {
-        setValue("short", value);
-    }
-
-    public String get_short() {
-        return getStringValue("short");
-    }
-
-    public String getDefault_short(String defaultVal) {
-        return getStringValue("short", defaultVal);
-    }
-
-    public boolean contains_short(String value) {
-        return containsValue("short", value);
-    }
-
     public void set_available(Byte value) {
         setValue("available", value);
     }
@@ -377,22 +375,6 @@ public class Line_product
 
     public boolean contains_price_old(BigDecimal value) {
         return containsValue("price_old", value);
-    }
-
-    public void set_country(String value) {
-        setValue("country", value);
-    }
-
-    public String get_country() {
-        return getStringValue("country");
-    }
-
-    public String getDefault_country(String defaultVal) {
-        return getStringValue("country", defaultVal);
-    }
-
-    public boolean contains_country(String value) {
-        return containsValue("country", value);
     }
 
     public void set_main_pic(File value) {
@@ -529,6 +511,268 @@ public class Line_product
 
     public boolean contains_gallery(File value) {
         return containsValue("gallery", value);
+    }
+
+    public void set_has_lines(Byte value) {
+        setValue("has_lines", value);
+    }
+
+    public void setUI_has_lines(String value)
+        throws Exception
+    {
+        setValueUI("has_lines", value);
+    }
+
+    public Byte get_has_lines() {
+        return getByteValue("has_lines");
+    }
+
+    public Byte getDefault_has_lines(Byte defaultVal) {
+        return getByteValue("has_lines", defaultVal);
+    }
+
+    public boolean contains_has_lines(Byte value) {
+        return containsValue("has_lines", value);
+    }
+
+    public void set_artist(String value) {
+        setValue("artist", value);
+    }
+
+    public String get_artist() {
+        return getStringValue("artist");
+    }
+
+    public String getDefault_artist(String defaultVal) {
+        return getStringValue("artist", defaultVal);
+    }
+
+    public boolean contains_artist(String value) {
+        return containsValue("artist", value);
+    }
+
+    public void set_starring(String value) {
+        setValue("starring", value);
+    }
+
+    public String get_starring() {
+        return getStringValue("starring");
+    }
+
+    public String getDefault_starring(String defaultVal) {
+        return getStringValue("starring", defaultVal);
+    }
+
+    public boolean contains_starring(String value) {
+        return containsValue("starring", value);
+    }
+
+    public void set_director(String value) {
+        setValue("director", value);
+    }
+
+    public String get_director() {
+        return getStringValue("director");
+    }
+
+    public String getDefault_director(String defaultVal) {
+        return getStringValue("director", defaultVal);
+    }
+
+    public boolean contains_director(String value) {
+        return containsValue("director", value);
+    }
+
+    public void set_author(String value) {
+        setValue("author", value);
+    }
+
+    public String get_author() {
+        return getStringValue("author");
+    }
+
+    public String getDefault_author(String defaultVal) {
+        return getStringValue("author", defaultVal);
+    }
+
+    public boolean contains_author(String value) {
+        return containsValue("author", value);
+    }
+
+    public void set_series(String value) {
+        setValue("series", value);
+    }
+
+    public String get_series() {
+        return getStringValue("series");
+    }
+
+    public String getDefault_series(String defaultVal) {
+        return getStringValue("series", defaultVal);
+    }
+
+    public boolean contains_series(String value) {
+        return containsValue("series", value);
+    }
+
+    public void set_media(String value) {
+        setValue("media", value);
+    }
+
+    public String get_media() {
+        return getStringValue("media");
+    }
+
+    public String getDefault_media(String defaultVal) {
+        return getStringValue("media", defaultVal);
+    }
+
+    public boolean contains_media(String value) {
+        return containsValue("media", value);
+    }
+
+    public void set_year(String value) {
+        setValue("year", value);
+    }
+
+    public String get_year() {
+        return getStringValue("year");
+    }
+
+    public String getDefault_year(String defaultVal) {
+        return getStringValue("year", defaultVal);
+    }
+
+    public boolean contains_year(String value) {
+        return containsValue("year", value);
+    }
+
+    public void set_originalName(String value) {
+        setValue("originalName", value);
+    }
+
+    public String get_originalName() {
+        return getStringValue("originalName");
+    }
+
+    public String getDefault_originalName(String defaultVal) {
+        return getStringValue("originalName", defaultVal);
+    }
+
+    public boolean contains_originalName(String value) {
+        return containsValue("originalName", value);
+    }
+
+    public void set_country_of_origin(String value) {
+        setValue("country_of_origin", value);
+    }
+
+    public String get_country_of_origin() {
+        return getStringValue("country_of_origin");
+    }
+
+    public String getDefault_country_of_origin(String defaultVal) {
+        return getStringValue("country_of_origin", defaultVal);
+    }
+
+    public boolean contains_country_of_origin(String value) {
+        return containsValue("country_of_origin", value);
+    }
+
+    public void set_country(String value) {
+        setValue("country", value);
+    }
+
+    public String get_country() {
+        return getStringValue("country");
+    }
+
+    public String getDefault_country(String defaultVal) {
+        return getStringValue("country", defaultVal);
+    }
+
+    public boolean contains_country(String value) {
+        return containsValue("country", value);
+    }
+
+    public void set_publisher(String value) {
+        setValue("publisher", value);
+    }
+
+    public String get_publisher() {
+        return getStringValue("publisher");
+    }
+
+    public String getDefault_publisher(String defaultVal) {
+        return getStringValue("publisher", defaultVal);
+    }
+
+    public boolean contains_publisher(String value) {
+        return containsValue("publisher", value);
+    }
+
+    public void set_page_extent(String value) {
+        setValue("page_extent", value);
+    }
+
+    public String get_page_extent() {
+        return getStringValue("page_extent");
+    }
+
+    public String getDefault_page_extent(String defaultVal) {
+        return getStringValue("page_extent", defaultVal);
+    }
+
+    public boolean contains_page_extent(String value) {
+        return containsValue("page_extent", value);
+    }
+
+    public void set_language(String value) {
+        setValue("language", value);
+    }
+
+    public String get_language() {
+        return getStringValue("language");
+    }
+
+    public String getDefault_language(String defaultVal) {
+        return getStringValue("language", defaultVal);
+    }
+
+    public boolean contains_language(String value) {
+        return containsValue("language", value);
+    }
+
+    public void set_ISBN(String value) {
+        setValue("ISBN", value);
+    }
+
+    public String get_ISBN() {
+        return getStringValue("ISBN");
+    }
+
+    public String getDefault_ISBN(String defaultVal) {
+        return getStringValue("ISBN", defaultVal);
+    }
+
+    public boolean contains_ISBN(String value) {
+        return containsValue("ISBN", value);
+    }
+
+    public void add_picture(String value) {
+        setValue("picture", value);
+    }
+
+    public List<String> getAll_picture() {
+        return getStringValues("picture");
+    }
+
+    public void remove_picture(String value) {
+        removeEqualValue("picture", value);
+    }
+
+    public boolean contains_picture(String value) {
+        return containsValue("picture", value);
     }
 
 }
