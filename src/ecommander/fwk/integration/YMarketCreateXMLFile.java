@@ -114,7 +114,7 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 				BigDecimal price = product.getDecimalValue(PRICE_PARAM, zero);
 				String avail = price.doubleValue() <= 0.001d ? "false" : "true";
 				xml.startElement(OFFER_ELEMENT, ID_ATTR, product.getStringValue(CODE_PARAM), AVAILABLE_ATTR, avail);
-				String url = getUrlBase() + "/" + baseProduct.getKeyUnique() + "/";
+				String url = getUrlBase() + "/" + baseProduct.getKeyUnique() + "/" + "";
 				xml.startElement(URL_ELEMENT).addText(url).endElement();
 				xml.startElement(PRICE_ELEMENT).addText(product.getDecimalValue(PRICE_PARAM)).endElement();
 				xml.startElement(CURRENCY_ID_ELEMENT).addText("BYN").endElement();

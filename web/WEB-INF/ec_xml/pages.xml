@@ -1429,4 +1429,13 @@
 		</command>
 	</page>
 
+	<page name="create_tsv" template="integration/create_excel">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="ecommander.fwk.integration.CreateGoogleTSV" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 </site>
