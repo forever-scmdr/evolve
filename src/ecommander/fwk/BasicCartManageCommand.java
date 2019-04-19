@@ -5,7 +5,6 @@ import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
@@ -136,24 +135,41 @@ public abstract class BasicCartManageCommand extends Command {
 		// Подготовка тела письма
 		String regularTopic
 				= "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
-		Multipart regularMP = new MimeMultipart();
-		MimeBodyPart regularTextPart = new MimeBodyPart();
-		regularMP.addBodyPart(regularTextPart);
-		LinkPE regularLink = LinkPE.newDirectLink("link", "order_email", false);
-		regularLink.addStaticVariable("order_num", orderNumber + "");
-		ExecutablePagePE regularTemplate = getExecutablePage(regularLink.serialize());
+		Multipart customerMP = new MimeMultipart();
+		Multipart sellerMP = new MimeMultipart();
+
+		MimeBodyPart customerTextPart = new MimeBodyPart();
+		MimeBodyPart sellerTextPart = new MimeBodyPart();
+
+		sellerMP.addBodyPart(sellerTextPart);
+		customerMP.addBodyPart(customerTextPart);
+
+		LinkPE customerLink = LinkPE.newDirectLink("link", "order_email", false);
+		customerLink.addStaticVariable("order_num", orderNumber + "");
+		LinkPE sellerLink = LinkPE.newDirectLink("link", "order_email_seller", false);
+		sellerLink.addStaticVariable("order_num", orderNumber + "");
+
+
+		ExecutablePagePE customerTemplate = getExecutablePage(customerLink.serialize());
+		ExecutablePagePE sellerTemplate = getExecutablePage(sellerLink.serialize());
+
 		final String customerEmail = getItemForm().getTransientSingleItem().getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
 
-		ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
-		PageController.newSimple().executePage(regularTemplate, regularBos);
-		regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+		ByteArrayOutputStream customerBos = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(customerTemplate, customerBos);
+		customerTextPart.setContent(customerBos.toString("UTF-8"), customerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+				+ ";charset=UTF-8");
+
+		ByteArrayOutputStream sellerBos = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(sellerTemplate, sellerBos);
+		customerTextPart.setContent(sellerBos.toString("UTF-8"), sellerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 				+ ";charset=UTF-8");
 
 		// Отправка на ящик заказчика
 		try {
 			if (StringUtils.isNotBlank(customerEmail))
-				EmailUtils.sendGmailDefault(customerEmail, regularTopic, regularMP);
+				EmailUtils.sendGmailDefault(customerEmail, regularTopic, customerMP);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra (IN_PROGRESS, null);
@@ -162,7 +178,7 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 		// Отправка на ящик магазина
 		try {
-			EmailUtils.sendGmailDefault(shopEmail, regularTopic, regularMP);
+			EmailUtils.sendGmailDefault(shopEmail, regularTopic, sellerMP);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);

@@ -629,7 +629,8 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="zakaz@mystery.by"/>
+			<var name="email" value="bio@forever-ds.com"/>
+			<!--<var name="email" value="zakaz@mystery.by"/>-->
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -735,6 +736,32 @@
 
 
 	<page name="order_email" template="order_email">
+		<session>
+			<single item="cart">
+				<list item="bought" id="bought">
+					<single item="abstract_product" tag="product" id="prod">
+						<filter>
+							<parameter name="code" compare="SOME" sign="=">
+								<var ref="bought" parameter="code"/>
+							</parameter>
+						</filter>
+						<link name="show_product" target="product" type="exclusive">
+							<var name="prod" ref="prod" style="translit"/>
+						</link>
+					</single>
+				</list>
+			</single>
+			<new item="user_phys" id="user_phys">
+				<parameter-input ref="user_phys" form="customer_phys"/>
+			</new>
+			<new item="user_jur" id="user_jur">
+				<parameter-input ref="user_jur" form="customer_jur"/>
+			</new>
+		</session>
+		<include name="COMMON"/>
+	</page>
+
+	<page name="order_email_seller" template="order_email_seller">
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
