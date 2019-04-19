@@ -1,10 +1,7 @@
 package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.EcommanderException;
-import ecommander.fwk.ItemUtils;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.fwk.*;
 import ecommander.model.Item;
 import ecommander.model.ParameterDescription;
 import ecommander.model.User;
@@ -33,6 +30,7 @@ import java.util.List;
 public class YMarketCreateXMLFile extends Command implements CatalogConst {
 
 	private static final String YANDEX_FILE_NAME = "yandex_market.xml";
+	private static final String UTM_CONST = "?utm_source=market.yandex.ru&utm_medium=cpc&utm_term=";
 
 	private XmlDocumentBuilder xml;
 	private Item catalog;
@@ -114,12 +112,19 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 				BigDecimal price = product.getDecimalValue(PRICE_PARAM, zero);
 				String avail = price.doubleValue() <= 0.001d ? "false" : "true";
 				xml.startElement(OFFER_ELEMENT, ID_ATTR, product.getStringValue(CODE_PARAM), AVAILABLE_ATTR, avail);
-				String url = getUrlBase() + "/" + baseProduct.getKeyUnique() + "/" + "";
+				String url = getUrlBase() + "/" + baseProduct.getKeyUnique();
+
+				//Add UTM fix 19/04/2019
+				String name = baseProduct.getStringValue(NAME_PARAM);
+				String utm = UTM_CONST+product.getStringValue(CODE_PARAM)+"&utm_campaign="+category.getId()+ Strings.translit(category.getStringValue(NAME_PARAM))+"&utm_content="+name;
+				url += utm;
+
 				xml.startElement(URL_ELEMENT).addText(url).endElement();
+
 				xml.startElement(PRICE_ELEMENT).addText(product.getDecimalValue(PRICE_PARAM)).endElement();
 				xml.startElement(CURRENCY_ID_ELEMENT).addText("BYN").endElement();
 				xml.startElement(CATEGORY_ID_ELEMENT).addText(category.getId()).endElement();
-				String name = baseProduct.getStringValue(NAME_PARAM);
+
 				if (hasLines)
 					name += " " + product.getStringValue(NAME_PARAM);
 				if (baseProduct.isValueNotEmpty(TYPE_PARAM))
