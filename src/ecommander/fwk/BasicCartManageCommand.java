@@ -6,6 +6,7 @@ import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.DataHandler;
@@ -122,6 +123,9 @@ public abstract class BasicCartManageCommand extends Command {
 			return getResult("confirm");
 		}
 
+		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
+
+
 		// Проверка, есть ли обычные заказы, заказы с количеством 0 и кастомные заказы
 
 
@@ -149,7 +153,16 @@ public abstract class BasicCartManageCommand extends Command {
 		regularLink.addStaticVariable("order_num", orderNumber + "");
 		ExecutablePagePE regularTemplate = getExecutablePage(regularLink.serialize());
 		final String customerEmail = getItemForm().getTransientSingleItem().getStringValue("email");
-		final String shopEmail = getVarSingleValue("email");
+		String shopEmail = getVarSingleValue("email");
+		if (isPhys) {
+			String physEmail = getVarSingleValue("email_phys");
+			if (StringUtils.isNotBlank(physEmail))
+				shopEmail = physEmail;
+		} else {
+			String jurEmail = getVarSingleValue("email_jur");
+			if (StringUtils.isNotBlank(jurEmail))
+				shopEmail = jurEmail;
+		}
 
 		ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
 		PageController.newSimple().executePage(regularTemplate, regularBos);

@@ -384,7 +384,7 @@
 	<item name="warranty_form" caption="Форма гарантии XXL" virtual="true" ag-id="1733" ag-hash="2091581991">
 		<parameter name="code" type="string" caption="Уникальный артикул товара"/>
 		<parameter name="serial" type="string" caption="Серийный номер изделия"/>
-		<parameter name="date" type="date" caption="Дата покупки"/>
+		<parameter name="date" type="date" caption="Дата покупки" format="dd.MM.yyyy"/>
 		<parameter name="seller" type="string" caption="Продавец"/>
 		<parameter name="owner" type="string" caption="Имя владельца" />
 		<parameter name="email" type="string" caption="E-mail"/>

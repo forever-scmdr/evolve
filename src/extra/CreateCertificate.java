@@ -1,18 +1,39 @@
 package extra;
 
 import ecommander.controllers.AppContext;
+import ecommander.controllers.PageController;
+import ecommander.fwk.EmailUtils;
+import ecommander.fwk.ItemUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
+import ecommander.model.ParameterDescription;
+import ecommander.model.User;
+import ecommander.model.UserGroupRegistry;
+import ecommander.model.datatypes.DateDataType;
 import ecommander.pages.Command;
+import ecommander.pages.PagePE;
 import ecommander.pages.ResultPE;
+import ecommander.pages.var.StaticVariable;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Warranty_form;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.imageio.ImageIO;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 /**
@@ -50,8 +71,26 @@ public class CreateCertificate extends Command implements ItemNames.warranty_for
 			error.addVariable(MESSAGE, "Получение сертификата временно невозможно. Попробуйте позже или обратитесь к менеджерам через обратную связь");
 			return error;
 		}
+		// Проверка даты сертификата
+		DateTime now = new DateTime(System.currentTimeMillis(), DateTimeZone.UTC);
+		DateTime purchaseDate = new DateTime(form.get_date(), DateTimeZone.UTC);
+		if (purchaseDate.plusMonths(1).isBefore(now)) {
+			ResultPE error = getResult(ERROR);
+			error.addVariable(MESSAGE, "С момента покупки прошло более месяца, поэтому получение сертификата в автоматическом режиме невозможно. " +
+					"Воспользуйтесь формой обратной связи для связи с менеджерами");
+			return error;
+		}
+		DateTime certDate = purchaseDate.plusYears(2);
+
 		File productPicFile = product.getFileValue(ItemNames.product_.GALLERY, AppContext.getFilesDirPath(product.isFileProtected()));
 		try {
+			// Увеличение нормера сертификата
+			Item counter = ItemUtils.ensureSingleRootItem(ItemNames.COUNTER, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+			int count = counter.getIntValue(ItemNames.counter_.WARRANTY_COUNT, 500) + 1;
+			if (count > 99999)
+				count = 1;
+			String certNumber = String.format("%05d", count);
+
 			BufferedImage cert = ImageIO.read(baseCertFile);
 			Graphics graph = cert.getGraphics();
 			if (productPicFile != null && productPicFile.exists()) {
@@ -65,25 +104,44 @@ public class CreateCertificate extends Command implements ItemNames.warranty_for
 			Font normal = new Font(Font.SANS_SERIF, Font.PLAIN, 54);
 			graph.setColor(Color.black);
 			graph.setFont(big);
-			graph.drawString("cool", 1510, 695);
+			graph.drawString(certNumber, 1510, 760);
 			graph.setFont(normal);
-			graph.drawString(form.get_owner(), 730, 970);
-			graph.drawString(product.getStringValue(ItemNames.product_.NAME), 1076, 930);
-			graph.drawString(form.get_code(), 540, 1085);
-			graph.drawString(form.get_serial(), 770, 1290);
-			graph.drawString(form.get_seller(), 580, 1400);
-			graph.drawString(form.outputValue(ItemNames.warranty_form_.DATE), 680, 1500);
-			graph.drawString(form.outputValue(ItemNames.warranty_form_.DATE), 955, 1610);
+			graph.drawString(form.get_owner(), 730, 1010);
+			graph.drawString(product.getStringValue(ItemNames.product_.NAME), 950, 1120);
+			graph.drawString(form.get_code(), 540, 1225);
+			graph.drawString(form.get_serial(), 770, 1330);
+			graph.drawString(form.get_seller(), 585, 1440);
+			graph.drawString(form.outputValue(ItemNames.warranty_form_.DATE), 680, 1545);
+			graph.drawString(DateDataType.outputDate(certDate.getMillis(), DateDataType.DAY_FORMATTER), 955, 1650);
 			graph.dispose();
 
 			File newCertFile = new File(AppContext.getRealPath("img/cert" + form.get_serial() + ".jpg"));
 			ImageIO.write(cert, "jpg", newCertFile);
+
+			// Отправка сертификата на почту
+			// Формирование тела письма
+			Multipart mp = new MimeMultipart();
+			String mailMessage = "Копия сертификата №" + certNumber;
+			ByteArrayOutputStream certBos = new ByteArrayOutputStream();
+			ImageIO.write(cert, "jpg", certBos);
+			ByteArrayInputStream certBis = new ByteArrayInputStream(certBos.toByteArray());
+			DataSource dataSource = new ByteArrayDataSource(certBis, "image/jpeg");
+			MimeBodyPart filePart = new MimeBodyPart();
+			filePart.setDataHandler(new DataHandler(dataSource));
+			filePart.setFileName(newCertFile.getName());
+			mp.addBodyPart(filePart);
+			MimeBodyPart textPart = new MimeBodyPart();
+			mp.addBodyPart(textPart);
+			textPart.setContent(mailMessage, "text/plain;charset=UTF-8");
+			// Отправка письма
+			EmailUtils.sendGmailDefault(form.get_email(), "Сертификат на технику Metabo", mp);
+
+			return getResult("success").addVariable("serial", form.get_serial());
 		} catch (Exception e) {
 			ServerLogger.error("Unable to manipulate pic file", e);
 			ResultPE error = getResult(ERROR);
 			error.addVariable(MESSAGE, "Получение сертификата временно невозможно. Попробуйте позже или обратитесь к менеджерам через обратную связь");
 			return error;
 		}
-		return null;
 	}
 }

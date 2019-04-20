@@ -33,6 +33,7 @@ public interface ItemNames {
     String USER_PHYS = "user_phys";
     String REGISTERED_CATALOG = "registered_catalog";
     String WARRANTY_FORM = "warranty_form";
+    String CHEAPER_FORM = "cheaper_form";
     String MAIN_PROMO_BOTTOM = "main_promo_bottom";
     String MAIN_SLIDER_FRAME = "main_slider_frame";
     String BANNER = "banner";
@@ -169,6 +170,17 @@ public interface ItemNames {
 
     }
 
+    public interface cheaper_form_ {
+
+        String _ITEM_NAME = "cheaper_form";
+        String PRODUCT = "product";
+        String NAME = "name";
+        String PHONE = "phone";
+        String URL = "url";
+        String URL_CHECK = "url_check";
+
+    }
+
     public interface common_ {
 
         String _ITEM_NAME = "common";
@@ -197,6 +209,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "counter";
         String COUNT = "count";
+        String WARRANTY_COUNT = "warranty_count";
 
     }
 

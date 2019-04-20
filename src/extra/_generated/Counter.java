@@ -10,6 +10,7 @@ public class Counter
 
     public final static String _NAME = "counter";
     public final static String COUNT = "count";
+    public final static String WARRANTY_COUNT = "warranty_count";
 
     private Counter(Item item) {
         super(item);
@@ -50,6 +51,28 @@ public class Counter
 
     public boolean contains_count(Integer value) {
         return containsValue("count", value);
+    }
+
+    public void set_warranty_count(Integer value) {
+        setValue("warranty_count", value);
+    }
+
+    public void setUI_warranty_count(String value)
+        throws Exception
+    {
+        setValueUI("warranty_count", value);
+    }
+
+    public Integer get_warranty_count() {
+        return getIntValue("warranty_count");
+    }
+
+    public Integer getDefault_warranty_count(Integer defaultVal) {
+        return getIntValue("warranty_count", defaultVal);
+    }
+
+    public boolean contains_warranty_count(Integer value) {
+        return containsValue("warranty_count", value);
     }
 
 }

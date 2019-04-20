@@ -682,6 +682,8 @@
 			<var name="code"/>
 			<var name="qty"/>
 			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email_phys" value="forever@forever-ds.com"/>
+			<var name="email_jur" value="egor@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -1153,6 +1155,8 @@
 	<page name="warranty_form" template="warranty_form">
 		<request>
 			<var name="message"/>
+			<var name="success"/>
+			<var name="serial"/>
 		</request>
 		<new item="warranty_form" id="warranty">
 			<parameter-input ref="warranty" form="warranty"/>
@@ -1160,12 +1164,18 @@
 		<link name="submit_link" target="warranty_action" type="itemform">
 			<var name="form_name" value="feedback"/>
 		</link>
+		<link name="confirmed_link" target="xxl">
+			<var name="message" var="message"/>
+			<var name="serial" var="serial"/>
+		</link>
 	</page>
 
 
 	<page name="warranty_action">
 		<link name="error" target="warranty_form"/>
-		<link name="success" target="xxl"/>
+		<link name="success" target="xxl">
+			<var name="message" value="Ваш сертификат оформлен и доступен для печати, его копия отправлена на ваш e-mail."/>
+		</link>
 		<link name="not_found" target="xxl">
 			<var name="not_found" value="true"/>
 		</link>

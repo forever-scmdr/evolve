@@ -27,12 +27,12 @@
 
 		<div class="page-content m-t">
 			<a class="button" data-toggle="modal" data-target="#warranty">XXL-гарантия</a>
-			<p>Копия сертификата отправлена вам на ящик <strong>usermail@mail.com</strong></p>
+			<p>Копия сертификата отправлена вам на  ящик <strong>usermail@mail.com</strong></p>
 			<div>
 				<a href="">Распечатать сертификат</a>
 			</div>
 			<div>
-				<img src="img/warranty-template-1.jpg" style="max-width: 600px; box-shadow: 0 0 15px gray;" alt=""/>
+				<img src="img/{page/variables/serial}.jpg" style="max-width: 600px; box-shadow: 0 0 15px gray;" alt=""/>
 			</div>
 			<p>Товар с таким артикулом не найден. Обратитесь в службу сервиса с помощью <a href="">формы обратной связи</a>.</p>
 		</div>
