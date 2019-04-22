@@ -1,6 +1,5 @@
 package ecommander.controllers;
 
-import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.User;
@@ -18,7 +17,6 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 /**
@@ -49,6 +47,7 @@ public class SessionContext implements AutoCloseable {
 	private static final String SESSION_OBJECT_COUNT = "$object_count$";
 
 	private static final int COOKIE_EXPIRE = 10 * 24 * 60 * 60;
+	private static final long INITIAL_GENERATED_ID = -100L;
 
 	@Override
 	public void close() throws Exception {
@@ -84,7 +83,7 @@ public class SessionContext implements AutoCloseable {
 	private HashMap<String, String> cookies = null;
 	// Генератор ID для новых айтемов. Предполагается, что при повторной загрузке одной и той же страницы
 	// сгенерируются одни и те же ID (это нужно для восстановления ранее сохраненных введеннй пользователем значений полей)
-	private long _id_generator = -100L;
+	private long _id_generator = INITIAL_GENERATED_ID;
 
 	private SessionContext(HttpServletRequest request) {
 		this.request = request;
@@ -92,6 +91,18 @@ public class SessionContext implements AutoCloseable {
 
 	public static SessionContext createSessionContext(HttpServletRequest request) {
 		return new SessionContext(request);
+	}
+
+	/**
+	 * Создать контекст сеанса только с одним установленным пользователем
+	 * (без фактического сеанса, из всех данных только пользователь)
+	 * @param user
+	 * @return
+	 */
+	public static SessionContext userOnlySessionContext(User user) {
+		SessionContext context = new SessionContext(null);
+		context.user = user;
+		return context;
 	}
 
 	/**
@@ -386,4 +397,10 @@ public class SessionContext implements AutoCloseable {
 		return _id_generator--;
 	}
 	
+	/**
+	 * Возврат первоначального значения для генератора сеансовых ID айтемов
+	 */
+	public final void resetIdGenerator() {
+		_id_generator = INITIAL_GENERATED_ID;
+	}
 }
