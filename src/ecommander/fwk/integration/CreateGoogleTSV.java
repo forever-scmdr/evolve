@@ -4,7 +4,7 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.model.Item;
 import ecommander.persistence.itemquery.ItemQuery;
-import org.tuckey.web.filters.urlrewrite.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -22,9 +22,9 @@ public class CreateGoogleTSV extends IntegrateBase implements CatalogConst {
 	private int lineNumber = 0;
 	private int position = 0;
 	private LinkedList<Item> sections = new LinkedList<>();
-	private static final String FILE_NAME = "catalog.tsv";
+	private static final String FILE_NAME = "catalog.csv";
 	private static final char SEP = ',';
-	private static final String HEADERS = "ID"+SEP+"ID2SEP\"Item title\"SEP\"Final URL\"SEP\"Image URL\"SEPPriceSEP\"Item description\"SEP\"Formatted price\"SEP\"Item category\"";
+	private static final String HEADERS = "ID"+SEP+"ID2"+SEP+"\"Item title\""+SEP+"\"Final URL\""+SEP+"\"Image URL\""+SEP+"Price"+SEP+"\"Item description\""+SEP+"\"Formatted price\""+SEP+"\"Item category\"";
 
 	@Override
 	protected boolean makePreparations() throws Exception {
@@ -78,19 +78,19 @@ public class CreateGoogleTSV extends IntegrateBase implements CatalogConst {
 						lineNumber++;
 						code = lineProduct.getStringValue(CODE_PARAM);
 						priceValue = lineProduct.outputValue(PRICE_PARAM);
-						priceValue = priceValue == null? "" : '"'+priceValue;
+						priceValue = priceValue == null? "" : priceValue;
 
 						imgUrl = getUrlBase() + AppContext.getFilesUrlPath(lineProduct.isFileProtected()) + lineProduct.getRelativeFilesPath() + lineProduct.getStringValue(SMALL_PIC_PARAM);
-						imgUrl = StringUtils.isBlank(product.getStringValue(SMALL_PIC_PARAM))? "" : imgUrl;
+						imgUrl = StringUtils.endsWith(imgUrl, "null")? "" : imgUrl;
 						productName = lineProduct.getStringValue(NAME_PARAM).replaceAll("\".+\"", "");
-						String out = join(SEP, code,code,productName,url,imgUrl,"\""+fPrice(priceValue)+" BYN\"", "", '"'+priceValue+" руб.\"", sectionName);
+						String out = join(SEP, code,code,productName,url,imgUrl,fPrice(priceValue)+" BYN", "", fPrice(priceValue).replace('.', ',')+" руб.", sectionName);
 						writer.newLine();
 						writer.write(out);
 						info.increaseProcessed();
 					}
 				}else{
 					lineNumber++;
-					String out = join(SEP, code,code,productName,url,imgUrl,"\""+fPrice(priceValue)+" BYN\"", "", '"'+priceValue+" руб.\"", sectionName);
+					String out = join(SEP, code,code,productName,url,imgUrl,fPrice(priceValue)+" BYN", "", fPrice(priceValue).replace('.', ',')+" руб.", sectionName);
 					writer.newLine();
 					writer.write(out);
 					info.increaseProcessed();
@@ -106,8 +106,11 @@ public class CreateGoogleTSV extends IntegrateBase implements CatalogConst {
 	private String join(char separator, String... args){
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i<args.length; i++){
+			String s = args[i];
 			if(i > 0) sb.append(separator);
-			sb.append(args[i] == null? "" : args[i]);
+			s = s == null? "" : args[i].replaceAll("\"", "");
+			s = s.indexOf(SEP) != -1 || s.indexOf(" ") != -1? '"'+args[i]+'"' : s;
+			sb.append(s);
 		}
 		return sb.toString();
 	}
