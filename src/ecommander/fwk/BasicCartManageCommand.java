@@ -151,7 +151,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 		ExecutablePagePE customerTemplate = getExecutablePage(customerLink.serialize());
-		ExecutablePagePE sellerTemplate = getExecutablePage(sellerLink.serialize());
+
 
 		final String customerEmail = getItemForm().getTransientSingleItem().getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
@@ -162,6 +162,7 @@ public abstract class BasicCartManageCommand extends Command {
 				+ ";charset=UTF-8");
 
 		ByteArrayOutputStream sellerBos = new ByteArrayOutputStream();
+		ExecutablePagePE sellerTemplate = getExecutablePage(sellerLink.serialize());
 		PageController.newSimple().executePage(sellerTemplate, sellerBos);
 		sellerTextPart.setContent(sellerBos.toString("UTF-8"), sellerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 				+ ";charset=UTF-8");
@@ -178,7 +179,7 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 		// Отправка на ящик магазина
 		try {
-			EmailUtils.sendGmailDefault(shopEmail, regularTopic, customerMP/*sellerMP*/);
+			EmailUtils.sendGmailDefault(shopEmail, regularTopic, /*customerMP*/sellerMP);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);
