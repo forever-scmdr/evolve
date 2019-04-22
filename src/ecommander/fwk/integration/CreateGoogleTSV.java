@@ -23,7 +23,8 @@ public class CreateGoogleTSV extends IntegrateBase implements CatalogConst {
 	private int position = 0;
 	private LinkedList<Item> sections = new LinkedList<>();
 	private static final String FILE_NAME = "catalog.tsv";
-	private static final String HEADERS = "ID\tID2\t\"Item title\"\t\"Final URL\"\t\"Image URL\"\tPrice\t\"Item description\"\t\"Formatted price\"\t\"Item category\"";
+	private static final char SEP = ',';
+	private static final String HEADERS = "ID"+SEP+"ID2SEP\"Item title\"SEP\"Final URL\"SEP\"Image URL\"SEPPriceSEP\"Item description\"SEP\"Formatted price\"SEP\"Item category\"";
 
 	@Override
 	protected boolean makePreparations() throws Exception {
@@ -82,14 +83,14 @@ public class CreateGoogleTSV extends IntegrateBase implements CatalogConst {
 						imgUrl = getUrlBase() + AppContext.getFilesUrlPath(lineProduct.isFileProtected()) + lineProduct.getRelativeFilesPath() + lineProduct.getStringValue(SMALL_PIC_PARAM);
 						imgUrl = StringUtils.isBlank(product.getStringValue(SMALL_PIC_PARAM))? "" : imgUrl;
 						productName = lineProduct.getStringValue(NAME_PARAM).replaceAll("\".+\"", "");
-						String out = join('\t', code,code,productName,url,imgUrl,"\""+fPrice(priceValue)+" BYN\"", "", '"'+priceValue+" руб.\"", sectionName);
+						String out = join(SEP, code,code,productName,url,imgUrl,"\""+fPrice(priceValue)+" BYN\"", "", '"'+priceValue+" руб.\"", sectionName);
 						writer.newLine();
 						writer.write(out);
 						info.increaseProcessed();
 					}
 				}else{
 					lineNumber++;
-					String out = join('\t', code,code,productName,url,imgUrl,"\""+fPrice(priceValue)+" BYN\"", "", '"'+priceValue+" руб.\"", sectionName);
+					String out = join(SEP, code,code,productName,url,imgUrl,"\""+fPrice(priceValue)+" BYN\"", "", '"'+priceValue+" руб.\"", sectionName);
 					writer.newLine();
 					writer.write(out);
 					info.increaseProcessed();
