@@ -171,6 +171,8 @@
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
+		<on-update class="ecommander.fwk.CreateCatalogLink"/>
+		<on-create class="ecommander.fwk.CreateCatalogLink"/>
 	</item>
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
@@ -189,7 +191,7 @@
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
-		<parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" />
+		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
 		<parameter name="group_id" type="string" caption="Номер группы" description="в яндекс маркете все товары одной группы выводятся на одной странице"/>
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
@@ -212,6 +214,8 @@
 		<child item="params" single="true"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
+		<on-update class="ecommander.fwk.CreateCatalogLink"/>
+		<on-create class="ecommander.fwk.CreateCatalogLink"/>
 	</item>
 
 
@@ -308,7 +312,6 @@
 
 	<item name="counter" caption="Счетчик номера договора" ag-id="29" ag-hash="957830652">
 		<parameter name="count" type="integer" caption="Счетчик"/>
-		<parameter name="warranty_count" type="integer" caption="Счетчик " default="505"/>
 	</item>
 
 	<!--/////////////                                                                      ////////////-->
@@ -379,28 +382,6 @@
 	<item name="registered_catalog" caption="Каталог пользователей" ag-id="822" ag-hash="-755203236">
 		<child item="user"/>
 	</item>
-
-
-	<item name="warranty_form" caption="Форма гарантии XXL" virtual="true" ag-id="1733" ag-hash="2091581991">
-		<parameter name="code" type="string" caption="Уникальный артикул товара"/>
-		<parameter name="serial" type="string" caption="Серийный номер изделия"/>
-		<parameter name="date" type="date" caption="Дата покупки" format="dd.MM.yyyy"/>
-		<parameter name="seller" type="string" caption="Продавец"/>
-		<parameter name="owner" type="string" caption="Имя владельца" />
-		<parameter name="email" type="string" caption="E-mail"/>
-		<parameter name="phone" type="string" caption="Телефон"/>
-		<parameter name="url" type="string" caption="Проверочное поле" description="против спама"/>
-	</item>
-
-
-	<item name="cheaper_form" caption="Форма нашли дешевле" virtual="true" ag-id="1734" ag-hash="516915559">
-		<parameter name="product" type="string" caption="Товар, который нашли дешевле"/>
-		<parameter name="name" type="string" caption="Имя"/>
-		<parameter name="phone" type="string" caption="Телефон"/>
-		<parameter name="url" type="string" caption="Ссылка на страницу где дешевле"/>
-		<parameter name="url_check" type="string" caption="Проверочное поле" description="против спама"/>
-	</item>
-
 
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                            END РЕГИСТРАЦИЯ                           ////////////-->

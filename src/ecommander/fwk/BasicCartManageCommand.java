@@ -6,16 +6,11 @@ import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
-import javax.mail.util.ByteArrayDataSource;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -123,9 +118,6 @@ public abstract class BasicCartManageCommand extends Command {
 			return getResult("confirm");
 		}
 
-		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
-
-
 		// Проверка, есть ли обычные заказы, заказы с количеством 0 и кастомные заказы
 
 
@@ -146,33 +138,43 @@ public abstract class BasicCartManageCommand extends Command {
 		// Подготовка тела письма
 		String regularTopic
 				= "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
-		Multipart regularMP = new MimeMultipart();
-		MimeBodyPart regularTextPart = new MimeBodyPart();
-		regularMP.addBodyPart(regularTextPart);
-		LinkPE regularLink = LinkPE.newDirectLink("link", "order_email", false);
-		regularLink.addStaticVariable("order_num", orderNumber + "");
-		ExecutablePagePE regularTemplate = getExecutablePage(regularLink.serialize());
-		final String customerEmail = getItemForm().getTransientSingleItem().getStringValue("email");
-		String shopEmail = getVarSingleValue("email");
-		if (isPhys) {
-			String physEmail = getVarSingleValue("email_phys");
-			if (StringUtils.isNotBlank(physEmail))
-				shopEmail = physEmail;
-		} else {
-			String jurEmail = getVarSingleValue("email_jur");
-			if (StringUtils.isNotBlank(jurEmail))
-				shopEmail = jurEmail;
-		}
 
-		ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
-		PageController.newSimple().executePage(regularTemplate, regularBos);
-		regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+		final String customerEmail = getItemForm().getTransientSingleItem().getStringValue("email");
+		final String shopEmail = getVarSingleValue("email");
+
+		// Письмо для покупателя
+		Multipart customerMultipart = new MimeMultipart();
+		MimeBodyPart customerTextPart = new MimeBodyPart();
+		customerMultipart.addBodyPart(customerTextPart);
+		LinkPE customerEmailLink = LinkPE.newDirectLink("link", "customer_email", false);
+		customerEmailLink.addStaticVariable("order_num", orderNumber + "");
+		ExecutablePagePE customerTemplate = getExecutablePage(customerEmailLink.serialize());
+		ByteArrayOutputStream customerEmailBytes = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(customerTemplate, customerEmailBytes);
+		customerTextPart.setContent(customerEmailBytes.toString("UTF-8"), customerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 				+ ";charset=UTF-8");
+
+		// Письмо для продавца
+		Multipart shopMultipart = new MimeMultipart();
+		MimeBodyPart shopTextPart = new MimeBodyPart();
+		shopMultipart.addBodyPart(shopTextPart);
+		try {
+			LinkPE shopEmailLink = LinkPE.newDirectLink("link", "shop_email", false);
+			shopEmailLink.addStaticVariable("order_num", orderNumber + "");
+			ExecutablePagePE shopTemplate = getExecutablePage(shopEmailLink.serialize());
+			ByteArrayOutputStream shopEmailBytes = new ByteArrayOutputStream();
+			PageController.newSimple().executePage(shopTemplate, shopEmailBytes);
+			shopTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+					+ ";charset=UTF-8");
+		} catch (Exception e) {
+			shopTextPart.setContent(customerEmailBytes.toString("UTF-8"), customerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+					+ ";charset=UTF-8");
+		}
 
 		// Отправка на ящик заказчика
 		try {
 			if (StringUtils.isNotBlank(customerEmail))
-				EmailUtils.sendGmailDefault(customerEmail, regularTopic, regularMP);
+				EmailUtils.sendGmailDefault(customerEmail, regularTopic, customerMultipart);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra (IN_PROGRESS, null);
@@ -181,21 +183,7 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 		// Отправка на ящик магазина
 		try {
-			// Добавить XML файл
-			LinkPE xmlLink = LinkPE.newDirectLink("link", "cart_xml", false);
-			ExecutablePagePE xmlTemplate = getExecutablePage(xmlLink.serialize());
-			ByteArrayOutputStream xmlBos = new ByteArrayOutputStream();
-			PageController.newSimple().executePage(xmlTemplate, xmlBos);
-
-			DataSource dataSource = new ByteArrayDataSource(new ByteArrayInputStream(xmlBos.toByteArray()), "application/xml;charset=UTF-8");
-			MimeBodyPart filePart = new MimeBodyPart();
-			filePart.setDataHandler(new DataHandler(dataSource));
-			filePart.setFileName("order" + orderNumber + ".xml");
-			regularMP.addBodyPart(filePart);
-
-			regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
-					+ ";charset=UTF-8");
-			EmailUtils.sendGmailDefault(shopEmail, regularTopic, regularMP);
+			EmailUtils.sendGmailDefault(shopEmail, regularTopic, shopMultipart);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);
@@ -284,7 +272,7 @@ public abstract class BasicCartManageCommand extends Command {
 				} catch (NumberFormatException e) { /**/ }
 				if (quantity > 0) {
 					Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-					double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+					double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
 					if (maxQuantity > 0)
 						quantity = maxQuantity > quantity ? quantity : maxQuantity;
 					bought.setValue(QTY_PARAM, quantity);
@@ -307,7 +295,7 @@ public abstract class BasicCartManageCommand extends Command {
 				return;
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
-			double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
 			if (maxQuantity > 0)
 				qty = maxQuantity > qty ? qty : maxQuantity;
 			bought.setValue(QTY_PARAM, qty);
@@ -330,7 +318,7 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().removeItems(bought.getId());
 				return;
 			}
-			double maxQuantity = boughtProduct.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity = boughtProduct.getDoubleValue(QTY_PARAM, MAX_QTY);
 			if (maxQuantity > 0)
 				qty = maxQuantity > qty ? qty : maxQuantity;
 			bought.setValue(QTY_PARAM, qty);
@@ -371,7 +359,7 @@ public abstract class BasicCartManageCommand extends Command {
 	/**
 	 * Загрузить корзину, но не создавать в случае если корзина не найдена
 	 */
-	private void loadCart() throws Exception {
+	protected void loadCart() throws Exception {
 		if (cart == null) {
 			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 		}
@@ -382,7 +370,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * Сохранить корзину в куки на всякий случай (если будет разрыв сеанса, корзину можно восстановить)
 	 * @throws Exception
 	 */
-	private void saveCookie() throws Exception {
+	protected void saveCookie() throws Exception {
 		ensureCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		ArrayList<String> codeQtys = new ArrayList<>();
@@ -425,7 +413,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * Пересчитывает данные для одного enterprise_bought, когда в корзине произошли какие-то изменения
 	 * @throws Exception
 	 */
-	private boolean recalculateCart() throws Exception {
+	protected boolean recalculateCart() throws Exception {
 		loadCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal sum = new BigDecimal(0); // полная сумма
@@ -436,7 +424,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// Обычные заказы и заказы с нулевым количеством на складе
 		for (Item bought : boughts) {
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-			double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
 			double quantity = bought.getDoubleValue(QTY_PARAM);
 			if (quantity <= 0) {
 				getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);

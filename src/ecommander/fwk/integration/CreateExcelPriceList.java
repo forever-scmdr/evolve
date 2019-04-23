@@ -101,7 +101,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			sections = q.loadItems();
 		} else {
 			Item section = ItemQuery.loadById(secId);
-			fileSuffix = section.getStringValue(NAME_PARAM);
+			fileSuffix = section.getStringValue(NAME_PARAM).replaceAll("/", " ");
 			sections.add(section);
 		}
 		info.pushLog("Обнаружено разделов первого уровня: " + sections.size());
@@ -118,8 +118,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			if(writeHierarchy) {
 
 				Row row = sh.createRow(++rowIndex);
-				String[]secInfo = getSectionName(section);
-				row.createCell(++colIdx).setCellValue("разд:"+secInfo[0]);
+				String[] secInfo = getSectionName(section);
+				row.createCell(++colIdx).setCellValue("разд:" + secInfo[0]);
 				row.getCell(colIdx).setCellStyle(sectionStyle);
 				row.createCell(++colIdx).setCellValue(secInfo[1]);
 				row.getCell(colIdx).setCellStyle(sectionStyle);
@@ -130,7 +130,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			if(!isEmpty) {
 				ItemType auxType = getAuxType(section.getId());
 				if(writeHierarchy) {
-					rowIndex = (auxType == null)? initializeHeader(sh, rowIndex) : initializeHeader(sh, rowIndex, auxType);
+					rowIndex = (auxType == null) ? initializeHeader(sh, rowIndex) : initializeHeader(sh, rowIndex, auxType);
 				}
 				rowIndex = processProducts(sh, rowIndex, id);
 			}
@@ -231,7 +231,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			row.getCell(colIdx).setCellStyle(headerStyle);
 		}
 
-		for (int i = 0; i < colIdx+1; i++) {
+		for(int i = 0; i < colIdx+1; i++){
 			row.getCell(i).setCellStyle(headerStyle);
 		}
 
@@ -453,8 +453,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			if(writeHierarchy) {
 				Row row = sh.createRow(++rowI);
 				int colIdx = -1;
-				String[]secInfo = getSectionName(section);
-				row.createCell(++colIdx).setCellValue("разд:"+secInfo[0]);
+				String[] secInfo = getSectionName(section);
+				row.createCell(++colIdx).setCellValue("разд:" + secInfo[0]);
 				row.getCell(colIdx).setCellStyle(sectionStyle);
 				row.createCell(++colIdx).setCellValue(secInfo[1]);
 				row.getCell(colIdx).setCellStyle(sectionStyle);
@@ -565,7 +565,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		writeLineProducts = ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM) != null && writeLineProducts;
 
 		//write prices only
-		if (YES.equalsIgnoreCase(priceOnlyVar)) {
+		if(YES.equalsIgnoreCase(priceOnlyVar)){
 			writeAllProductParams = false;
 			writeAuxParams = false;
 			writeHierarchy = false;

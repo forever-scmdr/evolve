@@ -576,7 +576,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 						URL url = new URL(s);
 						existingFiles.add(url);
 					}
-					else{File f = folder.resolve(s).toFile();
+					else{
+						File f = folder.resolve(s).toFile();
 						if (f.exists()) {
 							existingFiles.add(f);
 						}
