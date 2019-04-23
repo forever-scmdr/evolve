@@ -18,7 +18,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 	static {
 		MANDATORY_PHYS.add(ItemNames.user_phys_.NAME);
 		//MANDATORY_PHYS.add(ItemNames.user_phys_.ADDRESS);
-		//MANDATORY_PHYS.add(ItemNames.user_phys_.EMAIL);
+		MANDATORY_PHYS.add(ItemNames.user_phys_.EMAIL);
 		MANDATORY_PHYS.add(ItemNames.user_phys_.PHONE);
 		//MANDATORY_PHYS.add(ItemNames.user_phys_.SHIP_TYPE);
 
