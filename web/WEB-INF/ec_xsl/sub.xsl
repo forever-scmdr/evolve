@@ -16,12 +16,11 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="/">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
 					<a href="{show_section}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
-				<i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -84,7 +83,7 @@
 <!-- 				<xsl:for-each select="page/current_section/section">
 					<xsl:variable name="main_pic" select="product[1]/gallery[1]"/>
 					<div class="catalog-item">
-						<xsl:variable name="pic_path" select="if ($main_pic) then concat(product[1]/@path, $main_pic) else 'img/no_image.png'"/>
+						<xsl:variable name="pic_path" select="if ($main_pic) then concat('product[1]/@path, $main_pic) else 'img/no_image.png'"/>
 						<a href="{show_products}" class="image-container"><img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}"/></a>
 						<div>
 							<a href="{show_products}" style="height: unset;"><xsl:value-of select="name"/></a>

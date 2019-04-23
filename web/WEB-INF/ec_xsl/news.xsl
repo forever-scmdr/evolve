@@ -5,7 +5,8 @@
 
 	<xsl:variable name="title" select="page/selected_news/name" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
-	<xsl:variable name="active_menu_item" select="'news'"/>
+	<!--<xsl:variable name="active_menu_item" select="'news'"/>-->
+	<xsl:variable name="active_menu_item" select="page/selected_news/@key"/>
 
 	<xsl:variable name="p" select="page/product"/>
 
@@ -26,8 +27,8 @@
 					<div class="catalog-item">
 						<a href="{show_news_item}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="{@path}{main_pic}" alt=""/> --></a>
 						<div class="text">
-							<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]"/></div>
 							<a href="{show_news_item}"><xsl:value-of select="header"/></a>
+							<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]"/></div>
 							<xsl:value-of select="short" disable-output-escaping="yes"/>
 						</div>
 					</div>

@@ -14,7 +14,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Документация</h1>
+		<h1>Документация</h1>
 
 		<div class="page-content m-t">
 			<h3>Расположение дилеров на карте</h3>

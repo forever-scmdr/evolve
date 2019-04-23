@@ -13,7 +13,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Корзина</h1>
+		<h1>Список товаров</h1>
 
 		<div class="cart-container">
 			<xsl:choose>

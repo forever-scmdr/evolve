@@ -4,7 +4,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-
+	<xsl:variable name="title" select="'Оформление заявки'"/>
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="is_jur" select="page/user_jur//@validation-error or page/user_jur/organization != '' or page/jur"/>
 
@@ -12,12 +12,12 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> <i class="fas fa-angle-right"></i>
-				<a href="{page/cart_link}">Корзина</a> <i class="fas fa-angle-right"></i>
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
+				<a href="{page/cart_link}">Изменить зявку</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Анкета покупателя</h1>
+		<h1>Анкета покупателя</h1>
 
 		<div class="page-content m-t">
 			<xsl:if test="$message">
@@ -33,7 +33,7 @@
 			<div class="tab-content">
 
 				<div role="tabpanel" class="tab-pane{' active'[not($is_jur)]}" id="tab_phys">
-					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заказа.</p>
+					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заявки.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
 						<xsl:call-template name="USER_PHYS_INPUTS">

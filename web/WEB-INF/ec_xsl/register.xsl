@@ -18,7 +18,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Вход/Регистрация</h1>
+		<h1>Вход/Регистрация</h1>
 
 		<div class="page-content m-t">
 			<xsl:if test="$message and not($success)">

@@ -22,7 +22,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
+		<h1>Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
 
 		<div class="page-content m-t">
 

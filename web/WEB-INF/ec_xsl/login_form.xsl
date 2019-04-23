@@ -19,11 +19,11 @@
 			<!-- <xsl:call-template name="PRINT"/> -->
 		</div>
 		<xsl:if test="$registered">
-			<h1 class="page-title">Вход выполнен.</h1>
+			<h1>Вход выполнен.</h1>
 			<p>Добро пожаловать!</p>
 		</xsl:if>
 		<xsl:if test="not($registered)">
-			<h1 class="page-title">Вход</h1>
+			<h1>Вход</h1>
 
 			<div class="page-content m-t">
 				<xsl:if test="$message and not($success)">

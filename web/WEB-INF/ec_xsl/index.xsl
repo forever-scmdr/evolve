@@ -37,92 +37,7 @@
 		</script>
 	</xsl:template>
 
-	<xsl:template name="LEFT_COLOUMN">
-		<div class="side-menu">
-			<xsl:for-each select="page/catalog/section">
-				<div class="level-1">
-					<div class="capsule">
-						<a href="{show_section}"><xsl:value-of select="name"/></a>
-					</div>
-					<xsl:if test="section">
-						<div class="popup-menu" style="display:none">
-							<div class="popup-coloumn">
-								<xsl:for-each select="section[position() &lt;= 8]">
-									<div><a href="{show_section}"><xsl:value-of select="name"/></a></div>
-								</xsl:for-each>
-							</div>
-							<xsl:if test="count(section) &gt; 8">
-								<div class="popup-coloumn">
-									<xsl:for-each select="section[position() &gt; 8]">
-										<div><a href="{show_section}"><xsl:value-of select="name"/></a></div>
-									</xsl:for-each>
-								</div>
-							</xsl:if>
-						</div>
-					</xsl:if>
-				</div>
-			</xsl:for-each>
-		</div>
-		<xsl:if test="page/main_page/link_text and not(page/main_page/link_text = '')">
-			<div class="actions">
-				<h3>Акции</h3>
-				<div class="actions-container">
-					<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
-				</div>
-			</div>
-		</xsl:if>
-		<script>
-			var _menuShowInterval = 0;
-			var _menuHideInterval = 0;
-			var _menuCurrentItem = 0;
-			$(document).ready(function() {
-				$('.level-1').hover(
-					function(){
-						clearInterval(_menuHideInterval);
-						if (_menuMouseMovedVertically) {
-							$('.popup-menu').hide();
-							$(this).find('.popup-menu').show();
-						} else {
-							_menuCurrentItem = $(this);
-							_menuShowInterval = setInterval(function() {
-								$('.popup-menu').hide();
-								_menuCurrentItem.find('.popup-menu').show();
-							}, 500);
-						}
-					},
-					function() {
-						clearInterval(_menuShowInterval);
-						if (_menuMouseMovedVertically) {
-							$('.popup-menu').hide();
-						} else {
-							_menuHideInterval = setInterval(function() {
-								$('.popup-menu').hide();
-							}, 500);
-						}
-					}
-				);
-			<xsl:text disable-output-escaping="yes">
-				var _menuPrevX = 1000;
-				var _menuPrevY = -1000;
-				var _menuMouseMovedVertically = true;
-				$('.side-menu').mousemove(
-					function(event) {
-						_menuMouseMovedVertically = (Math.abs(event.pageY - _menuPrevY) - Math.abs(event.pageX - _menuPrevX)) &gt; 0;
-						_menuPrevX = event.pageX;
-						_menuPrevY = event.pageY;
-						console.log(_menuMouseMovedVertically);
-					}
-				);
-			</xsl:text>
-			});
-		</script>
-		<!-- <div class="contacts">
-			<h3>Заказ и консультация</h3>
-			<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - тел./Viber</p>
-			<p>Email <a href="">info@beltesto.by</a></p>
-			<p><a href="">Схема проезда к офису</a></p>
-		</div> -->
-	</xsl:template>
+
 
 
 	<xsl:template name="CONTENT"></xsl:template>
@@ -166,71 +81,429 @@
 
 
 	<xsl:template name="BANNERS">
-		<section class="hero">
+		<section class="catalog-index pt">
 			<div class="container">
-				<div class="fotorama" data-width="100%">
+				<div class="catalog-index__cell">
+					<div class="block-title">Каталог запчастей</div>
+					<div class="catalog-index__group">
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (1).jpg" alt=""/></a>
+							<a href="/catalog">Бензогенератор</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (2).jpg" alt=""/></a>
+							<a href="/catalog">Бензокосы</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (3).jpg" alt=""/></a>
+							<a href="/catalog">Бензопила</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (4).jpg" alt=""/></a>
+							<a href="/catalog">Бетономешалка</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (5).jpg" alt=""/></a>
+							<a href="/catalog">Бытовая техника</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (6).jpg" alt=""/></a>
+							<a href="/catalog">Виброплиты</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (7).jpg" alt=""/></a>
+							<a href="/catalog">Газовые колонки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (8).jpg" alt=""/></a>
+							<a href="/catalog">Газонокосилка на колесах</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (9).jpg" alt=""/></a>
+							<a href="/catalog">Двигатели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (10).jpg" alt=""/></a>
+							<a href="/catalog">Дисковые пилы</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (11).jpg" alt=""/></a>
+							<a href="/catalog">Дрели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (12).jpg" alt=""/></a>
+							<a href="/catalog">Зернодрбилки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (13).jpg" alt=""/></a>
+							<a href="/catalog">Компрессора</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (1).jpg" alt=""/></a>
+							<a href="/catalog">Бензогенератор</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (2).jpg" alt=""/></a>
+							<a href="/catalog">Бензокосы</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (3).jpg" alt=""/></a>
+							<a href="/catalog">Бензопила</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (4).jpg" alt=""/></a>
+							<a href="/catalog">Бетономешалка</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (5).jpg" alt=""/></a>
+							<a href="/catalog">Бытовая техника</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (6).jpg" alt=""/></a>
+							<a href="/catalog">Виброплиты</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (7).jpg" alt=""/></a>
+							<a href="/catalog">Газовые колонки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (8).jpg" alt=""/></a>
+							<a href="/catalog">Газонокосилка на колесах</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (9).jpg" alt=""/></a>
+							<a href="/catalog">Двигатели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (10).jpg" alt=""/></a>
+							<a href="/catalog">Дисковые пилы</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (11).jpg" alt=""/></a>
+							<a href="/catalog">Дрели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (12).jpg" alt=""/></a>
+							<a href="/catalog">Зернодрбилки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (13).jpg" alt=""/></a>
+							<a href="/catalog">Компрессора</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (9).jpg" alt=""/></a>
+							<a href="/catalog">Двигатели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (10).jpg" alt=""/></a>
+							<a href="/catalog">Дисковые пилы</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (11).jpg" alt=""/></a>
+							<a href="/catalog">Дрели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (12).jpg" alt=""/></a>
+							<a href="/catalog">Зернодрбилки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (13).jpg" alt=""/></a>
+							<a href="/catalog">Компрессора</a>
+						</div>
+					</div>
+				</div>
+				<div class="catalog-index__cell">
+					<div class="block-title">Популярные группы товаров</div>
+					<div class="catalog-index__group">
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (1).jpg" alt=""/></a>
+							<a href="/catalog">Бензогенератор</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (2).jpg" alt=""/></a>
+							<a href="/catalog">Бензокосы</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (3).jpg" alt=""/></a>
+							<a href="/catalog">Бензопила</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (4).jpg" alt=""/></a>
+							<a href="/catalog">Бетономешалка</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (5).jpg" alt=""/></a>
+							<a href="/catalog">Бытовая техника</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (1).jpg" alt=""/></a>
+							<a href="/catalog">Бензогенератор</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (2).jpg" alt=""/></a>
+							<a href="/catalog">Бензокосы</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (3).jpg" alt=""/></a>
+							<a href="/catalog">Бензопила</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (4).jpg" alt=""/></a>
+							<a href="/catalog">Бетономешалка</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (5).jpg" alt=""/></a>
+							<a href="/catalog">Бытовая техника</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (6).jpg" alt=""/></a>
+							<a href="/catalog">Виброплиты</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (7).jpg" alt=""/></a>
+							<a href="/catalog">Газовые колонки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (8).jpg" alt=""/></a>
+							<a href="/catalog">Газонокосилка на колесах</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (9).jpg" alt=""/></a>
+							<a href="/catalog">Двигатели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (10).jpg" alt=""/></a>
+							<a href="/catalog">Дисковые пилы</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (11).jpg" alt=""/></a>
+							<a href="/catalog">Дрели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (12).jpg" alt=""/></a>
+							<a href="/catalog">Зернодрбилки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (13).jpg" alt=""/></a>
+							<a href="/catalog">Компрессора</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (5).jpg" alt=""/></a>
+							<a href="/catalog">Бытовая техника</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (6).jpg" alt=""/></a>
+							<a href="/catalog">Виброплиты</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (7).jpg" alt=""/></a>
+							<a href="/catalog">Газовые колонки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (8).jpg" alt=""/></a>
+							<a href="/catalog">Газонокосилка на колесах</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (9).jpg" alt=""/></a>
+							<a href="/catalog">Двигатели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (10).jpg" alt=""/></a>
+							<a href="/catalog">Дисковые пилы</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (11).jpg" alt=""/></a>
+							<a href="/catalog">Дрели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (12).jpg" alt=""/></a>
+							<a href="/catalog">Зернодрбилки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (13).jpg" alt=""/></a>
+							<a href="/catalog">Компрессора</a>
+						</div>
+					</div>
+				</div>
+				<div class="catalog-index__cell">
+					<div class="block-title">Инструмент и материалы</div>
+					<div class="catalog-index__group">
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (1).jpg" alt=""/></a>
+							<a href="/catalog">Бензогенератор</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (2).jpg" alt=""/></a>
+							<a href="/catalog">Бензокосы</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (3).jpg" alt=""/></a>
+							<a href="/catalog">Бензопила</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (4).jpg" alt=""/></a>
+							<a href="/catalog">Бетономешалка</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (5).jpg" alt=""/></a>
+							<a href="/catalog">Бытовая техника</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (6).jpg" alt=""/></a>
+							<a href="/catalog">Виброплиты</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (7).jpg" alt=""/></a>
+							<a href="/catalog">Газовые колонки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (8).jpg" alt=""/></a>
+							<a href="/catalog">Газонокосилка на колесах</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (9).jpg" alt=""/></a>
+							<a href="/catalog">Двигатели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (10).jpg" alt=""/></a>
+							<a href="/catalog">Дисковые пилы</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (11).jpg" alt=""/></a>
+							<a href="/catalog">Дрели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (12).jpg" alt=""/></a>
+							<a href="/catalog">Зернодрбилки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (13).jpg" alt=""/></a>
+							<a href="/catalog">Компрессора</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (4).jpg" alt=""/></a>
+							<a href="/catalog">Бетономешалка</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (5).jpg" alt=""/></a>
+							<a href="/catalog">Бытовая техника</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (6).jpg" alt=""/></a>
+							<a href="/catalog">Виброплиты</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (7).jpg" alt=""/></a>
+							<a href="/catalog">Газовые колонки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (8).jpg" alt=""/></a>
+							<a href="/catalog">Газонокосилка на колесах</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (9).jpg" alt=""/></a>
+							<a href="/catalog">Двигатели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (10).jpg" alt=""/></a>
+							<a href="/catalog">Дисковые пилы</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (11).jpg" alt=""/></a>
+							<a href="/catalog">Дрели</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (12).jpg" alt=""/></a>
+							<a href="/catalog">Зернодрбилки</a>
+						</div>
+						<div class="catalog-index__item">
+							<a href="/catalog"><img src="img/icons/section (13).jpg" alt=""/></a>
+							<a href="/catalog">Компрессора</a>
+						</div>
+					</div>
+				</div>
+				<div class="catalog-index__cell">
+					<!-- <div class="block-title">1</div> -->
+					<div class="banner rexant">
+						<div class="banner__title">Электротехника</div>
+						<div class="banner__text">
+							<a href="/catalog">Разъемы и переходники; </a> <a href="/catalog">Кабель; </a> <a href="/catalog">Инструмент; </a>
+							<a href="/catalog">Крепеж; </a> <a href="/catalog">Изоляционные и соединительные материалы; </a> <a href="/catalog">Электроустановочные изделия; </a> <a href="/catalog">Шнуры; </a> <a href="/catalog">Автомобильные аксессуары; </a> <a href="/catalog">Мобильные аксессуары.</a>
+						</div>
+						<div class="banner__image"><img src="/files/353/225f/rexant_logo.png" alt=""/></div>
+						<a class="banner__link" href="/catalog">Купить здесь</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- <section class="hero pb">
+			<div class="container">
+				<div class="fotorama" data-width="100%" data-height="284px" data-fit="cover">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<img src="{@path}{pic}" alt="{name}"/>
+						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+							<div class="slider-item__block fotorama__select">
+								<div class="slider-item__wrapper">
+									<div class="slider-item__title"><xsl:value-of select="name" /></div>
+									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+								</div>
+							</div>
+						</div>
 					</xsl:for-each>
 				</div>
-				<div class="hero__banners">
-					<xsl:apply-templates select="page/banner_section[1]/banner"/>
-				</div>
+				<xsl:apply-templates select="page/banner_section[1]/banner"/>
 			</div>
 		</section>
-		<section class="events">
+		<section class="catalog-map">
 			<div class="container">
-				<div>
-					<div class="events__banners">
-						<xsl:apply-templates select="page/banner_section[2]/banner"/>
-					</div>
-					<div class="block-title events__title">Новости</div>
-					<div class="events__news">
-						<xsl:for-each select="page//news_item">
-							<div class="news-item events__news-item">
-								<div class="small-text"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
-								<a href="{show_news_item}"><xsl:value-of select="header" /></a>
-							</div>
-						</xsl:for-each>
-					</div>
+				<div class="title_2">
+					Каталог продукции
 				</div>
-				<xsl:apply-templates select="page/banner_section[3]/banner"/>
-			</div>
-		</section>
-		<section class="special-items">
-			<div class="container" style="overflow: hidden;">
-				<div class="block-title">Новинки</div>
-				<div class="special-items__devices slick-slider">
-					<xsl:apply-templates select="page/main_page/product[tag='Новинка']"/>
+				<div class="grid">
+					<xsl:for-each select="page/catalog/section">
+						<div class="catalog-map__item">
+							<div class="catalog-map__icon"><img src="{@path}{icon}" alt="" /></div>
+							<ul class="catalog-map__list">
+								<li><a href="{show_products}"><xsl:value-of select="name"/></a></li>
+								<xsl:for-each select="section">
+									<li><a href="{show_products}"><xsl:value-of select="name"/></a></li>
+								</xsl:for-each>
+							</ul>
+							<xsl:if test="count(section) &gt; 4">
+								<a href="#" class="catalog-map__toggle">Раскрыть полный список</a>
+							</xsl:if>
+						</div>
+					</xsl:for-each>
 				</div>
 			</div>
 		</section>
-		<section class="special-items">
-			<div class="container" style="overflow: hidden;">
-				<div class="block-title">Акции</div>
-				<div class="special-items__devices slick-slider zu">
-					<xsl:apply-templates select="page/main_page/product[tag='Акция']"/>
-				</div>
-			</div>
-		</section>
-		<section class="benefits">
+		<section class="brands ptb">
 			<div class="container">
-				<div class="block-title">Почему нас выбирают клиенты</div>
-				<div class="benefits__banners">
-					<xsl:apply-templates select="page/banner_section[4]/banner"/>
+				<div class="block-title">Бренды</div>
+				<div class="grid">
+					<xsl:for-each select="page/banner_section[2]/banner">
+						<div class="brand-item">
+							<a href="{link}"><img src="{@path}{image_pic}" /></a>
+						</div>
+					</xsl:for-each>
 				</div>
 			</div>
-		</section>
-		<section class="s-info pt-4">
-			<div class="container">
-				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
-			</div>
-		</section>
-
+		</section> -->
 	</xsl:template>
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript" src="fotorama/fotorama.js"/>
+		<script>
+			$(document).ready(function() {
+				$('.catalog-map__toggle').click(function(e) {
+					e.preventDefault();
+					$(this).closest('.catalog-map__item').find('ul').toggleClass('show', 200);
+					if ($(this).html() == 'Свернуть')
+						$(this).html('Раскрыть полный список');
+					else
+						$(this).html('Свернуть');
+				});
+			});
+		</script>
 	</xsl:template>
 
 </xsl:stylesheet>

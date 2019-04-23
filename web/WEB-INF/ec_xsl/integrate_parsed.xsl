@@ -24,7 +24,7 @@
 		</style>
 		<script>
 			setTimeout(function(){
-				document.location.replace("/integrate");
+				document.location.replace("/integrate_parsed");
 			}, 5000);
 		</script>
 		</head>
@@ -32,14 +32,6 @@
 			<h1><xsl:value-of select="/page/operation"/></h1>
 			<h2>Процесс выполнения</h2>
 			<table>
-				<tr>
-					<td>Строка файла:</td>
-					<td class="error">
-						<span id="prcnt"></span>
-						<span id="progressBar"></span>
-						<xsl:value-of select="/page/line"/> / <xsl:value-of select="/page/total-line-number"/>
-					</td>
-				</tr>
 				<tr>
 					<td>Всего элементов для обработки:</td>
 					<td class="error"><xsl:value-of select="/page/to_process"/></td>
@@ -75,9 +67,9 @@
 					</xsl:for-each>
 				</table>
 			</xsl:if>
-			
+
 		</body>
-		
+
 		</html>
 	</xsl:template>
 

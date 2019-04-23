@@ -18,7 +18,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Спасибо за заявку!</h1>
+		<h1>Спасибо за заявку!</h1>
 
 
 		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>

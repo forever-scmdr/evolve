@@ -76,7 +76,6 @@
 						<xsl:value-of select="name"/>
 					</a>
 				</xsl:for-each>
-				<i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -96,7 +95,7 @@
 			<!-- Отображние блоками/списком, товаров на страницу, сортировка, наличие -->
 
 			<xsl:if test="$subs and $sub_view = 'pics' and $show_devices and not($sel_sec/show_subs = '0')">
-				<div class="h3">Товары</div>
+				<div class="title_2" style="margin-top: 32px;">Товары</div>
 			</xsl:if>
 			<xsl:call-template name="DISPLAY_CONTROL"/>
 
@@ -218,16 +217,26 @@
 	<xsl:template name="DISPLAY_CONTROL">
 		<xsl:if test="$show_devices">
 			<div class="view-container desktop">
-				<div class="view">
+				<div class="view"><span>Вид:&#160;&#160;</span>
 					<span class="{'active'[not($view = 'list')]}">
-						<i class="fas fa-th-large"></i>
-						<a href="{page/set_view_table}">Плиткой</a>
+						<a href="{page/set_view_table}"><i class="fas fa-th-large"></i></a>
 					</span>
 					<span class="{'active'[$view = 'list']}">
-						<i class="fas fa-th-list"></i>
-						<a href="{page/set_view_list}">Строками</a>
+						<a href="{page/set_view_list}"><i class="fas fa-th-list"></i></a>
 					</span>
 				</div>
+
+
+
+				<span>
+					<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
+							onchange="window.location.href = $(this).find(':selected').attr('link')">
+						<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
+						<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
+						<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
+						<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
+						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
+					</select></span>
 				<div class="checkbox">
 					<label>
 						<xsl:if test="not($only_available)">
@@ -241,18 +250,8 @@
 						в наличии на складе
 					</label>
 				</div>
-				<span>
-					<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
-							onchange="window.location.href = $(this).find(':selected').attr('link')">
-						<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
-						<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
-						<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
-						<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
-						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
-					</select>
-				</span>
 				<div class="quantity">
-					<span>Кол-во на странице:</span>
+					<span>Кол-во на странице:&#160;&#160;</span>
 					<span>
 						<select class="form-control" value="{page/variables/limit}"
 								onchange="window.location.href = $(this).find(':selected').attr('link')">
@@ -276,7 +275,7 @@
 
 	<xsl:template match="section" mode="pic">
 		<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
-		<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
+		<xsl:variable name="product_pic" select="if (product[1]/main_pic != '') then concat(product[1]/@path, product[1]/main_pic) else ''"/>
 		<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 		<div class="device items-catalog__section">
 			<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
