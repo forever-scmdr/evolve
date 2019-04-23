@@ -10,11 +10,11 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> &gt;
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Документация</h1>
+		<h1 class="page-title">Документация</h1>
 
 		<div class="page-content m-t">
 			<h3>Расположение дилеров на карте</h3>

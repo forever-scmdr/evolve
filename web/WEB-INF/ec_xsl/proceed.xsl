@@ -12,12 +12,12 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> &gt;
-				<a href="{page/cart_link}">Изменить заказ</a> &gt;
+				<a href="/">Главная страница</a> <i class="fas fa-angle-right"></i>
+				<a href="{page/cart_link}">Корзина</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Анкета покупателя</h1>
+		<h1 class="page-title">Анкета покупателя</h1>
 
 		<div class="page-content m-t">
 			<xsl:if test="$message">

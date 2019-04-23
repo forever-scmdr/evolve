@@ -16,11 +16,12 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> &gt;
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
 				<xsl:variable name="ns" select="page/news[@id = $ni/news/@id]"/>
 				<a href="{$ns/show_page}">
 					<xsl:value-of select="$ns/name"/>
 				</a>
+				<i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>

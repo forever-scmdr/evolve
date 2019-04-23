@@ -11,12 +11,15 @@
 
 	<xsl:variable name="canonical" select="concat('/', $active_menu_item, '/')"/>
 
+	<xsl:variable name="serial" select="page/variables/serial"/>
+	<xsl:variable name="success" select="$serial and not($serial = 'not_found')"/>
+	<xsl:variable name="not_found" select="$serial and $serial = 'not_found'"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> >
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
 				<xsl:for-each select="$p/parent">
 					<a href="{show_page}"><xsl:value-of select="header"/></a> >
 				</xsl:for-each>
@@ -27,14 +30,18 @@
 
 		<div class="page-content m-t">
 			<a class="button" data-toggle="modal" data-target="#warranty">XXL-гарантия</a>
-			<p>Копия сертификата отправлена вам на  ящик <strong>usermail@mail.com</strong></p>
-			<div>
-				<a href="">Распечатать сертификат</a>
-			</div>
-			<div>
-				<img src="img/{page/variables/serial}.jpg" style="max-width: 600px; box-shadow: 0 0 15px gray;" alt=""/>
-			</div>
-			<p>Товар с таким артикулом не найден. Обратитесь в службу сервиса с помощью <a href="">формы обратной связи</a>.</p>
+			<p>
+				<xsl:if test="$success">Ваш сертификат оформлен и доступен для печати, его копия отправлена на указанный e-mail.</xsl:if>
+				<xsl:if test="$not_found">Товар с указанным артикулом не найден. Проверьте артикул или воспользуйтесь формой обратной связи</xsl:if>
+			</p>
+			<xsl:if test="$success">
+				<div>
+					<a href="#" onclick="document.print()">Распечатать сертификат</a>
+				</div>
+				<div>
+					<img src="img/cert{page/variables/serial}.jpg" style="max-width: 600px; box-shadow: 0 0 15px gray;" alt=""/>
+				</div>
+			</xsl:if>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>

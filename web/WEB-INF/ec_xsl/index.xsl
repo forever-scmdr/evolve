@@ -198,7 +198,7 @@
 			</div>
 		</section>
 		<section class="special-items">
-			<div class="container">
+			<div class="container" style="overflow: hidden;">
 				<div class="block-title">Новинки</div>
 				<div class="special-items__devices slick-slider">
 					<xsl:apply-templates select="page/main_page/product[tag='Новинка']"/>
@@ -206,7 +206,7 @@
 			</div>
 		</section>
 		<section class="special-items">
-			<div class="container">
+			<div class="container" style="overflow: hidden;">
 				<div class="block-title">Акции</div>
 				<div class="special-items__devices slick-slider zu">
 					<xsl:apply-templates select="page/main_page/product[tag='Акция']"/>

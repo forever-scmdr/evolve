@@ -9,11 +9,11 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> &gt;
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Список товаров</h1>
+		<h1 class="page-title">Корзина</h1>
 
 		<div class="cart-container">
 			<xsl:choose>

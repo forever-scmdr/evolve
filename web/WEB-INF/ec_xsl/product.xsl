@@ -226,16 +226,16 @@
 
 				<div class="device-benefits">
 					<div class="device-benefits__item">
-						<i class="fas fa-shield-alt device-benefits__icon"></i>
-						<div class="device-benefits__label">Официальная гарантия и сервис</div>
-					</div>
-					<div class="device-benefits__item">
 						<i class="fas fa-trophy device-benefits__icon"></i>
-						<div class="device-benefits__label">Официальные поставки</div>
+						<div class="device-benefits__label"><a href="https://www.metabo.com/com/en/info/company/metabo-worldwide/" target="_blank" rel="nofollow">Первый официальный дистрибутор</a></div>
 					</div>
 					<div class="device-benefits__item">
-						<i class="far fa-thumbs-up device-benefits__icon"></i>
-						<div class="device-benefits__label">Обучение и сопровождение</div>
+						<img src="img/benefits-icon-2.svg" alt=""/>
+						<div class="device-benefits__label">Прямые поставки из Германии</div>
+					</div>
+					<div class="device-benefits__item">
+						<img src="img/benefits-icon-1.svg" alt=""/>
+						<div class="device-benefits__label">Опыт поставок и ремонта более 20 лет</div>
 					</div>
 				</div>
 				<div class="extra-contacts">

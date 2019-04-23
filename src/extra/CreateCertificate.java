@@ -71,6 +71,7 @@ public class CreateCertificate extends Command implements ItemNames.warranty_for
 			error.addVariable(MESSAGE, "Получение сертификата временно невозможно. Попробуйте позже или обратитесь к менеджерам через обратную связь");
 			return error;
 		}
+		ServerLogger.error("\t\t\t\tWARRANTY START");
 		// Проверка даты сертификата
 		DateTime now = new DateTime(System.currentTimeMillis(), DateTimeZone.UTC);
 		DateTime purchaseDate = new DateTime(form.get_date(), DateTimeZone.UTC);
@@ -82,6 +83,7 @@ public class CreateCertificate extends Command implements ItemNames.warranty_for
 		}
 		DateTime certDate = purchaseDate.plusYears(2);
 
+		ServerLogger.error("\t\t\t\tWARRANTY MAIN");
 		File productPicFile = product.getFileValue(ItemNames.product_.GALLERY, AppContext.getFilesDirPath(product.isFileProtected()));
 		try {
 			// Увеличение нормера сертификата
@@ -90,8 +92,10 @@ public class CreateCertificate extends Command implements ItemNames.warranty_for
 			if (count > 99999)
 				count = 1;
 			String certNumber = String.format("%05d", count);
+			ServerLogger.error("\t\t\t\tWARRANTY COUNTER");
 
 			BufferedImage cert = ImageIO.read(baseCertFile);
+			ServerLogger.error("\t\t\t\tWARRANTY PIC");
 			Graphics graph = cert.getGraphics();
 			if (productPicFile != null && productPicFile.exists()) {
 				BufferedImage productPic = ImageIO.read(productPicFile);
@@ -100,6 +104,7 @@ public class CreateCertificate extends Command implements ItemNames.warranty_for
 				Image tmp = productPic.getScaledInstance(newWidth, PIC_HEIGHT, Image.SCALE_SMOOTH);
 				graph.drawImage(tmp, 290, 1800, null);
 			}
+			ServerLogger.error("\t\t\t\tWARRANTY DRAWN");
 			Font big = new Font(Font.SANS_SERIF, Font.PLAIN, 87);
 			Font normal = new Font(Font.SANS_SERIF, Font.PLAIN, 54);
 			graph.setColor(Color.black);
@@ -114,10 +119,12 @@ public class CreateCertificate extends Command implements ItemNames.warranty_for
 			graph.drawString(form.outputValue(ItemNames.warranty_form_.DATE), 680, 1545);
 			graph.drawString(DateDataType.outputDate(certDate.getMillis(), DateDataType.DAY_FORMATTER), 955, 1650);
 			graph.dispose();
+			ServerLogger.error("\t\t\t\tWARRANTY DISPOSED");
 
 			File newCertFile = new File(AppContext.getRealPath("img/cert" + form.get_serial() + ".jpg"));
 			ImageIO.write(cert, "jpg", newCertFile);
 
+			ServerLogger.error("\t\t\t\tWARRANTY WRITTEN");
 			// Отправка сертификата на почту
 			// Формирование тела письма
 			Multipart mp = new MimeMultipart();
@@ -133,8 +140,15 @@ public class CreateCertificate extends Command implements ItemNames.warranty_for
 			MimeBodyPart textPart = new MimeBodyPart();
 			mp.addBodyPart(textPart);
 			textPart.setContent(mailMessage, "text/plain;charset=UTF-8");
+			ServerLogger.error("\t\t\t\tWARRANTY BEFORE_EMAIL");
 			// Отправка письма
 			EmailUtils.sendGmailDefault(form.get_email(), "Сертификат на технику Metabo", mp);
+			ServerLogger.error("\t\t\t\tWARRANTY EMAIL 1");
+			// Отправка письма админу
+			if (StringUtils.isNotBlank(getVarSingleValue("admin_email"))) {
+				EmailUtils.sendGmailDefault(getVarSingleValue("admin_email"), "Сертификат на технику Metabo", mp);
+			}
+			ServerLogger.error("\t\t\t\tWARRANTY EMAIL 2");
 
 			return getResult("success").addVariable("serial", form.get_serial());
 		} catch (Exception e) {

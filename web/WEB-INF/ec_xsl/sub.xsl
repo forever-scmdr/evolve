@@ -16,11 +16,12 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
+				<a href="/">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
 					<a href="{show_section}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
+				<i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
