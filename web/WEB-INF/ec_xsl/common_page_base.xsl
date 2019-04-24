@@ -216,32 +216,39 @@
 		<!-- FOOTER BEGIN -->
 		<div class="footer-placeholder"></div>
 		<section class="footer">
-		    <div class="container">
-		        <div class="footer__menu">
-		            <a href="">Каталог</a>
-		            <a href="">Новости</a>
-		            <a href="">Акции</a>
-		            <a href="">О компании</a>
-		            <a href="">Сервис</a>
-		            <a href="">Оплата</a>
-		            <a href="">Доставка</a>
-		            <a href="">Контакты</a>
-		        </div>
-		        <div class="footer__content">
-			        <xsl:variable name="footer" select="page/common/footer"/>
-			        <div class="footer__column">
-		                <xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
-				            <div class="title_3"><xsl:value-of select="$footer/block[1]/header" /></div>
-		                </xsl:if>
-				        <xsl:value-of select="$footer/block[1]/text" disable-output-escaping="yes"/>
-		                <div class="forever">
-		                    <img src="img/forever.png" alt="" />
-		                    <a href="forever.by" target="_blank">Разработка сайта студия веб-дизайна Forever</a>
-		                </div>
-		            </div>
+			<div class="container">
+				<div class="footer__menu">
+					<a href="{page/catalog_link}" class="{'active'[$active_menu_item = 'catalog']}">Каталог</a>
+					<xsl:for-each select="page/news">
+						<xsl:variable name="key" select="@key"/>
+						<xsl:variable name="sel" select="page/varibles/sel"/>
+						<a href="{show_page}" class="{'active'[$sel = $key]}">
+							<xsl:value-of select="name"/>
+						</a>
+					</xsl:for-each>
+					<xsl:for-each select="page/custom_pages/menu_custom[in_main_menu = 'да']">
+						<xsl:variable name="key" select="@key"/>
+						<a href="{show_page}" class="{'active'[$active_menu_item = $key]}">
+							<xsl:value-of select="header"/>
+						</a>		
+					</xsl:for-each>
+					<a href="{page/contacts_link}">Контакты</a>
+				</div>
+				<div class="footer__content">
+					<xsl:variable name="footer" select="page/common/footer"/>
+					<div class="footer__column">
+						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
+							<div class="title_3"><xsl:value-of select="$footer/block[1]/header" /></div>
+						</xsl:if>
+						<xsl:value-of select="$footer/block[1]/text" disable-output-escaping="yes"/>
+						<div class="forever">
+							<img src="img/forever.png" alt="" />
+							<a href="forever.by" target="_blank">Разработка сайта студия веб-дизайна Forever</a>
+						</div>
+					</div>
 					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
-		        </div>
-		    </div>
+				</div>
+			</div>
 		</section>
 		<!-- FOOTER END -->
 
@@ -786,10 +793,11 @@
 				</xsl:for-each>
 			</head>
 			<body>
+				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
 				<xsl:for-each select="$body-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
-				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
+				
 				<!-- ALL CONTENT BEGIN -->
 				<div class="content-container">
 					<xsl:call-template name="INC_DESKTOP_HEADER"/>
@@ -806,17 +814,15 @@
 
 				<xsl:call-template name="INC_MOBILE_MENU"/>
 				<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
-				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"/>
+				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
 				<script type="text/javascript" src="js/bootstrap.js"/>
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/fwk/common.js"/>
-				<script type="text/javascript" src="slick/slick.min.js"/>
-				<script type="text/javascript" src="js/truncate.js"/>
+				<script type="text/javascript" src="slick/slick.min.js"></script>
 				<script type="text/javascript">
 					$(document).ready(function() {
-						$('.seo-text').truncate();
 						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
 							type: 'image',
 							closeOnContentClick: true,

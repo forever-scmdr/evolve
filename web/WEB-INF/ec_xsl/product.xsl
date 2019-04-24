@@ -64,7 +64,7 @@
 		<p>арт. <xsl:value-of select="$p/code"/></p>
 		<div class="catalog-item-container">
 			<div class="gallery">
-				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
+				<div class="fotorama" data-nav="thumbs" data-thumbheight="80" data-thumbwidth="80" data-allowfullscreen="true">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
@@ -206,20 +206,21 @@
 
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
+							<xsl:for-each select="$p/product_extra">
+								<xsl:variable name="first" select="position()=1" />
+								<li role="presentation" class="{'active'[$first]}">
+									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a> 
+								</li>
+							</xsl:for-each>
 							<xsl:if test="$p/params">
-							<li role="presentation" class="active">
+							<li role="presentation" class="{'active'[not($p/product_extra)]}">
 								<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
 							</li>
 							</xsl:if>
-							<xsl:for-each select="$p/product_extra">
-								<li role="presentation">
-									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a>
-								</li>
-							</xsl:for-each>
 					</ul>
 				<div class="tab-content">
 					<xsl:if test="$p/params">
-						<div role="tabpanel" class="tab-pane active" id="tab1">
+						<div role="tabpanel" class="tab-pane {'active'[not($p/product_extra)]}" id="tab1">
 							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
 							<table>
 								<colgroup>
@@ -231,7 +232,7 @@
 											<p><strong><xsl:value-of select="@caption"/></strong></p>
 										</td>
 										<td>
-											<p><xsl:value-of select="."/></p>
+											<p><xsl:value-of select="."/><xsl:text> </xsl:text><xsl:value-of select="@description"/></p>
 										</td>
 									</tr>
 								</xsl:for-each>
@@ -240,11 +241,10 @@
 						</div>
 					</xsl:if>
 					<xsl:for-each select="$p/product_extra">
-						<div role="tabpanel" class="tab-pane" id="tab{@id}">
+						<xsl:variable name="first" select="position()=1" />
+						<div role="tabpanel" class="tab-pane {'active'[$first]}" id="tab{@id}">
 							<h4><xsl:value-of select="name"/></h4>
-							<div class="catalog-items">
-								<xsl:value-of select="text" disable-output-escaping="yes"/>
-							</div>
+							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
 					</xsl:for-each>
 				</div>
