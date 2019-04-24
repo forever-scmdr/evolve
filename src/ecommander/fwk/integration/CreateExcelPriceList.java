@@ -31,6 +31,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private CellStyle auxHeaderStyle;
 	//file Constants
 	protected static final String CODE_FILE = "Код";
+	protected static final String MIZIDA_CODE_FILE = "Артикул MIZIDA";
 	protected static final String IS_DEVICE_FILE = "Отдельный товар";
 	protected static final String NAME_FILE = "Название";
 	protected static final String PRICE_FILE = "Цена";
@@ -47,6 +48,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 	private static final LinkedHashSet<String> BUILT_IN_PARAMS = new LinkedHashSet<String>() {{
 		add(CODE_PARAM);
+		add("mizida_code");
 		add(NAME_PARAM);
 		add(PRICE_PARAM);
 		add(PRICE_OLD_PARAM);
@@ -193,6 +195,10 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		Row row = sh.createRow(++rowIdx);
 		row.createCell(++colIdx).setCellValue(CODE_FILE);
 		sh.setColumnWidth(colIdx, 20 * 256);
+
+		row.createCell(++colIdx).setCellValue(MIZIDA_CODE_FILE);
+		sh.setColumnWidth(colIdx, 20 * 256);
+
 		if(writeLineProducts && writeLineProductsHeader) {
 			row.createCell(++colIdx).setCellValue(IS_DEVICE_FILE);
 			sh.setColumnWidth(colIdx, 20 * 256);
@@ -298,6 +304,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			String currencyID = product.outputValue(CURRENCY_ID_PARAM);
 
 			row.createCell(++colIdx).setCellValue(product.getStringValue(CODE_PARAM, ""));
+			row.createCell(++colIdx).setCellValue(product.getStringValue("mizida_code", ""));
 			if(writeLineProducts && writeLineProductsHeader) {
 				row.createCell(++colIdx).setCellValue("+");
 			}
@@ -372,6 +379,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						currencyID = lineProduct.outputValue(CURRENCY_ID_PARAM);
 
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(CODE_PARAM, ""));
+						row.createCell(++colIdx).setCellValue("");
 						row.createCell(++colIdx).setCellValue("");
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(NAME_PARAM, ""));
 						row.createCell(++colIdx).setCellValue(priceValue);

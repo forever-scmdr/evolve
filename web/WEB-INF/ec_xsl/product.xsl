@@ -61,7 +61,7 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
-		<p>арт. <xsl:value-of select="$p/code"/></p>
+		<p>арт. <xsl:value-of select="$p/mizida_code"/></p>
 		<div class="catalog-item-container">
 			<div class="gallery">
 				<div class="fotorama" data-nav="thumbs" data-thumbheight="80" data-thumbwidth="80" data-allowfullscreen="true">
@@ -180,6 +180,9 @@
 						<i class="far fa-thumbs-up device-benefits__icon"></i>
 						<div class="device-benefits__label">Обучение и сопровождение</div>
 					</div>
+				</div>
+				<div class="extra-contacts">
+					<xsl:value-of select="$common/product_side/text" disable-output-escaping="yes"/>
 				</div>
 				<div class="extra-contacts">
 					<div class="extra-contacts__title">Звоните, чтобы получить помощь и консультацию</div>

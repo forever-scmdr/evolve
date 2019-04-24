@@ -127,6 +127,7 @@
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
 	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product *" virtual="true" ag-id="1021" ag-hash="1523682729">
+		<parameter name="mizida_code" type="string" caption="фирменный артикул MIZIDA" text-index="fulltext" />
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
@@ -403,6 +404,11 @@
 		<child item="delivery" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
+		<child item="product_side" single="true"/>
+	</item>
+
+	<item name="product_side" caption="В карточке товара" ag-id="2233" ag-hash="1014531751" >
+		<parameter name="text" type="text" caption="Текст"/>
 	</item>
 
 	<item name="block" caption="Блок текста (кода)" key="header" ag-id="1341" ag-hash="93832333">

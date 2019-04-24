@@ -45,6 +45,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 	private static HashMap<String, String> HEADER_PARAM = new HashMap() {{
 		put(CreateExcelPriceList.CODE_FILE.toLowerCase(), CODE_PARAM);
+		put(CreateExcelPriceList.MIZIDA_CODE_FILE.toLowerCase(), "mizida_code");
 		put(CreateExcelPriceList.NAME_FILE.toLowerCase(), NAME_PARAM);
 		put(CreateExcelPriceList.PRICE_FILE.toLowerCase(), PRICE_PARAM);
 		put(CreateExcelPriceList.PRICE_OLD_FILE.toLowerCase(), PRICE_OLD_PARAM);

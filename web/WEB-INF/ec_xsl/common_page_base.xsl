@@ -526,7 +526,7 @@
 			</xsl:if>
 			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
-			<div class="device__article-number"><xsl:value-of select="code"/></div>
+			<div class="device__article-number">арт. <xsl:value-of select="mizida_code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
 					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
@@ -615,7 +615,7 @@
 					<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 				</div>
 			</div>
-			<div class="device__article-number"><xsl:value-of select="code"/></div>
+			<div class="device__article-number">арт. <xsl:value-of select="mizida_code"/></div>
 			<div class="device__actions device_row__actions">
 				<xsl:if test="not($is_compare)">
 					<div id="compare_list_{@id}">
