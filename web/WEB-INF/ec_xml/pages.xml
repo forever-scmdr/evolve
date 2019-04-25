@@ -1518,9 +1518,7 @@
 	<page name="create_excel_pricelist_min" template="integration/create_excel" authority-groups="common">
 		<request>
 			<var name="action"/>
-			<var name="prod_params" value="no"/>
-			<var name="aux_params" value="no"/>
-			<var name="manuals" value="no"/>
+			<var name="price_only" value="yes"/>
 			<var name="sec"/>
 		</request>
 		<command class="ecommander.fwk.integration.CreateExcelPriceList" clear-cache="yes">
