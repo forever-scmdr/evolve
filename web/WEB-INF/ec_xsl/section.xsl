@@ -14,7 +14,17 @@
 	</xsl:variable>
 	<xsl:variable name="x" select="f:num(page/variables/page) mod count($cities)" />
 
-	<xsl:variable name="title" select="string-join(('Купить', lower-case($sel_sec/name), 'в',$cities[$x],'с доставкой по РБ - Интернет-магазин Mystery.by'), ' ')"/>
+	<xsl:variable name="page_postfix" select="if(/page/variables/page = '1') then '' else concat('Страница: ', /page/variables/page, ',' )"/>
+
+	<xsl:variable name="from" select="(f:num(/page/variables/page) * f:num(/page/variables/limit)) - f:num(/page/variables/limit) + 1" />
+
+	<xsl:variable name="to" select="$from + count($sel_sec/product) - 1"/>
+
+	<xsl:variable name="product_from_to" select="string-join(('товары с', $from, 'по', $to ), ' ')"/>
+
+	<xsl:variable name="title_postfix" select="string-join(('в',$cities[$x],'с доставкой - Mystery.by.', $page_postfix, $product_from_to),' ')"/>
+
+	<xsl:variable name="title" select="string-join(('Купить', lower-case($sel_sec/name), $title_postfix), ' ')"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $sel_sec/name"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
@@ -31,8 +41,8 @@
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="quote">"</xsl:variable>
-		<xsl:variable name="min" select="f:currency_decimal(//min/price)"/>
-		<xsl:variable name="max" select="f:currency_decimal(//max/price)"/>
+		<xsl:variable name="min" select="f:currency(min($sel_sec/product/f:num(price)))"/>
+		<xsl:variable name="max" select="f:currency(max($sel_sec/product/f:num(price)))"/>
 		<script type="application/ld+json">
 		{
 			"@context": "http://schema.org/",
@@ -46,7 +56,7 @@
 				"priceCurrency": "BYN",
 				"lowPrice": <xsl:value-of select="concat($quote,$min, $quote)"/>,
 				"highPrice": <xsl:value-of select="concat($quote, $max, $quote)"/>,
-				"offerCount": <xsl:value-of select="concat($quote, $sel_sec/product_count, $quote)"/>
+				"offerCount": <xsl:value-of select="concat($quote, string(count($sel_sec/product)), $quote)"/>
 			},
 			"aggregateRating": {
 				"@type": "AggregateRating",
@@ -95,8 +105,8 @@
 		<h1 class="page-title">
 			<xsl:value-of select="$h1"/>
 		</h1>
-		<xsl:if test="$seo[1]/text">
-			<div class="page-content m-t seo-text">
+		<xsl:if test="$seo[1]/text  and /page/variables/page = '1'">
+			<div class="page-content m-t ">
 				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
 			</div>
 		</xsl:if>

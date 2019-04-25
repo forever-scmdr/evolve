@@ -483,11 +483,17 @@
 		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
+		<child item="soc" single="true"/>
+	</item>
+
+	<item name="soc" caption="соц. сети" ag-id="1804" ag-hash="114055">
+		<parameter name="code" type="plain-text" caption="Код"/>
 	</item>
 
 	<item name="block" caption="Блок текста (кода)" key="header" ag-id="1341" ag-hash="93832333">
 		<parameter name="header" type="string" caption="Заголовок"/>
-		<parameter name="text" type="short-text" caption="Текст (код)"/>
+		<parameter name="text" type="short-text" caption="Текст"/>
+		<parameter name="code" type="plain-text" caption="Код"/>
 	</item>
 
 	<item name="block_array" caption="Массив блоков" virtual="true" ag-id="1342" ag-hash="1210858535">
@@ -592,6 +598,7 @@
 		<parameter name="name" type="string" caption="Имя покупателя"/>
 		<parameter name="product_code" type="string" caption="Артикул товара"/>
 		<parameter name="product_name" type="string" caption="Название товара"/>
+		<parameter name="price" type="string" caption="Цена"/>
 	</item>
 
 	<item name="custom_pages" caption="Информационные разделы" ag-id="26" ag-hash="727106934">

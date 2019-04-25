@@ -92,6 +92,7 @@ public class NonemptyEmailCommand extends Command {
 			ExecutablePagePE emailPage = null;
 			if (!StringUtils.isBlank(templatePageName)) {
 				try {
+					saveSessionForm(formNameStr);
 					emailPage = getExecutablePage(templatePageName);
 				} catch (Exception e) {
 					emailPage = null;

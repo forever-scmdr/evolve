@@ -160,7 +160,9 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
-			<a href="{link}" class="banner__link"></a>
+			<xsl:if test="link != ''">
+				<a href="{link}" class="banner__link"></a>
+			</xsl:if>
 		</div>
 	</xsl:template>
 
@@ -197,14 +199,16 @@
 				<xsl:apply-templates select="page/banner_section[3]/banner"/>
 			</div>
 		</section>
-		<section class="special-items">
-			<div class="container">
-				<div class="block-title">Новинки</div>
-				<div class="special-items__devices slick-slider">
-					<xsl:apply-templates select="page/main_page/product"/>
+		<xsl:if test="page/main_page/product">
+			<section class="special-items">
+				<div class="container">
+					<div class="block-title">Новинки</div>
+					<div class="special-items__devices slick-slider">
+						<xsl:apply-templates select="page/main_page/product"/>
+					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		</xsl:if>
 		<section class="benefits">
 			<div class="container">
 				<div class="block-title">Почему нас выбирают клиенты</div>
@@ -218,6 +222,14 @@
 				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
 			</div>
 		</section>
+
+		<xsl:if test="$common/soc">
+			<section class="s-info pt-4">
+				<div class="container">
+					<xsl:value-of select="$common/soc/code" disable-output-escaping="yes"/>
+				</div>
+			</section>
+		</xsl:if>
 
 	</xsl:template>
 

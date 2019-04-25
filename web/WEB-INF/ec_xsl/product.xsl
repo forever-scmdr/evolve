@@ -22,7 +22,7 @@
 	<xsl:variable name="music_title" select="string-join(('Купить музыку', $p/name,',', $p/artist,'в Минске - интернет магазин Mystery.by, Беларусь'), ' ')"/>
 	<xsl:variable name="music_description" select="string-join(('Музыка: альбом', $p/name,',', $p/artist, 'в магазине Мистери недорого. Доставка по Беларуси. ЗАКАЗЫВАЙТЕ по ☎☎☎ +375 29 257 08 03!'), ' ')"/>
 
-	<xsl:variable name="book_title" select="string-join(('Купить книгу', $p/name,',', $p/author, ': цена ', $p/price,'byn в Минске - интернет магазин Mystery.by, Беларусь'),' ')"/>
+	<xsl:variable name="book_title" select="string-join(('Купить книгу', $p/name,'', $p/author,': цена ', $p/price,'byn в Минске - интернет магазин Mystery.by, Беларусь'),' ')"/>
 	<xsl:variable name="book_description" select="string-join(('Книга', $p/name,',', $p/author, 'в магазине Мистери недорого. Доставка по Беларуси. ЗАКАЗЫВАЙТЕ по ☎☎☎ +375 29 257 08 03!'),' ')"/>
 
 
@@ -80,12 +80,12 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
-		<p>арт. <a target="_blank" rel="nofollow" href="{concat('https://www.ozon.ru/context/detail/id/', $p/code, '/?partner=mysteryby')}"><xsl:value-of select="$p/code"/></a></p>
+		<p>арт. <!-- <a target="_blank" rel="nofollow" href="{concat('https://www.ozon.ru/context/detail/id/', $p/code, '/?partner=mysteryby')}"> --><xsl:value-of select="$p/code"/><!-- </a> --></p>
 		<div class="catalog-item-container">
 			<div class="gallery">
-				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
+				<div class="fotorama" data-max-width="350" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
 					<xsl:for-each select="$p/picture">
-						<img src="{.}" alt="{$h1}"/>
+						<img src="{.}" alt="{string-join(($p/name, $p/author), '. ')}"/>
 					</xsl:for-each>
 				</div>
 			</div>
@@ -238,6 +238,10 @@
 						<xsl:if test="$p/ISBN"><li>ISBN: <xsl:value-of select="$p/ISBN"/></li></xsl:if>
 					</ul>
 				</div>
+				<p>Поделиться с друзьями в: <script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
+				<script src="//yastatic.net/share2/share.js"></script>
+				<div class="ya-share2" data-services="vkontakte,facebook,pinterest,viber,whatsapp,skype,telegram" data-image="https://www.mystery.by/img/logo-big.svg" data-counter=""></div>
+			</p>
 			</div>
 			<div class="description">
 
@@ -287,12 +291,31 @@
 					</xsl:for-each>
 				</div>
 			</div>
+			<xsl:if test="page/also">
+				<div class="block-title">Смотрите также</div>
+				<div class="page-content" style="width: 100%;">
+				<div class="catalog-items">
+					<xsl:apply-templates select="page/also"/>
+				</div>
+				
+				</div>	
+			</xsl:if>
+
 		</div>
+
 		<xsl:if test="page/assoc">
 			<h3>Вас также может заинтересовать</h3>
 			<div class="catalog-items">
 				<xsl:apply-templates select="page/assoc" mode="lines"/>
 			</div>
+		</xsl:if>
+
+		<xsl:if test="$common/soc">
+			<section class="s-info pt-4">
+				<div class="container">
+					<xsl:value-of select="$common/soc/code" disable-output-escaping="yes"/>
+				</div>
+			</section>
 		</xsl:if>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>

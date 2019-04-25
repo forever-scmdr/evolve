@@ -39,7 +39,7 @@
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
 						<div class="form-group">
-							<label>Ваше имя *:</label>
+							<label>Ваше ФИО *:</label>
 							<input type="text" class="form-control" name="{$inp/name/@input}" value="{if($inp/name != '') then $inp/name else $phys_reg/name}" error="{$inp/name/@validation-error}"/>
 						</div>
 						<div class="form-group">

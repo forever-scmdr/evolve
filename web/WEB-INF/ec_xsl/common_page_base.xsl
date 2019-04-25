@@ -17,7 +17,8 @@
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
 	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 
-	<xsl:variable name="title" select="'Мизида'" />
+	<xsl:variable name="title" select="'Mystery.by'" />
+	<xsl:variable name="title_postfix"/>
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
@@ -78,7 +79,7 @@
 				<a href="{$main_host}" class="logo"><img src="img/logo-big.svg" alt="" /></a>
 				<div class="header__content">
 					<div class="header__columns">
-						<form action="{page/search_link}" method="post" class="header__search header__column">
+						<form action="{page/search_link}" method="get" class="header__search header__column">
 							<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" />
 							<input type="submit" class="button header__button" value="Найти" />
 						</form>
@@ -190,7 +191,7 @@
 					<a href="javascript:showMobileMainMenu()"><i class="fas fa-bars"></i></a>
 				</div>
 				<div class="search-container">
-					<form action="{page/search_link}" method="post">
+					<form action="{page/search_link}" method="get">
 						<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
 					</form>
 				</div>
@@ -227,7 +228,7 @@
 		                <xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
 				            <div class="title_3"><xsl:value-of select="$footer/block[1]/header" /></div>
 		                </xsl:if>
-				        <xsl:value-of select="$footer/block[1]/text" disable-output-escaping="yes"/>
+				        <xsl:value-of select="if(not($footer/block[1]/code != '')) then $footer/block[1]/text else $footer/block[1]/code" disable-output-escaping="yes"/>
 		                <div class="forever">
 		                    <img src="img/forever.png" alt="" />
 		                    <a href="http://forever.by" target="_blank">Разработка сайта студия веб-дизайна Forever</a>
@@ -505,7 +506,7 @@
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
 
-	<xsl:template match="accessory | set | probe | product | assoc">
+	<xsl:template match="accessory | set | probe | product | assoc | also">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
@@ -710,7 +711,7 @@
 				<div class="mc-container">
 					<xsl:call-template name="INC_MOBILE_HEADER"/>
 					<xsl:call-template name="CONTENT"/>
-					<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub'">
+					<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub' and page/@name != 'search'">
 						<div class="page-content">
 							<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
 						</div>
@@ -787,10 +788,11 @@
 				</xsl:for-each>
 			</head>
 			<body>
+				
+				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
 				<xsl:for-each select="$body-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
-				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
 				<!-- ALL CONTENT BEGIN -->
 				<div class="content-container">
 					<xsl:call-template name="INC_DESKTOP_HEADER"/>
@@ -998,7 +1000,7 @@
 
 	<xsl:template match="seo | url_seo">
 		<title>
-			<xsl:value-of select="title"/>
+			<xsl:value-of select="string-join(($seo/title, $title_postfix), ' ')"/>
 		</title>
 		<meta name="description" content="{description}"/>
 		<meta name="keywords" content="{keywords}"/>

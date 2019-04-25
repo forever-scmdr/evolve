@@ -5,6 +5,9 @@
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:f="f:f"
         version="2.0">
+
+    <xsl:import href="utils/price_conversions.xsl"/>
+        
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/html" indent="yes" omit-xml-declaration="yes" exclude-result-prefixes="#all"/>
 
 	<xsl:variable name="message" select="page/variables/message"/>
@@ -15,6 +18,8 @@
 	              select="if (page/variables/pname) then page/variables/pname else $form/input/product_name"/>
 	<xsl:variable name="pcode"
 	              select="if (page/variables/pcode) then page/variables/pcode else $form/input/product_code"/>
+	<xsl:variable name="price"
+	              select="if (page/variables/price) then page/variables/price else $form/input/price"/>              
 
 	<xsl:template match="/">
 		<div class="result" id="modal-one_click">
@@ -44,8 +49,12 @@
 									<label>Товар:</label>
 									<input type="text" class="form-control"
 									       name="{$form/input/product_name/@input}" value="{$pname}" readonly="readonly"/><br/>
+									<label>Артикул:</label>      
 									<input type="text" class="form-control"
-									       name="{$form/input/product_code/@input}" value="{$pcode}" readonly="readonly"/>
+									       name="{$form/input/product_code/@input}" value="{$pcode}" readonly="readonly"/><br/>
+									<label>Цена:</label>
+									<input type="text" class="form-control"
+									       name="{$form/input/price/@input}" value="{format-number(f:num($price), '#0.00')} руб." readonly="readonly"/>
 								</div>
 								<input name="topic" value="{concat($pname, '. Арт: ', $pcode)}" type="hidden"/>
 								<input type="submit" value="Заказать"/>
