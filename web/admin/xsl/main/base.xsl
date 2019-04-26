@@ -128,7 +128,7 @@
 					</div>
 					<div class="mid">
 						<div class="left-col">
-							<div class="list mass-select">
+							<!--<div class="list mass-select">
 								<h4 id="mass-selection-trigger" class="mass-selection-trigger">Выбрать несколько айтемов</h4>
 								<div class="selection-actions edit">
 									<div id="actions-items" class="actions-items">
@@ -153,18 +153,24 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<div id="subitems">
 								<div style="min-height: 100px; margin-bottom: 10px;"/>
 							</div>
 							<div class="list additional">
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
+									<li class="visible" title="Список разделов для формирования прайс-листов" style="background: #0c609d;">
+										<a href="section_list" style="color: #fff;">Список разделов</a>
+									</li>
+									<li class="visible" title="Разбор прайс-листа Excel" style="background: #0c609d;">
+										<a href="parse_excel/?action=start" style="color: #fff;">Разбор прайс-листа Excel</a>
+									</li>
 									<li class="visible" title="Загрзить товары из Yandex Market">
 										<a href="integrate/?action=start">Интеграция яндекс-маркета</a>
 									</li>
 									<li class="visible" title="Разобрать прайс-листы определенных производителей">
-										<a href="integrate_excel/?action=start">Интеграция прайс-листов</a>
+										<a href="integrate_excel/?action=start">Интеграция Складов</a>
 									</li>
 									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 										<a href="generate_sitemap">Обновить карту сайта</a>

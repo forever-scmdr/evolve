@@ -5964,7 +5964,7 @@
 <!--END_p5928559-->
 
 <!--START_p953048-->
-<item name="p953048" caption="Сердечники ферритовые" key="" ag-id="0" ag-hash="-1996427475" virtual="false" user-def="true" description="" super="params *">
+<item name="p953048" caption="Сердечники ферритовые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="882" ag-hash="-1996427475">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_serdechnika" caption="Тип сердечника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-75875149" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="versiya" caption="Версия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="351608321" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -5993,7 +5993,7 @@
 <!--END_p953048-->
 
 <!--START_p956873-->
-<item name="p956873" caption="Каркасы и аксессуары" key="" ag-id="0" ag-hash="-1996330326" virtual="false" user-def="true" description="" super="params *">
+<item name="p956873" caption="Каркасы и аксессуары" key="" virtual="false" user-def="true" description="" super="params *" ag-id="889" ag-hash="-1996330326">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_karkasa" caption="Тип каркаса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-595981732" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="versiya" caption="Версия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="351608321" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6022,7 +6022,7 @@
 <!--END_p956873-->
 
 <!--START_p961010-->
-<item name="p961010" caption="Корпуса система 19 дюймов - Аксессуары" key="" ag-id="0" ag-hash="-1995563637" virtual="false" user-def="true" description="" super="params *">
+<item name="p961010" caption="Корпуса система 19 дюймов - Аксессуары" key="" virtual="false" user-def="true" description="" super="params *" ag-id="905" ag-hash="-1995563637">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_aksessuarov_dlya_korpusov" caption="Тип аксессуаров для корпусов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1120149500" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6033,7 +6033,7 @@
 <!--END_p961010-->
 
 <!--START_p961044-->
-<item name="p961044" caption="Корпуса система 19 дюймов" key="" ag-id="0" ag-hash="-1995563540" virtual="false" user-def="true" description="" super="params *">
+<item name="p961044" caption="Корпуса система 19 дюймов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="906" ag-hash="-1995563540">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="poleznaya_vysota_u" caption="Полезная высота (U)" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1130442564" description="U" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6057,7 +6057,7 @@
 <!--END_p961044-->
 
 <!--START_p961264-->
-<item name="p961264" caption="Экранирующие корпуса" key="" ag-id="0" ag-hash="-1995561556" virtual="false" user-def="true" description="" super="params *">
+<item name="p961264" caption="Экранирующие корпуса" key="" virtual="false" user-def="true" description="" super="params *" ag-id="907" ag-hash="-1995561556">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_h" caption="Размер Х" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="601968120" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6075,7 +6075,7 @@
 <!--END_p961264-->
 
 <!--START_p961385-->
-<item name="p961385" caption="Корпуса универсальные" key="" ag-id="0" ag-hash="-1995560532" virtual="false" user-def="true" description="" super="params *">
+<item name="p961385" caption="Корпуса универсальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="908" ag-hash="-1995560532">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_h" caption="Размер Х" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="601968120" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6107,7 +6107,7 @@
 <!--END_p961385-->
 
 <!--START_p963576-->
-<item name="p963576" caption="Корпуса для устройств с индикатором" key="" ag-id="0" ag-hash="-1995499058" virtual="false" user-def="true" description="" super="params *">
+<item name="p963576" caption="Корпуса для устройств с индикатором" key="" virtual="false" user-def="true" description="" super="params *" ag-id="909" ag-hash="-1995499058">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_h" caption="Размер Х" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="601968120" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6133,7 +6133,7 @@
 <!--END_p963576-->
 
 <!--START_p964296-->
-<item name="p964296" caption="Корпуса для модульной аппаратуры" key="" ag-id="0" ag-hash="-1995472088" virtual="false" user-def="true" description="" super="params *">
+<item name="p964296" caption="Корпуса для модульной аппаратуры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="911" ag-hash="-1995472088">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="klass_zaschity" caption="Класс защиты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-321513636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6161,7 +6161,7 @@
 <!--END_p964296-->
 
 <!--START_p964755-->
-<item name="p964755" caption="Корпуса настенные" key="" ag-id="0" ag-hash="-1995467408" virtual="false" user-def="true" description="" super="params *">
+<item name="p964755" caption="Корпуса настенные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="912" ag-hash="-1995467408">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_h" caption="Размер Х" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="601968120" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6189,7 +6189,7 @@
 <!--END_p964755-->
 
 <!--START_p965454-->
-<item name="p965454" caption="Корпуса с панелью" key="" ag-id="0" ag-hash="-1995440501" virtual="false" user-def="true" description="" super="params *">
+<item name="p965454" caption="Корпуса с панелью" key="" virtual="false" user-def="true" description="" super="params *" ag-id="913" ag-hash="-1995440501">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="seriya_korpusa" caption="Серия корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="546315827" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6214,7 +6214,7 @@
 <!--END_p965454-->
 
 <!--START_p966213-->
-<item name="p966213" caption="Корпуса устройств сигнализ. и датчиков" key="" ag-id="0" ag-hash="-1995412757" virtual="false" user-def="true" description="" super="params *">
+<item name="p966213" caption="Корпуса устройств сигнализ. и датчиков" key="" virtual="false" user-def="true" description="" super="params *" ag-id="914" ag-hash="-1995412757">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_h" caption="Размер Х" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="601968120" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6242,7 +6242,7 @@
 <!--END_p966213-->
 
 <!--START_p966389-->
-<item name="p966389" caption="Корпуса панельные" key="" ag-id="0" ag-hash="-1995411573" virtual="false" user-def="true" description="" super="params *">
+<item name="p966389" caption="Корпуса панельные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="915" ag-hash="-1995411573">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_h" caption="Размер Х" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="601968120" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6272,7 +6272,7 @@
 <!--END_p966389-->
 
 <!--START_p970696-->
-<item name="p970696" caption="Корпуса для блоков питания" key="" ag-id="0" ag-hash="-1994663887" virtual="false" user-def="true" description="" super="params *">
+<item name="p970696" caption="Корпуса для блоков питания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="924" ag-hash="-1994663887">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_h" caption="Размер Х" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="601968120" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6291,7 +6291,7 @@
 <!--END_p970696-->
 
 <!--START_p970803-->
-<item name="p970803" caption="Корпуса для систем Embedded" key="" ag-id="0" ag-hash="-1994662247" virtual="false" user-def="true" description="" super="params *">
+<item name="p970803" caption="Корпуса для систем Embedded" key="" virtual="false" user-def="true" description="" super="params *" ag-id="925" ag-hash="-1994662247">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="naznachenie" caption="Назначение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1886637308" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6308,7 +6308,7 @@
 <!--END_p970803-->
 
 <!--START_p971044-->
-<item name="p971044" caption="Корпуса для герметизации" key="" ag-id="0" ag-hash="-1994640019" virtual="false" user-def="true" description="" super="params *">
+<item name="p971044" caption="Корпуса для герметизации" key="" virtual="false" user-def="true" description="" super="params *" ag-id="926" ag-hash="-1994640019">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_h" caption="Размер Х" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="601968120" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6331,7 +6331,7 @@
 <!--END_p971044-->
 
 <!--START_p971268-->
-<item name="p971268" caption="Корпуса на DIN-рейку" key="" ag-id="0" ag-hash="-1994638031" virtual="false" user-def="true" description="" super="params *">
+<item name="p971268" caption="Корпуса на DIN-рейку" key="" virtual="false" user-def="true" description="" super="params *" ag-id="927" ag-hash="-1994638031">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_korpusa" caption="Тип корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-195005443" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_y" caption="Размер Y" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="601968137" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6366,7 +6366,7 @@
 <!--END_p971268-->
 
 <!--START_p971803-->
-<item name="p971803" caption="Аксессуары к корпусам на DIN-рейку" key="" ag-id="0" ag-hash="-1994632456" virtual="false" user-def="true" description="" super="params *">
+<item name="p971803" caption="Аксессуары к корпусам на DIN-рейку" key="" virtual="false" user-def="true" description="" super="params *" ag-id="928" ag-hash="-1994632456">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_aksessuarov_dlya_korpusov" caption="Тип аксессуаров для корпусов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1120149500" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="primenenie" caption="Применение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1164660268" description="M Modulbox One, для корпусов" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6399,7 +6399,7 @@
 <!--END_p971803-->
 
 <!--START_p1081538-->
-<item name="p1081538" caption="Аккумуляторы" key="" ag-id="0" ag-hash="-408301934" virtual="false" user-def="true" description="" super="params *">
+<item name="p1081538" caption="Аккумуляторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1185" ag-hash="-408301934">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_akkumulyatora" caption="Тип аккумулятора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1801150590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_batarei" caption="Размер батареи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-458351686" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6442,7 +6442,7 @@
 <!--END_p1081538-->
 
 <!--START_p1083441-->
-<item name="p1083441" caption="Батареи - контейнеры и держатели" key="" ag-id="0" ag-hash="-408243289" virtual="false" user-def="true" description="" super="params *">
+<item name="p1083441" caption="Батареи - контейнеры и держатели" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1186" ag-hash="-408243289">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_aksessuara_dlya_batarei" caption="Тип аксессуара для батареи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2005277953" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_batarei" caption="Размер батареи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-458351686" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6476,7 +6476,7 @@
 <!--END_p1083441-->
 
 <!--START_p1084080-->
-<item name="p1084080" caption="Аккумуляторы кислотные" key="" ag-id="0" ag-hash="-408217219" virtual="false" user-def="true" description="" super="params *">
+<item name="p1084080" caption="Аккумуляторы кислотные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1187" ag-hash="-408217219">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_akkumulyatora" caption="Тип аккумулятора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1801150590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="nominalnoe_napryagenie" caption="Номинальное напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1169898616" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6499,7 +6499,7 @@
 <!--END_p1084080-->
 
 <!--START_p1084654-->
-<item name="p1084654" caption="Батареи" key="" ag-id="0" ag-hash="-408211542" virtual="false" user-def="true" description="" super="params *">
+<item name="p1084654" caption="Батареи" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1188" ag-hash="-408211542">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_batarei" caption="Тип батареи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="7984774" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="nominalnoe_napryagenie" caption="Номинальное напряжение" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1169898616" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6528,7 +6528,7 @@
 <!--END_p1084654-->
 
 <!--START_p1086304-->
-<item name="p1086304" caption="Блоки питания к ноутбукам" key="" ag-id="0" ag-hash="-408154998" virtual="false" user-def="true" description="" super="params *">
+<item name="p1086304" caption="Блоки питания к ноутбукам" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1189" ag-hash="-408154998">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_bloka_pitaniya" caption="Тип блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1568080785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vyhodnoe_napryagenie" caption="Выходное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1030150406" description="В DC" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6560,7 +6560,7 @@
 <!--END_p1086304-->
 
 <!--START_p1087125-->
-<item name="p1087125" caption="Компьютерные блоки питания и UPS&apos;ы" key="" ag-id="0" ag-hash="-408127066" virtual="false" user-def="true" description="" super="params *">
+<item name="p1087125" caption="Компьютерные блоки питания и UPS&apos;ы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1190" ag-hash="-408127066">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_bloka_pitaniya" caption="Тип блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1568080785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_bloka_pitaniya" caption="Вид блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1405378907" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6598,7 +6598,7 @@
 <!--END_p1087125-->
 
 <!--START_p1087514-->
-<item name="p1087514" caption="Блоки питания от сети" key="" ag-id="0" ag-hash="-408123254" virtual="false" user-def="true" description="" super="params *">
+<item name="p1087514" caption="Блоки питания от сети" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1191" ag-hash="-408123254">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_bloka_pitaniya" caption="Тип блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1568080785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_bloka_pitaniya" caption="Вид блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1405378907" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6623,7 +6623,7 @@
 <!--END_p1087514-->
 
 <!--START_p1087551-->
-<item name="p1087551" caption="Открытые блоки питания" key="" ag-id="0" ag-hash="-408123133" virtual="false" user-def="true" description="" super="params *">
+<item name="p1087551" caption="Открытые блоки питания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1192" ag-hash="-408123133">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_bloka_pitaniya" caption="Тип блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1568080785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6654,7 +6654,7 @@
 <!--END_p1087551-->
 
 <!--START_p1089983-->
-<item name="p1089983" caption="Блоки питания настольные" key="" ag-id="0" ag-hash="-408059612" virtual="false" user-def="true" description="" super="params *">
+<item name="p1089983" caption="Блоки питания настольные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1193" ag-hash="-408059612">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_bloka_pitaniya" caption="Тип блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1568080785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vyhodnoe_napryagenie" caption="Выходное напряжение" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1030150406" description="В DC" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6690,7 +6690,7 @@
 <!--END_p1089983-->
 
 <!--START_p1091805-->
-<item name="p1091805" caption="Блоки питания для LED" key="" ag-id="0" ag-hash="-407375626" virtual="false" user-def="true" description="" super="params *">
+<item name="p1091805" caption="Блоки питания для LED" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1194" ag-hash="-407375626">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_bloka_pitaniya" caption="Тип блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1568080785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="primenenie" caption="Применение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1164660268" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6733,7 +6733,7 @@
 <!--END_p1091805-->
 
 <!--START_p1094783-->
-<item name="p1094783" caption="Блоки питания и преобразователи" key="" ag-id="0" ag-hash="-407286968" virtual="false" user-def="true" description="" super="params *">
+<item name="p1094783" caption="Блоки питания и преобразователи" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1195" ag-hash="-407286968">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_preobrazovatelya" caption="Тип преобразователя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="185467938" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vyhodnaya_moschnost" caption="Выходная мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="576005614" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6765,7 +6765,7 @@
 <!--END_p1094783-->
 
 <!--START_p1096490-->
-<item name="p1096490" caption="Блоки питания на DIN-рейку" key="" ag-id="0" ag-hash="-407230241" virtual="false" user-def="true" description="" super="params *">
+<item name="p1096490" caption="Блоки питания на DIN-рейку" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1196" ag-hash="-407230241">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_bloka_pitaniya" caption="Тип блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1568080785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6813,7 +6813,7 @@
 <!--END_p1096490-->
 
 <!--START_p1101168-->
-<item name="p1101168" caption="Блоки питания для встраивания" key="" ag-id="0" ag-hash="-387064702" virtual="false" user-def="true" description="" super="params *">
+<item name="p1101168" caption="Блоки питания для встраивания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1197" ag-hash="-387064702">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_bloka_pitaniya" caption="Тип блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1568080785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_bloka_pitaniya" caption="Вид блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1405378907" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6856,7 +6856,7 @@
 <!--END_p1101168-->
 
 <!--START_p1105800-->
-<item name="p1105800" caption="Штекерные блоки питания" key="" ag-id="0" ag-hash="-386939005" virtual="false" user-def="true" description="" super="params *">
+<item name="p1105800" caption="Штекерные блоки питания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1198" ag-hash="-386939005">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_bloka_pitaniya" caption="Тип блока питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1568080785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vyhodnoe_napryagenie" caption="Выходное напряжение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1030150406" description="В DC" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6899,7 +6899,7 @@
 <!--END_p1105800-->
 
 <!--START_p1109100-->
-<item name="p1109100" caption="Зарядные устройства" key="" ag-id="0" ag-hash="-386826568" virtual="false" user-def="true" description="" super="params *">
+<item name="p1109100" caption="Зарядные устройства" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1199" ag-hash="-386826568">
 	<parameter name="tip_soedinitelnogo_kabelya" caption="Тип соединительного кабеля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2057535611" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="naznachenie" caption="Назначение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1886637308" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6965,7 +6965,7 @@
 <!--END_p1109100-->
 
 <!--START_p1112558-->
-<item name="p1112558" caption="Модули фотоэлектрические" key="" ag-id="0" ag-hash="-386107577" virtual="false" user-def="true" description="" super="params *">
+<item name="p1112558" caption="Модули фотоэлектрические" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1200" ag-hash="-386107577">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_batarei" caption="Тип батареи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="7984774" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -6987,7 +6987,7 @@
 <!--END_p1112558-->
 
 <!--START_p1113187-->
-<item name="p1113187" caption="Источники света - светодиодные ленты" key="" ag-id="0" ag-hash="-386081538" virtual="false" user-def="true" description="" super="params *">
+<item name="p1113187" caption="Источники света - светодиодные ленты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1203" ag-hash="-386081538">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tsvet_dioda_led" caption="Цвет диодa LED" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1820179482" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7034,7 +7034,7 @@
 <!--END_p1113187-->
 
 <!--START_p1114408-->
-<item name="p1114408" caption="Источники света - светодиодные линейки" key="" ag-id="0" ag-hash="-386049111" virtual="false" user-def="true" description="" super="params *">
+<item name="p1114408" caption="Источники света - светодиодные линейки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1207" ag-hash="-386049111">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochee_napryagenie" caption="Рабочее напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1900878609" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7070,7 +7070,7 @@
 <!--END_p1114408-->
 
 <!--START_p1198423-->
-<item name="p1198423" caption="Аксессуары к стартерным комплектам" key="" ag-id="0" ag-hash="-378541722" virtual="false" user-def="true" description="" super="params *">
+<item name="p1198423" caption="Аксессуары к стартерным комплектам" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1514" ag-hash="-378541722">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="D Systems" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_sredstv_razrabotki" caption="Тип средств разработки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="572874551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="sovmestimye_mikroshemy" caption="Совместимые микросхемы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-675715444" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7153,7 +7153,7 @@
 <!--END_p1198423-->
 
 <!--START_p1200103-->
-<item name="p1200103" caption="Компиляторы" key="" ag-id="0" ag-hash="-358465533" virtual="false" user-def="true" description="" super="params *">
+<item name="p1200103" caption="Компиляторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1515" ag-hash="-358465533">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_aksessuara_dlya_sredstv_razrabotki" caption="Тип аксессуара для средств разработки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1864565474" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="yazyk_programmirovaniya" caption="Язык программирования" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1558102096" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7165,7 +7165,7 @@
 <!--END_p1200103-->
 
 <!--START_p1200157-->
-<item name="p1200157" caption="Платы расширения" key="" ag-id="0" ag-hash="-358465374" virtual="false" user-def="true" description="" super="params *">
+<item name="p1200157" caption="Платы расширения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1516" ag-hash="-358465374">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_aksessuara_dlya_sredstv_razrabotki" caption="Тип аксессуара для средств разработки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1864565474" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_modulya" caption="Вид модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1812072525" description="G, GSM/GPRS" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7229,7 +7229,7 @@
 <!--END_p1200157-->
 
 <!--START_p1201251-->
-<item name="p1201251" caption="Наборы пусковые остальные" key="" ag-id="0" ag-hash="-358434628" virtual="false" user-def="true" description="" super="params *">
+<item name="p1201251" caption="Наборы пусковые остальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1517" ag-hash="-358434628">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="D Systems" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya_svyazi" caption="Тип модуля связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1070085796" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="protokol_kommunikatsii" caption="Протокол коммуникации" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-714615742" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7273,7 +7273,7 @@
 <!--END_p1201251-->
 
 <!--START_p1203042-->
-<item name="p1203042" caption="Наборы пусковые для систем STM" key="" ag-id="0" ag-hash="-358376998" virtual="false" user-def="true" description="" super="params *">
+<item name="p1203042" caption="Наборы пусковые для систем STM" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1518" ag-hash="-358376998">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_sredstv_razrabotki" caption="Тип средств разработки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="572874551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="sostav_nabora" caption="Состав набора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2125913700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7286,7 +7286,7 @@
 <!--END_p1203042-->
 
 <!--START_p1203483-->
-<item name="p1203483" caption="Наборы пусковые для систем Microchip" key="" ag-id="0" ag-hash="-358373029" virtual="false" user-def="true" description="" super="params *">
+<item name="p1203483" caption="Наборы пусковые для систем Microchip" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1519" ag-hash="-358373029">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_sredstv_razrabotki" caption="Тип средств разработки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="572874551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="sostav_nabora" caption="Состав набора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2125913700" description="платы PICtail" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7330,7 +7330,7 @@
 <!--END_p1203483-->
 
 <!--START_p1206556-->
-<item name="p1206556" caption="Наборы пусковые Arduino" key="" ag-id="0" ag-hash="-358282785" virtual="false" user-def="true" description="" super="params *">
+<item name="p1206556" caption="Наборы пусковые Arduino" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1520" ag-hash="-358282785">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_sredstv_razrabotki" caption="Тип средств разработки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="572874551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="harakternye_osobennosti_sredstv_razrabotki_i_programmatorov" caption="Характерные особенности средств разработки и программаторов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1526653133" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7352,7 +7352,7 @@
 <!--END_p1206556-->
 
 <!--START_p1206927-->
-<item name="p1206927" caption="Комплекти для передачи данных" key="" ag-id="0" ag-hash="-358279033" virtual="false" user-def="true" description="" super="params *">
+<item name="p1206927" caption="Комплекти для передачи данных" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1521" ag-hash="-358279033">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_sredstv_razrabotki" caption="Тип средств разработки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="572874551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="komponenty" caption="Компоненты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2019554284" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7406,7 +7406,7 @@
 <!--END_p1206927-->
 
 <!--START_p1207377-->
-<item name="p1207377" caption="Наборы пусковые для систем NXP" key="" ag-id="0" ag-hash="-358254853" virtual="false" user-def="true" description="" super="params *">
+<item name="p1207377" caption="Наборы пусковые для систем NXP" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1522" ag-hash="-358254853">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_sredstv_razrabotki" caption="Тип средств разработки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="572874551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="sostav_nabora" caption="Состав набора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2125913700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7432,7 +7432,7 @@
 <!--END_p1207377-->
 
 <!--START_p1207811-->
-<item name="p1207811" caption="Наборы пусковые для систем TI" key="" ag-id="0" ag-hash="-358250240" virtual="false" user-def="true" description="" super="params *">
+<item name="p1207811" caption="Наборы пусковые для систем TI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1523" ag-hash="-358250240">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_sredstv_razrabotki" caption="Тип средств разработки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="572874551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="sostav_nabora" caption="Состав набора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2125913700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7454,7 +7454,7 @@
 <!--END_p1207811-->
 
 <!--START_p1207990-->
-<item name="p1207990" caption="Модули M2M (GPRS/HSPA/LTE)" key="" ag-id="0" ag-hash="-358249032" virtual="false" user-def="true" description="" super="params *">
+<item name="p1207990" caption="Модули M2M (GPRS/HSPA/LTE)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1524" ag-hash="-358249032">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya_svyazi" caption="Тип модуля связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1070085796" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="peredacha" caption="Передача" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="441836823" description="Мбит/с" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7500,7 +7500,7 @@
 <!--END_p1207990-->
 
 <!--START_p1208205-->
-<item name="p1208205" caption="Модули и считыватели RFID" key="" ag-id="0" ag-hash="-358226242" virtual="false" user-def="true" description="" super="params *">
+<item name="p1208205" caption="Модули и считыватели RFID" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1525" ag-hash="-358226242">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya_svyazi" caption="Тип модуля связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1070085796" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="harakteristiki_modulei_svyazi" caption="Характеристики модулей связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1229138976" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7548,7 +7548,7 @@
 <!--END_p1208205-->
 
 <!--START_p1208581-->
-<item name="p1208581" caption="Модули USB" key="" ag-id="0" ag-hash="-358223115" virtual="false" user-def="true" description="" super="params *">
+<item name="p1208581" caption="Модули USB" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1526" ag-hash="-358223115">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya_svyazi" caption="Тип модуля связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1070085796" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="pitayuschii_vyhod" caption="Питающий выход" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-381224495" description="В DC" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7571,7 +7571,7 @@
 <!--END_p1208581-->
 
 <!--START_p1208680-->
-<item name="p1208680" caption="Прочие модули" key="" ag-id="0" ag-hash="-358222155" virtual="false" user-def="true" description="" super="params *">
+<item name="p1208680" caption="Прочие модули" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1527" ag-hash="-358222155">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya_svyazi" caption="Тип модуля связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1070085796" description="b Firewire" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="В DC" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7590,7 +7590,7 @@
 <!--END_p1208680-->
 
 <!--START_p1208702-->
-<item name="p1208702" caption="Антенны GPS" key="" ag-id="0" ag-hash="-358221440" virtual="false" user-def="true" description="" super="params *">
+<item name="p1208702" caption="Антенны GPS" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1528" ag-hash="-358221440">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_aksessuarov_dlya_modulei_svyazi" caption="Тип аксессуаров для модулей связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="362022841" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_antenny" caption="Вид антенны" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="408457325" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7637,7 +7637,7 @@
 <!--END_p1208702-->
 
 <!--START_p1208811-->
-<item name="p1208811" caption="Антенны GSM" key="" ag-id="0" ag-hash="-358220449" virtual="false" user-def="true" description="" super="params *">
+<item name="p1208811" caption="Антенны GSM" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1529" ag-hash="-358220449">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="J" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_aksessuarov_dlya_modulei_svyazi" caption="Тип аксессуаров для модулей связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="362022841" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_antenny" caption="Вид антенны" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="408457325" description="G, AMPS, Bluetooth, DCS, GSM, PCS, WiFi" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7668,7 +7668,7 @@
 <!--END_p1208811-->
 
 <!--START_p1208892-->
-<item name="p1208892" caption="Аксессуары к устройствам RF" key="" ag-id="0" ag-hash="-358220200" virtual="false" user-def="true" description="" super="params *">
+<item name="p1208892" caption="Аксессуары к устройствам RF" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1530" ag-hash="-358220200">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_aksessuarov_dlya_modulei_svyazi" caption="Тип аксессуаров для модулей связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="362022841" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7700,7 +7700,7 @@
 <!--END_p1208892-->
 
 <!--START_p1208978-->
-<item name="p1208978" caption="Антенны WiFi/Bluetooth" key="" ag-id="0" ag-hash="-358219295" virtual="false" user-def="true" description="" super="params *">
+<item name="p1208978" caption="Антенны WiFi/Bluetooth" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1531" ag-hash="-358219295">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_aksessuarov_dlya_modulei_svyazi" caption="Тип аксессуаров для модулей связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="362022841" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_antenny" caption="Вид антенны" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="408457325" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7752,7 +7752,7 @@
 <!--END_p1208978-->
 
 <!--START_p1209115-->
-<item name="p1209115" caption="Модули RF" key="" ag-id="0" ag-hash="-358197381" virtual="false" user-def="true" description="" super="params *">
+<item name="p1209115" caption="Модули RF" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1532" ag-hash="-358197381">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya_svyazi" caption="Тип модуля связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1070085796" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_modulya" caption="Вид модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1812072525" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7794,7 +7794,7 @@
 <!--END_p1209115-->
 
 <!--START_p1209748-->
-<item name="p1209748" caption="Модули IoT (WiFi/Bluetooth)" key="" ag-id="0" ag-hash="-358191519" virtual="false" user-def="true" description="" super="params *">
+<item name="p1209748" caption="Модули IoT (WiFi/Bluetooth)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1533" ag-hash="-358191519">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya_svyazi" caption="Тип модуля связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1070085796" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="В DC" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7852,7 +7852,7 @@
 <!--END_p1209748-->
 
 <!--START_p1210196-->
-<item name="p1210196" caption="Модули GNSS (GPS/GLONASS/BEIDOU)" key="" ag-id="0" ag-hash="-357541730" virtual="false" user-def="true" description="" super="params *">
+<item name="p1210196" caption="Модули GNSS (GPS/GLONASS/BEIDOU)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1534" ag-hash="-357541730">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya_svyazi" caption="Тип модуля связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1070085796" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="chuvstvitelnost_priemnika" caption="Чувствительность приемника" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="2031923908" description="-163дБм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7883,7 +7883,7 @@
 <!--END_p1210196-->
 
 <!--START_p1210374-->
-<item name="p1210374" caption="Антенны RF" key="" ag-id="0" ag-hash="-357539872" virtual="false" user-def="true" description="" super="params *">
+<item name="p1210374" caption="Антенны RF" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1535" ag-hash="-357539872">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_aksessuarov_dlya_modulei_svyazi" caption="Тип аксессуаров для модулей связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="362022841" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="chastota" caption="Частота" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1437432319" description="МГц" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7914,7 +7914,7 @@
 <!--END_p1210374-->
 
 <!--START_p1210475-->
-<item name="p1210475" caption="Модули Ethernet" key="" ag-id="0" ag-hash="-357538910" virtual="false" user-def="true" description="" super="params *">
+<item name="p1210475" caption="Модули Ethernet" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1536" ag-hash="-357538910">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya_svyazi" caption="Тип модуля связи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1070085796" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="napryagenie_pitaniya" caption="Напряжение питания" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1149006439" description="В DC" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7944,7 +7944,7 @@
 <!--END_p1210475-->
 
 <!--START_p1210597-->
-<item name="p1210597" caption="Комплементарные пары транзисторов" key="" ag-id="0" ag-hash="-357537885" virtual="false" user-def="true" description="" super="params *">
+<item name="p1210597" caption="Комплементарные пары транзисторов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1537" ag-hash="-357537885">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7962,7 +7962,7 @@
 <!--END_p1210597-->
 
 <!--START_p1210725-->
-<item name="p1210725" caption="Транзисторы NPN THT" key="" ag-id="0" ag-hash="-357536182" virtual="false" user-def="true" description="" super="params *">
+<item name="p1210725" caption="Транзисторы NPN THT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1538" ag-hash="-357536182">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -7985,7 +7985,7 @@
 <!--END_p1210725-->
 
 <!--START_p1211396-->
-<item name="p1211396" caption="Транзисторы PNP SMD" key="" ag-id="0" ag-hash="-357510017" virtual="false" user-def="true" description="" super="params *">
+<item name="p1211396" caption="Транзисторы PNP SMD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1539" ag-hash="-357510017">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8003,7 +8003,7 @@
 <!--END_p1211396-->
 
 <!--START_p1211915-->
-<item name="p1211915" caption="Транзисторы PNP THT" key="" ag-id="0" ag-hash="-357504500" virtual="false" user-def="true" description="" super="params *">
+<item name="p1211915" caption="Транзисторы PNP THT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1540" ag-hash="-357504500">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8021,7 +8021,7 @@
 <!--END_p1211915-->
 
 <!--START_p1212515-->
-<item name="p1212515" caption="Транзисторы NPN SMD" key="" ag-id="0" ag-hash="-357478553" virtual="false" user-def="true" description="" super="params *">
+<item name="p1212515" caption="Транзисторы NPN SMD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1541" ag-hash="-357478553">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8040,7 +8040,7 @@
 <!--END_p1212515-->
 
 <!--START_p1213114-->
-<item name="p1213114" caption="Транзисторы Дарлингтона PNP SMD" key="" ag-id="0" ag-hash="-357452607" virtual="false" user-def="true" description="" super="params *">
+<item name="p1213114" caption="Транзисторы Дарлингтона PNP SMD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1542" ag-hash="-357452607">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8057,7 +8057,7 @@
 <!--END_p1213114-->
 
 <!--START_p1213193-->
-<item name="p1213193" caption="Транзисторы Дарлингтона NPN THT" key="" ag-id="0" ag-hash="-357452360" virtual="false" user-def="true" description="" super="params *">
+<item name="p1213193" caption="Транзисторы Дарлингтона NPN THT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1543" ag-hash="-357452360">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8078,7 +8078,7 @@
 <!--END_p1213193-->
 
 <!--START_p1213554-->
-<item name="p1213554" caption="Транзисторы Дарлингтона NPN SMD" key="" ag-id="0" ag-hash="-357448639" virtual="false" user-def="true" description="" super="params *">
+<item name="p1213554" caption="Транзисторы Дарлингтона NPN SMD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1544" ag-hash="-357448639">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8095,7 +8095,7 @@
 <!--END_p1213554-->
 
 <!--START_p1213687-->
-<item name="p1213687" caption="Транзисторы Дарлингтона PNP THT" key="" ag-id="0" ag-hash="-357447582" virtual="false" user-def="true" description="" super="params *">
+<item name="p1213687" caption="Транзисторы Дарлингтона PNP THT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1545" ag-hash="-357447582">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8112,7 +8112,7 @@
 <!--END_p1213687-->
 
 <!--START_p1213920-->
-<item name="p1213920" caption="Модули IGBT" key="" ag-id="0" ag-hash="-357444892" virtual="false" user-def="true" description="" super="params *">
+<item name="p1213920" caption="Модули IGBT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1546" ag-hash="-357444892">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8133,7 +8133,7 @@
 <!--END_p1213920-->
 
 <!--START_p1214339-->
-<item name="p1214339" caption="Транзисторы IGBT THT" key="" ag-id="0" ag-hash="-357420827" virtual="false" user-def="true" description="" super="params *">
+<item name="p1214339" caption="Транзисторы IGBT THT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1547" ag-hash="-357420827">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="napryagenie_kollektor_emitter" caption="Напряжение коллектор-эмиттер" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-385386932" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8157,7 +8157,7 @@
 <!--END_p1214339-->
 
 <!--START_p1214793-->
-<item name="p1214793" caption="Транзисторы IGBT SMD" key="" ag-id="0" ag-hash="-357416803" virtual="false" user-def="true" description="" super="params *">
+<item name="p1214793" caption="Транзисторы IGBT SMD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1548" ag-hash="-357416803">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="napryagenie_kollektor_emitter" caption="Напряжение коллектор-эмиттер" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-385386932" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8177,7 +8177,7 @@
 <!--END_p1214793-->
 
 <!--START_p1214934-->
-<item name="p1214934" caption="Транзисторы с каналом P SMD" key="" ag-id="0" ag-hash="-357415066" virtual="false" user-def="true" description="" super="params *">
+<item name="p1214934" caption="Транзисторы с каналом P SMD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1549" ag-hash="-357415066">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8199,7 +8199,7 @@
 <!--END_p1214934-->
 
 <!--START_p1216040-->
-<item name="p1216040" caption="Транзисторы с каналом P THT" key="" ag-id="0" ag-hash="-357364106" virtual="false" user-def="true" description="" super="params *">
+<item name="p1216040" caption="Транзисторы с каналом P THT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1550" ag-hash="-357364106">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8220,7 +8220,7 @@
 <!--END_p1216040-->
 
 <!--START_p1216349-->
-<item name="p1216349" caption="Транзисторные модули MOSFET" key="" ag-id="0" ag-hash="-357361214" virtual="false" user-def="true" description="" super="params *">
+<item name="p1216349" caption="Транзисторные модули MOSFET" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1551" ag-hash="-357361214">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8243,7 +8243,7 @@
 <!--END_p1216349-->
 
 <!--START_p1216485-->
-<item name="p1216485" caption="Транзисторы с каналом N SMD" key="" ag-id="0" ag-hash="-357360133" virtual="false" user-def="true" description="" super="params *">
+<item name="p1216485" caption="Транзисторы с каналом N SMD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1552" ag-hash="-357360133">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tehnologiya" caption="Технология" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1704243589" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8275,7 +8275,7 @@
 <!--END_p1216485-->
 
 <!--START_p1218582-->
-<item name="p1218582" caption="Транзисторы с каналом N THT" key="" ag-id="0" ag-hash="-357299593" virtual="false" user-def="true" description="" super="params *">
+<item name="p1218582" caption="Транзисторы с каналом N THT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1553" ag-hash="-357299593">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8308,7 +8308,7 @@
 <!--END_p1218582-->
 
 <!--START_p1219663-->
-<item name="p1219663" caption="Транзисторы многоканальные" key="" ag-id="0" ag-hash="-357268902" virtual="false" user-def="true" description="" super="params *">
+<item name="p1219663" caption="Транзисторы многоканальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1554" ag-hash="-357268902">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_tranzistora" caption="Тип транзистора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1877486625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tehnologiya" caption="Технология" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1704243589" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8335,7 +8335,7 @@
 <!--END_p1219663-->
 
 <!--START_p1220124-->
-<item name="p1220124" caption="Динисторы" key="" ag-id="0" ag-hash="-356618428" virtual="false" user-def="true" description="" super="params *">
+<item name="p1220124" caption="Динисторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1555" ag-hash="-356618428">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="pryamoi_tok_maks_" caption="Прямой ток макс." type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1712124594" description="А" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8347,7 +8347,7 @@
 <!--END_p1220124-->
 
 <!--START_p1220186-->
-<item name="p1220186" caption="Трехфазные мосты диодные" key="" ag-id="0" ag-hash="-356618240" virtual="false" user-def="true" description="" super="params *">
+<item name="p1220186" caption="Трехфазные мосты диодные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1556" ag-hash="-356618240">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8368,7 +8368,7 @@
 <!--END_p1220186-->
 
 <!--START_p1220669-->
-<item name="p1220669" caption="Трехфазные мосты управляемые" key="" ag-id="0" ag-hash="-356613494" virtual="false" user-def="true" description="" super="params *">
+<item name="p1220669" caption="Трехфазные мосты управляемые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1557" ag-hash="-356613494">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8389,7 +8389,7 @@
 <!--END_p1220669-->
 
 <!--START_p1220722-->
-<item name="p1220722" caption="Однофазные мосты управляемые" key="" ag-id="0" ag-hash="-356612664" virtual="false" user-def="true" description="" super="params *">
+<item name="p1220722" caption="Однофазные мосты управляемые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1558" ag-hash="-356612664">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8410,7 +8410,7 @@
 <!--END_p1220722-->
 
 <!--START_p1220772-->
-<item name="p1220772" caption="Однофазные мосты диодные квадратные" key="" ag-id="0" ag-hash="-356612509" virtual="false" user-def="true" description="" super="params *">
+<item name="p1220772" caption="Однофазные мосты диодные квадратные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1559" ag-hash="-356612509">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="кВ" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8429,7 +8429,7 @@
 <!--END_p1220772-->
 
 <!--START_p1221271-->
-<item name="p1221271" caption="Однофазные мосты диодные круглые" key="" ag-id="0" ag-hash="-356587524" virtual="false" user-def="true" description="" super="params *">
+<item name="p1221271" caption="Однофазные мосты диодные круглые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1560" ag-hash="-356587524">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8445,7 +8445,7 @@
 <!--END_p1221271-->
 
 <!--START_p1221362-->
-<item name="p1221362" caption="Однофазные мосты диодные SMD/THT" key="" ag-id="0" ag-hash="-356586593" virtual="false" user-def="true" description="" super="params *">
+<item name="p1221362" caption="Однофазные мосты диодные SMD/THT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1561" ag-hash="-356586593">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8462,7 +8462,7 @@
 <!--END_p1221362-->
 
 <!--START_p1222121-->
-<item name="p1222121" caption="Однофазные мосты диодные плоские" key="" ag-id="0" ag-hash="-356558849" virtual="false" user-def="true" description="" super="params *">
+<item name="p1222121" caption="Однофазные мосты диодные плоские" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1562" ag-hash="-356558849">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8479,7 +8479,7 @@
 <!--END_p1222121-->
 
 <!--START_p1222641-->
-<item name="p1222641" caption="Однофазные мосты диодные - остальные" key="" ag-id="0" ag-hash="-356553982" virtual="false" user-def="true" description="" super="params *">
+<item name="p1222641" caption="Однофазные мосты диодные - остальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1563" ag-hash="-356553982">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8497,7 +8497,7 @@
 <!--END_p1222641-->
 
 <!--START_p1222763-->
-<item name="p1222763" caption="Диодные модули" key="" ag-id="0" ag-hash="-356552957" virtual="false" user-def="true" description="" super="params *">
+<item name="p1222763" caption="Диодные модули" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1564" ag-hash="-356552957">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="независимых диода" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8517,7 +8517,7 @@
 <!--END_p1222763-->
 
 <!--START_p1223506-->
-<item name="p1223506" caption="Специальные диоды" key="" ag-id="0" ag-hash="-356525271" virtual="false" user-def="true" description="" super="params *">
+<item name="p1223506" caption="Специальные диоды" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1565" ag-hash="-356525271">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8536,7 +8536,7 @@
 <!--END_p1223506-->
 
 <!--START_p1223529-->
-<item name="p1223529" caption="Стабилитроны винтовые" key="" ag-id="0" ag-hash="-356525206" virtual="false" user-def="true" description="" super="params *">
+<item name="p1223529" caption="Стабилитроны винтовые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1566" ag-hash="-356525206">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="power_dissipation" caption="Power dissipation" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="583603375" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8552,7 +8552,7 @@
 <!--END_p1223529-->
 
 <!--START_p1223536-->
-<item name="p1223536" caption="Стабилитроны THT" key="" ag-id="0" ag-hash="-356525178" virtual="false" user-def="true" description="" super="params *">
+<item name="p1223536" caption="Стабилитроны THT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1567" ag-hash="-356525178">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="power_dissipation" caption="Power dissipation" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="583603375" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8571,7 +8571,7 @@
 <!--END_p1223536-->
 
 <!--START_p1224536-->
-<item name="p1224536" caption="Стабилитроны SMD" key="" ag-id="0" ag-hash="-356495387" virtual="false" user-def="true" description="" super="params *">
+<item name="p1224536" caption="Стабилитроны SMD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1568" ag-hash="-356495387">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="power_dissipation" caption="Power dissipation" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="583603375" description="мВт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8594,7 +8594,7 @@
 <!--END_p1224536-->
 
 <!--START_p1226043-->
-<item name="p1226043" caption="Диоды остальные" key="" ag-id="0" ag-hash="-356440582" virtual="false" user-def="true" description="" super="params *">
+<item name="p1226043" caption="Диоды остальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1569" ag-hash="-356440582">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="кВ" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8617,7 +8617,7 @@
 <!--END_p1226043-->
 
 <!--START_p1226221-->
-<item name="p1226221" caption="Универсальные диоды SMD" key="" ag-id="0" ag-hash="-356438724" virtual="false" user-def="true" description="" super="params *">
+<item name="p1226221" caption="Универсальные диоды SMD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1570" ag-hash="-356438724">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8640,7 +8640,7 @@
 <!--END_p1226221-->
 
 <!--START_p1227805-->
-<item name="p1227805" caption="Универсальные диоды THT" key="" ag-id="0" ag-hash="-356403225" virtual="false" user-def="true" description="" super="params *">
+<item name="p1227805" caption="Универсальные диоды THT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1571" ag-hash="-356403225">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8665,7 +8665,7 @@
 <!--END_p1227805-->
 
 <!--START_p1229504-->
-<item name="p1229504" caption="Резьбовые универсальные диоды" key="" ag-id="0" ag-hash="-356346527" virtual="false" user-def="true" description="" super="params *">
+<item name="p1229504" caption="Резьбовые универсальные диоды" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1572" ag-hash="-356346527">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8684,7 +8684,7 @@
 <!--END_p1229504-->
 
 <!--START_p1229747-->
-<item name="p1229747" caption="Диоды transil SMD однонаправленные" key="" ag-id="0" ag-hash="-356344478" virtual="false" user-def="true" description="" super="params *">
+<item name="p1229747" caption="Диоды transil SMD однонаправленные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1573" ag-hash="-356344478">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="power_dissipation" caption="Power dissipation" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="583603375" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8706,7 +8706,7 @@
 <!--END_p1229747-->
 
 <!--START_p1231188-->
-<item name="p1231188" caption="Диоды transil SMD двунаправленные" key="" ag-id="0" ag-hash="-355664926" virtual="false" user-def="true" description="" super="params *">
+<item name="p1231188" caption="Диоды transil SMD двунаправленные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1574" ag-hash="-355664926">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="power_dissipation" caption="Power dissipation" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="583603375" description="мВт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8727,7 +8727,7 @@
 <!--END_p1231188-->
 
 <!--START_p1232548-->
-<item name="p1232548" caption="Диоды защитные - сборки" key="" ag-id="0" ag-hash="-355631415" virtual="false" user-def="true" description="" super="params *">
+<item name="p1232548" caption="Диоды защитные - сборки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1575" ag-hash="-355631415">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="napryagenie_proboya" caption="Напряжение пробоя" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-892367406" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8749,7 +8749,7 @@
 <!--END_p1232548-->
 
 <!--START_p1232892-->
-<item name="p1232892" caption="Диоды transil THT однонаправленные" key="" ag-id="0" ag-hash="-355628383" virtual="false" user-def="true" description="" super="params *">
+<item name="p1232892" caption="Диоды transil THT однонаправленные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1576" ag-hash="-355628383">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="power_dissipation" caption="Power dissipation" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="583603375" description="кВт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8769,7 +8769,7 @@
 <!--END_p1232892-->
 
 <!--START_p1233761-->
-<item name="p1233761" caption="Диоды transil THT двунаправленные" key="" ag-id="0" ag-hash="-355599647" virtual="false" user-def="true" description="" super="params *">
+<item name="p1233761" caption="Диоды transil THT двунаправленные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1577" ag-hash="-355599647">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="power_dissipation" caption="Power dissipation" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="583603375" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8789,7 +8789,7 @@
 <!--END_p1233761-->
 
 <!--START_p1234498-->
-<item name="p1234498" caption="Диоды Шотки THT" key="" ag-id="0" ag-hash="-355572639" virtual="false" user-def="true" description="" super="params *">
+<item name="p1234498" caption="Диоды Шотки THT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1578" ag-hash="-355572639">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tehnologiya" caption="Технология" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1704243589" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8813,7 +8813,7 @@
 <!--END_p1234498-->
 
 <!--START_p1235393-->
-<item name="p1235393" caption="Диоды Шотки SMD" key="" ag-id="0" ag-hash="-355543814" virtual="false" user-def="true" description="" super="params *">
+<item name="p1235393" caption="Диоды Шотки SMD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1579" ag-hash="-355543814">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8837,7 +8837,7 @@
 <!--END_p1235393-->
 
 <!--START_p1237325-->
-<item name="p1237325" caption="Симисторы" key="" ag-id="0" ag-hash="-355484447" virtual="false" user-def="true" description="" super="params *">
+<item name="p1237325" caption="Симисторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1580" ag-hash="-355484447">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8850,7 +8850,7 @@
 <!--END_p1237325-->
 
 <!--START_p1237636-->
-<item name="p1237636" caption="Модули тиристорные" key="" ag-id="0" ag-hash="-355481532" virtual="false" user-def="true" description="" super="params *">
+<item name="p1237636" caption="Модули тиристорные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1581" ag-hash="-355481532">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8868,7 +8868,7 @@
 <!--END_p1237636-->
 
 <!--START_p1238069-->
-<item name="p1238069" caption="Модули диодно-тиристорные" key="" ag-id="0" ag-hash="-355457411" virtual="false" user-def="true" description="" super="params *">
+<item name="p1238069" caption="Модули диодно-тиристорные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1582" ag-hash="-355457411">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8888,7 +8888,7 @@
 <!--END_p1238069-->
 
 <!--START_p1238371-->
-<item name="p1238371" caption="Тиристоры винтовые" key="" ag-id="0" ag-hash="-355454505" virtual="false" user-def="true" description="" super="params *">
+<item name="p1238371" caption="Тиристоры винтовые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1583" ag-hash="-355454505">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="кВ" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8907,7 +8907,7 @@
 <!--END_p1238371-->
 
 <!--START_p1238621-->
-<item name="p1238621" caption="Тиристоры THT" key="" ag-id="0" ag-hash="-355451777" virtual="false" user-def="true" description="" super="params *">
+<item name="p1238621" caption="Тиристоры THT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1584" ag-hash="-355451777">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8924,7 +8924,7 @@
 <!--END_p1238621-->
 
 <!--START_p1239020-->
-<item name="p1239020" caption="Тиристоры остальные" key="" ag-id="0" ag-hash="-355427753" virtual="false" user-def="true" description="" super="params *">
+<item name="p1239020" caption="Тиристоры остальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1585" ag-hash="-355427753">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8944,7 +8944,7 @@
 <!--END_p1239020-->
 
 <!--START_p1239138-->
-<item name="p1239138" caption="Тиристоры таблеточные" key="" ag-id="0" ag-hash="-355426753" virtual="false" user-def="true" description="" super="params *">
+<item name="p1239138" caption="Тиристоры таблеточные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1586" ag-hash="-355426753">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obratnoe_napryagenie_maks_" caption="Обратное напряжение макс." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1848724614" description="кВ" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8961,7 +8961,7 @@
 <!--END_p1239138-->
 
 <!--START_p1263005-->
-<item name="p1263005" caption="Диодные модули" key="" ag-id="0" ag-hash="-352835993" virtual="false" user-def="true" description="" super="params *">
+<item name="p1263005" caption="Диодные модули" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1664" ag-hash="-352835993">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="независимых диода" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8981,7 +8981,7 @@
 <!--END_p1263005-->
 
 <!--START_p1263748-->
-<item name="p1263748" caption="Модули тиристорные" key="" ag-id="0" ag-hash="-352829139" virtual="false" user-def="true" description="" super="params *">
+<item name="p1263748" caption="Модули тиристорные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1665" ag-hash="-352829139">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8999,7 +8999,7 @@
 <!--END_p1263748-->
 
 <!--START_p1264181-->
-<item name="p1264181" caption="Модули диодно-тиристорные" key="" ag-id="0" ag-hash="-352804997" virtual="false" user-def="true" description="" super="params *">
+<item name="p1264181" caption="Модули диодно-тиристорные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1666" ag-hash="-352804997">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9019,7 +9019,7 @@
 <!--END_p1264181-->
 
 <!--START_p1264482-->
-<item name="p1264482" caption="Транзисторные модули MOSFET" key="" ag-id="0" ag-hash="-352802113" virtual="false" user-def="true" description="" super="params *">
+<item name="p1264482" caption="Транзисторные модули MOSFET" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1667" ag-hash="-352802113">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9042,7 +9042,7 @@
 <!--END_p1264482-->
 
 <!--START_p1264617-->
-<item name="p1264617" caption="Модули IGBT" key="" ag-id="0" ag-hash="-352800403" virtual="false" user-def="true" description="" super="params *">
+<item name="p1264617" caption="Модули IGBT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1668" ag-hash="-352800403">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="konstruktsiya_dioda" caption="Конструкция диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2055735555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9063,7 +9063,7 @@
 <!--END_p1264617-->
 
 <!--START_p1265036-->
-<item name="p1265036" caption="Радиаторы - оснащение" key="" ag-id="0" ag-hash="-352776317" virtual="false" user-def="true" description="" super="params *">
+<item name="p1265036" caption="Радиаторы - оснащение" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1669" ag-hash="-352776317">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="M" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_teploprovodnei_prokladki" caption="Тип теплопроводней прокладки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1087372262" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="primenenie" caption="Применение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1164660268" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9109,7 +9109,7 @@
 <!--END_p1265036-->
 
 <!--START_p1265581-->
-<item name="p1265581" caption="Подставки тестовые" key="" ag-id="0" ag-hash="-352771362" virtual="false" user-def="true" description="" super="params *">
+<item name="p1265581" caption="Подставки тестовые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1670" ag-hash="-352771362">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="M" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_panelki_dlya_mikroshem" caption="Тип панельки для микросхем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-708712389" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_vyvodov" caption="Кол-во выводов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-105537376" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9132,7 +9132,7 @@
 <!--END_p1265581-->
 
 <!--START_p1265660-->
-<item name="p1265660" caption="Модули Пельтье" key="" ag-id="0" ag-hash="-352770464" virtual="false" user-def="true" description="" super="params *">
+<item name="p1265660" caption="Модули Пельтье" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1671" ag-hash="-352770464">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochee_napryagenie_maks_" caption="Рабочее напряжение макс." type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-144644299" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9152,7 +9152,7 @@
 <!--END_p1265660-->
 
 <!--START_p1265719-->
-<item name="p1265719" caption="Радиаторы" key="" ag-id="0" ag-hash="-352769649" virtual="false" user-def="true" description="" super="params *">
+<item name="p1265719" caption="Радиаторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1672" ag-hash="-352769649">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_radiatora" caption="Тип радиатора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-872434509" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="primenenie" caption="Применение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1164660268" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9187,7 +9187,7 @@
 <!--END_p1265719-->
 
 <!--START_p1266056-->
-<item name="p1266056" caption="Подставки DIP стандартные" key="" ag-id="0" ag-hash="-352746464" virtual="false" user-def="true" description="" super="params *">
+<item name="p1266056" caption="Подставки DIP стандартные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1673" ag-hash="-352746464">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_panelki_dlya_mikroshem" caption="Тип панельки для микросхем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-708712389" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_vyvodov" caption="Кол-во выводов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-105537376" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9208,7 +9208,7 @@
 <!--END_p1266056-->
 
 <!--START_p1266141-->
-<item name="p1266141" caption="Подставки точные" key="" ag-id="0" ag-hash="-352745539" virtual="false" user-def="true" description="" super="params *">
+<item name="p1266141" caption="Подставки точные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1674" ag-hash="-352745539">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_panelki_dlya_mikroshem" caption="Тип панельки для микросхем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-708712389" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_vyvodov" caption="Кол-во выводов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-105537376" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9237,7 +9237,7 @@
 <!--END_p1266141-->
 
 <!--START_p1266307-->
-<item name="p1266307" caption="Подставки PLCC" key="" ag-id="0" ag-hash="-352743735" virtual="false" user-def="true" description="" super="params *">
+<item name="p1266307" caption="Подставки PLCC" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1675" ag-hash="-352743735">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_panelki_dlya_mikroshem" caption="Тип панельки для микросхем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-708712389" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_vyvodov" caption="Кол-во выводов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-105537376" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9254,7 +9254,7 @@
 <!--END_p1266307-->
 
 <!--START_p1272719-->
-<item name="p1272719" caption="Светодиоды мощности белые - COB" key="" ag-id="0" ag-hash="-351935501" virtual="false" user-def="true" description="" super="params *">
+<item name="p1272719" caption="Светодиоды мощности белые - COB" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1687" ag-hash="-351935501">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ispolnenie_dioda_led" caption="Исполнение диода LED" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1886306500" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9281,7 +9281,7 @@
 <!--END_p1272719-->
 
 <!--START_p1273272-->
-<item name="p1273272" caption="Светодиоды мощности белые - Emitter" key="" ag-id="0" ag-hash="-351910336" virtual="false" user-def="true" description="" super="params *">
+<item name="p1273272" caption="Светодиоды мощности белые - Emitter" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1688" ag-hash="-351910336">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tsvet_dioda_led" caption="Цвет диодa LED" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1820179482" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9309,7 +9309,7 @@
 <!--END_p1273272-->
 
 <!--START_p1273510-->
-<item name="p1273510" caption="Светодиоды мощности цветные - Emitter" key="" ag-id="0" ag-hash="-351907641" virtual="false" user-def="true" description="" super="params *">
+<item name="p1273510" caption="Светодиоды мощности цветные - Emitter" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1689" ag-hash="-351907641">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ispolnenie_dioda_led" caption="Исполнение диода LED" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1886306500" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9344,7 +9344,7 @@
 <!--END_p1273510-->
 
 <!--START_p1273747-->
-<item name="p1273747" caption="Светодиоды мощности цветные - COB" key="" ag-id="0" ag-hash="-351905619" virtual="false" user-def="true" description="" super="params *">
+<item name="p1273747" caption="Светодиоды мощности цветные - COB" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1690" ag-hash="-351905619">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ispolnenie_dioda_led" caption="Исполнение диода LED" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1886306500" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9366,7 +9366,7 @@
 <!--END_p1273747-->
 
 <!--START_p1273790-->
-<item name="p1273790" caption="Диоды LED - &quot;plants growth&quot;" key="" ag-id="0" ag-hash="-351905471" virtual="false" user-def="true" description="" super="params *">
+<item name="p1273790" caption="Диоды LED - &quot;plants growth&quot;" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1691" ag-hash="-351905471">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9393,7 +9393,7 @@
 <!--END_p1273790-->
 
 <!--START_p1273869-->
-<item name="p1273869" caption="Светодиоды УФ" key="" ag-id="0" ag-hash="-351904594" virtual="false" user-def="true" description="" super="params *">
+<item name="p1273869" caption="Светодиоды УФ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1692" ag-hash="-351904594">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ispolnenie_dioda_led" caption="Исполнение диода LED" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1886306500" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9419,7 +9419,7 @@
 <!--END_p1273869-->
 
 <!--START_p1273970-->
-<item name="p1273970" caption="Светодиоды SMD цветные" key="" ag-id="0" ag-hash="-351903611" virtual="false" user-def="true" description="" super="params *">
+<item name="p1273970" caption="Светодиоды SMD цветные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1693" ag-hash="-351903611">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9459,7 +9459,7 @@
 <!--END_p1273970-->
 
 <!--START_p1275477-->
-<item name="p1275477" caption="Светодиоды SMD белые" key="" ag-id="0" ag-hash="-351848827" virtual="false" user-def="true" description="" super="params *">
+<item name="p1275477" caption="Светодиоды SMD белые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1694" ag-hash="-351848827">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9495,7 +9495,7 @@
 <!--END_p1275477-->
 
 <!--START_p1276202-->
-<item name="p1276202" caption="Инфракрасные LEDы" key="" ag-id="0" ag-hash="-351821180" virtual="false" user-def="true" description="" super="params *">
+<item name="p1276202" caption="Инфракрасные LEDы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1695" ag-hash="-351821180">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_dioda_led" caption="Диаметр диода LED" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-266554138" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9529,7 +9529,7 @@
 <!--END_p1276202-->
 
 <!--START_p1276664-->
-<item name="p1276664" caption="Светодиоды THT 3мм" key="" ag-id="0" ag-hash="-351817148" virtual="false" user-def="true" description="" super="params *">
+<item name="p1276664" caption="Светодиоды THT 3мм" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1696" ag-hash="-351817148">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_dioda_led" caption="Диаметр диода LED" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-266554138" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9569,7 +9569,7 @@
 <!--END_p1276664-->
 
 <!--START_p1277318-->
-<item name="p1277318" caption="Светодиоды THT овальные" key="" ag-id="0" ag-hash="-351790391" virtual="false" user-def="true" description="" super="params *">
+<item name="p1277318" caption="Светодиоды THT овальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1697" ag-hash="-351790391">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="forma" caption="Форма" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="97618973" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9596,7 +9596,7 @@
 <!--END_p1277318-->
 
 <!--START_p1277455-->
-<item name="p1277455" caption="Подсветка" key="" ag-id="0" ag-hash="-351789309" virtual="false" user-def="true" description="" super="params *">
+<item name="p1277455" caption="Подсветка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1698" ag-hash="-351789309">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tsvet" caption="Цвет" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="110671046" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9611,7 +9611,7 @@
 <!--END_p1277455-->
 
 <!--START_p1277522-->
-<item name="p1277522" caption="Светодиоды THT прямоугольные" key="" ag-id="0" ag-hash="-351788444" virtual="false" user-def="true" description="" super="params *">
+<item name="p1277522" caption="Светодиоды THT прямоугольные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1699" ag-hash="-351788444">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="forma" caption="Форма" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="97618973" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9643,7 +9643,7 @@
 <!--END_p1277522-->
 
 <!--START_p1277718-->
-<item name="p1277718" caption="Светодиоды THT 20мм" key="" ag-id="0" ag-hash="-351786547" virtual="false" user-def="true" description="" super="params *">
+<item name="p1277718" caption="Светодиоды THT 20мм" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1700" ag-hash="-351786547">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_dioda_led" caption="Диаметр диода LED" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-266554138" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9668,7 +9668,7 @@
 <!--END_p1277718-->
 
 <!--START_p1277788-->
-<item name="p1277788" caption="Светодиоды THT 1,8мм" key="" ag-id="0" ag-hash="-351786330" virtual="false" user-def="true" description="" super="params *">
+<item name="p1277788" caption="Светодиоды THT 1,8мм" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1701" ag-hash="-351786330">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_dioda_led" caption="Диаметр диода LED" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-266554138" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9690,7 +9690,7 @@
 <!--END_p1277788-->
 
 <!--START_p1277948-->
-<item name="p1277948" caption="Светодиоды THT 5мм" key="" ag-id="0" ag-hash="-351784532" virtual="false" user-def="true" description="" super="params *">
+<item name="p1277948" caption="Светодиоды THT 5мм" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1702" ag-hash="-351784532">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_dioda_led" caption="Диаметр диода LED" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-266554138" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9730,7 +9730,7 @@
 <!--END_p1277948-->
 
 <!--START_p1278550-->
-<item name="p1278550" caption="Светодиоды THT Super Flux" key="" ag-id="0" ag-hash="-351758562" virtual="false" user-def="true" description="" super="params *">
+<item name="p1278550" caption="Светодиоды THT Super Flux" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1703" ag-hash="-351758562">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmery" caption="Размеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="989249674" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9760,7 +9760,7 @@
 <!--END_p1278550-->
 
 <!--START_p1278623-->
-<item name="p1278623" caption="Светодиоды THT 8мм" key="" ag-id="0" ag-hash="-351757691" virtual="false" user-def="true" description="" super="params *">
+<item name="p1278623" caption="Светодиоды THT 8мм" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1704" ag-hash="-351757691">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_dioda_led" caption="Диаметр диода LED" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-266554138" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9795,7 +9795,7 @@
 <!--END_p1278623-->
 
 <!--START_p1278868-->
-<item name="p1278868" caption="Светодиоды THT остальные" key="" ag-id="0" ag-hash="-351755640" virtual="false" user-def="true" description="" super="params *">
+<item name="p1278868" caption="Светодиоды THT остальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1705" ag-hash="-351755640">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_dioda_led" caption="Диаметр диода LED" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-266554138" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9823,7 +9823,7 @@
 <!--END_p1278868-->
 
 <!--START_p1279057-->
-<item name="p1279057" caption="Светодиоды THT 10мм" key="" ag-id="0" ag-hash="-351733569" virtual="false" user-def="true" description="" super="params *">
+<item name="p1279057" caption="Светодиоды THT 10мм" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1706" ag-hash="-351733569">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_dioda_led" caption="Диаметр диода LED" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-266554138" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9854,7 +9854,7 @@
 <!--END_p1279057-->
 
 <!--START_p1279269-->
-<item name="p1279269" caption="Источники света - светодиодные ленты" key="" ag-id="0" ag-hash="-351731614" virtual="false" user-def="true" description="" super="params *">
+<item name="p1279269" caption="Источники света - светодиодные ленты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1707" ag-hash="-351731614">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tsvet_dioda_led" caption="Цвет диодa LED" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1820179482" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9901,7 +9901,7 @@
 <!--END_p1279269-->
 
 <!--START_p1279743-->
-<item name="p1279743" caption="Источники света - светодиодные модули" key="" ag-id="0" ag-hash="-351726877" virtual="false" user-def="true" description="" super="params *">
+<item name="p1279743" caption="Источники света - светодиодные модули" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1708" ag-hash="-351726877">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9949,7 +9949,7 @@
 <!--END_p1279743-->
 
 <!--START_p1280064-->
-<item name="p1280064" caption="Источники света - светодиодные линейки" key="" ag-id="0" ag-hash="-351078139" virtual="false" user-def="true" description="" super="params *">
+<item name="p1280064" caption="Источники света - светодиодные линейки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1709" ag-hash="-351078139">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_modulya" caption="Тип модуля" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1567213117" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochee_napryagenie" caption="Рабочее напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1900878609" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9985,7 +9985,7 @@
 <!--END_p1280064-->
 
 <!--START_p1280243-->
-<item name="p1280243" caption="Специальные диоды LED – для спецэффектов" key="" ag-id="0" ag-hash="-351076280" virtual="false" user-def="true" description="" super="params *">
+<item name="p1280243" caption="Специальные диоды LED – для спецэффектов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1710" ag-hash="-351076280">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_dioda_led" caption="Диаметр диода LED" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-266554138" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10019,7 +10019,7 @@
 <!--END_p1280243-->
 
 <!--START_p1280357-->
-<item name="p1280357" caption="Оптроны – аналоговый выход" key="" ag-id="0" ag-hash="-351075284" virtual="false" user-def="true" description="" super="params *">
+<item name="p1280357" caption="Оптроны – аналоговый выход" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1711" ag-hash="-351075284">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10041,7 +10041,7 @@
 <!--END_p1280357-->
 
 <!--START_p1281383-->
-<item name="p1281383" caption="Оптроны – цифровой выход" key="" ag-id="0" ag-hash="-351045404" virtual="false" user-def="true" description="" super="params *">
+<item name="p1281383" caption="Оптроны – цифровой выход" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1712" ag-hash="-351045404">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10062,7 +10062,7 @@
 <!--END_p1281383-->
 
 <!--START_p1281672-->
-<item name="p1281672" caption="Оптроны остальные" key="" ag-id="0" ag-hash="-351042553" virtual="false" user-def="true" description="" super="params *">
+<item name="p1281672" caption="Оптроны остальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1713" ag-hash="-351042553">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10080,7 +10080,7 @@
 <!--END_p1281672-->
 
 <!--START_p1281805-->
-<item name="p1281805" caption="Оптотриаки" key="" ag-id="0" ag-hash="-351040845" virtual="false" user-def="true" description="" super="params *">
+<item name="p1281805" caption="Оптотриаки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1714" ag-hash="-351040845">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_poluprovodnikovogo_elementa" caption="Тип полупроводникового элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1535309402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="napryagenie_izolyatsii" caption="Напряжение изоляции" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1680939941" description="кВ" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10098,7 +10098,7 @@
 <!--END_p1281805-->
 
 <!--START_p1282219-->
-<item name="p1282219" caption="Фотодиоды" key="" ag-id="0" ag-hash="-351016785" virtual="false" user-def="true" description="" super="params *">
+<item name="p1282219" caption="Фотодиоды" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1715" ag-hash="-351016785">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_fotopriemnika" caption="Тип фотоприемника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2046765368" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_dioda_led" caption="Диаметр диода LED" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-266554138" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10131,7 +10131,7 @@
 <!--END_p1282219-->
 
 <!--START_p1282480-->
-<item name="p1282480" caption="Фоторезисторы" key="" ag-id="0" ag-hash="-351014655" virtual="false" user-def="true" description="" super="params *">
+<item name="p1282480" caption="Фоторезисторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1716" ag-hash="-351014655">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_fotopriemnika" caption="Тип фотоприемника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2046765368" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="мВт" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10145,7 +10145,7 @@
 <!--END_p1282480-->
 
 <!--START_p1282541-->
-<item name="p1282541" caption="Модули ИК-приемников" key="" ag-id="0" ag-hash="-351013817" virtual="false" user-def="true" description="" super="params *">
+<item name="p1282541" caption="Модули ИК-приемников" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1717" ag-hash="-351013817">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_fotopriemnika" caption="Тип фотоприемника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2046765368" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="chastota" caption="Частота" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1437432319" description="кГц" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10165,7 +10165,7 @@
 <!--END_p1282541-->
 
 <!--START_p1282611-->
-<item name="p1282611" caption="Фототранзисторы" key="" ag-id="0" ag-hash="-351012949" virtual="false" user-def="true" description="" super="params *">
+<item name="p1282611" caption="Фототранзисторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1718" ag-hash="-351012949">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_fotopriemnika" caption="Тип фотоприемника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2046765368" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_volny_v_tochke_maks__chuvstvitelnosti" caption="Длина волны в точке макс. чувствительности" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1744072786" description="нм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10187,7 +10187,7 @@
 <!--END_p1282611-->
 
 <!--START_p1282839-->
-<item name="p1282839" caption="LED индикаторы для печатных плат" key="" ag-id="0" ag-hash="-351010957" virtual="false" user-def="true" description="" super="params *">
+<item name="p1282839" caption="LED индикаторы для печатных плат" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1719" ag-hash="-351010957">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_dioda" caption="Тип диода" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763272221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ispolnenie_dioda_led" caption="Исполнение диода LED" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1886306500" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10223,7 +10223,7 @@
 <!--END_p1282839-->
 
 <!--START_p1283263-->
-<item name="p1283263" caption="LED панельные индикаторы" key="" ag-id="0" ag-hash="-350986845" virtual="false" user-def="true" description="" super="params *">
+<item name="p1283263" caption="LED панельные индикаторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1720" ag-hash="-350986845">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_indik__lampy" caption="Тип индик. лампы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2020336260" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_indikatora" caption="Вид индикатора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="474632728" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10254,7 +10254,7 @@
 <!--END_p1283263-->
 
 <!--START_p1284543-->
-<item name="p1284543" caption="Дисплеи OLED буквенно-цифровые" key="" ag-id="0" ag-hash="-350954233" virtual="false" user-def="true" description="" super="params *">
+<item name="p1284543" caption="Дисплеи OLED буквенно-цифровые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1726" ag-hash="-350954233">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_displeya" caption="Тип дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2066678265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_displeya" caption="Вид дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="549649233" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10276,7 +10276,7 @@
 <!--END_p1284543-->
 
 <!--START_p1284738-->
-<item name="p1284738" caption="Дисплеи OLED графические" key="" ag-id="0" ag-hash="-350952337" virtual="false" user-def="true" description="" super="params *">
+<item name="p1284738" caption="Дисплеи OLED графические" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1727" ag-hash="-350952337">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_displeya" caption="Тип дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2066678265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_displeya" caption="Вид дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="549649233" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10301,7 +10301,7 @@
 <!--END_p1284738-->
 
 <!--START_p1284930-->
-<item name="p1284930" caption="Дисплеи LCD графические" key="" ag-id="0" ag-hash="-350950423" virtual="false" user-def="true" description="" super="params *">
+<item name="p1284930" caption="Дисплеи LCD графические" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1728" ag-hash="-350950423">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_displeya" caption="Тип дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2066678265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_displeya" caption="Вид дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="549649233" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10331,7 +10331,7 @@
 <!--END_p1284930-->
 
 <!--START_p1285614-->
-<item name="p1285614" caption="Дисплеи LCD цифровые" key="" ag-id="0" ag-hash="-350923573" virtual="false" user-def="true" description="" super="params *">
+<item name="p1285614" caption="Дисплеи LCD цифровые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1730" ag-hash="-350923573">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_displeya" caption="Тип дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2066678265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_displeya" caption="Вид дисплея" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="549649233" description="-сегментный (цифровой)" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10347,7 +10347,7 @@
 <!--END_p1285614-->
 
 <!--START_p1286584-->
-<item name="p1286584" caption="Дисплеи TFT" key="" ag-id="0" ag-hash="-350894526" virtual="false" user-def="true" description="" super="params *">
+<item name="p1286584" caption="Дисплеи TFT" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1732" ag-hash="-350894526">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_displeya" caption="Тип дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2066678265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diagonal_ekrana" caption="Диагональ экрана" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="290709778" description="&quot;" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10384,7 +10384,7 @@
 <!--END_p1286584-->
 
 <!--START_p1287040-->
-<item name="p1287040" caption="Дисплеи LED матрицы" key="" ag-id="0" ag-hash="-350869668" virtual="false" user-def="true" description="" super="params *">
+<item name="p1287040" caption="Дисплеи LED матрицы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1733" ag-hash="-350869668">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_displeya" caption="Тип дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2066678265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10405,7 +10405,7 @@
 <!--END_p1287040-->
 
 <!--START_p1287259-->
-<item name="p1287259" caption="Дисплеи LED двойные" key="" ag-id="0" ag-hash="-350867706" virtual="false" user-def="true" description="" super="params *">
+<item name="p1287259" caption="Дисплеи LED двойные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1734" ag-hash="-350867706">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_displeya" caption="Тип дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2066678265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10427,7 +10427,7 @@
 <!--END_p1287259-->
 
 <!--START_p1287678-->
-<item name="p1287678" caption="Дисплеи LED тройные" key="" ag-id="0" ag-hash="-350863801" virtual="false" user-def="true" description="" super="params *">
+<item name="p1287678" caption="Дисплеи LED тройные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1735" ag-hash="-350863801">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_displeya" caption="Тип дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2066678265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10449,7 +10449,7 @@
 <!--END_p1287678-->
 
 <!--START_p1287915-->
-<item name="p1287915" caption="Дисплеи LED одинарные" key="" ag-id="0" ag-hash="-350861107" virtual="false" user-def="true" description="" super="params *">
+<item name="p1287915" caption="Дисплеи LED одинарные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1736" ag-hash="-350861107">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_displeya" caption="Тип дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2066678265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10472,7 +10472,7 @@
 <!--END_p1287915-->
 
 <!--START_p1288644-->
-<item name="p1288644" caption="Дисплеи LED остальные" key="" ag-id="0" ag-hash="-350834107" virtual="false" user-def="true" description="" super="params *">
+<item name="p1288644" caption="Дисплеи LED остальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1737" ag-hash="-350834107">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_displeya" caption="Тип дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2066678265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10499,7 +10499,7 @@
 <!--END_p1288644-->
 
 <!--START_p1288716-->
-<item name="p1288716" caption="Дисплеи LED четверные" key="" ag-id="0" ag-hash="-350833237" virtual="false" user-def="true" description="" super="params *">
+<item name="p1288716" caption="Дисплеи LED четверные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1738" ag-hash="-350833237">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_displeya" caption="Тип дисплея" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2066678265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10521,7 +10521,7 @@
 <!--END_p1288716-->
 
 <!--START_p1293167-->
-<item name="p1293167" caption="Изолированные коннекторы" key="" ag-id="0" ag-hash="-350064281" virtual="false" user-def="true" description="" super="params *">
+<item name="p1293167" caption="Изолированные коннекторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1772" ag-hash="-350064281">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_nakonechnika" caption="Тип наконечника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1299348696" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="otverstie_pod_vint_diametrom" caption="Отверстие под винт диаметром" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-484103928" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10567,7 +10567,7 @@
 <!--END_p1293167-->
 
 <!--START_p1293988-->
-<item name="p1293988" caption="Паечные штифты PCB" key="" ag-id="0" ag-hash="-350056530" virtual="false" user-def="true" description="" super="params *">
+<item name="p1293988" caption="Паечные штифты PCB" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1773" ag-hash="-350056530">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina" caption="Ширина" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="2061610206" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10625,7 +10625,7 @@
 <!--END_p1293988-->
 
 <!--START_p1294770-->
-<item name="p1294770" caption="Зажимные втулки" key="" ag-id="0" ag-hash="-350028700" virtual="false" user-def="true" description="" super="params *">
+<item name="p1294770" caption="Зажимные втулки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1774" ag-hash="-350028700">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_nakonechnika" caption="Тип наконечника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1299348696" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="versiya_nakonechnika" caption="Версия наконечника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286759810" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10662,7 +10662,7 @@
 <!--END_p1294770-->
 
 <!--START_p1295295-->
-<item name="p1295295" caption="Неизолированные коннекторы" key="" ag-id="0" ag-hash="-350003647" virtual="false" user-def="true" description="" super="params *">
+<item name="p1295295" caption="Неизолированные коннекторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1775" ag-hash="-350003647">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_nakonechnika" caption="Тип наконечника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1299348696" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="otverstie_pod_vint_diametrom" caption="Отверстие под винт диаметром" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-484103928" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10707,7 +10707,7 @@
 <!--END_p1295295-->
 
 <!--START_p1296292-->
-<item name="p1296292" caption="Быстрые соединители проводов" key="" ag-id="0" ag-hash="-349973859" virtual="false" user-def="true" description="" super="params *">
+<item name="p1296292" caption="Быстрые соединители проводов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1776" ag-hash="-349973859">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="M" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_soedinitelya" caption="Тип соединителя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-999132898" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="seriya_razema" caption="Серия разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2011431972" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10764,7 +10764,7 @@
 <!--END_p1296292-->
 
 <!--START_p1296707-->
-<item name="p1296707" caption="Клеммные колодки для печатных плат" key="" ag-id="0" ag-hash="-349969328" virtual="false" user-def="true" description="" super="params *">
+<item name="p1296707" caption="Клеммные колодки для печатных плат" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1777" ag-hash="-349969328">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="prostranstvennaya_orientatsiya_informatsiya_o_vzaimopologenii_otnositelno_drug_druga__kabelnogo_vhoda_kontaktov_libo_pcb" caption="Пространственная ориентация Информация о взаимоположении относительно друг друга: кабельного входа, контактов либо PCB" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-885367363" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10805,7 +10805,7 @@
 <!--END_p1296707-->
 
 <!--START_p1297314-->
-<item name="p1297314" caption="Клеммники прочие" key="" ag-id="0" ag-hash="-349943353" virtual="false" user-def="true" description="" super="params *">
+<item name="p1297314" caption="Клеммники прочие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1778" ag-hash="-349943353">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_polyusov" caption="Кол-во полюсов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1405267104" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10843,7 +10843,7 @@
 <!--END_p1297314-->
 
 <!--START_p1297492-->
-<item name="p1297492" caption="Клеммные колодки" key="" ag-id="0" ag-hash="-349942146" virtual="false" user-def="true" description="" super="params *">
+<item name="p1297492" caption="Клеммные колодки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1779" ag-hash="-349942146">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="mehanicheskii_montag" caption="Механический монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="153044513" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10881,7 +10881,7 @@
 <!--END_p1297492-->
 
 <!--START_p1297852-->
-<item name="p1297852" caption="Клеммные колодки разъемного типа" key="" ag-id="0" ag-hash="-349938426" virtual="false" user-def="true" description="" super="params *">
+<item name="p1297852" caption="Клеммные колодки разъемного типа" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1780" ag-hash="-349938426">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shag_kontaktov" caption="Шаг контактов" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1595312899" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10924,7 +10924,7 @@
 <!--END_p1297852-->
 
 <!--START_p1299177-->
-<item name="p1299177" caption="Разъемы для LED" key="" ag-id="0" ag-hash="-349885504" virtual="false" user-def="true" description="" super="params *">
+<item name="p1299177" caption="Разъемы для LED" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1781" ag-hash="-349885504">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="elektricheskii_montag" caption="Электрический монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-361831533" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -10974,7 +10974,7 @@
 <!--END_p1299177-->
 
 <!--START_p1299590-->
-<item name="p1299590" caption="Разъeмы DC" key="" ag-id="0" ag-hash="-349881605" virtual="false" user-def="true" description="" super="params *">
+<item name="p1299590" caption="Разъeмы DC" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1782" ag-hash="-349881605">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razem" caption="Разъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="108291603" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -11035,7 +11035,7 @@
 <!--END_p1299590-->
 
 <!--START_p1300563-->
-<item name="p1300563" caption="Другие разъемы AC" key="" ag-id="0" ag-hash="-329832352" virtual="false" user-def="true" description="" super="params *">
+<item name="p1300563" caption="Другие разъемы AC" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1783" ag-hash="-329832352">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_perehodnika" caption="Тип переходника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1470221442" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="nominalnyi_tok" caption="Номинальный ток" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1483027763" description="А" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -11089,7 +11089,7 @@
 <!--END_p1300563-->
 
 <!--START_p1300937-->
-<item name="p1300937" caption="Однофазные сетевые разъемы" key="" ag-id="0" ag-hash="-329828597" virtual="false" user-def="true" description="" super="params *">
+<item name="p1300937" caption="Однофазные сетевые разъемы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1784" ag-hash="-329828597">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razem" caption="Разъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="108291603" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -11118,7 +11118,7 @@
 <!--END_p1300937-->
 
 <!--START_p1301433-->
-<item name="p1301433" caption="Разъемы IEC 60320" key="" ag-id="0" ag-hash="-329803615" virtual="false" user-def="true" description="" super="params *">
+<item name="p1301433" caption="Разъемы IEC 60320" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1785" ag-hash="-329803615">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razem" caption="Разъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="108291603" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -11172,7 +11172,7 @@
 <!--END_p1301433-->
 
 <!--START_p1302043-->
-<item name="p1302043" caption="Многофазные разъемы IEC 60309" key="" ag-id="0" ag-hash="-329777637" virtual="false" user-def="true" description="" super="params *">
+<item name="p1302043" caption="Многофазные разъемы IEC 60309" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1786" ag-hash="-329777637">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razem" caption="Разъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="108291603" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -11200,7 +11200,7 @@
 <!--END_p1302043-->
 
 <!--START_p1302328-->
-<item name="p1302328" caption="Соединителей на рейку" key="" ag-id="0" ag-hash="-329774811" virtual="false" user-def="true" description="" super="params *">
+<item name="p1302328" caption="Соединителей на рейку" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1787" ag-hash="-329774811">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_aksessuarov_dlya_razemov" caption="Тип аксессуаров для разъемов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114561475" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="naznachenie" caption="Назначение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1886637308" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -11252,7 +11252,7 @@
 <!--END_p1302328-->
 
 <!--START_p1303559-->
-<item name="p1303559" caption="Разъемы для солнечных батарей" key="" ag-id="0" ag-hash="-329743004" virtual="false" user-def="true" description="" super="params *">
+<item name="p1303559" caption="Разъемы для солнечных батарей" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1788" ag-hash="-329743004">
 	<parameter name="tip_perehodnika" caption="Тип переходника" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1470221442" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="prostranstvennaya_orientatsiya_informatsiya_o_vzaimopologenii_otnositelno_drug_druga__kabelnogo_vhoda_kontaktov_libo_pcb" caption="Пространственная ориентация Информация о взаимоположении относительно друг друга: кабельного входа, контактов либо PCB" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-885367363" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="klass_zaschity" caption="Класс защиты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-321513636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -11293,7 +11293,7 @@
 <!--END_p1303559-->
 
 <!--START_p1303617-->
-<item name="p1303617" caption="Разъeмы прочие" key="" ag-id="0" ag-hash="-329742169" virtual="false" user-def="true" description="" super="params *">
+<item name="p1303617" caption="Разъeмы прочие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1789" ag-hash="-329742169">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="M" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razem" caption="Разъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="108291603" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -11353,7 +11353,7 @@
 <!--END_p1303617-->
 
 <!--START_p1304042-->
-<item name="p1304042" caption="Разъeмы пластина - пластина" key="" ag-id="0" ag-hash="-329718056" virtual="false" user-def="true" description="" super="params *">
+<item name="p1304042" caption="Разъeмы пластина - пластина" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1790" ag-hash="-329718056">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid_razemov" caption="Вид разъемов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2050488052" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -11384,7 +11384,7 @@
 <!--END_p1304042-->
 
 <!--START_p1304380-->
-<item name="p1304380" caption="Разъeмы Dubox растр 2,54мм" key="" ag-id="0" ag-hash="-329715051" virtual="false" user-def="true" description="" super="params *">
+<item name="p1304380" caption="Разъeмы Dubox растр 2,54мм" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1791" ag-hash="-329715051">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razem" caption="Разъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="108291603" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -11406,7 +11406,7 @@
 <!--END_p1304380-->
 
 <!--START_p1304438-->
-<item name="p1304438" caption="Разъeмы CE156 растр 3,96мм" key="" ag-id="0" ag-hash="-329714237" virtual="false" user-def="true" description="" super="params *">
+<item name="p1304438" caption="Разъeмы CE156 растр 3,96мм" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1792" ag-hash="-329714237">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip_aksessuarov_dlya_razemov" caption="Тип аксессуаров для разъемов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2114561475" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_vyvodov" caption="Кол-во выводов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-105537376" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -11429,4 +11429,16 @@
 	<parameter name="fiksatsiya_razema" caption="Фиксация разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2030852753" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p1304438-->
+
+<!--START_p10028102-->
+<item name="p10028102" caption="Ферритовые сердечники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2550" ag-hash="-480500">
+	<parameter name="versiya" caption="Версия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="351608321" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota" caption="Высота" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-801445108" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina" caption="Длина" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_d1" caption="Размер d1" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142461" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_d2" caption="Размер d2" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142462" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina" caption="Ширина" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="2061610206" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p10028102-->
 <!--EXP--></model>
