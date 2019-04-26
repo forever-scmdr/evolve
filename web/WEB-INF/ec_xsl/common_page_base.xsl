@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+				xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
@@ -32,6 +33,7 @@
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
+	<xsl:variable name="delivery_date" select="f:delivery-date(current-dateTime())" />
 
 	<xsl:variable name="active_menu_item"/>
 

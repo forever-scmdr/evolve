@@ -83,8 +83,8 @@
 
 
 
-	<page name="index" template="index" cacheable="true">
-		<single item="main_page" id="main" cacheable="true">
+	<page name="index" template="index" cacheable="false">
+		<single item="main_page" id="main" cacheable="false">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
 			<single item="seo"/>
@@ -116,7 +116,7 @@
 				<single item="params"/>
 			</list>
 		</single>
-		<list item="banner_section" id="banner_section" cacheable="true">
+		<list item="banner_section" id="banner_section" cacheable="false">
 			<list item="banner"/>
 		</list>
 		<single item="news_wrap" cacheable="true">

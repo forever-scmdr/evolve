@@ -90,6 +90,9 @@
 				</div>
 			</div>
 			<div class="product-info">
+				<div class="delivery-date extra-info">
+					<p>Товар поступит на пункт самовывоза <b><xsl:value-of select="$delivery_date" /></b></p>
+				</div>
 				<!-- new html -->
 				<xsl:for-each select="$p/tag">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>

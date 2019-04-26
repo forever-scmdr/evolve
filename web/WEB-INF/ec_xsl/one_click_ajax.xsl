@@ -36,6 +36,12 @@
 							</div>
 						</xsl:if>
 						<xsl:if test="not($success)">
+							<div class="delivery-date">
+								<b>ВНИМАНИЕ!</b>
+								<p>Товар поступит на пункт самовывоза <b><xsl:value-of select="f:delivery-date(current-dateTime())"/></b></p>
+							</div>
+						</xsl:if>
+						<xsl:if test="not($success)">
 							<form action="{page/submit_link}" method="post" ajax="true" ajax-loader-id="modal-one_click" id="one-click-form">
 								<div class="form-group">
 									<label>Телефон:</label>
