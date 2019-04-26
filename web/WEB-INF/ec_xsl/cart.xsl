@@ -1,7 +1,11 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0"> 
+	<xsl:import href="user_data_inputs.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
+
+	<xsl:variable name="message" select="page/variables/message"/>
+	<xsl:variable name="is_jur" select="page/user_jur//@validation-error or page/user_jur/organization != '' or page/jur"/>
 
 	<xsl:variable name="title" select="'Список товаров'" />
 
@@ -56,6 +60,9 @@
 							<xsl:if test="page/cart/sum != '0'">
 								<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
 							</xsl:if>
+							<div class="discount-total">
+								Итоговая скидка: 10 руб. Сумма без учета скидки: 100 руб.
+							</div>
 							<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
 							<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 						</div>
@@ -67,6 +74,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</div>
+
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>

@@ -31,7 +31,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-		getPrice = StringUtils.equalsAnyIgnoreCase(getVarSingleValueDefault(GET_PRICE_PARAM, "no"), "yes", "true");
+		getPrice = StringUtils.equalsAnyIgnoreCase(getVarSingleValueDefault(GET_PRICE_PARAM, "yes"), "yes", "true");
 		return true;
 	}
 

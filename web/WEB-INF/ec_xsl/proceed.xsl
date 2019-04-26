@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0"> 
 	<xsl:import href="user_data_inputs.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
@@ -36,15 +36,17 @@
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заявки.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
-						<xsl:call-template name="USER_PHYS_INPUTS">
-							<xsl:with-param name="inp" select="$inp"/>
-							<xsl:with-param name="vals" select="page/phys"/>
-						</xsl:call-template>
+						<div class="cart-form cart-form__phys">
+							<xsl:call-template name="USER_PHYS_INPUTS">
+								<xsl:with-param name="inp" select="$inp"/>
+								<xsl:with-param name="vals" select="page/phys"/>
+							</xsl:call-template>
+						</div>
 						<div class="form-group">
 							<label>Комментарий:</label>
 							<textarea class="form-control" rows="3" name="{$inp/comment/@input}"><xsl:value-of select="$inp/comment"/></textarea>
 						</div>
-						<input type="submit" value="Отправить заявку"/>
+						<!-- <input type="submit" class="button" value="Отправить заявку"/> -->
 					</form>
 				</div>
 
@@ -52,17 +54,29 @@
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заказа.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
 						<xsl:variable name="inp" select="page/user_jur/input"/>
-						<xsl:call-template name="USER_JUR_INPUTS">
-							<xsl:with-param name="inp" select="$inp"/>
-							<xsl:with-param name="vals" select="page/jur"/>
-						</xsl:call-template>
+						<div class="cart-form">
+							<xsl:call-template name="USER_JUR_INPUTS">
+								<xsl:with-param name="inp" select="$inp"/>
+								<xsl:with-param name="vals" select="page/jur"/>
+							</xsl:call-template>
+						</div>
 						<div class="form-group">
 							<label>Комментарий:</label>
 							<textarea class="form-control" rows="3" name="{$inp/comment/@input}"><xsl:value-of select="$inp/comment"/></textarea>
 						</div>
-						<input type="submit" value="Отправить заказ"/>
+						<!-- <input type="submit" class="button" value="Отправить заказ"/> -->
 					</form>
 				</div>
+			</div>
+			<div class="total">
+				<p>Итого: 99 р.</p>
+				<!-- <xsl:if test="page/cart/sum != '0'">
+					<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
+				</xsl:if> -->
+				<div class="discount-total">
+					Итоговая скидка: 10 руб. Сумма без учета скидки: 100 руб.
+				</div>
+				<input type="submit" class="button" value="Отправить заказ" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 			</div>
 		</div>
 

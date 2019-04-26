@@ -20,6 +20,9 @@
 						<limit>
 							<var value="1"/>
 						</limit>
+						<sorting>
+							<var value="small_pic"/>
+						</sorting>
 					</filter>
 				</list>
 			</tree>
@@ -53,7 +56,6 @@
 		<link name="cart_link" target="cart"/>
 		<link name="search_link" target="search"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
-		<link name="warranty_form_link" target="warranty_form"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="fav_link" target="fav"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
@@ -1439,6 +1441,16 @@
 		<command class="ecommander.fwk.integration.YMarketCreateXMLFile">
 			<result name="success" type="redirect"/>
 			<result name="error" type="redirect"/>
+		</command>
+	</page>
+
+
+	<page name="download_pics" template="integration/download_pics" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.DownloadPics" clear-cache="yes">
+			<result name="complete" type="xml"/>
 		</command>
 	</page>
 

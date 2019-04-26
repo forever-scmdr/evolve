@@ -23,7 +23,6 @@ public class Line_product
     public final static String VENDOR = "vendor";
     public final static String VENDOR_CODE = "vendor_code";
     public final static String OFFER_ID = "offer_id";
-    public final static String SHORT = "short";
     public final static String AVAILABLE = "available";
     public final static String GROUP_ID = "group_id";
     public final static String URL = "url";
@@ -231,22 +230,6 @@ public class Line_product
 
     public boolean contains_offer_id(String value) {
         return containsValue("offer_id", value);
-    }
-
-    public void set_short(String value) {
-        setValue("short", value);
-    }
-
-    public String get_short() {
-        return getStringValue("short");
-    }
-
-    public String getDefault_short(String defaultVal) {
-        return getStringValue("short", defaultVal);
-    }
-
-    public boolean contains_short(String value) {
-        return containsValue("short", value);
     }
 
     public void set_available(Byte value) {

@@ -214,18 +214,18 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 	 * @param itemId
 	 * @param limit
 	 * @param moreThanId
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByTypeId(int itemId, int limit, long moreThanId, Connection conn) throws Exception {
+	public static ArrayList<Item> loadByTypeId(int itemId, int limit, long moreThanId) throws Exception {
 		ArrayList<Item> result = new ArrayList<>();
 		// Полиморфная загрузка
 		TemplateQuery select = new TemplateQuery("Select items for indexing");
 		Integer[] extenders = ItemTypeRegistry.getBasicItemExtendersIds(itemId);
 		select.SELECT("*").FROM(ITEM_TBL).WHERE().col_IN(I_TYPE_ID).intIN(extenders).AND()
 				.col(I_ID, ">").long_(moreThanId).ORDER_BY(I_ID).LIMIT(limit);
-		try (PreparedStatement pstmt = select.prepareQuery(conn)) {
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = select.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			// Создание айтемов
 			while (rs.next()) {
@@ -242,12 +242,11 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 	 * @param itemName
 	 * @param limit
 	 * @param startFromId
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByName(String itemName, int limit, long startFromId, Connection conn) throws Exception {
-		return loadByTypeId(ItemTypeRegistry.getItemType(itemName).getTypeId(), limit, startFromId, conn);
+	public static ArrayList<Item> loadByName(String itemName, int limit, long startFromId) throws Exception {
+		return loadByTypeId(ItemTypeRegistry.getItemType(itemName).getTypeId(), limit, startFromId);
 	}
 
 	/**

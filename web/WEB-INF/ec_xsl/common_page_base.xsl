@@ -457,12 +457,17 @@
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
 			</div>
-			<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
-				<div class="device__in-stock"><i class="fas fa-signal"></i> есть на складе</div>
-			</xsl:if>
-			<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
-				<div class="device__in-stock device__in-stock_no" title="Ближайшая поставка: 01.01.2020"><i class="fas fa-truck"></i> товар в пути</div>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="qty and f:num(qty) &gt; 10">
+					<div class="device__in-stock"><i class="fas fa-signal"></i> есть на складе</div>
+				</xsl:when>
+				<xsl:when test="qty and f:num(qty) &gt; 0">
+					<div class="device__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="qty"/> шт.</div>
+				</xsl:when>
+				<xsl:otherwise>
+					<div class="device__in-stock device__in-stock_no" title="Ближайшая поставка: 01.01.2020"><i class="fas fa-truck"></i> товар в пути</div>
+				</xsl:otherwise>
+			</xsl:choose>
 
 
 
@@ -575,12 +580,17 @@
 				<xsl:if test="$has_lines">
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
-				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
-					<div class="device__in-stock device_row__in-stock"><i class="fas fa-signal"></i> есть на складе</div>
-				</xsl:if>
-				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
-					<div class="device__in-stock device_row__in-stock" title="Ближайшая поставка: 01.01.2020"><i class="fas fa-truck"></i> товар в пути</div>
-				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="qty and f:num(qty) &gt; 10">
+						<div class="device__in-stock device_row__in-stock"><i class="fas fa-signal"></i> есть на складе</div>
+					</xsl:when>
+					<xsl:when test="qty and f:num(qty) &gt; 0">
+						<div class="device__in-stock device_row__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="qty"/> шт.</div>
+					</xsl:when>
+					<xsl:otherwise>
+						<div class="device__in-stock device_row__in-stock device__in-stock_no" title="Ближайшая поставка: 01.01.2020"><i class="fas fa-truck"></i> товар в пути</div>
+					</xsl:otherwise>
+				</xsl:choose>
 			</div>
 			<xsl:for-each select="tag">
 				<div class="device__tag device_row__tag"><xsl:value-of select="." /></div>
@@ -678,7 +688,7 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css"/>
+				<link rel="stylesheet" href="css/app.css?version=0.1"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>

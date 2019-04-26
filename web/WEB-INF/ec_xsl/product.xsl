@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0"> 
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -116,8 +116,15 @@
 							</div>
 						</div> -->
 						<xsl:choose>
-							<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-signal"></i> есть на складе</div></xsl:when>
-							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="fas fa-truck"></i> товар в пути</div></xsl:otherwise>
+							<xsl:when test="$p/qty and f:num($p/qty) &gt; 10">
+								<div class="device__in-stock"><i class="fas fa-signal"></i> есть на складе</div>
+							</xsl:when>
+							<xsl:when test="$p/qty and f:num($p/qty) &gt; 0">
+								<div class="device__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="$p/qty"/> шт.</div>
+							</xsl:when>
+							<xsl:otherwise>
+								<div class="device__in-stock device__in-stock_no" title="Ближайшая поставка: 01.01.2020"><i class="fas fa-truck"></i> товар в пути</div>
+							</xsl:otherwise>
 						</xsl:choose>
 					</div>
 				</xsl:if>

@@ -14,6 +14,7 @@ public class Catalog
     public final static String INTEGRATION = "integration";
     public final static String DATE = "date";
     public final static String INTEGRATION_PENDING = "integration_pending";
+    public final static String BIG_INTEGRATION = "big_integration";
 
     private Catalog(Item item) {
         super(item);
@@ -88,6 +89,18 @@ public class Catalog
 
     public boolean contains_integration_pending(Byte value) {
         return containsValue("integration_pending", value);
+    }
+
+    public void set_big_integration(File value) {
+        setValue("big_integration", value);
+    }
+
+    public File get_big_integration() {
+        return getFileValue("big_integration", AppContext.getCommonFilesDirPath());
+    }
+
+    public boolean contains_big_integration(File value) {
+        return containsValue("big_integration", value);
     }
 
 }

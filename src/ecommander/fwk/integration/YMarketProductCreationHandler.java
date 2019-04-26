@@ -21,17 +21,31 @@ import java.util.*;
 
 public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
 
-	private static final HashSet<String> COMMON_PARAMS = new HashSet<>();
+	private static final HashSet<String> SINGLE_PARAMS = new HashSet<>();
+	private static final HashSet<String> MULTIPLE_PARAMS = new HashSet<>();
 	static {
-		COMMON_PARAMS.add(URL_ELEMENT);
-		COMMON_PARAMS.add(PRICE_ELEMENT);
-		COMMON_PARAMS.add(CURRENCY_ID_ELEMENT);
-		COMMON_PARAMS.add(CATEGORY_ID_ELEMENT);
-		COMMON_PARAMS.add(NAME_ELEMENT);
-		COMMON_PARAMS.add(VENDOR_CODE_ELEMENT);
-		COMMON_PARAMS.add(DESCRIPTION_ELEMENT);
-		COMMON_PARAMS.add(COUNTRY_OF_ORIGIN_ELEMENT);
-		COMMON_PARAMS.add(MODEL_ELEMENT);
+		SINGLE_PARAMS.add(URL_ELEMENT);
+		SINGLE_PARAMS.add(PRICE_ELEMENT);
+		SINGLE_PARAMS.add(CURRENCY_ID_ELEMENT);
+		//SINGLE_PARAMS.add(CATEGORY_ID_ELEMENT);
+		SINGLE_PARAMS.add(NAME_ELEMENT);
+		SINGLE_PARAMS.add(VENDOR_CODE_ELEMENT);
+		SINGLE_PARAMS.add(DESCRIPTION_ELEMENT);
+		SINGLE_PARAMS.add(COUNTRY_OF_ORIGIN_ELEMENT);
+		SINGLE_PARAMS.add(MODEL_ELEMENT);
+		SINGLE_PARAMS.add(QUANTITY_ELEMENT);
+		SINGLE_PARAMS.add(VENDOR_ELEMENT);
+		SINGLE_PARAMS.add(OLDPRICE_ELEMENT);
+		SINGLE_PARAMS.add(OPTPRICE_ELEMENT);
+		SINGLE_PARAMS.add(OLDOPTPRICE_ELEMENT);
+		SINGLE_PARAMS.add(MIN_QUANTITY_ELEMENT);
+		SINGLE_PARAMS.add(STATUS_ELEMENT);
+
+		MULTIPLE_PARAMS.add(CATEGORY_ID_ELEMENT);
+		MULTIPLE_PARAMS.add(PICTURE_ELEMENT);
+		MULTIPLE_PARAMS.add(ANALOG_ELEMENT);
+		MULTIPLE_PARAMS.add(SIMILAR_ITEMS_ELEMENT);
+		MULTIPLE_PARAMS.add(SUPPORT_ITEMS_ELEMENT);
 	}
 
 
@@ -43,11 +57,11 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private HashMap<String, Item> sections = null;
 
 	private IntegrateBase.Info info; // информация для пользователя
-	private HashMap<String, String> commonParams;
+	private HashMap<String, String> singleParams;
+	private HashMap<String, LinkedHashSet<String>> multipleParams;
 	private LinkedHashMap<String, String> specialParams;
 	private ItemType productType;
 	private ItemType paramsXmlType;
-	private ArrayList<String> picUrls;
 	private User initiator;
 	private boolean isInsideOffer = false;
 	private boolean getPrice = false;
@@ -67,15 +81,22 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		try {
 			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
-				String code = commonParams.get(ID_ATTR);
-				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
+				HashSet<String> productContainers = new HashSet<>();
+				String code = singleParams.get(ID_ATTR);
+				//String secCode = singleParams.get(CATEGORY_ID_ELEMENT);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
 				boolean isProductNotNew = true;
-				Item section = sections.get(secCode);
+				LinkedHashSet<String> categoryIds = multipleParams.getOrDefault(CATEGORY_ID_ELEMENT, new LinkedHashSet<>());
 				if (product == null) {
+					String secCode = "-000-";
+					if (categoryIds.size() > 0) {
+						secCode = categoryIds.iterator().next();
+					}
+					Item section = sections.get(secCode);
 					isProductNotNew = false;
 					if (section != null) {
 						product = Item.newChildItem(productType, section);
+						productContainers.add(secCode);
 					} else {
 						info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
 						return;
@@ -84,47 +105,61 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				product.setValue(CODE_PARAM, code);
 				product.setValue(OFFER_ID_PARAM, code);
-				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(commonParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
-				product.setValue(GROUP_ID_PARAM, commonParams.get(GROUP_ID_ATTR));
-				product.setValue(URL_PARAM, commonParams.get(URL_ELEMENT));
-				product.setValue(CURRENCY_ID_PARAM, commonParams.get(CURRENCY_ID_ELEMENT));
-				product.setValue(CATEGORY_ID_PARAM, commonParams.get(CATEGORY_ID_ELEMENT));
-				product.setValue(NAME_PARAM, commonParams.get(NAME_ELEMENT));
+				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(singleParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
+				product.setValueUI(QTY_PARAM, singleParams.get(QUANTITY_ELEMENT));
+				product.setValue(GROUP_ID_PARAM, singleParams.get(GROUP_ID_ATTR));
+				product.setValue(URL_PARAM, singleParams.get(URL_ELEMENT));
+				if (product.getItemType().hasParameter(CURRENCY_ID_PARAM))
+					product.setValue(CURRENCY_ID_PARAM, singleParams.get(CURRENCY_ID_ELEMENT));
+				if (product.getItemType().hasParameter(CATEGORY_ID_PARAM))
+					product.setValue(CATEGORY_ID_PARAM, singleParams.get(CATEGORY_ID_ELEMENT));
+				product.setValue(NAME_PARAM, singleParams.get(NAME_ELEMENT));
 				if (product.isValueEmpty(NAME_PARAM))
-					product.setValue(NAME_PARAM, commonParams.get(MODEL_ELEMENT));
-				product.setValue(VENDOR_CODE_PARAM, commonParams.get(VENDOR_CODE_ELEMENT));
-				product.setValue(DESCRIPTION_PARAM, commonParams.get(DESCRIPTION_ELEMENT));
-				product.setValue(VENDOR_PARAM, commonParams.get(VENDOR_ELEMENT));
-				product.setValue(COUNTRY_PARAM, commonParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
+					product.setValue(NAME_PARAM, singleParams.get(MODEL_ELEMENT));
+				if (product.getItemType().hasParameter(VENDOR_CODE_PARAM))
+					product.setValue(VENDOR_CODE_PARAM, singleParams.get(VENDOR_CODE_ELEMENT));
+				if (product.getItemType().hasParameter(VENDOR_PARAM))
+					product.setValue(VENDOR_PARAM, singleParams.get(VENDOR_ELEMENT));
+				if (product.getItemType().hasParameter(DESCRIPTION_PARAM))
+					product.setValue(DESCRIPTION_PARAM, singleParams.get(DESCRIPTION_ELEMENT));
+				if (product.getItemType().hasParameter(VENDOR_PARAM))
+					product.setValue(VENDOR_PARAM, singleParams.get(VENDOR_ELEMENT));
+				if (product.getItemType().hasParameter(COUNTRY_PARAM))
+					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
+				if (product.getItemType().hasParameter(COUNTRY_PARAM))
+					product.setValue(OPTPRICE_ELEMENT, singleParams.get(OPTPRICE_ELEMENT));
+				if (product.getItemType().hasParameter(PRICE_OLD_PARAM))
+					product.setValue(PRICE_OLD_PARAM, singleParams.get(OLDPRICE_ELEMENT));
+				if (product.getItemType().hasParameter(PRICE_OPT_OLD_PARAM))
+					product.setValue(PRICE_OPT_OLD_PARAM, singleParams.get(OLDOPTPRICE_ELEMENT));
+				if (product.getItemType().hasParameter(MIN_QTY_PARAM))
+					product.setValueUI(MIN_QTY_PARAM, singleParams.get(MIN_QUANTITY_ELEMENT));
+				if (product.getItemType().hasParameter(COUNTRY_PARAM))
+					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
+				if (product.getItemType().hasParameter(COUNTRY_PARAM))
+					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
+				if (product.getItemType().hasParameter(COUNTRY_PARAM))
+					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
+				if (product.getItemType().hasParameter(COUNTRY_PARAM))
+					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
+				if (product.getItemType().hasParameter(COUNTRY_PARAM))
+					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
+				if (product.getItemType().hasParameter(COUNTRY_PARAM))
+					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
+				if (product.getItemType().hasParameter(COUNTRY_PARAM))
+					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
+
+
 
 				if (getPrice)
-					product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
+					product.setValueUI(PRICE_PARAM, singleParams.get(PRICE_ELEMENT));
 				else
 					product.setValueUI(PRICE_PARAM, "0");
 
 				// Качать картинки только для новых товаров
-				if (product.isNew()) {
-					for (String picUrl : picUrls) {
-						product.setValue(GALLERY_PARAM, new URL(picUrl));
-					}
-				}
+				boolean wasNew = product.isNew();
 
-				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-
-				// Генерация маленького изображения
-				if (noMainPic) {
-					if (picUrls.size() > 0) {
-						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.get(0)));
-					}
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-					try {
-						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-					} catch (Exception e) {
-						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-					}
-				}
 
 				// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
 				if (isProductNotNew) {
@@ -153,17 +188,50 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					// Загрузить разделы, содержащие товар
 					List<Item> secs = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false,
 							ItemTypeRegistry.getPrimaryAssoc().getName(), catalogLinkAssoc.getName()).loadItems();
-					// Создать ассоциацию товара с разделом, если ее еще не существует
-					boolean needLink = true;
 					for (Item sec : secs) {
-						if (sec.getId() == section.getId()) {
-							needLink = false;
-							break;
-						}
+						productContainers.add(sec.getStringValue(CATEGORY_ID_PARAM));
 					}
-					if (needLink) {
+				}
+
+				// Создать ассоциацию товара с разделом, если ее еще не существует
+				categoryIds.removeAll(productContainers);
+				for (String categoryId : categoryIds) {
+					Item section = sections.get(categoryId);
+					if (section != null)
 						DelayedTransaction.executeSingle(initiator,
 								CreateAssocDBUnit.childExistsSoft(product, section, catalogLinkAssoc.getId()));
+				}
+
+
+				boolean needSave = false;
+				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
+				if (wasNew) {
+					for (String picUrl : picUrls) {
+						product.setValue(GALLERY_PARAM, new URL(picUrl));
+						needSave = true;
+					}
+				}
+
+				// Генерация маленького изображения
+				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
+				if (noMainPic && picUrls.size() > 0) {
+					if (picUrls.size() > 0) {
+						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
+					}
+					try {
+						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
+						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+					} catch (Exception e) {
+						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+					}
+					needSave = false;
+				}
+				if (needSave) {
+					try {
+						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+					} catch (Exception e) {
+						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
 					}
 				}
 
@@ -171,16 +239,17 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				isInsideOffer = false;
 			}
 
-			else if (isInsideOffer && COMMON_PARAMS.contains(qName) && parameterReady) {
-				commonParams.put(paramName, StringUtils.trim(paramValue.toString()));
+			else if (isInsideOffer && SINGLE_PARAMS.contains(qName) && parameterReady) {
+				singleParams.put(paramName, StringUtils.trim(paramValue.toString()));
 			}
 
 			else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
 				specialParams.put(paramName, StringUtils.trim(paramValue.toString()));
 			}
 
-			else if (isInsideOffer && StringUtils.equalsIgnoreCase(qName, PICTURE_ELEMENT)) {
-				picUrls.add(paramValue.toString());
+			else if (isInsideOffer && MULTIPLE_PARAMS.contains(qName) && parameterReady) {
+				LinkedHashSet<String> vals = multipleParams.computeIfAbsent(qName, k -> new LinkedHashSet<>());
+				vals.add(paramValue.toString());
 			}
 
 			parameterReady = false;
@@ -207,16 +276,17 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		paramValue = new StringBuilder();
 		// Продукт
 		if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
-			commonParams = new HashMap<>();
+			singleParams = new HashMap<>();
 			specialParams = new LinkedHashMap<>();
-			picUrls = new ArrayList<>();
-			commonParams.put(ID_ATTR, attributes.getValue(ID_ATTR));
-			commonParams.put(AVAILABLE_ATTR, attributes.getValue(AVAILABLE_ATTR));
-			commonParams.put(GROUP_ID_ATTR, attributes.getValue(GROUP_ID_ATTR));
+			multipleParams = new LinkedHashMap<>();
+			singleParams.put(ID_ATTR, attributes.getValue(ID_ATTR));
+			singleParams.put(AVAILABLE_ATTR, attributes.getValue(AVAILABLE_ATTR));
+			singleParams.put(GROUP_ID_ATTR, attributes.getValue(GROUP_ID_ATTR));
 			isInsideOffer = true;
 		}
 		// Параметры продуктов (общие)
-		else if (isInsideOffer && (COMMON_PARAMS.contains(qName) || StringUtils.equalsIgnoreCase(qName, PICTURE_ELEMENT))) {
+		else if (isInsideOffer &&
+				(SINGLE_PARAMS.contains(qName) || StringUtils.equalsAnyIgnoreCase(qName, PICTURE_ELEMENT, CATEGORY_ID_ELEMENT))) {
 			paramName = qName;
 			parameterReady = true;
 		}

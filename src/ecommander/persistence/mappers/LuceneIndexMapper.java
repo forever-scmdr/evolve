@@ -552,9 +552,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 					ArrayList<Item> items;
 					long startFrom = 0;
 					do {
-						try (Connection conn = MysqlConnector.getConnection()) {
-							items = ItemMapper.loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom, conn);
-						}
+						items = ItemMapper.loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom);
 						for (Item item : items) {
 							updateItem(item);
 						}

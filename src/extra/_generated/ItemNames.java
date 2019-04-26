@@ -32,8 +32,6 @@ public interface ItemNames {
     String USER_JUR = "user_jur";
     String USER_PHYS = "user_phys";
     String REGISTERED_CATALOG = "registered_catalog";
-    String WARRANTY_FORM = "warranty_form";
-    String CHEAPER_FORM = "cheaper_form";
     String MAIN_PROMO_BOTTOM = "main_promo_bottom";
     String MAIN_SLIDER_FRAME = "main_slider_frame";
     String BANNER = "banner";
@@ -160,6 +158,7 @@ public interface ItemNames {
         String INTEGRATION = "integration";
         String DATE = "date";
         String INTEGRATION_PENDING = "integration_pending";
+        String BIG_INTEGRATION = "big_integration";
 
     }
 
@@ -167,17 +166,6 @@ public interface ItemNames {
 
         String _ITEM_NAME = "catalog_texts";
         String PAYMENT = "payment";
-
-    }
-
-    public interface cheaper_form_ {
-
-        String _ITEM_NAME = "cheaper_form";
-        String PRODUCT = "product";
-        String NAME = "name";
-        String PHONE = "phone";
-        String URL = "url";
-        String URL_CHECK = "url_check";
 
     }
 
@@ -209,7 +197,6 @@ public interface ItemNames {
 
         String _ITEM_NAME = "counter";
         String COUNT = "count";
-        String WARRANTY_COUNT = "warranty_count";
 
     }
 
@@ -266,7 +253,6 @@ public interface ItemNames {
         String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
         String OFFER_ID = "offer_id";
-        String SHORT = "short";
         String AVAILABLE = "available";
         String GROUP_ID = "group_id";
         String URL = "url";
@@ -340,7 +326,6 @@ public interface ItemNames {
         String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
         String OFFER_ID = "offer_id";
-        String SHORT = "short";
         String AVAILABLE = "available";
         String GROUP_ID = "group_id";
         String URL = "url";
@@ -535,7 +520,6 @@ public interface ItemNames {
         String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
         String OFFER_ID = "offer_id";
-        String SHORT = "short";
         String AVAILABLE = "available";
         String GROUP_ID = "group_id";
         String URL = "url";
@@ -713,20 +697,6 @@ public interface ItemNames {
         String SHIP_TYPE = "ship_type";
         String PAY_TYPE = "pay_type";
         String COMMENT = "comment";
-
-    }
-
-    public interface warranty_form_ {
-
-        String _ITEM_NAME = "warranty_form";
-        String CODE = "code";
-        String SERIAL = "serial";
-        String DATE = "date";
-        String SELLER = "seller";
-        String OWNER = "owner";
-        String EMAIL = "email";
-        String PHONE = "phone";
-        String URL = "url";
 
     }
 
