@@ -1478,4 +1478,8 @@
 		</command>
 	</page>
 
+	<page name="clear_cache" schedule="0 1 15,18 ? * FRI *">
+		<command class="extra.ClearCache" clear-cache="yes"/>
+	</page>
+
 </site>
