@@ -67,6 +67,7 @@
 		<div class="catalog-item-container">
 			<div class="gallery">
 				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="native">
+					<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>

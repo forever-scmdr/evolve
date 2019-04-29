@@ -21,7 +21,7 @@
 							<var value="1"/>
 						</limit>
 						<sorting>
-							<var value="small_pic"/>
+							<var value="main_pic"/>
 						</sorting>
 					</filter>
 				</list>
@@ -1445,7 +1445,7 @@
 	</page>
 
 
-	<page name="download_pics" template="integration/download_pics" authority-groups="common">
+	<page name="download_pics" template="integration/download_pics">
 		<request>
 			<var name="action"/>
 		</request>

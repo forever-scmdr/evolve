@@ -54,19 +54,6 @@
             <body>
                 <h1><xsl:value-of select="/page/operation"/></h1>
                 <h2>Процесс выполнения</h2>
-                <xsl:if test="/page/error">
-                    <h2>ошибки выполнения интеграции</h2>
-                    <table>
-                        <xsl:for-each select="/page/error">
-                            <tr>
-                                <td class="string-no">
-                                    Источник: <span class="no"><xsl:value-of select="@originator"/></span>
-                                </td>
-                                <td class="error"><xsl:value-of select="."/></td>
-                            </tr>
-                        </xsl:for-each>
-                    </table>
-                </xsl:if>
                 <table>
                     <tr>
                         <td colspan="2">
@@ -100,6 +87,19 @@
                         </tr>
                     </xsl:for-each>
                 </table>
+                <xsl:if test="/page/error">
+                    <h2>ошибки выполнения интеграции</h2>
+                    <table>
+                        <xsl:for-each select="/page/error">
+                            <tr>
+                                <td class="string-no">
+                                    Источник: <span class="no"><xsl:value-of select="@originator"/></span>
+                                </td>
+                                <td class="error"><xsl:value-of select="."/></td>
+                            </tr>
+                        </xsl:for-each>
+                    </table>
+                </xsl:if>
             </body>
         </html>
     </xsl:template>

@@ -184,6 +184,9 @@
 									<li class="visible" title="Загрзить товары из Yandex Market">
 										<a href="integrate/?action=start">Интеграция Yandex Market</a>
 									</li>
+									<li class="visible" title="Скачать картинки">
+										<a href="download_pics/?action=start">Скачать картинки</a>
+									</li>
 									<!--<li class="visible" title="Загрузить товары из файла во временный раздел">-->
 										<!--<a href="add_products/?action=start">Добваление товаров</a>-->
 									<!--</li>-->

@@ -494,6 +494,15 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
+	<item name="discounts" caption="Скидки">
+		<parameter name="self_delivery" type="double" caption="Скидка за самовывоз" default="1" description="в процентах"/>
+		<parameter name="pay_first" type="double" caption="Скидка за предоплату" default="0.5" description="в процентах" />
+		<parameter name="autolight" type="double" caption="Надбавка за автолайт" default="5" description="в процентах" />
+		<parameter name="delivery" type="double" caption="Надбавка за доставку" default="3" description="в процентах" />
+		<parameter name="sum_discount" type="double" caption="Скидка большую сумму заказа" default="2" description="в процентах" />
+		<parameter name="sum_more" type="double" caption="Сумма заказа для предоставления скидки" default="2000" description="в рублях" />
+	</item>
+
 	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1432" ag-hash="-1220416192">
 		<parameter name="payment" type="text" caption="Оплата и доставка" description="выводится на странице товара в блоке справа"/>
 	</item>

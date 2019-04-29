@@ -49,7 +49,7 @@
 			<div class="catalog-index__group">
 				<xsl:for-each select="section">
 					<div class="catalog-index__item">
-						<a href="{show_products}"><img src="{product/@path}{product/small_pic}" alt=""/></a>
+						<a href="{show_products}"><img src="{product/@path}{product/main_pic}" alt=""/></a>
 						<a href="{show_products}"><xsl:value-of select="name" /></a>
 					</div>
 				</xsl:for-each>
