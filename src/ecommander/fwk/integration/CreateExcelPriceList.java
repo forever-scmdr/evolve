@@ -346,7 +346,6 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 					List<Item> lineProducts = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(product.getId(), false).loadItems();
 					info.setToProcess(info.getToProcess() + lineProducts.size());
 					info.pushLog(product.getStringValue(NAME_PARAM) + ". Обнаружено вложенных товаров: " + lineProducts.size());
-					String parentCode = product.getStringValue(CODE_PARAM, "");
 					for (Item lineProduct : lineProducts) {
 						colIdx = -1;
 						//write aux params
@@ -359,11 +358,6 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						}
 						row = sh.createRow(++rowI);
 						cellStyle = chooseCellStyle(lineProduct);
-//						if(priceType == DataType.Type.DECIMAL || priceType == DataType.Type.CURRENCY || priceType == DataType.Type.CURRENCY_PRECISE) {
-//							price = lineProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).doubleValue();
-//						}else{
-//							price = lineProduct.getDoubleValue(PRICE_PARAM,0d);
-//						}
 						priceValue = lineProduct.outputValue(PRICE_PARAM);//(price > 0.001) ? String.valueOf(price) : "";
 						qtyValue = lineProduct.outputValue(QTY_PARAM);//(lineProduct.getDoubleValue(QTY_PARAM) != null) ? String.valueOf(lineProduct.getDoubleValue(QTY_PARAM)) : "";
 						priceOldValue = lineProduct.outputValue(PRICE_OLD_PARAM);
@@ -371,7 +365,9 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						currencyID = lineProduct.outputValue(CURRENCY_ID_PARAM);
 
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(CODE_PARAM, ""));
-						row.createCell(++colIdx).setCellValue("");
+						if(writeLineProductsHeader) {
+							row.createCell(++colIdx).setCellValue("");
+						}
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(NAME_PARAM, ""));
 						row.createCell(++colIdx).setCellValue(priceValue);
 						row.createCell(++colIdx).setCellValue(priceOldValue);
