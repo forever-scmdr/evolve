@@ -179,11 +179,17 @@
 									<!--<li class="visible" title="Загрузить товары из файла во временный раздел">-->
 										<!--<a href="add_products/?action=start">Добваление товаров</a>-->
 									<!--</li>-->
-									<li class="visible" title="Загрузить товары с других сайтов">
-										<a href="get_site/?action=start" target="_blank">Скачать с сайтов</a>
+									<li class="visible" title="Скачать отдельные УРЛы">
+										<a href="get_site/?action=start" target="_blank">Скачать отдельные УРЛы</a>
 									</li>
-									<li class="visible" title="Загрузить товары с других сайтов">
-										<a href="deploy_parsed/?action=start" target="_blank">Разместить скачанное</a>
+									<li class="visible" title="Разместить отделные УРЛы">
+										<a href="deploy_parsed/?action=start" target="_blank">Разместить отделные УРЛы</a>
+									</li>
+									<li class="visible" title="Скачать все с metabo.ru">
+										<a href="crawl/?action=start&amp;mode=all" target="_blank">Скачать все с metabo.ru</a>
+									</li>
+									<li class="visible" title="Разместить все с metabo.ru">
+										<a href="integrate_parsed/?action=start" target="_blank">Разместить все с metabo.ru</a>
 									</li>
 									<li class="visible" title="Создать фильтры по параметрам товаров">
 										<a href="create_filters/?action=start" target="_blank">Создать фильтры</a>
