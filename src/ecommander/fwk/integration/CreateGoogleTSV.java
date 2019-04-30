@@ -57,7 +57,7 @@ public class CreateGoogleTSV extends IntegrateBase implements CatalogConst {
 		q.setParentId(section.getId(), false);
 		q.setLimit(500, ++pageNumber);
 		products.addAll(q.loadItems());
-		String sectionName = section.getStringValue(NAME_PARAM).replaceAll("\".+\"", "");
+		String sectionName = section.getStringValue(NAME_PARAM).replaceAll("\"","");
 		while (products.size() > 0){
 			if(products.size() == 0) return;
 			pushLog(sectionName);
@@ -70,7 +70,7 @@ public class CreateGoogleTSV extends IntegrateBase implements CatalogConst {
 				String imgUrl = getUrlBase() +'/'+ AppContext.getFilesUrlPath(product.isFileProtected()) + product.getRelativeFilesPath() + product.getStringValue(SMALL_PIC_PARAM);
 				imgUrl = StringUtils.isBlank(product.getStringValue(SMALL_PIC_PARAM))? "" : imgUrl;
 				String url = getUrlBase() +'/'+ product.getKeyUnique();
-				String productName = product.getStringValue(NAME_PARAM).replaceAll("\".+\"", "");
+				String productName = product.getStringValue(NAME_PARAM).replaceAll("\"", "");
 				if(product.getByteValue(HAS_LINE_PRODUCTS, (byte)0) > 0){
 					ItemQuery lineProductsQuery = new ItemQuery(LINE_PRODUCT_ITEM);
 					lineProductsQuery.setParentId(product.getId(), false);
@@ -82,7 +82,7 @@ public class CreateGoogleTSV extends IntegrateBase implements CatalogConst {
 
 						imgUrl = getUrlBase() + AppContext.getFilesUrlPath(lineProduct.isFileProtected()) + lineProduct.getRelativeFilesPath() + lineProduct.getStringValue(SMALL_PIC_PARAM);
 						imgUrl = StringUtils.endsWith(imgUrl, "null")? "" : imgUrl;
-						productName = lineProduct.getStringValue(NAME_PARAM).replaceAll("\".+\"", "");
+						productName = lineProduct.getStringValue(NAME_PARAM).replaceAll("\"", "");
 						String out = join(SEP, code,code,productName,url,imgUrl,fPrice(priceValue)+" BYN", "", fPrice(priceValue).replace('.', ',')+" руб.", sectionName);
 						writer.newLine();
 						writer.write(out);
