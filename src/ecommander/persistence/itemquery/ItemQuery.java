@@ -907,6 +907,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				.WHERE().col(I_GROUP).byte_(userGroupId)
 				.AND().col(I_USER).int_(userId)
 				.AND().col_IN(I_SUPERTYPE).intIN(ItemTypeRegistry.getItemExtendersIds(type.getTypeId()))
+				.AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN)
 				.AND().col(IP_CHILD_ID).sql(IP_PARENT_ID);
 		ArrayList<Item> result = loadByQuery(query, "PID", null, null, conn);
 		if (result.size() > 0)
