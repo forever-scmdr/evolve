@@ -13,7 +13,9 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private CellStyle noCodeStyle;
 	private CellStyle sectionStyle;
 	private CellStyle auxHeaderStyle;
+	private Sheet sh;
 	//file Constants
 	protected static final String CODE_FILE = "Код";
 	protected static final String IS_DEVICE_FILE = "Отдельный товар";
@@ -82,7 +85,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private boolean writeHierarchy = true;
 	private boolean hasUnits = false;
 	private long secId = 0L;
-
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
 
 	@Override
@@ -108,13 +111,24 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 		workBook = new HSSFWorkbook();
 		initCellStyles();
-
+		boolean headerInitialized = false;
+		int rowIndex = -1;
 		for (Item section : sections) {
-			Sheet sh = initializeSheet(section);
-			int rowIndex = -1;
+			if(writeHierarchy) {
+				sh = initializeSheet(section);
+			}else if(sh == null){
+				sh = initializeSheet("Цены за "+DATE_FORMAT.format(new Date()));
+			}
+			if(writeHierarchy || (!writeHierarchy && !headerInitialized)) {
+				rowIndex = -1;
+			}
 			long id = section.getId();
 			int colIdx = -1;
-			rowIndex = initializeHeader(sh,rowIndex);
+
+			if(writeHierarchy || (!writeHierarchy && !headerInitialized)) {
+				rowIndex = initializeHeader(sh, rowIndex);
+				headerInitialized = true;
+			}
 			if(writeHierarchy) {
 
 				Row row = sh.createRow(++rowIndex);
@@ -134,7 +148,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 				}
 				rowIndex = processProducts(sh, rowIndex, id);
 			}
-			processSubsections(sh, rowIndex, id);
+			rowIndex = processSubsections(sh, rowIndex, id);
 		}
 		setOperation("Запись файла");
 		String optionsSuffix = (writeHierarchy)? "" : "min-";
@@ -150,6 +164,11 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		String[]secInfo = getSectionName(section);
 		String sheetName = secInfo[2];
 		setOperation(section.getValue(NAME_PARAM) + ". Обработка подразделов.");
+		return workBook.createSheet(sheetName);
+	}
+
+	private Sheet initializeSheet(String sheetName){
+		setOperation("Создание минимального прайс-листа");
 		return workBook.createSheet(sheetName);
 	}
 
