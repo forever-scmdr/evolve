@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>                                        
+<?xml version="1.0" encoding="UTF-8"?>                                         
 <site>
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -129,6 +129,10 @@
 					<var name="action" value="add"/>
 					<var name="src_page" value="compare_ajax"/>
 				</link>
+				<link name="one_click_link" target="one_click_ajax">
+					<var name="pname" ref="prod" parameter="name"/>
+					<var name="pcode" ref="prod" parameter="code"/>
+				</link>
 				<single item="params"/>
 			</list>
 		</single>
@@ -231,6 +235,10 @@
 					<var name="update_cookie_value" ref="prod" parameter="code"/>
 					<var name="action" value="add"/>
 					<var name="src_page" value="compare_ajax"/>
+				</link>
+				<link name="one_click_link" target="one_click_ajax">
+					<var name="pname" ref="prod" parameter="name"/>
+					<var name="pcode" ref="prod" parameter="code"/>
 				</link>
 				<single item="params"/>
 			</list>
@@ -354,6 +362,10 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
 			<single item="params"/>
 		</list>
 		<link name="set_view_table" target="tag_section" copy-page-vars="yes">
@@ -427,6 +439,10 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
 			<single item="params"/>
 		</list>
 		<link name="set_view_table" target="search" copy-page-vars="yes">
@@ -458,7 +474,7 @@
 			</link>
 			<single item="seo" assoc="seo"/>
 			<single item="params"/>
-			<single item="product_extra"/>
+			<list item="product_extra"/>
 			<ancestor item="section" transit="false" id="cur_sec" tag="product_section">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="cur_sec" style="key"/>
@@ -484,11 +500,20 @@
 				<var name="prod" ref="prod"/>
 			</link>
 
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
+
 			<list item="line_product" id="lprod">
 				<list item="params"/>
 				<link name="to_cart" target="cart_action">
 					<var name="action" value="addToCart"/>
 					<var name="code" ref="lprod" parameter="code"/>
+				</link>
+				<link name="one_click_link" target="one_click_ajax">
+					<var name="pname" ref="lprod" parameter="name"/>
+					<var name="pcode" ref="lprod" parameter="code"/>
 				</link>
 			</list>
 
@@ -597,6 +622,9 @@
 			<var name="message"/>
 			<var name="not_found"/>
 		</request>
+		<single item="xxl">
+			<single item="seo"/>
+		</single>
 		<include name="COMMON"/>
 	</page>
 
@@ -612,6 +640,25 @@
 		<link name="submit_link" target="feedback_command" type="itemform">
 			<var name="form_name" value="feedback"/>
 			<var name="source_page" value="feedback_ajax"/>
+		</link>
+	</page>
+
+
+	<page name="one_click_ajax" template="one_click_ajax">
+		<request>
+			<var name="pname"/>
+			<var name="pcode"/>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<new item="one_click_form" id="form" tag="form">
+			<parameter-input ref="form" form="one_click"/>
+		</new>
+		<link name="submit_link" target="feedback_command" type="itemform">
+			<var name="form_name" value="one_click"/>
+			<var name="source_page" value="one_click_ajax"/>
+			<var name="required" value="phone"/>
+			<var name="topic" value="Заказ в один клик"/>
 		</link>
 	</page>
 
@@ -939,6 +986,10 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
 		</list>
 		<link name="set_view_table" target="fav">
 			<var name="view" value="table"/>
@@ -972,6 +1023,10 @@
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
 				<var name="code" ref="prod" parameter="code"/>
+			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
 			</link>
 			<single item="params"/>
 		</list>
@@ -1300,6 +1355,7 @@
 	<page name="integrate" template="integrate" authority-groups="common">
 		<request>
 			<var name="action"/>
+			<var name="ignore" value="16549"/>
 		</request>
 		<command class="ecommander.fwk.integration.YMarketCreateCatalogCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>

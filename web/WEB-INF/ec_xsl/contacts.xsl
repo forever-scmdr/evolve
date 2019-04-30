@@ -20,6 +20,7 @@
 
 		<div class="page-content m-t">
 			<xsl:value-of select="page/contacts/text" disable-output-escaping="yes"/>
+			<p><a class="button" data-toggle="modal" data-target="#modal-feedback">Форма обратной связи</a></p>
 			<h3>Расположение нашего офиса на карте</h3>
 			<div class="map-container">
 				<xsl:value-of select="page/contacts/map" disable-output-escaping="yes"/>

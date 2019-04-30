@@ -381,7 +381,7 @@
 	</item>
 
 
-	<item name="warranty_form" caption="Форма гарантии XXL" virtual="true" ag-id="1733" ag-hash="2091581991">
+	<item name="warranty_form" caption="Форма гарантии XXL" virtual="true" ag-id="1732" ag-hash="2091581991">
 		<parameter name="code" type="string" caption="Уникальный артикул товара"/>
 		<parameter name="serial" type="string" caption="Серийный номер изделия"/>
 		<parameter name="date" type="date" caption="Дата покупки" format="dd.MM.yyyy"/>
@@ -393,7 +393,7 @@
 	</item>
 
 
-	<item name="cheaper_form" caption="Форма нашли дешевле" virtual="true" ag-id="1734" ag-hash="516915559">
+	<item name="cheaper_form" caption="Форма нашли дешевле" virtual="true" ag-id="2121" ag-hash="516915559">
 		<parameter name="product" type="string" caption="Товар, который нашли дешевле"/>
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
@@ -489,6 +489,7 @@
 		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
+		<child item="xxl" single="true"/>
 	</item>
 
 	<item name="block" caption="Блок текста (кода)" key="header" ag-id="1341" ag-hash="93832333">
@@ -504,7 +505,7 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="payment" caption="Оплата" ag-id="1732" ag-hash="-786681338">
+	<item name="payment" caption="Оплата" ag-id="1733" ag-hash="-786681338">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
@@ -515,6 +516,13 @@
 	<item name="footer" caption="Футер (низ)" super="block_array" ag-id="1343" ag-hash="-1268861541"/>
 
 	<item name="topper" caption="Топпер (верх)" super="block_array" ag-id="1344" ag-hash="-868027480"/>
+
+	<item name="xxl" caption="XXL гарантия" ag-id="2122" ag-hash="119148" >
+		<child item="seo" single="true"/>
+		<parameter name="header" type="string" caption="Заголовок"/>
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+	</item>
 
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                     END ОБЩЕЕ ДЛЯ ВСЕХ СТРАНИЦ                       ////////////-->
