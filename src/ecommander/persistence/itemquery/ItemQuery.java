@@ -889,7 +889,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	}
 
 	/**
-	 * Загрузить корневой айтем (в таблице родителей родитель равен потомку)
+	 * Загрузить корневой айтем (в  таблице родителей родитель равен потомку)
 	 * @param itemName
 	 * @param userId
 	 * @param userGroupId
