@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 /**
  * Контроллер кэша
  * @author EEEE
@@ -25,6 +25,9 @@ import java.util.Map;
  */
 public class PageController {
 	private static final String CONTENT_TYPE_HEADER = "Content-Type";
+	private static final String LAST_MODIFIED_HEADER = "Last-Modified";
+	private static final String MODIFIED_SINCE_HEADER = "If-Modified-Since";
+	private static final SimpleDateFormat MODIFIED_DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm z", Locale.UK);
 	
 	private String requestUrl; // для работы кеша
 	private final String domainName; // для работы кеша
@@ -88,7 +91,7 @@ public class PageController {
 		}
 		// Переменные, хранящиеся в куки
 		page.getSessionContext().flushCookies(resp);
-		// Проверить, найден ли критический айтем. Если нет - вернуть ошибку 404
+		// Проверить, найден ли критический айтем. Если нет - вернуть ошибку
 		// При загрузке из кеша айтем никогда не содержит найденные, поэтому исключить
 		// эту ситуацию
 		if (page.hasCriticalItem() && !loadedFromCache) {
@@ -96,6 +99,22 @@ public class PageController {
 			if (!pageItem.hasFoundItems() && !pageItem.isLoadedFromCache()) {
 				resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 				return;
+			}
+			String isModifiedSinceHeader = headers.get(MODIFIED_SINCE_HEADER);
+
+			long lastModified = pageItem.getSingleFoundItem().getTimeUpdated();
+			Date modifiedDate = new Date(lastModified);
+
+			MODIFIED_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+			String lastModifiedHeader = MODIFIED_DATE_FORMAT.format(modifiedDate);
+			resp.setHeader(LAST_MODIFIED_HEADER, lastModifiedHeader);
+
+			if(StringUtils.isNotBlank(isModifiedSinceHeader)) {
+				long modifiedSinceTime = MODIFIED_DATE_FORMAT.parse(isModifiedSinceHeader).getTime();
+				if (lastModified < modifiedSinceTime) {
+					resp.setStatus(304);
+					return;
+				}
 			}
 		}
 		// Редирект, т.к. форвард уже был выполнен в методе processPageInt
