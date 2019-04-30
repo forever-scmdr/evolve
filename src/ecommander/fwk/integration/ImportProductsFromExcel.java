@@ -540,7 +540,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							cellValue = StringUtils.isAllBlank(cellValue) ? "" : cellValue;
 							xml.startElement("parameter")
 									.startElement("name")
-									.addText(firstUpperCase(header))
+									.addText(firstUpperCase(header.replaceAll(""+ExcelPriceList.DUPLICATE_HEADER_PREFIX, "")))
 									.endElement()
 									.startElement("value")
 									.addText(cellValue)
