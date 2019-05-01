@@ -12,6 +12,7 @@ public class User
     public final static String EMAIL = "email";
     public final static String PHONE = "phone";
     public final static String PASSWORD = "password";
+    public final static String REGISTERED = "registered";
     public final static String PAYMENT = "payment";
 
     private User(Item item) {
@@ -79,6 +80,28 @@ public class User
 
     public boolean contains_password(String value) {
         return containsValue("password", value);
+    }
+
+    public void set_registered(Byte value) {
+        setValue("registered", value);
+    }
+
+    public void setUI_registered(String value)
+        throws Exception
+    {
+        setValueUI("registered", value);
+    }
+
+    public Byte get_registered() {
+        return getByteValue("registered");
+    }
+
+    public Byte getDefault_registered(Byte defaultVal) {
+        return getByteValue("registered", defaultVal);
+    }
+
+    public boolean contains_registered(Byte value) {
+        return containsValue("registered", value);
     }
 
     public void set_payment(String value) {

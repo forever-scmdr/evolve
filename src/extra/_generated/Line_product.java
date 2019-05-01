@@ -30,6 +30,10 @@ public class Line_product
     public final static String CURRENCY_ID = "currency_id";
     public final static String PRICE_ORIGINAL = "price_original";
     public final static String PRICE_OLD = "price_old";
+    public final static String PRICE_OPT = "price_opt";
+    public final static String PRICE_OPT_OLD = "price_opt_old";
+    public final static String STATUS = "status";
+    public final static String MIN_QTY = "min_qty";
     public final static String COUNTRY = "country";
     public final static String MAIN_PIC = "main_pic";
     public final static String SMALL_PIC = "small_pic";
@@ -38,6 +42,9 @@ public class Line_product
     public final static String EXTRA_XML = "extra_xml";
     public final static String TEXT_PICS = "text_pics";
     public final static String ASSOC_CODE = "assoc_code";
+    public final static String ANALOG_CODE = "analog_code";
+    public final static String SIMILAR_CODE = "similar_code";
+    public final static String SUPPORT_CODE = "support_code";
     public final static String TAG = "tag";
     public final static String GALLERY = "gallery";
 
@@ -362,6 +369,88 @@ public class Line_product
         return containsValue("price_old", value);
     }
 
+    public void set_price_opt(BigDecimal value) {
+        setValue("price_opt", value);
+    }
+
+    public void setUI_price_opt(String value)
+        throws Exception
+    {
+        setValueUI("price_opt", value);
+    }
+
+    public BigDecimal get_price_opt() {
+        return getDecimalValue("price_opt");
+    }
+
+    public BigDecimal getDefault_price_opt(BigDecimal defaultVal) {
+        return getDecimalValue("price_opt", defaultVal);
+    }
+
+    public boolean contains_price_opt(BigDecimal value) {
+        return containsValue("price_opt", value);
+    }
+
+    public void set_price_opt_old(BigDecimal value) {
+        setValue("price_opt_old", value);
+    }
+
+    public void setUI_price_opt_old(String value)
+        throws Exception
+    {
+        setValueUI("price_opt_old", value);
+    }
+
+    public BigDecimal get_price_opt_old() {
+        return getDecimalValue("price_opt_old");
+    }
+
+    public BigDecimal getDefault_price_opt_old(BigDecimal defaultVal) {
+        return getDecimalValue("price_opt_old", defaultVal);
+    }
+
+    public boolean contains_price_opt_old(BigDecimal value) {
+        return containsValue("price_opt_old", value);
+    }
+
+    public void set_status(String value) {
+        setValue("status", value);
+    }
+
+    public String get_status() {
+        return getStringValue("status");
+    }
+
+    public String getDefault_status(String defaultVal) {
+        return getStringValue("status", defaultVal);
+    }
+
+    public boolean contains_status(String value) {
+        return containsValue("status", value);
+    }
+
+    public void set_min_qty(Double value) {
+        setValue("min_qty", value);
+    }
+
+    public void setUI_min_qty(String value)
+        throws Exception
+    {
+        setValueUI("min_qty", value);
+    }
+
+    public Double get_min_qty() {
+        return getDoubleValue("min_qty");
+    }
+
+    public Double getDefault_min_qty(Double defaultVal) {
+        return getDoubleValue("min_qty", defaultVal);
+    }
+
+    public boolean contains_min_qty(Double value) {
+        return containsValue("min_qty", value);
+    }
+
     public void set_country(String value) {
         setValue("country", value);
     }
@@ -480,6 +569,54 @@ public class Line_product
 
     public boolean contains_assoc_code(String value) {
         return containsValue("assoc_code", value);
+    }
+
+    public void add_analog_code(String value) {
+        setValue("analog_code", value);
+    }
+
+    public List<String> getAll_analog_code() {
+        return getStringValues("analog_code");
+    }
+
+    public void remove_analog_code(String value) {
+        removeEqualValue("analog_code", value);
+    }
+
+    public boolean contains_analog_code(String value) {
+        return containsValue("analog_code", value);
+    }
+
+    public void add_similar_code(String value) {
+        setValue("similar_code", value);
+    }
+
+    public List<String> getAll_similar_code() {
+        return getStringValues("similar_code");
+    }
+
+    public void remove_similar_code(String value) {
+        removeEqualValue("similar_code", value);
+    }
+
+    public boolean contains_similar_code(String value) {
+        return containsValue("similar_code", value);
+    }
+
+    public void add_support_code(String value) {
+        setValue("support_code", value);
+    }
+
+    public List<String> getAll_support_code() {
+        return getStringValues("support_code");
+    }
+
+    public void remove_support_code(String value) {
+        removeEqualValue("support_code", value);
+    }
+
+    public boolean contains_support_code(String value) {
+        return containsValue("support_code", value);
     }
 
     public void add_tag(String value) {

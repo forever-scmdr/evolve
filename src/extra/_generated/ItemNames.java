@@ -42,6 +42,7 @@ public interface ItemNames {
     String BLOCK_ARRAY = "block_array";
     String DELIVERY = "delivery";
     String PAYMENT = "payment";
+    String DISCOUNTS = "discounts";
     String CATALOG_TEXTS = "catalog_texts";
     String FOOTER = "footer";
     String TOPPER = "topper";
@@ -260,6 +261,10 @@ public interface ItemNames {
         String CURRENCY_ID = "currency_id";
         String PRICE_ORIGINAL = "price_original";
         String PRICE_OLD = "price_old";
+        String PRICE_OPT = "price_opt";
+        String PRICE_OPT_OLD = "price_opt_old";
+        String STATUS = "status";
+        String MIN_QTY = "min_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
         String SMALL_PIC = "small_pic";
@@ -268,8 +273,23 @@ public interface ItemNames {
         String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
         String ASSOC_CODE = "assoc_code";
+        String ANALOG_CODE = "analog_code";
+        String SIMILAR_CODE = "similar_code";
+        String SUPPORT_CODE = "support_code";
         String TAG = "tag";
         String GALLERY = "gallery";
+
+    }
+
+    public interface discounts_ {
+
+        String _ITEM_NAME = "discounts";
+        String SELF_DELIVERY = "self_delivery";
+        String PAY_FIRST = "pay_first";
+        String AUTOLIGHT = "autolight";
+        String DELIVERY = "delivery";
+        String SUM_DISCOUNT = "sum_discount";
+        String SUM_MORE = "sum_more";
 
     }
 
@@ -333,6 +353,10 @@ public interface ItemNames {
         String CURRENCY_ID = "currency_id";
         String PRICE_ORIGINAL = "price_original";
         String PRICE_OLD = "price_old";
+        String PRICE_OPT = "price_opt";
+        String PRICE_OPT_OLD = "price_opt_old";
+        String STATUS = "status";
+        String MIN_QTY = "min_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
         String SMALL_PIC = "small_pic";
@@ -341,6 +365,9 @@ public interface ItemNames {
         String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
         String ASSOC_CODE = "assoc_code";
+        String ANALOG_CODE = "analog_code";
+        String SIMILAR_CODE = "similar_code";
+        String SUPPORT_CODE = "support_code";
         String TAG = "tag";
         String GALLERY = "gallery";
 
@@ -527,6 +554,10 @@ public interface ItemNames {
         String CURRENCY_ID = "currency_id";
         String PRICE_ORIGINAL = "price_original";
         String PRICE_OLD = "price_old";
+        String PRICE_OPT = "price_opt";
+        String PRICE_OPT_OLD = "price_opt_old";
+        String STATUS = "status";
+        String MIN_QTY = "min_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
         String SMALL_PIC = "small_pic";
@@ -535,6 +566,9 @@ public interface ItemNames {
         String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
         String ASSOC_CODE = "assoc_code";
+        String ANALOG_CODE = "analog_code";
+        String SIMILAR_CODE = "similar_code";
+        String SUPPORT_CODE = "support_code";
         String TAG = "tag";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
@@ -563,6 +597,7 @@ public interface ItemNames {
     public interface registered_catalog_ {
 
         String _ITEM_NAME = "registered_catalog";
+        String USERS_FILE = "users_file";
 
     }
 
@@ -654,6 +689,7 @@ public interface ItemNames {
         String EMAIL = "email";
         String PHONE = "phone";
         String PASSWORD = "password";
+        String REGISTERED = "registered";
         String PAYMENT = "payment";
 
     }
@@ -664,11 +700,17 @@ public interface ItemNames {
         String EMAIL = "email";
         String PHONE = "phone";
         String PASSWORD = "password";
+        String REGISTERED = "registered";
         String PAYMENT = "payment";
         String ORGANIZATION = "organization";
+        String CONTRACT_NUMBER = "contract_number";
         String CONTACT_NAME = "contact_name";
         String CONTACT_PHONE = "contact_phone";
         String ADDRESS = "address";
+        String CITY = "city";
+        String ROUTE = "route";
+        String DEBT = "debt";
+        String DISCOUNT = "discount";
         String SHIP_TYPE = "ship_type";
         String PAY_TYPE = "pay_type";
         String NO_ACCOUNT = "no_account";
@@ -691,6 +733,7 @@ public interface ItemNames {
         String EMAIL = "email";
         String PHONE = "phone";
         String PASSWORD = "password";
+        String REGISTERED = "registered";
         String PAYMENT = "payment";
         String NAME = "name";
         String ADDRESS = "address";

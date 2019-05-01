@@ -199,7 +199,11 @@
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
 		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
+		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="price_opt_old" type="currency" caption="Старая цена" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="status" type="string" caption="Статус"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
+		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
 		<parameter name="small_pic" type="picture" format="width: 200; src: main_pic;" caption="Маленькая картинка"/>
@@ -208,6 +212,9 @@
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
+		<parameter name="analog_code" type="string" caption="Код аналога" multiple="true"/>
+		<parameter name="similar_code" type="string" caption="Код похожего товара" multiple="true"/>
+		<parameter name="support_code" type="string" caption="Код сопутствующего товара" multiple="true"/>
 		<parameter name="tag" type="string" caption="Тэг" multiple="true"/>
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
@@ -338,20 +345,26 @@
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="password" type="string" caption="Пароль"/>
+		<parameter name="registered" type="byte" caption="Флаг зарегистрированности" domain="0-1" default="0"/>
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<child item="purchase"/>
 		<on-create class="ecommander.fwk.ManageUsers$OnCreate"/>
-		<on-update class="ecommander.fwk.ManageUsers$OnUpdate"/>
+		<on-update class="extra.MakeUserRegistered"/>
 		<on-delete class="ecommander.fwk.ManageUsers$OnDelete"/>
 	</item>
 
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
 		<parameter name="organization" type="string" caption="Наименование организации" />
 		<!--<parameter name="phone" type="string" caption="Телефон/факс" />-->
+		<parameter name="contract_number" type="string" caption="Номер договора" />
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />
 		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />
 		<parameter name="email" type="string" caption="E-mail" />
 		<parameter name="address" type="string" caption="Юридический адрес" />
+		<parameter name="city" type="string" caption="Город" />
+		<parameter name="route" type="string" caption="Маршрут" />
+		<parameter name="debt" type="currency" caption="Долг" />
+		<parameter name="discount" type="double" caption="Персональная скидка" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
 		<parameter name="pay_type" type="string" caption="Способ оплаты" />
 		<parameter name="no_account" type="string" caption="Нет расчетного счета" domain="yes-no"/>
@@ -378,6 +391,7 @@
 
 
 	<item name="registered_catalog" caption="Каталог пользователей" ag-id="822" ag-hash="-755203236">
+		<parameter name="users_file" type="file" caption="Файл пользователей"/>
 		<child item="user"/>
 	</item>
 
@@ -465,6 +479,7 @@
 		<parameter name="yandex_verification" type="string" caption="YANDEX verification code"/>
 		<child item="delivery" single="true"/>
 		<child item="payment" single="true"/>
+		<child item="discounts" single="true"/>
 		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
@@ -485,6 +500,15 @@
 
 	<item name="payment" caption="Оплата" ag-id="1831" ag-hash="-786681338">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
+	</item>
+
+	<item name="discounts" caption="Скидки">
+		<parameter name="self_delivery" type="double" caption="Скидка за самовывоз" default="1" description="в процентах"/>
+		<parameter name="pay_first" type="double" caption="Скидка за предоплату" default="0.5" description="в процентах" />
+		<parameter name="autolight" type="double" caption="Надбавка за автолайт" default="5" description="в процентах" />
+		<parameter name="delivery" type="double" caption="Надбавка за доставку" default="3" description="в процентах" />
+		<parameter name="sum_discount" type="double" caption="Скидка большую сумму заказа" default="2" description="в процентах" />
+		<parameter name="sum_more" type="double" caption="Сумма заказа для предоставления скидки" default="2000" description="в рублях" />
 	</item>
 
 	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1432" ag-hash="-1220416192">

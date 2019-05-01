@@ -999,7 +999,7 @@
 		<link name="user_exists_personal" target="personal">
 			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
 		</link>
-		<command class="extra.RegisterCommand" method-var="action">
+		<command class="extra.JustEmailRegisterCommand" method-var="action">
 			<result name="not_set" type="redirect"/>
 			<result name="user_exists" type="redirect"/>
 			<result name="success" type="redirect"/>
@@ -1450,6 +1450,16 @@
 			<var name="action"/>
 		</request>
 		<command class="extra.DownloadPics" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="create_users" template="integration/create_users">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.CreateUsersCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

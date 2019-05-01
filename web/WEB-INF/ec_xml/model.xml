@@ -345,20 +345,26 @@
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="password" type="string" caption="Пароль"/>
+		<parameter name="registered" type="byte" caption="Флаг зарегистрированности" domain="0-1" default="0"/>
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<child item="purchase"/>
 		<on-create class="ecommander.fwk.ManageUsers$OnCreate"/>
-		<on-update class="ecommander.fwk.ManageUsers$OnUpdate"/>
+		<on-update class="extra.MakeUserRegistered"/>
 		<on-delete class="ecommander.fwk.ManageUsers$OnDelete"/>
 	</item>
 
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
 		<parameter name="organization" type="string" caption="Наименование организации" />
 		<!--<parameter name="phone" type="string" caption="Телефон/факс" />-->
+		<parameter name="contract_number" type="string" caption="Номер договора" />
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />
 		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />
 		<parameter name="email" type="string" caption="E-mail" />
 		<parameter name="address" type="string" caption="Юридический адрес" />
+		<parameter name="city" type="string" caption="Город" />
+		<parameter name="route" type="string" caption="Маршрут" />
+		<parameter name="debt" type="currency" caption="Долг" />
+		<parameter name="discount" type="double" caption="Персональная скидка" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
 		<parameter name="pay_type" type="string" caption="Способ оплаты" />
 		<parameter name="no_account" type="string" caption="Нет расчетного счета" domain="yes-no"/>
@@ -385,6 +391,7 @@
 
 
 	<item name="registered_catalog" caption="Каталог пользователей" ag-id="822" ag-hash="-755203236">
+		<parameter name="users_file" type="file" caption="Файл пользователей"/>
 		<child item="user"/>
 	</item>
 
@@ -472,6 +479,7 @@
 		<parameter name="yandex_verification" type="string" caption="YANDEX verification code"/>
 		<child item="delivery" single="true"/>
 		<child item="payment" single="true"/>
+		<child item="discounts" single="true"/>
 		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
@@ -494,7 +502,7 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="discounts" caption="Скидки">
+	<item name="discounts" caption="Скидки" ag-id="1832" ag-hash="-121228462">
 		<parameter name="self_delivery" type="double" caption="Скидка за самовывоз" default="1" description="в процентах"/>
 		<parameter name="pay_first" type="double" caption="Скидка за предоплату" default="0.5" description="в процентах" />
 		<parameter name="autolight" type="double" caption="Надбавка за автолайт" default="5" description="в процентах" />
