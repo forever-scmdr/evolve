@@ -126,6 +126,16 @@
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
 						<xsl:variable name="product" select="//page/product[code = current()/code]"/>
+						<xsl:variable name="price">
+							<xsl:choose>
+								<xsl:when test="$is_reg_jur">
+									<xsl:value-of select="if (f:num($product/price) != 0) then concat(f:currency_decimal($product/price), ' p.') else 'по запросу'"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="if (f:num($product/price_opt) != 0) then concat(f:currency_decimal($product/price_opt), ' p.') else 'по запросу'"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
 						<tr>
 							<td>
 								<xsl:value-of select="$product/code"/>
@@ -137,7 +147,7 @@
 								<xsl:value-of select="qty"/>
 							</td>
 							<td>
-								<xsl:value-of select="$product/price"/>
+								<xsl:value-of select="$price"/>
 							</td>
 							<td>
 								<xsl:value-of select="sum"/>

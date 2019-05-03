@@ -200,7 +200,8 @@
 		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
 		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>
-		<parameter name="price_opt_old" type="currency" caption="Старая цена" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>
 		<parameter name="status" type="string" caption="Статус"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
@@ -311,6 +312,7 @@
 		<parameter name="order_num" type="string" caption="Номер заказа"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="sum_discount" type="currency" caption="Сумма с учетом скидки"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
 		<child item="bought"/>
 	</item>
@@ -363,8 +365,8 @@
 		<parameter name="address" type="string" caption="Юридический адрес" />
 		<parameter name="city" type="string" caption="Город" />
 		<parameter name="route" type="string" caption="Маршрут" />
-		<parameter name="debt" type="currency" caption="Долг" />
-		<parameter name="discount" type="double" caption="Персональная скидка" />
+		<parameter name="debt" type="currency" caption="Долг" default="0" />
+		<parameter name="discount" type="double" caption="Персональная скидка" default="0" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
 		<parameter name="pay_type" type="string" caption="Способ оплаты" />
 		<parameter name="no_account" type="string" caption="Нет расчетного счета" domain="yes-no"/>
@@ -475,6 +477,7 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
+		<parameter name="debt_text" type="short-text" caption="Текст о долге (для должников)"/>
 		<parameter name="google_verification" type="string" caption="GOOGLE verification code"/>
 		<parameter name="yandex_verification" type="string" caption="YANDEX verification code"/>
 		<child item="delivery" single="true"/>
@@ -502,13 +505,13 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="discounts" caption="Скидки">
+	<item name="discounts" caption="Скидки" ag-id="1832" ag-hash="-121228462">
 		<parameter name="self_delivery" type="double" caption="Скидка за самовывоз" default="1" description="в процентах"/>
 		<parameter name="pay_first" type="double" caption="Скидка за предоплату" default="0.5" description="в процентах" />
 		<parameter name="autolight" type="double" caption="Надбавка за автолайт" default="5" description="в процентах" />
 		<parameter name="delivery" type="double" caption="Надбавка за доставку" default="3" description="в процентах" />
 		<parameter name="sum_discount" type="double" caption="Скидка большую сумму заказа" default="2" description="в процентах" />
-		<parameter name="sum_more" type="double" caption="Сумма заказа для предоставления скидки" default="2000" description="в рублях" />
+		<parameter name="sum_more" type="currency" caption="Сумма заказа для предоставления скидки" default="2000" description="в рублях" />
 	</item>
 
 	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1432" ag-hash="-1220416192">

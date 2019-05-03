@@ -149,6 +149,7 @@ public interface ItemNames {
         String ORDER_NUM = "order_num";
         String QTY = "qty";
         String SUM = "sum";
+        String SUM_DISCOUNT = "sum_discount";
         String PROCESSED = "processed";
 
     }
@@ -179,6 +180,7 @@ public interface ItemNames {
         String LINK_LINK = "link_link";
         String BOTTOM = "bottom";
         String BOTTOM_ADDRESS = "bottom_address";
+        String DEBT_TEXT = "debt_text";
         String GOOGLE_VERIFICATION = "google_verification";
         String YANDEX_VERIFICATION = "yandex_verification";
 
@@ -263,6 +265,7 @@ public interface ItemNames {
         String PRICE_OLD = "price_old";
         String PRICE_OPT = "price_opt";
         String PRICE_OPT_OLD = "price_opt_old";
+        String NEXT_DELIVERY = "next_delivery";
         String STATUS = "status";
         String MIN_QTY = "min_qty";
         String COUNTRY = "country";
@@ -355,6 +358,7 @@ public interface ItemNames {
         String PRICE_OLD = "price_old";
         String PRICE_OPT = "price_opt";
         String PRICE_OPT_OLD = "price_opt_old";
+        String NEXT_DELIVERY = "next_delivery";
         String STATUS = "status";
         String MIN_QTY = "min_qty";
         String COUNTRY = "country";
@@ -556,6 +560,7 @@ public interface ItemNames {
         String PRICE_OLD = "price_old";
         String PRICE_OPT = "price_opt";
         String PRICE_OPT_OLD = "price_opt_old";
+        String NEXT_DELIVERY = "next_delivery";
         String STATUS = "status";
         String MIN_QTY = "min_qty";
         String COUNTRY = "country";

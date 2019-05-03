@@ -81,7 +81,7 @@
 		<div class="form-group">
 			<label>Наименование организации *:</label>
 			<input type="text" class="form-control" name="{$inp/organization/@input}"
-			       value="{f:not_empty($inp/email, $vals/email)}" error="{$inp/organization/@validation-error}"/>
+			       value="{f:not_empty($inp/organization, $vals/organization)}" error="{$inp/organization/@validation-error}"/>
 		</div>
 		<div class="form-group">
 			<label for="">Телефон/факс *:</label>

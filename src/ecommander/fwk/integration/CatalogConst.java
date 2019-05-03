@@ -61,6 +61,8 @@ public interface CatalogConst {
 	String LINK_PARAM = "link";
 	String ASSOC_PARAM = "assoc";
 	String ASSOC_CODE_PARAM = "assoc_code";
+	String NEXT_DELIVERY_PARAM = "next_delivery";
+
 	String HAS_LINE_PRODUCTS = "has_lines";
 
 
@@ -95,6 +97,7 @@ public interface CatalogConst {
 	String FILE_ELEMENT = "file";
 	String ASSOC_CODE_ELEMENT = "assoc_code";
 	String PARAMS_XML_ELEMENT = "params_xml";
+	String NEXT_DELIVERY_ELEMENT = "next_delivery";
 
 	String QUANTITY_ELEMENT = "quantity";
 	String OLDPRICE_ELEMENT = "oldprice";

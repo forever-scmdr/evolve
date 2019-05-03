@@ -190,11 +190,8 @@
 									<!--<li class="visible" title="Загрузить товары из файла во временный раздел">-->
 										<!--<a href="add_products/?action=start">Добваление товаров</a>-->
 									<!--</li>-->
-									<li class="visible" title="Загрузить товары с других сайтов">
-										<a href="get_site/?action=start" target="_blank">Скачать с сайтов</a>
-									</li>
-									<li class="visible" title="Загрузить товары с других сайтов">
-										<a href="deploy_parsed/?action=start" target="_blank">Разместить скачанное</a>
+									<li class="visible" title="Создать пользователей">
+										<a href="create_users/?action=start">Создать пользователей</a>
 									</li>
 									<li class="visible" title="Создать фильтры по параметрам товаров">
 										<a href="create_filters/?action=start" target="_blank">Создать фильтры</a>

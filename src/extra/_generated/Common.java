@@ -15,6 +15,7 @@ public class Common
     public final static String LINK_LINK = "link_link";
     public final static String BOTTOM = "bottom";
     public final static String BOTTOM_ADDRESS = "bottom_address";
+    public final static String DEBT_TEXT = "debt_text";
     public final static String GOOGLE_VERIFICATION = "google_verification";
     public final static String YANDEX_VERIFICATION = "yandex_verification";
 
@@ -131,6 +132,22 @@ public class Common
 
     public boolean contains_bottom_address(String value) {
         return containsValue("bottom_address", value);
+    }
+
+    public void set_debt_text(String value) {
+        setValue("debt_text", value);
+    }
+
+    public String get_debt_text() {
+        return getStringValue("debt_text");
+    }
+
+    public String getDefault_debt_text(String defaultVal) {
+        return getStringValue("debt_text", defaultVal);
+    }
+
+    public boolean contains_debt_text(String value) {
+        return containsValue("debt_text", value);
     }
 
     public void set_google_verification(String value) {

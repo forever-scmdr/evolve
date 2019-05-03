@@ -32,6 +32,7 @@ public class Described_product
     public final static String PRICE_OLD = "price_old";
     public final static String PRICE_OPT = "price_opt";
     public final static String PRICE_OPT_OLD = "price_opt_old";
+    public final static String NEXT_DELIVERY = "next_delivery";
     public final static String STATUS = "status";
     public final static String MIN_QTY = "min_qty";
     public final static String COUNTRY = "country";
@@ -411,6 +412,22 @@ public class Described_product
 
     public boolean contains_price_opt_old(BigDecimal value) {
         return containsValue("price_opt_old", value);
+    }
+
+    public void set_next_delivery(String value) {
+        setValue("next_delivery", value);
+    }
+
+    public String get_next_delivery() {
+        return getStringValue("next_delivery");
+    }
+
+    public String getDefault_next_delivery(String defaultVal) {
+        return getStringValue("next_delivery", defaultVal);
+    }
+
+    public boolean contains_next_delivery(String value) {
+        return containsValue("next_delivery", value);
     }
 
     public void set_status(String value) {

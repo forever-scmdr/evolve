@@ -40,6 +40,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		SINGLE_PARAMS.add(OLDOPTPRICE_ELEMENT);
 		SINGLE_PARAMS.add(MIN_QUANTITY_ELEMENT);
 		SINGLE_PARAMS.add(STATUS_ELEMENT);
+		SINGLE_PARAMS.add(NEXT_DELIVERY_ELEMENT);
 
 		MULTIPLE_PARAMS.add(CATEGORY_ID_ELEMENT);
 		MULTIPLE_PARAMS.add(PICTURE_ELEMENT);
@@ -107,48 +108,51 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				product.setValue(OFFER_ID_PARAM, code);
 				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(singleParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
 				product.setValueUI(QTY_PARAM, singleParams.get(QUANTITY_ELEMENT));
-				product.setValue(GROUP_ID_PARAM, singleParams.get(GROUP_ID_ATTR));
-				product.setValue(URL_PARAM, singleParams.get(URL_ELEMENT));
+				product.setValueUI(GROUP_ID_PARAM, singleParams.get(GROUP_ID_ATTR));
+				product.setValueUI(URL_PARAM, singleParams.get(URL_ELEMENT));
 				if (product.getItemType().hasParameter(CURRENCY_ID_PARAM))
-					product.setValue(CURRENCY_ID_PARAM, singleParams.get(CURRENCY_ID_ELEMENT));
+					product.setValueUI(CURRENCY_ID_PARAM, singleParams.get(CURRENCY_ID_ELEMENT));
 				if (product.getItemType().hasParameter(CATEGORY_ID_PARAM))
-					product.setValue(CATEGORY_ID_PARAM, singleParams.get(CATEGORY_ID_ELEMENT));
-				product.setValue(NAME_PARAM, singleParams.get(NAME_ELEMENT));
+					product.setValueUI(CATEGORY_ID_PARAM, singleParams.get(CATEGORY_ID_ELEMENT));
+				product.setValueUI(NAME_PARAM, singleParams.get(NAME_ELEMENT));
 				if (product.isValueEmpty(NAME_PARAM))
-					product.setValue(NAME_PARAM, singleParams.get(MODEL_ELEMENT));
+					product.setValueUI(NAME_PARAM, singleParams.get(MODEL_ELEMENT));
 				if (product.getItemType().hasParameter(VENDOR_CODE_PARAM))
-					product.setValue(VENDOR_CODE_PARAM, singleParams.get(VENDOR_CODE_ELEMENT));
+					product.setValueUI(VENDOR_CODE_PARAM, singleParams.get(VENDOR_CODE_ELEMENT));
 				if (product.getItemType().hasParameter(VENDOR_PARAM))
-					product.setValue(VENDOR_PARAM, singleParams.get(VENDOR_ELEMENT));
+					product.setValueUI(VENDOR_PARAM, singleParams.get(VENDOR_ELEMENT));
 				if (product.getItemType().hasParameter(DESCRIPTION_PARAM))
-					product.setValue(DESCRIPTION_PARAM, singleParams.get(DESCRIPTION_ELEMENT));
-				if (product.getItemType().hasParameter(VENDOR_PARAM))
-					product.setValue(VENDOR_PARAM, singleParams.get(VENDOR_ELEMENT));
+					product.setValueUI(DESCRIPTION_PARAM, singleParams.get(DESCRIPTION_ELEMENT));
 				if (product.getItemType().hasParameter(COUNTRY_PARAM))
-					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
-				if (product.getItemType().hasParameter(COUNTRY_PARAM))
-					product.setValue(OPTPRICE_ELEMENT, singleParams.get(OPTPRICE_ELEMENT));
+					product.setValueUI(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
+				if (product.getItemType().hasParameter(OPTPRICE_ELEMENT))
+					product.setValueUI(PRICE_OPT_PARAM, singleParams.get(OPTPRICE_ELEMENT));
 				if (product.getItemType().hasParameter(PRICE_OLD_PARAM))
-					product.setValue(PRICE_OLD_PARAM, singleParams.get(OLDPRICE_ELEMENT));
+					product.setValueUI(PRICE_OLD_PARAM, singleParams.get(OLDPRICE_ELEMENT));
 				if (product.getItemType().hasParameter(PRICE_OPT_OLD_PARAM))
-					product.setValue(PRICE_OPT_OLD_PARAM, singleParams.get(OLDOPTPRICE_ELEMENT));
+					product.setValueUI(PRICE_OPT_OLD_PARAM, singleParams.get(OLDOPTPRICE_ELEMENT));
 				if (product.getItemType().hasParameter(MIN_QTY_PARAM))
 					product.setValueUI(MIN_QTY_PARAM, singleParams.get(MIN_QUANTITY_ELEMENT));
-				if (product.getItemType().hasParameter(COUNTRY_PARAM))
-					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
-				if (product.getItemType().hasParameter(COUNTRY_PARAM))
-					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
-				if (product.getItemType().hasParameter(COUNTRY_PARAM))
-					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
-				if (product.getItemType().hasParameter(COUNTRY_PARAM))
-					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
-				if (product.getItemType().hasParameter(COUNTRY_PARAM))
-					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
-				if (product.getItemType().hasParameter(COUNTRY_PARAM))
-					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
-				if (product.getItemType().hasParameter(COUNTRY_PARAM))
-					product.setValue(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
+				if (product.getItemType().hasParameter(STATUS_PARAM))
+					product.setValueUI(STATUS_PARAM, singleParams.get(STATUS_ELEMENT));
+				if (product.getItemType().hasParameter(NEXT_DELIVERY_PARAM))
+					product.setValueUI(NEXT_DELIVERY_PARAM, singleParams.get(NEXT_DELIVERY_ELEMENT));
 
+				if (product.getItemType().hasParameter(ANALOG_CODE_PARAM) && multipleParams.containsKey(ANALOG_ELEMENT)) {
+					for (String val : multipleParams.get(ANALOG_ELEMENT)) {
+						product.setValueUI(ANALOG_CODE_PARAM, val);
+					}
+				}
+				if (product.getItemType().hasParameter(SIMILAR_CODE_PARAM) && multipleParams.containsKey(SIMILAR_ITEMS_ELEMENT)) {
+					for (String val : multipleParams.get(SIMILAR_ITEMS_ELEMENT)) {
+						product.setValueUI(SIMILAR_CODE_PARAM, val);
+					}
+				}
+				if (product.getItemType().hasParameter(SUPPORT_CODE_PARAM) && multipleParams.containsKey(SUPPORT_ITEMS_ELEMENT)) {
+					for (String val : multipleParams.get(SUPPORT_ITEMS_ELEMENT)) {
+						product.setValueUI(SUPPORT_CODE_PARAM, val);
+					}
+				}
 
 
 				if (getPrice)
@@ -207,8 +211,12 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
 				if (wasNew) {
 					for (String picUrl : picUrls) {
-						product.setValue(GALLERY_PARAM, new URL(picUrl));
-						needSave = true;
+						try {
+							product.setValue(GALLERY_PARAM, new URL(picUrl));
+							needSave = true;
+						} catch (Exception e) {
+							info.addError("Неверный формат картинки: " + picUrl, picUrl);
+						}
 					}
 				}
 

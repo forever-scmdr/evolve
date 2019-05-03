@@ -24,7 +24,7 @@ public class JustEmailRegisterCommand extends RegisterCommand {
 		if (!validate()) {
 			return getResult("not_set");
 		}
-		Item form = getItemForm().getTransientSingleItem();
+		Item form = getItemForm().getItemSingleTransient();
 		if (form.isValueEmpty(PASSWORD_PARAM)) {
 			return getResult("not_set");
 		}

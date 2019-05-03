@@ -1,6 +1,7 @@
 
 package extra._generated;
 
+import java.math.BigDecimal;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -145,7 +146,7 @@ public class Discounts
         return containsValue("sum_discount", value);
     }
 
-    public void set_sum_more(Double value) {
+    public void set_sum_more(BigDecimal value) {
         setValue("sum_more", value);
     }
 
@@ -155,15 +156,15 @@ public class Discounts
         setValueUI("sum_more", value);
     }
 
-    public Double get_sum_more() {
-        return getDoubleValue("sum_more");
+    public BigDecimal get_sum_more() {
+        return getDecimalValue("sum_more");
     }
 
-    public Double getDefault_sum_more(Double defaultVal) {
-        return getDoubleValue("sum_more", defaultVal);
+    public BigDecimal getDefault_sum_more(BigDecimal defaultVal) {
+        return getDecimalValue("sum_more", defaultVal);
     }
 
-    public boolean contains_sum_more(Double value) {
+    public boolean contains_sum_more(BigDecimal value) {
         return containsValue("sum_more", value);
     }
 

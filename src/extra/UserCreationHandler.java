@@ -54,7 +54,7 @@ public class UserCreationHandler extends DefaultHandler implements ItemNames.use
 		this.info = info;
 		this.userType = ItemTypeRegistry.getItemType(User_jur._NAME);
 		this.initiator = initiator;
-		userCatalog = ItemUtils.ensuteSingleRootAnonymousItem(ItemNames.REGISTERED_CATALOG, initiator);
+		userCatalog = ItemUtils.ensureSingleRootAnonymousItem(ItemNames.REGISTERED_CATALOG, initiator);
 	}
 
 	@Override

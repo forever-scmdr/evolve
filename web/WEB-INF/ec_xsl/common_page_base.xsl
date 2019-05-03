@@ -9,6 +9,8 @@
 
 
 	<xsl:variable name="common" select="page/common"/>
+	<xsl:variable name="registration" select="page/registration"/>
+	<xsl:variable name="is_reg_jur" select="$registration/@type = 'user_jur'"/>
 
 
 
@@ -57,13 +59,13 @@
 		<a href="{link}" class="menu__item{' active'[$page = $active_menu_item]}"><xsl:value-of select="name" /></a>
 	</xsl:template>
 
-	<xsl:template match="custom_page" mode="menu">
+	<xsl:template match="menu_custom" mode="menu">
 		<a href="{show_page}" class="menu__item{' active'[current()/@key = $active_menu_item]}"><xsl:value-of select="header" /></a>
 	</xsl:template>
 
 	<xsl:template name="MAIN_MENU">
 		<a href="/catalog" class="menu__item">Каталог</a>
-		<xsl:apply-templates select="page/custom_pages/page_link | page/custom_pages/custom_page" mode="menu"/>
+		<xsl:apply-templates select="page/custom_pages/page_link | page/custom_pages/menu_custom" mode="menu"/>
 		<a href="{page/contacts_link}" class="menu__item{' active'['contacts' = $active_menu_item]}">
 			Контакты
 		</a>
@@ -80,7 +82,7 @@
 			<div class="container">
 				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
 				<form action="{page/search_link}" method="post" class="header__search header__column">
-					<input type="text" class="text-input header__field" placeholder="Поиск по каталогу" name="q" value="{page/variables/q}" />
+					<input type="text" class="text-input header__field" placeholder="Поиск по каталогу" name="q" value="{page/variables/q}" autofocus="autofocus" />
 					<input type="submit" class="button header__button" value="Поиск" />
 				</form>
 				<div class="phones">
@@ -98,7 +100,9 @@
 			<div class="container">
 				<xsl:call-template name="MAIN_MENU"/>
 				<div class="auth">
-					<i class="fas fa-lock"></i><a href="/register/?login=true">Вход / Регистрация</a>
+					<xsl:call-template name="PERSONAL_DESKTOP"/>
+					<!-- login form -->
+					<xsl:call-template name="LOGIN_FORM"/>
 				</div>
 			</div>
 		</section>
@@ -159,30 +163,6 @@
 		<!-- FOOTER END -->
 
 		<!-- MODALS BEGIN -->
-		<!-- modal login -->
-		<div class="modal fade" tabindex="-1" role="dialog" id="modal-login">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
-						<div class="modal-title h4">Вход</div>
-					</div>
-					<div class="modal-body">
-						<form action="" method="post">
-							<div class="form-group">
-								<label for="">Электронная почта:</label>
-								<input type="text" class="form-control" />
-							</div>
-							<div class="form-group">
-								<label for="">Пароль:</label>
-								<input type="password" class="form-control" />
-							</div>
-							<input type="submit" name="" value="Отправить заказ"/>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
 
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
@@ -412,7 +392,7 @@
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
 
 	<xsl:template match="accessory | set | probe | product | assoc">
-		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="has_price" select="if ($is_reg_jur) then (price_opt and price_opt != '0') else (price and price != '0')"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device items-catalog__device">
@@ -429,8 +409,14 @@
 			<div class="device__article-number">Артикул: <xsl:value-of select="vendor_code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
+					<xsl:if test="not($is_reg_jur)">
+						<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
+						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
+					</xsl:if>
+					<xsl:if test="$is_reg_jur">
+						<xsl:if test="price_opt_old"><div class="price_old"><span><xsl:value-of select="price_opt_old"/> руб.</span></div></xsl:if>
+						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price_opt"/> руб.</div>
+					</xsl:if>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -470,34 +456,6 @@
 			</xsl:choose>
 
 
-
-			<!-- <div class="device__actions">
-				<xsl:if test="not($is_compare)">
-					<div id="compare_list_{@id}">
-						<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
-							<i class="fas fa-balance-scale"></i>сравнить
-						</a>
-					</div>
-				</xsl:if>
-				<xsl:if test="$is_compare">
-					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
-				</xsl:if>
-				<xsl:choose>
-					<xsl:when test="$is_fav">
-						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
-					</xsl:when>
-					<xsl:otherwise>
-						<div id="fav_list_{@id}">
-							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
-								<i class="fas fa-star"></i>отложить
-							</a>
-						</div>
-					</xsl:otherwise>
-				</xsl:choose>
-			</div> -->
-
-
-
 			<xsl:for-each select="tag">
 				<div class="device__tag"><xsl:value-of select="." /></div>
 			</xsl:for-each>
@@ -507,7 +465,7 @@
 
 
 	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
-		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="has_price" select="if ($is_reg_jur) then (price_opt and price_opt != '0') else (price and price != '0')"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device device_row">
@@ -527,34 +485,16 @@
 				</div>
 			</div>
 			<div class="device__article-number">Артикул: <xsl:value-of select="vendor_code"/></div>
-			<!-- <div class="device__actions device_row__actions">
-				<xsl:if test="not($is_compare)">
-					<div id="compare_list_{@id}">
-						<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
-							<i class="fas fa-balance-scale"></i>сравнить
-						</a>
-					</div>
-				</xsl:if>
-				<xsl:if test="$is_compare">
-					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
-				</xsl:if>
-				<xsl:choose>
-					<xsl:when test="$is_fav">
-						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
-					</xsl:when>
-					<xsl:otherwise>
-						<div id="fav_list_{@id}">
-							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
-								<i class="fas fa-star"></i>отложить
-							</a>
-						</div>
-					</xsl:otherwise>
-				</xsl:choose>
-			</div> -->
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
+					<xsl:if test="not($is_reg_jur)">
+						<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
+						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
+					</xsl:if>
+					<xsl:if test="$is_reg_jur">
+						<xsl:if test="price_opt_old"><div class="price_old"><span><xsl:value-of select="price_opt_old"/> руб.</span></div></xsl:if>
+						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price_opt"/> руб.</div>
+					</xsl:if>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -804,8 +744,9 @@
 					]
 					});
 
-						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
-						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+						//initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
+						//initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+						initCatalogPopupMenu('#login_click', '.login-popup', 'mouseenter');
 						initDropDownHeader();
 					});
 

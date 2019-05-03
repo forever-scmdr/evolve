@@ -13,6 +13,7 @@ public class Cart
     public final static String ORDER_NUM = "order_num";
     public final static String QTY = "qty";
     public final static String SUM = "sum";
+    public final static String SUM_DISCOUNT = "sum_discount";
     public final static String PROCESSED = "processed";
 
     private Cart(Item item) {
@@ -92,6 +93,28 @@ public class Cart
 
     public boolean contains_sum(BigDecimal value) {
         return containsValue("sum", value);
+    }
+
+    public void set_sum_discount(BigDecimal value) {
+        setValue("sum_discount", value);
+    }
+
+    public void setUI_sum_discount(String value)
+        throws Exception
+    {
+        setValueUI("sum_discount", value);
+    }
+
+    public BigDecimal get_sum_discount() {
+        return getDecimalValue("sum_discount");
+    }
+
+    public BigDecimal getDefault_sum_discount(BigDecimal defaultVal) {
+        return getDecimalValue("sum_discount", defaultVal);
+    }
+
+    public boolean contains_sum_discount(BigDecimal value) {
+        return containsValue("sum_discount", value);
     }
 
     public void set_processed(Byte value) {

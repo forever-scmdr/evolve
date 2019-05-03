@@ -28,16 +28,25 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 		
 	}
 
-	private static User createUser(TemplateQuery query) throws SQLException, NamingException {
+	private static User createUser(TemplateQuery query, Connection... connection) throws SQLException, NamingException {
 		User user = null;
-		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = query.prepareQuery(conn)) {
+		boolean ownConn = connection == null || connection.length == 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = ownConn ? MysqlConnector.getConnection() : connection[0];
+			pstmt = query.prepareQuery(conn);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				if (user == null)
 					user = new User(rs.getString(U_LOGIN), rs.getString(U_PASSWORD), rs.getString(U_DESCRIPTION), rs.getInt(U_ID));
 				user.addGroup(rs.getString(UG_GROUP_NAME), rs.getByte(UG_GROUP_ID), rs.getByte(UG_ROLE));
 			}
+
+		} finally {
+			MysqlConnector.closeStatement(pstmt);
+			if (ownConn)
+				MysqlConnector.closeConnection(conn);
 		}
 		return user;
 	}
@@ -50,11 +59,11 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 	 * @throws SQLException
 	 * @throws NamingException 
 	 */
-	public static User getUser(String login, String pass) throws SQLException, NamingException {
+	public static User getUser(String login, String pass, Connection... conn) throws SQLException, NamingException {
 		TemplateQuery selectUser = new TemplateQuery("Select user by login and password");
 		selectUser.SELECT("*").FROM(USER_TBL).INNER_JOIN(USER_GROUP_TBL, U_ID, UG_USER_ID)
 				.WHERE().col(U_LOGIN).string(login).AND().col(U_PASSWORD).string(pass);
-		return createUser(selectUser);
+		return createUser(selectUser, conn);
 	}
 
 	/**
@@ -65,11 +74,11 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 	 * @throws SQLException
 	 * @throws NamingException
 	 */
-	public static User getUser(String login) throws SQLException, NamingException {
+	public static User getUser(String login, Connection... conn) throws SQLException, NamingException {
 		TemplateQuery selectUser = new TemplateQuery("Select user by login and password");
 		selectUser.SELECT("*").FROM(USER_TBL).INNER_JOIN(USER_GROUP_TBL, U_ID, UG_USER_ID)
 				.WHERE().col(U_LOGIN).string(login);
-		return createUser(selectUser);
+		return createUser(selectUser, conn);
 	}
 	/**
 	 * Загружает юзера по его ID
@@ -78,11 +87,11 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 	 * @throws SQLException
 	 * @throws NamingException 
 	 */
-	public static User getUser(int userId) throws SQLException, NamingException {
+	public static User getUser(int userId, Connection... conn) throws SQLException, NamingException {
 		TemplateQuery selectUser = new TemplateQuery("Select user by ID");
 		selectUser.SELECT("*").FROM(USER_TBL).INNER_JOIN(USER_GROUP_TBL, U_ID, UG_USER_ID)
 				.WHERE().col(U_ID).int_(userId);
-		return createUser(selectUser);
+		return createUser(selectUser, conn);
 	}
 	/**
 	 * Получает всех пользователей
@@ -116,15 +125,23 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 	 * @throws SQLException 
 	 * @throws NamingException 
 	 */
-	public static boolean userNameExists(String userName) throws NamingException, SQLException {
+	public static boolean userNameExists(String userName, Connection... connection) throws NamingException, SQLException {
+		boolean ownConn = connection == null || connection.length == 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
 		TemplateQuery checkUserName = new TemplateQuery("Check user name");
 		checkUserName.SELECT("*").FROM(USER_TBL).WHERE().col(U_LOGIN).string(userName);
-		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = checkUserName.prepareQuery(conn)) {
+		try {
+			conn = ownConn ? MysqlConnector.getConnection() : connection[0];
+			pstmt = checkUserName.prepareQuery(conn);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				return true;
 			}
+		} finally {
+			MysqlConnector.closeStatement(pstmt);
+			if (ownConn)
+				MysqlConnector.closeConnection(conn);
 		}
 		return false;
 	}
@@ -136,15 +153,23 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 	 * @throws NamingException
 	 * @throws SQLException
 	 */
-	public static int getUserId(String userName) throws NamingException, SQLException {
+	public static int getUserId(String userName, Connection... connection) throws NamingException, SQLException {
+		boolean ownConn = connection == null || connection.length == 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
 		TemplateQuery checkUserName = new TemplateQuery("Check user name");
 		checkUserName.SELECT(U_ID).FROM(USER_TBL).WHERE().col(U_LOGIN).string(userName);
-		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = checkUserName.prepareQuery(conn)) {
+		try {
+			conn = ownConn ? MysqlConnector.getConnection() : connection[0];
+			pstmt = checkUserName.prepareQuery(conn);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				return rs.getInt(U_ID);
 			}
+		} finally {
+			MysqlConnector.closeStatement(pstmt);
+			if (ownConn)
+				MysqlConnector.closeConnection(conn);
 		}
 		return -1;
 	}

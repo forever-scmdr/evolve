@@ -8,7 +8,10 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
-	<include-definition name="COMMON"> 
+	<include-definition name="COMMON">
+		<personal>
+			<single item="user" tag="registration"/>
+		</personal>
 
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec" assoc="* catalog_link">
@@ -63,6 +66,7 @@
 
 		<!-- REGISTRATION -->
 		<link name="register_link" target="register"/>
+		<link name="login_form_link" target="login_form_ajax"/>
 		<link name="login_link" target="register">
 			<var name="login" value="true"/>
 		</link>
@@ -78,7 +82,7 @@
 
 
 	<page name="test">
-		<single item="catalog" id="catalog_main">
+		<single item="catalog"  id="catalog_main">
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="key"/>
@@ -980,7 +984,7 @@
 		<link name="login" target-var="src">
 			<var name="success" value="true"/>
 		</link>
-		<link name="login_error" target="register">
+		<link name="login_error" target-var="src">
 			<var name="message" value="Неверные логин/пароль"/>
 			<var name="success" value="false"/>
 			<var name="login" value="true"/>
@@ -1024,10 +1028,12 @@
 		<request>
 			<var name="message"/>
 		</request>
-		<link name="submit_form" target="register_action">
+		<link name="submit_login" target="register_action">
+			<var name="src" value="login_form_ajax"/>
 			<var name="action" value="login"/>
 		</link>
 	</page>
+
 
 	<page name="login_form" template="login_form">
 		<request>
@@ -1455,7 +1461,7 @@
 	</page>
 
 
-	<page name="create_users" template="integration/create_users">
+	<page name="create_users" template="">
 		<request>
 			<var name="action"/>
 		</request>

@@ -23,22 +23,22 @@ import java.util.Date;
  */
 public abstract class BasicCartManageCommand extends Command {
 
-	private static final String PRODUCT_ITEM = "abstract_product";
-	private static final String CART_ITEM = "cart";
-	private static final String BOUGHT_ITEM = "bought";
-	private static final String PURCHASE_ITEM = "purchase";
-	private static final String USER_ITEM = "user";
-	private static final String PRICE_PARAM = "price";
-	private static final String QTY_PARAM = "qty";
-	private static final String SUM_PARAM = "sum";
-	private static final String CODE_PARAM = "code";
-	private static final String NAME_PARAM = "name";
-	private static final String PROCESSED_PARAM = "processed";
-	private static final String COUNTER_ITEM = "counter";
-	private static final String COUNT_PARAM = "count";
-	private static final String NUM_PARAM = "num";
-	private static final String DATE_PARAM = "date";
-	private static final String EMAIL_PARAM = "email";
+	protected static final String PRODUCT_ITEM = "abstract_product";
+	protected static final String CART_ITEM = "cart";
+	protected static final String BOUGHT_ITEM = "bought";
+	protected static final String PURCHASE_ITEM = "purchase";
+	protected static final String USER_ITEM = "user";
+	protected static final String PRICE_PARAM = "price";
+	protected static final String QTY_PARAM = "qty";
+	protected static final String SUM_PARAM = "sum";
+	protected static final String CODE_PARAM = "code";
+	protected static final String NAME_PARAM = "name";
+	protected static final String PROCESSED_PARAM = "processed";
+	protected static final String COUNTER_ITEM = "counter";
+	protected static final String COUNT_PARAM = "count";
+	protected static final String NUM_PARAM = "num";
+	protected static final String DATE_PARAM = "date";
+	protected static final String EMAIL_PARAM = "email";
 
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
 	public static final String REGISTERED_GROUP = "registered";
@@ -98,7 +98,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
-		Item form = getItemForm().getTransientSingleItem();
+		Item form = getItemForm().getItemSingleTransient();
 		getSessionMapper().saveTemporaryItem(form, "user");
 
 		if (!validate()) {
@@ -139,7 +139,7 @@ public abstract class BasicCartManageCommand extends Command {
 		String regularTopic
 				= "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
 
-		final String customerEmail = getItemForm().getTransientSingleItem().getStringValue("email");
+		final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
 
 		// Письмо для покупателя
@@ -413,13 +413,15 @@ public abstract class BasicCartManageCommand extends Command {
 	 * Пересчитывает данные для одного enterprise_bought, когда в корзине произошли какие-то изменения
 	 * @throws Exception
 	 */
-	protected boolean recalculateCart() throws Exception {
+	protected boolean recalculateCart(String...priceParamName) throws Exception {
 		loadCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal sum = new BigDecimal(0); // полная сумма
 		double zeroQuantity = 0;
 		double regularQuantity = 0;
 		boolean result = true;
+
+		final String PRICE = (priceParamName != null && priceParamName.length > 0) ? priceParamName[0] : PRICE_PARAM;
 
 		// Обычные заказы и заказы с нулевым количеством на складе
 		for (Item bought : boughts) {
@@ -431,7 +433,7 @@ public abstract class BasicCartManageCommand extends Command {
 				result = false;
 			} else {
 				// Первоначальная сумма
-				BigDecimal price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+				BigDecimal price = product.getDecimalValue(PRICE, new BigDecimal(0));
 				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
 				if (maxQuantity <= 0) {
 					productSum = new BigDecimal(0);
@@ -439,7 +441,7 @@ public abstract class BasicCartManageCommand extends Command {
 				} else {
 					regularQuantity += quantity;
 				}
-				bought.setValue(PRICE_PARAM, price);
+				bought.setValue(PRICE, price);
 				bought.setValue(SUM_PARAM, productSum);
 				sum = sum.add(productSum);
 				// Сохранить bought

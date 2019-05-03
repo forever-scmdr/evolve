@@ -6,9 +6,13 @@
  * Показать меню первого уровня каталога продукции
  * @param menuTriggerSelector
  * @param menuSelector
+ * @param eventName
  */
-function initCatalogPopupMenu(menuTriggerSelector, menuSelector) {
-	$(menuTriggerSelector).click(function (event) {
+function initCatalogPopupMenu(menuTriggerSelector, menuSelector, eventName) {
+	if (typeof eventName === 'undefined' || eventName == null || eventName == '') {
+		eventName = 'click';
+	}
+	$(menuTriggerSelector).on(eventName, function (event) {
 		event.preventDefault();
 		$(menuSelector).toggle('fade', 150);
 	});
