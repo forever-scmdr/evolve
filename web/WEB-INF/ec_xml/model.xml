@@ -648,6 +648,7 @@
 		<parameter name="quotient_2" type="decimal" caption="Второй диапазон КОЭФФИЦИЕНТ"/>
 		<parameter name="level_2" type="currency" caption="Второй диапазон ДО"/>
 		<parameter name="quotient_3" type="decimal" caption="Третий диапазон КОЭФФИЦИЕНТ"/>
+		<parameter name="quotient_bukinistic" type="decimal" caption="Букинистическое издание КОЭФФИЦИЕНТ"/>
 	</item>
 
 
