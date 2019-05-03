@@ -14,7 +14,10 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1>Список товаров</h1>
-
+		<div class="page-content m-t">
+			Уважаемый покупатель!
+			<br/>Обращаем Ваше внимание, товары поступят на пункт самовывоза <b>не ранее <xsl:value-of select="$delivery_date"/></b>.
+		</div>
 		<div class="cart-container">
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">

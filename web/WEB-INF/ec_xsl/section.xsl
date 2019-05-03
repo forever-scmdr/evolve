@@ -3,8 +3,29 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<!-- <xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/> -->
+	<xsl:variable name="cities" as="element()*">
+		<item>Минске</item>
+		<item>Витебске</item>
+		<item>Могилеве</item>
+		<item>Гомеле</item>
+		<item>Бресте</item>
+		<item>Гродно</item>
+	</xsl:variable>
+	<xsl:variable name="x" select="f:num(page/variables/page) mod count($cities)" />
+
+	<xsl:variable name="page_postfix" select="if(/page/variables/page = '1') then '' else concat('Страница: ', /page/variables/page, ',' )"/>
+
+	<xsl:variable name="from" select="(f:num(/page/variables/page) * f:num(/page/variables/limit)) - f:num(/page/variables/limit) + 1" />
+
+	<xsl:variable name="to" select="$from + count($sel_sec/product) - 1"/>
+
+	<xsl:variable name="product_from_to" select="string-join(('товары с', $from, 'по', $to ), ' ')"/>
+
+	<xsl:variable name="title_postfix" select="string-join(('в',$cities[$x],'с доставкой - Mystery.by.', $page_postfix, $product_from_to),' ')"/>
+
+	<xsl:variable name="title" select="string-join(('Купить', lower-case($sel_sec/name), $title_postfix), ' ')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $sel_sec/name"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$sel_sec/section"/>
@@ -20,8 +41,8 @@
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="quote">"</xsl:variable>
-		<xsl:variable name="min" select="f:currency_decimal(//min/price)"/>
-		<xsl:variable name="max" select="f:currency_decimal(//max/price)"/>
+		<xsl:variable name="min" select="f:currency(min($sel_sec/product/f:num(price)))"/>
+		<xsl:variable name="max" select="f:currency(max($sel_sec/product/f:num(price)))"/>
 		<script type="application/ld+json">
 		{
 			"@context": "http://schema.org/",
@@ -35,7 +56,7 @@
 				"priceCurrency": "BYN",
 				"lowPrice": <xsl:value-of select="concat($quote,$min, $quote)"/>,
 				"highPrice": <xsl:value-of select="concat($quote, $max, $quote)"/>,
-				"offerCount": <xsl:value-of select="concat($quote, $sel_sec/product_count, $quote)"/>
+				"offerCount": <xsl:value-of select="concat($quote, string(count($sel_sec/product)), $quote)"/>
 			},
 			"aggregateRating": {
 				"@type": "AggregateRating",
@@ -53,19 +74,20 @@
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="tag" select="page/variables/tag"/>
-	<xsl:variable name="title" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
+	<!-- <xsl:variable name="title" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/> -->
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
-	<xsl:variable name="canonical"
-				  select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/>
+<!-- 	<xsl:variable name="canonical"
+				  select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/> -->
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
 
 	<xsl:template name="CONTENT">
+		<!-- <xsl:value-of select="//canonical_link"/> -->
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
@@ -83,8 +105,8 @@
 		<h1 class="page-title">
 			<xsl:value-of select="$h1"/>
 		</h1>
-		<xsl:if test="$seo[1]/text">
-			<div class="page-content m-t">
+		<xsl:if test="$seo[1]/text  and /page/variables/page = '1'">
+			<div class="page-content m-t ">
 				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
 			</div>
 		</xsl:if>
@@ -175,7 +197,7 @@
 		<xsl:if test="not($subs) and $valid_inputs">
 			<div class="toggle-filters">
 				<i class="fas fa-cog"></i>
-				<a onclick="$('#filters_container').slideToggle(200);">Подбор по параметрам</a>
+				<a onclick="$('#filters_container').slideToggle(200);" rel="nofollow">Подбор по параметрам</a>
 			</div>
 			<form method="post" action="{$sel_sec/filter_base_link}">
 				<div class="filters" style="{'display: none'[not($user_filter)]}" id="filters_container">
@@ -216,11 +238,11 @@
 				<div class="view">
 					<span class="{'active'[not($view = 'list')]}">
 						<i class="fas fa-th-large"></i>
-						<a href="{page/set_view_table}">Плиткой</a>
+						<a href="{page/set_view_table}" rel="nofollow">Плиткой</a>
 					</span>
 					<span class="{'active'[$view = 'list']}">
 						<i class="fas fa-th-list"></i>
-						<a href="{page/set_view_list}">Строками</a>
+						<a href="{page/set_view_list}" rel="nofollow">Строками</a>
 					</span>
 				</div>
 				<span>

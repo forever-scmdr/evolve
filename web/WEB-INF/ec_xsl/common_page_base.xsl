@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+				xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
+	<xsl:import href="one_click_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
@@ -16,12 +18,13 @@
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
 	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 
-	<xsl:variable name="title" select="'Мизида'" />
+	<xsl:variable name="title" select="'Mystery.by'" />
+	<xsl:variable name="title_postfix"/>
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
 
-	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''" />
+	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('', tokenize(page/source_link, '\?')[1]) else ''" />
 	<xsl:variable name="custom_canonical" select="//canonical_link[1]"/>
 
 	<xsl:variable name="canonical" select="if($custom_canonical != '') then $custom_canonical else $default_canonical"/>
@@ -30,6 +33,7 @@
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
+	<xsl:variable name="delivery_date" select="f:delivery-date(current-dateTime())" />
 
 	<xsl:variable name="active_menu_item"/>
 
@@ -77,22 +81,22 @@
 				<a href="{$main_host}" class="logo"><img src="img/logo-big.svg" alt="" /></a>
 				<div class="header__content">
 					<div class="header__columns">
-						<form action="{page/search_link}" method="post" class="header__search header__column">
+						<form action="{page/search_link}" method="get" class="header__search header__column">
 							<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" />
 							<input type="submit" class="button header__button" value="Найти" />
 						</form>
 						<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-							<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
+							<a><i class="fas fa-shopping-cart"></i>Корзина</a>
 							<!-- <div>Товаров: <strong>2</strong></div>
 							<div>Cумма: <strong>1250 руб.</strong></div> -->
 						</div>
 						<div class="user-links header__column">
 							<xsl:call-template name="PERSONAL_DESKTOP"/>
 							<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
-								<a href=""><i class="fas fa-star"/>Избранное</a>
+								<a rel="nofollow"><i class="fas fa-star"/>Избранное</a>
 							</div>
 							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}">
-								<a href="compare.html"><i class="fas fa-balance-scale"/>Сравнение</a>
+								<a href="{page/compare_link}" rel="nofollow"><i class="fas fa-balance-scale"/>Сравнение</a>
 							</div>
 						</div>
 					</div>
@@ -189,7 +193,7 @@
 					<a href="javascript:showMobileMainMenu()"><i class="fas fa-bars"></i></a>
 				</div>
 				<div class="search-container">
-					<form action="{page/search_link}" method="post">
+					<form action="{page/search_link}" method="get">
 						<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
 					</form>
 				</div>
@@ -226,10 +230,10 @@
 		                <xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
 				            <div class="title_3"><xsl:value-of select="$footer/block[1]/header" /></div>
 		                </xsl:if>
-				        <xsl:value-of select="$footer/block[1]/text" disable-output-escaping="yes"/>
+				        <xsl:value-of select="if(not($footer/block[1]/code != '')) then $footer/block[1]/text else $footer/block[1]/code" disable-output-escaping="yes"/>
 		                <div class="forever">
 		                    <img src="img/forever.png" alt="" />
-		                    <a href="forever.by" target="_blank">Разработка сайта студия веб-дизайна Forever</a>
+		                    <a href="http://forever.by" target="_blank">Разработка сайта студия веб-дизайна Forever</a>
 		                </div>
 		            </div>
 					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
@@ -301,8 +305,12 @@
 							<xsl:value-of select="name"/>
 						</a></li>
 					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/menu_custom">
-						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
+					<xsl:for-each select="page/custom_pages/custom_page[in_main_menu='да']">
+						<li>
+							<a href="{show_page}">
+								<xsl:value-of select="header"/>
+							</a>
+						</li>
 					</xsl:for-each>
 					<li>
 						<a href="{page/contacts_link}">Контакты</a>
@@ -500,13 +508,13 @@
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
 
-	<xsl:template match="accessory | set | probe | product | assoc">
+	<xsl:template match="accessory | set | probe | product | assoc | also">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device items-catalog__device">
 			<xsl:variable name="pic_path" select="if (picture) then picture[1] else 'img/no_image.png'"/>
-			<a href="{$pic_path}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
+			<a href="{$pic_path}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow" style="max-width: 20px;">
 				<i class="fas fa-search-plus"></i>
 			</a>
 			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
@@ -529,7 +537,7 @@
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button" value="Заказать"/>
+								<input type="submit" class="button" value="В корзину"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
@@ -542,6 +550,9 @@
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
 			</div>
+			<div class="extra-links">
+				<a href="{one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+			</div>
 			<!-- <xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
 				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div>
 			</xsl:if>
@@ -551,21 +562,21 @@
 			<div class="device__actions">
 				<xsl:if test="not($is_compare)">
 					<div id="compare_list_{@id}">
-						<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
+						<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}"  rel="nofollow">
 							<i class="fas fa-balance-scale"></i>сравнить
 						</a>
 					</div>
 				</xsl:if>
 				<xsl:if test="$is_compare">
-					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
+					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}"  rel="nofollow">убрать</a></span>
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="$is_fav">
-						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
+						<a href="{from_fav}" class="icon-link device__action-link" rel="nofollow"><i class="fas fa-star"></i>убрать</a>
 					</xsl:when>
 					<xsl:otherwise>
 						<div id="fav_list_{@id}">
-							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
+							<a href="{to_fav}" class="icon-link device__action-link" rel="nofollow" ajax="true" ajax-loader-id="fav_list_{@id}">
 								<i class="fas fa-star"></i>отложить
 							</a>
 						</div>
@@ -587,7 +598,7 @@
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable name="pic_path" select="if (picture) then picture[1] else 'img/no_image.png'"/>
-			<a href="{$pic_path}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
+			<a href="{$pic_path}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow" style="max-width: 20px;">
 				<i class="fas fa-search-plus"></i>
 			</a>
 			<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
@@ -657,6 +668,9 @@
 				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> под заказ</div>
 				</xsl:if> -->
+				<div class="extra-links">
+					<a href="{one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+				</div>
 			</div>
 			<xsl:for-each select="tag">
 				<div class="device__tag device_row__tag"><xsl:value-of select="." /></div>
@@ -699,7 +713,7 @@
 				<div class="mc-container">
 					<xsl:call-template name="INC_MOBILE_HEADER"/>
 					<xsl:call-template name="CONTENT"/>
-					<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub'">
+					<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub' and page/@name != 'search'">
 						<div class="page-content">
 							<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
 						</div>
@@ -748,7 +762,6 @@
 				<xsl:text disable-output-escaping="yes">
 --&gt;
 				</xsl:text>
-				<!--<base href="https://ttd.by"/> -->
 				<base href="{$main_host}"/>
 				<meta charset="utf-8"/>
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -768,6 +781,7 @@
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 				<link rel="stylesheet" href="fotorama/fotorama.css"/>
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
+				<link rel="stylesheet" href="css/spoiler.css"/>
 				<!-- <script defer="defer" src="js/font_awesome_all.js"/> -->
 				<script defer="defer" src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" />
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
@@ -776,10 +790,11 @@
 				</xsl:for-each>
 			</head>
 			<body>
+				
+				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
 				<xsl:for-each select="$body-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
-				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
 				<!-- ALL CONTENT BEGIN -->
 				<div class="content-container">
 					<xsl:call-template name="INC_DESKTOP_HEADER"/>
@@ -796,6 +811,8 @@
 
 				<xsl:call-template name="INC_MOBILE_MENU"/>
 				<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
+				<xsl:call-template name="ONE_CLICK_FORM"/>
+
 				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
 				<script type="text/javascript" src="js/bootstrap.js"/>
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
@@ -803,8 +820,11 @@
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/fwk/common.js"/>
 				<script type="text/javascript" src="slick/slick.min.js"></script>
+				<script type="text/javascript" src="js/spoiler.js"></script>
+				<script type="text/javascript" src="js/truncate.js"/>
 				<script type="text/javascript">
 					$(document).ready(function() {
+						$('.seo-text').truncate({length: 300});
 						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
 							type: 'image',
 							closeOnContentClick: true,
@@ -957,21 +977,21 @@
 
 	<xsl:template name="SEO">
 		<xsl:variable name="quote">"</xsl:variable>
-		<link rel="canonical" href="{concat($main_host, $canonical)}" />
+		<xsl:if test="/page/variables/page = '1' or not(/page/variables/page)">
+			<link rel="canonical" href="{concat($main_host, $canonical)}" />
+		</xsl:if>
 		<xsl:if test="$seo">
 			<xsl:apply-templates select="$seo"/>
 		</xsl:if>
 		<xsl:if test="not($seo) or $seo = ''">
-			<title>
-				<xsl:value-of select="$title"/>
-			</title>
+			<title><xsl:value-of select="$title"/></title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
 		<xsl:if test="$common/google_verification">
 			<meta name="google-site-verification" content="{$common/google_verification}"/>
 		</xsl:if>
 		<xsl:if test="$common/yandex_verification">
-			<meta name="google-site-verification" content="{$common/yandex_verification}"/>
+			<meta name="yandex-verification" content="{$common/yandex_verification}"/>
 		</xsl:if>
 		<xsl:call-template name="MARKUP" />
 	</xsl:template>
@@ -982,7 +1002,7 @@
 
 	<xsl:template match="seo | url_seo">
 		<title>
-			<xsl:value-of select="title"/>
+			<xsl:value-of select="string-join(($seo/title, $title_postfix), ' ')"/>
 		</title>
 		<meta name="description" content="{description}"/>
 		<meta name="keywords" content="{keywords}"/>

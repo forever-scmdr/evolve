@@ -13,14 +13,7 @@
 			<label for="">Адрес:</label>
 			<input type="text" class="form-control" name="{$inp/address/@input}" value="{$inp/address}" error="{$inp/address/@validation-error}"/>
 		</div>
-		<div class="form-group">
-			<label>Способ доставки <a href="oplata_i_dostavka">Подробнее об условиях доставки</a></label>
-			<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">
-				<option>Самовывоз из офиса отдела продаж.<!--  Бесплатно. --></option>
-				<option>Доставка транспортом Поставщика.<!--  От 250р бесплатно. Менее - 5р. --></option>
-				<option>Доставка курьерской службой. <!-- Сумма заказа от 500р. --></option>
-			</select>
-		</div>
+		
 		<div class="form-group">
 			<label>Телефон *:</label>
 			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}" error="{$inp/phone/@validation-error}"/>
@@ -47,14 +40,7 @@
 			<label for="">Телефон/факс *:</label>
 			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}"/>
 		</div>
-		<div class="form-group">
-			<label>Способ доставки <a href="oplata_i_dostavka">Подробнее об условиях доставки</a></label>
-			<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}">
-				<option>Самовывоз из офиса отдела продаж.<!--  Бесплатно. --></option>
-				<option>Доставка транспортом Поставщика.<!--  От 250р бесплатно. Менее - 5р. --></option>
-				<option>Доставка курьерской службой.<!--  Сумма заказа от 500р. --></option>
-			</select>
-		</div>
+		
 		<div class="form-group">
 			<label>E-mail:</label>
 			<input type="text" class="form-control" name="{$inp/email/@input}" value="{$inp/email}"/>

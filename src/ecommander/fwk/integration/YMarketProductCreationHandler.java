@@ -1,13 +1,15 @@
 package ecommander.fwk.integration;
 
-import ecommander.fwk.*;
+import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ItemUtils;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.ItemMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
@@ -16,7 +18,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.URL;
 import java.util.*;
 
 public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
@@ -40,6 +41,9 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private static final String ISBN = "ISBN";
 	private static final String PICTURE = "picture";
 	private static final String BARCODE = "barcode";
+	private static final String STATUS = "Статус";
+	private static final String PUBLISH_TYPE = "Вид издания";
+	private static final String BOOKINISTIC = "Букинистическое издание";
 
 	static {
 		COMMON_PARAMS.add(URL_ELEMENT);
@@ -86,7 +90,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private ArrayList<String> picUrls;
 	private User initiator;
 	private boolean isInsideOffer = false;
-	private BigDecimal level_1, level_2, quotient_1, quotient_2, quotient_3;
+	private BigDecimal level_1, level_2, quotient_1, quotient_2, quotient_3, quotient_buk;
 	private Assoc catalogLinkAssoc;
 
 	
@@ -104,6 +108,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			level_2 = course.getDecimalValue("level_2");
 			quotient_2 = course.getDecimalValue("quotient_2");
 			quotient_3 = course.getDecimalValue("quotient_3");
+			quotient_buk = course.getDecimalValue("quotient_bukinistic", BigDecimal.ZERO);
 		} catch (Exception e) {
 			info.addError("Не задан курс российского рубля", "Каталог продукции");
 		}
@@ -173,6 +178,14 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				//else
 				//	product.setValueUI(PRICE_PARAM, "0");
 
+				boolean isBookinistic = (BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE))) && quotient_buk.compareTo(BigDecimal.ZERO) != 0;
+
+				if(isBookinistic){
+					product.setValue(PRICE_PARAM, price.multiply(quotient_buk).setScale(1, RoundingMode.CEILING));
+					product.setValue("tag", BOOKINISTIC);
+				}else if(secCode.equalsIgnoreCase("16546")){
+					product.setValue(PRICE_PARAM, price.multiply(quotient_buk).setScale(1, RoundingMode.CEILING));
+				}
 
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
 

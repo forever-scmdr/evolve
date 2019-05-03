@@ -156,7 +156,7 @@
 
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
-	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" super="seo_container" ag-id="12" ag-hash="1970241253">
+	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" super="seo_container" children-per-page="50" ag-id="12" ag-hash="1970241253">
 		<child item="parse_section" single="true"/>
 		<child item="section" />
 		<child item="product"/>
@@ -476,17 +476,24 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
-		<parameter name="google_verification" type="string" caption="google verification code"/>
-		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
+		<parameter name="google_verification" type="string" caption="GOOGLE verification code"/>
+		<parameter name="yandex_verification" type="string" caption="YANDEX verification code"/>
 		<child item="delivery" single="true"/>
+		<child item="payment" single="true"/>
 		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
+		<child item="soc" single="true"/>
+	</item>
+
+	<item name="soc" caption="соц. сети" ag-id="230" ag-hash="114055">
+		<parameter name="code" type="plain-text" caption="Код"/>
 	</item>
 
 	<item name="block" caption="Блок текста (кода)" key="header" ag-id="36" ag-hash="93832333">
 		<parameter name="header" type="string" caption="Заголовок"/>
-		<parameter name="text" type="short-text" caption="Текст (код)"/>
+		<parameter name="text" type="short-text" caption="Текст"/>
+		<parameter name="code" type="plain-text" caption="Код"/>
 	</item>
 
 	<item name="block_array" caption="Массив блоков" virtual="true" ag-id="37" ag-hash="1210858535">
@@ -494,6 +501,10 @@
 	</item>
 
 	<item name="delivery" caption="Доставка" ag-id="38" ag-hash="823466996">
+		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
+	</item>
+
+	<item name="payment" caption="Оплата" ag-id="61" ag-hash="-786681338">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
@@ -584,8 +595,10 @@
 
 	<item name="one_click_form" caption="Форма заказа в один клик" virtual="true" ag-id="52" ag-hash="-2028535660">
 		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="name" type="string" caption="Имя покупателя"/>
 		<parameter name="product_code" type="string" caption="Артикул товара"/>
 		<parameter name="product_name" type="string" caption="Название товара"/>
+		<parameter name="price" type="string" caption="Цена"/>
 	</item>
 
 	<item name="custom_pages" caption="Информационные разделы" ag-id="53" ag-hash="727106934">
@@ -635,6 +648,7 @@
 		<parameter name="quotient_2" type="decimal" caption="Второй диапазон КОЭФФИЦИЕНТ"/>
 		<parameter name="level_2" type="currency" caption="Второй диапазон ДО"/>
 		<parameter name="quotient_3" type="decimal" caption="Третий диапазон КОЭФФИЦИЕНТ"/>
+		<parameter name="quotient_bukinistic" type="decimal" caption="Букинистическое издание КОЭФФИЦИЕНТ"/>
 	</item>
 
 

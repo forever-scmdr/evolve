@@ -14,6 +14,8 @@
 	<xsl:variable name="products" select="page/product"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 
+	<xsl:variable name="h1" select="if(not($seo/h1 != '')) then concat('Поиск по запросу ', page/variables/q) else $seo/h1"/>
+
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
@@ -22,7 +24,13 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
+		<h1><xsl:value-of select="$h1"/></h1>
+
+		<xsl:if test="$seo[1]/text">
+			<div class="page-content m-t ">
+				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
+			</div>
+		</xsl:if>
 
 		<div class="page-content m-t">
 
@@ -54,6 +62,10 @@
 				</xsl:if>
 			</div>
 
+			<xsl:if test="$seo[1]/bottom_text">
+				<div style="margin-top:20px;"></div>
+				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
+			</xsl:if>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>

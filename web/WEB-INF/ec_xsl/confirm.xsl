@@ -18,10 +18,10 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Спасибо за заявку!</h1>
+		<h1>Спасибо за заказ!</h1>
 
 
-		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
+		<h3>Заказ №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="item-summ" style="padding-bottom: 20px;">
 			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
 			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
