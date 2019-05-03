@@ -75,7 +75,7 @@
 							</label>
 						</div>
 						-->
-						<input type="submit" class="button" value="Отправить заявку"/>
+						<input type="submit" onclick="{$GA_CONFIRM_PHYS}" class="button" value="Отправить заявку"/>
 					</form>
 				</div>
 
@@ -154,7 +154,7 @@
 							</label>
 						</div>
 						-->
-						<input type="submit" class="button" value="Отправить заявку"/>
+						<input type="submit" onclick="{$GA_CONFIRM_JUR}" class="button" value="Отправить заявку"/>
 					</form>
 				</div>
 			</div>

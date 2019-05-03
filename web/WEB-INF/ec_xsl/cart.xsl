@@ -26,13 +26,13 @@
 							<div class="item">
 								<xsl:if test="not($p/product)">
 									<a href="{$p/show_product}" class="image-container">
-										<img src="http://aquacom.must.by/{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
+										<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
 									</a>
 									<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
 								</xsl:if>
 								<xsl:if test="$p/product">
 									<a href="{$p/product/show_product}" class="image-container">
-										<img src="http://aquacom.must.by/{$p/product/@path}{$p/product/main_pic}" alt="{$p/name}"/>
+										<img src="{$p/product/@path}{$p/product/main_pic}" alt="{$p/name}"/>
 									</a>
 									<a href="{$p/product/show_product}" class="title">
 										<xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)
@@ -49,7 +49,7 @@
 									<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
 								</div>
 								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
-								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
+								<a href="{delete}" onclick="{$GA_DELETE}" class="delete"><i class="fas fa-times"/></a>
 							</div>
 						</xsl:for-each>
 						<div class="total">
@@ -57,7 +57,7 @@
 								<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
 							</xsl:if>
 							<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
-							<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
+							<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}'); {$GA_PROCEED}"/>
 						</div>
 
 					</form>

@@ -206,7 +206,8 @@
 					   </xsl:for-each>
 					   <div class="buttons">
 							<input class="button" type="submit" value="Показать найденное"/>
-							<input class="button" type="submit" value="Сбросить" onclick="location.href = '{page/reset_filter_link}'; return false;"/>
+							<a class="button submit" href="{page/reset_filter_link}" onclick="{$GA_RESET_FILTER}">Сбросить</a>
+							<!-- <input class="button" type="submit" value="Сбросить" onclick="location.href = '{page/reset_filter_link}'; return false;"/> -->
 					   </div>
 				</div>
 			</form>
@@ -249,8 +250,8 @@
 						<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
 						<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
 						<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
-						<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
-						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
+						<!-- <option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
+						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option> -->
 					</select>
 				</span>
 				<div class="quantity">

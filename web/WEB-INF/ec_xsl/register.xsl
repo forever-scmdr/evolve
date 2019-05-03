@@ -42,7 +42,7 @@
 
 				<div role="tabpanel" class="tab-pane{' active'[$is_login]}" id="tab_login">
 					<p>Введите адрес электрнной почты и пароль.</p>
-					<form action="{page/submit_login}" method="post" onsubmit="lock('tab_login')">
+					<form action="{page/submit_login}" method="post" onsubmit="lock('tab_login'); {$GA_LOGIN}">
 						<div class="form-group">
 							<label>Электронная почта:</label>
 							<input type="text" class="form-control" name="email"/>
@@ -57,7 +57,7 @@
 
 				<div role="tabpanel" class="tab-pane{' active'[not($is_jur) and not($is_login)]}" id="tab_phys">
 					<p>Заполните, пожалуйста, форму регистрации. Ваш email будет использован в качестве логина. Если не указан email, будет использован номер телефона.</p>
-					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
+					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys'); {$GA_REGISTER_PHYS}">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
 						<xsl:call-template name="USER_PHYS_INPUTS">
 							<xsl:with-param name="inp" select="$inp"/>
@@ -72,7 +72,7 @@
 
 				<div role="tabpanel" class="tab-pane{' active'[$is_jur]}" id="tab_jur">
 					<p>Заполните, пожалуйста, форму регистрации. Ваш email будет использован в качестве логина. Если не указан email, будет использован номер телефона.</p>
-					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
+					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur');  {$GA_REGISTER_JUR}">
 						<xsl:variable name="inp" select="page/user_jur/input"/>
 						<xsl:call-template name="USER_JUR_INPUTS">
 							<xsl:with-param name="inp" select="$inp"/>

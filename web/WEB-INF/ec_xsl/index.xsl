@@ -168,9 +168,9 @@
 	<xsl:template name="BANNERS">
 		<section class="hero pb">
 			<div class="container">
-				<div class="fotorama" data-width="100%" data-height="284px" data-fit="cover">
+				<div class="fotorama" data-autoplay="true" data-width="100%" data-height="284px" data-fit="cover" data-stopautoplayontouch="false">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+						<div class="slider-item" style="background-image: url({@path}{pic});">
 							<div class="slider-item__block fotorama__select">
 								<div class="slider-item__wrapper">
 									<div class="slider-item__title"><xsl:value-of select="name" /></div>

@@ -3,6 +3,7 @@
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
+	<xsl:import href="ga_const.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
@@ -64,7 +65,7 @@
 	<xsl:template name="MAIN_MENU">
 		<section class="top-menu">
 			<div class="container">
-				<xsl:apply-templates select="page/custom_pages/page_link | page/custom_pages/custom_page" mode="menu"/>
+				<xsl:apply-templates select="page/custom_pages/page_link[in_main_menu = 'да'] | page/custom_pages/custom_page[in_main_menu = 'да']" mode="menu"/>
 				<a href="{page/contacts_link}" class="top-menu__item{' active'['contacts' = $active_menu_item]}">
 					Контакты
 				</a>
@@ -451,7 +452,7 @@
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button" value="Заказать"/>
+								<input type="submit" class="button" value="Заказать" onclick="{$GA_TO_CART}"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
@@ -473,7 +474,7 @@
 			<div class="device__actions">
 				<xsl:if test="not($is_compare)">
 					<div id="compare_list_{@id}">
-						<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
+						<a href="{to_compare}" onclick="{$GA_TO_COMPARE}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
 							<i class="fas fa-balance-scale"></i>сравнить
 						</a>
 					</div>
@@ -487,7 +488,7 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<div id="fav_list_{@id}">
-							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
+							<a href="{to_fav}" onclick="{$GA_TO_CHOSEN}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
 								<i class="fas fa-star"></i>отложить
 							</a>
 						</div>
@@ -526,7 +527,7 @@
 			<div class="device__actions device_row__actions">
 				<xsl:if test="not($is_compare)">
 					<div id="compare_list_{@id}">
-						<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
+						<a href="{to_compare}" onclick="{$GA_TO_COMPARE}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
 							<i class="fas fa-balance-scale"></i>сравнить
 						</a>
 					</div>
@@ -540,7 +541,7 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<div id="fav_list_{@id}">
-							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
+							<a href="{to_fav}" onclick="{$GA_TO_CHOSEN}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
 								<i class="fas fa-star"></i>отложить
 							</a>
 						</div>
@@ -564,7 +565,7 @@
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button" value="Заказать"/>
+								<input type="submit" class="button" onclick="{$GA_TO_CART}" value="Заказать"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
@@ -670,6 +671,8 @@
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+				<xsl:call-template name="DYNAMIC_GOOGLE_ANALYTICS" />
+
 				<xsl:for-each select="$head-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
@@ -696,6 +699,10 @@
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 			</head>
+			<xsl:text disable-output-escaping="yes">&lt;!--[if lt IE 10]&gt;</xsl:text>
+<style>.outdated {
+display: block !important; }</style>
+<xsl:text disable-output-escaping="yes">&lt;![endif]--&gt;</xsl:text>
 			<body>
 				<xsl:if test="$seo/body_class">
 					<xsl:attribute name="class" select="$seo/body_class"/>
@@ -705,6 +712,12 @@
 				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
 				<!-- ALL CONTENT BEGIN -->
+				<div class="outdated" style="display: none;">
+					<h1>Внимание! Ваш браузер устарел</h1>
+					<p>Чтобы воспользоваться сайтом, перейдите по ссылке и скачайте современный браузер.</p>
+					<br/><br/>
+					<p><a href="http://outdatedbrowser.com/ru" target="_blank"><strong>Скачать современный браузер</strong></a></p>
+				</div>
 				<div class="content-container">
 					<xsl:call-template name="INC_DESKTOP_HEADER"/>
 
@@ -887,6 +900,30 @@
 			<meta name="google-site-verification" content="{$common/yandex_verification}"/>
 		</xsl:if>
 		<xsl:call-template name="MARKUP" />
+	</xsl:template>
+
+
+	<xsl:template name="DYNAMIC_GOOGLE_ANALYTICS">
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-139036768-1', 'auto');
+			ga('require', 'displayfeatures');
+			ga('send', 'pageview');
+			ga('require', 'ecommerce');
+			<xsl:if test="page/@name = 'product'">ga('set','dimension1','<xsl:value-of select="page/product/code"/>');
+			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="page/@name = 'index'">ga('set','dimension2','home');</xsl:when>
+				<xsl:when test="page/@name = 'search'">ga('set','dimension2','searchresults');</xsl:when>
+				<xsl:when test="page/@name = 'product'">ga('set','dimension2','offerintent');</xsl:when>
+				<xsl:when test="page/@name = 'proceed'">ga('set','dimension2','conversionintent');</xsl:when>
+				<xsl:when test="page/@ame = 'confirm'">ga('set','dimension2','conversion');</xsl:when>
+			</xsl:choose>
+		</script>
 	</xsl:template>
 
 
