@@ -1,10 +1,5 @@
 package ecommander.persistence.commandunits;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.*;
 import ecommander.persistence.common.PersistenceCommandUnit;
@@ -13,6 +8,10 @@ import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.mappers.DBConstants;
 
 import javax.naming.NamingException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Абстрактный класс для команд базы данных

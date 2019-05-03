@@ -4,8 +4,8 @@ import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
 import ecommander.fwk.MysqlConnector;
 import ecommander.model.*;
-import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.common.TemplateQuery;
+import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.itemquery.ItemQuery;
 
 import javax.naming.NamingException;
@@ -27,7 +27,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 		FORCE_UPDATE // принудительное изменение (даже если параметры не менялись)
 	}
 
-	private static final String PARAM_INSERT_PREPARED_START 
+	private static final String PARAM_INSERT_PREPARED_START
 		= " ("
 		+ ItemIndexes.II_ITEM_ID + ", "
 		+ ItemIndexes.II_PARAM + ", "

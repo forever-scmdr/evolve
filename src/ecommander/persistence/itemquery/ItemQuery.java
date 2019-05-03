@@ -703,7 +703,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			if (isTransitive) {
 				query.getSubquery(Const.WHERE).AND().col_IN(P_DOT + IP_PARENT_DIRECT).byteIN((byte) 1, (byte) 0);
 			} else {
-				query.getSubquery(Const.WHERE).AND().col(P_DOT + IP_PARENT_DIRECT).byte_((byte)1);
+				query.getSubquery(Const.WHERE).AND().col(P_DOT + IP_PARENT_DIRECT).byte_((byte) 1);
 			}
 			// Добавить DISTINCT если загрузка сразу по нескольким ассоциациям
 			// DISTINCT добавляется только если результат не ожидается очень большим (для оптимизации)

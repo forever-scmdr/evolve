@@ -11,7 +11,6 @@ import ecommander.model.Item;
 import ecommander.pages.var.RequestVariablePE;
 import ecommander.pages.var.VariablePE;
 import ecommander.persistence.itemquery.ItemQuery;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -134,6 +133,8 @@ public class PageModelRegistry {
 		// Проверка, разрешен ли пользователю доступ к этой странице
 		if (context != null && !pageModel.isUserAuthorized(context.getUser()))
 			throw new UserNotAllowedException("Requested page is not allowed for current user");
+		if (context != null)
+			context.resetIdGenerator();
 		return pageModel.createExecutableClone(context, link, linkUrl, urlBase);
 	}
 

@@ -2,7 +2,10 @@ package ecommander.model;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 
 
 /**

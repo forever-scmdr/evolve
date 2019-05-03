@@ -3,11 +3,11 @@ package ecommander.pages.output;
 import ecommander.fwk.FilterProcessException;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.model.User;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElement;
 import ecommander.pages.var.FilterStaticVariable;
 import ecommander.pages.var.Variable;
-import ecommander.model.User;
 
 /**
  * Создает XML для страницы

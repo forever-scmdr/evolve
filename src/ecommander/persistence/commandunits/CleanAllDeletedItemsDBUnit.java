@@ -8,6 +8,7 @@ import ecommander.persistence.mappers.LuceneIndexMapper;
  * Также возмжно инофрмирование о количестве удаленных айтемов с помощью специального интерфейса
  * @author EEEE
  */
+@Deprecated
 public class CleanAllDeletedItemsDBUnit extends DBPersistenceCommandUnit {
 
 	public interface DeleteInformer {

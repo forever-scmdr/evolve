@@ -2,12 +2,12 @@ package ecommander.controllers;
 
 import ecommander.fwk.*;
 import ecommander.pages.LinkPE;
-import ecommander.pages.var.VariablePE;
 import org.apache.catalina.connector.ClientAbortException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.RequestDispatcher;
@@ -118,6 +118,7 @@ public abstract class BasicServlet extends HttpServlet {
 	 * @throws EcommanderException 
 	 */
 	protected void sendFile(HttpServletResponse response, String fileUrl, boolean isProtected) throws IOException {
+		/*
 		File requestedFile = new File(AppContext.getFilePathByUrlPath(fileUrl, isProtected));
 		if (requestedFile.exists() && requestedFile.isFile()) {
 			FileInputStream fis = new FileInputStream(requestedFile);
@@ -128,6 +129,17 @@ public abstract class BasicServlet extends HttpServlet {
 			}
 			response.getOutputStream().flush();
 			fis.close();
+		} else {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		}*/
+		File requestedFile = new File(AppContext.getFilePathByUrlPath(fileUrl, isProtected));
+		if (requestedFile.exists() && requestedFile.isFile()) {
+			String contentType = getServletContext().getMimeType(requestedFile.getName());
+			if (StringUtils.isBlank(contentType))
+				contentType = "application/octet-stream";
+			response.setContentType(contentType);
+			response.setHeader("Content-Disposition", "filename=\"" + requestedFile.getName() + "\"");
+			FileUtils.copyFile(requestedFile, response.getOutputStream());
 		} else {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}

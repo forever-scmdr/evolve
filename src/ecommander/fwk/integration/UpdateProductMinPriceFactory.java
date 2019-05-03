@@ -8,7 +8,6 @@ import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * Обновляет минимальную цену товара из каталога, если в нем был изменен строковый товар
