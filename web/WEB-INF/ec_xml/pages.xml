@@ -1456,4 +1456,12 @@
 		</command>
 	</page>
 
+	<page name="create_search_feed" template="integration/create_excel">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="ecommander.fwk.integration.CreateGoogleSearchFeedCSV" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 </site>
