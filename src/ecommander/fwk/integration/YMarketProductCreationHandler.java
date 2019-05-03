@@ -179,10 +179,12 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				//	product.setValueUI(PRICE_PARAM, "0");
 
 				boolean isBookinistic = (BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE))) && quotient_buk.compareTo(BigDecimal.ZERO) != 0;
+				if(BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE))){
+					product.setValue("tag", BOOKINISTIC);
+				}
 
 				if(isBookinistic){
 					product.setValue(PRICE_PARAM, price.multiply(quotient_buk).setScale(1, RoundingMode.CEILING));
-					product.setValue("tag", BOOKINISTIC);
 				}else if(secCode.equalsIgnoreCase("16546")){
 					product.setValue(PRICE_PARAM, price.multiply(quotient_buk).setScale(1, RoundingMode.CEILING));
 				}
