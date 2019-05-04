@@ -6,6 +6,7 @@
 	<xsl:variable name="title" select="$p/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
+	<xsl:variable name="quote">"</xsl:variable>
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -92,6 +93,26 @@
 							</div>
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
+							<script type="text/javascript">
+								function sbmt<xsl:value-of select="$p/@id" />(){
+								var push = {
+								"ecommerce": {
+								"add": {
+								"products": [
+								{
+								"id": <xsl:value-of select="concat($quote,$p/code,$quote)"/>,
+								"name": <xsl:value-of select="concat($quote,replace($p/name(), $quote, ''), $quote)"/>,
+								"price": <xsl:value-of select="f:currency_decimal($p/price)"/>,
+								"category": <xsl:value-of select="concat($quote,$p/path,$quote)" />,
+								"quantity": $('#qty<xsl:value-of select="$p/@id"/>').val()
+								}
+								]
+								}
+								}
+								}
+								window.dataLayer.push(push);
+								}
+							</script>
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
@@ -115,10 +136,6 @@
 								</a>
 							</div>
 						</div>
-						<!-- <xsl:choose>
-							<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
-							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
-						</xsl:choose> -->
 					</div>
 				</xsl:if>
 
@@ -126,48 +143,6 @@
 					<xsl:variable name="param_names" select="distinct-values($p/line_product/params/param/@name)"/>
 					<xsl:variable name="param_captions" select="distinct-values($p/line_product/params/param/@caption)"/>
 					<xsl:variable name="col_qty" select="count($param_names) + 4"/>
-					<!-- <div class="multi-device" style="grid-template-columns: repeat({$col_qty}, auto);">
-						<div style="padding-left: 0;">Название</div>
-						<div>Артикул</div>
-						<xsl:for-each select="$param_captions">
-							<div><xsl:value-of select="." /></div>
-						</xsl:for-each>
-						<div>Цена</div>
-						<div></div>
-
-						<xsl:for-each select="$p/line_product">
-							<xsl:variable name="lp" select="."/>
-							<xsl:variable name="has_price" select="price and price != '0'"/>
-							<div class="multi-device__name"><xsl:value-of select="name" /></div>
-							<div class="multi-device__name"><xsl:value-of select="vendor_code" /></div>
-							<xsl:for-each select="$param_names">
-								<div><xsl:value-of select="$lp/params/param[@name = current()]" /></div>
-							</xsl:for-each>
-							<div class="multi-device__price">
-								<xsl:if test="$has_price">
-									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="price_old"/> руб.</div></xsl:if>
-									<div class="multi-device__price_new"><xsl:value-of select="if (price) then price else '0'"/></div>
-								</xsl:if>
-								<xsl:if test="not($has_price)">
-									<div class="multi-device__price_new">по запросу</div>
-								</xsl:if>
-							</div>
-							<div class="multi-device__actions" id="cart_list_{@id}">
-								<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-									<xsl:if test="$has_price">
-										<input type="number" class="text-input" name="qty" value="1" min="0" />
-										<input type="submit" class="button" value="Заказать" />
-									</xsl:if>
-									<xsl:if test="not($has_price)">
-										<input type="number" class="text-input" name="qty" value="1" min="0" />
-										<input type="submit" class="button" value="Запросить цену" />
-									</xsl:if>
-								</form>
-							</div>
-						</xsl:for-each>
-
-					</div> -->
-
 					<table class="multiproduct">
 						<tr> 
 							<th>Название</th>
@@ -200,6 +175,27 @@
 								</td>
 								<td>
 									<div class="multi-device__actions" id="cart_list_{@id}">
+										<script type="text/javascript">
+											function sbmt<xsl:value-of select="@id" />(){
+											var push = {
+											"ecommerce": {
+											"add": {
+											"products": [
+											{
+											"id": <xsl:value-of select="concat($quote,code,$quote)"/>,
+											"name": <xsl:value-of select="concat($quote,replace(name(), $quote, ''), $quote)"/>,
+											"price": <xsl:value-of select="f:currency_decimal(price)"/>,
+											"category": <xsl:value-of select="concat($quote,path,$quote)" />,
+											"quantity": $('#qty<xsl:value-of select="@id"/>').val()
+											}
+											]
+											}
+											}
+											}
+											window.dataLayer.push(push);
+											console.log(window.dataLayer);
+											}
+										</script>
 										<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 											<xsl:if test="$has_price">
 												<input type="number" class="text-input" name="qty" value="1" min="0" />
@@ -341,6 +337,28 @@
 		<script type="text/javascript" src="fotorama/fotorama.js"/>
 	</xsl:template>
 
+	<xsl:template name="E_COMMERCE_PUSH">
+		<xsl:variable name="cats" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/replace(name, $quote,''),'/')" />
+		<script>
+
+			window.dataLayer.push({
+				"ecommerce": {
+				"currencyCode": "BYN",
+				"detail" : {
+				<!--"actionField" : <actionField>,-->
+					"products" : [
+						{
+						"id": <xsl:value-of select="concat($quote,$p/code,$quote)"/>,
+						"name" : <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)"/>,
+						"price": <xsl:value-of select="f:currency_decimal($p/price)"/>,
+						"category": <xsl:value-of select="concat($quote, $cats, $quote)"/>
+						}
+					]
+				}
+			}
+			});
+		</script>
+	</xsl:template>
 
 
 </xsl:stylesheet>

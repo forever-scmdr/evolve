@@ -5,6 +5,7 @@
 
 	<xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="quote">"</xsl:variable>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section/section"/>
@@ -19,7 +20,7 @@
 	</xsl:template>
 
 	<xsl:template name="MARKUP">
-		<xsl:variable name="quote">"</xsl:variable>
+
 		<xsl:variable name="min" select="f:currency_decimal(//min/price)"/>
 		<xsl:variable name="max" select="f:currency_decimal(//max/price)"/>
 		<script type="application/ld+json">
@@ -285,6 +286,34 @@
 			<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
 			<a href="{show_products}" class="device__title"><xsl:value-of select="name"/></a>
 		</div>
+	</xsl:template>
+
+	<xsl:template name="E_COMMERCE_PUSH">
+		<xsl:variable name="cats" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/replace(name, $quote,''),'/')" />
+		<xsl:if test="$products">
+			<script>
+
+				window.dataLayer.push({
+				"ecommerce": {
+				"currencyCode": "BYN",
+				"detail" : {
+				<!--"actionField" : <actionField>,-->
+				"products" : [
+					<xsl:for-each select="$sel_sec/product">
+						<xsl:if test="position() != 1">,</xsl:if>
+						{
+						"id": <xsl:value-of select="concat($quote,code,$quote)"/>,
+						"name" : <xsl:value-of select="concat($quote, replace(name, $quote, ''), $quote)"/>,
+						"price": <xsl:value-of select="f:currency_decimal(price)"/>,
+						"category": <xsl:value-of select="concat($quote, $cats, $quote)"/>
+						}
+					</xsl:for-each>
+				]
+				}
+				}
+				});
+			</script>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>

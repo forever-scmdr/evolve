@@ -7,6 +7,7 @@
 	<xsl:import href="utils/price_conversions.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
+	<xsl:variable name="quote">"</xsl:variable>
 
 
 	<xsl:variable name="common" select="page/common"/>
@@ -423,6 +424,7 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+		<xsl:variable name="path" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/replace(name, $quote,''),'/')" />
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
@@ -449,9 +451,32 @@
 			<div class="device__order">
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
-						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
+						<script type="text/javascript">
+							function sbmt<xsl:value-of select="@id" />(){
+							var push = {
+							"ecommerce": {
+							"add": {
+							"products": [
+							{
+							"id": <xsl:value-of select="concat($quote,code,$quote)"/>,
+							"name": <xsl:value-of select="concat($quote,replace(name(), $quote, ''), $quote)"/>,
+							"price": <xsl:value-of select="f:currency_decimal(price)"/>,
+							"category": <xsl:value-of select="concat($quote,path,$quote)" />,
+							"quantity": $('#qty<xsl:value-of select="@id"/>').val()
+							}
+							]
+							}
+							}
+							}
+							window.dataLayer.push(push);
+							console.log(window.dataLayer);
+							}
+						</script>
+						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}" onsubmit="sbmt{@id}();">
+							<input type="hidden" name="path" value="{$path}"/>
 							<xsl:if test="$has_price">
-								<input type="number" class="text-input" name="qty" value="1" min="0"/>
+
+								<input type="number" id="qty{@id}" class="text-input" name="qty" value="1" min="0"/>
 								<input type="submit" class="button" value="Заказать" onclick="{$GA_TO_CART}"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
@@ -459,6 +484,7 @@
 								<input type="submit" class="button not_available" value="Запросить цену"/>
 							</xsl:if>
 						</form>
+
 					</div>
 				</xsl:if>
 				<xsl:if test="$has_lines">
@@ -507,6 +533,7 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+		<xsl:variable name="path" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/replace(name, $quote,''),'/')" />
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
@@ -562,7 +589,29 @@
 			<div class="device__order device_row__order">
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
-						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
+						<script type="text/javascript">
+							function sbmt<xsl:value-of select="@id" />(){
+							var push = {
+							"ecommerce": {
+							"add": {
+							"products": [
+							{
+							"id": <xsl:value-of select="concat($quote,code,$quote)"/>,
+							"name": <xsl:value-of select="concat($quote,replace(name(), $quote, ''), $quote)"/>,
+							"price": <xsl:value-of select="f:currency_decimal(price)"/>,
+							"category": <xsl:value-of select="concat($quote,path,$quote)" />,
+							"quantity": $('#qty<xsl:value-of select="@id"/>').val()
+							}
+							]
+							}
+							}
+							}
+							window.dataLayer.push(push);
+							console.log(window.dataLayer);
+							}
+						</script>
+						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}" onsubmit="sbmt{@id}();">
+							<input type="hidden" name="path" value="{$path}"/>
 							<xsl:if test="$has_price">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
 								<input type="submit" class="button" onclick="{$GA_TO_CART}" value="Заказать"/>
@@ -711,6 +760,9 @@ display: block !important; }</style>
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
+
+				<xsl:call-template name="E_COMMERCE_PUSH"/>
+
 				<!-- ALL CONTENT BEGIN -->
 				<div class="outdated" style="display: none;">
 					<h1>Внимание! Ваш браузер устарел</h1>
@@ -882,7 +934,6 @@ display: block !important; }</style>
 
 
 	<xsl:template name="SEO">
-		<xsl:variable name="quote">"</xsl:variable>
 		<link rel="canonical" href="{concat($main_host, $canonical)}" />
 		<xsl:if test="$seo">
 			<xsl:apply-templates select="$seo"/>
@@ -928,7 +979,7 @@ display: block !important; }</style>
 
 
 	<xsl:template name="MARKUP"/>
-
+	<xsl:template name="E_COMMERCE_PUSH"/>
 
 	<xsl:template match="seo | url_seo">
 		<title>

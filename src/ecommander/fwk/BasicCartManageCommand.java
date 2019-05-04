@@ -63,11 +63,12 @@ public abstract class BasicCartManageCommand extends Command {
 	 */
 	public ResultPE addToCart() throws Exception {
 		String code = getVarSingleValue(CODE_PARAM);
+		String path = getVarSingleValue("path");
 		double quantity = 0;
 		try {
 			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
 		} catch (Exception e) {/**/}
-		addProduct(code, quantity);
+		addProduct(code, quantity, path);
 		recalculateCart();
 		return getResult("ajax");
 	}
@@ -286,7 +287,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 
-	private void addProduct(String code, double qty) throws Exception {
+	private void addProduct(String code, double qty, String path) throws Exception {
 		ensureCart();
 		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
 		Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
@@ -301,6 +302,7 @@ public abstract class BasicCartManageCommand extends Command {
 			bought.setValue(QTY_PARAM, qty);
 			bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
 			bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
+			bought.setValue("path", path);
 			// Сохраняется bought
 			getSessionMapper().saveTemporaryItem(bought);
 			// Сохраняется девайс
@@ -403,7 +405,7 @@ public abstract class BasicCartManageCommand extends Command {
 		for (String codeQty : codeQtys) {
 			String[] pair = StringUtils.split(codeQty, ':');
 			double qty = DoubleDataType.parse(pair[1]);
-			addProduct(pair[0], qty);
+			addProduct(pair[0], qty, "");
 		}
 		recalculateCart();
 		return null;
