@@ -71,4 +71,28 @@
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 
+	<xsl:template name="E_COMMERCE_PUSH">
+		<xsl:if test="page/cart/deleted">
+			<script>
+				window.dataLayer.push({
+				"ecommerce": {
+				"currencyCode": "BYN",
+				"remove": {
+				"products": [
+				{
+				"id": <xsl:value-of select="concat($quote, page/cart/deleted/code, $quote)"/>,
+				"name": <xsl:value-of select="concat($quote, page/cart/deleted/product/replace(name, $quote,''), $quote)"/>,
+				"category":  <xsl:value-of select="concat($quote, page/cart/deleted/path, $quote)"/>,
+				"quantity": <xsl:value-of select="concat($quote, page/cart/deleted/qty, $quote)"/>
+				}
+				]
+				}
+				}
+				});
+				console.log(dataLayer);
+				insertAjax('cart_action/?action=clearDeleted');
+			</script>
+		</xsl:if>
+	</xsl:template>
+
 </xsl:stylesheet>

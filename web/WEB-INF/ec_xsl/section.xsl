@@ -14,6 +14,7 @@
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
 
 	<xsl:variable name="sub_view" select="if($sel_sec/sub_view != '') then $sel_sec/sub_view else $default_sub_view"/>
+	<xsl:variable name="path" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/replace(name, $quote,''),'/')" />
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -289,7 +290,7 @@
 	</xsl:template>
 
 	<xsl:template name="E_COMMERCE_PUSH">
-		<xsl:variable name="cats" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/replace(name, $quote,''),'/')" />
+
 		<xsl:if test="$products">
 			<script>
 
@@ -305,7 +306,7 @@
 						"id": <xsl:value-of select="concat($quote,code,$quote)"/>,
 						"name" : <xsl:value-of select="concat($quote, replace(name, $quote, ''), $quote)"/>,
 						"price": <xsl:value-of select="f:currency_decimal(price)"/>,
-						"category": <xsl:value-of select="concat($quote, $cats, $quote)"/>
+						"category": <xsl:value-of select="concat($quote, $path, $quote)"/>
 						}
 					</xsl:for-each>
 				]

@@ -303,12 +303,15 @@
 		<child item="product" single="true"/>
 	</item>
 
+	<item name="deleted" virtual="true" super="bought" ag-id="1840" ag-hash="1550463001"/>
+
 	<item name="cart" caption="Корзина" virtual="true" ag-id="17" ag-hash="3046176">
 		<parameter name="order_num" type="string" caption="Номер заказа"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
 		<child item="bought"/>
+		<child item="deleted"/>
 	</item>
 
 	<item name="counter" caption="Счетчик номера договора" ag-id="29" ag-hash="957830652">

@@ -7,6 +7,7 @@
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 	<xsl:variable name="quote">"</xsl:variable>
+	<xsl:variable name="path" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/replace(name, $quote,''),'/')" />
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -103,7 +104,7 @@
 								"id": <xsl:value-of select="concat($quote,$p/code,$quote)"/>,
 								"name": <xsl:value-of select="concat($quote,replace($p/name(), $quote, ''), $quote)"/>,
 								"price": <xsl:value-of select="f:currency_decimal($p/price)"/>,
-								"category": <xsl:value-of select="concat($quote,$p/path,$quote)" />,
+								"category": <xsl:value-of select="concat($quote,$path,$quote)" />,
 								"quantity": $('#qty<xsl:value-of select="$p/@id"/>').val()
 								}
 								]
@@ -113,7 +114,7 @@
 								window.dataLayer.push(push);
 								}
 							</script>
-							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+							<form action="{$p/to_cart}"  onsubmit="sbmt{@id}()" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
 									<input type="submit" onclick="{$GA_TO_CART}" class="button" value="Заказать" />
@@ -185,7 +186,7 @@
 											"id": <xsl:value-of select="concat($quote,code,$quote)"/>,
 											"name": <xsl:value-of select="concat($quote,replace(name(), $quote, ''), $quote)"/>,
 											"price": <xsl:value-of select="f:currency_decimal(price)"/>,
-											"category": <xsl:value-of select="concat($quote,path,$quote)" />,
+											"category": <xsl:value-of select="concat($quote,$path,$quote)" />,
 											"quantity": $('#qty<xsl:value-of select="@id"/>').val()
 											}
 											]
@@ -193,10 +194,9 @@
 											}
 											}
 											window.dataLayer.push(push);
-											console.log(window.dataLayer);
 											}
 										</script>
-										<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
+										<form action="{to_cart}" onsubmit="sbmt{@id}()" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 											<xsl:if test="$has_price">
 												<input type="number" class="text-input" name="qty" value="1" min="0" />
 												<input type="submit" onclick="{$GA_TO_CART}" class="button" value="Заказать" />
@@ -338,7 +338,7 @@
 	</xsl:template>
 
 	<xsl:template name="E_COMMERCE_PUSH">
-		<xsl:variable name="cats" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/replace(name, $quote,''),'/')" />
+
 		<script>
 
 			window.dataLayer.push({
@@ -351,7 +351,7 @@
 						"id": <xsl:value-of select="concat($quote,$p/code,$quote)"/>,
 						"name" : <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)"/>,
 						"price": <xsl:value-of select="f:currency_decimal($p/price)"/>,
-						"category": <xsl:value-of select="concat($quote, $cats, $quote)"/>
+						"category": <xsl:value-of select="concat($quote, $path, $quote)"/>
 						}
 					]
 				}

@@ -62,6 +62,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @throws Exception
 	 */
 	public ResultPE addToCart() throws Exception {
+		getSessionMapper().removeItems("deleted");
 		String code = getVarSingleValue(CODE_PARAM);
 		String path = getVarSingleValue("path");
 		double quantity = 0;
@@ -77,8 +78,17 @@ public abstract class BasicCartManageCommand extends Command {
 	public ResultPE delete() throws Exception {
 		// В этом случае ID не самого продукта, а объекта bought
 		long boughtId = Long.parseLong(getVarSingleValue(BOUGHT_ITEM));
+		getSessionMapper().removeItems("deleted");
+		Item deleted = getSessionMapper().createSessionItem("deleted", getSessionMapper().getSingleRootItemByName(CART_ITEM).getId());
+		Item.updateParamValues(getSessionMapper().getItemSingle(boughtId), deleted);
+		getSessionMapper().saveTemporaryItem(deleted);
+		getSessionMapper().getItemsByName(PRODUCT_ITEM, boughtId);
+		Item product = getSessionMapper().getItemsByName(PRODUCT_ITEM, boughtId).get(0);
+		product.setContextPrimaryParentId(deleted.getId());
+		getSessionMapper().saveTemporaryItem(product);
 		getSessionMapper().removeItems(boughtId, BOUGHT_ITEM);
 		recalculateCart();
+
 		return getResult("cart");
 	}
 
@@ -91,6 +101,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	public ResultPE proceed() throws Exception {
+		getSessionMapper().removeItems("deleted");
 		updateQtys();
 		recalculateCart();
 		return getResult("proceed");
@@ -98,6 +109,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	public ResultPE customerForm() throws Exception {
+		getSessionMapper().removeItems("deleted");
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
 		Item form = getItemForm().getTransientSingleItem();
 		getSessionMapper().saveTemporaryItem(form, "user");
@@ -257,6 +269,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	private void updateQtys() throws Exception {
+		getSessionMapper().removeItems("deleted");
 		MultipleHttpPostForm form = getItemForm();
 		// Обновление параметров
 		loadCart();
@@ -454,6 +467,11 @@ public abstract class BasicCartManageCommand extends Command {
 		getSessionMapper().saveTemporaryItem(cart);
 		saveCookie();
 		return result && regularQuantity > 0;
+	}
+
+	public ResultPE clearDeleted() throws EcommanderException {
+		getSessionMapper().removeItems("deleted");
+		return getResult("ajax");
 	}
 
 	@Override

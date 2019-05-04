@@ -642,6 +642,7 @@
 						</link>
 					</list>
 				</list>
+
 			</single>
 		</session>
 		<single item="url_seo_wrap"/>
@@ -700,7 +701,6 @@
 						<var name="action" value="delete"/>
 						<var name="bought" ref="bought"/>
 					</link>
-					<parameter-input ref="bought" name="qty"/>
 				</list>
 			</single>
 		</session>

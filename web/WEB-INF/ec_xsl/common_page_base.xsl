@@ -32,6 +32,8 @@
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
+	<xsl:variable name="path" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/replace(name, $quote,''),'/')" />
+
 
 
 
@@ -424,7 +426,6 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
-		<xsl:variable name="path" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/replace(name, $quote,''),'/')" />
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
@@ -461,7 +462,7 @@
 							"id": <xsl:value-of select="concat($quote,code,$quote)"/>,
 							"name": <xsl:value-of select="concat($quote,replace(name(), $quote, ''), $quote)"/>,
 							"price": <xsl:value-of select="f:currency_decimal(price)"/>,
-							"category": <xsl:value-of select="concat($quote,path,$quote)" />,
+							"category": <xsl:value-of select="concat($quote,$path,$quote)" />,
 							"quantity": $('#qty<xsl:value-of select="@id"/>').val()
 							}
 							]
@@ -533,7 +534,6 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
-		<xsl:variable name="path" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/replace(name, $quote,''),'/')" />
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
@@ -599,7 +599,7 @@
 							"id": <xsl:value-of select="concat($quote,code,$quote)"/>,
 							"name": <xsl:value-of select="concat($quote,replace(name(), $quote, ''), $quote)"/>,
 							"price": <xsl:value-of select="f:currency_decimal(price)"/>,
-							"category": <xsl:value-of select="concat($quote,path,$quote)" />,
+							"category": <xsl:value-of select="concat($quote,$path,$quote)" />,
 							"quantity": $('#qty<xsl:value-of select="@id"/>').val()
 							}
 							]
@@ -761,8 +761,6 @@ display: block !important; }</style>
 				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
 
-				<xsl:call-template name="E_COMMERCE_PUSH"/>
-
 				<!-- ALL CONTENT BEGIN -->
 				<div class="outdated" style="display: none;">
 					<h1>Внимание! Ваш браузер устарел</h1>
@@ -871,6 +869,7 @@ display: block !important; }</style>
 					});
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
+				<xsl:call-template name="E_COMMERCE_PUSH"/>
 				<xsl:for-each select="$body-end-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
