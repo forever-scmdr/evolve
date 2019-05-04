@@ -441,7 +441,7 @@ public abstract class BasicCartManageCommand extends Command {
 				} else {
 					regularQuantity += quantity;
 				}
-				bought.setValue(PRICE, price);
+				bought.setValue(PRICE_PARAM, price);
 				bought.setValue(SUM_PARAM, productSum);
 				sum = sum.add(productSum);
 				// Сохранить bought

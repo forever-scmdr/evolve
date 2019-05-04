@@ -20,6 +20,11 @@
         <xsl:value-of select="format-number(f:num($str), '#0.00')"/>
     </xsl:function>
 
+    <xsl:function name="f:number_decimal">
+        <xsl:param name="num"/>
+        <xsl:value-of select="format-number($num, '#0.00')"/>
+    </xsl:function>
+
     <xsl:function name="f:rub_kop" as="xs:string">
         <xsl:param name="price" as="xs:string"/>
         <xsl:param name="rub" as="xs:string"/>

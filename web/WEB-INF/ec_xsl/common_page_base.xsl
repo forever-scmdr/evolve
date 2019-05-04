@@ -11,7 +11,8 @@
 	<xsl:variable name="common" select="page/common"/>
 	<xsl:variable name="registration" select="page/registration"/>
 	<xsl:variable name="is_reg_jur" select="$registration/@type = 'user_jur'"/>
-
+	<xsl:variable name="debt" select="if ($registration/debt and not($registration/debt = '') and not(normalize-space($registration/debt) = '0')) then $registration/debt else false() "/>
+	<xsl:variable name="discount" select="if ($is_reg_jur and $registration/discount and not($registration/discount = '')) then f:num($registration/discount) else 0"/>
 
 
 	<!-- ****************************    SEO    ******************************** -->
@@ -393,6 +394,8 @@
 
 	<xsl:template match="accessory | set | probe | product | assoc">
 		<xsl:variable name="has_price" select="if ($is_reg_jur) then (price_opt and price_opt != '0') else (price and price != '0')"/>
+		<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num(price_opt) div 100 * (100 - $discount)) else price"/>
+		<xsl:variable name="price_old" select="if ($is_reg_jur) then price_opt_old else price_old"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device items-catalog__device">
@@ -409,14 +412,8 @@
 			<div class="device__article-number">Артикул: <xsl:value-of select="vendor_code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
-					<xsl:if test="not($is_reg_jur)">
-						<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
-					</xsl:if>
-					<xsl:if test="$is_reg_jur">
-						<xsl:if test="price_opt_old"><div class="price_old"><span><xsl:value-of select="price_opt_old"/> руб.</span></div></xsl:if>
-						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price_opt"/> руб.</div>
-					</xsl:if>
+					<xsl:if test="$price_old"><div class="price_old"><span><xsl:value-of select="$price_old"/> руб.</span></div></xsl:if>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="$price"/> руб.</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -467,6 +464,8 @@
 	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
 		<xsl:variable name="has_price" select="if ($is_reg_jur) then (price_opt and price_opt != '0') else (price and price != '0')"/>
 		<xsl:variable name="prms" select="params/param"/>
+		<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num(price_opt) div 100 * (100 - $discount)) else price"/>
+		<xsl:variable name="price_old" select="if ($is_reg_jur) then price_opt_old else price_old"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
@@ -487,14 +486,8 @@
 			<div class="device__article-number">Артикул: <xsl:value-of select="vendor_code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
-					<xsl:if test="not($is_reg_jur)">
-						<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
-					</xsl:if>
-					<xsl:if test="$is_reg_jur">
-						<xsl:if test="price_opt_old"><div class="price_old"><span><xsl:value-of select="price_opt_old"/> руб.</span></div></xsl:if>
-						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price_opt"/> руб.</div>
-					</xsl:if>
+					<xsl:if test="$price_old"><div class="price_old"><span><xsl:value-of select="$price_old"/> руб.</span></div></xsl:if>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="$price"/> руб.</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">

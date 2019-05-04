@@ -6,6 +6,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
 import ecommander.pages.MultipleHttpPostForm;
+import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.Discounts;
 import extra._generated.ItemNames;
@@ -84,15 +85,15 @@ public class CartManageCommand extends BasicCartManageCommand {
 					User.getDefaultUser(), common.getId(), common.getOwnerGroupId(), common.getOwnerUserId()));
 		}
 		double discount = 0.0d;
-		BigDecimal originalSum = cart.getDecimalValue(SUM_PARAM);
-		if (originalSum.compareTo(discounts.get_sum_more()) >= 0) {
-			discount += discounts.get_sum_discount();
-		}
 		User_jur user = User_jur.get(new ItemQuery(ItemNames.USER_JUR).setUser(getInitiator()).loadFirstItem());
 		if (user != null) {
 			discount += user.getDefault_discount(0.0d);
 		}
 		boolean success = super.recalculateCart(user != null ? ItemNames.product_.PRICE_OPT : PRICE_PARAM);
+		BigDecimal originalSum = cart.getDecimalValue(SUM_PARAM, new BigDecimal(0));
+		if (originalSum.compareTo(discounts.get_sum_more()) >= 0) {
+			discount += discounts.get_sum_discount();
+		}
 		MultipleHttpPostForm userForm = getSessionForm("customer_jur");
 		if (userForm != null) {
 			user = User_jur.get(userForm.getItemSingleTransient());
@@ -113,5 +114,19 @@ public class CartManageCommand extends BasicCartManageCommand {
 		cart.setValue(ItemNames.cart_.SUM_DISCOUNT, discountedSum);
 		getSessionMapper().saveTemporaryItem(cart);
 		return success;
+	}
+
+	public ResultPE update() throws Exception {
+		Item form = getItemForm().getItemSingleTransient();
+		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
+		if (isPhys) {
+			removeSessionForm("customer_jur");
+			saveSessionForm("customer_phys");
+		} else {
+			removeSessionForm("customer_phys");
+			saveSessionForm("customer_jur");
+		}
+		recalculateCart(isPhys ? PRICE_PARAM : ItemNames.product_.PRICE);
+		return getResult("proceed");
 	}
 }

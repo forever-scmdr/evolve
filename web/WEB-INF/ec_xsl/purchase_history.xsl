@@ -16,9 +16,11 @@
 		</div>
 		<h1 class="page-title">Заказы</h1>
 		<div class="page-content m-t">
-			<div class="alert alert-danger" role="alert">
-				Внимание! У вас задолженность 2007 руб. Ваши заказы не будут обработаны до погашения задолженности.
-			</div>
+			<xsl:if test="$debt">
+				<div class="alert alert-danger" role="alert">
+					Внимание! У вас задолженность <xsl:value-of select="$debt" /> руб. <xsl:value-of select="page/common/debt_text" disable-output-escaping="yes"/>
+				</div>
+			</xsl:if>
 			<div class="orders-list">
 				<xsl:for-each select="page/purchase">
 					<div class="order">

@@ -82,20 +82,16 @@
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
 				</xsl:for-each>
 
-				<xsl:variable name="has_price" select="if ($is_reg_jur) then (price_opt and price_opt != '0') else (price and price != '0')"/>
+				<xsl:variable name="has_price" select="if ($is_reg_jur) then ($p/price_opt and $p/price_opt != '0') else ($p/price and $p/price != '0')"/>
+				<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num($p/price_opt) div 100 * (100 - $discount)) else $p/price"/>
+				<xsl:variable name="price_old" select="if ($is_reg_jur) then $p/price_opt_old else $p/price_old"/>
 
 				<xsl:if test="not($has_lines)">
 					<div class="device-page__actions">
 						<xsl:if test="$has_price">
 							<div class="device__price device__price_device-page">
-								<xsl:if test="not($is_reg_jur)">
-									<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$p/price_old"/> руб.</span></div></xsl:if>
-									<div class="price_normal"><xsl:value-of select="if ($p/price) then $p/price else '0'"/> руб.</div>
-								</xsl:if>
-								<xsl:if test="$is_reg_jur">
-									<xsl:if test="$p/price_opt_old"><div class="price_old"><span><xsl:value-of select="$p/price_opt_old"/> руб.</span></div></xsl:if>
-									<div class="price_normal"><xsl:value-of select="if ($p/price_opt) then $p/price_opt else '0'"/> руб.</div>
-								</xsl:if>
+								<xsl:if test="$price_old"><div class="price_old"><span><xsl:value-of select="$price_old"/> руб.</span></div></xsl:if>
+								<div class="price_normal"><xsl:value-of select="if ($price) then $price else '0'"/> руб.</div>
 							</div>
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">

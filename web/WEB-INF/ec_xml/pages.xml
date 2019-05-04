@@ -727,13 +727,14 @@
 	</page>
 
 
-	<page name="proceed" template="proceed">
+	<page name="proceed"  template="proceed">
 		<request>
 			<var name="message" />
 		</request>
 		<session>
 			<single item="user_phys" id="phys" tag="phys"/>
 			<single item="user_jur" id="jur" tag="jur"/>
+			<single item="cart"/>
 		</session>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="customer_phys"/>
@@ -741,6 +742,9 @@
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="customer_jur"/>
 		</new>
+		<link name="recalculate_link" target="cart_action" type="itemform">
+			<var name="action" value="update"/>
+		</link>
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="customerForm"/>
 		</link>
@@ -780,11 +784,12 @@
 	</page>
 
 
-	<page name="order_email" template="order_email">
+	<page name="order_email"  template="order_email">
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought"/>
 			</single>
+			<single item="user" tag="registration"/>
 			<new item="user_phys" id="user_phys">
 				<parameter-input ref="user_phys" form="customer_phys"/>
 			</new>
@@ -802,7 +807,7 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 		</list>
-		<include name="COMMON"/>
+		<single item="common" cacheable="true"/>
 	</page>
 
 

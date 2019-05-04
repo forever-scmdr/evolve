@@ -20,6 +20,12 @@
 		</div>
 		<h1>Анкета заказчика</h1>
 
+		<xsl:if test="$debt">
+			<div class="alert alert-danger" role="alert">
+				Внимание! У вас задолженность <xsl:value-of select="$debt" /> руб. <xsl:value-of select="page/common/debt_text" disable-output-escaping="yes"/>
+			</div>
+		</xsl:if>
+
 		<div class="page-content m-t">
 			<xsl:if test="$message and not($success)">
 				<div class="alert alert-danger">

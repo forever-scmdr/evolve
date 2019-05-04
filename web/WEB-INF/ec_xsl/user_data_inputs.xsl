@@ -11,6 +11,21 @@
 	</xsl:function>
 
 
+	<xsl:template name="SUBMIT_SCRIPT">
+		<xsl:if test="page/@name = 'proceed'">
+			<script>
+				$(document).ready(function() {
+					$('select').change(function() {
+						var form = $(this).closest('form');
+						form.attr('action', '<xsl:value-of select="page/recalculate_link" />');
+						form.submit();
+					});
+				});
+			</script>
+		</xsl:if>
+	</xsl:template>
+
+
 	<xsl:template name="USER_PHYS_INPUTS">
 		<xsl:param name="inp"/>
 		<xsl:param name="vals" select="$inp"/>
@@ -131,6 +146,7 @@
 			<label>Действует на основании:</label>
 			<input type="text" class="form-control" name="{$inp/base/@input}" value="{f:not_empty($inp/base, $vals/base)}"/>
 		</div>
+		<xsl:call-template name="SUBMIT_SCRIPT"/>
 	</xsl:template>
 
 
