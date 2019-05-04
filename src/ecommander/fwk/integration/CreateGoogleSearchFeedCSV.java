@@ -38,6 +38,8 @@ public class CreateGoogleSearchFeedCSV extends IntegrateBase implements CatalogC
 		Path outputPath = Paths.get(AppContext.getContextPath(), FILE_NAME);
 		host = getUrlBase();
 		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputPath.toString()), "UTF8"))){
+			writer.write("Page URL,Custom label");
+			writer.newLine();
 			Item section;
 			while ((section = sections.poll()) != null){
 				processSection(section, writer, "");
