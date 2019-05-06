@@ -113,6 +113,7 @@
 								}
 							</script>
 							<form action="{$p/to_cart}"  onsubmit="sbmt{@id}()" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+								<input type="hidden" name="path" value="{$path}"/>
 								<xsl:if test="$has_price">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
 									<input type="submit" onclick="{$GA_TO_CART}" class="button" value="Заказать" />
@@ -195,6 +196,7 @@
 											}
 										</script>
 										<form action="{to_cart}" onsubmit="sbmt{@id}()" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
+											<input type="hidden" name="path" value="{$path}"/>
 											<xsl:if test="$has_price">
 												<input type="number" class="text-input" name="qty" value="1" min="0" />
 												<input type="submit" onclick="{$GA_TO_CART}" class="button" value="Заказать" />
