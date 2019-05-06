@@ -6,8 +6,6 @@
 	<xsl:variable name="title" select="$p/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
-	<xsl:variable name="quote">"</xsl:variable>
-	<xsl:variable name="path" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/replace(name, $quote,''),'/')" />
 
 
 	<xsl:template name="LEFT_COLOUMN">

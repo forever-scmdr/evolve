@@ -485,7 +485,6 @@
 								<input type="submit" class="button not_available" value="Запросить цену"/>
 							</xsl:if>
 						</form>
-
 					</div>
 				</xsl:if>
 				<xsl:if test="$has_lines">
@@ -760,7 +759,6 @@ display: block !important; }</style>
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
-
 				<!-- ALL CONTENT BEGIN -->
 				<div class="outdated" style="display: none;">
 					<h1>Внимание! Ваш браузер устарел</h1>

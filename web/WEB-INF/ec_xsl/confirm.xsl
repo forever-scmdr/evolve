@@ -152,4 +152,27 @@
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 
+	<xsl:template name="E_COMMERCE_PUSH">
+		dataLayer.push({
+		"ecommerce": {
+		"purchase": {
+		"actionField": {
+		"id" : <xsl:value-of select="concat($quote, $cart/order_num, $quote)"/>
+		},
+		"products": [
+		<xsl:for-each select="$cart/bought">
+			<xsl:if test="position() != 1">,</xsl:if>
+			{
+			"id": <xsl:value-of select="concat($quote,code,$quote)"/>,
+			"name":  <xsl:value-of select="concat($quote, replace(name, $quote, ''), $quote)"/>,
+			"price": <xsl:value-of select="f:currency_decimal(product/price)"/>,
+			"category": <xsl:value-of select="concat($quote, path, $quote)"/>,
+			}
+		</xsl:for-each>
+		]
+		}
+		}
+		});
+	</xsl:template>
+
 </xsl:stylesheet>
