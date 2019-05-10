@@ -92,6 +92,7 @@
 		<parameter name="key_unique" caption="Ключ страницы" type="string"
 		           description="должен совпадать с уникальным текстовым ключом соответствующего айтема"/>
 		<on-create class="ecommander.fwk.integration.CreateSeoItemFactory"/>
+		<on-update class="ecommander.fwk.integration.UpdateSeoItemHandler"/>
 	</item>
 
 	<item name="url_seo" key="name" caption="SEO" super="* base_seo" ag-id="5" ag-hash="-169844339">

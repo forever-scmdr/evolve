@@ -91,27 +91,29 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		//          если заданный тектовый ключ неуникален и был сгенерирован другой
 		//
 		if (item.getItemType().isKeyUnique()) {
+			boolean isNotUnique;
+			// Запрос на получение значения
+			TemplateQuery keySelect = new TemplateQuery("key select");
+			keySelect.SELECT(I_ID).FROM(UNIQUE_KEY_TBL).INNER_JOIN(ITEM_TBL, UK_ID, I_ID)
+					.WHERE().col(UK_KEY).string(item.getKeyUnique()).AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+			try (PreparedStatement pstmt = keySelect.prepareQuery(conn)) {
+				pstmt.setString(1, item.getKeyUnique());
+				ResultSet rs = pstmt.executeQuery();
+				isNotUnique = rs.next();
+			}
+			if (isNotUnique)
+				item.setKeyUnique(item.getKeyUnique() + item.getId());
+
 			TemplateQuery uniqueKeyInsert = new TemplateQuery("Unique key insert");
 			uniqueKeyInsert
 					.INSERT_INTO(UNIQUE_KEY_TBL).SET()
 					.col(UK_ID).long_(item.getId())
 					._col(UK_KEY).string(item.getKeyUnique());
-			PreparedStatement keyUniqueStmt = uniqueKeyInsert.prepareQuery(conn);
-			boolean needItemUpdate = false;
-			try {
+			try (PreparedStatement keyUniqueStmt = uniqueKeyInsert.prepareQuery(conn)) {
 				keyUniqueStmt.executeUpdate();
-			} catch (Exception e) {
-				// Значит такой ключ уже существует, добавить к ключу ID айтема
-				item.setKeyUnique(item.getKeyUnique() + item.getId());
-				keyUniqueStmt.setString(2, item.getKeyUnique());
-				keyUniqueStmt.executeUpdate();
-				needItemUpdate = true;
-			} finally {
-				if (keyUniqueStmt != null)
-					keyUniqueStmt.close();
 			}
 			// Обновление уникального ключа айтема (если это нужно)
-			if (needItemUpdate) {
+			if (isNotUnique) {
 				TemplateQuery keyUpdate = new TemplateQuery("Item unique key update");
 				keyUpdate.UPDATE(ITEM_TBL)
 						.SET().col(I_T_KEY).string(item.getKeyUnique())

@@ -935,7 +935,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			return new ArrayList<>();
 		TemplateQuery query = new TemplateQuery("load by ids");
 		query.SELECT(ITEM_TBL + ".*", "0 AS PID")
-				.FROM(ITEM_TBL).WHERE().col_IN(I_ID).longIN(ids.toArray(new Long[ids.size()]));
+				.FROM(ITEM_TBL).WHERE().col_IN(I_ID).longIN(ids.toArray(new Long[ids.size()]))
+				.AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 		return loadByQuery(query, "PID", order, null, conn);
 	}
 	/**
