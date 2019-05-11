@@ -6,7 +6,9 @@
 
 	<xsl:variable name="title" select="'Оформление заявки'"/>
 	<xsl:variable name="message" select="page/variables/message"/>
-	<xsl:variable name="is_jur" select="page/user_jur//@validation-error or page/user_jur/organization != '' or page/jur"/>
+	<xsl:variable name="is_phys" select="page/user_phys/input/field[@name != 'registered'] and page/user_phys/input/field[@name != 'registered'] != ''"/>
+	<xsl:variable name="is_jur" select="not($is_phys)"/>
+	<!--<xsl:variable name="is_jur" select="page/user_jur//@validation-error or page/user_jur/input/organization != '' or page/jur or page/user_jur/input/field != ''"/>-->
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -51,7 +53,7 @@
 							<label>Комментарий:</label>
 							<textarea class="form-control" rows="3" name="{$inp/comment/@input}"><xsl:value-of select="$inp/comment"/></textarea>
 						</div>
-						<!-- <input type="submit" class="button" value="Отправить заявку"/> -->
+						<xsl:call-template name="TOTAL"/>
 					</form>
 				</div>
 
@@ -69,26 +71,29 @@
 							<label>Комментарий:</label>
 							<textarea class="form-control" rows="3" name="{$inp/comment/@input}"><xsl:value-of select="$inp/comment"/></textarea>
 						</div>
-						<!-- <input type="submit" class="button" value="Отправить заказ"/> -->
+						<xsl:call-template name="TOTAL"/>
 					</form>
 				</div>
 			</div>
-			<div class="total">
-				<p>Итого: <xsl:value-of select="page/cart/sum_discount"/> р.</p>
-				<!-- <xsl:if test="page/cart/sum != '0'">
-					<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
-				</xsl:if> -->
-				<xsl:if test="f:num(page/cart/sum) &gt; f:num(page/cart/sum_discount)">
-					<div class="discount-total">
-						Итоговая скидка: <xsl:value-of select="round((f:num(page/cart/sum) - f:num(page/cart/sum_discount)) * 100) div 100"/> руб.
-						Сумма без учета скидки: <xsl:value-of select="page/cart/sum"/> руб.
-					</div>
-				</xsl:if>
-				<input type="submit" class="button" value="Отправить заказ" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
-			</div>
+
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
+
+
+	<xsl:template name="TOTAL">
+		<div class="total">
+			<p>Итого: <xsl:value-of select="page/cart/sum_discount"/> р.</p>
+			<xsl:if test="f:num(page/cart/sum) &gt; f:num(page/cart/sum_discount)">
+				<div class="discount-total">
+					Итоговая скидка: <xsl:value-of select="round((f:num(page/cart/sum) - f:num(page/cart/sum_discount)) * 100) div 100"/> руб.
+					Сумма без учета скидки: <xsl:value-of select="page/cart/sum"/> руб.
+				</div>
+			</xsl:if>
+			<input type="submit" class="button" value="Отправить заказ" onclick="$(this).closest('form').attr('action', '{page/confirm_link}')"/>
+		</div>
+	</xsl:template>
+
 
 </xsl:stylesheet>

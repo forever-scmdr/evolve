@@ -6,12 +6,15 @@ import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -99,6 +102,9 @@ public abstract class BasicCartManageCommand extends Command {
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
 		Item form = getItemForm().getItemSingleTransient();
+		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
+		recalculateCart(isPhys ? PRICE_PARAM : ItemNames.product_.PRICE);
+
 		getSessionMapper().saveTemporaryItem(form, "user");
 
 		if (!validate()) {
@@ -142,33 +148,40 @@ public abstract class BasicCartManageCommand extends Command {
 		final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
 
-		// Письмо для покупателя
-		Multipart customerMultipart = new MimeMultipart();
-		MimeBodyPart customerTextPart = new MimeBodyPart();
-		customerMultipart.addBodyPart(customerTextPart);
-		LinkPE customerEmailLink = LinkPE.newDirectLink("link", "customer_email", false);
-		customerEmailLink.addStaticVariable("order_num", orderNumber + "");
-		ExecutablePagePE customerTemplate = getExecutablePage(customerEmailLink.serialize());
-		ByteArrayOutputStream customerEmailBytes = new ByteArrayOutputStream();
-		PageController.newSimple().executePage(customerTemplate, customerEmailBytes);
-		customerTextPart.setContent(customerEmailBytes.toString("UTF-8"), customerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
-				+ ";charset=UTF-8");
-
 		// Письмо для продавца
 		Multipart shopMultipart = new MimeMultipart();
 		MimeBodyPart shopTextPart = new MimeBodyPart();
 		shopMultipart.addBodyPart(shopTextPart);
+		LinkPE shopEmailLink = LinkPE.newDirectLink("link", "shop_email", false);
+		ExecutablePagePE shopTemplate;
 		try {
-			LinkPE shopEmailLink = LinkPE.newDirectLink("link", "shop_email", false);
-			shopEmailLink.addStaticVariable("order_num", orderNumber + "");
-			ExecutablePagePE shopTemplate = getExecutablePage(shopEmailLink.serialize());
-			ByteArrayOutputStream shopEmailBytes = new ByteArrayOutputStream();
-			PageController.newSimple().executePage(shopTemplate, shopEmailBytes);
-			shopTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+			shopTemplate = getExecutablePage(shopEmailLink.serialize());
+		} catch (PageNotFoundException e) {
+			shopEmailLink = LinkPE.newDirectLink("link", "order_email", false);
+			shopTemplate = getExecutablePage(shopEmailLink.serialize());
+		}
+		ByteArrayOutputStream shopEmailBytes = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(shopTemplate, shopEmailBytes);
+		shopTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+				+ ";charset=UTF-8");
+		addExtraEmailBodyPart(false, shopMultipart);
+
+		// Письмо для покупателя
+		Multipart customerMultipart = new MimeMultipart();
+		MimeBodyPart customerTextPart = new MimeBodyPart();
+		customerMultipart.addBodyPart(customerTextPart);
+		try {
+			LinkPE customerEmailLink = LinkPE.newDirectLink("link", "customer_email", false);
+			ExecutablePagePE customerTemplate = getExecutablePage(customerEmailLink.serialize());
+			ByteArrayOutputStream customerEmailBytes = new ByteArrayOutputStream();
+			PageController.newSimple().executePage(customerTemplate, customerEmailBytes);
+			customerTextPart.setContent(customerEmailBytes.toString("UTF-8"), customerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 					+ ";charset=UTF-8");
+			addExtraEmailBodyPart(true, customerMultipart);
 		} catch (Exception e) {
-			shopTextPart.setContent(customerEmailBytes.toString("UTF-8"), customerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+			customerTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 					+ ";charset=UTF-8");
+			addExtraEmailBodyPart(false, customerMultipart);
 		}
 
 		// Отправка на ящик заказчика
@@ -218,7 +231,7 @@ public abstract class BasicCartManageCommand extends Command {
 						UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 				form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
 				form.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), User.ANONYMOUS_ID);
-				executeCommandUnit(SaveItemDBUnit.get(form).ignoreUser());
+				executeCommandUnit(SaveItemDBUnit.get(form).ignoreUser().noTriggerExtra());
 				userItem = form;
 			}
 		}
@@ -253,6 +266,10 @@ public abstract class BasicCartManageCommand extends Command {
 	}
 
 	protected abstract boolean validate() throws Exception;
+
+	protected boolean addExtraEmailBodyPart(boolean isCustomerEmail, Multipart mp) throws Exception {
+		return true;
+	}
 
 
 	private void updateQtys() throws Exception {

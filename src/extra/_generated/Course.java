@@ -15,6 +15,7 @@ public class Course
     public final static String QUOTIENT_2 = "quotient_2";
     public final static String LEVEL_2 = "level_2";
     public final static String QUOTIENT_3 = "quotient_3";
+    public final static String QUOTIENT_BUKINISTIC = "quotient_bukinistic";
 
     private Course(Item item) {
         super(item);
@@ -143,6 +144,28 @@ public class Course
 
     public boolean contains_quotient_3(BigDecimal value) {
         return containsValue("quotient_3", value);
+    }
+
+    public void set_quotient_bukinistic(BigDecimal value) {
+        setValue("quotient_bukinistic", value);
+    }
+
+    public void setUI_quotient_bukinistic(String value)
+        throws Exception
+    {
+        setValueUI("quotient_bukinistic", value);
+    }
+
+    public BigDecimal get_quotient_bukinistic() {
+        return getDecimalValue("quotient_bukinistic");
+    }
+
+    public BigDecimal getDefault_quotient_bukinistic(BigDecimal defaultVal) {
+        return getDecimalValue("quotient_bukinistic", defaultVal);
+    }
+
+    public boolean contains_quotient_bukinistic(BigDecimal value) {
+        return containsValue("quotient_bukinistic", value);
     }
 
 }

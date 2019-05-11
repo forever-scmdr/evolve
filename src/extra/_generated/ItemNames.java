@@ -151,6 +151,8 @@ public interface ItemNames {
         String SUM = "sum";
         String SUM_DISCOUNT = "sum_discount";
         String PROCESSED = "processed";
+        String EXTRA_SUM_STR = "extra_sum_str";
+        String EXTRA_DATE_STR = "extra_date_str";
 
     }
 

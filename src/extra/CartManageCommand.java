@@ -1,20 +1,37 @@
 package extra;
 
-import ecommander.fwk.BasicCartManageCommand;
-import ecommander.fwk.ItemUtils;
+import com.lowagie.text.pdf.BaseFont;
+import ecommander.controllers.AppContext;
+import ecommander.controllers.PageController;
+import ecommander.fwk.*;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
-import ecommander.pages.MultipleHttpPostForm;
-import ecommander.pages.ResultPE;
+import ecommander.pages.*;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.Discounts;
 import extra._generated.ItemNames;
 import extra._generated.User_jur;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.Charsets;
 import org.apache.commons.lang3.StringUtils;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.util.ByteArrayDataSource;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.*;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.HashSet;
+import java.util.Locale;
 
 /**
  * Корзина
@@ -95,23 +112,36 @@ public class CartManageCommand extends BasicCartManageCommand {
 			discount += discounts.get_sum_discount();
 		}
 		MultipleHttpPostForm userForm = getSessionForm("customer_jur");
+		if (userForm == null)
+			userForm = getSessionForm("customer_phys");
 		if (userForm != null) {
-			user = User_jur.get(userForm.getItemSingleTransient());
-			if (user != null) {
-				if (StringUtils.containsIgnoreCase(user.get_ship_type(), "самовывоз")) {
+			Item uf = userForm.getItemSingleTransient();
+			if (uf != null) {
+				String shipType = uf.getStringValue("ship_type");
+				if (StringUtils.containsIgnoreCase(shipType, "самовывоз")) {
 					discount += discounts.get_self_delivery();
-				} else if (StringUtils.containsIgnoreCase(user.get_ship_type(), "автолайт")) {
+				} else if (StringUtils.containsIgnoreCase(shipType, "автолайт")) {
 					discount -= discounts.get_autolight();
-				} else if (StringUtils.containsIgnoreCase(user.get_ship_type(), "доставка")) {
+				} else if (StringUtils.containsIgnoreCase(shipType, "доставка")) {
 					discount -= discounts.get_delivery();
 				}
-				if (StringUtils.containsIgnoreCase(user.get_pay_type(), "предоплата")) {
+				if (StringUtils.containsIgnoreCase(uf.getStringValue("pay_type"), "предоплата")) {
 					discount += discounts.get_pay_first();
 				}
 			}
 		}
 		BigDecimal discountedSum = originalSum.multiply(new BigDecimal((100 - discount) / 100));
 		cart.setValue(ItemNames.cart_.SUM_DISCOUNT, discountedSum);
+		// Сумма прописью
+		BigDecimal rub = discountedSum.setScale(0, BigDecimal.ROUND_FLOOR);
+		BigDecimal kop = discountedSum.subtract(rub).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_CEILING);
+		String sumText = Strings.numberToRusWords(rub.doubleValue()) + " "
+				+ Strings.numberEnding(rub.doubleValue(), "белорусский рубль", "белорусских рубля", "белорусских рублей")
+				+ " " + kop + " "
+				+ Strings.numberEnding(kop.doubleValue(), "копейка", "копейки", "копеек");
+		String dateStr = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(new Locale("ru")).format(LocalDate.now());
+		cart.setValueUI(ItemNames.cart_.EXTRA_SUM_STR, sumText);
+		cart.setValueUI(ItemNames.cart_.EXTRA_DATE_STR, dateStr);
 		getSessionMapper().saveTemporaryItem(cart);
 		return success;
 	}
@@ -128,5 +158,41 @@ public class CartManageCommand extends BasicCartManageCommand {
 		}
 		recalculateCart(isPhys ? PRICE_PARAM : ItemNames.product_.PRICE);
 		return getResult("proceed");
+	}
+
+	@Override
+	protected boolean addExtraEmailBodyPart(boolean isCustomerEmail, Multipart mp) {
+		try {
+			LinkPE pdfLink = LinkPE.newDirectLink("link", "order_pdf", false);
+			ExecutablePagePE pdfTemplate = getExecutablePage(pdfLink.serialize());
+			ByteArrayOutputStream pdfHtmlBytes = new ByteArrayOutputStream();
+			PageController.newSimple().executePage(pdfTemplate, pdfHtmlBytes);
+
+			File dir = new File(AppContext.getFilesDirPath(false) + "pdf");
+			dir.mkdir();
+			File output = new File(AppContext.getFilesDirPath(false) + "pdf/" + String.valueOf(cart.getStringValue(ItemNames.cart_.ORDER_NUM)) + ".pdf");
+			if (!output.exists()) {
+				String content = new String(pdfHtmlBytes.toByteArray(), Strings.SYSTEM_ENCODING);
+
+				ITextRenderer renderer = new ITextRenderer();
+				String fontPath = AppContext.getContextPath() + "ARIALUNI.TTF";
+				renderer.getFontResolver().addFont(fontPath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+				renderer.setDocumentFromString(content);
+				renderer.layout();
+				FileOutputStream fos = new FileOutputStream(output);
+				renderer.createPDF(fos);
+				fos.close();
+			}
+			FileInputStream fis = new FileInputStream(output);
+			DataSource dataSource = new ByteArrayDataSource(fis, "application/pdf");
+			MimeBodyPart filePart = new MimeBodyPart();
+			filePart.setDataHandler(new DataHandler(dataSource));
+			filePart.setFileName(output.getName());
+			mp.addBodyPart(filePart);
+			return true;
+		} catch (Exception e) {
+			ServerLogger.error("Email PDF generation error", e);
+			return false;
+		}
 	}
 }

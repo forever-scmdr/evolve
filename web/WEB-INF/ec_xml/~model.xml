@@ -314,6 +314,10 @@
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
 		<parameter name="sum_discount" type="currency" caption="Сумма с учетом скидки"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
+
+		<parameter name="extra_sum_str" type="string" caption="Сумма прописью"/>
+		<parameter name="extra_date_str" type="string" caption="Дата прописью"/>
+
 		<child item="bought"/>
 	</item>
 

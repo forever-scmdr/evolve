@@ -26,7 +26,7 @@
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
 							<xsl:variable name="has_price" select="if ($is_reg_jur) then ($p/price_opt and $p/price_opt != '0') else ($p/price and $p/price != '0')"/>
-							<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num($p/price_opt) div 100 * (100 - $discount)) else $p/price"/>
+							<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num($p/price_opt) div 100 * (100 - $discount)) else f:num($p/price)"/>
 							<xsl:variable name="price_out" select="if ($price != 0) then concat($price, ' p.') else 'по запросу'"/>
 							<div class="item">
 								<xsl:if test="not($p/product)">

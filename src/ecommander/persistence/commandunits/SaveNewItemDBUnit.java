@@ -176,6 +176,9 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		if (triggerExtra && item.getItemType().hasExtraHandlers(ItemType.Event.create)) {
 			for (ItemEventCommandFactory fac : item.getItemType().getExtraHandlers(ItemType.Event.create)) {
 				PersistenceCommandUnit command = fac.createCommand(item);
+				if (command instanceof DBPersistenceCommandUnit) {
+					((DBPersistenceCommandUnit) command).ignoreUser(ignoreUser).ignoreFileErrors(ignoreFileErrors);
+				}
 				executeCommandInherited(command);
 			}
 		}

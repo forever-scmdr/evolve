@@ -812,6 +812,33 @@
 
 
 
+	<page name="order_pdf"  template="order_pdf">
+		<session>
+			<single item="cart">
+				<list item="bought" id="bought"/>
+			</single>
+			<single item="user" tag="registration"/>
+			<new item="user_phys" id="user_phys">
+				<parameter-input ref="user_phys" form="customer_phys"/>
+			</new>
+			<new item="user_jur" id="user_jur">
+				<parameter-input ref="user_jur" form="customer_jur"/>
+			</new>
+		</session>
+		<list item="product" tag="product" id="prod">
+			<filter>
+				<parameter name="code" compare="SOME" sign="=">
+					<var ref="bought" parameter="code"/>
+				</parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+		</list>
+	</page>
+
+
+
 	<page name="fav_ajax" template="fav_ajax">
 		<request>
 			<var name="favourites" scope="cookie"/>
