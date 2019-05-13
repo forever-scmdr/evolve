@@ -1493,7 +1493,7 @@
 	</page>
 
 
-	<page name="create_users" template="">
+	<page name="create_users" template="integration/create_users">
 		<request>
 			<var name="action"/>
 		</request>
