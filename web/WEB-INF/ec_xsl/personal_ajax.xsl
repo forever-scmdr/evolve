@@ -19,11 +19,11 @@
 		<xsl:if test="$registered">
 			<div class="result" id="personal_desktop">
 				<i class="fas fa-lock"/>
-				<a href="{page/personal_link}"> Анкета</a> / <a href="{page/purchase_history_link}">Заказы</a>
+				<a href="{page/personal_link}"> Анкета</a> / <a href="{page/purchase_history_link}">Заказы</a> / <a href="/logout.login?target=index">×</a>
 			</div>
 			<div class="result" id="personal_mobile">
 				<i class="fas fa-lock"></i>
-				<a href="{page/personal_link}"> Анкета</a> / <a href="{page/purchase_history_link}">Заказы</a>
+				<a href="{page/personal_link}"> Анкета</a> / <a href="{page/purchase_history_link}">Заказы</a> / <a href="/logout.login?target=index">×</a>
 			</div>
 		</xsl:if>
 	</xsl:template>

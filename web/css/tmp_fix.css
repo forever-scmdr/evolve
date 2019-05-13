@@ -28,7 +28,6 @@
 	position: relative;
 }
 .catalog-items .catalog-item .image-container{
-	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: 50%;
 }

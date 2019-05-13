@@ -20,7 +20,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Избранное</h1>
+		<h1 class="page-title">Избранное</h1>
 
 		<div class="page-content m-t">
 

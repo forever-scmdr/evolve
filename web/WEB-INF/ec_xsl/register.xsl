@@ -9,7 +9,6 @@
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
 	<xsl:variable name="is_jur" select="page/user_jur//@validation-error"/>
 	<xsl:variable name="is_login" select="page/variables/login = 'true'"/>
-	<xsl:variable name="title" select="'Регистрация пользователя'" />
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -19,7 +18,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Вход/Регистрация</h1>
+		<h1 class="page-title">Вход/Регистрация</h1>
 
 		<div class="page-content m-t">
 			<xsl:if test="$message and not($success)">

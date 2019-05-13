@@ -13,7 +13,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Документация</h1>
+		<h1 class="page-title">Документация</h1>
 
 		<div class="page-content m-t">
 			<xsl:value-of select="page/docs/text" disable-output-escaping="yes"/>
