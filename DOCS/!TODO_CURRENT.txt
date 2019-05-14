@@ -1,0 +1,2 @@
+	Сделать базовой (master branch) версию titantools
+	Перенести изменения класса корзины из dadget в titantools
