@@ -5,14 +5,16 @@ import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,22 +26,23 @@ import java.util.Date;
  */
 public abstract class BasicCartManageCommand extends Command {
 
-	private static final String PRODUCT_ITEM = "abstract_product";
-	private static final String CART_ITEM = "cart";
-	private static final String BOUGHT_ITEM = "bought";
-	private static final String PURCHASE_ITEM = "purchase";
-	private static final String USER_ITEM = "user";
-	private static final String PRICE_PARAM = "price";
-	private static final String QTY_PARAM = "qty";
-	private static final String SUM_PARAM = "sum";
-	private static final String CODE_PARAM = "code";
-	private static final String NAME_PARAM = "name";
-	private static final String PROCESSED_PARAM = "processed";
-	private static final String COUNTER_ITEM = "counter";
-	private static final String COUNT_PARAM = "count";
-	private static final String NUM_PARAM = "num";
-	private static final String DATE_PARAM = "date";
-	private static final String EMAIL_PARAM = "email";
+	protected static final String PRODUCT_ITEM = "abstract_product";
+	protected static final String CART_ITEM = "cart";
+	protected static final String BOUGHT_ITEM = "bought";
+	protected static final String PURCHASE_ITEM = "purchase";
+	protected static final String USER_ITEM = "user";
+	protected static final String PRICE_PARAM = "price";
+	protected static final String PRICE_OPT_PARAM = "price_opt";
+	protected static final String QTY_PARAM = "qty";
+	protected static final String SUM_PARAM = "sum";
+	protected static final String CODE_PARAM = "code";
+	protected static final String NAME_PARAM = "name";
+	protected static final String PROCESSED_PARAM = "processed";
+	protected static final String COUNTER_ITEM = "counter";
+	protected static final String COUNT_PARAM = "count";
+	protected static final String NUM_PARAM = "num";
+	protected static final String DATE_PARAM = "date";
+	protected static final String EMAIL_PARAM = "email";
 
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
 	public static final String REGISTERED_GROUP = "registered";
@@ -52,7 +55,10 @@ public abstract class BasicCartManageCommand extends Command {
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
 
-	private Item cart;
+	protected static final Double MAX_QTY = 1000000000000d;
+
+
+	protected Item cart;
 
 	/**
 	 * Добавить товар в корзину
@@ -96,7 +102,10 @@ public abstract class BasicCartManageCommand extends Command {
 
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
-		Item form = getItemForm().getTransientSingleItem();
+		Item form = getItemForm().getItemSingleTransient();
+		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
+		recalculateCart(isPhys ? PRICE_PARAM : PRICE_OPT_PARAM);
+
 		getSessionMapper().saveTemporaryItem(form, "user");
 
 		if (!validate()) {
@@ -136,24 +145,50 @@ public abstract class BasicCartManageCommand extends Command {
 		// Подготовка тела письма
 		String regularTopic
 				= "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
-		Multipart regularMP = new MimeMultipart();
-		MimeBodyPart regularTextPart = new MimeBodyPart();
-		regularMP.addBodyPart(regularTextPart);
-		LinkPE regularLink = LinkPE.newDirectLink("link", "order_email", false);
-		regularLink.addStaticVariable("order_num", orderNumber + "");
-		ExecutablePagePE regularTemplate = getExecutablePage(regularLink.serialize());
-		final String customerEmail = getItemForm().getTransientSingleItem().getStringValue("email");
+
+		final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
 
-		ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
-		PageController.newSimple().executePage(regularTemplate, regularBos);
-		regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+		// Письмо для продавца
+		Multipart shopMultipart = new MimeMultipart();
+		MimeBodyPart shopTextPart = new MimeBodyPart();
+		shopMultipart.addBodyPart(shopTextPart);
+		LinkPE shopEmailLink = LinkPE.newDirectLink("link", "shop_email", false);
+		ExecutablePagePE shopTemplate;
+		try {
+			shopTemplate = getExecutablePage(shopEmailLink.serialize());
+		} catch (PageNotFoundException e) {
+			shopEmailLink = LinkPE.newDirectLink("link", "order_email", false);
+			shopTemplate = getExecutablePage(shopEmailLink.serialize());
+		}
+		ByteArrayOutputStream shopEmailBytes = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(shopTemplate, shopEmailBytes);
+		shopTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 				+ ";charset=UTF-8");
+		addExtraEmailBodyPart(false, shopMultipart);
+
+		// Письмо для покупателя
+		Multipart customerMultipart = new MimeMultipart();
+		MimeBodyPart customerTextPart = new MimeBodyPart();
+		customerMultipart.addBodyPart(customerTextPart);
+		try {
+			LinkPE customerEmailLink = LinkPE.newDirectLink("link", "customer_email", false);
+			ExecutablePagePE customerTemplate = getExecutablePage(customerEmailLink.serialize());
+			ByteArrayOutputStream customerEmailBytes = new ByteArrayOutputStream();
+			PageController.newSimple().executePage(customerTemplate, customerEmailBytes);
+			customerTextPart.setContent(customerEmailBytes.toString("UTF-8"), customerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+					+ ";charset=UTF-8");
+			addExtraEmailBodyPart(true, customerMultipart);
+		} catch (Exception e) {
+			customerTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+					+ ";charset=UTF-8");
+			addExtraEmailBodyPart(false, customerMultipart);
+		}
 
 		// Отправка на ящик заказчика
 		try {
 			if (StringUtils.isNotBlank(customerEmail))
-				EmailUtils.sendGmailDefault(customerEmail, regularTopic, regularMP);
+				EmailUtils.sendGmailDefault(customerEmail, regularTopic, customerMultipart);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra (IN_PROGRESS, null);
@@ -162,7 +197,7 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 		// Отправка на ящик магазина
 		try {
-			EmailUtils.sendGmailDefault(shopEmail, regularTopic, regularMP);
+			EmailUtils.sendGmailDefault(shopEmail, regularTopic, shopMultipart);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);
@@ -197,7 +232,7 @@ public abstract class BasicCartManageCommand extends Command {
 						UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 				form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
 				form.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), User.ANONYMOUS_ID);
-				executeCommandUnit(SaveItemDBUnit.get(form).ignoreUser());
+				executeCommandUnit(SaveItemDBUnit.get(form).ignoreUser().noTriggerExtra());
 				userItem = form;
 			}
 		}
@@ -233,6 +268,10 @@ public abstract class BasicCartManageCommand extends Command {
 
 	protected abstract boolean validate() throws Exception;
 
+	protected boolean addExtraEmailBodyPart(boolean isCustomerEmail, Multipart mp) throws Exception {
+		return true;
+	}
+
 
 	private void updateQtys() throws Exception {
 		MultipleHttpPostForm form = getItemForm();
@@ -251,7 +290,7 @@ public abstract class BasicCartManageCommand extends Command {
 				} catch (NumberFormatException e) { /**/ }
 				if (quantity > 0) {
 					Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-					double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+					double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
 					if (maxQuantity > 0)
 						quantity = maxQuantity > quantity ? quantity : maxQuantity;
 					bought.setValue(QTY_PARAM, quantity);
@@ -274,7 +313,7 @@ public abstract class BasicCartManageCommand extends Command {
 				return;
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
-			double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
 			if (maxQuantity > 0)
 				qty = maxQuantity > qty ? qty : maxQuantity;
 			bought.setValue(QTY_PARAM, qty);
@@ -297,7 +336,7 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().removeItems(bought.getId());
 				return;
 			}
-			double maxQuantity = boughtProduct.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity = boughtProduct.getDoubleValue(QTY_PARAM, MAX_QTY);
 			if (maxQuantity > 0)
 				qty = maxQuantity > qty ? qty : maxQuantity;
 			bought.setValue(QTY_PARAM, qty);
@@ -338,7 +377,7 @@ public abstract class BasicCartManageCommand extends Command {
 	/**
 	 * Загрузить корзину, но не создавать в случае если корзина не найдена
 	 */
-	private void loadCart() throws Exception {
+	protected void loadCart() throws Exception {
 		if (cart == null) {
 			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 		}
@@ -349,7 +388,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * Сохранить корзину в куки на всякий случай (если будет разрыв сеанса, корзину можно восстановить)
 	 * @throws Exception
 	 */
-	private void saveCookie() throws Exception {
+	protected void saveCookie() throws Exception {
 		ensureCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		ArrayList<String> codeQtys = new ArrayList<>();
@@ -392,7 +431,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * Пересчитывает данные для одного enterprise_bought, когда в корзине произошли какие-то изменения
 	 * @throws Exception
 	 */
-	private boolean recalculateCart() throws Exception {
+	protected boolean recalculateCart(String...priceParamName) throws Exception {
 		loadCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal sum = new BigDecimal(0); // полная сумма
@@ -400,17 +439,19 @@ public abstract class BasicCartManageCommand extends Command {
 		double regularQuantity = 0;
 		boolean result = true;
 
+		final String PRICE = (priceParamName != null && priceParamName.length > 0) ? priceParamName[0] : PRICE_PARAM;
+
 		// Обычные заказы и заказы с нулевым количеством на складе
 		for (Item bought : boughts) {
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-			double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
 			double quantity = bought.getDoubleValue(QTY_PARAM);
 			if (quantity <= 0) {
 				getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);
 				result = false;
 			} else {
 				// Первоначальная сумма
-				BigDecimal price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+				BigDecimal price = product.getDecimalValue(PRICE, new BigDecimal(0));
 				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
 				if (maxQuantity <= 0) {
 					productSum = new BigDecimal(0);

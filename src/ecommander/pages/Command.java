@@ -132,6 +132,15 @@ public abstract class Command implements AutoCloseable {
 		if (page.getItemFrom() != null)
 			page.getSessionContext().removeForm(formName);
 	}
+
+	/**
+	 * Получить сохраненную в сеансе форму
+	 * @param formName
+	 * @return
+	 */
+	protected final MultipleHttpPostForm getSessionForm(String formName) {
+		return page.getSessionContext().getForm(formName);
+	}
 	/**
 	 * Получить другую страницу
 	 * @param url

@@ -4,10 +4,7 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CopyItemDBUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
-import ecommander.persistence.commandunits.MoveItemDBUnit;
-import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
@@ -28,6 +25,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 	Item catalog;
 	Item currentSection;
 	Item currentSubsection;
+	Item currentProduct;
 	private boolean newItemTypes = false;
 	private HashSet<Long> sectionsWithNewItemTypes = new HashSet<>();
 	private HashSet<String> duplicateCodes = new HashSet<>();
@@ -89,20 +87,20 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			protected void processRow() throws Exception {
 				info.setLineNumber(getRowNum() + 1);
 				String code = getValue(CreateExcelPriceList.CODE_FILE);
-				String name = getValue(CreateExcelPriceList.NAME_FILE);
 				if (StringUtils.isBlank(code)) return;
 
 				//check duplicate codes
-				if(duplicateCodes.contains(code)){
-					info.addError("Повторяющийся артикул", code);
-				}else{
+				if(duplicateCodes.contains(code) && !CreateExcelPriceList.CODE_FILE.equalsIgnoreCase(code)){
+					info.addError("Повторяющийся артикул: "+code,"");
+				}else if(!CreateExcelPriceList.CODE_FILE.equalsIgnoreCase(code)){
 					duplicateCodes.add(code);
 				}
 
 				if (StringUtils.startsWith(code, "разд:")) {
 					code = StringUtils.substringAfter(code, "разд:").trim();
-					String parentCode = name;
-					name = getValue(CreateExcelPriceList.PRICE_FILE);
+					int codeIndex = getColIndex(CreateExcelPriceList.CODE_FILE);
+					String parentCode = getValue(codeIndex+1);
+					String name = getValue(codeIndex+2);
 					String[] secInfo = new String[]{name, code, parentCode};
 					if (currentSection != null) {
 						processSubsection(secInfo);
@@ -191,16 +189,17 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					reInit(CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE);
 				} else {
 					if (currentSubsection == null) currentSubsection = currentSection;
-					Item product = getExistingProduct(code);
+					boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
+					Item product = getExistingProduct(code, isProduct);
 					TreeSet<String> headers = getHeaders();
 					Path picsFolder = contextPath.resolve("product_pics");
 					varValues withPictures = settings.get(WITH_PICS);
 					// product NOT exists
 					if (product == null) {
-						Item parent = (code.indexOf('@') == -1) ? currentSubsection : new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, StringUtils.substringAfter(code, "@"), "=", null, Compare.SOME).loadFirstItem();
-						ItemType itemType = (code.indexOf('@') == -1) ? ItemTypeRegistry.getItemType(PRODUCT_ITEM) : ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM);
+						Item parent = (isProduct) ? currentSubsection : currentProduct;
+						ItemType itemType = (isProduct) ? ItemTypeRegistry.getItemType(PRODUCT_ITEM) : ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM);
 						product = Item.newChildItem(itemType, parent);
-						code = (code.indexOf('@') == -1) ? code : StringUtils.substringBefore(code, "@");
+						//code = (code.indexOf('@') == -1) ? code : StringUtils.substringBefore(code, "@");
 						//set product params
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
@@ -211,7 +210,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							if (CODE_PARAM.equals(paramName)) {
 								product.setValue(CODE_PARAM, code);
 								product.setValue(VENDOR_CODE_PARAM, code);
-								product.setValue(OFFER_ID_PARAM, code);
+								product.setValue(OFFER_ID_PARAM, code);//x
 
 							} else if (MAIN_PIC_PARAM.equals(paramName)) {
 								if (withPictures == varValues.IGNORE) continue;
@@ -244,7 +243,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									case DOWNLOAD: {
 										if (StringUtils.isNotBlank(cellValue)) {
 											try {
-												URL url = new URL(cellValue.trim());
+												URL url = new URL(cellValue);
 												product.setValue(paramName, url);
 											} catch (Exception e) {
 											}
@@ -272,8 +271,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 											try {
 												URL url = new URL(s);
 												product.setValue(paramName, url);
-											} catch (Exception e) {
-											}
+											} catch (Exception e) {}
 											break;
 										default:
 											break;
@@ -282,7 +280,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								}
 							} else {
 								if (StringUtils.isBlank(cellValue)) continue;
-								ParameterDescription pd = productItemType.getParameter(paramName);
+								ParameterDescription pd = itemType.getParameter(paramName);
 								if (pd.isMultiple()) {
 									String[] values = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
 									for (String val : values) {
@@ -326,6 +324,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									executeCommandUnit(SaveItemDBUnit.get(manualItem).noFulltextIndex().noTriggerExtra());
 								}
 								commitCommandUnits();
+								if(isProduct) currentProduct = product;
 							}
 						}
 
@@ -335,7 +334,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 						//set product params
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
-							if (!productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+							ItemType itemType = product.getItemType();
+							if(itemType.equals(productItemType)) currentProduct = product;
+							if (!itemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
 								continue;
 							String cellValue = getValue(header);
 							varValues ifBlank = settings.get(IF_BLANK);
@@ -385,7 +386,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								}
 							} else if (GALLERY_PARAM.equals(paramName)) {
 								String currVa = getStr(product, paramName);
-								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
+								if (currVa.equals(cellValue) && StringUtils.isNotBlank(currVa)) continue;
 								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
 									product.clearValue(paramName);
 									if (withPictures == varValues.SEARCH_BY_CODE) {
@@ -404,7 +405,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								}
 							} else if (TEXT_PICS_PARAM.equals(paramName)) {
 								String currVa = getStr(product, paramName);
-								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
+								if (currVa.equals(cellValue) && StringUtils.isNotBlank(currVa)) continue;
 								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
 									product.clearValue(paramName);
 									if (withPictures == varValues.SEARCH_BY_CODE) {
@@ -418,42 +419,27 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 												}
 											}
 										}
-									} else {
-										product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
 									}
+								 else {
+									product = setMultipleFileParam(product, paramName, cellValue, picsFolder);}
 								}
 							}
-//							else if (FILES_PARAM.equals(paramName)) {
-//								String currVa = getStr(product, paramName);
-//								if (currVa.equals(cellValue.trim()) && StringUtils.isNotBlank(currVa)) continue;
-//								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
-//									product.clearValue(FILES_PARAM);
-//									if (withPictures == varValues.SEARCH_BY_CODE) {
-//										Path filesPath = picsFolder.resolve(code);
-//										File additionalFiles = filesPath.toFile();
-//										if (additionalFiles.exists()) {
-//											for (File f : FileUtils.listFiles(filesPath.toFile(), null, false)) {
-//												if (!f.getName().matches("[^\\s]+(\\.(?i)(jpe?g|png|gif|bmp|svg))$")) {
-//													product.setValue(FILES_PARAM, f);
-//												}
-//											}
-//										}
-//									}
-//								} else {
-//									product = setMultipleFileParam(product, paramName, cellValue, picsFolder);
-//								}
-//							}
 							else {
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
-								ParameterDescription pd = productItemType.getParameter(paramName);
-								if (pd.isMultiple()) {
-									String[] values = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
-									for (String val : values) {
-										product.setValueUI(paramName, val.trim());
-									}
+								else if(StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR){
+									product.clearValue(paramName);
+								}
+								else {
+									ParameterDescription pd = productItemType.getParameter(paramName);
+									if (pd.isMultiple()) {
+										String[] values = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
+										for (String val : values) {
+											product.setValueUI(paramName, val.trim());
+										}
 
-								} else {
-									product.setValueUI(paramName, cellValue);
+									} else {
+										product.setValueUI(paramName, cellValue);
+									}
 								}
 							}
 
@@ -470,6 +456,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									for (Item item : items) {
 										executeCommandUnit(ItemStatusDBUnit.delete(item.getId()).noFulltextIndex());
 									}
+									//executeCommandUnit(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
 									commitCommandUnits();
 									continue;
 								}
@@ -488,8 +475,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 											x[i] = x[i].replace(";", "").trim();
 										}
 										switch (x.length) {
-											case 0:
-												break;
+											case 0: break;
 											case 1:
 												manualItem = Item.newChildItem(ItemTypeRegistry.getItemType(MANUAL_PARAM), product);
 												manualItem.setValue(NAME_PARAM, "Документ");
@@ -506,8 +492,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 												manualItem.setValue(NAME_PARAM, x[1]);
 												manualItem.setValue(LINK_PARAM, x[2]);
 												break;
-											default:
-												id = Long.parseLong(x[0]);
+											default: id = Long.parseLong(x[0]);
 												manualItem = ItemQuery.loadById(id);
 												break;
 										}
@@ -545,7 +530,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 						XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
-							if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+							if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header))
 								continue;
 							String cellValue = getValue(header);
 							cellValue = StringUtils.isAllBlank(cellValue) ? "" : cellValue;
@@ -566,8 +551,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								sectionsWithNewItemTypes.add(currentSubsection.getId());
 								continue;
 							}
-							if (StringUtils.isNotBlank(auxParams.get(param)))
-								aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
+							if (StringUtils.isNotBlank(auxParams.get(param))) aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
 						}
 						paramsXML.setValueUI(XML_PARAM, xml.toString());
 						executeCommandUnit(SaveItemDBUnit.get(paramsXML).noFulltextIndex());
@@ -581,6 +565,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			}
 
 			private Item setMultipleFileParam(Item item, String paramName, String values, Path folder) throws MalformedURLException {
+				if(StringUtils.isBlank(values)) return item;
 				String[] apv = values.split(CreateExcelPriceList.VALUE_SEPARATOR);
 				LinkedHashSet<Object> existingFiles = new LinkedHashSet<>();
 				for (String s : apv) {
@@ -590,7 +575,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					if (StringUtils.startsWith(s, "https://") || StringUtils.startsWith(s, "http://")) {
 						URL url = new URL(s);
 						existingFiles.add(url);
-					} else {
+					}
+					else{
 						File f = folder.resolve(s).toFile();
 						if (f.exists()) {
 							existingFiles.add(f);
@@ -611,14 +597,13 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 				return (pv.size() == 0) ? "" : (pv.size() == 1) ? pv.get(0).toString() : CreateExcelPriceList.join(pv);
 			}
 
-			private Item getExistingProduct(String code) throws Exception {
+			private Item getExistingProduct(String code, boolean isProduct) throws Exception {
 				Item prod;
-				if (code.indexOf('@') == -1) {
+				if (isProduct) {
 					prod = new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME).loadFirstItem();
-				} else {
-					String[] codes = code.split("@");
-					Item parent = new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, codes[1], "=", null, Compare.SOME).loadFirstItem();
-					prod = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(parent.getId(), false).addParameterCriteria(CODE_PARAM, codes[0], "=", null, Compare.SOME).loadFirstItem();
+				}
+				else {
+					prod = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(currentProduct.getId(), false).addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME).loadFirstItem();
 				}
 				return prod;
 			}
@@ -627,6 +612,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			protected void processSheet() throws Exception {
 				currentSection = null;
 				currentSubsection = null;
+				currentProduct = null;
 			}
 		};
 		return true;
@@ -655,6 +641,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			switch (v) {
 				case DELETE:
 					executeCommandUnit(ItemStatusDBUnit.delete(existingSection.getId()).noFulltextIndex());
+					//executeCommandUnit(new CleanAllDeletedItemsDBUnit(20, null));
 					Item newSection = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), declaredParent);
 					newSection.setValue(NAME_PARAM, sName);
 					newSection.setValue(CATEGORY_ID_PARAM, sCode);
@@ -774,15 +761,14 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
 		//indexation
-		//info.setOperation("Индексация названий товаров");
-		//LuceneIndexMapper.getSingleton().reindexAll();
+		info.setOperation("Индексация названий товаров");
+		LuceneIndexMapper.getSingleton().reindexAll();
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Интеграция завершена");
 	}
 
 	@Override
-	protected void terminate() throws Exception {
-	}
+	protected void terminate() throws Exception {}
 
 	private String firstUpperCase(String s) {
 		return s.substring(0, 1).toUpperCase() + s.substring(1);

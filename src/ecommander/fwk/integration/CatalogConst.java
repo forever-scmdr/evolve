@@ -35,6 +35,13 @@ public interface CatalogConst {
 	String PRICE_OLD_PARAM = "price_old";
 	String PRICE_PARAM = "price";
 	String COUNTRY_PARAM = "country";
+	String PRICE_OPT_PARAM = "price_opt";
+	String PRICE_OPT_OLD_PARAM = "price_opt_old";
+	String MIN_QTY_PARAM = "min_qty";
+	String ANALOG_CODE_PARAM = "analog_code";
+	String SIMILAR_CODE_PARAM = "similar_code";
+	String SUPPORT_CODE_PARAM = "support_code";
+	String STATUS_PARAM = "status";
 	String DESCRIPTION_PARAM = "description";
 	String TEXT_PARAM = "text";
 	String TEXT_PICS_PARAM = "text_pics";
@@ -54,6 +61,8 @@ public interface CatalogConst {
 	String LINK_PARAM = "link";
 	String ASSOC_PARAM = "assoc";
 	String ASSOC_CODE_PARAM = "assoc_code";
+	String NEXT_DELIVERY_PARAM = "next_delivery";
+
 	String HAS_LINE_PRODUCTS = "has_lines";
 
 
@@ -88,6 +97,19 @@ public interface CatalogConst {
 	String FILE_ELEMENT = "file";
 	String ASSOC_CODE_ELEMENT = "assoc_code";
 	String PARAMS_XML_ELEMENT = "params_xml";
+	String NEXT_DELIVERY_ELEMENT = "next_delivery";
+
+	String QUANTITY_ELEMENT = "quantity";
+	String OLDPRICE_ELEMENT = "oldprice";
+	String OPTPRICE_ELEMENT = "optprice";
+	String OLDOPTPRICE_ELEMENT = "oldoptprice";
+	String MIN_QUANTITY_ELEMENT = "min-quantity";
+	String ANALOG_ELEMENT = "analog";
+	String SIMILAR_ITEMS_ELEMENT = "similar_items";
+	String SUPPORT_ITEMS_ELEMENT = "support_items";
+	String STATUS_ELEMENT = "status";
+
+
 
 
 	String DATE_ATTR = "date";

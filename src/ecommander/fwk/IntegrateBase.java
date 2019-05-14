@@ -39,6 +39,7 @@ public abstract class IntegrateBase extends Command {
 	private static final Object MUTEX = new Object();
 	private static boolean isInProgress = false;
 	protected static Info info = null;
+	protected volatile boolean needTermination = false;
 
 	private static final class LogMessage {
 		private Date date;
@@ -277,6 +278,7 @@ public abstract class IntegrateBase extends Command {
 		boolean async = getVarSingleValueDefault("mode", "async").equalsIgnoreCase("async");
 		// Если команда находитя в стадии выполнения - вернуть результат сразу (не запускать команду по новой)
 		if (isInProgress && "terminate".equals(operation)) {
+			needTermination = true;
 			terminate();
 			return buildResult();
 		} else if (isInProgress || !"start".equals(operation)) {
@@ -306,6 +308,7 @@ public abstract class IntegrateBase extends Command {
 						getInfo().setInProgress(false);
 					}
 				});
+				thread.setDaemon(true);
 				if (async)
 					thread.start();
 				else
@@ -336,9 +339,10 @@ public abstract class IntegrateBase extends Command {
 	private ResultPE buildResult() throws IOException {
 		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
 		doc.startElement("page", "name", getPageName());
+		doc.startElement("base").addText(getUrlBase()).endElement();
 		getInfo().output(doc);
 		doc.endElement();
-		ResultPE result = null;
+		ResultPE result;
 		try {
 			result = getResult("complete");
 		} catch (EcommanderException e) {

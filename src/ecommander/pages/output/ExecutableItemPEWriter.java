@@ -23,7 +23,7 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 	public static final String PATH_ATTRIBUTE = "path";
 	public static final String KEY_ATTRIBUTE = "key";
 	public static final String KEYPATH_ATTRIBUTE = "keypath";
-	
+
 	public static final String ADMIN_PARAMETERS_ATTRIBUTE = "adm-params";
 	public static final String ADMIN_FULL_ATTRIBUTE = "adm-full";
 	public static final String ADMIN_DELETE_ATTRIBUTE = "adm-delete";

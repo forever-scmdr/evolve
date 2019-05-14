@@ -207,6 +207,9 @@ public class PageController {
 		String xslFileName = AppContext.getStylesDirPath() + page.getTemplate() + ".xsl";
 		// Загрузка страницы и выполнение команд страницы
 		Timer.getTimer().start(Timer.LOAD_DB_ITEMS);
+		// Сброс сеансового генератора ID (чтобы для каждого выпонения страницы ID начинались с одного и того же начального)
+		if (page.getSessionContext() != null)
+			page.getSessionContext().resetIdGenerator();
 		ResultPE result = page.execute();
 		Timer.getTimer().stop(Timer.LOAD_DB_ITEMS);
 		// Если команда требует очисти кеша, очистить его

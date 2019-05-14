@@ -183,6 +183,11 @@ public class ExcelTableData implements TableDataSource {
 		return getValue(colIdx);
 	}
 
+	public final int getColIndex(String colName){
+		Integer colIdx = currentHeader.get(StringUtils.lowerCase(colName));
+		return (colIdx != null)? colIdx : -1;
+	}
+
 	public final Double getDoubleValue(String colName) {
 		String val = getValue(colName);
 		return DoubleDataType.parse(val);
