@@ -137,6 +137,7 @@
 							</td>
 							<td>
 								<xsl:value-of select="product/price"/>
+								<xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if>
 							</td>
 							<td>
 								<xsl:value-of select="sum"/>

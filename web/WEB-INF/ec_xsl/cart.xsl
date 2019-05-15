@@ -42,6 +42,7 @@
 									<p>
 										<span>Цена</span>
 										<xsl:value-of select="$price"/>
+										<xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if>
 									</p>
 								</div>
 								<div class="quantity">
