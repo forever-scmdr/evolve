@@ -174,7 +174,7 @@
 	</item>
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
-	<item name="abstract_product" caption="Абстрактный товар" key="name" virtual="true" ag-id="1020" ag-hash="1636704722">
+	<item name="abstract_product" caption="Абстрактный товар" key="name code" virtual="true" ag-id="1020" ag-hash="1636704722">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
@@ -183,7 +183,7 @@
 	</item>
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
-	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product * gallery" virtual="true" ag-id="1021" ag-hash="1523682729">
+	<item name="described_product" key="name code" caption="Абстрактный товар с описанием" super="abstract_product * gallery" virtual="true" ag-id="1021" ag-hash="1523682729">
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
