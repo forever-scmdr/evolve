@@ -81,6 +81,7 @@ public abstract class IntegrateBase extends Command {
 		private static final String _indexation = "Индексация названий товаров";
 
 		private volatile String operation = "Инициализация";
+		private volatile String currentJob = "Инициализация";
 		private volatile int lineNumber = 0;
 		private volatile int position = 0;
 		private volatile int processed = 0;
@@ -92,6 +93,10 @@ public abstract class IntegrateBase extends Command {
 
 		public synchronized void setOperation(String opName) {
 			operation = opName;
+		}
+
+		public synchronized void setCurrentJob(String currentJob) {
+			this.currentJob = currentJob;
 		}
 
 		public synchronized void setLineNumber(int lineNumber) {
@@ -160,6 +165,7 @@ public abstract class IntegrateBase extends Command {
 
 		public synchronized void output(XmlDocumentBuilder doc) throws IOException {
 			doc.startElement("operation").addText(operation).endElement();
+			doc.startElement("current_job").addText(currentJob).endElement();
 			doc.startElement("line").addText(lineNumber).endElement();
 			if (operation.equals(_indexation))
 				doc.startElement("processed").addText(LuceneIndexMapper.getSingleton().getCountProcessed()).endElement();
