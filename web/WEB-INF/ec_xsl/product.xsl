@@ -138,7 +138,8 @@
 				</xsl:if>
 
 				<div class="extra-buttons">
-					<a class="button secondary" data-toggle="modal" data-target="#cheaper">Нашли дешевле?</a> 
+					<a class="button secondary" data-toggle="modal" data-target="#cheaper">Нашли дешевле?</a>
+					<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
 					<!-- <a class="button secondary" data-toggle="modal" data-target="#warranty">XXL-гарантия</a> -->
 				</div>
 
@@ -208,7 +209,9 @@
 							</xsl:for-each>
 						</div>
 					</div>
-
+					<div class="multi-device__links">
+						<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+					</div>
 					<!-- <div class="multi-device__links">
 						<div id="compare_list_{$p/@id}">
 							<a href="{$p/to_compare}" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
@@ -238,7 +241,8 @@
 						<div class="device-benefits__label">Опыт поставок и ремонта более 20 лет</div>
 					</div>
 				</div>
-				<div class="extra-contacts">
+				<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
+				<!-- <div class="extra-contacts">
 					<div class="extra-contacts__title">Звоните, чтобы получить помощь и консультацию</div>
 					<div class="extra-contacts__items">
 						<div class="extra-contacts__item">
@@ -254,7 +258,7 @@
 							<div class="extra-contacts__text">Сервис</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 <!-- 				<div class="extra-info">
 					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 				</div> -->
@@ -266,11 +270,13 @@
 							<li role="presentation" class="active">
 								<a href="#tab0" role="tab" data-toggle="tab">Описание</a>
 							</li>							
+							<!--
 							<xsl:if test="$p/params">
 								<li role="presentation">
 									<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
 								</li>
 							</xsl:if>
+							-->
 							<xsl:for-each select="$p/product_extra">
 								<li role="presentation">
 									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="f:tab_name(name)"/></a>

@@ -1,5 +1,6 @@
 @charset "UTF-8";
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+@import "patch.css";
 /*! * Bootstrap v3.3.7 (http://getbootstrap.com) * Copyright 2011-2016 Twitter,Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE) */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 html {
@@ -6309,7 +6310,7 @@ img {
 .catalog-items .catalog-item div a {
 	display:block;
 	overflow:hidden;
-	height:3.7rem;
+	height:4.3rem;
 	margin-bottom: 1rem;
 }
 .catalog-items .catalog-item .tags {
@@ -7000,7 +7001,6 @@ a[href^="tel:"] {
 }
 .orders-list .order a.button {
 	display:inline-block;
-	background-color:#5A422A;
 	color:#fff;
 	padding:.5rem 1rem;
 	border-radius:.4rem;
@@ -7015,7 +7015,7 @@ a[href^="tel:"] {
 }
 .orders-list .order.active {
 	padding:1.5rem;
-	border:2px solid #2060A5;
+	border:2px solid #26473f;
 }
 .orders-list .order.active .short-info>div:last-child {
 	display:flex;
@@ -7155,7 +7155,7 @@ a[href^="tel:"] {
 	padding:.3rem .6rem;
 	border-radius:4px;
 	color:#fff;
-	background:#0F5392;
+	background:#26473f;
 	margin-bottom:.5rem;
 	margin-right:.5rem;
 	font-size:.9em;
@@ -7163,8 +7163,7 @@ a[href^="tel:"] {
 	cursor:pointer;
 }
 .tags label.active {
-	background:#F7A80F;
-	color:#000;
+	background:#a7323b;
 }
 .tags {
 	height:auto;
@@ -7502,7 +7501,7 @@ td .catalog-item {
 	display:block;
 	margin-bottom:10px;
 	overflow:hidden;
-	height:48px;
+	height:44px;
 	line-height:1;
 }
 .device__article-number {
@@ -8066,9 +8065,9 @@ td .catalog-item {
 	.events__banners {
 		justify-content:space-between;
 	}
-	.events__banner:first-child {
+	/*.events__banner:first-child {
 		margin-right:unset;
-	}
+	}*/
 	.events__banner {
 		flex-basis:48.5%;
 	}
@@ -8294,10 +8293,14 @@ td .catalog-item {
 	display: flex;
 	justify-content: flex-start;
 	flex: 1;
+	margin-right: 4px;
+}
+.device-benefits__item img {
+	margin-right: 5px;
 }
 .device-benefits__label {
-	font-size: 13px;
-	line-height: .9;
+	font-size: 11px;
+	line-height: 1.1;
 	color: #4f4f4f;
 	display: flex;
 	align-items: center;
@@ -8523,3 +8526,25 @@ td .catalog-item {
 	margin-bottom: 32px;
 }
 /* fixes end*/
+
+
+.slider-link {
+	position: absolute;
+	top:0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+.body_certificate {
+	display: none;
+}
+
+@media print {
+	body * {
+		display: none;
+	}
+	.body_certificate {
+		display: block;
+	}
+
+}

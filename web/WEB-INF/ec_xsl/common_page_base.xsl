@@ -5,6 +5,7 @@
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="warranty_form.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
+	<xsl:import href="one_click_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
@@ -276,6 +277,8 @@
 		<xsl:call-template name="CHEAPER_FORM"/>
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
+		<!-- one click form -->
+		<xsl:call-template name="ONE_CLICK_FORM"/>
 		<!-- MODALS END -->
 	</xsl:template>
 
@@ -522,7 +525,7 @@
 			</xsl:if>
 			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="type"/><xsl:text> </xsl:text><xsl:value-of select="name"/></a>
-			<div class="device__article-number"><xsl:value-of select="code"/></div>
+			<div class="device__article-number">Артикул: <xsl:value-of select="code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
 					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
@@ -534,6 +537,9 @@
 
 				</div>
 			</xsl:if>
+			<div class="extra-links">
+				<a href="{one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+			</div>
 			<div class="device__order">
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
@@ -635,6 +641,7 @@
 				</div>
 			</xsl:if>
 			<div class="device__order device_row__order">
+				<a href="{one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
@@ -761,6 +768,10 @@
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
 
 
+	<xsl:template name="BODY"></xsl:template>
+
+
+
 	<xsl:template match="/">
 	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
 	</xsl:text>
@@ -805,6 +816,7 @@
 				</xsl:for-each>
 			</head>
 			<body>
+				<xsl:call-template name="BODY"/>
 				<xsl:if test="$seo/body_class">
 					<xsl:attribute name="class" select="$seo/body_class"/>
 				</xsl:if>

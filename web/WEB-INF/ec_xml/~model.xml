@@ -384,7 +384,7 @@
 	<item name="warranty_form" caption="Форма гарантии XXL" virtual="true" ag-id="1733" ag-hash="2091581991">
 		<parameter name="code" type="string" caption="Уникальный артикул товара"/>
 		<parameter name="serial" type="string" caption="Серийный номер изделия"/>
-		<parameter name="date" type="date" caption="Дата покупки"/>
+		<parameter name="date" type="date" caption="Дата покупки" format="dd.MM.yyyy"/>
 		<parameter name="seller" type="string" caption="Продавец"/>
 		<parameter name="owner" type="string" caption="Имя владельца" />
 		<parameter name="email" type="string" caption="E-mail"/>
@@ -489,6 +489,7 @@
 		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
+		<child item="xxl" single="true"/>
 	</item>
 
 	<item name="block" caption="Блок текста (кода)" key="header" ag-id="1341" ag-hash="93832333">
@@ -515,6 +516,13 @@
 	<item name="footer" caption="Футер (низ)" super="block_array" ag-id="1343" ag-hash="-1268861541"/>
 
 	<item name="topper" caption="Топпер (верх)" super="block_array" ag-id="1344" ag-hash="-868027480"/>
+
+	<item name="xxl" caption="XXL гарантия" >
+		<child item="seo" single="true"/>
+		<parameter name="header" type="string" caption="Заголовок"/>
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+	</item>
 
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                     END ОБЩЕЕ ДЛЯ ВСЕХ СТРАНИЦ                       ////////////-->

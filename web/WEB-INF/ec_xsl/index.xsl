@@ -168,9 +168,10 @@
 	<xsl:template name="BANNERS">
 		<section class="hero">
 			<div class="container">
-				<div class="fotorama" data-width="100%">
+				<div class="fotorama" data-width="100%" data-autoplay="true">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<img src="{@path}{pic}" alt="{name}"/>
+						<!-- <img src="{@path}{pic}" alt="{name}"/> -->
+						 <div data-img="{@path}{pic}" alt="{name}"><a class="slider-link" href="{link}"></a></div>
 					</xsl:for-each>
 				</div>
 				<div class="hero__banners">
