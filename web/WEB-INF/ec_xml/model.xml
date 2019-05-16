@@ -304,6 +304,7 @@
 		<parameter name="code" type="string" caption="Код товара"/>
 		<parameter name="qty" type="double" caption="Количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
+		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<child item="product" single="true"/>
 	</item>
@@ -355,7 +356,7 @@
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<child item="purchase"/>
 		<on-create class="ecommander.fwk.ManageUsers$OnCreate"/>
-		<on-update class="extra.MakeUserRegistered"/>
+		<on-update class="ecommander.fwk.ManageUsers$OnUpdate"/>
 		<on-delete class="ecommander.fwk.ManageUsers$OnDelete"/>
 	</item>
 
@@ -509,7 +510,7 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="discounts" caption="Скидки" ag-id="1832" ag-hash="-121228462">
+	<item name="discounts" caption="Скидки" ag-id="2183" ag-hash="-121228462">
 		<parameter name="self_delivery" type="double" caption="Скидка за самовывоз" default="1" description="в процентах"/>
 		<parameter name="pay_first" type="double" caption="Скидка за предоплату" default="0.5" description="в процентах" />
 		<parameter name="autolight" type="double" caption="Надбавка за автолайт" default="5" description="в процентах" />

@@ -91,6 +91,9 @@ public class UserCreationHandler extends DefaultHandler implements ItemNames.use
 				for (String element : singleParams.keySet()) {
 					userItem.setValueUI(ELEMENT_PARAM.get(element), singleParams.get(element));
 				}
+				userItem.setValue(REGISTERED, (byte) 1);
+				userItem.setValue(EMAIL, userName);
+				userItem.setValue(PASSWORD, password);
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(userItem).noTriggerExtra().ignoreUser());
 				info.increaseProcessed();
 				isInsideUser = false;

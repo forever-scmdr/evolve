@@ -9,12 +9,10 @@ import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +30,8 @@ public abstract class BasicCartManageCommand extends Command {
 	protected static final String PURCHASE_ITEM = "purchase";
 	protected static final String USER_ITEM = "user";
 	protected static final String PRICE_PARAM = "price";
+	protected static final String PRICE_OPT_PARAM = "price_opt";
+	protected static final String NOT_AVAILABLE = "not_available";
 	protected static final String QTY_PARAM = "qty";
 	protected static final String SUM_PARAM = "sum";
 	protected static final String CODE_PARAM = "code";
@@ -103,7 +103,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
 		Item form = getItemForm().getItemSingleTransient();
 		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
-		recalculateCart(isPhys ? PRICE_PARAM : ItemNames.product_.PRICE);
+		recalculateCart(isPhys ? PRICE_PARAM : PRICE_OPT_PARAM);
 
 		getSessionMapper().saveTemporaryItem(form, "user");
 
@@ -157,6 +157,9 @@ public abstract class BasicCartManageCommand extends Command {
 		try {
 			shopTemplate = getExecutablePage(shopEmailLink.serialize());
 		} catch (PageNotFoundException e) {
+			shopTemplate = null;
+		}
+		if (shopTemplate == null) {
 			shopEmailLink = LinkPE.newDirectLink("link", "order_email", false);
 			shopTemplate = getExecutablePage(shopEmailLink.serialize());
 		}
@@ -313,8 +316,10 @@ public abstract class BasicCartManageCommand extends Command {
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
 			double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
-			if (maxQuantity > 0)
-				qty = maxQuantity > qty ? qty : maxQuantity;
+			if (maxQuantity <= 0 || qty > maxQuantity) {
+				//qty = maxQuantity > qty ? qty : maxQuantity;
+				bought.setValue(NOT_AVAILABLE, (byte) 1);
+			}
 			bought.setValue(QTY_PARAM, qty);
 			bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
 			bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
@@ -336,8 +341,10 @@ public abstract class BasicCartManageCommand extends Command {
 				return;
 			}
 			double maxQuantity = boughtProduct.getDoubleValue(QTY_PARAM, MAX_QTY);
-			if (maxQuantity > 0)
-				qty = maxQuantity > qty ? qty : maxQuantity;
+			if (maxQuantity > 0 && qty > maxQuantity) {
+				//qty = maxQuantity > qty ? qty : maxQuantity;
+				bought.setValue(NOT_AVAILABLE, (byte) 1);
+			}
 			bought.setValue(QTY_PARAM, qty);
 			getSessionMapper().saveTemporaryItem(bought);
 		}
@@ -433,9 +440,8 @@ public abstract class BasicCartManageCommand extends Command {
 	protected boolean recalculateCart(String...priceParamName) throws Exception {
 		loadCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
-		BigDecimal sum = new BigDecimal(0); // полная сумма
-		double zeroQuantity = 0;
-		double regularQuantity = 0;
+		BigDecimal totalSum = new BigDecimal(0); // полная сумма
+		double totanQuantity = 0;
 		boolean result = true;
 
 		final String PRICE = (priceParamName != null && priceParamName.length > 0) ? priceParamName[0] : PRICE_PARAM;
@@ -452,25 +458,24 @@ public abstract class BasicCartManageCommand extends Command {
 				// Первоначальная сумма
 				BigDecimal price = product.getDecimalValue(PRICE, new BigDecimal(0));
 				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
-				if (maxQuantity <= 0) {
+				if (maxQuantity <= 0 || maxQuantity < quantity) {
 					productSum = new BigDecimal(0);
-					zeroQuantity += quantity;
 				} else {
-					regularQuantity += quantity;
+					totanQuantity += quantity;
 				}
 				bought.setValue(PRICE_PARAM, price);
 				bought.setValue(SUM_PARAM, productSum);
-				sum = sum.add(productSum);
+				totalSum = totalSum.add(productSum);
 				// Сохранить bought
 				getSessionMapper().saveTemporaryItem(bought);
 			}
 		}
-		cart.setValue(SUM_PARAM, sum);
-		cart.setValue(QTY_PARAM, regularQuantity);
+		cart.setValue(SUM_PARAM, totalSum);
+		cart.setValue(QTY_PARAM, totanQuantity);
 		// Сохранить корзину
 		getSessionMapper().saveTemporaryItem(cart);
 		saveCookie();
-		return result && regularQuantity > 0;
+		return result && totanQuantity > 0;
 	}
 
 	@Override
