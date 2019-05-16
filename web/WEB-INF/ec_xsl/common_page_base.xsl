@@ -618,13 +618,16 @@
 					<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 					<xsl:variable name="extra" select="parse-xml(concat('&lt;extra&gt;', extra_xml, '&lt;/extra&gt;'))/extra"/>
 					<div class="item-icons">
-					<xsl:for-each select="$extra/pic"><span><img src="{@link}" alt="{.}"  data-toggle="tooltip" data-placement="left" title="{.}"/></span></xsl:for-each>
-					<script>
-						$(function () {
-							$('[data-toggle="tooltip"]').tooltip()
-						})
-					</script>
-				</div>
+						<xsl:for-each select="$extra/pic">
+							<xsl:variable name="et" select="replace(., '&lt;br/&gt;', ' ')"/>
+							<span><img src="{@link}" alt="{$et}"  data-toggle="tooltip" data-placement="left" title="{$et}"/></span>
+						</xsl:for-each>
+						<script>
+							$(function () {
+								$('[data-toggle="tooltip"]').tooltip()
+							})
+						</script>
+					</div>
 				</div>
 			</div>
 			<div class="device__article-number">Артикул: <br/><xsl:value-of select="code"/></div>

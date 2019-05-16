@@ -640,6 +640,15 @@ public class Item implements ItemBasics {
 		return oldKeyUnique;
 	}
 	/**
+	 * Принудительно разобрать содержимое строки параметров и установить флаг о том,
+	 * что айтем был обновлен (хотя он не был)
+	 * @return
+	 */
+	public final void forceInitialInconsistent() {
+		populateMap();
+		state = State.modified_NO_xml;
+	}
+	/**
 	 * Получить XML со всеми параметрами айтема
 	 * После вызова этого метода айтем находится в согласованном состоянии
 	 * @return

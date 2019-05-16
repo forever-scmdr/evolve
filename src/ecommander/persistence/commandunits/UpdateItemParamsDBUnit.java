@@ -35,6 +35,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 		this.item = item;
 		if (forceUpdate) {
 			this.mode = ItemMapper.Mode.FORCE_UPDATE;
+			this.item.forceInitialInconsistent();
 		}
 	}
 
