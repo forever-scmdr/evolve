@@ -180,9 +180,19 @@
 											Импорт каталога из Excel
 										</a>
 									</li>
+									<li class="visible" style="background: #0c609d;">
+										<a href="update_prices_from_excel/?action=start" style="color: #fff;">
+											Обновить цены из Excel
+										</a>
+									</li>
 
 									<li class="visible" title="Загрзить товары из Yandex Market">
 										<a href="integrate/?action=start">Интеграция Yandex Market</a>
+									</li>
+									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков" target="_blank">
+										<a href="create_yml_file">
+											Сгенерировать файл Яндекс-маркет
+										</a>
 									</li>
 									<li class="visible" title="Скачать картинки">
 										<a href="download_pics/?action=start">Скачать картинки</a>

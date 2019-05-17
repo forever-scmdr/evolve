@@ -30,6 +30,7 @@ public abstract class BasicRegisterCommand extends Command {
 
 	public static final String REGISTERED_GROUP = "registered";
 	public static final String USER_ITEM = "user";
+	protected static final String CART_ITEM = "cart";
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -96,6 +97,8 @@ public abstract class BasicRegisterCommand extends Command {
 						getSessionMapper().removeItems(oldUserItem.getId());
 					userItem.setContextPrimaryParentId(Item.DEFAULT_ID);
 					getSessionMapper().saveTemporaryItem(userItem);
+					// Удалить корзину
+					getSessionMapper().removeItems(CART_ITEM);
 				}
 				return getResult("login");
 			} else {

@@ -1,9 +1,7 @@
 package ecommander.fwk.integration;
 
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ResizeImagesFactory;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.controllers.AppContext;
+import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
@@ -16,6 +14,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.io.File;
 import java.net.URL;
 import java.util.*;
 
@@ -208,20 +207,34 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 
 				boolean needSave = false;
+				ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+				for (File galleryPic : galleryPics) {
+					if (!galleryPic.exists()) {
+						product.removeEqualValue(GALLERY_PARAM, galleryPic.getName());
+					}
+				}
 				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
-				if (wasNew) {
-					for (String picUrl : picUrls) {
-						try {
+				for (String picUrl : picUrls) {
+					try {
+						String fileName = Strings.getFileName(picUrl);
+						if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
 							product.setValue(GALLERY_PARAM, new URL(picUrl));
 							needSave = true;
-						} catch (Exception e) {
-							info.addError("Неверный формат картинки: " + picUrl, picUrl);
 						}
+					} catch (Exception e) {
+						info.addError("Неверный формат картинки: " + picUrl, picUrl);
 					}
 				}
 
 				// Генерация маленького изображения
 				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
+				if (!noMainPic) {
+					File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+					if (!mainPic.exists()) {
+						product.clearValue(MAIN_PIC_PARAM);
+						noMainPic = true;
+					}
+				}
 				if (noMainPic && picUrls.size() > 0) {
 					if (picUrls.size() > 0) {
 						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));

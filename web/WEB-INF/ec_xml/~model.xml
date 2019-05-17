@@ -397,7 +397,7 @@
 	</item>
 
 
-	<item name="registered_catalog" caption="Каталог пользователей" ag-id="822" ag-hash="-755203236">
+	<item name="registered_catalog" caption="Каталог пользователей" children-sorting="DESC" children-per-page="50" ag-id="822" ag-hash="-755203236">
 		<parameter name="users_file" type="file" caption="Файл пользователей"/>
 		<child item="user"/>
 	</item>

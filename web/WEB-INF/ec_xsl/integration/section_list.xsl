@@ -19,7 +19,7 @@
             </head>
             <body>
                 <ul>
-                    <li><a href="{page/create_pricelist}">ВСЕ (<xsl:value-of select="sum(//f:num(product_count))"/>)</a></li>
+                    <li><a href="{page/create_pricelist}">ВСЕ<!-- (<xsl:value-of select="sum(//f:num(product_count))"/>)--></a></li>
                     <xsl:apply-templates select="/page/catalog/section"/>
                 </ul>
             </body>
@@ -29,7 +29,7 @@
     <xsl:template match="section">
        <li>
            <a href="{create_link}">
-               <xsl:value-of select="name"/>(<xsl:value-of select="sum(.//f:num(product_count))"/>)
+               <xsl:value-of select="name"/><!--(<xsl:value-of select="sum(.//f:num(product_count))"/>)-->
            </a>
            <xsl:if test="section">
                <ul>

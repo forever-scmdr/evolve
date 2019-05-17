@@ -94,9 +94,26 @@
 		</div>
 	</xsl:template>
 
+	<xsl:template name="HERO">
+		<section class="hero">
+			<div class="fotorama" data-width="100%" data-height="80px" data-fit="cover" data-autoplay="true" data-nav="false" data-transition="crossfade">
+				<xsl:for-each select="page/main_page/main_slider_frame">
+					<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+						<a href="{link}" style="display: block; position: absolute; top: 0; right: 0; bottom: 0; left: 0"></a>
+						<!-- <div class="slider-item__block fotorama__select">
+							<div class="slider-item__wrapper">
+								<div class="slider-item__title"><xsl:value-of select="name" /></div>
+								<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+							</div>
+						</div> -->
+					</div>
+				</xsl:for-each>
+			</div>
+		</section>
+	</xsl:template>
 
 	<xsl:template name="BANNERS">
-		<section class="catalog-index pt">
+		<section class="catalog-index pt pb">
 			<div class="container">
 				<xsl:apply-templates select="page/catalog/section[1]"/>
 				<xsl:apply-templates select="page/catalog/section[2]"/>
@@ -116,74 +133,21 @@
 				</div>
 			</div>
 		</section>
-		<!-- <section class="hero pb">
+
+		<section class="special-items">
 			<div class="container">
-				<div class="fotorama" data-width="100%" data-height="284px" data-fit="cover">
-					<xsl:for-each select="page/main_page/main_slider_frame">
-						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
-							<div class="slider-item__block fotorama__select">
-								<div class="slider-item__wrapper">
-									<div class="slider-item__title"><xsl:value-of select="name" /></div>
-									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
-								</div>
-							</div>
-						</div>
-					</xsl:for-each>
-				</div>
-				<xsl:apply-templates select="page/banner_section[1]/banner"/>
-			</div>
-		</section>
-		<section class="catalog-map">
-			<div class="container">
-				<div class="title_2">
-					Каталог продукции
-				</div>
-				<div class="grid">
-					<xsl:for-each select="page/catalog/section">
-						<div class="catalog-map__item">
-							<div class="catalog-map__icon"><img src="{@path}{icon}" alt="" /></div>
-							<ul class="catalog-map__list">
-								<li><a href="{show_products}"><xsl:value-of select="name"/></a></li>
-								<xsl:for-each select="section">
-									<li><a href="{show_products}"><xsl:value-of select="name"/></a></li>
-								</xsl:for-each>
-							</ul>
-							<xsl:if test="count(section) &gt; 4">
-								<a href="#" class="catalog-map__toggle">Раскрыть полный список</a>
-							</xsl:if>
-						</div>
-					</xsl:for-each>
+				<div class="block-title">Новинки</div>
+				<div class="special-items__devices slick-slider zu">
+					<xsl:apply-templates select="page/main_page/product[tag='Новинка']" mode="special"/>
 				</div>
 			</div>
 		</section>
-		<section class="brands ptb">
-			<div class="container">
-				<div class="block-title">Бренды</div>
-				<div class="grid">
-					<xsl:for-each select="page/banner_section[2]/banner">
-						<div class="brand-item">
-							<a href="{link}"><img src="{@path}{image_pic}" /></a>
-						</div>
-					</xsl:for-each>
-				</div>
-			</div>
-		</section> -->
+
+
 	</xsl:template>
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript" src="fotorama/fotorama.js"/>
-		<script>
-			$(document).ready(function() {
-				$('.catalog-map__toggle').click(function(e) {
-					e.preventDefault();
-					$(this).closest('.catalog-map__item').find('ul').toggleClass('show', 200);
-					if ($(this).html() == 'Свернуть')
-						$(this).html('Раскрыть полный список');
-					else
-						$(this).html('Свернуть');
-				});
-			});
-		</script>
 	</xsl:template>
 
 </xsl:stylesheet>

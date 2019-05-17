@@ -80,7 +80,7 @@ public class WebClient {
 
 	public static void saveFile(String url, String dirName, String saveAs, String...proxy) throws IOException {
 		String badPart = StringUtils.substringAfterLast(url,"/");
-		url = url.replace(badPart, URLEncoder.encode(badPart, "UTF-8"));
+		url = url.replace(badPart, URLEncoder.encode(badPart, "UTF-8").replace("+", "%20"));
 		Request req = Request.Get(url)
 				.addHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
 		if (proxy.length > 0 && StringUtils.isNotBlank(proxy[0])) {

@@ -105,7 +105,7 @@ public abstract class BasicCartManageCommand extends Command {
 		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
 		recalculateCart(isPhys ? PRICE_PARAM : PRICE_OPT_PARAM);
 
-		getSessionMapper().saveTemporaryItem(form, "user");
+		//getSessionMapper().saveTemporaryItem(form, "user");
 
 		if (!validate()) {
 			return getResult("validation_failed");
@@ -293,8 +293,9 @@ public abstract class BasicCartManageCommand extends Command {
 				if (quantity > 0) {
 					Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 					double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
-					if (maxQuantity > 0)
-						quantity = maxQuantity > quantity ? quantity : maxQuantity;
+					if (maxQuantity > 0 && quantity > maxQuantity) {
+						bought.setValue(NOT_AVAILABLE, (byte) 1);
+					}
 					bought.setValue(QTY_PARAM, quantity);
 					getSessionMapper().saveTemporaryItem(bought);
 				} else {

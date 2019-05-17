@@ -84,7 +84,7 @@
 
 	<xsl:template name="TOTAL">
 		<div class="total">
-			<p>Итого: <xsl:value-of select="page/cart/sum_discount"/> р.</p>
+			<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum_discount)"/> р.</p>
 			<xsl:if test="f:num(page/cart/sum) &gt; f:num(page/cart/sum_discount)">
 				<div class="discount-total">
 					Итоговая скидка: <xsl:value-of select="round((f:num(page/cart/sum) - f:num(page/cart/sum_discount)) * 100) div 100"/> руб.

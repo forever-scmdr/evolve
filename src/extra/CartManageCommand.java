@@ -131,6 +131,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			}
 		}
 		BigDecimal discountedSum = originalSum.multiply(new BigDecimal((100 - discount) / 100));
+		discountedSum = discountedSum.setScale(2, BigDecimal.ROUND_CEILING);
 		cart.setValue(ItemNames.cart_.SUM_DISCOUNT, discountedSum);
 		// Сумма прописью
 		BigDecimal rub = discountedSum.setScale(0, BigDecimal.ROUND_FLOOR);

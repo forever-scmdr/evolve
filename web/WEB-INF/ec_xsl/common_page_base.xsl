@@ -531,6 +531,48 @@
 		</div>
 	</xsl:template>
 
+	<xsl:template match="accessory | set | probe | product | assoc" mode="special">
+		<xsl:variable name="has_price" select="if ($is_reg_jur) then (price_opt and price_opt != '0') else (price and price != '0')"/>
+		<xsl:variable name="prms" select="params/param"/>
+		<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num(price_opt) div 100 * (100 - $discount)) else price"/>
+		<xsl:variable name="price_old" select="if ($is_reg_jur) then price_opt_old else price_old"/>
+		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+		<div class="device_special">
+			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<!-- <xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
+				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
+					<i class="fas fa-search-plus"></i>
+				</a>
+			</xsl:if> -->
+			<div>
+				<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}">&#160;</a>
+				<div style="flex: 1; margin-left: 8px;">
+					<div class="device__info">
+						<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
+						<div class="device__description">
+							<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
+						</div>
+					</div>
+					<xsl:if test="$has_price">
+						<div class="device__price">
+							<xsl:if test="$price_old"><div class="price_old"><span><xsl:value-of select="$price_old"/> руб.</span></div></xsl:if>
+							<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="$price"/> руб.</div>
+						</div>
+					</xsl:if>
+					<xsl:if test="not($has_price)">
+						<div class="device__pric">
+
+						</div>
+					</xsl:if>
+				</div>
+			</div>
+			<xsl:for-each select="tag">
+				<div class="device__tag device_row__tag"><xsl:value-of select="." /></div>
+			</xsl:for-each>
+		</div>
+	</xsl:template>
+
 
 
 	<xsl:template name="CART_SCRIPT">
@@ -592,7 +634,7 @@
 
 
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
-
+	<xsl:template name="HERO" />
 
 	<xsl:template match="/">
 	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
@@ -621,7 +663,7 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css?version=0.1"/>
+				<link rel="stylesheet" href="css/app.css?version=0.2"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
@@ -648,6 +690,7 @@
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
 				<!-- ALL CONTENT BEGIN -->
 				<div class="content-container">
+					<xsl:call-template name="HERO" />
 					<xsl:call-template name="INC_DESKTOP_HEADER"/>
 
 					<xsl:call-template name="MAIN_CONTENT"/>
@@ -671,71 +714,71 @@
 				<script type="text/javascript" src="slick/slick.min.js"></script>
 				<script type="text/javascript">
 					$(document).ready(function(){
-					$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
-						type: 'image',
-						closeOnContentClick: true,
-						mainClass: 'mfp-img-mobile',
-						image: {
-							verticalFit: true
-						}
-					});
-					var oh = $(".footer").outerHeight();
-					$(".footer-placeholder").height(oh+110);
-					$(".footer").css("margin-top", -1*oh);
-					$('.slick-slider').slick({
-					infinite: true,
-					slidesToShow: 6,
-					slidesToScroll: 6,
-					dots: true,
-					arrows: false,
-					responsive: [
-						{
-							breakpoint: 1440,
-							settings: {
-								slidesToShow: 5,
-								slidesToScroll: 5,
-								infinite: true,
-								dots: true
+						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
+							type: 'image',
+							closeOnContentClick: true,
+							mainClass: 'mfp-img-mobile',
+							image: {
+								verticalFit: true
 							}
-						},
-						{
-							breakpoint: 1200,
-							settings: {
-								slidesToShow: 4,
-								slidesToScroll: 4,
-								infinite: true,
-								dots: true
-							}
-						},
-						{
-							breakpoint: 992,
-							settings: {
-								slidesToShow: 3,
-								slidesToScroll: 3,
-								infinite: true,
-								dots: true
-							}
-						},
-						{
-							breakpoint: 768,
-							settings: {
-								slidesToShow: 2,
-								slidesToScroll: 2,
-								infinite: true,
-								dots: true
-							}
-						},
-						{
-							breakpoint: 375,
-							settings: {
-								slidesToShow: 1,
-								slidesToScroll: 1,
-								infinite: true,
-								dots: true
-							}
-						}
-					]
-					});
+						});
+						var oh = $(".footer").outerHeight();
+						$(".footer-placeholder").height(oh+110);
+						$(".footer").css("margin-top", -1*oh);
+						$('.slick-slider').slick({
+							infinite: true,
+							slidesToShow: 4,
+							slidesToScroll: 4,
+							dots: true,
+							arrows: false,
+							responsive: [
+								{
+									breakpoint: 1440,
+									settings: {
+										slidesToShow: 4,
+										slidesToScroll: 4,
+										infinite: true,
+										dots: true
+									}
+								},
+								{
+									breakpoint: 1200,
+									settings: {
+										slidesToShow: 3,
+										slidesToScroll: 3,
+										infinite: true,
+										dots: true
+									}
+								},
+								{
+									breakpoint: 992,
+									settings: {
+										slidesToShow: 2,
+										slidesToScroll: 2,
+										infinite: true,
+										dots: true
+									}
+								},
+								{
+									breakpoint: 768,
+									settings: {
+										slidesToShow: 2,
+										slidesToScroll: 2,
+										infinite: true,
+										dots: true
+									}
+								},
+								{
+									breakpoint: 426,
+									settings: {
+										slidesToShow: 1,
+										slidesToScroll: 1,
+										infinite: true,
+										dots: true
+									}
+								}
+							]
+						});
 
 						//initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
 						//initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');

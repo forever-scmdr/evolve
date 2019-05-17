@@ -201,7 +201,7 @@
 				<filter>
 					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
-					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+					<parameter name="qty" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 					<sorting direction-var="direction">
 						<var var="sort"/>
 					</sorting>
@@ -605,7 +605,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="design@forever-ds.com"/>
+			<var name="email" value="forever@forever-ds.com"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -667,7 +667,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="design@forever-ds.com"/>
+			<var name="email" value="forever@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -789,7 +789,7 @@
 			<single item="cart">
 				<list item="bought" id="bought"/>
 			</single>
-			<single item="user" tag="registration"/>
+			<list item="user" tag="registration"/>
 			<new item="user_phys" id="user_phys">
 				<parameter-input ref="user_phys" form="customer_phys"/>
 			</new>
@@ -817,7 +817,7 @@
 			<single item="cart">
 				<list item="bought" id="bought"/>
 			</single>
-			<single item="user" tag="registration"/>
+			<list item="user" tag="registration"/>
 			<new item="user_phys" id="user_phys">
 				<parameter-input ref="user_phys" form="customer_phys"/>
 			</new>
