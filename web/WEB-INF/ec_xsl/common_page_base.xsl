@@ -216,6 +216,12 @@
 				$('#mobile_catalog_menu').toggle();
 			}
 
+			function hideMobileCatalogMenu() {
+				$("#mobile_catalog_menu .content").css('left', '100%');
+				$("#m_sub_cat").css('left', '0%');
+				$('#mobile_catalog_menu').hide();
+			}
+
 			$(document).ready(function() {
 				$("#mobile_catalog_menu .content li a[rel]").click(function(event) {
 					//event.preventDefault();
@@ -234,13 +240,10 @@
 					var parentMenuContainer = $(back.attr('rel'));
 					parentMenuContainer.css('left', '0%');
 				});
+
+				initCatalogPopupMenu('#login_click', '.login-popup', 'mouseenter');
 			});
 
-			function hideMobileCatalogMenu() {
-				$("#mobile_catalog_menu .content").css('left', '100%');
-				$("#m_sub_cat").css('left', '0%');
-				$('#mobile_catalog_menu').hide();
-			}
 		</script>
 	</xsl:template>
 
@@ -671,6 +674,7 @@
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 				<script defer="defer" src="js/font_awesome_all.js"/>
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
+				<script type="text/javascript" src="js/fwk/common.js"/>
 				<xsl:if test="$seo/extra_style">
 					<style>
 						<xsl:value-of select="$seo/extra_style" disable-output-escaping="yes"/>
@@ -710,7 +714,6 @@
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
-				<script type="text/javascript" src="js/fwk/common.js"/>
 				<script type="text/javascript" src="slick/slick.min.js"></script>
 				<script type="text/javascript">
 					$(document).ready(function(){
@@ -782,7 +785,6 @@
 
 						//initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
 						//initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
-						initCatalogPopupMenu('#login_click', '.login-popup', 'mouseenter');
 						initDropDownHeader();
 					});
 
