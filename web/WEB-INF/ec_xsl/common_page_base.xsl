@@ -505,8 +505,10 @@
 				<a href="{$product_link}"><xsl:value-of select="vendor"/></a>
 			</div>
 			<!-- <div class="device__article-number"><xsl:value-of select="code"/></div> -->
-			<xsl:variable name="device-link" select="if(starts-with(manual[1]/link, 'http://') or starts-with(manual[1]/link, 'https://')) then manual[1]/link else concat('https://tme.eu', manual[1]/link)"/>
-					<a href="{$device-link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
+			<xsl:if test="manual and not(manual = '')">
+				<xsl:variable name="device-link" select="if(starts-with(manual[1]/link, 'http://') or starts-with(manual[1]/link, 'https://')) then manual[1]/link else concat('https://tme.eu', manual[1]/link)"/>
+				<a href="{$device-link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
+			</xsl:if>
 			<!-- <a href="{manual[1]/link}"><xsl:value-of select="manual[1]/name"/></a> -->
 			<xsl:if test="$has_price">
 				<div class="device__price">
@@ -584,8 +586,10 @@
 			<div class="device__info">
 				<div style="position: relative; display: inline-block;">
 					<a href="{$product_link}" class="device__title"><xsl:value-of select="name"/></a>
-					<xsl:variable name="device-link" select="if(starts-with(manual[1]/link, 'http://') or starts-with(manual[1]/link, 'https://')) then manual[1]/link else concat('https://tme.eu', manual[1]/link)"/>
-					<a href="{$device-link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
+					<xsl:if test="manual and not(manual = '')">
+						<xsl:variable name="device-link" select="if(starts-with(manual[1]/link, 'http://') or starts-with(manual[1]/link, 'https://')) then manual[1]/link else concat('https://tme.eu', manual[1]/link)"/>
+						<a href="{$device-link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
+					</xsl:if>
 				</div>
 				<div class="device__description">
 					<div class="small-text device__small-text" title="{name_extra}"><xsl:value-of select="name_extra"/></div>

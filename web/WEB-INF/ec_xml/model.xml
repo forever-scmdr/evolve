@@ -55,7 +55,7 @@
 	</item>
 
 
-	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="30" children-sorting="ASC" ag-id="2127" ag-hash="-328034960">
+	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="50" children-sorting="ASC" ag-id="2127" ag-hash="-328034960">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="date" type="date" caption="Дата"/>
 		<child item="product"/>
@@ -64,7 +64,7 @@
 
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
-	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" ag-id="3" ag-hash="1970241253">
+	<item name="section" default-page="section" key="name" caption="Раздел" children-per-page="50" key-unique="true" ag-id="3" ag-hash="1970241253">
 		<child item="seo" single="true"/>
 		<child item="section" />
 		<child item="product"/>

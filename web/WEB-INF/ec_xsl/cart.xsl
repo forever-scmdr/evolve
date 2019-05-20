@@ -19,16 +19,26 @@
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
 					<form method="post">
+						<xsl:variable name="products" select="/page/product"/>
 						<xsl:for-each select="page/cart/bought">
-							<xsl:variable name="p" select="product"/>
+							<xsl:variable name="code" select="code"/>
+							<xsl:variable name="p" select="$products[code = $code]"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat($p/price, ' p.') else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num(sum) != 0) then concat(sum, ' p.') else ''"/>
 							<div class="item">
-								<a href="{$p/show_product}" class="image-container">
-									
-									<img src="{if($p/main_pic != '') then concat($p/@path, $p/main_pic) else 'img/no_image.png'}" alt="{$p/name}"/>
-								</a>
-								<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
+								<xsl:if test="not($p/plain_section)">
+									<a href="{$p/show_product}" class="image-container">
+										
+										<img src="{if($p/main_pic != '') then concat($p/@path, $p/main_pic) else 'img/no_image.png'}" alt="{$p/name}"/>
+									</a>
+									<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
+								</xsl:if>
+								<xsl:if test="$p/plain_section">
+									<span class="image-container">
+										<img src="{if($p/main_pic != '') then concat($p/@path, $p/main_pic) else 'img/no_image.png'}" alt="{$p/name}"/>
+									</span>
+									<span class="title"><xsl:value-of select="$p/name"/></span>
+								</xsl:if>
 								<div class="price one">
 									<p>
 										<span>Цена</span>

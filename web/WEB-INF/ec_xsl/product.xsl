@@ -27,9 +27,9 @@
 			{
 			"@context": "http://schema.org/",
 			"@type": "Product",
-			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
-			"image": <xsl:value-of select="concat($quote, $base, '/', $p/@path, $p/gallery[1], $quote)" />,
-			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
+			"name": <xsl:value-of select="concat($quote, replace($p[1]/name, $quote, ''), $quote)" />,
+			"image": <xsl:value-of select="concat($quote, $base, '/', $p[1]/@path, $p[1]/gallery[1], $quote)" />,
+			"brand": <xsl:value-of select="concat($quote, $p[1]/tag[1], $quote)" />,
 			"offers": {
 			"@type": "Offer",
 			"priceCurrency": "BYN",
@@ -41,7 +41,7 @@
 			"ratingCount": "53",
 			"bestRating": "5",
 			"worstRating": "1",
-			"name": <xsl:value-of select="concat($quote, translate($p/name, $quote, ''), $quote)" />
+			"name": <xsl:value-of select="concat($quote, translate($p[1]/name, $quote, ''), $quote)" />
 			}
 			}
 		</script>
@@ -231,7 +231,7 @@
 							<th>Описание</th>
 							<th>Производитель</th>
 							<!--<th>Код производителя</th>-->
-							<th>На складе</th>
+							<th>Количество</th>
 							<th>Срок поставки</th>
 							<th>Единица</th>
 							<th>Мин. заказ</th>
