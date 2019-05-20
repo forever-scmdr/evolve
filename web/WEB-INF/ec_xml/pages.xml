@@ -35,7 +35,7 @@
 			<list item="block_array">
 				<list item="block"/>
 			</list>
-			<single item="product_side"/>
+			<!--<single item="product_side"/>-->
 		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
