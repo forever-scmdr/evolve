@@ -15,11 +15,11 @@
 		<div class="path-container">
 			<div class="path">
 				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
-				<a href="{page/cart_link}">Изменить зявку</a> <i class="fas fa-angle-right"></i>
+				<a href="{page/cart_link}">Корзина</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Анкета покупателя</h1>
+		<h1 class="page-title">Анкета покупателя</h1>
 
 		<div class="page-content m-t">
 			<xsl:if test="$message">

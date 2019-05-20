@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>                                        
+<?xml version="1.0" encoding="UTF-8"?>                                            
 <site>
 
 
@@ -19,12 +19,12 @@
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="keypath"/>
 				</link>
-				<list item="product"  transit="true">
+				<list item="product" transit="true">
 					<filter>
 						<limit>
 							<var value="1"/>
 						</limit>
-						<sorting>
+						<sorting direction="DESC">
 							<var value="main_pic"/>
 						</sorting>
 					</filter>
@@ -606,7 +606,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="design@forever-ds.com"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -668,7 +668,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="design@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -808,7 +808,7 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 		</list>
-		<single item="common" cacheable="true"/>
+		<single item="common"/>
 	</page>
 
 

@@ -22,7 +22,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="page/variables/tag"/></h1>
+		<h1 class="page-title"><xsl:value-of select="page/variables/tag"/></h1>
 
 		<div class="page-content m-t">
 

@@ -28,7 +28,7 @@
 							<div><a href="#" class="order_toggle">Заказ № <xsl:value-of select="num"/></a><span>от <xsl:value-of select="date"/></span></div>
 							<div><strong><xsl:value-of select="sum"/> р.</strong><span><xsl:value-of select="qty"/> позиций</span></div>
 							<div class="order-buttons" style="display: none">
-								<a href="#" class="button desktop submit_all_again">Повторить заказ</a>
+								<a href="#" class="button desktop submit_all_again">В корзину</a>
 								<a href="#" class="button mobile submit_all_again"><i class="fas fa-redo"></i></a>
 							</div>
 						</div>
@@ -66,17 +66,19 @@
 										<div><xsl:value-of select="sum"/> р.</div>
 										<div>
 											<xsl:if test="$prod">
-												<xsl:variable name="has_price" select="$prod/price and $prod/price != '0'"/>
-												<div><xsl:if test="$has_price"><xsl:value-of select="$prod/price"/> р.</xsl:if></div>
+												<xsl:variable name="has_price" select="if ($is_reg_jur) then ($prod/price_opt and $prod/price_opt != '0') else ($prod/price and $prod/price != '0')"/>
+												<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num($prod/price_opt) div 100 * (100 - $discount)) else $prod/price"/>
+												<xsl:variable name="price_old" select="if ($is_reg_jur) then $prod/price_opt_old else $prod/price_old"/>
+												<div><xsl:if test="$has_price"><xsl:value-of select="$price"/> р.</xsl:if></div>
 												<div id="cart_list_{$prod/code}" class="product_purchase_container">
 													<form action="{$prod/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$prod/code}">
 														<xsl:if test="$has_price">
 															<input type="number" name="qty" value="{qty}" min="0"/>
-															<input type="submit" value="В корзину"/>
+															<input type="submit" value="В корзину" class="button"/>
 														</xsl:if>
 														<xsl:if test="not($has_price)">
 															<input type="number" name="qty" value="1" min="0"/>
-															<input type="submit" class="not_available" value="Под заказ"/>
+															<input type="submit" class="not_available button" value="Под заказ"/>
 														</xsl:if>
 													</form>
 												</div>

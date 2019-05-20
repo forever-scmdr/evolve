@@ -66,6 +66,11 @@
 
 	<xsl:template name="MAIN_MENU">
 		<a href="/catalog" class="menu__item">Каталог</a>
+		<xsl:for-each select="page/news">
+			<a href="{show_page}" class="menu__item{' active'[current()/@key = $active_menu_item]}">
+				<xsl:value-of select="name"/>
+			</a>
+		</xsl:for-each>
 		<xsl:apply-templates select="page/custom_pages/page_link | page/custom_pages/menu_custom" mode="menu"/>
 		<a href="{page/contacts_link}" class="menu__item{' active'['contacts' = $active_menu_item]}">
 			Контакты
@@ -192,9 +197,9 @@
 					<li><i class="fas fa-th-list"></i> <a href="#" onclick="showMobileCatalogMenu(); return false">Каталог продукции</a></li>
 				</ul>
 				<ul>
-					<li><i class="fas fa-shopping-cart"></i> <a href="{page/cart_link}" rel="nofolow">Заявки</a></li>
-					<li><i class="fas fa-star"></i> <a href="{page/fav_link}">Избранное</a></li>
-					<li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li>
+					<li><i class="fas fa-shopping-cart"></i> <a href="{page/cart_link}" rel="nofolow">Корзина</a></li>
+					<!-- <li><i class="fas fa-star"></i> <a href="{page/fav_link}">Избранное</a></li> -->
+					<!-- <li><i class="fas fa-balance-scale"></i> <a href="{page/compare_link}">Сравнение</a></li> -->
 				</ul>
 				<ul>
 					<xsl:for-each select="page/news">
@@ -666,7 +671,7 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css?version=0.2"/>
+				<link rel="stylesheet" href="css/app.css?version=0.3"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
