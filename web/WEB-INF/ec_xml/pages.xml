@@ -490,12 +490,28 @@
 			</list>
 
 		</single>
-		<list item="product" tag="assoc" id="assoc">
+		<list item="product" tag="analog" id="analog">
 			<filter>
-				<parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
+				<parameter name="code" compare="SOME"><var ref="prod" parameter="analog_code"/></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="assoc" style="key"/>
+				<var name="prod" ref="analog" style="key"/>
+			</link>
+		</list>
+		<list item="product" tag="similar" id="similar">
+			<filter>
+				<parameter name="code" compare="SOME"><var ref="prod" parameter="similar_code"/></parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="similar" style="key"/>
+			</link>
+		</list>
+		<list item="product" tag="support" id="support">
+			<filter>
+				<parameter name="code" compare="SOME"><var ref="prod" parameter="support_code"/></parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="support" style="key"/>
 			</link>
 		</list>
 		<include name="COMMON"/>

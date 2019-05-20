@@ -139,17 +139,26 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				if (product.getItemType().hasParameter(ANALOG_CODE_PARAM) && multipleParams.containsKey(ANALOG_ELEMENT)) {
 					for (String val : multipleParams.get(ANALOG_ELEMENT)) {
-						product.setValueUI(ANALOG_CODE_PARAM, val);
+						String[] parts = StringUtils.split(val, ',');
+						for (String part : parts) {
+							product.setValueUI(ANALOG_CODE_PARAM, StringUtils.trim(part));
+						}
 					}
 				}
 				if (product.getItemType().hasParameter(SIMILAR_CODE_PARAM) && multipleParams.containsKey(SIMILAR_ITEMS_ELEMENT)) {
 					for (String val : multipleParams.get(SIMILAR_ITEMS_ELEMENT)) {
-						product.setValueUI(SIMILAR_CODE_PARAM, val);
+						String[] parts = StringUtils.split(val, ',');
+						for (String part : parts) {
+							product.setValueUI(SIMILAR_CODE_PARAM, StringUtils.trim(part));
+						}
 					}
 				}
 				if (product.getItemType().hasParameter(SUPPORT_CODE_PARAM) && multipleParams.containsKey(SUPPORT_ITEMS_ELEMENT)) {
 					for (String val : multipleParams.get(SUPPORT_ITEMS_ELEMENT)) {
-						product.setValueUI(SUPPORT_CODE_PARAM, val);
+						String[] parts = StringUtils.split(val, ',');
+						for (String part : parts) {
+							product.setValueUI(SUPPORT_CODE_PARAM, StringUtils.trim(part));
+						}
 					}
 				}
 
@@ -270,7 +279,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 			else if (isInsideOffer && MULTIPLE_PARAMS.contains(qName) && parameterReady) {
 				LinkedHashSet<String> vals = multipleParams.computeIfAbsent(qName, k -> new LinkedHashSet<>());
-				vals.add(paramValue.toString());
+				if (StringUtils.isNotBlank(StringUtils.trim(paramValue.toString())))
+					vals.add(paramValue.toString());
 			}
 
 			parameterReady = false;
@@ -306,8 +316,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			isInsideOffer = true;
 		}
 		// Параметры продуктов (общие)
-		else if (isInsideOffer &&
-				(SINGLE_PARAMS.contains(qName) || StringUtils.equalsAnyIgnoreCase(qName, PICTURE_ELEMENT, CATEGORY_ID_ELEMENT))) {
+		else if (isInsideOffer && (SINGLE_PARAMS.contains(qName) || MULTIPLE_PARAMS.contains(qName))) {
 			paramName = qName;
 			parameterReady = true;
 		}

@@ -255,13 +255,24 @@
 				</div>
 			</div>
 		</div>
-		<xsl:if test="page/assoc">
-			<h3>Вас также может заинтересовать</h3>
+		<xsl:if test="page/analog">
+			<h3>Аналоги</h3>
 			<div class="catalog-items">
-				<xsl:apply-templates select="page/assoc" mode="lines"/>
+				<xsl:apply-templates select="page/analog" mode="lines"/>
 			</div>
 		</xsl:if>
-
+		<xsl:if test="page/similar">
+			<h3>Похожие товары</h3>
+			<div class="catalog-items">
+				<xsl:apply-templates select="page/similar" mode="lines"/>
+			</div>
+		</xsl:if>
+		<xsl:if test="page/support">
+			<h3>Сопутствующие товары</h3>
+			<div class="catalog-items">
+				<xsl:apply-templates select="page/support" mode="lines"/>
+			</div>
+		</xsl:if>
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 

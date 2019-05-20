@@ -469,7 +469,7 @@
 
 
 
-	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
+	<xsl:template match="accessory | set | probe | product | assoc | analog | support | similar" mode="lines">
 		<xsl:variable name="has_price" select="if ($is_reg_jur) then (price_opt and price_opt != '0') else (price and price != '0')"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num(price_opt) div 100 * (100 - $discount)) else price"/>
@@ -539,7 +539,7 @@
 		</div>
 	</xsl:template>
 
-	<xsl:template match="accessory | set | probe | product | assoc" mode="special">
+	<xsl:template match="accessory | set | probe | product | assoc | analog | support | similar" mode="special">
 		<xsl:variable name="has_price" select="if ($is_reg_jur) then (price_opt and price_opt != '0') else (price and price != '0')"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num(price_opt) div 100 * (100 - $discount)) else price"/>
