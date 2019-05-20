@@ -29,17 +29,10 @@
 		testWhileIdle="true"
 		timeBetweenEvictionRunsMillis="10000"
 		minEvictableIdleTimeMillis="60000"
-<<<<<<< Updated upstream
-		username="alfacomp_main"
-		password="alfacomp_main"
+		username="root"
+		password="2"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://alfacomponent.must.by:3306/alfacomp_main?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
-=======
-		username="mizida_main"
-		password="mizida_main"
-		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://shop0.must.by/mizida_17?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
->>>>>>> Stashed changes
+		url="jdbc:mysql://localhost:3307/mizida_main?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
 	/>
 
 </Context>
