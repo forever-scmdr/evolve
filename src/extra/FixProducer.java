@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class FixProducer extends Command {
 
 	public static final String PRODUCT = "product";
-	public static final String NAME = "name";
+	public static final String CODE = "code";
 	public static final String PARAMS_XML = "params_xml";
 	public static final String XML = "xml";
 
@@ -36,8 +36,8 @@ public class FixProducer extends Command {
 			do {
 				products = ItemMapper.loadByName(PRODUCT, 100, lastId, conn);
 				for (Item product : products) {
-					String name = StringUtils.trim(product.getStringValue(NAME));
-					if (StringUtils.endsWithIgnoreCase(name, "ND")) {
+					String name = StringUtils.trim(product.getStringValue(CODE));
+					if (StringUtils.endsWithIgnoreCase(name, "-ND")) {
 						Item paramsXml = new ItemQuery(PARAMS_XML).setParentId(product.getId(), false).loadFirstItem();
 						if (paramsXml != null
 								&& !StringUtils.containsIgnoreCase(paramsXml.getStringValue(XML), "Производитель")
