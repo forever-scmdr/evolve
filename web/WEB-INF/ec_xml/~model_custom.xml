@@ -1,112 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
-<!--START_p257260-->
-<item name="p257260" caption="Анкеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1943" ag-hash="2098256904"></item>
-<!--END_p257260-->
-
-<!--START_p257279-->
-<item name="p257279" caption="Химические анкера и комплектующие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1944" ag-hash="2098256944"></item>
-<!--END_p257279-->
-
-<!--START_p257360-->
-<item name="p257360" caption="Крепление фасадной, гидро и теплоизоляции" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1946" ag-hash="2098257865"></item>
-<!--END_p257360-->
-
-<!--START_p257372-->
-<item name="p257372" caption="Метрический крепеж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1947" ag-hash="2098257898"></item>
-<!--END_p257372-->
-
-<!--START_p257391-->
-<item name="p257391" caption="Заклепки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1948" ag-hash="2098257959"></item>
-<!--END_p257391-->
-
-<!--START_p257459-->
-<item name="p257459" caption="Крепеж из нержавеющей стали" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1950" ag-hash="2098258804"></item>
-<!--END_p257459-->
-
-<!--START_p257475-->
-<item name="p257475" caption="Главная страница Крепеж Сантехнический" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1951" ag-hash="2098258862"></item>
-<!--END_p257475-->
-
-<!--START_p257484-->
-<item name="p257484" caption="Крюки и кольца ввертные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1952" ag-hash="2098258892"></item>
-<!--END_p257484-->
-
-<!--START_p257492-->
-<item name="p257492" caption="Такелаж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1953" ag-hash="2098258921"></item>
-<!--END_p257492-->
-
-<!--START_p257508-->
-<item name="p257508" caption="Электротехнический (кабельный) крепеж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1954" ag-hash="2098259609"></item>
-<!--END_p257508-->
-
-<!--START_p257514-->
-<item name="p257514" caption="Перфорированный крепеж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1955" ag-hash="2098259636"></item>
-<!--END_p257514-->
-
-<!--START_p257542-->
-<item name="p257542" caption="Сверла" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1956" ag-hash="2098259727"></item>
-<!--END_p257542-->
-
-<!--START_p257555-->
-<item name="p257555" caption="Диски и полотна для электроинструмента" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1957" ag-hash="2098259761"></item>
-<!--END_p257555-->
-
-<!--START_p257577-->
-<item name="p257577" caption="Сменные насадки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1958" ag-hash="2098259825"></item>
-<!--END_p257577-->
-
-<!--START_p257585-->
-<item name="p257585" caption="Ручной инструмент" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1959" ag-hash="2098259854"></item>
-<!--END_p257585-->
-
-<!--START_p257603-->
-<item name="p257603" caption="Ручной строительный инструмент STARTUL/TOPTUL" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1960" ag-hash="2098260565"></item>
-<!--END_p257603-->
-
-<!--START_p257630-->
-<item name="p257630" caption="Пена, герметики" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1961" ag-hash="2098260655"></item>
-<!--END_p257630-->
-
-<!--START_p257644-->
-<item name="p257644" caption="Электроинструмент" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1962" ag-hash="2098260690"></item>
-<!--END_p257644-->
-
-<!--START_p257653-->
-<item name="p257653" caption="Гвозди" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1963" ag-hash="2098260720"></item>
-<!--END_p257653-->
-
-<!--START_p257657-->
-<item name="p257657" caption="Проволока вязальная оцинкованная" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1964" ag-hash="2098260724"></item>
-<!--END_p257657-->
-
-<!--START_p257659-->
-<item name="p257659" caption="Скоба строительная" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1965" ag-hash="2098260726"></item>
-<!--END_p257659-->
-
-<!--START_p174123-->
-<item name="p174123" caption="Винты" key="" ag-id="0" ag-hash="2071384340" virtual="false" user-def="true" description="" super="params *">
-	<parameter name="varianty" caption="Варианты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1249574764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p369285-->
+<item name="p369285" caption="Детям" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1726" ag-hash="2127869225">
+	<parameter name="kolichestvo_kasset_sht_" caption="Количество кассет, шт." type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="138239828" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_plastika_v_kagdoi_kassete_m" caption="Количество пластика в каждой кассете, м" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-722276155" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="summarnaya_dlina_niti_m" caption="Суммарная длина нити, м" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1836141722" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trafarety_v_komplekte" caption="Трафареты в комплекте" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="410790314" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tubus_dlya_hraneniya_ruchki" caption="Тубус для хранения ручки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-451713885" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_rashodnyh_materialov_plastik" caption="Тип расходных материалов, пластик" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1773004234" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rossiiskoe_proizvodstvo_i_komponenty" caption="Российское производство и компоненты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1929806030" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_poverhnost_laminatsiya_kryshki" caption="Рабочая поверхность (ламинация крышки)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1564236594" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prilogenie" caption="Приложение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1772337086" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_akkumulyatora" caption="Тип аккумулятора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1801150590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tsvet" caption="Цвет" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="110671046" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material_sopla" caption="Материал сопла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1263811343" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_g" caption="Вес, г" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="112097932" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_sopla_mm" caption="Диаметр сопла, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-925479773" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vstroennyi_akkumulyator" caption="Встроенный аккумулятор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1764703939" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dopolnitelnye_funktsii_multitul" caption="Дополнительные функции (мультитул)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1898575581" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pitanie_zaryadka_ot_usb" caption="Питание/зарядка от USB" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1979165159" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rashodnye_materialy_v_komplekte" caption="Расходные материалы в комплекте" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1997241160" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="risovanie_na_ekrane_plansheta" caption="Рисование на экране планшета" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1681326150" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="emkost_akkumulyatora_mach" caption="Емкость аккумулятора, мАч" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="361270280" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vremya_avtonomnoi_raboty_min" caption="Время автономной работы, мин" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1210166796" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_podachi_plastika" caption="Скорость подачи пластика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1500728506" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vremya_zaryadki_min" caption="Время зарядки, мин" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2032624245" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmery_v_upakovke" caption="Размеры в упаковке" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-76307580" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_oblasti_pechati" caption="Размер области печати" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904283091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material_dlya_pechati" caption="Материал для печати" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="47007653" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_sloya" caption="Высота слоя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1198707765" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rekomendovannoe_po" caption="Рекомендованное ПО" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1938075923" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_modulei" caption="Количество модулей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-12026441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p174123-->
-
-<!--START_p257291-->
-<item name="p257291" caption="Дюбеля" key="" ag-id="0" ag-hash="2098256998" virtual="false" user-def="true" description="" super="params *">
-	<parameter name="ves_kg" caption="Вес, кг" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p257291-->
-
-<!--START_p257400-->
-<item name="p257400" caption="Саморезы, шурупы" key="" ag-id="0" ag-hash="2098258640" virtual="false" user-def="true" description="" super="params *">
-	<parameter name="diametr" caption="Диаметр" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1655045266" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="dostavka" caption="Доставка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1318522487" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kachestvo" caption="Качество" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2127388828" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="massa" caption="Масса" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="103667693" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tsvetmet" caption="Цветмет" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1533643946" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p257400-->
+<!--END_p369285-->
 <!--EXP--></model>

@@ -188,7 +188,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 		Timestamp timeUpdated = rs.getTimestamp(I_UPDATED);
 		byte status = rs.getByte(I_STATUS);
 		byte groupId = rs.getByte(I_GROUP);
-		int userId = rs.getByte(I_USER);
+		int userId = rs.getInt(I_USER);
 		boolean filesProtected = rs.getBoolean(I_PROTECTED);
 		String params = rs.getString(I_PARAMS);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemTypeId);

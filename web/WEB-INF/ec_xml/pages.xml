@@ -9,6 +9,9 @@
 
 
 	<include-definition name="COMMON">
+		<personal>
+			<single item="user" tag="registration"/>
+		</personal>
 
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec" assoc="* catalog_link">
@@ -43,6 +46,8 @@
 				<list item="block"/>
 			</list>
 			<single item="catalog_texts"/>
+			<single item="payment"/>
+			<single item="delivery"/>
 		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
@@ -171,7 +176,7 @@
 
 
 
-	<page name="section" template="section" cacheable="false" critical-item="cur_sec" >
+	<page name="section" template="section" cacheable="true" critical-item="cur_sec" >
 		<request>
 			<var name="sec" style="keypath"/>
 			<var name="page" value="1"/>
@@ -185,7 +190,7 @@
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
 			<link name="canonical_link" target="section" type="exclusive">
-				<var name="sec" item="cur_sec" style="key"/>
+				<var name="sec" ref="cur_sec" style="key"/>
 			</link>
 			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" transit="true" assoc="* catalog_link">
@@ -445,13 +450,13 @@
 
 
 
-	<page name="product" template="product" cacheable="false">
+	<page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="keypath"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
 			<link name="canonical_link" target="product" type="exclusive">
-				<var name="prod" item="prod" style="key"/>
+				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<single item="seo" assoc="seo"/>
 			<single item="params"/>
@@ -730,8 +735,9 @@
 			<var name="message"/>
 		</request>
 		<session>
-			<single item="user_phys" tag="phys"/>
-			<single item="user_jur" tag="jur"/>
+			<single item="user_phys" id="phys" tag="phys"/>
+			<single item="user_jur" id="jur" tag="jur"/>
+			<single item="cart"/>
 		</session>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="customer_phys"/>
@@ -758,11 +764,19 @@
 		</new>
 		<session>
 			<single item="cart">
-				<list item="bought">
-					<list item="product" tag="product"/>
-				</list>
+				<list item="bought" id="bought"/>
 			</single>
 		</session>
+		<list item="product" tag="product" id="prod">
+			<filter>
+				<parameter name="code" compare="SOME" sign="=">
+					<var ref="bought" parameter="code"/>
+				</parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+		</list>
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="confirm"/>
 		</link>
@@ -773,19 +787,9 @@
 	<page name="order_email" template="order_email">
 		<session>
 			<single item="cart">
-				<list item="bought" id="bought">
-					<single item="product" tag="product" id="prod">
-						<filter>
-							<parameter name="code" compare="SOME" sign="=">
-								<var ref="bought" parameter="code"/>
-							</parameter>
-						</filter>
-						<link name="show_product" target="product" type="exclusive">
-							<var name="prod" ref="prod" style="key"/>
-						</link>
-					</single>
-				</list>
+				<list item="bought" id="bought"/>
 			</single>
+			<list item="user" tag="registration"/>
 			<new item="user_phys" id="user_phys">
 				<parameter-input ref="user_phys" form="customer_phys"/>
 			</new>
@@ -793,8 +797,19 @@
 				<parameter-input ref="user_jur" form="customer_jur"/>
 			</new>
 		</session>
-		<include name="COMMON"/>
+		<list item="product" tag="product" id="prod">
+			<filter>
+				<parameter name="code" compare="SOME" sign="=">
+					<var ref="bought" parameter="code"/>
+				</parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+		</list>
+		<single item="common"/>
 	</page>
+
 
 
 	<page name="fav_ajax" template="fav_ajax">
@@ -858,6 +873,7 @@
 	<page name="fav" template="fav">
 		<request>
 			<var name="favourites" scope="cookie"/>
+			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -1387,7 +1403,7 @@
 		<request>
 			<var name="action"/>
 		</request>
-			<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
+	    <command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
     </page>

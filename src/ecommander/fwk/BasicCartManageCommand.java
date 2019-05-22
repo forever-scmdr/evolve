@@ -9,12 +9,10 @@ import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -107,7 +105,7 @@ public abstract class BasicCartManageCommand extends Command {
 		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
 		recalculateCart(isPhys ? PRICE_PARAM : PRICE_OPT_PARAM);
 
-		getSessionMapper().saveTemporaryItem(form, "user");
+		//getSessionMapper().saveTemporaryItem(form, "user");
 
 		if (!validate()) {
 			return getResult("validation_failed");
@@ -159,6 +157,9 @@ public abstract class BasicCartManageCommand extends Command {
 		try {
 			shopTemplate = getExecutablePage(shopEmailLink.serialize());
 		} catch (PageNotFoundException e) {
+			shopTemplate = null;
+		}
+		if (shopTemplate == null) {
 			shopEmailLink = LinkPE.newDirectLink("link", "order_email", false);
 			shopTemplate = getExecutablePage(shopEmailLink.serialize());
 		}
@@ -292,8 +293,9 @@ public abstract class BasicCartManageCommand extends Command {
 				if (quantity > 0) {
 					Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 					double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
-					if (maxQuantity > 0)
-						quantity = maxQuantity > quantity ? quantity : maxQuantity;
+					if (maxQuantity > 0 && quantity > maxQuantity) {
+						bought.setValue(NOT_AVAILABLE, (byte) 1);
+					}
 					bought.setValue(QTY_PARAM, quantity);
 					getSessionMapper().saveTemporaryItem(bought);
 				} else {
