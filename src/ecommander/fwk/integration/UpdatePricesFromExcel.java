@@ -38,7 +38,10 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				String origPrice = getValue(CreateExcelPriceList.PRICE_ORIGINAL_FILE);
 				String currency = getValue(CreateExcelPriceList.CURRENCY_ID_FILE);
 				String unit = getValue(CreateExcelPriceList.UNIT_FILE);
-				Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code);
+
+				Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.LINE_PRODUCT, CODE_PARAM, code);
+				product = product == null? ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code) : product;
+
 				if(product != null){
 					product.setValueUI(PRICE_PARAM, price.replaceAll("[^\\d,.]",""));
 					if(qty != null) {
