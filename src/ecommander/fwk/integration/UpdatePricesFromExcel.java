@@ -62,7 +62,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 					if(unit != null) {
 						product.setValueUI(CURRENCY_ID_PARAM, currency);
 					}
-					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
+					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex());
 					setProcessed(rowNum++);
 				}
 			}
