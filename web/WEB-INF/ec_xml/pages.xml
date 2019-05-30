@@ -1145,6 +1145,14 @@
 	</page>
 
 
+	<page name="force_update_products" template="integration/integration">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="ecommander.fwk.integration.ForceUpdateAllProducts" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
 
 </site>

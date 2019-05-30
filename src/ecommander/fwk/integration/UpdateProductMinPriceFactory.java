@@ -45,22 +45,22 @@ public class UpdateProductMinPriceFactory implements ItemEventCommandFactory {
 				if (linePrice.compareTo(ZERO) > 0 && !isDelete) {
 					if (productMinPrice.compareTo(linePrice) > 0) {
 						product.setValue(PRICE, linePrice);
-					}
-				} else {
-					Item min = new ItemQuery(LINE_PRODUCT).setAggregation(PRICE, "MIN", "ASC").setParentId(product.getId(), false)
-							.loadFirstItem(getTransactionContext().getConnection());
-					if (min != null) {
-						BigDecimal minPrice = min.getDecimalValue(PRICE, MANY);
-						if (minPrice.compareTo(MANY) < 0) {
-							product.setValue(PRICE, minPrice);
-						}
-					}
-
-					if (min == null) {
-						min = new ItemQuery(LINE_PRODUCT).setParentId(product.getId(), false)
+					} else {
+						Item min = new ItemQuery(LINE_PRODUCT).setAggregation(PRICE, "MIN", "ASC").setParentId(product.getId(), false)
 								.loadFirstItem(getTransactionContext().getConnection());
-						if (min == null)
-							product.setValue(HAS_LINES, min == null ? (byte) 0 : (byte) 1);
+						if (min != null) {
+							BigDecimal minPrice = min.getDecimalValue(PRICE, MANY);
+							if (minPrice.compareTo(MANY) < 0) {
+								product.setValue(PRICE, minPrice);
+							}
+						}
+
+						if (min == null) {
+							min = new ItemQuery(LINE_PRODUCT).setParentId(product.getId(), false)
+									.loadFirstItem(getTransactionContext().getConnection());
+							if (min == null)
+								product.setValue(HAS_LINES, min == null ? (byte) 0 : (byte) 1);
+						}
 					}
 				}
 				if (!isDelete) {
