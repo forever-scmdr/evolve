@@ -486,6 +486,7 @@
 		<div class="contacts">
 			<xsl:value-of select="$common/left" disable-output-escaping="yes"/>
 		</div>
+		
 	</xsl:template>
 
 

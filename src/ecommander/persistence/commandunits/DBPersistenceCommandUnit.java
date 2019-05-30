@@ -21,7 +21,7 @@ import java.util.HashSet;
 public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit, DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants.ComputedLog {
 	
 	protected TransactionContext context;
-	boolean ignoreUser = false;
+	protected boolean ignoreUser = false;
 	boolean ignoreFileErrors = false;
 	boolean insertIntoFulltextIndex = true;
 	boolean processComputed = true;
@@ -62,8 +62,8 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 * 
 	 * @return
 	 */
-	public DBPersistenceCommandUnit ignoreUser() {
-		this.ignoreUser = true;
+	public DBPersistenceCommandUnit ignoreUser(boolean... ignore) {
+		this.ignoreUser = ignore.length <= 0 || ignore[0];
 		return this;
 	}
 	/**
@@ -72,7 +72,7 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 * @return
 	 */
 	public DBPersistenceCommandUnit ignoreFileErrors(boolean... ignore) {
-		this.ignoreFileErrors = (ignore.length > 0)? ignore[0]: true;
+		this.ignoreFileErrors = ignore.length <= 0 || ignore[0];
 		return this;
 	}
 

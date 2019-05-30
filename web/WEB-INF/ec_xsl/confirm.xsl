@@ -42,6 +42,12 @@
 						<span style="font-weight: bold;">Адрес:</span>&#160; <xsl:value-of select="$contacts/address"/>
 					</p>
 					<p>
+						<span style="font-weight: bold;">Адрес:</span>&#160; <xsl:value-of select="$contacts/ship_type"/>
+					</p>
+					<p>
+						<span style="font-weight: bold;">Адрес:</span>&#160; <xsl:value-of select="$contacts/pay_type"/>
+					</p>
+					<p>
 						<span style="font-weight: bold;">Дополнительно:</span>&#160; <xsl:value-of select="$contacts/comment"/>
 					</p>
 				</xsl:if>
@@ -94,6 +100,12 @@
 						<xsl:if test="$contacts/base != 'Устава'">
 							&#160;№ <xsl:value-of select="$contacts/base_number"/> от <xsl:value-of select="$contacts/base_date"/>
 						</xsl:if>
+					</p>
+					<p>
+						<span style="font-weight: bold;">Адрес:</span>&#160; <xsl:value-of select="$contacts/ship_type"/>
+					</p>
+					<p>
+						<span style="font-weight: bold;">Адрес:</span>&#160; <xsl:value-of select="$contacts/pay_type"/>
 					</p>
 					<p>
 						<span style="font-weight: bold;">Дополнительно:</span>&#160; <xsl:value-of select="$contacts/comment"/>
@@ -149,6 +161,11 @@
 					</xsl:for-each>
 				</table>
 			</div>
+
+			<div class="item-summ" style="padding-bottom: 20px; font-weight: 700; font-size: 24px;">
+				ИТОГО: Позиций: <xsl:value-of select="count($cart/bought)"/> Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
+			</div>
+
 		</div>
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>

@@ -60,4 +60,8 @@
         <to type="forward">/un/eco/$1</to>
     </rule>
      -->
+    <rule match-type="regex" enabled="true">
+        <from>^/(.*)/\?(.*)$</from>
+        <to type="forward" last="true">/eco/$1?$2</to>
+    </rule>
 </urlrewrite>

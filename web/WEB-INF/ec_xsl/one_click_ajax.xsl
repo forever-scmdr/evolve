@@ -21,7 +21,7 @@
 			<div class="modal-dialog modal-sm" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 						<h4 class="modal-title">Купить в один клик</h4>
 					</div>
 					<div class="modal-body">
@@ -43,7 +43,7 @@
 									<label>Телефон:</label>
 									<input type="text" class="form-control" name="{$form/input/phone/@input}" value="{$form/input/phone}"/>
 								</div>
-								<input type="submit" value="Отправить сообщение"/>
+								<input class="button" type="submit" value="Отправить сообщение"/>
 							</form>
 						</xsl:if>
 					</div>

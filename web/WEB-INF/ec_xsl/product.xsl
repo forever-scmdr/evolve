@@ -226,12 +226,24 @@
 					</div> -->
 				</xsl:if>
 
+				<xsl:variable name="extra" select="parse-xml(concat('&lt;extra&gt;', $p/extra_xml, '&lt;/extra&gt;'))/extra"/>
+				<div class="item-icons" style="margin-bottom: 24px;">
+					<xsl:for-each select="$extra/pic"><span><img src="{@link}" alt="{.}"  data-toggle="tooltip" data-placement="left" title="{.}"/></span></xsl:for-each>
+					<script>
+						$(function () {
+							$('[data-toggle="tooltip"]').tooltip()
+						})
+					</script>
+				</div>
 
 				<div class="device-benefits">
 					<div class="device-benefits__item">
 						<i class="fas fa-trophy device-benefits__icon"></i>
 						<div class="device-benefits__label"><a href="https://www.metabo.com/com/en/info/company/metabo-worldwide/" target="_blank" rel="nofollow">Первый официальный дистрибутор</a></div>
 					</div>
+
+					
+
 					<div class="device-benefits__item">
 						<img src="img/benefits-icon-2.svg" alt=""/>
 						<div class="device-benefits__label">Прямые поставки из Германии</div>

@@ -8548,3 +8548,12 @@ td .catalog-item {
 	}
 
 }
+
+.device .extra-links {
+	font-size: 12px;
+	margin-bottom: 4px;
+}
+.one-click {
+	margin-top: 8px;
+	font-size: 13px;
+}

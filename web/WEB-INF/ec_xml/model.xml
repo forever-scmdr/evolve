@@ -489,7 +489,6 @@
 		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
-		<child item="xxl" single="true"/>
 	</item>
 
 	<item name="block" caption="Блок текста (кода)" key="header" ag-id="1341" ag-hash="93832333">
@@ -516,13 +515,6 @@
 	<item name="footer" caption="Футер (низ)" super="block_array" ag-id="1343" ag-hash="-1268861541"/>
 
 	<item name="topper" caption="Топпер (верх)" super="block_array" ag-id="1344" ag-hash="-868027480"/>
-
-	<item name="xxl" caption="XXL гарантия" ag-id="2122" ag-hash="119148" >
-		<child item="seo" single="true"/>
-		<parameter name="header" type="string" caption="Заголовок"/>
-		<parameter name="text" type="text" caption="Текст"/>
-		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
-	</item>
 
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                     END ОБЩЕЕ ДЛЯ ВСЕХ СТРАНИЦ                       ////////////-->
@@ -610,6 +602,7 @@
 
 	<item name="custom_pages" caption="Информационные разделы" ag-id="26" ag-hash="727106934">
 		<child item="menu_item"/>
+		<parameter name="xxl_text" type="text" caption="Текст о гарантии XXL"/>
 	</item>
 
 	<item name="menu_item" caption="Элемент меню" virtual="true" ag-id="1627" ag-hash="-1527078413">
