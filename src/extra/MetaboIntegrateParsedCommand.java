@@ -2,7 +2,6 @@ package extra;
 
 import ecommander.fwk.*;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CopyItemDBUnit;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -74,6 +73,15 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		return infoProvider.isValid();
 	}
 
+	private boolean checkPreparations() throws Exception{
+		sectionType = sectionType == null? ItemTypeRegistry.getItemType(SECTION) : sectionType;
+		productType = productType == null? ItemTypeRegistry.getItemType(PRODUCT) : productType;
+		productExtraType = productExtraType == null? ItemTypeRegistry.getItemType(PRODUCT_EXTRA) : productExtraType;
+		paramsXmlType = paramsXmlType == null? ItemTypeRegistry.getItemType(PARAMS_XML) : paramsXmlType;
+		infoProvider = infoProvider == null? new ParsedInfoProvider() : infoProvider;
+		return infoProvider.isValid();
+	}
+
 	@Override
 	protected void integrate() throws Exception {
 		info.setToProcess(0);
@@ -122,6 +130,9 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 	Item deployProduct(Element productEl, Item parent) throws Exception {
 		if (needTermination)
 			return null;
+		if (!checkPreparations()) {
+			throw new Exception("preparations failed");
+		}
 		String code = productEl.getElementsByTag(CODE).first().ownText();
 		String name = productEl.getElementsByTag(NAME).first().ownText();
 		String type = productEl.getElementsByTag(TYPE).first().ownText();
@@ -153,7 +164,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		for (Element pic : pics) {
 			Path file = infoProvider.getFile(code, pic.attr(LINK));
 			if (file != null)
-				gallery.add(file);
+			gallery.add(file);
 		}
 		ArrayList<String> assocCodes = new ArrayList<>();
 		Elements codeEls = productEl.getElementsByTag(ASSOC).first().getElementsByTag(CODE);
@@ -247,7 +258,6 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		info.increaseProcessed();
 		return product;
 	}
-
 
 	@Override
 	protected void terminate() throws Exception {

@@ -728,9 +728,9 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by"/>
-			<var name="email_phys" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by"/>
-			<var name="email_jur" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by"/>
+			<var name="email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/>
+			<var name="email_phys" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/>
+			<var name="email_jur" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -1225,7 +1225,7 @@
 
 	<page name="warranty_action">
 		<request>
-			<var name="admin_email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by"/>
+			<var name="admin_email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/>
 		</request>
 		<link name="error" target="warranty_form"/>
 		<link name="success" target="warranty_form">
@@ -1267,7 +1267,7 @@
 	<page name="cheaper_action">
 		<request>
 			<var name="topic" value="Нашли дешевле"/>
-			<var name="email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by"/>
+			<var name="email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/>
 			<var name="required" value="product, name, phone, url"/>
 			<var name="spam" value="url_check"/>
 			<var name="prod"/>
@@ -1628,8 +1628,8 @@
 	<page name="create_yml_file">
 		<headers content-type="text/xml"/>
 		<request>
-			<var name="name" value="Акваком"/>
-			<var name="company" value="Частное предприятие «Акваком»"/>
+			<var name="name" value="МЕТАБО"/>
+			<var name="company" value="МЕТАБО"/>
 		</request>
 		<command class="ecommander.fwk.integration.YMarketCreateXMLFile">
 			<result name="success" type="redirect"/>

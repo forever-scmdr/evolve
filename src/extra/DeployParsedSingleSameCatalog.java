@@ -25,6 +25,7 @@ public class DeployParsedSingleSameCatalog extends DeployParsedSingle {
 		int processed = 0;
 		info.limitLog(5000);
 		List<Item> parseSections = new ItemQuery(ItemNames.PARSE_SECTION).loadItems();
+		LuceneIndexMapper.getSingleton().startUpdate();
 		for (Item ps : parseSections) {
 			Item section = new ItemQuery(ItemNames.SECTION).setChildId(ps.getId(), false).loadFirstItem();
 			info.pushLog("Обработка раздела {}", section.getStringValue(NAME));

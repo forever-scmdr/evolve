@@ -22,10 +22,10 @@
 
 
 		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
-		<div class="item-summ" style="padding-bottom: 20px;">
-			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
-			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
-		</div>
+		<!--<div class="item-summ" style="padding-bottom: 20px;">-->
+			<!--Позиций: <xsl:value-of select="count($cart/bought)"/><br/>-->
+			<!--Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.-->
+		<!--</div>-->
 		<div class="checkout-cont1">
 			<div class="info" style="padding-bottom: 20px;">
 				<xsl:if test="$is_phys">
@@ -42,14 +42,16 @@
 						<span style="font-weight: bold;">Адрес:</span>&#160; <xsl:value-of select="$contacts/address"/>
 					</p>
 					<p>
-						<span style="font-weight: bold;">Адрес:</span>&#160; <xsl:value-of select="$contacts/ship_type"/>
+						<span style="font-weight: bold;">Доставка:</span>&#160; <xsl:value-of select="$contacts/ship_type"/>
 					</p>
 					<p>
-						<span style="font-weight: bold;">Адрес:</span>&#160; <xsl:value-of select="$contacts/pay_type"/>
+						<span style="font-weight: bold;">Оплата:</span>&#160; <xsl:value-of select="$contacts/pay_type"/>
 					</p>
-					<p>
-						<span style="font-weight: bold;">Дополнительно:</span>&#160; <xsl:value-of select="$contacts/comment"/>
-					</p>
+					<xsl:if test="$contacts/comment != ''">
+						<p>
+							<span style="font-weight: bold;">Дополнительно:</span>&#160; <xsl:value-of select="$contacts/comment"/>
+						</p>
+					</xsl:if>
 				</xsl:if>
 				<xsl:if test="not($is_phys)">
 					<p>
@@ -102,14 +104,16 @@
 						</xsl:if>
 					</p>
 					<p>
-						<span style="font-weight: bold;">Адрес:</span>&#160; <xsl:value-of select="$contacts/ship_type"/>
+						<span style="font-weight: bold;">Доставка:</span>&#160; <xsl:value-of select="$contacts/ship_type"/>
 					</p>
 					<p>
-						<span style="font-weight: bold;">Адрес:</span>&#160; <xsl:value-of select="$contacts/pay_type"/>
+						<span style="font-weight: bold;">Оплата:</span>&#160; <xsl:value-of select="$contacts/pay_type"/>
 					</p>
-					<p>
-						<span style="font-weight: bold;">Дополнительно:</span>&#160; <xsl:value-of select="$contacts/comment"/>
-					</p>
+					<xsl:if test="$contacts/comment != ''">
+						<p>
+							<span style="font-weight: bold;">Дополнительно:</span>&#160; <xsl:value-of select="$contacts/comment"/>
+						</p>
+					</xsl:if>
 				</xsl:if>
 			</div>
 
