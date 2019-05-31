@@ -172,6 +172,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					}
 				}
 
+				info.setCurrentJob("раздел " + section.getStringValue(NAME_PARAM) + " * товар " + product.getStringValue(NAME_PARAM));
+
 				//if (getPrice)
 				product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
 				BigDecimal price = product.getDecimalValue(PRICE_PARAM);

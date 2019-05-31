@@ -1,38 +1,20 @@
 package ecommander.admin;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
+import ecommander.controllers.StartController;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.model.*;
+import ecommander.pages.PageModelBuilder;
+import ecommander.pages.output.*;
+import ecommander.persistence.commandunits.*;
+import ecommander.persistence.common.InPlaceTransaction;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import ecommander.pages.PageModelBuilder;
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
-import ecommander.controllers.StartController;
-import ecommander.pages.output.AggregateMDWriter;
-import ecommander.pages.output.ItemTypeMDWriter;
-import ecommander.pages.output.LeafMDWriter;
-import ecommander.pages.output.MetaDataWriter;
-import ecommander.pages.output.ParameterDescriptionMDWriter;
-import ecommander.model.DataModelBuilder;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.ParameterDescription;
-import ecommander.model.TypeHierarchy;
-import ecommander.persistence.common.InPlaceTransaction;
-import ecommander.persistence.commandunits.DeleteItemTypeBDUnit;
-import ecommander.persistence.commandunits.DeleteParameterDescriptionBDUnit;
-import ecommander.persistence.commandunits.ItemModelFilePersistenceCommandUnit;
-import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
-import ecommander.persistence.commandunits.SaveNewParameterDescriptionDBUnit;
-import ecommander.persistence.commandunits.UpdateItemTypeDBUnit;
-import ecommander.persistence.commandunits.UpdateParameterDescriptionDBUnit;
-import ecommander.model.Domain;
-import ecommander.model.DomainRegistry;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 public class ItemAdminServlet extends BasicAdminServlet {
 	

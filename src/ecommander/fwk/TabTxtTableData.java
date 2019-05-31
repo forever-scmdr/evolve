@@ -2,15 +2,16 @@ package ecommander.fwk;
 
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.model.datatypes.DoubleDataType;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
@@ -78,7 +79,7 @@ public class TabTxtTableData implements TableDataSource {
 			if (rowChecked) {
 				for (int i = 0; i < cols.length; i++) {
 					if (StringUtils.isNotBlank(cols[i])) {
-						header.put(StringUtils.lowerCase(cols[i]), i);
+						header.put(StringUtils.trim(StringUtils.lowerCase(cols[i])), i);
 					}
 				}
 				isValid = true;

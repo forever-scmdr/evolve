@@ -64,7 +64,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 			// Удалить DOCTYPE
 //			if (removeDoctype(xml)) {
 			parser.parse(xml, secHandler);
-			info.increaseProcessed();
+//			info.increaseProcessed();
 //			} else {
 //				addError("Невозможно удалить DOCTYPE " + xml, xml.getName());
 //			}
@@ -79,7 +79,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		for (File xml : xmls) {
 			parser.parse(xml, prodHandler);
 		}
-		executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(20, null).noFulltextIndex());
+		//executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(20, null).noFulltextIndex());
 
 		info.pushLog("Создание товаров завершено");
 		info.pushLog("Индексация");

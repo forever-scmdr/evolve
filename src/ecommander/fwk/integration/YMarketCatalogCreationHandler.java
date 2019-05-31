@@ -85,6 +85,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 						//currentSection = Item.newChildItem(sectionDesc, catalog);
 						newSectionParent.put(code, new Pair<>(null, parentCode));
 						currentSection = null;
+						info.addError("Не найден родительский раздел для раздела " + code, locator.getLineNumber(), locator.getColumnNumber());
 					} else {
 						currentSection = Item.newChildItem(sectionDesc, parentSection);
 						currentSection.setValue(PARENT_ID_PARAM, parentCode);
@@ -94,16 +95,32 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 				}
 
 				// Скрыть все товары раздела
-				ItemQuery visibleProudctsQuery = new ItemQuery(PRODUCT_ITEM).setParentId(currentSection.getId(), false).setLimit(20);
-				List<Item> visibleProducts;
-				DelayedTransaction transaction = new DelayedTransaction(owner);
-				do {
-					visibleProducts = visibleProudctsQuery.loadItems();
-					for (Item visibleProduct : visibleProducts) {
-						transaction.addCommandUnit(ItemStatusDBUnit.hide(visibleProduct));
-					}
-					transaction.execute();
-				} while (visibleProducts.size() > 0);
+				int hiddenCount = 0;
+				long lastProductId = 0;
+				if (currentSection != null) {
+					info.setCurrentJob("скрывается " + currentSection.getStringValue(NAME_PARAM));
+					ItemQuery proudctsQuery = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED)
+							.setParentId(currentSection.getId(), false).setLimit(100);
+					List<Item> visibleProducts;
+					DelayedTransaction transaction = new DelayedTransaction(owner);
+					do {
+						visibleProducts = proudctsQuery.setIdSequential(lastProductId).loadItems();
+						for (Item visibleProduct : visibleProducts) {
+							transaction.addCommandUnit(ItemStatusDBUnit.hide(visibleProduct));
+							lastProductId = visibleProduct.getId();
+						}
+						transaction.execute();
+						hiddenCount += visibleProducts.size();
+						info.setCurrentJob("скрывается " + currentSection.getStringValue(NAME_PARAM) + " * скрыто товаров " + hiddenCount);
+					} while (visibleProducts.size() > 0);
+//					ItemQuery sectionsQuery = new ItemQuery(SECTION_ITEM).setParentId(currentSection.getId(), true).setLimit(1);
+//					if (sectionsQuery.loadFirstItem() == null) {
+//						info.setCurrentJob("скрывается " + currentSection.getStringValue(NAME_PARAM));
+//						DelayedTransaction.executeSingle(owner, ItemStatusDBUnit.hideChildren(currentSection));
+//					}
+				}
+
+
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Integration error", e);
@@ -116,7 +133,9 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 		if (StringUtils.equalsIgnoreCase(CATEGORIES_ELEMENT, qName)) {
 			categoryReady = false;
 			// Теперь сохранить все новые разделы
-			while (!newSectionParent.isEmpty()) {
+			boolean newParentsListModified = true;
+			while (!newSectionParent.isEmpty() && newParentsListModified) {
+				newParentsListModified = false;
 				HashSet<String> newCodes = new HashSet<>(newSectionParent.keySet());
 				for (String newCode : newCodes) {
 					Pair<String, String> sec = newSectionParent.get(newCode);
@@ -129,6 +148,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 							DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(section).noTriggerExtra());
 							categories.put(newCode, section);
 							newSectionParent.remove(newCode);
+							newParentsListModified = true;
 						} catch (Exception e) {
 							ServerLogger.error("Integration error", e);
 							info.addError(e.getMessage(), "Section " + newCode);
@@ -136,7 +156,6 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 					}
 				}
 			}
-
 		} else if (StringUtils.equalsIgnoreCase(CATEGORY_ELEMENT, qName)) {
 			try {
 				if (currentSection != null) {
@@ -153,6 +172,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 						secParent.setLeft(StringUtils.trimToEmpty(chars.toString()));
 					}
 				}
+				info.increaseProcessed();
 			} catch (Exception e) {
 				ServerLogger.error("Integration error", e);
 				info.addError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());

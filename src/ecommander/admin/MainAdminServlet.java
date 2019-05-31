@@ -78,6 +78,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 		private HttpSession session = null;
 		// Сообщение
 		private String message = null;
+		//Переменные
+		private boolean clearPasteBuffer = true;
 	}
 	
 	/**
@@ -245,6 +247,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			input.page = NumberUtils.toInt(req.getParameter(MainAdminPageCreator.PAGE_INPUT), 1);
 		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.MESSAGE_INPUT)))
 			input.message = URLDecoder.decode(req.getParameter(MainAdminPageCreator.MESSAGE_INPUT), "utf-8");
+		input.clearPasteBuffer = (!"yes".equalsIgnoreCase(req.getParameter(MainAdminPageCreator.PRESERVE_PASTE_BUFFER_VAR)));
 		// Создание ссылок
 		Enumeration<String> paramNames = req.getParameterNames();
 		while (paramNames.hasMoreElements()) {
@@ -524,8 +527,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 		transaction.execute();
 		// Очистить корзину
 		LuceneIndexMapper.getSingleton().startUpdate();
-		transaction.addCommandUnit(new CleanAllDeletedItemsDBUnit(20, null));
-		transaction.execute();
 		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
 		// Удалить айтем из индекса Lucene
 		LuceneIndexMapper.getSingleton().finishUpdate();
@@ -926,7 +927,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			transaction.execute();
 			@SuppressWarnings("unchecked")
 			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
-			if (buffer != null) {
+			if (buffer != null && in.clearPasteBuffer) {
 				buffer.remove(in.itemId);
 				for (long id : in.bufferedItemIds) {
 					buffer.remove(id);
@@ -1028,7 +1029,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			}
 			transaction.execute();
 
-			if (buffer != null) {
+			if (buffer != null && in.clearPasteBuffer) {
 				buffer.remove(in.itemId);
 				for (long id : in.bufferedItemIds) {
 					buffer.remove(id);
@@ -1104,7 +1105,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 				transaction.addCommandUnit(new CopyItemDBUnit(id, in.parentId));
 			}
 			transaction.execute();
-			in.session.removeAttribute(MainAdminPageCreator.PASTE_LIST);
+			if (in.clearPasteBuffer)
+				in.session.removeAttribute(MainAdminPageCreator.PASTE_LIST);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to copy items", e);
 			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
@@ -1140,7 +1142,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 				transaction.addCommandUnit(new MoveItemDBUnit(id, in.parentId));
 			}
 			transaction.execute();
-			in.session.removeAttribute(MainAdminPageCreator.PASTE_LIST);
+			if (in.clearPasteBuffer)
+				in.session.removeAttribute(MainAdminPageCreator.PASTE_LIST);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to move items", e);
 			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);

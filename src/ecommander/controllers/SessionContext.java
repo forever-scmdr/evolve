@@ -1,5 +1,6 @@
 package ecommander.controllers;
 
+import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.User;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 /**
@@ -396,7 +398,7 @@ public class SessionContext implements AutoCloseable {
 	public final long getNewId() {
 		return _id_generator--;
 	}
-	
+
 	/**
 	 * Возврат первоначального значения для генератора сеансовых ID айтемов
 	 */

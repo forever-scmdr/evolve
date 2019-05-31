@@ -32,6 +32,7 @@ public interface CatalogConst {
 	String URL_PARAM = "url";
 	String CURRENCY_ID_PARAM = "currency_id";
 	String PRICE_ORIGINAL_PARAM = "price_original";
+	String PRICE_OLD_PARAM = "price_old";
 	String PRICE_PARAM = "price";
 	String COUNTRY_PARAM = "country";
 	String DESCRIPTION_PARAM = "description";

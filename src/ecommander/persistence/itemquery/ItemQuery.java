@@ -14,6 +14,7 @@ import ecommander.persistence.mappers.DataTypeMapper;
 import ecommander.persistence.mappers.ItemMapper;
 import org.apache.commons.collections4.MultiMapUtils;
 import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
@@ -54,6 +55,7 @@ import java.util.*;
 public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants.UniqueItemKeys, DBConstants.ItemIndexes {
 
 	public static final int MAX_PAGE = 20;
+	public static final int ITEM_STATUS_COUNT = 3;
 
 	public interface Const {
 		String DISTINCT = "<<DISTINCT>>";
@@ -89,33 +91,29 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private static final String COMMON_QUERY
 			= "SELECT <<DISTINCT>> I.*, <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
+			+ "WHERE 1=1 <<STATUS_PART>> <<WHERE_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
 
 	private static final String PARENT_QUERY
 			= "SELECT <<DISTINCT>> I.*, <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) <<WHERE_PART>>";
+			+ "WHERE  1=1 <<STATUS_PART>> <<WHERE_PART>>";
 
 
 	private static final String GROUP_COMMON_QUERY
 			= "SELECT <<PARENT_ID_PART>> AS PID, <<GROUP_PARAMS_PART>> "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
+			+ "WHERE 1=1 <<STATUS_PART>> <<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
 
 	private static final String COMMON_QUANTITY_QUERY
 			= "SELECT COUNT(<<DISTINCT>> I." + I_ID + "), <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> GROUP BY PID";
+			+ "WHERE 1=1 <<STATUS_PART>> <<WHERE_PART>> GROUP BY PID";
 
 	private static final String SINGLE_QUANTITY_QUERY
 			= "SELECT COUNT(*), <<DEF_PARENT_ID_PART>> AS DPID FROM ( "
 			+ "SELECT <<DISTINCT>> I." + I_ID + ", <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> <<DEF_LIMIT_PART>>) AS <<COUNT_TABLE>>";
+			+ "WHERE 1=1 <<STATUS_PART>> <<WHERE_PART>> <<DEF_LIMIT_PART>>) AS <<COUNT_TABLE>>";
 
 
 	private boolean hasParent = false; // Есть ли критерий предка у искомого айтема (нужно ли искать потомков определенных предков)
@@ -130,17 +128,21 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private boolean isParent = false; // искомый айтем ялвяется не потомком, а предком загруженных ранее айтемов
 	private User user = null; // критерий пользователя-владельца айтема (для персональных айтемов)
 	private String userGroupName = null; // критерий группы, которой принадлежит айтем
-	private Byte[] status = null; // статус айтема (нормальный, скрытый, удаленный)
+	private HashSet<Byte> status = new HashSet<>(); // статус айтема (нормальный, скрытый, удаленный)
 	private boolean isTree = false; // результат загрузки должен быть деревом (true) или списком (false)
 	private boolean isVeryLargeResult = false; // ожидается ли очень длинный результат (после загрузки количества)
-
+	private boolean isIdSequential = false;
+	private long idSequentialStart = -1;
 	
 	public ItemQuery(ItemType itemDesc, Byte... status) {
 		this.itemDescStack.push(itemDesc);
-		if (status.length > 0)
-			this.status = status;
+		if (status.length > 0) {
+			for (Byte st : status) {
+				this.status.add(st);
+			}
+		}
 		else
-			this.status = new Byte[] {Item.STATUS_NORMAL};
+			this.status.add(Item.STATUS_NORMAL);
 	}
 
 	public ItemQuery(String itemName, Byte... status) {
@@ -217,6 +219,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		return setAggregation(getItemDesc().getParameter(paramName), function, sorting);
 	}
 
+	/**
+	 * Когда нужно производить перебор всех вариантов пакетно.
+	 * Много выполнений одного запроса.
+	 * @param startingId
+	 */
+	public ItemQuery setIdSequential(long startingId) {
+		this.isIdSequential = true;
+		this.idSequentialStart = startingId;
+		return this;
+	}
 	/**
 	 * Должен ли результат загрузки быть деревом
 	 * Для дерева нужно дополнительно извлекать прямого родителя для каждого айтема
@@ -703,7 +715,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			if (isTransitive) {
 				query.getSubquery(Const.WHERE).AND().col_IN(P_DOT + IP_PARENT_DIRECT).byteIN((byte) 1, (byte) 0);
 			} else {
-				query.getSubquery(Const.WHERE).AND().col(P_DOT + IP_PARENT_DIRECT).byte_((byte)1);
+				query.getSubquery(Const.WHERE).AND().col(P_DOT + IP_PARENT_DIRECT).byte_((byte) 1);
 			}
 			// Добавить DISTINCT если загрузка сразу по нескольким ассоциациям
 			// DISTINCT добавляется только если результат не ожидается очень большим (для оптимизации)
@@ -776,7 +788,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				query = TemplateQuery.createFromString(COMMON_QUERY, "Common query");
 		}
 		// Установить критерий статуса айтема
-		query.getSubquery(Const.STATUS).byteArray(status);
+		if (status.size() < ITEM_STATUS_COUNT)
+			query.getSubquery(Const.STATUS).AND().col_IN("I." + I_STATUS).byteIN(status.toArray(new Byte[0]));
 		// Если был полнотекстовый поиск, выполнить его и добавить критерий найденных ID
 		if (hasFulltext())
 			query.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_ID).longIN(fulltext.getLoadedIds());
@@ -801,12 +814,17 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 					if (isTree) {
 						orderBy.sql(TP_DOT + IP_WEIGHT);
 					} else {
-						orderBy.sql(P_DOT + IP_WEIGHT);
-						// Оптимизация извлечения - если есть лимит и если он небольшой, ограничить
-						// только первыми несколькими записями (чтобы был задействован весь мндекс для сортировки)
-						if (hasLimit() && limit.getPage() == 1 && limit.getLimit() < 5) {
-							query.getSubquery(Const.WHERE).AND()
-									.col(P_DOT + IP_WEIGHT, " < ").int_(Item.WEIGHT_STEP * limit.getLimit() * 2);
+						if (isIdSequential) {
+							query.getSubquery(Const.WHERE).AND().col(I_DOT + I_ID, ">").long_(idSequentialStart);
+							orderBy.sql(I_DOT + I_ID);
+						} else {
+							orderBy.sql(P_DOT + IP_WEIGHT);
+							// Оптимизация извлечения - если есть лимит и если он небольшой, ограничить
+							// только первыми несколькими записями (чтобы был задействован весь мндекс для сортировки)
+							if (hasLimit() && limit.getPage() == 1 && limit.getLimit() < 5) {
+								query.getSubquery(Const.WHERE).AND()
+										.col(P_DOT + IP_WEIGHT, " < ").int_(Item.WEIGHT_STEP * limit.getLimit() * 2);
+							}
 						}
 					}
 				} else {
@@ -935,7 +953,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			return new ArrayList<>();
 		TemplateQuery query = new TemplateQuery("load by ids");
 		query.SELECT(ITEM_TBL + ".*", "0 AS PID")
-				.FROM(ITEM_TBL).WHERE().col_IN(I_ID).longIN(ids.toArray(new Long[ids.size()]));
+				.FROM(ITEM_TBL).WHERE().col_IN(I_ID).longIN(ids.toArray(new Long[ids.size()]))
+				.AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 		return loadByQuery(query, "PID", order, null, conn);
 	}
 	/**
@@ -1189,7 +1208,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Выбрать нужный запрос
 		TemplateQuery query = TemplateQuery.createFromString(COMMON_QUANTITY_QUERY, "Common qty query");
 		// Установить критерий статуса айтема
-		query.getSubquery(Const.STATUS).byteArray(status);
+		if (status.size() < ITEM_STATUS_COUNT)
+			query.getSubquery(Const.STATUS).AND().col_IN("I." + I_STATUS).byteIN(status.toArray(new Byte[0]));
 		// Если был полнотекстовый поиск, выполнить его и добавить критерий найденных ID
 		if (hasFulltext())
 			query.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_ID).longIN(fulltext.getLoadedIds());
@@ -1240,7 +1260,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Выбрать нужный запрос
 		TemplateQuery baseQuery = TemplateQuery.createFromString(SINGLE_QUANTITY_QUERY, "Single qty query");
 		// Установить критерий статуса айтема
-		baseQuery.getSubquery(Const.STATUS).byteArray(status);
+		if (status.size() < ITEM_STATUS_COUNT)
+			baseQuery.getSubquery(Const.STATUS).AND().col_IN("I." + I_STATUS).byteIN(status.toArray(new Byte[0]));
 		// Если был полнотекстовый поиск, выполнить его и добавить критерий найденных ID
 		if (hasFulltext())
 			baseQuery.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_ID).longIN(fulltext.getLoadedIds());

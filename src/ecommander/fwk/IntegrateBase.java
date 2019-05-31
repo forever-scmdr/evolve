@@ -39,6 +39,7 @@ public abstract class IntegrateBase extends Command {
 	private static final Object MUTEX = new Object();
 	private static boolean isInProgress = false;
 	protected static Info info = null;
+	protected volatile boolean needTermination = false;
 
 	private static final class LogMessage {
 		private Date date;
@@ -80,6 +81,7 @@ public abstract class IntegrateBase extends Command {
 		private static final String _indexation = "Индексация названий товаров";
 
 		private volatile String operation = "Инициализация";
+		private volatile String currentJob = "Инициализация";
 		private volatile int lineNumber = 0;
 		private volatile int position = 0;
 		private volatile int processed = 0;
@@ -91,6 +93,10 @@ public abstract class IntegrateBase extends Command {
 
 		public synchronized void setOperation(String opName) {
 			operation = opName;
+		}
+
+		public synchronized void setCurrentJob(String currentJob) {
+			this.currentJob = currentJob;
 		}
 
 		public synchronized void setLineNumber(int lineNumber) {
@@ -159,6 +165,7 @@ public abstract class IntegrateBase extends Command {
 
 		public synchronized void output(XmlDocumentBuilder doc) throws IOException {
 			doc.startElement("operation").addText(operation).endElement();
+			doc.startElement("current_job").addText(currentJob).endElement();
 			doc.startElement("line").addText(lineNumber).endElement();
 			if (operation.equals(_indexation))
 				doc.startElement("processed").addText(LuceneIndexMapper.getSingleton().getCountProcessed()).endElement();
@@ -277,6 +284,7 @@ public abstract class IntegrateBase extends Command {
 		boolean async = getVarSingleValueDefault("mode", "async").equalsIgnoreCase("async");
 		// Если команда находитя в стадии выполнения - вернуть результат сразу (не запускать команду по новой)
 		if (isInProgress && "terminate".equals(operation)) {
+			needTermination = true;
 			terminate();
 			return buildResult();
 		} else if (isInProgress || !"start".equals(operation)) {
@@ -306,6 +314,7 @@ public abstract class IntegrateBase extends Command {
 						getInfo().setInProgress(false);
 					}
 				});
+				thread.setDaemon(true);
 				if (async)
 					thread.start();
 				else
@@ -338,7 +347,7 @@ public abstract class IntegrateBase extends Command {
 		doc.startElement("page", "name", getPageName());
 		getInfo().output(doc);
 		doc.endElement();
-		ResultPE result = null;
+		ResultPE result;
 		try {
 			result = getResult("complete");
 		} catch (EcommanderException e) {

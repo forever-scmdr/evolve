@@ -1,9 +1,10 @@
 package ecommander.pages;
 
 import ecommander.pages.var.Variable;
-import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Элемент - референс <reference>
@@ -83,7 +84,7 @@ public class ReferencePE implements PageElement {
 		}
 		return new ArrayList<>(0);
 	}
-	
+
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
 		ReferencePE clone = new ReferencePE(pageVarName, paramName, pageItemId, parentPage);
 		if (container != null)

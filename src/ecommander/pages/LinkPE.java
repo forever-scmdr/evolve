@@ -6,7 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 
 /**
  * Для каждого айтема, который можно передавать и принимать по ссылке, должно быть спец имя (ID).

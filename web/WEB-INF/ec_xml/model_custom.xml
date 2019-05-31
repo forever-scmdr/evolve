@@ -2,7 +2,7 @@
 <model>
 
 <!--START_p174142-->
-<item name="p174142" caption="Боевики" key="" virtual="false" user-def="true" description="" super="params *" ag-id="62" ag-hash="2071384401">
+<item name="p174142" caption="Боевики" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1635" ag-hash="2071384401">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -37,7 +37,7 @@
 <!--END_p174142-->
 
 <!--START_p174143-->
-<item name="p174143" caption="Детективы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="63" ag-hash="2071384402">
+<item name="p174143" caption="Детективы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1636" ag-hash="2071384402">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -72,7 +72,7 @@
 <!--END_p174143-->
 
 <!--START_p174144-->
-<item name="p174144" caption="Для всей семьи" key="" virtual="false" user-def="true" description="" super="params *" ag-id="64" ag-hash="2071384403">
+<item name="p174144" caption="Для всей семьи" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1637" ag-hash="2071384403">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -107,7 +107,7 @@
 <!--END_p174144-->
 
 <!--START_p174145-->
-<item name="p174145" caption="Для детей" key="" virtual="false" user-def="true" description="" super="params *" ag-id="65" ag-hash="2071384404">
+<item name="p174145" caption="Для детей" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1638" ag-hash="2071384404">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -141,7 +141,7 @@
 <!--END_p174145-->
 
 <!--START_p174146-->
-<item name="p174146" caption="Криминальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="66" ag-hash="2071384405">
+<item name="p174146" caption="Криминальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1639" ag-hash="2071384405">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -175,7 +175,7 @@
 <!--END_p174146-->
 
 <!--START_p174147-->
-<item name="p174147" caption="Фильмы-катастрофы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="67" ag-hash="2071384406">
+<item name="p174147" caption="Фильмы-катастрофы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1640" ag-hash="2071384406">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -204,7 +204,7 @@
 <!--END_p174147-->
 
 <!--START_p174148-->
-<item name="p174148" caption="Военные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="68" ag-hash="2071384407">
+<item name="p174148" caption="Военные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1641" ag-hash="2071384407">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -238,7 +238,7 @@
 <!--END_p174148-->
 
 <!--START_p174149-->
-<item name="p174149" caption="Драмы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="69" ag-hash="2071384408">
+<item name="p174149" caption="Драмы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1642" ag-hash="2071384408">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -275,7 +275,7 @@
 <!--END_p174149-->
 
 <!--START_p174150-->
-<item name="p174150" caption="Индийское кино" key="" virtual="false" user-def="true" description="" super="params *" ag-id="70" ag-hash="2071384430">
+<item name="p174150" caption="Индийское кино" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1643" ag-hash="2071384430">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -304,7 +304,7 @@
 <!--END_p174150-->
 
 <!--START_p174151-->
-<item name="p174151" caption="Исторические" key="" virtual="false" user-def="true" description="" super="params *" ag-id="71" ag-hash="2071384431">
+<item name="p174151" caption="Исторические" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1644" ag-hash="2071384431">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -338,7 +338,7 @@
 <!--END_p174151-->
 
 <!--START_p174152-->
-<item name="p174152" caption="Комедии" key="" virtual="false" user-def="true" description="" super="params *" ag-id="72" ag-hash="2071384432">
+<item name="p174152" caption="Комедии" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1645" ag-hash="2071384432">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -374,7 +374,7 @@
 <!--END_p174152-->
 
 <!--START_p174153-->
-<item name="p174153" caption="Мелодрамы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="73" ag-hash="2071384433">
+<item name="p174153" caption="Мелодрамы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1646" ag-hash="2071384433">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -409,7 +409,7 @@
 <!--END_p174153-->
 
 <!--START_p174154-->
-<item name="p174154" caption="Приключения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="74" ag-hash="2071384434">
+<item name="p174154" caption="Приключения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1647" ag-hash="2071384434">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -444,7 +444,7 @@
 <!--END_p174154-->
 
 <!--START_p174155-->
-<item name="p174155" caption="Триллеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="75" ag-hash="2071384435">
+<item name="p174155" caption="Триллеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1648" ag-hash="2071384435">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -479,7 +479,7 @@
 <!--END_p174155-->
 
 <!--START_p174156-->
-<item name="p174156" caption="Ужасы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="76" ag-hash="2071384436">
+<item name="p174156" caption="Ужасы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1649" ag-hash="2071384436">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -512,7 +512,7 @@
 <!--END_p174156-->
 
 <!--START_p174157-->
-<item name="p174157" caption="Фантастика" key="" virtual="false" user-def="true" description="" super="params *" ag-id="77" ag-hash="2071384437">
+<item name="p174157" caption="Фантастика" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1650" ag-hash="2071384437">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -547,7 +547,7 @@
 <!--END_p174157-->
 
 <!--START_p174158-->
-<item name="p174158" caption="Фэнтези" key="" virtual="false" user-def="true" description="" super="params *" ag-id="78" ag-hash="2071384438">
+<item name="p174158" caption="Фэнтези" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1651" ag-hash="2071384438">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -581,7 +581,7 @@
 <!--END_p174158-->
 
 <!--START_p174159-->
-<item name="p174159" caption="Эротика" key="" virtual="false" user-def="true" description="" super="params *" ag-id="79" ag-hash="2071384439">
+<item name="p174159" caption="Эротика" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1652" ag-hash="2071384439">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -613,7 +613,7 @@
 <!--END_p174159-->
 
 <!--START_p174160-->
-<item name="p174160" caption="Артхаус" key="" virtual="false" user-def="true" description="" super="params *" ag-id="80" ag-hash="2071384461">
+<item name="p174160" caption="Артхаус" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1653" ag-hash="2071384461">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -645,7 +645,7 @@
 <!--END_p174160-->
 
 <!--START_p174162-->
-<item name="p174162" caption="Военные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="81" ag-hash="2071384463">
+<item name="p174162" caption="Военные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1654" ag-hash="2071384463">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -674,7 +674,7 @@
 <!--END_p174162-->
 
 <!--START_p174163-->
-<item name="p174163" caption="Детективы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="82" ag-hash="2071384464">
+<item name="p174163" caption="Детективы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1655" ag-hash="2071384464">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -705,7 +705,7 @@
 <!--END_p174163-->
 
 <!--START_p174164-->
-<item name="p174164" caption="Драмы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="83" ag-hash="2071384465">
+<item name="p174164" caption="Драмы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1656" ag-hash="2071384465">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -736,7 +736,7 @@
 <!--END_p174164-->
 
 <!--START_p174165-->
-<item name="p174165" caption="Комедийные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="84" ag-hash="2071384466">
+<item name="p174165" caption="Комедийные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1657" ag-hash="2071384466">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -765,7 +765,7 @@
 <!--END_p174165-->
 
 <!--START_p174166-->
-<item name="p174166" caption="Криминальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="85" ag-hash="2071384467">
+<item name="p174166" caption="Криминальные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1658" ag-hash="2071384467">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -796,7 +796,7 @@
 <!--END_p174166-->
 
 <!--START_p174167-->
-<item name="p174167" caption="Мелодрамы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="86" ag-hash="2071384468">
+<item name="p174167" caption="Мелодрамы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1659" ag-hash="2071384468">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -827,7 +827,7 @@
 <!--END_p174167-->
 
 <!--START_p174168-->
-<item name="p174168" caption="Приключения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="87" ag-hash="2071384469">
+<item name="p174168" caption="Приключения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1660" ag-hash="2071384469">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -860,7 +860,7 @@
 <!--END_p174168-->
 
 <!--START_p174169-->
-<item name="p174169" caption="Триллеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="88" ag-hash="2071384470">
+<item name="p174169" caption="Триллеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1661" ag-hash="2071384470">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -892,7 +892,7 @@
 <!--END_p174169-->
 
 <!--START_p174170-->
-<item name="p174170" caption="Фантастические" key="" virtual="false" user-def="true" description="" super="params *" ag-id="89" ag-hash="2071384492">
+<item name="p174170" caption="Фантастические" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1662" ag-hash="2071384492">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -923,7 +923,7 @@
 <!--END_p174170-->
 
 <!--START_p174172-->
-<item name="p174172" caption="Российские мультфильмы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="90" ag-hash="2071384494">
+<item name="p174172" caption="Российские мультфильмы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1663" ag-hash="2071384494">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -958,7 +958,7 @@
 <!--END_p174172-->
 
 <!--START_p174173-->
-<item name="p174173" caption="Аниме" key="" virtual="false" user-def="true" description="" super="params *" ag-id="91" ag-hash="2071384495">
+<item name="p174173" caption="Аниме" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1664" ag-hash="2071384495">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -988,7 +988,7 @@
 <!--END_p174173-->
 
 <!--START_p174174-->
-<item name="p174174" caption="Мультсериалы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="92" ag-hash="2071384496">
+<item name="p174174" caption="Мультсериалы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1665" ag-hash="2071384496">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1024,7 +1024,7 @@
 <!--END_p174174-->
 
 <!--START_p174175-->
-<item name="p174175" caption="Полнометражные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="93" ag-hash="2071384497">
+<item name="p174175" caption="Полнометражные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1666" ag-hash="2071384497">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1059,7 +1059,7 @@
 <!--END_p174175-->
 
 <!--START_p174176-->
-<item name="p174176" caption="Развивающие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="94" ag-hash="2071384498">
+<item name="p174176" caption="Развивающие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1667" ag-hash="2071384498">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1094,7 +1094,7 @@
 <!--END_p174176-->
 
 <!--START_p174178-->
-<item name="p174178" caption="Природа и животные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="95" ag-hash="2071384500">
+<item name="p174178" caption="Природа и животные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1668" ag-hash="2071384500">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1125,7 +1125,7 @@
 <!--END_p174178-->
 
 <!--START_p174179-->
-<item name="p174179" caption="Путешествия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="96" ag-hash="2071384501">
+<item name="p174179" caption="Путешествия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1669" ag-hash="2071384501">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1154,7 +1154,7 @@
 <!--END_p174179-->
 
 <!--START_p174180-->
-<item name="p174180" caption="Исторические" key="" virtual="false" user-def="true" description="" super="params *" ag-id="97" ag-hash="2071384523">
+<item name="p174180" caption="Исторические" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1670" ag-hash="2071384523">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1186,7 +1186,7 @@
 <!--END_p174180-->
 
 <!--START_p174181-->
-<item name="p174181" caption="Биографии" key="" virtual="false" user-def="true" description="" super="params *" ag-id="98" ag-hash="2071384524">
+<item name="p174181" caption="Биографии" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1671" ag-hash="2071384524">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1223,7 +1223,7 @@
 <!--END_p174181-->
 
 <!--START_p174182-->
-<item name="p174182" caption="Оружие и военная техника" key="" virtual="false" user-def="true" description="" super="params *" ag-id="99" ag-hash="2071384525">
+<item name="p174182" caption="Оружие и военная техника" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1672" ag-hash="2071384525">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1251,7 +1251,7 @@
 <!--END_p174182-->
 
 <!--START_p174183-->
-<item name="p174183" caption="Наука и технологии" key="" virtual="false" user-def="true" description="" super="params *" ag-id="100" ag-hash="2071384526">
+<item name="p174183" caption="Наука и технологии" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1673" ag-hash="2071384526">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1280,7 +1280,7 @@
 <!--END_p174183-->
 
 <!--START_p174184-->
-<item name="p174184" caption="Культура и искусство" key="" virtual="false" user-def="true" description="" super="params *" ag-id="101" ag-hash="2071384527">
+<item name="p174184" caption="Культура и искусство" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1674" ag-hash="2071384527">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1309,7 +1309,7 @@
 <!--END_p174184-->
 
 <!--START_p174185-->
-<item name="p174185" caption="Религия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="102" ag-hash="2071384528">
+<item name="p174185" caption="Религия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1675" ag-hash="2071384528">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1337,7 +1337,7 @@
 <!--END_p174185-->
 
 <!--START_p174186-->
-<item name="p174186" caption="Для школы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="103" ag-hash="2071384529">
+<item name="p174186" caption="Для школы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1676" ag-hash="2071384529">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1365,7 +1365,7 @@
 <!--END_p174186-->
 
 <!--START_p174187-->
-<item name="p174187" caption="Спорт" key="" virtual="false" user-def="true" description="" super="params *" ag-id="104" ag-hash="2071384530">
+<item name="p174187" caption="Спорт" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1677" ag-hash="2071384530">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1397,7 +1397,7 @@
 <!--END_p174187-->
 
 <!--START_p174188-->
-<item name="p174188" caption="Эзотерика и паронормальные явления" key="" virtual="false" user-def="true" description="" super="params *" ag-id="105" ag-hash="2071384531">
+<item name="p174188" caption="Эзотерика и паронормальные явления" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1678" ag-hash="2071384531">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1425,7 +1425,7 @@
 <!--END_p174188-->
 
 <!--START_p174190-->
-<item name="p174190" caption="Бизнес-уроки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="106" ag-hash="2071384554">
+<item name="p174190" caption="Бизнес-уроки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1679" ag-hash="2071384554">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1449,7 +1449,7 @@
 <!--END_p174190-->
 
 <!--START_p174191-->
-<item name="p174191" caption="Красота и здоровье" key="" virtual="false" user-def="true" description="" super="params *" ag-id="107" ag-hash="2071384555">
+<item name="p174191" caption="Красота и здоровье" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1680" ag-hash="2071384555">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1478,7 +1478,7 @@
 <!--END_p174191-->
 
 <!--START_p174192-->
-<item name="p174192" caption="Кулинария" key="" virtual="false" user-def="true" description="" super="params *" ag-id="108" ag-hash="2071384556">
+<item name="p174192" caption="Кулинария" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1681" ag-hash="2071384556">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1504,7 +1504,7 @@
 <!--END_p174192-->
 
 <!--START_p174193-->
-<item name="p174193" caption="Курсы иностранных языков" key="" virtual="false" user-def="true" description="" super="params *" ag-id="109" ag-hash="2071384557">
+<item name="p174193" caption="Курсы иностранных языков" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1682" ag-hash="2071384557">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1534,7 +1534,7 @@
 <!--END_p174193-->
 
 <!--START_p174194-->
-<item name="p174194" caption="Охота и рыбалка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="110" ag-hash="2071384558">
+<item name="p174194" caption="Охота и рыбалка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1683" ag-hash="2071384558">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1560,7 +1560,7 @@
 <!--END_p174194-->
 
 <!--START_p174195-->
-<item name="p174195" caption="Психология и человек" key="" virtual="false" user-def="true" description="" super="params *" ag-id="111" ag-hash="2071384559">
+<item name="p174195" caption="Психология и человек" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1684" ag-hash="2071384559">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1591,7 +1591,7 @@
 <!--END_p174195-->
 
 <!--START_p174196-->
-<item name="p174196" caption="Юмор" key="" virtual="false" user-def="true" description="" super="params *" ag-id="112" ag-hash="2071384560">
+<item name="p174196" caption="Юмор" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1685" ag-hash="2071384560">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1617,7 +1617,7 @@
 <!--END_p174196-->
 
 <!--START_p174197-->
-<item name="p174197" caption="Рукоделие и творчество" key="" virtual="false" user-def="true" description="" super="params *" ag-id="113" ag-hash="2071384561">
+<item name="p174197" caption="Рукоделие и творчество" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1686" ag-hash="2071384561">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1643,7 +1643,7 @@
 <!--END_p174197-->
 
 <!--START_p174198-->
-<item name="p174198" caption="Сад и огород" key="" virtual="false" user-def="true" description="" super="params *" ag-id="114" ag-hash="2071384562">
+<item name="p174198" caption="Сад и огород" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1687" ag-hash="2071384562">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1664,7 +1664,7 @@
 <!--END_p174198-->
 
 <!--START_p174199-->
-<item name="p174199" caption="Уроки танцев" key="" virtual="false" user-def="true" description="" super="params *" ag-id="115" ag-hash="2071384563">
+<item name="p174199" caption="Уроки танцев" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1688" ag-hash="2071384563">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1694,7 +1694,7 @@
 <!--END_p174199-->
 
 <!--START_p174201-->
-<item name="p174201" caption="Балет" key="" virtual="false" user-def="true" description="" super="params *" ag-id="116" ag-hash="2071385237">
+<item name="p174201" caption="Балет" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1689" ag-hash="2071385237">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1723,7 +1723,7 @@
 <!--END_p174201-->
 
 <!--START_p174202-->
-<item name="p174202" caption="Оперы, оперетты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="117" ag-hash="2071385238">
+<item name="p174202" caption="Оперы, оперетты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1690" ag-hash="2071385238">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1754,7 +1754,7 @@
 <!--END_p174202-->
 
 <!--START_p174203-->
-<item name="p174203" caption="Театральные постановки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="118" ag-hash="2071385239">
+<item name="p174203" caption="Театральные постановки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1691" ag-hash="2071385239">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1786,7 +1786,7 @@
 <!--END_p174203-->
 
 <!--START_p174204-->
-<item name="p174204" caption="Танцевальные шоу" key="" virtual="false" user-def="true" description="" super="params *" ag-id="119" ag-hash="2071385240">
+<item name="p174204" caption="Танцевальные шоу" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1692" ag-hash="2071385240">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1816,7 +1816,7 @@
 <!--END_p174204-->
 
 <!--START_p174206-->
-<item name="p174206" caption="Российская поп-музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="120" ag-hash="2071385242">
+<item name="p174206" caption="Российская поп-музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1693" ag-hash="2071385242">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1844,7 +1844,7 @@
 <!--END_p174206-->
 
 <!--START_p174207-->
-<item name="p174207" caption="Зарубежная поп-музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="121" ag-hash="2071385243">
+<item name="p174207" caption="Зарубежная поп-музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1694" ag-hash="2071385243">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1875,7 +1875,7 @@
 <!--END_p174207-->
 
 <!--START_p174208-->
-<item name="p174208" caption="Русский рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="122" ag-hash="2071385244">
+<item name="p174208" caption="Русский рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1695" ag-hash="2071385244">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1903,7 +1903,7 @@
 <!--END_p174208-->
 
 <!--START_p174209-->
-<item name="p174209" caption="Зарубежный рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="123" ag-hash="2071385245">
+<item name="p174209" caption="Зарубежный рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1696" ag-hash="2071385245">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1937,7 +1937,7 @@
 <!--END_p174209-->
 
 <!--START_p174210-->
-<item name="p174210" caption="Металл" key="" virtual="false" user-def="true" description="" super="params *" ag-id="124" ag-hash="2071385267">
+<item name="p174210" caption="Металл" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1697" ag-hash="2071385267">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1964,7 +1964,7 @@
 <!--END_p174210-->
 
 <!--START_p174211-->
-<item name="p174211" caption="Хип-хоп. Рэп" key="" virtual="false" user-def="true" description="" super="params *" ag-id="125" ag-hash="2071385268">
+<item name="p174211" caption="Хип-хоп. Рэп" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1698" ag-hash="2071385268">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1990,7 +1990,7 @@
 <!--END_p174211-->
 
 <!--START_p174212-->
-<item name="p174212" caption="Электронная музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="126" ag-hash="2071385269">
+<item name="p174212" caption="Электронная музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1699" ag-hash="2071385269">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2017,7 +2017,7 @@
 <!--END_p174212-->
 
 <!--START_p174213-->
-<item name="p174213" caption="Классическая музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="127" ag-hash="2071385270">
+<item name="p174213" caption="Классическая музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1700" ag-hash="2071385270">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2047,7 +2047,7 @@
 <!--END_p174213-->
 
 <!--START_p174214-->
-<item name="p174214" caption="Шансон" key="" virtual="false" user-def="true" description="" super="params *" ag-id="128" ag-hash="2071385271">
+<item name="p174214" caption="Шансон" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1701" ag-hash="2071385271">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2074,7 +2074,7 @@
 <!--END_p174214-->
 
 <!--START_p174215-->
-<item name="p174215" caption="Видеоклипы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="129" ag-hash="2071385272">
+<item name="p174215" caption="Видеоклипы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1702" ag-hash="2071385272">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2102,7 +2102,7 @@
 <!--END_p174215-->
 
 <!--START_p174216-->
-<item name="p174216" caption="Караоке" key="" virtual="false" user-def="true" description="" super="params *" ag-id="130" ag-hash="2071385273">
+<item name="p174216" caption="Караоке" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1703" ag-hash="2071385273">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2127,7 +2127,7 @@
 <!--END_p174216-->
 
 <!--START_p174219-->
-<item name="p174219" caption="Детективы, триллеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="131" ag-hash="2071385276">
+<item name="p174219" caption="Детективы, триллеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1704" ag-hash="2071385276">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2159,7 +2159,7 @@
 <!--END_p174219-->
 
 <!--START_p174220-->
-<item name="p174220" caption="Фантастика и фэнтези" key="" virtual="false" user-def="true" description="" super="params *" ag-id="132" ag-hash="2071385298">
+<item name="p174220" caption="Фантастика и фэнтези" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1705" ag-hash="2071385298">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2191,7 +2191,7 @@
 <!--END_p174220-->
 
 <!--START_p174221-->
-<item name="p174221" caption="Романы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="133" ag-hash="2071385299">
+<item name="p174221" caption="Романы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1706" ag-hash="2071385299">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2222,7 +2222,7 @@
 <!--END_p174221-->
 
 <!--START_p174222-->
-<item name="p174222" caption="Современная проза" key="" virtual="false" user-def="true" description="" super="params *" ag-id="134" ag-hash="2071385300">
+<item name="p174222" caption="Современная проза" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1707" ag-hash="2071385300">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2255,7 +2255,7 @@
 <!--END_p174222-->
 
 <!--START_p174223-->
-<item name="p174223" caption="Поэзия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="135" ag-hash="2071385301">
+<item name="p174223" caption="Поэзия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1708" ag-hash="2071385301">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2286,7 +2286,7 @@
 <!--END_p174223-->
 
 <!--START_p174224-->
-<item name="p174224" caption="Классическая проза" key="" virtual="false" user-def="true" description="" super="params *" ag-id="136" ag-hash="2071385302">
+<item name="p174224" caption="Классическая проза" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1709" ag-hash="2071385302">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2317,7 +2317,7 @@
 <!--END_p174224-->
 
 <!--START_p174225-->
-<item name="p174225" caption="Афоризмы, цитаты, пословицы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="137" ag-hash="2071385303">
+<item name="p174225" caption="Афоризмы, цитаты, пословицы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1710" ag-hash="2071385303">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2353,7 +2353,7 @@
 <!--END_p174225-->
 
 <!--START_p174226-->
-<item name="p174226" caption="Биографии, мемуары" key="" virtual="false" user-def="true" description="" super="params *" ag-id="138" ag-hash="2071385304">
+<item name="p174226" caption="Биографии, мемуары" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1711" ag-hash="2071385304">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2394,7 +2394,7 @@
 <!--END_p174226-->
 
 <!--START_p174227-->
-<item name="p174227" caption="Юмор" key="" virtual="false" user-def="true" description="" super="params *" ag-id="139" ag-hash="2071385305">
+<item name="p174227" caption="Юмор" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1712" ag-hash="2071385305">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2430,7 +2430,7 @@
 <!--END_p174227-->
 
 <!--START_p174229-->
-<item name="p174229" caption="Научная литература" key="" virtual="false" user-def="true" description="" super="params *" ag-id="140" ag-hash="2071385307">
+<item name="p174229" caption="Научная литература" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1713" ag-hash="2071385307">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2471,7 +2471,7 @@
 <!--END_p174229-->
 
 <!--START_p174230-->
-<item name="p174230" caption="Компьютерные технологии" key="" virtual="false" user-def="true" description="" super="params *" ag-id="141" ag-hash="2071385329">
+<item name="p174230" caption="Компьютерные технологии" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1714" ag-hash="2071385329">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2507,7 +2507,7 @@
 <!--END_p174230-->
 
 <!--START_p174231-->
-<item name="p174231" caption="Искусство и фотография" key="" virtual="false" user-def="true" description="" super="params *" ag-id="142" ag-hash="2071385330">
+<item name="p174231" caption="Искусство и фотография" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1715" ag-hash="2071385330">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2551,7 +2551,7 @@
 <!--END_p174231-->
 
 <!--START_p174232-->
-<item name="p174232" caption="Популярная психология, саморазвитие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="143" ag-hash="2071385331">
+<item name="p174232" caption="Популярная психология, саморазвитие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1716" ag-hash="2071385331">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2590,7 +2590,7 @@
 <!--END_p174232-->
 
 <!--START_p174233-->
-<item name="p174233" caption="Религия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="144" ag-hash="2071385332">
+<item name="p174233" caption="Религия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1717" ag-hash="2071385332">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2620,7 +2620,7 @@
 <!--END_p174233-->
 
 <!--START_p174234-->
-<item name="p174234" caption="Дом и хобби" key="" virtual="false" user-def="true" description="" super="params *" ag-id="145" ag-hash="2071385333">
+<item name="p174234" caption="Дом и хобби" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1718" ag-hash="2071385333">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2658,7 +2658,7 @@
 <!--END_p174234-->
 
 <!--START_p174235-->
-<item name="p174235" caption="Кулинарные книги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="146" ag-hash="2071385334">
+<item name="p174235" caption="Кулинарные книги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1719" ag-hash="2071385334">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2695,7 +2695,7 @@
 <!--END_p174235-->
 
 <!--START_p174236-->
-<item name="p174236" caption="Эзотерика и спиритизм" key="" virtual="false" user-def="true" description="" super="params *" ag-id="147" ag-hash="2071385335">
+<item name="p174236" caption="Эзотерика и спиритизм" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1720" ag-hash="2071385335">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2731,7 +2731,7 @@
 <!--END_p174236-->
 
 <!--START_p174237-->
-<item name="p174237" caption="Энциклопедии, справочники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="148" ag-hash="2071385336">
+<item name="p174237" caption="Энциклопедии, справочники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1721" ag-hash="2071385336">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2762,7 +2762,7 @@
 <!--END_p174237-->
 
 <!--START_p174238-->
-<item name="p174238" caption="Право" key="" virtual="false" user-def="true" description="" super="params *" ag-id="149" ag-hash="2071385337">
+<item name="p174238" caption="Право" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1722" ag-hash="2071385337">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2791,7 +2791,7 @@
 <!--END_p174238-->
 
 <!--START_p174239-->
-<item name="p174239" caption="Красота, здоровье и спорт" key="" virtual="false" user-def="true" description="" super="params *" ag-id="150" ag-hash="2071385338">
+<item name="p174239" caption="Красота, здоровье и спорт" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1723" ag-hash="2071385338">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2833,7 +2833,7 @@
 <!--END_p174239-->
 
 <!--START_p174240-->
-<item name="p174240" caption="Публицистика" key="" virtual="false" user-def="true" description="" super="params *" ag-id="151" ag-hash="2071385360">
+<item name="p174240" caption="Публицистика" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1724" ag-hash="2071385360">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2870,7 +2870,7 @@
 <!--END_p174240-->
 
 <!--START_p174241-->
-<item name="p174241" caption="Детям и родителям" key="" virtual="false" user-def="true" description="" super="params *" ag-id="152" ag-hash="2071385361">
+<item name="p174241" caption="Детям и родителям" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1725" ag-hash="2071385361">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2916,7 +2916,7 @@
 <!--END_p174241-->
 
 <!--START_p174242-->
-<item name="p174242" caption="Литература на иностранных языках" key="" virtual="false" user-def="true" description="" super="params *" ag-id="153" ag-hash="2071385362">
+<item name="p174242" caption="Литература на иностранных языках" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1726" ag-hash="2071385362">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -2957,7 +2957,7 @@
 <!--END_p174242-->
 
 <!--START_p174243-->
-<item name="p174243" caption="Изучение иностранных языков" key="" virtual="false" user-def="true" description="" super="params *" ag-id="154" ag-hash="2071385363">
+<item name="p174243" caption="Изучение иностранных языков" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1727" ag-hash="2071385363">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3000,7 +3000,7 @@
 <!--END_p174243-->
 
 <!--START_p174244-->
-<item name="p174244" caption="Учебная литература" key="" virtual="false" user-def="true" description="" super="params *" ag-id="155" ag-hash="2071385364">
+<item name="p174244" caption="Учебная литература" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1728" ag-hash="2071385364">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3047,7 +3047,7 @@
 <!--END_p174244-->
 
 <!--START_p174245-->
-<item name="p174245" caption="Бизнес-литература" key="" virtual="false" user-def="true" description="" super="params *" ag-id="156" ag-hash="2071385365">
+<item name="p174245" caption="Бизнес-литература" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1729" ag-hash="2071385365">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3087,7 +3087,7 @@
 <!--END_p174245-->
 
 <!--START_p174246-->
-<item name="p174246" caption="Комиксы, манга" key="" virtual="false" user-def="true" description="" super="params *" ag-id="157" ag-hash="2071385366">
+<item name="p174246" caption="Комиксы, манга" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1730" ag-hash="2071385366">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3124,7 +3124,7 @@
 <!--END_p174246-->
 
 <!--START_p174247-->
-<item name="p174247" caption="Путешествия, путеводители" key="" virtual="false" user-def="true" description="" super="params *" ag-id="158" ag-hash="2071385367">
+<item name="p174247" caption="Путешествия, путеводители" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1731" ag-hash="2071385367">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3160,7 +3160,7 @@
 <!--END_p174247-->
 
 <!--START_p174248-->
-<item name="p174248" caption="Букинистика" key="" virtual="false" user-def="true" description="" super="params *" ag-id="159" ag-hash="2071385368">
+<item name="p174248" caption="Букинистика" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1732" ag-hash="2071385368">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3198,7 +3198,7 @@
 <!--END_p174248-->
 
 <!--START_p174249-->
-<item name="p174249" caption="Подарочные издания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="160" ag-hash="2071385369">
+<item name="p174249" caption="Подарочные издания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1733" ag-hash="2071385369">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3244,7 +3244,7 @@
 <!--END_p174249-->
 
 <!--START_p174250-->
-<item name="p174250" caption="Календари на 2019 год" key="" virtual="false" user-def="true" description="" super="params *" ag-id="161" ag-hash="2071385391">
+<item name="p174250" caption="Календари на 2019 год" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1734" ag-hash="2071385391">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3267,7 +3267,7 @@
 <!--END_p174250-->
 
 <!--START_p174251-->
-<item name="p174251" caption="Аудиокниги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="162" ag-hash="2071385392">
+<item name="p174251" caption="Аудиокниги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1735" ag-hash="2071385392">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3293,7 +3293,7 @@
 <!--END_p174251-->
 
 <!--START_p174252-->
-<item name="p174252" caption="Цифровые книги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="163" ag-hash="2071385393">
+<item name="p174252" caption="Цифровые книги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1736" ag-hash="2071385393">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3307,7 +3307,7 @@
 <!--END_p174252-->
 
 <!--START_p174253-->
-<item name="p174253" caption="Антикварные книги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="164" ag-hash="2071385394">
+<item name="p174253" caption="Антикварные книги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1737" ag-hash="2071385394">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3332,7 +3332,7 @@
 <!--END_p174253-->
 
 <!--START_p174256-->
-<item name="p174256" caption="Российская поп-музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="165" ag-hash="2071385397">
+<item name="p174256" caption="Российская поп-музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1738" ag-hash="2071385397">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3355,7 +3355,7 @@
 <!--END_p174256-->
 
 <!--START_p174257-->
-<item name="p174257" caption="Зарубежная поп-музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="166" ag-hash="2071385398">
+<item name="p174257" caption="Зарубежная поп-музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1739" ag-hash="2071385398">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3380,7 +3380,7 @@
 <!--END_p174257-->
 
 <!--START_p174258-->
-<item name="p174258" caption="Ретро" key="" virtual="false" user-def="true" description="" super="params *" ag-id="167" ag-hash="2071385399">
+<item name="p174258" caption="Ретро" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1740" ag-hash="2071385399">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3403,7 +3403,7 @@
 <!--END_p174258-->
 
 <!--START_p174259-->
-<item name="p174259" caption="Диско" key="" virtual="false" user-def="true" description="" super="params *" ag-id="168" ag-hash="2071385400">
+<item name="p174259" caption="Диско" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1741" ag-hash="2071385400">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3425,7 +3425,7 @@
 <!--END_p174259-->
 
 <!--START_p174260-->
-<item name="p174260" caption="Брит-поп" key="" virtual="false" user-def="true" description="" super="params *" ag-id="169" ag-hash="2071385422">
+<item name="p174260" caption="Брит-поп" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1742" ag-hash="2071385422">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3449,7 +3449,7 @@
 <!--END_p174260-->
 
 <!--START_p174262-->
-<item name="p174262" caption="Русский рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="170" ag-hash="2071385424">
+<item name="p174262" caption="Русский рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1743" ag-hash="2071385424">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3474,7 +3474,7 @@
 <!--END_p174262-->
 
 <!--START_p174264-->
-<item name="p174264" caption="Рок-н-ролл и рокабилли" key="" virtual="false" user-def="true" description="" super="params *" ag-id="171" ag-hash="2071385426">
+<item name="p174264" caption="Рок-н-ролл и рокабилли" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1744" ag-hash="2071385426">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3497,7 +3497,7 @@
 <!--END_p174264-->
 
 <!--START_p174265-->
-<item name="p174265" caption="Классический рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="172" ag-hash="2071385427">
+<item name="p174265" caption="Классический рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1745" ag-hash="2071385427">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3521,7 +3521,7 @@
 <!--END_p174265-->
 
 <!--START_p174266-->
-<item name="p174266" caption="Метал" key="" virtual="false" user-def="true" description="" super="params *" ag-id="173" ag-hash="2071385428">
+<item name="p174266" caption="Метал" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1746" ag-hash="2071385428">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3545,7 +3545,7 @@
 <!--END_p174266-->
 
 <!--START_p174267-->
-<item name="p174267" caption="Хард-рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="174" ag-hash="2071385429">
+<item name="p174267" caption="Хард-рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1747" ag-hash="2071385429">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3569,7 +3569,7 @@
 <!--END_p174267-->
 
 <!--START_p174268-->
-<item name="p174268" caption="Поп-рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="175" ag-hash="2071385430">
+<item name="p174268" caption="Поп-рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1748" ag-hash="2071385430">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3594,7 +3594,7 @@
 <!--END_p174268-->
 
 <!--START_p174269-->
-<item name="p174269" caption="Арт-рок. Прогрессив-рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="176" ag-hash="2071385431">
+<item name="p174269" caption="Арт-рок. Прогрессив-рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1749" ag-hash="2071385431">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3616,7 +3616,7 @@
 <!--END_p174269-->
 
 <!--START_p174270-->
-<item name="p174270" caption="Блюз-рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="177" ag-hash="2071385453">
+<item name="p174270" caption="Блюз-рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1750" ag-hash="2071385453">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3640,7 +3640,7 @@
 <!--END_p174270-->
 
 <!--START_p174271-->
-<item name="p174271" caption="Инди-рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="178" ag-hash="2071385454">
+<item name="p174271" caption="Инди-рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1751" ag-hash="2071385454">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3664,7 +3664,7 @@
 <!--END_p174271-->
 
 <!--START_p174273-->
-<item name="p174273" caption="Эмо" key="" virtual="false" user-def="true" description="" super="params *" ag-id="179" ag-hash="2071385456">
+<item name="p174273" caption="Эмо" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1752" ag-hash="2071385456">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3681,7 +3681,7 @@
 <!--END_p174273-->
 
 <!--START_p174274-->
-<item name="p174274" caption="Ню-метал" key="" virtual="false" user-def="true" description="" super="params *" ag-id="180" ag-hash="2071385457">
+<item name="p174274" caption="Ню-метал" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1753" ag-hash="2071385457">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3701,7 +3701,7 @@
 <!--END_p174274-->
 
 <!--START_p174275-->
-<item name="p174275" caption="Металкор" key="" virtual="false" user-def="true" description="" super="params *" ag-id="181" ag-hash="2071385458">
+<item name="p174275" caption="Металкор" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1754" ag-hash="2071385458">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3717,7 +3717,7 @@
 <!--END_p174275-->
 
 <!--START_p174276-->
-<item name="p174276" caption="Русская альтернатива" key="" virtual="false" user-def="true" description="" super="params *" ag-id="182" ag-hash="2071385459">
+<item name="p174276" caption="Русская альтернатива" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1755" ag-hash="2071385459">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3741,7 +3741,7 @@
 <!--END_p174276-->
 
 <!--START_p174278-->
-<item name="p174278" caption="Гранж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="183" ag-hash="2071385461">
+<item name="p174278" caption="Гранж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1756" ag-hash="2071385461">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3761,7 +3761,7 @@
 <!--END_p174278-->
 
 <!--START_p174279-->
-<item name="p174279" caption="Ска-панк" key="" virtual="false" user-def="true" description="" super="params *" ag-id="184" ag-hash="2071385462">
+<item name="p174279" caption="Ска-панк" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1757" ag-hash="2071385462">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3779,7 +3779,7 @@
 <!--END_p174279-->
 
 <!--START_p174280-->
-<item name="p174280" caption="Фолк-рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="185" ag-hash="2071385484">
+<item name="p174280" caption="Фолк-рок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1758" ag-hash="2071385484">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3802,7 +3802,7 @@
 <!--END_p174280-->
 
 <!--START_p174282-->
-<item name="p174282" caption="Русский рэп" key="" virtual="false" user-def="true" description="" super="params *" ag-id="186" ag-hash="2071385486">
+<item name="p174282" caption="Русский рэп" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1759" ag-hash="2071385486">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3823,7 +3823,7 @@
 <!--END_p174282-->
 
 <!--START_p174283-->
-<item name="p174283" caption="Зарубежный рэп и хип-хоп" key="" virtual="false" user-def="true" description="" super="params *" ag-id="187" ag-hash="2071385487">
+<item name="p174283" caption="Зарубежный рэп и хип-хоп" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1760" ag-hash="2071385487">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3847,7 +3847,7 @@
 <!--END_p174283-->
 
 <!--START_p174284-->
-<item name="p174284" caption="R&amp;B" key="" virtual="false" user-def="true" description="" super="params *" ag-id="188" ag-hash="2071385488">
+<item name="p174284" caption="R&amp;B" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1761" ag-hash="2071385488">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3871,7 +3871,7 @@
 <!--END_p174284-->
 
 <!--START_p174286-->
-<item name="p174286" caption="Dance" key="" virtual="false" user-def="true" description="" super="params *" ag-id="189" ag-hash="2071385490">
+<item name="p174286" caption="Dance" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1762" ag-hash="2071385490">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3896,7 +3896,7 @@
 <!--END_p174286-->
 
 <!--START_p174287-->
-<item name="p174287" caption="Trance" key="" virtual="false" user-def="true" description="" super="params *" ag-id="190" ag-hash="2071385491">
+<item name="p174287" caption="Trance" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1763" ag-hash="2071385491">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3918,7 +3918,7 @@
 <!--END_p174287-->
 
 <!--START_p174288-->
-<item name="p174288" caption="Lounge. Chillout. Downtempo" key="" virtual="false" user-def="true" description="" super="params *" ag-id="191" ag-hash="2071385492">
+<item name="p174288" caption="Lounge. Chillout. Downtempo" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1764" ag-hash="2071385492">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3942,7 +3942,7 @@
 <!--END_p174288-->
 
 <!--START_p174289-->
-<item name="p174289" caption="Hardcore" key="" virtual="false" user-def="true" description="" super="params *" ag-id="192" ag-hash="2071385493">
+<item name="p174289" caption="Hardcore" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1765" ag-hash="2071385493">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3961,7 +3961,7 @@
 <!--END_p174289-->
 
 <!--START_p174290-->
-<item name="p174290" caption="Ambient. IDM. Experimental" key="" virtual="false" user-def="true" description="" super="params *" ag-id="193" ag-hash="2071385515">
+<item name="p174290" caption="Ambient. IDM. Experimental" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1766" ag-hash="2071385515">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -3983,7 +3983,7 @@
 <!--END_p174290-->
 
 <!--START_p174291-->
-<item name="p174291" caption="House" key="" virtual="false" user-def="true" description="" super="params *" ag-id="194" ag-hash="2071385516">
+<item name="p174291" caption="House" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1767" ag-hash="2071385516">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4006,7 +4006,7 @@
 <!--END_p174291-->
 
 <!--START_p174292-->
-<item name="p174292" caption="Drum &amp; Bass. Jungle. Breakbeat. Dubstep" key="" virtual="false" user-def="true" description="" super="params *" ag-id="195" ag-hash="2071385517">
+<item name="p174292" caption="Drum &amp; Bass. Jungle. Breakbeat. Dubstep" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1768" ag-hash="2071385517">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4026,7 +4026,7 @@
 <!--END_p174292-->
 
 <!--START_p174293-->
-<item name="p174293" caption="Trip-Hop" key="" virtual="false" user-def="true" description="" super="params *" ag-id="196" ag-hash="2071385518">
+<item name="p174293" caption="Trip-Hop" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1769" ag-hash="2071385518">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4045,7 +4045,7 @@
 <!--END_p174293-->
 
 <!--START_p174294-->
-<item name="p174294" caption="Techno" key="" virtual="false" user-def="true" description="" super="params *" ag-id="197" ag-hash="2071385519">
+<item name="p174294" caption="Techno" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1770" ag-hash="2071385519">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4070,7 +4070,7 @@
 <!--END_p174294-->
 
 <!--START_p174295-->
-<item name="p174295" caption="Регги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="198" ag-hash="2071385520">
+<item name="p174295" caption="Регги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1771" ag-hash="2071385520">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4090,7 +4090,7 @@
 <!--END_p174295-->
 
 <!--START_p174297-->
-<item name="p174297" caption="Опера, оперетта, мюзикл" key="" virtual="false" user-def="true" description="" super="params *" ag-id="199" ag-hash="2071385522">
+<item name="p174297" caption="Опера, оперетта, мюзикл" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1772" ag-hash="2071385522">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4114,7 +4114,7 @@
 <!--END_p174297-->
 
 <!--START_p174298-->
-<item name="p174298" caption="Классическая гитара" key="" virtual="false" user-def="true" description="" super="params *" ag-id="200" ag-hash="2071385523">
+<item name="p174298" caption="Классическая гитара" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1773" ag-hash="2071385523">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4136,7 +4136,7 @@
 <!--END_p174298-->
 
 <!--START_p174299-->
-<item name="p174299" caption="Фортепианная музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="201" ag-hash="2071385524">
+<item name="p174299" caption="Фортепианная музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1774" ag-hash="2071385524">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4160,7 +4160,7 @@
 <!--END_p174299-->
 
 <!--START_p174300-->
-<item name="p174300" caption="Органная музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="202" ag-hash="2071386197">
+<item name="p174300" caption="Органная музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1775" ag-hash="2071386197">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4183,7 +4183,7 @@
 <!--END_p174300-->
 
 <!--START_p174301-->
-<item name="p174301" caption="Балеты. Вальсы. Мазурки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="203" ag-hash="2071386198">
+<item name="p174301" caption="Балеты. Вальсы. Мазурки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1776" ag-hash="2071386198">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4206,7 +4206,7 @@
 <!--END_p174301-->
 
 <!--START_p174302-->
-<item name="p174302" caption="Русские композиторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="204" ag-hash="2071386199">
+<item name="p174302" caption="Русские композиторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1777" ag-hash="2071386199">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4230,7 +4230,7 @@
 <!--END_p174302-->
 
 <!--START_p174303-->
-<item name="p174303" caption="Зарубежные композиторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="205" ag-hash="2071386200">
+<item name="p174303" caption="Зарубежные композиторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1778" ag-hash="2071386200">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4255,7 +4255,7 @@
 <!--END_p174303-->
 
 <!--START_p174304-->
-<item name="p174304" caption="Духовная музыка и церковное пение" key="" virtual="false" user-def="true" description="" super="params *" ag-id="206" ag-hash="2071386201">
+<item name="p174304" caption="Духовная музыка и церковное пение" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1779" ag-hash="2071386201">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4278,7 +4278,7 @@
 <!--END_p174304-->
 
 <!--START_p174305-->
-<item name="p174305" caption="Хоровое пение" key="" virtual="false" user-def="true" description="" super="params *" ag-id="207" ag-hash="2071386202">
+<item name="p174305" caption="Хоровое пение" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1780" ag-hash="2071386202">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4301,7 +4301,7 @@
 <!--END_p174305-->
 
 <!--START_p174306-->
-<item name="p174306" caption="Скрипка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="208" ag-hash="2071386203">
+<item name="p174306" caption="Скрипка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1781" ag-hash="2071386203">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4324,7 +4324,7 @@
 <!--END_p174306-->
 
 <!--START_p174307-->
-<item name="p174307" caption="Романс" key="" virtual="false" user-def="true" description="" super="params *" ag-id="209" ag-hash="2071386204">
+<item name="p174307" caption="Романс" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1782" ag-hash="2071386204">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4347,7 +4347,7 @@
 <!--END_p174307-->
 
 <!--START_p174309-->
-<item name="p174309" caption="Swing" key="" virtual="false" user-def="true" description="" super="params *" ag-id="210" ag-hash="2071386206">
+<item name="p174309" caption="Swing" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1783" ag-hash="2071386206">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4370,7 +4370,7 @@
 <!--END_p174309-->
 
 <!--START_p174310-->
-<item name="p174310" caption="Funk" key="" virtual="false" user-def="true" description="" super="params *" ag-id="211" ag-hash="2071386228">
+<item name="p174310" caption="Funk" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1784" ag-hash="2071386228">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4390,7 +4390,7 @@
 <!--END_p174310-->
 
 <!--START_p174311-->
-<item name="p174311" caption="Soul" key="" virtual="false" user-def="true" description="" super="params *" ag-id="212" ag-hash="2071386229">
+<item name="p174311" caption="Soul" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1785" ag-hash="2071386229">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4411,7 +4411,7 @@
 <!--END_p174311-->
 
 <!--START_p174312-->
-<item name="p174312" caption="Acid Jazz" key="" virtual="false" user-def="true" description="" super="params *" ag-id="213" ag-hash="2071386230">
+<item name="p174312" caption="Acid Jazz" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1786" ag-hash="2071386230">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4430,7 +4430,7 @@
 <!--END_p174312-->
 
 <!--START_p174313-->
-<item name="p174313" caption="Smooth jazz" key="" virtual="false" user-def="true" description="" super="params *" ag-id="214" ag-hash="2071386231">
+<item name="p174313" caption="Smooth jazz" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1787" ag-hash="2071386231">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4448,7 +4448,7 @@
 <!--END_p174313-->
 
 <!--START_p174314-->
-<item name="p174314" caption="Fusion" key="" virtual="false" user-def="true" description="" super="params *" ag-id="215" ag-hash="2071386232">
+<item name="p174314" caption="Fusion" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1788" ag-hash="2071386232">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4472,7 +4472,7 @@
 <!--END_p174314-->
 
 <!--START_p174315-->
-<item name="p174315" caption="Bop. Post-bop. Hard-bop" key="" virtual="false" user-def="true" description="" super="params *" ag-id="216" ag-hash="2071386233">
+<item name="p174315" caption="Bop. Post-bop. Hard-bop" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1789" ag-hash="2071386233">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4495,7 +4495,7 @@
 <!--END_p174315-->
 
 <!--START_p174316-->
-<item name="p174316" caption="Jazz rock" key="" virtual="false" user-def="true" description="" super="params *" ag-id="217" ag-hash="2071386234">
+<item name="p174316" caption="Jazz rock" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1790" ag-hash="2071386234">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4513,7 +4513,7 @@
 <!--END_p174316-->
 
 <!--START_p174317-->
-<item name="p174317" caption="Soul-Blues" key="" virtual="false" user-def="true" description="" super="params *" ag-id="218" ag-hash="2071386235">
+<item name="p174317" caption="Soul-Blues" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1791" ag-hash="2071386235">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4531,7 +4531,7 @@
 <!--END_p174317-->
 
 <!--START_p174318-->
-<item name="p174318" caption="Vocal jazz" key="" virtual="false" user-def="true" description="" super="params *" ag-id="219" ag-hash="2071386236">
+<item name="p174318" caption="Vocal jazz" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1792" ag-hash="2071386236">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4554,7 +4554,7 @@
 <!--END_p174318-->
 
 <!--START_p174319-->
-<item name="p174319" caption="Кантри" key="" virtual="false" user-def="true" description="" super="params *" ag-id="220" ag-hash="2071386237">
+<item name="p174319" caption="Кантри" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1793" ag-hash="2071386237">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4576,7 +4576,7 @@
 <!--END_p174319-->
 
 <!--START_p174320-->
-<item name="p174320" caption="Детская музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="221" ag-hash="2071386259">
+<item name="p174320" caption="Детская музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1794" ag-hash="2071386259">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4600,7 +4600,7 @@
 <!--END_p174320-->
 
 <!--START_p174321-->
-<item name="p174321" caption="Авторская песня" key="" virtual="false" user-def="true" description="" super="params *" ag-id="222" ag-hash="2071386260">
+<item name="p174321" caption="Авторская песня" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1795" ag-hash="2071386260">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4623,7 +4623,7 @@
 <!--END_p174321-->
 
 <!--START_p174322-->
-<item name="p174322" caption="Шансон" key="" virtual="false" user-def="true" description="" super="params *" ag-id="223" ag-hash="2071386261">
+<item name="p174322" caption="Шансон" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1796" ag-hash="2071386261">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4647,7 +4647,7 @@
 <!--END_p174322-->
 
 <!--START_p174324-->
-<item name="p174324" caption="Саундтреки к фильмам" key="" virtual="false" user-def="true" description="" super="params *" ag-id="224" ag-hash="2071386263">
+<item name="p174324" caption="Саундтреки к фильмам" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1797" ag-hash="2071386263">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4670,7 +4670,7 @@
 <!--END_p174324-->
 
 <!--START_p174325-->
-<item name="p174325" caption="Саундтреки к мультфильмам" key="" virtual="false" user-def="true" description="" super="params *" ag-id="225" ag-hash="2071386264">
+<item name="p174325" caption="Саундтреки к мультфильмам" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1798" ag-hash="2071386264">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4690,7 +4690,7 @@
 <!--END_p174325-->
 
 <!--START_p174327-->
-<item name="p174327" caption="Этническая музыка. Фолк" key="" virtual="false" user-def="true" description="" super="params *" ag-id="226" ag-hash="2071386266">
+<item name="p174327" caption="Этническая музыка. Фолк" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1799" ag-hash="2071386266">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4715,7 +4715,7 @@
 <!--END_p174327-->
 
 <!--START_p174328-->
-<item name="p174328" caption="Инструментальная музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="227" ag-hash="2071386267">
+<item name="p174328" caption="Инструментальная музыка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1800" ag-hash="2071386267">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4738,7 +4738,7 @@
 <!--END_p174328-->
 
 <!--START_p174329-->
-<item name="p174329" caption="Нью-эйдж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="228" ag-hash="2071386268">
+<item name="p174329" caption="Нью-эйдж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1801" ag-hash="2071386268">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4761,7 +4761,7 @@
 <!--END_p174329-->
 
 <!--START_p174330-->
-<item name="p174330" caption="Музыка для отдыха и медитации" key="" virtual="false" user-def="true" description="" super="params *" ag-id="229" ag-hash="2071386290">
+<item name="p174330" caption="Музыка для отдыха и медитации" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1802" ag-hash="2071386290">
 	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina_upakovki" caption="Ширина упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1315524277" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vysota_upakovki" caption="Высота упаковки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-17463587" description="" owner-id="0" virtual="false" hidden="false"></parameter>

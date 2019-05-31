@@ -30,6 +30,7 @@
 		</head>
 		<body>
 			<h1><xsl:value-of select="/page/operation"/></h1>
+			<h3>Сейчас выполняется: <xsl:value-of select="/page/current_job"/></h3>
 			<h2>Процесс выполнения</h2>
 			<table>
 				<tr>

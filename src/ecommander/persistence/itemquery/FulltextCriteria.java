@@ -7,7 +7,6 @@ import ecommander.persistence.itemquery.fulltext.LuceneQueryCreator;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 
 import java.io.IOException;
