@@ -3,12 +3,15 @@ package extra;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ItemUtils;
 import ecommander.fwk.JsoupUtils;
+import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import extra._generated.ItemNames;
 import lunacrawler.fwk.Parse_item;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,9 +19,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Размещает на сайте информацию, полученную с помощью парсинга
@@ -142,7 +147,56 @@ public class DeployParsedSingle extends MetaboIntegrateParsedCommand {
 		Item prod = null;
 		Elements prodEls = doc.getElementsByTag(PRODUCT);
 		for (Element prodEl : prodEls) {
-			prod = deployProduct(prodEl, parentSection);
+			prod = deployProduct(prodEl, parentSection, false);
+
+			//TODO delete patch. override the whole method!
+			//patch 31.05.2019 deploy pictures
+			// Заполнение картинок
+			HashMap<String, File> picFiles = new HashMap<>();
+			List<File> allFiles = pi.getAll_file();
+			for (File file : allFiles) {
+				picFiles.put(file.getName(), file);
+			}
+			Element gallery = prodEl.getElementsByTag(GALLERY).first();
+			boolean noMainPic = true;
+			if (gallery != null) {
+				for (Element picEl : gallery.getElementsByTag(PIC)) {
+					String fileName = Strings.getFileName(picEl.attr("download"));
+					File pic = picFiles.get(fileName);
+					if (pic != null) {
+						prod.setValue("gallery", pic);
+						picFiles.remove(fileName);
+						if (noMainPic) {
+							try {
+								File mainFile = new File(pic.getParentFile().getCanonicalPath() + "/main_" + pic.getName());
+								FileUtils.copyFile(pic, mainFile);
+								prod.setValue("main_pic", mainFile);
+								/*
+								ByteArrayOutputStream os = ResizeImagesFactory.resize(pic, 200, -1);
+								File smallFile = new File(pic.getParentFile().getCanonicalPath() + "/small_" + pic.getName());
+								FileUtils.writeByteArrayToFile(mainFile, os.toByteArray());
+								prod.setValue("main_pic", mainFile);
+								*/
+								noMainPic = false;
+							} catch (Exception e) {
+								ServerLogger.error("resize error", e);
+								info.pushLog("ОШИБКА! {}", e.getLocalizedMessage());
+							}
+						}
+					}
+				}
+			}
+			for (File htmlPic : pi.getAll_html_pic()) {
+				picFiles.put(htmlPic.getName(), htmlPic);
+			}
+			for (File picFile : picFiles.values()) {
+				prod.setValue("text_pics", picFile);
+			}
+			// Исправить адреса картинок в HTML
+			updatePics(prod, ItemNames.product_.TEXT, ItemNames.product_.TEXT_PICS);
+			updatePics(prod, ItemNames.product_.DESCRIPTION, ItemNames.product_.TEXT_PICS);
+			executeCommandUnit(SaveItemDBUnit.get(prod));
+			//END_patch
 		}
 
 		return prod;

@@ -73,13 +73,16 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		return infoProvider.isValid();
 	}
 
-	private boolean checkPreparations() throws Exception{
+	private boolean checkPreparations(boolean... needInfoProvider) throws Exception{
 		sectionType = sectionType == null? ItemTypeRegistry.getItemType(SECTION) : sectionType;
 		productType = productType == null? ItemTypeRegistry.getItemType(PRODUCT) : productType;
 		productExtraType = productExtraType == null? ItemTypeRegistry.getItemType(PRODUCT_EXTRA) : productExtraType;
 		paramsXmlType = paramsXmlType == null? ItemTypeRegistry.getItemType(PARAMS_XML) : paramsXmlType;
-		infoProvider = infoProvider == null? new ParsedInfoProvider() : infoProvider;
-		return infoProvider.isValid();
+		if(needInfoProvider.length > 0 && needInfoProvider[0]) {
+			infoProvider = infoProvider == null ? new ParsedInfoProvider() : infoProvider;
+			return infoProvider.isValid();
+		}
+		return true;
 	}
 
 	@Override
@@ -127,10 +130,10 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		}
 	}
 
-	Item deployProduct(Element productEl, Item parent) throws Exception {
+	Item deployProduct(Element productEl, Item parent, boolean... lookForPics) throws Exception {
 		if (needTermination)
 			return null;
-		if (!checkPreparations()) {
+		if (!checkPreparations(lookForPics)) {
 			throw new Exception("preparations failed");
 		}
 		String code = productEl.getElementsByTag(CODE).first().ownText();
@@ -160,11 +163,13 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			extraXml += spareParts.first().outerHtml();
 		}
 		ArrayList<Path> gallery = new ArrayList<>();
-		Elements pics = productEl.getElementsByTag(GALLERY).first().getElementsByTag(PIC);
-		for (Element pic : pics) {
-			Path file = infoProvider.getFile(code, pic.attr(LINK));
-			if (file != null)
-			gallery.add(file);
+		if(lookForPics.length > 0 && lookForPics[0]) {
+			Elements pics = productEl.getElementsByTag(GALLERY).first().getElementsByTag(PIC);
+			for (Element pic : pics) {
+				Path file = infoProvider.getFile(code, pic.attr(LINK));
+				if (file != null)
+					gallery.add(file);
+			}
 		}
 		ArrayList<String> assocCodes = new ArrayList<>();
 		Elements codeEls = productEl.getElementsByTag(ASSOC).first().getElementsByTag(CODE);
@@ -194,15 +199,17 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		for (String assocCode : assocCodes) {
 			product.setValue(ASSOC_CODE, assocCode);
 		}
-		for (Path path : gallery) {
-			product.setValue(GALLERY, path.toFile());
-		}
-		if (gallery.size() > 0) {
-			Path firstPic = gallery.get(0);
-			Path newMainPic = firstPic.resolveSibling("main_" + firstPic.getFileName());
-			ByteArrayOutputStream bos = ResizeImagesFactory.resize(firstPic.toFile(), 0, 400);
-			Files.write(newMainPic, bos.toByteArray());
-			product.setValue(MAIN_PIC, newMainPic.toFile());
+		if((lookForPics.length > 0) && lookForPics[0]) {
+			for (Path path : gallery) {
+				product.setValue(GALLERY, path.toFile());
+			}
+			if (gallery.size() > 0) {
+				Path firstPic = gallery.get(0);
+				Path newMainPic = firstPic.resolveSibling("main_" + firstPic.getFileName());
+				ByteArrayOutputStream bos = ResizeImagesFactory.resize(firstPic.toFile(), 0, 400);
+				Files.write(newMainPic, bos.toByteArray());
+				product.setValue(MAIN_PIC, newMainPic.toFile());
+			}
 		}
 
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
