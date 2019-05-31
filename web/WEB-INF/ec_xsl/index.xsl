@@ -160,7 +160,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
-			<a href="{link}" class="banner__link"></a>
+			<a href="{link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-feedback" class="banner__link"></a>
 		</div>
 	</xsl:template>
 
