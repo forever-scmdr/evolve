@@ -92,6 +92,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private boolean isInsideOffer = false;
 	private BigDecimal level_1, level_2, quotient_1, quotient_2, quotient_3, quotient_buk;
 	private Assoc catalogLinkAssoc;
+	private boolean isBookinistic = false;
 
 	
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
@@ -178,15 +179,15 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				//else
 				//	product.setValueUI(PRICE_PARAM, "0");
 
-				boolean isBookinistic = (BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE))) && quotient_buk.compareTo(BigDecimal.ZERO) != 0;
+				isBookinistic = isBookinistic && quotient_buk.compareTo(BigDecimal.ZERO) != 0;
 				if(BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE))){
 					product.setValue("tag", BOOKINISTIC);
 				}
 
 				if(isBookinistic){
 					product.setValue(PRICE_PARAM, price.multiply(quotient_buk).setScale(1, RoundingMode.CEILING));
-				}else if(secCode.equalsIgnoreCase("16546")){
-					product.setValue(PRICE_PARAM, price.multiply(quotient_buk).setScale(1, RoundingMode.CEILING));
+				}else{
+					product.removeEqualValue("tag", BOOKINISTIC);
 				}
 
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
@@ -230,6 +231,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				info.increaseProcessed();
 				isInsideOffer = false;
+				isBookinistic = false;
 			}
 
 			else if (isInsideOffer && COMMON_PARAMS.contains(qName) && parameterReady) {
@@ -284,6 +286,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		// Пользовательские параметры продуктов
 		else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName)) {
 			paramName = attributes.getValue(NAME_ATTR);
+			if(paramName.equalsIgnoreCase("Сохранность")) isBookinistic = true;
 			parameterReady = true;
 		}
 	}
