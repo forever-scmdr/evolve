@@ -217,7 +217,7 @@
 
 	<xsl:template name="DISPLAY_CONTROL">
 		<xsl:if test="$show_devices and not($not_found) and $sel_sec/product">
-			<div class="view-container desktop">
+			<!-- <div class="view-container desktop">
 				<div class="view">
 					<span class="{'active'[not($view = 'list')]}">
 						<i class="fas fa-th-large"></i>
@@ -262,7 +262,7 @@
 						</select>
 					</span>
 				</div>
-			</div>
+			</div> -->
 		</xsl:if>
 	</xsl:template>
 

@@ -3,15 +3,20 @@ package ecommander.fwk.integration;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.MysqlConnector;
+import ecommander.model.Compare;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.ItemMapper;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.sql.Connection;
+import java.util.LinkedList;
 
 /**
  * Created by anton on 06.12.2018.
@@ -82,12 +87,37 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 		info.setLineNumber(0);
 		info.setToProcess(priceWB.getLinesCount());
 		priceWB.iterate();
+		checkAvailable();
 		info.setOperation("Интеграция завершена");
 		priceWB.close();
 	//	catalog.setValue(INTEGRATION_PENDING_PARAM, (byte)0);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex());
 	}
 
+	private void checkAvailable() throws Exception {
+		info.setOperation("Проверка наличия товаров");
+		long startFrom = -1;
+		int step = 1000;
+		Connection conn = MysqlConnector.getConnection();
+		setProcessed(0);
+		LinkedList<Item> allProducts = new LinkedList<>();
+		allProducts.addAll(ItemMapper.loadByName(PRODUCT_ITEM, step, startFrom, conn));
+		while (allProducts.size() > 0){
+			Item product;
+			while ((product = allProducts.poll()) != null){
+				startFrom = product.getId();
+				if(product.getByteValue(ItemNames.product_.HAS_LINES, (byte)0) == 0){info.increaseProcessed(); continue;}
+				ItemQuery q = new ItemQuery(LINE_PRODUCT_ITEM);
+				q.setParentId(product.getId(), false);
+				q.addParameterCriteria(ItemNames.line_product_.AVAILABLE, "1", "=", null, Compare.SOME);
+				byte av = q.loadFirstItem() != null? (byte) 1 : (byte)0;
+				product.setValue(ItemNames.product_.AVAILABLE, av);
+				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
+				info.increaseProcessed();
+			}
+			allProducts.addAll(ItemMapper.loadByName(PRODUCT_ITEM, step, startFrom, conn));
+		}
+	}
 
 
 	@Override

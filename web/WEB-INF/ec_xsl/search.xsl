@@ -26,13 +26,13 @@
 
 		<div class="page-content m-t">
 
-			<xsl:if test="$products">
+			<!-- <xsl:if test="$products">
 				<div class="view-container desktop">
 					<div class="view">
 						<span>Показывать:</span>
 						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
 						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
-						<!-- <div class="checkbox">
+						<div class="checkbox">
 							<label>
 								<xsl:if test="not($only_available)">
 									<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
@@ -42,10 +42,10 @@
 								</xsl:if>
 								в наличии
 							</label>
-						</div> -->
 					</div>
 				</div>
-			</xsl:if>
+				</div>
+			</xsl:if> -->
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
 				<xsl:apply-templates select="$products"/>

@@ -160,7 +160,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
-			<a href="{link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-feedback" class="banner__link"></a>
+			<a href="{page/feedback_form_link}" class="banner__link" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-feedback"></a>
 		</div>
 	</xsl:template>
 
@@ -173,9 +173,9 @@
 						<img src="{@path}{pic}" alt="{name}"/>
 					</xsl:for-each>
 				</div>
-				<div class="hero__banners">
+				<!-- <div class="hero__banners">
 					<xsl:apply-templates select="page/banner_section[1]/banner"/>
-				</div>
+				</div> -->
 			</div>
 		</section>
 		<section class="events">
@@ -199,9 +199,9 @@
 		</section>
 		<section class="special-items">
 			<div class="container">
-				<div class="block-title">Новинки</div>
+				<div class="block-title">Хиты продаж</div>
 				<div class="special-items__devices slick-slider">
-					<xsl:apply-templates select="page/main_page/product[tag='Новинка']"/>
+					<xsl:apply-templates select="page/main_page/product[tag='Хит продаж']"/>
 				</div>
 			</div>
 		</section>
