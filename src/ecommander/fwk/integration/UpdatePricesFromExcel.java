@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -43,16 +44,17 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				String origPrice = getValue(CreateExcelPriceList.PRICE_ORIGINAL_FILE);
 				String currency = getValue(CreateExcelPriceList.CURRENCY_ID_FILE);
 				String unit = getValue(CreateExcelPriceList.UNIT_FILE);
+				ArrayList<Item> products = new ArrayList<>();
+				products = ItemQuery.loadByParamValue(ItemNames.LINE_PRODUCT, CODE_PARAM, code);
+				products = products.size() == 0? ItemQuery.loadByParamValue(ItemNames.PRODUCT, CODE_PARAM, code) : products;
 
-				Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.LINE_PRODUCT, CODE_PARAM, code);
-				product = product == null? ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code) : product;
-
-				if(product != null){
+				for(Item product : products){
 					product.setValueUI(PRICE_PARAM, price.replaceAll("[^\\d,.]",""));
 					if(qty != null) {
 						product.setValueUI(QTY_PARAM, qty);
 					}
 					if(av != null) {
+						av = StringUtils.startsWith("-", av) || "0".equals(av) || StringUtils.isBlank(av)? "0" : "1";
 						product.setValueUI(AVAILABLE_PARAM, av);
 					}
 					if(oldPrice != null){
