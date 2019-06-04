@@ -3,9 +3,9 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="p" select="page/product[1]"/>
+	<xsl:variable name="p" select="if (page/product[params]) then page/product[params] else page/product[1]"/>
 
-	<xsl:variable name="title" select="if (starts-with($p[1]/name, $p/vendor)) then $p/name else concat($p/vendor, ' ', $p/name)"/>
+	<xsl:variable name="title" select="if (starts-with($p[1]/name, $p[1]/vendor)) then $p/name else concat($p[1]/vendor, ' ', $p[1]/name)"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -14,6 +14,8 @@
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
+
+	<xsl:variable name="price_items" select="page/price[plain_section]"/>
 
 	<xsl:variable name="price_intervals" select="page/price_catalog/price_interval"/>
 	<xsl:variable name="Q" select="f:num(page/price_catalog/quotient)"/>
@@ -25,9 +27,9 @@
 			{
 			"@context": "http://schema.org/",
 			"@type": "Product",
-			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
-			"image": <xsl:value-of select="concat($quote, $base, '/', $p/@path, $p/gallery[1], $quote)" />,
-			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
+			"name": <xsl:value-of select="concat($quote, replace($p[1]/name, $quote, ''), $quote)" />,
+			"image": <xsl:value-of select="concat($quote, $base, '/', $p[1]/@path, $p[1]/gallery[1], $quote)" />,
+			"brand": <xsl:value-of select="concat($quote, $p[1]/tag[1], $quote)" />,
 			"offers": {
 			"@type": "Offer",
 			"priceCurrency": "BYN",
@@ -39,7 +41,7 @@
 			"ratingCount": "53",
 			"bestRating": "5",
 			"worstRating": "1",
-			"name": <xsl:value-of select="concat($quote, translate($p/name, $quote, ''), $quote)" />
+			"name": <xsl:value-of select="concat($quote, translate($p[1]/name, $quote, ''), $quote)" />
 			}
 			}
 		</script>
@@ -77,7 +79,10 @@
 			<td><xsl:value-of select="vendor" /></td>
 			<!--<td><a><xsl:value-of select="code"/></a></td>-->
 			<td><xsl:value-of select="qty"/><xsl:text> </xsl:text><xsl:value-of select="$unit"/></td>
-			<td><xsl:value-of select="available"/></td>
+			<td>
+				<xsl:if test="available and not(available = '0')"><xsl:value-of select="available"/> нед.</xsl:if>
+				<xsl:if test="not(available) or available = '0'">склад</xsl:if>
+			</td>
 			<td><xsl:value-of select="$unit"/></td>
 			<td><xsl:value-of select="min_qty"/></td>
 			<td>
@@ -172,6 +177,21 @@
 					</div>
 				</xsl:if>
 				<div class="order">
+					<xsl:if test="not($price_items)">
+						<div style="width: 100%"><p><b>Товар отсутствует на складе.</b></p><p><b>Товар можно оформить под заказ.</b></p></div>
+						<div id="cart_list_{$p/@id}" class="product_purchase_container">
+							<form action="{$p/to_cart}" method="post" ajax="true">
+								<xsl:if test="$has_price">
+									<input type="number" name="qty" value="1" min="0"/>
+									<input type="submit" value="Заказать"/>
+								</xsl:if>
+								<xsl:if test="not($has_price)">
+									<input type="hidden" name="qty" value="1" min="0"/>
+									<input type="submit" class="not_available" value="Запросить цену"/>
+								</xsl:if>
+							</form>
+						</div>
+					</xsl:if>
 					<xsl:choose>
 						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>
 						<xsl:otherwise><!-- <div class="quantity">Нет на складе</div> --></xsl:otherwise>
@@ -203,8 +223,7 @@
 					</div>
 				</div>
 			</div>
-			<xsl:variable name="prices" select="page/price[plain_section]"/>
-			<xsl:if test="$prices">
+			<xsl:if test="$price_items">
 				<div>
 					<table class="srtable">
 						<tr>
@@ -212,7 +231,7 @@
 							<th>Описание</th>
 							<th>Производитель</th>
 							<!--<th>Код производителя</th>-->
-							<th>На складе</th>
+							<th>Количество</th>
 							<th>Срок поставки</th>
 							<th>Единица</th>
 							<th>Мин. заказ</th>
@@ -220,7 +239,9 @@
 							<th>Сумма (руб.)</th>
 							<th>Заказать</th>
 						</tr>
-						<xsl:apply-templates select="$prices"/>
+						<xsl:for-each-group select="$price_items" group-by="@id">
+							<xsl:apply-templates select="current-group()[1]"/>
+						</xsl:for-each-group>
 					</table>
 				</div>
 			</xsl:if>

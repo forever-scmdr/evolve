@@ -10,7 +10,7 @@
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
 	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 
-	<xsl:variable name="title" select="'Альфакомпонент'" />
+	<xsl:variable name="title" select="'Chiptrade LTD - alfacomponent.com'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
@@ -189,7 +189,7 @@
 					<div class="col-xs-12">
 						<div class="footer-container">
 							<div class="block">
-								<p><strong>Alfacomponent.by, 2018</strong></p>
+								<p><strong>Alfacomponent.com, 2018</strong></p>
 								<div class="forever">
 									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
 								</div>
@@ -502,12 +502,13 @@
 			<a href="{$product_link}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
 			<div class="small-text device__small-text" title="{name_extra}"><xsl:value-of select="name_extra"/></div>
 			<div class="device__small-text">
-				<a href=""><xsl:value-of select="vendor"/></a> - <a href="{$product_link}">
-					<xsl:value-of select="vendor_code"/></a>
+				<a href="{$product_link}"><xsl:value-of select="vendor"/></a>
 			</div>
 			<!-- <div class="device__article-number"><xsl:value-of select="code"/></div> -->
-			<xsl:variable name="device-link" select="if(starts-with(manual[1]/link, 'http://') or starts-with(manual[1]/link, 'https://')) then manual[1]/link else concat('https://tme.eu', manual[1]/link)"/>
-					<a href="{$device-link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
+			<xsl:if test="manual and not(manual = '')">
+				<xsl:variable name="device-link" select="if(starts-with(manual[1]/link, 'http://') or starts-with(manual[1]/link, 'https://')) then manual[1]/link else concat('https://tme.eu', manual[1]/link)"/>
+				<a href="{$device-link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
+			</xsl:if>
 			<!-- <a href="{manual[1]/link}"><xsl:value-of select="manual[1]/name"/></a> -->
 			<xsl:if test="$has_price">
 				<div class="device__price">
@@ -528,8 +529,9 @@
 							<input type="submit" class="button" value="Заказать"/>
 						</xsl:if>
 						<xsl:if test="not($has_price)">
-							<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
-							<input type="submit" class="not_available" value="Запросить цену"/>
+<!-- 							<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
+							<input type="submit" class="not_available" value="Запросить цену"/> -->
+							<a href="{$product_link}" class="button not_available">Смотреть стоимость</a>
 						</xsl:if>
 					</form>
 				</div>
@@ -584,13 +586,15 @@
 			<div class="device__info">
 				<div style="position: relative; display: inline-block;">
 					<a href="{$product_link}" class="device__title"><xsl:value-of select="name"/></a>
-					<xsl:variable name="device-link" select="if(starts-with(manual[1]/link, 'http://') or starts-with(manual[1]/link, 'https://')) then manual[1]/link else concat('https://tme.eu', manual[1]/link)"/>
-					<a href="{$device-link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
+					<xsl:if test="manual and not(manual = '')">
+						<xsl:variable name="device-link" select="if(starts-with(manual[1]/link, 'http://') or starts-with(manual[1]/link, 'https://')) then manual[1]/link else concat('https://tme.eu', manual[1]/link)"/>
+						<a href="{$device-link}" class="device__download" target="_blank"><i class="fas fa-file-pdf"></i></a>
+					</xsl:if>
 				</div>
 				<div class="device__description">
 					<div class="small-text device__small-text" title="{name_extra}"><xsl:value-of select="name_extra"/></div>
 					<div class="device__small-text">
-						<a href=""><xsl:value-of select="vendor"/></a> - <a href="{$product_link}"><xsl:value-of select="vendor_code"/></a>
+						<a href="{$product_link}"><xsl:value-of select="vendor"/></a>
 					</div>
 					
 				</div>
@@ -634,8 +638,9 @@
 							<input type="submit" class="button" value="Заказать"/>
 						</xsl:if>
 						<xsl:if test="not($has_price)">
-							<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
-							<input type="submit" class="not_available" value="Запросить цену"/>
+<!-- 							<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
+							<input type="submit" class="not_available" value="Запросить цену"/> -->
+							<a href="{$product_link}" class="button not_available">Смотреть стоимость</a>
 						</xsl:if>
 					</form>
 				</div>

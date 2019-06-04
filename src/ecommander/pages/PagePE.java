@@ -147,7 +147,7 @@ public class PagePE extends PageElementContainer implements VariablePE.VariableC
 
 	@Override
 	protected PageElementContainer createExecutableShallowClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		throw new RuntimeException("Nerver use method createExecutableShallowClone() for page models");
+		throw new RuntimeException("Never use method createExecutableShallowClone() for page models");
 	}
 	/**
 	 * Добавить название переменной в список (для сохранения порядка следования переменных)

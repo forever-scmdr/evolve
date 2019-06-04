@@ -151,8 +151,8 @@
 			<div class="container">
 				<div class="fotorama" style="width: 100%;" data-width="100%" data-height="301px" data-transition="crossfade" data-autoplay="true" data-loop="true" data-fit="cover">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<img src="http://alfacomponent.must.by/{@path}{pic}" alt="{name}"/>
-						<!-- <div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url(http://alfacomponent.must.by/{@path}{pic});">
+						<img src="http://alfacomponent.com/{@path}{pic}" alt="{name}"/>
+						<!-- <div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url(http://alfacomponent.com/{@path}{pic});">
 							<div class="container">
 								<div class="slider-item__block fotorama__select">
 									<div class="slider-item__title"><xsl:value-of select="name" /></div>
@@ -174,8 +174,8 @@
 			<div class="title_2">Каталог продукции</div>
 			<div class="catalog-items">
 				<xsl:for-each select="/page/catalog/section">
-					<xsl:variable name="sec_pic" select="if (main_pic != '') then concat('http://alfacomponent.must.by/', @path, main_pic) else ''"/>
-					<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat('http://alfacomponent.must.by/', product/@path, product/main_pic) else ''"/>
+					<xsl:variable name="sec_pic" select="if (main_pic != '') then concat('http://alfacomponent.com/', @path, main_pic) else ''"/>
+					<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat('http://alfacomponent.com/', product/@path, product/main_pic) else ''"/>
 					<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 					<xsl:variable name="link" select="if (section) then show_sub else show_products" />
 					<div class="device items-catalog__section">
@@ -195,7 +195,7 @@
 				<div class="catalog-items info">
 					<xsl:for-each select="page//news_item">
 						<div class="catalog-item">
-							<a href="{show_news_item}" class="image-container" style="background-image: url('http://alfacomponent.must.by/{@path}{main_pic}');"><!-- <img src="http://alfacomponent.must.by/{@path}{main_pic}" alt=""/> --></a>
+							<a href="{show_news_item}" class="image-container" style="background-image: url('http://alfacomponent.com/{@path}{main_pic}');"><!-- <img src="http://alfacomponent.com/{@path}{main_pic}" alt=""/> --></a>
 							<div class="text">
 								<a href="{show_news_item}"><xsl:value-of select="header"/></a>
 								<div class="date"><xsl:value-of select="date"/></div>

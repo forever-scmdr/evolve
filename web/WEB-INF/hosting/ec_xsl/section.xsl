@@ -175,7 +175,7 @@
 	</xsl:template>
 
 	<xsl:template name="FILTER">
-		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 1]"/>
+		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 1 or @caption = 'Производитель']"/>
 
 		<!--<xsl:if test="not($subs) and $valid_inputs">-->
 		<xsl:if test="$valid_inputs">

@@ -5,7 +5,8 @@
 
 	<xsl:variable name="title" select="'Оформление заявки'"/>
 	<xsl:variable name="message" select="page/variables/message"/>
-	<xsl:variable name="is_jur" select="page/user_jur//@validation-error"/>
+	<!--<xsl:variable name="is_jur" select="page/user_jur//@validation-error"/>-->
+	<xsl:variable name="is_jur" select="true()"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->

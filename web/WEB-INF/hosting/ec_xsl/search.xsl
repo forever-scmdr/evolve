@@ -74,7 +74,7 @@
 							<th>Описание</th>
 							<th>Производитель</th>
 							<!--<th>Код производителя</th>-->
-							<th>На складе</th>
+							<th>Количество</th>
 							<th>Срок поставки</th>
 							<th>Единица</th>
 							<th>Мин. заказ</th>
@@ -170,7 +170,12 @@
 			<td><xsl:value-of select="vendor" /></td>
 			<!--<td><a><xsl:value-of select="code"/></a></td>-->
 			<td><xsl:value-of select="qty"/></td>
-			<td><xsl:value-of select="available"/></td>
+			<td>
+				<xsl:if test="not(vendor_code)">
+					<xsl:if test="available and not(available = '0')"><xsl:value-of select="available"/> нед.</xsl:if>
+					<xsl:if test="not(available) or available = '0'">склад</xsl:if>
+				</xsl:if>
+			</td>
 			<td><xsl:value-of select="$unit"/></td>
 			<td><xsl:value-of select="min_qty"/></td>
 			<td>
