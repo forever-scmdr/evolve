@@ -69,7 +69,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 					if(unit != null) {
 						product.setValueUI(CURRENCY_ID_PARAM, currency);
 					}
-					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex());
+					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
 					setProcessed(rowNum++);
 				}
 			}
@@ -113,6 +113,11 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				q.setParentId(product.getId(), false);
 				q.addParameterCriteria(ItemNames.line_product_.AVAILABLE, "1", "=", null, Compare.SOME);
 				byte av = q.loadFirstItem() != null? (byte) 1 : (byte)0;
+				q = new ItemQuery(LINE_PRODUCT_ITEM);
+				q.setParentId(product.getId(), false);
+				q.addSorting(PRICE_PARAM, "ASC");
+				String pv = q.loadFirstItem() == null? "" : q.loadFirstItem().outputValue(PRICE_PARAM);
+				product.setValueUI(PRICE_PARAM, pv);
 				product.setValue(ItemNames.product_.AVAILABLE, av);
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
 				info.increaseProcessed();
