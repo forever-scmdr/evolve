@@ -44,6 +44,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private static final String STATUS = "Статус";
 	private static final String PUBLISH_TYPE = "Вид издания";
 	private static final String BOOKINISTIC = "Букинистическое издание";
+	private static final String BOOKINISTIC_1 = "Букинистика";
 
 	static {
 		COMMON_PARAMS.add(URL_ELEMENT);
@@ -181,15 +182,19 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				//else
 				//	product.setValueUI(PRICE_PARAM, "0");
 
-				isBookinistic = isBookinistic && quotient_buk.compareTo(BigDecimal.ZERO) != 0;
-				if(BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE))){
-					product.setValue("tag", BOOKINISTIC);
-				}
 
 				if(isBookinistic){
+					info.pushLog("BUK: "+ commonParams.get(NAME_ELEMENT));
+					product.removeEqualValue("tag", BOOKINISTIC);
+					product.setValue("tag", BOOKINISTIC_1);
+				}
+
+				if(isBookinistic && quotient_buk.compareTo(BigDecimal.ZERO) != 0){
 					product.setValue(PRICE_PARAM, price.multiply(quotient_buk).setScale(1, RoundingMode.CEILING));
 				}else{
+					info.pushLog("NOT BUK: "+ commonParams.get(NAME_ELEMENT));
 					product.removeEqualValue("tag", BOOKINISTIC);
+					product.removeEqualValue("tag", BOOKINISTIC_1);
 				}
 
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());

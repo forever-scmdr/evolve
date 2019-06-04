@@ -17,7 +17,9 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Создание разделов каталога
@@ -45,6 +47,9 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 		this.owner = owner;
 		this.info = info;
 		this.ignoreCodes = ignoreCodes;
+		for(String ignoreCode : ignoreCodes){
+			info.addLog("ignore: "+ignoreCode);
+		}
 	}
 
 	@Override
@@ -60,6 +65,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 				code = attributes.getValue(ID_ATTR);
 				// пропустить некоторые разделы
 				if (ignoreCodes.contains(code)) {
+					info.addLog(code+" ignored.");
 					currentSection = null;
 					return;
 				}

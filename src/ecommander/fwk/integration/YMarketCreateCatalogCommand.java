@@ -4,9 +4,9 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
 import ecommander.fwk.Strings;
-import ecommander.model.*;
-import ecommander.persistence.commandunits.*;
-import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.model.Item;
+import ecommander.model.User;
+import ecommander.model.UserGroupRegistry;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,8 +16,6 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
 
 /**
  * Создание каталога продукции по файлу Yandex Market
@@ -50,9 +48,9 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		SAXParser parser = factory.newSAXParser();
 
 		// Создание (обновление) каталога товаров
-		List<Object> ignoreList = getVarValues("ignore");
+		String ignoreVar = getVarSingleValue("ignore");
 		HashSet<String> ignore = new HashSet<>();
-		for (Object code : ignoreList) {
+		for (String code : StringUtils.split(ignoreVar, ',')) {
 			ignore.add((String) code);
 		}
 		info.setOperation("Создание разделов каталога и типов товаров");
