@@ -22,11 +22,33 @@
 			.no{color: #dc0000; font-weight: bold;}
 			.path{color: #0071bc;}
 		</style>
-		<script>
-			setTimeout(function(){
-				document.location.replace("/integrate");
-			}, 5000);
-		</script>
+			<script>
+				function endsWith(str, suffix) {
+				return str.indexOf(suffix, str.length - suffix.length) !== -1;
+				}
+
+				refreshTimeout = setTimeout(
+				function () {
+				h = document.location.href;
+				h = h.replace("_start", "");
+				h = h.replace("?action=start", "");
+				document.location.replace(h);
+				},
+				5000
+				);
+				function toggleRefresh() {
+				refresher = document.getElementById('refresher');
+				if (refresher.classList.contains("clicked")) {
+				h = document.location.href;
+				h = h.replace("_start", "");
+				h = h.replace("?action=start", "");
+				document.location.replace(h);
+				} else {
+				clearTimeout(refreshTimeout);
+				refresher.classList.add("clicked");
+				}
+				}
+			</script>
 		</head>
 		<body>
 			<h1><xsl:value-of select="/page/operation"/></h1>
@@ -39,6 +61,11 @@
 						<span id="prcnt"></span>
 						<span id="progressBar"></span>
 						<xsl:value-of select="/page/line"/> / <xsl:value-of select="/page/total-line-number"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
 					</td>
 				</tr>
 				<tr>
@@ -72,6 +99,7 @@
 						<td>Время, мс</td>
 					</tr>
 					<xsl:for-each select="/page/slow/q">
+						<xsl:sort select="number(time)" order="descending"/>
 						<tr>
 							<td><xsl:value-of select="log"/></td>
 							<td>
