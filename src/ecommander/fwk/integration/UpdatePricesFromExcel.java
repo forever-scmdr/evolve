@@ -31,7 +31,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 		catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
 		String repository = AppContext.getFilesDirPath(catalog.isFileProtected());
 		File priceList = catalog.getFileValue(INTEGRATION_PARAM, repository);
-		priceWB = new ExcelPriceList(priceList, CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.PRICE_FILE) {
+		priceWB = new ExcelPriceList(priceList, CreateExcelPriceList.CODE_FILE) {
 			private int rowNum = 0;
 			@Override
 			protected void processRow() throws Exception {
@@ -53,10 +53,11 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 					if(qty != null) {
 						product.setValueUI(QTY_PARAM, qty);
 					}
-					if(av != null) {
-						av = StringUtils.startsWith("-", av) || "0".equals(av) || StringUtils.isBlank(av)? "0" : "1";
+//					if(av != null) {
+//						av = StringUtils.startsWith("-", av) || "0".equals(av) || StringUtils.isBlank(av)? "0" : "1";
+						av = product.getDoubleValue(QTY_PARAM, 0d) > 0d? "1" : "0";
 						product.setValueUI(AVAILABLE_PARAM, av);
-					}
+//					}
 					if(oldPrice != null){
 						product.setValueUI(PRICE_OLD_PARAM, oldPrice.replaceAll("[^\\d,.]",""));
 					}
@@ -108,7 +109,9 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 			Item product;
 			while ((product = allProducts.poll()) != null){
 				startFrom = product.getId();
-				if(product.getByteValue(ItemNames.product_.HAS_LINES, (byte)0) == 0){info.increaseProcessed(); continue;}
+				if(product.getByteValue(ItemNames.product_.HAS_LINES, (byte)0) == 0){
+					info.increaseProcessed(); continue;
+				}
 				ItemQuery q = new ItemQuery(LINE_PRODUCT_ITEM);
 				q.setParentId(product.getId(), false);
 				q.addParameterCriteria(ItemNames.line_product_.AVAILABLE, "1", "=", null, Compare.SOME);
