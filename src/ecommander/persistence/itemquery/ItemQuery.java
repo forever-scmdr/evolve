@@ -817,7 +817,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 					} else {
 						if (isIdSequential) {
 							query.getSubquery(Const.WHERE).AND().col(I_DOT + I_ID, ">").long_(idSequentialStart);
-							orderBy.sql(I_DOT + I_ID);
+							if (isParent)
+								orderBy.sql(P_DOT + IP_PARENT_ID);
+							else
+								orderBy.sql(P_DOT + IP_CHILD_ID);
 						} else {
 							orderBy.sql(P_DOT + IP_WEIGHT);
 							// Оптимизация извлечения - если есть лимит и если он небольшой, ограничить
