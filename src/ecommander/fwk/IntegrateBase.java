@@ -212,7 +212,7 @@ public abstract class IntegrateBase extends Command {
 			operation = _indexation;
 		}
 
-		public void addSlowQuery(String queryLog, long nanos) {
+		public synchronized void addSlowQuery(String queryLog, long nanos) {
 			slowQueries.put(nanos, queryLog);
 			if(slowQueries.size() > 100){
 				slowQueries.remove(slowQueries.firstKey());

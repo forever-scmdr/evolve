@@ -108,7 +108,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 					info.setCurrentJob("скрывается " + currentSection.getStringValue(NAME_PARAM));
 
 					ItemQuery proudctsQuery = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED)
-							.setParentId(currentSection.getId(), false).setLimit(100);
+							.setParentId(currentSection.getId(), false).setLimit(1000);
 					List<Item> visibleProducts;
 					DelayedTransaction transaction = new DelayedTransaction(owner);
 					do {
