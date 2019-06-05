@@ -63,6 +63,25 @@
 					</tr>
 				</xsl:for-each>
 			</table>
+
+			<xsl:if test="/page/slow">
+				<h2>Медленные запросы</h2>
+				<table>
+					<tr>
+						<td>Запрос</td>
+						<td>Время, мс</td>
+					</tr>
+					<xsl:for-each select="/page/slow/q">
+						<tr>
+							<td><xsl:value-of select="log"/></td>
+							<td>
+								<xsl:value-of select="time"/>
+							</td>
+						</tr>
+					</xsl:for-each>
+				</table>
+			</xsl:if>
+
 			<xsl:if test="/page/log">
 				<h2>Сообщения</h2>
 				<table>

@@ -106,25 +106,30 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 				long lastProductId = 0;
 				if (currentSection != null) {
 					info.setCurrentJob("скрывается " + currentSection.getStringValue(NAME_PARAM));
-					Timer.getTimer().start("loading products to hide");
+
 					ItemQuery proudctsQuery = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED)
 							.setParentId(currentSection.getId(), false).setLimit(100);
 					List<Item> visibleProducts;
 					DelayedTransaction transaction = new DelayedTransaction(owner);
 					do {
+						Timer.getTimer().start("loading products");
 						visibleProducts = proudctsQuery.setIdSequential(lastProductId).loadItems();
-						long nanos = Timer.getTimer().getNanos("loading products to hide");
-						Timer.getTimer().stop("loading products to hide");
-						info.addLog(String.format("loading products: %,d"));
+						long nanos = Timer.getTimer().getNanos("loading products");
+						Timer.getTimer().stop("loading products");
+						if(nanos/1000000 > 100){
+							String queryLog = String.format(proudctsQuery.getSqlForLog() + ". Took: %,d ms.", nanos/1000000);
+							info.addSlowQuery(proudctsQuery.getSqlForLog(), nanos);
+							info.pushLog(queryLog);
+						}
 						for (Item visibleProduct : visibleProducts) {
 							transaction.addCommandUnit(ItemStatusDBUnit.hide(visibleProduct));
 							lastProductId = visibleProduct.getId();
 						}
-						Timer.getTimer().start("hiding");
+						//Timer.getTimer().start("hiding");
 						transaction.execute();
-						nanos = Timer.getTimer().getNanos("hiding");
-						Timer.getTimer().stop("hiding");
-						info.addLog(String.format("hiding: %,d"));
+						//nanos = Timer.getTimer().getNanos("hiding");
+						//Timer.getTimer().stop("hiding");
+						//info.addLog(String.format("hiding: %,d", nanos/1000000));
 						hiddenCount += visibleProducts.size();
 						info.setCurrentJob("скрывается " + currentSection.getStringValue(NAME_PARAM) + " * скрыто товаров " + hiddenCount);
 					} while (visibleProducts.size() > 0);
