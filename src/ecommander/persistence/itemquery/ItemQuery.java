@@ -2,7 +2,7 @@ package ecommander.persistence.itemquery;
 
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.MysqlConnector.ConnectionCount;
+import ecommander.fwk.MysqlConnector.LoggedConnection;
 import ecommander.fwk.Pair;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
@@ -130,8 +130,9 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private HashSet<Byte> status = new HashSet<>(); // статус айтема (нормальный, скрытый, удаленный)
 	private boolean isTree = false; // результат загрузки должен быть деревом (true) или списком (false)
 	private boolean isVeryLargeResult = false; // ожидается ли очень длинный результат (после загрузки количества)
-	private boolean isIdSequential = false;
-	private long idSequentialStart = -1;
+	private boolean isIdSequential = false; // последовательная пакетная загрузка в порядке возрастания ID айтема
+	private long idSequentialStart = -1; // начальный ID айтема для последовательной загрузки (не включен в результат)
+	private String sqlForLog = null; // SQL последнего выполненного запроса
 	
 	public ItemQuery(ItemType itemDesc, Byte... status) {
 		this.itemDescStack.push(itemDesc);
@@ -798,6 +799,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Теперь можно загружать группировку (если она есть), предварительно добавив критерий типа айтема и предка
 		if (hasAggregation()) {
 			createParentTypeUserCriteria(query, ancestorIds);
+			sqlForLog = query.getSimpleSql();
 			return loadGroupedItems(query, conn);
 		}
 		// Если в фильтре нет своей сортировки, можно установить сортировку по умолчанию
@@ -857,6 +859,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			if (hasLimit())
 				limit.appendQuery(query);
 		}
+		sqlForLog = query.getSimpleSql();
 		return loadByQuery(query, PID, null, fulltext, conn);
 	}
 	/**
@@ -869,6 +872,14 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		if (all.size() == 0)
 			return null;
 		return all.get(0);
+	}
+
+	/**
+	 * Получить SQL запроса, который сгенерировался этим конструктором
+	 * @return
+	 */
+	public String getSqlForLog() {
+		return sqlForLog;
 	}
 	/**
 	 * Загрузить один айтем по его ID
@@ -1368,8 +1379,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	}
 	
 	public static void queryFinished(Connection conn) {
-		if (conn instanceof ConnectionCount)
-			((ConnectionCount) conn).queryFinished();
+		if (conn instanceof LoggedConnection)
+			((LoggedConnection) conn).queryFinished();
 	}
 
 	/**
