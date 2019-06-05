@@ -3,6 +3,7 @@ package ecommander.fwk.integration;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Timer;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
@@ -17,7 +18,9 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Создание разделов каталога
@@ -45,6 +48,9 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 		this.owner = owner;
 		this.info = info;
 		this.ignoreCodes = ignoreCodes;
+		for(String ignoreCode : ignoreCodes){
+			info.addLog("ignore: "+ignoreCode);
+		}
 	}
 
 	@Override
@@ -60,6 +66,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 				code = attributes.getValue(ID_ATTR);
 				// пропустить некоторые разделы
 				if (ignoreCodes.contains(code)) {
+					info.addLog(code+" ignored.");
 					currentSection = null;
 					return;
 				}
@@ -99,17 +106,25 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 				long lastProductId = 0;
 				if (currentSection != null) {
 					info.setCurrentJob("скрывается " + currentSection.getStringValue(NAME_PARAM));
+					Timer.getTimer().start("loading products to hide");
 					ItemQuery proudctsQuery = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED)
 							.setParentId(currentSection.getId(), false).setLimit(100);
 					List<Item> visibleProducts;
 					DelayedTransaction transaction = new DelayedTransaction(owner);
 					do {
 						visibleProducts = proudctsQuery.setIdSequential(lastProductId).loadItems();
+						long nanos = Timer.getTimer().getNanos("loading products to hide");
+						Timer.getTimer().stop("loading products to hide");
+						info.addLog(String.format("loading products: %,d"));
 						for (Item visibleProduct : visibleProducts) {
 							transaction.addCommandUnit(ItemStatusDBUnit.hide(visibleProduct));
 							lastProductId = visibleProduct.getId();
 						}
+						Timer.getTimer().start("hiding");
 						transaction.execute();
+						nanos = Timer.getTimer().getNanos("hiding");
+						Timer.getTimer().stop("hiding");
+						info.addLog(String.format("hiding: %,d"));
 						hiddenCount += visibleProducts.size();
 						info.setCurrentJob("скрывается " + currentSection.getStringValue(NAME_PARAM) + " * скрыто товаров " + hiddenCount);
 					} while (visibleProducts.size() > 0);

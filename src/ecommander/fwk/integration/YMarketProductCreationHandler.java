@@ -44,6 +44,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private static final String STATUS = "Статус";
 	private static final String PUBLISH_TYPE = "Вид издания";
 	private static final String BOOKINISTIC = "Букинистическое издание";
+	private static final String BOOKINISTIC_1 = "Букинистика";
 
 	static {
 		COMMON_PARAMS.add(URL_ELEMENT);
@@ -92,6 +93,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private boolean isInsideOffer = false;
 	private BigDecimal level_1, level_2, quotient_1, quotient_2, quotient_3, quotient_buk;
 	private Assoc catalogLinkAssoc;
+	private boolean isBookinistic = false;
 
 	
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
@@ -180,13 +182,19 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				//else
 				//	product.setValueUI(PRICE_PARAM, "0");
 
-				boolean isBookinistic = (BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE))) && quotient_buk.compareTo(BigDecimal.ZERO) != 0;
 
 				if(isBookinistic){
+					info.pushLog("BUK: "+ commonParams.get(NAME_ELEMENT));
+					product.removeEqualValue("tag", BOOKINISTIC);
+					product.setValue("tag", BOOKINISTIC_1);
+				}
+
+				if(isBookinistic && quotient_buk.compareTo(BigDecimal.ZERO) != 0){
 					product.setValue(PRICE_PARAM, price.multiply(quotient_buk).setScale(1, RoundingMode.CEILING));
-					product.setValue("tag", BOOKINISTIC);
-				}else if(secCode.equalsIgnoreCase("16546")){
-					product.setValue(PRICE_PARAM, price.multiply(quotient_buk).setScale(1, RoundingMode.CEILING));
+				}else{
+					info.pushLog("NOT BUK: "+ commonParams.get(NAME_ELEMENT));
+					product.removeEqualValue("tag", BOOKINISTIC);
+					product.removeEqualValue("tag", BOOKINISTIC_1);
 				}
 
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
@@ -230,6 +238,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				info.increaseProcessed();
 				isInsideOffer = false;
+				isBookinistic = false;
 			}
 
 			else if (isInsideOffer && COMMON_PARAMS.contains(qName) && parameterReady) {
@@ -284,6 +293,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		// Пользовательские параметры продуктов
 		else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName)) {
 			paramName = attributes.getValue(NAME_ATTR);
+			if(paramName.equalsIgnoreCase("Сохранность")) isBookinistic = true;
 			parameterReady = true;
 		}
 	}
