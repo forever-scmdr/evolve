@@ -39,7 +39,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				if(StringUtils.isBlank(code) || CreateExcelPriceList.CODE_FILE.equalsIgnoreCase(code) || StringUtils.startsWith(code,"разд:")) return;
 				String price = getValue(CreateExcelPriceList.PRICE_FILE);
 				String qty = getValue(CreateExcelPriceList.QTY_FILE);
-				String av = getValue(CreateExcelPriceList.AVAILABLE_FILE);
+				String av;
 				String oldPrice = getValue(CreateExcelPriceList.PRICE_OLD_FILE);
 				String origPrice = getValue(CreateExcelPriceList.PRICE_ORIGINAL_FILE);
 				String currency = getValue(CreateExcelPriceList.CURRENCY_ID_FILE);
@@ -52,12 +52,13 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 					product.setValueUI(PRICE_PARAM, price.replaceAll("[^\\d,.]",""));
 					if(qty != null) {
 						product.setValueUI(QTY_PARAM, qty);
-					}
+
 //					if(av != null) {
 //						av = StringUtils.startsWith("-", av) || "0".equals(av) || StringUtils.isBlank(av)? "0" : "1";
 						av = product.getDoubleValue(QTY_PARAM, 0d) > 0d? "1" : "0";
 						product.setValueUI(AVAILABLE_PARAM, av);
 //					}
+					}
 					if(oldPrice != null){
 						product.setValueUI(PRICE_OLD_PARAM, oldPrice.replaceAll("[^\\d,.]",""));
 					}
