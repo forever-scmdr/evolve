@@ -6,38 +6,18 @@
 */
 package ecommander.fwk;
 
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.NClob;
-import java.sql.PreparedStatement;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.sql.Struct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.Executor;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import java.sql.*;
+import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 /**
@@ -53,8 +33,8 @@ public class MysqlConnector
 	private static final int MAX_CONNECTIONS = 24;
 	
 	private static volatile int _open_count = 0;
-	private static HashMap<Integer, Integer> connectionNames = new HashMap<Integer, Integer>();
-	private static HashSet<Integer> openConnections = new HashSet<Integer>();
+	private static HashMap<Integer, Integer> connectionNames = new HashMap<>();
+	private static HashSet<Integer> openConnections = new HashSet<>();
 	private static int com_name_counter = 0;
 	
 	private static final Lock lock = new ReentrantLock();

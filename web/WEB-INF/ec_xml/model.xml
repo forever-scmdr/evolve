@@ -213,10 +213,14 @@
 		<parameter name="quotient" type="decimal" caption="Коэффициент"/>
 	</item>
 
-	<item name="price_catalog" caption="Каталог ценовых интервалов" ag-id="2207" ag-hash="2102484771">
+	<item name="price_catalog" caption="Каталог ценовых интервалов" key="name" ag-id="2207" ag-hash="2102484771">
 		<parameter name="name" type="string" caption="Название источника" />
 		<parameter name="quotient" type="decimal" caption="Базовый коэффициент" default="1.4"/>
 		<child item="price_interval" inline="true"/>
+	</item>
+
+	<item name="price_catalogs" caption="Каталоги ценовых интервалов">
+		<child item="price_catalog"/>
 	</item>
 
 	<item name="currencies" caption="Курсы валют">
