@@ -44,9 +44,11 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				String origPrice = getValue(CreateExcelPriceList.PRICE_ORIGINAL_FILE);
 				String currency = getValue(CreateExcelPriceList.CURRENCY_ID_FILE);
 				String unit = getValue(CreateExcelPriceList.UNIT_FILE);
-				ArrayList<Item> products = new ArrayList<>();
-				products = ItemQuery.loadByParamValue(ItemNames.LINE_PRODUCT, CODE_PARAM, code);
-				products = products.size() == 0? ItemQuery.loadByParamValue(ItemNames.PRODUCT, CODE_PARAM, code) : products;
+				ArrayList<Item> products;
+				products = ItemQuery.loadByParamValue(ItemNames.ABSTRACT_PRODUCT, CODE_PARAM, code);
+//				products = products.size() == 0? ItemQuery.loadByParamValue(ItemNames.PRODUCT, CODE_PARAM, code) : products;
+
+				if(products.size() > 1) info.pushLog(code);
 
 				for(Item product : products){
 					product.setValueUI(PRICE_PARAM, price.replaceAll("[^\\d,.]",""));
@@ -72,6 +74,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 						product.setValueUI(CURRENCY_ID_PARAM, currency);
 					}
 					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
+					if(products.size() > 1) info.pushLog("updating:" + code + ". Price = "+ price);
 					setProcessed(rowNum++);
 				}
 			}
@@ -113,14 +116,24 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				if(product.getByteValue(ItemNames.product_.HAS_LINES, (byte)0) == 0){
 					info.increaseProcessed(); continue;
 				}
+				//load min price
 				ItemQuery q = new ItemQuery(LINE_PRODUCT_ITEM);
 				q.setParentId(product.getId(), false);
-				q.addParameterCriteria(ItemNames.line_product_.AVAILABLE, "1", "=", null, Compare.SOME);
-				byte av = q.loadFirstItem() != null? (byte) 1 : (byte)0;
 				q = new ItemQuery(LINE_PRODUCT_ITEM);
 				q.setParentId(product.getId(), false);
 				q.addSorting(PRICE_PARAM, "ASC");
+				q.addParameterCriteria(PRICE_PARAM, "0", ">", null, Compare.SOME);
+				Item min = q.loadFirstItem();
 				String pv = q.loadFirstItem() == null? "" : q.loadFirstItem().outputValue(PRICE_PARAM);
+
+				//load available
+				byte av = min != null? min.getByteValue(AVAILABLE_PARAM, (byte)0) : (byte)0;
+				if(av == 0){
+					q = new ItemQuery(LINE_PRODUCT_ITEM);
+					q.addParameterCriteria(ItemNames.line_product_.AVAILABLE, "1", "=", null, Compare.SOME);
+					av = q.loadFirstItem() != null? (byte) 1 : (byte)0;
+				}
+
 				product.setValueUI(PRICE_PARAM, pv);
 				product.setValue(ItemNames.product_.AVAILABLE, av);
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
