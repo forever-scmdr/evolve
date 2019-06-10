@@ -132,8 +132,10 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					product.setValueUI(PRICE_OPT_OLD_PARAM, singleParams.get(OLDOPTPRICE_ELEMENT));
 				if (product.getItemType().hasParameter(MIN_QTY_PARAM))
 					product.setValueUI(MIN_QTY_PARAM, singleParams.get(MIN_QUANTITY_ELEMENT));
-				if (product.getItemType().hasParameter(STATUS_PARAM))
-					product.setValueUI(STATUS_PARAM, singleParams.get(STATUS_ELEMENT));
+				if (product.getItemType().hasParameter(TAG_PARAM)) {
+					product.clearValue(TAG_PARAM);
+					product.setValueUI(TAG_PARAM, singleParams.get(STATUS_ELEMENT));
+				}
 				if (product.getItemType().hasParameter(NEXT_DELIVERY_PARAM))
 					product.setValueUI(NEXT_DELIVERY_PARAM, singleParams.get(NEXT_DELIVERY_ELEMENT));
 

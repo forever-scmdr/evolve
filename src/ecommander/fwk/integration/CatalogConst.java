@@ -42,6 +42,7 @@ public interface CatalogConst {
 	String SIMILAR_CODE_PARAM = "similar_code";
 	String SUPPORT_CODE_PARAM = "support_code";
 	String STATUS_PARAM = "status";
+	String TAG_PARAM = "tag";
 	String DESCRIPTION_PARAM = "description";
 	String TEXT_PARAM = "text";
 	String TEXT_PICS_PARAM = "text_pics";
