@@ -98,6 +98,9 @@
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
 		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
+		<parameter name="price_RUB" type="currency" caption="Цена RUB" description="в валюте текущего сайта"/>
+		<parameter name="price_USD" type="currency" caption="Цена USD" description="в валюте текущего сайта"/>
+		<parameter name="price_EUR" type="currency" caption="Цена EUR" description="в валюте текущего сайта"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
 		<parameter name="qty" type="decimal" caption="Количество на складе"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
@@ -213,24 +216,32 @@
 		<parameter name="quotient" type="decimal" caption="Коэффициент"/>
 	</item>
 
-	<item name="price_catalog" caption="Каталог ценовых интервалов" key="name" ag-id="2207" ag-hash="2102484771">
-		<parameter name="name" type="string" caption="Название источника" />
+	<item name="price_catalog" caption="Настройки поставщика" key="name" ag-id="2207" ag-hash="2102484771">
+		<parameter name="name" type="string" caption="Название поставщика" />
 		<parameter name="quotient" type="decimal" caption="Базовый коэффициент" default="1.4"/>
+		<parameter name="default_ship_time" type="decimal" caption="Срок поставки по умолчанию" default="14"/>
 		<child item="price_interval" inline="true"/>
 	</item>
 
-	<item name="price_catalogs" caption="Каталоги ценовых интервалов">
+	<item name="price_catalogs" caption="Настройки поставщиков" ag-id="3124" ag-hash="752518576">
 		<child item="price_catalog"/>
 	</item>
 
-	<item name="currencies" caption="Курсы валют">
-		<parameter name="RUB" type="currency-precise" caption="Российский рубль"/>
-		<parameter name="USD" type="currency-precise" caption="Доллар США"/>
-		<parameter name="EUR" type="currency-precise" caption="Евро"/>
+	<item name="currencies" caption="Курсы валют" ag-id="3125" ag-hash="-1089470353">
+		<parameter name="RUB_rate" type="currency-precise" caption="Российский рубль (Rate)"/>
+		<parameter name="RUB_scale" type="currency-precise" caption="Российский рубль (Scale)"/>
+		<parameter name="RUB_extra" type="currency-precise" default="0" caption="Российский рубль - дополнительный процент"/>
+		<parameter name="USD_rate" type="currency-precise" caption="Доллар США (Rate)"/>
+		<parameter name="USD_scale" type="currency-precise" caption="Доллар США (Scale)"/>
+		<parameter name="USD_extra" type="currency-precise" default="0" caption="Доллар США - дополнительный процент"/>
+		<parameter name="EUR_rate" type="currency-precise" caption="Евро (Rate)"/>
+		<parameter name="EUR_scale" type="currency-precise" caption="Евро (Scale)"/>
+		<parameter name="EUR_extra" type="currency-precise" default="0" caption="Евро - дополнительный процент"/>
 	</item>
 
-	<item name="catalog_meta" caption="Настройки каталога">
-		<
+	<item name="catalog_meta" caption="Настройки каталога" ag-id="3126" ag-hash="-1147955605">
+		<child item="price_catalogs" single="true"/>
+		<child item="currencies" single="true"/>
 	</item>
 
 	<!--/////////////                            END КОРЗИНА                               ////////////-->
@@ -464,6 +475,7 @@
 		<child item="url_seo_wrap" single="true"/>
 		<child item="plain_catalog" single="true"/>
 		<child item="price_catalog" single="true"/>
+		<child item="catalog_meta" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

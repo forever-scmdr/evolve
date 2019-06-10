@@ -5,10 +5,12 @@ import ecommander.fwk.*;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Product;
+import lunacrawler._generated.ItemNames;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -67,15 +69,17 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 		info.pushLog("Создание товаров");
 		info.setOperation("Создание товаров");
 		info.setProcessed(0);
+		final CurrencyRates currencyRates = new CurrencyRates();
 		for (File excel : excels) {
 			if (!StringUtils.endsWithAny(excel.getName(), "xls", "xlsx", "txt"))
 				continue;
 			// Загрузка раздела
 			section = ItemQuery.loadSingleItemByParamValue(ItemNames.PLAIN_SECTION, plain_section_.NAME, excel.getName());
-			if (section == null) {
-				section = Item.newChildItem(sectionType, catalog);
-				section.setValue(plain_section_.NAME, excel.getName());
+			if (section != null) {
+				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(section));
 			}
+			section = Item.newChildItem(sectionType, catalog);
+			section.setValue(plain_section_.NAME, excel.getName());
 			section.setValue(plain_section_.DATE, DateTime.now(DateTimeZone.UTC).getMillis());
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
 			// Разбор прайс-листа
@@ -99,7 +103,8 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							prod.set_available(NumberUtils.toByte(src.getValue(DELAY_HEADER), (byte) 0));
 							prod.set_qty(src.getCurrencyValue(QTY_HEADER, new BigDecimal(0)));
 							prod.set_min_qty(src.getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1)));
-							prod.set_price(src.getCurrencyValue(PRICE_HEADER, new BigDecimal(0)));
+							//prod.set_price(src.getCurrencyValue(PRICE_HEADER, new BigDecimal(0)));
+							currencyRates.setAllPrices(prod, src.getValue(PRICE_HEADER));
 							prod.set_vendor(src.getValue(VENDOR_HEADER));
 							prod.set_name_extra(src.getValue(NAME_EXTRA_HEADER));
 							prod.set_unit(src.getValue(UNIT_HEADER));
