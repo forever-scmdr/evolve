@@ -178,11 +178,10 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				//if (getPrice)
 				product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
 				BigDecimal price = product.getDecimalValue(PRICE_PARAM);
-				product.setValue(PRICE_PARAM, getCorrectPrice(price).setScale(1, RoundingMode.CEILING));
 				//else
 				//	product.setValueUI(PRICE_PARAM, "0");
-
 				isBookinistic = isBookinistic || secCode.equals("16546") || BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE));
+				product.setValue(PRICE_PARAM, getCorrectPrice(price).setScale(1, RoundingMode.CEILING));
 
 				if(isBookinistic){
 					//info.pushLog("BUK: "+ commonParams.get(NAME_ELEMENT));
@@ -190,9 +189,10 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					product.setValue("tag", BOOKINISTIC_1);
 				}
 
-				if(isBookinistic && quotient_buk.compareTo(BigDecimal.ZERO) != 0){
-					product.setValue(PRICE_PARAM, price.multiply(quotient_buk).setScale(1, RoundingMode.CEILING));
-				}else{
+//				if(isBookinistic && quotient_buk.compareTo(BigDecimal.ZERO) != 0){
+//					product.setValue(PRICE_PARAM, price.multiply(quotient_buk).setScale(1, RoundingMode.CEILING));
+//				}
+				else{
 					//info.pushLog("NOT BUK: "+ commonParams.get(NAME_ELEMENT));
 					product.removeEqualValue("tag", BOOKINISTIC);
 					product.removeEqualValue("tag", BOOKINISTIC_1);
@@ -300,6 +300,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	}
 
 	private BigDecimal getCorrectPrice(BigDecimal price) {
+		if (isBookinistic && quotient_buk.compareTo(BigDecimal.ZERO) != 0) return price.multiply(quotient_buk);
 		if (price.compareTo(level_1) < 0) {
 			return price.multiply(quotient_1);
 		}
