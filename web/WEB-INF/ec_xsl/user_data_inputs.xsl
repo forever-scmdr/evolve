@@ -16,11 +16,11 @@
 		<xsl:param name="vals" select="$inp"/>
 		<div class="form-group">
 			<label>Ваше имя *:</label>
-			<input type="text" class="form-control" name="{$inp/name/@input}" value="{f:not_empty($inp/name, $vals/name)}" error="{$inp/name/@validation-error}"/>
+			<input type="text" class="form-control" name="{$inp/name/@input}" value="{f:not_empty($inp/name, $vals/name)}" error="{$inp/name/@validation-error}" placeholder="Имя Фамилия"/>
 		</div>
 		<div class="form-group">
 			<label for="">Адрес:</label>
-			<input type="text" class="form-control" name="{$inp/address/@input}" value="{f:not_empty($inp/address, $vals/address)}" error="{$inp/address/@validation-error}"/>
+			<input type="text" class="form-control" name="{$inp/address/@input}" value="{f:not_empty($inp/address, $vals/address)}" error="{$inp/address/@validation-error}" placeholder="г. Минск, ул. Полевая, 21, кв. 1"/>
 		</div>
 		<div class="form-group">
 			<label>Способ доставки <a href="dostavka">Подробнее об условиях доставки</a></label>
@@ -40,11 +40,11 @@
 		</div>
 		<div class="form-group">
 			<label>Телефон:</label>
-			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{f:not_empty($inp/phone, $vals/phone)}" error="{$inp/phone/@validation-error}"/>
+			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{f:not_empty($inp/phone, $vals/phone)}" error="{$inp/phone/@validation-error}" placeholder="+375 29 123-45-67"/>
 		</div>
 		<div class="form-group">
 			<label>Электронная почта:</label>
-			<input type="text" class="form-control" name="{$inp/email/@input}" value="{f:not_empty($inp/email, $vals/email)}" error="{$inp/email/@validation-error}"/>
+			<input type="text" class="form-control" name="{$inp/email/@input}" value="{f:not_empty($inp/email, $vals/email)}" error="{$inp/email/@validation-error}" placeholder="my-email@domain.xx"/>
 		</div>
 	</xsl:template>
 
@@ -59,11 +59,11 @@
 		<div class="form-group">
 			<label>Наименование организации *:</label>
 			<input type="text" class="form-control" name="{$inp/organization/@input}"
-			       value="{f:not_empty($inp/email, $vals/email)}" error="{$inp/organization/@validation-error}"/>
+			       value="{f:not_empty($inp/email, $vals/email)}" error="{$inp/organization/@validation-error}" placeholder="ООО &quot;Мое предприятие&quot;"/>
 		</div>
 		<div class="form-group">
 			<label for="">Телефон/факс *:</label>
-			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{f:not_empty($inp/phone, $vals/phone)}"/>
+			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{f:not_empty($inp/phone, $vals/phone)}" placeholder="+375 29 123-45-67"/>
 		</div>
 		<div class="form-group">
 			<label>Способ доставки <a href="dostavka">Подробнее об условиях доставки</a></label>
@@ -83,19 +83,19 @@
 		</div>
 		<div class="form-group">
 			<label>E-mail:</label>
-			<input type="text" class="form-control" name="{$inp/email/@input}" value="{f:not_empty($inp/email, $vals/email)}"/>
+			<input type="text" class="form-control" name="{$inp/email/@input}" value="{f:not_empty($inp/email, $vals/email)}" placeholder="my-email@domain.xx"/>
 		</div>
 		<div class="form-group">
 			<label>Контактное лицо *:</label>
-			<input type="text" class="form-control" name="{$inp/contact_name/@input}" value="{f:not_empty($inp/contact_name, $vals/contact_name)}"/>
+			<input type="text" class="form-control" name="{$inp/contact_name/@input}" value="{f:not_empty($inp/contact_name, $vals/contact_name)}" placeholder="Имя Фамилия"/>
 		</div>
 		<div class="form-group">
 			<label>Телефон контактного лица:</label>
-			<input type="text" class="form-control" name="{$inp/contact_phone/@input}" value="{f:not_empty($inp/contact_phone, $vals/contact_phone)}"/>
+			<input type="text" class="form-control" name="{$inp/contact_phone/@input}" value="{f:not_empty($inp/contact_phone, $vals/contact_phone)}" placeholder="+375 29 123-45-67"/>
 		</div>
 		<div class="form-group">
 			<label>Юридический адрес:</label>
-			<input type="text" class="form-control" name="{$inp/address/@input}" value="{f:not_empty($inp/address, $vals/address)}"/>
+			<input type="text" class="form-control" name="{$inp/address/@input}" value="{f:not_empty($inp/address, $vals/address)}" placeholder="г. Минск, ул. Полевая, 21, офис 1"/>
 		</div>
 		<div class="form-group">
 			<label>Расчетный счет:</label>
@@ -103,11 +103,11 @@
 		</div>
 		<div class="form-group">
 			<label>Название банка:</label>
-			<input type="text" class="form-control" name="{$inp/bank/@input}" value="{f:not_empty($inp/bank, $vals/bank)}"/>
+			<input type="text" class="form-control" name="{$inp/bank/@input}" value="{f:not_empty($inp/bank, $vals/bank)}" placeholder="ОАО &quot;Приорбанк&quot;"/>
 		</div>
 		<div class="form-group">
 			<label>Адрес банка:</label>
-			<input type="text" class="form-control" name="{$inp/bank_address/@input}" value="{f:not_empty($inp/bank_address, $vals/bank_address)}"/>
+			<input type="text" class="form-control" name="{$inp/bank_address/@input}" value="{f:not_empty($inp/bank_address, $vals/bank_address)}" placeholder="г. Минск, ул. Полевая, 21, офис 1" />
 		</div>
 		<div class="form-group">
 			<label>Код банка:</label>
@@ -119,7 +119,7 @@
 		</div>
 		<div class="form-group">
 			<label>Ф.И.О директора:</label>
-			<input type="text" class="form-control" name="{$inp/director/@input}" value="{f:not_empty($inp/director, $vals/director)}"/>
+			<input type="text" class="form-control" name="{$inp/director/@input}" value="{f:not_empty($inp/director, $vals/director)}" placeholder="Иванов Иван Иванович"/>
 		</div>
 		<div class="form-group">
 			<label>Действует на основании:</label>

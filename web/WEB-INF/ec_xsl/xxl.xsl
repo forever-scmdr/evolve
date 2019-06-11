@@ -35,10 +35,10 @@
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
-			<p>
-				<a class="button" data-toggle="modal" data-target="#warranty">Оформить XXL-гарантию</a>
-			</p>
 			<xsl:value-of select="page/custom_pages/xxl_text" disable-output-escaping="yes"/>
+			<p style="text-align: center;">
+				<a class="button" data-toggle="modal" data-target="#warranty" style="font-size: 21px; height: auto; border-radius: 4px; padding: 3px 12px;">Оформить XXL-гарантию</a>
+			</p>
 			<p>
 				<xsl:if test="$success">Ваш сертификат оформлен и доступен для печати, его копия отправлена на указанный e-mail.</xsl:if>
 				<xsl:if test="$not_found">Товар с указанным артикулом не найден. Проверьте артикул или воспользуйтесь формой обратной связи</xsl:if>

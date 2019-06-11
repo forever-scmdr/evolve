@@ -75,27 +75,6 @@
 	</include-definition>
 
 
-	<page name="test">
-		<single item="catalog" id="catalog_main">
-			<tree item="section" id="sec" assoc="* catalog_link">
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="sec" style="key"/>
-				</link>
-				<list item="product"  transit="true">
-					<filter>
-						<limit>
-							<var value="1"/>
-						</limit>
-					</filter>
-				</list>
-			</tree>
-		</single>
-	</page>
-
-
-
-
-
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                                ИНДЕКС                                ////////////-->
@@ -524,6 +503,29 @@
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="assoc" style="key"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="assoc" parameter="code"/>
+			</link>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="assoc" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="update_cookie_value" ref="assoc" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
+			<link name="cheaper_link" target="cheaper_form">
+				<var name="prod" ref="assoc"/>
+			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="assoc" parameter="name"/>
+				<var name="pcode" ref="assoc" parameter="code"/>
 			</link>
 		</list>
 		<include name="COMMON"/>

@@ -41,7 +41,7 @@
 								</div>
 								<div class="form-group">
 									<label>Телефон:</label>
-									<input type="text" class="form-control" name="{$form/input/phone/@input}" value="{$form/input/phone}"/>
+									<input type="text" class="form-control" name="{$form/input/phone/@input}" value="{$form/input/phone}"  placeholder="+375 29 123-45-67"/>
 								</div>
 								<input class="button" type="submit" value="Отправить сообщение"/>
 							</form>

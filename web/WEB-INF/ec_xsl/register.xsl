@@ -40,7 +40,7 @@
 			<div class="tab-content">
 
 				<div role="tabpanel" class="tab-pane{' active'[$is_login]}" id="tab_login">
-					<p>Введите адрес электрнной почты и пароль.</p>
+					<p>Введите адрес электронной почты и пароль.</p>
 					<form action="{page/submit_login}" method="post" onsubmit="lock('tab_login')">
 						<div class="form-group">
 							<label>Электронная почта:</label>

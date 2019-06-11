@@ -217,32 +217,32 @@
 		<!-- FOOTER BEGIN -->
 		<div class="footer-placeholder"></div>
 		<section class="footer">
-		    <div class="container">
-		        <!-- <div class="footer__menu">
-		            <a href="">Каталог</a>
-		            <a href="">Новости</a>
-		            <a href="">Акции</a>
-		            <a href="">О компании</a>
-		            <a href="">Сервис</a>
-		            <a href="">Оплата</a>
-		            <a href="">Доставка</a>
-		            <a href="">Контакты</a>
-		        </div> -->
-		        <div class="footer__content">
-			        <xsl:variable name="footer" select="page/common/footer"/>
-			        <div class="footer__column">
-		                <xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
-				            <div class="title_3"><xsl:value-of select="$footer/block[1]/header" /></div>
-		                </xsl:if>
-				        <xsl:value-of select="$footer/block[1]/text" disable-output-escaping="yes"/>
-		                <div class="forever">
-		                    <img src="img/forever.png" alt="" />
-		                    <a href="http://forever.by" target="_blank">Разработка сайта студия веб-дизайна Forever</a>
-		                </div>
-		            </div>
+			<div class="container">
+				<!-- <div class="footer__menu">
+					<a href="">Каталог</a>
+					<a href="">Новости</a>
+					<a href="">Акции</a>
+					<a href="">О компании</a>
+					<a href="">Сервис</a>
+					<a href="">Оплата</a>
+					<a href="">Доставка</a>
+					<a href="">Контакты</a>
+				</div> -->
+				<div class="footer__content">
+					<xsl:variable name="footer" select="page/common/footer"/>
+					<div class="footer__column">
+						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
+							<div class="title_3"><xsl:value-of select="$footer/block[1]/header" /></div>
+						</xsl:if>
+						<xsl:value-of select="$footer/block[1]/text" disable-output-escaping="yes"/>
+						<!-- <div class="forever">
+							<img src="img/forever.png" alt="" />
+							<a href="http://forever.by" target="_blank">Разработка сайта студия веб-дизайна Forever</a>
+						</div> -->
+					</div>
 					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
-		        </div>
-		    </div>
+				</div>
+			</div>
 		</section>
 		<!-- FOOTER END -->
 
