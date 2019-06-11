@@ -924,6 +924,12 @@
 						initDropDownHeader();
 					});
 
+					$(document).on('click', '.print-img', function(e){
+						e.preventDefault();
+						printImage($(this).attr('href'));
+						return false;
+					});
+
 					$(window).resize(function(){
 						var oh = $(".footer").outerHeight();
 						$(".footer-placeholder").height(oh+40);
@@ -939,6 +945,14 @@
 							$('#' + mi.attr('dd-id')).show();
 						});
 					}
+
+
+					function printImage(imgId) {
+						var img = document.getElementById(imgId);
+						var win = window.open(img.src,"_blank");
+						win.onload = function() { win.print();}
+					}
+
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
 				<xsl:for-each select="$body-end-modules">
