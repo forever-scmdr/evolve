@@ -176,13 +176,13 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				String productParentCode = product.getStringValue("parent_id");
 				if(StringUtils.isBlank(productParentCode)){
-					ItemQuery q = new ItemQuery(SECTION_ITEM);
-					q.setParentId(product.getId(), false);
+					ItemQuery q = new ItemQuery(SECTION_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED);
+					q.setChildId(product.getId(), false);
 					Item sec = q.loadFirstItem();
 					productParentCode = sec.getStringValue("category_id");
 					product.setValue("parent_id", productParentCode);
 				}
-				secCode = productParentCode;
+				secCode = (StringUtils.isNoneBlank(productParentCode))? productParentCode : secCode;
 
 				info.setCurrentJob("раздел " + section.getStringValue(NAME_PARAM) + " * товар " + product.getStringValue(NAME_PARAM));
 
