@@ -124,21 +124,23 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
 				Item section = sections.get(secCode);
 				// пропустить некоторые разделы
-				if (section == null)
+				if (section == null) {
+					info.addLog("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
 					return;
+				}
 				//Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
 				Item product = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN)
 						.addParameterEqualsCriteria(OFFER_ID_PARAM, code).loadFirstItem();
 				boolean isProductNew = false;
 				if (product == null) {
-					if (section != null) {
+					//if (section != null) {
 						product = Item.newChildItem(productType, section);
 						product.setValue("parent_id", secCode);
 						isProductNew = true;
-					} else {
-						info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
-						return;
-					}
+//					} else {
+//						info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
+//						return;
+//					}
 					product.setValue(CODE_PARAM, code);
 					product.setValue(OFFER_ID_PARAM, code);
 					product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(commonParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
