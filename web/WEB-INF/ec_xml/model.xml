@@ -233,6 +233,7 @@
 		<parameter name="language" type="string" caption="Язык" text-index="fulltext" text-index-parameter="name"/>
 		<parameter name="ISBN" type="string" caption="ISBN" text-index="fulltext" text-index-parameter="name"/>
 		<parameter name="picture" type="string" multiple="true" caption="Урл картинки"/>
+		<parameter name="parent_id" type="string" caption="код родительского раздела"/>
 	</item>
 
 

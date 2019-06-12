@@ -133,6 +133,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				if (product == null) {
 					if (section != null) {
 						product = Item.newChildItem(productType, section);
+						product.setValue("parent_id", secCode);
 						isProductNew = true;
 					} else {
 						info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
@@ -172,6 +173,16 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						product.setValue(PICTURE, picUrl);
 					}
 				}
+
+				String productParentCode = product.getStringValue("parent_id");
+				if(StringUtils.isBlank(productParentCode)){
+					ItemQuery q = new ItemQuery(SECTION_ITEM);
+					q.setParentId(product.getId(), false);
+					Item sec = q.loadFirstItem();
+					productParentCode = sec.getStringValue("category_id");
+					product.setValue("parent_id", productParentCode);
+				}
+				secCode = productParentCode;
 
 				info.setCurrentJob("раздел " + section.getStringValue(NAME_PARAM) + " * товар " + product.getStringValue(NAME_PARAM));
 
