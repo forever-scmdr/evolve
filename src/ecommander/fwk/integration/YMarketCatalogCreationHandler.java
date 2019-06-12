@@ -112,15 +112,15 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 					List<Item> visibleProducts;
 					DelayedTransaction transaction = new DelayedTransaction(owner);
 					do {
-						Timer.getTimer().start("loading products");
+//						Timer.getTimer().start("loading products");
 						visibleProducts = proudctsQuery.setIdSequential(lastProductId).loadItems();
 						long nanos = Timer.getTimer().getNanos("loading products");
-						Timer.getTimer().stop("loading products");
-						if(nanos/1000000 > 100){
-							String queryLog = String.format(proudctsQuery.getSqlForLog() + ". Took: %,d ms.", nanos/1000000);
-							info.addSlowQuery(proudctsQuery.getSqlForLog(), nanos);
-							info.pushLog(queryLog);
-						}
+//						Timer.getTimer().stop("loading products");
+//						if(nanos/1000000 > 100){
+//							String queryLog = String.format(proudctsQuery.getSqlForLog() + ". Took: %,d ms.", nanos/1000000);
+//							info.addSlowQuery(proudctsQuery.getSqlForLog(), nanos);
+//							info.pushLog(queryLog);
+//						}
 						for (Item visibleProduct : visibleProducts) {
 							transaction.addCommandUnit(ItemStatusDBUnit.hide(visibleProduct));
 							lastProductId = visibleProduct.getId();

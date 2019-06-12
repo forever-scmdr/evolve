@@ -1,9 +1,7 @@
 package ecommander.fwk.integration;
 
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ItemUtils;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.fwk.*;
+import ecommander.fwk.Timer;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
@@ -178,9 +176,17 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				String productParentCode = product.getStringValue("parent_id");
 				if(StringUtils.isBlank(productParentCode)){
+					ecommander.fwk.Timer.getTimer().start("loading_parent_section");
 					ItemQuery q = new ItemQuery(SECTION_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED);
 					q.setChildId(product.getId(), false);
 					Item sec = q.loadFirstItem();
+					long nanos = Timer.getTimer().getNanos("loading_parent_section");
+					Timer.getTimer().stop("loading_parent_section");
+					if(nanos/1000000 > 100){
+						//String queryLog = String.format(q.getSqlForLog() + ". Took: %,d ms.", nanos/1000000);
+						info.addSlowQuery(q.getSqlForLog(), nanos);
+						//info.pushLog(queryLog);
+					}
 					productParentCode = sec.getStringValue("category_id","");
 					product.setValue("parent_id", productParentCode);
 				}
