@@ -4,17 +4,17 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="'Оформление заявки'"/>
-	<xsl:variable name="message" select="page/variables/message"/>
-	<xsl:variable name="is_jur" select="page/user_jur//@validation-error"/>
 	<xsl:variable name="phys_reg" select="page/phys"/>
 	<xsl:variable name="jur_reg" select="page/jur"/>
+	<xsl:variable name="message" select="page/variables/message"/>
+	<xsl:variable name="is_jur" select="page/user_jur//@validation-error or $jur_reg"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
 				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
-				<a href="{page/cart_link}">Изменить зявку</a> <i class="fas fa-angle-right"></i>
+				<a href="{page/cart_link}">Корзина</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -46,16 +46,16 @@
 							<label for="">Адрес:</label>
 							<input type="text" class="form-control" name="{$inp/address/@input}" value="{if($inp/address != '') then $inp/address else $phys_reg/address}" error="{$inp/address/@validation-error}"/>
 						</div>
-						<!-- <div class="form-group">
-							<label>Способ доставки <a href="">Подробнее об условиях доставки</a></label>
-							<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</select>
-						</div> -->
+						<xsl:if test="//page/common/delivery">
+							<div class="form-group">
+								<label>Способ доставки <a href="oplata_i_dostavka">Подробнее об условиях доставки</a></label>
+								<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">
+									<xsl:for-each select="//page/common/delivery/option">
+										<option><xsl:value-of select="." /></option>
+									</xsl:for-each>
+								</select>
+							</div>
+						</xsl:if>
 						<div class="form-group">
 							<label>Телефон *:</label>
 							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{if($inp/phone != '') then $inp/phone else $phys_reg/phone}" error="{$inp/phone/@validation-error}"/>
@@ -93,16 +93,16 @@
 							<label for="">Телефон/факс *:</label>
 							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{if($inp/phone != '') then $inp/phone else $jur_reg/phone}"/>
 						</div>
-						<!-- <div class="form-group">
-							<label>Способ доставки <a href="">Подробнее об условиях доставки</a></label>
-							<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}">
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</select>
-						</div> -->
+						<xsl:if test="//page/common/delivery">
+							<div class="form-group">
+								<label>Способ доставки <a href="oplata_i_dostavka">Подробнее об условиях доставки</a></label>
+								<select class="form-control" name="{$inp/ship_type/@input}" value="{if($inp/ship_type != '') then $inp/ship_type else $jur_reg/ship_type}" error="{$inp/ship_type/@validation-error}">
+									<xsl:for-each select="//page/common/delivery/option">
+										<option><xsl:value-of select="." /></option>
+									</xsl:for-each>
+								</select>
+							</div>
+						</xsl:if>
 						<div class="form-group">
 							<label>E-mail:</label>
 							<input type="text" class="form-control" name="{$inp/email/@input}" value="{if($inp/email != '') then $inp/email else $jur_reg/email}"/>

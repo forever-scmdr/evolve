@@ -16,7 +16,7 @@
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
 	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 
-	<xsl:variable name="title" select="'Мизида'" />
+	<xsl:variable name="title" select="'Скобяной трейд'" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
@@ -43,6 +43,7 @@
 	<xsl:variable name="head-end-modules" select="$modules[place = 'head_end']"/>
 	<xsl:variable name="body-start-modules" select="$modules[place = 'body_start']"/>
 	<xsl:variable name="body-end-modules" select="$modules[not(place != '') or place = 'body_end']"/>
+	<xsl:variable name="is_registered" select="page/user/group/@name = 'registered'"/>
 
 
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
@@ -52,10 +53,23 @@
 	<xsl:template name="INC_DESKTOP_HEADER">
 		<section class="top-stripe desktop">
 			<div class="container">
-				<!-- <div class="top-stripe__phone"><img src="img/phone_logo.svg" />(+375 17) 123-45-67;</div> -->
-				<div class="top-stripe__phone"><img src="img/velcom_logo.svg" />(+375 17) 123-45-67 - отдел продаж;</div>
-				<div class="top-stripe__phone"><img src="img/mts_logo.svg" />(+375 17) 123-45-67 - отдел сервиса;</div>
-				<div class="top-stripe__address">г. Орша Ул. 1 Мая 81В-2; Время работы: пн. - пт. с 9 до 18;</div>
+				<xsl:variable name="topper" select="page/common/topper"/>
+				<!-- <div class="dropdown">
+					<a class="dropdown-toggle top-stripe__location" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<xsl:value-of select="$topper/block[1]/header"/>&#160;<i class="fas fa-caret-down"></i>
+					</a>
+
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						<xsl:for-each select="$topper/block">
+							<a class="dropdown-item dd_menu_item" href="#" dd-id="dd_block_{@id}"><xsl:value-of select="header"/></a>
+						</xsl:for-each>
+					</div>
+				</div> -->
+				<xsl:for-each select="$topper/block">
+					<div class="dd_block" id="dd_block_{@id}">
+						<xsl:value-of select="text" disable-output-escaping="yes"/>
+					</div>
+				</xsl:for-each>
 			</div>
 		</section>
 		<section class="header desktop">
@@ -187,32 +201,19 @@
 		<div class="footer-placeholder"></div>
 		<footer class="footer">
 			<div class="container">
-				<div>
-					<p>
-						<strong>© ООО «Скобяной трейд», 2018</strong>
-					</p>
-					<div class="footer__forever">
-						<a href="http://forever.by">Разработка сайта — студия веб-дизайна Forever</a>
+				<div class="footer__content">
+					<xsl:variable name="footer" select="page/common/footer"/>
+					<div class="footer__column">
+						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
+							<div class="title_3"><xsl:value-of select="$footer/block[1]/header" /></div>
+						</xsl:if>
+						<xsl:value-of select="$footer/block[1]/text" disable-output-escaping="yes"/>
+						<div class="forever">
+							<img src="img/forever.png" alt="" />
+							<a href="forever.by" target="_blank">Разработка сайта студия веб-дизайна Forever</a>
+						</div>
 					</div>
-				</div>
-				<!-- Эти блоки сделать редактируемыми через админку (произвольное количество блоков) -->
-				<div>
-					<p>
-						<strong>Заказ и констультация</strong>
-					</p>
-					<p>(+375 17) 123-45-67 - городской;</p>
-					<p>(+375 17) 123-45-67 - велком;</p>
-					<p>(+375 17) 123-45-67 - МТС;</p>
-					<p>email: <a href="mailto:skobtrade@mail.ru">skobtrade@mail.ru</a></p>
-				</div>
-				<div>
-					<p>Республика Беларусь Витебская обл., 211394 г. Орша Ул. 1 Мая 81В-2</p>
-					<p>email: <a href="mailto:skobtrade@mail.ru">skobtrade@mail.ru</a></p>
-					<p><strong>Режим работы</strong></p>
-					<p>Пн.-пт.: с 9:00 до 20:00</p>
-				</div>
-				<div>
-					<p>Работаем только с юридическими лицами и индивидуальными предпринимателями по безналичному расчету</p>
+					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
 				</div>
 			</div>
 		</footer>
@@ -250,6 +251,12 @@
 	</xsl:template>
 
 
+	<xsl:template match="block" mode="footer">
+		<div class="footer__column">
+			<xsl:if test="header and not(header = '')"><div class="title_3"><xsl:value-of select="header" /></div></xsl:if>
+			<xsl:value-of select="text" disable-output-escaping="yes"/>
+		</div>
+	</xsl:template>
 
 
 	<xsl:template name="INC_MOBILE_MENU">
@@ -371,6 +378,7 @@
 				</div>
 			</xsl:for-each>
 			<xsl:for-each select="page/catalog/section/section[section]">
+
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
@@ -446,7 +454,6 @@
 			</div>
 		</div> -->
 		<div class="contacts">
-			<div class="block-title block-title_normal">Заказ и консультация</div>
 			<xsl:value-of select="$common/left" disable-output-escaping="yes"/>
 			<!-- <strong>Принимаем к оплате</strong>
 			<div class="pay-cards">
@@ -509,37 +516,39 @@
 			</xsl:if>
 			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
-			<div class="device__article-number"><xsl:value-of select="code"/></div>
-			<xsl:if test="$has_price">
-				<div class="device__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
-				</div>
-			</xsl:if>
-			<xsl:if test="not($has_price)">
-				<div class="device__price">
-
-				</div>
-			</xsl:if>
-			<div class="device__order">
-				<xsl:if test="not($has_lines)">
-					<div id="cart_list_{@id}">
-						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-							<xsl:if test="$has_price">
-								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button" value="Заказать"/>
-							</xsl:if>
-							<xsl:if test="not($has_price)">
-								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button not_available" value="Запросить цену"/>
-							</xsl:if>
-						</form>
+			<div class="device__article-number"><xsl:value-of select="vendor_code"/></div>
+			<xsl:if test="$is_registered">
+				<xsl:if test="$has_price">
+					<div class="device__price">
+						<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
+						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
 					</div>
 				</xsl:if>
-				<xsl:if test="$has_lines">
-					<a class="button" href="{show_product}">Подробнее</a>
+				<xsl:if test="not($has_price)">
+					<div class="device__price">
+
+					</div>
 				</xsl:if>
-			</div>
+				<div class="device__order">
+					<xsl:if test="not($has_lines)">
+						<div id="cart_list_{@id}">
+							<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
+								<xsl:if test="$has_price">
+									<input type="number" class="text-input" name="qty" value="1" min="0"/>
+									<input type="submit" class="button" value="Заказать"/>
+								</xsl:if>
+								<xsl:if test="not($has_price)">
+									<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
+									<input type="submit" class="button not_available" value="Запросить цену"/>
+								</xsl:if>
+							</form>
+						</div>
+					</xsl:if>
+					<xsl:if test="$has_lines">
+						<a class="button" href="{show_product}">Подробнее</a>
+					</xsl:if>
+				</div>
+			</xsl:if>
 			<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
 				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div>
 			</xsl:if>
@@ -598,7 +607,7 @@
 					<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 				</div>
 			</div>
-			<div class="device__article-number"><xsl:value-of select="code"/></div>
+			<div class="device__article-number"><xsl:value-of select="vendor_code"/></div>
 			<div class="device__actions device_row__actions">
 				<xsl:if test="not($is_compare)">
 					<div id="compare_list_{@id}">
@@ -623,42 +632,44 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
-			<xsl:if test="$has_price">
-				<div class="device__price device_row__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
-				</div>
-			</xsl:if>
-			<xsl:if test="not($has_price)">
-				<div class="device__price device_row__price">
-
-				</div>
-			</xsl:if>
-			<div class="device__order device_row__order">
-				<xsl:if test="not($has_lines)">
-					<div id="cart_list_{@id}">
-						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-							<xsl:if test="$has_price">
-								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button" value="Заказать"/>
-							</xsl:if>
-							<xsl:if test="not($has_price)">
-								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button not_available" value="Запросить цену"/>
-							</xsl:if>
-						</form>
+			<xsl:if test="$is_registered">
+				<xsl:if test="$has_price">
+					<div class="device__price device_row__price">
+						<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
+						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
 					</div>
 				</xsl:if>
-				<xsl:if test="$has_lines">
-					<a class="button" href="{show_product}">Подробнее</a>
+				<xsl:if test="not($has_price)">
+					<div class="device__price device_row__price">
+
+					</div>
 				</xsl:if>
-				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
-					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии</div>
-				</xsl:if>
-				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
-					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> под заказ</div>
-				</xsl:if>
-			</div>
+				<div class="device__order device_row__order">
+					<xsl:if test="not($has_lines)">
+						<div id="cart_list_{@id}">
+							<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
+								<xsl:if test="$has_price">
+									<input type="number" class="text-input" name="qty" value="1" min="0"/>
+									<input type="submit" class="button" value="Заказать"/>
+								</xsl:if>
+								<xsl:if test="not($has_price)">
+									<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
+									<input type="submit" class="button not_available" value="Запросить цену"/>
+								</xsl:if>
+							</form>
+						</div>
+					</xsl:if>
+					<xsl:if test="$has_lines">
+						<a class="button" href="{show_product}">Подробнее</a>
+					</xsl:if>
+					<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+						<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии</div>
+					</xsl:if>
+					<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
+						<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> под заказ</div>
+					</xsl:if>
+				</div>
+			</xsl:if>
 			<xsl:for-each select="tag">
 				<div class="device__tag device_row__tag"><xsl:value-of select="." /></div>
 			</xsl:for-each>

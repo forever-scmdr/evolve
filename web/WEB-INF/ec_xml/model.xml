@@ -148,9 +148,12 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
-		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
+		<parameter name="integration" type="file" caption="Excel файл обновление цены"/>
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
-		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
+		<parameter name="integration_pending" type="byte" caption="Идет интеграция" domain="0-1" />
+		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
+		<on-update class="ecommander.fwk.CopyToUpload"/>
+		<!-- <parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" /> -->
 	</item>
 
 	<!--Является также и разделом для парсинга-->
@@ -332,8 +335,11 @@
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="password" type="string" caption="Пароль"/>
+		<parameter name="registered" type="byte" caption="Флаг зарегистрированности" domain="0-1" default="0"/>
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<child item="purchase"/>
+		<on-update class="extra.MakeUserRegistered"/>
+		<on-delete class="extra.DeleteRegisteredUser"/>
 	</item>
 
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">

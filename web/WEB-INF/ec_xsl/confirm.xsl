@@ -127,7 +127,7 @@
 						<xsl:sort select="type"/>
 						<tr>
 							<td>
-								<xsl:value-of select="product/code"/>
+								<xsl:value-of select="product/vendor_code"/>
 							</td>
 							<td valign="top">
 								<strong><xsl:value-of select="product/name"/></strong>

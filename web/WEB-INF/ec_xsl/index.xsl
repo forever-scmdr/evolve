@@ -243,7 +243,7 @@
 				</div>
 			</div>
 		</section>
-		<section class="brands ptb">
+		<!-- <section class="brands ptb">
 			<div class="container">
 				<div class="block-title">Производители</div>
 				<div class="slick-slider" style="margin: 0 -12px;">
@@ -294,7 +294,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
+		</section> -->
 		<section class="s-info">
 			<div class="container">
 				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>

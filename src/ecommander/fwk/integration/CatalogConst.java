@@ -5,6 +5,7 @@ public interface CatalogConst {
 	String CATALOG_ITEM = "catalog";
 	String SECTION_ITEM = "section";
 	String PRODUCT_ITEM = "product";
+	String LINE_PRODUCT_ITEM = "line_product";
 	String PARAMS_ITEM = "params";
 	String PARAMS_XML_ITEM = "params_xml";
 	String MAIN_SECTION_ITEM = "main_section";
@@ -31,11 +32,13 @@ public interface CatalogConst {
 	String URL_PARAM = "url";
 	String CURRENCY_ID_PARAM = "currency_id";
 	String PRICE_ORIGINAL_PARAM = "price_original";
+	String PRICE_OLD_PARAM = "price_old";
 	String PRICE_PARAM = "price";
 	String COUNTRY_PARAM = "country";
 	String DESCRIPTION_PARAM = "description";
 	String TEXT_PARAM = "text";
 	String TEXT_PICS_PARAM = "text_pics";
+	String FILES_PARAM = "files";
 	String GALLERY_PARAM = "gallery";
 	String XML_PARAM = "xml";
 	String SHORT_PARAM = "short";
@@ -51,6 +54,7 @@ public interface CatalogConst {
 	String LINK_PARAM = "link";
 	String ASSOC_PARAM = "assoc";
 	String ASSOC_CODE_PARAM = "assoc_code";
+	String HAS_LINE_PRODUCTS = "has_lines";
 
 
 	String PARAMETER = "parameter";

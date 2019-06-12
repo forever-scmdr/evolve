@@ -6,7 +6,6 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -184,6 +183,11 @@ public class ExcelTableData implements TableDataSource {
 		return getValue(colIdx);
 	}
 
+	public final int getColIndex(String colName){
+		Integer colIdx = currentHeader.get(StringUtils.lowerCase(colName));
+		return (colIdx != null)? colIdx : -1;
+	}
+
 	public final Double getDoubleValue(String colName) {
 		String val = getValue(colName);
 		return DoubleDataType.parse(val);
@@ -233,7 +237,14 @@ public class ExcelTableData implements TableDataSource {
 		return a;
 	}
 
-	public int getLinesCount() {
+	public int getLinesCount() throws EcommanderException {
+		if (!isValid) {
+			String message = "Excel file is not valid";
+			if (missingColumns != null && missingColumns.size() > 0) {
+				message = "Отсутствуют обязательные колонки: " + StringUtils.join(missingColumns, ", ");
+			}
+			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, message);
+		}
 		return currentSheet.getLastRowNum() - headerCell.row;
 	}
 	public int getTotalLinesCount(){

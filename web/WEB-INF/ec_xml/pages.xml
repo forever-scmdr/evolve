@@ -41,6 +41,7 @@
 			<list item="block_array">
 				<list item="block"/>
 			</list>
+			<single item="delivery"/>
 		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
@@ -51,9 +52,11 @@
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
+		<link name="fav_link" target="fav"/>
+		<link name="compare_link" target="compare"/>
 
 		<!-- REGISTRATION -->
-		<link name="register_link" target="register"/>
+		<link name="register_link" target="register"/>на
 		<link name="login_link" target="register">
 			<var name="login" value="true"/>
 		</link>
@@ -538,7 +541,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="egor@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -632,7 +635,7 @@
 		<session>
 			<single item="cart">
 				<list item="bought">
-					<list item="product" tag="product"/>
+					<list item="abstract_product" tag="product"/>
 				</list>
 			</single>
 		</session>
@@ -647,7 +650,7 @@
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
-					<single item="product" tag="product" id="prod">
+					<single item="abstract_product" tag="product" id="prod">
 						<filter>
 							<parameter name="code" compare="SOME" sign="=">
 								<var ref="bought" parameter="code"/>
@@ -667,6 +670,14 @@
 			</new>
 		</session>
 		<include name="COMMON"/>
+	</page>
+
+
+	<page name="register_email" template="register_email">
+		<request>
+			<var name="user"/>
+		</request>
+		<single item="user" var="user" tag="user"/>
 	</page>
 
 
@@ -822,7 +833,7 @@
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="register"/>
 		</new>
-		<link name="confirm_link" target="register_action" type="itemform">
+		<link name="confirm_link" target="just_email_register_action" type="itemform">
 			<var name="action" value="register"/>
 		</link>
 		<include name="COMMON"/>
@@ -840,7 +851,7 @@
 		<link name="user_exists" target="register">
 			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
 		</link>
-		<link name="success" target="register">
+		<link name="success" target="personal">
 			<var name="message" value="Вы успешно зарегистрированы, спасибо"/>
 			<var name="success" value="true"/>
 		</link>
@@ -874,6 +885,29 @@
 			<result name="success_personal" type="redirect"/>
 			<result name="not_set_personal" type="redirect"/>
 			<result name="user_exists_personal" type="redirect"/>
+		</command>
+	</page>
+
+
+	<page name="just_email_register_action">
+		<request>
+			<var name="action"/>
+			<var name="src" value="register"/>
+		</request>
+		<link name="not_set" target="register">
+			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
+		</link>
+		<link name="user_exists" target="register">
+			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
+		</link>
+		<link name="success" target="register">
+			<var name="message" value="Ваша заявка на регистрацию отправлена на согласование, спасибо"/>
+			<var name="success" value="true"/>
+		</link>
+		<command class="extra.JustEmailRegisterCommand" method-var="action">
+			<result name="not_set" type="redirect"/>
+			<result name="user_exists" type="redirect"/>
+			<result name="success" type="redirect"/>
 		</command>
 	</page>
 
@@ -1200,6 +1234,7 @@
 		</request>
         <link name="create_pricelist" target="create_excel_pricelist">
             <var name="action" value="start"/>
+            <var name="prod_params" value="yes"/>
             <var name="aux_params" value="yes"/>
         </link>
         <single item="catalog" id="catalog_main">
@@ -1243,19 +1278,30 @@
         </command>
     </page>
 
-    <!--<page name="update_prices_from_excel" template="integration/create_excel"  authority-groups="common">-->
-    <!--<request>-->
-    <!--<var name="action"/>-->
-    <!--</request>-->
-    <!--<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">-->
-    <!--<result name="complete" type="xml"/>-->
-    <!--</command>-->
-    <!--</page>-->
+    <page name="update_prices_from_excel" template="integration/create_excel"  authority-groups="common">
+   		<request>
+    		<var name="action"/>
+    	</request>
+    	<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
+	   		<result name="complete" type="xml"/>
+	    </command>
+    </page>
+
+    <page name="create_excel_pricelist_min" template="integration/create_excel" authority-groups="common">
+		<request>
+			<var name="action"/>
+			<var name="price_only" value="yes"/>
+			<var name="sec"/>
+		</request>
+		<command class="ecommander.fwk.integration.CreateExcelPriceList" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
     <page name="parse_excel" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
-            <!--<var name="with_existing_sections" value="copy"/>-->
+            <!--<var name="with_existing_sections" value="copy"/> -->
         </request>
         <command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
             <result name="complete" type="xml"/>
@@ -1271,6 +1317,21 @@
 		</request>
 		<command class="ecommander.fwk.CreateWaterMarks" clear-cache="yes">
 			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<!--
+		Создать файл YML формата со всеми разделами и товарами каталога
+	-->
+	<page name="create_yml_file">
+		<headers content-type="text/xml"/>
+		<request>
+			<var name="name" value="Акваком"/>
+			<var name="company" value="ООО «Скобяной трейд»"/>
+		</request>
+		<command class="ecommander.fwk.integration.YMarketCreateXMLFile">
+			<result name="success" type="redirect"/>
+			<result name="error" type="redirect"/>
 		</command>
 	</page>
 
