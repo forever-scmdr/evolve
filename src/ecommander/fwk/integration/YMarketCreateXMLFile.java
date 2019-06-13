@@ -110,17 +110,18 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 		BigDecimal zero = new BigDecimal(0);
 		for (Item prod : products) {
 			BigDecimal price = prod.getDecimalValue(PRICE_PARAM, zero);
-			String avail = price.doubleValue() <= 0.001d ? "false" : "true";
+			String avail = String.valueOf(prod.getByteValue(AVAILABLE_PARAM, (byte)0) > 0);
 			xml.startElement(OFFER_ELEMENT, ID_ATTR, prod.getStringValue(CODE_PARAM), AVAILABLE_ATTR, avail);
 			String url = getUrlBase() + "/" + prod.getKeyUnique() + "/";
 			xml.startElement(URL_ELEMENT).addText(url).endElement();
-			xml.startElement(PRICE_ELEMENT).addText(prod.getDecimalValue(PRICE_PARAM)).endElement();
+			xml.startElement(PRICE_ELEMENT).addText(price).endElement();
 			xml.startElement(CURRENCY_ID_ELEMENT).addText("BYN").endElement();
 			xml.startElement(CATEGORY_ID_ELEMENT).addText(category.getId()).endElement();
 			String name = prod.getStringValue(NAME_PARAM);
 			if (prod.isValueNotEmpty(TYPE_PARAM))
 				name = prod.getStringValue(TYPE_PARAM) + " " + name;
 			xml.startElement(NAME_ELEMENT).addText(name).endElement();
+			//xml.startElement(AVAILABLE_ELEMENT).addText(String.valueOf(prod.getByteValue(AVAILABLE_PARAM, (byte)0) > 0)).endElement();
 			if (prod.isValueNotEmpty(VENDOR_CODE_PARAM))
 				xml.startElement(VENDOR_CODE_ELEMENT).addText(prod.getStringValue(VENDOR_CODE_PARAM)).endElement();
 			xml.startElement(MODEL_ELEMENT).addText(prod.getStringValue(NAME_PARAM)).endElement();
