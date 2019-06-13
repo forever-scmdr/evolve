@@ -123,7 +123,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				Item section = sections.get(secCode);
 				// пропустить некоторые разделы
 				if (section == null) {
-					info.addLog("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
+					//info.addLog("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
 					return;
 				}
 				//Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
