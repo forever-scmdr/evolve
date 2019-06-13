@@ -43,10 +43,12 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private static final String PUBLISH_TYPE = "Вид издания";
 	private static final String BOOKINISTIC = "Букинистическое издание";
 	private static final String BOOKINISTIC_1 = "Букинистика";
+	private static final String OLD_PRICE_ELEMENT = "oldprice";
 
 	static {
 		COMMON_PARAMS.add(URL_ELEMENT);
 		COMMON_PARAMS.add(PRICE_ELEMENT);
+		COMMON_PARAMS.add(OLD_PRICE_ELEMENT);
 		COMMON_PARAMS.add(CURRENCY_ID_ELEMENT);
 		COMMON_PARAMS.add(CATEGORY_ID_ELEMENT);
 		COMMON_PARAMS.add(NAME_ELEMENT);
@@ -92,15 +94,17 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private BigDecimal level_1, level_2, quotient_1, quotient_2, quotient_3, quotient_buk;
 	private Assoc catalogLinkAssoc;
 	private boolean isBookinistic = false;
+	private HashSet<String> ignoreCodes;
 
 	
-	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
+	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator, HashSet<String> ignoreCodes) {
 		this.info = info;
 		this.sections = sections;
 		this.productType = ItemTypeRegistry.getItemType("book");
 		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
 		this.catalogLinkAssoc = ItemTypeRegistry.getAssoc("catalog_link");
+		this.ignoreCodes = ignoreCodes;
 		try {
 			Item course = new ItemQuery("course").loadFirstItem();
 			level_1 = course.getDecimalValue("level_1");
@@ -122,13 +126,16 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
 				Item section = sections.get(secCode);
 				// пропустить некоторые разделы
-				if (section == null) {
-					//info.addLog("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
+				if (ignoreCodes.contains(secCode)) {
 					return;
 				}
 				//Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
 				Item product = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN)
 						.addParameterEqualsCriteria(OFFER_ID_PARAM, code).loadFirstItem();
+				if(product == null && section == null){
+					info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
+					return;
+				}
 				boolean isProductNew = false;
 				if (product == null) {
 					//if (section != null) {
@@ -187,7 +194,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						info.addSlowQuery(q.getSqlForLog(), nanos);
 						//info.pushLog(queryLog);
 					}
-					productParentCode = sec.getStringValue("category_id","");
+					productParentCode = sec.getStringValue(CATEGORY_ID_PARAM,"");
 					product.setValue("parent_id", productParentCode);
 				}
 				secCode = (StringUtils.isNoneBlank(productParentCode))? productParentCode : secCode;
@@ -196,11 +203,26 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				//if (getPrice)
 				product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
+				product.setValueUI(PRICE_OLD_PARAM, commonParams.get(OLD_PRICE_ELEMENT));
 				BigDecimal price = product.getDecimalValue(PRICE_PARAM);
+				BigDecimal oldPrice = product.getDecimalValue(PRICE_OLD_PARAM);
 				//else
 				//	product.setValueUI(PRICE_PARAM, "0");
 				isBookinistic = isBookinistic || secCode.equals("16546") || BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE));
 				product.setValue(PRICE_PARAM, getCorrectPrice(price).setScale(1, RoundingMode.CEILING));
+				if(oldPrice != null){
+					if (isBookinistic && quotient_buk.compareTo(BigDecimal.ZERO) != 0) oldPrice =   oldPrice.multiply(quotient_buk);
+					else if (price.compareTo(level_1) < 0) {
+						oldPrice =   oldPrice.multiply(quotient_1);
+					}
+					else if (price.compareTo(level_2) < 0) {
+						oldPrice =  oldPrice.multiply(quotient_2);
+					}
+					else {
+						oldPrice = oldPrice.multiply(quotient_3);
+					}
+					product.setValue(PRICE_OLD_PARAM, oldPrice.setScale(1, RoundingMode.CEILING));
+				}
 
 				if(isBookinistic){
 					//info.pushLog("BUK: "+ commonParams.get(NAME_ELEMENT));
