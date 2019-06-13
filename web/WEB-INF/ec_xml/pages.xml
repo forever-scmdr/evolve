@@ -56,7 +56,7 @@
 		<link name="compare_link" target="compare"/>
 
 		<!-- REGISTRATION -->
-		<link name="register_link" target="register"/>на
+		<link name="register_link" target="register"/>
 		<link name="login_link" target="register">
 			<var name="login" value="true"/>
 		</link>
