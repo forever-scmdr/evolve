@@ -66,13 +66,10 @@
 		<p class="subtitle">арт. <xsl:value-of select="$p/vendor_code"/></p>
 		<div class="catalog-item-container">
 			<div class="gallery">
-				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-width="100%" data-allowfullscreen="native">
+				<div class="fotorama" data-nav="thumbs" data-thumbheight="80" data-thumbwidth="80" data-allowfullscreen="native" data-width="100%">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
-					<!--<xsl:for-each-group select="$p/gallery" group-by="f:substring-before-last(name, '_')">-->
-						<!--<img src="{$p/@path}{current-group()[1]/.}" alt="{$p/name}"/>-->
-					<!--</xsl:for-each-group>-->
 					<xsl:if test="not($p/gallery)">
 						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
@@ -88,7 +85,7 @@
 
 				<xsl:if test="not($has_lines)">
 					<div class="device-page__actions">
-						<xsl:if test="$is_registered">
+						<!-- <xsl:if test="$is_registered"> -->
 							<xsl:if test="$has_price">
 								<div class="device__price device__price_device-page">
 									<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$p/price_old"/> руб.</span></div></xsl:if>
@@ -107,7 +104,7 @@
 									</xsl:if>
 								</form>
 							</div>
-						</xsl:if>
+						<!-- </xsl:if> -->
 						<div class="device__actions device__actions_device-page">
 							<div id="compare_list_{$p/@id}">
 								<a href="{$p/to_compare}" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
@@ -181,62 +178,62 @@
 					</xsl:if>
 				</div>
 			</div>
-			<div class="description">
+		</div>
+		<div class="description">
 
-					<ul class="nav nav-tabs" role="tablist">
-						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-						<xsl:if test="$p/params">
-							<li role="presentation" class="active">
-								<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
-							</li>
-						</xsl:if>
-						<xsl:if test="$is_big">
-							<li role="presentation" class="{'active'[not($p/params)]}">
-								<a href="#tab2" role="tab" data-toggle="tab">Описание</a>
-							</li>
-						</xsl:if>
-						<xsl:for-each select="$p/product_extra">
-							<li role="presentation">
-								<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a>
-							</li>
-						</xsl:for-each>
-					</ul>
-				<div class="tab-content">
+				<ul class="nav nav-tabs" role="tablist">
+					<!--<xsl:if test="string-length($p/text) &gt; 15">-->
 					<xsl:if test="$p/params">
-						<div role="tabpanel" class="tab-pane active" id="tab1">
-							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
-							<table>
-								<colgroup>
-									<col style="width: 40%"/>
-								</colgroup>
-								<xsl:for-each select="$p/params/param">
-									<tr>
-										<td>
-											<p><strong><xsl:value-of select="@caption"/></strong></p>
-										</td>
-										<td>
-											<p><xsl:value-of select="."/></p>
-										</td>
-									</tr>
-								</xsl:for-each>
-							</table>
-
-						</div>
+						<li role="presentation" class="active">
+							<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
+						</li>
 					</xsl:if>
 					<xsl:if test="$is_big">
-						<div role="tabpanel" class="tab-pane {'active'[not($p/params)]}" id="tab2">
-							<xsl:value-of select="$p_big" disable-output-escaping="yes"/>
-						</div>
+						<li role="presentation" class="{'active'[not($p/params)]}">
+							<a href="#tab2" role="tab" data-toggle="tab">Описание</a>
+						</li>
 					</xsl:if>
 					<xsl:for-each select="$p/product_extra">
-						<div role="tabpanel" class="tab-pane" id="tab{@id}">
-							<h4><xsl:value-of select="name"/></h4>
-							<div class="catalog-items">
-								<xsl:value-of select="text" disable-output-escaping="yes"/>
-							</div>
-						</div>
+						<li role="presentation">
+							<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a>
+						</li>
 					</xsl:for-each>
-				</div>
+				</ul>
+			<div class="tab-content">
+				<xsl:if test="$p/params">
+					<div role="tabpanel" class="tab-pane active" id="tab1">
+						<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
+						<table>
+							<colgroup>
+								<col style="width: 40%"/>
+							</colgroup>
+							<xsl:for-each select="$p/params/param">
+								<tr>
+									<td>
+										<p><strong><xsl:value-of select="@caption"/></strong></p>
+									</td>
+									<td>
+										<p><xsl:value-of select="."/></p>
+									</td>
+								</tr>
+							</xsl:for-each>
+						</table>
+
+					</div>
+				</xsl:if>
+				<xsl:if test="$is_big">
+					<div role="tabpanel" class="tab-pane {'active'[not($p/params)]}" id="tab2">
+						<xsl:value-of select="$p_big" disable-output-escaping="yes"/>
+					</div>
+				</xsl:if>
+				<xsl:for-each select="$p/product_extra">
+					<div role="tabpanel" class="tab-pane" id="tab{@id}">
+						<h4><xsl:value-of select="name"/></h4>
+						<div class="catalog-items">
+							<xsl:value-of select="text" disable-output-escaping="yes"/>
+						</div>
+					</div>
+				</xsl:for-each>
 			</div>
 		</div>
 		<xsl:if test="page/assoc">

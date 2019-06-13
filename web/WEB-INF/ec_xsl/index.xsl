@@ -236,13 +236,6 @@
 				</div>
 			</div>
 		</section>
-		<section class="ptb mtb" style="background-color: #f2f2f2;">
-			<div class="container">
-				<div class="banners-big-icons">
-					<xsl:apply-templates select="page/banner_section[2]/banner"/>
-				</div>
-			</div>
-		</section>
 		<!-- <section class="brands ptb">
 			<div class="container">
 				<div class="block-title">Производители</div>
@@ -305,15 +298,11 @@
 				<div class="page-map" id="contacts">
 					<div class="page-map__map"><script type="text/javascript" charset="utf-8" async="async" src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2f9a2f790522d006537ede412d3d2eeb312795427a599cbbdfdab5140aa849b4&amp;width=100%25&amp;height=300&amp;lang=ru_RU&amp;scroll=true"></script></div>
 					<div class="page-map__text">
+						<xsl:variable name="info_banner" select="page/banner_section[2]/banner[1]"/>
 						<div class="block-title">
-							Схема проезда и контакты
+							<xsl:value-of select="$info_banner/header"/>
 						</div>
-						<p>Республика Беларусь, Витебская обл., 211394, г. Орша, ул. 1 Мая, 81Б-2.</p>
-						<p>(+375 17) 123-45-67 - тел./факс;</p>
-						<p>(+375 17) 123-45-67 - тел./факс;</p>
-						<p>(+375 29) 123-45-67 - Велком;</p>
-						<p>(+375 33) 123-45-67 - МТС;</p>
-						<p><a href="mailto:skobtrade@mail.ru">skobtrade@mail.ru</a></p>
+						<xsl:value-of select="$info_banner/text" disable-output-escaping="yes"/>
 					</div>
 				</div>
 			</div>

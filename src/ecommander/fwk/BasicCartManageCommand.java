@@ -1,19 +1,25 @@
 package ecommander.fwk;
 
+import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,6 +103,7 @@ public abstract class BasicCartManageCommand extends Command {
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
 		Item form = getItemForm().getTransientSingleItem();
+		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
 		getSessionMapper().saveTemporaryItem(form, "user");
 
 		if (!validate()) {
@@ -224,6 +231,31 @@ public abstract class BasicCartManageCommand extends Command {
 		// Подтвердить изменения
 		commitCommandUnits();
 
+		// 5. Сохранить файлы в папках для 1С.
+		String clientType = (isPhys)? "phys" : "jur" ;
+		Path savePath = Paths.get(AppContext.getContextPath(), "orders", clientType);
+
+		File dir = savePath.toFile();
+		if(!dir.exists()){dir.mkdirs();}
+
+		savePath = savePath.resolve(orderNumber+".xml");
+
+		LinkPE xmlOrderLink = LinkPE.newDirectLink("link", "order_xml", false);
+		xmlOrderLink.addStaticVariable("order_num", orderNumber + "");
+		ExecutablePagePE xmlOrderTemplate = getExecutablePage(xmlOrderLink.serialize());
+
+		ByteArrayOutputStream xmlBos = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(xmlOrderTemplate, xmlBos);
+
+		try(OutputStream outputStream = new FileOutputStream(savePath.toFile())) {
+			xmlBos.writeTo(outputStream);
+		}
+
+		//
+		//
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+
+		// 6. Очистить корзину
 		cart.setValue(PROCESSED_PARAM, (byte)1);
 		cart.setExtra(IN_PROGRESS, null);
 		setCookieVariable(CART_COOKIE, null);

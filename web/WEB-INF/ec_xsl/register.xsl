@@ -34,7 +34,7 @@
 			</xsl:if>
 			<ul class="nav nav-tabs" role="tablist">
 				<li role="presentation" class="{'active'[$is_login]}"><a href="#tab_login" role="tab" data-toggle="tab">Вход</a></li>
-				<li role="presentation" class="{'active'[not($is_jur) and not($is_login)]}"><a href="#tab_phys" role="tab" data-toggle="tab">Физическое лицо</a></li>
+				<!-- <li role="presentation" class="{'active'[not($is_jur) and not($is_login)]}"><a href="#tab_phys" role="tab" data-toggle="tab">Физическое лицо</a></li> -->
 				<li role="presentation" class="{'active'[$is_jur]}"><a href="#tab_jur" role="tab" data-toggle="tab">Юридическое лицо</a></li>
 			</ul>
 			<div class="tab-content">

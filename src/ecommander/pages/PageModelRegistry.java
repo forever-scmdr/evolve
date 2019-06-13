@@ -16,7 +16,9 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Properties;
 
 /**
  * Хранит все модели страниц (PagePE)
@@ -133,8 +135,8 @@ public class PageModelRegistry {
 		// Проверка, разрешен ли пользователю доступ к этой странице
 		if (context != null && !pageModel.isUserAuthorized(context.getUser()))
 			throw new UserNotAllowedException("Requested page is not allowed for current user");
-		if (context == null)
-			context = SessionContext.createSessionContext(null);
+		if (context != null)
+			context.resetIdGenerator();
 		return pageModel.createExecutableClone(context, link, linkUrl, urlBase);
 	}
 

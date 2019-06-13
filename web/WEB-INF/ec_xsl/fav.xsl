@@ -20,26 +20,36 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Избранное</h1>
+		<h1 class="page-title">Избранное</h1>
 
 		<div class="page-content m-t">
 
 			<xsl:if test="$products">
 				<div class="view-container desktop">
 					<div class="view">
-						<span>Показывать:</span>
-						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
-						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
+						<span class="{'active'[not($view = 'list')]}">
+							<i class="fas fa-th-large"></i>
+							<a href="{page/set_view_table}">Плиткой</a>
+						</span>
+						<span class="{'active'[$view = 'list']}">
+							<i class="fas fa-th-list"></i>
+							<a href="{page/set_view_list}">Строками</a>
+						</span>
 					</div>
 				</div>
 			</xsl:if>
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
-				<xsl:apply-templates select="$products"/>
-				<xsl:if test="not($products)">
-					<h4>Нет товаров</h4>
-				</xsl:if>
-			</div>
+					<xsl:if test="$view = 'table'">
+						<xsl:apply-templates select="$products"/>
+					</xsl:if>
+					<xsl:if test="$view = 'list'">
+						<xsl:apply-templates select="$products" mode="lines"/>
+					</xsl:if>
+				</div>
+			<xsl:if test="not($products)">
+				<h4>Ничего нет</h4>
+			</xsl:if>
 
 		</div>
 

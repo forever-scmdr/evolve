@@ -673,6 +673,8 @@
 	</page>
 
 	<page name="order_xml" template="order_xml">
+		<headers content-type="text/xml"/>
+		<headers charset="utf-8"/>
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
