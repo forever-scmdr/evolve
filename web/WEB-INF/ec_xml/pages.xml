@@ -672,7 +672,7 @@
 		<include name="COMMON"/>
 	</page>
 
-	<page name="order_xml">
+	<page name="order_xml" template="order_xml">
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
