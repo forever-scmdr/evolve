@@ -55,7 +55,7 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 			Item catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
 			section = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), catalog);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex().ignoreUser());
-			executeAndCommitCommandUnits(ItemStatusDBUnit.hide(section.getId()));
+			executeAndCommitCommandUnits(ItemStatusDBUnit.hide(section.getId()).noFulltextIndex().noTriggerExtra().ignoreUser());
 		}
 		parser.parse(content.asStream(), new ToolsParser(section, getInitiator()));
 	}
@@ -126,7 +126,8 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 					if(!pic.isFile()){
 						product.setValue(MAIN_PIC_PARAM, new URL(currentParams.get(PRICE)));
 					}
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors().ignoreUser());
+					DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.hide(product.getId()).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
 				} catch (Exception e) {
 					addError(ExceptionUtils.getExceptionStackTrace(e), locator.getLineNumber(), locator.getColumnNumber());
 				}
