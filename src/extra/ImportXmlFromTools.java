@@ -40,7 +40,7 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 	@Override
 	protected boolean makePreparations() throws Exception {
 		content = Request.Get(URL).execute().returnContent();
-		return false;
+		return content != null;
 	}
 
 	@Override
