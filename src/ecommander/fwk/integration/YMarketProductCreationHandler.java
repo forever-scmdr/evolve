@@ -212,10 +212,10 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				isBookinistic = isBookinistic || secCode.equals("16546") || BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE));
 				product.setValue(PRICE_PARAM, getCorrectPrice(price).setScale(1, RoundingMode.CEILING));
 				if(oldPrice != null){
-					if (isBookinistic && quotient_buk.compareTo(BigDecimal.ZERO) != 0) oldPrice =   oldPrice.multiply(quotient_buk);
-					else if (price.compareTo(level_1) < 0) {
+					if (price.compareTo(level_1) < 0) {
 						oldPrice =   oldPrice.multiply(quotient_1);
 					}
+					else if (isBookinistic && quotient_buk.compareTo(BigDecimal.ZERO) != 0) oldPrice =   oldPrice.multiply(quotient_buk);
 					else if (price.compareTo(level_2) < 0) {
 						oldPrice =  oldPrice.multiply(quotient_2);
 					}
@@ -339,11 +339,11 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	}
 
 	private BigDecimal getCorrectPrice(BigDecimal price) {
-		if (isBookinistic && quotient_buk.compareTo(BigDecimal.ZERO) != 0){
-			return price.multiply(quotient_buk);
-		}
 		if (price.compareTo(level_1) < 0) {
 			return price.multiply(quotient_1);
+		}
+		if (isBookinistic && quotient_buk.compareTo(BigDecimal.ZERO) != 0){
+			return price.multiply(quotient_buk);
 		}
 		if (price.compareTo(level_2) < 0) {
 			return price.multiply(quotient_2);
