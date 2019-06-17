@@ -39,12 +39,16 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 
 	@Override
 	protected boolean makePreparations() throws Exception {
+		setOperation("Соединение с "+URL);
 		content = Request.Get(URL).execute().returnContent();
 		return content != null;
 	}
 
 	@Override
 	protected void integrate() throws Exception {
+		setOperation("Создание раздела");
+		info.setLineNumber(-1);
+		info.setProcessed(0);
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		SAXParser parser = factory.newSAXParser();
 
@@ -54,9 +58,11 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 		if(section == null){
 			Item catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
 			section = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), catalog);
+			section.setValue(NAME_PARAM, TOOLS_NAME);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex().ignoreUser());
 			executeAndCommitCommandUnits(ItemStatusDBUnit.hide(section.getId()).noFulltextIndex().noTriggerExtra().ignoreUser());
 		}
+
 		parser.parse(content.asStream(), new ToolsParser(section, getInitiator()));
 	}
 
@@ -96,9 +102,13 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 			PARAMS.add(COUNTRY_OF_ORIGIN);
 			PARAMS.add(DESCRIPTION);
 			PARAMS.add(PRICE);
+			PARAMS.add(VENDOR_ELEMENT);
+			PARAMS.add(ID_ATTR);
+			PARAMS.add(NAME);
 		}
 
 		private ToolsParser (Item section, User initiator){
+			setOperation("Импорт информации");
 			this.section = section;
 			this.initiator = initiator;
 		}
@@ -107,8 +117,10 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 		public void endElement(String uri, String localName, String qName) throws SAXException {
 			if (isInsideOffer && PARAMS.contains(qName) && parameterReady) {
 				currentParams.put(paramName, StringUtils.trim(paramValue.toString()));
+				parameterReady = false;
 			}else if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 				String code = currentParams.get(CODE);
+				code = StringUtils.isAllBlank(code)? currentParams.get(ID_ATTR) : code;
 				ItemQuery q = new ItemQuery(PRODUCT_ITEM, Item.STATUS_HIDDEN);
 				q.setParentId(section.getId(), false);
 				q.addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME);
@@ -117,6 +129,7 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 					if(product == null) product = Item.newChildItem(ItemTypeRegistry.getItemType(PRODUCT_ITEM), section);
 					product.setValue(CODE_PARAM, code);
 					product.setValue(NAME_PARAM, currentParams.get(NAME));
+					product.setValue(VENDOR_PARAM, currentParams.get(VENDOR_ELEMENT));
 					product.setValue(DESCRIPTION_PARAM, currentParams.get(DESCRIPTION));
 					product.setValue(URL_PARAM, currentParams.get(URL));
 					product.setValueUI(AVAILABLE_PARAM, "true".equalsIgnoreCase(currentParams.get(AVAILABLE))? "1" : "0");
@@ -124,14 +137,23 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 					product.setValue(CURRENCY_ID_PARAM, currentParams.get(CURRENCY_ID));
 					File pic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
 					if(!pic.isFile()){
-						product.setValue(MAIN_PIC_PARAM, new URL(currentParams.get(PRICE)));
+						URL picUrl = null;
+						try{
+							picUrl = new URL(currentParams.get(PICTURE));
+						}catch (Exception e){
+							addLog("Img not found. URL:\""+currentParams.get(PICTURE)+"\"");
+						}if(picUrl != null){
+							product.setValue(MAIN_PIC_PARAM, picUrl);
+						}
 					}
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors().ignoreUser());
 					DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.hide(product.getId()).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
+					info.increaseProcessed();
 				} catch (Exception e) {
 					addError(ExceptionUtils.getExceptionStackTrace(e), locator.getLineNumber(), locator.getColumnNumber());
 				}
-
+				isInsideOffer = false;
+				parameterReady = false;
 			}
 		}
 		@Override
@@ -146,9 +168,11 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 			parameterReady = false;
 			paramValue = new StringBuilder();
+			info.setLineNumber(locator.getLineNumber());
 			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 				currentParams = new HashMap<>();
 				currentParams.put(AVAILABLE, attributes.getValue(AVAILABLE));
+				currentParams.put(ID_ATTR, attributes.getValue(ID_ATTR));
 				isInsideOffer = true;
 			}
 			else if (isInsideOffer) {

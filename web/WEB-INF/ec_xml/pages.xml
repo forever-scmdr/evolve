@@ -1127,6 +1127,15 @@
 		</command>
 	</page>
 
+	<page name="parse_tools" template="integration/create_excel" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.ImportXmlFromTools" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 	<page name="force_resize">
 		<link name="success" target="delete_seo_complete">
 			<var name="message" value="all OK. Images resized"/>
