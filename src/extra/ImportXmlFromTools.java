@@ -141,7 +141,7 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 						try{
 							picUrl = new URL(currentParams.get(PICTURE));
 						}catch (Exception e){
-							addLog("Img not found. URL:\""+currentParams.get(PICTURE)+"\"");
+							pushLog("Img not found. URL:\""+currentParams.get(PICTURE)+"\"");
 						}if(picUrl != null){
 							product.setValue(MAIN_PIC_PARAM, picUrl);
 						}
