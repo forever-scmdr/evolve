@@ -3,6 +3,9 @@
 
 	<!-- ******************************* Включение для разделов каталога ****************************** -->
 	<include-definition name="COMMON">
+		<request>
+			<var name="cur" value="BYN" scope="cookie"/>
+		</request>
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec">
 				<link name="show_products" target="section" type="exclusive">
@@ -16,7 +19,7 @@
 			</tree>
 		</single>
 
-		<single item="custom_pages" id="custom_pages" cacheable="true">
+		<single  item="custom_pages" id="custom_pages" cacheable="true">
 			<tree item="custom_page" id="custom_page" tag="menu_custom">
 				<link name="show_page" target="page" type="exclusive">
 					<var name="p" ref="custom_page" style="translit"/>
@@ -40,6 +43,18 @@
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
 		<link name="excel_search_link" target="excel_search" type="itemform"/>
+		<link name="set_currency_byn" target-var="$pagename" copy-page-vars="yes">
+			<var name="cur" value="BYN"/>
+		</link>
+		<link name="set_currency_usd" target-var="$pagename" copy-page-vars="yes">
+			<var name="cur" value="USD"/>
+		</link>
+		<link name="set_currency_eur" target-var="$pagename" copy-page-vars="yes">
+			<var name="cur" value="EUR"/>
+		</link>
+		<link name="set_currency_rub" target-var="$pagename" copy-page-vars="yes">
+			<var name="cur" value="RUB"/>
+		</link>
 
 		<!-- REGISTRATION -->
 		<link name="register_link" target="register"/>
@@ -53,9 +68,9 @@
 		<single item="url_seo_wrap" cacheable="true">
 			<list item="url_seo"/>
 		</single>
-		<single item="price_catalog" cacheable="true">
+		<list item="price_catalog" cacheable="true">
 			<list item="price_interval"/>
-		</single>
+		</list>
 	</include-definition>
 
 
@@ -284,6 +299,7 @@
 				<var name="src_page" value="compare_ajax"/>
 			</link>
 			<single item="manual"/>
+			<ancestor item="plain_section"/>
 		</list>
 		<link name="set_view_table" target="search" copy-page-vars="yes">
 			<var name="view" value="table"/>
@@ -584,6 +600,7 @@
 	<page name="cart_ajax" template="cart_ajax">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="cur" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
@@ -1355,5 +1372,13 @@
 		<command class="extra.UpdateCurrencyRates"/>
 	</page>
 
+	<page name="get_ferrite" template="integration">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.ImportFerriteRu">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
 </site>

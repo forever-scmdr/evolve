@@ -5965,7 +5965,7 @@ img {
     max-width: 100%;
     height: 45px; }
   .desktop .header-container .other-container {
-    flex-basis: 30%;
+    flex-basis: 35%;
     display: flex;
     justify-content: space-between;
     padding-right: 0;
@@ -5974,7 +5974,7 @@ img {
       /*flex: 1.5;*/ }
   .desktop .header-container .search {
     flex: 1;
-    padding-right: 10rem;
+    padding-right: 3rem;
     padding-left: 5rem; }
     .desktop .header-container .search form {
       display: flex; }
@@ -6423,7 +6423,7 @@ img {
   .catalog-items .links span.active svg{
     color: #f7a80f;
   }
-    
+
   .catalog-items.lines .tags {
     position: static;
     flex-basis: 100%;
@@ -6594,7 +6594,7 @@ table {
     background-color: #eee;
     padding: 1.2rem 1rem; }
   table td {
-    padding: .7rem 1rem;
+    padding: .7rem .2rem;
     font-size: .9em; }
     table td p:last-child {
       margin-bottom: 0; }
@@ -6873,7 +6873,7 @@ a {
   color: #46726C; }
 
 .fotorama__active .fotorama__dot {
-  border-color: #fdd500 !important; }
+  border-color: #0C609D !important; }
 
 .fotorama__dot {
   top: 4px !important;
@@ -7172,7 +7172,7 @@ input.submit {
     flex-basis: 100%;
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center; 
+    background-position: center;
   }
 }*/
 
@@ -7410,7 +7410,7 @@ svg {
   overflow: hidden;
 }
 .catalog-items .catalog-item .image-container {
-  
+
 }
 
 .buttons > input[type='submit']:first-child {
@@ -7570,7 +7570,7 @@ td .catalog-item {
   height: 28px;
   cursor: pointer;
   border-radius: 2px;
-  padding: 2px 8px;
+  padding: 5px 8px;
   display: inline-block; }
 
 .button:hover {
@@ -8027,7 +8027,7 @@ label.upload + input[type="submit"] {
   margin-right: 8px;
 }
 .srtable td {
-  font-size: 12px;
+  font-size: 11px;
 }
 .srtable .parent {
   border: 1px solid #005692;
@@ -8039,3 +8039,17 @@ td.toggle-plus a {
   color: #0F5392;
 }
 /* excel search end */
+
+.srtable p {margin: 0;}
+
+.fotorama__nav-wrap {
+  margin-top: -30px;
+}
+ul.currency-options {
+	list-style: none;
+	padding-left: 26px;
+  font-size: 13px;
+}
+ul.currency-options li.active {
+  font-weight: bold;
+}

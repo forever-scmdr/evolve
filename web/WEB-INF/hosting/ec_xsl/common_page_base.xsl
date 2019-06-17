@@ -55,6 +55,14 @@
 							</form> -->
 						</div>
 						<div class="other-container">
+							<div class="catalog-currency">
+								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
+								<ul class="currency-options">
+									<li class="active">BYN</li>
+									<li><a href="">RUB</a></li>
+									<li><a href="">USD</a></li>
+								</ul>
+							</div>
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Загрузка...</strong></p>
 							</div>
@@ -95,7 +103,7 @@
 								</xsl:for-each>
 							</div>
 
-							<xsl:for-each select="page/catalog/section">	
+							<xsl:for-each select="page/catalog/section">
 								<div class="subsections" style="display: none" id="sub_{@id}">
 									<xsl:for-each select="section">
 										<xsl:variable name="link" select="if(section) then show_sub else show_products" />
@@ -596,7 +604,7 @@
 					<div class="device__small-text">
 						<a href="{$product_link}"><xsl:value-of select="vendor"/></a>
 					</div>
-					
+
 				</div>
 			</div>
 			<div class="device__article-number"><xsl:value-of select="@id"/></div>

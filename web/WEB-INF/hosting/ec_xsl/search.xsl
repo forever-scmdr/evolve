@@ -18,8 +18,8 @@
 	<xsl:variable name="multiple" select="count($queries) &gt; 1"/>
 
 
-	<xsl:variable name="price_intervals" select="page/price_catalog/price_interval"/>
-	<xsl:variable name="Q" select="f:num(page/price_catalog/quotient)"/>
+	<xsl:variable name="price_intervals" select="page/price_catalog[1]/price_interval"/>
+	<xsl:variable name="Q" select="f:num(page/price_catalog[1]/quotient)"/>
 
 
 	<xsl:template name="MAIN_CONTENT">

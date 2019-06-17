@@ -1,0 +1,94 @@
+<price_catalog_count>0</price_catalog_count>
+<price_catalog type="price_catalog" id="8399800" path="files/839/980/0f/" key="katalog_tsenovyh_intervalov" keypath="katalog_tsenovyh_intervalov">
+<name>default</name>
+<quotient>1,3</quotient>
+<default_ship_time>14</default_ship_time>
+	<price_interval_count>10</price_interval_count>
+	<price_interval type="price_interval" id="8399801" path="files/839/980/1f/" key="0_10_14" keypath="0_10_14">
+<min>0</min>
+<max>0,14</max>
+<quotient>1,4</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="8399802" path="files/839/980/2f/" key="10_20_13" keypath="10_20_13">
+<min>0,15</min>
+<max>0,49</max>
+<quotient>1,35</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="8399803" path="files/839/980/3f/" key="20_50_12" keypath="20_50_12">
+<min>0,5</min>
+<max>0,99</max>
+<quotient>1,3</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="8399804" path="files/839/980/4f/" key="50_100_11" keypath="50_100_11">
+<min>1</min>
+<max>4,99</max>
+<quotient>1,15</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="8399805" path="files/839/980/5f/" key="100_500_1" keypath="100_500_1">
+<min>5</min>
+<max>24,99</max>
+<quotient>1,05</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="8399807" path="files/839/980/7f/" key="2000_1000000_07" keypath="2000_1000000_07">
+<min>25</min>
+<max>99,99</max>
+<quotient>1,02</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="8399810" path="files/839/981/0f/" key="200_29999_1" keypath="200_29999_1">
+<min>100</min>
+<max>299,99</max>
+<quotient>1</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="8399811" path="files/839/981/1f/" key="300_49999_097" keypath="300_49999_097">
+<min>300</min>
+<max>499,99</max>
+<quotient>0,97</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="8399812" path="files/839/981/2f/" key="500_99999_093" keypath="500_99999_093">
+<min>500</min>
+<max>999,99</max>
+<quotient>0,95</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="8399813" path="files/839/981/3f/" key="1000_1000000000_09" keypath="1000_1000000000_09">
+<min>1 000</min>
+<max>1 000 000 000</max>
+<quotient>0,9</quotient>
+	</price_interval>
+</price_catalog>
+<price_catalog type="price_catalog" id="11255624" path="files/112/556/24f/" key="ferrite.ru" keypath="ferrite.ru">
+<name>ferrite.ru</name>
+<quotient>1,4</quotient>
+<default_ship_time>14</default_ship_time>
+	<price_interval_count>0</price_interval_count>
+</price_catalog>
+<price_catalog type="price_catalog" id="11255655" path="files/112/556/55f/" key="compeldisti3_blr_ext_030619.txt" keypath="compeldisti3_blr_ext_030619.txt">
+<name>COMPELDISTI3_BLR_ext_030619.txt</name>
+<quotient>1,3</quotient>
+<default_ship_time>22</default_ship_time>
+	<price_interval_count>5</price_interval_count>
+	<price_interval type="price_interval" id="11255656" path="files/112/556/56f/" key="10_50_2" keypath="10_50_2">
+<min>0</min>
+<max>20</max>
+<quotient>2</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="11255657" path="files/112/556/57f/" key="20_50_15" keypath="20_50_15">
+<min>20</min>
+<max>50</max>
+<quotient>1,5</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="11255658" path="files/112/556/58f/" key="50_200_135" keypath="50_200_135">
+<min>50</min>
+<max>200</max>
+<quotient>1,35</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="11255659" path="files/112/556/59f/" key="200_1000_12" keypath="200_1000_12">
+<min>200</min>
+<max>1 000</max>
+<quotient>1,2</quotient>
+	</price_interval>
+	<price_interval type="price_interval" id="11255660" path="files/112/556/60f/" key="1000_1000000000000_1" keypath="1000_1000000000000_1">
+<min>1 000</min>
+<max>1 000 000 000 000</max>
+<quotient>1</quotient>
+	</price_interval>
+</price_catalog>

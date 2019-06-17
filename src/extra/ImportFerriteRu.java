@@ -3,12 +3,13 @@ package extra;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
 import ecommander.model.*;
+import ecommander.model.datatypes.DecimalDataType;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import lunacrawler._generated.ItemNames;
-import lunacrawler._generated.Price_catalog;
-import lunacrawler._generated.Product;
+import extra._generated.ItemNames;
+import extra._generated.Price_catalog;
+import extra._generated.Product;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -17,6 +18,7 @@ import org.joda.time.DateTimeZone;
 import java.io.File;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by E on 8/6/2019.
@@ -53,6 +55,7 @@ public class ImportFerriteRu extends IntegrateBase implements ItemNames {
 			Item catalogMeta = ItemUtils.ensureSingleRootItem(CATALOG_META, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 			Item priceCatalogs = ItemUtils.ensureSingleItem(PRICE_CATALOGS, getInitiator(), catalogMeta.getId(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 			ferriteMeta = Item.newChildItem(ItemTypeRegistry.getItemType(PRICE_CATALOG), priceCatalogs);
+			ferriteMeta.setValue(Price_catalog.NAME, FERRITE_RU);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(ferriteMeta));
 		}
 		defaultDelay = ferriteMeta.getByteValue(Price_catalog.DEFAULT_SHIP_TIME);
@@ -65,6 +68,7 @@ public class ImportFerriteRu extends IntegrateBase implements ItemNames {
 		try {
 			contents = WebClient.getString(FERRITE_RU_URL);
 		} catch (Exception e) {
+			ServerLogger.error("Не возмножно скачать URL", e);
 			info.addError("Не доступен URL " + FERRITE_RU_URL, 0, 0);
 			info.setOperation("Фатальная ошибка, интеграция не возможна");
 			return;
@@ -72,7 +76,7 @@ public class ImportFerriteRu extends IntegrateBase implements ItemNames {
 		File ferriteFile = new File(AppContext.getRealPath(INTEGRATION_FILE));
 		if (ferriteFile.exists())
 			FileUtils.deleteQuietly(ferriteFile);
-		FileUtils.write(ferriteFile, contents, Charset.forName("UTF-8"));
+		FileUtils.write(ferriteFile, contents, StandardCharsets.UTF_8);
 
 		// Создание самих товаров
 		info.pushLog("Создание товаров");
@@ -91,7 +95,7 @@ public class ImportFerriteRu extends IntegrateBase implements ItemNames {
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
 		// Разбор прайс-листа
 		try {
-			price = new TabTxtTableData(ferriteFile, NAME_HEADER, CODE_HEADER);
+			price = new TabTxtTableData(ferriteFile, StandardCharsets.UTF_8, NAME_HEADER, CODE_HEADER);
 			TableDataRowProcessor proc = src -> {
 				String code = null;
 				try {
@@ -102,14 +106,18 @@ public class ImportFerriteRu extends IntegrateBase implements ItemNames {
 							prod = Product.get(Item.newChildItem(productType, section));
 							prod.set_code(code);
 						}
-						prod.set_name(src.getValue(NAME_HEADER));
+						prod.set_name(removeQuotes(src.getValue(NAME_HEADER)));
 						prod.set_available(defaultDelay);
 						prod.set_qty(src.getCurrencyValue(QTY_HEADER, new BigDecimal(0)));
 						prod.set_min_qty(new BigDecimal(1));
 						//prod.set_price(src.getCurrencyValue(PRICE_HEADER, new BigDecimal(0)));
-						currencyRates.setAllPrices(prod, src.getValue(PRICE_HEADER));
-						prod.set_vendor(src.getValue(VENDOR_HEADER));
-						prod.set_name_extra(src.getValue(NAME_EXTRA_HEADER));
+						//currencyRates.setAllPrices(prod, src.getValue(PRICE_HEADER));
+						BigDecimal price = DecimalDataType.parse(src.getValue(PRICE_HEADER), 2);
+						if (price != null)
+							price = price.multiply(new BigDecimal(0.9)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+						currencyRates.setAllPrices(prod, price, "RUB");
+						prod.set_vendor(removeQuotes(src.getValue(VENDOR_HEADER)));
+						prod.set_name_extra(removeQuotes(src.getValue(NAME_EXTRA_HEADER)));
 						prod.set_unit("шт.");
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
 						info.increaseProcessed();
@@ -141,5 +149,12 @@ public class ImportFerriteRu extends IntegrateBase implements ItemNames {
 	@Override
 	protected void terminate() throws Exception {
 
+	}
+
+	private static String removeQuotes(String str) {
+		str = StringUtils.trim(str);
+		if (StringUtils.startsWith(str, "\"") && StringUtils.endsWith(str, "\""))
+			return str.substring(1, str.length() - 2);
+		return str;
 	}
 }

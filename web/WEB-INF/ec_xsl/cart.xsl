@@ -19,12 +19,10 @@
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
 					<form method="post">
-						<xsl:variable name="products" select="/page/product"/>
 						<xsl:for-each select="page/cart/bought">
-							<xsl:variable name="code" select="code"/>
-							<xsl:variable name="p" select="$products[code = $code]"/>
-							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat($p/price, ' p.') else 'по запросу'"/>
-							<xsl:variable name="sum" select="if (f:num(sum) != 0) then concat(sum, ' p.') else ''"/>
+							<xsl:variable name="p" select="product"/>
+							<xsl:variable name="price" select="if (f:num(f:exchange($p, 'price')) != 0) then f:exchange_cur($p, 'price') else 'по запросу'"/>
+							<xsl:variable name="sum" select="if (f:num(f:exchange(current(), 'sum')) != 0) then f:exchange_cur(current(), 'sum') else ''"/>
 							<div class="item">
 								<xsl:if test="not($p/plain_section)">
 									<a href="{$p/show_product}" class="image-container">
@@ -58,8 +56,8 @@
 							</div>
 						</xsl:for-each>
 						<div class="total">
-							<xsl:if test="page/cart/sum != '0'">
-								<p>Итого: <xsl:value-of select="page/cart/sum"/> р.</p>
+							<xsl:if test="f:exchange(page/cart, 'sum') != '0'">
+								<p>Итого: <xsl:value-of select="f:exchange_cur(page/cart, 'sum')"/></p>
 							</xsl:if>
 							<input type="submit" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
 							<input type="submit" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>

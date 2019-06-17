@@ -14,6 +14,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +32,7 @@ public abstract class BasicCartManageCommand extends Command {
 	protected static final String USER_ITEM = "user";
 	protected static final String PRICE_PARAM = "price";
 	protected static final String QTY_PARAM = "qty";
+	protected static final String MIN_QTY_PARAM = "min_qty";
 	protected static final String SUM_PARAM = "sum";
 	protected static final String CODE_PARAM = "code";
 	protected static final String NAME_PARAM = "name";
@@ -44,7 +46,7 @@ public abstract class BasicCartManageCommand extends Command {
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
 	public static final String REGISTERED_GROUP = "registered";
 
-
+	public static final int BIG_DECIMAL_SCALE_6 = 6;
 
 	protected static final String CART_COOKIE = "cart_cookie";
 
@@ -286,20 +288,27 @@ public abstract class BasicCartManageCommand extends Command {
 	}
 
 
+	protected abstract void extraLoading(Item product) throws Exception;
+
 
 	private void addProduct(String code, double qty) throws Exception {
 		ensureCart();
 		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
 		Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
+		BigDecimal decimalQty = new BigDecimal(qty).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN);
 		if (boughtProduct == null) {
 			if (qty <= 0)
 				return;
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
-			double maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(MAX_QTY)).doubleValue();
-			if (maxQuantity > 0)
-				qty = maxQuantity > qty ? qty : maxQuantity;
-			bought.setValue(QTY_PARAM, qty);
+			BigDecimal maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(MAX_QTY));
+			BigDecimal minQuantity = product.getDecimalValue(MIN_QTY_PARAM, new BigDecimal(1));
+			BigDecimal qtyMinQtyFraction = decimalQty.divide(minQuantity, BigDecimal.ROUND_HALF_EVEN);
+			if (!isIntegerValue(qtyMinQtyFraction))
+				decimalQty = minQuantity.multiply(qtyMinQtyFraction.setScale(0, BigDecimal.ROUND_CEILING));
+			if (maxQuantity.compareTo(new BigDecimal(0)) > 0)
+				decimalQty = maxQuantity.compareTo(decimalQty) > 0 ? decimalQty : maxQuantity;
+			bought.setValue(QTY_PARAM, decimalQty.doubleValue());
 			bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
 			bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
 			// Сохраняется bought
@@ -313,16 +322,22 @@ public abstract class BasicCartManageCommand extends Command {
 				parent.setContextPrimaryParentId(product.getId());
 				getSessionMapper().saveTemporaryItem(parent);
 			}
+			extraLoading(product);
 		} else {
 			Item bought = getSessionMapper().getItem(boughtProduct.getContextParentId(), BOUGHT_ITEM);
 			if (qty <= 0) {
 				getSessionMapper().removeItems(bought.getId());
 				return;
 			}
-			double maxQuantity = boughtProduct.getDoubleValue(QTY_PARAM, MAX_QTY);
-			if (maxQuantity > 0)
-				qty = maxQuantity > qty ? qty : maxQuantity;
-			bought.setValue(QTY_PARAM, qty);
+			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
+			BigDecimal minQuantity = product.getDecimalValue(MIN_QTY_PARAM, new BigDecimal(1));
+			BigDecimal qtyMinQtyFraction = decimalQty.divide(minQuantity, BigDecimal.ROUND_HALF_EVEN);
+			if (!isIntegerValue(qtyMinQtyFraction))
+				decimalQty = decimalQty.setScale(0, RoundingMode.CEILING);
+			BigDecimal maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(MAX_QTY));
+			if (maxQuantity.compareTo(new BigDecimal(0)) > 0)
+				decimalQty = maxQuantity.compareTo(decimalQty) > 0 ? decimalQty : maxQuantity;
+			bought.setValue(QTY_PARAM, decimalQty.doubleValue());
 			getSessionMapper().saveTemporaryItem(bought);
 		}
 	}
@@ -453,6 +468,10 @@ public abstract class BasicCartManageCommand extends Command {
 		getSessionMapper().saveTemporaryItem(cart);
 		saveCookie();
 		return result && regularQuantity > 0;
+	}
+
+	public static boolean isIntegerValue(BigDecimal bd) {
+		return bd.stripTrailingZeros().scale() <= 0;
 	}
 
 	@Override

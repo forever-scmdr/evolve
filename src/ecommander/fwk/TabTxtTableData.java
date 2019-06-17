@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -20,6 +20,9 @@ import java.util.TreeSet;
  * Created by E on 14/1/2019.
  */
 public class TabTxtTableData implements TableDataSource {
+
+	public static final String UTF8_BOM = "\uFEFF";
+
 	private boolean isValid = false;
 	private HashMap<String, Integer> header = new HashMap<>();
 	private String[] currentRow;
@@ -27,19 +30,23 @@ public class TabTxtTableData implements TableDataSource {
 	private int headerRow = -1;
 	private File file;
 	private ArrayList<String> missingColumns = null;
+	private Charset fileCharset;
 
-	public TabTxtTableData(String fileName, String... mandatoryCols) {
+	public TabTxtTableData(String fileName, Charset charset, String... mandatoryCols) {
 		this.file = new File(fileName);
+		this.fileCharset = charset;
 		init(mandatoryCols);
 	}
 
-	public TabTxtTableData(File file, String... mandatoryCols) {
+	public TabTxtTableData(File file, Charset charset, String... mandatoryCols) {
 		this.file = file;
+		this.fileCharset = charset;
 		init(mandatoryCols);
 	}
 
-	public TabTxtTableData(Path path, String... mandatoryCols) {
+	public TabTxtTableData(Path path, Charset charset, String... mandatoryCols) {
 		this.file = path.toFile();
+		this.fileCharset = charset;
 		init(mandatoryCols);
 	}
 
@@ -54,8 +61,10 @@ public class TabTxtTableData implements TableDataSource {
 		String line;
 		String[] cols = {};
 		if (mandatoryCols.length > 0) {
-			try (BufferedReader br = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_16)) {
-				line = br.readLine();
+			try (BufferedReader br = Files.newBufferedReader(file.toPath(), fileCharset)) {
+				line = StringUtils.trim(br.readLine());
+				if (StringUtils.startsWith(line, UTF8_BOM))
+					line = line.substring(1);
 				while (line != null && headerRow < 1000 && !rowChecked) {
 					headerRow++;
 					cols = StringUtils.splitPreserveAllTokens(line, '\t');
@@ -136,7 +145,7 @@ public class TabTxtTableData implements TableDataSource {
 			}
 			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, message);
 		}
-		try (BufferedReader br = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_16)) {
+		try (BufferedReader br = Files.newBufferedReader(file.toPath(), fileCharset)) {
 			for (int i = 0; i <= headerRow; i++) {
 				br.readLine();
 			}

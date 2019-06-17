@@ -30,7 +30,7 @@ public class WebClient {
 		if (proxy.length > 0 && StringUtils.isNotBlank(proxy[0])) {
 			req.viaProxy(proxy[0]);
 		}
-		return req.connectTimeout(1000).socketTimeout(3000)
+		return req.connectTimeout(5000).socketTimeout(5000)
 				.execute()
 				.handleResponse(response -> {
 					StatusLine statusLine = response.getStatusLine();
@@ -87,7 +87,7 @@ public class WebClient {
 			req.viaProxy(proxy[0]);
 		}
 		String finalUrl = url;
-		req.connectTimeout(1000).socketTimeout(3000)
+		req.connectTimeout(5000).socketTimeout(5000)
 				.execute()
 				.handleResponse(response -> {
 					StatusLine statusLine = response.getStatusLine();

@@ -25,7 +25,6 @@
 	<xsl:variable name="active_menu_item"/>
 
 
-
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
 
 
@@ -55,6 +54,27 @@
 							</form> -->
 						</div>
 						<div class="other-container">
+							<div class="catalog-currency">
+								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
+								<ul class="currency-options">
+									<li class="{'active'[$currency = 'BYN']}">
+										<xsl:if test="not($currency = 'BYN')"><a href="{page/set_currency_byn}">BYN</a></xsl:if>
+										<xsl:if test="$currency = 'BYN'">BYN</xsl:if>
+									</li>
+									<li class="{'active'[$currency = 'RUB']}">
+										<xsl:if test="not($currency = 'RUB')"><a href="{page/set_currency_rub}">RUB</a></xsl:if>
+										<xsl:if test="$currency = 'RUB'">RUB</xsl:if>
+									</li>
+									<li class="{'active'[$currency = 'USD']}">
+										<xsl:if test="not($currency = 'USD')"><a href="{page/set_currency_usd}">USD</a></xsl:if>
+										<xsl:if test="$currency = 'USD'">USD</xsl:if>
+									</li>
+									<li class="{'active'[$currency = 'EUR']}">
+										<xsl:if test="not($currency = 'EUR')"><a href="{page/set_currency_eur}">EUR</a></xsl:if>
+										<xsl:if test="$currency = 'EUR'">EUR</xsl:if>
+									</li>
+								</ul>
+							</div>
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 								<p><i class="fas fa-shopping-cart"/>&#160;<strong>Загрузка...</strong></p>
 							</div>

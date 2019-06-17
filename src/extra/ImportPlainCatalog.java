@@ -10,7 +10,6 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Product;
-import lunacrawler._generated.ItemNames;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -19,6 +18,7 @@ import org.joda.time.DateTimeZone;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
 /**
@@ -85,7 +85,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 			// Разбор прайс-листа
 			try {
 				if (StringUtils.endsWithIgnoreCase(excel.getName(), "txt")) {
-					price = new TabTxtTableData(excel, NAME_HEADER, CODE_HEADER);
+					price = new TabTxtTableData(excel, StandardCharsets.UTF_16, NAME_HEADER, CODE_HEADER);
 				} else {
 					price = new ExcelTableData(excel, NAME_HEADER, CODE_HEADER);
 				}

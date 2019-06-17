@@ -174,8 +174,35 @@
 		</xsl:if>
 	</xsl:template>
 
+
+	<xsl:template match="input">
+		<xsl:variable name="name" select="@id"/>
+		<div class="active checkgroup">
+			<strong>
+				<xsl:value-of select="@caption"/>
+			</strong>
+			<div class="values">
+				<xsl:for-each select="domain/value">
+					<div class="checkbox">
+						<label>
+							<input name="{$name}" type="checkbox" value="{.}">
+								<xsl:if test=". = $user_filter/input[@id = $name]">
+									<xsl:attribute name="checked" select="'checked'"/>
+								</xsl:if>
+							</input>
+							&#160;<xsl:value-of select="."/>
+						</label>
+					</div>
+				</xsl:for-each>
+			</div>
+		</div>
+	</xsl:template>
+
+
 	<xsl:template name="FILTER">
 		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 1 or @caption = 'Производитель']"/>
+		<xsl:variable name="show_params"
+		              select="if ($sel_sec/filter_show_params and not($sel_sec/filter_show_params = '')) then tokenize($sel_sec/filter_show_params, '\|') else ()"/>
 
 		<!--<xsl:if test="not($subs) and $valid_inputs">-->
 		<xsl:if test="$valid_inputs">
@@ -185,32 +212,20 @@
 			</div>
 			<form method="post" action="{$sel_sec/filter_base_link}">
 				<div class="filters" style="{'display: none'[not($user_filter)]}" id="filters_container">
-					   <xsl:for-each select="$valid_inputs">
-						   <xsl:variable name="name" select="@id"/>
-							<div class="active checkgroup">
-								<strong>
-									<xsl:value-of select="@caption"/>
-								</strong>
-								<div class="values">
-									<xsl:for-each select="domain/value">
-										<div class="checkbox">
-											<label>
-												<input name="{$name}" type="checkbox" value="{.}">
-													<xsl:if test=". = $user_filter/input[@id = $name]">
-														<xsl:attribute name="checked" select="'checked'"/>
-													</xsl:if>
-												</input>
-												&#160;<xsl:value-of select="."/>
-											</label>
-										</div>
-									</xsl:for-each>
-								</div>
-							</div>
-					   </xsl:for-each>
-					   <div class="buttons">
-							<input type="submit" value="Показать найденное"/>
-							<input type="submit" value="Сбросить" onclick="location.href = '{page/reset_filter_link}'; return false;"/>
-					   </div>
+					<xsl:if test="count($show_params) = 0">
+						<xsl:for-each select="$valid_inputs">
+							<xsl:apply-templates select="."/>
+						</xsl:for-each>
+					</xsl:if>
+					<xsl:if test="count($show_params) != 0">
+						<xsl:for-each select="$show_params">
+							<xsl:apply-templates select="$valid_inputs[@caption = current()]"/>
+						</xsl:for-each>
+					</xsl:if>
+					<div class="buttons">
+						<input type="submit" value="Показать найденное"/>
+						<input type="submit" value="Сбросить" onclick="location.href = '{page/reset_filter_link}'; return false;"/>
+					</div>
 				</div>
 			</form>
 		</xsl:if>

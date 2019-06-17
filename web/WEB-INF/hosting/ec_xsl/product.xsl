@@ -18,7 +18,7 @@
 	<xsl:variable name="price_items" select="page/price[plain_section]"/>
 
 	<xsl:variable name="price_intervals" select="page/price_catalog/price_interval"/>
-	<xsl:variable name="Q" select="f:num(page/price_catalog/quotient)"/>
+	<xsl:variable name="Q" select="f:num(page/price_catalog[1]/quotient[1])"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>

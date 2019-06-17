@@ -136,10 +136,10 @@
 								<xsl:value-of select="qty"/>
 							</td>
 							<td>
-								<xsl:value-of select="product/price"/>
+								<xsl:value-of select="if (f:num(f:exchange(product, 'price')) != 0) then f:exchange_cur(product, 'price') else 'по запросу'"/>
 							</td>
 							<td>
-								<xsl:value-of select="sum"/>
+								<xsl:value-of select="if (f:num(f:exchange(product, 'sum')) != 0) then f:exchange_cur(product, 'sum') else ''"/>
 							</td>
 							<!-- <td>
 								<xsl:value-of select="product/qty"/>
