@@ -3,8 +3,10 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="concat($p/type, ' ', $p/name)"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="title" select="string-join(($p/type, 'Метабо', $p/name, 'купить в Минске недорого: цена - интернет магазин METABO BELARUS'), ' ')"/>
+
+	<xsl:variable name="meta_description" select="string-join(($p/type, 'Метабо по выгодной цене.', 'Доставка по Беларуси +375(29)266-44-66','Доступная цена, гарантия, 20 лет на рынке!'),' ')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else string-join(($p/type, $p/name, 'Metabo'), ' ')"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
@@ -279,31 +281,34 @@
 
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
+							<!-- <xsl:if test="$p/params">
 							<li role="presentation" class="active">
-								<a href="#tab0" role="tab" data-toggle="tab">Описание</a>
-							</li>							
-							<!--
-							<xsl:if test="$p/params">
-								<li role="presentation">
 									<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
 								</li>
+							</xsl:if> -->
+
+							<xsl:if test="$p/description != ''">
+								<li role="presentation" class="active">
+									<a href="#tab0" role="tab" data-toggle="tab">Описание</a>
+								</li>
 							</xsl:if>
-							-->
 							<xsl:for-each select="$p/product_extra">
-								<li role="presentation">
+								<xsl:variable name="pos" select="position()"/>
+								<li role="presentation" class="{if(not($p/description != '') and $pos = 1) then 'active' else ''}">
 									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="f:tab_name(name)"/></a>
 								</li>
 							</xsl:for-each>
 					</ul>
 				<div class="tab-content">
+					<xsl:if test="$p/description != ''">
 					<div role="tabpanel" class="tab-pane active" id="tab0">
 						<div>
 							<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 						</div>
 					</div>
-					<xsl:if test="$p/params">
-						<div role="tabpanel" class="tab-pane" id="tab1">
-							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
+					</xsl:if>
+					<!-- <xsl:if test="$p/params">
+						<div role="tabpanel" class="tab-pane active" id="tab1">
 							<table>
 								<colgroup>
 									<col style="width: 40%"/>
@@ -321,9 +326,10 @@
 							</table>
 
 						</div>
-					</xsl:if>
+					</xsl:if> -->
 					<xsl:for-each select="$p/product_extra">
-						<div role="tabpanel" class="tab-pane" id="tab{@id}">
+						<xsl:variable name="pos" select="position()"/>
+						<div role="tabpanel" class="tab-pane {if(not($p/description != '') and $pos = 1) then 'active' else ''}" id="tab{@id}">
 							<!-- <h4><xsl:value-of select="name"/></h4> -->
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>

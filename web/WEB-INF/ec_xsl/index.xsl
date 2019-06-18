@@ -13,12 +13,12 @@
 				"logo":"<xsl:value-of select="concat($main_host, '/img/logo_big.svg')"/>",
 				"aggregateRating": {
 					"@type": "AggregateRating",
-					"ratingCount": "53",
-					"reviewCount": "53",
+					"ratingCount": "78",
+					"reviewCount": "78",
 					"bestRating": "5",
 					"ratingValue": "4,9",
 					"worstRating": "1",
-					"name": "TTD"
+					"name": "Metabo Belarus"
 				},
 				"contactPoint": [
 					<xsl:for-each select="page/common/phone" >

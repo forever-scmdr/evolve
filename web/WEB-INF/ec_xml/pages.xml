@@ -806,10 +806,12 @@
 							<link name="show_product" target="product" type="exclusive">
 								<var name="prod" ref="parent" style="key"/>
 							</link>
+
 						</single>
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="key"/>
 						</link>
+						<single item="params"/>
 					</list>
 					<link name="delete" target="cart_action">
 						<var name="action" value="delete"/>
@@ -819,6 +821,14 @@
 				</list>
 			</single>
 		</session>
+		<list item="product">
+			<filter>
+				<parameter name="code" compare="SOME">
+					<var ref="prod" parameter="code"/>
+				</parameter>
+			</filter>
+			<list item="params"/>
+		</list>
 		<link name="recalculate_link" target="cart_action" type="itemform">
 			<var name="action" value="recalculate"/>
 		</link>
@@ -930,6 +940,7 @@
 					<var ref="bought" parameter="code"/>
 				</parameter>
 			</filter>
+			<list item="params"/>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>

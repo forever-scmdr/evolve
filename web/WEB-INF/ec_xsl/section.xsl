@@ -3,8 +3,29 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="cities" as="element()*">
+		<item>Минске</item>
+		<item>Витебске</item>
+		<item>Могилеве</item>
+		<item>Гомеле</item>
+		<item>Бресте</item>
+		<item>Гродно</item>
+	</xsl:variable>
+	<xsl:variable name="x" select="f:num(page/variables/page) mod count($cities)" />
+
+	<xsl:variable name="page_postfix" select="if(/page/variables/page = '1') then '' else concat('Страница: ', /page/variables/page, ',' )"/>
+
+	<xsl:variable name="from" select="(f:num(/page/variables/page) * f:num(/page/variables/limit)) - f:num(/page/variables/limit) + 1" />
+
+	<xsl:variable name="to" select="$from + count($sel_sec/product) - 1"/>
+
+	<xsl:variable name="product_from_to" select="string-join(('товары с', $from, 'по', $to ), ' ')"/>
+
+	<xsl:variable name="title_postfix" select="string-join(('в',$cities[$x],'недорого: цена - интернет магазин METABO BELARUS'),' ')"/>
+
+	<xsl:variable name="title" select="string-join(( $sel_sec/name, 'Метабо купить', $title_postfix), ' ')"/>
+
+	<xsl:variable name="meta_description" select="string-join(($sel_sec/name, 'Метабо по выгодной цене ✅ Доставка по Беларуси +375(29)266-44-66 ►►► Доступная цена, гарантия, 20 лет на рынке!'),' ')"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section/section"/>
@@ -53,16 +74,15 @@
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="tag" select="page/variables/tag"/>
-	<xsl:variable name="title" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
-	<xsl:variable name="canonical"
-				  select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
+
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($sel_sec/name, ' Metabo')"/>
 
 
 	<xsl:template name="CONTENT">
@@ -125,6 +145,12 @@
 						</a>
 					</xsl:for-each>
 				</div>
+			</div>
+		</xsl:if>
+
+		<xsl:if test="page/variables/page = '1'">
+			<div class="page-content">
+				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
 			</div>
 		</xsl:if>
 

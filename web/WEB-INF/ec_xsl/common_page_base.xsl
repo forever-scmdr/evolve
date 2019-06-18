@@ -61,13 +61,13 @@
 			<div class="container">
 				<xsl:variable name="topper" select="page/common/topper"/>
 				<div class="dropdown">
-					<a class="dropdown-toggle top-stripe__location" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<a class="dropdown-toggle top-stripe__location" href="#" rel="nofollow" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<xsl:value-of select="$topper/block[1]/header"/>&#160;<i class="fas fa-caret-down"></i>
 					</a>
 
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 						<xsl:for-each select="$topper/block">
-							<a class="dropdown-item dd_menu_item" href="#" dd-id="dd_block_{@id}"><xsl:value-of select="header"/></a>
+							<a class="dropdown-item dd_menu_item" href="#" rel="nofollow" dd-id="dd_block_{@id}"><xsl:value-of select="header"/></a>
 						</xsl:for-each>
 					</div>
 				</div>
@@ -89,15 +89,15 @@
 							<input type="submit" class="button header__button" value="Найти" />
 						</form>
 						<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-							<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
+							<a href="#" rel="nofollow"><i class="fas fa-shopping-cart"></i>Корзина</a>
 						</div>
 						<div class="user-links header__column">
 							<xsl:call-template name="PERSONAL_DESKTOP"/>
 							<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
-								<a href=""><i class="fas fa-star"/>Избранное</a>
+								<a href="#" rel="nofollow"><i class="fas fa-star"/>Избранное</a>
 							</div>
 							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}">
-								<a href="compare.html"><i class="fas fa-balance-scale"/>Сравнение</a>
+								<a href="{page/compare_link}"><i class="fas fa-balance-scale"/>Сравнение</a>
 							</div>
 						</div>
 					</div>
@@ -150,7 +150,7 @@
 							</xsl:if>
 							<xsl:if test="menu_custom">
 								<div class="main-menu__item" style="position: relative;">
-									<a href="#ts-{@id}" class="show-sub{' active'[$active_menu_item = $key]}">
+									<a href="#ts-{@id}" rel="nofollow" class="show-sub{' active'[$active_menu_item = $key]}">
 										<span><xsl:value-of select="header"/></span>
 									</a>
 									<div id="ts-{@id}" class="popup-text-menu" style="position: absolute; z-index: 2; display: none;">
@@ -166,16 +166,16 @@
 							</xsl:if>
 						</xsl:for-each>
 					<!-- 	<div class="main-menu__item">
-							<a href=""><span>Акции</span></a>
+							<a href="#" rel="nofollow"><span>Акции</span></a>
 						</div>
 						<div class="main-menu__item">
-							<a href=""><span>Новости</span></a>
+							<a href="#" rel="nofollow"><span>Новости</span></a>
 						</div>
 						<div class="main-menu__item">
-							<a href=""><span>О компании</span></a>
+							<a href="#" rel="nofollow"><span>О компании</span></a>
 						</div>
 						<div class="main-menu__item">
-							<a href=""><span>Помощь</span></a>
+							<a href="#" rel="nofollow"><span>Помощь</span></a>
 						</div> -->
 						<div class="main-menu__item">
 							<a href="{page/contacts_link}"><span>Контакты</span></a>
@@ -197,8 +197,8 @@
 				</a>
 				<div class="icons-container">
 					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
-					<a href="{page/cart_link}"><i class="fas fa-shopping-cart"></i></a>
-					<a href="javascript:showMobileMainMenu()"><i class="fas fa-bars"></i></a>
+					<a href="{page/cart_link}" rel="nofollow"><i class="fas fa-shopping-cart"></i></a>
+					<a href="javascript:showMobileMainMenu()" rel="nofollow"><i class="fas fa-bars"></i></a>
 				</div>
 				<div class="search-container">
 					<form action="{page/search_link}" method="post">
@@ -223,14 +223,14 @@
 		<section class="footer">
 			<div class="container">
 				<!-- <div class="footer__menu">
-					<a href="">Каталог</a>
-					<a href="">Новости</a>
-					<a href="">Акции</a>
-					<a href="">О компании</a>
-					<a href="">Сервис</a>
-					<a href="">Оплата</a>
-					<a href="">Доставка</a>
-					<a href="">Контакты</a>
+					<a href="#" rel="nofollow">Каталог</a>
+					<a href="#" rel="nofollow">Новости</a>
+					<a href="#" rel="nofollow">Акции</a>
+					<a href="#" rel="nofollow">О компании</a>
+					<a href="#" rel="nofollow">Сервис</a>
+					<a href="#" rel="nofollow">Оплата</a>
+					<a href="#" rel="nofollow">Доставка</a>
+					<a href="#" rel="nofollow">Контакты</a>
 				</div> -->
 				<div class="footer__content">
 					<xsl:variable name="footer" select="page/common/footer"/>
@@ -305,7 +305,7 @@
 					</li>
 				</ul>
 				<ul>
-					<li><i class="fas fa-th-list"></i> <a href="#" onclick="showMobileCatalogMenu(); return false">Каталог продукции</a></li>
+					<li><i class="fas fa-th-list"></i> <a href="#" rel="nofollow" onclick="showMobileCatalogMenu(); return false">Каталог продукции</a></li>
 				</ul>
 				<ul>
 					<li><i class="fas fa-shopping-cart"></i> <a href="{page/cart_link}" rel="nofolow">Заявки</a></li>
@@ -367,7 +367,7 @@
 			<div class="content" id="m_sub_cat">
 				<div class="small-nav">
 					<a class="header">Каталог продукции</a>
-					<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
+					<a href="#" rel="nofollow" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 				</div>
 				<ul>
 					<xsl:for-each select="page/catalog/section">
@@ -390,9 +390,9 @@
 			<xsl:for-each select="page/catalog/section[section]">
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
-						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
+						<a href="#" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
 						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
-						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
+						<a href="#" rel="nofollow" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
 						<xsl:for-each select="section">
@@ -416,9 +416,9 @@
 			<xsl:for-each select="page/catalog/section/section[section]">
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
-						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
+						<a href="#" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
 						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
-						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
+						<a href="#" rel="nofollow" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
 						<xsl:for-each select="section">
@@ -469,7 +469,7 @@
 
 
 	<xsl:template name="PRINT">
-		<span><i class="fas fa-print"></i> <a href="javascript:window.print()">Распечатать</a></span>
+		<span><i class="fas fa-print"></i> <a href="javascript:window.print()" rel="nofollow">Распечатать</a></span>
 	</xsl:template>
 
 
@@ -683,21 +683,21 @@
 				<div class="device__actions device_row__actions">
 				<xsl:if test="not($is_compare)">
 					<div id="compare_list_{@id}">
-						<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
+						<a href="{to_compare}" rel="nofollow" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
 							<i class="fas fa-balance-scale"></i>сравнить
 						</a>
 					</div>
 				</xsl:if>
 				<xsl:if test="$is_compare">
-					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
+					<span><i class="fas fa-balance-scale"></i>&#160;<a rel="nofollow" href="{from_compare}">убрать</a></span>
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="$is_fav">
-						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
+						<a href="{from_fav}" rel="nofollow" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
 					</xsl:when>
 					<xsl:otherwise>
 						<div id="fav_list_{@id}">
-							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
+							<a href="{to_fav}" rel="nofollow" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
 								<i class="fas fa-star"></i>отложить
 							</a>
 						</div>
@@ -1077,7 +1077,7 @@
 
 	<xsl:template match="seo | url_seo">
 		<title>
-			<xsl:value-of select="title"/>
+			<xsl:value-of select="if(title != '') then title else $title"/>
 		</title>
 		<meta name="description" content="{description}"/>
 		<meta name="keywords" content="{keywords}"/>
