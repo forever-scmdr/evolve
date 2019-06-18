@@ -15,6 +15,12 @@
                 select="if ($str and $str != '') then number(replace(replace($str, '[&#160;\s]', ''), ',', '.')) else number(0)"/>
     </xsl:function>
 
+    <xsl:function name="f:int" as="xs:integer">
+        <xsl:param name="str" as="xs:string?"/>
+        <xsl:sequence
+                select="if ($str and $str != '') then xs:integer(number(replace(replace($str, '[&#160;\s]', ''), ',', '.'))) else 0"/>
+    </xsl:function>
+
     <xsl:function name="f:currency_decimal">
         <xsl:param name="str" as="xs:string?"/>
         <xsl:value-of select="format-number(f:num($str), '#0.00')"/>

@@ -33,6 +33,10 @@
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
+	<!-- discount cookies -->
+	<xsl:variable name="discount_time" select="page/variables/discount_active = 'yes'" />
+	<xsl:variable name="discount" select="1 - f:num(page/common/discount)" />
+	<!-- -->
 
 	<xsl:variable name="active_menu_item"/>
 
@@ -513,6 +517,9 @@
 
 	<xsl:template match="accessory | set | probe | product | assoc">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="price" select="if($discount_time) then format-number(f:num(price)*$discount, '#0.00') else price"/>
+		<xsl:variable name="price_old" select="if($discount_time) then price else price_old"/>
+
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device items-catalog__device">
@@ -529,8 +536,8 @@
 			<div class="device__article-number">Артикул: <xsl:value-of select="code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
+					<xsl:if test="price_old"><div class="$price_old"><span><xsl:value-of select="$price_old"/> руб.</span></div></xsl:if>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="$price"/> руб.</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -602,6 +609,10 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+
+		<xsl:variable name="price" select="if($discount_time) then format-number(f:num(price)*$discount, '#0.00') else price"/>
+		<xsl:variable name="price_old" select="if($discount_time) then price else price_old"/>
+
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
@@ -635,8 +646,8 @@
 			
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
+					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="$price_old"/> руб.</span></div></xsl:if>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="$price"/> руб.</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -711,6 +722,23 @@
 					var lockId = $(this).closest('.product_purchase_container').attr('id');
 					postForm(qtyForm, lockId, null);
 				});
+				$('[data-toggle="popover"]')
+					.popover({ trigger: "manual" , html: true, animation:false})
+					.on("mouseenter", function () {
+						var _this = this;
+						$(this).popover("show");
+						$(".popover").on("mouseleave", function () {
+							$(_this).popover('hide');
+						});
+					})
+					.on("mouseleave", function () {
+						var _this = this;
+						setTimeout(function () {
+							if (!$(".popover:hover").length) {
+								$(_this).popover("hide");
+							}
+						}, 300);
+					});
 			});
 		</script>
 	</xsl:template>
@@ -772,7 +800,10 @@
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
 
 
-	<xsl:template name="BODY"></xsl:template>
+	<xsl:template name="BODY">
+		<div id="discount-popup-2" class="message" style="display: none;"></div>
+		<div id="discount-popup" class="discount-alert" style="display: none;"></div>
+	</xsl:template>
 
 
 
@@ -781,6 +812,7 @@
 	</xsl:text>
 		<html lang="ru">
 			<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 				<xsl:text disable-output-escaping="yes">
 &lt;!--
 				</xsl:text>
@@ -820,7 +852,7 @@
 				</xsl:for-each>
 			</head>
 			<body>
-				<xsl:call-template name="BODY"/>
+
 				<xsl:if test="$seo/body_class">
 					<xsl:attribute name="class" select="$seo/body_class"/>
 				</xsl:if>
@@ -828,6 +860,7 @@
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
+				<xsl:call-template name="BODY"/>
 				<!-- ALL CONTENT BEGIN -->
 				<div class="content-container">
 					<xsl:call-template name="INC_DESKTOP_HEADER"/>

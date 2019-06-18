@@ -53,13 +53,20 @@
 							</div>
 						</xsl:for-each>
 						<div class="total">
+							<xsl:if test="page/cart/simple_sum">
+								<span style="text-decoration: line-through; padding-right: 10px; color: #ccc;"><xsl:value-of select="page/cart/simple_sum"/> р.</span>
+							</xsl:if>
 							<xsl:if test="page/cart/sum != '0'">
 								<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
 							</xsl:if>
 							<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
 							<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 						</div>
-
+						<xsl:if test="page/cart/simple_sum">
+							<div class="total">
+								<p>Сэкономьте: <xsl:value-of select="f:num(page/cart/simple_sum) - f:num(page/cart/sum)"/> р.</p>
+							</div>
+						</xsl:if>
 					</form>
 				</xsl:when>
 				<xsl:otherwise>

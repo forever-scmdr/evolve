@@ -302,6 +302,7 @@
 		<parameter name="order_num" type="string" caption="Номер заказа"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="simple_sum" type="currency" caption="Сумма без скидки"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
 		<child item="bought"/>
 	</item>
@@ -476,6 +477,10 @@
 
 
 	<item name="common" caption="На всех страницах" ag-id="22" ag-hash="-1354814997">
+		<parameter name="show_window" type="integer" caption="Начало скидки, сек. после захода на сайт"/>
+		<parameter name="discount_last" type="integer" caption="Срок действия скидки, сек."/>
+		<parameter name="discount" type="double" caption="Скидка" description="0.1 - скидка 10%"/>
+		<parameter name="discount_text" type="tiny-text" caption="Текст во всплывающем окне"/>
 		<parameter name="top" type="short-text" caption="Верх" description="телефоны"/>
 		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
 		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
