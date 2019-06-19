@@ -8594,3 +8594,37 @@ td .catalog-item {
 	text-decoration: none;
 	padding: 4px 8px;
 }
+#search-result, #search-result-mobile {
+	position: absolute;
+	padding: 16px;
+	box-shadow: grey 0px 4px 10px;
+	top: 100px;
+	z-index: 1;
+	background: white;
+	display: none;
+	/*width: 100%;*/
+}
+#search-result ul, #search-result-mobile ul{
+	padding-left: 0;
+}
+#search-result li, #search-result-mobile li{
+	list-style-type: none;
+}
+#search-result li a, #search-result-mobile li a{
+	color: #363636;
+	text-decoration: underline;
+
+}
+.show-all{
+	display: block;
+	width: 100%;
+	background: #a7323b;
+	color: #fff;
+	text-decoration: none;
+	text-align: center;
+	text-transform: uppercase;
+	padding: 0.5rem 0;
+}
+.show-all:hover{
+	text-decoration: none;
+}

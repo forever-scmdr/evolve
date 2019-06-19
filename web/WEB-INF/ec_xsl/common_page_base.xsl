@@ -85,8 +85,9 @@
 				<div class="header__content">
 					<div class="header__columns">
 						<form action="{page/search_link}" method="post" class="header__search header__column">
-							<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" />
+							<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" id="q-ipt" />
 							<input type="submit" class="button header__button" value="Найти" />
+							<div id="search-result"></div>
 						</form>
 						<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 							<a href="#" rel="nofollow"><i class="fas fa-shopping-cart"></i>Корзина</a>
@@ -202,8 +203,9 @@
 				</div>
 				<div class="search-container">
 					<form action="{page/search_link}" method="post">
-						<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
+						<input id="q-ipt-mobile" type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
 					</form>
+					<div id="search-result-mobile"></div>
 				</div>
 			</div>
 		</div>
@@ -884,78 +886,81 @@
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/fwk/common.js"/>
 				<script type="text/javascript" src="slick/slick.min.js"></script>
+				<script type="text/javascript" src="js/search-tip.js"></script>
 				<script type="text/javascript">
-					$(document).ready(function() {
+					$(document).ready(function(){
 						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
-							type: 'image',
-							closeOnContentClick: true,
-							mainClass: 'mfp-img-mobile',
-							image: {
+								type: 'image',
+								closeOnContentClick: true,
+								mainClass: 'mfp-img-mobile',
+								image: {
 								verticalFit: true
 							}
 						});
 						var oh = $(".footer").outerHeight();
 						$(".footer-placeholder").height(oh+40);
 						$(".footer").css("margin-top", -1*oh);
-						$('.slick-slider').slick({
-						infinite: true,
-						slidesToShow: 6,
-						slidesToScroll: 6,
-						dots: true,
-						arrows: false,
-						responsive: [
+						<xsl:if test="page/@name = 'index'">
+							$('.slick-slider').slick({
+							infinite: true,
+							slidesToShow: 6,
+							slidesToScroll: 6,
+							dots: true,
+							arrows: false,
+							responsive: [
 							{
-								breakpoint: 1440,
-								settings: {
-									slidesToShow: 5,
-									slidesToScroll: 5,
-									infinite: true,
-									dots: true
-								}
-							},
-							{
-								breakpoint: 1200,
-								settings: {
-									slidesToShow: 4,
-									slidesToScroll: 4,
-									infinite: true,
-									dots: true
-								}
-							},
-							{
-								breakpoint: 992,
-								settings: {
-									slidesToShow: 3,
-									slidesToScroll: 3,
-									infinite: true,
-									dots: true
-								}
-							},
-							{
-								breakpoint: 768,
-								settings: {
-									slidesToShow: 2,
-									slidesToScroll: 2,
-									infinite: true,
-									dots: true
-								}
-							},
-							{
-								breakpoint: 375,
-								settings: {
-									slidesToShow: 1,
-									slidesToScroll: 1,
-									infinite: true,
-									dots: true
-								}
+							breakpoint: 1440,
+							settings: {
+							slidesToShow: 5,
+							slidesToScroll: 5,
+							infinite: true,
+							dots: true
 							}
-						]
-						});
-
-						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
-						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
-						initDropDownHeader();
+							},
+							{
+							breakpoint: 1200,
+							settings: {
+							slidesToShow: 4,
+							slidesToScroll: 4,
+							infinite: true,
+							dots: true
+							}
+							},
+							{
+							breakpoint: 992,
+							settings: {
+							slidesToShow: 3,
+							slidesToScroll: 3,
+							infinite: true,
+							dots: true
+							}
+							},
+							{
+							breakpoint: 768,
+							settings: {
+							slidesToShow: 2,
+							slidesToScroll: 2,
+							infinite: true,
+							dots: true
+							}
+							},
+							{
+							breakpoint: 375,
+							settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1,
+							infinite: true,
+							dots: true
+							}
+							}
+							]
+							});
+						</xsl:if>
 					});
+
+					initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
+					initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+					initDropDownHeader();
 
 					$(document).on('click', '.print-img', function(e){
 						e.preventDefault();
@@ -983,9 +988,8 @@
 					function printImage(imgId) {
 						var img = document.getElementById(imgId);
 						var win = window.open(img.src,"_blank");
-						win.onload = function() { win.print();}
+						win.onload = function(){win.print();}
 					}
-
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
 				<xsl:for-each select="$body-end-modules">
