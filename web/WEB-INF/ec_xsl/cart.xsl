@@ -17,7 +17,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Список товаров</h1>
+		<h1 class="page-title">Корзина</h1>
 
 		<div class="cart-container">
 			<xsl:choose>
@@ -27,6 +27,12 @@
 							<xsl:variable name="p" select="product"/>
 							<xsl:variable name="has_price" select="if ($is_reg_jur) then ($p/price_opt and $p/price_opt != '0') else ($p/price and $p/price != '0')"/>
 							<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num($p/price_opt) div 100 * (100 - $discount)) else f:num($p/price)"/>
+
+							<xsl:variable name="price_old" select="if ($is_reg_jur) then $p/price_opt_old else $p/price_old"/>
+
+							<xsl:variable name="discount_percent" select="f:discount(string($price), $price_old)"/>
+
+
 							<xsl:variable name="price_out" select="if ($price != 0) then concat($price, ' p.') else 'по запросу'"/>
 							<div class="item">
 								<xsl:if test="not($p/product)">
@@ -47,6 +53,11 @@
 									<p>
 										<span>Цена</span>
 										<xsl:value-of select="$price_out"/>
+<!-- UPDATE 10.06/2019 discount label -->
+					<xsl:if test="$discount_percent != ''">
+						<span class="discount" style="color: red; font-weight: bold;">Скидка: <xsl:value-of select="$discount_percent" />%</span>
+					</xsl:if>	
+<!-- END_UPDATE 10.06/2019 discount label -->
 										<xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if>
 									</p>
 								</div>

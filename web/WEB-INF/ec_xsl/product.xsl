@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0"> 
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -77,14 +77,21 @@
 				</div>
 			</div>
 			<div class="product-info">
+				<xsl:variable name="has_price" select="if ($is_reg_jur) then ($p/price_opt and $p/price_opt != '0') else ($p/price and $p/price != '0')"/>
+				<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num($p/price_opt) div 100 * (100 - $discount)) else $p/price"/>
+				<xsl:variable name="price_old" select="if ($is_reg_jur) then $p/price_opt_old else $p/price_old"/>
+				<xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/><xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/>
 				<!-- new html -->
 				<xsl:for-each select="$p/tag">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
 				</xsl:for-each>
+				<!-- UPDATE 10.06/2019 discount label -->
+				<xsl:if test="$discount_percent != ''">
+					<div class="device__tag device__tag_device-page device__tag_discount">Скидка: <xsl:value-of select="$discount_percent" />%</div>
+				</xsl:if>
+				<!-- END_UPDATE 10.06/2019 discount label -->
 
-				<xsl:variable name="has_price" select="if ($is_reg_jur) then ($p/price_opt and $p/price_opt != '0') else ($p/price and $p/price != '0')"/>
-				<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num($p/price_opt) div 100 * (100 - $discount)) else $p/price"/>
-				<xsl:variable name="price_old" select="if ($is_reg_jur) then $p/price_opt_old else $p/price_old"/>
+
 
 				<xsl:if test="not($has_lines)">
 					<div class="device-page__actions">
@@ -92,6 +99,8 @@
 							<div class="device__price device__price_device-page">
 								<xsl:if test="$price_old"><div class="price_old"><span><xsl:value-of select="$price_old"/> руб.</span></div></xsl:if>
 								<div class="price_normal"><xsl:value-of select="if ($price) then $price else '0'"/> руб.</div>
+
+
 							</div>
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
@@ -136,6 +145,7 @@
 					<xsl:variable name="param_names" select="distinct-values($p/line_product/params/param/@name)"/>
 					<xsl:variable name="param_captions" select="distinct-values($p/line_product/params/param/@caption)"/>
 					<xsl:variable name="col_qty" select="count($param_names) + 4"/>
+
 					<div class="multi-device" style="grid-template-columns: repeat({$col_qty}, auto);">
 						<div style="padding-left: 0;">Название</div>
 						<div>Артикул</div>
@@ -147,7 +157,12 @@
 
 						<xsl:for-each select="$p/line_product">
 							<xsl:variable name="lp" select="."/>
-							<xsl:variable name="has_price" select="price and price != '0'"/>
+
+							<xsl:variable name="has_price" select="if($is_reg_jur) then f:num(price_opt) != 0 else f:num(price) != 0"/>
+							<xsl:variable name="price" select="if($is_reg_jur) then price_opt else price"/>
+							<xsl:variable name="price_old" select="if($is_reg_jur) then price_opt_old else price_old"/>
+							<xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/>
+
 							<div class="multi-device__name"><xsl:value-of select="name" /></div>
 							<div class="multi-device__name"><xsl:value-of select="vendor_code" /></div>
 							<xsl:for-each select="$param_names">
@@ -155,8 +170,13 @@
 							</xsl:for-each>
 							<div class="multi-device__price">
 								<xsl:if test="$has_price">
-									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="price_old"/> руб.</div></xsl:if>
-									<div class="multi-device__price_new"><xsl:value-of select="if (price) then price else '0'"/></div>
+									<xsl:if test="$price_old"><div class="multi-device__price_old"><xsl:value-of select="$price_old"/> руб.</div></xsl:if>
+									<div class="multi-device__price_new"><xsl:value-of select="if ($price) then $price else '0'"/></div>
+<!-- UPDATE 10.06/2019 discount label -->
+									<xsl:if test="$discount_percent != ''">
+										<span class="discount" style="color: red; font-weight: bold;">Скидка: <xsl:value-of select="$discount_percent" />%</span>
+									</xsl:if>
+<!-- END_UPDATE 10.06/2019 discount label -->
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<div class="multi-device__price_new">по запросу</div>
@@ -231,7 +251,7 @@
 											<p><xsl:value-of select="@caption"/></p>
 										</td>
 										<td>
-											<p><xsl:value-of select="."/></p>
+											<p><xsl:value-of select="."/><xsl:text> </xsl:text><xsl:value-of select="@description"/></p>
 										</td>
 									</tr>
 								</xsl:for-each>
@@ -258,19 +278,19 @@
 		<xsl:if test="page/analog">
 			<h3>Аналоги</h3>
 			<div class="catalog-items">
-				<xsl:apply-templates select="page/analog" mode="lines"/>
+				<xsl:apply-templates select="page/analog"/>
 			</div>
 		</xsl:if>
 		<xsl:if test="page/similar">
 			<h3>Похожие товары</h3>
 			<div class="catalog-items">
-				<xsl:apply-templates select="page/similar" mode="lines"/>
+				<xsl:apply-templates select="page/similar"/>
 			</div>
 		</xsl:if>
 		<xsl:if test="page/support">
 			<h3>Сопутствующие товары</h3>
 			<div class="catalog-items">
-				<xsl:apply-templates select="page/support" mode="lines"/>
+				<xsl:apply-templates select="page/support"/>
 			</div>
 		</xsl:if>
 		<xsl:call-template name="ACTIONS_MOBILE"/>

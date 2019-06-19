@@ -88,8 +88,9 @@
 			<div class="container">
 				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
 				<form action="{page/search_link}" method="post" class="header__search header__column">
-					<input type="text" class="text-input header__field" placeholder="Поиск по каталогу" name="q" value="{page/variables/q}" autofocus="autofocus" />
+					<input type="text" class="text-input header__field" placeholder="Поиск по каталогу" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
 					<input type="submit" class="button header__button" value="Поиск" />
+					<div id="search-result"></div>
 				</form>
 				<div class="phones">
 					<xsl:value-of select="$common/top" disable-output-escaping="yes"/>
@@ -129,7 +130,8 @@
 				</div>
 				<div class="search-container">
 					<form action="{page/search_link}" method="post">
-						<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
+						<input type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}"/>
+						<div id="search-result"></div>
 					</form>
 				</div>
 			</div>
@@ -400,10 +402,13 @@
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
 
-	<xsl:template match="accessory | set | probe | product | assoc">
+	<xsl:template match="accessory | set | probe | product | assoc | analog | support | similar">
 		<xsl:variable name="has_price" select="if ($is_reg_jur) then (price_opt and price_opt != '0') else (price and price != '0')"/>
 		<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num(price_opt) div 100 * (100 - $discount)) else price"/>
 		<xsl:variable name="price_old" select="if ($is_reg_jur) then price_opt_old else price_old"/>
+
+		<xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/>
+
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device items-catalog__device">
@@ -417,11 +422,20 @@
 			</xsl:if>
 			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
-			<div class="device__article-number">Артикул: <xsl:value-of select="vendor_code"/></div>
+			<div class="device__article-number">
+				Артикул: <xsl:value-of select="vendor_code"/>
+				<!-- UPDATE 10.06/2019 discount label -->
+				<xsl:if test="$discount_percent != ''">
+					&#160;<span class="discount" style="color: red;">-<xsl:value-of select="$discount_percent" />%</span>
+				</xsl:if>
+				<!-- END_UPDATE 10.06/2019 discount label -->
+			</div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
 					<xsl:if test="$price_old"><div class="price_old"><span><xsl:value-of select="$price_old"/> руб.</span></div></xsl:if>
 					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="$price"/> руб.</div>
+
+
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -474,6 +488,9 @@
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num(price_opt) div 100 * (100 - $discount)) else price"/>
 		<xsl:variable name="price_old" select="if ($is_reg_jur) then price_opt_old else price_old"/>
+
+		<xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/>
+
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
@@ -496,6 +513,13 @@
 				<div class="device__price device_row__price">
 					<xsl:if test="$price_old"><div class="price_old"><span><xsl:value-of select="$price_old"/> руб.</span></div></xsl:if>
 					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="$price"/> руб.</div>
+
+<!-- UPDATE 10.06/2019 discount label -->
+					<xsl:if test="$discount_percent != ''">
+						<span class="discount" style="color: #ED1C24; font-size: 12px;">Скидка: <xsl:value-of select="$discount_percent" />%</span>
+					</xsl:if>
+<!-- END_UPDATE 10.06/2019 discount label -->
+
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -610,7 +634,7 @@
 				<xsl:call-template name="LEFT_COLOUMN"/>
 			</div>
 			<!-- LEFT COLOUMN END -->
-			
+
 			<!-- RIGHT COLOUMN BEGIN -->
 			<div class="column-right main-content">
 				<div class="mc-container">
@@ -671,10 +695,12 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css?version=0.3"/>
+				<link rel="stylesheet" href="css/app.css?version=0.4"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
-				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
-				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+				<xsl:if test="page/@name = 'index'">
+					<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+					<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+				</xsl:if>
 				<link rel="stylesheet" href="fotorama/fotorama.css"/>
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 				<script defer="defer" src="js/font_awesome_all.js"/>
@@ -719,7 +745,9 @@
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
-				<script type="text/javascript" src="slick/slick.min.js"></script>
+				<xsl:if test="page/@name = 'index'">
+					<script type="text/javascript" src="slick/slick.min.js"></script>
+				</xsl:if>
 				<script type="text/javascript">
 					$(document).ready(function(){
 						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
@@ -733,6 +761,8 @@
 						var oh = $(".footer").outerHeight();
 						$(".footer-placeholder").height(oh+110);
 						$(".footer").css("margin-top", -1*oh);
+
+						<xsl:if test="page/@name = 'index'">
 						$('.slick-slider').slick({
 							infinite: true,
 							slidesToShow: 4,
@@ -787,10 +817,13 @@
 								}
 							]
 						});
-
+						</xsl:if>
 						//initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
 						//initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
 						initDropDownHeader();
+						$("#q-ipt").keyup(function(){
+							searchAjax(this);
+						});
 					});
 
 					$(window).resize(function(){
@@ -808,6 +841,40 @@
 							$('#' + mi.attr('dd-id')).show();
 						});
 					}
+
+
+					function searchAjax(el){
+						var $el = $(el);
+						<!-- console.log($el); -->
+						var val = $el.val();
+						if(val.length > 2){
+							<xsl:text disable-output-escaping="yes">
+								var $form = $("&lt;form&gt;",
+							</xsl:text>
+								{'method' : 'post', 'action' : '<xsl:value-of select="page/search_ajax_link"/>', 'id' : 'tmp-form'}
+							);
+							<xsl:text disable-output-escaping="yes">
+								var $ipt2 = $("&lt;input&gt;",
+							</xsl:text>
+							 {'type' : 'text', 'value': val, 'name' : 'q'});
+
+							 $ipt2.val(val);
+
+							$form.append($ipt2);
+							$('body').append($form);
+							postForm('tmp-form', 'search-result');
+							$('#tmp-form').remove();
+							$('#search-result').show();
+						}
+					}
+
+					$(document).on('click', 'body', function(e){
+						var $trg = $(e.target);
+						if($trg.closest('#search-result').length > 0 || $trg.is('#search-result') || $trg.is('input')) return;
+						$('#search-result').hide();
+						$('#search-result').html('');
+					});
+
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
 				<xsl:for-each select="$body-end-modules">

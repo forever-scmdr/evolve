@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>                                            
+ <?xml version="1.0" encoding="UTF-8"?>        
 <site>
 
 
@@ -39,7 +39,7 @@
 				</link>
 			</tree>
 		</single>
- 
+
 		<list item="news" id="news" cacheable="true">
 			<link name="show_page" target="news" type="exclusive">
 				<var name="sel" ref="news" style="key"/>
@@ -59,6 +59,7 @@
 		<link name="cart_ajax_link" target="cart_ajax"/>
 		<link name="cart_link" target="cart"/>
 		<link name="search_link" target="search"/>
+		<link name="search_ajax_link" target="search_ajax"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="fav_link" target="fav"/>
@@ -195,7 +196,7 @@
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
 			<link name="canonical_link" target="section" type="exclusive">
-				<var name="sec" ref="cur_sec" style="key"/>
+				<var name="sec" item="cur_sec" style="key"/>
 			</link>
 			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" transit="true" assoc="* catalog_link">
@@ -395,6 +396,30 @@
 
 
 
+	<page name="search_ajax" template="search_ajax">
+		<request>
+			<var name="q"/>
+			<var name="view" value="table" scope="cookie"/>
+			<var name="minqty" value="" scope="cookie"/>
+		</request>
+		<list item="product" id="prod">
+			<filter>
+				<fulltext limit="5" compare="EVERY">
+					<var var="q"/>
+				</fulltext>
+				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+		</list>
+		<link name="show_all" target="search">
+			<var name="q" var="q"/>
+			<!-- <var name="view" value="table" scope="cookie"/>
+			<var name="minqty" value="" scope="cookie"/> -->
+		</link>
+	</page>
+
 	<page name="search" template="search">
 		<request>
 			<var name="q"/>
@@ -449,12 +474,13 @@
 
 
 	<page name="product" template="product" cacheable="true" cache-vars="prod $username">
+	<!-- <page name="product" template="product" cacheable="true" cache-vars="prod $username"> -->
 		<request>
 			<var name="prod" style="keypath"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
 			<link name="canonical_link" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
+				<var name="prod" item="prod" style="key"/>
 			</link>
 			<single item="seo" assoc="seo"/>
 			<single item="params"/>

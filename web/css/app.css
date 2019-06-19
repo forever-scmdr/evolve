@@ -6361,7 +6361,7 @@ img {
 	flex-basis:100%;
 }
 .catalog-items.info .catalog-item {
-	background-color: #fff;	
+	background-color: #fff;
 }
 .catalog-items.info .catalog-item .image-container {
 	background-size:cover;
@@ -6844,13 +6844,18 @@ ul.icons li>*:first-child {
 	}
 	.cart-container .item {
 		/*flex-wrap:wrap;*/
-		border:1px solid #ccc;
+		/*border:1px solid #ccc;
 		padding:1rem;
 		border-radius:.4rem;
-		background-color: #fff;
+		background-color: #fff;*/
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 16px;
 	}
 	.cart-container .item .image-container {
-		flex-basis:20%;
+		/*flex-basis:20%;*/
+		grid-row-start: 1;
+		grid-row-end: 5;
 	}
 	/*.cart-container .item .title{flex-basis: 80%;}*/
 	.total {
@@ -6973,7 +6978,7 @@ body {
 }
 .orders-list .order a.button {
 	display:inline-block;
-	background-color:#5A422A;
+	background-color:#333;
 	color:#fff;
 	padding:.5rem 1rem;
 	border-radius:.4rem;
@@ -6988,7 +6993,7 @@ body {
 }
 .orders-list .order.active {
 	padding:1.5rem;
-	border:2px solid #2060A5;
+	border:2px solid #333;
 }
 .orders-list .order.active .short-info>div:last-child {
 	display:flex;
@@ -7542,10 +7547,11 @@ td .catalog-item {
 	top:8px;
 	left:8px;
 	background-color:#ED1C24;
+	border: 1px solid #ED1C24;
 	color:#ffffff;
 	padding:4px 8px;
 	font-size:14px;
-	border-bottom-right-radius:2px;
+	border-radius: 2px;
 }
 .device__actions {
 	display:flex;
@@ -7750,6 +7756,7 @@ td .catalog-item {
 	display:flex;
 	flex-grow: .7;
 	align-items: center;
+	position: relative;
 }
 .header__field,.header__button {
 	height:36px;
@@ -8033,13 +8040,35 @@ td .catalog-item {
 }
 /* block title end*/
 /* special items */
-.special-items__devices {
-	display:flex;
-	margin-left: -12px;
-	margin-right: -12px;
-}
 .special-items__devices .items-catalog__device {
 	margin: 12px;
+}
+.special-items__devices .device__article-number,
+.special-items__devices .device__order {
+	display: none;
+}
+.special-items__devices {
+	margin-left: -8px;
+	margin-right: -8px;
+}
+.device_special > div:first-child {
+	display: flex;
+	border: 1px solid #f2f2f2;
+	padding: 8px;
+}
+.device_special .device__image {
+	border: none;
+}
+.slick-slide {
+	margin: 0 8px;
+}
+.device_special {
+	position: relative;
+}
+.device_special .device__price {
+	justify-content: flex-start;
+	font-size: 14px;
+	font-weight: normal;
 }
 /* special items end*/
 /* benefits */
@@ -8582,16 +8611,16 @@ td .catalog-item {
 	object-fit: cover;
 	align-self: stretch;
   }
-  
+
   .news__item > * {
 	margin-bottom: 8px;
   }
-  
+
   .news__image-container {
 	display: block;
 	height: 150px;
   }
-  
+
   @media (max-width: 768px) {
 	.news .wrap {
 	  flex-wrap: wrap;
@@ -8641,6 +8670,35 @@ td .catalog-item {
 	margin-right: 8px;
 	display: inline-block;
 	background-color: #f2f2f2;
+}
+@media (max-width: 768px) {
+	.catalog-index__cell:nth-child(3) {
+		grid-column: span 2;
+	}
+	.catalog-index__cell:nth-child(3) .catalog-index__group {
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-rows: repeat(9, 26px);
+	}
+	.catalog-index__cell:nth-child(4) {
+		grid-column: span 2;
+	}
+}
+@media (max-width: 425px) {
+	.catalog-index__cell {
+		grid-column: span 4 !important;
+	}
+	.hero {
+		display: none;
+	}
+	.block-title {
+		font-size: 18px;
+	}
+	.block-title::before {
+		top: 3px;
+	}
+	.catalog-index__cell:nth-child(4) {
+		padding-top: 0;
+	}
 }
 /* catalog-index end*/
 
@@ -8772,4 +8830,40 @@ table.parameters td:last-child {
 }
 .discount-total {
 	margin-bottom: 24px;
+}
+
+.form-group label {
+	font-size: 14px;
+}
+@media (max-width: 425px) {
+	.cart-form {
+		grid-template-columns: 1fr;
+	}
+}
+
+
+#search-result {
+	position: absolute;
+	padding: 16px;
+	box-shadow: grey 0px 4px 10px;
+	top: 40px;
+	z-index: 1;
+	background: white;
+	display: none;
+	width: 100%;
+}
+#search-result ul {
+	list-style: none;
+	padding: 0;
+	margin-bottom: 24px;
+}
+#search-result li {
+	font-size: 13px;
+	margin-bottom: 16px;
+	line-height: 1;
+}
+.device__tag_discount {
+	background-color: #fff;
+	border: 1px solid #ED1C24;
+	color: #ED1C24;
 }
