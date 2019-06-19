@@ -38,7 +38,7 @@
 					<part><xsl:value-of select="name"/></part>
 					<note><xsl:value-of select="type"/><xsl:text> </xsl:text><xsl:value-of select="name_extra"/></note>
 					<img><xsl:value-of select="concat('http://alfacomponent.com/', @path, main_img)"/></img>
-					<url>http://alfacomponent.must.by<xsl:value-of select="show_product"/></url>
+					<url>http://alfacomponent.com<xsl:value-of select="show_product"/></url>
 					<sku><xsl:value-of select="code"/></sku>
 					<cur>USD</cur>
 					<xsl:if test="price_USD and f:num(price_USD) &gt; 0.001">
