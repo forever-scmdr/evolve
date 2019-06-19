@@ -172,6 +172,9 @@
 									<li class="visible" title="Разобрать прайс-листы определенных производителей">
 										<a href="integrate_excel/?action=start">Интеграция Складов</a>
 									</li>
+									<li class="visible" title="Разобрать прайс-лист ferrite.ru">
+										<a href="get_ferrite/?action=start">Интеграция ferrite.ru</a>
+									</li>
 									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 										<a href="generate_sitemap">Обновить карту сайта</a>
 									</li>

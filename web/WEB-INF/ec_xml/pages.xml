@@ -386,6 +386,10 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="translit"/>
 			</link>
+			<ancestor item="plain_section"/>
+		</list>
+		<list item="price_catalog" cacheable="true">
+			<list item="price_interval"/>
 		</list>
 	</page>
 
