@@ -20,16 +20,15 @@
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="lib" level="project" />
-    <orderEntry type="library" exported="" name="Tomcat 7.0.41" level="application_server_libraries" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.5.41" level="application_server_libraries" />
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/Apache Software Foundation/Tomcat 7.0/lib/catalina.jar!/" />
+          <root url="jar://C:/Program Files/Apache Software Foundation/Tomcat 8.5/lib/catalina.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="lib" level="application" />
   </component>
 </module>
