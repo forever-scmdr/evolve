@@ -21,22 +21,24 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
+							<xsl:variable name="min_qty" select="if ($p/min_qty) then f:num($p/min_qty) else 1"/>
 							<xsl:variable name="price" select="if (f:num(f:exchange($p, 'price')) != 0) then f:exchange_cur($p, 'price') else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num(f:exchange(current(), 'sum')) != 0) then f:exchange_cur(current(), 'sum') else ''"/>
 							<div class="item">
+								<!--
 								<xsl:if test="not($p/plain_section)">
 									<a href="{$p/show_product}" class="image-container">
-										
 										<img src="{if($p/main_pic != '') then concat($p/@path, $p/main_pic) else 'img/no_image.png'}" alt="{$p/name}"/>
 									</a>
 									<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
 								</xsl:if>
 								<xsl:if test="$p/plain_section">
+								-->
 									<span class="image-container">
 										<img src="{if($p/main_pic != '') then concat($p/@path, $p/main_pic) else 'img/no_image.png'}" alt="{$p/name}"/>
 									</span>
 									<span class="title"><xsl:value-of select="$p/name"/></span>
-								</xsl:if>
+								<!--</xsl:if>-->
 								<div class="price one">
 									<p>
 										<span>Цена</span>
@@ -44,8 +46,12 @@
 									</p>
 								</div>
 								<div class="quantity">
+									<span>Мин. заказ</span>
+									<xsl:value-of select="$min_qty"/>
+								</div>
+								<div class="quantity">
 									<span>Кол-во</span>
-									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" min="0"/>
+									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" min="0" step="{$min_qty}"/>
 								</div>
 								<div class="quantity">
 									<span>Сумма позиции</span>

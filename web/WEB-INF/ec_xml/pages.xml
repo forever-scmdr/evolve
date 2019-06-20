@@ -379,7 +379,8 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext name="name" limit="50" compare="EVERY" type="term wildcard">
+				<!--<fulltext name="name" limit="50" compare="EVERY" type="term wildcard">-->
+				<fulltext name="name" limit="200" threshold="0.1" type="prefix">
 					<var var="q"/>
 				</fulltext>
 			</filter>

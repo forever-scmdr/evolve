@@ -142,7 +142,9 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 					regularQuantity += quantity;
 				}
 				// Умножить сумму на коэффициент, зависящий от суммы (количества заказанных товаров)
-				BigDecimal quotient = getTotalQuotient(productSum, section.getStringValue(Plain_section.NAME));
+				BigDecimal quotient = new BigDecimal(1);
+				if (section != null)
+					quotient = getTotalQuotient(productSum, section.getStringValue(Plain_section.NAME));
 				productSum = productSum.multiply(quotient).setScale(2, BigDecimal.ROUND_CEILING);
 				for (String currencyCode : currencyProductSums.keySet()) {
 					currencyProductSums.put(currencyCode, currencyProductSums.get(currencyCode).multiply(quotient).setScale(2, BigDecimal.ROUND_CEILING));

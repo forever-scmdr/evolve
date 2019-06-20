@@ -113,11 +113,11 @@
 			<td id="cart_search_{@id}">
 				<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
 					<xsl:if test="$has_price">
-						<input type="number" name="qty" value="{$min_qty}" min="0"/>
+						<input type="number" name="qty" value="{$min_qty}" min="0" step="{$min_qty}"/>
 						<input type="submit" value="Заказать"/>
 					</xsl:if>
 					<xsl:if test="not($has_price)">
-						<input type="number" name="qty" value="{$min_qty}" min="0"/>
+						<input type="number" name="qty" value="{$min_qty}" min="0" step="{$min_qty}"/>
 						<input type="submit" value="Запросить цену"/>
 					</xsl:if>
 				</form>
