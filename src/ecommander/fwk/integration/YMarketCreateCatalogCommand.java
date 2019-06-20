@@ -110,7 +110,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 
 		Item section = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, sectionCode);
 		int page = 1;
-		ItemQuery q = new ItemQuery(PRODUCT_ITEM);
+		ItemQuery q = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 		q.setParentId(section.getId(), false);
 		List<Item> prods;
 		info.setProcessed(0);
