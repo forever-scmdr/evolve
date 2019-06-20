@@ -114,6 +114,15 @@ public abstract class BasicCartManageCommand extends Command {
 		final String TRUE = "true";
 		final String FALSE = "false";
 		loadCart();
+		// Была ли использована скидка
+		if(discountUsed()){
+			BigDecimal simpleSum = cart.getDecimalValue("simple_sum");
+			if(simpleSum != null || simpleSum.compareTo(BigDecimal.ZERO) != 0){
+				recalculateCart();
+				return getResult("discount_used");
+			}
+		}
+
 		if (StringUtils.equalsIgnoreCase(cart.getStringExtra(IN_PROGRESS), TRUE)) {
 			return getResult("confirm");
 		}

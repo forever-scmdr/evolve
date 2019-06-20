@@ -49,6 +49,14 @@
 									</a>
 								</xsl:if>
 								<div class="price one">
+									<xsl:if test="$weight != 0">
+										<p>
+											<span>Вес</span>
+											<xsl:value-of select="$weight * f:num(qty)" /> кг
+										</p>
+									</xsl:if>
+								</div>
+								<div class="price one">
 									<p>
 										<span>Цена</span>
 										<xsl:value-of select="$price"/>
@@ -57,17 +65,17 @@
 								<div class="quantity">
 									<span>Кол-во</span>
 									<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
-									<xsl:if test="$weight != 0">
-										<p>вес: <xsl:value-of select="$weight * f:num(qty)" /> кг</p>
-									</xsl:if>
 									<!--<xsl:value-of select="$p2/params/@id" />-->
 								</div>
 								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
 								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
 							</div>
 						</xsl:for-each>
+						<p><a href="dostavka#calculator">Узнать стоимость доставки</a></p>
 
 						<div class="total">
+							<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
+							<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 							<xsl:if test="page/cart/sum != '0'">
 								<p>Итого:
 									<xsl:if test="page/cart/simple_sum">
@@ -77,9 +85,6 @@
 								</p>
 								<p class="{if($no_weight) then 'no-data' else ''}">Общий вес: <span><xsl:value-of select="format-number(sum(for $s in tokenize($weights, ',') return f:num($s)),'#0.00')"/></span> кг.</p>
 							</xsl:if>
-
-							<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
-							<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 						</div>
 						<xsl:if test="page/cart/simple_sum">
 							<div class="total">

@@ -795,6 +795,7 @@
             <result name="confirm" type="redirect"/>
             <result name="validation_failed" type="redirect"/>
             <result name="email_send_failed" type="redirect"/>
+			<result name="discount_used" type="redirect"/>
         </command>
     </page>
 
