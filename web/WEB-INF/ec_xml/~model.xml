@@ -302,6 +302,7 @@
 		<parameter name="order_num" type="string" caption="Номер заказа"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="discount" type="double" caption="Скидка"/>
 		<parameter name="simple_sum" type="currency" caption="Сумма без скидки"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
 		<child item="bought"/>

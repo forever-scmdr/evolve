@@ -22,6 +22,8 @@
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
 	<xsl:variable name="extra_xml" select="parse-xml(concat('&lt;extra&gt;', $p/extra_xml, '&lt;/extra&gt;'))/extra"/>
+	<xsl:variable name="price" select="if($discount_time) then format-number(f:num($p/price)*$discount, '#0.00') else $p/price"/>
+	<xsl:variable name="price_old" select="if($discount_time) then $p/price else $p/price_old"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -104,8 +106,8 @@
 					<div class="device-page__actions">
 						<xsl:if test="$has_price">
 							<div class="device__price device__price_device-page">
-								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$p/price_old"/> руб.</span></div></xsl:if>
-								<div class="price_normal"><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</div>
+								<xsl:if test="f:num($price_old) != 0"><div class="price_old"><span><xsl:value-of select="$price_old"/> р.</span></div></xsl:if>
+								<div class="price_normal"><xsl:value-of select="if ($price) then $price else '0'"/> р.</div>
 							</div>
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">

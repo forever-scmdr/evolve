@@ -520,7 +520,7 @@
 	<xsl:template match="accessory | set | probe | product | assoc">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="price" select="if($discount_time) then format-number(f:num(price)*$discount, '#0.00') else price"/>
-		<xsl:variable name="price_old" select="if($discount_time) then price else price_old"/>
+		<xsl:variable name="price_old" select="if($discount_time) then format-number(f:num(price), '#0.00') else format-number(f:num(price_old), '#0.00')"/>
 
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
@@ -538,8 +538,8 @@
 			<div class="device__article-number">Артикул: <xsl:value-of select="code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
-					<xsl:if test="price_old"><div class="$price_old"><span><xsl:value-of select="$price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="$price"/> руб.</div>
+					<xsl:if test="f:num($price_old) != 0"><div class="price_old"><span><xsl:value-of select="$price_old"/></span></div></xsl:if>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="$price"/> р.</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -613,7 +613,7 @@
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 
 		<xsl:variable name="price" select="if($discount_time) then format-number(f:num(price)*$discount, '#0.00') else price"/>
-		<xsl:variable name="price_old" select="if($discount_time) then price else price_old"/>
+		<xsl:variable name="price_old" select="if($discount_time) then format-number(f:num(price), '#0.00') else format-number(f:num(price_old), '#0.00')"/>
 
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
@@ -648,8 +648,8 @@
 			
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="$price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="$price"/> руб.</div>
+					<xsl:if test="f:num($price_old) != 0"><div class="price_old"><span><xsl:value-of select="$price_old"/></span></div></xsl:if>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="$price"/> р.</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">

@@ -4,7 +4,8 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="'Список товаров'" />
-	<xsl:variable name="boughts" select="page/cart/bought"/>
+	<xsl:variable name="cart" select="page/cart"/>
+	<xsl:variable name="boughts" select="$cart/bought"/>
 	<xsl:variable name="prods" select="$boughts/product"/>
 	<xsl:variable name="no_weight" select="//page/product/params[not(param[starts-with(lower-case(@caption), 'вес')])] or //page/product/params/param[starts-with(lower-case(@caption), 'вес')] = ''"/>
 
@@ -30,7 +31,7 @@
 
 							<xsl:variable name="weight" select="f:num($p2/params/param[starts-with(lower-case(@caption), 'вес')])"/>
 
-							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal($p/price), ' p.') else 'по запросу'"/>
+							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(string(f:num($p/price) * f:num($cart/discount))), ' р.') else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' p.') else ''"/>
 							<div class="item">
 								<xsl:if test="not($p/product)">
@@ -67,12 +68,13 @@
 						</xsl:for-each>
 
 						<div class="total">
-							<!--<xsl:if test="page/cart/simple_sum">-->
-								<!--<span style="text-decoration: line-through; padding-right: 10px; color: #ccc;"><xsl:value-of select="page/cart/simple_sum"/> р.</span>-->
-							<!--</xsl:if>-->
-
 							<xsl:if test="page/cart/sum != '0'">
-								<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
+								<p>Итого:
+									<xsl:if test="page/cart/simple_sum">
+										<span style="text-decoration: line-through; padding-right: 10px; color: #ccc;"><xsl:value-of select="page/cart/simple_sum"/> р.</span>
+									</xsl:if>
+									<xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.
+								</p>
 								<p class="{if($no_weight) then 'no-data' else ''}">Общий вес: <span><xsl:value-of select="format-number(sum(for $s in tokenize($weights, ',') return f:num($s)),'#0.00')"/></span> кг.</p>
 							</xsl:if>
 

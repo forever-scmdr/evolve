@@ -512,6 +512,7 @@ public abstract class BasicCartManageCommand extends Command {
 	private BigDecimal applyDiscount(BigDecimal sum) throws Exception{
 		if(discountUsed()){
 			cart.clearValue("simple_sum");
+			cart.setValue("discount", 1d);
 			getSessionMapper().saveTemporaryItem(cart);
 			return sum;
 		}
@@ -527,6 +528,7 @@ public abstract class BasicCartManageCommand extends Command {
 		long discountExpires = startTime + fiveMinutes + duration;
 		if(StringUtils.isBlank(start) || now - startTime > hour){
 			cart.clearValue("simple_sum");
+			cart.setValue("discount", 1d);
 			getSessionMapper().saveTemporaryItem(cart);
 			return sum;
 		}
@@ -535,10 +537,12 @@ public abstract class BasicCartManageCommand extends Command {
 		if(d > fiveMinutes && now < discountExpires){
 			double discount = 1d - common.getDoubleValue("discount",0d);
 			cart.setValue("simple_sum", sum);
+			cart.setValue("discount", discount);
 			sum = sum.multiply(new BigDecimal(discount));
 
 		}else{
 			cart.clearValue("simple_sum");
+			cart.setValue("discount", 1d);
 			getSessionMapper().saveTemporaryItem(cart);
 		}
 		return sum;
