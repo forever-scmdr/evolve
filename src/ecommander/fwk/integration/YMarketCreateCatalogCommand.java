@@ -77,6 +77,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		for (File xml : xmls) {
 			parser.parse(xml, prodHandler);
 		}
+		postProcessBookinistic("16546");
 		//executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(20, null).noFulltextIndex());
 
 		info.pushLog("Создание товаров завершено");
@@ -88,6 +89,11 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.pushLog("Индексация завершена");
 		info.pushLog("Интеграция успешно завершена");
 		info.setOperation("Интеграция завершена");
+	}
+
+	private void postProcessBookinistic(String sectionCode) {
+		setOperation("Повторное расставление цен на букинистические товары");
+
 	}
 
 
