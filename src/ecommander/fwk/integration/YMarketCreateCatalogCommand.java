@@ -7,6 +7,8 @@ import ecommander.fwk.Strings;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,8 +16,11 @@ import org.apache.commons.lang3.StringUtils;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Создание каталога продукции по файлу Yandex Market
@@ -36,7 +41,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 			info.addError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
 			return;
 		}
-		Collection<File> xmls = FileUtils.listFiles(integrationDir, new String[] {"xml"}, true);
+		Collection<File> xmls = FileUtils.listFiles(integrationDir, new String[]{"xml"}, true);
 		if (xmls.size() == 0) {
 			info.addError("Не найдены XML файлы в директории " + INTEGRATION_DIR, "init");
 			return;
@@ -91,10 +96,63 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.setOperation("Интеграция завершена");
 	}
 
-	private void postProcessBookinistic(String sectionCode) {
+	private void postProcessBookinistic(String sectionCode) throws Exception {
 		setOperation("Повторное расставление цен на букинистические товары");
 
+		Item course = new ItemQuery("course").loadFirstItem();
+		BigDecimal level_1 = course.getDecimalValue("level_1");
+		BigDecimal quotient_1 = course.getDecimalValue("quotient_1");
+		BigDecimal level_2 = course.getDecimalValue("level_2");
+		BigDecimal quotient_2 = course.getDecimalValue("quotient_2");
+		BigDecimal quotient_3 = course.getDecimalValue("quotient_3");
+		BigDecimal quotient_buk = course.getDecimalValue("quotient_bukinistic", BigDecimal.ZERO);
+
+
+		Item section = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, sectionCode);
+		int page = 1;
+		ItemQuery q = new ItemQuery(PRODUCT_ITEM);
+		q.setParentId(section.getId(), false);
+		List<Item> prods;
+		info.setProcessed(0);
+		while ((prods = q.setLimit(1000, page).loadItems()).size() > 0) {
+			for (Item prod : prods) {
+				info.setCurrentJob("товар " + prod.getStringValue(NAME_PARAM));
+				BigDecimal price = prod.getDecimalValue(PRICE_ORIGINAL_PARAM);
+				BigDecimal priceOld = prod.getDecimalValue("price_old_original");
+				if (price != null) {
+					if (price.compareTo(level_1) < 0) {
+						price = price.multiply(quotient_1);
+					} else if (quotient_buk.compareTo(BigDecimal.ZERO) != 0)
+						price = price.multiply(quotient_buk);
+					else if (price.compareTo(level_2) < 0) {
+						price = price.multiply(quotient_2);
+					} else {
+						price = price.multiply(quotient_3);
+					}
+					prod.setValue(PRICE_PARAM, price.setScale(1, RoundingMode.CEILING));
+				}
+				if(priceOld != null){
+					if (price.compareTo(level_1) < 0) {
+						priceOld =   priceOld.multiply(quotient_1);
+					}
+					else if (quotient_buk.compareTo(BigDecimal.ZERO) != 0) priceOld =  priceOld.multiply(quotient_buk);
+					else if (price.compareTo(level_2) < 0) {
+						priceOld =  priceOld.multiply(quotient_2);
+					}
+					else {
+						priceOld = priceOld.multiply(quotient_3);
+					}
+					prod.setValue(PRICE_OLD_PARAM, priceOld.setScale(1, RoundingMode.CEILING));
+				}
+				prod.removeEqualValue("tag", "Букинистическое издание");
+				prod.setValue("tag", "Букинистика");
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(prod).noTriggerExtra().ignoreUser().noFulltextIndex().ignoreFileErrors());
+				info.increaseProcessed();
+			}
+			page++;
+		}
 	}
+
 
 
 	private static boolean removeDoctype(File file) throws FileNotFoundException {
@@ -123,7 +181,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		     BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Strings.SYSTEM_ENCODING))) {
 			String currentLine;
 			boolean doctypeNotRemoved = true;
-			while((currentLine = reader.readLine()) != null) {
+			while ((currentLine = reader.readLine()) != null) {
 				if (doctypeNotRemoved && StringUtils.contains(currentLine, DOCTYPE)) {
 					doctypeNotRemoved = false;
 					continue;
