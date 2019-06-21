@@ -1,25 +1,17 @@
 package lunacrawler.fwk;
 
-import java.io.*;
-import java.net.URI;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.nio.file.*;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
+import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
+import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import edu.uci.ics.crawler4j.crawler.CrawlController;
+import edu.uci.ics.crawler4j.crawler.Page;
+import edu.uci.ics.crawler4j.fetcher.PageFetcher;
+import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
+import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lunacrawler.UrlModifier;
+import net.sf.saxon.TransformerFactoryImpl;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -29,15 +21,17 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
-import ecommander.controllers.AppContext;
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
-import edu.uci.ics.crawler4j.crawler.CrawlController;
-import edu.uci.ics.crawler4j.crawler.Page;
-import edu.uci.ics.crawler4j.fetcher.PageFetcher;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
-import edu.uci.ics.crawler4j.url.URLCanonicalizer;
-import net.sf.saxon.TransformerFactoryImpl;
+import javax.xml.transform.*;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
+import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.nio.file.*;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * В стилях самостоятельные сущности должны содержать атрибут ID. По этому ID они будут идентифицироваться на разных страницах
  * одного сайта. Поэтому ID должен получаться как часть URL, ведущего на страницу
@@ -202,7 +196,7 @@ public class CrawlerController {
 	private CrawlController CONTROLLER = null;
 	private LinkedList<String> proxies = null;
 	private LinkedHashMap<String, String> urlStyles = null;
-	private LinkedHashSet<String> seedUrls = null;
+	private 		LinkedHashSet<String> seedUrls = null;
 	private int urlsPerProxy = 0;
 	private int numberOfCrawlers = 1;
 	private int maxPages = -1;
@@ -283,7 +277,7 @@ public class CrawlerController {
 	}
 
 
-	private CrawlerController() throws Exception {
+	CrawlerController() throws Exception {
 
 		info = new IntegrateBase.Info();
 
@@ -363,10 +357,10 @@ public class CrawlerController {
 	 * @param crawlerClass
 	 * @throws Exception
 	 */
-	private void start(Class<? extends BasicCrawler> crawlerClass,  Mode mode) throws Exception {
+	private void start(Class<? extends BasicCrawler> crawlerClass,  Mode mode, boolean... noDepth) throws Exception {
 		info.pushLog("Current mode : {}", mode);
 		if (mode == Mode.get || mode == Mode.all) {
-			initAndStartCrawler(crawlerClass);
+			initAndStartCrawler(crawlerClass, noDepth);
 		}
 		if (mode == Mode.transform || mode == Mode.all) {
 			transformSource();
@@ -385,13 +379,8 @@ public class CrawlerController {
 	private void terminateInt() {
 		CONTROLLER.shutdown();
 	}
-	/**
-	 * Создать объект crawler4j и начать скачку страниц
-	 * @param crawlerClass
-	 * @throws Exception
-	 */
-	private void initAndStartCrawler(Class<? extends BasicCrawler> crawlerClass) throws Exception {
-		// ������������ crawler4j
+
+	private void setConfig(){
 		int politeness = Integer.parseInt(AppContext.getProperty(POLITENESS, "none"));
 		String storageDir = AppContext.getRealPath(AppContext.getProperty(STORAGE_DIR, ""));
 		CONFIG = new CrawlConfig();
@@ -402,7 +391,26 @@ public class CrawlerController {
 		CONFIG.setMaxPagesToFetch(maxPages);
 		CONFIG.setMaxDepthOfCrawling(maxDepth);
 		CONFIG.setUserAgentString("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
+	}
 
+	private void setConfig(int maxDepth, int maxPages){
+		setConfig();
+		CONFIG.setMaxPagesToFetch(maxPages);
+		CONFIG.setMaxDepthOfCrawling(maxDepth);
+	}
+
+	/**
+	 * Создать объект crawler4j и начать скачку страниц
+	 * @param crawlerClass
+	 * @throws Exception
+	 */
+	private void initAndStartCrawler(Class<? extends BasicCrawler> crawlerClass, boolean... noDepth) throws Exception {
+		boolean nd = noDepth != null && noDepth[0];
+		if(nd){
+			setConfig(0, -1);
+		}else {
+			setConfig();
+		}
 		/*
 		 * Instantiate the controller for this crawl.
 		 */
@@ -426,12 +434,12 @@ public class CrawlerController {
 	 * @param crawlerClass
 	 * @throws Exception
 	 */
-	public static void startCrawling(Class<? extends BasicCrawler> crawlerClass, IntegrateBase.Info info, Mode mode,
+	public static void startCrawling(Class<? extends BasicCrawler> crawlerClass, IntegrateBase.Info info, Mode mode, boolean noDepth,
 	                                 UrlModifier... modifier) throws Exception {
 		getSingleton(true).info = info;
 		if (modifier != null && modifier.length > 0)
 			getSingleton().urlModifier = modifier[0];
-		getSingleton().start(crawlerClass, mode);
+		getSingleton().start(crawlerClass, mode, noDepth);
 	}
 	
 	public static void terminate() {

@@ -22,7 +22,8 @@ public class CrawlCommand extends IntegrateBase implements UrlModifier {
 	@Override
 	protected void integrate() throws Exception {
 		String mode = getVarSingleValue("job");
-		XSLTransformCrawler.startCrawling(info, mode, this);
+		boolean noDepth = "yes".equalsIgnoreCase(getVarSingleValue("no_detph"));
+		XSLTransformCrawler.startCrawling(info, mode, noDepth, this);
 	}
 
 	@Override

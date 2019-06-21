@@ -59,9 +59,9 @@ public class XSLTransformCrawler extends BasicCrawler {
 		return null;
 	}
 
-	public static void startCrawling(IntegrateBase.Info info, String mode, UrlModifier... modifier) {
+	public static void startCrawling(IntegrateBase.Info info, String mode, boolean noDepth,UrlModifier... modifier) {
 		try {
-			CrawlerController.startCrawling(XSLTransformCrawler.class, info, Mode.valueOf(mode), modifier);
+			CrawlerController.startCrawling(XSLTransformCrawler.class, info, Mode.valueOf(mode), noDepth, modifier);
 		} catch (Exception e) {
 			info.pushLog("Some error", "<pre>" + ExceptionUtils.getStackTrace(e) + "</pre>");
 		}
@@ -73,7 +73,7 @@ public class XSLTransformCrawler extends BasicCrawler {
 	
 	public static void main(String[] args) {
 		try {
-			CrawlerController.startCrawling(XSLTransformCrawler.class, null, null);
+			CrawlerController.startCrawling(XSLTransformCrawler.class, null, null, false);
 		} catch (Exception e) {
 			//info.pushLog("Some error", e);
 		}
