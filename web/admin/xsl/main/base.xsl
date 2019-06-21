@@ -190,6 +190,9 @@
 									<li class="visible" title="Удалить товары из списка">
 										<a href="delete_codes" target="_blank">Удалить товары из списка</a>
 									</li>
+									<li class="visible" title="Скрыть товары из списка">
+										<a href="delete_codes?action=hide" target="_blank">Скрыть товары из списка</a>
+									</li>
 									<!--<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">-->
 										<!--<a href="admin_domains_initialize.domain">-->
 											<!--Управление доменами-->

@@ -85,29 +85,42 @@
 								<th></th>
 							</xsl:if>
 						</tr>
-						<!--<xsl:if test="$multiple">-->
-							<!--<xsl:for-each select="$queries">-->
-								<!--<xsl:variable name="q" select="."/>-->
-								<!--<xsl:variable name="nn" select="$numbers[starts-with(., concat($q, ':'))][1]"/>-->
-								<!--<xsl:variable name="n" select="f:num(tokenize($nn, ':')[last()])"/>-->
-								<!--<xsl:variable name="p" select="position()"/>-->
- 								<!--<xsl:variable name="query_products" select="$products[item_own_extras/query = $q]"/>-->
-								<!--<xsl:apply-templates select="$query_products[1]">-->
-									<!--<xsl:with-param name="number" select="$n"/>-->
-									<!--<xsl:with-param name="position" select="$p"/>-->
-								<!--</xsl:apply-templates>-->
-								<!--<xsl:apply-templates select="$query_products[position() &gt; 1]">-->
-									<!--<xsl:with-param name="hidden" select="'hidden'"/>-->
-									<!--<xsl:with-param name="number" select="$n"/>-->
-									<!--<xsl:with-param name="position" select="$p"/>-->
- 								<!--</xsl:apply-templates>-->
-							<!--</xsl:for-each>-->
-						<!--</xsl:if>-->
-						<!--<xsl:if test="not($multiple)">-->
-							<!--<xsl:for-each select="$products">-->
-								<!--<xsl:apply-templates select="."/>-->
-							<!--</xsl:for-each>-->
-						<!--</xsl:if>-->
+						<xsl:if test="$multiple">
+							<xsl:for-each select="$queries">
+								<xsl:variable name="q" select="."/>
+								<xsl:variable name="nn" select="$numbers[starts-with(., concat($q, ':'))][1]"/>
+								<xsl:variable name="n" select="f:num(tokenize($nn, ':')[last()])"/>
+								<xsl:variable name="p" select="position()"/>
+ 								<xsl:variable name="price_query_products" select="$products[item_own_extras/query = $q and plain_section]"/>
+								<xsl:variable name="no_price_query_products" select="$products[item_own_extras/query = $q and not(plain_section)]"/>
+								<xsl:apply-templates select="$price_query_products[1]">
+									<xsl:with-param name="number" select="$n"/>
+									<xsl:with-param name="position" select="$p"/>
+								</xsl:apply-templates>
+								<xsl:apply-templates select="$price_query_products[position() &gt; 1]">
+									<xsl:with-param name="hidden" select="'hidden'"/>
+									<xsl:with-param name="number" select="$n"/>
+									<xsl:with-param name="position" select="$p"/>
+ 								</xsl:apply-templates>
+								<xsl:apply-templates select="$no_price_query_products[1]">
+									<xsl:with-param name="number" select="$n"/>
+									<xsl:with-param name="position" select="$p"/>
+								</xsl:apply-templates>
+								<xsl:apply-templates select="$no_price_query_products[position() &gt; 1]">
+									<xsl:with-param name="hidden" select="'hidden'"/>
+									<xsl:with-param name="number" select="$n"/>
+									<xsl:with-param name="position" select="$p"/>
+								</xsl:apply-templates>
+							</xsl:for-each>
+						</xsl:if>
+						<xsl:if test="not($multiple)">
+							<xsl:for-each select="$products[plain_section]">
+								<xsl:apply-templates select="."/>
+							</xsl:for-each>
+							<xsl:for-each select="$products[not(plain_section)]">
+								<xsl:apply-templates select="."/>
+							</xsl:for-each>
+						</xsl:if>
 					</table>
 				</div>
 			</xsl:if>

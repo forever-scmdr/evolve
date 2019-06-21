@@ -1388,6 +1388,9 @@
 	</page>
 
 	<page name="delete_codes" template="success">
+		<request>
+			<var name="action" value="delete"/>
+		</request>
 		<command class="extra.DeleteByCodeCommand"/>
 	</page>
 
