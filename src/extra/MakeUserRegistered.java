@@ -7,10 +7,7 @@ import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.LinkPE;
 import ecommander.pages.PageModelRegistry;
 import ecommander.pages.PagePE;
-import ecommander.persistence.commandunits.ChangeItemOwnerDBUnit;
-import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
-import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
+import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,6 +15,7 @@ import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
+import java.sql.Connection;
 
 /**
  * Created by E on 2/4/2019.
@@ -46,6 +44,20 @@ public class MakeUserRegistered implements ItemEventCommandFactory {
 				return;
 			}
 			if (!regParam.hasChanged()) {
+				SingleParameter passwordParam = (SingleParameter) userItem.getParameterByName(PASSWORD_PARAM);
+				SingleParameter loginParam = (SingleParameter) userItem.getParameterByName(EMAIL_PARAM);
+				if (loginParam.hasChanged()) {
+					userItem.setValue(EMAIL_PARAM, loginParam.getOldValues().get(0));
+				}
+				User user = UserMapper.getUser(userItem.getStringValue(EMAIL_PARAM));
+				if (user != null) {
+					if (!StringUtils.equals(user.getPassword(), passwordParam.outputValue())) {
+						user.setNewPassword(passwordParam.outputValue());
+						executeCommand(new UpdateUserDBUnit(user, false));
+					}
+				}
+				if (userItem.hasChanged())
+					executeCommand(SaveItemDBUnit.get(userItem).ignoreUser().noTriggerExtra());
 				return;
 			}
 			String userName = userItem.getStringValue(EMAIL_PARAM);
