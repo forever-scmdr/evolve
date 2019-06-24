@@ -279,8 +279,8 @@ public class CrawlerController {
 	public void addSeedUrls(Collection<String> urls){
 		int lineNum = 1;
 		for(String url : urls){
-			if(StringUtils.isBlank(url) || url.startsWith("#")) continue;
 			url = url.trim();
+			if(StringUtils.isBlank(url) || url.startsWith("#")) continue;
 			String[] parts = StringUtils.split(url, ' ');
 			if (parts.length == 1) {
 				String seed = URLCanonicalizer.getCanonicalURL(parts[0]);
