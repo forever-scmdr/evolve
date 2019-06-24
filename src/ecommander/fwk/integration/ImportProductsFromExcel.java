@@ -189,7 +189,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 				} else if (code.equals(CreateExcelPriceList.CODE_FILE)) {
 					reInit(CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE);
 				} else {
-					if (currentSubsection == null) currentSubsection = currentSection;
+ 					if (currentSubsection == null) currentSubsection = currentSection;
 					boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE)) || !getHeaders().contains(CreateExcelPriceList.IS_DEVICE_FILE.toLowerCase());
 					Item product = getExistingProduct(code, isProduct);
 					TreeSet<String> headers = getHeaders();
@@ -295,6 +295,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 						}
 						}
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
+						if(isProduct) currentProduct = product;
 
 						//MANUALS
 						for (String header : headers) {
@@ -326,7 +327,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									executeCommandUnit(SaveItemDBUnit.get(manualItem).noFulltextIndex().noTriggerExtra());
 								}
 								commitCommandUnits();
-								if(isProduct) currentProduct = product;
 							}
 						}
 

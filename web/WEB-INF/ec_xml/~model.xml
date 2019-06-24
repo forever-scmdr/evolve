@@ -98,8 +98,7 @@
 		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
 		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
 		<on-update class="ecommander.fwk.CopyToUpload"/>
-	</item>
-
+	</item>	
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
 	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" super="seo_container" ag-id="3" ag-hash="1970241253">
@@ -404,10 +403,10 @@
 		<child item="delivery" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
-		<child item="product_side" single="true"/>
+	<child item="product_side" single="true"/>
 	</item>
 
-	<item name="product_side" caption="В карточке товара" >
+	<item name="product_side" caption="В карточке товара" ag-id="1834" ag-hash="1014531751" >
 		<parameter name="text" type="text" caption="Текст"/>
 	</item>
 
