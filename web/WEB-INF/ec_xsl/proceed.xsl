@@ -6,7 +6,7 @@
 
 	<xsl:variable name="title" select="'Оформление заявки'"/>
 	<xsl:variable name="message" select="page/variables/message"/>
-	<xsl:variable name="is_jur" select="page/user_jur/input/field[@name != 'registered'] != '' or page/jur"/>
+	<xsl:variable name="is_jur" select="page/user_jur/input/field[@name != 'registered'] != ''"/>
 	<xsl:variable name="is_phys" select="not($is_jur)"/>
 	<!--<xsl:variable name="is_jur" select="page/user_jur//@validation-error or page/user_jur/input/organization != '' or page/jur or page/user_jur/input/field != ''"/>-->
 
@@ -79,14 +79,14 @@
 
 	<xsl:template name="TOTAL">
 		<div class="total">
-			<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum_discount)"/> р.</p>
-			<xsl:if test="f:num(page/cart/sum) &gt; f:num(page/cart/sum_discount)">
+			<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
+<!-- 			<xsl:if test="f:num(page/cart/sum) &gt; f:num(page/cart/sum_discount)">
 				<div class="discount-total">
 					Итоговая скидка: <xsl:value-of select="round((f:num(page/cart/sum) - f:num(page/cart/sum_discount)) * 100) div 100"/> руб.
 					Сумма без учета скидки: <xsl:value-of select="page/cart/sum"/> руб.
 				</div>
-			</xsl:if>
-			<input type="submit" class="button" value="Отправить заказ" onclick="$(this).closest('form').attr('action', '{page/confirm_link}')"/>
+			</xsl:if> -->
+			<input type="submit" class="button" value="Оформить заказ" onclick="$(this).closest('form').attr('action', '{page/confirm_link}')"/>
 		</div>
 	</xsl:template>
 

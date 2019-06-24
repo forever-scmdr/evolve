@@ -5,9 +5,6 @@
 	<xsl:strip-space elements="*"/>
 
 
-	<xsl:variable name="title" select="'Вход / регистрация'" />
-
-
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
 	<xsl:variable name="is_login" select="page/variables/login = 'true'"/>

@@ -47,7 +47,7 @@
 								</div>
 								<div class="quantity">
 									<span>Кол-во</span>
-									<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
+									<input type="number" value="{qty}" name="{input/qty/@input}" min="1" class="qty-input" data-old="{qty}" />
 								</div>
 								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
 								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
@@ -57,7 +57,7 @@
 							<xsl:if test="page/cart/sum != '0'">
 								<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
 							</xsl:if>
-							<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
+							<!-- <input type="submit" class="button" value="Пересчитать" id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/> -->
 							<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 						</div>
 
@@ -70,6 +70,29 @@
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
+	</xsl:template>
+
+	<xsl:template name="EXTRA_SCRIPTS">
+		<script type="text/javascript">
+			$(".qty-input").change(function(){
+				$t = $(this);
+				if($t.val() != $t.attr("data-old") &amp; validate($t.val())){
+					$form = $(this).closest('form');
+					$form.attr("action", '<xsl:value-of select="page/recalculate_link"/>');
+					$form.submit();
+				}else if(!validate($t.val())){
+					if(validate($t.attr("data-old"))){
+						$t.val($t.attr("data-old"));
+					}else{
+						$t.val("1");
+					}
+				}
+			});
+
+			function validate(val){
+				return parseInt(val) &gt; 0;
+			}
+		</script>
 	</xsl:template>
 
 </xsl:stylesheet>

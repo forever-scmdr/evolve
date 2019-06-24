@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="$p/name"/>
+	<xsl:variable name="title" select="concat($p/name, ' купить в Минске')"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -66,7 +66,7 @@
 		<p class="subtitle">арт. <xsl:value-of select="$p/code"/></p>
 		<div class="catalog-item-container">
 			<div class="gallery">
-				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-width="100%" data-allowfullscreen="native">
+				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-width="100%" data-allowfullscreen="true">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
@@ -77,6 +77,23 @@
 						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
 				</div>
+				<script>
+					$('.fotorama')
+						.on('fotorama:fullscreenenter fotorama:fullscreenexit', function (e, fotorama) {
+						if (e.type === 'fotorama:fullscreenenter') {
+							// Options for the fullscreen
+							fotorama.setOptions({
+								fit: 'scaledown'
+							});
+						} else {
+							// Back to normal settings
+							fotorama.setOptions({
+								fit: 'contain'
+							});
+						}
+						})
+						.fotorama();
+					</script>
 			</div>
 			<div class="product-info">
 				<!-- new html -->
@@ -98,7 +115,7 @@
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
-									<input type="submit" class="button" value="Заказать" />
+									<input type="submit" class="button" value="В корзину" />
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
@@ -147,7 +164,7 @@
 								<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 									<xsl:if test="$has_price">
 										<input type="number" class="text-input" name="qty" value="1" min="0" />
-										<input type="submit" class="button" value="Заказать" />
+										<input type="submit" class="button" value="В корзину" />
 									</xsl:if>
 									<xsl:if test="not($has_price)">
 										<input type="number" class="text-input" name="qty" value="1" min="0" />

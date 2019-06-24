@@ -2202,6 +2202,7 @@ table td[class*="col-"],table th[class*="col-"] {
 .table-responsive {
 	overflow-x:auto;
 	min-height:0.01%;
+	max-width: 858px;
 }
 @media screen and (max-width:767px) {
 	.table-responsive {
@@ -8805,4 +8806,11 @@ td .catalog-item {
 }
 .extra-info li {
 	margin-bottom: 8px;
+}
+
+.rating {
+	margin-top: 32px;
+}
+.footer .rating p {
+	font-size: 12px;
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>                     
+<?xml version="1.0" encoding="UTF-8"?>                           
 <site>
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -77,7 +77,7 @@
 	</include-definition>
 
 
-	<page name="test">
+<!-- 	<page name="test">
 		<single item="catalog" id="catalog_main">
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
@@ -92,7 +92,7 @@
 				</list>
 			</tree>
 		</single>
-	</page>
+	</page> -->
 
 
 
@@ -873,7 +873,6 @@
 	<page name="fav" template="fav">
 		<request>
 			<var name="favourites" scope="cookie"/>
-			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>

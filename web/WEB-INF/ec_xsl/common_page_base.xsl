@@ -49,6 +49,52 @@
 
 
 
+	<xsl:template match="custom_page" mode="menu_first">
+		<xsl:variable name="key" select="@key"/>
+		<xsl:if test="not(custom_page)">
+			<div class="main-menu__item">
+				<a href="{show_page}" class="{'active'[$active_menu_item = $key]}">
+					<xsl:value-of select="header"/>
+				</a>
+			</div>
+		</xsl:if>
+		<xsl:if test="custom_page or page_link">
+			<div class="main-menu__item" style="position: relative;">
+				<a href="#ts-{@id}" class="show-sub{' active'[$active_menu_item = $key]}">
+					<span><xsl:value-of select="header"/></span>
+				</a>
+				<div id="ts-{@id}" class="popup-text-menu" style="position: absolute; z-index: 2; display: none;">
+					<div class="sections">
+						<xsl:apply-templates select="custom_page | page_link" mode="menu"/>
+					</div>
+				</div>
+			</div>
+		</xsl:if>
+	</xsl:template>
+
+
+	<xsl:template match="custom_page" mode="menu">
+		<a href="{show_page}">
+			<xsl:value-of select="header"/>
+		</a>
+	</xsl:template>
+
+
+	<xsl:template match="page_link" mode="menu_first">
+		<div class="main-menu__item">
+			<a href="{link}">
+				<xsl:value-of select="name"/>
+			</a>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="page_link" mode="menu">
+		<a href="{link}">
+			<xsl:value-of select="name"/>
+		</a>
+	</xsl:template>
+
+
 	<xsl:template name="INC_DESKTOP_HEADER">
 		<section class="top-stripe desktop">
 			<div class="container">
@@ -118,32 +164,7 @@
 							</a>
 						</div>
 					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/custom_page[in_main_menu = 'да']">
-						<xsl:variable name="key" select="@key"/>
-						<xsl:if test="not(custom_page)">
-							<div class="main-menu__item">
-								<a href="{show_page}" class="{'active'[$active_menu_item = $key]}">
-									<xsl:value-of select="header"/>
-								</a>
-							</div>
-						</xsl:if>
-						<xsl:if test="custom_page">
-							<div class="main-menu__item" style="position: relative;">
-								<a href="#ts-{@id}" class="show-sub{' active'[$active_menu_item = $key]}">
-									<span><xsl:value-of select="header"/></span>
-								</a>
-								<div id="ts-{@id}" class="popup-text-menu" style="position: absolute; z-index: 2; display: none;">
-									<div class="sections">
-										<xsl:for-each select="custom_page">
-											<a href="{show_page}">
-												<xsl:value-of select="header"/>
-											</a>
-										</xsl:for-each>
-									</div>
-								</div>
-							</div>
-						</xsl:if>
-					</xsl:for-each>
+					<xsl:apply-templates select="page/custom_pages/*[in_main_menu = 'да']" mode="menu_first"/>
 					<div class="main-menu__item">
 						<a href="{page/contacts_link}"><span>Контакты</span></a>
 					</div>
@@ -542,7 +563,7 @@
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button" value="Заказать"/>
+								<input type="submit" class="button" value="В корзину"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
@@ -610,7 +631,7 @@
 			<div class="device__info">
 				<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
 				<div class="device__description">
-					<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
+					<!-- <xsl:value-of select="description" disable-output-escaping="yes"/> -->
 				</div>
 			</div>
 			<div class="device__article-number"><xsl:value-of select="code"/></div>
@@ -655,7 +676,7 @@
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button" value="Заказать"/>
+								<input type="submit" class="button" value="В корзину"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>

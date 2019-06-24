@@ -28,31 +28,18 @@
 				<div class="view-container desktop">
 					<div class="view">
 						<span>Показывать:</span>
-						<span class="{'active'[not($view = 'list')]}">
-							<i class="fas fa-th-large"></i>
-							<a href="{page/set_view_table}">Плиткой</a>
-						</span>
-						<span class="{'active'[$view = 'list']}">
-							<i class="fas fa-th-list"></i>
-							<a href="{page/set_view_list}">Строками</a>
-						</span>
+						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
+						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
 					</div>
 				</div>
 			</xsl:if>
 
-
 			<div class="catalog-items{' lines'[$view = 'list']}">
-				<xsl:if test="$view = 'table'">
-					<xsl:apply-templates select="$products"/>
-				</xsl:if>
-				<xsl:if test="$view = 'list'">
-					<xsl:apply-templates select="$products" mode="lines"/>
-				</xsl:if>
+				<xsl:apply-templates select="$products"/>
 				<xsl:if test="not($products)">
 					<h4>Нет товаров</h4>
 				</xsl:if>
 			</div>
-
 
 		</div>
 
