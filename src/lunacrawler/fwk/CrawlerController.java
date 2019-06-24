@@ -276,6 +276,29 @@ public class CrawlerController {
 		}
 	}
 
+	public void addSeedUrls(Collection<String> urls){
+		int lineNum = 1;
+		for(String url : urls){
+			if(StringUtils.isBlank(url) || url.startsWith("#")) continue;
+			url = url.trim();
+			String[] parts = StringUtils.split(url, ' ');
+			if (parts.length == 1) {
+				String seed = URLCanonicalizer.getCanonicalURL(parts[0]);
+				seedUrls.add(seed);
+				urlStyles.put(seed, NO_TEMPLATE);
+			} else {
+				// Проверка правильности регулярного выражения
+				// Для этого используются все части, после второй (третяя и далее)
+				for (int i = 2; i < parts.length; i++) {
+					if (!parts[i].matches(parts[0]))
+						info.pushLog("Supplied test url {} does not match regex {} on line {}", parts[i], parts[0], lineNum);
+					else
+						info.pushLog("Testing regex: {} - OK", parts[0]);
+				}
+				urlStyles.put(parts[0], parts[1]);
+			}
+		}
+	}
 
 	CrawlerController() throws Exception {
 
@@ -302,28 +325,29 @@ public class CrawlerController {
 		if (new File(urlFileName).exists()) {
 			try {
 				List<String> lines = Files.readAllLines(Paths.get(urlFileName), Charset.forName(UTF_8));
-			    int lineNum = 1;
-				for (String line : lines) {
-			        line = line.trim();
-			    	if (!StringUtils.isBlank(line) && !line.startsWith("#")) {
-			        	String[] parts = StringUtils.split(line, ' ');
-			        	if (parts.length == 1) {
-			        		String seed = URLCanonicalizer.getCanonicalURL(parts[0]);
-			        		seedUrls.add(seed);
-			        		urlStyles.put(seed, NO_TEMPLATE);
-			        	} else {
-					        // Проверка правильности регулярного выражения
-					        // Для этого используются все части, после второй (третяя и далее)
-							for (int i = 2; i < parts.length; i++) {
-								if (!parts[i].matches(parts[0]))
-									info.pushLog("Supplied test url {} does not match regex {} on line {}", parts[i], parts[0], lineNum);
-								else
-									info.pushLog("Testing regex: {} - OK", parts[0]);
-							}
-			        		urlStyles.put(parts[0], parts[1]);
-			        	}
-			        }
-			    }
+				addSeedUrls(lines);
+//			    int lineNum = 1;
+//				for (String line : lines) {
+//			        line = line.trim();
+//			    	if (!StringUtils.isBlank(line) && !line.startsWith("#")) {
+//			        	String[] parts = StringUtils.split(line, ' ');
+//			        	if (parts.length == 1) {
+//			        		String seed = URLCanonicalizer.getCanonicalURL(parts[0]);
+//			        		seedUrls.add(seed);
+//			        		urlStyles.put(seed, NO_TEMPLATE);
+//			        	} else {
+//					        // Проверка правильности регулярного выражения
+//					        // Для этого используются все части, после второй (третяя и далее)
+//							for (int i = 2; i < parts.length; i++) {
+//								if (!parts[i].matches(parts[0]))
+//									info.pushLog("Supplied test url {} does not match regex {} on line {}", parts[i], parts[0], lineNum);
+//								else
+//									info.pushLog("Testing regex: {} - OK", parts[0]);
+//							}
+//			        		urlStyles.put(parts[0], parts[1]);
+//			        	}
+//			        }
+//			    }
 			} catch (Exception e) {
 				ServerLogger.error("Can not read URLs list", e);
 				throw e;
@@ -357,10 +381,10 @@ public class CrawlerController {
 	 * @param crawlerClass
 	 * @throws Exception
 	 */
-	private void start(Class<? extends BasicCrawler> crawlerClass,  Mode mode, boolean... noDepth) throws Exception {
+	private void start(Class<? extends BasicCrawler> crawlerClass, Collection<String> additionalUrls,  Mode mode, boolean... noDepth) throws Exception {
 		info.pushLog("Current mode : {}", mode);
 		if (mode == Mode.get || mode == Mode.all) {
-			initAndStartCrawler(crawlerClass, noDepth);
+			initAndStartCrawler(crawlerClass, additionalUrls, noDepth);
 		}
 		if (mode == Mode.transform || mode == Mode.all) {
 			transformSource();
@@ -404,7 +428,7 @@ public class CrawlerController {
 	 * @param crawlerClass
 	 * @throws Exception
 	 */
-	private void initAndStartCrawler(Class<? extends BasicCrawler> crawlerClass, boolean... noDepth) throws Exception {
+	private void initAndStartCrawler(Class<? extends BasicCrawler> crawlerClass,Collection<String> additionalUrls, boolean... noDepth) throws Exception {
 		boolean nd = noDepth != null && noDepth[0];
 		if(nd){
 			setConfig(0, -1);
@@ -419,6 +443,7 @@ public class CrawlerController {
 		robotstxtConfig.setEnabled(false);
 		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
 		CONTROLLER = new CrawlController(CONFIG, pageFetcher, robotstxtServer);
+		if(additionalUrls != null) addSeedUrls(additionalUrls);
 
 		for (String seed : seedUrls) {
 			CONTROLLER.addSeed(seed);
@@ -434,12 +459,12 @@ public class CrawlerController {
 	 * @param crawlerClass
 	 * @throws Exception
 	 */
-	public static void startCrawling(Class<? extends BasicCrawler> crawlerClass, IntegrateBase.Info info, Mode mode, boolean noDepth,
+	public static void startCrawling(Class<? extends BasicCrawler> crawlerClass, Collection<String> additionalUrls, IntegrateBase.Info info, Mode mode, boolean noDepth,
 	                                 UrlModifier... modifier) throws Exception {
 		getSingleton(true).info = info;
 		if (modifier != null && modifier.length > 0)
 			getSingleton().urlModifier = modifier[0];
-		getSingleton().start(crawlerClass, mode, noDepth);
+		getSingleton().start(crawlerClass,additionalUrls, mode, noDepth);
 	}
 	
 	public static void terminate() {

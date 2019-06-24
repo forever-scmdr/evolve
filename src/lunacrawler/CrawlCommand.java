@@ -3,11 +3,15 @@ package lunacrawler;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.JsoupUtils;
 import ecommander.fwk.Strings;
+import ecommander.model.Item;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lunacrawler.fwk.CrawlerController;
 import lunacrawler.fwk.Parse_item;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
 
 /**
  * Команда для парсинга сайта
@@ -23,7 +27,14 @@ public class CrawlCommand extends IntegrateBase implements UrlModifier {
 	protected void integrate() throws Exception {
 		String mode = getVarSingleValue("job");
 		boolean noDepth = "yes".equalsIgnoreCase(getVarSingleValue("no_detph"));
-		XSLTransformCrawler.startCrawling(info, mode, noDepth, this);
+		String itemName = getVarSingleValue("item_name");
+		String paramName = getVarSingleValue("param_name");
+		ArrayList<String> values = null;
+		if(StringUtils.isNotBlank(itemName) && StringUtils.isNotBlank(paramName)){
+			Item item = ItemQuery.loadSingleItemByName(itemName);
+			values = item.getStringValues(paramName);
+		}
+		XSLTransformCrawler.startCrawling(info, mode, values, noDepth, this);
 	}
 
 	@Override

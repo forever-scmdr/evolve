@@ -13,6 +13,7 @@ import org.htmlcleaner.PrettyXmlSerializer;
 import org.htmlcleaner.TagNode;
 
 import java.net.URLDecoder;
+import java.util.Collection;
 
 public class XSLTransformCrawler extends BasicCrawler {
 	
@@ -59,9 +60,9 @@ public class XSLTransformCrawler extends BasicCrawler {
 		return null;
 	}
 
-	public static void startCrawling(IntegrateBase.Info info, String mode, boolean noDepth,UrlModifier... modifier) {
+	public static void startCrawling(IntegrateBase.Info info, String mode, Collection<String> additionalUrls, boolean noDepth, UrlModifier... modifier) {
 		try {
-			CrawlerController.startCrawling(XSLTransformCrawler.class, info, Mode.valueOf(mode), noDepth, modifier);
+			CrawlerController.startCrawling(XSLTransformCrawler.class, additionalUrls, info, Mode.valueOf(mode), noDepth, modifier);
 		} catch (Exception e) {
 			info.pushLog("Some error", "<pre>" + ExceptionUtils.getStackTrace(e) + "</pre>");
 		}
@@ -73,7 +74,7 @@ public class XSLTransformCrawler extends BasicCrawler {
 	
 	public static void main(String[] args) {
 		try {
-			CrawlerController.startCrawling(XSLTransformCrawler.class, null, null, false);
+			CrawlerController.startCrawling(XSLTransformCrawler.class, null, null, null, false);
 		} catch (Exception e) {
 			//info.pushLog("Some error", e);
 		}
