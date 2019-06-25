@@ -31,7 +31,8 @@
 
 	<xsl:template match="/">
 		<data version="2.0">
-			<xsl:for-each select="page/product[plain_section]">
+			<xsl:variable name="find" select="page/product[plain_section]"/>
+			<xsl:for-each select="$find[position() &lt;= 5]">
 				<xsl:variable name="min_qty" select="if (min_qty) then f:num(min_qty) else 1"/>
 				<item>
 					<mfg><xsl:value-of select="vendor"/></mfg>
