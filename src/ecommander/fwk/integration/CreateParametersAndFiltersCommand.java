@@ -9,7 +9,6 @@ import ecommander.model.datatypes.DataType;
 import ecommander.model.filter.CriteriaDef;
 import ecommander.model.filter.FilterDefinition;
 import ecommander.model.filter.InputDef;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
@@ -24,6 +23,8 @@ import org.jsoup.select.Elements;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.*;
+
+import static ecommander.fwk.integration.CreateParametersAndFiltersCommand.Params.testValueHasUnit;
 
 /**
  * Created by E on 17/5/2018.
@@ -55,7 +56,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			this.className = Strings.createXmlElementName(className);
 		}
 
-		protected void addParameter(String name, String value, boolean isMultiple) {
+		public void addParameter(String name, String value, boolean isMultiple) {
 			String paramName = Strings.createXmlElementName(name);
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);
@@ -90,7 +91,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			return true;
 		}
 
-		protected static Pair<DataType.Type, String> testValueHasUnit(String value) {
+		public static Pair<DataType.Type, String> testValueHasUnit(String value) {
 			try {
 				Integer.parseInt(value);
 				return new Pair<>(DataType.Type.INTEGER, null);
@@ -257,9 +258,9 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 									Elements values = paramEl.getElementsByTag("value");
 									for (Element valueEl : values) {
 										String value = StringUtils.trim(valueEl.ownText());
-										Pair<DataType.Type, String> valuePair = Params.testValueHasUnit(value);
+										Pair<DataType.Type, String> valuePair = testValueHasUnit(value);
 										if (StringUtils.isNotBlank(valuePair.getRight())) {
-											value = value.split("\\s")[0];
+											value = StringUtils.substringBefore(value, valuePair.getRight()).trim();
 										}
 										params.setValueUI(name, value);
 									}
@@ -283,5 +284,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 	public static void main(String[] args) {
 		System.out.println("0.5 - 5 Нм".matches("^-?[0-9]+[\\.,]?[0-9]*\\s+[^-\\s]+$"));
+		Params p = new Params("caption", "name");
+		p.addParameter("test", "4.5W", false);
 	}
 }
