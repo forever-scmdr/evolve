@@ -123,10 +123,9 @@ public class DateDataType extends FormatDataType {
 		DateTimeFormatter formatter = null;
 		if (format.length != 0)
 			formatter = format[0];
-
-		String s = (formatter != null)? formatter.print(millis) : DATE_FORMATTER.print(millis);
-
-		return s;
+		if (formatter != null)
+			return formatter.print(millis);
+		return DATE_FORMATTER.print(millis);
 	}
 	
 	public static void setTimeZoneHourOffset(int offset) {
