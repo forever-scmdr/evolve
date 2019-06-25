@@ -477,13 +477,10 @@
 	<xsl:template name="VIDGET_CODE">
 		<xsl:if test="page/main_page/informer">
 			<xsl:for-each select="page/main_page/informer">
-				<div class="header__content row" id="header-widget-{@id}" data-h="{height}">
+				<div class="header__content row">
 					<xsl:value-of select="code" disable-output-escaping="yes" />
 				</div>
 			</xsl:for-each>
-			<xsl:if test="count(page/main_page/informer) &gt; 1">
-
-			</xsl:if>
 		</xsl:if>
 	</xsl:template>
 

@@ -82,9 +82,10 @@
 			</div>
 
 			<div class="row masonry-wrap">
-				<div class="masonry">
+				<div class="">
 					<xsl:for-each select="page/small_news/small_news_item">
-						<div class="col-four tab-full small-news-item masonry__brick" data-aos="fade-up">
+						<div class="col-four tab-full small-news-item" data-aos="fade-up">
+						<!-- <div class="col-four tab-full small-news-item masonry__brick" data-aos="fade-up"> -->
 							<p class="date" data-utc="{date/@millis}">
 								<xsl:value-of select="date"/>
 							</p>
@@ -106,6 +107,15 @@
 							</p>
 							</xsl:if>
 						</div>
+
+						<xsl:variable name="pos" select="position()"/>
+						<!-- <xsl:if test="$pos mod 2 = 0">
+							<div class="two-col-border"></div>
+						</xsl:if> -->
+						<xsl:if test="$pos mod 3 = 0">
+							<div class="three-col-border"></div>
+						</xsl:if>
+
 					</xsl:for-each>
 				</div>
 			</div>

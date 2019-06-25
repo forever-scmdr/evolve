@@ -9,7 +9,7 @@
 
 
 	<xsl:variable name="ni" select="page/news_item"/>
-	<xsl:variable name="parent" select="/page/news[@id = $ni/news/@id]" />
+	<xsl:variable name="parent" select="/page/news[@id = $ni/news[1]/@id]" />
 	<xsl:variable name="canonical" select="concat('/', $ni/@key, '/')"/>
 	<xsl:variable name="format" select="if($ni/video_url != '') then 'video' else if($ni/top_gal/main_pic != '') then 'gallery' else 'standard'"/>
 

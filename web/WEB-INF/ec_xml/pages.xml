@@ -89,7 +89,7 @@
 					<var value="date"/>
 				</sorting>
 				<limit>
-					<var value="9"/>
+					<var value="14"/>
 				</limit>
 				<parameter name="date" sign="&lt;=" compare="SOME">
 					<var var="$now"/>
@@ -134,7 +134,7 @@
 
 	<page name="news_ajax" template="news_ajax">
 		<request>
-			<var name="limit" value="9"/>
+			<var name="limit" value="14"/>
 			<var name="page" value="1"/>
 		</request>
 		<single item="news_wrap">
@@ -384,6 +384,7 @@
 					<var name="big_id" ref="comment"/>
 				</link>
 			</single>
+			<ancestor item="news" transit="false"/>
 			<ancestor item="news_wrap" id="parent" transit="true" tag="news">
 				<list item="news_item" tag="prev" id="prev" cacheable="false" cache-vars="ni" transit="true">
 					<filter>
