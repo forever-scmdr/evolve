@@ -326,7 +326,7 @@
 
 	<page name="all_news_ajax" template="news_page_ajax">
 		<request>
-			<var name="page" value="1"/>
+			<var name="page" value="2"/>
 			<var name="limit" value="24"/>
 			<var name="tag"/>
 			<var name="min_date"/>
@@ -489,7 +489,53 @@
 				<var name="tag" ref="tag" parameter="tag"/>
 			</link>
 		</list>
+		<link name="page_link" target="small_news_ajax">
+			<var name="limit" value="24"/>
+			<var name="tag"/>
+			<var name="min_date"/>
+			<var name="max_date"/>
+		</link>
 		<include name="COMMON"/>
+	</page>
+
+	<page name="small_news_ajax" template="small_news_ajax">
+		<request>
+			<var name="page" value="2"/>
+			<var name="limit" value="24"/>
+			<var name="tag"/>
+			<var name="min_date"/>
+			<var name="max_date"/>
+		</request>
+		<single item="small_news">
+			<list item="small_news_item" id="ni">
+				<filter>
+					<parameter name="tag" sign="=">
+						<var var="tag"/>
+					</parameter>
+					<parameter name="date" sign="&gt;=">
+						<var var="min_date"/>
+					</parameter>
+					<parameter name="date" sign="&lt;=">
+						<var var="max_date"/>
+					</parameter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var var="page"/>
+					</pages>
+					<parameter name="date" sign="&lt;=" compare="SOME">
+						<var var="$now"/>
+					</parameter>
+				</filter>
+				<link name="show_page" target="small_news_item" type="exclusive">
+					<var name="sni" ref="ni" style="translit"/>
+				</link>
+			</list>
+		</single>
 	</page>
 
 	<page name="small_news_item" template="small_news_item">
