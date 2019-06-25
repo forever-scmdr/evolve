@@ -53,6 +53,7 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 	protected void integrate() throws Exception{
 		info.setOperation("Разбор старого каталога");
 
+
 		Document oldCatalog = Jsoup.parse(new FileInputStream(exportFile), "UTF-8", "", Parser.xmlParser());
 
 		int sectionCount = oldCatalog.select("section").size();
@@ -83,6 +84,7 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 
 		ServerLogger.debug("creating ancient catalog");
 		Item bigSection = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), existingCatalog);
+
 		bigSection.setValue(NAME_PARAM, OLD_SECTION_NAME);
 		String id = oldCatalog.getElementsByTag("catalog").first().getElementsByTag("id").first().ownText();
 		bigSection.setValueUI(CATEGORY_ID_PARAM,id);
@@ -201,7 +203,7 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 		//processTextPics(product, TEXT_PICS_PARAM, TEXT_PARAM, text);
 		product.setValue(TEXT_PARAM, text);
 		ServerLogger.debug("Trying to save product...");
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(product, true).noFulltextIndex().ignoreFileErrors(true));
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors(true));
 		ServerLogger.debug("product saved. new file path: " + product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())));
 		info.increaseProcessed();
 	}

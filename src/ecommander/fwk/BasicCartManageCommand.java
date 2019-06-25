@@ -5,7 +5,6 @@ import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,7 +23,7 @@ import java.util.Date;
  */
 public abstract class BasicCartManageCommand extends Command {
 
-	private static final String PRODUCT_ITEM = "product";
+	private static final String PRODUCT_ITEM = "abstract_product";
 	private static final String CART_ITEM = "cart";
 	private static final String BOUGHT_ITEM = "bought";
 	private static final String PURCHASE_ITEM = "purchase";
@@ -274,7 +273,7 @@ public abstract class BasicCartManageCommand extends Command {
 				return;
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
-			double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(1000000d)).doubleValue();
 			if (maxQuantity > 0)
 				qty = maxQuantity > qty ? qty : maxQuantity;
 			bought.setValue(QTY_PARAM, qty);
@@ -285,6 +284,12 @@ public abstract class BasicCartManageCommand extends Command {
 			// Сохраняется девайс
 			product.setContextPrimaryParentId(bought.getId());
 			getSessionMapper().saveTemporaryItem(product, PRODUCT_ITEM);
+			// Загрузка и сохранение родительского продукта (для продуктов, вложенных в другие продукты)
+			Item parent = new ItemQuery(PRODUCT_ITEM).setChildId(product.getId(), false).loadFirstItem();
+			if (parent != null) {
+				parent.setContextPrimaryParentId(product.getId());
+				getSessionMapper().saveTemporaryItem(parent);
+			}
 		} else {
 			Item bought = getSessionMapper().getItem(boughtProduct.getContextParentId(), BOUGHT_ITEM);
 			if (qty <= 0) {
@@ -397,7 +402,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// Обычные заказы и заказы с нулевым количеством на складе
 		for (Item bought : boughts) {
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-			double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(1000000d)).doubleValue();
 			double quantity = bought.getDoubleValue(QTY_PARAM);
 			if (quantity <= 0) {
 				getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);

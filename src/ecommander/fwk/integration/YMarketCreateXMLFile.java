@@ -5,8 +5,10 @@ import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ItemUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.model.*;
-import ecommander.model.datatypes.DataType;
+import ecommander.model.Item;
+import ecommander.model.ParameterDescription;
+import ecommander.model.User;
+import ecommander.model.UserGroupRegistry;
 import ecommander.model.datatypes.DateDataType;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
@@ -16,14 +18,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
-import org.jsoup.select.Elements;
 
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,20 +38,12 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 	private Item catalog;
 	private String name;
 	private String company;
-	private boolean hasContainsAssoc;
-	private boolean hasParamsItem;
-	private boolean hasXmlParams;
 
 	@Override
 	public ResultPE execute() throws Exception {
 		name = getVarSingleValue(NAME_ELEMENT);
 		company = getVarSingleValue(COMPANY_ELEMENT);
 		catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, User.getDefaultUser(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-		hasContainsAssoc = ItemTypeRegistry.getAssoc("contains") != null;
-		hasParamsItem = ItemTypeRegistry.getItemType(PARAMS_ITEM) != null;
-		hasXmlParams = false;
-		ParameterDescription desc = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter("tech");
-		hasXmlParams = desc != null && desc.getType() == DataType.Type.XML;
 		return createYandex();
 	}
 
@@ -104,63 +96,71 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 
 	private void processCategoryProducts(Item category) throws Exception {
 		List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(category.getId(), false).loadItems();
-		if (products.size() == 0 && hasContainsAssoc) {
-			products = new ItemQuery(PRODUCT_ITEM).setParentId(category.getId(), false, "contains").loadItems();
-		}
 		BigDecimal zero = new BigDecimal(0);
-		for (Item prod : products) {
-			BigDecimal price = prod.getDecimalValue(PRICE_PARAM, zero);
+		for (Item baseProduct : products) {
+			List<Item> subProducts;
+			boolean hasLines = baseProduct.getByteValue(HAS_LINE_PRODUCTS, (byte)0) == (byte) 1;
+			if (hasLines) {
+				subProducts = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(baseProduct.getId(), false).loadItems();
+			} else {
+				subProducts = new ArrayList<>(1);
+				subProducts.add(baseProduct);
+			}
+
+			// Пользовательские параметры
+			Item baseParams = new ItemQuery(PARAMS_ITEM).setParentId(baseProduct.getId(), false).loadFirstItem();
+
+			for (Item product : subProducts) {
+				BigDecimal price = product.getDecimalValue(PRICE_PARAM, zero);
 			String avail = price.doubleValue() <= 0.001d ? "false" : "true";
-			xml.startElement(OFFER_ELEMENT, ID_ATTR, prod.getStringValue(CODE_PARAM), AVAILABLE_ATTR, avail);
-			String url = getUrlBase() + "/" + prod.getKeyUnique() + "/";
+				xml.startElement(OFFER_ELEMENT, ID_ATTR, product.getStringValue(CODE_PARAM), AVAILABLE_ATTR, avail);
+				String url = getUrlBase() + "/" + baseProduct.getKeyUnique() + "/";
 			xml.startElement(URL_ELEMENT).addText(url).endElement();
-			xml.startElement(PRICE_ELEMENT).addText(prod.getDecimalValue(PRICE_PARAM)).endElement();
+				xml.startElement(PRICE_ELEMENT).addText(product.getDecimalValue(PRICE_PARAM)).endElement();
 			xml.startElement(CURRENCY_ID_ELEMENT).addText("BYN").endElement();
 			xml.startElement(CATEGORY_ID_ELEMENT).addText(category.getId()).endElement();
-			String name = prod.getStringValue(NAME_PARAM);
-			if (prod.isValueNotEmpty(TYPE_PARAM))
-				name = prod.getStringValue(TYPE_PARAM) + " " + name;
+				String name = baseProduct.getStringValue(NAME_PARAM);
+				if (hasLines)
+					name += " " + product.getStringValue(NAME_PARAM);
+				if (baseProduct.isValueNotEmpty(TYPE_PARAM))
+					name = baseProduct.getStringValue(TYPE_PARAM) + " " + name;
 			xml.startElement(NAME_ELEMENT).addText(name).endElement();
-			if (prod.isValueNotEmpty(VENDOR_CODE_PARAM))
-				xml.startElement(VENDOR_CODE_ELEMENT).addText(prod.getStringValue(VENDOR_CODE_PARAM)).endElement();
-			xml.startElement(MODEL_ELEMENT).addText(prod.getStringValue(NAME_PARAM)).endElement();
-			String text = prod.getStringValue(TEXT_PARAM);
+				if (baseProduct.isValueNotEmpty(VENDOR_CODE_PARAM))
+					xml.startElement(VENDOR_CODE_ELEMENT).addText(baseProduct.getStringValue(VENDOR_CODE_PARAM)).endElement();
+				xml.startElement(MODEL_ELEMENT).addText(baseProduct.getStringValue(NAME_PARAM)).endElement();
+				String text = baseProduct.getStringValue(TEXT_PARAM);
 			if (StringUtils.isBlank(text))
-				text = prod.getStringValue(DESCRIPTION_PARAM);
+					text = baseProduct.getStringValue(DESCRIPTION_PARAM);
 			if (StringUtils.isNotBlank(text)) {
 				Document doc = Jsoup.parse(text);
 				xml.startElement(DESCRIPTION_ELEMENT).addText(doc.body().text()).endElement();
 			}
 
 			// Галерея
-			for (String picName : prod.outputValues(GALLERY_PARAM)) {
+				boolean hasGallery = false;
+				for (String picName : baseProduct.outputValues(GALLERY_PARAM)) {
 				xml.startElement("picture").addText(getUrlBase() + "/" + AppContext.getFilesUrlPath(false) +
-						Item.createItemFilesPath(prod.getId()) + picName).endElement();
+							Item.createItemFilesPath(baseProduct.getId()) + picName).endElement();
+					hasGallery = true;
+				}
+				if (!hasGallery && baseProduct.isValueNotEmpty(MAIN_PIC_PARAM)) {
+					xml.startElement("picture").addText(getUrlBase() + "/" + AppContext.getFilesUrlPath(false) +
+							Item.createItemFilesPath(baseProduct.getId()) + baseProduct.outputValue(MAIN_PIC_PARAM)).endElement();
 			}
 
-			// Пользовательские параметры
-			if (hasParamsItem) {
-				Item prodParams = new ItemQuery(PARAMS_ITEM).setParentId(prod.getId(), false).loadFirstItem();
-				if (prodParams != null) {
-					for (ParameterDescription paramDesc : prodParams.getItemType().getParameterList()) {
-						xml.startElement(PARAM_ELEMENT, NAME_ATTR, paramDesc.getCaption())
-								.addText(prodParams.outputValue(paramDesc.getName()))
-								.endElement();
+				Item subParams = null;
+				if (hasLines)
+					subParams = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
+
+				if (baseParams != null) {
+					for (ParameterDescription paramDesc : baseParams.getItemType().getParameterList()) {
+						String value = baseParams.outputValue(paramDesc.getName());
+						if (hasLines && subParams != null) {
+							String subValue = subParams.outputValue(paramDesc.getName());
+							if (StringUtils.isNotBlank(subValue))
+								value = subValue;
 					}
-				}
-			}
-			// Параметры в виде XML
-			else if (hasXmlParams) {
-				String paramsXml = prod.getStringValue("tech");
-				if (StringUtils.isNotBlank(paramsXml)) {
-					String stringXml = "<params>" + paramsXml + "</params>";
-					Document paramsTree = Jsoup.parse(stringXml, "localhost", Parser.xmlParser());
-					Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
-					for (Element paramEl : paramEls) {
-						String caption = StringUtils.trim(paramEl.getElementsByTag(NAME).first().ownText());
-						String value = StringUtils.trim(paramEl.getElementsByTag(VALUE).first().ownText());
-						xml.startElement(PARAM_ELEMENT, NAME_ATTR, caption).addText(value).endElement();
-					}
+						xml.startElement(PARAM_ELEMENT, NAME_ATTR, paramDesc.getCaption()).addText(value).endElement();
 				}
 			}
 
@@ -168,6 +168,7 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 			xml.endElement();
 			//processed++;
 			//setProcessed(processed);
+		}
 		}
 		List<Item> subCats = new ItemQuery(SECTION_ITEM).setParentId(category.getId(), false).loadItems();
 		for (Item subCat : subCats) {

@@ -60,7 +60,7 @@ public abstract class DataType {
 		}
 	}
 	
-	private static HashSet<Type> BIG_TEXT_TYPES = new HashSet<Type>();
+	private static HashSet<Type> BIG_TEXT_TYPES = new HashSet<>();
 	static {
 		BIG_TEXT_TYPES.add(Type.TINY_TEXT);
 		BIG_TEXT_TYPES.add(Type.SHORT_TEXT);

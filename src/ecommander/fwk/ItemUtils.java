@@ -3,6 +3,7 @@ package ecommander.fwk;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
+import ecommander.model.UserGroupRegistry;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -62,6 +63,17 @@ public class ItemUtils {
 			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(item));
 		}
 		return item;
+	}
+
+	/**
+	 * Загрузить определенный одиночный корневой айтем по его названию. Если айтем не найден, то создать его.
+	 * @param itemName
+	 * @param initiator
+	 * @return
+	 * @throws Exception
+	 */
+	public static Item ensuteSingleRootAnonymousItem(String itemName, User initiator) throws Exception {
+		return ensureSingleRootItem(itemName, initiator, UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 	}
 	/**
 	 * Загрузить определенный одиночный айтем по его названию из сеанса. Если айтем не найден, то создать его и сохранить в сеансе.

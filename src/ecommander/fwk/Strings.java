@@ -56,7 +56,7 @@ public class Strings
 		"1","2","3","4","5","6","7","8","9","0","_",
 		"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",		
 		"a","b","v","g","d","e","yo","g","z","i","y","i","k","l","m","n","o","p","r","s","t",
-		"u","f","h","ts","ch","sh","sch","e","yu","ya","dot","_","","ask","_","_","_","_","_","","","","_"
+		"u","f","h","ts","ch","sh","sch","e","yu","ya","_","_","","ask","_","_","_","_","_","","","","_"
 	};
 	private static final String PASSWORD_LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 	private static Charset ASCII_CHARSET = Charset.forName("ISO-8859-1");
@@ -86,8 +86,8 @@ public class Strings
     	if (StringUtils.isBlank(halfValid))
     		return null;
     	if (StringUtils.contains(DIGITS, halfValid.charAt(0)) || halfValid.charAt(0) == '.')
-    		return "_" + halfValid;
-    	return halfValid;
+    		return StringUtils.substring("_" + halfValid, 0, 254);
+    	return StringUtils.substring(halfValid, 0, 254);
     }
     /**
      * Проверяет, является ли строка 

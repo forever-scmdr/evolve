@@ -158,6 +158,7 @@ public class MainAdminPageCreator implements AdminXML {
 	/**
 	 * Разные экшены
 	 */
+	public static final String PRESERVE_PASTE_BUFFER_VAR = "preserve_buffer_content";
 	public static final String INITIALIZE_ACTION = "admin_initialize";
 	public static final String SET_ITEM_ACTION = "admin_set_item";
 	public static final String CREATE_ITEM_ACTION = "admin_create_item";

@@ -1,5 +1,21 @@
 package ecommander.fwk;
 
+import ecommander.filesystem.SingleItemDirectoryFileUnit;
+import ecommander.model.Item;
+import ecommander.model.MultipleParameter;
+import ecommander.model.ParameterDescription;
+import ecommander.model.SingleParameter;
+import ecommander.model.datatypes.DataType.Type;
+import ecommander.persistence.common.PersistenceCommandUnit;
+import ecommander.persistence.common.TransactionContext;
+import ecommander.persistence.mappers.DBConstants;
+import ecommander.persistence.mappers.ItemMapper;
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -7,24 +23,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import ecommander.model.datatypes.DataType.Type;
-import ecommander.model.Item;
-import ecommander.model.MultipleParameter;
-import ecommander.model.ParameterDescription;
-import ecommander.model.SingleParameter;
-import ecommander.persistence.common.PersistenceCommandUnit;
-import ecommander.persistence.common.TransactionContext;
-import ecommander.persistence.mappers.DBConstants;
-import ecommander.persistence.mappers.ItemMapper;
-import ecommander.filesystem.SingleItemDirectoryFileUnit;
-import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.geometry.Positions;
 /**
  * Команда, которая преобразует картинки айтема к определенному формату после сохранения айтема
  * Используется атрибут format определения параметра (ParameterDescription)
@@ -227,7 +225,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 					pstmt.close();
 					
 					// Выполнить запросы для сохранения параметров
-					ItemMapper.insertItemParametersToIndex(item, false, getTransactionContext());
+					ItemMapper.insertItemParametersToIndex(item, ItemMapper.Mode.UPDATE, getTransactionContext());
 				} finally {
 					MysqlConnector.closeStatement(pstmt);
 				}

@@ -75,7 +75,7 @@ public class StaticVariable extends Variable {
 	@Override
 	public String getSingleLocalValue() {
 		if (values.size() > 0)
-			return values.get(0).toString();
+			return values.get(values.size() - 1).toString();
 		return null;
 	}
 

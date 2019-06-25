@@ -1,9 +1,9 @@
 package ecommander.fwk;
 
-import java.util.Stack;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
+
+import java.util.Stack;
 
 /**
  * Экземпляр этого класса передается по цепочке всем методам, которые осуществляют
@@ -159,6 +159,17 @@ public class XmlDocumentBuilder {
 		return this;
 	}
 	
+	/**
+	 * Добавляет тэги к текущему открытому элементу (кусок XML)
+	 * но делает это без перехода на новую строку
+	 * @return
+	 */
+	public XmlDocumentBuilder addElementsInline(CharSequence tags) {
+		if (StringUtils.isNotBlank(tags))
+			xml.append(tags);
+		return this;
+	}
+
 	@Override
 	public String toString() {
 		return xml.toString();

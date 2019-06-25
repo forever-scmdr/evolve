@@ -30,6 +30,8 @@ public class CleanAllDeletedItemsDBUnit extends DBPersistenceCommandUnit {
 			LuceneIndexMapper.getSingleton().startUpdate();
 			do {
 				CleanDeletedItemsDBUnit cleanBatch = new CleanDeletedItemsDBUnit(deleteBatchQty);
+				if (!insertIntoFulltextIndex)
+					cleanBatch.noFulltextIndex();
 				transaction.addCommandUnit(cleanBatch);
 				transaction.execute();
 				deletedCount = cleanBatch.getDeletedCount();

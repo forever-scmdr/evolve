@@ -22,18 +22,57 @@
 			.no{color: #dc0000; font-weight: bold;}
 			.path{color: #0071bc;}
 		</style>
-		<script>
-			setTimeout(function(){
-				locatus = document.location.href;
-				locatus = locatus.replace("?action=start", "");
-				document.location.replace(locatus);
-			}, 5000);
-		</script>
+			<script>
+				function endsWith(str, suffix) {
+				return str.indexOf(suffix, str.length - suffix.length) !== -1;
+				}
+
+				refreshTimeout = setTimeout(
+				function () {
+				h = document.location.href;
+				h = h.replace("_start", "");
+				h = h.replace("?action=start", "");
+				document.location.replace(h);
+				},
+				5000
+				);
+				function toggleRefresh() {
+				refresher = document.getElementById('refresher');
+				if (refresher.classList.contains("clicked")) {
+				h = document.location.href;
+				h = h.replace("_start", "");
+				h = h.replace("?action=start", "");
+				document.location.replace(h);
+				} else {
+				clearTimeout(refreshTimeout);
+				refresher.classList.add("clicked");
+				}
+				}
+			</script>
 		</head>
 		<body>
 			<h1><xsl:value-of select="/page/operation"/></h1>
 			<h2>Процесс выполнения</h2>
+			<xsl:if test="/page/error">
+				<h2>ошибки выполнения интеграции</h2>
+				<table>
+					<xsl:for-each select="/page/error">
+						<tr>
+							<td class="string-no">
+								Строка: <span class="no"><xsl:value-of select="@line"/></span>
+								Позиция: <span class="no"><xsl:value-of select="@coloumn"/></span>
+							</td>
+							<td class="error"><xsl:value-of select="."/></td>
+						</tr>
+					</xsl:for-each>
+				</table>
+			</xsl:if>
 			<table>
+				<tr>
+					<td colspan="2">
+						<input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
+					</td>
+				</tr>
 				<tr>
 					<td>Строка файла:</td>
 					<td class="error">
@@ -61,21 +100,19 @@
 						<td class="error"><xsl:value-of select="."/></td>
 					</tr>
 				</xsl:for-each>
+				<tr>
+					<td colspan="2">
+						Журнал опреации:
+					</td>
+				</tr>
+				<xsl:for-each select="/page/log">
+					<tr>
+						<td class="string-no"><xsl:value-of select="@time"/></td>
+						<td class="error"><xsl:value-of select="."/></td>
+					</tr>
+				</xsl:for-each>
 			</table>
-			<xsl:if test="/page/error">
-				<h2>ошибки выполнения интеграции</h2>
-				<table>
-					<xsl:for-each select="/page/error">
-						<tr>
-							<td class="string-no">
-							Строка: <span class="no"><xsl:value-of select="@line"/></span> 
-							 Позиция: <span class="no"><xsl:value-of select="@coloumn"/></span>
-							</td>
-							<td class="error"><xsl:value-of select="."/></td>
-						</tr>
-					</xsl:for-each>
-				</table>
-			</xsl:if>
+
 			
 		</body>
 		

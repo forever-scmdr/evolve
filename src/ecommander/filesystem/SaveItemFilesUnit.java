@@ -12,6 +12,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.imageio.ImageIO;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
@@ -33,12 +34,10 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 	//if (m.matches()) {
 
 	private ArrayList<File> files;
-	private boolean ignoreFileErrors = false;
 
-	public SaveItemFilesUnit(Item item, boolean... ignoreFileErrors) {
+	public SaveItemFilesUnit(Item item) {
 		super(item);
 		files = new ArrayList<>();
-		this.ignoreFileErrors = (ignoreFileErrors.length > 0)? ignoreFileErrors[0] : false;
 	}
 	/**
 	 * Перемещает файлы из директории загрузки в постоянную директорию и дает им новое название (c ID предков)
@@ -46,15 +45,23 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 	 */
 	public void execute() throws Exception {
 		String fileDirectoryName = createItemDirectoryName();
+		boolean filesChanged = false;
+		HashSet<String> actualFiles = new HashSet<>();
 		for (ParameterDescription paramDesc : item.getItemType().getParameterList()) {
 			if (paramDesc.getDataType().isFile()) {
-				HashSet<String> existingNames = new HashSet<>();
 				// Пропустить параметры, которые не менялись
-				if (!item.getParameter(paramDesc.getId()).hasChanged())
-					continue;
+				// Сохранить значения этих параметров, чтобы можно было удалить ненужные файлы в конце команды
 				ArrayList<SingleParameter> params = new ArrayList<>();
 				params.addAll(item.getParamValues(paramDesc.getName()));
+				if (!item.getParameter(paramDesc.getId()).hasChanged()) {
+					for (SingleParameter sp : params) {
+						actualFiles.add(sp.outputValue());
+					}
+					continue;
+				}
+				filesChanged = true;
 				ArrayList<String> newValues = new ArrayList<>();
+				HashSet<String> existingFileNames = new HashSet<>();
 				for (int i = 0; i < params.size(); i++) {
 					SingleParameter param = params.get(i);
 					//-- Надо решить удалять файл или нет если значение параметра null
@@ -72,32 +79,36 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 //					Object value = param.getValue();
 //					if (value == null)
 //						continue;
+					boolean isString = value instanceof String;
 					boolean isUploaded = value instanceof FileItem;
 					boolean isDirect = value instanceof File;
 					boolean isUrl = value instanceof URL;
+					boolean isBuffer = value instanceof FileDataType.BufferedPic;
 					// Если файл прикреплен, то он должен быть типа FileItem или типа File
-					if (isUploaded || isDirect || isUrl) {
+					if (!isString) {
 						// Если название файла содержит путь - удалить этот путь
 						String fileName = null;
-						if (isUploaded)
+						if (isUploaded) {
 							fileName = FileDataType.getFileName((FileItem) value);
-						else if (isDirect)
+						} else if (isDirect) {
 							fileName = ((File) value).getName();
-						else if (isUrl)
+						} else if (isUrl) {
 							fileName = Strings.getFileName(((URL) value).getFile());
-						while(existingNames.contains(fileName)){
+						} else if (isBuffer) {
+							fileName = ((FileDataType.BufferedPic) value).name;
+						}
+						// Проверка, добавлялся ли к этому параметру файл с таким именем ранее
+						while (existingFileNames.contains(fileName)) {
 							fileName = decorateFileName(paramDesc, i, fileName);
 						}
-						existingNames.add(fileName);
-
+						existingFileNames.add(fileName);
 						// Создание новой директории
 						File dir = new File(fileDirectoryName);
 						dir.mkdirs();
 						files.add(dir);
-						fileName = Strings.createFileName(fileName);
 						File newFile = new File( fileDirectoryName + fileName);
 						// Удаление файла, если он уже есть
-						if (newFile.exists()) {
+						while (newFile.exists()) {
 							/*
 							if (!newFile.canWrite())
 								throw new FileException("File '" + newFile.getName() + "' is write protected");
@@ -112,14 +123,13 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 							else if (isDirect)
 								Files.copy(((File) value).toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 							else if (isUrl)
-								WebClient.saveFile(value.toString(), fileDirectoryName, Strings.createFileName(fileName));
-
+								WebClient.saveFile(value.toString(), fileDirectoryName, fileName);
+							else if (isBuffer)
+								ImageIO.write(((FileDataType.BufferedPic) value).pic, ((FileDataType.BufferedPic) value).type, newFile);
 						} catch (Exception e) {
 							ServerLogger.error("File error", e);
-							if(!ignoreFileErrors) {
 								throw new FileException("File '" + newFile.getName() + "' has not been moved successfully");
 							}
-						}
 						files.add(newFile);
 						newValues.add(fileName);
 						item.removeEqualValue(paramDesc.getName(), value);
@@ -129,9 +139,21 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 					}
 				}
 				// Замена объектов на имена файлов
-				item.clearParameter(paramDesc.getName());
+				item.clearValue(paramDesc.getName());
 				for (String newVal : newValues) {
 					item.setValue(paramDesc.getName(), newVal);
+				}
+				actualFiles.addAll(newValues);
+			}
+		}
+		// Удалить старые файлы айтема
+		if (filesChanged) {
+			File[] allFiles = new File(fileDirectoryName).listFiles();
+			if (allFiles != null) {
+				for (File itemFile : allFiles) {
+					if (!actualFiles.contains(itemFile.getName())) {
+						FileUtils.deleteQuietly(itemFile);
+					}
 				}
 			}
 		}

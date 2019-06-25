@@ -1,11 +1,11 @@
 package ecommander.filesystem;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import ecommander.model.Item;
 import ecommander.model.MultipleParameter;
 import ecommander.model.SingleParameter;
+
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Удаляет файлы - множественные параметры, также удаляет значение соответствующего параметра
@@ -37,7 +37,7 @@ public class DeleteItemFileUnit extends SingleItemDirectoryFileUnit {
 		} else {
 			String paramValue = ((SingleParameter)item.getParameter(paramId)).outputValue();
 			deleteFile(paramValue);
-			item.clearParameter(paramId);
+			item.clearValue(paramId);
 		}
 	}
 
