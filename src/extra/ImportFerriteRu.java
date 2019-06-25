@@ -154,7 +154,7 @@ public class ImportFerriteRu extends IntegrateBase implements ItemNames {
 	private static String removeQuotes(String str) {
 		str = StringUtils.trim(str);
 		if (StringUtils.startsWith(str, "\"") && StringUtils.endsWith(str, "\""))
-			return str.substring(1, str.length() - 2);
+			return str.substring(1, str.length() - 1);
 		return str;
 	}
 }
