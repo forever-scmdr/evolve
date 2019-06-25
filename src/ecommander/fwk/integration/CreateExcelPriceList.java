@@ -30,6 +30,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private CellStyle sectionStyle;
 	private CellStyle auxHeaderStyle;
 	//file Constants
+
 	protected static final String CODE_FILE = "Код";
 	protected static final String NAME_FILE = "Название";
 	protected static final String PRICE_FILE = "Цена";
