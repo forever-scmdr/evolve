@@ -260,7 +260,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 										String value = StringUtils.trim(valueEl.ownText());
 										Pair<DataType.Type, String> valuePair = testValueHasUnit(value);
 										if (StringUtils.isNotBlank(valuePair.getRight())) {
-											value = value.split("\\s")[0];
+											value = StringUtils.substringBefore(value, valuePair.getRight()).trim();
 										}
 										params.setValueUI(name, value);
 									}
