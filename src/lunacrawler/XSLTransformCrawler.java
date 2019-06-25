@@ -64,6 +64,7 @@ public class XSLTransformCrawler extends BasicCrawler {
 		try {
 			CrawlerController.startCrawling(XSLTransformCrawler.class, additionalUrls, info, Mode.valueOf(mode), noDepth, modifier);
 		} catch (Exception e) {
+			e.printStackTrace();
 			info.pushLog("Some error", "<pre>" + ExceptionUtils.getStackTrace(e) + "</pre>");
 		}
 	}

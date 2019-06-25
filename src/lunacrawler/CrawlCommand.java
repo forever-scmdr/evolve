@@ -32,7 +32,13 @@ public class CrawlCommand extends IntegrateBase implements UrlModifier {
 		ArrayList<String> values = null;
 		if(StringUtils.isNotBlank(itemName) && StringUtils.isNotBlank(paramName)){
 			Item item = ItemQuery.loadSingleItemByName(itemName);
-			values = item.getStringValues(paramName);
+			String val = item.getStringValue(paramName,"");
+			if(StringUtils.isNotBlank(val)){
+				values = new ArrayList<>();
+				for(String s : StringUtils.split(val, '\n')){
+					values.add(s);
+				}
+			}
 		}
 		XSLTransformCrawler.startCrawling(info, mode, values, noDepth, this);
 	}

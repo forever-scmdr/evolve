@@ -1451,7 +1451,9 @@
         <request>
             <var name="action"/>
             <var name="no_detph" value="yes" />
-            <var name="job"/>
+            <var name="item_name" value="catalog"/>
+            <var name="param_name" value="urls"/>
+            <var name="job" value="all"/>
         </request>
         <command class="extra.MetaboCrawlCommand">
             <result name="complete" type="xml"/>
