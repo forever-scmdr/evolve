@@ -131,11 +131,14 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				if(av == 0){
 					q = new ItemQuery(LINE_PRODUCT_ITEM);
 					q.addParameterCriteria(ItemNames.line_product_.AVAILABLE, "1", "=", null, Compare.SOME);
-					av = q.loadFirstItem() != null? (byte) 1 : (byte)0;
+					Item lineProduct = q.loadFirstItem();
+					av = lineProduct != null? (byte) 1 : (byte)0;
+					if(lineProduct != null) product.setValueUI("unit", lineProduct.getStringValue("unit", ""));
 				}
 
 				product.setValueUI(PRICE_PARAM, pv);
 				product.setValue(ItemNames.product_.AVAILABLE, av);
+
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
 				info.increaseProcessed();
 			}
