@@ -481,7 +481,9 @@ public class CrawlerController {
 		try {
 			String url = page.getWebURL().getURL();
 			url = URLDecoder.decode(url, "UTF-8");
-			String fileName = Strings.createFileName(url);
+			String croppedURL = StringUtils.substringAfterLast(url, "/");
+			croppedURL = StringUtils.substringBefore(croppedURL, "?");
+			String fileName = Strings.createFileName(croppedURL);
 			Files.createDirectories(Paths.get(resultTempSrcDir));
 			// Если результат парсинга урла не пустая строка - записать этот результат в файл
 			if (!StringUtils.isBlank(result)) {
