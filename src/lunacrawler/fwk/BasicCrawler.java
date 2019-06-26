@@ -4,7 +4,6 @@ import ecommander.fwk.ServerLogger;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
-import lunacrawler.UrlModifier;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URLDecoder;
@@ -40,6 +39,7 @@ public abstract class BasicCrawler extends WebCrawler {
 	@Override
 	public final void visit(Page page) {
 		String href = page.getWebURL().getURL();
+		href = (StringUtils.contains(href, ".html?"))?  StringUtils.substringBeforeLast(href, "?") : href;
 		try {
 			href = URLDecoder.decode(href, "UTF-8");
 		} catch (Exception e) {
