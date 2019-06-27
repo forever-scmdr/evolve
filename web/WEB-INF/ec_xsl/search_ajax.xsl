@@ -26,7 +26,7 @@
 						</li>
 					</xsl:for-each>
 				</ul>
-				<a class="show-all" href="{page/show_all}"><strong>Показать все результаты</strong></a>
+				<a class="show-all" href="{//search_link}"><strong>Показать все результаты</strong></a>
 			</xsl:if>
 		</div>
 		<div class="result" id="search-result-mobile">
@@ -43,7 +43,7 @@
 						</li>
 					</xsl:for-each>
 				</ul>
-				<a class="show-all" href="{page/show_all}"><strong>Показать все результаты</strong></a>
+				<a class="show-all" href="{//search_link}"><strong>Показать все результаты</strong></a>
 			</xsl:if>
 		</div>
     </xsl:template>

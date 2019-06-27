@@ -405,6 +405,7 @@
                 <var name="prod" ref="prod" style="key"/>
             </link>
         </list>
+        <link name="search_link" target="search" copy-page-vars="yes"/>
     </page>
 
 

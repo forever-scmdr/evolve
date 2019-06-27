@@ -25,7 +25,7 @@
 
 	<xsl:variable name="title" select="string-join(( $sel_sec/name, 'Метабо купить', $title_postfix), ' ')"/>
 
-	<xsl:variable name="meta_description" select="string-join(($sel_sec/name, 'Метабо по выгодной цене ✅ Доставка по Беларуси +375(29)266-44-66 ►►► Доступная цена, гарантия, 20 лет на рынке!'),' ')"/>
+	<xsl:variable name="meta_description" select="string-join(($sel_sec/name, 'Метабо по выгодной цене ✅ Доставка по Беларуси +375(29)266-44-66 ►►► ПЕРВЫЙ поставщик, гарантия, 20 лет на рынке!'),' ')"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section/section"/>

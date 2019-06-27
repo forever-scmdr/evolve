@@ -338,6 +338,38 @@
 					</xsl:for-each>
 				</div>
 			</div>
+			<div class="someInfo">
+				<div>
+					<p><div class="someIcon"><i class="fas fa-shopping-cart"></i></div><strong>Оформление заказа</strong></p>
+					<ul>
+						<li>Через корзину на сайте</li>
+						<li>По телефонам:<br></br> +375 (29) 266-44-66, <br></br>+375 (29) 692-50-50, <br></br>+375 29 692-50-50, <br></br>Пн-Пт: 09.00–18.00</li>
+					</ul>
+				</div>
+				<div>
+					<p><div class="someIcon"><i class="fas fa-money-bill-wave"></i></div><strong>Оплата</strong></p>
+					<ul>
+						<li>Наличными курьеру при получении товара</li>
+						<li>Банковской картой (временно недоступно)</li>
+						<li>Через ЕРИП (временно недоступно)</li>
+					</ul>
+				</div>
+				<div>
+					<p><div class="someIcon"><i class="fas fa-truck"></i></div><strong>Доставка</strong></p>
+					<ul>
+						<li>Самовывоз - у нас доступно 32 пункта самовывоза в 26 городах Беларуси</li>
+						<li>Курьером по Минску - стоимость 6 руб</li>
+						<li>Курьером по Беларуси - стоимость зависит от местоположения точки доставки</li>
+					</ul>
+				</div>
+				<div>
+					<p><div class="someIcon"><i class="fas fa-shield-alt"></i></div><strong>Гарантия</strong></p>
+					<ul>
+						<li>12 месяцев со дня покупки товара конечным потребителем - только на неисправности, возникшие из-за дефектов производства.</li>
+						<li>Дополнительно можно получить гарантию на 18 и 36 месяцем (см. раздел Гарантия XXL)</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 		<xsl:if test="page/assoc">
 			<h3 style="margin-bottom: 16px; margin-top: 0"><strong>Вас также может заинтересовать</strong></h3>
