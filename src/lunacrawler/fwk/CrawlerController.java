@@ -284,6 +284,7 @@ public class CrawlerController {
 			String[] parts = StringUtils.split(url, ' ');
 			if (parts.length == 1) {
 				String seed = URLCanonicalizer.getCanonicalURL(parts[0]);
+				seed = StringUtils.substringBefore(seed,"?");
 				seedUrls.add(seed);
 				urlStyles.put(seed, NO_TEMPLATE);
 			} else {
