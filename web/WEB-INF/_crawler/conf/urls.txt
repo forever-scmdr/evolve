@@ -44,5 +44,5 @@
 #https://www\.metabo\.com/ru/index\.php\?cl=search(&amp;)?&?&order=?(&amp;)?&?ldtype=infogrid(&amp;)?&?_artperpage=100(&amp;)?&?pgNr=.{0,2}(&amp;)?&?searchparam=?   section.xsl
 #https://www\.metabo\.com/ru/index\.php\?cl=search(&amp;)?&?&order=?(&amp;)?&?&pgNr=1   section.xsl
 
-.*metabo\.com/ru/ru/(prinadlezhnosti|instrumenty).*\.html.*     product.xsl     https://www.metabo.com/ru/ru/instrumenty/akkumuljatornye-instrumenty/akkumuljatornye-dreli/be-18-ltx-6-600261890-akkumuljatornaja-drel.html?listtype=search
+.*metabo\.com/ru/ru/(prinadlezhnosti|instrumenty).*\.html.*     product.xsl     https://www.metabo.com/ru/ru/instrumenty/akkumuljatornye-instrumenty/akkumuljatornye-dreli/be-18-ltx-6-600261890-akkumuljatornaja-drel.html
 
