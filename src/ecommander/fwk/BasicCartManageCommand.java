@@ -186,7 +186,7 @@ public abstract class BasicCartManageCommand extends Command {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra (IN_PROGRESS, null);
 			getSessionMapper().saveTemporaryItem(cart);
-			return getResult("email_send_failed").setVariable("message", "Не удалось отправить сообщение на указанный ящик");
+			return getResult("email_send_failed").setVariable("message", "Не удалось отправить сообщение на указанный ящик. Проверьте правильно ли введен адрес электронной почты.");
 		}
 		// Отправка на ящик магазина
 		try {
