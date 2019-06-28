@@ -138,6 +138,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 
 				product.setValueUI(PRICE_PARAM, pv);
 				product.setValue(ItemNames.product_.AVAILABLE, av);
+				if(min != null) product.setValueUI("unit", min.getStringValue("unit", ""));
 
 				DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
 				info.increaseProcessed();
