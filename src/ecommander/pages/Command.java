@@ -14,6 +14,7 @@ import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.mappers.SessionItemMapper;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 /**
@@ -362,5 +363,13 @@ public abstract class Command implements AutoCloseable {
 		ResultPE result = getResult(name);
 		result.rollback();
 		return result;
+	}
+
+	protected final boolean hasCriticalItem() {
+		ExecutableItemPE pageItem = page.getItemPEById(page.getCriticalItem());
+		if (!pageItem.hasFoundItems() && !pageItem.isLoadedFromCache()) {
+			return false;
+		}
+		return true;
 	}
 }

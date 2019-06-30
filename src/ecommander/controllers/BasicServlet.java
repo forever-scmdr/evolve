@@ -2,6 +2,7 @@ package ecommander.controllers;
 
 import ecommander.fwk.*;
 import ecommander.pages.LinkPE;
+import extra.CacheAndCleanHidden;
 import org.apache.catalina.connector.ClientAbortException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -133,16 +134,28 @@ public abstract class BasicServlet extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}*/
 		File requestedFile = new File(AppContext.getFilePathByUrlPath(fileUrl, isProtected));
-		if (requestedFile.exists() && requestedFile.isFile()) {
-			String contentType = getServletContext().getMimeType(requestedFile.getName());
-			if (StringUtils.isBlank(contentType))
-				contentType = "application/octet-stream";
-			response.setContentType(contentType);
-			response.setHeader("Content-Disposition", "filename=\"" + requestedFile.getName() + "\"");
-			FileUtils.copyFile(requestedFile, response.getOutputStream());
-		} else {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		boolean sendFile = requestedFile.exists() && requestedFile.isFile();
+		boolean isEternalCache = false;
+		if (!sendFile) {
+			requestedFile = CacheAndCleanHidden.getEternalCachedFile(fileUrl);
+			sendFile = requestedFile.exists() && requestedFile.isFile();
+			isEternalCache = true;
 		}
+		if (!sendFile) {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+		String contentType;
+		if (isEternalCache)
+			contentType = "text/html";
+		else
+			contentType = getServletContext().getMimeType(requestedFile.getName());
+		if (StringUtils.isBlank(contentType))
+			contentType = "application/octet-stream";
+		response.setContentType(contentType);
+		if (!isEternalCache)
+			response.setHeader("Content-Disposition", "filename=\"" + requestedFile.getName() + "\"");
+		FileUtils.copyFile(requestedFile, response.getOutputStream());
 	}
 	/**
 	 * Получить часть URL после названия сайта

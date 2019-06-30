@@ -49,7 +49,7 @@ public class CacheAndCleanHidden extends IntegrateBase implements CatalogConst {
 				try {
 					executeAndCommitCommandUnits(ItemStatusDBUnit.restore(hiddenProduct));
 					ExecutablePagePE page = getExecutablePage(hiddenProduct.getKeyUnique());
-					File cache = new File(AppContext.getContextPath() + CACHED_DIR + "/" + page.getCacheableId());
+					File cache = getEternalCachedFile(hiddenProduct.getKeyUnique());
 					if (cache.exists())
 						cache.delete();
 					cache.createNewFile();
@@ -80,4 +80,23 @@ public class CacheAndCleanHidden extends IntegrateBase implements CatalogConst {
 	protected void terminate() throws Exception {
 
 	}
+
+	public static final File getEternalCachedFile(String productKeyUnique) {
+		return new File(AppContext.getContextPath() + CACHED_DIR + "/" + productKeyUnique);
+	}
+
+	/*
+
+	[ERROR]-[15:57:45]-[Thread-6] - ecommander.persistence.mappers.SessionItemMapper$SessionStorageImp cannot be cast to ecommander.persistence.mappers.SessionObjectStorage
+java.lang.ClassCastException: ecommander.persistence.mappers.SessionItemMapper$SessionStorageImp cannot be cast to ecommander.persistence.mappers.SessionObjectStorage
+	at ecommander.controllers.SessionContext.close(SessionContext.java:57)
+	at ecommander.pages.ExecutablePagePE.execute(ExecutablePagePE.java:209)
+	at ecommander.controllers.PageController.processSimplePage(PageController.java:210)
+	at ecommander.controllers.PageController.processPageInt(PageController.java:134)
+	at ecommander.controllers.PageController.executePage(PageController.java:124)
+	at extra.CacheAndCleanHidden.integrate(CacheAndCleanHidden.java:58)
+	at ecommander.fwk.IntegrateBase.lambda$0(IntegrateBase.java:328)
+	at java.lang.Thread.run(Thread.java:748)
+
+	 */
 }
