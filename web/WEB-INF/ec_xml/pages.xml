@@ -1468,6 +1468,17 @@
 		</command>
 	</page>
 
+
+	<page name="cache_and_remove" template="integrate" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.CacheAndCleanHidden" clear-cache="no">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
 	<page name="reindex_all" template="integration/reindex" authority-groups="common">
         <request>
             <var name="action"/>
@@ -1477,8 +1488,15 @@
 		</command>
 	</page>
 
+
 	<page name="clear_cache" schedule="0 1 15,18 ? * FRI *">
 		<command class="extra.ClearCache"/>
 	</page>
+
+
+	<page name="clear_cache" schedule="0 1 15,18 ? * FRI *">
+		<command class="extra.ClearCache"/>
+	</page>
+
 
 </site>

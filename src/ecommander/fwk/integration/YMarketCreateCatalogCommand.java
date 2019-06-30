@@ -10,6 +10,7 @@ import ecommander.model.UserGroupRegistry;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import extra.CacheAndCleanHidden;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -85,6 +86,13 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		postProcessBookinistic("16546");
 		//executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(20, null).noFulltextIndex());
 
+		info.setOperation("Создание кеша удаляемых товаров");
+		info.pushLog("Создание кеша удаляемых товаров");
+
+		CacheAndCleanHidden cacheCommand = new CacheAndCleanHidden(this);
+		cacheCommand.integrate();
+
+		info.pushLog("Создание кеша завершено");
 		info.pushLog("Создание товаров завершено");
 		info.pushLog("Индексация");
 		info.setOperation("Индексация");
