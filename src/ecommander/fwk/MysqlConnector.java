@@ -52,8 +52,8 @@ public class MysqlConnector
 	private static final int MAX_CONNECTIONS = 24;
 	
 	private static volatile int _open_count = 0;
-	private static HashMap<Integer, Integer> connectionNames = new HashMap<Integer, Integer>();
-	private static HashSet<Integer> openConnections = new HashSet<Integer>();
+	private static HashMap<Integer, Integer> connectionNames = new HashMap<>();
+	private static final HashSet<Integer> openConnections = new HashSet<>();
 	private static int com_name_counter = 0;
 	
 	private static final Lock lock = new ReentrantLock();
@@ -102,7 +102,9 @@ public class MysqlConnector
 					name = ++com_name_counter;
 					connectionNames.put(conn.hashCode(), name);
 				}
-				openConnections.add(name);
+				synchronized (openConnections) {
+					openConnections.add(name);
+				}
 				createTime = System.currentTimeMillis();
 				StackTraceElement[] els = Thread.currentThread().getStackTrace();
 				String trace = "";
@@ -159,7 +161,6 @@ public class MysqlConnector
 			} finally {
 				lock.unlock();
 			}
-			openConnections.remove(name);
 			String logEntry = "";
 			for (int i = 0; i < queryTimes.size(); i++) {
 				logEntry += "\n" + queryTimes.get(i) + "\t" + queries.get(i);
@@ -168,8 +169,11 @@ public class MysqlConnector
 			ServerLogger.error(logEntry);
 			ServerLogger.error("/////////////---------- CLOSE conneciton. Name " + name + "   Open time: " + time + "   Total: " + _open_count
 					+ createExtra() + " ----------/////////////");
-			ServerLogger
-					.error("/////////////---------- REMAINS OPEN: " + StringUtils.join(openConnections, ", ") + " ----------/////////////");
+			synchronized (openConnections) {
+				openConnections.remove(name);
+				ServerLogger
+						.error("/////////////---------- REMAINS OPEN: " + StringUtils.join(openConnections, ", ") + " ----------/////////////");
+			}
 		}
 
 		public void commit() throws SQLException {

@@ -153,9 +153,12 @@ public abstract class BasicServlet extends HttpServlet {
 		if (StringUtils.isBlank(contentType))
 			contentType = "application/octet-stream";
 		response.setContentType(contentType);
-		if (!isEternalCache)
+		if (!isEternalCache) {
 			response.setHeader("Content-Disposition", "filename=\"" + requestedFile.getName() + "\"");
-		FileUtils.copyFile(requestedFile, response.getOutputStream());
+			FileUtils.copyFile(requestedFile, response.getOutputStream());
+		} else {
+			Compression.decompress(requestedFile, response.getOutputStream());
+		}
 	}
 	/**
 	 * Получить часть URL после названия сайта

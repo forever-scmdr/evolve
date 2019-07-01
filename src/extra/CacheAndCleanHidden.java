@@ -2,6 +2,7 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
+import ecommander.fwk.Compression;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.integration.CatalogConst;
@@ -9,8 +10,10 @@ import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,26 +50,28 @@ public class CacheAndCleanHidden extends IntegrateBase implements CatalogConst {
 			for (Item hiddenProduct : hiddenProducts) {
 				// Создать файл кеша
 				try {
-					executeAndCommitCommandUnits(ItemStatusDBUnit.restore(hiddenProduct));
+					DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.restore(hiddenProduct));
 					ExecutablePagePE page = getExecutablePage(hiddenProduct.getKeyUnique());
 					File cache = getEternalCachedFile(hiddenProduct.getKeyUnique());
 					if (cache.exists())
 						cache.delete();
 					cache.createNewFile();
-					FileOutputStream fos = new FileOutputStream(cache, false);
+					//FileOutputStream fos = new FileOutputStream(cache, false);
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					PageController.newSimple().executePage(page, bos);
-					bos.writeTo(fos);
-					fos.flush();
-					fos.close();
+					ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+					Compression.compress(bis, cache);
+					//bos.writeTo(fos);
+					//fos.flush();
+					//fos.close();
 				} catch (Exception e) {
 					ServerLogger.error(e.getLocalizedMessage(), e);
 					info.addError("Невозможно создать кеш для товара", hiddenProduct.getKey());
-					executeAndCommitCommandUnits(ItemStatusDBUnit.hide(hiddenProduct));
+					DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.hide(hiddenProduct));
 					continue;
 				}
 				// Удалить
-				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(hiddenProduct));
+				DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.delete(hiddenProduct));
 				lastProductId = hiddenProduct.getId();
 				lastName = hiddenProduct.getKey();
 				info.increaseProcessed();
