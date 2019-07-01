@@ -39,12 +39,14 @@
 									</span>
 									<span class="title"><xsl:value-of select="$p/name"/></span>
 								<!--</xsl:if>-->
+								<!--
 								<div class="price one">
 									<p>
 										<span>Цена</span>
 										<xsl:value-of select="$price"/>
 									</p>
 								</div>
+								-->
 								<div class="quantity">
 									<span>Мин. заказ</span>
 									<xsl:value-of select="$min_qty"/>

@@ -49,7 +49,7 @@
 							<xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
 						</xsl:call-template>
 					</xsl:if>
-					<stock>0</stock>
+					<stock><xsl:value-of select="qty"/></stock>
 					<dlv>10-12 дней</dlv>
 					<bid>0</bid>
 				</item>

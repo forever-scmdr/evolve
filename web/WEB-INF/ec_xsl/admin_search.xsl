@@ -80,8 +80,8 @@
 							<th>Срок поставки</th>
 							<th>Единица</th>
 							<th>Мин. заказ</th>
-							<th>Цена (руб.)</th>
-							<th>Сумма (руб.)</th>
+							<th>Цена (<xsl:value-of select="$currency_out" />)</th>
+							<th>Сумма (<xsl:value-of select="$currency_out" />)</th>
 							<th>Начальная цена</th>
 							<th>Склад</th>
 							<th>Обновлено</th>
