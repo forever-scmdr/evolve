@@ -12,7 +12,7 @@
         <xsl:call-template name="DOCTYPE"/>
         <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
-                <base href="{page/base}"/>
+                <base href="http://alfacomponent.com"/>
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
                 <title>Результат разбора файла</title><!-- ******************* TODO LOCAL ******************** -->
             </head>

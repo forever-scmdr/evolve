@@ -31,7 +31,7 @@
 
 	<xsl:template name="INC_DESKTOP_HEADER">
 		<div class="container-fluid top-stripe desktop">
-			<div class="container">
+			<div class="container grid">
 				<xsl:value-of select="page/common/top" disable-output-escaping="yes"/>
 			</div>
 		</div>
@@ -772,7 +772,7 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css"/>
+				<link rel="stylesheet" href="css/app.css?version=2"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>

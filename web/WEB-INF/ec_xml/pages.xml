@@ -326,8 +326,15 @@
 			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
+			<!--
 			<filter>
 				<fulltext limit="48" compare="EVERY" threshold="0.3">
+					<var var="q"/>
+				</fulltext>
+			</filter>
+		-->
+			<filter>
+				<fulltext limit="200" threshold="0.1" type="prefix" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 			</filter>
@@ -381,7 +388,7 @@
 		<list item="product" id="prod">
 			<filter>
 				<!--<fulltext name="name" limit="50" compare="EVERY" type="term wildcard">-->
-				<fulltext name="name" limit="200" threshold="0.1" type="prefix" >
+				<fulltext name="name" limit="200" threshold="0.1" type="prefix">
 					<var var="q"/>
 				</fulltext>
 				<predecessor ref="ps" sing="IN"/>

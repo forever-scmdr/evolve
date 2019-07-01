@@ -18,8 +18,10 @@
 	<xsl:variable name="multiple" select="count($queries) &gt; 1"/>
 
 
-	<xsl:variable name="price_intervals" select="page/price_catalog/price_interval"/>
-	<xsl:variable name="Q" select="f:num(page/price_catalog/quotient)"/>
+	<xsl:variable name="price_catalogs" select="page/price_catalog"/>
+	<xsl:variable name="price_intervals_default" select="$price_catalogs[name = 'default']/price_interval"/>
+	<!--<xsl:variable name="Q" select="f:num(page/price_catalog/quotient)"/>-->
+	<xsl:variable name="Q" select="f:num(page/price_catalog[name = 'default']/quotient)"/>
 
 
 	<xsl:template name="MAIN_CONTENT">
@@ -94,20 +96,33 @@
 								<xsl:variable name="nn" select="$numbers[starts-with(., concat($q, ':'))][1]"/>
 								<xsl:variable name="n" select="f:num(tokenize($nn, ':')[last()])"/>
 								<xsl:variable name="p" select="position()"/>
- 								<xsl:variable name="query_products" select="$products[item_own_extras/query = $q]"/>
-								<xsl:apply-templates select="$query_products[1]">
+ 								<xsl:variable name="price_query_products" select="$products[item_own_extras/query = $q and plain_section]"/>
+								<xsl:variable name="no_price_query_products" select="$products[item_own_extras/query = $q and not(plain_section)]"/>
+								<xsl:apply-templates select="$price_query_products[1]">
 									<xsl:with-param name="number" select="$n"/>
 									<xsl:with-param name="position" select="$p"/>
 								</xsl:apply-templates>
-								<xsl:apply-templates select="$query_products[position() &gt; 1]">
+								<xsl:apply-templates select="$price_query_products[position() &gt; 1]">
 									<xsl:with-param name="hidden" select="'hidden'"/>
 									<xsl:with-param name="number" select="$n"/>
 									<xsl:with-param name="position" select="$p"/>
  								</xsl:apply-templates>
+								<xsl:apply-templates select="$no_price_query_products[1]">
+									<xsl:with-param name="number" select="$n"/>
+									<xsl:with-param name="position" select="$p"/>
+								</xsl:apply-templates>
+								<xsl:apply-templates select="$no_price_query_products[position() &gt; 1]">
+									<xsl:with-param name="hidden" select="'hidden'"/>
+									<xsl:with-param name="number" select="$n"/>
+									<xsl:with-param name="position" select="$p"/>
+								</xsl:apply-templates>
 							</xsl:for-each>
 						</xsl:if>
 						<xsl:if test="not($multiple)">
-							<xsl:for-each select="$products">
+							<xsl:for-each select="$products[plain_section]">
+								<xsl:apply-templates select="."/>
+							</xsl:for-each>
+							<xsl:for-each select="$products[not(plain_section)]">
 								<xsl:apply-templates select="."/>
 							</xsl:for-each>
 						</xsl:if>
@@ -125,25 +140,28 @@
 
 
 	<xsl:template name="ALL_PRICES">
+		<xsl:param name="section_name"/>
 		<xsl:param name="price"/>
 		<xsl:param name="min_qty"/>
 		<xsl:param name="need_sum"/>
+		<xsl:variable name="intervals" select="$price_catalogs[name = $section_name]/price_interval"/>
+		<xsl:variable name="price_intervals" select="if ($intervals) then $intervals else $price_intervals_default"/>
 		<xsl:for-each select="$price_intervals">
 			<xsl:variable name="quotient" select="f:num(quotient)"/>
 			<xsl:variable name="unit_price" select="$price * $Q * $quotient"/>
 			<xsl:if test="$price * $min_qty &lt; f:num(max)">
 				<xsl:variable name="min_number" select="ceiling(f:num(min) div $price)"/>
-				<xsl:variable name="number" select="if ($min_number &gt; $min_qty) then $min_number else $min_qty"/>
+				<xsl:variable name="number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) * $min_qty else $min_qty"/>
 				<xsl:variable name="sum" select="$unit_price * $number"/>
 				<p>
 					<!--|<xsl:value-of select="$Q"/> * <xsl:value-of select="$quotient"/> * <xsl:value-of select="$price"/>|-->
+					<!--|<xsl:value-of select="$min_number"/> div <xsl:value-of select="$min_qty"/> * <xsl:value-of select="$min_qty"/>|-->
 					<xsl:if test="$need_sum">x<xsl:value-of select="$number"/>&#160;=&#160;<xsl:value-of select="f:format_currency($sum)"/></xsl:if>
 					<xsl:if test="not($need_sum)"><xsl:value-of select="f:format_currency($unit_price)"/></xsl:if>
 				</p>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
-
 
 
 
@@ -173,14 +191,20 @@
 			<td><xsl:value-of select="vendor" /></td>
 			<!--<td><a><xsl:value-of select="code"/></a></td>-->
 			<td><xsl:value-of select="qty"/></td>
-			<td><xsl:value-of select="available"/></td>
+			<td>
+				<xsl:if test="not(vendor_code)">
+					<xsl:if test="available and not(available = '0')"><xsl:value-of select="available"/> нед.</xsl:if>
+					<xsl:if test="not(available) or available = '0'">склад</xsl:if>
+				</xsl:if>
+			</td>
 			<td><xsl:value-of select="$unit"/></td>
 			<td><xsl:value-of select="min_qty"/></td>
 			<td>
 				<xsl:if test="price and f:num(price) &gt; 0.001">
 					<xsl:call-template name="ALL_PRICES">
+						<xsl:with-param name="section_name" select="plain_section/name"/>
 						<xsl:with-param name="min_qty" select="$min_qty"/>
-						<xsl:with-param name="price" select="f:num(price)"/>
+						<xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
 						<xsl:with-param name="need_sum" select="false()"/>
 					</xsl:call-template>
 				</xsl:if>
@@ -188,8 +212,9 @@
 			<td>
 				<xsl:if test="price and f:num(price) &gt; 0.001">
 					<xsl:call-template name="ALL_PRICES">
+						<xsl:with-param name="section_name" select="plain_section/name"/>
 						<xsl:with-param name="min_qty" select="$min_qty"/>
-						<xsl:with-param name="price" select="f:num(price)"/>
+						<xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
 						<xsl:with-param name="need_sum" select="true()"/>
 					</xsl:call-template>
 				</xsl:if>
@@ -200,11 +225,11 @@
 			<td id="cart_search_{@id}">
 				<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
 					<xsl:if test="$has_price">
-						<input type="number" name="qty" value="{$num}" min="0"/>
+						<input type="number" name="qty" value="{$num}" min="0" step="{$min_qty}"/>
 						<input type="submit" value="Заказать"/>
 					</xsl:if>
 					<xsl:if test="not($has_price)">
-						<input type="number" name="qty" value="{$num}" min="0"/>
+						<input type="number" name="qty" value="{$num}" min="0" step="{$min_qty}"/>
 						<input type="submit" value="Запросить цену"/>
 					</xsl:if>
 				</form>
@@ -218,7 +243,6 @@
 			</xsl:if>
 		</tr>
 	</xsl:template>
-
 
 
 
