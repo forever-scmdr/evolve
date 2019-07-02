@@ -186,7 +186,7 @@ public abstract class BasicCartManageCommand extends Command {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra (IN_PROGRESS, null);
 			getSessionMapper().saveTemporaryItem(cart);
-			return getResult("email_send_failed").setVariable("message", "Не удалось отправить сообщение на указанный ящик. Проверьте правильно ли введен адрес электронной почты.");
+			return getResult("email_send_failed").setVariable("message", "Не удалось отправить сообщение на указанный ящик.");
 		}
 		// Отправка на ящик магазина
 		try {
@@ -209,7 +209,7 @@ public abstract class BasicCartManageCommand extends Command {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);
 			getSessionMapper().saveTemporaryItem(cart);
-			return getResult("email_send_failed").setVariable("message", "Отправка заказа временно недоступна, попробуйте позже или звоните по телефону");
+			return getResult("email_send_failed").setVariable("message", "Отправка заказа временно недоступна, попробуйте позже или звоните по телефону. Проверьте правильно ли введен адрес электронной почты.");
 		}
 
 		// Сохранение нового значения счетчика, если все отправлено удачно
