@@ -9,61 +9,58 @@
 
 	<xsl:template match="/">
 		<result>
-			<xsl:variable name="crumbs" select="html//div[@id='breadCrumb'][1]//span[@itemprop='title']"/>
+			<xsl:variable name="crumbs" select="html//div[@id='breadcrumbs_container'][1]//li[position() &gt; 1 and a]"/>
 			<xsl:for-each select="$crumbs">
-					<xsl:variable name="pos" select="position()"/>
-				<section id="{string-join($crumbs[position() &lt; $pos] | ., '_')}">
-					<xsl:if test="$crumbs[position() &lt; $pos]">
-						<h_parent parent="{string-join($crumbs[position() &lt; $pos], '_')}"/>
-						</xsl:if>
-					<name><xsl:value-of select="." /></name>
-					</section>
-				</xsl:for-each>
-			<xsl:variable name="header" select="//h1"/>
-			<xsl:variable name="code" select="substring-before(substring-after($header, ' ('), ')')"/>
+				<xsl:variable name="pos" select="position()"/>
+				<section id="{a/@href}">
+					<xsl:if test="$crumbs[position() = $pos - 1]">
+						<h_parent parent="{$crumbs[position() = $pos - 1]/a/@href}"/>
+					</xsl:if>
+					<name><xsl:value-of select="a/span" /></name>
+				</section>
+			</xsl:for-each>
+			<xsl:variable name="model_block" select="html//div[contains(@class, 's-nomenclature__sales-block-inner')]"/>
+			<xsl:variable name="code" select="html//p[contains(@class, 's-nomenclature__articul')]/span[2]"/>
+			<xsl:variable name="name" select="$model_block//span[contains(@class, 'js-panel-value')]"/>
 			<product id="{$code}">
-				<h_parent parent="{string-join($crumbs, '_')}"/>
-				<name><xsl:value-of select="substring-before($header, ' (')"/></name>
+				<h_parent parent="{$crumbs[position() = last()]/a/@href}"/>
+				<header><xsl:value-of select="//h1"/></header>
+				<name><xsl:value-of select="if (starts-with($name, ':')) then normalize-space(substring-after($name, ':')) else $name"/></name>
 				<code><xsl:value-of select="$code" /></code>
-				<type><xsl:value-of select="substring-after($header, ') ')"/></type>
-				<name_extra><xsl:value-of select="//h2"/></name_extra>
 				<short>
-					<xsl:copy-of select="//div[@class='productMainInfo']//div[@class='attributes']"/>
+					<xsl:copy-of select="html//div[@id = 'main_attributes']/ul/li"/>
 				</short>
-				<extra>
-					<xsl:copy-of select="//div[@class='prodinfo']/ul"/>
-				</extra>
+				<xsl:for-each select="html//li[contains(@class, 's-video__item')]">
+					<video>
+						<link><xsl:value-of select="a/@target" /></link>
+						<pic download="{a/img/@src}"><xsl:value-of select="a/img/@src" /></pic>
+					</video>
+				</xsl:for-each>
 				<description>
-					<xsl:copy-of select="//div[@id='description']"/>
+					<xsl:copy-of select="html//div[@id='text_attributes']"/>
 				</description>
 				<tech>
-					<xsl:copy-of select="//div[@id='attributes']"/>
-				</tech>
-				<package>
-					<xsl:copy-of select="//div[@id='scopeofdelivery']"/>
-				</package>
-				<symbols>
-					<xsl:for-each select="//div[@class='attributeSymbol']">
-						<pic link="{.//img/@src}" download="{.//img/@src}"><xsl:value-of select=".//img/@title" /></pic>
+					<xsl:for-each select="html//div[@id = 'list_attributes']//tr[th]">
+						<param>
+							<name><xsl:value-of select="th"/></name>
+							<value><xsl:value-of select="td"/></value>
+						</param>
 					</xsl:for-each>
-				</symbols>
-				<manual><xsl:value-of select="//div[@class='product-attributes-pdfs']/a[1]/@href"/></manual>
-				<parts><xsl:value-of select="//div[@class='product-attributes-pdfs']/a[2]/@href"/></parts>
-				<xsl:variable name="spins" select="//iframe[@class='degree']"/>
-				<xsl:if test="$spins">
-					<spin link="{$spins[1]/@src}"/>
-				</xsl:if>
-				<xsl:for-each select="//iframe[not(@class='degree') and @id]">
-					<video link="{@src}"/>
+				</tech>
+				<xsl:for-each select="html//div[@id = 'files_lists']//li">
+					<manual>
+						<file download="{a/@href}"><xsl:value-of select="a/@href" /></file>
+						<title><xsl:value-of select="div/a" /></title>
+					</manual>
 				</xsl:for-each>
 				<gallery>
-					<xsl:for-each select="//div[@id='popupGallery']//div[@class='thumbnail']//img[ends-with(@src, '.jpg') or ends-with(@src, '.jpeg')]">
-						<pic download="{@src}" link="{@src}"/>
+					<xsl:for-each select="html//ul[contains(@class, 's-nomenclature__thumbs-list') and not(../@style)]//li">
+						<pic download="{a/@href}" link="{a/@href}"/>
 					</xsl:for-each>
 				</gallery>
 				<assoc>
-					<xsl:for-each select="//div[@class='widgetBoxBottomRound']//a/span">
-						<code><xsl:value-of select="substring-before(substring-after(., '('), ')')"/></code>
+					<xsl:for-each select="html//ul[contains(@class, 's-catalog-groups__list')]/li">
+						<name><xsl:value-of select="current()//div[2]/a/span"/></name>
 					</xsl:for-each>
 				</assoc>
 			</product>

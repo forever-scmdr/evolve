@@ -381,7 +381,7 @@ public class CrawlerController {
 			downloadFiles();
 		}
 	}
-	
+
 	private void terminateInt() {
 		CONTROLLER.shutdown();
 	}
@@ -561,12 +561,18 @@ public class CrawlerController {
 
 					}
 				};
+				threads[i].setDaemon(true);
 				threads[i].start();
 			}
-
+			for (Thread thread : threads) {
+				thread.join();
+			}
 			info.pushLog("Finished downloading files");
 		} catch (IOException e) {
-			info.pushLog("Can not parse result file", e);
+			info.pushLog("Can not parse result file");
+		} catch (InterruptedException e) {
+			ServerLogger.error("Thread join error", e);
+			info.pushLog("Ошибка объединения потоков скачивания файлов");
 		}
 	}
 	/**
