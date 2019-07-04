@@ -4,7 +4,10 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.*;
+import ecommander.persistence.commandunits.CopyItemDBUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.commandunits.MoveItemDBUnit;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
@@ -380,6 +383,16 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 												product.clearValue("small_pic");
 											}
 											break;
+										case DOWNLOAD:
+											if (StringUtils.isNotBlank(cellValue)) {
+												try {
+													URL url = new URL(cellValue);
+													product.setValue(paramName, url);
+												} catch (Exception e) {
+												}
+
+											}
+											break;
 										default:
 											break;
 									}
@@ -553,12 +566,14 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							}
 							if (StringUtils.isNotBlank(auxParams.get(param))) aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
 						}
-						paramsXML.setValueUI(XML_PARAM, xml.toString());
-						executeCommandUnit(SaveItemDBUnit.get(paramsXML).noFulltextIndex());
+
+						paramsXML.setValue(XML_PARAM, xml.toString());
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXML).noFulltextIndex());
+
 						if (auxType != null) {
-							executeCommandUnit(SaveItemDBUnit.get(aux).noFulltextIndex());
+							executeAndCommitCommandUnits(SaveItemDBUnit.get(aux).noFulltextIndex());
 						}
-						commitCommandUnits();
+
 					}
 				}
 
