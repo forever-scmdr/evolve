@@ -1261,7 +1261,7 @@
 	</page>
 
 
-    <page name="crawl" template="crawl">
+    <page name="crawl" template="integration/crawl">
         <request>
             <var name="action"/>
             <var name="job"/>
