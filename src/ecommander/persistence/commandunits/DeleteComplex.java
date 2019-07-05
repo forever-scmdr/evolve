@@ -21,8 +21,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class DeleteComplex implements DBConstants.ItemTbl {
 
-	private static final int AVERAGE = 50000;
-	private static final int MANY = 500000;
+	private static final int AVERAGE = 10000;
+	private static final int MANY = 50000;
 
 	private static final int MAX_DELETE_SECONDS  = 60;
 
