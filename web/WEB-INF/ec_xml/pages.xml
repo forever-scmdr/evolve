@@ -251,7 +251,17 @@
 				</link>
 				<single item="params"/>
 			</list>
-			<list item="product" tag="tag" id="tag">
+<!--			<list item="product" tag="tag" id="tag">-->
+<!--				<aggregation parameter="tag"/>-->
+<!--				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">-->
+<!--					<var name="sec" style="translit" var="sec"/>-->
+<!--					<var name="tag" parameter="tag" ref="tag"/>-->
+<!--				</link>-->
+<!--			</list>-->
+			<list item="book" tag="tag" id="tag">
+				<filter>
+					<limit><var value="100" /></limit>
+				</filter>
 				<aggregation parameter="tag"/>
 				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
 					<var name="sec" style="translit" var="sec"/>

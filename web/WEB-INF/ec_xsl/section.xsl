@@ -176,7 +176,18 @@
 			<xsl:if test="not($subs)">
 				<div class="tags">
 					<form method="GET" action="{page/source_link}">
-						<xsl:apply-templates select="$sel_sec/tag"/>
+						<xsl:for-each-group select="$sel_sec/tag" group-by="tag">
+							<label class="tag{if(current-grouping-key() = $tag) then ' active' else ''}">
+								<xsl:if test="current-grouping-key() = $tag">
+									<input type="radio" checked="checked" value="{current-grouping-key()}" name="tag"
+									       onclick="document.location.replace('{//reset_filter_link}')"/>
+								</xsl:if>
+								<xsl:if test="not(current-grouping-key() = $tag)">
+									<input type="radio" value="{current-grouping-key()}" name="tag" onchange="$(this).closest('form').submit();"/>
+								</xsl:if>
+								<xsl:value-of select="current-grouping-key()"/>
+							</label>
+						</xsl:for-each-group>
 					</form>
 				</div>
 			</xsl:if>
