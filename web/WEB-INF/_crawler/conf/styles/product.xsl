@@ -41,15 +41,15 @@
 				</description>
 				<tech>
 					<xsl:for-each select="html//div[@id = 'list_attributes']//tr[th]">
-						<param>
+						<parameter>
 							<name><xsl:value-of select="th"/></name>
 							<value><xsl:value-of select="td"/></value>
-						</param>
+						</parameter>
 					</xsl:for-each>
 				</tech>
 				<xsl:for-each select="html//div[@id = 'files_lists']//li">
 					<manual>
-						<file download="https://suzuki.ru{a/@href}">https://suzuki.ru<xsl:value-of select="a/@href" /></file>
+						<file download="{a/@href}"><xsl:value-of select="a/@href" /></file>
 						<title><xsl:value-of select="div/a" /></title>
 					</manual>
 				</xsl:for-each>
