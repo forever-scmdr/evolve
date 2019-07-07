@@ -63,6 +63,7 @@ public interface CatalogConst {
 	String ASSOC_PARAM = "assoc";
 	String ASSOC_CODE_PARAM = "assoc_code";
 	String NEXT_DELIVERY_PARAM = "next_delivery";
+	String HEADER = "header";
 
 	String HAS_LINE_PRODUCTS = "has_lines";
 

@@ -809,6 +809,7 @@ public class CrawlerController {
 				info.increaseProcessed();
 			}
 		} catch (IOException e) {
+			ServerLogger.error("Error while normalizing item personal file", e);
 			info.pushLog("Error while normalizing item personal file", e);
 		}
 		info.pushLog("ЗАВЕРШЕНО: Удаление дублирующихся данных");

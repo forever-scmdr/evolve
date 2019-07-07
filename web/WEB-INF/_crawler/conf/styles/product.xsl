@@ -14,7 +14,7 @@
 				<xsl:variable name="pos" select="position()"/>
 				<section id="{a/@href}">
 					<xsl:if test="$crumbs[position() = $pos - 1]">
-						<h_parent parent="{$crumbs[position() = $pos - 1]/a/@href}"/>
+						<h_parent parent="{$crumbs[position() = $pos - 1]/a/@href}" element="section"/>
 					</xsl:if>
 					<name><xsl:value-of select="a/span" /></name>
 				</section>
@@ -23,7 +23,7 @@
 			<xsl:variable name="code" select="html//p[contains(@class, 's-nomenclature__articul')]/span[2]"/>
 			<xsl:variable name="name" select="$model_block//span[contains(@class, 'js-panel-value')]"/>
 			<product id="{$code}">
-				<h_parent parent="{$crumbs[position() = last()]/a/@href}"/>
+				<h_parent parent="{$crumbs[position() = last()]/a/@href}" element="section"/>
 				<header><xsl:value-of select="//h1"/></header>
 				<name><xsl:value-of select="if (starts-with($name, ':')) then normalize-space(substring-after($name, ':')) else $name"/></name>
 				<code><xsl:value-of select="$code" /></code>
@@ -49,13 +49,13 @@
 				</tech>
 				<xsl:for-each select="html//div[@id = 'files_lists']//li">
 					<manual>
-						<file download="{a/@href}"><xsl:value-of select="a/@href" /></file>
+						<file download="https://suzuki.ru{a/@href}">https://suzuki.ru<xsl:value-of select="a/@href" /></file>
 						<title><xsl:value-of select="div/a" /></title>
 					</manual>
 				</xsl:for-each>
 				<gallery>
 					<xsl:for-each select="html//ul[contains(@class, 's-nomenclature__thumbs-list') and not(../@style)]//li">
-						<pic download="{a/@href}" link="{a/@href}"/>
+						<pic download="https://suzuki.ru{a/@href}" link="https://suzuki.ru{a/@href}"/>
 					</xsl:for-each>
 				</gallery>
 				<assoc>

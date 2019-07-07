@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.print.Doc;
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -83,9 +84,9 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 				code = productElTree.attr(ID_ATTR);
 				if (StringUtils.isBlank(code))
 					continue;
-				Document productDoc;
+				ParsedInfoProvider.InfoAccessor productDoc;
 				try {
-					productDoc = infoProvider.getItem(code);
+					productDoc = infoProvider.getAccessor(code);
 				} catch (Exception e) {
 					ServerLogger.error("Error parsing product xml file", e);
 					info.addError("Документ для товара '" + code + "' содержит ошибки", code);
@@ -94,7 +95,7 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 				name = productDoc.getElementsByTag(NAME).first().ownText();
 				String type = productDoc.getElementsByTag(TYPE_PARAM).first().ownText();
 				String nameExtra = productDoc.getElementsByTag(NAME_EXTRA_PARAM).first().ownText();
-				String vendorCode = productDoc.getElementsByTag(VENDOR_CODE_PARAM).first().ownText();
+				String vendorCode = productDoc.getElementsByTag(VENDOR_COjrDE_PARAM).first().ownText();
 				String vendor = productDoc.getElementsByTag(VENDOR_ELEMENT).first().html();
 				//String description = productDoc.getElementsByTag(EXTRA_PARAM).first().html();
 				String text = productDoc.getElementsByTag(TEXT_PARAM).first().html();

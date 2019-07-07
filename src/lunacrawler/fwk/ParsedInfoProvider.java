@@ -6,7 +6,9 @@ import ecommander.fwk.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +23,45 @@ import java.nio.file.Paths;
 public class ParsedInfoProvider {
 	public static final String RESULT_DIR = "parsing.result_dir"; // директория, в которой лежат файлы со стилями
 	public static final String UTF_8 = "UTF-8";
+
+
+	public static class InfoAccessor {
+		private Element root;
+
+		public InfoAccessor(Document root) {
+			this.root = root;
+		}
+
+		public String getNodeText(String tag, String...defaultValue) {
+			Element el = root.getElementsByTag(tag).first();
+			if (el == null)
+				return defaultValue.length > 0 ? defaultValue[0] : null;
+			return el.ownText();
+		}
+
+		public String getNodeHtml(String tag, String...defaultValue) {
+			Element el = root.getElementsByTag(tag).first();
+			if (el == null)
+				return defaultValue.length > 0 ? defaultValue[0] : null;
+			return el.html();
+		}
+
+		public Element getRoot() {
+			return root;
+		}
+
+		public Element getFirst(String tag) {
+			return root.getElementsByTag(tag).first();
+		}
+
+		public Elements getChildrenOfFirst(String firstTag, String childrenTag) {
+			Element el = root.getElementsByTag(firstTag).first();
+			if (el == null)
+				return new Elements();
+			return el.getElementsByTag(childrenTag);
+		}
+	}
+
 
 	private Path compiledDir;
 	private Path filesDir;
@@ -60,6 +101,10 @@ public class ParsedInfoProvider {
 		Path file = compiledDir.resolve(fileName);
 		String xml = new String(Files.readAllBytes(file), UTF_8);
 		return Jsoup.parse(xml, "localhost", Parser.xmlParser());
+	}
+
+	public InfoAccessor getAccessor(String id) throws IOException {
+		return new InfoAccessor(getItem(id));
 	}
 
 	/**
