@@ -34,7 +34,7 @@ public class ParsedInfoProvider {
 
 		public String getNodeText(String tag, String...defaultValue) {
 			Element el = root.getElementsByTag(tag).first();
-			if (el == null || StringUtils.isBlank(el.ownText()))
+			if (el == null)
 				return defaultValue.length > 0 ? defaultValue[0] : null;
 			return el.ownText();
 		}
