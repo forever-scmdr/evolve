@@ -173,8 +173,6 @@
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
-		<on-update class="ecommander.fwk.CreateCatalogLink"/>
-		<on-create class="ecommander.fwk.CreateCatalogLink"/>
 	</item>
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
@@ -184,15 +182,12 @@
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
-		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
 	</item>
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
 	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product * gallery" virtual="true" ag-id="865" ag-hash="1523682729">
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
-		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
-		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
@@ -202,7 +197,9 @@
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
 		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
+		<parameter name="status" type="string" caption="Статус"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
+		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
 		<parameter name="small_pic" type="picture" format="width: 200; src: main_pic;" caption="Маленькая картинка"/>
@@ -210,21 +207,20 @@
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
+		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
 		<parameter name="tag" type="string" caption="Тэг" multiple="true"/>
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
-		<!--<on-update class="ecommander.fwk.CreateCatalogLink"/>-->
-		<!--<on-create class="ecommander.fwk.CreateCatalogLink"/>-->
 	</item>
 
 
 	<!--Товар, который вложен в другой товар-->
 	<!--Обновляет цену ОТ (минимальная цена) своего родительского товара при сохранении-->
-	<item name="line_product" caption="Товар-строка" description="содержится в товаре, какн из видов этого товара" super="described_product" ag-id="866" ag-hash="1097527204">
-		<on-update class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/> оди
+	<item name="line_product" caption="Товар-строка" description="содержится в товаре, как один из видов этого товара" super="described_product" ag-id="866" ag-hash="1097527204">
+		<on-update class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/>
 		<on-create class="ecommander.fwk.integration.UpdateProductMinPriceFactory"/>
 		<on-delete class="ecommander.fwk.integration.UpdateProductMinPriceDeletedFactory"/>
 	</item>
@@ -233,7 +229,6 @@
 	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true"
 	      default-page="product" super="described_product * seo_container">
 		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
-
 		<child item="line_product"/>
 	</item>
 
@@ -299,10 +294,7 @@
 	<item name="bought" caption="Покупка" virtual="true" key="code" ag-id="16" ag-hash="-1383211797">
 		<parameter name="name" type="string" caption="Наименование товара" description="не обязательно. Используется только в истории заказов"/>
 		<parameter name="code" type="string" caption="Код товара"/>
-		<parameter name="qty" type="double" format="#.###" caption="Количество (deprecated)" description="для обратной совместимости"/>
-		<parameter name="qty_avail" type="double" format="#.###" caption="Количество, обеспеченное складом"
-				   description="та часть общего количества, которое есть на складе"/>
-		<parameter name="qty_total" type="double" format="#.###" caption="Общее количество"/>
+		<parameter name="qty" type="double" caption="Количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
@@ -343,10 +335,7 @@
 	<item name="purchase" caption="Заказ" key="num" ag-id="820" ag-hash="1743324417">
 		<parameter name="num" caption="Номер" type="string"/>
 		<parameter name="date" caption="Дата" type="date"/>
-		<parameter name="qty" type="double" caption="Количество (deprecated)" description="для обратной совместимости"/>
-		<parameter name="qty_avail" type="double" caption="Количество, обеспеченное складом"
-				   description="та часть общего количества, которое есть на складе"/>
-		<parameter name="qty_total" type="double" caption="Общее количество"/>
+		<parameter name="qty" type="double" caption="Количество товаров"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
 		<child item="bought"/>
 	</item>
@@ -366,10 +355,15 @@
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
 		<parameter name="organization" type="string" caption="Наименование организации" />
 		<!--<parameter name="phone" type="string" caption="Телефон/факс" />-->
+		<parameter name="contract_number" type="string" caption="Номер договора" />
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />
 		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />
 		<parameter name="email" type="string" caption="E-mail" />
 		<parameter name="address" type="string" caption="Юридический адрес" />
+		<parameter name="city" type="string" caption="Город" />
+		<parameter name="route" type="string" caption="Маршрут" />
+		<parameter name="debt" type="currency" caption="Долг" default="0" />
+		<parameter name="discount" type="double" caption="Персональная скидка" default="0" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
 		<parameter name="pay_type" type="string" caption="Способ оплаты" />
 		<parameter name="no_account" type="string" caption="Нет расчетного счета" domain="yes-no"/>
@@ -395,7 +389,8 @@
 	</item>
 
 
-	<item name="registered_catalog" caption="Каталог пользователей" ag-id="822" ag-hash="-755203236">
+	<item name="registered_catalog" caption="Каталог пользователей" children-sorting="DESC" children-per-page="50" ag-id="822" ag-hash="-755203236">
+		<parameter name="users_file" type="file" caption="Файл пользователей"/>
 		<child item="user"/>
 	</item>
 
@@ -429,7 +424,6 @@
 		<parameter name="link_name" type="string" caption="Текст на ссылке" description="выводится как текст кнопки"/>
 		<parameter name="link" type="string" caption="Ссылка" description="в формате http://..."/>
 		<parameter name="pic" type="picture" caption="Картинка"/>
-		<parameter name="pic_mobile" type="picture" caption="Картинка для мобильных устройств" description="меньше и других пропорций"/>
 	</item>
 
 	<item name="banner" caption="Баннер" key="header" ag-id="867" ag-hash="-1396342996">
@@ -480,10 +474,12 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
-		<parameter name="google_verification" type="string" caption="google verification code"/>
-		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
+		<parameter name="debt_text" type="short-text" caption="Текст о долге (для должников)"/>
+		<parameter name="google_verification" type="string" caption="GOOGLE verification code"/>
+		<parameter name="yandex_verification" type="string" caption="YANDEX verification code"/>
 		<child item="delivery" single="true"/>
 		<child item="payment" single="true"/>
+		<child item="discounts" single="true"/>
 		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
@@ -502,8 +498,17 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="payment" caption="Оплата" ag-id="1726" ag-hash="-786681338">
+	<item name="payment" caption="Оплата" ag-id="1831" ag-hash="-786681338">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
+	</item>
+
+	<item name="discounts" caption="Скидки" ag-id="2183" ag-hash="-121228462">
+		<parameter name="self_delivery" type="double" caption="Скидка за самовывоз" default="1" description="в процентах"/>
+		<parameter name="pay_first" type="double" caption="Скидка за предоплату" default="0.5" description="в процентах" />
+		<parameter name="autolight" type="double" caption="Надбавка за автолайт" default="5" description="в процентах" />
+		<parameter name="delivery" type="double" caption="Надбавка за доставку" default="3" description="в процентах" />
+		<parameter name="sum_discount" type="double" caption="Скидка большую сумму заказа" default="2" description="в процентах" />
+		<parameter name="sum_more" type="currency" caption="Сумма заказа для предоставления скидки" default="2000" description="в рублях" />
 	</item>
 
 	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1432" ag-hash="-1220416192">

@@ -71,7 +71,7 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 			String secCode = sectionEl.attr(ID_ATTR);
 			String secName = infoProvider.getItem(secCode).getElementsByTag(NAME_ELEMENT).first().ownText();
 			Item section = Item.newChildItem(sectionType, parent);
-			section.setValue(CODE_PARAM, secCode);
+			//section.setValue(CODE_PARAM, secCode);
 			section.setValue(NAME_PARAM, secName);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex());
 			processSubsections(sectionEl, section);
@@ -92,43 +92,30 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 					info.addError("Документ для товара '" + code + "' содержит ошибки", code);
 					continue;
 				}
-				name = productDoc.getElementsByTag(NAME).first().ownText();
-				String type = productDoc.getElementsByTag(TYPE_PARAM).first().ownText();
-				String nameExtra = productDoc.getElementsByTag(NAME_EXTRA_PARAM).first().ownText();
-				String vendorCode = productDoc.getElementsByTag(VENDOR_COjrDE_PARAM).first().ownText();
-				String vendor = productDoc.getElementsByTag(VENDOR_ELEMENT).first().html();
-				//String description = productDoc.getElementsByTag(EXTRA_PARAM).first().html();
-				String text = productDoc.getElementsByTag(TEXT_PARAM).first().html();
-				String paramsXml = productDoc.getElementsByTag(PARAMS_XML_ELEMENT).first().html();
-				//String packageTxt = productDoc.getElementsByTag(PACKAGE_PARAM).first().html();
-				//String extraXml = productDoc.getElementsByTag(SYMBOLS_PARAM).first().html();
-				/*
-				Elements spinEls = productDoc.getElementsByTag(SPIN_PARAM);
-				for (Element spinEl : spinEls) {
-					extraXml += spinEl.outerHtml();
-				}
-				Elements videoEls = productDoc.getElementsByTag(VIDEO_PARAM);
+				String header = productDoc.getNodeText(HEADER);
+				name = productDoc.getNodeText(NAME, header);
+				String shortDesc = productDoc.getNodeHtml(SHORT_PARAM);
+				String text = productDoc.getNodeHtml(DESCRIPTION_ELEMENT);
+				String paramsXml = productDoc.getNodeHtml(TECH_PARAM);
+
+				Elements videoEls = productDoc.getRoot().getElementsByTag(VIDEO_PARAM);
+				String extraXml = "";
 				for (Element videoEl : videoEls) {
 					extraXml += videoEl.outerHtml();
 				}
-				Elements manuals = productDoc.getElementsByTag(MANUAL_PARAM);
-				if (manuals.size() > 0) {
-					extraXml += manuals.first().outerHtml();
+				Elements manuals = productDoc.getRoot().getElementsByTag(MANUAL_PARAM);
+				for (Element manual : manuals) {
+					extraXml += manuals.outerHtml();
 				}
-				Elements spareParts = productDoc.getElementsByTag(PARTS_PARAM);
-				if (spareParts.size() > 0) {
-					extraXml += spareParts.first().outerHtml();
-				}
-				*/
 				ArrayList<Path> gallery = new ArrayList<>();
-				Elements pics = productDoc.getElementsByTag(GALLERY_PARAM).first().getElementsByTag(PIC_PARAM);
+				ArrayList<String> assocCodes = new ArrayList<>();
+				Elements pics = productDoc.getFirst(GALLERY_PARAM).getElementsByTag(PIC_PARAM);
 				for (Element pic : pics) {
 					Path file = infoProvider.getFile(code, pic.attr(LINK_PARAM));
 					if (file != null)
 						gallery.add(file);
 				}
-				ArrayList<String> assocCodes = new ArrayList<>();
-				Elements codeEls = productDoc.getElementsByTag(ASSOC_PARAM).first().getElementsByTag(ASSOC_CODE_ELEMENT);
+				Elements codeEls = productDoc.getFirst(ASSOC_PARAM).getElementsByTag(ASSOC_CODE_ELEMENT);
 				for (Element codeEl : codeEls) {
 					assocCodes.add(codeEl.ownText());
 				}
@@ -137,14 +124,10 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 				Product product = Product.get(Item.newChildItem(productType, parent));
 				product.set_name(name);
 				product.set_code(code);
-				product.set_type(type);
-				product.set_name_extra(nameExtra);
-				product.set_vendor_code(vendorCode);
-				product.set_vendor(vendor);
-				//product.set_short(shortTxt);
-				//product.set_description(description);
+				product.set_name_extra(header);
+				product.set_description(shortDesc);
 				product.set_text(text);
-				//product.set_extra_xml(extraXml);
+				product.set_extra_xml(extraXml);
 				for (String assocCode : assocCodes) {
 					product.setValue(ASSOC_CODE_PARAM, assocCode);
 				}
@@ -200,32 +183,7 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 					Item paramsXmlItem = Item.newChildItem(paramsXmlType, product);
 					paramsXmlItem.setValue(XML_PARAM, paramsXml);
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXmlItem).noFulltextIndex().ignoreFileErrors());
-
-				/*
-				Item techItem = Item.newChildItem(productExtraType, product);
-				techItem.setValue(NAME, "tech");
-				techItem.setValue(TEXT_PARAM, tech);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(techItem).noFulltextIndex().ignoreFileErrors());
-				*/
 				}
-				/*
-				Elements manuals = productDoc.getElementsByTag(MANUALS_ELEMENT).first().getElementsByTag(MANUAL);
-				for (Element manual : manuals) {
-					Item manualItem = Item.newChildItem(manualType, product);
-					manualItem.setValue(NAME, manual.getElementsByTag(NAME_ELEMENT).first().ownText());
-					manualItem.setValue(LINK_PARAM, manual.getElementsByTag(FILE_ELEMENT).first().ownText());
-					executeAndCommitCommandUnits(SaveItemDBUnit.get(manualItem).noFulltextIndex().ignoreFileErrors());
-				}
-				*/
-				// комплектность поставки
-/*
-			if (StringUtils.isNotBlank(packageTxt)) {
-				Item packageItem = Item.newChildItem(productExtraType, product);
-				packageItem.setValue(NAME, "package");
-				packageItem.setValue(TEXT_PARAM, packageTxt);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(packageItem).noFulltextIndex().ignoreFileErrors());
-			}
-*/
 				info.increaseProcessed();
 			} catch (Exception e) {
 				ServerLogger.error("Product save error", e);
