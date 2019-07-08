@@ -107,7 +107,14 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			if (path.length <= 0)
 				continue;
 			String secName = path[path.length - 1];
-			Item section = Item.newChildItem(sectionType, parent);
+			if("Инструменты".equals(secName)){
+				processSubsections(sectionEl, parent);
+				continue;
+			}
+			ItemQuery sectionByName = new ItemQuery(SECTION);
+			sectionByName.setParentId(parent.getId(), false);
+			Item section = sectionByName.addParameterCriteria(NAME, secName, "=", null, Compare.SOME).loadFirstItem();
+			section = section == null? Item.newChildItem(sectionType, parent) : section;
 			section.setValue(NAME, secName);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex());
 			processSubsections(sectionEl, section);
