@@ -3,7 +3,6 @@ package extra;
 import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.Section;
@@ -17,7 +16,6 @@ import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by E on 3/5/2018.
@@ -89,12 +87,12 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 	protected void integrate() throws Exception {
 		info.setToProcess(0);
 		info.setProcessed(0);
-		List<Item> catalogs = new ItemQuery(CATALOG).loadItems();
-		if (catalogs.size() > 0) {
-			for (Item catalog : catalogs) {
-				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(catalog));
-			}
-		}
+//		List<Item> catalogs = new ItemQuery(CATALOG).loadItems();
+//		if (catalogs.size() > 0) {
+//			for (Item catalog : catalogs) {
+//				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(catalog));
+//			}
+//		}
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		Document tree = infoProvider.getTree();
 		processSubsections(tree.getElementsByTag("data").first(), catalog);
