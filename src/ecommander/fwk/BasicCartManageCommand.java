@@ -459,11 +459,14 @@ public abstract class BasicCartManageCommand extends Command {
 				// Первоначальная сумма
 				BigDecimal price = product.getDecimalValue(PRICE, new BigDecimal(0));
 				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
-				if (maxQuantity <= 0 || maxQuantity < quantity) {
-					productSum = new BigDecimal(0);
-				} else {
-					totanQuantity += quantity;
-				}
+//				if (maxQuantity <= 0 || maxQuantity < quantity) {
+//					productSum = new BigDecimal(0);
+//				} else {
+//					totanQuantity += quantity;
+//				}
+				//Fix? 09.07.2019. add missing products cost to order.
+				totanQuantity += quantity;
+				//END fix 09.07.2019
 				bought.setValue(PRICE_PARAM, price);
 				bought.setValue(SUM_PARAM, productSum);
 				totalSum = totalSum.add(productSum);
