@@ -131,7 +131,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 				ServerLogger.error("Error parsing product xml file", e);
 				info.addError("Документ для товара '" + code + "' содержит ошибки", code);
 			}
-			deployProduct(productDoc, parent);
+			deployProduct(productDoc, parent, true);
 		}
 	}
 
