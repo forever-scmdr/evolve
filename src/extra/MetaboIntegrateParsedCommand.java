@@ -190,8 +190,10 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			Path firstPic = gallery.get(0);
 			Path newMainPic = firstPic.resolveSibling("main_" + firstPic.getFileName());
 			ByteArrayOutputStream bos = ResizeImagesFactory.resize(firstPic.toFile(), 0, 400);
-			Files.write(newMainPic, bos.toByteArray());
-			product.setValue(MAIN_PIC, newMainPic.toFile());
+			if (bos != null) {
+				Files.write(newMainPic, bos.toByteArray());
+				product.setValue(MAIN_PIC, newMainPic.toFile());
+			}
 		}
 
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());

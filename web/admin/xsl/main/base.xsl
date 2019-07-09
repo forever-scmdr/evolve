@@ -223,6 +223,16 @@
 											Управление классами объектов
 										</a>
 									</li>
+									<li class="visible" title="Запустить парсинг suzuki.ru">
+										<a href="crawl?action=start&amp;job=all">
+											Запустить парсинг suzuki.ru
+										</a>
+									</li>
+									<li class="visible" title="Разместить результаты парсинга">
+										<a href="integrate_parsed?action=start">
+											Разместить результаты парсинга
+										</a>
+									</li>
 								</ul>
 							</div>
 						</div>
