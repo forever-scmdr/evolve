@@ -9,7 +9,7 @@
 
 	<xsl:template match="/">
 		<result>
-			<xsl:variable name="crumbs" select="html//div[@id='breadcrumbs_container'][1]//li[position() &gt; 1 and a]"/>
+			<xsl:variable name="crumbs" select="html//div[@id='breadcrumbs_container'][1]//ol[1]/li[position() &gt; 1 and a]"/>
 			<xsl:for-each select="$crumbs">
 				<xsl:variable name="pos" select="position()"/>
 				<section id="{a/@href}">
