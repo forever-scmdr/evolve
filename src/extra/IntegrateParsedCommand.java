@@ -139,8 +139,10 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 						Path firstPic = gallery.get(0);
 						Path newMainPic = firstPic.resolveSibling("main_" + firstPic.getFileName());
 						ByteArrayOutputStream bos = ResizeImagesFactory.resize(firstPic.toFile(), 0, 400);
-						Files.write(newMainPic, bos.toByteArray());
-						product.set_main_pic(newMainPic.toFile());
+						if (bos != null) {
+							Files.write(newMainPic, bos.toByteArray());
+							product.set_main_pic(newMainPic.toFile());
+						}
 					} catch (Exception e) {
 						ServerLogger.error("Image resize error", e);
 						info.addError("Image resize error", name + " " + code);

@@ -277,6 +277,8 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 	public static ByteArrayOutputStream resize(File src, int width, int height) throws IOException {
 		String format = StringUtils.substringAfterLast(src.getName(), ".");
 		BufferedImage srcImg = ImageIO.read(src);
+		if (srcImg == null)
+			return null;
 		Thumbnails.Builder<BufferedImage> thumbnailer = Thumbnails.of(srcImg);
 		if (width > 0)
 			thumbnailer.width(width);
