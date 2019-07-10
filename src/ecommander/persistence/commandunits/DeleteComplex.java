@@ -26,17 +26,16 @@ public class DeleteComplex implements DBConstants.ItemTbl {
 
 	private static final int MAX_DELETE_SECONDS  = 60;
 
-	private static final int FREQUENT_SECONDS = 120;
-	private static final int NORMAL_SECONDS = 1200;
-	private static final int RARE_SECONDS = 7200;
+	private static final int FREQUENT_SECONDS = 2;
+	private static final int NORMAL_SECONDS = 2;
+	private static final int RARE_SECONDS = 2;
 
 	private class DeleteThread implements Runnable {
 
 		@Override
 		public void run() {
 			try {
-				DelayedTransaction.executeSingle(User.getDefaultUser(),
-						new PerformDeletedCleaningDBUnit(8, MAX_DELETE_SECONDS).ignoreUser());
+				new PerformDeletedCleaningComplex(8, MAX_DELETE_SECONDS).execute();
 				TemplateQuery countQuery = new TemplateQuery("Count query");
 				countQuery.SELECT("count(*)").FROM(ITEM_TBL).WHERE().col(I_STATUS).byte_(Item.STATUS_DELETED);
 				try (Connection conn = MysqlConnector.getConnection();

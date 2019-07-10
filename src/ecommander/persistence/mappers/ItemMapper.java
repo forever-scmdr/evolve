@@ -56,7 +56,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 		if (mode == Mode.INSERT) {
 			query = new TemplateQuery("Item index insert new");
 			for (Parameter param : item.getAllParameters()) {
-				if (!param.isEmpty()) {
+				if (!param.isEmpty() && param.needsDBIndex()) {
 					if (param.isMultiple()) {
 						for (SingleParameter singleParam : ((MultipleParameter)param).getValues()) {
 							createSingleValueInsert(query, item, singleParam, false);
@@ -72,7 +72,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 			query = new TemplateQuery("Item index update");
 			for (Parameter param : item.getAllParameters()) {
 				// Пропустить все неизмененные параметры
-				if (!param.hasChanged() && mode == Mode.UPDATE)
+				if ((!param.hasChanged() && mode == Mode.UPDATE) || !param.needsDBIndex())
 					continue;
 				// Удалить старое значение
 				query.DELETE_FROM_WHERE(DataTypeMapper.getTableName(param.getType()))

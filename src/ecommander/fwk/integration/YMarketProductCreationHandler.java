@@ -89,7 +89,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private HashMap<String, String> commonParams;
 	private LinkedHashMap<String, String> specialParams;
 	private ItemType productType;
-	private ItemType paramsXmlType;
+//	private ItemType paramsXmlType;
 	private ArrayList<String> picUrls;
 	private User initiator;
 	private boolean isInsideOffer = false;
@@ -103,7 +103,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		this.info = info;
 		this.sections = sections;
 		this.productType = ItemTypeRegistry.getItemType("book");
-		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
+//		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
 		this.catalogLinkAssoc = ItemTypeRegistry.getAssoc("catalog_link");
 		this.ignoreCodes = ignoreCodes;
@@ -240,12 +240,10 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					product.removeEqualValue("tag", BOOKINISTIC_1);
 				}
 
-				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
-
 				if (isProductNew) {
-					// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
-					Item paramsXml = ItemUtils.ensureSingleItem(PARAMS_XML_ITEM, initiator,
-							product.getId(), product.getOwnerGroupId(), product.getOwnerUserId());
+//					// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
+//					Item paramsXml = ItemUtils.ensureSingleItem(PARAMS_XML_ITEM, initiator,
+//							product.getId(), product.getOwnerGroupId(), product.getOwnerUserId());
 					// Создать айтем с параметрами продукта
 					XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 					for (String name : specialParams.keySet()) {
@@ -255,9 +253,12 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 								.startElement(VALUE).addText(value).endElement()
 								.endElement();
 					}
-					paramsXml.setValue(XML_PARAM, xml.toString());
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).noFulltextIndex());
+					product.setValue("extra_xml", xml.toString());
+					//paramsXml.setValue(XML_PARAM, xml.toString());
+					//DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).noFulltextIndex());
 				}
+
+				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
 
 				if (!isProductNew) {
 					// Сделать товар видимым
