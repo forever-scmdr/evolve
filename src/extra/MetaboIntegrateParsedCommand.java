@@ -219,8 +219,18 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 
-		// Параметры XML
+		//Extra product info
+		ItemQuery q = new ItemQuery(PRODUCT_EXTRA);
+		q.setParentId(product.getId(), false);
+		Item techItem = null;
+		Item packageItem = null;
 
+		for(Item item : q.loadItems()){
+			if(item.getStringValue(NAME,"").equals("tech")) techItem = item;
+			else if(item.getStringValue(NAME, "").equals("package")) packageItem = item;
+		}
+
+		// Параметры XML
 		XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 		if (StringUtils.isNotBlank(tech)) {
 			Element techEl = productEl.getElementsByTag(TECH).first().getElementById("attributes");
@@ -248,11 +258,15 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 				}
 			}
 
-			Item paramsXml = Item.newChildItem(paramsXmlType, product);
+			q = new ItemQuery(PARAMS_XML);
+			q.setParentId(product.getId(), false);
+			Item paramsXml = q.loadFirstItem();
+			paramsXml = paramsXml == null? Item.newChildItem(paramsXmlType, product) : paramsXml;
 			paramsXml.setValue(XML, xml.toString());
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXml).noFulltextIndex().ignoreFileErrors());
 
-			Item techItem = Item.newChildItem(productExtraType, product);
+
+			techItem = techItem == null? Item.newChildItem(productExtraType, product) : techItem;
 			techItem.setValue(NAME, "tech");
 			techItem.setValue(TEXT, tech);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(techItem).noFulltextIndex().ignoreFileErrors());
@@ -261,7 +275,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		// комплектность поставки
 
 		if (StringUtils.isNotBlank(packageTxt)) {
-			Item packageItem = Item.newChildItem(productExtraType, product);
+			packageItem = packageItem == null? Item.newChildItem(productExtraType, product) : packageItem;
 			packageItem.setValue(NAME, "package");
 			packageItem.setValue(TEXT, packageTxt);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(packageItem).noFulltextIndex().ignoreFileErrors());
