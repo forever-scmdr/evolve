@@ -27,10 +27,9 @@ public class AddAssociatedProducts extends IntegrateBase implements CatalogConst
 		ItemQuery q = new ItemQuery(SECTION_ITEM);
 		q.addParameterCriteria(ItemNames.section.ASSOC_CODES,"-","!=", null, Compare.SOME);
 		sections.addAll(q.loadItems());
-		Item section;
 		info.setToProcess(toProcess);
 		info.setProcessed(0);
-		while ((section = sections.poll()) != null){
+		for(Item section : sections){
 			String assocCodes = section.getStringValue(ItemNames.section.ASSOC_CODES);
 			List<String> codes = Arrays.asList(assocCodes.split("[\\n,\\,,\\;, \\s]"));
 			q = new ItemQuery(PRODUCT_ITEM);
@@ -47,7 +46,9 @@ public class AddAssociatedProducts extends IntegrateBase implements CatalogConst
 			}
 		}
 		setOperation("Создание фильтров");
-		new CreateParametersAndFiltersCommand(this).execute();
+		CreateParametersAndFiltersCommand createFilters = new CreateParametersAndFiltersCommand(this);
+		createFilters.setSections(sections);
+		createFilters.execute();
 		setOperation("Переиндексация");
 		info.indexsationStarted();
 		LuceneIndexMapper.getSingleton().reindexAll();

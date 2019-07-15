@@ -30,6 +30,8 @@ import java.util.*;
  */
 public class CreateParametersAndFiltersCommand extends IntegrateBase implements CatalogConst {
 
+	private List<Item> sections = null;
+
 	/**
 	 * Типы и названия параметров
 	 * Тип параметра может быть одним из трех
@@ -126,7 +128,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 	@Override
 	protected void integrate() throws Exception {
-		List<Item> sections = new ItemQuery(SECTION_ITEM).loadItems();
+		sections = sections == null? new ItemQuery(SECTION_ITEM).loadItems() : sections;
 		info.setOperation("Создание классов и фильтров");
 		info.setToProcess(sections.size());
 		info.setProcessed(0);
@@ -239,11 +241,15 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		System.out.println("0.5 - 5 Нм".matches("^-?[0-9]+[\\.,]?[0-9]*\\s+[^-\\s]+$"));
 	}
 
-	public CreateParametersAndFiltersCommand() {
 
-	}
+
+	public CreateParametersAndFiltersCommand() {}
 
 	public CreateParametersAndFiltersCommand(Command outer) {
 		super(outer);
+	}
+
+	public void setSections(List<Item> sections) {
+		this.sections = sections;
 	}
 }
