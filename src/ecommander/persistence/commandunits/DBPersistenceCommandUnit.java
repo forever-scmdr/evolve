@@ -1,5 +1,6 @@
 package ecommander.persistence.commandunits;
 
+import ecommander.fwk.Timer;
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.*;
 import ecommander.persistence.common.PersistenceCommandUnit;
@@ -11,7 +12,9 @@ import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 
 /**
  * Абстрактный класс для команд базы данных
@@ -27,6 +30,8 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	boolean processComputed = true;
 	boolean triggerExtra = true;
 	private ArrayList<PersistenceCommandUnit> executedCommands;
+	private LinkedHashMap<String, Long> queryTimes = null;
+	private String currentQuery = null;
 	
 	public TransactionContext getTransactionContext() {
 		return context;
@@ -110,6 +115,14 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 		commandUnit.setTransactionContext(context);
 		commandUnit.execute();
 		executedCommands.add(commandUnit);
+		if (commandUnit instanceof DBPersistenceCommandUnit) {
+			LinkedHashMap<String, Long> subTimes = ((DBPersistenceCommandUnit) commandUnit).queryTimes;
+			if (subTimes != null) {
+				if (queryTimes == null)
+					queryTimes = new LinkedHashMap<>();
+				queryTimes.putAll(subTimes);
+			}
+		}
 	}
 
 	/**
@@ -213,5 +226,46 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 				pstmt.executeUpdate();
 			}
 		}
+	}
+
+	protected void startQuery(String currentQuery) {
+		if (currentQuery != null)
+			endQuery();
+		this.currentQuery = currentQuery;
+		Timer.getTimer().start(currentQuery);
+	}
+
+	protected void endQuery() {
+		if (currentQuery == null)
+			return;
+		if (queryTimes == null)
+			queryTimes = new LinkedHashMap<>();
+		Timer.TimeLogMessage msg = Timer.getTimer().stop(currentQuery);
+		if (msg != null)
+			queryTimes.put(currentQuery, msg.getExecTime());
+		currentQuery = null;
+	}
+
+	public LinkedHashMap<String, Long> getExplainedExecTimes() {
+		return queryTimes;
+	}
+
+	/**
+	 * Получить запросы, выполнение которых медленнее определенного
+	 * @param timeUnits - нужные единицы времени
+	 * @param millisQuotient - сколько в нужной единице времени миллисекунд
+	 * @return
+	 */
+	public LinkedHashMap<String, Long> getQueriesSlowerThan(long timeUnits, long millisQuotient) {
+		LinkedHashMap<String, Long> slow = new LinkedHashMap<>();
+		if (queryTimes != null) {
+			long slowTime = timeUnits * millisQuotient;
+			for (String query : queryTimes.keySet()) {
+				long time = queryTimes.get(query);
+				if (time >= slowTime)
+					slow.put(query, /*time / millisQuotient*/time);
+			}
+		}
+		return slow;
 	}
 }

@@ -265,7 +265,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 		}
 		TemplateQuery select= new TemplateQuery("Select ids by string unique keys");
 		select.SELECT(UK_KEY, UK_ID).FROM(UNIQUE_KEY_TBL).WHERE().col_IN(UK_KEY).stringIN(keys);
-		try(Connection conn = MysqlConnector.getConnection();
+		try (Connection conn = MysqlConnector.getConnection();
 			PreparedStatement pstmt = select.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {

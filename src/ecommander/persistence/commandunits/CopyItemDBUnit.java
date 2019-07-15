@@ -60,9 +60,9 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 	public void execute() throws Exception {
 		// Загрузка айтемов
 		if (baseItem == null)
-			baseItem = ItemQuery.loadById(baseItemId, getTransactionContext().getConnection());
+			baseItem = ItemQuery.loadById(baseItemId);
 		if (newParent == null)
-			newParent = ItemQuery.loadById(newParentId, getTransactionContext().getConnection());
+			newParent = ItemQuery.loadById(newParentId);
 
 		////// Проверка прав пользователя на айтем //////
 		//

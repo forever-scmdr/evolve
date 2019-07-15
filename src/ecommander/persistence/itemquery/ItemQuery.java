@@ -766,7 +766,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Item> loadItems(Connection... conn) throws Exception {
+	public List<Item> loadItems() throws Exception {
 		// Проверка, нужно ли выполнять загрузку
 		if (isEmptySet())
 			return new ArrayList<>();
@@ -800,7 +800,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		if (hasAggregation()) {
 			createParentTypeUserCriteria(query, ancestorIds);
 			sqlForLog = query.getSimpleSql();
-			return loadGroupedItems(query, conn);
+			return loadGroupedItems(query);
 		}
 		// Если в фильтре нет своей сортировки, можно установить сортировку по умолчанию
 		// Также если в фильтре нет сортировки, но есть полнотекстовый поиск, то нужно учитывать
@@ -863,15 +863,15 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				limit.appendQuery(query);
 		}
 		sqlForLog = query.getSimpleSql();
-		return loadByQuery(query, PID, null, fulltext, conn);
+		return loadByQuery(query, PID, null, fulltext);
 	}
 	/**
 	 * Загрузить первый из айтемов, соответствующих установленным критериям запроса
 	 * @return
 	 * @throws Exception
 	 */
-	public Item loadFirstItem(Connection...conn) throws Exception {
-		List<Item> all = loadItems(conn);
+	public Item loadFirstItem() throws Exception {
+		List<Item> all = loadItems();
 		if (all.size() == 0)
 			return null;
 		return all.get(0);
@@ -887,14 +887,13 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	/**
 	 * Загрузить один айтем по его ID
 	 * @param id
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static Item loadById(long id, Connection... conn) throws Exception {
+	public static Item loadById(long id) throws Exception {
 		TemplateQuery query = new TemplateQuery("load by id");
 		query.SELECT(ITEM_TBL + ".*", "0 AS PID").FROM(ITEM_TBL).WHERE().col(I_ID).long_(id);
-		ArrayList<Item> result = loadByQuery(query, "PID", null, null, conn);
+		ArrayList<Item> result = loadByQuery(query, "PID", null, null);
 		if (result.size() > 0)
 			return result.get(0);
 		return null;
@@ -903,11 +902,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * Загрузить айтемы по их ID
 	 * @param id
 	 * @param assocId
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByParentId(long id, Byte[] assocId, Connection... conn) throws Exception {
+	public static ArrayList<Item> loadByParentId(long id, Byte[] assocId) throws Exception {
 		if (assocId == null || assocId.length == 0) {
 			assocId = new Byte[1];
 			assocId[0] = ItemTypeRegistry.getPrimaryAssocId();
@@ -916,7 +914,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		query.SELECT(ITEM_TBL + ".*", IP_PARENT_ID).FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID)
 				.WHERE().col(IP_PARENT_ID).long_(id).AND().col(IP_PARENT_DIRECT).byte_((byte)1)
 				.AND().col_IN(IP_ASSOC_ID).byteIN(assocId);
-		return loadByQuery(query, IP_PARENT_ID, null, null, conn);
+		return loadByQuery(query, IP_PARENT_ID, null, null);
 	}
 
 	/**
@@ -924,11 +922,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param itemName
 	 * @param userId
 	 * @param userGroupId
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static Item loadRootItem(String itemName, int userId, byte userGroupId, Connection... conn) throws Exception {
+	public static Item loadRootItem(String itemName, int userId, byte userGroupId) throws Exception {
 		ItemType type = ItemTypeRegistry.getItemType(itemName);
 		if (type == null)
 			return null;
@@ -940,7 +937,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				.AND().col_IN(I_SUPERTYPE).intIN(ItemTypeRegistry.getItemExtendersIds(type.getTypeId()))
 				.AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN)
 				.AND().col(IP_CHILD_ID).sql(IP_PARENT_ID);
-		ArrayList<Item> result = loadByQuery(query, "PID", null, null, conn);
+		ArrayList<Item> result = loadByQuery(query, "PID", null, null);
 		if (result.size() > 0)
 			return result.get(0);
 		return null;
@@ -951,34 +948,32 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws Exception 
 	 */
-	public static ArrayList<Item> loadByIdsLong(Collection<Long> ids, Connection... conn) throws Exception {
-		return loadByIdsLong(ids, null, conn);
+	public static ArrayList<Item> loadByIdsLong(Collection<Long> ids) throws Exception {
+		return loadByIdsLong(ids, null);
 	}
 	/**
 	 * Загрузить айтемы по их ID и вернуть в заданном порядке
 	 * @param ids
-	 * @param conn
 	 * @param order
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByIdsLong(Collection<Long> ids, Long[] order, Connection... conn) throws Exception {
+	public static ArrayList<Item> loadByIdsLong(Collection<Long> ids, Long[] order) throws Exception {
 		if (ids.size() == 0)
 			return new ArrayList<>();
 		TemplateQuery query = new TemplateQuery("load by ids");
 		query.SELECT(ITEM_TBL + ".*", "0 AS PID")
 				.FROM(ITEM_TBL).WHERE().col_IN(I_ID).longIN(ids.toArray(new Long[ids.size()]))
 				.AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
-		return loadByQuery(query, "PID", order, null, conn);
+		return loadByQuery(query, "PID", order, null);
 	}
 	/**
 	 * Загрузить айтемы по их ID
 	 * @param ids
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByIdsString(Collection<String> ids, Connection... conn) throws Exception {
+	public static ArrayList<Item> loadByIdsString(Collection<String> ids) throws Exception {
 		if (ids.size() == 0)
 			return new ArrayList<>();
 		ArrayList<Long> idsLong = new ArrayList<>();
@@ -987,18 +982,17 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				idsLong.add(Long.parseLong(id));
 			} catch (Exception e) { }
 		}
-		return loadByIdsLong(idsLong, null, conn);
+		return loadByIdsLong(idsLong, null);
 	}
 	/**
 	 * Загрузить айтемы по их ID с учетом типа айтема
 	 * @param ids
 	 * @param itemTypeName
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByIdsString(Collection<String> ids, String itemTypeName, Connection... conn) throws Exception {
-		ArrayList<Item> byIds = loadByIdsString(ids, conn);
+	public static ArrayList<Item> loadByIdsString(Collection<String> ids, String itemTypeName) throws Exception {
+		ArrayList<Item> byIds = loadByIdsString(ids);
 		Set<String> extNames = ItemTypeRegistry.getItemExtenders(itemTypeName);
 		Iterator<Item> iter = byIds.iterator();
 		while(iter.hasNext()) {
@@ -1011,36 +1005,23 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	/**
 	 * Загрузить айтемы по их уникальному текстовому ключу
 	 * @param keys
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByUniqueKey(Collection<String> keys, Connection... conn) throws Exception {
+	public static ArrayList<Item> loadByUniqueKey(Collection<String> keys) throws Exception {
 		if (keys.size() == 0)
 			return new ArrayList<>(0);
 		TemplateQuery idsSelect = new TemplateQuery("ids select");
 		idsSelect.SELECT(UK_ID).FROM(UNIQUE_KEY_TBL).WHERE().col_IN(UK_KEY).stringIN(keys.toArray(new String[0]));
-		boolean isOwnConnection = false;
-		Connection connection = null;
 		ArrayList<Long> ids = new ArrayList<>();
-		PreparedStatement pstmt = null;
-		try {
-			if (conn == null || conn.length == 0) {
-				isOwnConnection = true;
-				connection = MysqlConnector.getConnection();
-			} else {
-				connection = conn[0];
-			}
-			pstmt = idsSelect.prepareQuery(connection);
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = idsSelect.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next())
 				ids.add(rs.getLong(1));
 			rs.close();
-			queryFinished(connection);
-			return loadByIdsLong(ids, connection);
-		} finally {
-			MysqlConnector.closeStatement(pstmt);
-			if (isOwnConnection) MysqlConnector.closeConnection(connection);
+			queryFinished(conn);
+			return loadByIdsLong(ids);
 		}
 	}
 
@@ -1066,11 +1047,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param itemName
 	 * @param paramName
 	 * @param paramValue
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByParamValue(String itemName, String paramName, Collection<String> paramValue, Connection... conn)
+	public static ArrayList<Item> loadByParamValue(String itemName, String paramName, Collection<String> paramValue)
 			throws Exception {
 		ItemType item = ItemTypeRegistry.getItemType(itemName);
 		Integer[] extenders = ItemTypeRegistry.getItemExtendersIds(item.getTypeId());
@@ -1090,31 +1070,29 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		if (param.getOwnerItemId() != item.getTypeId()) {
 			query.AND().col_IN(II_ITEM_TYPE).intIN(extenders);
 		}
-		return loadByQuery(query, "PID", null, null, conn);
+		return loadByQuery(query, "PID", null, null);
 	}
 	/**
 	 * Загрузить айтем по значению одного параметра
 	 * @param itemName
 	 * @param paramName
 	 * @param paramValue
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByParamValue(String itemName, String paramName, String paramValue, Connection... conn) throws Exception {
-		return loadByParamValue(itemName, paramName, Collections.singletonList(paramValue), conn);
+	public static ArrayList<Item> loadByParamValue(String itemName, String paramName, String paramValue) throws Exception {
+		return loadByParamValue(itemName, paramName, Collections.singletonList(paramValue));
 	}
 	/**
 	 * Загрзуить один айтем по значению параметра, подразумевается, что значение этого параметра является уникальным
 	 * @param itemName
 	 * @param paramName
 	 * @param paramValue
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static Item loadSingleItemByParamValue(String itemName, String paramName, String paramValue, Connection... conn) throws Exception {
-		ArrayList<Item> items = loadByParamValue(itemName, paramName, paramValue, conn);
+	public static Item loadSingleItemByParamValue(String itemName, String paramName, String paramValue) throws Exception {
+		ArrayList<Item> items = loadByParamValue(itemName, paramName, paramValue);
 		if (items.size() == 0)
 			return null;
 		return items.get(0);
@@ -1149,24 +1127,15 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param parentIdCol
 	 * @param order - опциональный параметр, который хранит порядок следования айтемов в результате
 	 * @param fulltext - опциональный параметр, нужный для вывода фрагментов с подсвеченным текстом при полнотекстовом поиске
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
 	private static ArrayList<Item> loadByQuery(TemplateQuery query, String parentIdCol, Long[] order,
-	                                           FulltextCriteria fulltext, Connection... conn) throws Exception {
-		boolean isOwnConnection = false;
-		Connection connection = null;
+	                                           FulltextCriteria fulltext) throws Exception {
 		ArrayList<Item> result = new ArrayList<>();
-		PreparedStatement pstmt = null;
-		try {
-			if (conn == null || conn.length == 0) {
-				isOwnConnection = true;
-				connection = MysqlConnector.getConnection();
-			} else {
-				connection = conn[0];
-			}
-			pstmt = query.prepareQuery(connection);
+
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			if (order == null) {
 				while (rs.next())
@@ -1185,10 +1154,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				}
 			}
 			rs.close();
-			queryFinished(connection);
-		} finally {
-			MysqlConnector.closeStatement(pstmt);
-			if (isOwnConnection) MysqlConnector.closeConnection(connection);
+			queryFinished(conn);
 		}
 		// Установка фрагментов подсвеченного текста в айтемы
 		if (fulltext != null) {
@@ -1205,58 +1171,58 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		return result;
 	}
 
-	/**
-	 * Загружает общие количества айтемов, сответствующих фильтру и родителю
-	 * @return
-	 * @throws SQLException 
-	 * @throws NamingException 
-	 * @throws IOException 
-	 * @throws EcommanderException 
-	 */
-	public HashMap<Long, Integer> oldLoadTotalQuantities(Connection... conn) throws SQLException, NamingException, IOException, EcommanderException {
-		if (isEmptySet())
-			return new HashMap<>();
-		// Если был полнотекстовый поиск - выполнить сначала его (посмотреть, вернет ли он какие-нибудь результаты)
-		if (hasFulltext())
-			loadFulltextIds();
-		// Выбрать нужный запрос
-		TemplateQuery query = TemplateQuery.createFromString(COMMON_QUANTITY_QUERY, "Common qty query");
-		// Установить критерий статуса айтема
-		if (status.size() < ITEM_STATUS_COUNT)
-			query.getSubquery(Const.STATUS).AND().col_IN("I." + I_STATUS).byteIN(status.toArray(new Byte[0]));
-		// Если был полнотекстовый поиск, выполнить его и добавить критерий найденных ID
-		if (hasFulltext())
-			query.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_ID).longIN(fulltext.getLoadedIds());
-		// Добавить фильтр
-		if (hasFilter())
-			filter.appendQuery(query);
-		// Критерий родителя и типа айтема
-		createParentTypeUserCriteria(query, ancestorIds);
-		// Выполнение запроса к БД
-		HashMap<Long, Integer> result = new HashMap<>();
-		boolean isOwnConnection = false;
-		Connection connection = null;
-		PreparedStatement pstmt = null;
-		try {
-			if (conn == null || conn.length == 0) {
-				isOwnConnection = true;
-				connection = MysqlConnector.getConnection();
-			} else {
-				connection = conn[0];
-			}
-			pstmt = query.prepareQuery(connection);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				result.put(rs.getLong(2), rs.getInt(1));
-			}
-			rs.close();
-			queryFinished(connection);
-		} finally {
-			MysqlConnector.closeStatement(pstmt);
-			if (isOwnConnection) MysqlConnector.closeConnection(connection);
-		}
-		return result;
-	}
+//	/**
+//	 * Загружает общие количества айтемов, сответствующих фильтру и родителю
+//	 * @return
+//	 * @throws SQLException
+//	 * @throws NamingException
+//	 * @throws IOException
+//	 * @throws EcommanderException
+//	 */
+//	public HashMap<Long, Integer> oldLoadTotalQuantities(Connection... conn) throws SQLException, NamingException, IOException, EcommanderException {
+//		if (isEmptySet())
+//			return new HashMap<>();
+//		// Если был полнотекстовый поиск - выполнить сначала его (посмотреть, вернет ли он какие-нибудь результаты)
+//		if (hasFulltext())
+//			loadFulltextIds();
+//		// Выбрать нужный запрос
+//		TemplateQuery query = TemplateQuery.createFromString(COMMON_QUANTITY_QUERY, "Common qty query");
+//		// Установить критерий статуса айтема
+//		if (status.size() < ITEM_STATUS_COUNT)
+//			query.getSubquery(Const.STATUS).AND().col_IN("I." + I_STATUS).byteIN(status.toArray(new Byte[0]));
+//		// Если был полнотекстовый поиск, выполнить его и добавить критерий найденных ID
+//		if (hasFulltext())
+//			query.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_ID).longIN(fulltext.getLoadedIds());
+//		// Добавить фильтр
+//		if (hasFilter())
+//			filter.appendQuery(query);
+//		// Критерий родителя и типа айтема
+//		createParentTypeUserCriteria(query, ancestorIds);
+//		// Выполнение запроса к БД
+//		HashMap<Long, Integer> result = new HashMap<>();
+//		boolean isOwnConnection = false;
+//		Connection connection = null;
+//		PreparedStatement pstmt = null;
+//		try {
+//			if (conn == null || conn.length == 0) {
+//				isOwnConnection = true;
+//				connection = MysqlConnector.getConnection();
+//			} else {
+//				connection = conn[0];
+//			}
+//			pstmt = query.prepareQuery(connection);
+//			ResultSet rs = pstmt.executeQuery();
+//			while (rs.next()) {
+//				result.put(rs.getLong(2), rs.getInt(1));
+//			}
+//			rs.close();
+//			queryFinished(connection);
+//		} finally {
+//			MysqlConnector.closeStatement(pstmt);
+//			if (isOwnConnection) MysqlConnector.closeConnection(connection);
+//		}
+//		return result;
+//	}
 	/**
 	 * Загружает общие количества айтемов, сответствующих фильтру и родителю
 	 * @return
@@ -1265,7 +1231,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @throws IOException
 	 * @throws EcommanderException
 	 */
-	public HashMap<Long, Integer> loadTotalQuantities(Connection... conn) throws SQLException, NamingException, IOException, EcommanderException {
+	public HashMap<Long, Integer> loadTotalQuantities() throws SQLException, NamingException, IOException, EcommanderException {
 		if (isEmptySet())
 			return new HashMap<>();
 		// Если был полнотекстовый поиск - выполнить сначала его (посмотреть, вернет ли он какие-нибудь результаты)
@@ -1308,16 +1274,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Выполнение запроса к БД
 		HashMap<Long, Integer> result = new HashMap<>();
 		boolean isOwnConnection = false;
-		Connection connection = null;
-		PreparedStatement pstmt = null;
-		try {
-			if (conn == null || conn.length == 0) {
-				isOwnConnection = true;
-				connection = MysqlConnector.getConnection();
-			} else {
-				connection = conn[0];
-			}
-			pstmt = unionQuery.prepareQuery(connection);
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = unionQuery.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				int qty = rs.getInt(1);
@@ -1326,10 +1284,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				result.put(rs.getLong(2), qty);
 			}
 			rs.close();
-			queryFinished(connection);
-		} finally {
-			MysqlConnector.closeStatement(pstmt);
-			if (isOwnConnection) MysqlConnector.closeConnection(connection);
+			queryFinished(conn);
 		}
 		return result;
 	}
@@ -1339,23 +1294,14 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @throws SQLException 
 	 * @throws IOException 
 	 */
-	private ArrayList<Item> loadGroupedItems(TemplateQuery query, Connection... conn) throws SQLException, IOException, NamingException {
+	private ArrayList<Item> loadGroupedItems(TemplateQuery query) throws SQLException, IOException, NamingException {
 		// Выполнение запроса к БД
 		ArrayList<Item> result = new ArrayList<>();
-		boolean isOwnConnection = false;
-		Connection connection = null;
-		PreparedStatement pstmt = null;
 		final int PARENT_COL = 1;
 		final int MAIN_COL = 2;
 		final int ADDITIONAL_COL = 3;
-		try {
-			if (conn == null || conn.length == 0) {
-				isOwnConnection = true;
-				connection = MysqlConnector.getConnection();
-			} else {
-				connection = conn[0];
-			}
-			pstmt = query.prepareQuery(connection);
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Item item = Item.existingItem(getItemDesc(), -1, ItemTypeRegistry.getPrimaryAssoc(),
@@ -1372,11 +1318,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				result.add(item);
 			}
 			rs.close();
-			queryFinished(connection);
-		} finally {
-			MysqlConnector.closeStatement(pstmt);
-			if (isOwnConnection)
-				MysqlConnector.closeConnection(connection);
+			queryFinished(conn);
 		}
 		return result;
 	}
@@ -1391,33 +1333,19 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param childId
 	 * @param parentId
 	 * @param assocId
-	 * @param conn
 	 * @return
 	 * @throws SQLException
 	 * @throws NamingException
 	 */
-	public static boolean isAncestor(long childId, long parentId, byte assocId, Connection... conn) throws SQLException, NamingException {
+	public static boolean isAncestor(long childId, long parentId, byte assocId) throws SQLException, NamingException {
 		TemplateQuery query = new TemplateQuery("ParsedItem Check");
 		query.SELECT("*").FROM(ITEM_PARENT_TBL).WHERE().col(IP_CHILD_ID).long_(childId)
 				.AND().col(IP_PARENT_ID).long_(parentId)
 				.AND().col(IP_ASSOC_ID).byte_(assocId);
-		boolean isOwnConnection = false;
-		Connection connection = null;
-		PreparedStatement pstmt = null;
-		try {
-			if (conn == null || conn.length == 0) {
-				isOwnConnection = true;
-				connection = MysqlConnector.getConnection();
-			} else {
-				connection = conn[0];
-			}
-			pstmt = query.prepareQuery(connection);
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
-		} finally {
-			MysqlConnector.closeStatement(pstmt);
-			if (isOwnConnection)
-				MysqlConnector.closeConnection(connection);
 		}
 	}
 
@@ -1425,41 +1353,27 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * Загрузить все значения одного параметра (для айтема одного типа)
 	 * @param item
 	 * @param param
-	 * @param conn
 	 * @return
 	 * @throws SQLException
 	 * @throws NamingException
 	 */
-	public static ArrayList<String> loadParameterValues(ItemType item, ParameterDescription param, Connection... conn) throws SQLException, NamingException {
+	public static ArrayList<String> loadParameterValues(ItemType item, ParameterDescription param) throws SQLException, NamingException {
 		String tableName = DataTypeMapper.getTableName(param.getType());
 		TemplateQuery query = new TemplateQuery("Load Parameter Values");
 		query.SELECT(II_VALUE).FROM(tableName).WHERE()
 				.col(II_ITEM_TYPE).int_(item.getTypeId()).AND().col(II_PARAM).int_(param.getId())
 				.sql(" GROUP BY " + II_VALUE)
 				.ORDER_BY(II_VALUE);
-		boolean isOwnConnection = false;
-		Connection connection = null;
-		PreparedStatement pstmt = null;
 		ArrayList<String> result = new ArrayList<>();
 		DataType paramType = DataTypeRegistry.getType(param.getType());
-		try {
-			if (conn == null || conn.length == 0) {
-				isOwnConnection = true;
-				connection = MysqlConnector.getConnection();
-			} else {
-				connection = conn[0];
-			}
-			pstmt = query.prepareQuery(connection);
+		try (Connection conn = MysqlConnector.getConnection();
+			PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				Object value = DataTypeMapper.createValue(param.getType(), rs);
 				result.add(paramType.outputValue(value, null));
 			}
 			return result;
-		} finally {
-			MysqlConnector.closeStatement(pstmt);
-			if (isOwnConnection)
-				MysqlConnector.closeConnection(connection);
 		}
 	}
 }

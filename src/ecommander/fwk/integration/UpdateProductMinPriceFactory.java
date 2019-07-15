@@ -36,8 +36,7 @@ public class UpdateProductMinPriceFactory implements ItemEventCommandFactory {
 		@Override
 		public void execute() throws Exception {
 			BigDecimal linePrice = lineProduct.getDecimalValue(PRICE, ZERO);
-			Item product = new ItemQuery(PRODUCT).setChildId(lineProduct.getId(), false)
-					.loadFirstItem(getTransactionContext().getConnection());
+			Item product = new ItemQuery(PRODUCT).setChildId(lineProduct.getId(), false).loadFirstItem();
 			if (product != null) {
 				BigDecimal productMinPrice = product.getDecimalValue(PRICE, linePrice.add(MANY));
 				if (productMinPrice.compareTo(ZERO) == 0)
@@ -47,8 +46,7 @@ public class UpdateProductMinPriceFactory implements ItemEventCommandFactory {
 						product.setValue(PRICE, linePrice);
 					}
 				} else {
-					Item min = new ItemQuery(LINE_PRODUCT).setAggregation(PRICE, "MIN", "ASC").setParentId(product.getId(), false)
-							.loadFirstItem(getTransactionContext().getConnection());
+					Item min = new ItemQuery(LINE_PRODUCT).setAggregation(PRICE, "MIN", "ASC").setParentId(product.getId(), false).loadFirstItem();
 					if (min != null) {
 						BigDecimal minPrice = min.getDecimalValue(PRICE, MANY);
 						if (minPrice.compareTo(MANY) < 0) {
@@ -57,8 +55,7 @@ public class UpdateProductMinPriceFactory implements ItemEventCommandFactory {
 					}
 
 					if (min == null) {
-						min = new ItemQuery(LINE_PRODUCT).setParentId(product.getId(), false)
-								.loadFirstItem(getTransactionContext().getConnection());
+						min = new ItemQuery(LINE_PRODUCT).setParentId(product.getId(), false).loadFirstItem();
 						if (min == null)
 							product.setValue(HAS_LINES, min == null ? (byte) 0 : (byte) 1);
 					}

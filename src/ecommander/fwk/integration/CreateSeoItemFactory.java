@@ -31,7 +31,7 @@ public class CreateSeoItemFactory implements ItemEventCommandFactory {
 
 		@Override
 		public void execute() throws Exception {
-			Item parent = ItemQuery.loadById(seo.getContextParentId(), getTransactionContext().getConnection());
+			Item parent = ItemQuery.loadById(seo.getContextParentId());
 			if(!parent.getItemType().isKeyUnique()) return;
 			// Проверка, есть ли сео для айтема
 			List<Item> seos = new ItemQuery(SEO).setParentId(parent.getId(), false, SEO).loadItems();

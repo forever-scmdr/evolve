@@ -106,24 +106,42 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 				long lastProductId = 0;
 				if (currentSection != null) {
 					info.setCurrentJob("скрывается " + currentSection.getStringValue(NAME_PARAM));
-
+					// Проверка, есть ли у раздела товары
+					Item product = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED)
+							.setParentId(currentSection.getId(), false).setLimit(1).loadFirstItem();
+					Item section = new ItemQuery(SECTION_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED)
+							.setParentId(currentSection.getId(), false).setLimit(1).loadFirstItem();
+					if (product != null || section == null) {
+						DelayedTransaction.executeSingle(owner, ItemStatusDBUnit.hideChildren(currentSection));
+					}
+					/*
 					ItemQuery proudctsQuery = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED)
 							.setParentId(currentSection.getId(), false).setLimit(1000);
 					List<Item> visibleProducts;
 					DelayedTransaction transaction = new DelayedTransaction(owner);
 					do {
-//						Timer.getTimer().start("loading products");
+						Timer.getTimer().start("loading products");
 						visibleProducts = proudctsQuery.setIdSequential(lastProductId).loadItems();
 						long nanos = Timer.getTimer().getNanos("loading products");
-//						Timer.getTimer().stop("loading products");
-//						if(nanos/1000000 > 100){
-//							String queryLog = String.format(proudctsQuery.getSqlForLog() + ". Took: %,d ms.", nanos/1000000);
-//							info.addSlowQuery(proudctsQuery.getSqlForLog(), nanos);
-//							info.pushLog(queryLog);
-//						}
+						Timer.getTimer().stop("loading products");
+						if(nanos/1000000 > 100){
+							//String queryLog = String.format(proudctsQuery.getSqlForLog() + ". Took: %,d ms.", nanos/1000000);
+							info.addSlowQuery(proudctsQuery.getSqlForLog(), nanos);
+							//info.pushLog(queryLog);
+						}
 						for (Item visibleProduct : visibleProducts) {
 							transaction.addCommandUnit(ItemStatusDBUnit.hide(visibleProduct));
 							lastProductId = visibleProduct.getId();
+							if (transaction.getCommandCount() >= 10) {
+								Timer.getTimer().start("hiding");
+								transaction.execute();
+								nanos = Timer.getTimer().getNanos("hiding");
+								if(nanos/1000000 > 100){
+									//String queryLog = String.format(proudctsQuery.getSqlForLog() + ". Took: %,d ms.", nanos/1000000);
+									info.addSlowQuery("Скрываются товары", nanos);
+									//info.pushLog(queryLog);
+								}
+							}
 						}
 						//Timer.getTimer().start("hiding");
 						transaction.execute();
@@ -138,6 +156,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 //						info.setCurrentJob("скрывается " + currentSection.getStringValue(NAME_PARAM));
 //						DelayedTransaction.executeSingle(owner, ItemStatusDBUnit.hideChildren(currentSection));
 //					}
+					*/
 				}
 
 

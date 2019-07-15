@@ -3,9 +3,11 @@ package ecommander.fwk.integration;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Timer;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
+import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
@@ -97,6 +99,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private Assoc catalogLinkAssoc;
 	private boolean isBookinistic = false;
 	private HashSet<String> ignoreCodes;
+	private String currentQuery;
+
 
 	
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator, HashSet<String> ignoreCodes) {
@@ -132,8 +136,11 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					return;
 				}
 				//Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
-				Item product = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN)
-						.addParameterEqualsCriteria(OFFER_ID_PARAM, code).loadFirstItem();
+				ItemQuery loadProductQuery =  new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN)
+						.addParameterEqualsCriteria(OFFER_ID_PARAM, code);
+				startCheckSlowQuery(loadProductQuery.getSqlForLog());
+				Item product = loadProductQuery.loadFirstItem();
+				endCheckSlowQuery();
 				if(product == null && section == null){
 					info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
 					return;
@@ -258,14 +265,22 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					//DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).noFulltextIndex());
 				}
 
-				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
+				DBPersistenceCommandUnit save = SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra();
+				DelayedTransaction.executeSingle(initiator, save);
+				checkSlowCommand(save);
 
 				if (!isProductNew) {
 					// Сделать товар видимым
-					DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.restore(product));
+					ItemStatusDBUnit show = ItemStatusDBUnit.restore(product);
+					DelayedTransaction.executeSingle(initiator, show);
+					checkSlowCommand(show);
 					// Загрузить разделы, содержащие товар
-					List<Item> secs = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false,
-							ItemTypeRegistry.getPrimaryAssoc().getName(), catalogLinkAssoc.getName()).loadItems();
+					/*
+					ItemQuery query = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false,
+							ItemTypeRegistry.getPrimaryAssoc().getName(), catalogLinkAssoc.getName());
+					startCheckSlowQuery(query.getSqlForLog());
+					List<Item> secs = query.loadItems();
+					endCheckSlowQuery();
 					// Создать ассоциацию товара с разделом, если ее еще не существует
 					boolean needLink = true;
 					for (Item sec : secs) {
@@ -275,9 +290,11 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						}
 					}
 					if (needLink) {
-						DelayedTransaction.executeSingle(initiator,
-								CreateAssocDBUnit.childExistsSoft(product, section, catalogLinkAssoc.getId()));
+						CreateAssocDBUnit createAssoc = CreateAssocDBUnit.childExistsSoft(product, section, catalogLinkAssoc.getId());
+						DelayedTransaction.executeSingle(initiator, createAssoc);
+						checkSlowCommand(createAssoc);
 					}
+					*/
 				}
 
 				info.increaseProcessed();
@@ -353,5 +370,25 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			return price.multiply(quotient_2);
 		}
 		return price.multiply(quotient_3);
+	}
+
+	private void startCheckSlowQuery(String currentQuery) {
+		this.currentQuery = currentQuery;
+		Timer.getTimer().start(currentQuery);
+	}
+
+	private void checkSlowCommand(DBPersistenceCommandUnit command) {
+		LinkedHashMap<String, Long> slow = command.getQueriesSlowerThan(50, 1000000);
+		for (String query : slow.keySet()) {
+			info.addSlowQuery(query, slow.get(query));
+		}
+	}
+
+	private void endCheckSlowQuery() {
+		long nanos = Timer.getTimer().getNanos(currentQuery);
+		Timer.getTimer().stop(currentQuery);
+		if (nanos > 100 * 1000000 && currentQuery != null){
+			info.addSlowQuery(currentQuery, nanos);
+		}
 	}
 }

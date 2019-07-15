@@ -16,6 +16,7 @@ import ecommander.persistence.mappers.LuceneIndexMapper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 
 /**
  * Сохранение нового айтема в базоне
@@ -41,9 +42,11 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 
 	public void execute() throws Exception {
 		// Создать значение ключа
+		startQuery("SAVE NEW ITEM: prepare to save");
 		item.prepareToSave();
 
 		// Загрузка и валидация родительского айтема, если надо
+		startQuery("SAVE NEW ITEM: load parent");
 		Connection conn = getTransactionContext().getConnection();
 		if (item.hasParent()) {
 			if (parent == null)
@@ -72,6 +75,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		if (hasId)
 			itemInsert._col(I_ID).long_(item.getId());
 
+		startQuery(itemInsert.getSimpleSql());
 		if (!hasId) {
 			try (PreparedStatement pstmt = itemInsert.prepareQuery(conn, true)) {
 				pstmt.executeUpdate();
@@ -84,6 +88,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 				pstmt.executeUpdate();
 			}
 		}
+		endQuery();
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 2.   Если айтем имеет уникальный текстовый ключ, то происходит его сохранение в
@@ -96,11 +101,13 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 			TemplateQuery keySelect = new TemplateQuery("key select");
 			keySelect.SELECT(I_ID).FROM(UNIQUE_KEY_TBL).INNER_JOIN(ITEM_TBL, UK_ID, I_ID)
 					.WHERE().col(UK_KEY).string(item.getKeyUnique()).AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+			startQuery(keySelect.getSimpleSql());
 			try (PreparedStatement pstmt = keySelect.prepareQuery(conn)) {
 				pstmt.setString(1, item.getKeyUnique());
 				ResultSet rs = pstmt.executeQuery();
 				isNotUnique = rs.next();
 			}
+			endQuery();
 			if (isNotUnique)
 				item.setKeyUnique(item.getKeyUnique() + item.getId());
 
@@ -109,18 +116,22 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 					.INSERT_INTO(UNIQUE_KEY_TBL).SET()
 					.col(UK_ID).long_(item.getId())
 					._col(UK_KEY).string(item.getKeyUnique());
+			startQuery(uniqueKeyInsert.getSimpleSql());
 			try (PreparedStatement keyUniqueStmt = uniqueKeyInsert.prepareQuery(conn)) {
 				keyUniqueStmt.executeUpdate();
 			}
+			endQuery();
 			// Обновление уникального ключа айтема (если это нужно)
 			if (isNotUnique) {
 				TemplateQuery keyUpdate = new TemplateQuery("Item unique key update");
 				keyUpdate.UPDATE(ITEM_TBL)
 						.SET().col(I_T_KEY).string(item.getKeyUnique())
 						.WHERE().col(I_ID).long_(item.getId());
+				startQuery(keyUpdate.getSimpleSql());
 				try (PreparedStatement pstmt = keyUpdate.prepareQuery(conn)) {
 					pstmt.executeUpdate();
 				}
+				endQuery();
 			}
 		}
 
@@ -139,16 +150,18 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 					._col(IP_PARENT_DIRECT).byte_((byte)1)
 					._col(IP_CHILD_SUPERTYPE).int_(item.getBasicSupertypeId())
 					._col(IP_WEIGHT).int_(0);
+			startQuery(rootQuery.getSimpleSql());
 			try (PreparedStatement pstmt = rootQuery.prepareQuery(conn)) {
 				pstmt.executeUpdate();
 			}
+			endQuery();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 4.   Сохранение файлов айтема
 		//
 		try {
-			executeCommand(new SaveItemFilesUnit(item));
+			executeCommandInherited(new SaveItemFilesUnit(item));
 		} catch (Exception e) {
 			if (!ignoreFileErrors)
 				throw e;
@@ -162,15 +175,19 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 			updateItem.UPDATE(DBConstants.ItemTbl.ITEM_TBL).SET()
 					.col(DBConstants.ItemTbl.I_PARAMS).string(item.outputValues())
 					.WHERE().col(DBConstants.ItemTbl.I_ID).long_(item.getId());
+			startQuery(updateItem.getSimpleSql());
 			try (PreparedStatement pstmt = updateItem.prepareQuery(conn)) {
 				pstmt.executeUpdate();
 			}
+			endQuery();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 5.   Сохранить параметры айтема в таблицах индексов
 		//
+		startQuery("SAVE NEW ITEM: insert parameters");
 		ItemMapper.insertItemParametersToIndex(item, ItemMapper.Mode.INSERT, getTransactionContext());
+		endQuery();
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 6.   Дополнительная обработка

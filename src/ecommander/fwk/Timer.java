@@ -35,7 +35,7 @@ public class Timer {
     	long getExecTime();
     }
     
-	private static class TimeLogMessage implements TimerMessage{
+	public static class TimeLogMessage implements TimerMessage{
 		private String taskName;
 		private String comment;
 		private long execTime;
@@ -118,7 +118,7 @@ public class Timer {
 	public TimeLogMessage stop(String name) {
 		TimeLogMessage stamp = runningTasks.get(name);
 		if (stamp == null) {
-			ServerLogger.warn("Timer for task '" + name + "' not started");
+			//ServerLogger.warn("Timer for task '" + name + "' not started");
 			return null;
 		}
 		stamp.execTime = System.nanoTime() - stamp.execTime;

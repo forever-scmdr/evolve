@@ -89,10 +89,12 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		//////////////////////////////////////////////////////////////////////////////////////////
 
 		// Проверить права пользователя
+		startQuery("CREATE ASSOC: load parent");
 		if (parent == null)
 			parent = ItemMapper.loadItemBasics(parentId, getTransactionContext().getConnection());
 		testPrivileges(item);
 		testPrivileges(parent);
+		endQuery();
 
 		Assoc assoc = ItemTypeRegistry.getAssoc(assocId);
 
@@ -110,6 +112,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						.UNION_ALL()
 						.SELECT(IP_PARENT_ID).FROM(ITEM_PARENT_TBL).WHERE()
 						.col(IP_CHILD_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(assocId);
+				startQuery(checkQuery.getSimpleSql());
 				try (PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection())) {
 					HashSet<Long> nodesParents = new HashSet<>();
 					ResultSet rs = pstmt.executeQuery();
@@ -126,6 +129,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						nodesParents.add(parentId);
 					}
 				}
+				endQuery();
 			} else {
 				// Предок не должен содержать потомка по этой ассоциации
 				TemplateQuery checkQuery = new TemplateQuery("check assoc validity non transitive");
@@ -133,6 +137,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						.col(IP_PARENT_ID).long_(parent.getId()).AND()
 						.col(IP_CHILD_ID).long_(item.getId()).AND()
 						.col(IP_ASSOC_ID).byte_(assocId);
+				startQuery(checkQuery.getSimpleSql());
 				try (PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection())) {
 					ResultSet rs = pstmt.executeQuery();
 					if (rs.next()) {
@@ -144,6 +149,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						}
 					}
 				}
+				endQuery();
 			}
 		}
 
@@ -221,9 +227,11 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			// duplicate key. Просто установить parent_direct = 0
 			insert.ON_DUPLICATE_KEY_UPDATE(IP_PARENT_DIRECT).byte_((byte) 0);
 		}
+		startQuery(insert.getSimpleSql());
 		try (PreparedStatement pstmt = insert.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}
+		endQuery();
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 		//         Включить в список обновления предшественников айтема (и его сабайтемов)      //

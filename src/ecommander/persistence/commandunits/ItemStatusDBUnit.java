@@ -117,9 +117,11 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 				.SET().col(I_STATUS).byte_(newStatus)
 				.WHERE().col(IP_PARENT_ID).long_(item.getId())
 				.AND().col(IP_ASSOC_ID).byte_(primaryAssoc);
+		startQuery(updateItemStatus.getSimpleSql());
 		try(PreparedStatement pstmt = updateItemStatus.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}
+		endQuery();
 
 		// Дополнительная обработка для удаления
 		if (triggerExtra && newStatus == Item.STATUS_DELETED) {
@@ -128,7 +130,7 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 			if (type.hasExtraHandlers(ItemType.Event.delete)) {
 				for (ItemEventCommandFactory fac : type.getExtraHandlers(ItemType.Event.delete)) {
 					if (itemFull == null) {
-						itemFull = ItemQuery.loadById(item.getId(), getTransactionContext().getConnection());
+						itemFull = ItemQuery.loadById(item.getId());
 					}
 					PersistenceCommandUnit command = fac.createCommand(itemFull);
 					executeCommandInherited(command);
