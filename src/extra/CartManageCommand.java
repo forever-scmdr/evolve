@@ -34,7 +34,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 		//MANDATORY_JUR.add(ItemNames.user_jur_.EMAIL);
 		MANDATORY_JUR.add(ItemNames.user_jur_.ORGANIZATION);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.SHIP_TYPE);
-		//MANDATORY_JUR.add(ItemNames.user_jur_.UNP);
+		MANDATORY_JUR.add(ItemNames.user_jur_.UNP);
 	}
 
 
