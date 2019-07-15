@@ -56,7 +56,8 @@
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
-		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="bottom_text" caption="текст ВНИЗУ страницы" type="text"/>
+		<parameter name="text" caption="текст ВВЕРХУ страницы" type="text"/>
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 	</item>
 

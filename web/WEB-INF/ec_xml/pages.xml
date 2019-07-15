@@ -1212,8 +1212,8 @@
 	<page name="create_yml_file">
 		<headers content-type="text/xml"/>
 		<request>
-			<var name="name" value="Юкс"/>
-			<var name="company" value="ООО Юкс"/>
+			<var name="name" value="МЕТАБО.БЕЛ"/>
+			<var name="company" value="ИП РАКЕЦКАЯ Т.В."/>
 		</request>
 		<command class="ecommander.fwk.integration.YMarketCreateXMLFile">
 			<result name="success" type="redirect"/>
