@@ -6,10 +6,11 @@ public interface ItemNames {
 
     String PARSE_SECTION = "parse_section";
     String PARSE_ITEM = "parse_item";
-    String BASE_SEO = "base_seo";
     String SEO = "seo";
     String URL_SEO = "url_seo";
     String URL_SEO_WRAP = "url_seo_wrap";
+    String ORIGINAL_GALLERY = "original_gallery";
+    String GALLERY = "gallery";
     String CATALOG = "catalog";
     String SECTION = "section";
     String PRODUCT = "product";
@@ -74,6 +75,7 @@ public interface ItemNames {
         String ORDER_NUM = "order_num";
         String QTY = "qty";
         String SUM = "sum";
+        String SIMPLE_SUM = "simple_sum";
         String PROCESSED = "processed";
 
     }
@@ -89,6 +91,10 @@ public interface ItemNames {
     public interface common {
 
         String _ITEM_NAME = "common";
+        String SHOW_WINDOW = "show_window";
+        String DISCOUNT_LAST = "discount_last";
+        String DISCOUNT = "discount";
+        String DISCOUNT_TEXT = "discount_text";
         String TOP = "top";
         String LEFT = "left";
         String LINK_TEXT = "link_text";
@@ -186,6 +192,13 @@ public interface ItemNames {
 
     }
 
+    public interface gallery {
+
+        String _ITEM_NAME = "gallery";
+        String GALLERY = "gallery";
+
+    }
+
     public interface main_page {
 
         String _ITEM_NAME = "main_page";
@@ -265,6 +278,15 @@ public interface ItemNames {
 
     }
 
+    public interface original_gallery {
+
+        String _ITEM_NAME = "original_gallery";
+        String WATERMARK_FILENAME = "watermark_filename";
+        String WATERMARK_FILE_MODIFIED = "watermark_file_modified";
+        String GALLERY = "gallery";
+
+    }
+
     public interface params {
 
         String _ITEM_NAME = "params";
@@ -278,7 +300,7 @@ public interface ItemNames {
 
     }
 
-    public interface parse_item_ {
+    public interface parse_item {
 
         String _ITEM_NAME = "parse_item";
         String URL = "url";
@@ -294,7 +316,7 @@ public interface ItemNames {
 
     }
 
-    public interface parse_section_ {
+    public interface parse_section {
 
         String _ITEM_NAME = "parse_section";
         String ITEM_URLS = "item_urls";
@@ -371,6 +393,7 @@ public interface ItemNames {
         String _ITEM_NAME = "product_present";
         String PRODUCT_CODE = "product_code";
         String PRESENT_CODE = "present_code";
+        String QTY = "qty";
 
     }
 
@@ -411,6 +434,7 @@ public interface ItemNames {
         String PARENT_ID = "parent_id";
         String MAIN_PIC = "main_pic";
         String PARAMS_FILTER = "params_filter";
+        String ASSOC_CODES = "assoc_codes";
 
     }
 
@@ -422,6 +446,7 @@ public interface ItemNames {
         String DESCRIPTION = "description";
         String KEYWORDS = "keywords";
         String META = "meta";
+        String BOTTOM_TEXT = "bottom_text";
         String TEXT = "text";
         String TEXT_PICS = "text_pics";
 

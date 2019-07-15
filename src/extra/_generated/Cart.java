@@ -1,9 +1,10 @@
 
 package extra._generated;
 
-import java.math.BigDecimal;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
+
+import java.math.BigDecimal;
 
 public class Cart
     extends Item
@@ -88,6 +89,28 @@ public class Cart
 
     public boolean contains_sum(BigDecimal value) {
         return containsValue("sum", value);
+    }
+
+    public void set_simple_sum(BigDecimal value) {
+        setValue("simple_sum", value);
+    }
+
+    public void setUI_simple_sum(String value)
+        throws Exception
+    {
+        setValueUI("simple_sum", value);
+    }
+
+    public BigDecimal get_simple_sum() {
+        return getDecimalValue("simple_sum");
+    }
+
+    public BigDecimal getDefault_simple_sum(BigDecimal defaultVal) {
+        return getDecimalValue("simple_sum", defaultVal);
+    }
+
+    public boolean contains_simple_sum(BigDecimal value) {
+        return containsValue("simple_sum", value);
     }
 
     public void set_processed(Byte value) {

@@ -17,14 +17,16 @@
 	в разделы урлы всех айтемов, которые необходимо спарсить.
 	-->
 
-	<item name="parse_section" caption="Урлы для парсинга">
+	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true"/>
+
+	<item name="parse_section" caption="Урлы для парсинга" ag-id="2442" ag-hash="-814293671">
 		<parameter name="item_urls" type="plain-text" caption="Урлы вложенных товаров" />
 		<parameter name="item_urls_backup" type="plain-text" caption="Урлы вложенных товаров (backup)" />
 		<child item="parse_item"/>
 	</item>
 
 
-	<item name="parse_item" caption="Товар для парсинга" key="url downloaded parsed got_files">
+	<item name="parse_item" caption="Товар для парсинга" key="url downloaded parsed got_files" ag-id="2443" ag-hash="-980954849">
 		<parameter name="url" type="string" caption="URL"/>
 		<parameter name="downloaded" type="byte" caption="Downloaded" default="0"/>
 		<parameter name="parsed" type="byte" caption="Parsed" default="0"/>
@@ -56,7 +58,8 @@
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
-		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="bottom_text" caption="текст ВНИЗУ страницы" type="text"/>
+		<parameter name="text" caption="текст ВВЕРХУ страницы" type="text"/>
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 	</item>
 
@@ -113,11 +116,13 @@
 		<child item="parse_section" single="true"/>
 		<child item="section" />
 		<child item="product"/>
+		<child item="product" assoc="catalog_link"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
+		<parameter name="assoc_codes" type="plain-text" caption="артикулы дополнительных товаров"/>
 	</item>
 
 

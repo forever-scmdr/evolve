@@ -29,22 +29,6 @@ public class Parse_section
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 
-    public void set_name(String value) {
-        setValue("name", value);
-    }
-
-    public String get_name() {
-        return getStringValue("name");
-    }
-
-    public String getDefault_name(String defaultVal) {
-        return getStringValue("name", defaultVal);
-    }
-
-    public boolean contains_name(String value) {
-        return containsValue("name", value);
-    }
-
     public void set_item_urls(String value) {
         setValue("item_urls", value);
     }
@@ -59,6 +43,22 @@ public class Parse_section
 
     public boolean contains_item_urls(String value) {
         return containsValue("item_urls", value);
+    }
+
+    public void set_item_urls_backup(String value) {
+        setValue("item_urls_backup", value);
+    }
+
+    public String get_item_urls_backup() {
+        return getStringValue("item_urls_backup");
+    }
+
+    public String getDefault_item_urls_backup(String defaultVal) {
+        return getStringValue("item_urls_backup", defaultVal);
+    }
+
+    public boolean contains_item_urls_backup(String value) {
+        return containsValue("item_urls_backup", value);
     }
 
 }

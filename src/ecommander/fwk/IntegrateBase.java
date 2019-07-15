@@ -39,6 +39,7 @@ public abstract class IntegrateBase extends Command {
 	private static final Object MUTEX = new Object();
 	private static boolean isInProgress = false;
 	protected static Info info = null;
+	protected volatile boolean needTermination = false;
 
 	private static final class LogMessage {
 		private Date date;
@@ -80,20 +81,31 @@ public abstract class IntegrateBase extends Command {
 		private static final String _indexation = "Индексация названий товаров";
 
 		private volatile String operation = "Инициализация";
+		private volatile String currentJob = "Инициализация";
 		private volatile int lineNumber = 0;
+		private volatile int position = 0;
 		private volatile int processed = 0;
 		private volatile int toProcess = 0;
 		private ArrayDeque<LogMessage> log = new ArrayDeque<>();
 		private ArrayList<Error> errors = new ArrayList<>();
 		private volatile boolean inProgress = false;
 		private volatile int logSize = 30;
+		private String host;
 
 		public synchronized void setOperation(String opName) {
 			operation = opName;
 		}
 
+		public synchronized void setCurrentJob(String currentJob) {
+			this.currentJob = currentJob;
+		}
+
 		public synchronized void setLineNumber(int lineNumber) {
 			this.lineNumber = lineNumber;
+		}
+
+		public synchronized void setLinePosition(int position) {
+			this.position = position;
 		}
 
 		public synchronized void setProcessed(int processed) {
@@ -114,6 +126,10 @@ public abstract class IntegrateBase extends Command {
 
 		public synchronized void increaseProcessed() {
 			this.processed++;
+		}
+
+		public synchronized void increaseProcessed(int procCount) {
+			this.processed += procCount;
 		}
 
 		public synchronized void increaseLineNumber() {
@@ -149,7 +165,9 @@ public abstract class IntegrateBase extends Command {
 		}
 
 		public synchronized void output(XmlDocumentBuilder doc) throws IOException {
+			doc.startElement("base").addText(host).endElement();
 			doc.startElement("operation").addText(operation).endElement();
+			doc.startElement("current_job").addText(currentJob).endElement();
 			doc.startElement("line").addText(lineNumber).endElement();
 			if (operation.equals(_indexation))
 				doc.startElement("processed").addText(LuceneIndexMapper.getSingleton().getCountProcessed()).endElement();
@@ -176,6 +194,9 @@ public abstract class IntegrateBase extends Command {
 						.addText(error.message).endElement();
 			}
 			ServerLogger.debug(doc.toString());
+		}
+		public synchronized void indexsationStarted() {
+			operation = _indexation;
 		}
 	}
 
@@ -256,6 +277,7 @@ public abstract class IntegrateBase extends Command {
 		boolean async = getVarSingleValueDefault("mode", "async").equalsIgnoreCase("async");
 		// Если команда находитя в стадии выполнения - вернуть результат сразу (не запускать команду по новой)
 		if (isInProgress && "terminate".equals(operation)) {
+			needTermination = true;
 			terminate();
 			return buildResult();
 		} else if (isInProgress || !"start".equals(operation)) {
@@ -264,6 +286,7 @@ public abstract class IntegrateBase extends Command {
 			synchronized (MUTEX) {
 				isInProgress = true;
 				newInfo().setInProgress(true);
+				getInfo().host = getUrlBase();
 				setOperation("Инициализация");
 				// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
 				if (!makePreparations()) {
@@ -279,12 +302,13 @@ public abstract class IntegrateBase extends Command {
 					} catch (Exception se) {
 						setOperation("Интеграция завершена с ошибками");
 						ServerLogger.error("Integration error", se);
-						getInfo().addError(se.getMessage(), 0, 0);
+						getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
 					} finally {
 						isInProgress = false;
 						getInfo().setInProgress(false);
 					}
 				});
+				thread.setDaemon(true);
 				if (async)
 					thread.start();
 				else
@@ -314,10 +338,10 @@ public abstract class IntegrateBase extends Command {
 	 */
 	private ResultPE buildResult() throws IOException {
 		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
-		doc.startElement("page");
+		doc.startElement("page", "name", getPageName());
 		getInfo().output(doc);
 		doc.endElement();
-		ResultPE result = null;
+		ResultPE result;
 		try {
 			result = getResult("complete");
 		} catch (EcommanderException e) {

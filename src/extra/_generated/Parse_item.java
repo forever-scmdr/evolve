@@ -1,11 +1,12 @@
 
 package extra._generated;
 
-import java.io.File;
-import java.util.List;
 import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
+
+import java.io.File;
+import java.util.List;
 
 public class Parse_item
     extends Item
@@ -198,6 +199,22 @@ public class Parse_item
 
     public boolean contains_file(File value) {
         return containsValue("file", value);
+    }
+
+    public void add_html_pic(File value) {
+        setValue("html_pic", value);
+    }
+
+    public List<File> getAll_html_pic() {
+        return getFileValues("html_pic", AppContext.getCommonFilesDirPath());
+    }
+
+    public void remove_html_pic(File value) {
+        removeEqualValue("html_pic", value);
+    }
+
+    public boolean contains_html_pic(File value) {
+        return containsValue("html_pic", value);
     }
 
 }

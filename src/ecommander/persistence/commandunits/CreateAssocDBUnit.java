@@ -52,7 +52,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		this.isItemNew = isItemNew;
 	}
 
-	public CreateAssocDBUnit(Item item, long parentId, byte assocId) {
+	public CreateAssocDBUnit() {
 		this.assocId = assocId;
 		this.item = item;
 		this.parentId = parentId;

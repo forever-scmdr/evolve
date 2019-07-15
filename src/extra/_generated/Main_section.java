@@ -7,29 +7,35 @@ import ecommander.model.ItemTypeRegistry;
 
 import java.io.File;
 
-public class Section
+public class Main_section
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "section";
+    public final static String _NAME = "main_section";
+    public final static String NAME = "name";
+    public final static String CATEGORY_ID = "category_id";
+    public final static String PARENT_ID = "parent_id";
+    public final static String MAIN_PIC = "main_pic";
+    public final static String PARAMS_FILTER = "params_filter";
+    public final static String NAME_EXTRA = "name_extra";
 
-    private Section(Item item) {
+    private Main_section(Item item) {
         super(item);
     }
 
-    public static Section get(Item item) {
+    public static Main_section get(Item item) {
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'section' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'main_section' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Section(item);
+        return new Main_section(item);
     }
 
-    public static Section newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+    public static Main_section newChild(Item parent) {
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {
@@ -92,20 +98,20 @@ public class Section
         return containsValue("main_pic", value);
     }
 
-    public void set_assoc_codes(String value) {
-        setValue("assoc_codes", value);
+    public void set_name_extra(String value) {
+        setValue("name_extra", value);
     }
 
-    public String get_assoc_codes() {
-        return getStringValue("assoc_codes");
+    public String get_name_extra() {
+        return getStringValue("name_extra");
     }
 
-    public String getDefault_assoc_codes(String defaultVal) {
-        return getStringValue("assoc_codes", defaultVal);
+    public String getDefault_name_extra(String defaultVal) {
+        return getStringValue("name_extra", defaultVal);
     }
 
-    public boolean contains_assoc_codes(String value) {
-        return containsValue("assoc_codes", value);
+    public boolean contains_name_extra(String value) {
+        return containsValue("name_extra", value);
     }
 
 }

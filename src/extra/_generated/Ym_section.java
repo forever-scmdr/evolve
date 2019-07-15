@@ -7,28 +7,28 @@ import ecommander.model.ItemTypeRegistry;
 
 import java.io.File;
 
-public class Section
+public class Ym_section
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "section";
+    private final static String _ITEM_TYPE_NAME = "ym_section";
 
-    private Section(Item item) {
+    private Ym_section(Item item) {
         super(item);
     }
 
-    public static Section get(Item item) {
+    public static Ym_section get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'section' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'ym_section' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Section(item);
+        return new Ym_section(item);
     }
 
-    public static Section newChild(Item parent) {
+    public static Ym_section newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 
@@ -90,22 +90,6 @@ public class Section
 
     public boolean contains_main_pic(File value) {
         return containsValue("main_pic", value);
-    }
-
-    public void set_assoc_codes(String value) {
-        setValue("assoc_codes", value);
-    }
-
-    public String get_assoc_codes() {
-        return getStringValue("assoc_codes");
-    }
-
-    public String getDefault_assoc_codes(String defaultVal) {
-        return getStringValue("assoc_codes", defaultVal);
-    }
-
-    public boolean contains_assoc_codes(String value) {
-        return containsValue("assoc_codes", value);
     }
 
 }

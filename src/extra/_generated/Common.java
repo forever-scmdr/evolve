@@ -29,6 +29,88 @@ public class Common
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 
+    public void set_show_window(Integer value) {
+        setValue("show_window", value);
+    }
+
+    public void setUI_show_window(String value)
+        throws Exception
+    {
+        setValueUI("show_window", value);
+    }
+
+    public Integer get_show_window() {
+        return getIntValue("show_window");
+    }
+
+    public Integer getDefault_show_window(Integer defaultVal) {
+        return getIntValue("show_window", defaultVal);
+    }
+
+    public boolean contains_show_window(Integer value) {
+        return containsValue("show_window", value);
+    }
+
+    public void set_discount_last(Integer value) {
+        setValue("discount_last", value);
+    }
+
+    public void setUI_discount_last(String value)
+        throws Exception
+    {
+        setValueUI("discount_last", value);
+    }
+
+    public Integer get_discount_last() {
+        return getIntValue("discount_last");
+    }
+
+    public Integer getDefault_discount_last(Integer defaultVal) {
+        return getIntValue("discount_last", defaultVal);
+    }
+
+    public boolean contains_discount_last(Integer value) {
+        return containsValue("discount_last", value);
+    }
+
+    public void set_discount(Double value) {
+        setValue("discount", value);
+    }
+
+    public void setUI_discount(String value)
+        throws Exception
+    {
+        setValueUI("discount", value);
+    }
+
+    public Double get_discount() {
+        return getDoubleValue("discount");
+    }
+
+    public Double getDefault_discount(Double defaultVal) {
+        return getDoubleValue("discount", defaultVal);
+    }
+
+    public boolean contains_discount(Double value) {
+        return containsValue("discount", value);
+    }
+
+    public void set_discount_text(String value) {
+        setValue("discount_text", value);
+    }
+
+    public String get_discount_text() {
+        return getStringValue("discount_text");
+    }
+
+    public String getDefault_discount_text(String defaultVal) {
+        return getStringValue("discount_text", defaultVal);
+    }
+
+    public boolean contains_discount_text(String value) {
+        return containsValue("discount_text", value);
+    }
+
     public void set_top(String value) {
         setValue("top", value);
     }

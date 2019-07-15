@@ -4,28 +4,28 @@ package extra._generated;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class News_wrap
+public class Small_news
     extends Item
 {
 
-    public final static String _NAME = "news_wrap";
+    public final static String _NAME = "small_news";
 
-    private News_wrap(Item item) {
+    private Small_news(Item item) {
         super(item);
     }
 
-    public static News_wrap get(Item item) {
+    public static Small_news get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'news_wrap' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'small_news' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new News_wrap(item);
+        return new Small_news(item);
     }
 
-    public static News_wrap newChild(Item parent) {
+    public static Small_news newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 

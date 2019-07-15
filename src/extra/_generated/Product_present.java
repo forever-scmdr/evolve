@@ -61,4 +61,20 @@ public class Product_present
         return containsValue("present_code", value);
     }
 
+    public void set_qty(String value) {
+        setValue("qty", value);
+    }
+
+    public String get_qty() {
+        return getStringValue("qty");
+    }
+
+    public String getDefault_qty(String defaultVal) {
+        return getStringValue("qty", defaultVal);
+    }
+
+    public boolean contains_qty(String value) {
+        return containsValue("qty", value);
+    }
+
 }
