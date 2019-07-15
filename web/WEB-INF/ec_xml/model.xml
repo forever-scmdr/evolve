@@ -17,6 +17,8 @@
 	в разделы урлы всех айтемов, которые необходимо спарсить.
 	-->
 
+	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true"/>
+
 	<item name="parse_section" caption="Урлы для парсинга" ag-id="2442" ag-hash="-814293671">
 		<parameter name="item_urls" type="plain-text" caption="Урлы вложенных товаров" />
 		<parameter name="item_urls_backup" type="plain-text" caption="Урлы вложенных товаров (backup)" />
@@ -114,6 +116,7 @@
 		<child item="parse_section" single="true"/>
 		<child item="section" />
 		<child item="product"/>
+		<child item="product" assoc="catalog_link"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
