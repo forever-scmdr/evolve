@@ -53,9 +53,10 @@
 						</div>
 						<div class="search">
 							<form action="{page/search_link}" method="post">
-								<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
+								<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"  id="q-ipt" />
 								<input type="submit" value="Найти"/>
 							</form>
+							<div id="search-result"></div>
 						</div>
 						<div class="other-container">
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
@@ -123,8 +124,9 @@
 				</div>
 				<div class="search-container">
 					<form action="{page/search_link}" method="post">
-						<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
+						<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}" id="q-ipt-mobile"/>
 					</form>
+					<div id="search-result-mobile"></div>
 				</div>
 			</div>
 		</div>
@@ -715,33 +717,36 @@
 			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 			<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 			<script type="text/javascript" src="js/fwk/common.js"/>
-			<script type="text/javascript" src="slick/slick.min.js"></script>
-			<script type="text/javascript">
-				$(document).ready(function(){
-					$(".footer-placeholder").height($(".footer").outerHeight()+40);
-					$('.slick-slider').slick({
-						infinite: true,
-						slidesToShow: 6,
-						slidesToScroll: 6,
-						dots: true,
-						arrows: false,
-						responsive: [
-							{
-						      breakpoint: 767,
-						      settings: {
-						        slidesToShow: 2,
-						        slidesToScroll: 2,
-						        infinite: true,
-						        dots: true
-						      }
-						    }
-						]
-					});
+			<script type="text/javascript" src="js/search-tip.js"></script>
+			<xsl:if test="/page/@name = 'index'">
+				<script type="text/javascript" src="slick/slick.min.js"></script>
+				<script type="text/javascript">
+					$(document).ready(function(){
+						$(".footer-placeholder").height($(".footer").outerHeight()+40);
+						$('.slick-slider').slick({
+							infinite: true,
+							slidesToShow: 6,
+							slidesToScroll: 6,
+							dots: true,
+							arrows: false,
+							responsive: [
+								{
+								  breakpoint: 767,
+								  settings: {
+									slidesToShow: 2,
+									slidesToScroll: 2,
+									infinite: true,
+									dots: true
+								  }
+								}
+							]
+						});
 
-					initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
-					initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
-				});
-			</script>
+						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
+						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+					});
+				</script>
+			</xsl:if>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>
 			<xsl:call-template name="USER_SCRIPTS"/>
 		</body>
