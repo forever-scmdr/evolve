@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -51,14 +52,14 @@ public class MysqlConnector
 {
 	private static final int MAX_CONNECTIONS = 24;
 	
-	private static volatile int _open_count = 0;
+	private static AtomicInteger _open_count = new AtomicInteger(0);
 	private static HashMap<Integer, Integer> connectionNames = new HashMap<>();
 	//private static final HashSet<Integer> openConnections = new HashSet<>();
 	private static final HashMap<Integer, String> openTraces = new HashMap<>();
-	private static int com_name_counter = 0;
+	private static AtomicInteger com_name_counter = new AtomicInteger(0);
 	
-	private static final Lock lock = new ReentrantLock();
-	private static final Condition isNotFull = lock.newCondition();
+	//private static final Lock lock = new ReentrantLock();
+	//private static final Condition isNotFull = lock.newCondition();
 
 	public static class AutoRollback implements AutoCloseable {
 		private boolean committed = false;
@@ -93,14 +94,14 @@ public class MysqlConnector
 		private LoggedConnection(Connection conn, HttpServletRequest request) {
 			this.conn = conn;
 			this.request = request;
-			try {
-				lock.lock();
-				if (_open_count >= MAX_CONNECTIONS)
-					isNotFull.await();
-				_open_count++;
+//			try {
+//				lock.lock();
+//				if (_open_count >= MAX_CONNECTIONS)
+//					isNotFull.await();
+				_open_count.incrementAndGet();
 				Integer name = connectionNames.get(conn.hashCode());
 				if (name == null) {
-					name = ++com_name_counter;
+					name = com_name_counter.incrementAndGet();
 					connectionNames.put(conn.hashCode(), name);
 				}
 //				synchronized (openConnections) {
@@ -124,11 +125,12 @@ public class MysqlConnector
 					}
 				}
 				//ServerLogger.debug("/////////////---------- OPEN conneciton. Name " + name + "  Total: " + _open_count + createExtra() + " ----------/////////////" + trace);
-			} catch (InterruptedException e) {
-				ServerLogger.error("Interrupted", e);
-			} finally {
-				lock.unlock();
-			}
+//			} catch (InterruptedException e) {
+//				ServerLogger.error("Interrupted", e);
+//			}
+//			finally {
+//				lock.unlock();
+//			}
 		}
 		
 		public void queryFinished() {
@@ -163,16 +165,17 @@ public class MysqlConnector
 		public void close() throws SQLException {
 			if (conn.isClosed())
 				return;
-			Integer name = connectionNames.get(conn.hashCode());
 			conn.close();
-			try {
-				lock.lock();
-				_open_count--;
-				if (_open_count < MAX_CONNECTIONS)
-					isNotFull.signal();
-			} finally {
-				lock.unlock();
-			}
+			_open_count.decrementAndGet();
+			Integer name = connectionNames.get(conn.hashCode());
+//			try {
+//				lock.lock();
+//				_open_count--;
+//				if (_open_count < MAX_CONNECTIONS)
+//					isNotFull.signal();
+//			} finally {
+//				lock.unlock();
+//			}
 			String logEntry = "";
 			for (int i = 0; i < queryTimes.size(); i++) {
 				logEntry += "\n" + queryTimes.get(i) + "\t" + queries.get(i);
