@@ -256,7 +256,7 @@
 				</fulltext>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
+				<var name="prod" ref="prod" style="translit"/>
 			</link>
 		</list>
 		<link name="search_link" target="search" copy-page-vars="yes"/>

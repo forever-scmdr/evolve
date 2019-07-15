@@ -17,15 +17,23 @@
 				По Вашему запросу ничего не найдено.
 			</xsl:if>
 			<xsl:if test="page/product">
-				<ul>
+				<div class="cart-container">
 					<xsl:for-each select="page/product">
-						<li>
-							<a href="{show_product}">
-								<xsl:value-of select="name"/>
+						<xsl:variable name="price" select="if (price) then concat(price, ' p.') else 'под заказ'"/>
+						<div class="item">
+							<a href="{show_product}" class="image-container">
+								<img src="{@path}{main_pic}" alt=""/>
 							</a>
-						</li>
+							<a href="{show_product}" class="title">
+								<xsl:value-of select="name"/>
+								<span style="display: block">
+									№ для заказа: <xsl:value-of select="code"/>
+								</span>
+								<div class="price one"><span>Цена</span><xsl:value-of select="$price"/></div>
+							</a>
+						</div>
 					</xsl:for-each>
-				</ul>
+				</div>
 				<a class="show-all" href="{//search_link}"><strong>Показать все результаты</strong></a>
 			</xsl:if>
 		</div>
@@ -34,15 +42,24 @@
 				По Вашему запросу ничего не найдено.
 			</xsl:if>
 			<xsl:if test="page/product">
-				<ul>
+				<div class="cart-container">
 					<xsl:for-each select="page/product">
-						<li>
-							<a href="{show_product}">
-								<xsl:value-of select="name"/>
+						<xsl:variable name="price" select="if (price) then concat(price, ' p.') else 'под заказ'"/>
+						<div class="item">
+							<a href="{show_product}" class="image-container">
+								<img src="{@path}{main_pic}" alt=""/>
 							</a>
-						</li>
+							<a href="{show_product}" class="title">
+								<xsl:value-of select="name"/>
+								<br />
+								<span>
+									№ для заказа: <xsl:value-of select="code"/>
+								</span>
+								<div class="price one"><span>Цена</span><xsl:value-of select="$price"/></div>
+							</a>
+						</div>
 					</xsl:for-each>
-				</ul>
+				</div>
 				<a class="show-all" href="{//search_link}"><strong>Показать все результаты</strong></a>
 			</xsl:if>
 		</div>
