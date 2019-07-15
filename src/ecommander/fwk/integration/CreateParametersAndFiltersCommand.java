@@ -8,6 +8,7 @@ import ecommander.model.datatypes.DataType;
 import ecommander.model.filter.CriteriaDef;
 import ecommander.model.filter.FilterDefinition;
 import ecommander.model.filter.InputDef;
+import ecommander.pages.Command;
 import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -236,5 +237,13 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 	public static void main(String[] args) {
 		System.out.println("0.5 - 5 Нм".matches("^-?[0-9]+[\\.,]?[0-9]*\\s+[^-\\s]+$"));
+	}
+
+	public CreateParametersAndFiltersCommand() {
+
+	}
+
+	public CreateParametersAndFiltersCommand(Command outer) {
+		super(outer);
 	}
 }

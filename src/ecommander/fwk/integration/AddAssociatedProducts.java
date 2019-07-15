@@ -25,7 +25,7 @@ public class AddAssociatedProducts extends IntegrateBase implements CatalogConst
 		info.setOperation("Загрузка разделов каталога");
 		LinkedList<Item> sections = new LinkedList<>();
 		ItemQuery q = new ItemQuery(SECTION_ITEM);
-		q.addParameterCriteria(ItemNames.section.ASSOC_CODES,"","!=", null, Compare.SOME);
+		q.addParameterCriteria(ItemNames.section.ASSOC_CODES,"-","!=", null, Compare.SOME);
 		sections.addAll(q.loadItems());
 		Item section;
 		info.setToProcess(toProcess);
@@ -36,6 +36,7 @@ public class AddAssociatedProducts extends IntegrateBase implements CatalogConst
 			q = new ItemQuery(PRODUCT_ITEM);
 			q.addParameterCriteria(CODE_PARAM, codes, "=", null, Compare.SOME);
 			LinkedList<Item> loadedProducts = new LinkedList<>();
+			loadedProducts.addAll(q.loadItems());
 			toProcess += loadedProducts.size();
 			info.setToProcess(toProcess);
 			Item product;
@@ -45,6 +46,8 @@ public class AddAssociatedProducts extends IntegrateBase implements CatalogConst
 				info.increaseProcessed();
 			}
 		}
+		setOperation("Создание фильтров");
+		new CreateParametersAndFiltersCommand(this).execute();
 		setOperation("Переиндексация");
 		info.indexsationStarted();
 		LuceneIndexMapper.getSingleton().reindexAll();

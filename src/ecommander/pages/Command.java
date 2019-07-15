@@ -6,7 +6,6 @@ import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.pages.var.CookieStaticVariable;
-import ecommander.pages.var.SessionStaticVariable;
 import ecommander.pages.var.StaticVariable;
 import ecommander.pages.var.Variable;
 import ecommander.persistence.common.PersistenceCommandUnit;
@@ -27,6 +26,19 @@ public abstract class Command implements AutoCloseable {
 	private HashMap<String, ResultPE> results = null; // резльтаты выполнения команды
 	private SynchronousTransaction transaction = null;
 	private SessionItemMapper sessionMapper = null;
+
+
+	public Command() {
+
+	}
+
+
+	public Command(Command outer) {
+		this.page = outer.page;
+		this.transaction = outer.transaction;
+		this.sessionMapper = outer.sessionMapper;
+	}
+
 
 	void init(ExecutablePagePE page) {
 		this.page = page;
@@ -57,6 +69,10 @@ public abstract class Command implements AutoCloseable {
 	
 	protected final String getUrlBase() {
 		return page.getUrlBase();
+	}
+
+	protected final String getPageName() {
+		return page.getPageName();
 	}
 	/**
 	 * Установить значение переменной куки
