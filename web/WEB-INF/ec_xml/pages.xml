@@ -245,6 +245,23 @@
 		<include name="COMMON"/>
 	</page>
 
+	<page name="search_ajax" template="search_ajax">
+		<request>
+			<var name="q"/>
+		</request>
+		<list item="product" id="prod">
+			<filter>
+				<fulltext limit="5" compare="EVERY">
+					<var var="q"/>
+				</fulltext>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+		</list>
+		<link name="search_link" target="search" copy-page-vars="yes"/>
+	</page>
+
 	<page name="search" template="search">
 		<request>
 			<var name="discount_active" scope="cookie"/>
