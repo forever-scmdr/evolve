@@ -4784,7 +4784,7 @@
 <!--END_p174330-->
 
 <!--START_p109446-->
-<item name="p109446" caption="Штроборезы" key="" ag-id="0" ag-hash="2065071596" virtual="false" user-def="true" description="" super="params *">
+<item name="p109446" caption="Штроборезы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2613" ag-hash="2065071596">
 	<parameter name="reguliruemaya_glubina_reza" caption="Регулируемая глубина реза" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1749779090" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vozmognaya_shirina_paza" caption="Возможная ширина паза" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1214610265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_otreznyh_krugov" caption="Диаметр отрезных кругов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2044478249" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>

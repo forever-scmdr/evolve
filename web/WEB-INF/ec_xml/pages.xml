@@ -1259,7 +1259,7 @@
 		</command>
 	</page>
 
-	<page name="add_associated">
+	<page name="add_associated" template="integrate">
 		<request>
 			<var name="action"/>
 		</request>
