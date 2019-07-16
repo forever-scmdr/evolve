@@ -1,6 +1,5 @@
 package ecommander.admin;
 
-import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.controllers.SessionContext;
 import ecommander.filesystem.DeleteItemFileUnit;
@@ -14,7 +13,6 @@ import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
-import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -760,7 +758,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		Item item = ItemQuery.loadById(in.itemId);
 		for (String itemInput : in.mount.keySet()) {
 			String[] parts = MainAdminPageCreator.splitInputName(itemInput);
-			transaction.addCommandUnit(new CreateAssocDBUnit(item, Long.parseLong(parts[2]), in.assocId, false));
+			transaction.addCommandUnit(CreateAssocDBUnit.childExistsStrict(item, Long.parseLong(parts[2]), in.assocId));
 		}
 		transaction.execute();
 		// Очистить кеш страниц
@@ -785,7 +783,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		for (String itemInput : in.mount.keySet()) {
 			String[] parts = MainAdminPageCreator.splitInputName(itemInput);
 			Item child = ItemQuery.loadById(Long.parseLong(parts[2]));
-			transaction.addCommandUnit(new CreateAssocDBUnit(child, parent, in.assocId, false));
+			transaction.addCommandUnit(CreateAssocDBUnit.childExistsStrict(child, parent, in.assocId));
 		}
 		transaction.execute();
 		// Очистить кеш страниц

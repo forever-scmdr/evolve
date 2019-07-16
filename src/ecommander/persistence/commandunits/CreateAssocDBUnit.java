@@ -37,32 +37,49 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 	private ItemBasics parent;
 	private byte assocId;
 	private boolean isItemNew = false;
+	private boolean isStrict = true;
 
-	public CreateAssocDBUnit(Item item, long parentId, byte assocId, boolean isItemNew) {
+
+	public static CreateAssocDBUnit childIsNew(Item item, long parentId, byte assocId) {
+		return new CreateAssocDBUnit(item, parentId, assocId, true, true);
+	}
+
+	public static CreateAssocDBUnit childIsNew(Item item, ItemBasics parent, byte assocId) {
+		return new CreateAssocDBUnit(item, parent, assocId, true, true);
+	}
+
+	public static CreateAssocDBUnit childExistsStrict(Item item, long parentId, byte assocId) {
+		return new CreateAssocDBUnit(item, parentId, assocId, false, true);
+	}
+
+	public static CreateAssocDBUnit childExistsStrict(Item item, ItemBasics parent, byte assocId) {
+		return new CreateAssocDBUnit(item, parent, assocId, false, true);
+	}
+
+	public static CreateAssocDBUnit childExistsSoft(Item item, long parentId, byte assocId) {
+		return new CreateAssocDBUnit(item, parentId, assocId, false, false);
+	}
+
+	public static CreateAssocDBUnit childExistsSoft(Item item, ItemBasics parent, byte assocId) {
+		return new CreateAssocDBUnit(item, parent, assocId, false, false);
+	}
+
+	private CreateAssocDBUnit(Item item, long parentId, byte assocId, boolean isItemNew, boolean isStrict) {
 		this.assocId = assocId;
 		this.item = item;
 		this.parentId = parentId;
 		this.isItemNew = isItemNew;
+		this.isStrict = isStrict;
 	}
 
-	public CreateAssocDBUnit(Item item, ItemBasics parent, byte assocId, boolean isItemNew) {
+	private CreateAssocDBUnit(Item item, ItemBasics parent, byte assocId, boolean isItemNew, boolean isStrict) {
 		this.assocId = assocId;
 		this.item = item;
 		this.parent = parent;
 		this.isItemNew = isItemNew;
+		this.isStrict = isStrict;
 	}
 
-	public CreateAssocDBUnit() {
-		this.assocId = assocId;
-		this.item = item;
-		this.parentId = parentId;
-	}
-
-	public CreateAssocDBUnit(Item item, ItemBasics parent, byte assocId) {
-		this.assocId = assocId;
-		this.item = item;
-		this.parent = parent;
-	}
 
 	@Override
 	public void execute() throws Exception {
@@ -98,9 +115,14 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 					ResultSet rs = pstmt.executeQuery();
 					while (rs.next()) {
 						long parentId = rs.getLong(1);
-						if (nodesParents.contains(parentId))
-							throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
-									"Association parent and child nodes must be in different branches");
+						if (nodesParents.contains(parentId)) {
+							if (isStrict) {
+								throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
+										"Association parent and child nodes must be in different branches");
+							} else {
+								return;
+							}
+						}
 						nodesParents.add(parentId);
 					}
 				}
@@ -113,9 +135,14 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						.col(IP_ASSOC_ID).byte_(assocId);
 				try (PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection())) {
 					ResultSet rs = pstmt.executeQuery();
-					if (rs.next())
-						throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
-								"Association parent already has specified child");
+					if (rs.next()) {
+						if (isStrict) {
+							throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
+									"Association parent already has specified child");
+						} else {
+							return;
+						}
+					}
 				}
 			}
 		}

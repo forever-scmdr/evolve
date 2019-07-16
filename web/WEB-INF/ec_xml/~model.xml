@@ -17,7 +17,7 @@
 	в разделы урлы всех айтемов, которые необходимо спарсить.
 	-->
 
-	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true"/>
+	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true" ag-id="1" ag-hash="-1147981728"/>
 
 	<item name="parse_section" caption="Урлы для парсинга" ag-id="2442" ag-hash="-814293671">
 		<parameter name="item_urls" type="plain-text" caption="Урлы вложенных товаров" />

@@ -40,7 +40,7 @@ public class AddAssociatedProducts extends IntegrateBase implements CatalogConst
 			info.setToProcess(toProcess);
 			Item product;
 			while((product = loadedProducts.poll())!=null){
-				CreateAssocDBUnit createAssocDBUnit = new CreateAssocDBUnit(product, section, ItemTypeRegistry.getAssocId("catalog_link"), false);
+				CreateAssocDBUnit createAssocDBUnit = CreateAssocDBUnit.childExistsSoft(product, section, ItemTypeRegistry.getAssocId("catalog_link"));
 				executeAndCommitCommandUnits(createAssocDBUnit);
 				info.increaseProcessed();
 			}
@@ -48,7 +48,7 @@ public class AddAssociatedProducts extends IntegrateBase implements CatalogConst
 		setOperation("Создание фильтров");
 		CreateParametersAndFiltersCommand createFilters = new CreateParametersAndFiltersCommand(this);
 		createFilters.setSections(sections);
-		createFilters.execute();
+		createFilters.integrate();
 		setOperation("Переиндексация");
 		info.indexsationStarted();
 		LuceneIndexMapper.getSingleton().reindexAll();
