@@ -1,6 +1,5 @@
 package ecommander.pages;
 
-import ecommander.model.Assoc;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import org.apache.commons.lang3.StringUtils;
@@ -50,7 +49,7 @@ public class ItemPE extends PageElementContainer {
 	// Название айтема (типа айтема)
 	private String itemName = null;
 	// Название ассоциации
-	private String assocName = null;
+	private String[] assocName = null;
 	// Название айтема, уникальное для него на странице
 	private String pageId = null;
 	// ID родительского айтема для новых айтемов (айтемов типа new)
@@ -70,7 +69,7 @@ public class ItemPE extends PageElementContainer {
 	// Список названий переменных страницы для идентификации айтема при кешировании
 	private ArrayList<String> cacheVars = null;
 
-	ItemPE(Type type, String itemName, String assocName, String pageId, String parentPageId, String tag, ItemRootType rootType,
+	ItemPE(Type type, String itemName, String[] assocName, String pageId, String parentPageId, String tag, ItemRootType rootType,
 	       String rootGroupName, boolean isTransitive, boolean isCacheable, boolean isVirtual, ArrayList<String> cacheVarNames) {
 		super();
 		this.type = type;
@@ -85,8 +84,10 @@ public class ItemPE extends PageElementContainer {
 		this.cacheable = isCacheable;
 		this.virtual = isVirtual;
 		this.cacheVars = cacheVarNames;
-		if (StringUtils.isBlank(this.assocName))
-			this.assocName = ItemTypeRegistry.getPrimaryAssoc().getName();
+		if (assocName == null || assocName.length == 0 || StringUtils.isBlank(this.assocName[0])) {
+			this.assocName = new String[1];
+			this.assocName[0] = ItemTypeRegistry.getPrimaryAssoc().getName();
+		}
 	}
 
 	public final String getItemName() {
@@ -142,7 +143,7 @@ public class ItemPE extends PageElementContainer {
 		return isTransitive;
 	}
 
-	public final String getAssocName() {
+	public final String[] getAssocName() {
 		return assocName;
 	}
 	
@@ -174,10 +175,11 @@ public class ItemPE extends PageElementContainer {
 			results.addError(elementPath + " > " + getKey(), "there is no '" + itemName + "' item in site model");
 			return false;
 		}
-		Assoc assoc = ItemTypeRegistry.getAssoc(assocName);
-		if (assoc == null) {
-			results.addError(elementPath + " > " + getKey(), "there is no '" + assocName + "' association in site model");
-			return false;
+		for (String an : assocName) {
+			if (ItemTypeRegistry.getAssoc(an) == null) {
+				results.addError(elementPath + " > " + getKey(), "there is no '" + an + "' association in site model");
+				return false;
+			}
 		}
 		// Установить данные для последующей валидации (ItemDescription страничного айтема)
 		results.pushBufferData(itemDesc);

@@ -139,7 +139,7 @@
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<single item="seo"/>
-			<list item="product" id="prod" transit="true">
+			<list item="product" id="prod" transit="true" assoc="catalog_link *">
 				<filter>
 					<parameter name="available" compare="ANY"><var var="minqty" /></parameter>
 					<child item="params" transit="false" ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>

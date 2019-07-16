@@ -892,7 +892,7 @@ public class PageModelBuilder {
 		// Считвание базовых параметров страничного айтема
 		String itemNodeName = itemNode.tagName();
 		String itemName = itemNode.attr(ITEM_ATTRIBUTE);
-		String assocName = itemNode.attr(ASSOC_ATTRIBUTE);
+		String[] assocName = StringUtils.split(itemNode.attr(ASSOC_ATTRIBUTE), ' ');
 		String pageItemId = itemNode.attr(ID_ATTRIBUTE);
 		String tagName = itemNode.attr(TAG_ATTRIBUTE);
 		String referenceVar = itemNode.attr(VAR_ATTRIBUTE);
@@ -1081,8 +1081,8 @@ public class PageModelBuilder {
 			boolean isUserFiltered = StringUtils.isNotBlank(userFilterItemId)
 					&& StringUtils.isNotBlank(userFilterParamName)
 					&& StringUtils.isNotBlank(userFilterVarName);
-			AssociatedItemCriteriaPE assocCrit = new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE),
-					filterSubnode.attr(ASSOC_ATTRIBUTE), isParent, isUserFiltered);
+			AssociatedItemCriteriaPE assocCrit = new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), isParent, isUserFiltered,
+					StringUtils.split(filterSubnode.attr(ASSOC_ATTRIBUTE), ' '));
 			container.addElement(assocCrit);
 			if (isUserFiltered) {
 				filter.setUserFilter(userFilterItemId, userFilterParamName, userFilterVarName, preload, false);

@@ -240,7 +240,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 	 * @param itemPageId
 	 * @param tag
 	 */
-	protected ExecutableItemPE(Type itemType, String itemName, String assocName, String itemPageId, String parentPageId,
+	protected ExecutableItemPE(Type itemType, String itemName, String[] assocName, String itemPageId, String parentPageId,
 	                           String tag, ItemRootType itemRootType, String itemRootGroupName, boolean isSingle,
 	                           boolean isCacheable, boolean isVirtual, ArrayList<String> cacheVars,	ExecutablePagePE parentPage) {
 		super(itemType, itemName, assocName, itemPageId, parentPageId, tag, itemRootType, itemRootGroupName, isSingle, isCacheable, isVirtual, cacheVars);
@@ -256,7 +256,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		return parentItem != null;
 	}
 
-	private boolean hasReference() {
+	public boolean hasReference() {
 		return reference != null;
 	}
 	
