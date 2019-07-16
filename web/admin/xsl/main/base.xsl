@@ -145,8 +145,26 @@
 							<div class="list additional">
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
+									<li class="visible" >
+										<a href="add_associated/?action=start">Добавить ссылки на товары</a>
+									</li>
 									<li class="visible" title="Загрзить товары из Yandex Market">
 										<a href="integrate/?action=start">Интеграция каталога</a>
+									</li>
+									<li class="visible" title="Парсинг ссылок часть 1">
+										<a href="get_site?action=start">Скачать товары по ссылкам</a>
+									</li>
+									<li class="visible" title="Парсинг ссылок часть 2">
+										<a href="deploy_parsed?action=start">Разместить товары по ссылкам</a>
+									</li>
+									<li class="visible" title="Автосоздание фильтров">
+										<a href="create_filters?action=start">Автосоздание фильтров</a>
+									</li>
+									<li class="visible" title="Добавить водяные знаки">
+										<a href="watermarks?action=start">Добавить водяные знаки</a>
+									</li>
+									<li class="visible" title="Создать прайс прайс-лист (Но#, цена без скидки, цена со скидкой, наличие, подарок)">
+										<a href="create_metabo_price?action=start">Создать прайс-лист</a>
 									</li>
 									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 										<a href="generate_sitemap">Обновить карту сайта</a>
