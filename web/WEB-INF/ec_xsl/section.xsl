@@ -94,7 +94,7 @@
 				<a href="{$main_host}">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
-					<a href="{show_products}">
+					<a href="{if (name(..) = 'catalog') then show_sub else show_products}">
 						<xsl:value-of select="name"/>
 					</a>
 					<i class="fas fa-angle-right"></i>
@@ -147,6 +147,12 @@
 						</a>
 					</xsl:for-each>
 				</div>
+			</div>
+		</xsl:if>
+
+		<xsl:if test="$seo/bottom_text != ''">
+			<div class="page-content">
+				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
 			</div>
 		</xsl:if>
 

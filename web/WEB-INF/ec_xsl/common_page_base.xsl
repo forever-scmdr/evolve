@@ -106,7 +106,7 @@
 							<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 								<div class="sections">
 									<xsl:for-each select="page/catalog/section">
-										<a href="{show_products}" class="cat_menu_item_1" rel="#sub_{@id}">
+										<a href="{show_sub}" class="cat_menu_item_1" rel="#sub_{@id}">
 											<xsl:value-of select="name" />
 										</a>
 									</xsl:for-each>
@@ -382,7 +382,7 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_sub}" class="header"><xsl:value-of select="name"/></a>
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
@@ -432,7 +432,7 @@
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="level-1{' active'[$l1_active]}">
 					<div class="capsule">
-						<a href="{show_products}"><xsl:value-of select="name"/> </a>
+						<a href="{show_sub}"><xsl:value-of select="name"/> </a>
 					</div>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
@@ -731,7 +731,7 @@
 			<xsl:for-each select="page/catalog/section">
 				<div class="level-1">
 					<div class="capsule">
-						<a href="{show_products}"><xsl:value-of select="name"/></a>
+						<a href="{show_sub}"><xsl:value-of select="name"/></a>
 					</div>
 				</div>
 			</xsl:for-each>

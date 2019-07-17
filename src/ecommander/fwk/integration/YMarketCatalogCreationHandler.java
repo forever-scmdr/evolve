@@ -107,11 +107,9 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 				if (currentSection != null) {
 					info.setCurrentJob("скрывается " + currentSection.getStringValue(NAME_PARAM));
 					// Проверка, есть ли у раздела товары
-					Item product = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED)
+					Item product = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN)
 							.setParentId(currentSection.getId(), false).setLimit(1).loadFirstItem();
-					Item section = new ItemQuery(SECTION_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED)
-							.setParentId(currentSection.getId(), false).setLimit(1).loadFirstItem();
-					if (product != null || section == null) {
+					if (product != null) {
 						DelayedTransaction.executeSingle(owner, ItemStatusDBUnit.hideChildren(currentSection));
 					}
 					/*

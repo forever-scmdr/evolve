@@ -25,6 +25,8 @@
 	<xsl:variable name="book_title" select="string-join(('Купить книгу', $p/name,'', $p/author,': цена ', $p/price,'byn в Минске - интернет магазин Mystery.by, Беларусь'),' ')"/>
 	<xsl:variable name="book_description" select="string-join(('Книга', $p/name,',', $p/author, 'в магазине Мистери недорого. Доставка по Беларуси. ЗАКАЗЫВАЙТЕ по ☎☎☎ +375 29 257 08 03!'),' ')"/>
 
+	<xsl:variable name="alt" select="string-join(($p/name, $p/author | $p/artist), '. ')"/>
+
 
 	<xsl:variable name="title" select="if($is_video) then $video_title else if($is_book) then $book_title else $music_title"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $p/name"/>
@@ -74,7 +76,7 @@
 				<a href="{$main_host}">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="$path">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{show_products}"><xsl:value-of select="name"/></a>
+					<a href="{if (position() = 1) then show_section else show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -85,7 +87,7 @@
 			<div class="gallery">
 				<div class="fotorama" data-max-width="350" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
 					<xsl:for-each select="$p/picture">
-						<img src="{.}" alt="{string-join(($p/name, $p/author), '. ')}"/>
+						<img src="{.}" alt="{$alt}"/>
 					</xsl:for-each>
 				</div>
 			</div>
@@ -200,7 +202,7 @@
 					</div>
 					<div class="device-benefits__item">
 						<i class="fas fa-shopping-cart device-benefits__icon"></i>
-						<div class="device-benefits__label">Самовывоз - бесплатно</div>
+						<div class="device-benefits__label">Самовывоз:<br/>Минск, ул. Раковская 12-А</div>
 					</div>
 				</div>
 				<div class="extra-contacts">
@@ -250,7 +252,7 @@
 
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-						<xsl:if test="$p/params_xml">
+						<xsl:if test="$p/extra_xml">
 						<li role="presentation" class="active">
 							<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
 						</li>
@@ -262,8 +264,8 @@
 						</xsl:for-each>
 					</ul>
 				<div class="tab-content">
-					<xsl:if test="$p/params_xml">
-						<xsl:variable name="params" select="parse-xml(concat('&lt;xml&gt;', $p/params_xml/xml, '&lt;/xml&gt;'))"/>
+					<xsl:if test="$p/extra_xml">
+						<xsl:variable name="params" select="parse-xml(concat('&lt;xml&gt;', $p/extra_xml, '&lt;/xml&gt;'))"/>
 						<div role="tabpanel" class="tab-pane active" id="tab1">
 							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
 							<table>
@@ -294,6 +296,37 @@
 					</xsl:for-each>
 				</div>
 			</div>
+			<div class="someInfo"> 
+				<p><div class="someIcon"><i class="fas fa-shopping-cart"></i></div><strong>Как оформить заказ</strong></p>
+				<ul>
+					<li>Через корзину на сайте (добавьте товары в корзину и оформите заказ)</li>
+					<li>По телефону:(029) 381 08 03 (Velcom), (029) 257 08 03 (МТС), (025) 755 08 03 (Life) ПН-ПТ с 10:00 до 18:00</li>
+					<li>Через онлайн чат на сайте</li>
+				</ul>
+				<p><div class="someIcon"><i class="fas fa-money-bill-wave"></i></div><strong>Оплата</strong></p>
+				<ul>
+					<li>Наличными деньгами курьеру в момент передачи товара</li>
+					<li>Наложенный платеж</li>
+					<li>Безналичный платеж (через систему «РАСЧЁТ» с помощью интернет-банкинга или терминалов оплаты)</li>
+					<span style="color: #E31E24; font-weight: 700;">ВАЖНО:</span> ДО ТОГО, КАК ОПЛАЧИВАТЬ НЕОБХОДИМО ДОЖДАТЬСЯ ПОДТВЕРЖДЕНИЯ НАЛИЧИЯ ЗАКАЗАННОГО ТОВАРА!
+				</ul>
+				<p><div class="someIcon"><i class="fas fa-truck"></i></div><strong>Доставка</strong></p>
+				<ul>
+					<li>Самовывоз из пунктов выдачи (Минск, ул. Раковская 12-А. За ТД «На Немиге». Метро «Немига». По средам и четвергам с 10:00 до 19:00)</li>
+					<li>Курьером по (в пределах МКАД — 5 рублей. На сумму более 100 рублей — по Минску БЕСПЛАТНО)</li>
+					<li>Почтой по Беларуси (в любой населенный пункт наложенным платежом через отделение РУП «Белпочта»)</li>
+					<li>Курьерской службой по Беларуси (стоимость — 10 рублей)</li>
+				</ul>
+				<p><div class="someIcon"><i class="fas fa-percent"></i></div><strong>Скидки</strong></p>
+				<ul>
+					<li>Накопительная скидка автоматически предоставляется зарегистрированному покупателю исходя из суммы оплаченных заказов за весь период</li>
+				</ul>
+				<p><div class="someIcon"><i class="fas fa-credit-card"></i></div><strong>Дисконтные карты</strong></p>
+				<ul>
+					<li>Серебряная дисконтная карта - 5%, сумма накопления для получения скидки - 500 рублей.</li>
+					<li>Золотая дисконтная карта - 10%, сумма накопления для получения скидки - 1000 рублей.</li>
+				</ul>
+			</div>
 			<xsl:if test="page/also">
 				<div class="block-title">Смотрите также</div>
 				<div class="page-content" style="width: 100%;">
@@ -315,7 +348,7 @@
 
 		<xsl:if test="$common/soc">
 			<section class="s-info pt-4">
-				<div class="container">
+				<div>
 					<xsl:value-of select="$common/soc/code" disable-output-escaping="yes"/>
 				</div>
 			</section>

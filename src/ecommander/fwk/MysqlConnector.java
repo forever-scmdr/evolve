@@ -109,12 +109,12 @@ public class MysqlConnector
 //				}
 				createTime = System.currentTimeMillis();
 				StackTraceElement[] els = Thread.currentThread().getStackTrace();
-				String trace = "";
+				StringBuilder trace = new StringBuilder();
 				for (int i = 2; i < 12 && i < els.length; i++) {
-					trace += "\n" + els[i];
+					trace.append("\n").append(els[i]);
 				}
 				synchronized (openTraces) {
-					openTraces.put(name, trace);
+					openTraces.put(name, trace.toString());
 					if (openTraces.size() > 5) {
 						ServerLogger.error("\n\n\n/////////////---------- " + openTraces.size() + " CONNECTIONS ----------/////////////");
 						StringBuilder message = new StringBuilder();
@@ -163,9 +163,9 @@ public class MysqlConnector
 		}
 
 		public void close() throws SQLException {
-			if (conn.isClosed())
-				return;
-			conn.close();
+			if (!conn.isClosed()) {
+				conn.close();
+			}
 			_open_count.decrementAndGet();
 			Integer name = connectionNames.get(conn.hashCode());
 //			try {
@@ -432,16 +432,16 @@ public class MysqlConnector
 	 * @throws NamingException 
 	 * @throws SQLException 
 	 */
-	public static synchronized LoggedConnection getConnection() throws NamingException, SQLException {
+	public static synchronized Connection getConnection() throws NamingException, SQLException {
 		//ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
-		return new LoggedConnection(_DS.getConnection(), null);
-		//return _DS.getConnection();
+		//return new LoggedConnection(_DS.getConnection(), null);
+		return _DS.getConnection();
 	}
 
-	public static synchronized LoggedConnection getConnection(HttpServletRequest request) throws NamingException, SQLException, InterruptedException {
+	public static synchronized Connection getConnection(HttpServletRequest request) throws NamingException, SQLException, InterruptedException {
 		//ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
-		return new LoggedConnection(_DS.getConnection(), request);
-		//return _DS.getConnection();
+		//return new LoggedConnection(_DS.getConnection(), request);
+		return _DS.getConnection();
 	}
 	/**
 	 * Marks the connection from pool as unused or closes it if it is not from pool

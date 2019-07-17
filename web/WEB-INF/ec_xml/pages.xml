@@ -12,6 +12,11 @@
 
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec">
+				<list item="book" transit="true" tag="product">
+					<filter>
+						<limit><var value="1" /></limit>
+					</filter>
+				</list>
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
@@ -262,7 +267,6 @@
 				<filter>
 					<limit><var value="100" /></limit>
 				</filter>
-				<aggregation parameter="tag"/>
 				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
 					<var name="sec" style="translit" var="sec"/>
 					<var name="tag" parameter="tag" ref="tag"/>
@@ -1216,7 +1220,7 @@
 	<page name="integrate" template="integrate" authority-groups="common">
 		<request>
 			<var name="action"/>
-			<var name="ignore" value="16548,16549,30963"/>
+			<var name="ignore" value="16548,16549,30963,40021"/>
 		</request>
 		<command class="ecommander.fwk.integration.YMarketCreateCatalogCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>
@@ -1498,7 +1502,7 @@
 		</command>
 	</page>
 
-
+<!--
 	<page name="clear_cache" schedule="0 1 15,18 ? * FRI *">
 		<command class="extra.ClearCache"/>
 	</page>
@@ -1507,6 +1511,6 @@
 	<page name="clear_cache" schedule="0 1 15,18 ? * FRI *">
 		<command class="extra.ClearCache"/>
 	</page>
-
+-->
 
 </site>

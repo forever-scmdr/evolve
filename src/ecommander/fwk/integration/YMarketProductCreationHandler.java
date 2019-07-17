@@ -275,7 +275,6 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					DelayedTransaction.executeSingle(initiator, show);
 					checkSlowCommand(show);
 					// Загрузить разделы, содержащие товар
-					/*
 					ItemQuery query = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false,
 							ItemTypeRegistry.getPrimaryAssoc().getName(), catalogLinkAssoc.getName());
 					startCheckSlowQuery(query.getSqlForLog());
@@ -294,7 +293,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						DelayedTransaction.executeSingle(initiator, createAssoc);
 						checkSlowCommand(createAssoc);
 					}
-					*/
+
 				}
 
 				info.increaseProcessed();
