@@ -59,7 +59,7 @@
 		<xsl:variable name="product_pic" select="product/picture[1]"/>
 		<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 		<div class="device items-catalog__section">
-			<a href="{$link}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
+			<a href="{$link}" class="device__image device_section__image"  style="background-image: url({$pic});"></a>
 			<a href="{$link}" class="device__title"><xsl:value-of select="name"/></a>
 		</div>
 	</xsl:template>
