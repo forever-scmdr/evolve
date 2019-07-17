@@ -21,7 +21,10 @@ import org.apache.lucene.search.TermQuery;
 
 import javax.naming.NamingException;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -106,7 +109,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private LimitCriteria limit = null; // Ограничение количества и страницы
 	private FulltextCriteria fulltext = null; // Полнотекстовый поиск
 	private Long[] ancestorIds = null; // Загруженные предки айтема (может быть null, если предов нет)
-	private byte assocId = -1; // ID ассоциации для загрузки
+	private Byte[] assocId = null; // ID ассоциаций для загрузки
 	private boolean isTransitive = false; // нужна ли транзитивная загрузка
 	private boolean isParent = false; // искомый айтем ялвяется не потомком, а предком загруженных ранее айтемов
 	private User user = null; // критерий пользователя-владельца айтема (для персональных айтемов)
@@ -143,10 +146,15 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		} else {
 			this.ancestorIds = new Long[0];
 		}
-		if (assocName.length > 0)
-			this.assocId = ItemTypeRegistry.getAssoc(assocName[0]).getId();
-		else
-			this.assocId = ItemTypeRegistry.getPrimaryAssocId();
+		if (assocName.length > 0) {
+			this.assocId = new Byte[assocName.length];
+			for (int i = 0; i < assocName.length; i++) {
+				this.assocId[i] = ItemTypeRegistry.getAssoc(assocName[i]).getId();
+			}
+		} else {
+			this.assocId = new Byte[1];
+			this.assocId[0] = ItemTypeRegistry.getPrimaryAssocId();
+		}
 		return this;
 	}
 
@@ -318,7 +326,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param assocId
 	 * @return
 	 */
-	public ItemQuery startChildCriteria(ItemType item, byte assocId) {
+	public ItemQuery startChildCriteria(ItemType item, Byte... assocId) {
 		ensureFilter();
 		itemDescStack.push(item);
 		filter.startAssociatedGroup(item, assocId, AssociatedItemCriteriaGroup.Type.CHILD);
@@ -332,7 +340,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param assocId
 	 * @return
 	 */
-	public ItemQuery startParentCriteria(ItemType item, byte assocId) {
+	public ItemQuery startParentCriteria(ItemType item, Byte... assocId) {
 		ensureFilter();
 		itemDescStack.push(item);
 		filter.startAssociatedGroup(item, assocId, AssociatedItemCriteriaGroup.Type.PARENT);
@@ -347,14 +355,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 */
 	public ItemQuery startChildCriteria(String itemName, String... assocName) {
-		ensureFilter();
-		byte assocId = ItemTypeRegistry.getPrimaryAssocId();
-		if (assocName.length > 0 && StringUtils.isNotBlank(assocName[0]))
-			assocId = ItemTypeRegistry.getAssoc(assocName[0]).getId();
-		ItemType item = ItemTypeRegistry.getItemType(itemName);
-		itemDescStack.push(item);
-		filter.startAssociatedGroup(item, assocId, AssociatedItemCriteriaGroup.Type.CHILD);
-		return this;
+		return startAssocCriteria(itemName, AssociatedItemCriteriaGroup.Type.CHILD, assocName);
 	}
 
 	/**
@@ -365,13 +366,32 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 */
 	public ItemQuery startParentCriteria(String itemName, String... assocName) {
+		return startAssocCriteria(itemName, AssociatedItemCriteriaGroup.Type.PARENT, assocName);
+	}
+
+	/**
+	 * Начать создание группы критериев по предку или потомку айтема с определенной ассоциацией
+	 * После создания группы и до ее закрытия все критерии будут добавляться именно в эту группу
+	 * @param itemName
+	 * @param type
+	 * @param assocName
+	 * @return
+	 */
+	private ItemQuery startAssocCriteria(String itemName, AssociatedItemCriteriaGroup.Type type, String... assocName) {
 		ensureFilter();
-		byte assocId = ItemTypeRegistry.getPrimaryAssocId();
-		if (assocName.length > 0 && StringUtils.isNotBlank(assocName[0]))
-			assocId = ItemTypeRegistry.getAssoc(assocName[0]).getId();
+		Byte[] assocId;
+		if (assocName.length > 0 && StringUtils.isNotBlank(assocName[0])) {
+			assocId = new Byte[assocName.length];
+			for (int i = 0; i < assocName.length; i++) {
+				assocId[i] = ItemTypeRegistry.getAssoc(assocName[i]).getId();
+			}
+		} else {
+			assocId = new Byte[1];
+			assocId[0] = ItemTypeRegistry.getPrimaryAssocId();
+		}
 		ItemType item = ItemTypeRegistry.getItemType(itemName);
 		itemDescStack.push(item);
-		filter.startAssociatedGroup(item, assocId, AssociatedItemCriteriaGroup.Type.PARENT);
+		filter.startAssociatedGroup(item, assocId, type);
 		return this;
 	}
 
@@ -625,18 +645,18 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			if (isParent) {
 				query.getSubquery(Const.JOIN).INNER_JOIN(ITEM_PARENT_TBL + " AS P", P_DOT + IP_PARENT_ID, I_DOT + I_ID);
 				query.getSubquery(Const.WHERE).AND().col_IN(P_DOT + IP_CHILD_ID).longIN(parentIds)
-						.AND().col(P_DOT + IP_ASSOC_ID).byte_(assocId)
+						.AND().col_IN(P_DOT + IP_ASSOC_ID).byteIN(assocId)
 						.AND().col_IN(I_DOT + I_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()));
 				query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_CHILD_ID);
 			} else {
 				query.getSubquery(Const.JOIN).INNER_JOIN(ITEM_PARENT_TBL + " AS P", P_DOT + IP_CHILD_ID, I_DOT + I_ID);
 				query.getSubquery(Const.WHERE).AND().col_IN(P_DOT + IP_PARENT_ID).longIN(parentIds)
-						.AND().col(P_DOT + IP_ASSOC_ID).byte_(assocId)
+						.AND().col_IN(P_DOT + IP_ASSOC_ID).byteIN(assocId)
 						.AND().col_IN(P_DOT + IP_CHILD_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()));
 				// Для деревьев нужно дополнительно извлечь ID непосредственного предка
 				if (isTree) {
 					query.getSubquery(Const.JOIN).INNER_JOIN(ITEM_PARENT_TBL + " AS TP", TP_DOT + IP_CHILD_ID, I_DOT + I_ID);
-					query.getSubquery(Const.WHERE).AND().col(TP_DOT + IP_ASSOC_ID).byte_(assocId)
+					query.getSubquery(Const.WHERE).AND().col_IN(TP_DOT + IP_ASSOC_ID).byteIN(assocId)
 							.AND().col_IN(TP_DOT + IP_CHILD_SUPERTYPE).intIN(ItemTypeRegistry.getBasicItemExtendersIds(getItemDesc().getTypeId()))
 							.AND().col(TP_DOT + IP_PARENT_DIRECT).byte_((byte)1);
 					query.getSubquery(Const.PARENT_ID).sql(TP_DOT + IP_PARENT_ID);
@@ -705,7 +725,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			query = TemplateQuery.createFromString(GROUP_COMMON_QUERY, "Group query");
 		} else {
 			if (isParent)
-				query = TemplateQuery.createFromString(PARENT_QUERY, "ParsedItem query");
+				query = TemplateQuery.createFromString(PARENT_QUERY, "Parent query");
 			else
 				query = TemplateQuery.createFromString(COMMON_QUERY, "Common query");
 		}
@@ -768,7 +788,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			if (hasLimit())
 				limit.appendQuery(query);
 		}
-		return loadByQuery(query, PID, assocId, null, fulltext, conn);
+		return loadByQuery(query, PID, null, fulltext, conn);
 	}
 	/**
 	 * Загрузить первый из айтемов, соответствующих установленным критериям запроса
@@ -791,7 +811,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	public static Item loadById(long id, Connection... conn) throws Exception {
 		TemplateQuery query = new TemplateQuery("load by id");
 		query.SELECT(ITEM_TBL + ".*", "0 AS PID").FROM(ITEM_TBL).WHERE().col(I_ID).long_(id);
-		ArrayList<Item> result = loadByQuery(query, "PID", ItemTypeRegistry.getPrimaryAssocId(), null, null, conn);
+		ArrayList<Item> result = loadByQuery(query, "PID", null, null, conn);
 		if (result.size() > 0)
 			return result.get(0);
 		return null;
@@ -804,12 +824,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByParentId(long id, byte assocId, Connection... conn) throws Exception {
+	public static ArrayList<Item> loadByParentId(long id, Byte[] assocId, Connection... conn) throws Exception {
+		if (assocId == null || assocId.length == 0) {
+			assocId = new Byte[1];
+			assocId[0] = ItemTypeRegistry.getPrimaryAssocId();
+		}
 		TemplateQuery query = new TemplateQuery("load by parent");
 		query.SELECT(ITEM_TBL + ".*", IP_PARENT_ID).FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID)
 				.WHERE().col(IP_PARENT_ID).long_(id).AND().col(IP_PARENT_DIRECT).byte_((byte)1)
-				.AND().col(IP_ASSOC_ID).byte_(assocId);
-		return loadByQuery(query, IP_PARENT_ID, assocId, null, null, conn);
+				.AND().col_IN(IP_ASSOC_ID).byteIN(assocId);
+		return loadByQuery(query, IP_PARENT_ID, null, null, conn);
 	}
 
 	/**
@@ -832,7 +856,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				.AND().col(I_USER).int_(userId)
 				.AND().col(I_TYPE_ID).int_(type.getTypeId())
 				.AND().col(IP_CHILD_ID).sql(IP_PARENT_ID);
-		ArrayList<Item> result = loadByQuery(query, "PID", ItemTypeRegistry.getPrimaryAssocId(), null, null, conn);
+		ArrayList<Item> result = loadByQuery(query, "PID", null, null, conn);
 		if (result.size() > 0)
 			return result.get(0);
 		return null;
@@ -860,7 +884,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		TemplateQuery query = new TemplateQuery("load by ids");
 		query.SELECT(ITEM_TBL + ".*", "0 AS PID")
 				.FROM(ITEM_TBL).WHERE().col_IN(I_ID).longIN(ids.toArray(new Long[ids.size()]));
-		return loadByQuery(query, "PID", ItemTypeRegistry.getPrimaryAssocId(), order, null, conn);
+		return loadByQuery(query, "PID", order, null, conn);
 	}
 	/**
 	 * Загрузить айтемы по их ID
@@ -977,7 +1001,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		if (param.getOwnerItemId() != item.getTypeId()) {
 			query.AND().col_IN(II_ITEM_TYPE).intIN(extenders);
 		}
-		return loadByQuery(query, "PID", ItemTypeRegistry.getPrimaryAssocId(), null, null, conn);
+		return loadByQuery(query, "PID", null, null, conn);
 	}
 	/**
 	 * Загрузить айтем по значению одного параметра
@@ -1034,14 +1058,13 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * Загрузить по готовому запросу
 	 * @param query
 	 * @param parentIdCol
-	 * @param assocId
 	 * @param order - опциональный параметр, который хранит порядок следования айтемов в результате
 	 * @param fulltext - опциональный параметр, нужный для вывода фрагментов с подсвеченным текстом при полнотекстовом поиске
 	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	private static ArrayList<Item> loadByQuery(TemplateQuery query, String parentIdCol, byte assocId, Long[] order,
+	private static ArrayList<Item> loadByQuery(TemplateQuery query, String parentIdCol, Long[] order,
 	                                           FulltextCriteria fulltext, Connection... conn) throws Exception {
 		boolean isOwnConnection = false;
 		Connection connection;
@@ -1058,12 +1081,12 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			ResultSet rs = pstmt.executeQuery();
 			if (order == null) {
 				while (rs.next())
-					result.add(ItemMapper.buildItem(rs, assocId, parentIdCol));
+					result.add(ItemMapper.buildItem(rs, (byte) 0, parentIdCol));
 			} else {
 				MultiValuedMap<Long, Item> items = MultiMapUtils.newListValuedHashMap();
 				//HashMap<Long, Item> items = new HashMap<Long, Item>();
 				while (rs.next()) {
-					Item item = ItemMapper.buildItem(rs, assocId, parentIdCol);
+					Item item = ItemMapper.buildItem(rs, (byte) 0, parentIdCol);
 					items.put(item.getId(), item);
 				}
 				for (Long itemId : order) {
@@ -1161,7 +1184,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		try (PreparedStatement pstmt = query.prepareQuery(connection)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Item item = Item.existingItem(getItemDesc(), -1, ItemTypeRegistry.getAssoc(assocId),
+				Item item = Item.existingItem(getItemDesc(), -1, ItemTypeRegistry.getPrimaryAssoc(),
 						rs.getLong(PARENT_COL), 0, (byte) 0, Item.STATUS_NORMAL, "", "", "", 0, false);
 				ParameterDescription aggParam = filter.getMainAggregationCriteria().getParam();
 				item.setValue(aggParam.getId(), DataTypeMapper.createValue(aggParam.getType(), rs, MAIN_COL));

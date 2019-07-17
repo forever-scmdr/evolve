@@ -51,12 +51,12 @@ public class AssociatedItemCriteriaGroup extends CriteriaGroup implements DBCons
 		}
 	}
 
-	private final byte assocId;
+	private final Byte[] assocId;
 	private final Type type;
 	private final AssociatedItemCriteriaGroup parent;
 	private final ItemType parentItem;
 
-	AssociatedItemCriteriaGroup(String critId, ItemType item, byte assocId, Type type,
+	AssociatedItemCriteriaGroup(String critId, ItemType item, Byte[] assocId, Type type,
 	                            AssociatedItemCriteriaGroup parent, ItemType parentItem) {
 		super(critId, item);
 		this.assocId = assocId;
@@ -66,7 +66,7 @@ public class AssociatedItemCriteriaGroup extends CriteriaGroup implements DBCons
 	}
 
 	@Override
-	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, byte assocId, Type type) {
+	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, Byte[] assocId, Type type) {
 		String critId = (type == AssociatedItemCriteriaGroup.Type.CHILD ? "C" : "P") + assocCriterias.size() + groupId;
 		AssociatedItemCriteriaGroup newCrit = new AssociatedItemCriteriaGroup(critId, item, assocId, type, this, this.item);
 		assocCriterias.add(newCrit);
@@ -97,7 +97,7 @@ public class AssociatedItemCriteriaGroup extends CriteriaGroup implements DBCons
 		ItemType baseItem = type == Type.CHILD ? item : parentItem;
 		Integer[] superTypes = ItemTypeRegistry.getBasicItemExtendersIds(baseItem.getTypeId());
 		where.AND().col(GROUP_ITEM_TABLE + '.' + I_STATUS, "=0")
-				.AND().col(GROUP_PARENT_TABLE + '.' + IP_ASSOC_ID).byte_(assocId)
+				.AND().col_IN(GROUP_PARENT_TABLE + '.' + IP_ASSOC_ID).byteIN(assocId)
 				.AND().col_IN(GROUP_PARENT_TABLE + '.' + IP_CHILD_SUPERTYPE).intIN(superTypes);
 		// связь с третьей (и последующими) таблицей и добавление критерия осуществляется в ParameterCriteria
 		for (FilterCriteria criteria : criterias) {

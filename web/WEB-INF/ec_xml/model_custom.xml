@@ -4025,24 +4025,6 @@
 </item>
 <!--END_p110123-->
 
-<!--START_p109446-->
-<item name="p109446" caption="Штроборезы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2056" ag-hash="2065071596">
-	<parameter name="reguliruemaya_glubina_reza" caption="Регулируемая глубина реза" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1749779090" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vozmognaya_shirina_paza" caption="Возможная ширина паза" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1214610265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diametr_otreznyh_krugov" caption="Диаметр отрезных кругов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2044478249" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="nominalnaya_potreblyaemaya_moschnost" caption="Номинальная потребляемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1279960088" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="otdavaemaya_moschnost" caption="Отдаваемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="899828717" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="chislo_oborotov_holostogo_hoda" caption="Число оборотов холостого хода" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-65611961" description="/мин" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="chislo_oborotov_pri_nominalnoi_nagruzke" caption="Число оборотов при номинальной нагрузке" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-992006072" description="/мин" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="krutyaschii_moment" caption="Крутящий момент" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="426736565" description="Нм" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves_bez_setevogo_kabelya" caption="Вес без сетевого кабеля" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="843905283" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="dlina_kabelya" caption="Длина кабеля" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-179349808" description="м" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="uroven_zvukovogo_davleniya" caption="Уровень звукового давления" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1774103230" description="дБ(А)" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="uroven_zvukovoi_moschnosti_lwa" caption="Уровень звуковой мощности (LwA)" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1377540834" description="дБ(А)" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="pogreshnost_izmereniya_k" caption="Погрешность измерения K" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-73508904" description="дБ(А)" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p109446-->
-
 <!--START_p109459-->
 <item name="p109459" caption="Шлифовальные машины для стен и потолков" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2057" ag-hash="2065071630">
 	<parameter name="diametr_tarelchatogo_shlifovalnogo_kruga" caption="Диаметр тарельчатого шлифовального круга" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1373314727" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8044,6 +8026,24 @@
 	<parameter name="emkost" caption="Емкость" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1299461267" description="Ач" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p120857-->
+
+<!--START_p109446-->
+<item name="p109446" caption="Штроборезы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2056" ag-hash="2065071596">
+	<parameter name="reguliruemaya_glubina_reza" caption="Регулируемая глубина реза" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1749779090" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vozmognaya_shirina_paza" caption="Возможная ширина паза" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1214610265" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_otreznyh_krugov" caption="Диаметр отрезных кругов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2044478249" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="nominalnaya_potreblyaemaya_moschnost" caption="Номинальная потребляемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1279960088" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="otdavaemaya_moschnost" caption="Отдаваемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="899828717" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chislo_oborotov_holostogo_hoda" caption="Число оборотов холостого хода" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-65611961" description="/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chislo_oborotov_pri_nominalnoi_nagruzke" caption="Число оборотов при номинальной нагрузке" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-992006072" description="/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="krutyaschii_moment" caption="Крутящий момент" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="426736565" description="Нм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_bez_setevogo_kabelya" caption="Вес без сетевого кабеля" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="843905283" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_kabelya" caption="Длина кабеля" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-179349808" description="м" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="uroven_zvukovogo_davleniya" caption="Уровень звукового давления" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1774103230" description="дБ(А)" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="uroven_zvukovoi_moschnosti_lwa" caption="Уровень звуковой мощности (LwA)" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1377540834" description="дБ(А)" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pogreshnost_izmereniya_k" caption="Погрешность измерения K" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-73508904" description="дБ(А)" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p109446-->
 
 <!--START_p110410-->
 <item name="p110410" caption="Универсальные пылесосы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2095" ag-hash="2065726899">
