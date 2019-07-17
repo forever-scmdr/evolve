@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?> 
 <site>
 
 <!-- ******************************* Включение для разделов каталога ****************************** -->
@@ -139,7 +139,7 @@
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<single item="seo"/>
-			<list item="product" id="prod" transit="true" assoc="catalog_link *">
+			<list item="product" id="prod" transit="true" assoc="* catalog_link">
 				<filter>
 					<parameter name="available" compare="ANY"><var var="minqty" /></parameter>
 					<child item="params" transit="false" ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
@@ -616,8 +616,8 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<!--<var name="email" value="metabobelarus@gmail.com"/>-->
-			<var name="email" value="bio@forever-ds.com" />
+			<var name="email" value="metabobelarus@gmail.com"/>
+			<!-- <var name="email" value="bio@forever-ds.com" /> -->
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="site_visit" scope="cookie"/>
 			<var name="current_time" scope="cookie"/>

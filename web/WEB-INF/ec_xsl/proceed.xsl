@@ -1,23 +1,23 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="user_data_inputs.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-
+	<xsl:variable name="title" select="'Оформление заказа'"/>
 	<xsl:variable name="message" select="page/variables/message"/>
-	<xsl:variable name="is_jur" select="page/user_jur//@validation-error or page/user_jur/organization != '' or page/jur"/>
+	<xsl:variable name="is_jur" select="page/user_jur"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> <i class="fas fa-angle-right"></i>
-				<a href="{page/cart_link}">Корзина</a> <i class="fas fa-angle-right"></i>
+				<a href="/">Главная страница</a> &gt;
+				<a href="{page/cart_link}">Изменить заказ</a> &gt;
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Анкета покупателя</h1>
+		<h1>Анкета покупателя</h1>
 
 		<div class="page-content m-t">
 			<xsl:if test="$message">
@@ -32,34 +32,48 @@
 			</ul>
 			<div class="tab-content">
 
+
 				<div role="tabpanel" class="tab-pane{' active'[not($is_jur)]}" id="tab_phys">
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заказа.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
-						<xsl:variable name="inp" select="page/user_phys/input"/>
+						<xsl:variable name="inp" select="if (page/user_phys) then page/user_phys/input else page/phys_form/input"/>
 						<xsl:call-template name="USER_PHYS_INPUTS">
 							<xsl:with-param name="inp" select="$inp"/>
-							<xsl:with-param name="vals" select="page/phys"/>
 						</xsl:call-template>
 						<div class="form-group">
 							<label>Комментарий:</label>
 							<textarea class="form-control" rows="3" name="{$inp/comment/@input}"><xsl:value-of select="$inp/comment"/></textarea>
 						</div>
-						<input type="submit" value="Отправить заявку"/>
+						<!--
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value=""/> зарегистрироваться на сайте
+							</label>
+						</div>
+						-->
+						<input type="submit" value="Отправить заказ"/>
 					</form>
 				</div>
+
 
 				<div role="tabpanel" class="tab-pane{' active'[$is_jur]}" id="tab_jur">
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заказа.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
-						<xsl:variable name="inp" select="page/user_jur/input"/>
+						<xsl:variable name="inp" select="if (page/user_jur) then page/user_jur/input else page/jur_form/input"/>
 						<xsl:call-template name="USER_JUR_INPUTS">
 							<xsl:with-param name="inp" select="$inp"/>
-							<xsl:with-param name="vals" select="page/jur"/>
 						</xsl:call-template>
 						<div class="form-group">
 							<label>Комментарий:</label>
 							<textarea class="form-control" rows="3" name="{$inp/comment/@input}"><xsl:value-of select="$inp/comment"/></textarea>
 						</div>
+						<!--
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value=""/> зарегистрироваться на сайте
+							</label>
+						</div>
+						-->
 						<input type="submit" value="Отправить заказ"/>
 					</form>
 				</div>

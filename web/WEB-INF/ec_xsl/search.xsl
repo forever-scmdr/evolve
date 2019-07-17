@@ -1,28 +1,28 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
-	<xsl:variable name="title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</xsl:variable>
+
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="products" select="page/product"/>
-	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+	<xsl:variable name="only_available" select="page/variables/minqty = '1'"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="/">Главная страница</a>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
+		<h1>Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
 
 		<div class="page-content m-t">
 
@@ -32,7 +32,7 @@
 						<span>Показывать:</span>
 						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
 						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
-						<!-- <div class="checkbox">
+						<div class="checkbox">
 							<label>
 								<xsl:if test="not($only_available)">
 									<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>
@@ -42,18 +42,13 @@
 								</xsl:if>
 								в наличии
 							</label>
-						</div> -->
+						</div>
 					</div>
 				</div>
 			</xsl:if>
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
-				<xsl:if test="$view = 'list'">
-					<xsl:apply-templates select="$products" mode="lines"/>
-				</xsl:if>
-				<xsl:if test="not($view = 'list')">
-					<xsl:apply-templates select="$products"/>
-				</xsl:if>
+				<xsl:apply-templates select="$products"/>
 				<xsl:if test="not($products)">
 					<h4>По заданным критериям товары не найдены</h4>
 				</xsl:if>

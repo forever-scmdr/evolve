@@ -1,104 +1,57 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="'Список товаров'" />
-	<xsl:variable name="cart" select="page/cart"/>
-	<xsl:variable name="boughts" select="$cart/bought"/>
-	<xsl:variable name="prods" select="$boughts/product"/>
-	<xsl:variable name="no_weight" select="//page/product/params[not(param[starts-with(lower-case(@caption), 'вес')])] or //page/product/params/param[starts-with(lower-case(@caption), 'вес')] = ''"/>
-
-	<xsl:variable name="weights"><xsl:for-each select="$boughts"><xsl:value-of select="f:num(qty) * f:num(//page/product[code = current()/code]/params/param[starts-with(lower-case(@caption), 'вес')])" />,</xsl:for-each></xsl:variable>
+	<xsl:variable name="title" select="'Ваш заказ'" />
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
+				<a href="/">Главная страница</a> &gt;
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Корзина</h1>
+		<h1>Ваш заказ</h1>
 
 		<div class="cart-container">
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
 					<form method="post">
-						<xsl:for-each select="$boughts">
+						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="p2" select="//page/product[code = $p/code]"/>
-
-							<xsl:variable name="weight" select="f:num($p2/params/param[starts-with(lower-case(@caption), 'вес')])"/>
-
-							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(string(f:num($p/price) * f:num($cart/discount))), ' р.') else 'по запросу'"/>
-							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' p.') else ''"/>
+							<xsl:variable name="price" select="if ($p/price) then concat($p/price, ' p.') else 'под заказ'"/>
+							<xsl:variable name="sum" select="if ($p/price) then concat(sum, ' p.') else 'под заказ'"/>
 							<div class="item">
-								<xsl:if test="not($p/product)">
-									<a href="{$p/show_product}" class="image-container">
-										<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
-									</a>
-									<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
-								</xsl:if>
-								<xsl:if test="$p/product">
-									<a href="{$p/product/show_product}" class="image-container">
-										<img src="{$p/product/@path}{$p/product/main_pic}" alt="{$p/name}"/>
-									</a>
-									<a href="{$p/product/show_product}" class="title">
-										<xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)
-									</a>
-								</xsl:if>
-								<div class="price one">
-									<xsl:variable name="av" select="f:num($p/qty) &gt; 0"/>
-									<p>
-										<span>Статус</span>
-										<img src="{if($av) then 'img/av1.png' else 'img/av0.png'}" style="width: 24px; height: 12px; display: block;"/>
-										<!-- <span> -->
-											<xsl:value-of select="if($av) then 'на складе' else 'под заказ'"/>
-										<!-- </span> -->
-									</p>
-								</div>
-								<div class="price one">
-									<xsl:if test="$weight != 0">
-										<p>
-											<span>Вес</span>
-											<xsl:value-of select="$weight * f:num(qty)" /> кг
-										</p>
-									</xsl:if>
-								</div>
-								<div class="price one">
-									<p>
-										<span>Цена</span>
-										<xsl:value-of select="$price"/>
-									</p>
-								</div>
+								<a href="{$p/show_product}" class="image-container">
+									<img src="{$p/@path}{$p/main_pic}" alt=""/>
+								</a>
+								<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
+								<div class="price one"><p><span>Цена за ед.</span><xsl:value-of select="$price"/></p></div>
 								<div class="quantity">
 									<span>Кол-во</span>
 									<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
-									<!--<xsl:value-of select="$p2/params/@id" />-->
 								</div>
-								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
+								<div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div>
 								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
 							</div>
 						</xsl:for-each>
-						<p><a href="dostavka#calculator">Узнать стоимость доставки</a></p>
 
 						<div class="total">
-							<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
-							<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
-							<xsl:if test="page/cart/sum != '0'">
-								<p>Итого:
-									<xsl:if test="page/cart/simple_sum">
-										<span style="text-decoration: line-through; padding-right: 10px; color: #ccc;"><xsl:value-of select="page/cart/simple_sum"/> р.</span>
-									</xsl:if>
-									<xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.
-								</p>
-								<p class="{if($no_weight) then 'no-data' else ''}">Общий вес: <span><xsl:value-of select="format-number(sum(for $s in tokenize($weights, ',') return f:num($s)),'#0.00')"/></span> кг.</p>
-							</xsl:if>
+							<p>Итого:
+								<xsl:if test="page/cart/simple_sum">
+								<span style="text-decoration: line-through; padding-right: 10px; color: #ccc;"><xsl:value-of select="page/cart/simple_sum"/> р.</span>
+								</xsl:if>
+								<xsl:value-of select="page/cart/sum"/> р.</p>
+							<div>
+							<input type="submit" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
+							<input type="submit" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
+						</div>
 						</div>
 						<xsl:if test="page/cart/simple_sum">
 							<div class="total">
-								<p>Сэкономьте: <xsl:value-of select="format-number(f:num(page/cart/simple_sum) - f:num(page/cart/sum), '#0.00')"/> р.</p>
+								<p>Сэкономьте: <xsl:value-of select="f:num(page/cart/simple_sum) - f:num(page/cart/sum)"/> р.</p>
 							</div>
 						</xsl:if>
 					</form>

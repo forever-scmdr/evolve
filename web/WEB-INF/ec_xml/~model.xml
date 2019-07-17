@@ -196,7 +196,7 @@
 	</item>
 
 	<!-- Соотношение подарков и товаров -->
-	<item name="product_present" caption="Соответствие товара подарку" virtual="true" ag-id="1673" ag-hash="2122091883">
+	<item name="product_present" key="product_code present_code" caption="Соответствие товара подарку" virtual="true" ag-id="1673" ag-hash="2122091883">
 		<parameter name="product_code" type="string" caption="Код продукта"/>
 		<parameter name="present_code" type="string" caption="Код подарка"/>
 		<parameter name="qty" type="string" caption="Количество"/>

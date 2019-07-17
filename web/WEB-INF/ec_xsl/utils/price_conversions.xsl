@@ -22,6 +22,7 @@
     </xsl:function>
 
     <xsl:function name="f:currency_decimal">
+
         <xsl:param name="str" as="xs:string?"/>
         <xsl:value-of select="format-number(f:num($str), '#0.00')"/>
     </xsl:function>
