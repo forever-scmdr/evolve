@@ -1,7 +1,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="user_data_inputs.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 
@@ -14,11 +14,11 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> &gt;
+				<a href="/">Главная страница</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Анкета заказчика</h1>
+		<h1 class="page-title">Анкета заказчика</h1>
 
 		<div class="page-content m-t">
 			<xsl:if test="$message and not($success)">
@@ -46,7 +46,7 @@
 						<label>Подтверждение нового пароля:</label>
 						<input type="password" class="form-control" name="{$phys/input[3]/new-password-2/@input}"/>
 					</div>
-					<input type="submit" value="Отправить анкету"/>
+					<input type="submit" class="button" value="Отправить анкету"/>
 				</form>
 			</xsl:if>
 
@@ -64,7 +64,7 @@
 						<label>Подтверждение нового пароля:</label>
 						<input type="password" class="form-control" name="{$jur/input[3]/new-password-2/@input}"/>
 					</div>
-					<input type="submit" value="Отправить анкету"/>
+					<input type="submit" class="button" value="Отправить анкету"/>
 				</form>
 			</xsl:if>
 

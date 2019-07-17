@@ -1,6 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 
@@ -10,11 +10,11 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> &gt;
+				<a href="/">Главная страница</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Заказы</h1>
+		<h1 class="page-title">Заказы</h1>
 		<div class="page-content m-t">
 			<div class="orders-list">
 				<xsl:for-each select="page/purchase">
@@ -23,7 +23,7 @@
 							<div><a href="#" class="order_toggle">Заказ № <xsl:value-of select="num"/></a><span>от <xsl:value-of select="date"/></span></div>
 							<div><strong><xsl:value-of select="sum"/> р.</strong><span><xsl:value-of select="qty"/> позиций</span></div>
 							<div class="order-buttons" style="display: none">
-								<a href="#" class="button desktop submit_all_again">Повторить заказ</a>
+								<a href="#" class="button desktop submit_all_again">Добавить в корзину</a>
 								<a href="#" class="button mobile submit_all_again"><i class="fas fa-redo"></i></a>
 							</div>
 						</div>
@@ -67,11 +67,11 @@
 													<form action="{$prod/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$prod/code}">
 														<xsl:if test="$has_price">
 															<input type="number" name="qty" value="{qty}" min="0"/>
-															<input type="submit" value="В корзину"/>
+															<input type="submit" value="В корзину" class="button"/>
 														</xsl:if>
 														<xsl:if test="not($has_price)">
 															<input type="number" name="qty" value="1" min="0"/>
-															<input type="submit" class="not_available" value="Под заказ"/>
+															<input type="submit" class="not_available button" value="Под заказ"/>
 														</xsl:if>
 													</form>
 												</div>
