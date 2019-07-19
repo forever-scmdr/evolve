@@ -483,11 +483,11 @@
 		<child item="block" inline="true"/>
 	</item>
 
-	<item name="delivery" caption="Доставка">
+	<item name="delivery" caption="Доставка" ag-id="827" ag-hash="823466996">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="payment" caption="Оплата">
+	<item name="payment" caption="Оплата" ag-id="1726" ag-hash="-786681338">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 

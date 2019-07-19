@@ -212,6 +212,11 @@
 
 	<xsl:template name="INC_FOOTER">
 		<!-- FOOTER BEGIN -->
+		<div class="call-back">
+			<a href="" class="call-back__link" data-toggle="modal" data-target="#modal-call-back">
+				<img class="call-back__image" src="img/call-back.svg" alt="Обратный звонок"/>
+			</a>
+		</div>
 		<div class="footer-placeholder"></div>
 		<footer class="footer">
 			<div class="container">
@@ -274,6 +279,27 @@
 								<input type="password" class="form-control" />
 							</div>
 							<input type="submit" name="" value="Отправить заказ"/>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- modal call-back -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-call-back">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<div class="modal-title h4">Обратный звонок</div>
+					</div>
+					<div class="modal-body">
+						<p>Оставьте свой номер телефона и наш консультант свяжется с вами в рабочее время с 9:00 до 20:00.</p>
+						<form action="" method="post">
+							<div class="form-group">
+								<label for="">Номер телефона:</label>
+								<input type="text" class="form-control" placeholder="+375-XX-XXX-XX-XX"/>
+							</div>
+							<input class="button" type="submit" name="" value="Заказать обратный звонок"/>
 						</form>
 					</div>
 				</div>

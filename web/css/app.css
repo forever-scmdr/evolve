@@ -8423,7 +8423,7 @@ td .catalog-item {
   align-self: flex-start;
 }
 .device__price_device-page {
-	font-size: 24px;
+	font-size: 28px;
 }
 .device-page__actions .device__in-stock {
 	flex-basis: 100%;
@@ -8813,4 +8813,25 @@ td .catalog-item {
 }
 .footer .rating p {
 	font-size: 12px;
+}
+
+
+.call-back {
+	position: fixed;
+	bottom: 24px;
+	right: 24px;
+	z-index: 2;
+}
+.call-back__link {
+	height: 64px;
+	width: 64px;
+	display: flex;
+	background-color: #fb9f00;
+	border-radius: 100%;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 0 4px 15px gray;
+}
+.call-back__image {
+	width: 60%;
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>                           
+<?xml version="1.0" encoding="UTF-8"?>                                    
 <site>
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -601,6 +601,21 @@
 		<link name="submit_link" target="feedback_command" type="itemform">
 			<var name="form_name" value="feedback"/>
 			<var name="source_page" value="feedback_ajax"/>
+		</link>
+	</page>
+
+	<page name="callback_ajax" template="callback_ajax">
+		<request>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<new item="feedback_form" id="form">
+			<parameter-input ref="form" form="feedback"/>
+		</new>
+		<link name="submit_link" target="feedback_command" type="itemform">
+			<var name="form_name" value="feedback"/>
+			<var name="source_page" value="callback_ajax"/>
+			<var name="required" value="phone"/>
 		</link>
 	</page>
 

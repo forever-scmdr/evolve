@@ -2,7 +2,7 @@
 <model>
 
 <!--START_p369285-->
-<item name="p369285" caption="Детям" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1726" ag-hash="2127869225">
+<item name="p369285" caption="Детям" key="" ag-id="0" ag-hash="2127869225" virtual="false" user-def="true" description="" super="params *">
 	<parameter name="kolichestvo_kasset_sht_" caption="Количество кассет, шт." type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="138239828" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_plastika_v_kagdoi_kassete_m" caption="Количество пластика в каждой кассете, м" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-722276155" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="summarnaya_dlina_niti_m" caption="Суммарная длина нити, м" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1836141722" description="" owner-id="0" virtual="false" hidden="false"></parameter>

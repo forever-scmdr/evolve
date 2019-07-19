@@ -150,6 +150,14 @@
 					</xsl:for-each>
 				</table>
 			</div>
+			<!-- сопутствующие товары (не работает) -->
+			<xsl:if test="page/assoc">
+				<h3>Вас также может заинтересовать</h3>
+				<div class="catalog-items">
+					<xsl:apply-templates select="page/assoc" />
+				</div>
+			</xsl:if>
+
 		</div>
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>

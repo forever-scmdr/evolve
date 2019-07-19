@@ -253,7 +253,7 @@
 		<xsl:if test="page/assoc">
 			<h3>Вас также может заинтересовать</h3>
 			<div class="catalog-items">
-				<xsl:apply-templates select="page/assoc" mode="lines"/>
+				<xsl:apply-templates select="page/assoc" />
 			</div>
 		</xsl:if>
 
