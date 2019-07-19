@@ -36,19 +36,24 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 	}
 	
 	private Class<Command> commandClass;
+	private String tag; // Тэг для вывода команды в виде текста или XML на странице (по умолчанию - command)
 	private boolean cacheClearNeeded = false; // Нужно ли проводить очистку кеша после выполнения этой команды
 	private ValueOrRef methodVar = null; // Переменная, которая хранит названия методов, которые должны быть в команде и котороые выполняют разные действия
 	private ExecutablePagePE parentPage;
 
+	private ResultPE executionResult = null; // результат выполнения команды
+
 	@SuppressWarnings("unchecked")
-	public CommandPE(String className, boolean clearCache) throws ClassNotFoundException {
+	public CommandPE(String className, String tag, boolean clearCache) throws ClassNotFoundException {
 		this.commandClass = (Class<Command>) Class.forName(className);
 		this.cacheClearNeeded = clearCache;
+		this.tag = StringUtils.isNoneBlank(tag) ? tag : ELEMENT_NAME;
 	}
 	
 	private CommandPE(CommandPE base, ExecutablePagePE parentPage) {
 		this.commandClass = base.commandClass;
 		this.cacheClearNeeded = base.cacheClearNeeded;
+		this.tag = base.tag;
 		this.parentPage = parentPage;
 	}
 	
@@ -93,12 +98,15 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 						method = commandClass.getMethod(methodName);
 					} catch (NoSuchMethodException e) {
 						ServerLogger.warn("There is no '" + methodName + "' method in '" + commandClass.getName() + "' class");
-						return command.execute();
+						executionResult = command.execute();
+						return executionResult;
 					}
-					return (ResultPE) method.invoke(command);
+					executionResult = (ResultPE) method.invoke(command);
+					return executionResult;
 				}
 			}
-			return command.execute();
+			executionResult = command.execute();
+			return executionResult;
 	    }
 	}
 	
@@ -131,8 +139,28 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 //		}
 		return true;
 	}
-	
+
+	/**
+	 * Получить результат выполнения команды
+	 * @return
+	 */
+	public final ResultPE getExecutionResult() {
+		return executionResult;
+	}
+
+	/**
+	 * Есть ли результат выполнения команды (если нет, то команда или не выполнялась, или вернула null)
+	 * @return
+	 */
+	public final boolean hasExecutionResult() {
+		return executionResult != null;
+	}
+
 	public String getElementName() {
 		return ELEMENT_NAME;
+	}
+
+	public String getTag() {
+		return tag;
 	}
 }

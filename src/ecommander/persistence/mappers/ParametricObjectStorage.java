@@ -6,12 +6,12 @@
  */
 package ecommander.persistence.mappers;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
 
 /**
  * Класс, который может хранить объекты, которые обладаю некоторыми общими параметрами.
@@ -171,7 +171,8 @@ public abstract class ParametricObjectStorage
 	 * @param parameterValues
 	 */
 	public void delete(int[] parameterIds, Object[] parameterValues) {
-		storage.removeAll(select(parameterIds, parameterValues));
+		ArrayList<Object> all = select(parameterIds, parameterValues);
+		storage.removeAll(all);
 	}
 
 	public boolean isEmpty() {

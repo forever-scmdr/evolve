@@ -3,6 +3,7 @@ package ecommander.pages;
 import ecommander.pages.var.Variable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -67,9 +68,23 @@ public class ReferencePE implements PageElement {
 	}
 
 	public boolean isUrlKeyUnique() {
-		return pageVarName != null && paramName == null && pageModel.getInitVariablePE(pageVarName).isStyleTranslit();
+		return pageVarName != null && paramName == null && pageModel.getInitVariablePE(pageVarName).isStyleKey();
 	}
-	
+
+	public List<String> getKeysUnique() {
+		if (isUrlKeyUnique()) {
+			Variable variable = pageModel.getVariable(pageVarName);
+			if (variable == null || variable.isEmpty())
+				return new ArrayList<>(0);
+			if (pageModel.getInitVariablePE(pageVarName).isStyleKeyPath()) {
+				return Arrays.asList(variable.writeSingleValue());
+			} else {
+				return variable.writeAllValues();
+			}
+		}
+		return new ArrayList<>(0);
+	}
+
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
 		ReferencePE clone = new ReferencePE(pageVarName, paramName, pageItemId, parentPage);
 		if (container != null)

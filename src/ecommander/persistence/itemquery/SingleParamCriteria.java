@@ -30,7 +30,7 @@ class SingleParamCriteria extends ParameterCriteria {
 		if (StringUtils.isBlank(this.sign))
 			this.sign = "=";
 		this.pattern = pattern;
-		if ((type == Compare.SOME || type == Compare.EVERY) && StringUtils.isBlank(value) && !"!=".equals(sign))
+		if ((type == Compare.SOME || type == Compare.EVERY) && StringUtils.isBlank(value))
 		 	isEmptySet = true;
 	}
 

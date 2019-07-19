@@ -104,13 +104,17 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 						AppContext.getFilesDirPath(baseItem.isFileProtected()));
 				item.clearValue(paramDesc.getName()); // для того, чтобы не было дублирования
 				for (File file : files) {
-					item.setValue(paramDesc.getName(), file);
+					if(file.exists() && file.isFile()) {
+						item.setValue(paramDesc.getName(), file);
+					} else {
+						item.setValue(paramDesc.getName(), file.getName());
+					}
 				}
 			}
 		}
 
 		// Шаг 3. - Сохранить новый айтем
-		executeCommand(new SaveNewItemDBUnit(item, newParent));
+		executeCommand(new SaveNewItemDBUnit(item, newParent).ignoreFileErrors(ignoreFileErrors));
 
 		// Шаг 4. - Обновить пути к файлам во всех текстовых параметрах айтема
 		boolean corrections = false;
@@ -126,7 +130,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 			}
 		}
 		if (corrections)
-			executeCommand(new UpdateItemParamsDBUnit(item, false).noFulltextIndex());
+			executeCommand(new UpdateItemParamsDBUnit(item).noFulltextIndex().noTriggerExtra());
 
 		// Шаг 5. - Выполнить команду копирования для всех сабайтемов копируемого айтема
 		TemplateQuery allSubitems = new TemplateQuery("Load item primary subitems");

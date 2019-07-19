@@ -43,8 +43,7 @@ public class FilterFormServlet extends BasicServlet {
 		String pageStr = Strings.EMPTY;
 		req.getQueryString();
 		try {
-			targetUrl = PageModelRegistry.getRegistry().normalizeUrl(targetUrl);
-			LinkPE targetLink = LinkPE.parseLink(targetUrl);
+			LinkPE targetLink = PageModelRegistry.getRegistry().normalizeAndCreateLink(targetUrl);
 			String varName = targetLink.getVariable(LinkPE.VAR_VARIABLE).writeSingleValue(); // Название переменной для пользовательского фильтра
 			targetLink.removeVariable(LinkPE.VAR_VARIABLE); // чтобы не выводить лишнюю переменную, которая все равно добавится потом
 			Map<String, String[]> params = new HashMap<>(req.getParameterMap());

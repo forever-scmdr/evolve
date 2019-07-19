@@ -85,8 +85,11 @@ public class SingleParameter extends Parameter {
 	}
 
 	@Override
-	public void clear() {
+	public boolean clear() {
+		if (isEmpty())
+			return false;
 		setValue(null, true);
+		return true;
 	}
 
 	public String outputValue() {

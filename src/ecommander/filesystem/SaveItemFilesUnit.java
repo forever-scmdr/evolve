@@ -14,12 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -154,9 +149,11 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 		// Удалить старые файлы айтема
 		if (filesChanged) {
 			File[] allFiles = new File(fileDirectoryName).listFiles();
-			for (File itemFile : allFiles) {
-				if (!actualFiles.contains(itemFile.getName())) {
-					FileUtils.deleteQuietly(itemFile);
+			if (allFiles != null) {
+				for (File itemFile : allFiles) {
+					if (!actualFiles.contains(itemFile.getName())) {
+						FileUtils.deleteQuietly(itemFile);
+					}
 				}
 			}
 		}

@@ -1,20 +1,11 @@
 package ecommander.model;
 
-import java.io.File;
-import java.io.StringReader;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.model.datatypes.DataType.Type;
 import ecommander.pages.InputValues;
+import ecommander.pages.output.UserParameterDescriptionMDWriter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.xml.sax.Attributes;
@@ -22,11 +13,13 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
-import ecommander.pages.output.UserParameterDescriptionMDWriter;
-import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.model.datatypes.DataType.Type;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
+import java.io.StringReader;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Такие действия, как добавление (или удаление) сабайтема в айтем должны происходить следующим образом:
@@ -64,7 +57,7 @@ public class Item implements ItemBasics {
 	public static final int WEIGHT_STEP = 64;
 
 	public static final byte STATUS_NORMAL = (byte) 0;
-	public static final byte STATUS_NIDDEN = (byte) 1;
+	public static final byte STATUS_HIDDEN = (byte) 1;
 	public static final byte STATUS_DELETED = (byte) 2;
 
 	private static final int _NO_PARAM_ID  = -1;
@@ -291,17 +284,22 @@ public class Item implements ItemBasics {
 	 * @param paramId
 	 * @param value
 	 */
-	public final void setValue(int paramId, Object value) {
+	public final boolean setValue(int paramId, Object value) {
+		boolean modified;
 		if (value == null) {
 			// Если добавляется пустое значение к множественному параметру - ничего не делать
 			if (itemType.getParameter(paramId).isMultiple())
-				return;
+				return false;
 			// Удалить параметр, если значение равно null
-			clearValue(paramId);
+			modified = clearValue(paramId);
 		} else {
-			getParameter(paramId).setValue(value, false);
+			modified = getParameter(paramId).setValue(value, false);
 		}
-		state = State.modified_NO_xml;
+		if (modified) {
+			state = State.modified_NO_xml;
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Прямая установка параметра. Используется когда сразу есть значение параметра соответствующего типа
@@ -309,8 +307,8 @@ public class Item implements ItemBasics {
 	 * @param paramName
 	 * @param value
 	 */
-	public final void setValue(String paramName, Object value) {
-		setValue(itemType.getParameter(paramName).getId(), value);
+	public final boolean setValue(String paramName, Object value) {
+		return setValue(itemType.getParameter(paramName).getId(), value);
 	}
 	/**
 	 * Содержит параметр айтема определенное значение
@@ -326,9 +324,10 @@ public class Item implements ItemBasics {
 	 * @param paramName
 	 * @param value
 	 */
-	public final void setValueUnique(String paramName, Object value) {
+	public final boolean setValueUnique(String paramName, Object value) {
 		if (!containsValue(paramName, value))
-			setValue(paramName, value);
+			return setValue(paramName, value);
+		return false;
 	}
 	/**
 	 * Возвращает параметр по его ID.
@@ -520,10 +519,13 @@ public class Item implements ItemBasics {
 	 * Удаляет параметр с заданным ID
 	 * @param paramId
 	 */
-	public final void clearValue(int paramId) {
+	public final boolean clearValue(int paramId) {
 		populateMap();
-		getParameterFromMap(paramId).clear();
-		state = State.modified_NO_xml;
+		if (getParameterFromMap(paramId).clear()) {
+			state = State.modified_NO_xml;
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Удалить все значения определенного параметра по его названию
@@ -729,7 +731,7 @@ public class Item implements ItemBasics {
 	}
 
 	public final boolean isStatusHidden() {
-		return status == STATUS_NIDDEN;
+		return status == STATUS_HIDDEN;
 	}
 
 	public final boolean isStatusDeleted() {
@@ -1161,6 +1163,11 @@ public class Item implements ItemBasics {
 	 */
 	public final ArrayList<String> outputValues(String paramName) {
 		ArrayList<String> result = new ArrayList<>();
+		// Если нужно вывести уникальный ключ, то парсинг айтема не требуется
+		if (StringUtils.equals(KEY_PARAMETER, paramName)) {
+			result.add(keyUnique);
+			return result;
+		}
 		Collection<SingleParameter> multipleValues = getParamValues(paramName);
 		for (SingleParameter sp : multipleValues) {
 			if (!sp.isEmpty())
@@ -1238,7 +1245,16 @@ public class Item implements ItemBasics {
 	 * @return
 	 */
 	public final File getFileValue(String paramName, String filesRepositoryPath) {
-		String fileName = ((SingleParameter)getParameterByName(paramName)).outputValue();
+		SingleParameter param;
+		if (getParameterByName(paramName).isMultiple()) {
+			Collection<SingleParameter> sp = ((MultipleParameter) getParameterByName(paramName)).getValues();
+			if (sp.size() == 0)
+				return null;
+			param = sp.iterator().next();
+		} else {
+			param = (SingleParameter) getParameterByName(paramName);
+		}
+		String fileName = param.outputValue();
 		return new File(getParamFileName(filesRepositoryPath, id, fileName));
 	}
 	/**

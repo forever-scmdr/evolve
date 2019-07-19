@@ -29,10 +29,8 @@ public class ComputedUpdater implements DBConstants.ComputedLog {
 					TemplateQuery select = new TemplateQuery("Select from computed log");
 					select.SELECT(L_ITEM).FROM(COMPUTED_LOG_TBL).LIMIT(50);
 					ArrayList<Long> itemsToUpdate = new ArrayList<>();
-					try (
-							Connection conn = MysqlConnector.getConnection();
-							PreparedStatement pstmt = select.prepareQuery(conn);
-					) {
+					try (Connection conn = MysqlConnector.getConnection();
+					     PreparedStatement pstmt = select.prepareQuery(conn)) {
 						ResultSet rs = pstmt.executeQuery();
 						while (rs.next()) {
 							itemsToUpdate.add(rs.getLong(1));

@@ -158,6 +158,7 @@ public class MainAdminPageCreator implements AdminXML {
 	/**
 	 * Разные экшены
 	 */
+	public static final String PRESERVE_PASTE_BUFFER_VAR = "preserve_buffer_content";
 	public static final String INITIALIZE_ACTION = "admin_initialize";
 	public static final String SET_ITEM_ACTION = "admin_set_item";
 	public static final String CREATE_ITEM_ACTION = "admin_create_item";
@@ -197,12 +198,26 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String UPLOAD_START_ACTION = "admin_upload_start";
 	public static final String UPLOAD_IMG_ACTION = "admin_upload_img";
 	public static final String COPY_ACTION = "admin_copy";
+
 	public static final String PASTE_ACTION = "admin_paste";
 	public static final String DELETE_PASTE_ACTION = "admin_delete_paste";
 	public static final String STATUS_ACTION = "admin_status";
 	public static final String NEW_GROUP_ACTION = "new_group";
 	public static final String NEW_USER_ACTION = "new_user";
 	public static final String TOGGLE_FILE_PROTECTION_ACTION = "file_protection";
+
+	//MASS ACTIONS
+	public static final String MASS_COPY_ACTION = "admin_copy_all";
+	public static final String MASS_PASTE_ACTION = "admin_paste_selected";
+	public static final String MASS_MOVE_TO_ACTION = "admin_move_selected";
+	public static final String MASS_DELETE_ACTION = "admin_delete_all";
+	public static final String MASS_HIDE_ACTION = "admin_hide_all";
+	public static final String MASS_SHOW_ACTION = "admin_show_all";
+	public static final String MASS_DELETE_FROM_BUFFER_ACTION = "admin_delete_selected_from_buffer";
+	public static final String CLEAR_BUFFER_ACTION = "admin_clear_paste_buffer";
+	public static final String PASTE_ALL_ACTION = "admin_paste_all";
+	public static final String MOVE_ALL_ACTION = "admin_move_all";
+
 	/**
 	 * Инпуты
 	 */
@@ -228,6 +243,8 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String USER_ID_INPUT = "userId";
 	public static final String MESSAGE_INPUT = "msg";
 	public static final String GO_TO_PARENT_INPUT = "goToParent";
+	public static final String ITEM_IDS_INPUT = "ids";
+	public static final String BUFFERED_ITEM_IDS_INPUT = "ids_b";
 	/**
 	 * Значения
 	 */
@@ -529,6 +546,9 @@ public class MainAdminPageCreator implements AdminXML {
 			String pasteUrl = createAdminUrl(PASTE_ACTION, ITEM_ID_INPUT, item.getId(), PARENT_ID_INPUT, newParentId, ITEM_TYPE_INPUT,
 					newParentTypeId);
 			item.addSubwriter(new LeafMDWriter(PASTE_LINK_ELEMENT, pasteUrl));
+			String moveToUrl = createAdminUrl(MOVE_TO_ACTION, ITEM_ID_INPUT, item.getId(), PARENT_ID_INPUT, newParentId, ITEM_TYPE_INPUT,
+					newParentTypeId);
+			item.addSubwriter(new LeafMDWriter("move-to-link",  moveToUrl));
 			page.addElement(item);
 		}
 		return page;
@@ -769,7 +789,7 @@ public class MainAdminPageCreator implements AdminXML {
 		currentAssocId = -1;
 		assocWriter = new AggregateMDWriter("empty");
 		for (ItemAccessor item : toAssoc) {
-			if (ItemTypeRegistry.isDirectContainer(item.getTypeId(), baseAcc.getTypeId(), assocId) && !mountedList.contains(item)) {
+			if (ItemTypeRegistry.isDirectContainer(baseAcc.getTypeId(), item.getTypeId(), assocId) && !mountedList.contains(item)) {
 				String newAssocInput = createInputName(item.getTypeId(), item.getId(), MOUNT_INPUT_PREFIX);
 				item.addSubwriter(new LeafMDWriter(INPUT_ELEMENT, ADD_VALUE, NAME_ATTRIBUTE, newAssocInput));
 				String moveInput = createInputName(item.getTypeId(), item.getId(), MOVE_VALUE);

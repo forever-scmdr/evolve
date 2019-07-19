@@ -24,10 +24,10 @@ import java.util.Set;
 public class FilterStaticVariable extends StaticVariable {
 
 	private static final int DELIM_LENGTH = 4;
-	public static final String TOKEN_DELIM = "-fl-";
+	public static final String TOKEN_DELIM = "(fl)";
 	public static final char VALUE_DELIM = '~';
-	public static final String SORTING = "-fs-";
-	public static final String PAGE = "-fp-";
+	public static final String SORTING = "(fs)";
+	public static final String PAGE = "(fp)";
 
 	private HashMap<Integer, ArrayList<String>> paramValues;
 	private int sortingParamId;

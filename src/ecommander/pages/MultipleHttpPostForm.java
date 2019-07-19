@@ -1,7 +1,11 @@
 package ecommander.pages;
 
+import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
-import ecommander.model.*;
+import ecommander.model.Item;
+import ecommander.model.ItemTreeNode;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -11,7 +15,14 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Форма на замену SingleItemHttpPostFormDeprecated
@@ -33,6 +44,7 @@ public class MultipleHttpPostForm implements Serializable {
 	private static final long serialVersionUID = 2L;
 
 	private static final String FORM_ITEM_UNIQUE_KEY = "ukey";
+	private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
 
 	private HashMap<Long, InputValues> inputs = new HashMap<>();
 	private InputValues extras = new InputValues();
@@ -96,6 +108,10 @@ public class MultipleHttpPostForm implements Serializable {
 		return (String) extras.get(key);
 	}
 
+	public FileItem getSingleFileExtra(String key) {
+		return (FileItem) extras.get(key);
+	}
+
 	InputValues getItemInput(long itemId) {
 		return inputs.get(itemId);
 	}
@@ -150,7 +166,7 @@ public class MultipleHttpPostForm implements Serializable {
 	 * @return
 	 * @throws Exception
 	 */
-	public Item getTransientSingleItem() throws Exception {
+	public Item getItemSingleTransient() throws Exception {
 		ItemTreeNode first = getItemTree().getFirstChild();
 		if (first == null)
 			return null;
@@ -174,10 +190,10 @@ public class MultipleHttpPostForm implements Serializable {
 				if (itemType.getParameter(inDesc.getParamId()).getDataType().isFile()) {
 					if (paramValue instanceof List) {
 						for (Object file : (List<Object>) paramValue) {
-							item.setValue(inDesc.getParamId(), file);
+							item.setValue(inDesc.getParamId(), getFileValue(file));
 						}
 					} else {
-						item.setValue(inDesc.getParamId(), paramValue);
+						item.setValue(inDesc.getParamId(), getFileValue(paramValue));
 					}
 				} else {
 					if (paramValue instanceof List) {
@@ -207,4 +223,24 @@ public class MultipleHttpPostForm implements Serializable {
 		values.add(inputDesc, value);
 	}
 
+	/**
+	 * Преобразует значение из строкового типа в тип URL, если параметр (для которого это значение предназанчено)
+	 * файловый и если строка соответствует шаблону урла
+	 * @param rawValue
+	 * @return
+	 */
+	private Object getFileValue(Object rawValue) {
+		if (rawValue instanceof String) {
+			Matcher matcher = URL_PATTERN.matcher((String) rawValue);
+			if (matcher.matches()) {
+				try {
+					URL fileUrl = new URL((String) rawValue);
+					return fileUrl;
+				} catch (MalformedURLException e) {
+					ServerLogger.debug("The url matches pattern but is still malformed", e);
+				}
+			}
+		}
+		return rawValue;
+	}
 }

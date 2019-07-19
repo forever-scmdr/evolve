@@ -29,12 +29,14 @@ public class SessionItemMapper {
 		long parentId;
 		String typeName;
 		String tagName;
+		String key;
 
-		private SessionItemMemento(long id, long parentId, String typeName, String tagName) {
+		private SessionItemMemento(long id, long parentId, String typeName, String tagName, String key) {
 			this.id = id;
 			this.parentId = parentId;
 			this.typeName = typeName;
 			this.tagName = tagName;
+			this.key = key;
 		}
 
 		/**
@@ -59,6 +61,10 @@ public class SessionItemMapper {
 		public long getParentId() {
 			return parentId;
 		}
+
+		public String getKey() {
+			return key;
+		}
 	}
 
 	/**
@@ -80,7 +86,7 @@ public class SessionItemMapper {
 		 * @param tagName
 		 */
 		private TransientMemento(Item item, String tagName) {
-			super(item.getId(), item.getContextParentId(), item.getTypeName(), tagName);
+			super(item.getId(), item.getContextParentId(), item.getTypeName(), tagName, item.getKeyUnique());
 			this.userId = item.getOwnerUserId();
 			this.groupId = item.getOwnerGroupId();
 			parameters = new HashMap<>();
@@ -113,7 +119,7 @@ public class SessionItemMapper {
 		 */
 		public Item restoreItem() throws Exception {
 			Item item = Item.existingItem(ItemTypeRegistry.getItemType(typeName), id, ItemTypeRegistry.getPrimaryAssoc(),
-					parentId, userId, groupId, Item.STATUS_NORMAL, Strings.EMPTY, null, null, 0, false);
+					parentId, userId, groupId, Item.STATUS_NORMAL, Strings.EMPTY, null, key, 0, false);
 			if (parameters != null) {
 				for (Integer paramId : parameters.keySet()) {
 					if (item.getItemType().getParameter(paramId).isMultiple()) {
@@ -221,9 +227,9 @@ public class SessionItemMapper {
 				item.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), rootItemId);
 		}
 		SessionItemMemento sessionItem = new TransientMemento(item, itemTag);
-		// Удалить старый айтем, если такой уже есть
-		int[] paramIds = { ID, TAG_NAME };
-		Object[] paramValues = { item.getId(), itemTag };
+		// Удалить старый айтем, если такой уже есть (с таким же родителем)
+		int[] paramIds = { ID, TAG_NAME, PARENT_ID };
+		Object[] paramValues = { item.getId(), itemTag, item.getContextParentId() };
 		forceGetStorage().delete(paramIds, paramValues);
 		forceGetStorage().addObject(sessionItem);
 	}

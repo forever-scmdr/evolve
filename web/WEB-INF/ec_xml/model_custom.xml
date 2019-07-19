@@ -8046,7 +8046,7 @@
 <!--END_p109446-->
 
 <!--START_p110410-->
-<item name="p110410" caption="Универсальные пылесосы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2095" ag-hash="2065726899">
+<item name="p110410" caption="Универсальные пылесосы" key="" ag-id="0" ag-hash="2065726899" virtual="false" user-def="true" description="" super="params *">
 	<parameter name="proizvoditelnost_po_vozduhu_maks." caption="Производительность по воздуху, макс." type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-422979312" description="л/мин" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razregenie" caption="Разрежение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1196641394" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="filtruyuschaya_poverhnost" caption="Фильтрующая поверхность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-158080246" description="см²" owner-id="0" virtual="false" hidden="false"></parameter>

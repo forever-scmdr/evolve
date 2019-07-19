@@ -1,7 +1,5 @@
 package ecommander.model.datatypes;
 
-import ecommander.controllers.AppContext;
-import ecommander.fwk.Strings;
 import ecommander.model.Item;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
@@ -9,14 +7,13 @@ import org.joda.time.DateTime;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
-import javax.imageio.stream.FileImageInputStream;
-import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -52,6 +49,8 @@ public class PictureDataType extends FileDataType {
 			} catch (IOException e) {
 					return new HashMap<>(0);
 			}
+		} else if (value instanceof URL) {
+			return meta;
 		} else {
 			try {
 				Path file = null;

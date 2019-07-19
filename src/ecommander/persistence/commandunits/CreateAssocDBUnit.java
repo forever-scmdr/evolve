@@ -158,8 +158,14 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		insert.INSERT_INTO(ITEM_PARENT_TBL, IP_PARENT_ID, IP_CHILD_ID, IP_ASSOC_ID, IP_CHILD_SUPERTYPE, IP_PARENT_DIRECT, IP_WEIGHT);
 
 		// Шаг 1. Вставить запись непосредственного предка и потомка
+		Integer[] childrenBaseIds = ItemTypeRegistry.getDirectChildrenBasicTypeIds(parent.getTypeId());
 		insert.SELECT(parent.getId(), childId, assocId, superTypeId, 1, "COALESCE(MAX(" + IP_WEIGHT + "), 0) + 64")
-				.FROM(ITEM_PARENT_TBL).WHERE().col(IP_PARENT_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(assocId).sql(" \r\n");
+				.FROM(ITEM_PARENT_TBL).WHERE()
+				.col(IP_PARENT_ID).long_(parent.getId()).AND()
+				.col(IP_ASSOC_ID).byte_(assocId).AND()
+				.col_IN(IP_CHILD_SUPERTYPE).intIN(childrenBaseIds).AND()
+				.col(IP_PARENT_DIRECT).byte_((byte) 1)
+				.sql(" \r\n");
 
 		// Остальные шаги только для транзитивных ассоциаций
 		if (assoc.isTransitive()) {
@@ -200,7 +206,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 					insert.UNION_ALL()
 							.SELECT_DISTINCT(parent.getId(), childId, IP_ASSOC_ID, superTypeId, 1, 0)
 							.FROM(ITEM_PARENT_TBL).WHERE()
-							.col(IP_PARENT_ID).long_(parent.getId()).AND().col_IN(IP_ASSOC_ID).byteIN(ass).sql(" \r\n");
+							.col(IP_CHILD_ID).long_(parent.getId()).AND().col_IN(IP_ASSOC_ID).byteIN(ass).sql(" \r\n");
 
 					// Шаг 4. Добавить для нового потомка в качестве новых предков всех предков нового непосредственного родителя
 					insert.UNION_ALL()

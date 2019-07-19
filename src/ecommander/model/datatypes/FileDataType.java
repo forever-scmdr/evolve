@@ -1,5 +1,12 @@
 package ecommander.model.datatypes;
 
+import ecommander.controllers.AppContext;
+import ecommander.fwk.Strings;
+import ecommander.model.Item;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,14 +16,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
-
-import ecommander.model.Item;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-
-import ecommander.fwk.Strings;
-import ecommander.controllers.AppContext;
 
 
 public class FileDataType extends StringDataType {
