@@ -27,11 +27,11 @@ public class SaveAllProductsCommand extends IntegrateBase implements CatalogCons
 		ArrayList<Item> products;
 		info.setProcessed(0);
 		try(Connection conn = MysqlConnector.getConnection()) {
-			while ((products = ItemMapper.loadByName(PRODUCT_ITEM, 500, startID, conn)).size() > 0) {
+			while ((products = ItemMapper.loadByName(PRODUCT_ITEM, 500, startID)).size() > 0) {
 				for (Item product : products) {
 					startID = product.getId();
 					product.forceInitialInconsistent();
-					executeAndCommitCommandUnits(SaveItemDBUnit.get(product, false).noFulltextIndex().noFulltextIndex());
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noTriggerExtra().noFulltextIndex().noFulltextIndex());
 					info.increaseProcessed();
 				}
 			}

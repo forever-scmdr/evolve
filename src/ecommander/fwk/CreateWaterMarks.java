@@ -65,7 +65,7 @@ public class CreateWaterMarks extends IntegrateBase {
 		do {
 			DelayedTransaction transaction = new DelayedTransaction(getInitiator());
 			try (Connection conn = MysqlConnector.getConnection()) {
-				items = ItemMapper.loadByName(GALLERY, 10, startFrom, conn);
+				items = ItemMapper.loadByName(GALLERY, 10, startFrom);
 			}
 			for (Item item : items) {
 				Item backup = new ItemQuery(ORIGINAL_GALLERY).setParentId(item.getId(), false).loadFirstItem();
