@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
-<!--	<xsl:import href="cart_ajax.xsl"/>-->
+	<xsl:import href="callback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
@@ -213,11 +213,7 @@
 
 	<xsl:template name="INC_FOOTER">
 		<!-- FOOTER BEGIN -->
-		<div class="call-back">
-			<a href="" class="call-back__link" data-toggle="modal" data-target="#modal-call-back">
-				<img class="call-back__image" src="img/call-back.svg" alt="Обратный звонок"/>
-			</a>
-		</div>
+		<xsl:call-template name="CALLBACK_BUTTON"/>
 		<div class="footer-placeholder"></div>
 		<footer class="footer">
 			<div class="container">
@@ -286,26 +282,27 @@
 			</div>
 		</div>
 		<!-- modal call-back -->
-		<div class="modal fade" tabindex="-1" role="dialog" id="modal-call-back">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-						<div class="modal-title h4">Обратный звонок</div>
-					</div>
-					<div class="modal-body">
-						<p>Оставьте свой номер телефона и наш консультант свяжется с вами в рабочее время с 9:00 до 20:00.</p>
-						<form action="" method="post">
-							<div class="form-group">
-								<label for="">Номер телефона:</label>
-								<input type="text" class="form-control" placeholder="+375-XX-XXX-XX-XX"/>
-							</div>
-							<input class="button" type="submit" name="" value="Заказать обратный звонок"/>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+		<xsl:call-template name="CALLBACK_FORM"/>
+<!--		<div class="modal fade" tabindex="-1" role="dialog" id="modal-call-back">-->
+<!--			<div class="modal-dialog modal-sm" role="document">-->
+<!--				<div class="modal-content">-->
+<!--					<div class="modal-header">-->
+<!--						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
+<!--						<div class="modal-title h4">Обратный звонок</div>-->
+<!--					</div>-->
+<!--					<div class="modal-body">-->
+<!--						<p>Оставьте свой номер телефона и наш консультант свяжется с вами в рабочее время с 9:00 до 20:00.</p>-->
+<!--						<form action="" method="post">-->
+<!--							<div class="form-group">-->
+<!--								<label for="">Номер телефона:</label>-->
+<!--								<input type="text" class="form-control" placeholder="+375-XX-XXX-XX-XX"/>-->
+<!--							</div>-->
+<!--							<input class="button" type="submit" name="" value="Заказать обратный звонок"/>-->
+<!--						</form>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
 
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>

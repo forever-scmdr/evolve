@@ -56,6 +56,7 @@
 		<link name="cart_link" target="cart"/>
 		<link name="search_link" target="search"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
+		<link name="callback_form_link" target="callback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="fav_link" target="fav"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
@@ -666,7 +667,7 @@
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
 			<single item="cart">
-				<list item="bought">
+				<list item="bought" id="bought">
 					<list item="abstract_product" id="product" tag="product">
 						<link name="to_cart" target="cart_action">
 							<var name="action" value="addToCart"/>
@@ -682,6 +683,9 @@
 				<parameter name="code" sign="=" compare="SOME">
 					<var name="code" ref="product" parameter="assoc_product"/>
 					<var name="code" ref="parent" parameter="assoc_product"/>
+				</parameter>
+				<parameter name="code" sign="!=" compare="SOME">
+					<var ref="bought" parameter="code"/>
 				</parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
@@ -820,6 +824,18 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 		</list>
+
+		<list item="product" id="ass" tag="assoc">
+			<filter>
+				<parameter name="code" sign="=" compare="SOME">
+					<var ref="prod" parameter="assoc_product"/>
+				</parameter>
+				<parameter name="code" sign="!=" compare="SOME">
+					<var ref="bought" parameter="code"/>
+				</parameter>
+			</filter>
+		</list>
+
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="confirm"/>
 		</link>
