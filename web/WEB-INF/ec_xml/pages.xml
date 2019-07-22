@@ -681,8 +681,8 @@
 		<list item="product" id="assoc">
 			<filter>
 				<parameter name="code" sign="=" compare="SOME">
-					<var name="code" ref="product" parameter="assoc_product"/>
-					<var name="code" ref="parent" parameter="assoc_product"/>
+					<var name="code" ref="product" parameter="assoc_code"/>
+					<var name="code" ref="parent" parameter="assoc_code"/>
 				</parameter>
 				<parameter name="code" sign="!=" compare="SOME">
 					<var ref="bought" parameter="code"/>
@@ -828,7 +828,7 @@
 		<list item="product" id="ass" tag="assoc">
 			<filter>
 				<parameter name="code" sign="=" compare="SOME">
-					<var ref="prod" parameter="assoc_product"/>
+					<var ref="prod" parameter="assoc_code"/>
 				</parameter>
 				<parameter name="code" sign="!=" compare="SOME">
 					<var ref="bought" parameter="code"/>
