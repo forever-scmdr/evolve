@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
+<!--	<xsl:import href="cart_ajax.xsl"/>-->
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
@@ -308,7 +309,13 @@
 
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
+
+		<!-- modal assoc products -->
+		<div id="assoc-products-modal" class="modal fade" tabindex="-1" role="dialog" show-loader="yes">
+			Loading...
+		</div>
 		<!-- MODALS END -->
+
 	</xsl:template>
 
 

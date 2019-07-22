@@ -672,10 +672,38 @@
 							<var name="action" value="addToCart"/>
 							<var name="code" ref="product" parameter="code"/>
 						</link>
+						<single item="abstract_product" id="parent"/>
 					</list>
 				</list>
 			</single>
 		</session>
+		<list item="product" id="assoc">
+			<filter>
+				<parameter name="code" sign="=" compare="SOME">
+					<var name="code" ref="product" parameter="assoc_product"/>
+					<var name="code" ref="parent" parameter="assoc_product"/>
+				</parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="assoc" style="key"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="assoc" parameter="code"/>
+			</link>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="assoc" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="update_cookie_value" ref="assoc" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
+		</list>
 		<link name="show_cart" target="cart"/>
 	</page>
 
