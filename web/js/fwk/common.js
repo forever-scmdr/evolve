@@ -12,7 +12,11 @@ function initCatalogPopupMenu(menuTriggerSelector, menuSelector, eventName) {
 	if (typeof eventName === 'undefined' || eventName == null || eventName == '') {
 		eventName = 'click';
 	}
-	$(menuTriggerSelector).on(eventName, function (event) {
+	// $(menuTriggerSelector).on(eventName, function (event) {
+	// 	event.preventDefault();
+	// 	$(menuSelector).toggle('fade', 150);
+	// });
+	$(document).on(eventName, menuTriggerSelector, function (event) {
 		event.preventDefault();
 		$(menuSelector).toggle('fade', 150);
 	});
