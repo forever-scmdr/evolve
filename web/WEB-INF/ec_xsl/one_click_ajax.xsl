@@ -19,7 +19,10 @@
 	<xsl:variable name="pcode"
 	              select="if (page/variables/pcode) then page/variables/pcode else $form/input/product_code"/>
 	<xsl:variable name="price"
-	              select="if (page/variables/price) then page/variables/price else $form/input/price"/>              
+	              select="if (page/variables/price) then page/variables/price else $form/input/price"/>
+
+	<xsl:variable name="common" select="page/common"/>
+	<xsl:variable name="delivery_date" select="if(not($common/delivery_date != '')) then f:delivery-date(current-dateTime()) else $common/delivery_date" />         
 
 	<xsl:template match="/">
 		<div class="result" id="modal-one_click">
@@ -38,7 +41,7 @@
 						<xsl:if test="not($success)">
 							<div class="delivery-date">
 								<b>ВНИМАНИЕ!</b>
-								<p>Товар поступит на пункт самовывоза <b><xsl:value-of select="f:delivery-date(current-dateTime())"/></b></p>
+								<p>Товар поступит на пункт самовывоза <b><xsl:value-of select="$delivery_date"/></b></p>
 							</div>
 						</xsl:if>
 						<xsl:if test="not($success)">
@@ -73,9 +76,7 @@
 	</xsl:template>
 
 	<xsl:template name="ONE_CLICK_FORM">
-		<div class="modal fade" tabindex="-1" role="dialog" id="modal-one_click">
-		+++
-		</div>
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-one_click"></div>
 	</xsl:template>
 
 </xsl:stylesheet>

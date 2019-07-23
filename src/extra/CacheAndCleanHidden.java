@@ -9,6 +9,7 @@ import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.LinkPE;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -51,7 +52,10 @@ public class CacheAndCleanHidden extends IntegrateBase implements CatalogConst {
 				// Создать файл кеша
 				try {
 					DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.restore(hiddenProduct));
-					ExecutablePagePE page = getExecutablePage(hiddenProduct.getKeyUnique());
+					LinkPE link = LinkPE.newDirectLink("product_cache", "product_cache", false);
+					link.addStaticVariable("prod", hiddenProduct.getKeyUnique());
+					//ExecutablePagePE page = getExecutablePage(hiddenProduct.getKeyUnique());
+					ExecutablePagePE page = getExecutablePage(link.serialize());
 					File cache = getEternalCachedFile(hiddenProduct.getKeyUnique());
 					if (cache.exists())
 						cache.delete();

@@ -195,6 +195,9 @@
 							</div>
 						</xsl:for-each>
 					</div>
+					<div style="margin: 2rem 0;">
+						<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+					</div>
 				</div>
 				<xsl:apply-templates select="page/banner_section[3]/banner"/>
 			</div>

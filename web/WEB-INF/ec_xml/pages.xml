@@ -12,11 +12,6 @@
 
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec">
-				<list item="book" transit="true" tag="product">
-					<filter>
-						<limit><var value="1" /></limit>
-					</filter>
-				</list>
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="translit"/>
 				</link>
@@ -181,6 +176,23 @@
 		<request>
 			<var name="sec" style="translit"/>
 		</request>
+		<single item="section" var="sec" id="cur_sec" tag="current_section">
+			<list item="section" id="sec_pics">
+				<list item="product" transit="true" tag="product">
+					<filter>
+						<limit>
+							<var value="1"/>
+						</limit>
+					</filter>
+				</list>
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="sec_pics" style="translit"/>
+				</link>
+				<link name="show_sub" target="sub">
+					<var name="sec" ref="sec_pics" style="translit"/>
+				</link>
+			</list>
+		</single>
 		<include name="COMMON"/>
 	</page>
 	<!-- END_TMP FIX -->
@@ -396,8 +408,7 @@
 	</page>
 
 
-
-	<page name="product" template="product" cacheable="true">
+	<include-definition name="PRODUCT">
 		<request>
 			<var name="prod" style="translit"/>
 		</request>
@@ -433,7 +444,9 @@
 				<var name="pname" ref="prod" parameter="name"/>
 				<var name="pcode" ref="prod" parameter="code"/>
 			</link>
-
+			<link name="search_link" target="search">
+				<var name="q" ref="prod" parameter="name"/>
+			</link>
 			<list item="line_product" id="lprod">
 				<list item="params"/>
 				<link name="to_cart" target="cart_action">
@@ -446,7 +459,6 @@
 					<var name="pcode" ref="lprod" parameter="code"/>
 				</link>
 			</list>
-
 		</single>
 		<list item="product" tag="assoc" id="assoc"  cacheable="true" cache-vars="prod">
 			<filter>
@@ -514,8 +526,18 @@
 			</link>
 		</list>
 		<include name="COMMON"/>
+	</include-definition>
+
+
+
+	<page name="product" template="product" cacheable="true">
+		<include name="PRODUCT"/>
 	</page>
 
+
+	<page name="product_cache" template="product_cache">
+		<include name="PRODUCT"/>
+	</page>
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->

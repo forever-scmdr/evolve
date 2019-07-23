@@ -6,6 +6,9 @@
 */
 package ecommander.fwk;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
@@ -51,11 +54,13 @@ import org.apache.commons.lang3.StringUtils;
 public class MysqlConnector
 {
 	private static final int MAX_CONNECTIONS = 24;
+	private static final int LOG_OPEN_COUNT = 7;
 	
 	private static AtomicInteger _open_count = new AtomicInteger(0);
 	private static HashMap<Integer, Integer> connectionNames = new HashMap<>();
 	//private static final HashSet<Integer> openConnections = new HashSet<>();
 	private static final HashMap<Integer, String> openTraces = new HashMap<>();
+	private static final HashSet<Thread> openThreads = new HashSet<>();
 	private static AtomicInteger com_name_counter = new AtomicInteger(0);
 	
 	//private static final Lock lock = new ReentrantLock();
@@ -94,6 +99,7 @@ public class MysqlConnector
 		private LoggedConnection(Connection conn, HttpServletRequest request) {
 			this.conn = conn;
 			this.request = request;
+			logOpenConnections();
 //			try {
 //				lock.lock();
 //				if (_open_count >= MAX_CONNECTIONS)
@@ -123,6 +129,9 @@ public class MysqlConnector
 						}
 						ServerLogger.error(message.toString());
 					}
+				}
+				synchronized (openThreads) {
+					openThreads.add(Thread.currentThread());
 				}
 				//ServerLogger.debug("/////////////---------- OPEN conneciton. Name " + name + "  Total: " + _open_count + createExtra() + " ----------/////////////" + trace);
 //			} catch (InterruptedException e) {
@@ -186,6 +195,9 @@ public class MysqlConnector
 					+ createExtra() + " ----------/////////////");
 			synchronized (openTraces) {
 				openTraces.remove(name);
+			}
+			synchronized (openThreads) {
+				openThreads.remove(Thread.currentThread());
 			}
 //			synchronized (openConnections) {
 //				openConnections.remove(name);
@@ -434,14 +446,14 @@ public class MysqlConnector
 	 */
 	public static synchronized Connection getConnection() throws NamingException, SQLException {
 		//ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
-		//return new LoggedConnection(_DS.getConnection(), null);
-		return _DS.getConnection();
+		return new LoggedConnection(_DS.getConnection(), null);
+		//return _DS.getConnection();
 	}
 
 	public static synchronized Connection getConnection(HttpServletRequest request) throws NamingException, SQLException, InterruptedException {
 		//ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
-		//return new LoggedConnection(_DS.getConnection(), request);
-		return _DS.getConnection();
+		return new LoggedConnection(_DS.getConnection(), request);
+		//return _DS.getConnection();
 	}
 	/**
 	 * Marks the connection from pool as unused or closes it if it is not from pool
@@ -462,5 +474,38 @@ public class MysqlConnector
 	
 	public static void closeStatement(Statement stmt) throws SQLException {
 		if (stmt != null) stmt.close();
+	}
+
+
+	private static void logOpenConnections() {
+		if (_open_count.get() > LOG_OPEN_COUNT) {
+			StringBuilder message = new StringBuilder("\n\n\n\t\tTOO MANY CONNECTIOS\n\n\n\tThreads of these connections currently doing:\n\n\n");
+			synchronized (openThreads) {
+				for (Thread openThread : openThreads) {
+					message.append(getThreadDump(openThread));
+				}
+			}
+			ServerLogger.error(message);
+		}
+	}
+
+
+	private static StringBuilder getThreadDump(Thread thread) {
+		final StringBuilder dump = new StringBuilder();
+		final ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+		final ThreadInfo[] threadInfos = threadMXBean.getThreadInfo(threadMXBean.getAllThreadIds(), 20);
+		for (ThreadInfo threadInfo : threadInfos) {
+			dump.append('"').append(threadInfo.getThreadName()).append("\" ");
+			final Thread.State state = threadInfo.getThreadState();
+			dump.append("\n   java.lang.Thread.State: ");
+			dump.append(state);
+			final StackTraceElement[] stackTraceElements = threadInfo.getStackTrace();
+			for (final StackTraceElement stackTraceElement : stackTraceElements) {
+				dump.append("\n        at ");
+				dump.append(stackTraceElement);
+			}
+			dump.append("\n\n");
+		}
+		return dump;
 	}
 }

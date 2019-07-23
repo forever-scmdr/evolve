@@ -40,7 +40,7 @@
 		</xsl:if>
 		<div class="page-content m-t">
 			<div class="catalog-items">
-				<xsl:apply-templates select="$current_section/section"/>
+				<xsl:apply-templates select="page/current_section/section"/>
 			</div>
 		</div>
 		<xsl:if test="$seo/bottom_text">

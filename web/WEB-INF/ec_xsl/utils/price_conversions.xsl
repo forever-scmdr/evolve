@@ -123,7 +123,8 @@
         <xsl:param name="date" as="xs:dateTime?"/>
         <xsl:variable name="day" select="f:day-of-week($date)"/>
         <xsl:variable name="duration" select="24*60*60*1000"/>
-        <xsl:variable name="delta" select="if($day = 0 or $day = 6) then 10 else if ($day &lt; 5) then (5-$day + 4) else if(hours-from-dateTime($date) &lt; 18) then (5-$day + 4) else 10"/>
+        <xsl:variable name="plus" select="if($day = 6) then 11 else if($day = 0) then 10 else 12" />
+        <xsl:variable name="delta" select="if($day = 0 or $day = 6) then $plus else if ($day &lt; 5) then (5-$day + 5) else if(hours-from-dateTime($date) &lt; 18) then (5-$day + 5) else $plus"/>
         <xsl:variable name="millis" select="f:date_to_millis(xs:date($date)) + $duration * $delta"/>
         <xsl:sequence select="f:format_date(f:millis_to_date($millis))"/>
     </xsl:function>
