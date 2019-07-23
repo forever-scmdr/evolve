@@ -38,6 +38,10 @@
 		</list>
 	</include-definition>
 
+	<page name="informers" template="informers">
+		<include name="COMMON"/>
+	</page>
+
 
 	<page name="index" template="index" cacheable="false">
 		<request>
@@ -753,6 +757,7 @@
 			<var name="message"/>
 		</request>
 	</page>
+
 
 
 </site>
