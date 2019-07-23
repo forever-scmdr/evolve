@@ -49,7 +49,8 @@
 
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
 	<xsl:template name="HEADER">
-		<section class="s-pageheader{$extra-header-class}" style="{if(page/main_page/padding != '') then concat('padding-top: ', page/main_page/padding, 'px') else ''}">
+<!--		<section class="s-pageheader{$extra-header-class}" style="{if(page/main_page/padding != '') then concat('padding-top: ', page/main_page/padding, 'px') else ''}">-->
+		<section class="s-pageheader{$extra-header-class}">
 			<header class="header">
 				<div class="header__content row">
 					<div class="header__logo">
@@ -168,7 +169,7 @@
 							<xsl:for-each select="page/menu_custom">
 								<li><a href="{show_page}"><xsl:value-of select="name"/></a></li>
 							</xsl:for-each>
-							 <li><a href="{page/contacts_link}">Контакты</a></li>
+							<!--  <li><a href="{page/contacts_link}">Контакты</a></li> -->
                     </ul>
 					</div>
 					<div class="col-two md-four mob-full s-footer__archives">
@@ -476,11 +477,25 @@
 
 	<xsl:template name="VIDGET_CODE">
 		<xsl:if test="page/main_page/informer">
-			<xsl:for-each select="page/main_page/informer">
-				<div class="header__content row">
+			<div class="header__content row desctop-only">
+				<xsl:for-each select="page/main_page/informer">
 					<xsl:value-of select="code" disable-output-escaping="yes" />
+				</xsl:for-each>
+			</div>
+		</xsl:if>
+		<xsl:if test="page/main_page/informer_mobile">
+			<div class="header__content row mobile-only">
+				<xsl:value-of select="page/main_page/informer_mobile[1]/code" disable-output-escaping="yes" />
+				<div id="mobile-informers" style="display:none;">
+					<xsl:for-each select="page/main_page/informer_mobile[position() &gt; 1]">
+						<xsl:value-of select="code" disable-output-escaping="yes" />
+					</xsl:for-each>
 				</div>
-			</xsl:for-each>
+				<xsl:if test="count(page/main_page/informer_mobile) &gt; 1">
+					<a class="toggler" onclick="$('#mobile-informers, #more-info, #less-info').toggle(); $('.s-pageheader--home').css('padding-top', '370px');" id="more-info">больше информеров</a>
+					<a class="toggler" style="display: none;" onclick="$('#mobile-informers, #more-info, #less-info').toggle();$('.s-pageheader--home').css('padding-top', '');" id="less-info">меньше информеров</a>
+				</xsl:if>
+			</div>
 		</xsl:if>
 	</xsl:template>
 

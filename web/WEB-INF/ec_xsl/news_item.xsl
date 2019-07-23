@@ -138,7 +138,9 @@
 				</xsl:if>
 
 				<div class="col-full s-content__main">
-					<xsl:apply-templates select="$ni" mode="content"/>
+					<div class="content-text">
+						<xsl:apply-templates select="$ni" mode="content"/>
+					</div>
 					<xsl:if test="$ni/tag">
 						<p class="s-content__tags">
 							<span>Теги</span>
@@ -246,7 +248,10 @@
 						<div class="s-content__prev">
 							<a href="{$ni/news/prev/show_page}" rel="prev">
 								<span>Предыдущая статья</span>
+								<img src="{concat($ni/news/prev/@path, $ni/news/prev/small_pic)}" alt=""/>
 								<xsl:value-of select="$ni/news/prev/name"/>
+								
+								
 							</a>
 						</div>
 					</xsl:if>
@@ -254,7 +259,10 @@
 						<div class="s-content__next">
 							<a href="{$ni/news/next/show_page}" rel="next">
 								<span>Следующая статья</span>
+								<img src="{concat($ni/news/next/@path, $ni/news/next/small_pic)}" alt=""/>
 								<xsl:value-of select="$ni/news/next/name"/>
+								
+								
 							</a>
 						</div>
 					</xsl:if>

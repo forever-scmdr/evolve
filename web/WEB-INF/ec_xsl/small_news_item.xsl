@@ -102,8 +102,9 @@
                 </div>
                 <div class="col-full s-content__main">
                     <div id="nil">
-                        <xsl:apply-templates select="$ni" mode="content"/>
-
+                        <div class="content-text">
+                           <xsl:apply-templates select="$ni" mode="content"/>
+                        </div>
                         <xsl:if test="$ni/tag">
                             <p class="s-content__tags">
                                 <span>Теги</span>

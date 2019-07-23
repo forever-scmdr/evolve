@@ -680,17 +680,20 @@
                             if (data.indexOf('<') == 0) {
                                 var parsedData = $("<div>" + data + "</div>");
                                 //var articles = $("#add-content").find("article");
-                                var articles = parsedData.find("article");
+                                var articles = parsedData.find("article, .small-news-item, .three-col-border");
                                 var gridContainer = $("#add-content");
+                                if(gridContainer.is(".masonry")) {
+                                    gridContainer.append(articles).masonry('appended', articles);
+                                    gridContainer.masonry('reloadItems');
 
-                                gridContainer.append(articles).masonry('appended', articles);
-                                gridContainer.masonry('reloadItems');
+                                    //layout Masonry after each image loads
+                                    $(".masonry").imagesLoaded().progress(function () {
+                                        $(".masonry").masonry("layout");
+                                    });
 
-                                //layout Masonry after each image loads
-                                $(".masonry").imagesLoaded().progress( function() {
-                                    $(".masonry").masonry("layout");
-                                });
-
+                                }else{
+                                    gridContainer.append(articles);
+                                }
                                 flag = true;
                                 counter++;
                             }

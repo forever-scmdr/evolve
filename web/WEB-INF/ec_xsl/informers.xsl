@@ -4,36 +4,54 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template name="CONTENT">
-		<div class="tradingview-widget-container__widget"></div>
-		<div class="tradingview-widget-copyright">
-			<a href="https://ru.tradingview.com" rel="noopener" target="_blank">
-				<span class="blue-text">Котировки</span>
-			</a>
-			предоставлены TradingView
-		</div>
+		<section class="s-content s-content--narrow s-content--no-padding-bottom white">
+			<article class="row format-standard" style="max-width: 100%">
+				<div class="s-content__header col-full">
+					<h1 class="s-content__header-title">
+						Котировки
+					</h1>
+					<ul class="s-content__header-meta">
+						<li class="cat">
+							Источник: <a href="https://ru.tradingview.com" rel="noopener" target="_blank">TradingView</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-full s-content__main white" style="padding: 0 15px;">
+					<div class="tradingview-widget-container" id="xxx">
+						<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async="async">
+							{
+							"symbols": [
+							{
+							"title": "S&amp;P 500",
+							"proName": "OANDA:SPX500USD"
+							},
+							{
+							"title": "Shanghai Composite",
+							"proName": "INDEX:XLY0"
+							},
+							{
+							"title": "EUR/USD",
+							"proName": "FX_IDC:EURUSD"
+							},
+							{
+							"title": "BTC/USD",
+							"proName": "BITSTAMP:BTCUSD"
+							},
+							{
+							"title": "ETH/USD",
+							"proName": "BITSTAMP:ETHUSD"
+							}
+							],
+							"colorTheme": "light",
+							"isTransparent": false,
+							"locale": "ru"
+							}
+						</script>
+					</div>
+				</div>
+			</article>
+			<div style="height: 3rem;"></div>
+		</section>
 	</xsl:template>
-
-
-	<xsl:template name="EXTRA_SCRIPTS">
-		<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js"
-				async="async">
-			{
-			"symbols": [
-			{
-			"title": "S&P 500",
-			"proName": "OANDA:SPX500USD"
-			},
-			{
-			"title": "ETH/USD",
-			"proName": "BITSTAMP:ETHUSD"
-			}
-			],
-			"colorTheme": "light",
-			"isTransparent": false,
-			"locale": "ru"
-			}
-		</script>
-	</xsl:template>
-
 
 </xsl:stylesheet>

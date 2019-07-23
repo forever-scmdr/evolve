@@ -14,6 +14,7 @@
 	<xsl:variable name="prev" select="$pagination/page[number(/page/variables/p)-1]"/>
 	<xsl:variable name="next" select="$pagination/page[number(/page/variables/p)+1]"/>
 
+
 	<xsl:template name="CONTENT">
 		<section class="s-content f2">
 			<div class="row narrow">
@@ -23,57 +24,10 @@
 					</h1>
 					<xsl:if test="page/variables/tag">
 						<p class="s-content__tags" style="margin-top:0;">
-								<!-- <span>Теги</span> -->
-								<!-- <span class="s-content__tag-list" > -->
-									<a href="news" class="all" >
-										Все новости
-									</a>
-								<!-- 	<xsl:for-each select="page/tag[position() &lt; 7]">
-										<a href="{show_tag}">
-											<xsl:value-of select="tag"/>
-										</a>
-									</xsl:for-each>
-									<xsl:if test="page/tag[position() &lt; 7]">
-										<a title="еще" onclick="$('#all-tags-container').toggle()">...</a>	
-									</xsl:if> -->
-								<!-- </span> -->
-							</p>
-							<!-- <div id="all-tags-container" style="display:none;">
-								<p class="s-content__tags" style="margin-top:-26px;text-align: left;">
-									<span class="s-content__tag-list" >
-										<xsl:for-each select="page/tag[position() &gt; 7]">
-											<a href="{show_tag}">
-												<xsl:value-of select="tag"/>
-											</a>
-										</xsl:for-each>
-									</span>
-								</p>
-							</div> -->
-						<!-- <div class="tags">
-							<span class="entry__category gray">
-								<a href="{page/news_link}">
-									Все
-								</a>
-							</span>
-							<xsl:for-each select="page/tag">
-								<xsl:variable name="class">
-									<xsl:choose>
-										<xsl:when test="tag = 'Бизнес'">dark-blue</xsl:when>
-										<xsl:when test="tag = 'Политика'">red</xsl:when>
-										<xsl:when test="tag = 'Технологии'">yellow</xsl:when>
-										<xsl:when test="tag = 'Инфографика'">orange</xsl:when>
-										<xsl:when test="tag = 'Менеджмент'">blue</xsl:when>
-										<xsl:otherwise>gray</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-
-								<span class="entry__category {$class}">
-									<a href="{show_tag}">
-										<xsl:value-of select="tag"/>
-									</a>
-								</span>
-							</xsl:for-each>
-						</div> -->
+							<a href="news" class="all" >
+								Все новости
+							</a>
+						</p>
 					</xsl:if>
 					<div class="lead">
 						<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
@@ -82,7 +36,7 @@
 			</div>
 
 			<div class="row masonry-wrap">
-				<div class="">
+				<div id="add-content">
 					<xsl:for-each select="page/small_news/small_news_item">
 						<div class="col-four tab-full small-news-item" data-aos="fade-up">
 						<!-- <div class="col-four tab-full small-news-item masonry__brick" data-aos="fade-up"> -->
@@ -94,7 +48,7 @@
 									<xsl:value-of select="name"/>
 								</a>
 							</p>
-							<xsl:if test="tag">
+							<!-- <xsl:if test="tag">
 							<p class="tags botmar">
 								Теги: <xsl:for-each select="tag">
 									<xsl:if test="position() &gt; 1">
@@ -105,7 +59,7 @@
 									</a>
 								</xsl:for-each>
 							</p>
-							</xsl:if>
+							</xsl:if> -->
 						</div>
 
 						<xsl:variable name="pos" select="position()"/>
@@ -121,31 +75,35 @@
 			</div>
 
 			<xsl:if test="$pagination">
-				<div class="row">
-					<div class="col-full">
-						<nav class="pgn">
-							<ul>
-								<xsl:if test="$prev">
-									<li><a class="pgn__prev" href="{$prev/link}">Prev</a></li>
-								</xsl:if>
-								<xsl:for-each select="$pagination/page">
-									<xsl:if test="not(@current = 'current')">
-										<li><a class="pgn__num" href="{link}"><xsl:value-of select="number"/></a></li>
-									</xsl:if>
-									<xsl:if test="@current = 'current'">
-										<li><span class="pgn__num current"><xsl:value-of select="number"/></span></li>
-									</xsl:if>
-								</xsl:for-each>
-								<xsl:if test="$next">
-								<li><a class="pgn__next" href="{$next/link}">Next</a></li>
-								</xsl:if>
-							</ul>
-						</nav>
-					</div>
-				</div>
+				<script>
+					window.pagination = <xsl:value-of select="concat('[',string-join($pagination/page[position() &gt; 1]/concat($quot, //page_link,'&amp;page=', number, $quot), ','),']')" />;
+				</script>
+<!--				<div class="row">-->
+<!--					<div class="col-full">-->
+<!--						<nav class="pgn">-->
+<!--							<ul>-->
+<!--								<xsl:if test="$prev">-->
+<!--									<li><a class="pgn__prev" href="{$prev/link}">Prev</a></li>-->
+<!--								</xsl:if>-->
+<!--								<xsl:for-each select="$pagination/page">-->
+<!--									<xsl:if test="not(@current = 'current')">-->
+<!--										<li><a class="pgn__num" href="{link}"><xsl:value-of select="number"/></a></li>-->
+<!--									</xsl:if>-->
+<!--									<xsl:if test="@current = 'current'">-->
+<!--										<li><span class="pgn__num current"><xsl:value-of select="number"/></span></li>-->
+<!--									</xsl:if>-->
+<!--								</xsl:for-each>-->
+<!--								<xsl:if test="$next">-->
+<!--								<li><a class="pgn__next" href="{$next/link}">Next</a></li>-->
+<!--								</xsl:if>-->
+<!--							</ul>-->
+<!--						</nav>-->
+<!--					</div>-->
+<!--				</div>-->
 			</xsl:if>
 		</section>
 	</xsl:template>
+
 
 
 

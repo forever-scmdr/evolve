@@ -21,7 +21,9 @@
 					</h1>
 				</div>
 				<div class="col-full s-content__main">
-					<xsl:apply-templates select="$p" mode="content"/>
+					<div class="content-text">
+						<xsl:apply-templates select="$p" mode="content"/>
+					</div>
 					<div class="ya-share2" data-services="vkontakte,facebook,twitter" data-limit="3"></div>
 					<div style="height: 3rem;"></div>
 				</div>

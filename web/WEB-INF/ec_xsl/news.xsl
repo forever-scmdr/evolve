@@ -32,31 +32,8 @@
 				</div>
 			</div>
 			<xsl:if test="$pagination">
-				<!--<div class="row">-->
-					<!--<div class="col-full">-->
-						<!--<nav class="pgn">-->
-							<!--<ul>-->
-								<!--<xsl:if test="$prev">-->
-									<!--<li><a class="pgn__prev" href="{$prev/link}">Prev</a></li>-->
-								<!--</xsl:if>-->
-								<!--<xsl:for-each select="$pagination/page">-->
-									<!--<xsl:if test="not(@current = 'current')">-->
-										<!--<li><a class="pgn__num" href="{link}"><xsl:value-of select="number"/></a></li>-->
-									<!--</xsl:if>-->
-									<!--<xsl:if test="@current = 'current'">-->
-										<!--<li><span class="pgn__num current"><xsl:value-of select="number"/></span></li>-->
-									<!--</xsl:if>-->
-								<!--</xsl:for-each>-->
-								<!--<xsl:if test="$next">-->
-								<!--<li><a class="pgn__next" href="{$next/link}">Next</a></li>-->
-								<!--</xsl:if>-->
-							<!--</ul>-->
-						<!--</nav>-->
-					<!--</div>-->
-				<!--</div>-->
 				<script>
 					window.pagination = <xsl:value-of select="concat('[',string-join($pagination/page[position() &gt; 1]/concat($quote, 'news_page_ajax/',$sel,'/?p=', number, $quote), ','),']')" />;
-					
 				</script>
 			</xsl:if>
 		</section>
