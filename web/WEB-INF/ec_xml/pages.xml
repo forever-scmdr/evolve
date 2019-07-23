@@ -1386,6 +1386,7 @@
 		<command class="extra.UpdateCurrencyRates"/>
 	</page>
 
+
 	<page name="get_ferrite" template="integration">
 		<request>
 			<var name="action"/>
@@ -1395,6 +1396,18 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
+
+
+	<page name="get_compel" template="integration">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportCompelRu">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 
 	<page name="delete_codes" template="success">
 		<request>

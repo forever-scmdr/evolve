@@ -111,7 +111,7 @@ public class ImportCompelRu extends IntegrateBase implements ItemNames {
 		// Разбор прайс-листа
 		DBFReader reader = null;
 		try {
-			Charset stringCharset = Charset.forName("Cp1251");
+			Charset stringCharset = Charset.forName("Cp866");
 			reader = new DBFReader(new FileInputStream(compelFile), stringCharset);
 
 			DBFRow row;
@@ -123,7 +123,8 @@ public class ImportCompelRu extends IntegrateBase implements ItemNames {
 						prod = Product.get(Item.newChildItem(productType, section));
 						prod.set_code(code);
 					}
-					prod.set_name(row.getString(NAME_HEADER));
+					String name = row.getString(NAME_HEADER);
+					prod.set_name(name);
 					prod.set_available(defaultDelay);
 					prod.setUI_qty(row.getString(QTY_HEADER));
 					prod.setUI_min_qty(row.getString(MIN_QTY_HEADER));
