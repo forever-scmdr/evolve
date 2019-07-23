@@ -2,6 +2,7 @@ package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
+import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CopyItemDBUnit;
@@ -355,8 +356,12 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							} else if (MAIN_PIC_PARAM.equals(paramName)) {
 								Object mainPic = product.getValue(MAIN_PIC_PARAM, "");
 
-								if (mainPic.toString().equals(cellValue) && StringUtils.isNotBlank(mainPic.toString()))
+								if (Strings.getFileName(mainPic.toString()).equals(cellValue) && product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).isFile())
 									continue;
+
+								if(!product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).isFile()){
+									product.clearValue(MAIN_PIC_PARAM);
+								}
 
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR && withPictures == varValues.SEARCH_BY_CODE) {
 									File mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
@@ -384,6 +389,14 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 												product.clearValue("small_pic");
 											}
 											break;
+										case DOWNLOAD: {
+											if (StringUtils.isNotBlank(cellValue)) {
+												try {
+													URL url = new URL(cellValue);
+													product.setValue(MAIN_PIC_PARAM, url);
+												} catch (Exception e) {}
+											}
+										} break;
 										default:
 											break;
 									}
