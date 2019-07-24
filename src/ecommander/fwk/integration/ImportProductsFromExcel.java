@@ -361,6 +361,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 								if(!product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).isFile()){
 									product.clearValue(MAIN_PIC_PARAM);
+									mainPic = "";
 								}
 
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR && withPictures == varValues.SEARCH_BY_CODE) {
