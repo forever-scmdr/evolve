@@ -253,7 +253,8 @@
 				<xsl:text disable-output-escaping="yes">
 --&gt;
 				</xsl:text>
-				<base href="{$main_host}"/>
+<!--				<base href="{$main_host}"/>-->
+				<base href="{page/base}"/>
 				<!--- basic page needs -->
 				<meta charset="utf-8"/>
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
