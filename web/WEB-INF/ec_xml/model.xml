@@ -134,9 +134,9 @@
 		<parameter name="pro_name" type="string" caption="Котировка"/>
 	</item>
 
-	<item name="informer_wrap" caption="Тикер">
+	<item name="informer_wrap" key="name" caption="Тикер" ag-id="32" ag-hash="1228138771">
 		<parameter name="name" type="string" caption="Название"/>
-		<child item="informer"/>
+		<child item="informer" inline="true"/>
 	</item>
 
 	<item name="featured" caption="слайд" key="name" ag-id="17" ag-hash="-290659282">
