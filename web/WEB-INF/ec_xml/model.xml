@@ -91,7 +91,7 @@
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
-	<item name="news_item" key="name date" caption="Статья" key-unique="true" default-page="news_item" super="searchable" ag-id="14" ag-hash="300774655">
+	<item name="news_item" key="name" caption="Статья" key-unique="true" default-page="news_item" super="searchable" ag-id="14" ag-hash="300774655">
 		<child item="seo" single="true"/>
 		<parameter name="date" type="date" caption="Дата публикации" description="UTC"/>
 		<parameter name="source" type="string" caption="Источник"/>
@@ -131,7 +131,7 @@
 
 	<item name="informer" caption="Информер" key="name" ag-id="30" ag-hash="178836950">
 		<parameter name="name" type="string" caption="Название"/>
-		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
+		<parameter name="pro_name" type="string" caption="Котировка"/>
 	</item>
 
 	<item name="featured" caption="слайд" key="name" ag-id="17" ag-hash="-290659282">
@@ -179,7 +179,7 @@
 		<child item="small_news_item"/>
 	</item>
 
-	<item name="small_news_item" caption="Новость" key="name date" key-unique="true" super="searchable"  default-page="small_news_item" ag-id="28" ag-hash="-1321162809">
+	<item name="small_news_item" caption="Новость" key="name" key-unique="true" super="searchable"  default-page="small_news_item" ag-id="28" ag-hash="-1321162809">
 		<child item="seo" single="true"/>
 		<parameter name="date" type="date" caption="Дата публикации" description="UTC"/>
 		<parameter name="source" type="string" caption="Источник"/>

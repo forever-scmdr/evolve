@@ -38,14 +38,10 @@
 		</list>
 	</include-definition>
 
-	<page name="informers" template="informers">
-		<include name="COMMON"/>
-	</page>
-
 
 	<page name="index" template="index" cacheable="false">
 		<request>
-			<var name="limit" value="9"/>
+			<var name="limit" value="8"/>
 			<var name="page" value="1"/>
 		</request>
 		<single item="main_page" id="main">
@@ -116,7 +112,7 @@
 		<list item="small_news_item" id="sni">
 			<filter>
 				<limit>
-					<var value="5"/>
+					<var value="3"/>
 				</limit>
 				<sorting direction="DESC">
 					<var value="date"/>
@@ -138,7 +134,7 @@
 
 	<page name="news_ajax" template="news_ajax">
 		<request>
-			<var name="limit" value="14"/>
+			<var name="limit" value="9"/>
 			<var name="page" value="1"/>
 		</request>
 		<single item="news_wrap">
@@ -330,7 +326,7 @@
 
 	<page name="all_news_ajax" template="news_page_ajax">
 		<request>
-			<var name="page" value="2"/>
+			<var name="page" value="1"/>
 			<var name="limit" value="24"/>
 			<var name="tag"/>
 			<var name="min_date"/>
@@ -494,10 +490,10 @@
 			</link>
 		</list>
 		<link name="page_link" target="small_news_ajax">
-			<var name="limit" value="24"/>
-			<var name="tag"/>
-			<var name="min_date"/>
-			<var name="max_date"/>
+			<var name="limit" var="limit"/>
+			<var name="tag" var="tag"/>
+			<var name="min_date" var="min_date"/>
+			<var name="max_date" var="max_date"/>
 		</link>
 		<include name="COMMON"/>
 	</page>
@@ -592,7 +588,7 @@
 			<var name="p" style="translit"/>
 		</request>
 		<single item="custom_page" var="p">
-			<list item="page_part">
+			<list item="page_part" />
 		</single>
 		<include name="COMMON"/>
 	</page>
@@ -757,7 +753,6 @@
 			<var name="message"/>
 		</request>
 	</page>
-
 
 
 </site>
