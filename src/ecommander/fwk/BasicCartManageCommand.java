@@ -496,12 +496,12 @@ public abstract class BasicCartManageCommand extends Command {
 				// Первоначальная сумма
 				BigDecimal price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
 				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
-				if (maxQuantity <= 0) {
-					productSum = new BigDecimal(0);
-					zeroQuantity += quantity;
-				} else {
+//				if (maxQuantity <= 0) {
+//					productSum = new BigDecimal(0);
+//					zeroQuantity += quantity;
+//				} else {
 					regularQuantity += quantity;
-				}
+//				}
 				bought.setValue(PRICE_PARAM, price);
 				bought.setValue(SUM_PARAM, productSum);
 				sum = sum.add(productSum);

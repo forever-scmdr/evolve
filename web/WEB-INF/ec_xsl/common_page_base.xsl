@@ -822,8 +822,8 @@
 				<xsl:text disable-output-escaping="yes">
 --&gt;
 				</xsl:text>
-				<!--<base href="https://ttd.by"/> -->
-				<base href="{$main_host}"/>
+				<base href="{page/base}"/>
+<!--				<base href="{$main_host}"/>-->
 				<meta charset="utf-8"/>
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
