@@ -126,12 +126,17 @@
 		<parameter name="padding" type="integer" caption="высота шапки сайта"/>
 		<child item="seo" single="true"/>
 		<child item="featured" multiple="true"/>
-		<child item="informer" multiple="true"/>
+		<child item="informer_wrap" multiple="true"/>
 	</item>
 
-	<item name="informer" caption="Информер" key="name" ag-id="30" ag-hash="178836950">
+	<item name="informer" caption="Котировка" key="name" ag-id="30" ag-hash="178836950">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="pro_name" type="string" caption="Котировка"/>
+	</item>
+
+	<item name="informer_wrap" caption="Тикер">
+		<parameter name="name" type="string" caption="Название"/>
+		<child item="informer"/>
 	</item>
 
 	<item name="featured" caption="слайд" key="name" ag-id="17" ag-hash="-290659282">
