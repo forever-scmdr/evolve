@@ -4499,3 +4499,13 @@ footer h4::after {
 	display: block;
 	margin: 10px 0;
 }
+.informers-container{background: #fff; text-align: left;}
+.informers-container a{
+	display: inline-block;
+	padding: 1rem 2.5rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 0.5rem solid #fff;
+}
+.informers-container a.active{
+	border-bottom-color: #ccc;
+}

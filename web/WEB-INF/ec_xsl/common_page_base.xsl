@@ -229,11 +229,10 @@
 	<xsl:template name="EXTRA_HEADER_CONTENT"/>
 	<xsl:template name="EXTRA_SCRIPTS"/>
 	<xsl:template name="COMMON_SCRIPTS">
-		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/plugins.js"></script>
 		<!--<script src="https://maps.googleapis.com/maps/api/js"></script>-->
 		<script src="js/main.js"></script>
-		<script type="text/javascript" src="admin/ajax/ajax.js"></script>
+
 		<script type="text/javascript" src="admin/js/jquery.form.min.js"></script>
 	</xsl:template>
 
@@ -274,6 +273,8 @@
 				<xsl:call-template name="TWITTER_MARKUP"/>
 				 <xsl:call-template name="FACEBOOK_MARKUP"/>
 				<!-- SCRIPTS -->
+				<script src="js/jquery-3.2.1.min.js"></script>
+				<script type="text/javascript" src="admin/ajax/ajax.js"></script>
 				<script src="js/modernizr.js"></script>
 				<script src="js/pace.min.js"></script>
 				<xsl:for-each select="$head-end-modules">
@@ -477,25 +478,28 @@
 	<xsl:template name="FACEBOOK_MARKUP"/>
 
 	<xsl:template name="VIDGET_CODE">
-		<xsl:if test="page/main_page/informer">
-			<div class="header__content row desctop-only">
-				<xsl:for-each select="page/main_page/informer">
-					<xsl:value-of select="code" disable-output-escaping="yes" />
-				</xsl:for-each>
-			</div>
-		</xsl:if>
-		<xsl:if test="page/main_page/informer_mobile">
-			<div class="header__content row mobile-only">
-				<xsl:value-of select="page/main_page/informer_mobile[1]/code" disable-output-escaping="yes" />
-				<div id="mobile-informers" style="display:none;">
-					<xsl:for-each select="page/main_page/informer_mobile[position() &gt; 1]">
-						<xsl:value-of select="code" disable-output-escaping="yes" />
-					</xsl:for-each>
+		<xsl:variable name="inf" select="page/main_page/informer_wrap"/>
+		<xsl:if test="$inf">
+			<div class="header__content row">
+				<div class="informers-container">
+					<div class="informer-menu">
+						<xsl:for-each select="$inf">
+							<a href="{informers_ajax_link}" onclick="insertInformer(this)" class="informer-link{if(position() = 1) then ' active' else ''}">
+								<xsl:value-of select="name"/>
+							</a>
+						</xsl:for-each>
+					</div>
+					<div id="informers">
+						<script type="text/javascript">
+							$(document).ready(function(){
+								var tickersPerRequest = Math.floor($(".row").width()/229);
+								var link = $(".informer-link:eq(0)").attr("href");
+								link = link + "&amp;limit=" + tickersPerRequest + "&amp;tickers_per_request=" + tickersPerRequest;
+								insertAjax(link,'informers');
+							});
+						</script>
+					</div>
 				</div>
-				<xsl:if test="count(page/main_page/informer_mobile) &gt; 1">
-					<a class="toggler" onclick="$('#mobile-informers, #more-info, #less-info').toggle(); $('.s-pageheader--home').css('padding-top', '370px');" id="more-info">больше информеров</a>
-					<a class="toggler" style="display: none;" onclick="$('#mobile-informers, #more-info, #less-info').toggle();$('.s-pageheader--home').css('padding-top', '');" id="less-info">меньше информеров</a>
-				</xsl:if>
 			</div>
 		</xsl:if>
 	</xsl:template>

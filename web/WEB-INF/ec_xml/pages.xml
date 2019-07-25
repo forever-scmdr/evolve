@@ -39,6 +39,27 @@
 	</include-definition>
 
 
+	<page name="informers_ajax" template="informers_ajax">
+		<request>
+			<var name="ticker"/>
+			<var name="limit" value="5"/>
+			<var name="tickers_per_request" value="5"/>
+			<var name="page" value="1"/>
+		</request>
+		<single item="informer_wrap" var="ticker">
+			<list item="informer">
+				<filter>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var name="page" var="page"/>
+					</pages>
+				</filter>
+			</list>
+		</single>
+	</page>
+
 	<page name="index" template="index" cacheable="false">
 		<request>
 			<var name="limit" value="8"/>
@@ -53,7 +74,11 @@
 					</limit>
 				</filter>
 			</list>
-			<list item="informer"/>
+			<list item="informer_wrap" id="inf">
+				<link name="informers_ajax_link" target="informers_ajax">
+					<var name="ticker" ref="inf"/>
+				</link>
+			</list>
 		</single>
 		<single item="news_wrap">
 			<list item="news_item" id="ni" transit="true">
