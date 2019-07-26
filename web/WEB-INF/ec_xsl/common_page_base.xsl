@@ -484,21 +484,40 @@
 				<div class="informers-container">
 					<div class="informer-menu">
 						<xsl:for-each select="$inf">
-							<a href="{informers_ajax_link}" onclick="insertInformer(this)" class="informer-link{if(position() = 1) then ' active' else ''}">
+							<a href="{informers_ajax_link}" class="informer-link informer-ajax-caller{if(position() = 1) then ' active' else ''}">
 								<xsl:value-of select="name"/>
 							</a>
 						</xsl:for-each>
 					</div>
 					<div id="informers">
-						<script type="text/javascript">
-							$(document).ready(function(){
-								var tickersPerRequest = Math.floor($(".row").width()/229);
-								var link = $(".informer-link:eq(0)").attr("href");
-								link = link + "&amp;limit=" + tickersPerRequest + "&amp;tickers_per_request=" + tickersPerRequest;
-								insertAjax(link,'informers');
-							});
-						</script>
+						<div style="height: 72px;">Loading...</div>
 					</div>
+					<script type="text/javascript">
+						$(document).ready(function(){
+						var tickersPerRequest = Math.floor($(".row").width()/229);
+						var link = $(".informer-link:eq(0)").attr("href");
+						link = link + "&amp;limit=" + tickersPerRequest + "&amp;tickers_per_request=" + tickersPerRequest;
+						insertAjax(link,'informers', function(){
+								setTimeout(function(){$(".s-pageheader--home").css({
+								"padding-top" : $(".header").height() + 45
+								})}, 1000);
+							});
+						});
+						$(document).on("click", ".informer-ajax-caller", function(e){
+							e.preventDefault();
+							el = $(this);
+							$(".informer-link").removeClass("active");
+							el.addClass("active");
+							var tickersPerRequest = Math.floor($(".row").width()/229);
+							var link = el.attr("href");
+							link = link + "&amp;tickers_per_request=" + tickersPerRequest;
+							insertAjax(link,'informers', function(){
+								setTimeout(function(){$(".s-pageheader--home").css({
+									"padding-top" : $(".header").height() + 45
+								})}, 1000);
+							});
+						});
+					</script>
 				</div>
 			</div>
 		</xsl:if>

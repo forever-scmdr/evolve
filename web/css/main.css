@@ -1804,7 +1804,7 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 
 .s-pageheader--home {
 	min-height: 480px;
-	padding-top: 250px;
+	padding-top: 340px;
 }
 
 .header {
@@ -4500,11 +4500,18 @@ footer h4::after {
 	margin: 10px 0;
 }
 .informers-container{background: #fff; text-align: left;}
-.informers-container a{
+.informer-menu a{
 	display: inline-block;
 	padding: 1rem 2.5rem;
 	padding-bottom: 0.5rem;
 	border-bottom: 0.5rem solid #fff;
+	font-family: Trebuchet MS, roboto, ubuntu, sans-serif;
+}
+.informer-pagination{
+	font-size: 1.5rem;
+	padding: 0 2.5rem;
+	color: #4a4a4a;
+	font-family:Trebuchet MS, roboto, ubuntu, sans-serif;
 }
 .informers-container a.active{
 	border-bottom-color: #ccc;

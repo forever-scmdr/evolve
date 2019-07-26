@@ -58,6 +58,9 @@
 				</filter>
 			</list>
 		</single>
+		<link name="base_link" copy-page-vars="no" target="informers_ajax">
+			<var name="ticker" var="ticker"/>
+		</link>
 	</page>
 
 	<page name="index" template="index" cacheable="false">

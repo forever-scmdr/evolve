@@ -23,8 +23,36 @@
 					</xsl:if>
 				</xsl:for-each>
 			<xsl:call-template name="V_END" />
+			<xsl:if test="//informer_pages and number(page/variables/limit) &gt; 4">
+				<div class="informer-pagination">
+					<span>Страница: </span>
+					<xsl:apply-templates select="//informer_pages/page"/>
+				</div>
+				<script type="text/javascript">
+					function nextPage(link){
+						insertAjax(link,'informers', function(){
+							setTimeout(function(){$(".s-pageheader--home").css({
+								"padding-top" : $(".header").height() + 45
+							})}, 1000);
+						});
+					}
+				</script>
+			</xsl:if>
+			<xsl:if test="//informer_pages and number(page/variables/limit) &lt; 5">
+				<a href="{//base_link}" class="informer-ajax-caller">Подробнее</a>
+			</xsl:if>
+
+
+
 		</div>
 	</xsl:template>
+
+	<xsl:template match="page">
+		<a onclick="nextPage({concat('&#34;', link, '&#34;','')})" class="if(@current = 'current') then 'active' else ''">
+			<xsl:value-of select="number"/>
+		</a>
+	</xsl:template>
+
 
 	<xsl:template name="V_START">
 		<xsl:text disable-output-escaping="yes">
