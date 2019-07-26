@@ -92,7 +92,7 @@
 			<input type="text" class="form-control" name="{$inp/bank_code/@input}" value="{$inp/bank_code}"/>
 		</div>
 		<div class="form-group">
-			<label>УНП:</label>
+			<label>УНП *:</label>
 			<input type="text" class="form-control" name="{$inp/unp/@input}" value="{$inp/unp}"/>
 		</div>
 		<div class="form-group">
