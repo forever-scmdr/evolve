@@ -27,60 +27,60 @@
 					<p><xsl:value-of select="$message"/></p>
 				</div>
 			</xsl:if>
-			<ul class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="{'active'[not($is_jur)]}"><a href="#tab_phys" role="tab" data-toggle="tab">Физическое лицо</a></li>
-				<li role="presentation" class="{'active'[$is_jur]}"><a href="#tab_jur" role="tab" data-toggle="tab">Юридическое лицо</a></li>
-			</ul>
+<!--			<ul class="nav nav-tabs" role="tablist">-->
+<!--				<li role="presentation" class="{'active'[not($is_jur)]}"><a href="#tab_phys" role="tab" data-toggle="tab">Физическое лицо</a></li>-->
+<!--				<li role="presentation" class="{'active'[$is_jur]}"><a href="#tab_jur" role="tab" data-toggle="tab">Юридическое лицо</a></li>-->
+<!--			</ul>-->
 			<div class="tab-content">
 
 
-				<div role="tabpanel" class="tab-pane{' active'[not($is_jur)]}" id="tab_phys">
-					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заявки.</p>
-					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
-						<xsl:variable name="inp" select="page/user_phys/input"/>
-						<div class="form-group">
-							<label>Ваше имя *:</label>
-							<input type="text" class="form-control" name="{$inp/name/@input}" value="{if($inp/name != '') then $inp/name else $phys_reg/name}" error="{$inp/name/@validation-error}"/>
-						</div>
-						<div class="form-group">
-							<label for="">Адрес:</label>
-							<input type="text" class="form-control" name="{$inp/address/@input}" value="{if($inp/address != '') then $inp/address else $phys_reg/address}" error="{$inp/address/@validation-error}"/>
-						</div>
-						<xsl:if test="//page/common/delivery">
-							<div class="form-group">
-								<label>Способ доставки <a href="oplata_i_dostavka">Подробнее об условиях доставки</a></label>
-								<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">
-									<xsl:for-each select="//page/common/delivery/option">
-										<option><xsl:value-of select="." /></option>
-									</xsl:for-each>
-								</select>
-							</div>
-						</xsl:if>
-						<div class="form-group">
-							<label>Телефон *:</label>
-							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{if($inp/phone != '') then $inp/phone else $phys_reg/phone}" error="{$inp/phone/@validation-error}"/>
-						</div>
-						<div class="form-group">
-							<label>Электронная почта:</label>
-							<input type="text" class="form-control" name="{$inp/email/@input}" value="{if($inp/email != '') then $inp/email else $phys_reg/email}" error="{$inp/email/@validation-error}"/>
-						</div>
-						<div class="form-group">
-							<label>Комментарий:</label>
-							<textarea class="form-control" rows="3" name="{$inp/comment/@input}"><xsl:value-of select="$inp/comment"/></textarea>
-						</div>
-						<!--
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value=""/> зарегистрироваться на сайте
-							</label>
-						</div>
-						-->
-						<input type="submit" class="button" value="Отправить заявку"/>
-					</form>
-				</div>
+<!--				<div role="tabpanel" class="tab-pane{' active'[not($is_jur)]}" id="tab_phys">-->
+<!--					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заявки.</p>-->
+<!--					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">-->
+<!--						<xsl:variable name="inp" select="page/user_phys/input"/>-->
+<!--						<div class="form-group">-->
+<!--							<label>Ваше имя *:</label>-->
+<!--							<input type="text" class="form-control" name="{$inp/name/@input}" value="{if($inp/name != '') then $inp/name else $phys_reg/name}" error="{$inp/name/@validation-error}"/>-->
+<!--						</div>-->
+<!--						<div class="form-group">-->
+<!--							<label for="">Адрес:</label>-->
+<!--							<input type="text" class="form-control" name="{$inp/address/@input}" value="{if($inp/address != '') then $inp/address else $phys_reg/address}" error="{$inp/address/@validation-error}"/>-->
+<!--						</div>-->
+<!--						<xsl:if test="//page/common/delivery">-->
+<!--							<div class="form-group">-->
+<!--								<label>Способ доставки <a href="oplata_i_dostavka">Подробнее об условиях доставки</a></label>-->
+<!--								<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">-->
+<!--									<xsl:for-each select="//page/common/delivery/option">-->
+<!--										<option><xsl:value-of select="." /></option>-->
+<!--									</xsl:for-each>-->
+<!--								</select>-->
+<!--							</div>-->
+<!--						</xsl:if>-->
+<!--						<div class="form-group">-->
+<!--							<label>Телефон *:</label>-->
+<!--							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{if($inp/phone != '') then $inp/phone else $phys_reg/phone}" error="{$inp/phone/@validation-error}"/>-->
+<!--						</div>-->
+<!--						<div class="form-group">-->
+<!--							<label>Электронная почта:</label>-->
+<!--							<input type="text" class="form-control" name="{$inp/email/@input}" value="{if($inp/email != '') then $inp/email else $phys_reg/email}" error="{$inp/email/@validation-error}"/>-->
+<!--						</div>-->
+<!--						<div class="form-group">-->
+<!--							<label>Комментарий:</label>-->
+<!--							<textarea class="form-control" rows="3" name="{$inp/comment/@input}"><xsl:value-of select="$inp/comment"/></textarea>-->
+<!--						</div>-->
+<!--						&lt;!&ndash;-->
+<!--						<div class="checkbox">-->
+<!--							<label>-->
+<!--								<input type="checkbox" value=""/> зарегистрироваться на сайте-->
+<!--							</label>-->
+<!--						</div>-->
+<!--						&ndash;&gt;-->
+<!--						<input type="submit" class="button" value="Отправить заявку"/>-->
+<!--					</form>-->
+<!--				</div>-->
 
 
-				<div role="tabpanel" class="tab-pane{' active'[$is_jur]}" id="tab_jur">
+				<div role="tabpanel" class="tab-pane active" id="tab_jur">
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заявки.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
 						<xsl:variable name="inp" select="page/user_jur/input"/>
