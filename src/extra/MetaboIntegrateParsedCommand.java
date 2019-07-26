@@ -15,7 +15,7 @@ import org.jsoup.select.Elements;
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 /**
  * Created by E on 3/5/2018.
@@ -167,7 +167,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		if (spareParts.size() > 0) {
 			extraXml += spareParts.first().outerHtml();
 		}
-		ArrayList<Path> gallery = new ArrayList<>();
+		LinkedHashSet<Path> gallery = new LinkedHashSet<>();
 		if(lookForPics.length > 0 && lookForPics[0]) {
 			Elements pics = productEl.getElementsByTag(GALLERY).first().getElementsByTag(PIC);
 			for (Element pic : pics) {
@@ -176,7 +176,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 					gallery.add(file);
 			}
 		}
-		ArrayList<String> assocCodes = new ArrayList<>();
+		LinkedHashSet<String> assocCodes = new LinkedHashSet<>();
 		Elements codeEls = productEl.getElementsByTag(ASSOC).first().getElementsByTag(CODE);
 		for (Element codeEl : codeEls) {
 			assocCodes.add(codeEl.ownText());
@@ -209,7 +209,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 				product.setValue(GALLERY, path.toFile());
 			}
 			if (gallery.size() > 0) {
-				Path firstPic = gallery.get(0);
+				Path firstPic = gallery.iterator().next();
 				Path newMainPic = firstPic.resolveSibling("main_" + firstPic.getFileName());
 				ByteArrayOutputStream bos = ResizeImagesFactory.resize(firstPic.toFile(), 0, 400);
 				Files.write(newMainPic, bos.toByteArray());
