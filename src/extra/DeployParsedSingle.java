@@ -75,7 +75,6 @@ public class DeployParsedSingle extends IntegrateBase {
 		Item backCatalog = ItemUtils.ensureSingleRootItem("back_catalog", getInitiator(), USER_GROUP_ID, USER_ID);
 		HashMap<String, Item> backSections = new HashMap<>();
 		LinkedHashMap<Long, Item> sections = getLoadedItems("sec");
-		LuceneIndexMapper.getSingleton().startUpdate();
 		for (Item sec : sections.values()) {
 			info.pushLog("Обработка раздела {}", sec.getStringValue(NAME));
 			LinkedHashMap<Long, Item> secPIs = getLoadedChildItems("pi", sec.getId());
@@ -116,7 +115,6 @@ public class DeployParsedSingle extends IntegrateBase {
 				info.setProcessed(++processed);
 			}
 		}
-		LuceneIndexMapper.getSingleton().finishUpdate();
 	}
 
 	/**

@@ -313,7 +313,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 			ResultSet rs = stmt.executeQuery("SELECT " + DBConstants.ItemTbl.I_ID + " FROM " + DBConstants.ItemTbl.ITEM_TBL
 					+ " WHERE " + DBConstants.ItemTbl.I_TYPE_ID + " > 0");
 			DelayedTransaction tr = new DelayedTransaction(getCurrentAdmin());
-			LuceneIndexMapper.getSingleton().startUpdate();
 			while (rs.next()) {
 				Item item = AdminLoader.loadItem(rs.getLong(1), getCurrentAdmin());
 				if (item == null)
@@ -328,8 +327,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 			LuceneIndexMapper.getSingleton().commit();
 		} catch (Exception e) {
 			ServerLogger.error(e);
-		} finally {
-			LuceneIndexMapper.getSingleton().finishUpdate();
 		}
 		//AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
 		//page.addMessage("Все кеши очищены успешно", false);
@@ -521,10 +518,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		}
 		transaction.execute();
 		// Очистить корзину
-		LuceneIndexMapper.getSingleton().startUpdate();
 		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
-		// Удалить айтем из индекса Lucene
-		LuceneIndexMapper.getSingleton().finishUpdate();
 		// Очистить кеш страниц
 		PageController.clearCache();
 		page.addMessage("Элемент успешно удален", false);
