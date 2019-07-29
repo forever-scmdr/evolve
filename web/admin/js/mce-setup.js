@@ -13,10 +13,48 @@ var mceSettings = {
 				'insertdatetime media table contextmenu paste code'
 				// ,"fontawesome noneditable"
 				, "visualchars", "spoiler" ],
-		toolbar : "undo redo| spoiler-add spoiler-remove | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
+		toolbar : "undo redo| spoiler-add spoiler-remove | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
 		fontsize_formats : 'inherit 12px 13px 14px 16px 18px 24px 36px',
 		style_formats_merge : true,
 		style_formats : [
+			{title: "display",
+				items:[
+					{
+						title: "block",
+						wrapper: false,
+						styles: { display: 'block' },
+						selector: "*"
+					},
+					{
+						title: "inline-block",
+						wrapper: false,
+						styles: { display: 'inline-block', verticalAlign : 'top' },
+						selector: "*"
+					},
+					{
+						title: "inline",
+						wrapper: false,
+						styles: { display: 'inline' },
+						selector: "*"
+					},
+					{
+						title: "reset",
+						wrapper: false,
+						styles: { display: '', verticalAlign: '' },
+						selector: "*"
+					},
+					{
+						title: "grid",
+						wrapper: false,
+						styles: { display: 'grid' }
+					},
+					{
+						title: "flex",
+						wrapper: false,
+						styles: { display: 'flex' }
+					}
+				]
+			},
 			{title : 'Характеристики товара', selector : 'table', classes : 'features'},
 			{
 			title : 'Теги HTML-5',
@@ -69,7 +107,7 @@ var mceSettings = {
 				'insertdatetime media table contextmenu paste code'
 				// ,"fontawesome noneditable"
 				, "visualchars", "spoiler" ],
-		toolbar : "undo redo| spoiler-add spoiler-remove  | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
+		toolbar : "undo redo| spoiler-add spoiler-remove  | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify   | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
 		fontsize_formats : 'inherit 16px 18px 24px 36px',
 		style_formats_merge : true,
 		style_formats : [
