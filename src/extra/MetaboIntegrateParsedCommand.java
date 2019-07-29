@@ -205,15 +205,18 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			product.setValue(ASSOC_CODE, assocCode);
 		}
 		if((lookForPics.length > 0) && lookForPics[0]) {
-			for (Path path : gallery) {
-				product.setValue(GALLERY, path.toFile());
-			}
 			if (gallery.size() > 0) {
 				Path firstPic = gallery.iterator().next();
 				Path newMainPic = firstPic.resolveSibling("main_" + firstPic.getFileName());
 				ByteArrayOutputStream bos = ResizeImagesFactory.resize(firstPic.toFile(), 0, 400);
 				Files.write(newMainPic, bos.toByteArray());
 				product.setValue(MAIN_PIC, newMainPic.toFile());
+
+				product.clearValue(GALLERY);
+				for (Path path : gallery) {
+					product.setValue(GALLERY, path.toFile());
+				}
+
 			}
 		}
 
