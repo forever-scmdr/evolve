@@ -26,9 +26,7 @@ public class CleanAllDeletedItemsDBUnit extends DBPersistenceCommandUnit {
 	public void execute() throws Exception {
 		DelayedTransaction transaction = new DelayedTransaction(context.getInitiator());
 		int deletedCount;
-		try {
-			if (insertIntoFulltextIndex)
-				LuceneIndexMapper.getSingleton().startUpdate();
+		if (insertIntoFulltextIndex) {
 			do {
 				CleanDeletedItemsDBUnit cleanBatch = new CleanDeletedItemsDBUnit(deleteBatchQty);
 				if (!insertIntoFulltextIndex)
@@ -40,9 +38,6 @@ public class CleanAllDeletedItemsDBUnit extends DBPersistenceCommandUnit {
 					informer.receiveDeletedCount(deletedCount);
 				}
 			} while (deletedCount > 0);
-		} finally {
-			if (insertIntoFulltextIndex)
-				LuceneIndexMapper.getSingleton().finishUpdate();
 		}
 	}
 
