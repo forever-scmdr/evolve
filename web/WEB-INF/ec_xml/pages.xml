@@ -39,7 +39,7 @@
 	</include-definition>
 
 
-	<page name="informers_ajax" template="informers_ajax">
+	<page name="informers_ajax" template="informers_ajax" cacheable="true">
 		<request>
 			<var name="ticker"/>
 			<var name="limit" value="5"/>

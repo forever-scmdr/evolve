@@ -490,7 +490,7 @@
 						</xsl:for-each>
 					</div>
 					<div id="informers">
-						<div style="height: 72px;">Loading...</div>
+						<div style="height: 72px; text-align: center;">Loading...</div>
 					</div>
 					<script type="text/javascript">
 						$(document).ready(function(){
@@ -500,13 +500,13 @@
 						insertAjax(link,'informers', function(){
 								setTimeout(function(){$(".s-pageheader--home").css({
 								"padding-top" : $(".header").height() + 45
-								})}, 1000);
+								})}, 500);
 							});
 						});
 						$(document).on("click", ".informer-ajax-caller", function(e){
 							e.preventDefault();
 							el = $(this);
-							$(".informer-link").removeClass("active");
+							$(".informer-link").not(el).removeClass("active");
 							el.addClass("active");
 							var tickersPerRequest = Math.floor($(".row").width()/229);
 							var link = el.attr("href");
@@ -514,7 +514,7 @@
 							insertAjax(link,'informers', function(){
 								setTimeout(function(){$(".s-pageheader--home").css({
 									"padding-top" : $(".header").height() + 45
-								})}, 1000);
+								})},250);
 							});
 						});
 					</script>

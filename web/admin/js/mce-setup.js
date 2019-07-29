@@ -13,7 +13,7 @@ var mceSettings = {
 				'insertdatetime media table contextmenu paste code'
 				// ,"fontawesome noneditable"
 				, "visualchars", "spoiler" ],
-		toolbar : "undo redo| spoiler-add spoiler-remove | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
+		toolbar : "undo redo| spoiler-add spoiler-remove | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | charmap | link image | style",
 		fontsize_formats : 'inherit 12px 13px 14px 16px 18px 24px 36px',
 		style_formats_merge : true,
 		style_formats : [

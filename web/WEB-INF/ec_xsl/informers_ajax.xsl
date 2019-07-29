@@ -33,13 +33,15 @@
 						insertAjax(link,'informers', function(){
 							setTimeout(function(){$(".s-pageheader--home").css({
 								"padding-top" : $(".header").height() + 45
-							})}, 1000);
+							})},500);
 						});
 					}
 				</script>
 			</xsl:if>
 			<xsl:if test="//informer_pages and number(page/variables/limit) &lt; 5">
-				<a href="{//base_link}" class="informer-ajax-caller">Подробнее</a>
+				<div class="informer-pagination" style="text-align: center;">
+					<a href="{//base_link}" class="informer-ajax-caller">Подробнее</a>
+				</div>
 			</xsl:if>
 
 
@@ -48,7 +50,7 @@
 	</xsl:template>
 
 	<xsl:template match="page">
-		<a onclick="nextPage({concat('&#34;', link, '&#34;','')})" class="if(@current = 'current') then 'active' else ''">
+		<a onclick="nextPage({concat('&#34;', link, '&#34;','')})" class="{if(@current = 'current') then 'active' else ''}">
 			<xsl:value-of select="number"/>
 		</a>
 	</xsl:template>

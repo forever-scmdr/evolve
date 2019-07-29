@@ -4513,6 +4513,17 @@ footer h4::after {
 	color: #4a4a4a;
 	font-family:Trebuchet MS, roboto, ubuntu, sans-serif;
 }
+.informer-pagination a{
+	cursor: pointer;
+	display: inline-block;
+	padding: 0 0.5rem;
+	margin-left: 0.25rem;
+	text-decoration: underline;
+}
+.informer-pagination a.active{
+	text-decoration: none;
+	color: gray;
+}
 .informers-container a.active{
 	border-bottom-color: #ccc;
 }
