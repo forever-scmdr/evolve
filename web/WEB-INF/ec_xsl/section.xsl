@@ -82,7 +82,9 @@
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($sel_sec/name, ' Metabo')"/>
+	<xsl:variable name="sec_name" select="if($sel_sec/display_name != '') then $sel_sec/display_name else $sel_sec/name"/>
+
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($sec_name, ' Metabo')"/>
 
 
 	<xsl:template name="CONTENT">
@@ -93,7 +95,7 @@
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}">
-						<xsl:value-of select="name"/>
+						<xsl:value-of select="if(display_name != '') then display_name else name"/>"/>
 					</a>
 				</xsl:for-each>
 				<i class="fas fa-angle-right"></i>

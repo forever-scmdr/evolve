@@ -110,12 +110,12 @@
 									<xsl:for-each select="page/catalog/section">
 										<xsl:if test="section">
 											<a href="{show_products}" class="cat_menu_item_1" rel="#sub_{@id}">
-												<xsl:value-of select="name" />
+												<xsl:value-of select="if(display_name != '') then display_name else name"/>" />
 											</a>
 										</xsl:if>
 										<xsl:if test="not(section)">
 											<a href="{show_products}" class="cat_menu_item_1">
-												<xsl:value-of select="name" />
+												<xsl:value-of select="if(display_name != '') then display_name else name"/>" />
 											</a>
 										</xsl:if>
 									</xsl:for-each>
@@ -124,7 +124,7 @@
 								<xsl:for-each select="page/catalog/section">
 									<div class="subsections" style="display: none" id="sub_{@id}">
 										<xsl:for-each select="section">
-											<a href="{show_products}"><xsl:value-of select="name" /></a>
+											<a href="{show_products}"><xsl:value-of select="if(display_name != '') then display_name else name"/>" /></a>
 										</xsl:for-each>
 									</div>
 								</xsl:for-each>
@@ -376,13 +376,13 @@
 						<li>
 							<xsl:if test="section">
 								<a rel="{concat('#m_sub_', @id)}">
-									<xsl:value-of select="name"/>
+									<xsl:value-of select="if(display_name != '') then display_name else name"/>"/>
 								</a>
 								<i class="fas fa-chevron-right"></i>
 							</xsl:if>
 							<xsl:if test="not(section)">
 								<a href="{show_products}">
-									<xsl:value-of select="name"/>
+									<xsl:value-of select="if(display_name != '') then display_name else name"/>"/>
 								</a>
 							</xsl:if>
 						</li>
@@ -393,7 +393,7 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="#" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_products}" class="header"><xsl:value-of select="if(display_name != '') then display_name else name"/></a>
 						<a href="#" rel="nofollow" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
@@ -401,13 +401,13 @@
 							<li>
 								<xsl:if test="section">
 									<a rel="{concat('#m_sub_', @id)}">
-										<xsl:value-of select="name"/>
+										<xsl:value-of select="if(display_name != '') then display_name else name"/>
 									</a>
 									<i class="fas fa-chevron-right"></i>
 								</xsl:if>
 								<xsl:if test="not(section)">
 									<a href="{show_products}" >
-										<xsl:value-of select="name"/>
+										<xsl:value-of select="if(display_name != '') then display_name else name"/>
 									</a>
 								</xsl:if>
 							</li>
@@ -419,13 +419,13 @@
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="#" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
+						<a href="{show_products}" class="header"><xsl:value-of select="if(display_name != '') then display_name else name"/></a>
 						<a href="#" rel="nofollow" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
 						<xsl:for-each select="section">
 							<li>
-								<a href="{show_products}"><xsl:value-of select="name"/></a>
+								<a href="{show_products}"><xsl:value-of select="if(display_name != '') then display_name else name"/></a>
 							</li>
 						</xsl:for-each>
 					</ul>
@@ -442,21 +442,21 @@
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="level-1{' active'[$l1_active]}">
 					<div class="capsule">
-						<a href="{show_products}"><xsl:value-of select="name"/> </a>
+						<a href="{show_products}"><xsl:value-of select="if(display_name != '') then display_name else name"/> </a>
 					</div>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
 					<xsl:for-each select="section">
 						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
-						<div class="level-2{' active'[$l2_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
+						<div class="level-2{' active'[$l2_active]}"><a href="{show_products}"><xsl:value-of select="if(display_name != '') then display_name else name"/></a></div>
 						<xsl:if test=".//@id = $sel_sec_id">
 							<xsl:for-each select="section">
 								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
-								<div class="level-3{' active'[$l3_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
+								<div class="level-3{' active'[$l3_active]}"><a href="{show_products}"><xsl:value-of select="if(display_name != '') then display_name else name"/></a></div>
 								<xsl:if test=".//@id = $sel_sec_id">
 									<xsl:for-each select="section">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
-										<div class="level-4{' active'[$l4_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
+										<div class="level-4{' active'[$l4_active]}"><a href="{show_products}"><xsl:value-of select="if(display_name != '') then display_name else name"/></a></div>
 									</xsl:for-each>
 								</xsl:if>
 							</xsl:for-each>
@@ -783,7 +783,7 @@
 			<xsl:for-each select="page/catalog/section">
 				<div class="level-1">
 					<div class="capsule">
-						<a href="{show_products}"><xsl:value-of select="name"/></a>
+						<a href="{show_products}"><xsl:value-of select="if(display_name != '') then display_name else name"/></a>
 					</div>
 				</div>
 			</xsl:for-each>
