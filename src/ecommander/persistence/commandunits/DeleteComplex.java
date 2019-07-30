@@ -35,8 +35,7 @@ public class DeleteComplex implements DBConstants.ItemTbl {
 		@Override
 		public void run() {
 			try {
-				DelayedTransaction.executeSingle(User.getDefaultUser(),
-						new PerformDeletedCleaningDBUnit(8, MAX_DELETE_SECONDS).ignoreUser());
+				new PerformDeletedCleaningComplex(8, MAX_DELETE_SECONDS).execute();
 				TemplateQuery countQuery = new TemplateQuery("Count query");
 				countQuery.SELECT("count(*)").FROM(ITEM_TBL).WHERE().col(I_STATUS).byte_(Item.STATUS_DELETED);
 				try (Connection conn = MysqlConnector.getConnection();

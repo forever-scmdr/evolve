@@ -372,4 +372,12 @@ public abstract class Command implements AutoCloseable {
 		result.rollback();
 		return result;
 	}
+
+	protected final boolean hasCriticalItem() {
+		ExecutableItemPE pageItem = page.getItemPEById(page.getCriticalItem());
+		if (!pageItem.hasFoundItems() && !pageItem.isLoadedFromCache()) {
+			return false;
+		}
+		return true;
+	}
 }

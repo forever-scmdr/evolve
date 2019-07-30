@@ -8,9 +8,7 @@ import org.slf4j.helpers.MessageFormatter;
 import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Интеграция файла XML Результаты валидации и выполнения в след. виде
@@ -81,6 +79,7 @@ public abstract class IntegrateBase extends Command {
 		private static final String _indexation = "Индексация названий товаров";
 
 		private volatile String operation = "Инициализация";
+		private volatile String currentJob = "Инициализация";
 		private volatile int lineNumber = 0;
 		private volatile int position = 0;
 		private volatile int processed = 0;
@@ -89,9 +88,15 @@ public abstract class IntegrateBase extends Command {
 		private ArrayList<Error> errors = new ArrayList<>();
 		private volatile boolean inProgress = false;
 		private volatile int logSize = 30;
+		private volatile TreeMap<Long, String> slowQueries = new TreeMap<>();
+		private String host;
 
 		public synchronized void setOperation(String opName) {
 			operation = opName;
+		}
+
+		public synchronized void setCurrentJob(String currentJob) {
+			this.currentJob = currentJob;
 		}
 
 		public synchronized void setLineNumber(int lineNumber) {
@@ -159,7 +164,9 @@ public abstract class IntegrateBase extends Command {
 		}
 
 		public synchronized void output(XmlDocumentBuilder doc) throws IOException {
+			doc.startElement("base").addText(host).endElement();
 			doc.startElement("operation").addText(operation).endElement();
+			doc.startElement("current_job").addText(currentJob).endElement();
 			doc.startElement("line").addText(lineNumber).endElement();
 			if (operation.equals(_indexation))
 				doc.startElement("processed").addText(LuceneIndexMapper.getSingleton().getCountProcessed()).endElement();
@@ -185,11 +192,31 @@ public abstract class IntegrateBase extends Command {
 				doc.startElement("error", "line", error.lineNumber, "coloumn", error.position, "originator", error.originator)
 						.addText(error.message).endElement();
 			}
+			if(slowQueries.size() > 0){
+				doc.startElement("slow");
+				for(Map.Entry<Long, String> entry : slowQueries.entrySet()){
+					doc
+							.startElement("q")
+							.startElement("log").addText(entry.getValue()).endElement()
+							.startElement("time").addText(entry.getKey()/1000000).endElement()
+					.endElement();
+
+
+				}
+				doc.endElement();
+			}
 			ServerLogger.debug(doc.toString());
 		}
 
 		public synchronized void indexsationStarted() {
 			operation = _indexation;
+		}
+
+		public synchronized void addSlowQuery(String queryLog, long nanos) {
+			slowQueries.put(nanos, queryLog);
+			if(slowQueries.size() > 100){
+				slowQueries.remove(slowQueries.firstKey());
+			}
 		}
 	}
 
@@ -287,6 +314,7 @@ public abstract class IntegrateBase extends Command {
 			synchronized (MUTEX) {
 				isInProgress = true;
 				newInfo().setInProgress(true);
+				getInfo().host = getUrlBase();
 				setOperation("Инициализация");
 				// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
 				if (!makePreparations()) {
@@ -339,7 +367,6 @@ public abstract class IntegrateBase extends Command {
 	private ResultPE buildResult() throws IOException {
 		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
 		doc.startElement("page", "name", getPageName());
-		doc.startElement("base").addText(getUrlBase()).endElement();
 		getInfo().output(doc);
 		doc.endElement();
 		ResultPE result;
