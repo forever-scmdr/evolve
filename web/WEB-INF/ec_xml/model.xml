@@ -163,7 +163,8 @@
 		<child item="product"/>
 		<child item="section" assoc="catalog_link"/>
 		<child item="product" assoc="catalog_link"/>
-		<parameter name="name" type="string" caption="Название" description="раздела" />
+		<parameter name="name" type="string" caption="Название" description="совпадает с названием на https://www.metabo.com/ru/" />
+		<parameter name="display_name" type="string" caption="Отображаемое название" description="видно на сайте" />
 		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
 		<parameter name="show_subs" type="byte" domain="0-1" caption="Показать подразделы"/>
 		<parameter name="sub_view" type="string" domain="sub_view" caption="Тип отображения подразделов" description="tags - тегами, pics - с картинками"/>

@@ -116,6 +116,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			Item section = sectionByName.addParameterCriteria(NAME, secName, "=", null, Compare.SOME).loadFirstItem();
 			section = section == null? Item.newChildItem(sectionType, parent) : section;
 			section.setValue(NAME, secName);
+			section.setValue("display_name", secName);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex());
 			processSubsections(sectionEl, section);
 		}
