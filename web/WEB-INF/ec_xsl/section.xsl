@@ -95,7 +95,7 @@
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}">
-						<xsl:value-of select="if(display_name != '') then display_name else name"/>"/>
+						<xsl:value-of select="if(display_name != '') then display_name else name"/>
 					</a>
 				</xsl:for-each>
 				<i class="fas fa-angle-right"></i>

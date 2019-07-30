@@ -64,7 +64,7 @@
 				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
-					<a href="{show_products}"><xsl:value-of select="if(display_name != '') then display_name else name"/>"/></a>
+					<a href="{show_products}"><xsl:value-of select="if(display_name != '') then display_name else name"/></a>
 				</xsl:for-each>
 				<i class="fas fa-angle-right"></i>
 			</div>
