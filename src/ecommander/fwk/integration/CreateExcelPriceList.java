@@ -13,9 +13,10 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.*;
 
 /**
  * Created by user on 05.12.2018.
@@ -140,9 +141,18 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		String optionsSuffix = (writeHierarchy)? "" : "min-";
 		String fileName = "pricelist-"+ optionsSuffix + fileSuffix + ".xls";
 		pushLog(fileName);
-		FileOutputStream fileOutputStream = new FileOutputStream(AppContext.getFilesDirPath(false) + "/" + fileName);
+		String fileFullName = AppContext.getFilesDirPath(false) + "/" + fileName;
+		FileOutputStream fileOutputStream = new FileOutputStream(fileFullName);
 		workBook.write(fileOutputStream);
 		fileOutputStream.close();
+		// setting Permissions;
+		final Set<PosixFilePermission> perms = new HashSet<>();
+		perms.add(PosixFilePermission.OWNER_READ);
+		perms.add(PosixFilePermission.OWNER_WRITE);
+		perms.add(PosixFilePermission.GROUP_READ);
+		perms.add(PosixFilePermission.GROUP_WRITE);
+
+		Files.setPosixFilePermissions(Paths.get(fileFullName), perms);
 	}
 
 
