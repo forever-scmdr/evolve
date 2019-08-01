@@ -35,7 +35,7 @@ public class ScheduledJob implements Job {
 		String pageName = ctx.getJobDetail().getJobDataMap().getString(PAGE_NAME);
 		ServerLogger.debug("Start scheduled job page '" + pageName + "'");
 		try (SessionContext sessContext = SessionContext.createSessionContext(null)) {
-			ExecutablePagePE executable = PageModelRegistry.testAndGetRegistry().getExecutablePage(pageName, null, sessContext);
+			ExecutablePagePE executable = PageModelRegistry.testAndGetRegistry().getExecutablePage(pageName, null, sessContext).getLeft();
 			ResultPE result = executable.execute();
 			if (result != null && result.getType() != ResultType.none) {
 				ByteArrayOutputStream out = new ByteArrayOutputStream();

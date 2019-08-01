@@ -143,7 +143,7 @@ public abstract class Command implements AutoCloseable {
 	 */
 	protected final ExecutablePagePE getExecutablePage(String url) throws PageNotFoundException, UnsupportedEncodingException,
 			UserNotAllowedException {
-		return PageModelRegistry.getRegistry().getExecutablePage(url, page.getUrlBase(), page.getSessionContext());
+		return PageModelRegistry.getRegistry().getExecutablePage(url, page.getUrlBase(), page.getSessionContext()).getLeft();
 	}
 	/**
 	 * Получить маппер для сохранения и загрузки объектов сеанса

@@ -29,6 +29,7 @@ public class DateDataType extends FormatDataType {
 	public static DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm").withZoneUTC();
 	public static DateTimeFormatter DAY_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy").withZoneUTC();
 	public static DateTimeFormatter REPORT_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy_HH.mm").withZoneUTC();
+	public static DateTimeFormatter MODIFIED_FORMATTER = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss z").withZoneUTC();
 	
 	private static int TIMEZONE_HOUR_OFFSET = 100;
 	
@@ -158,6 +159,7 @@ public class DateDataType extends FormatDataType {
 		System.out.println();
 		long millis = System.currentTimeMillis();
 		System.out.println(outputDate(millis));
+		System.out.println(MODIFIED_FORMATTER.parseDateTime("Wed, 21 Oct 2015 07:28:00 GMT"));
 		System.out.println(parseDate("cool"));
 	}
 }

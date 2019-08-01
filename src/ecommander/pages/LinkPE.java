@@ -359,7 +359,24 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	public static LinkPE newVarLink(String linkName, String pageVarName, boolean copyPageVars) {
 		return new LinkPE(linkName, ValueOrRef.newRef(pageVarName), Type.normal, copyPageVars);
 	}
-	
+
+	/**
+	 * Создать новую эксклюзивную ссылку
+	 * @param pageName
+	 * @param varName
+	 * @param keyValue
+	 * @param copyPageVars
+	 * @return
+	 */
+	public static LinkPE newExclusiveLink(String pageName, String varName, String keyValue, boolean copyPageVars) {
+		LinkPE link = new LinkPE("exclusive", ValueOrRef.newValue(pageName), Type.exclusive, copyPageVars);
+		RequestVariablePE var = new RequestVariablePE(varName, RequestVariablePE.Scope.request, VariablePE.Style.keypath);
+		var.addValue(keyValue);
+		link.addVariablePE(var);
+		return link;
+	}
+
+
 	public String getElementName() {
 		return ELEMENT_NAME;
 	}

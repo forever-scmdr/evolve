@@ -1,14 +1,24 @@
 package ecommander.controllers;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
 import ecommander.fwk.ValidationException;
-import ecommander.pages.*;
-import ecommander.pages.ValidationResults.StructureMessage;
+import ecommander.model.Item;
+import ecommander.model.datatypes.DateDataType;
+import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.MultipleHttpPostForm;
+import ecommander.pages.PageModelRegistry;
+import ecommander.pages.ValidationResults;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHeaders;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  * Класс, который координирует все действия по обработке запроса пользователя
@@ -16,6 +26,7 @@ import ecommander.pages.ValidationResults.StructureMessage;
  *
  */
 public class MainExecutionController {
+
 
 	// Форма, которая была отправлена пользователем, устанавливается из экшена struts
 	private MultipleHttpPostForm itemForm = null;
@@ -42,14 +53,27 @@ public class MainExecutionController {
 		// Создание контекста сеанса
 		try (SessionContext sessContext = SessionContext.createSessionContext(req)) {
 			// Загрузка страницы
-			ExecutablePagePE page = PageModelRegistry.testAndGetRegistry().getExecutablePage(requestUrl, baseUrl, sessContext);
+			Pair<ExecutablePagePE, Item> pair = PageModelRegistry.testAndGetRegistry().getExecutablePage(requestUrl, baseUrl, sessContext);
+			ExecutablePagePE page = pair.getLeft();
+			Item exclusiveItem = pair.getRight();
+			// Переадресация, если дата изменения раньше чем if-modified-since
+			String modifiedStr = req.getHeader(HttpHeaders.IF_MODIFIED_SINCE);
+			if (exclusiveItem != null) {
+				if (StringUtils.isNotBlank(modifiedStr)) {
+					DateTime ifModifiedSince = DateDataType.MODIFIED_FORMATTER.parseDateTime(modifiedStr);
+					if (ifModifiedSince.isAfter(exclusiveItem.getTimeUpdated())) {
+						resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+					}
+				}
+				resp.setHeader(HttpHeaders.LAST_MODIFIED, DateDataType.MODIFIED_FORMATTER.print(exclusiveItem.getTimeUpdated()));
+			}
 			// Установить переменные, если есть команды на странице
 			page.setPostData(itemForm);
 			Timer.getTimer().stop(Timer.INIT);
 			// Выполнить страницу (загрузить и выполнить команды) или взять ее из кеша
 			PageController.newUsingCache(requestUrl, req.getServerName()).processPage(page, resp);
 		} catch (ValidationException ve) {
-			for (StructureMessage error : ve.getResults().getStructureErrors()) {
+			for (ValidationResults.StructureMessage error : ve.getResults().getStructureErrors()) {
 				ServerLogger.error("pages.xml: " + error.originator + " - " + error.message);
 			}
 			if (ve.getResults().getException() != null)

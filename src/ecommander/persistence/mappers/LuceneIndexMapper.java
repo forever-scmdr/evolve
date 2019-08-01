@@ -6,6 +6,7 @@ import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
+import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
@@ -472,9 +473,17 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		final int LIMIT = 500;
 		createNewIndex();
 		countProcessed = 0;
-		for (String itemName : ItemTypeRegistry.getItemNames()) {
+		int noCommitSize = 0;
+		HashSet<String> itemNamesToIndex = new HashSet<>(ItemTypeRegistry.getItemNames());
+		while (itemNamesToIndex.size() > 0) {
+			String itemName = itemNamesToIndex.iterator().next();
+			itemNamesToIndex.remove(itemName);
 			ItemType itemDesc = ItemTypeRegistry.getItemType(itemName);
 			if (itemDesc.isFulltextSearchable()) {
+				// Удалить из списка всех наследников
+				LinkedHashSet extenders = ItemTypeRegistry.getItemExtenders(itemName);
+				itemNamesToIndex.removeAll(extenders);
+				// Индексация
 				ArrayList<Item> items;
 				long startFrom = 0;
 				do {
@@ -487,9 +496,13 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 					if (items.size() > 0)
 						startFrom = items.get(items.size() - 1).getId() + 1;
 					countProcessed += items.size();
+					noCommitSize += items.size();
 					ServerLogger.debug("Indexed: " + countProcessed + " items");
-					commit();
-				} while (items.size() == LIMIT);
+					if (noCommitSize >= 10000) {
+						commit();
+						noCommitSize = 0;
+					}
+				} while (items.size() > 0);
 			}
 		}
 		commit();

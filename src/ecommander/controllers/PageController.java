@@ -270,7 +270,7 @@ public class PageController {
 				if (result.getType() == ResultType.forward) {
 					// Загрузка страницы
 					ExecutablePagePE newPage = PageModelRegistry.testAndGetRegistry().getExecutablePage(linkUrl, page.getUrlBase(),
-							page.getSessionContext());
+							page.getSessionContext()).getLeft();
 					newPage.setPostData(page.getItemFrom());
 					return processPageInt(newPage);
 				} else {
@@ -297,7 +297,7 @@ public class PageController {
 					String pageUrl = pageUrlVar == null ? "" : pageUrlVar.writeSingleValue();
 					LinkPE requestLink = page.getRequestLink();
 					String urlBase = page.getUrlBase();
-					page = PageModelRegistry.testAndGetRegistry().getExecutablePage(requestUrl, urlBase, page.getSessionContext());
+					page = PageModelRegistry.testAndGetRegistry().getExecutablePage(requestUrl, urlBase, page.getSessionContext()).getLeft();
 					processSimplePage(false);
 				} else {
 					throw e;

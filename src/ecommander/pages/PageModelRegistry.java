@@ -2,10 +2,7 @@ package ecommander.pages;
 
 import ecommander.controllers.ScheduledJob;
 import ecommander.controllers.SessionContext;
-import ecommander.fwk.PageNotFoundException;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.UserNotAllowedException;
-import ecommander.fwk.ValidationException;
+import ecommander.fwk.*;
 import ecommander.model.DomainBuilder;
 import ecommander.model.Item;
 import ecommander.pages.var.RequestVariablePE;
@@ -122,9 +119,11 @@ public class PageModelRegistry {
 	 * @throws UserNotAllowedException 
 	 * @throws UnsupportedEncodingException 
 	 */
-	public ExecutablePagePE getExecutablePage(String linkUrl, String urlBase, SessionContext context)
+	public Pair<ExecutablePagePE, Item> getExecutablePage(String linkUrl, String urlBase, SessionContext context)
 			throws PageNotFoundException, UserNotAllowedException, UnsupportedEncodingException {
-		LinkPE link = normalizeAndCreateLink(linkUrl);
+		Pair<LinkPE, Item> normalized = normalizeAndCreateLink(linkUrl);
+		LinkPE link = normalized.getLeft();
+		Item exclusiveItem = normalized.getRight();
 		PagePE pageModel = getPageModel(link.getPageName());
 		// Если не найдена страница - выбросить исключение
 		if (pageModel == null) {
@@ -135,7 +134,7 @@ public class PageModelRegistry {
 			throw new UserNotAllowedException("Requested page is not allowed for current user");
 		if (context != null)
 			context.resetIdGenerator();
-		return pageModel.createExecutableClone(context, link, linkUrl, urlBase);
+		return new Pair<>(pageModel.createExecutableClone(context, link, linkUrl, urlBase), exclusiveItem);
 	}
 
 	/**
@@ -144,9 +143,9 @@ public class PageModelRegistry {
 	 * @param urlString
 	 * @return
 	 */
-	public LinkPE normalizeAndCreateLink(String urlString) throws UnsupportedEncodingException {
+	public Pair<LinkPE, Item> normalizeAndCreateLink(String urlString) throws UnsupportedEncodingException {
 		if (StringUtils.isBlank(urlString)) {
-			return LinkPE.parseLink(urlString);
+			return new Pair<>(LinkPE.parseLink(urlString), null);
 		}
 		// Строка разбивается на path и query
 		String path = urlString;
@@ -158,12 +157,13 @@ public class PageModelRegistry {
 		}
 		String[] units = StringUtils.split(path, VariablePE.COMMON_DELIMITER);
 		if (units.length == 0) {
-			return LinkPE.parseLink(urlString);
+			return new Pair<>(LinkPE.parseLink(urlString), null);
 		}
 		String pageName = units[0];
 		PagePE pageModel = PageModelRegistry.getRegistry().getPageModel(pageName);
 		int lastTranslitPartIndex = -1;
 		boolean isExclusive = false;
+		Item exclusiveItem = null;
 		if (pageModel == null) {
 			try {
 				LinkedHashMap<String, Item> items = ItemQuery.loadByUniqueKey(units);
@@ -174,6 +174,7 @@ public class PageModelRegistry {
 						pageModel = getPageModel(pageName);
 						lastTranslitPartIndex = i;
 						isExclusive = true;
+						exclusiveItem = lastItem;
 					}
 				}
 			} catch (Exception e) {
@@ -196,7 +197,7 @@ public class PageModelRegistry {
 			}
 		}
 		if (pageModel == null)
-			return LinkPE.parseLink(urlString);
+			return new Pair<>(LinkPE.parseLink(urlString), null);
 		StringBuilder normalUrl = new StringBuilder();
 		Iterator<RequestVariablePE> varReverseIter = pageModel.getPathTranslitVarsReverseOrder().iterator();
 		if (varReverseIter.hasNext()) {
@@ -219,7 +220,7 @@ public class PageModelRegistry {
 		result.setOriginalUrl(urlString);
 		if (isExclusive)
 			result.setType(LinkPE.Type.exclusive);
-		return result;
+		return new Pair<>(result, exclusiveItem);
 	}
 
 	/**
