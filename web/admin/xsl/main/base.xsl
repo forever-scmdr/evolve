@@ -192,6 +192,9 @@
 									<li class="visible" title="Обновить список товаров для полнотекстового поиска">
 										<a href="reindex_all/?action=start">Переиндексация</a>
 									</li>
+									<li class="visible" title="Удалить скрытые (долго)">
+										<a href="create_sitemap/?action=start" target="_blank">Сгенерировать карту сайта</a>
+									</li>
 									<!--<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">-->
 										<!--<a href="admin_domains_initialize.domain">-->
 											<!--Управление доменами-->

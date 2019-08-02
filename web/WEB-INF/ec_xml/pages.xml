@@ -172,7 +172,7 @@
 	</page>
 
 	<!-- TMP FIX DELETE -->
-	<page name="sub" template="sub" cacheable="false">
+	<page name="sub" template="sub" cacheable="true">
 		<request>
 			<var name="sec" style="translit"/>
 		</request>
@@ -192,6 +192,7 @@
 					<var name="sec" ref="sec_pics" style="translit"/>
 				</link>
 			</list>
+			<single item="seo" assoc="seo"/>
 		</single>
 		<include name="COMMON"/>
 	</page>

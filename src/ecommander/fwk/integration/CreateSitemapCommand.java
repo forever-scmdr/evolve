@@ -74,7 +74,7 @@ public class CreateSitemapCommand extends IntegrateBase implements CatalogConst 
             }
         } while (prods.size() > 0);
         indexFile.endElement();// sitemapindex
-        FileUtils.write(new File(AppContext.getRealPath(SITEMAP + XML)), currentMap.toString(), StandardCharsets.UTF_8);
+        FileUtils.write(new File(AppContext.getRealPath(SITEMAP + XML)), indexFile.toString(), StandardCharsets.UTF_8);
     }
 
     private void newMapFile() throws IOException {
@@ -83,7 +83,7 @@ public class CreateSitemapCommand extends IntegrateBase implements CatalogConst 
             String fileName = SITEMAP + (mapCount++) + XML;
             FileUtils.write(new File(AppContext.getRealPath(fileName)), currentMap.toString(), StandardCharsets.UTF_8);
             indexFile.startElement("sitemap");
-            indexFile.startElement("loc").addText(getUrlBase() + fileName).endElement();
+            indexFile.startElement("loc").addText(getUrlBase() + '/' + fileName).endElement();
             indexFile.startElement("lastmod").addText(DateDataType.outputDate(System.currentTimeMillis(), SITEMAP_FORMATTER)).endElement();
             indexFile.endElement();
         }

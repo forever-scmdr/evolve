@@ -59,13 +59,14 @@ public class MainExecutionController {
 			// Переадресация, если дата изменения раньше чем if-modified-since
 			String modifiedStr = req.getHeader(HttpHeaders.IF_MODIFIED_SINCE);
 			if (exclusiveItem != null) {
-				if (StringUtils.isNotBlank(modifiedStr)) {
-					DateTime ifModifiedSince = DateDataType.MODIFIED_FORMATTER.parseDateTime(modifiedStr);
-					if (ifModifiedSince.isAfter(exclusiveItem.getTimeUpdated())) {
-						resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-					}
-				}
 				resp.setHeader(HttpHeaders.LAST_MODIFIED, DateDataType.MODIFIED_FORMATTER.print(exclusiveItem.getTimeUpdated()));
+                if (StringUtils.isNotBlank(modifiedStr)) {
+                    DateTime ifModifiedSince = DateDataType.MODIFIED_FORMATTER.parseDateTime(modifiedStr);
+                    if (!ifModifiedSince.isBefore(exclusiveItem.getTimeUpdated())) {
+                        resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                        return;
+                    }
+                }
 			}
 			// Установить переменные, если есть команды на странице
 			page.setPostData(itemForm);
