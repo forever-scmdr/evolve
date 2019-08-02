@@ -112,12 +112,18 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		LuceneIndexMapper.getSingleton().reindexAll();
 
 		info.pushLog("Индексация завершена");
+		info.setOperation("Создание фильтров");
+		info.pushLog("Создание фильтров");
+
+		new CreateParametersAndFiltersCommand(this).integrate();
+
+		info.pushLog("Создание фильтров завершено");
 		info.pushLog("Интеграция успешно завершена");
 		info.setOperation("Интеграция завершена");
 	}
 
 
-	private static boolean removeDoctype(File file) throws FileNotFoundException {
+	private static boolean removeDoctype(File file) {
 		File tempFile = new File("__temp__.xml");
 		final String DOCTYPE = "!DOCTYPE";
 		boolean containsDoctype = false;
@@ -159,7 +165,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 	}
 
 	@Override
-	protected void terminate() throws Exception {
+	protected void terminate() {
 
 	}
 }
