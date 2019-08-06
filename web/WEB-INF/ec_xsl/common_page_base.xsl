@@ -9,7 +9,7 @@
 
 
 	<xsl:variable name="common" select="page/common"/>
-	<xsl:variable name="registration" select="page/registration"/>
+	<xsl:variable name="registration" select="page/registration[1]"/>
 	<xsl:variable name="is_reg_jur" select="$registration/@type = 'user_jur'"/>
 	<xsl:variable name="debt" select="if ($registration/debt and not($registration/debt = '') and not(normalize-space($registration/debt) = '0')) then $registration/debt else false() "/>
 	<xsl:variable name="discount" select="if ($is_reg_jur and $registration/discount and not($registration/discount = '')) then f:num($registration/discount) else 0"/>

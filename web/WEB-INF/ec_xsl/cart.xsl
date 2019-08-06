@@ -63,7 +63,7 @@
 								</div>
 								<div class="quantity">
 									<span>Кол-во</span>
-									<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
+									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" min="0"/>
 								</div>
 								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
 								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>

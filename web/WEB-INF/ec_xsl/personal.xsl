@@ -7,8 +7,8 @@
 
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
-	<xsl:variable name="jur" select="page/user_jur"/>
-	<xsl:variable name="phys" select="page/user_phys"/>
+	<xsl:variable name="jur" select="page/user_jur[1]"/>
+	<xsl:variable name="phys" select="page/user_phys[1]"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->

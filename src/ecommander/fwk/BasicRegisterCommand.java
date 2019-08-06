@@ -57,17 +57,22 @@ public abstract class BasicRegisterCommand extends Command {
 		} catch (UserExistsExcepion e) {
 			return getResult("user_exists");
 		}
-		form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
-		form.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), newUser.getUserId());
-		executeCommandUnit(SaveItemDBUnit.get(form).ignoreUser().noTriggerExtra());
+		Item userItem = ItemQuery.loadSingleItemByParamValue(USER_ITEM, EMAIL_PARAM, userName);
+		if (userItem != null) {
+			Item.updateParamValues(userItem, form);
+		} else {
+			userItem = form;
+			userItem.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
+		}
+		userItem.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), newUser.getUserId());
+		executeCommandUnit(SaveItemDBUnit.get(userItem).ignoreUser().noTriggerExtra());
 		startUserSession(newUser);
 		commitCommandUnits();
 
-		sendEmail(form, newUser, getUrlBase());
+		sendEmail(userItem, newUser, getUrlBase());
 
 		//Add cart contacts!
 		Item oldUserItem = getSessionMapper().getSingleRootItemByName(USER_ITEM);
-		Item userItem = new ItemQuery(USER_ITEM).setUser(newUser).loadFirstItem();
 		if (oldUserItem != null){
 			getSessionMapper().removeItems(oldUserItem.getId());
 		}

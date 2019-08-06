@@ -366,7 +366,6 @@
 		<parameter name="contract_number" type="string" caption="Номер договора" />
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />
 		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />
-		<parameter name="email" type="string" caption="E-mail" />
 		<parameter name="address" type="string" caption="Юридический адрес" />
 		<parameter name="city" type="string" caption="Город" />
 		<parameter name="route" type="string" caption="Маршрут" />

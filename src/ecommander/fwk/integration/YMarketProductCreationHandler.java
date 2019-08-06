@@ -38,6 +38,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		SINGLE_PARAMS.add(OPTPRICE_ELEMENT);
 		SINGLE_PARAMS.add(OLDOPTPRICE_ELEMENT);
 		SINGLE_PARAMS.add(MIN_QUANTITY_ELEMENT);
+		SINGLE_PARAMS.add(MIN_QTY_PARAM);
 		SINGLE_PARAMS.add(STATUS_ELEMENT);
 		SINGLE_PARAMS.add(NEXT_DELIVERY_ELEMENT);
 
@@ -124,14 +125,18 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					product.setValueUI(DESCRIPTION_PARAM, singleParams.get(DESCRIPTION_ELEMENT));
 				if (product.getItemType().hasParameter(COUNTRY_PARAM))
 					product.setValueUI(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
-				if (product.getItemType().hasParameter(OPTPRICE_ELEMENT))
-					product.setValueUI(PRICE_OPT_PARAM, singleParams.get(OPTPRICE_ELEMENT));
+				if (product.getItemType().hasParameter(PRICE_OPT))
+					product.setValueUI(PRICE_OPT, singleParams.get(OPTPRICE_ELEMENT));
 				if (product.getItemType().hasParameter(PRICE_OLD_PARAM))
 					product.setValueUI(PRICE_OLD_PARAM, singleParams.get(OLDPRICE_ELEMENT));
-				if (product.getItemType().hasParameter(PRICE_OPT_OLD_PARAM))
-					product.setValueUI(PRICE_OPT_OLD_PARAM, singleParams.get(OLDOPTPRICE_ELEMENT));
-				if (product.getItemType().hasParameter(MIN_QTY_PARAM))
-					product.setValueUI(MIN_QTY_PARAM, singleParams.get(MIN_QUANTITY_ELEMENT));
+				if (product.getItemType().hasParameter(PRICE_OPT_OLD))
+					product.setValueUI(PRICE_OPT_OLD, singleParams.get(OLDOPTPRICE_ELEMENT));
+				if (product.getItemType().hasParameter(MIN_QTY_PARAM)) {
+					String minQty = singleParams.get(MIN_QUANTITY_ELEMENT);
+					if (StringUtils.isBlank(minQty))
+						minQty = singleParams.get(MIN_QTY_PARAM);
+					product.setValueUI(MIN_QTY_PARAM, minQty);
+				}
 				if (product.getItemType().hasParameter(TAG_PARAM)) {
 					product.clearValue(TAG_PARAM);
 					product.setValueUI(TAG_PARAM, singleParams.get(STATUS_ELEMENT));

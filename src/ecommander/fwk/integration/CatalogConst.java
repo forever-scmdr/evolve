@@ -35,9 +35,10 @@ public interface CatalogConst {
 	String PRICE_OLD_PARAM = "price_old";
 	String PRICE_PARAM = "price";
 	String COUNTRY_PARAM = "country";
-	String PRICE_OPT_PARAM = "price_opt";
-	String PRICE_OPT_OLD_PARAM = "price_opt_old";
+	String PRICE_OPT = "price_opt";
+	String PRICE_OPT_OLD = "price_opt_old";
 	String MIN_QTY_PARAM = "min_qty";
+	String MIN_QUANTITY_PARAM = "min-quantity";
 	String ANALOG_CODE_PARAM = "analog_code";
 	String SIMILAR_CODE_PARAM = "similar_code";
 	String SUPPORT_CODE_PARAM = "support_code";

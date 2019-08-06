@@ -485,7 +485,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		// поэтому сначала добавление в специальную структуру
 		ArrayList<ParameterDescription> itemParams = params.get(item.getTypeId());
 		if (itemParams == null) {
-			itemParams = new ArrayList<ParameterDescription>();
+			itemParams = new ArrayList<>();
 			params.put(item.getTypeId(), itemParams);
 		}
 		itemParams.add(param);
