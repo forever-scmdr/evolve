@@ -15,6 +15,7 @@
 
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
+	<xsl:variable name="is_available" select="($p/qty and number($p/qty) &gt; 0) or $has_lines"/>
 	<xsl:variable name="p_big" select="if (index-of($p/text, 'img src') &gt; -1 or string-length($p/text) &gt; 500) then $p/text else ''"/>
 	<xsl:variable name="is_big" select="$p_big and not($p_big = '')"/>
 
@@ -119,7 +120,7 @@
 						</div>
 						<xsl:choose>
 							<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
-							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
+							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock" style="color: #a7323b"></i> под заказ</div></xsl:otherwise>
 						</xsl:choose>
 					</div>
 				</xsl:if>
@@ -147,7 +148,7 @@
 									<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 										<xsl:if test="$has_price">
 											<input type="number" class="text-input" name="qty" value="1" min="0" />
-											<input type="submit" class="button" value="Заказать" />
+											<input type="submit" class="button{' not_available'[not($is_available)]}" value="Заказать" />
 										</xsl:if>
 										<xsl:if test="not($has_price)">
 											<input type="number" class="text-input" name="qty" value="1" min="0" />

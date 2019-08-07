@@ -1,8 +1,7 @@
 package ecommander.fwk;
 
 import ecommander.model.*;
-import ecommander.pages.Command;
-import ecommander.pages.ResultPE;
+import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.commandunits.UpdateUserDBUnit;
@@ -25,6 +24,7 @@ public abstract class BasicRegisterCommand extends Command {
 
 	public static final String REGISTERED_GROUP = "registered";
 	public static final String USER_ITEM = "user";
+	protected static final String CART_ITEM = "cart";
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -51,19 +51,25 @@ public abstract class BasicRegisterCommand extends Command {
 		} catch (UserExistsExcepion e) {
 			return getResult("user_exists");
 		}
+		Item userItem = ItemQuery.loadSingleItemByParamValue(USER_ITEM, EMAIL_PARAM, userName);
+		if (userItem != null) {
+			Item.updateParamValues(userItem, form);
+		} else {
+			userItem = form;
+			userItem.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
+		}
+		userItem.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), newUser.getUserId());
+		executeCommandUnit(SaveItemDBUnit.get(userItem).ignoreUser().noTriggerExtra());
 		startUserSession(newUser);
-		form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
-		form.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), newUser.getUserId());
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(form).ignoreUser());
+		commitCommandUnits();
 
 		//Add cart contacts!
 		Item oldUserItem = getSessionMapper().getSingleRootItemByName(USER_ITEM);
-		Item userItem = new ItemQuery(USER_ITEM).setUser(newUser).loadFirstItem();
 		if (oldUserItem != null){
 			getSessionMapper().removeItems(oldUserItem.getId());
 		}
 		userItem.setContextPrimaryParentId(Item.DEFAULT_ID);
-		getSessionMapper().saveTemporaryItem(userItem, "user");
+		getSessionMapper().saveTemporaryItem(userItem);
 
 
 		return getResult("success");
@@ -88,6 +94,8 @@ public abstract class BasicRegisterCommand extends Command {
 						getSessionMapper().removeItems(oldUserItem.getId());
 					userItem.setContextPrimaryParentId(Item.DEFAULT_ID);
 					getSessionMapper().saveTemporaryItem(userItem);
+					// Удалить корзину
+					getSessionMapper().removeItems(CART_ITEM);
 				}
 				return getResult("login");
 			} else {
@@ -122,7 +130,7 @@ public abstract class BasicRegisterCommand extends Command {
 		}
 		if (changeUser) {
 			try {
-				executeAndCommitCommandUnits(new UpdateUserDBUnit(user, false));
+				executeAndCommitCommandUnits(new UpdateUserDBUnit(user, false).noTriggerExtra());
 			} catch (UserExistsExcepion e) {
 				return getResult("user_exists_personal");
 			}
