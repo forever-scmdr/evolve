@@ -3,8 +3,9 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="current_section" select="//section[@key = /page/variables/sec]"/>
-	<xsl:variable name="sel_sec_id" select="current_section/@id"/>
+	<xsl:variable name="sel_sec_id" select="page/current_section/@id"/>
+	<xsl:variable name="current_section" select="//section[@id = $sel_sec_id]"/>
+	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$current_section/section"/>
 
 	<xsl:variable name="title" select="$current_section/name"/>

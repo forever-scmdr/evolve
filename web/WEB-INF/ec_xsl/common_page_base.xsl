@@ -33,7 +33,8 @@
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
-	<xsl:variable name="delivery_date" select="f:delivery-date(current-dateTime())" />
+	<xsl:variable name="dd" select="page/common/delivery_date" />
+	<xsl:variable name="delivery_date" select="if ($dd and $dd != '') then $dd else f:delivery-date(current-dateTime())" />
 
 	<xsl:variable name="active_menu_item"/>
 
@@ -762,7 +763,7 @@
 				<xsl:text disable-output-escaping="yes">
 --&gt;
 				</xsl:text>
-				<base href="{$base}"/>
+				<base href="{$main_host}"/>
 				<meta charset="utf-8"/>
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
