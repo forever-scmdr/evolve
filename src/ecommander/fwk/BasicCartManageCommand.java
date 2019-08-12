@@ -303,6 +303,7 @@ public abstract class BasicCartManageCommand extends Command {
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
 			BigDecimal maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(MAX_QTY));
 			BigDecimal minQuantity = product.getDecimalValue(MIN_QTY_PARAM, new BigDecimal(1));
+			if (minQuantity.intValue() == 0) minQuantity = new BigDecimal(1);
 			BigDecimal qtyMinQtyFraction = decimalQty.divide(minQuantity, BigDecimal.ROUND_HALF_EVEN);
 			if (!isIntegerValue(qtyMinQtyFraction))
 				decimalQty = minQuantity.multiply(qtyMinQtyFraction.setScale(0, BigDecimal.ROUND_CEILING));
@@ -331,6 +332,7 @@ public abstract class BasicCartManageCommand extends Command {
 			}
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 			BigDecimal minQuantity = product.getDecimalValue(MIN_QTY_PARAM, new BigDecimal(1));
+			if (minQuantity.intValue() == 0) minQuantity = new BigDecimal(1);
 			BigDecimal qtyMinQtyFraction = decimalQty.divide(minQuantity, BigDecimal.ROUND_HALF_EVEN);
 			if (!isIntegerValue(qtyMinQtyFraction))
 				decimalQty = decimalQty.setScale(0, RoundingMode.CEILING);

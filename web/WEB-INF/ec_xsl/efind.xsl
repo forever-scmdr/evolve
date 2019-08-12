@@ -33,14 +33,13 @@
 		<data version="2.0">
 			<xsl:variable name="find" select="page/product[plain_section]"/>
 			<xsl:for-each select="$find[position() &lt;= 5]">
-				<xsl:variable name="min_qty" select="if (min_qty) then f:num(min_qty) else 1"/>
+				<xsl:variable name="min_qty" select="if (min_qty and f:num(min_qty) &gt; 0) then f:num(min_qty) else 1"/>
 				<item>
 					<mfg><xsl:value-of select="vendor"/></mfg>
 					<part><xsl:value-of select="name"/></part>
 					<note><xsl:value-of select="type"/><xsl:text> </xsl:text><xsl:value-of select="name_extra"/></note>
-					<img><xsl:value-of select="concat('http://alfacomponent.com/', @path, main_img)"/></img>
 					<url>http://alfacomponent.com<xsl:value-of select="show_product"/></url>
-					<sku><xsl:value-of select="code"/></sku>
+<!--					<sku><xsl:value-of select="code"/></sku>-->
 					<cur>USD</cur>
 					<xsl:if test="price_USD and f:num(price_USD) &gt; 0.001">
 						<xsl:call-template name="ALL_PRICES">
@@ -50,7 +49,9 @@
 						</xsl:call-template>
 					</xsl:if>
 					<stock><xsl:value-of select="qty"/></stock>
-					<dlv>10-12 дней</dlv>
+					<xsl:if test="f:is_numeric(available)">
+						<dlv><xsl:value-of select="f:num(available) * 7"/> дней</dlv>
+					</xsl:if>
 					<bid>0</bid>
 				</item>
 			</xsl:for-each>

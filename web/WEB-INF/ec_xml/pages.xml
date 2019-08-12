@@ -387,7 +387,6 @@
 		<list item="plain_section" id="ps"/>
 		<list item="product" id="prod">
 			<filter>
-				<!--<fulltext name="name" limit="50" compare="EVERY" type="term wildcard">-->
 				<fulltext name="name" limit="200" threshold="0.1" type="prefix">
 					<var var="q"/>
 				</fulltext>
@@ -1355,16 +1354,6 @@
 	</page>
 
 
-	<page name="reindex_all" template="integration/reindex">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="ecommander.fwk.integration.ReindexCommand" clear-cache="no">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
-
 	<page name="fix_producer">
 		<command class="extra.FixProducer" clear-cache="no">
 			<result name="complete" type="xml"/>
@@ -1387,7 +1376,15 @@
 	</page>
 
 
-	<page name="get_ferrite" template="integration">
+	<page name="delete_codes" template="success">
+		<request>
+			<var name="action" value="delete"/>
+		</request>
+		<command class="extra.DeleteByCodeCommand"/>
+	</page>
+
+
+	<page name="get_ferrite" template="integration" schedule="0 0 23 ? * * *">
 		<request>
 			<var name="action"/>
 		</request>
@@ -1398,7 +1395,7 @@
 	</page>
 
 
-	<page name="get_compel" template="integration">
+	<page name="get_compel" template="integration" schedule="0 30 23 ? * * *">
 		<request>
 			<var name="action"/>
 		</request>
@@ -1409,11 +1406,13 @@
 	</page>
 
 
-	<page name="delete_codes" template="success">
+	<page name="reindex_all" template="integration/reindex" schedule="0 0 0 ? * * *">
 		<request>
-			<var name="action" value="delete"/>
+			<var name="action"/>
 		</request>
-		<command class="extra.DeleteByCodeCommand"/>
+		<command class="ecommander.fwk.integration.ReindexCommand" clear-cache="no">
+			<result name="complete" type="xml"/>
+		</command>
 	</page>
 
 </site>

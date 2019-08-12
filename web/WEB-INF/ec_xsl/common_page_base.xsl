@@ -69,10 +69,12 @@
 										<xsl:if test="not($currency = 'USD')"><a href="{page/set_currency_usd}">USD</a></xsl:if>
 										<xsl:if test="$currency = 'USD'">USD</xsl:if>
 									</li>
+									<!--
 									<li class="{'active'[$currency = 'EUR']}">
 										<xsl:if test="not($currency = 'EUR')"><a href="{page/set_currency_eur}">EUR</a></xsl:if>
 										<xsl:if test="$currency = 'EUR'">EUR</xsl:if>
 									</li>
+									-->
 								</ul>
 							</div>
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
@@ -267,7 +269,7 @@
 						<p>Вы можете загрузить список необходимых товаров в формате Excel. Такой способ позволяет быстро нахдить большое количество товаров.</p>
 						<p><a href="files/query.xlsx">Скачать образец файла</a></p>
 						<form action="{page/excel_search_link}" method="post" enctype="multipart/form-data">
-							<input type="file" name="file" id="file" class="get-file"/>
+							<input type="file" name="file" id="file" class="get-file" onchange="$(this).closest('form').find('label').text($(this).val())"/>
 							<label for="file" class="upload">Загрузить Excel-файл с компьютера</label>
 							<input type="submit" value="Найти" />
 						</form>
