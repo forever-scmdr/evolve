@@ -7,8 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
 import ecommander.fwk.ValidationException;
+import ecommander.model.datatypes.DateDataType;
 import ecommander.pages.*;
 import ecommander.pages.ValidationResults.StructureMessage;
+import org.apache.http.HttpHeaders;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Класс, который координирует все действия по обработке запроса пользователя
@@ -16,6 +20,8 @@ import ecommander.pages.ValidationResults.StructureMessage;
  *
  */
 public class MainExecutionController {
+
+	public static DateTimeFormatter MODIFIED_FORMATTER = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss z").withZoneUTC();
 
 	// Форма, которая была отправлена пользователем, устанавливается из экшена struts
 	private MultipleHttpPostForm itemForm = null;
@@ -43,6 +49,7 @@ public class MainExecutionController {
 		try (SessionContext sessContext = SessionContext.createSessionContext(req)) {
 			// Загрузка страницы
 			ExecutablePagePE page = PageModelRegistry.testAndGetRegistry().getExecutablePage(requestUrl, baseUrl, sessContext);
+			resp.setHeader(HttpHeaders.LAST_MODIFIED, MODIFIED_FORMATTER.print(System.currentTimeMillis()));
 			// Установить переменные, если есть команды на странице
 			page.setPostData(itemForm);
 			Timer.getTimer().stop(Timer.INIT);
