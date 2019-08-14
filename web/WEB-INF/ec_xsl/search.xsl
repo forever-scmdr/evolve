@@ -168,7 +168,7 @@
 		<xsl:variable name="unit" select="if (unit) then unit else 'шт.'"/>
 		<xsl:variable name="min_qty" select="if (min_qty and f:num(min_qty) &gt; 0) then f:num(min_qty) else 1"/>
 		<xsl:variable name="num" select="if ($number and $number &gt;= $min_qty) then $number else $min_qty"/>
-		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="has_price" select="price and f:num(price) &gt; 0.001"/>
 		<tr style="{'display: none'[$hidden]}" class="{if ($hidden) then concat('p_', $position) else 'parent'}">
 			<xsl:if test="$multiple">
 				<td><b><xsl:value-of select="item_own_extras/query" /></b></td>
@@ -195,26 +195,27 @@
 			</td>
 			<td><xsl:value-of select="$unit"/></td>
 			<td><xsl:value-of select="min_qty"/></td>
-			<td>
-				<xsl:if test="price and f:num(price) &gt; 0.001">
+			<xsl:if test="$has_price">
+				<td>
 					<xsl:call-template name="ALL_PRICES">
 						<xsl:with-param name="section_name" select="plain_section/name"/>
 						<xsl:with-param name="min_qty" select="$min_qty"/>
 						<xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
 						<xsl:with-param name="need_sum" select="false()"/>
 					</xsl:call-template>
-				</xsl:if>
-			</td>
-			<td>
-				<xsl:if test="price and f:num(price) &gt; 0.001">
+				</td>
+				<td>
 					<xsl:call-template name="ALL_PRICES">
 						<xsl:with-param name="section_name" select="plain_section/name"/>
 						<xsl:with-param name="min_qty" select="$min_qty"/>
 						<xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
 						<xsl:with-param name="need_sum" select="true()"/>
 					</xsl:call-template>
-				</xsl:if>
-			</td>
+				</td>
+			</xsl:if>
+			<xsl:if test="not($has_price)">
+				<td colspan="2"><p>запрос цены</p></td>
+			</xsl:if>
 			<td id="cart_search_{@id}">
 				<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
 					<xsl:if test="$has_price">

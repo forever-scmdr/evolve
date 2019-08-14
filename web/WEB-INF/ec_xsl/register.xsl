@@ -77,11 +77,9 @@
 						<xsl:variable name="inp" select="page/user_jur/input"/>
 						<xsl:call-template name="USER_JUR_INPUTS">
 							<xsl:with-param name="inp" select="$inp"/>
+							<xsl:with-param name="need_password" select="true()"/>
 						</xsl:call-template>
-						<div class="form-group">
-							<label>Пароль:</label>
-							<input type="text" class="form-control" name="{$inp/password/@input}" value="{$inp/password}" error="{$inp/password/@validation-error}"/>
-						</div>
+
 						<input type="submit" class="button" value="Отправить анкету"/>
 					</form>
 				</div>

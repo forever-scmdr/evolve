@@ -7,6 +7,7 @@
 	<xsl:variable name="message" select="page/variables/message"/>
 	<!--<xsl:variable name="is_jur" select="page/user_jur//@validation-error"/>-->
 	<xsl:variable name="is_jur" select="true()"/>
+	<xsl:variable name="jur" select="page/jur"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -67,14 +68,15 @@
 					<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заявки.</p>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
 						<xsl:variable name="inp" select="page/user_jur/input"/>
+						<xsl:variable name="src" select="if ($inp/field != '') then $inp else if ($jur) then $jur else $inp"/>
 						<div class="form-group">
 							<label>Наименование организации:</label>
-							<input type="text" class="form-control" name="{$inp/organization/@input}"
-							       value="{$inp/organization}" error="{$inp/organization/@validation-error}"/>
+							<input type="text" class="form-control" name="{$inp/organization/@input}" value="{$src/organization}"
+								   error="{$inp/organization/@validation-error}"/>
 						</div>
 						<div class="form-group">
 							<label for="">Телефон/факс:</label>
-							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}"/>
+							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$src/phone}"/>
 						</div>
 						<!-- <div class="form-group">
 							<label>Способ доставки <a href="">Подробнее об условиях доставки</a></label>
@@ -88,43 +90,43 @@
 						</div> -->
 						<div class="form-group">
 							<label>E-mail:</label>
-							<input type="text" class="form-control" name="{$inp/email/@input}" value="{$inp/email}"/>
+							<input type="text" class="form-control" name="{$inp/email/@input}" value="{$src/email}"/>
 						</div>
 						<div class="form-group">
 							<label>Контактное лицо:</label>
-							<input type="text" class="form-control" name="{$inp/contact_name/@input}" value="{$inp/contact_name}"/>
+							<input type="text" class="form-control" name="{$inp/contact_name/@input}" value="{$src/contact_name}"/>
 						</div>
 						<div class="form-group">
 							<label>Телефон контактного лица:</label>
-							<input type="text" class="form-control" name="{$inp/contact_phone/@input}" value="{$inp/contact_phone}"/>
+							<input type="text" class="form-control" name="{$inp/contact_phone/@input}" value="{$src/contact_phone}"/>
 						</div>
 						<div class="form-group">
 							<label>Юридический адрес:</label>
-							<input type="text" class="form-control" name="{$inp/address/@input}" value="{$inp/address}"/>
+							<input type="text" class="form-control" name="{$inp/address/@input}" value="{$src/address}"/>
 						</div>
 						<div class="form-group">
 							<label>Расчетный счет:</label>
-							<input type="text" class="form-control" name="{$inp/account/@input}" value="{$inp/account}"/>
+							<input type="text" class="form-control" name="{$inp/account/@input}" value="{$src/account}"/>
 						</div>
 						<div class="form-group">
 							<label>Название банка:</label>
-							<input type="text" class="form-control" name="{$inp/bank/@input}" value="{$inp/bank}"/>
+							<input type="text" class="form-control" name="{$inp/bank/@input}" value="{$src/bank}"/>
 						</div>
 						<div class="form-group">
 							<label>Адрес банка:</label>
-							<input type="text" class="form-control" name="{$inp/bank_address/@input}" value="{$inp/bank_address}"/>
+							<input type="text" class="form-control" name="{$inp/bank_address/@input}" value="{$src/bank_address}"/>
 						</div>
 						<div class="form-group">
 							<label>Код банка:</label>
-							<input type="text" class="form-control" name="{$inp/bank_code/@input}" value="{$inp/bank_code}"/>
+							<input type="text" class="form-control" name="{$inp/bank_code/@input}" value="{$src/bank_code}"/>
 						</div>
 						<div class="form-group">
 							<label>УНП:</label>
-							<input type="text" class="form-control" name="{$inp/unp/@input}" value="{$inp/unp}"/>
+							<input type="text" class="form-control" name="{$inp/unp/@input}" value="{$src/unp}"/>
 						</div>
 						<div class="form-group">
 							<label>Ф.И.О директора:</label>
-							<input type="text" class="form-control" name="{$inp/director/@input}" value="{$inp/director}"/>
+							<input type="text" class="form-control" name="{$inp/director/@input}" value="{$src/director}"/>
 						</div>
 						<div class="form-group">
 							<label>Комментарий:</label>

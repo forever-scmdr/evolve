@@ -29,10 +29,10 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 	public static final HashSet<String> MANDATORY_PHYS = new HashSet<>();
 	public static final HashSet<String> MANDATORY_JUR = new HashSet<>();
 	static {
-		MANDATORY_PHYS.add(ItemNames.user_phys_.NAME);
+		MANDATORY_PHYS.add(user_phys_.NAME);
 		//MANDATORY_PHYS.add(ItemNames.user_phys_.ADDRESS);
 		//MANDATORY_PHYS.add(ItemNames.user_phys_.EMAIL);
-		MANDATORY_PHYS.add(ItemNames.user_phys_.PHONE);
+		MANDATORY_PHYS.add(user_phys_.PHONE);
 		//MANDATORY_PHYS.add(ItemNames.user_phys_.SHIP_TYPE);
 
 		//MANDATORY_JUR.add(ItemNames.user_jur_.ACCOUNT);
@@ -40,12 +40,13 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		//MANDATORY_JUR.add(ItemNames.user_jur_.BANK);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.BANK_ADDRESS);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.BANK_CODE);
-		MANDATORY_JUR.add(ItemNames.user_jur_.CONTACT_NAME);
-		//MANDATORY_JUR.add(ItemNames.user_jur_.CONTACT_PHONE);
-		MANDATORY_JUR.add(ItemNames.user_jur_.PHONE);
+		MANDATORY_JUR.add(user_jur_.CONTACT_NAME);
+		MANDATORY_JUR.add(ItemNames.user_jur_.CONTACT_PHONE);
+		//MANDATORY_JUR.add(user_jur_.PHONE);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.DIRECTOR);
-		//MANDATORY_JUR.add(ItemNames.user_jur_.EMAIL);
-		MANDATORY_JUR.add(ItemNames.user_jur_.ORGANIZATION);
+		MANDATORY_JUR.add(user_jur_.EMAIL);
+		//MANDATORY_JUR.add(user_jur_.PASSWORD);
+		MANDATORY_JUR.add(user_jur_.ORGANIZATION);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.SHIP_TYPE);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.UNP);
 	}

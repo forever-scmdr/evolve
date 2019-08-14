@@ -23,7 +23,7 @@
 							<xsl:variable name="p" select="product"/>
 							<xsl:variable name="min_qty" select="if ($p/min_qty) then f:num($p/min_qty) else 1"/>
 							<xsl:variable name="price" select="if (f:num(f:exchange($p, 'price')) != 0) then f:exchange_cur($p, 'price') else 'по запросу'"/>
-							<xsl:variable name="sum" select="if (f:num(f:exchange(current(), 'sum')) != 0) then f:exchange_cur(current(), 'sum') else ''"/>
+							<xsl:variable name="sum" select="if (f:num(f:exchange(current(), 'sum')) != 0) then f:exchange_cur(current(), 'sum') else 'по запросу'"/>
 							<div class="item">
 								<!--
 								<xsl:if test="not($p/plain_section)">
@@ -60,7 +60,7 @@
 									<xsl:value-of select="$sum"/>
 								</div>
 								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
-								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
+								<a href="{delete}" class="delete" title="Удалить"><i class="fas fa-trash-alt"/></a>
 							</div>
 						</xsl:for-each>
 						<div class="total">
