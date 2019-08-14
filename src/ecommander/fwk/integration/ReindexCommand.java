@@ -17,6 +17,7 @@ public class ReindexCommand extends IntegrateBase {
 	protected void integrate() throws Exception {
 		info.indexsationStarted();
 		LuceneIndexMapper.getSingleton().reindexAll();
+		info.setProcessed(LuceneIndexMapper.getSingleton().getCountProcessed());
 	}
 
 	@Override

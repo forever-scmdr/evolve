@@ -738,7 +738,7 @@
 	</page>
 
 
-	<page name="customer_email" template="order_email">
+	<page name="customer_email" template="customer_email">
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought"/>
