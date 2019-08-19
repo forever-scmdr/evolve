@@ -521,7 +521,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 						HashMap<String, String> auxParams = new HashMap<>();
 						if (auxType != null) {
 							aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
-							aux = (aux == null) ? Item.newChildItem(auxType, product) : aux;
+							if(aux != null) executeAndCommitCommandUnits(ItemStatusDBUnit.delete(aux.getId()));
+							aux = Item.newChildItem(auxType, product);
 
 							for (ParameterDescription pd : auxType.getParameterList()) {
 								auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
@@ -531,6 +532,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							sectionsWithNewItemTypes.add(currentSubsection.getId());
 						}
 						XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+						paramsXML.clearParameter(XML_PARAM);
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
 							if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header))
@@ -554,15 +556,15 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								sectionsWithNewItemTypes.add(currentSubsection.getId());
 								continue;
 							}
-							if (StringUtils.isNotBlank(auxParams.get(param)))
+							//if (StringUtils.isNotBlank(auxParams.get(param)))
 								aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
 						}
 						paramsXML.setValueUI(XML_PARAM, xml.toString());
-						executeCommandUnit(SaveItemDBUnit.get(paramsXML).noFulltextIndex());
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXML).noFulltextIndex());
 						if (auxType != null) {
-							executeCommandUnit(SaveItemDBUnit.get(aux).noFulltextIndex());
+							executeAndCommitCommandUnits(SaveItemDBUnit.get(aux).noFulltextIndex());
 						}
-						commitCommandUnits();
+						//commitCommandUnits();
 					}
 				}
 
