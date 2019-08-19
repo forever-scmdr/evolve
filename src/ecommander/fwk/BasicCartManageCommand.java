@@ -24,6 +24,18 @@ import java.util.Date;
  */
 public abstract class BasicCartManageCommand extends Command {
 
+    public enum Strategy {
+        extra_line_overbuy, deny_overbuy, ignore_overbuy;
+
+        public static Strategy create(String name) {
+            name = StringUtils.lowerCase(name);
+            if (StringUtils.equalsAny(name, "extra_line_overbuy",
+                    "extra-line-overbuy", "extralineoverbuy", "extra_line_over_buy", "extra-line-over-buy"))
+                return extra_line_overbuy;
+            return deny_overbuy;
+        }
+    }
+
 	protected static final String PRODUCT_ITEM = "abstract_product";
 	protected static final String CART_ITEM = "cart";
 	protected static final String BOUGHT_ITEM = "bought";
@@ -33,6 +45,8 @@ public abstract class BasicCartManageCommand extends Command {
 	protected static final String PRICE_OPT_PARAM = "price_opt";
 	protected static final String NOT_AVAILABLE = "not_available";
 	protected static final String QTY_PARAM = "qty";
+    protected static final String QTY_AVAIL_PARAM = "qty_avail";
+    protected static final String QTY_TOTAL_PARAM = "qty_total";
 	protected static final String SUM_PARAM = "sum";
 	protected static final String CODE_PARAM = "code";
 	protected static final String NAME_PARAM = "name";
@@ -49,6 +63,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	private static final String CART_COOKIE = "cart_cookie";
+    private static final String STRATEGY_VAR = "strategy";
 
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
@@ -58,6 +73,12 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	protected Item cart;
+	protected Strategy strategy = Strategy.deny_overbuy;
+
+
+	protected void checkStrategy() {
+	    strategy = Strategy.create(getVarSingleValueDefault(STRATEGY_VAR, Strategy.deny_overbuy.name()));
+    }
 
 	/**
 	 * Добавить товар в корзину
@@ -65,6 +86,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @throws Exception
 	 */
 	public ResultPE addToCart() throws Exception {
+	    checkStrategy();
 		String code = getVarSingleValue(CODE_PARAM);
 		double quantity = 0;
 		try {
@@ -86,6 +108,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	public ResultPE recalculate() throws Exception {
+	    checkStrategy();
 		updateQtys();
 		recalculateCart();
 		return getResult("cart");
@@ -245,6 +268,8 @@ public abstract class BasicCartManageCommand extends Command {
 			purchase.setValue(NUM_PARAM, orderNumber + "");
 			purchase.setValue(DATE_PARAM, System.currentTimeMillis());
 			purchase.setValue(QTY_PARAM, cart.getValue(QTY_PARAM));
+			purchase.setValue(QTY_AVAIL_PARAM, cart.getValue(QTY_AVAIL_PARAM));
+			purchase.setValue(QTY_TOTAL_PARAM, cart.getValue(QTY_TOTAL_PARAM));
 			purchase.setValue(SUM_PARAM, cart.getValue(SUM_PARAM));
 			executeCommandUnit(SaveItemDBUnit.get(purchase).ignoreUser());
 			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
@@ -292,11 +317,7 @@ public abstract class BasicCartManageCommand extends Command {
 				} catch (NumberFormatException e) { /**/ }
 				if (quantity > 0) {
 					Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-					double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
-					if (maxQuantity > 0 && quantity > maxQuantity) {
-						bought.setValue(NOT_AVAILABLE, (byte) 1);
-					}
-					bought.setValue(QTY_PARAM, quantity);
+					setBoughtQtys(product, bought, quantity);
 					getSessionMapper().saveTemporaryItem(bought);
 				} else {
 					getSessionMapper().removeItems(bought.getId());
@@ -308,6 +329,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	private void addProduct(String code, double qty) throws Exception {
+	    checkStrategy();
 		ensureCart();
 		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
 		Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
@@ -315,15 +337,12 @@ public abstract class BasicCartManageCommand extends Command {
 			if (qty <= 0)
 				return;
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
+			if (product == null)
+			    return;
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
-			double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
-			if (maxQuantity <= 0 || qty > maxQuantity) {
-				//qty = maxQuantity > qty ? qty : maxQuantity;
-				bought.setValue(NOT_AVAILABLE, (byte) 1);
-			}
-			bought.setValue(QTY_PARAM, qty);
-			bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
-			bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
+            bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
+            bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
+			setBoughtQtys(product, bought, qty);
 			// Сохраняется bought
 			getSessionMapper().saveTemporaryItem(bought);
 			// Сохраняется девайс
@@ -341,15 +360,44 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().removeItems(bought.getId());
 				return;
 			}
-			double maxQuantity = boughtProduct.getDoubleValue(QTY_PARAM, MAX_QTY);
-			if (maxQuantity > 0 && qty > maxQuantity) {
-				//qty = maxQuantity > qty ? qty : maxQuantity;
-				bought.setValue(NOT_AVAILABLE, (byte) 1);
-			}
-			bought.setValue(QTY_PARAM, qty);
+            setBoughtQtys(boughtProduct, bought, qty);
 			getSessionMapper().saveTemporaryItem(bought);
 		}
 	}
+
+    /**
+     * Установить значения для всех параметров количества (в наличии, общего)
+     * @param product
+     * @param bought
+     * @param qtyWanted
+     */
+	private void setBoughtQtys(Item product, Item bought, double qtyWanted) {
+        double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
+        double qtyAvail = 0;
+        double qtyTotal = 0;
+        double qty = 0;
+        switch (strategy) {
+            case deny_overbuy:
+                qtyAvail = Math.min(qtyWanted, maxQuantity);
+                qtyTotal = qtyAvail;
+                qty = qtyAvail;
+                break;
+            case extra_line_overbuy:
+                qtyAvail = Math.min(qtyWanted, maxQuantity);
+                qtyTotal = qtyWanted;
+                qty = qtyTotal;
+                break;
+            case ignore_overbuy:
+                qtyTotal = qtyWanted;
+                qtyAvail = qtyWanted;
+                qty = qtyWanted;
+        }
+        bought.setValue(QTY_AVAIL_PARAM, qtyAvail);
+        bought.setValue(QTY_TOTAL_PARAM, qtyTotal);
+        bought.setValue(QTY_PARAM, qty);
+        bought.setValue(NOT_AVAILABLE, qtyAvail == qtyTotal ? (byte) 0 : (byte) 1);
+    }
+
 
 	/**
 	 * Загрузить корзину из сеанса или создать новую корзину
@@ -401,7 +449,7 @@ public abstract class BasicCartManageCommand extends Command {
 		ArrayList<String> codeQtys = new ArrayList<>();
 		for (Item bought : boughts) {
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-			double quantity = bought.getDoubleValue(QTY_PARAM);
+			double quantity = bought.getDoubleValue(QTY_TOTAL_PARAM);
 			codeQtys.add(product.getStringValue(CODE_PARAM) + ":" + quantity);
 		}
 		if (codeQtys.size() > 0) {
@@ -418,6 +466,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @throws Exception
 	 */
 	public ResultPE restoreFromCookie() throws Exception {
+	    checkStrategy();
 		loadCart();
 		if (cart != null)
 			return null;
@@ -439,10 +488,11 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @throws Exception
 	 */
 	protected boolean recalculateCart(String...priceParamName) throws Exception {
+	    checkStrategy();
 		loadCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal totalSum = new BigDecimal(0); // полная сумма
-		double totanQuantity = 0;
+		double totalQuantity = 0;
 		boolean result = true;
 
 		final String PRICE = (priceParamName != null && priceParamName.length > 0) ? priceParamName[0] : PRICE_PARAM;
@@ -450,20 +500,16 @@ public abstract class BasicCartManageCommand extends Command {
 		// Обычные заказы и заказы с нулевым количеством на складе
 		for (Item bought : boughts) {
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-			double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
-			double quantity = bought.getDoubleValue(QTY_PARAM);
-			if (quantity <= 0) {
+			double availableQty = bought.getDoubleValue(QTY_AVAIL_PARAM);
+			double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
+			if (availableQty <= 0) {
 				getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);
 				result = false;
 			} else {
 				// Первоначальная сумма
 				BigDecimal price = product.getDecimalValue(PRICE, new BigDecimal(0));
-				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
-				if (maxQuantity <= 0 || maxQuantity < quantity) {
-					productSum = new BigDecimal(0);
-				} else {
-					totanQuantity += quantity;
-				}
+				BigDecimal productSum = price.multiply(new BigDecimal(availableQty));
+				totalQuantity += totalQty;
 				bought.setValue(PRICE_PARAM, price);
 				bought.setValue(SUM_PARAM, productSum);
 				totalSum = totalSum.add(productSum);
@@ -472,11 +518,11 @@ public abstract class BasicCartManageCommand extends Command {
 			}
 		}
 		cart.setValue(SUM_PARAM, totalSum);
-		cart.setValue(QTY_PARAM, totanQuantity);
+		cart.setValue(QTY_PARAM, totalQuantity);
 		// Сохранить корзину
 		getSessionMapper().saveTemporaryItem(cart);
 		saveCookie();
-		return result && totanQuantity > 0;
+		return result && totalQuantity > 0;
 	}
 
 	@Override
