@@ -34,7 +34,7 @@ public class MysqlConnector
 	
 	private static volatile int _open_count = 0;
 	private static HashMap<Integer, Integer> connectionNames = new HashMap<>();
-	private static HashSet<Integer> openConnections = new HashSet<>();
+	private static Set<Integer> openConnections = Collections.synchronizedSet(new HashSet<>());
 	private static int com_name_counter = 0;
 	
 	private static final Lock lock = new ReentrantLock();
