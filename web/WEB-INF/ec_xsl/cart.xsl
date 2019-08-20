@@ -31,7 +31,8 @@
 							<xsl:variable name="price_old" select="if ($is_reg_jur) then $p/price_opt_old else $p/price_old"/>
 
 							<xsl:variable name="discount_percent" select="f:discount(string($price), $price_old)"/>
-
+							<xsl:variable name="available_qty" select="if ($p/qty and f:num($p/qty) &gt; 0) then f:num($p/qty) else 0"/>
+							<xsl:variable name="max" select="if ($available_qty &gt; 0) then $available_qty else 1000000"/>
 
 							<xsl:variable name="price_out" select="if ($price != 0) then concat($price, ' p.') else 'по запросу'"/>
 							<div class="item">
@@ -63,7 +64,7 @@
 								</div>
 								<div class="quantity">
 									<span>Кол-во</span>
-									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" min="0"/>
+									<input type="number" value="{f:num(qty_total)}" name="{input/qty/@input}" min="0" max="{$max}"/>
 								</div>
 								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
 								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>

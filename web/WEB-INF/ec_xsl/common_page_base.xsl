@@ -408,8 +408,7 @@
 		<xsl:variable name="price_old" select="if ($is_reg_jur) then price_opt_old else price_old"/>
 
 		<xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/>
-
-		<xsl:variable name="prms" select="params/param"/>
+		<xsl:variable name="available_qty" select="if (qty and f:num(qty) &gt; 0) then f:num(qty) else 0"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
@@ -447,12 +446,13 @@
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
+							<xsl:variable name="max" select="if ($available_qty &gt; 0) then $available_qty else 1000000"/>
 							<xsl:if test="$has_price">
-								<input type="number" class="text-input" name="qty" value="1" min="0"/>
+								<input type="number" class="text-input" name="qty" value="1" min="0" max="{$max}"/>
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
-								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
+								<input type="hidden" class="text-input" name="qty" value="1" min="0" max="{$max}"/>
 								<input type="submit" class="button not_available" value="Запросить цену"/>
 							</xsl:if>
 						</form>
@@ -463,10 +463,10 @@
 				</xsl:if>
 			</div>
 			<xsl:choose>
-				<xsl:when test="qty and f:num(qty) &gt; 10">
+				<xsl:when test="$available_qty &gt; 10">
 					<div class="device__in-stock"><i class="fas fa-signal"></i> есть на складе</div>
 				</xsl:when>
-				<xsl:when test="qty and f:num(qty) &gt; 0">
+				<xsl:when test="$available_qty &gt; 0">
 					<div class="device__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="qty"/> шт.</div>
 				</xsl:when>
 				<xsl:otherwise>
@@ -485,12 +485,11 @@
 
 	<xsl:template match="accessory | set | probe | product | assoc | analog | support | similar" mode="lines">
 		<xsl:variable name="has_price" select="if ($is_reg_jur) then (price_opt and price_opt != '0') else (price and price != '0')"/>
-		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num(price_opt) div 100 * (100 - $discount)) else price"/>
 		<xsl:variable name="price_old" select="if ($is_reg_jur) then price_opt_old else price_old"/>
 
 		<xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/>
-
+		<xsl:variable name="available_qty" select="if (qty and f:num(qty) &gt; 0) then f:num(qty) else 0"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
@@ -531,12 +530,13 @@
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
+							<xsl:variable name="max" select="if ($available_qty &gt; 0) then $available_qty else 1000000"/>
 							<xsl:if test="$has_price">
-								<input type="number" class="text-input" name="qty" value="1" min="0"/>
+								<input type="number" class="text-input" name="qty" value="1" min="0" max="{$max}"/>
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
-								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
+								<input type="hidden" class="text-input" name="qty" value="1" min="0" max="{$max}"/>
 								<input type="submit" class="button not_available" value="Запросить цену"/>
 							</xsl:if>
 						</form>
@@ -546,10 +546,10 @@
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
 				<xsl:choose>
-					<xsl:when test="qty and f:num(qty) &gt; 10">
+					<xsl:when test="$available_qty &gt; 10">
 						<div class="device__in-stock device_row__in-stock"><i class="fas fa-signal"></i> есть на складе</div>
 					</xsl:when>
-					<xsl:when test="qty and f:num(qty) &gt; 0">
+					<xsl:when test="$available_qty and f:num(qty) &gt; 0">
 						<div class="device__in-stock device_row__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="qty"/> шт.</div>
 					</xsl:when>
 					<xsl:otherwise>

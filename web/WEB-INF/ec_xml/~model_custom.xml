@@ -1,3 +1,566 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
+
+<!--START_p376298-->
+<item name="p376298" caption="Бензопилы Husqvarna" key="" ag-id="0" ag-hash="2128703407" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376298-->
+
+<!--START_p376299-->
+<item name="p376299" caption="Бензопилы Partner" key="" ag-id="0" ag-hash="2128703408" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376299-->
+
+<!--START_p376300-->
+<item name="p376300" caption="Бензопилы STIHL" key="" ag-id="0" ag-hash="2128704081" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376300-->
+
+<!--START_p376301-->
+<item name="p376301" caption="Бензопилы цыганка" key="" ag-id="0" ag-hash="2128704082" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376301-->
+
+<!--START_p376302-->
+<item name="p376302" caption="Бытовая техника" key="" ag-id="0" ag-hash="2128704083" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376302-->
+
+<!--START_p376303-->
+<item name="p376303" caption="Газовые колоноки" key="" ag-id="0" ag-hash="2128704084" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376303-->
+
+<!--START_p376304-->
+<item name="p376304" caption="Зернодробилоки" key="" ag-id="0" ag-hash="2128704085" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376304-->
+
+<!--START_p376305-->
+<item name="p376305" caption="Кулеры" key="" ag-id="0" ag-hash="2128704086" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376305-->
+
+<!--START_p376306-->
+<item name="p376306" caption="Мясорубки" key="" ag-id="0" ag-hash="2128704087" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376306-->
+
+<!--START_p376307-->
+<item name="p376307" caption="Пылесосы" key="" ag-id="0" ag-hash="2128704088" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376307-->
+
+<!--START_p376308-->
+<item name="p376308" caption="СВЧ" key="" ag-id="0" ag-hash="2128704089" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376308-->
+
+<!--START_p376309-->
+<item name="p376309" caption="Стиральные машины" key="" ag-id="0" ag-hash="2128704090" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376309-->
+
+<!--START_p376310-->
+<item name="p376310" caption="Хлебопечки" key="" ag-id="0" ag-hash="2128704112" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376310-->
+
+<!--START_p376312-->
+<item name="p376312" caption="Двигатель 168F" key="" ag-id="0" ag-hash="2128704114" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376312-->
+
+<!--START_p376313-->
+<item name="p376313" caption="Двигатель 173" key="" ag-id="0" ag-hash="2128704115" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376313-->
+
+<!--START_p376314-->
+<item name="p376314" caption="Двигатель 177" key="" ag-id="0" ag-hash="2128704116" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376314-->
+
+<!--START_p376315-->
+<item name="p376315" caption="Двигатель 188" key="" ag-id="0" ag-hash="2128704117" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376315-->
+
+<!--START_p376316-->
+<item name="p376316" caption="Двигатель 190" key="" ag-id="0" ag-hash="2128704118" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376316-->
+
+<!--START_p376317-->
+<item name="p376317" caption="Культиватор" key="" ag-id="0" ag-hash="2128704119" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376317-->
+
+<!--START_p376318-->
+<item name="p376318" caption="Электроинструменты" key="" ag-id="0" ag-hash="2128704120" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376318-->
+
+<!--START_p376319-->
+<item name="p376319" caption="Дрели" key="" ag-id="0" ag-hash="2128704121" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376319-->
+
+<!--START_p376320-->
+<item name="p376320" caption="Компрессоры" key="" ag-id="0" ag-hash="2128704143" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376320-->
+
+<!--START_p376321-->
+<item name="p376321" caption="Лобзики" key="" ag-id="0" ag-hash="2128704144" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376321-->
+
+<!--START_p376322-->
+<item name="p376322" caption="Перфораторы" key="" ag-id="0" ag-hash="2128704145" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376322-->
+
+<!--START_p376323-->
+<item name="p376323" caption="Плиткорезы" key="" ag-id="0" ag-hash="2128704146" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376323-->
+
+<!--START_p376324-->
+<item name="p376324" caption="Рубанки" key="" ag-id="0" ag-hash="2128704147" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376324-->
+
+<!--START_p376325-->
+<item name="p376325" caption="Сварочные аппараты" key="" ag-id="0" ag-hash="2128704148" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376325-->
+
+<!--START_p376326-->
+<item name="p376326" caption="УШМ" key="" ag-id="0" ag-hash="2128704149" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376326-->
+
+<!--START_p376327-->
+<item name="p376327" caption="Шуруповерты" key="" ag-id="0" ag-hash="2128704150" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376327-->
+
+<!--START_p376328-->
+<item name="p376328" caption="Электропилы" key="" ag-id="0" ag-hash="2128704151" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376328-->
+
+<!--START_p376329-->
+<item name="p376329" caption="Бензогенераторы" key="" ag-id="0" ag-hash="2128704152" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376329-->
+
+<!--START_p376330-->
+<item name="p376330" caption="Бензокосы" key="" ag-id="0" ag-hash="2128704174" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376330-->
+
+<!--START_p376331-->
+<item name="p376331" caption="Бетономешалки" key="" ag-id="0" ag-hash="2128704175" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376331-->
+
+<!--START_p376332-->
+<item name="p376332" caption="Виброплиты" key="" ag-id="0" ag-hash="2128704176" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376332-->
+
+<!--START_p376333-->
+<item name="p376333" caption="Газонокосилки на колесах" key="" ag-id="0" ag-hash="2128704177" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376333-->
+
+<!--START_p376334-->
+<item name="p376334" caption="Мойки высокого давления" key="" ag-id="0" ag-hash="2128704178" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376334-->
+
+<!--START_p376335-->
+<item name="p376335" caption="Мотобуры" key="" ag-id="0" ag-hash="2128704179" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376335-->
+
+<!--START_p376336-->
+<item name="p376336" caption="Насосы и насосные станции" key="" ag-id="0" ag-hash="2128704180" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376336-->
+
+<!--START_p376337-->
+<item name="p376337" caption="Садовые тачки" key="" ag-id="0" ag-hash="2128704181" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376337-->
+
+<!--START_p376338-->
+<item name="p376338" caption="Снегоуборочники" key="" ag-id="0" ag-hash="2128704182" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376338-->
+
+<!--START_p376341-->
+<item name="p376341" caption="Бумага  наждачная" key="" ag-id="0" ag-hash="2128704206" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376341-->
+
+<!--START_p376342-->
+<item name="p376342" caption="Диски  торцевые" key="" ag-id="0" ag-hash="2128704207" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376342-->
+
+<!--START_p376343-->
+<item name="p376343" caption="Шарошки  абразивные" key="" ag-id="0" ag-hash="2128704208" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376343-->
+
+<!--START_p376344-->
+<item name="p376344" caption="Шлифовальная  лента" key="" ag-id="0" ag-hash="2128704209" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376344-->
+
+<!--START_p376346-->
+<item name="p376346" caption="Диски  по бетону" key="" ag-id="0" ag-hash="2128704211" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376346-->
+
+<!--START_p376347-->
+<item name="p376347" caption="Диски по  металлу" key="" ag-id="0" ag-hash="2128704212" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376347-->
+
+<!--START_p376348-->
+<item name="p376348" caption="Диски по дереву" key="" ag-id="0" ag-hash="2128704213" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376348-->
+
+<!--START_p376349-->
+<item name="p376349" caption="Диски полировочные" key="" ag-id="0" ag-hash="2128704214" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376349-->
+
+<!--START_p376351-->
+<item name="p376351" caption="Мультиметры" key="" ag-id="0" ag-hash="2128704237" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376351-->
+
+<!--START_p376352-->
+<item name="p376352" caption="Рулетки" key="" ag-id="0" ag-hash="2128704238" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376352-->
+
+<!--START_p376353-->
+<item name="p376353" caption="Угольники" key="" ag-id="0" ag-hash="2128704239" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376353-->
+
+<!--START_p376354-->
+<item name="p376354" caption="Уровни" key="" ag-id="0" ag-hash="2128704240" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376354-->
+
+<!--START_p376355-->
+<item name="p376355" caption="Ножовки" key="" ag-id="0" ag-hash="2128704241" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376355-->
+
+<!--START_p376356-->
+<item name="p376356" caption="Ножовки по  бетону" key="" ag-id="0" ag-hash="2128704242" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376356-->
+
+<!--START_p376357-->
+<item name="p376357" caption="Ножовки по дереву" key="" ag-id="0" ag-hash="2128704243" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fasovka" caption="фасовка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1077248875" description="шт" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376357-->
+
+<!--START_p376358-->
+<item name="p376358" caption="Ножовки по металлу" key="" ag-id="0" ag-hash="2128704244" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376358-->
+
+<!--START_p376360-->
+<item name="p376360" caption="Буры  SDS" key="" ag-id="0" ag-hash="2128704267" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376360-->
+
+<!--START_p376361-->
+<item name="p376361" caption="Сверла  по  дереву" key="" ag-id="0" ag-hash="2128704268" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376361-->
+
+<!--START_p376362-->
+<item name="p376362" caption="Сверла  по  металлу" key="" ag-id="0" ag-hash="2128704269" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376362-->
+
+<!--START_p376363-->
+<item name="p376363" caption="Сверла  по бетону" key="" ag-id="0" ag-hash="2128704270" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376363-->
+
+<!--START_p376365-->
+<item name="p376365" caption="Бокорезы" key="" ag-id="0" ag-hash="2128704272" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376365-->
+
+<!--START_p376366-->
+<item name="p376366" caption="Переставные  ключи" key="" ag-id="0" ag-hash="2128704273" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376366-->
+
+<!--START_p376367-->
+<item name="p376367" caption="Плоскогубцы" key="" ag-id="0" ag-hash="2128704274" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fasovka" caption="фасовка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1077248875" description="шт" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376367-->
+
+<!--START_p376368-->
+<item name="p376368" caption="Разводные  ключи" key="" ag-id="0" ag-hash="2128704275" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fasovka" caption="фасовка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1077248875" description="шт" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376368-->
+
+<!--START_p376369-->
+<item name="p376369" caption="Струбцины" key="" ag-id="0" ag-hash="2128704276" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376369-->
+
+<!--START_p376370-->
+<item name="p376370" caption="Тиски" key="" ag-id="0" ag-hash="2128704298" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376370-->
+
+<!--START_p376371-->
+<item name="p376371" caption="Электроинструмент  и расходники" key="" ag-id="0" ag-hash="2128704299" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376371-->
+
+<!--START_p376372-->
+<item name="p376372" caption="Заточные  станки , диски" key="" ag-id="0" ag-hash="2128704300" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376372-->
+
+<!--START_p376373-->
+<item name="p376373" caption="Паяльники  для  пластиковых труб" key="" ag-id="0" ag-hash="2128704301" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376373-->
+
+<!--START_p376374-->
+<item name="p376374" caption="Паяльники  и  материалы" key="" ag-id="0" ag-hash="2128704302" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376374-->
+
+<!--START_p376375-->
+<item name="p376375" caption="Термопистолеты, фены, клей" key="" ag-id="0" ag-hash="2128704303" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376375-->
+
+<!--START_p376376-->
+<item name="p376376" caption="Газовые горелки" key="" ag-id="0" ag-hash="2128704304" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376376-->
+
+<!--START_p376377-->
+<item name="p376377" caption="Заклепочники , заклепки" key="" ag-id="0" ag-hash="2128704305" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376377-->
+
+<!--START_p376378-->
+<item name="p376378" caption="Инструмент  монтажный" key="" ag-id="0" ag-hash="2128704306" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376378-->
+
+<!--START_p376379-->
+<item name="p376379" caption="Инструмент для  отделочных  работ" key="" ag-id="0" ag-hash="2128704307" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376379-->
+
+<!--START_p376380-->
+<item name="p376380" caption="Магниты неодимовые" key="" ag-id="0" ag-hash="2128704329" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376380-->
+
+<!--START_p376381-->
+<item name="p376381" caption="Напильники" key="" ag-id="0" ag-hash="2128704330" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fasovka" caption="фасовка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1077248875" description="шт" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376381-->
+
+<!--START_p376382-->
+<item name="p376382" caption="Отвертки , наборы  отверток ,биты" key="" ag-id="0" ag-hash="2128704331" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fasovka" caption="фасовка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1077248875" description="шт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr" caption="Диаметр" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1655045266" description="mm" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnicheskie_parametry" caption="технические параметры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2004647686" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer" caption="Размер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-937920049" description="mm" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376382-->
+
+<!--START_p376383-->
+<item name="p376383" caption="Пистолеты  для пены , силикона" key="" ag-id="0" ag-hash="2128704332" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376383-->
+
+<!--START_p376384-->
+<item name="p376384" caption="Пневмоинструмент" key="" ag-id="0" ag-hash="2128704333" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376384-->
+
+<!--START_p376385-->
+<item name="p376385" caption="Разное" key="" ag-id="0" ag-hash="2128704334" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376385-->
+
+<!--START_p376386-->
+<item name="p376386" caption="Режущий  инструмент" key="" ag-id="0" ag-hash="2128704335" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376386-->
+
+<!--START_p376387-->
+<item name="p376387" caption="Садовый  инструмент" key="" ag-id="0" ag-hash="2128704336" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnicheskie_parametry" caption="технические параметры" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2004647686" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fasovka" caption="фасовка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1077248875" description="шт" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376387-->
+
+<!--START_p376388-->
+<item name="p376388" caption="Средства защиты" key="" ag-id="0" ag-hash="2128704337" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376388-->
+
+<!--START_p376389-->
+<item name="p376389" caption="Степлеры , скобы" key="" ag-id="0" ag-hash="2128704338" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376389-->
+
+<!--START_p376390-->
+<item name="p376390" caption="Ударный  инструмент" key="" ag-id="0" ag-hash="2128704360" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tehnicheskie_parametry" caption="технические параметры" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2004647686" description="гр" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fasovka" caption="фасовка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1077248875" description="шт" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376390-->
+
+<!--START_p376391-->
+<item name="p376391" caption="Хозтовары" key="" ag-id="0" ag-hash="2128704361" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376391-->
+
+<!--START_p376392-->
+<item name="p376392" caption="Щетки по металлу" key="" ag-id="0" ag-hash="2128704362" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376392-->
+
+<!--START_p376394-->
+<item name="p376394" caption="Аккумуляторы" key="" ag-id="0" ag-hash="2128704364" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="brend" caption="Бренд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="94001803" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376394-->
+
+<!--START_p376395-->
+<item name="p376395" caption="Вентиляторы" key="" ag-id="0" ag-hash="2128704365" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376395-->
+
+<!--START_p376396-->
+<item name="p376396" caption="Воздушные фильтры" key="" ag-id="0" ag-hash="2128704366" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376396-->
+
+<!--START_p376397-->
+<item name="p376397" caption="Выключатели, кнопки" key="" ag-id="0" ag-hash="2128704367" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376397-->
+
+<!--START_p376398-->
+<item name="p376398" caption="Двигатели" key="" ag-id="0" ag-hash="2128704368" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376398-->
+
+<!--START_p376399-->
+<item name="p376399" caption="Конденсаторы" key="" ag-id="0" ag-hash="2128704369" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376399-->
+
+<!--START_p376400-->
+<item name="p376400" caption="Конусные пары , шестерни" key="" ag-id="0" ag-hash="2128705042" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376400-->
+
+<!--START_p376401-->
+<item name="p376401" caption="Оптика, индикация" key="" ag-id="0" ag-hash="2128705043" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376401-->
+
+<!--START_p376402-->
+<item name="p376402" caption="Патроны для дрелей, перфораторов" key="" ag-id="0" ag-hash="2128705044" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376402-->
+
+<!--START_p376403-->
+<item name="p376403" caption="Подшипники" key="" ag-id="0" ag-hash="2128705045" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376403-->
+
+<!--START_p376404-->
+<item name="p376404" caption="Реле" key="" ag-id="0" ag-hash="2128705046" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376404-->
+
+<!--START_p376405-->
+<item name="p376405" caption="Ремни" key="" ag-id="0" ag-hash="2128705047" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376405-->
+
+<!--START_p376406-->
+<item name="p376406" caption="Свечи" key="" ag-id="0" ag-hash="2128705048" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376406-->
+
+<!--START_p376407-->
+<item name="p376407" caption="Стартера" key="" ag-id="0" ag-hash="2128705049" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376407-->
+
+<!--START_p376408-->
+<item name="p376408" caption="Угольные щетки" key="" ag-id="0" ag-hash="2128705050" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376408-->
+
+<!--START_p376409-->
+<item name="p376409" caption="Шины, цепи, напильники, ключи" key="" ag-id="0" ag-hash="2128705051" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376409-->
+
+<!--START_p376410-->
+<item name="p376410" caption="Щупы измерител" key="" ag-id="0" ag-hash="2128705073" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376410-->
+
+<!--START_p376411-->
+<item name="p376411" caption="Якоря  для электроинструмента" key="" ag-id="0" ag-hash="2128705074" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376411-->
+
+<!--START_p376413-->
+<item name="p376413" caption="Автомобильные аксессуары" key="" ag-id="0" ag-hash="2128705076" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376413-->
+
+<!--START_p376414-->
+<item name="p376414" caption="Безопасность и связь" key="" ag-id="0" ag-hash="2128705077" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376414-->
+
+<!--START_p376415-->
+<item name="p376415" caption="Изоляционные и соединительные материалы" key="" ag-id="0" ag-hash="2128705078" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376415-->
+
+<!--START_p376416-->
+<item name="p376416" caption="Кабельные линии" key="" ag-id="0" ag-hash="2128705079" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376416-->
+
+<!--START_p376417-->
+<item name="p376417" caption="Компоненты СКС" key="" ag-id="0" ag-hash="2128705080" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376417-->
+
+<!--START_p376418-->
+<item name="p376418" caption="Компьютерные аксессуары" key="" ag-id="0" ag-hash="2128705081" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376418-->
+
+<!--START_p376419-->
+<item name="p376419" caption="Мобильные аксессуары" key="" ag-id="0" ag-hash="2128705082" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376419-->
+
+<!--START_p376420-->
+<item name="p376420" caption="Разъемы, переходники, разветвители" key="" ag-id="0" ag-hash="2128705104" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376420-->
+
+<!--START_p376421-->
+<item name="p376421" caption="Телекоммуникационное оборудование" key="" ag-id="0" ag-hash="2128705105" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376421-->
+
+<!--START_p376422-->
+<item name="p376422" caption="Товары в розничной упаковке" key="" ag-id="0" ag-hash="2128705106" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376422-->
+
+<!--START_p376423-->
+<item name="p376423" caption="Элементы и устройства питания" key="" ag-id="0" ag-hash="2128705107" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376423-->
+
+<!--START_p376424-->
+<item name="p376424" caption="Я-Материалы" key="" ag-id="0" ag-hash="2128705108" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p376424-->
 <!--EXP--></model>

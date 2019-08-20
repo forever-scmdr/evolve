@@ -379,7 +379,7 @@ public abstract class BasicCartManageCommand extends Command {
         switch (strategy) {
             case deny_overbuy:
                 qtyAvail = Math.min(qtyWanted, maxQuantity);
-                qtyTotal = qtyAvail;
+                qtyTotal = (qtyAvail < 0.000001) ? qtyWanted : qtyAvail;
                 qty = qtyAvail;
                 break;
             case extra_line_overbuy:
@@ -502,7 +502,7 @@ public abstract class BasicCartManageCommand extends Command {
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 			double availableQty = bought.getDoubleValue(QTY_AVAIL_PARAM);
 			double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
-			if (availableQty <= 0) {
+			if (totalQty <= 0) {
 				getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);
 				result = false;
 			} else {
