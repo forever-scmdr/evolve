@@ -543,6 +543,7 @@
 			<var name="qty"/>
 			<var name="email" value="forever@forever-ds.com"/><!--skobtrade@mail.ru, design@forever-ds.com-->
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="strategy" value="extra-line-over-buy"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>

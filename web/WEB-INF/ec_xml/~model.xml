@@ -291,7 +291,10 @@
 	<item name="bought" caption="Покупка" virtual="true" key="code" ag-id="16" ag-hash="-1383211797">
 		<parameter name="name" type="string" caption="Наименование товара" description="не обязательно. Используется только в истории заказов"/>
 		<parameter name="code" type="string" caption="Код товара"/>
-		<parameter name="qty" type="double" caption="Количество"/>
+		<parameter name="qty" type="double" caption="Количество (deprecated)" description="для обратной совместимости"/>
+		<parameter name="qty_avail" type="double" caption="Количество, обеспеченное складом"
+				   description="та часть общего количества, которое есть на складе"/>
+		<parameter name="qty_total" type="double" caption="Общее количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
@@ -327,7 +330,10 @@
 	<item name="purchase" caption="Заказ" key="num" ag-id="820" ag-hash="1743324417">
 		<parameter name="num" caption="Номер" type="string"/>
 		<parameter name="date" caption="Дата" type="date"/>
-		<parameter name="qty" type="double" caption="Количество товаров"/>
+		<parameter name="qty" type="double" caption="Количество (deprecated)" description="для обратной совместимости"/>
+		<parameter name="qty_avail" type="double" caption="Количество, обеспеченное складом"
+				   description="та часть общего количества, которое есть на складе"/>
+		<parameter name="qty_total" type="double" caption="Общее количество"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
 		<child item="bought"/>
 	</item>

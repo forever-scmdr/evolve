@@ -532,8 +532,9 @@
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
-								<input type="number" class="text-input" name="qty" value="1" min="0"
-									   max="{if (qty and f:num(qty) != 0) then qty else ''}"/>
+								<input type="number" class="text-input" name="qty" value="1" min="0"/>
+								<!-- <input type="number" class="text-input" name="qty" value="1" min="0"
+									   max="{if (qty and f:num(qty) != 0) then qty else ''}"/> -->
 								<input type="submit" class="button{' not_available'[not($is_available)]}" value="Заказать"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
@@ -648,8 +649,9 @@
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
-								<input type="number" class="text-input" name="qty" value="1" min="0"
-									   max="{if (qty and f:num(qty) != 0) then qty else ''}"/>
+								<input type="number" class="text-input" name="qty" value="1" min="0"/>
+								<!-- <input type="number" class="text-input" name="qty" value="1" min="0"
+									   max="{if (qty and f:num(qty) != 0) then qty else ''}"/> -->
 								<input type="submit" class="button{' not_available'[not($is_available)]}" value="Заказать"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">

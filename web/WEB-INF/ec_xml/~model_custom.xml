@@ -680,4 +680,8 @@
 <!--START_p279167-->
 <item name="p279167" caption="Ручки кнопки" key="" ag-id="0" ag-hash="2100162574" virtual="false" user-def="true" description="" super="params *"></item>
 <!--END_p279167-->
+
+<!--START_p279358-->
+<item name="p279358" caption="Урны уличные" key="" ag-id="0" ag-hash="2100164466" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p279358-->
 <!--EXP--></model>

@@ -35,8 +35,12 @@
 			</div>
 			<div class="quantity">
 				<span>Кол-во</span>
-				<input type="number" value="{qty}" name="{input/qty/@input}" min="0"
-					   max="{if ($p/qty and f:num($p/qty) != 0) then $p/qty else ''}"/>
+				<!-- <input type="number" value="{qty}" name="{input/qty/@input}" min="0"
+					   max="{if ($p/qty and f:num($p/qty) != 0) then $p/qty else ''}"/> -->
+				<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
+				<xsl:if test="qty_avail != qty_total">
+					<span>в наличии <xsl:value-of select="qty_avail" /></span>
+				</xsl:if>
 			</div>
 			<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
 			<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
@@ -58,11 +62,11 @@
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
 					<form method="post">
-						<xsl:apply-templates select="page/cart/bought[f:num(product/price) != 0]"/>
-						<xsl:if test="page/cart/bought[f:num(product/price) = 0]">
+						<xsl:apply-templates select="page/cart/bought[qty_avail != '0']"/>
+						<xsl:if test="page/cart/bought[qty_avail = '0']">
 							<h3>Товары не в наличии:</h3>
 							<span>Эти товары не будут включены в заказ и оплату</span>
-							<xsl:apply-templates select="page/cart/bought[f:num(product/price) = 0]"/>
+							<xsl:apply-templates select="page/cart/bought[qty_avail = '0']"/>
 						</xsl:if>
 						<div class="total">
 							<xsl:if test="page/cart/sum != '0'">
