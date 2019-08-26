@@ -175,6 +175,9 @@
 									<li class="visible" style="background: #0c609d;">
 										<a href="create_excel_pricelist_min/?action=start" style="color: #fff;">Минимальный прайс-лист</a>
 									</li>
+									<li class="visible" title="Список разделов для формирования прайс-листов" style="background: #0c609d;">
+										<a href="create_excel_pricelist_full_urls/?action=start" style="color: #fff;">Прайслист с полными адресами картинок и файлов</a>
+									</li>
 									<li class="visible" style="background: #0c609d;">
 										<a href="parse_excel/?action=start" style="color: #fff;">
 											Импорт каталога из Excel
