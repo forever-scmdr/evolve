@@ -44,7 +44,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	protected static final String AVAILABLE_FILE = "Наличие";
 	protected static final String AUX_TYPE_FILE = "ID типа товара";
 	protected static final String MANUAL = "Документация";
-	protected static final String VALUE_SEPARATOR = ";";
+	protected static final String VALUE_SEPARATOR = ";" ;
 
 
 	private static final LinkedHashSet<String> BUILT_IN_PARAMS = new LinkedHashSet<String>() {{
