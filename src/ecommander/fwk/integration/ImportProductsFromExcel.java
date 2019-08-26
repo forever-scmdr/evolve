@@ -531,6 +531,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							newItemTypes = true;
 							sectionsWithNewItemTypes.add(currentSubsection.getId());
 						}
+						newItemTypes = true;
 						XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 						paramsXML.clearParameter(XML_PARAM);
 						for (String header : headers) {
