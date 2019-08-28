@@ -1,13 +1,13 @@
 package extra;
 
 import ecommander.controllers.AppContext;
+import ecommander.fwk.ResizeImagesFactory;
 import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
-import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -48,11 +48,8 @@ public class ForceResizeCommand extends Command {
 					String format = StringUtils.substringAfterLast(mainPic.getName(), ".");
 					format = SUPPORTED_FROMATS.contains(format)? format : "jpg";
 					String destFileName = "small_" + product.getValue("code") + "." + format;
-					BufferedImage srcImg = (exists)?  ImageIO.read(smallPic) : ImageIO.read(mainPic);
-					Thumbnails.Builder<BufferedImage> thumbnailer = Thumbnails.of(srcImg);
-					thumbnailer.width(200);
-					ByteArrayOutputStream ostream = new ByteArrayOutputStream();
-					thumbnailer.outputFormat(format).toOutputStream(ostream);
+					File srcImg = (exists)?  smallPic : mainPic;
+					ByteArrayOutputStream ostream = ResizeImagesFactory.resize(srcImg, 200, 0);
 					Path dest = Paths.get(folder,product.getRelativeFilesPath(), destFileName);
 					Path parentDir = dest.getParent();
 					if (!Files.exists(parentDir))
