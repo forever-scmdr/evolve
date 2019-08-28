@@ -49,8 +49,11 @@
 						</xsl:call-template>
 					</xsl:if>
 					<stock><xsl:value-of select="qty"/></stock>
-					<xsl:if test="f:is_numeric(available)">
+					<xsl:if test="f:is_numeric(available) and f:num(available) &gt; 0">
 						<dlv><xsl:value-of select="f:num(available) * 7"/> дней</dlv>
+					</xsl:if>
+					<xsl:if test="not(available) or available = '0'">
+						<dlv>склад</dlv>
 					</xsl:if>
 					<bid>0</bid>
 				</item>

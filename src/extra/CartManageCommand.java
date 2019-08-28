@@ -61,8 +61,9 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 	private static final String RATE_POSTFIX = "_rate";
 	private static final String DEFAULT = "default";
 
-	private HashMap<String, ArrayList<Pair<BigDecimal, BigDecimal>>> priceIntervals = null; // Значение, Коэффифиент
-	private BigDecimal defaultQuotient = new BigDecimal(1.4d);
+	// Раздел => Базовый коэффициент, Коэффициенты от суммы (Значение, Коэффифиент)
+	private HashMap<String, Pair<BigDecimal, ArrayList<Pair<BigDecimal, BigDecimal>>>> priceIntervals = null;
+	//private BigDecimal defaultQuotient = new BigDecimal(1.4d).setScale(4, BigDecimal.ROUND_CEILING);
 	private HashSet<String> currencyCodes = new HashSet<>();
 
 	public CartManageCommand() {
@@ -187,9 +188,11 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				List<Item> priceCatalogs = new ItemQuery(PRICE_CATALOG_ITEM).loadItems();
 				for (Item priceCatalog : priceCatalogs) {
 					ArrayList<Pair<BigDecimal, BigDecimal>> intervals = new ArrayList<>();
-					priceIntervals.put(priceCatalog.getStringValue(Price_catalog.NAME, DEFAULT), intervals);
+					priceIntervals.put(priceCatalog.getStringValue(Price_catalog.NAME, DEFAULT),
+							new Pair<>(priceCatalog.getDecimalValue(Price_catalog.QUOTIENT), intervals));
 					List<Item> quotients = new ItemQuery(PRICE_INTERVAL_ITEM)
-							.setParentId(priceCatalog.getId(), false).addSorting(MAX_PARAM, "ASC").loadItems();
+							.setParentId(priceCatalog.getId(), false)
+							.addSorting(MAX_PARAM, "ASC").loadItems();
 					for (Item quotient : quotients) {
 						intervals.add(new Pair<>(quotient.getDecimalValue(MAX_PARAM), quotient.getDecimalValue(QUOTIENT_PARAM)));
 					}
@@ -209,11 +212,14 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		loadPriceIntervals();
 		BigDecimal currentQuotient = new BigDecimal(1d);
 		ArrayList<Pair<BigDecimal, BigDecimal>> intervals = null;
-		if (StringUtils.isNotBlank(sectionName))
-			intervals = priceIntervals.get(sectionName);
-		if (intervals == null || intervals.size() == 0)
-			intervals = priceIntervals.get(DEFAULT);
-		if (intervals != null) {
+		BigDecimal basicQuotient = null;
+		if (StringUtils.isNotBlank(sectionName)) {
+			intervals = priceIntervals.get(sectionName).getRight();
+			basicQuotient = priceIntervals.get(sectionName).getLeft();
+		} if (intervals == null || intervals.size() == 0) {
+			intervals = priceIntervals.get(DEFAULT).getRight();
+			basicQuotient = priceIntervals.get(DEFAULT).getLeft();
+		} if (intervals != null) {
 			for (Pair<BigDecimal, BigDecimal> priceInterval : intervals) {
 				currentQuotient = priceInterval.getRight();
 				if (productSum.compareTo(priceInterval.getLeft()) <= 0) {
@@ -221,7 +227,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				}
 			}
 		}
-		return currentQuotient.multiply(defaultQuotient).setScale(6, BigDecimal.ROUND_CEILING);
+		return currentQuotient.multiply(basicQuotient).setScale(6, BigDecimal.ROUND_CEILING);
 	}
 
 	@Override

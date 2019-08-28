@@ -265,11 +265,17 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
 						<div class="modal-title h4">Загрузка BOM</div>
 					</div>
+					<script>
+						function fileName(name) {
+							var index = Math.max(name.lastIndexOf('/'), name.lastIndexOf('\\'));
+							return name.substring(index + 1);
+						}
+					</script>
 					<div class="modal-body">
 						<p>Вы можете загрузить список необходимых товаров в формате Excel. Такой способ позволяет быстро нахдить большое количество товаров.</p>
 						<p><a href="files/query.xlsx">Скачать образец файла</a></p>
 						<form action="{page/excel_search_link}" method="post" enctype="multipart/form-data">
-							<input type="file" name="file" id="file" class="get-file" onchange="$(this).closest('form').find('label').text($(this).val())"/>
+							<input type="file" name="file" id="file" class="get-file" onchange="$(this).closest('form').find('label').text(fileName($(this).val()))"/>
 							<label for="file" class="upload">Загрузить Excel-файл с компьютера</label>
 							<input type="submit" value="Найти" />
 						</form>

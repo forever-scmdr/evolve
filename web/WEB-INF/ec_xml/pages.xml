@@ -638,7 +638,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="infolog@list.ru, forever@forever-ds.com"/>
+			<var name="email" value="infolog@list.ru"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -683,6 +683,14 @@
 				</list>
 			</single>
 		</session>
+		<list item="product">
+			<filter>
+				<parameter name="code">
+					<var ref="prod" parameter="code"/>
+				</parameter>
+			</filter>
+			<ancestor item="plain_section"/>
+		</list>
 		<link name="recalculate_link" target="cart_action" type="itemform">
 			<var name="action" value="recalculate"/>
 		</link>

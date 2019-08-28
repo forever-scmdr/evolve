@@ -5,6 +5,35 @@
 
 	<xsl:variable name="title" select="'Список товаров'" />
 
+	<xsl:variable name="price_catalogs" select="page/price_catalog"/>
+	<xsl:variable name="price_intervals_default" select="$price_catalogs[name = 'default']/price_interval"/>
+	<xsl:variable name="Q" select="f:num(page/price_catalog[name = 'default']/quotient)"/>
+
+
+	<xsl:template name="ALL_PRICES">
+		<xsl:param name="section_name"/>
+		<xsl:param name="price"/>
+		<xsl:param name="min_qty"/>
+		<xsl:param name="need_sum"/>
+		<xsl:variable name="intervals" select="$price_catalogs[name = $section_name]/price_interval"/>
+		<xsl:variable name="price_intervals" select="if ($intervals) then $intervals else $price_intervals_default"/>
+		<xsl:for-each select="$price_intervals">
+			<xsl:variable name="quotient" select="f:num(quotient)"/>
+			<xsl:variable name="unit_price" select="$price * $Q * $quotient"/>
+			<xsl:if test="$price * $min_qty &lt; f:num(max)">
+				<xsl:variable name="min_number" select="ceiling(f:num(min) div $price)"/>
+				<xsl:variable name="number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) * $min_qty else $min_qty"/>
+				<xsl:variable name="sum" select="$unit_price * $number"/>
+				<div>
+					<xsl:if test="$need_sum">x<xsl:value-of select="$number"/>&#160;=&#160;<xsl:value-of select="f:format_currency_precise($sum)"/></xsl:if>
+					<xsl:if test="not($need_sum)"><xsl:value-of select="f:format_currency_precise($unit_price)"/></xsl:if>
+				</div>
+			</xsl:if>
+		</xsl:for-each>
+	</xsl:template>
+
+
+
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
@@ -21,7 +50,9 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="min_qty" select="if ($p/min_qty) then f:num($p/min_qty) else 1"/>
+							<xsl:variable name="p_p" select="//page/product[code = $p/code]"/>
+							<xsl:variable name="min_qty" select="if (min_qty and f:num(min_qty) &gt; 0) then f:num(min_qty) else 1"/>
+							<xsl:variable name="has_price" select="f:num(f:exchange($p, 'price')) &gt; 0.0001"/>
 							<xsl:variable name="price" select="if (f:num(f:exchange($p, 'price')) != 0) then f:exchange_cur($p, 'price') else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num(f:exchange(current(), 'sum')) != 0) then f:exchange_cur(current(), 'sum') else 'по запросу'"/>
 							<div class="item">
@@ -47,6 +78,26 @@
 									</p>
 								</div>
 								-->
+								<xsl:if test="$has_price">
+									<div class="quantity" style="font-size: 11px">
+										<span>Цена</span>
+										<xsl:call-template name="ALL_PRICES">
+											<xsl:with-param name="section_name" select="$p_p/plain_section/name"/>
+											<xsl:with-param name="min_qty" select="$min_qty"/>
+											<xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
+											<xsl:with-param name="need_sum" select="false()"/>
+										</xsl:call-template>
+									</div>
+									<div class="quantity" style="font-size: 11px">
+										<span>Сумма</span>
+										<xsl:call-template name="ALL_PRICES">
+											<xsl:with-param name="section_name" select="$p_p/plain_section/name"/>
+											<xsl:with-param name="min_qty" select="$min_qty"/>
+											<xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
+											<xsl:with-param name="need_sum" select="true()"/>
+										</xsl:call-template>
+									</div>
+								</xsl:if>
 								<div class="quantity">
 									<span>Мин. заказ</span>
 									<xsl:value-of select="$min_qty"/>

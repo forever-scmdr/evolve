@@ -78,7 +78,7 @@ public abstract class ItemDirectoryCommandUnit implements PersistenceCommandUnit
 	public static String createItemFilesDirectoryName(String basePath, long itemId) {
 		return basePath + Item.createItemFilesPath(itemId);
 	}
-
+/*
 	public static void main(String[] args) {
 		long[] ids = new long[] {11, 150, 1122, 1234, 1156, 224455, 123456789, 112334, 1123344, 1123345, 112333};
 		String src = "I:/test/files/";
@@ -97,4 +97,6 @@ public abstract class ItemDirectoryCommandUnit implements PersistenceCommandUnit
 			e.printStackTrace();
 		}
 	}
+
+ */
 }
