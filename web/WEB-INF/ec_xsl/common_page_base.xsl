@@ -501,6 +501,7 @@
 							<input type="submit" class="not_available" value="Под заказ"/>
 						</xsl:if>
 					</form>
+					<!-- <a href="" class="online-button">Онлайн-рассрочка</a> -->
 				</div>
 				<!--<xsl:choose>-->
 					<!--<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>-->

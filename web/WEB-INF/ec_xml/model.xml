@@ -18,6 +18,7 @@
 	-->
 
 	<assoc name="catalog_link" caption="Товары из других разделов" transitive="true" ag-id="1" ag-hash="-1147981728"/>
+	<assoc name="product_category" caption="Раздел каталога" transitive="false"/>
 
 	<item name="parse_section" caption="Урлы для парсинга" ag-id="2442" ag-hash="-814293671">
 		<parameter name="item_urls" type="plain-text" caption="Урлы вложенных товаров" />
@@ -359,6 +360,7 @@
 
 	<item name="main_page" caption="Главная страница" ag-id="15" ag-hash="-251149995">
 		<child item="seo" single="true"/>
+		<child item="section" assoc="product_category"/>
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
 	</item>

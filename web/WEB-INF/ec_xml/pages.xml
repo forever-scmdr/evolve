@@ -60,6 +60,11 @@
 		<single item="main_page" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
+			<list item="section" id="catalog_index" cacheable="true" tag="cat_pics">
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="sec_pics" style="key"/>
+				</link>
+			</list>
 			<single item="seo"/>
 		</single>
 		<single item="news">
@@ -70,18 +75,6 @@
 				</filter>
 				<link name="show_news_item" target="news_item" type="exclusive">
 					<var name="ni" ref="ni" style="key"/>
-				</link>
-			</list>
-		</single>
-		<single item="catalog" id="catalog_index" cacheable="true" tag="cat_pics">
-			<list item="section" id="sec_pics">
-				<list item="product" transit="true">
-					<filter>
-						<limit><var value="1" /></limit>
-					</filter>
-				</list>
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="sec_pics" style="key"/>
 				</link>
 			</list>
 		</single>

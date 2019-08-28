@@ -242,10 +242,10 @@
 	</xsl:template>
 
 	<xsl:template match="section" mode="pic">
-		<xsl:variable name="main_pic" select="product[1]/gallery[1]"/>
+		<xsl:variable name="main_pic" select="if(not(main_pic != '')) then concat(product[1]/@path, product[1]/gallery[1]) else concat(@path,main_pic)"/>
 		<xsl:variable name="sec_id" select="@id"/>
 		<xsl:variable name="has_sub" select="//page/catalog//section[@id = $sec_id and section]"/>
-		<xsl:variable name="pic_path" select="if ($main_pic) then concat(product[1]/@path, $main_pic) else 'img/no_image.png'"/>
+		<xsl:variable name="pic_path" select="if ($main_pic != '') then $main_pic else 'img/no_image.png'"/>
 		
 		<div class="catalog-item">
 			<a href="{show_products}" class="image-container" style="background-image: url({$pic_path})"></a>
