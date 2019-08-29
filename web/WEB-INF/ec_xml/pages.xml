@@ -6,11 +6,11 @@
 	<include-definition name="COMMON">
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec">
-				<list item="product" transit="true">
-					<filter>
-						<limit><var value="1" /></limit>
-					</filter>
-				</list>
+<!--				<list item="product" transit="true">-->
+<!--					<filter>-->
+<!--						<limit><var value="1" /></limit>-->
+<!--					</filter>-->
+<!--				</list>-->
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="key"/>
 				</link>
@@ -60,7 +60,7 @@
 		<single item="main_page" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
-			<list item="section" id="catalog_index" cacheable="true" tag="cat_pics">
+			<list item="section" id="sec_pics" cacheable="true" tag="cat_pics">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec_pics" style="key"/>
 				</link>
@@ -1257,6 +1257,15 @@
 			<var name="action"/>
 		</request>
 		<command class="ecommander.fwk.integration.AddAssociatedProducts" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<page name="add_sec_pics" template="integration/create_excel">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.AttachSectionPictures" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

@@ -121,9 +121,11 @@
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
-		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
+		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов" format="width: 300"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
 		<parameter name="assoc_codes" type="plain-text" caption="артикулы дополнительных товаров"/>
+		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
+		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
 
