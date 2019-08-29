@@ -5,6 +5,7 @@
 	<xsl:import href="personal_ajax.xsl"/>
 	<xsl:import href="my_price_ajax.xsl"/>
 	<xsl:import href="one_click_ajax.xsl"/>
+	<xsl:import href="defer_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
 
 	<!-- <xsl:template name="BR"> -->

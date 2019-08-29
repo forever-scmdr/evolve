@@ -441,6 +441,13 @@
 		<parameter name="product_name" type="string" caption="Название товара"/>
 	</item>
 
+	<item name="defer_form" caption="Форма заказа в один клик" virtual="true" ag-id="2449" ag-hash="-164595343">
+		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="name" type="string" caption="ФИО"/>
+		<parameter name="product_code" type="string" caption="Артикул товара"/>
+		<parameter name="product_name" type="string" caption="Название товара"/>
+	</item>
+
 	<item name="custom_pages" caption="Информационные разделы" ag-id="26" ag-hash="727106934">
 		<child item="custom_page"/>
 	</item>
