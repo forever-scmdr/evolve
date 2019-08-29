@@ -58,13 +58,13 @@
 			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="main_page" cacheable="true">
-			<list item="main_promo_bottom"/>
-			<list item="main_slider_frame"/>
-			<list item="section" id="sec_pics" cacheable="true" tag="cat_pics">
+			<list item="section" id="sec_pics" tag="cat_pic" assoc="product_category">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec_pics" style="key"/>
 				</link>
 			</list>
+			<list item="main_promo_bottom"/>
+			<list item="main_slider_frame"/>
 			<single item="seo"/>
 		</single>
 		<single item="news">

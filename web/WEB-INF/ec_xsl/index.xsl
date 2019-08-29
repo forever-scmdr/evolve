@@ -153,12 +153,12 @@
 					<div class="col-md-12 more-products p-t p-b">
 						<h4>Продукция</h4>
 						<div class="catalog-items main-page">
-							<xsl:for-each select="page/cat_pics/section">
+							<xsl:for-each select="page/main_page/cat_pic">
 								
-								<xsl:variable name="main_pic" select="if(not(main_pic != '')) then concat(product[1]/@path, product[1]/gallery[1]) else concat(@path, main_pic)"/>
+								<xsl:variable name="main_pic" select="concat(@path, main_pic)"/>
 
 								<div class="catalog-item">
-									<xsl:value-of select="main_pic"/>
+<!--									<xsl:value-of select="main_pic"/>-->
 									<xsl:variable name="pic_path" select="if ($main_pic != '') then $main_pic else 'img/no_image.png'"/>
 									<a href="{show_products}" class="image-container" style="background-image: url({$pic_path})"></a>
 									<div>

@@ -119,12 +119,12 @@
 						</form>
 					</div>
 
-					<!-- <a href="#" class="online-button product-button">Онлайн-рассрочка</a> -->
+					 <a href="#" class="online-button product-button">Онлайн-рассрочка</a>
 					
-					<!--<xsl:choose>-->
-						<!--<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>-->
-						<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
-					<!--</xsl:choose>-->
+<!--					<xsl:choose>-->
+<!--						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>-->
+<!--						<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
+<!--					</xsl:choose>-->
 				</div>
 				<div class="art-number">
 					№ для заказа: <xsl:value-of select="$p/code" />
