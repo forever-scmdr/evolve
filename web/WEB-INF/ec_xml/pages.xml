@@ -685,7 +685,7 @@
 		</session>
 		<list item="product">
 			<filter>
-				<parameter name="code">
+				<parameter name="code" compare="SOME">
 					<var ref="prod" parameter="code"/>
 				</parameter>
 			</filter>
@@ -1325,7 +1325,7 @@
 		</command>
 	</page>
 
-	<page name="update_prices_from_excel" template="integration/create_excel"  authority-groups="common">
+	<page name="update_prices_from_excel" template="integration/create_excel" schedule="0 30 22 ? * * *">
 		<request>
 			<var name="action"/>
 		</request>

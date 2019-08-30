@@ -1,5 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
+	<xsl:import href="user_data_inputs.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
@@ -69,65 +70,10 @@
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
 						<xsl:variable name="inp" select="page/user_jur/input"/>
 						<xsl:variable name="src" select="if ($inp/field != '') then $inp else if ($jur) then $jur else $inp"/>
-						<div class="form-group">
-							<label>Наименование организации:</label>
-							<input type="text" class="form-control" name="{$inp/organization/@input}" value="{$src/organization}"
-								   error="{$inp/organization/@validation-error}"/>
-						</div>
-						<div class="form-group">
-							<label for="">Телефон/факс:</label>
-							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$src/phone}"/>
-						</div>
-						<!-- <div class="form-group">
-							<label>Способ доставки <a href="">Подробнее об условиях доставки</a></label>
-							<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}">
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</select>
-						</div> -->
-						<div class="form-group">
-							<label>E-mail:</label>
-							<input type="text" class="form-control" name="{$inp/email/@input}" value="{$src/email}"/>
-						</div>
-						<div class="form-group">
-							<label>Контактное лицо:</label>
-							<input type="text" class="form-control" name="{$inp/contact_name/@input}" value="{$src/contact_name}"/>
-						</div>
-						<div class="form-group">
-							<label>Телефон контактного лица:</label>
-							<input type="text" class="form-control" name="{$inp/contact_phone/@input}" value="{$src/contact_phone}"/>
-						</div>
-						<div class="form-group">
-							<label>Юридический адрес:</label>
-							<input type="text" class="form-control" name="{$inp/address/@input}" value="{$src/address}"/>
-						</div>
-						<div class="form-group">
-							<label>Расчетный счет:</label>
-							<input type="text" class="form-control" name="{$inp/account/@input}" value="{$src/account}"/>
-						</div>
-						<div class="form-group">
-							<label>Название банка:</label>
-							<input type="text" class="form-control" name="{$inp/bank/@input}" value="{$src/bank}"/>
-						</div>
-						<div class="form-group">
-							<label>Адрес банка:</label>
-							<input type="text" class="form-control" name="{$inp/bank_address/@input}" value="{$src/bank_address}"/>
-						</div>
-						<div class="form-group">
-							<label>Код банка:</label>
-							<input type="text" class="form-control" name="{$inp/bank_code/@input}" value="{$src/bank_code}"/>
-						</div>
-						<div class="form-group">
-							<label>УНП:</label>
-							<input type="text" class="form-control" name="{$inp/unp/@input}" value="{$src/unp}"/>
-						</div>
-						<div class="form-group">
-							<label>Ф.И.О директора:</label>
-							<input type="text" class="form-control" name="{$inp/director/@input}" value="{$src/director}"/>
-						</div>
+						<xsl:call-template name="USER_JUR_INPUTS">
+							<xsl:with-param name="inp" select="$inp"/>
+							<xsl:with-param name="src" select="$src"/>
+						</xsl:call-template>
 						<div class="form-group">
 							<label>Комментарий:</label>
 							<textarea class="form-control" rows="3" name="{$inp/comment/@input}"><xsl:value-of select="$inp/comment"/></textarea>
