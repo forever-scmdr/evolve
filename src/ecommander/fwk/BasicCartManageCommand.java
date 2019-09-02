@@ -121,6 +121,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	public ResultPE proceed() throws Exception {
+		checkStrategy();
 		updateQtys();
 		recalculateCart();
 		return getResult("proceed");

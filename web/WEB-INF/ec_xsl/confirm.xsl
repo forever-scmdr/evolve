@@ -10,6 +10,32 @@
 	<xsl:variable name="cart" select="page/cart"/>
 	<xsl:variable name="contacts" select="if ($is_jur) then page/user_jur/input else page/user_phys/input"/>
 
+
+	<xsl:template match="bought">
+		<xsl:param name="avail" select="true()"/>
+		<tr>
+			<td>
+				<xsl:value-of select="product/vendor_code"/>
+			</td>
+			<td valign="top">
+				<strong><xsl:value-of select="product/name"/></strong>
+			</td>
+			<td valign="top">
+				<xsl:value-of select="if ($avail) then qty_avail else (f:num(qty_total) - f:num(qty_avail))"/>
+			</td>
+			<td>
+				<xsl:value-of select="product/price"/>
+			</td>
+			<td>
+				<xsl:value-of select="if ($avail) then sum else '0'"/>
+			</td>
+			<!-- <td>
+                <xsl:value-of select="product/qty"/>
+            </td> -->
+		</tr>
+	</xsl:template>
+
+
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
@@ -123,29 +149,21 @@
                                 Наличие
                             </th> -->
 					</tr>
-					<xsl:for-each select="$cart/bought">
+					<xsl:apply-templates select="$cart/bought[f:num(qty_avail) &gt; 0]">
 						<xsl:sort select="type"/>
+					</xsl:apply-templates>
+					<xsl:if test="$cart/bought[not_available = '1']">
 						<tr>
-							<td>
-								<xsl:value-of select="product/vendor_code"/>
+							<td colspan="5">
+								<h3>Товары не в наличии:</h3>
+								<span style="font-weight: bold;">Эти товары не включены в итоговую сумму</span>
 							</td>
-							<td valign="top">
-								<strong><xsl:value-of select="product/name"/></strong>
-							</td>
-							<td valign="top">
-								<xsl:value-of select="qty"/>
-							</td>
-							<td>
-								<xsl:value-of select="product/price"/>
-							</td>
-							<td>
-								<xsl:value-of select="sum"/>
-							</td>
-							<!-- <td>
-								<xsl:value-of select="product/qty"/>
-							</td> -->
 						</tr>
-					</xsl:for-each>
+						<xsl:apply-templates select="$cart/bought[not_available = '1']">
+							<xsl:sort select="type"/>
+							<xsl:with-param name="avail" select="false()"/>
+						</xsl:apply-templates>
+					</xsl:if>
 				</table>
 			</div>
 		</div>
