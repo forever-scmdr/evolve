@@ -54,8 +54,8 @@
 					</manual>
 				</xsl:for-each>
 				<gallery>
-					<xsl:for-each select="html//ul[contains(@class, 's-nomenclature__thumbs-list') and not(../@style)]//li">
-						<pic download="https://suzuki.ru{a/@href}" link="https://suzuki.ru{a/@href}"/>
+					<xsl:for-each select="html//div[contains(@class, 's-nomenclature__photo-item')]//img">
+						<pic download="https://suzuki.ru{@data-full}" link="https://suzuki.ru{@data-full}"/>
 					</xsl:for-each>
 				</gallery>
 				<assoc>
