@@ -41,15 +41,15 @@
 <!--END_p376000-->
 
 <!--START_p376873-->
-<item name="p376873" caption="Анкеры" key="" ag-id="0" ag-hash="2128709106" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p376873" caption="Анкеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1728" ag-hash="2128709106"></item>
 <!--END_p376873-->
 
 <!--START_p377256-->
-<item name="p377256" caption="Химические анкера и комплектующие" key="" ag-id="0" ag-hash="2128733072" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p377256" caption="Химические анкера и комплектующие" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1729" ag-hash="2128733072"></item>
 <!--END_p377256-->
 
 <!--START_p377337-->
-<item name="p377337" caption="Дюбеля" key="" ag-id="0" ag-hash="2128733972" virtual="false" user-def="true" description="" super="params *">
+<item name="p377337" caption="Дюбеля" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1730" ag-hash="2128733972">
 	<parameter name="ves_kg" caption="Вес, кг" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ed_izm_" caption="Ед.изм." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1897510365" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="material" caption="Материал" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -58,214 +58,231 @@
 <!--END_p377337-->
 
 <!--START_p377786-->
-<item name="p377786" caption="Крепление фасадной, гидро и теплоизоляции" key="" ag-id="0" ag-hash="2128737970" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p377786" caption="Крепление фасадной, гидро и теплоизоляции" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1731" ag-hash="2128737970"></item>
 <!--END_p377786-->
 
 <!--START_p377867-->
-<item name="p377867" caption="Метрический крепеж" key="" ag-id="0" ag-hash="2128738870" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p377867" caption="Метрический крепеж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1732" ag-hash="2128738870"></item>
 <!--END_p377867-->
 
 <!--START_p378774-->
-<item name="p378774" caption="Заклепки" key="" ag-id="0" ag-hash="2128767728" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p378774" caption="Заклепки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1733" ag-hash="2128767728"></item>
 <!--END_p378774-->
 
 <!--START_p379071-->
-<item name="p379071" caption="Саморезы, шурупы" key="" ag-id="0" ag-hash="2128790789" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p379071" caption="Саморезы, шурупы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1734" ag-hash="2128790789"></item>
 <!--END_p379071-->
 
 <!--START_p380028-->
-<item name="p380028" caption="Крепеж из нержавеющей стали" key="" ag-id="0" ag-hash="2129446043" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p380028" caption="Крепеж из нержавеющей стали" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1735" ag-hash="2129446043"></item>
 <!--END_p380028-->
 
 <!--START_p380511-->
-<item name="p380511" caption="Крепеж Сантехнический" key="" ag-id="0" ag-hash="2129450810" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p380511" caption="Крепеж Сантехнический" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1736" ag-hash="2129450810"></item>
 <!--END_p380511-->
 
 <!--START_p380738-->
-<item name="p380738" caption="Крюки и кольца ввертные" key="" ag-id="0" ag-hash="2129452801" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p380738" caption="Крюки и кольца ввертные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1737" ag-hash="2129452801"></item>
 <!--END_p380738-->
 
 <!--START_p381019-->
-<item name="p381019" caption="Такелаж" key="" ag-id="0" ag-hash="2129475804" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p381019" caption="Такелаж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1738" ag-hash="2129475804"></item>
 <!--END_p381019-->
 
 <!--START_p381278-->
-<item name="p381278" caption="Электротехнический (кабельный) крепеж" key="" ag-id="0" ag-hash="2129477911" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p381278" caption="Электротехнический (кабельный) крепеж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1739" ag-hash="2129477911"></item>
 <!--END_p381278-->
 
 <!--START_p381427-->
-<item name="p381427" caption="Перфорированный крепеж" key="" ag-id="0" ag-hash="2129479677" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p381427" caption="Перфорированный крепеж" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1740" ag-hash="2129479677"></item>
 <!--END_p381427-->
 
 <!--START_p381748-->
-<item name="p381748" caption="Сверла" key="" ag-id="0" ag-hash="2129482623" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p381748" caption="Сверла" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1741" ag-hash="2129482623"></item>
 <!--END_p381748-->
 
 <!--START_p382395-->
-<item name="p382395" caption="Диски и полотна для электроинструмента" key="" ag-id="0" ag-hash="2129508722" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p382395" caption="Диски и полотна для электроинструмента" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1742" ag-hash="2129508722"></item>
 <!--END_p382395-->
 
 <!--START_p382600-->
-<item name="p382600" caption="Сменные насадки" key="" ag-id="0" ag-hash="2129511321" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p382600" caption="Сменные насадки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1743" ag-hash="2129511321"></item>
 <!--END_p382600-->
 
 <!--START_p382751-->
-<item name="p382751" caption="Ручной инструмент" key="" ag-id="0" ag-hash="2129512438" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p382751" caption="Ручной инструмент" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1744" ag-hash="2129512438"></item>
 <!--END_p382751-->
 
 <!--START_p382843-->
-<item name="p382843" caption="Пистолеты монтажные для герметиков и пен" key="" ag-id="0" ag-hash="2129513370" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p382843" caption="Пистолеты монтажные для герметиков и пен" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1745" ag-hash="2129513370"></item>
 <!--END_p382843-->
 
 <!--START_p382868-->
-<item name="p382868" caption="Измерительный инструмент" key="" ag-id="0" ag-hash="2129513437" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p382868" caption="Измерительный инструмент" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1746" ag-hash="2129513437"></item>
 <!--END_p382868-->
 
 <!--START_p382959-->
-<item name="p382959" caption="Отвертки в ассортименте" key="" ag-id="0" ag-hash="2129514368" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p382959" caption="Отвертки в ассортименте" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1747" ag-hash="2129514368"></item>
 <!--END_p382959-->
 
 <!--START_p383026-->
-<item name="p383026" caption="Диэлектрический инструмент" key="" ag-id="0" ag-hash="2129535414" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p383026" caption="Диэлектрический инструмент" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1748" ag-hash="2129535414"></item>
 <!--END_p383026-->
 
 <!--START_p383039-->
-<item name="p383039" caption="Бокорезы" key="" ag-id="0" ag-hash="2129535448" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p383039" caption="Бокорезы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1749" ag-hash="2129535448"></item>
 <!--END_p383039-->
 
 <!--START_p383064-->
-<item name="p383064" caption="Ножницы по металлу" key="" ag-id="0" ag-hash="2129535536" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p383064" caption="Ножницы по металлу" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1750" ag-hash="2129535536"></item>
 <!--END_p383064-->
 
 <!--START_p383093-->
-<item name="p383093" caption="Плоскогубцы" key="" ag-id="0" ag-hash="2129535628" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p383093" caption="Плоскогубцы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1751" ag-hash="2129535628"></item>
 <!--END_p383093-->
 
 <!--START_p383164-->
-<item name="p383164" caption="Молотки\Киянки" key="" ag-id="0" ag-hash="2129536497" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p383164" caption="МолоткиКиянки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1752" ag-hash="2129536497"></item>
 <!--END_p383164-->
 
 <!--START_p383239-->
-<item name="p383239" caption="Уровни и правила" key="" ag-id="0" ag-hash="2129537370" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p383239" caption="Уровни и правила" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1753" ag-hash="2129537370"></item>
 <!--END_p383239-->
 
 <!--START_p383552-->
-<item name="p383552" caption="Малярные принадлежности" key="" ag-id="0" ag-hash="2129540308" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p383552" caption="Малярные принадлежности" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1754" ag-hash="2129540308"></item>
 <!--END_p383552-->
 
 <!--START_p383729-->
-<item name="p383729" caption="Штукатурные принадлежности" key="" ag-id="0" ag-hash="2129542144" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p383729" caption="Штукатурные принадлежности" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1755" ag-hash="2129542144"></item>
 <!--END_p383729-->
 
 <!--START_p383834-->
-<item name="p383834" caption="Шпатели" key="" ag-id="0" ag-hash="2129543131" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p383834" caption="Шпатели" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1756" ag-hash="2129543131"></item>
 <!--END_p383834-->
 
 <!--START_p383941-->
-<item name="p383941" caption="Кисти" key="" ag-id="0" ag-hash="2129544120" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p383941" caption="Кисти" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1757" ag-hash="2129544120"></item>
 <!--END_p383941-->
 
 <!--START_p384042-->
-<item name="p384042" caption="Ключи рожковые и комбинированные" key="" ag-id="0" ag-hash="2129565263" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384042" caption="Ключи рожковые и комбинированные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1758" ag-hash="2129565263"></item>
 <!--END_p384042-->
 
 <!--START_p384333-->
-<item name="p384333" caption="Наборы ключей и головок" key="" ag-id="0" ag-hash="2129568116" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384333" caption="Наборы ключей и головок" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1759" ag-hash="2129568116"></item>
 <!--END_p384333-->
 
 <!--START_p384452-->
-<item name="p384452" caption="Наборы ключей шестигранных и TORX" key="" ag-id="0" ag-hash="2129569138" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384452" caption="Наборы ключей шестигранных и TORX" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1760" ag-hash="2129569138"></item>
 <!--END_p384452-->
 
 <!--START_p384513-->
-<item name="p384513" caption="Пилы и ножовки" key="" ag-id="0" ag-hash="2129569976" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384513" caption="Пилы и ножовки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1761" ag-hash="2129569976"></item>
 <!--END_p384513-->
 
 <!--START_p384572-->
-<item name="p384572" caption="Миксеры для смесей" key="" ag-id="0" ag-hash="2129570161" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384572" caption="Миксеры для смесей" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1762" ag-hash="2129570161"></item>
 <!--END_p384572-->
 
 <!--START_p384583-->
-<item name="p384583" caption="Инструмент резьбонарезной" key="" ag-id="0" ag-hash="2129570193" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384583" caption="Инструмент резьбонарезной" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1763" ag-hash="2129570193"></item>
 <!--END_p384583-->
 
 <!--START_p384592-->
-<item name="p384592" caption="Монтировки\Гвоздодеры" key="" ag-id="0" ag-hash="2129570223" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384592" caption="МонтировкиГвоздодеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1764" ag-hash="2129570223"></item>
 <!--END_p384592-->
 
 <!--START_p384623-->
-<item name="p384623" caption="Струбцины строительные" key="" ag-id="0" ag-hash="2129570968" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384623" caption="Струбцины строительные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1765" ag-hash="2129570968"></item>
 <!--END_p384623-->
 
 <!--START_p384660-->
-<item name="p384660" caption="Ножи и лезвия строительные" key="" ag-id="0" ag-hash="2129571089" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384660" caption="Ножи и лезвия строительные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1766" ag-hash="2129571089"></item>
 <!--END_p384660-->
 
 <!--START_p384693-->
-<item name="p384693" caption="Стамески" key="" ag-id="0" ag-hash="2129571185" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384693" caption="Стамески" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1767" ag-hash="2129571185"></item>
 <!--END_p384693-->
 
 <!--START_p384706-->
-<item name="p384706" caption="Очки защитные" key="" ag-id="0" ag-hash="2129571870" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384706" caption="Очки защитные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1768" ag-hash="2129571870"></item>
 <!--END_p384706-->
 
 <!--START_p384735-->
-<item name="p384735" caption="Ленты, пленки, скотч" key="" ag-id="0" ag-hash="2129571962" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384735" caption="Ленты, пленки, скотч" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1769" ag-hash="2129571962"></item>
 <!--END_p384735-->
 
 <!--START_p384832-->
-<item name="p384832" caption="Топоры" key="" ag-id="0" ag-hash="2129572920" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384832" caption="Топоры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1770" ag-hash="2129572920"></item>
 <!--END_p384832-->
 
 <!--START_p384865-->
-<item name="p384865" caption="Разметочный инструмент" key="" ag-id="0" ag-hash="2129573016" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384865" caption="Разметочный инструмент" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1771" ag-hash="2129573016"></item>
 <!--END_p384865-->
 
 <!--START_p384926-->
-<item name="p384926" caption="Пена, герметики" key="" ag-id="0" ag-hash="2129573854" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384926" caption="Пена, герметики" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1772" ag-hash="2129573854"></item>
 <!--END_p384926-->
 
 <!--START_p384977-->
-<item name="p384977" caption="Электроинструмент" key="" ag-id="0" ag-hash="2129574010" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384977" caption="Электроинструмент" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1773" ag-hash="2129574010"></item>
 <!--END_p384977-->
 
 <!--START_p384994-->
-<item name="p384994" caption="Перфораторы" key="" ag-id="0" ag-hash="2129574069" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p384994" caption="Перфораторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1774" ag-hash="2129574069"></item>
 <!--END_p384994-->
 
 <!--START_p385067-->
-<item name="p385067" caption="Рубанки" key="" ag-id="0" ag-hash="2129595121" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p385067" caption="Рубанки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1775" ag-hash="2129595121"></item>
 <!--END_p385067-->
 
 <!--START_p385092-->
-<item name="p385092" caption="Лобзиковые пилы" key="" ag-id="0" ag-hash="2129595209" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p385092" caption="Лобзиковые пилы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1776" ag-hash="2129595209"></item>
 <!--END_p385092-->
 
 <!--START_p385135-->
-<item name="p385135" caption="Шуруповерты" key="" ag-id="0" ag-hash="2129595987" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p385135" caption="Шуруповерты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1777" ag-hash="2129595987"></item>
 <!--END_p385135-->
 
 <!--START_p385304-->
-<item name="p385304" caption="Углошлифмашины" key="" ag-id="0" ag-hash="2129597815" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p385304" caption="Углошлифмашины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1778" ag-hash="2129597815"></item>
 <!--END_p385304-->
 
 <!--START_p385471-->
-<item name="p385471" caption="Ленточные шлифмашины" key="" ag-id="0" ag-hash="2129598990" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p385471" caption="Ленточные шлифмашины" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1779" ag-hash="2129598990"></item>
 <!--END_p385471-->
 
 <!--START_p385482-->
-<item name="p385482" caption="Дрели безударные и ударные" key="" ag-id="0" ag-hash="2129599022" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p385482" caption="Дрели безударные и ударные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1780" ag-hash="2129599022"></item>
 <!--END_p385482-->
 
 <!--START_p385541-->
-<item name="p385541" caption="Гвозди" key="" ag-id="0" ag-hash="2129599858" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p385541" caption="Гвозди" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1781" ag-hash="2129599858"></item>
 <!--END_p385541-->
 
 <!--START_p385650-->
-<item name="p385650" caption="Проволока вязальная оцинкованная" key="" ag-id="0" ag-hash="2129600849" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p385650" caption="Проволока вязальная оцинкованная" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1782" ag-hash="2129600849"></item>
 <!--END_p385650-->
 
 <!--START_p385659-->
-<item name="p385659" caption="Скоба строительная" key="" ag-id="0" ag-hash="2129600858" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p385659" caption="Скоба строительная" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1783" ag-hash="2129600858"></item>
 <!--END_p385659-->
+
+
+
+<!--START_p389152-->
+<item name="p389152" caption="Дюбеля" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1788" ag-hash="2129715210">
+	<parameter name="ves_kg" caption="Вес, кг" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ed_izm_" caption="Ед.изм." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1897510365" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material" caption="Материал" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upakovka" caption="Упаковка" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p389152-->
+
+<!--START_p390049-->
+<item name="p390049" caption="Дюбеля" key="" ag-id="0" ag-hash="2130369627" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="ed_izm_" caption="Ед.изм." type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1897510365" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p390049-->
 <!--EXP--></model>

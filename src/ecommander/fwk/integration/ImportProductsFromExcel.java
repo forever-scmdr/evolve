@@ -212,7 +212,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							cellValue = StringUtils.isAllBlank(cellValue) ? "" : cellValue;
 							if (CODE_PARAM.equals(paramName)) {
 								product.setValue(CODE_PARAM, code);
-								product.setValue(VENDOR_CODE_PARAM, code);
+								//product.setValue(VENDOR_CODE_PARAM, code);
 								product.setValue(OFFER_ID_PARAM, code);//x
 
 							} else if (MAIN_PIC_PARAM.equals(paramName)) {
@@ -346,7 +346,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) continue;
 							if (CODE_PARAM.equals(paramName)) {
 								if (StringUtils.isBlank(product.getStringValue(VENDOR_CODE_PARAM))) {
-									product.setValueUI(VENDOR_CODE_PARAM, code);
+									//product.setValueUI(VENDOR_CODE_PARAM, code);
 								}
 								if (StringUtils.isBlank(product.getStringValue(OFFER_ID_PARAM))) {
 									product.setValueUI(OFFER_ID_PARAM, code);

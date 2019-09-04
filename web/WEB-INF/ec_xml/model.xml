@@ -190,7 +190,7 @@
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
-		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
+		<parameter name="vendor_code" type="string" caption="Артикул производителя" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
