@@ -488,7 +488,7 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="payment" caption="Оплата" ag-id="1727" ag-hash="-786681338">
+	<item name="payment" caption="Оплата" ag-id="1726" ag-hash="-786681338">
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 

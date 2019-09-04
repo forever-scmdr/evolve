@@ -73,10 +73,10 @@ public abstract class IntegrateBase extends Command {
 		}
 
 		private Error(Throwable e){
-			message = e.getMessage() == null? "": e.getMessage();
+			message = ExceptionUtils.getStackTrace(e);
 			lineNumber = info.lineNumber;
 			position = info.position;
-			originator = ExceptionUtils.getStackTrace(e);
+			originator = "";
 		}
 
 		@SuppressWarnings("unused")

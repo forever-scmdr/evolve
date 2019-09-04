@@ -54,6 +54,13 @@
             <body>
                 <h1><xsl:value-of select="/page/operation"/></h1>
                 <h2>Процесс выполнения</h2>
+                <table>
+                <tr>
+                    <td>
+                        <input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
+                    </td>
+                </tr>
+                </table>
                 <xsl:if test="/page/error">
                     <h2>ошибки выполнения интеграции</h2>
                     <table>
@@ -63,21 +70,12 @@
                                     Строка: <span class="no"><xsl:value-of select="@line"/></span>
                                     Позиция: <span class="no"><xsl:value-of select="@coloumn"/></span>
                                 </td>
-                                <td class="error">
-                                    <pre>
-                                    <xsl:value-of select="."/>
-                                    </pre>
-                                </td>
+                                <td class="error"><xsl:value-of select="."/></td>
                             </tr>
                         </xsl:for-each>
                     </table>
                 </xsl:if>
                 <table>
-                    <tr>
-                        <td colspan="2">
-                            <input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
-                        </td>
-                    </tr>
                     <tr>
                         <td>Строка файла:</td>
                         <td class="error">

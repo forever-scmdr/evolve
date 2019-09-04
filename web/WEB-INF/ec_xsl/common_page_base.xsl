@@ -893,8 +893,8 @@
 					$(".footer").css("margin-top", -1*oh);
 					$('.slick-slider').slick({
 					infinite: true,
-					slidesToShow: 6,
-					slidesToScroll: 6,
+					slidesToShow: 5,
+					slidesToScroll: 5,
 					dots: true,
 					arrows: false,
 					responsive: [
