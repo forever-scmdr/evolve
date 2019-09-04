@@ -502,7 +502,7 @@
 							<input type="submit" class="not_available" value="Под заказ"/>
 						</xsl:if>
 					</form>
-					 <a href="" class="online-button">Онлайн-рассрочка</a>
+					 <a href="{defer_link}" class="online-button" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-defer">Онлайн-рассрочка</a>
 				</div>
 				<!--<xsl:choose>-->
 					<!--<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>-->
@@ -713,6 +713,7 @@
 			<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
 			<xsl:call-template name="MY_PRICE_FORM"/>
 			<xsl:call-template name="ONE_CLICK_FORM"/>
+			<xsl:call-template name="DEFER_FORM"/>
 
 			<script type="text/javascript" src="js/bootstrap.js"/>
 			<script type="text/javascript" src="admin/ajax/ajax.js"/>

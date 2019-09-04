@@ -171,6 +171,10 @@
 					<var name="pname" ref="prod" parameter="name"/>
 					<var name="pcode" ref="prod" parameter="code"/>
 				</link>
+				<link name="defer_link" target="defer_ajax">
+					<var name="pname" ref="prod" parameter="name"/>
+					<var name="pcode" ref="prod" parameter="code"/>
+				</link>
 			</list>
 			<list item="product" tag="min" transit="true">
 				<filter>
@@ -295,6 +299,10 @@
 				<var name="pname" ref="prod" parameter="name"/>
 				<var name="pcode" ref="prod" parameter="code"/>
 			</link>
+			<link name="defer_link" target="defer_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
 		</list>
 		<include name="PRODUCT_EXTRA"/>
 		<link name="set_view_table" target="search" copy-page-vars="yes">
@@ -356,6 +364,10 @@
 				<var name="pname" ref="prod" parameter="name"/>
 				<var name="pcode" ref="prod" parameter="code"/>
 			</link>
+			<link name="defer_link" target="defer_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
 		</single>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
@@ -369,6 +381,10 @@
 				<var name="pcode" ref="assoc" parameter="code"/>
 			</link>
 			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="assoc" parameter="name"/>
+				<var name="pcode" ref="assoc" parameter="code"/>
+			</link>
+			<link name="defer_link" target="defer_ajax">
 				<var name="pname" ref="assoc" parameter="name"/>
 				<var name="pcode" ref="assoc" parameter="code"/>
 			</link>
