@@ -62,7 +62,11 @@
 								Строка: <span class="no"><xsl:value-of select="@line"/></span>
 								Позиция: <span class="no"><xsl:value-of select="@coloumn"/></span>
 							</td>
-							<td class="error"><xsl:value-of select="."/></td>
+							<td class="error">
+								<pre>
+									<xsl:value-of select="."/>
+								</pre>
+							</td>
 						</tr>
 					</xsl:for-each>
 				</table>
