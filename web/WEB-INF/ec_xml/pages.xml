@@ -275,7 +275,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="200" threshold="0.1" type="prefix">
+				<fulltext limit="200" threshold="0.1" type="prefix" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 			</filter>
@@ -387,7 +387,7 @@
 		<list item="plain_section" id="ps"/>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext name="name" limit="200" threshold="0.1" type="prefix">
+				<fulltext name="name" limit="200" threshold="0.1" type="prefix" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 				<predecessor ref="ps" sing="IN"/>
@@ -1426,7 +1426,7 @@
 
 
 
-	<page name="get_ferrite_auto_start" template="integration" schedule="0 0 15 ? * * *">
+	<page name="get_ferrite_auto_start" template="integration" schedule="0 0 23 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
