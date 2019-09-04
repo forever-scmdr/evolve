@@ -1325,15 +1325,6 @@
 		</command>
 	</page>
 
-	<page name="update_prices_from_excel" template="integration/create_excel" schedule="0 30 22 ? * * *">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
 	<page name="parse_excel" template="integration/create_excel" authority-groups="common">
 		<request>
 			<var name="action"/>
@@ -1392,7 +1383,7 @@
 	</page>
 
 
-	<page name="get_ferrite" template="integration" schedule="0 0 23 ? * * *">
+	<page name="get_ferrite" template="integration">
 		<request>
 			<var name="action"/>
 		</request>
@@ -1403,7 +1394,7 @@
 	</page>
 
 
-	<page name="get_compel" template="integration" schedule="0 30 23 ? * * *">
+	<page name="get_compel" template="integration">
 		<request>
 			<var name="action"/>
 		</request>
@@ -1414,7 +1405,7 @@
 	</page>
 
 
-	<page name="reindex_all" template="integration/reindex" schedule="0 0 0 ? * * *">
+	<page name="reindex_all" template="integration/reindex">
 		<request>
 			<var name="action"/>
 		</request>
@@ -1422,5 +1413,60 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
+
+
+	<page name="update_prices_from_excel" template="integration/create_excel">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+
+	<page name="get_ferrite_auto_start" template="integration" schedule="0 0 15 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportFerriteRu">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="get_compel_auto_start" template="integration" schedule="0 30 23 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportCompelRu">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="reindex_all_auto_start" template="integration/reindex" schedule="0 0 0 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="ecommander.fwk.integration.ReindexCommand" clear-cache="no">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="update_prices_from_excel_auto_start" template="integration/create_excel" schedule="0 30 22 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
 
 </site>

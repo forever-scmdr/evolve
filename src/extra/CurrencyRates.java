@@ -57,12 +57,13 @@ public class CurrencyRates implements ItemNames{
 		// Если цена в одной из валют сайта кроме BYN
 		if (rates.containsKey(currencyCode)) {
 			BigDecimal[] rate = rates.get(currencyCode);
-			bynPrice = price.multiply(rate[0]).divide(rate[1], 6, BigDecimal.ROUND_HALF_EVEN).multiply(rate[2]).setScale(2, BigDecimal.ROUND_CEILING);
+			BigDecimal extraQuotient = (new BigDecimal(1)).add(rate[2].divide(new BigDecimal(100), 6, BigDecimal.ROUND_HALF_EVEN));
+			bynPrice = price.multiply(rate[0]).divide(rate[1], 6, BigDecimal.ROUND_HALF_EVEN).multiply(extraQuotient).setScale(4, BigDecimal.ROUND_CEILING);
 		}
 		product.setValue(PRICE, bynPrice);
 		for (String CODE : rates.keySet()) {
 			BigDecimal[] rate = rates.get(CODE);
-			BigDecimal currencyPrice = bynPrice.divide(rate[0], 6, BigDecimal.ROUND_HALF_EVEN).multiply(rate[1]).setScale(2, BigDecimal.ROUND_CEILING);
+			BigDecimal currencyPrice = bynPrice.divide(rate[0], 6, BigDecimal.ROUND_HALF_EVEN).multiply(rate[1]).setScale(4, BigDecimal.ROUND_CEILING);
 			product.setValue(PRICE_PREFIX + CODE, currencyPrice);
 		}
 	}
