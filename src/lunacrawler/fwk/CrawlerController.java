@@ -561,12 +561,18 @@ public class CrawlerController {
 
 					}
 				};
+				threads[i].setDaemon(true);
 				threads[i].start();
 			}
-
+			for (Thread thread : threads) {
+				thread.join();
+			}
 			info.pushLog("Finished downloading files");
 		} catch (IOException e) {
-			info.pushLog("Can not parse result file", e);
+			info.pushLog("Can not parse result file");
+		} catch (InterruptedException e) {
+			ServerLogger.error("Thread join error", e);
+			info.pushLog("Ошибка объединения потоков скачивания файлов");
 		}
 	}
 	/**
@@ -803,6 +809,7 @@ public class CrawlerController {
 				info.increaseProcessed();
 			}
 		} catch (IOException e) {
+			ServerLogger.error("Error while normalizing item personal file", e);
 			info.pushLog("Error while normalizing item personal file", e);
 		}
 		info.pushLog("ЗАВЕРШЕНО: Удаление дублирующихся данных");
