@@ -612,7 +612,7 @@ public class Item implements ItemBasics {
 			}
 			if (key.length() > 99) key = key.substring(0, 98);
 			if (StringUtils.isBlank(keyUnique)) {
-				keyUnique = Strings.translit(key);
+				keyUnique = Strings.createTranslitedUrlPart(key);
 				if (keyUnique.length() > 99) keyUnique = keyUnique.substring(0, 98);
 			}
 			// Если айтем новый - также сохранить oldKeyUnique

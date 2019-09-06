@@ -408,7 +408,8 @@
 		<xsl:variable name="price_old" select="if ($is_reg_jur) then price_opt_old else price_old"/>
 
 		<xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/>
-		<xsl:variable name="available_qty" select="if (qty and f:num(qty) &gt; 0) then f:num(qty) else 0"/>
+		<xsl:variable name="qty" select="if ($is_reg_jur) then qty_opt else qty"/>
+		<xsl:variable name="available_qty" select="if ($qty and f:num($qty) &gt; 0) then f:num($qty) else 0"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
@@ -467,7 +468,7 @@
 					<div class="device__in-stock"><i class="fas fa-signal"></i> есть на складе</div>
 				</xsl:when>
 				<xsl:when test="$available_qty &gt; 0">
-					<div class="device__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="qty"/> шт.</div>
+					<div class="device__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="$qty"/> шт.</div>
 				</xsl:when>
 				<xsl:otherwise>
 					<div class="device__in-stock device__in-stock_no" title="Ближайшая поставка: 01.01.2020"><i class="fas fa-truck"></i> товар в пути</div>
@@ -489,7 +490,8 @@
 		<xsl:variable name="price_old" select="if ($is_reg_jur) then price_opt_old else price_old"/>
 
 		<xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/>
-		<xsl:variable name="available_qty" select="if (qty and f:num(qty) &gt; 0) then f:num(qty) else 0"/>
+        <xsl:variable name="qty" select="if ($is_reg_jur) then qty_opt else qty"/>
+		<xsl:variable name="available_qty" select="if ($qty and f:num($qty) &gt; 0) then f:num($qty) else 0"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
@@ -549,8 +551,8 @@
 					<xsl:when test="$available_qty &gt; 10">
 						<div class="device__in-stock device_row__in-stock"><i class="fas fa-signal"></i> есть на складе</div>
 					</xsl:when>
-					<xsl:when test="$available_qty and f:num(qty) &gt; 0">
-						<div class="device__in-stock device_row__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="qty"/> шт.</div>
+					<xsl:when test="$available_qty &gt; 0">
+						<div class="device__in-stock device_row__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="$qty"/> шт.</div>
 					</xsl:when>
 					<xsl:otherwise>
 						<div class="device__in-stock device_row__in-stock device__in-stock_no" title="Ближайшая поставка: 01.01.2020"><i class="fas fa-truck"></i> товар в пути</div>

@@ -81,7 +81,8 @@
 				<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num($p/price_opt) div 100 * (100 - $discount)) else $p/price"/>
 				<xsl:variable name="price_old" select="if ($is_reg_jur) then $p/price_opt_old else $p/price_old"/>
 				<xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/><xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/>
-				<xsl:variable name="available_qty" select="if ($p/qty and f:num($p/qty) &gt; 0) then f:num($p/qty) else 0"/>
+                <xsl:variable name="qty" select="if ($is_reg_jur) then $p/qty_opt else $p/qty"/>
+                <xsl:variable name="available_qty" select="if ($qty and f:num($qty) &gt; 0) then f:num($qty) else 0"/>
 				<xsl:variable name="max" select="if ($available_qty &gt; 0) then $available_qty else 1000000"/>
 				<!-- new html -->
 				<xsl:for-each select="$p/tag">
@@ -134,7 +135,7 @@
 								<div class="device__in-stock"><i class="fas fa-signal"></i> есть на складе</div>
 							</xsl:when>
 							<xsl:when test="$available_qty &gt; 0">
-								<div class="device__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="$p/qty"/> шт.</div>
+								<div class="device__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="$qty"/> шт.</div>
 							</xsl:when>
 							<xsl:otherwise>
 								<div class="device__in-stock device__in-stock_no" title="Ближайшая поставка: 01.01.2020"><i class="fas fa-truck"></i> товар в пути</div>
@@ -164,7 +165,8 @@
 							<xsl:variable name="price" select="if($is_reg_jur) then price_opt else price"/>
 							<xsl:variable name="price_old" select="if($is_reg_jur) then price_opt_old else price_old"/>
 							<xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/>
-							<xsl:variable name="available_qty" select="if (qty and f:num(qty) &gt; 0) then f:num(qty) else 0"/>
+                            <xsl:variable name="qty" select="if ($is_reg_jur) then $p/qty_opt else $p/qty"/>
+                            <xsl:variable name="available_qty" select="if ($qty and f:num($qty) &gt; 0) then f:num($qty) else 0"/>
 							<xsl:variable name="max" select="if ($available_qty &gt; 0) then $available_qty else 1000000"/>
 
 							<div class="multi-device__name"><xsl:value-of select="name" /></div>

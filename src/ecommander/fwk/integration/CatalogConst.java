@@ -19,6 +19,7 @@ public interface CatalogConst {
 	String TYPE_PARAM = "type";
 	String CODE_PARAM = "code";
 	String QTY_PARAM = "qty";
+	String QTY_OPT_PARAM = "qty_opt";
 	String CATEGORY_ID_PARAM = "category_id";
 	String PARENT_ID_PARAM = "parent_id";
 	String MAIN_PIC_PARAM = "main_pic";
@@ -103,6 +104,7 @@ public interface CatalogConst {
 	String NEXT_DELIVERY_ELEMENT = "next_delivery";
 
 	String QUANTITY_ELEMENT = "quantity";
+	String QUANTITY_OPT_ELEMENT = "quantity_opt";
 	String OLDPRICE_ELEMENT = "oldprice";
 	String OPTPRICE_ELEMENT = "optprice";
 	String OLDOPTPRICE_ELEMENT = "oldoptprice";

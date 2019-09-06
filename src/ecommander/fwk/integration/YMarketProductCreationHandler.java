@@ -33,6 +33,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		SINGLE_PARAMS.add(COUNTRY_OF_ORIGIN_ELEMENT);
 		SINGLE_PARAMS.add(MODEL_ELEMENT);
 		SINGLE_PARAMS.add(QUANTITY_ELEMENT);
+		SINGLE_PARAMS.add(QUANTITY_OPT_ELEMENT);
 		SINGLE_PARAMS.add(VENDOR_ELEMENT);
 		SINGLE_PARAMS.add(OLDPRICE_ELEMENT);
 		SINGLE_PARAMS.add(OPTPRICE_ELEMENT);
@@ -108,6 +109,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				product.setValue(OFFER_ID_PARAM, code);
 				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(singleParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
 				product.setValueUI(QTY_PARAM, singleParams.get(QUANTITY_ELEMENT));
+				product.setValueUI(QTY_OPT_PARAM, singleParams.get(QUANTITY_OPT_ELEMENT));
 				product.setValueUI(GROUP_ID_PARAM, singleParams.get(GROUP_ID_ATTR));
 				product.setValueUI(URL_PARAM, singleParams.get(URL_ELEMENT));
 				if (product.getItemType().hasParameter(CURRENCY_ID_PARAM))

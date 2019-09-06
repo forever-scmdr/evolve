@@ -181,6 +181,7 @@
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
+        <parameter name="qty_opt" type="double" caption="Количество на оптовом складе"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 	</item>
 
