@@ -213,13 +213,15 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		BigDecimal currentQuotient = new BigDecimal(1d);
 		ArrayList<Pair<BigDecimal, BigDecimal>> intervals = null;
 		BigDecimal basicQuotient = null;
-		if (StringUtils.isNotBlank(sectionName)) {
+		if (StringUtils.isNotBlank(sectionName) && priceIntervals.containsKey(sectionName)) {
 			intervals = priceIntervals.get(sectionName).getRight();
 			basicQuotient = priceIntervals.get(sectionName).getLeft();
-		} if (intervals == null || intervals.size() == 0) {
+		}
+		if (intervals == null || intervals.size() == 0) {
 			intervals = priceIntervals.get(DEFAULT).getRight();
 			basicQuotient = priceIntervals.get(DEFAULT).getLeft();
-		} if (intervals != null) {
+		}
+		if (intervals != null) {
 			for (Pair<BigDecimal, BigDecimal> priceInterval : intervals) {
 				currentQuotient = priceInterval.getRight();
 				if (productSum.compareTo(priceInterval.getLeft()) <= 0) {
