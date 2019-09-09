@@ -8,7 +8,11 @@
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
 	<!-- SEO VARS -->
+	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
+	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 	<xsl:variable name="title" select="'Керамо'" />
+	<xsl:variable name="local_h1" select="'Керамо'" />
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $local_h1" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
@@ -20,6 +24,8 @@
 
 
 	<xsl:variable name="active_menu_item"/>
+
+
 
 
 
@@ -126,8 +132,8 @@
 					<img src="img/logo.svg" alt="logo keramo.by" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
-					<a href=""><i class="fas fa-phone"></i></a>
-					<a href=""><i class="fas fa-shopping-cart"></i></a>
+					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
+					<a href="{page/cart_link}"><i class="fas fa-shopping-cart"></i></a>
 					<a href="javascript:showMobileMainMenu()"><i class="fas fa-bars"></i></a>
 				</div>
 				<div class="search-container">
@@ -154,13 +160,15 @@
 			<div class="container">
 				<div class="footer-container">
 					<div class="block">
-						<p><strong>© keramo.by, 2018</strong></p>
+						<p><strong>© Keramo.by, 2018</strong></p>
 						<div class="forever">
 							<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
 						</div>
 					</div>
 					<div class="block">
-
+						<p>
+							<a href="http://keramo.by/sub/nekollektsionnaya_plitka_dlya_pola/">Керамическая плитка для пола</a>
+						</p>
 					</div>
 					<div class="block">
 						<p>Принимаем к оплате<xsl:call-template name="BR"/> пластиковые карточки</p>
@@ -176,11 +184,11 @@
 						<!-- <xsl:value-of select="page/common/bottom_address" disable-output-escaping="yes"/> -->
 						<p>Мы в социальных сетях</p>
 						<div class="social">
-							<a href="" target="_blank"><i class="fab fa-facebook" /></a>
-							<a href="" target="_blank"><i class="fab fa-vk" /></a>
-							<a href="" target="_blank"><i class="fab fa-odnoklassniki" /></a>
-							<a href="" target="_blank"><i class="fab fa-youtube" /></a>
-							<a href="" target="_blank"><i class="fab fa-instagram" /></a>
+							<a target="_blank"><i class="fab fa-facebook" /></a>
+							<a target="_blank"><i class="fab fa-vk" /></a>
+							<a target="_blank"><i class="fab fa-odnoklassniki" /></a>
+							<a target="_blank"><i class="fab fa-youtube" /></a>
+							<a target="_blank"><i class="fab fa-instagram" /></a>
 						</div>
 					</div>
 				</div>
@@ -370,7 +378,7 @@
 
 	<xsl:template name="COMMON_LEFT_COLOUMN">
 		<div class="actions">
-			<h3>Акции</h3>
+			<div class="h3">Акции</div>
 			<div class="actions-container">
 				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 			</div>
@@ -391,7 +399,7 @@
 
 	<xsl:template name="ACTIONS_MOBILE">
 		<div class="actions mobile">
-			<h3>Акции</h3>
+			<div class="h3">Акции</div>
 			<div class="actions-container">
 				<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
 			</div>
@@ -440,7 +448,7 @@
 			<div class="price">
 				<xsl:if test="$has_price">
 					<!--<p><span>Старая цена</span>100 р.</p>-->
-					<p><!--<span>Новая цена</span>--><xsl:value-of select="price"/> р.</p>
+					<p><!--<span>Новая цена</span>-->Цена: <xsl:value-of select="price"/> р.</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
 					<!-- <p><span>&#160;</span>&#160;</p> -->
@@ -522,6 +530,7 @@
 					<div class="mc-container">
 						<xsl:call-template name="INC_MOBILE_HEADER"/>
 						<xsl:call-template name="CONTENT"/>
+						<xsl:call-template name="SEO_TEXT"/>
 					</div>
 				</div>
 				<!-- RIGHT COLOUMN END -->
@@ -574,11 +583,13 @@
 			<xsl:call-template name="SEO"/>
 			<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 			<link rel="stylesheet" href="css/app.css"/>
+			<link rel="stylesheet" href="css/app.min.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 			<link rel="stylesheet" href="fotorama/fotorama.css"/>
 			<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
-			<script defer="defer" src="js/font_awesome_all.js"/>
+			<!-- <script defer="defer" src="js/font_awesome_all.js"/> -->
+			<script defer="defer" src="https://use.fontawesome.com/releases/v5.6.1/js/all.js" integrity="sha384-R5JkiUweZpJjELPWqttAYmYM1P3SNEJRM6ecTQF05pFFtxmCO+Y1CiUhvuDzgSVZ" crossorigin="anonymous"></script>
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 		</head>
 		<body>
@@ -699,11 +710,8 @@
 	<xsl:template name="SEO">
 
 		<xsl:variable name="quote">"</xsl:variable>
-
-		<link rel="canonical" href="{concat($main_host, $canonical)}" />
-		<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
-		<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
-
+<!--    
+		<link rel="canonical" href="{concat($main_host, $canonical)}" />    каноникал    -->
 		<xsl:if test="$seo">
 			<xsl:apply-templates select="$seo"/>
 		</xsl:if>
@@ -716,7 +724,13 @@
 		<xsl:value-of select="page/common/google_verification" disable-output-escaping="yes"/>
 		<xsl:value-of select="page/common/yandex_verification" disable-output-escaping="yes"/>
 		<xsl:call-template name="MARKUP" />
+		<xsl:call-template name="PAGINATION_LINKS" />
+	</xsl:template>
 
+	<xsl:template name="SEO_TEXT">
+		<div class="text m-t">
+			<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+		</div>
 	</xsl:template>
 
 	<xsl:template name="MARKUP"/>
@@ -728,6 +742,23 @@
 		<meta name="description" content="{description}"/>
 		<meta name="keywords" content="{keywords}"/>
 		<xsl:value-of select="meta" disable-output-escaping="yes"/>
+	</xsl:template>
+
+	<xsl:template name="PAGINATION_LINKS">
+		<xsl:variable name="pages" select="//*[ends-with(name(), '_pages')]"/>
+		<xsl:if test="$pages">
+			<xsl:variable name="current_page" select="number(page/variables/page)"/>
+
+			<xsl:variable name="prev" select="$pages/page[$current_page - 1]"/>
+			<xsl:variable name="next" select="$pages/page[$current_page + 1]"/>
+
+			<xsl:if test="$prev">
+				<link rel="prev" href="{$prev/link}" />
+			</xsl:if>
+			<xsl:if test="$next">
+				<link rel="next" href="{$next/link}" />
+			</xsl:if>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>

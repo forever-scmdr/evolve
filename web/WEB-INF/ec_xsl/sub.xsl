@@ -10,6 +10,8 @@
 	<xsl:variable name="title" select="replace(concat($ancestors, $title-constant), $quote, '')" />
 	<xsl:variable name="meta_description" select="replace(concat($ancestors, $description-constant), $quote, '')" />
 
+	<xsl:variable name="local_h1" select="page/current_section/name"/>
+
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
@@ -21,18 +23,18 @@
 		<div class="path-container">
 			<div class="path">
 				<a href="/">Главная страница</a>
-				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
+				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
 					<a href="{show_section}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="page/current_section/name"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 		<div class="page-content m-t">
 			<div class="catalog-items"><!-- добавить класс lines для отображения по строкам -->
 				<xsl:for-each select="page/current_section/section">
-
+					
 					<xsl:variable name="clone" select="/page/catalog//section[@id = current()/@id]"/>
 					<xsl:variable name="href" select="if($clone/section) then $clone/show_section else show_products"/>
 

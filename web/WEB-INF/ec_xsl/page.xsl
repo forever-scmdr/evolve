@@ -4,6 +4,7 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="$p/header"/>
+	<xsl:variable name="local_h1" select="$p/header"/>
 
 	<xsl:variable name="p" select="page/custom_page"/>
 
@@ -23,7 +24,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$p/header"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
 			<div class="catalog-items info">

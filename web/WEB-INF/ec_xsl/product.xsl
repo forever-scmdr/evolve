@@ -4,6 +4,7 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="p" select="page/product"/>
+	<xsl:variable name="canonical" select="concat('/',$p/@key, '/')"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 	
 	<xsl:variable name="ancestors" select="string-join(page/catalog//section[.//@id = $sel_sec_id and @id != $p/product_section/@id]/name, ' ')" />
@@ -13,6 +14,7 @@
 	<xsl:variable name="title" select="replace(concat($ancestors,' ', $p/name, $title-constant), $quote, '')" />
 	<xsl:variable name="meta_description" select="replace(concat($ancestors, ' ', $p/name, $description-constant), $quote, '')" />
 
+	<xsl:variable name="local_h1" select="$p/name"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -53,14 +55,14 @@
 		<div class="path-container">
 			<div class="path">
 				<a href="/">Главная страница</a>
-				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
+				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $p/@id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{if (position() = 1) then show_section else show_products}"><xsl:value-of select="name"/></a>
+					<a href="{if (section != '') then show_section else show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$p/name"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="catalog-item-container">
 			<!--
@@ -85,8 +87,8 @@
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 				<xsl:if test="$has_price">
 					<div class="price">
-						<p><span>Старая цена</span>100 р.</p>
-						<p><span>Новая цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
+						<p><span> </span><!-- 100 р. --></p>
+						<p><!-- <span>Новая цена</span> -->Цена: <xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
 					</div>
 				</xsl:if>
 				<div class="order">
@@ -119,9 +121,53 @@
 				</div>
 				
 				<div class="info-blocks">
-					<div class="info-block">
+					<!-- <div class="info-block">
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
-					</div>
+					</div> -->
+					<noindex>
+						<xsl:if test="not($p/side_text != '') and not(page/common/product_side_text != '')">
+							<div class="more-info">
+								<div class="more-info__title">Заказать по телефону</div>
+								<ul class="more-info__phones">
+									<li><div class="phone-logo"><img src="img/phone_logo.svg" alt=""/></div><span>(+375 17) 291-91-50;</span></li>
+									<li><div class="phone-logo"><img class="phone-logo" src="img/velcom_logo.svg" alt=""/></div><span>(+375 29) 643-30-03.</span></li>
+								</ul>
+								<div class="more-info__title">Оплата</div>
+								<ul>
+									<li>наличными;</li>
+									<li>банковской картой;</li>
+									<li>через расчетный счет.</li>
+								</ul>
+								<div class="more-info__title">Наши магазины</div>
+								<ul>
+									<li>Минск, ул. Бабушкина, 3, магазин-склад (п/з Колядичи) <a href="/contacts" target="_blank">Схема проезда</a></li>
+									<li>Минск, стройрынок «Уручье», главная аллея, пав. № 368Б</li>
+								</ul>
+								<div class="more-info__title">Дополнительные услуги</div>
+								<ul>
+									<li>Бесплатная разработка дизайн-проекта помещения в 3D;</li>
+									<li>Доставка до подъезда, подъем на этаж;</li>
+									<li>Помощь в подборе плиточника;</li>
+									<li>Консультации в подборе сопутствующих материалов.</li>
+								</ul>
+							</div>
+							<!-- <xsl:value-of select="page/common/product_side_text" disable-output-escaping="yes"/> -->
+							
+						</xsl:if>
+						<xsl:if test="not($p/side_text != '') and page/common/product_side_text != ''">
+							<div class="more-info">
+								<xsl:value-of select="page/common/product_side_text" disable-output-escaping="yes"/>
+							</div>
+						</xsl:if>
+						<xsl:if test="$p/side_text != ''">
+							<div class="more-info">
+								<xsl:value-of select="$p/side_text" disable-output-escaping="yes"/>
+							</div>
+						</xsl:if>
+						<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
+						<script src="//yastatic.net/share2/share.js"></script>
+						<div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,viber,skype,telegram"></div>
+					</noindex>
 					<!--
 					<div class="info-block">
 						<h4>Рассрочка от 3 до 12 месяцев</h4>
@@ -137,11 +183,16 @@
 			<div class="description">
 				<ul class="nav nav-tabs" role="tablist">
 					<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-						<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab">Описание</a></li>
+						<xsl:if test="$p/description">
+							<li role="presentation" class="active">
+								<a href="#tab1" role="tab" data-toggle="tab">Описание</a>
+							</li>
+						</xsl:if>
 					<!--</xsl:if>-->
-					<!--<xsl:if test="$p/tech">-->
-						<!--<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">Технические данные</a></li>-->
-					<!--</xsl:if>-->
+					<!-- <xsl:if test="$p/text"> -->
+						<xsl:if test="$p/params/param">
+						<li role="presentation" class="{'active'[not($p/description)]}"><a href="#tab2" role="tab" data-toggle="tab">Технические характеристики</a></li>
+					</xsl:if>
 					<!--<xsl:if test="page/accessory">-->
 						<!--<li role="presentation"><a href="#tab3" role="tab" data-toggle="tab">Принадлежности</a></li>-->
 					<!--</xsl:if>-->
@@ -156,25 +207,53 @@
 					<!--</xsl:if>-->
 				</ul>
 				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane active" id="tab1">
-						<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
-						<table>
-							<colgroup>
-								<col style="width: 40%"/>
-							</colgroup>
-							<xsl:for-each select="$p/params/param">
-								<tr>
-									<td>
-										<p><strong><xsl:value-of select="@caption"/></strong></p>
-									</td>
-									<td>
-										<p><xsl:value-of select="."/></p>
-									</td>
-								</tr>
-							</xsl:for-each>
-						</table>
+					<xsl:if test="$p/params/param">
+						<div role="tabpanel" class="tab-pane {' active'[not($p/description)]}" id="tab2">
+							
+							<table>
+								<colgroup>
+									<col style="width: 40%"/>
+								</colgroup>
+								<xsl:for-each select="$p/params/param">
+									<tr>
+										<td>
+											<p><strong><xsl:value-of select="@caption"/></strong></p>
+										</td>
+										<td>
+											<p><xsl:value-of select="."/></p>
+										</td>
+									</tr>
+								</xsl:for-each>
+							</table>
 
-					</div>
+						</div>
+					</xsl:if>
+					<!-- <xsl:if test="$p/text"> -->
+					<xsl:if test="$p/description">
+						<div role="tabpanel" class="tab-pane active" id="tab1">
+							<!-- <xsl:value-of select="$p/text" disable-output-escaping="yes"/> -->
+							<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
+						</div>
+					</xsl:if>
+					<xsl:variable name="pid" select="$p/@id"/>
+					<xsl:if test="$p/product_section/product[@id != $pid]">
+						<div class="tab-pane" style="display: block;">
+							<div class="h1">Смотрите также</div>
+							<div class="catalog-items">
+								
+								<xsl:variable name="x" select="$p/product_section/product[@id != $pid]"/>
+
+								<xsl:variable name="params" select="$p/params/param"/>
+
+								<xsl:for-each select="$x">
+									<xsl:sort select="count(params/param[. = $params])" order="descending"/>
+									<xsl:if test="position() &lt; 5">
+										<xsl:apply-templates select="."/>
+									</xsl:if>
+								</xsl:for-each>
+							</div>
+						</div>
+					</xsl:if>
 					<!--<div role="tabpanel" class="tab-pane" id="tab2">-->
 						<!--<h4>Технические данные</h4>-->
 						<!--<div class="table-responsive">-->

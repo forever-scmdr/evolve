@@ -7,18 +7,24 @@
 
 	<item name="seo" caption="SEO" ag-id="2156" ag-hash="113757">
 		<parameter name="title" type="string" caption="title"/>
+		<parameter name="h1" type="string" caption="h1"/>
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
+		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 	</item>
 
 	<item name="url_seo" key="name" caption="SEO" ag-id="2157" ag-hash="-169844339">
 		<parameter name="name" type="string" caption="Название" description="для поиска в CMS"/>
 		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
 		<parameter name="title" type="string" caption="title"/>
+		<parameter name="h1" type="string" caption="h1"/>
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
+		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 	</item>
 
 	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="2158" ag-hash="843192252">
@@ -74,9 +80,10 @@
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" format="width: 300" caption="Главная картинка"/>
-		<parameter name="description" type="text" caption="Полное описание" text-index="fulltext" />
-		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
+		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
+		<parameter name="text" type="text" caption="Полное описание (не выводятся)" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
+		<parameter name="side_text" type="text" caption="Правая колонка" text-index="fulltext" />
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 		<child item="params" single="true"/>
 	</item>
@@ -239,9 +246,18 @@
 	</item>
 
 	<item name="common" caption="На всех страницах" ag-id="22" ag-hash="-1354814997">
+		<parameter name="product_side_text" type="text" caption="текст на странице карточки товара"/>
 		<parameter name="top" type="short-text" caption="Верх" description="телефоны"/>
 		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
 		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
+		
+		<parameter name="link_link2" type="string" caption="Ссылка на акцию 2" description="начиная с http://"/>
+		<parameter name="link_text2" type="string" caption="Текст ссылки на акцию 2" description="выводится слева под каталогом"/>
+		<parameter name="link_link3" type="string" caption="Ссылка на акцию 3" description="начиная с http://"/>
+		<parameter name="link_text3" type="string" caption="Текст ссылки на акцию 4" description="выводится слева под каталогом"/>
+		<parameter name="link_link4" type="string" caption="Ссылка на акцию 4" description="начиная с http://"/>
+		<parameter name="link_text4" type="string" caption="Текст ссылки на акцию 4" description="выводится слева под каталогом"/>
+		
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
@@ -332,5 +348,5 @@
 	</root>
 
 
-<!--EXP-->
+	<!--EXP-->
 </model>

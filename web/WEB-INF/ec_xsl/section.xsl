@@ -3,12 +3,17 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="canonical" select="concat('/',$sel_sec/@key, '/')"/>
+
 	<xsl:variable name="ancestors" select="string-join(page/catalog//section[.//@id = $sel_sec_id]/name, ' ')" />
+
 	<xsl:variable name="title-constant" select="' купить в Минске в магазине КЕРАМОМАРКЕТ'"/>
 	<xsl:variable name="description-constant" select="' купить в Минске недорого в магазине КЕРАМОМАРКЕТ &#9989;. Фото. Доступные цены ☎☎☎  +375 (17) 291-91-50 Звоните!'" />
 	<xsl:variable name="quote">"</xsl:variable>
 	<xsl:variable name="title" select="replace(concat($ancestors, $title-constant), $quote, '')" />
 	<xsl:variable name="meta_description" select="replace(concat($ancestors, $description-constant), $quote, '')" />
+
+	<xsl:variable name="local_h1" select="$sel_sec/name"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -62,14 +67,14 @@
 		<div class="path-container">
 			<div class="path">
 				<a href="/">Главная страница</a>
-				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
+				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
-					<a href="{if (position() = 1) then show_section else show_products}"><xsl:value-of select="name"/></a>
+					<a href="{if (section != '') then show_section else show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$sel_sec/name"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 		<div class="page-content m-t">
 			<xsl:if test="$sel_sec/params_filter/filter">
 				<div class="toggle-filters">

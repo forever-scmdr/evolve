@@ -13,7 +13,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Ваш заказ</h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="cart-container">
 			<xsl:choose>

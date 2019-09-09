@@ -4,6 +4,7 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="active_menu_item" select="'contacts'"/>
+	<xsl:variable name="title" select="'Контакты'" />
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -13,7 +14,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Контакты</h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
 			<xsl:value-of select="page/contacts/text" disable-output-escaping="yes"/>
