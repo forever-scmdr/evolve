@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>                                            
+<?xml version="1.0" encoding="UTF-8"?>           
 <site>
-
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -19,21 +18,18 @@
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="keypath"/>
 				</link>
-				<list item="product" transit="true">
+				<list item="product"  transit="true">
 					<filter>
 						<limit>
 							<var value="1"/>
 						</limit>
-						<sorting direction="DESC">
-							<var value="main_pic"/>
-						</sorting>
 					</filter>
 				</list>
 			</tree>
 		</single>
 
 		<single item="custom_pages" id="custom_pages" cacheable="true" >
-			<tree item="menu_item" id="custom_page" tag="menu_custom">
+			<tree item="menu_item" id="custom_page">
 				<link name="show_page" target="page" type="exclusive">
 					<var name="p" ref="custom_page" style="key"/>
 				</link>
@@ -67,7 +63,6 @@
 
 		<!-- REGISTRATION -->
 		<link name="register_link" target="register"/>
-		<link name="login_form_link" target="login_form_ajax"/>
 		<link name="login_link" target="register">
 			<var name="login" value="true"/>
 		</link>
@@ -82,8 +77,8 @@
 	</include-definition>
 
 
-	<page name="test">
-		<single item="catalog"  id="catalog_main">
+<!-- 	<page name="test">
+		<single item="catalog" id="catalog_main">
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="key"/>
@@ -97,7 +92,7 @@
 				</list>
 			</tree>
 		</single>
-	</page>
+	</page> -->
 
 
 
@@ -181,7 +176,7 @@
 
 
 
-	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit $username" >
+	<page name="section" template="section" cacheable="true" critical-item="cur_sec" >
 		<request>
 			<var name="sec" style="keypath"/>
 			<var name="page" value="1"/>
@@ -202,7 +197,7 @@
 				<filter>
 					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
-					<parameter name="qty" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 					<sorting direction-var="direction">
 						<var var="sort"/>
 					</sorting>
@@ -303,6 +298,13 @@
 		<include name="COMMON"/>
 	</page>
 
+
+	<page name="sub" template="sub" cacheable="false">
+		<request>
+			<var name="sec" style="key"/>
+		</request>
+		<include name="COMMON"/>
+	</page>
 
 
 	<page name="tag_section" template="tag_section">
@@ -448,7 +450,7 @@
 
 
 
-	<page name="product" template="product" cacheable="true" cache-vars="prod $username">
+	<page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="keypath"/>
 		</request>
@@ -490,28 +492,12 @@
 			</list>
 
 		</single>
-		<list item="product" tag="analog" id="analog">
+		<list item="product" tag="assoc" id="assoc">
 			<filter>
-				<parameter name="code" compare="SOME"><var ref="prod" parameter="analog_code"/></parameter>
+				<parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="analog" style="key"/>
-			</link>
-		</list>
-		<list item="product" tag="similar" id="similar">
-			<filter>
-				<parameter name="code" compare="SOME"><var ref="prod" parameter="similar_code"/></parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="similar" style="key"/>
-			</link>
-		</list>
-		<list item="product" tag="support" id="support">
-			<filter>
-				<parameter name="code" compare="SOME"><var ref="prod" parameter="support_code"/></parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="support" style="key"/>
+				<var name="prod" ref="assoc" style="key"/>
 			</link>
 		</list>
 		<include name="COMMON"/>
@@ -744,9 +730,9 @@
 	</page>
 
 
-	<page name="proceed"  template="proceed">
+	<page name="proceed" template="proceed">
 		<request>
-			<var name="message" />
+			<var name="message"/>
 		</request>
 		<session>
 			<single item="user_phys" id="phys" tag="phys"/>
@@ -759,9 +745,6 @@
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="customer_jur"/>
 		</new>
-		<link name="recalculate_link" target="cart_action" type="itemform">
-			<var name="action" value="update"/>
-		</link>
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="customerForm"/>
 		</link>
@@ -801,7 +784,7 @@
 	</page>
 
 
-	<page name="order_email"  template="order_email">
+	<page name="order_email" template="order_email">
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought"/>
@@ -825,33 +808,6 @@
 			</link>
 		</list>
 		<single item="common"/>
-	</page>
-
-
-
-	<page name="order_pdf"  template="order_pdf">
-		<session>
-			<single item="cart">
-				<list item="bought" id="bought"/>
-			</single>
-			<list item="user" tag="registration"/>
-			<new item="user_phys" id="user_phys">
-				<parameter-input ref="user_phys" form="customer_phys"/>
-			</new>
-			<new item="user_jur" id="user_jur">
-				<parameter-input ref="user_jur" form="customer_jur"/>
-			</new>
-		</session>
-		<list item="product" tag="product" id="prod">
-			<filter>
-				<parameter name="code" compare="SOME" sign="=">
-					<var ref="bought" parameter="code"/>
-				</parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-		</list>
 	</page>
 
 
@@ -1033,7 +989,7 @@
 		<link name="login" target-var="src">
 			<var name="success" value="true"/>
 		</link>
-		<link name="login_error" target-var="src">
+		<link name="login_error" target="register">
 			<var name="message" value="Неверные логин/пароль"/>
 			<var name="success" value="false"/>
 			<var name="login" value="true"/>
@@ -1052,7 +1008,7 @@
 		<link name="user_exists_personal" target="personal">
 			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
 		</link>
-		<command class="extra.JustEmailRegisterCommand" method-var="action">
+		<command class="extra.RegisterCommand" method-var="action">
 			<result name="not_set" type="redirect"/>
 			<result name="user_exists" type="redirect"/>
 			<result name="success" type="redirect"/>
@@ -1064,25 +1020,14 @@
 	</page>
 
 
-	<page name="register_email" template="register_email">
-		<request>
-			<var name="user"/>
-			<var name="base"/>
-		</request>
-		<single item="user" var="user" tag="user"/>
-	</page>
-
-
 	<page name="login_form_ajax" template="login_form_ajax">
 		<request>
 			<var name="message"/>
 		</request>
-		<link name="submit_login" target="register_action">
-			<var name="src" value="login_form_ajax"/>
+		<link name="submit_form" target="register_action">
 			<var name="action" value="login"/>
 		</link>
 	</page>
-
 
 	<page name="login_form" template="login_form">
 		<request>
@@ -1286,7 +1231,7 @@
 	</page>
 
 	<!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
-	<page name="sitemap" template="sitemap" cacheable="true">
+	<page name="sitemap" template="sitemap" cacheable="false">
 		<headers content-type="xml"/>
 		<single item="url_seo_wrap"/>
 		<single item="catalog" id="catalog_main">
@@ -1300,12 +1245,12 @@
 			</tree>
 		</single>
 
-			<list item="custom_page" id="custom_page" cacheable="true">
+			<list item="custom_page" id="custom_page" cacheable="false">
 				<link name="show_page" target="page" type="exclusive">
 					<var name="p" ref="custom_page" style="key"/>
 				</link>
 			</list>
-			<list item="news" id="news" cacheable="true">
+			<list item="news" id="news" cacheable="false">
 			<link name="show_page" target="news" type="exclusive">
 				<var name="sel" ref="news" style="key"/>
 			</link>
@@ -1457,7 +1402,7 @@
 		<request>
 			<var name="action"/>
 		</request>
-			<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
+	    <command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
     </page>
@@ -1496,26 +1441,6 @@
 		<command class="ecommander.fwk.integration.YMarketCreateXMLFile">
 			<result name="success" type="redirect"/>
 			<result name="error" type="redirect"/>
-		</command>
-	</page>
-
-
-	<page name="download_pics" template="integration/download_pics">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="extra.DownloadPics" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
-
-	<page name="create_users" template="integration/create_users">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="extra.CreateUsersCommand" clear-cache="yes">
-			<result name="complete" type="xml"/>
 		</command>
 	</page>
 

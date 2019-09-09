@@ -1,3 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
+
+<!--START_p369285-->
+<item name="p369285" caption="Детям" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1725" ag-hash="2127869225">
+	<parameter name="kolichestvo_kasset_sht_" caption="Количество кассет, шт." type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="138239828" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_plastika_v_kagdoi_kassete_m" caption="Количество пластика в каждой кассете, м" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-722276155" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="summarnaya_dlina_niti_m" caption="Суммарная длина нити, м" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1836141722" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="trafarety_v_komplekte" caption="Трафареты в комплекте" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="410790314" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tubus_dlya_hraneniya_ruchki" caption="Тубус для хранения ручки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-451713885" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_rashodnyh_materialov_plastik" caption="Тип расходных материалов, пластик" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1773004234" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rossiiskoe_proizvodstvo_i_komponenty" caption="Российское производство и компоненты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1929806030" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rabochaya_poverhnost_laminatsiya_kryshki" caption="Рабочая поверхность (ламинация крышки)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1564236594" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="prilogenie" caption="Приложение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1772337086" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_akkumulyatora" caption="Тип аккумулятора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1801150590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tsvet" caption="Цвет" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="110671046" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material_sopla" caption="Материал сопла" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1263811343" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_g" caption="Вес, г" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="112097932" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_sopla_mm" caption="Диаметр сопла, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-925479773" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vstroennyi_akkumulyator" caption="Встроенный аккумулятор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1764703939" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dopolnitelnye_funktsii_multitul" caption="Дополнительные функции (мультитул)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1898575581" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pitanie_zaryadka_ot_usb" caption="Питание/зарядка от USB" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1979165159" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rashodnye_materialy_v_komplekte" caption="Расходные материалы в комплекте" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1997241160" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="risovanie_na_ekrane_plansheta" caption="Рисование на экране планшета" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1681326150" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="emkost_akkumulyatora_mach" caption="Емкость аккумулятора, мАч" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="361270280" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vremya_avtonomnoi_raboty_min" caption="Время автономной работы, мин" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1210166796" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_podachi_plastika" caption="Скорость подачи пластика" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1500728506" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vremya_zaryadki_min" caption="Время зарядки, мин" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2032624245" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmery_v_upakovke" caption="Размеры в упаковке" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-76307580" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_oblasti_pechati" caption="Размер области печати" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1904283091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material_dlya_pechati" caption="Материал для печати" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="47007653" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota_sloya" caption="Высота слоя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1198707765" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rekomendovannoe_po" caption="Рекомендованное ПО" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1938075923" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_modulei" caption="Количество модулей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-12026441" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p369285-->
+
+<!--START_p376003-->
+<item name="p376003" caption="Детям" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1727" ag-hash="2128701201"></item>
+<!--END_p376003-->
+
+<!--START_p376072-->
+<item name="p376072" caption="Детям" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1728" ag-hash="2128701417"></item>
+<!--END_p376072-->
+
+<!--START_p376000-->
+<item name="p376000" caption="Моторы SUZUKI" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1729" ag-hash="2128701198">
+	<parameter name="ves_kg" caption="Вес, кг" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tranets_plavsredstva_mm" caption="Транец плавсредства, мм" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-825153666" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p376000-->
 <!--EXP--></model>
