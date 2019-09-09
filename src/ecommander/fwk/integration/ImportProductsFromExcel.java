@@ -510,13 +510,18 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					//process auxType
 					if (hasAuxParams(headers)) {
 
-						String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
-						ItemType auxType = null;
+						//load paramsXML
 						Item paramsXML = new ItemQuery(paramsXMLItemType).setParentId(product.getId(), false).loadFirstItem();
 						paramsXML = (paramsXML == null) ? Item.newChildItem(paramsXMLItemType, product) : paramsXML;
+
+						//load Aux type
+						String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
+						ItemType auxType = null;
 						if (StringUtils.isNotBlank(auxTypeString)) {
 							auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
 						}
+
+						//loading Aux item
 						Item aux = null;
 						HashMap<String, String> auxParams = new HashMap<>();
 						if (auxType != null) {
@@ -525,13 +530,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							aux = Item.newChildItem(auxType, product);
 
 							for (ParameterDescription pd : auxType.getParameterList()) {
-								String caption = pd.getCaption();
-								String description = pd.getDescription();
-								caption = StringUtils.isNotBlank(description)? caption + ", " + description : caption;
-								auxParams.put(caption.toLowerCase(), pd.getName());
+								auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
 							}
 						} else {
-//							newItemTypes = true;
 							sectionsWithNewItemTypes.add(currentSubsection.getId());
 						}
 						newItemTypes = true;
