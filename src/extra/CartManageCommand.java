@@ -127,12 +127,12 @@ public class CartManageCommand extends BasicCartManageCommand {
 				}
 			}
 		}
-		BigDecimal discountedSum = originalSum.multiply(new BigDecimal((100 - discount) / 100));
-		discountedSum = discountedSum.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+		//BigDecimal discountedSum = originalSum.multiply(new BigDecimal((100 - discount) / 100));
+		//discountedSum = discountedSum.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 		//cart.setValue(ItemNames.cart_.SUM_DISCOUNT, discountedSum);
 		// Сумма прописью
-		BigDecimal rub = discountedSum.setScale(0, BigDecimal.ROUND_FLOOR);
-		BigDecimal kop = discountedSum.subtract(rub).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_CEILING);
+		//BigDecimal rub = discountedSum.setScale(0, BigDecimal.ROUND_FLOOR);
+		//BigDecimal kop = discountedSum.subtract(rub).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_CEILING);
 		//String sumText = Strings.numberToRusWords(rub.doubleValue()) + " "
 		//		+ Strings.numberEnding(rub.doubleValue(), "белорусский рубль", "белорусских рубля", "белорусских рублей")
 		//		+ " " + kop + " "

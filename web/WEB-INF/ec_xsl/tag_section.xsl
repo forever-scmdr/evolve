@@ -7,7 +7,7 @@
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
-	<xsl:variable name="title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</xsl:variable>
+	<xsl:variable name="title"><xsl:value-of select="page/variables/tag"/></xsl:variable>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="view" select="page/variables/view"/>
@@ -22,7 +22,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title"><xsl:value-of select="page/variables/tag"/></h1>
+		<h1><xsl:value-of select="page/variables/tag"/></h1>
 
 		<div class="page-content m-t">
 
