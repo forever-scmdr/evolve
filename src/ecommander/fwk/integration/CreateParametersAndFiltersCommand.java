@@ -56,13 +56,17 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		}
 
 		protected void addParameter(String name, String value, boolean isMultiple) {
-			String paramName = Strings.createXmlElementName(name);
+
+			String caption = StringUtils.substringBeforeLast(name, ",");
+			String description = StringUtils.substringAfterLast(name, ",");
+			String paramName = Strings.createXmlElementName(caption);
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);
 				paramCaptions.put(paramName, new Pair<>(name, isMultiple));
 			}
 			DataType.Type currentType = paramTypes.get(paramName);
 			Pair<DataType.Type, String> test = testValueHasUnit(value);
+			if(StringUtils.isNotBlank(description)) test.setRight(description.trim());
 			if (currentType.equals(DataType.Type.INTEGER) && test.getLeft() != DataType.Type.INTEGER) {
 				paramTypes.put(paramName, test.getLeft());
 			} else if (currentType.equals(DataType.Type.DOUBLE) && test.getLeft() == DataType.Type.STRING) {

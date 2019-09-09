@@ -525,10 +525,13 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							aux = Item.newChildItem(auxType, product);
 
 							for (ParameterDescription pd : auxType.getParameterList()) {
-								auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
+								String caption = pd.getCaption();
+								String description = pd.getDescription();
+								caption = StringUtils.isNotBlank(description)? caption + ", " + description : caption;
+								auxParams.put(caption.toLowerCase(), pd.getName());
 							}
 						} else {
-							newItemTypes = true;
+//							newItemTypes = true;
 							sectionsWithNewItemTypes.add(currentSubsection.getId());
 						}
 						newItemTypes = true;

@@ -253,6 +253,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 				sh.setColumnWidth(colIdx, 10 * 256);
 				for (ParameterDescription auxParam : aux.getParameterList()) {
 					String caption = auxParam.getCaption();
+					String description = auxParam.getDescription();
+					caption = StringUtils.isNotBlank(description)? caption + ", " + description : caption;
 					row.createCell(++colIdx).setCellValue(caption);
 					row.getCell(colIdx).setCellStyle(auxHeaderStyle);
 					sh.setColumnWidth(colIdx, 20 * 256);
