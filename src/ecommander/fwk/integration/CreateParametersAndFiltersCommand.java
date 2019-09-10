@@ -55,11 +55,9 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			this.className = Strings.createXmlElementName(className);
 		}
 
-		protected void addParameter(String name, String value, boolean isMultiple) {
+		protected void addParameter(String name, String description, String value, boolean isMultiple) {
 
-			String caption = StringUtils.substringBeforeLast(name, ",");
-			String description = StringUtils.substringAfterLast(name, ",");
-			String paramName = Strings.createXmlElementName(caption);
+			String paramName = Strings.createXmlElementName(name);
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);
 				paramCaptions.put(paramName, new Pair<>(name, isMultiple));
@@ -169,12 +167,16 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 						Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
 						for (Element paramEl : paramEls) {
 							Elements nameElements = paramEl.getElementsByTag(NAME);
+							Elements unitElements = paramEl.getElementsByTag("unit");
+							String unit = !unitElements.isEmpty()? StringUtils.trim(unitElements.first().ownText()) : "";
 							if (!nameElements.isEmpty()) {
 								String caption = StringUtils.trim(nameElements.first().ownText());
+
+
 							if (StringUtils.isNotBlank(caption)) {
 									Elements values = paramEl.getElementsByTag(VALUE);
 									for (Element value : values) {
-										params.addParameter(caption, StringUtils.trim(value.ownText()), values.size() > 1);
+										params.addParameter(caption, unit ,StringUtils.trim(value.ownText()), values.size() > 1);
 									}
 								}
 							}

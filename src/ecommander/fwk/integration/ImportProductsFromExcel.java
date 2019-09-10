@@ -8,7 +8,7 @@ import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -207,7 +207,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							if (!itemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
 								continue;
 							String cellValue = getValue(header);
-							cellValue = StringUtils.isAllBlank(cellValue)? "" : cellValue;
+							cellValue = StringUtils.isBlank(cellValue)? "" : cellValue;
 							if (CODE_PARAM.equals(paramName)) {
 								product.setValue(CODE_PARAM, code);
 								product.setValue(VENDOR_CODE_PARAM, code);
@@ -542,34 +542,42 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							String paramName = HEADER_PARAM.get(header);
 							if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header))
 								continue;
+
 							String cellValue = getValue(header);
-							cellValue = StringUtils.isAllBlank(cellValue)? "" : cellValue;
+							cellValue = StringUtils.isBlank(cellValue)? "" : cellValue;
+							String unit = StringUtils.substringAfterLast(getOriginalCaseHeader(header), ",").trim();
+							String paramCaption = StringUtils.substringBeforeLast(header,",");
 							xml.startElement("parameter")
 									.startElement("name")
-									.addText(firstUpperCase(header))
+									.addText(firstUpperCase(paramCaption))
 									.endElement()
 									.startElement("value")
 									.addText(cellValue)
 									.endElement()
+									.startElement("unit")
+									.addText(unit)
+									.endElement()
 									.endElement();
 
 							if (auxType == null) continue;
-							String param = auxParams.get(header.toLowerCase());
+							String param = auxParams.get(paramCaption);
 							//Если добавился новый параметр
 							if (!auxType.getParameterNames().contains(param)){
-								newItemTypes = true;
 								sectionsWithNewItemTypes.add(currentSubsection.getId());
 								continue;
 							}
-							//if (StringUtils.isNotBlank(auxParams.get(param)))
-								aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
+							//Если добавилась единица измерения
+							if(!unit.equals(auxType.getParameter(param).getDescription())){
+								sectionsWithNewItemTypes.add(currentSubsection.getId());
+							}
+							aux.setValueUI(param, cellValue);
 						}
 						paramsXML.setValueUI(XML_PARAM, xml.toString());
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXML).noFulltextIndex());
 						if (auxType != null) {
 							executeAndCommitCommandUnits(SaveItemDBUnit.get(aux).noFulltextIndex());
 						}
-						//commitCommandUnits();
+
 					}
 				}
 

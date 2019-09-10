@@ -24,5 +24,7 @@ public interface TableDataSource extends Closeable {
 
 	TreeSet<String> getHeaders();
 
+	String getOriginalCaseHeader(String header);
+
 	int getRowNum();
 }

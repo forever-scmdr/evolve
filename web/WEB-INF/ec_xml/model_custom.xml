@@ -948,54 +948,6 @@
 	<parameter name="vilka" caption="Вилка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="112210735" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p146142-->
-
-<!--START_p146207-->
-<item name="p146207" caption="Парогенераторы промышленные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1801" ag-hash="2068674262">
-	<parameter name="obem_boilera" caption="Объем бойлера" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1741065888" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_boilera" caption="Мощность бойлера" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="465061885" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rabochee_davlenie" caption="Рабочее давление" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1456315402" description="bar" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie" caption="Напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1451382223" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="utyug" caption="Утюг" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="111627724" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves_utyuga" caption="Вес утюга" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="850624784" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="razmery_korobki" caption="Размеры коробки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1849075638" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="proizvoditelnost_po_paru" caption="Производительность по пару" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-328526762" description="кг/час" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vodyanoi_nasos" caption="Водяной насос" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1825801446" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_tena" caption="Мощность тена" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="741143467" description="Вт+++ Объем бойлера" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="podklyuchenie" caption="Подключение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1975561196" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="yomkost_boilera" caption="Ёмкость бойлера" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="942255937" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="pitanie_elektroseti" caption="Питание электросети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1291621296" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_tena_parogeneratora" caption="Мощность тэна парогенератора" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="804643184" description="Вт+++ Рабочее давление" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_nagrevatelya" caption="Мощность нагревателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-233111240" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kategoriya" caption="Категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-275590802" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="emkost_boilera" caption="Емкость бойлера" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-322267566" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_utyugov" caption="Количество утюгов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1339396371" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_utyuga" caption="Мощность утюга" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-682867172" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="potreblyaemaya_moschnost" caption="Потребляемая мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-223891584" description="кВт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="set" caption="Сеть" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="113762" description="V" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vremya_nagreva" caption="Время нагрева" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1486010463" description="мин" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vremya_bespreryvnoi_raboty" caption="Время беспрерывной работы" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="562986081" description="ч" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="davlenie_para" caption="Давление пара" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1272726983" description="бар" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vyhod_para" caption="Выход пара" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2120990107" description="г/мин" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="regulyator_vyhoda_para" caption="Регулятор выхода пара" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="38592093" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="manometr" caption="Манометр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="136374763" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vertikalnoe_otparivanie" caption="Вертикальное отпаривание" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1475820057" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="indikator_gotovnosti_para" caption="Индикатор готовности пара" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2076421603" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="indikator_otsutstviya_vody" caption="Индикатор отсутствия воды" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1253470900" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="material_korpusa_boilera" caption="Материал корпуса бойлера" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1461404818" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="material_podoshvy_utyuga" caption="Материал подошвы утюга" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-788021702" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="gabarity" caption="Габариты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2086878955" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="strana_brenda" caption="Страна бренда" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-538904334" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="месяцы" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_schyotki" caption="Мощность щётки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-981411541" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_pistoleta" caption="Мощность пистолета" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630413996" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="dlina_monoshlanga" caption="Длина моношланга" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1527249232" description="м" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p146207-->
-
 <!--START_p146247-->
 <item name="p146247" caption="Столы утюжильные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1802" ag-hash="2068674386">
 	<parameter name="elektricheskoe_podklyuchenie" caption="Электрическое подключение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1036193789" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1247,8 +1199,9 @@
 <item name="p197189" caption="www" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1814" ag-hash="2073320947"></item>
 <!--END_p197189-->
 
+
 <!--START_p146207-->
-<item name="p146207" caption="Парогенераторы промышленные" key="" ag-id="0" ag-hash="2068674262" virtual="false" user-def="true" description="" super="params *">
+<item name="p146207" caption="Парогенераторы промышленные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1801" ag-hash="2068674262">
 	<parameter name="vertikalnoe_otparivanie" caption="Вертикальное отпаривание" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1475820057" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ves_utyuga" caption="Вес утюга" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="850624784" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ves_kg" caption="Вес, кг" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -1294,50 +1247,25 @@
 </item>
 <!--END_p146207-->
 
-<!--START_p146207-->
-<item name="p146207" caption="Парогенераторы промышленные" key="" ag-id="0" ag-hash="2068674262" virtual="false" user-def="true" description="" super="params *">
-	<parameter name="vertikalnoe_otparivanie" caption="Вертикальное отпаривание" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1475820057" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves_utyuga" caption="Вес утюга" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="850624784" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves_kg" caption="Вес, кг" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-819931177" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vmestimost_l" caption="Вместимость, л" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1908599306" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vodyanoi_nasos" caption="Водяной насос" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1825801446" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vremya_bespreryvnoi_raboty" caption="Время беспрерывной работы" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="562986081" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vremya_nagreva" caption="Время нагрева" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1486010463" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vyhod_para" caption="Выход пара" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2120990107" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="gabarity" caption="Габариты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2086878955" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="garantiya" caption="Гарантия" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="dlina_monoshlanga" caption="Длина моношланга" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1527249232" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="indikator_gotovnosti_para" caption="Индикатор готовности пара" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2076421603" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="indikator_otsutstviya_vody" caption="Индикатор отсутствия воды" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1253470900" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kategoriya" caption="Категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-275590802" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_utyugov" caption="Количество утюгов" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1339396371" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="komplektatsiya" caption="Комплектация" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-624988422" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="manometr" caption="Манометр" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="136374763" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="material_korpusa_boilera" caption="Материал корпуса бойлера" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1461404818" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="material_podoshvy_utyuga" caption="Материал подошвы утюга" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-788021702" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_boilera" caption="Мощность бойлера" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="465061885" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_parogeneratora_vt" caption="Мощность парогенератора, вт" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-746332390" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_pistoleta" caption="Мощность пистолета" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-630413996" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_tena" caption="Мощность тена" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="741143467" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_tena_parogeneratora" caption="Мощность тэна парогенератора" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="804643184" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_utyuga_vt" caption="Мощность утюга, вт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1964255169" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_schyotki" caption="Мощность щётки" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-981411541" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_v" caption="Напряжение, v" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1086051834" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obschaya_moschnost_vt" caption="Общая мощность, вт" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-209834752" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obem_boilera_l" caption="Объем бойлера, л" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1872924019" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="potreblyaemaya_moschnost" caption="Потребляемая мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-223891584" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="proizvoditelnost_po_paru" caption="Производительность по пару" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-328526762" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rabochee_davlenie_bar" caption="Рабочее давление, бар" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1090528330" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="regulyator_vyhoda_para" caption="Регулятор выхода пара" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="38592093" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="strana_brenda" caption="Страна бренда" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-538904334" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obem_boilera" caption="Объем бойлера" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1741065888" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rabochee_davlenie" caption="Рабочее давление" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1456315402" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie" caption="Напряжение" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1451382223" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="utyug" caption="Утюг" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="111627724" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="razmery_korobki" caption="Размеры коробки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1849075638" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vmestimost" caption="Вместимость" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1177403741" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p232252-->
+<item name="p232252" caption="Светильники для швей" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1933" ag-hash="2096260878">
+	<parameter name="verhnyaya_korzina" caption="Верхняя корзина" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1913902358" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vysota" caption="Высота" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-801445108" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="glubina" caption="Глубина" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="126622826" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gruzopodyomnost" caption="Грузоподъёмность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="2045942131" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_koles" caption="Диаметр колес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2001005495" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_verhnei_truby" caption="Длина верхней трубы" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1251070671" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="nignyaya_korzina" caption="Нижняя корзина" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1126964579" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="pogruzochnaya_vysota" caption="Погрузочная высота" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="682571595" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmery_verhnei_shapki" caption="Размеры верхней &quot;шапки&quot;" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1355908055" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasstoyanie_megdu_nogami" caption="Расстояние между ногами" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-2061954083" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasstoyanie_megdu_storonami" caption="Расстояние между сторонами" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1918810516" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rasstoyanie_megdu_urovnyami" caption="Расстояние между уровнями" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-772831000" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reguliruemaya_vysota" caption="Регулируемая высота" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1167327125" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina" caption="Ширина" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="2061610206" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_bokovoi_storony" caption="Ширина боковой стороны" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="939598613" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shirina_nog" caption="Ширина ног" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1500452891" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p146207-->
+<!--END_p232252-->
 <!--EXP--></model>

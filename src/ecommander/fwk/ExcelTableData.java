@@ -3,7 +3,7 @@ package ecommander.fwk;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.model.datatypes.DoubleDataType;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
@@ -24,6 +24,7 @@ public class ExcelTableData implements TableDataSource {
 	private boolean isValid = false;
 	private Sheet currentSheet;
 	private HashMap<String, Integer> currentHeader = new HashMap<>();
+	private HashMap<String, String> orginalHeaders = new HashMap<>();
 	private Row currentRow;
 	private POIUtils.CellXY headerCell;
 	private FormulaEvaluator eval;
@@ -84,6 +85,7 @@ public class ExcelTableData implements TableDataSource {
 				String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 				if (StringUtils.isNotBlank(colHeader)) {
 					headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+					orginalHeaders.put(StringUtils.lowerCase(colHeader), colHeader);
 				}
 			}
 			currentHeader = headers;
@@ -128,10 +130,12 @@ public class ExcelTableData implements TableDataSource {
 				if (rowChecked && headerCell != null) {
 					Row row = sheet.getRow(headerCell.row);
 					HashMap<String, Integer> headers = new HashMap<>();
+					orginalHeaders = new HashMap<>();
 					for (Cell cell : row) {
 						String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 						if (StringUtils.isNotBlank(colHeader)) {
 							headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+							orginalHeaders.put(StringUtils.lowerCase(colHeader), colHeader);
 						}
 					}
 					SheetHeader sh = new SheetHeader(sheet, headers, headerCell);
@@ -235,6 +239,11 @@ public class ExcelTableData implements TableDataSource {
 		TreeSet<String> a = new TreeSet<>();
 		a.addAll(currentHeader.keySet());
 		return a;
+	}
+
+	@Override
+	public String getOriginalCaseHeader(String header) {
+		return orginalHeaders.get(header);
 	}
 
 	public int getLinesCount() {
