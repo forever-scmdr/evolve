@@ -19,6 +19,7 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -55,9 +56,12 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 
 		// Создание (обновление) каталога товаров
 		String ignoreVar = getVarSingleValue("ignore");
+		String notIgnoreVar = getVarSingleValue("not_ignore");
 		HashSet<String> ignore = new HashSet<>();
+		HashSet<String> notIgnore = new HashSet<>();
+		notIgnore.addAll(Arrays.asList(StringUtils.split(notIgnoreVar, ',')));
 		for (String code : StringUtils.split(ignoreVar, ',')) {
-			ignore.add((String) code);
+			if(!notIgnore.contains(code))ignore.add(code);
 		}
 		info.setOperation("Создание разделов каталога и типов товаров");
 		info.pushLog("Создание разделов");
