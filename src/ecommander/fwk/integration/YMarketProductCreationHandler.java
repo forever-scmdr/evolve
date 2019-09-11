@@ -1,7 +1,6 @@
 package ecommander.fwk.integration;
 
 import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ItemUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
 import ecommander.fwk.XmlDocumentBuilder;
@@ -80,6 +79,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	}
 
 
+
+
 	private Locator locator;
 	private boolean parameterReady = false;
 	private String paramName;
@@ -98,12 +99,13 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private BigDecimal level_1, level_2, quotient_1, quotient_2, quotient_3, quotient_buk;
 	private Assoc catalogLinkAssoc;
 	private boolean isBookinistic = false;
-	private HashSet<String> ignoreCodes;
+	private final HashSet<String> ignoreCodes;
+	private final HashSet<String> notIgnoreCodes;
 	private String currentQuery;
 
 
 	
-	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator, HashSet<String> ignoreCodes) {
+	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator, HashSet<String> ignoreCodes, HashSet<String> notIgnoreCodes) {
 		this.info = info;
 		this.sections = sections;
 		this.productType = ItemTypeRegistry.getItemType("book");
@@ -111,6 +113,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		this.initiator = initiator;
 		this.catalogLinkAssoc = ItemTypeRegistry.getAssoc("catalog_link");
 		this.ignoreCodes = ignoreCodes;
+		this.notIgnoreCodes = notIgnoreCodes;
 		try {
 			Item course = new ItemQuery("course").loadFirstItem();
 			level_1 = course.getDecimalValue("level_1");
@@ -145,6 +148,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
 					return;
 				}
+				if(isNotRussian()) return;
 				boolean isProductNew = false;
 				if (product == null) {
 					//if (section != null) {
@@ -318,6 +322,12 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			ServerLogger.error("Integration error", e);
 			info.addError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
 		}
+	}
+
+	private boolean isNotRussian() {
+		if(notIgnoreCodes.contains(commonParams.get(CATEGORY_ID_ELEMENT))) return false;
+		String lang = commonParams.get(LANGUAGE);
+		return StringUtils.isNotBlank(lang) && !("русский".equalsIgnoreCase(lang) || "белорусский".equalsIgnoreCase(lang));
 	}
 
 	@Override

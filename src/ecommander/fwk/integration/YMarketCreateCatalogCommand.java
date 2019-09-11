@@ -83,7 +83,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.pushLog("Создание товаров");
 		info.setOperation("Создание товаров");
 		info.setProcessed(0);
-		YMarketProductCreationHandler prodHandler = new YMarketProductCreationHandler(secHandler.getSections(), info, getInitiator(), ignore);
+		YMarketProductCreationHandler prodHandler = new YMarketProductCreationHandler(secHandler.getSections(), info, getInitiator(), ignore, notIgnore);
 		for (File xml : xmls) {
 			parser.parse(xml, prodHandler);
 		}
