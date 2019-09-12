@@ -93,7 +93,11 @@
 	<xsl:template name="EXTRA_HEADER_CONTENT">
 		<xsl:variable name="featured" select="page/main_page/featured" />
 		<xsl:if test="page/main_page/featured">
+<!--			<xsl:call-template name="VIDGET_CODE"/>-->
 			<div class="pageheader-content row">
+				<div class="col-full" style="height: 70px; background: #fff;">
+					test
+				</div>
 				<div class="col-full">
 					<div class="featured">
 						<div class="featured__column featured__column--big">

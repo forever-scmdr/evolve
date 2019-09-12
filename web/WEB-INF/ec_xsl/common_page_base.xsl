@@ -72,7 +72,6 @@
 					<xsl:call-template name="SEARCH"/>
 					<xsl:call-template name="HEADER_NAV" />
 				</div>
-				<xsl:call-template name="VIDGET_CODE"/>
 			</header>
 
 			<xsl:call-template name="EXTRA_HEADER_CONTENT"/>
