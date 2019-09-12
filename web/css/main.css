@@ -105,6 +105,7 @@ a {
 	color: #403030;
 	-webkit-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
+	outline: none;
 }
 
 a:hover, a:focus, a:active {
@@ -3050,7 +3051,7 @@ html.no-csstransitions .featured {
 
 @media only screen and (max-width: 600px) {
 	.s-content__header h1 {
-		font-size: 3.6rem;
+		font-size: 2.5rem;
 	}
 
 }
@@ -4492,7 +4493,7 @@ footer h4::after {
 }
 .content-text blockquote{
 	padding: 2rem 4rem;
-	background-color: #91d890;
+	background-color: #fe6f61;
 }
 .s-content__next img, .s-content__prev img{
 	max-width: 90%;
@@ -4502,11 +4503,72 @@ footer h4::after {
 .informers-container{background: #fff; text-align: left;}
 .informer-menu a{
 	display: inline-block;
-	padding: 1rem 2.5rem;
+	padding: 1rem 2.1rem;
 	padding-bottom: 0.5rem;
 	border-bottom: 0.5rem solid #fff;
 	font-family: Trebuchet MS, roboto, ubuntu, sans-serif;
 }
+.informer-menu .toggler{
+	display: none;
+}
+
+@media only screen and (max-width: 800px){
+	.informer-menu a{
+		display: none;
+		border-bottom: 0.2rem solid #fff;
+	}
+	.informer-menu a.active, .informer-menu a.visible{ display: block; }
+
+	.informer-menu .toggler{
+		top: 0;
+		display: block;
+		width: 46px;
+		height: 47px;
+		position: absolute;
+		right: 20px;
+	}
+	.informer-menu .toggler > span{
+		display: block;
+		width: 22px;
+		height: 2px;
+		margin-top: -1px;
+		position: absolute;
+		right: 9px;
+		top: 50%;
+		bottom: auto;
+		left: auto;
+		background-color: black;
+		-webkit-transition: background 0.2s ease-in-out;
+		transition: background 0.2s ease-in-out;
+		font: 0/0 a;
+		text-shadow: none;
+		color: transparent;
+	}
+	.informer-menu .toggler > span::before, .informer-menu .toggler > span::after {
+		content: '';
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		background-color: inherit;
+		left: 0;
+	}
+
+	.informer-menu .toggler > span::before{
+		top: -8px;
+	}
+
+	 .informer-menu .toggler > span::after{
+	 	content: '';
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		background-color: inherit;
+		left: 0;
+		bottom: -8px;
+	 }
+	
+}
+
 .informer-pagination{
 	font-size: 1.5rem;
 	padding: 0 2.5rem;

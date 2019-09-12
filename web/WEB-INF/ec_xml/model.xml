@@ -101,13 +101,15 @@
 		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
 		<parameter name="size" type="string" caption="Размер" domain="size"/>
 		<parameter name="video_url" type="string" caption="Ссылка на видео"/>
+		<parameter name="main_audio" type="file" caption="Аудио" description="в начале статьи"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000"/>
 		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;"/>
 		<parameter name="small_pic" type="picture" caption="Маленькое изображение" description="500" format="width: 500; src: main_pic;"/>
 		<parameter name="twitter_description" type="string" caption="Описание для твиттера"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
-		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags"/>
+<!--		<parameter name="text_audio" type="file" caption="Аудио для вставки в текст" multiple="true"/>-->
+		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags" text-index="fulltext"/>
 		<child item="page_part"/>
 		<child item="top_gal" single="true"/>
 		<child item="comments" single="true"/>
@@ -193,7 +195,7 @@
 		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
 		<parameter name="size" type="string" caption="Размер" domain="size"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
-		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags"/>
+		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags" text-index="fulltext"/>
 	</item>
 
 	<!--<item name="custom_pages" caption="Информационные разделы" ag-id="22" ag-hash="727106934">-->

@@ -109,7 +109,7 @@ function postForm(form, lockElementIds, additionalHandling) {
 			unlock(lockElementIds);
 		},
 		success: function(data, status, arg3) {
-			//console.log(data);
+			console.log(data);
 			processResult(data, additionalHandling, lockElementIds, status, arg3);
 		}
 	});
@@ -117,8 +117,8 @@ function postForm(form, lockElementIds, additionalHandling) {
 	lock(lockElementIds);
 }
 function postFormView(form, lockElementIds) {
-    //console.log('postFormView called');
-   // console.log('lockElementIds: '+lockElementIds);
+    console.log('postFormView called');
+    console.log('lockElementIds: '+lockElementIds);
 	if (typeof form == 'string')
 		form = $('#' + form);
 	form.ajaxSubmit({
@@ -129,7 +129,7 @@ function postFormView(form, lockElementIds) {
 		},
 		success: function(data, status, arg3) {
 			$("#subitems").html(data);
-			//console.log(data);
+			console.log(data);
             unlock(lockElementIds);
 		}
 	});

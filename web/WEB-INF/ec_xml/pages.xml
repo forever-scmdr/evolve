@@ -412,6 +412,7 @@
 					<var name="big_id" ref="comment"/>
 				</link>
 			</single>
+			<list item="page_part"></list>
 			<ancestor item="news" transit="false"/>
 			<ancestor item="news_wrap" id="parent" transit="true" tag="news">
 				<list item="news_item" tag="prev" id="prev" cacheable="false" cache-vars="ni" transit="true">

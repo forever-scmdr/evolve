@@ -14,21 +14,40 @@
 	<xsl:variable name="news_items" select="/page/news_item"/>
 	<xsl:variable name="news_parts" select="/page/text_part[news_item]"/>
 
+	<xsl:variable name="small_news" select="page/small_news_item"/>
+
 	<xsl:template name="CONTENT">
 		<section class="s-content">
-			<div class="row narrow">
-				<div class="col-full s-content__header" data-aos="fade-up">
-					<h1>
-						Статьи по запросу "<xsl:value-of select="page/variables/q"/>"
-					</h1>
+			<xsl:if test="count($small_news) &gt; 0">
+				<div class="row narrow">
+					<div class="col-full s-content__header" data-aos="fade-up">
+						<h1>
+							Новости по запросу "<xsl:value-of select="page/variables/q"/>"
+						</h1>
+					</div>
 				</div>
-			</div>
-			<div class="row masonry-wrap">
-				<div class="masonry" id="add-content">
-					<div class="grid-sizer"></div>
-					<xsl:apply-templates select="$news_items | $news_parts" mode="masonry"/>
+				<div class="row masonry-wrap">
+					<div class="masonry">
+						<xsl:apply-templates select="$small_news" mode="masonry"/>
+					</div>
 				</div>
-			</div>
+				<div style="margin-bottom: 2.5rem;"></div>
+			</xsl:if>
+			<xsl:if test="count($news_items|$news_parts) &gt; 0">
+				<div class="row narrow">
+					<div class="col-full s-content__header" data-aos="fade-up">
+						<h1>
+							Статьи по запросу "<xsl:value-of select="page/variables/q"/>"
+						</h1>
+					</div>
+				</div>
+				<div class="row masonry-wrap">
+					<div class="masonry" id="add-content">
+						<div class="grid-sizer"></div>
+						<xsl:apply-templates select="$news_items | $news_parts" mode="masonry"/>
+					</div>
+				</div>
+			</xsl:if>
 		</section>
 	</xsl:template>
 
@@ -37,6 +56,23 @@
 		<xsl:variable name="cid" select="news_item/@id"/>
 		<xsl:if test="not($news_items[@id = $nid])">
 			<xsl:apply-templates select="news_item" mode="masonry"/>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="small_news_item" mode="masonry">
+		<div class="col-four tab-full small-news-item" data-aos="fade-up" style="background: transparent;">
+			<p class="date" data-utc="{date/@millis}">
+				<xsl:value-of select="date"/>
+			</p>
+			<p class="name{if(not(tag)) then ' botmar' else ' mar-0'}">
+				<a href="{show_small_news_item}">
+					<xsl:value-of select="name"/>
+				</a>
+			</p>
+		</div>
+		<xsl:variable name="pos" select="position()"/>
+		<xsl:if test="$pos mod 3 = 0">
+			<div class="three-col-border"></div>
 		</xsl:if>
 	</xsl:template>
 

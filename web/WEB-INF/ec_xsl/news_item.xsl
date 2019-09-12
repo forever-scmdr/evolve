@@ -70,72 +70,9 @@
 							</xsl:if>
 						</div>
 					</xsl:if>
-					<!--<xsl:if test="$ni/tag">-->
-						<!--<div class="tags">-->
-							<!--<xsl:for-each select="$ni/tag">-->
-								<!--<xsl:variable name="class">-->
-									<!--<xsl:choose>-->
-										<!--<xsl:when test=". = 'Бизнес'">dark-blue</xsl:when>-->
-										<!--<xsl:when test=". = 'Политика'">red</xsl:when>-->
-										<!--<xsl:when test=". = 'Технологии'">yellow</xsl:when>-->
-										<!--<xsl:when test=". = 'Инфографика'">orange</xsl:when>-->
-										<!--<xsl:when test=". = 'Менеджмент'">blue</xsl:when>-->
-										<!--<xsl:otherwise>gray</xsl:otherwise>-->
-									<!--</xsl:choose>-->
-								<!--</xsl:variable>-->
-
-								<!--<span class="entry__category {$class}">-->
-									<!--<a href="{concat('all_news/?tag=', .)}">-->
-										<!--<xsl:value-of select="." />-->
-									<!--</a>-->
-								<!--</span>-->
-							<!--</xsl:for-each>-->
-						<!--</div>-->
-					<!--</xsl:if>-->
 				</div>
 
-				<xsl:if test="$ni/main_pic != '' or $ni/top_gal/main_pic != '' or $ni/video_url != ''">
-					<xsl:if test="$format = 'standard'">
-						<div class="s-content__media col-full">
-							<div class="s-content__post-thumb">
-								<img src="{concat($ni/@path, $ni/main_pic)}"
-									 srcset="{concat($ni/@path, $ni/main_pic)} 2000w,
-									 {concat($ni/@path, $ni/medium_pic)} 1000w,
-									 {concat($ni/@path, $ni/small_pic)} 500w"
-									 sizes="(max-width: 2000px) 100vw, 2000px" alt="" />
-							</div>
-						</div>
-					</xsl:if>
-
-					<xsl:if test="$format = 'gallery'">
-						<div class="s-content__media col-full">
-							<div class="s-content__slider slider">
-								<div class="slider__slides">
-									<xsl:variable name="gal" select="$ni/top_gal"/>
-									<xsl:variable name="path" select="$gal/@path"/>
-									<xsl:for-each select="$ni/top_gal/main_pic">
-										<xsl:variable name="p" select="position()"/>
-										<div class="slider__slide">
-											<img src="{concat($path, .)}"
-												 srcset="{concat($path, .)} 2000w,
-												 {concat($path, $gal/medium_pic[$p])} 1000w,
-												 {concat($path, $gal/small_pic[$p])} 500w"
-												 sizes="(max-width: 2000px) 100vw, 2000px" alt=""/>
-										</div>
-									</xsl:for-each>
-								</div>
-							</div>
-						</div>
-					</xsl:if>
-
-					<xsl:if test="$format = 'video'">
-						<div class="s-content__media col-full">
-							<div class="video-container">
-								<iframe src="{$ni/video_url}" width="640" height="360" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
-							</div>
-						</div>
-					</xsl:if>
-				</xsl:if>
+				<xsl:call-template name="NEWS_TOPPER"/>
 
 				<div class="col-full s-content__main">
 					<div class="content-text">
@@ -275,6 +212,73 @@
 		<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
 		<script src="//yastatic.net/share2/share.js"></script>
 		
+	</xsl:template>
+
+	<xsl:template name="NEWS_TOPPER">
+		<xsl:variable name="has_big_img" select="$ni/main_pic | $ni/top_gal/main_pic | $ni/video_url != ''" />
+		<xsl:variable name="has_audio" select="$ni/main_audio != ''"/>
+
+		<xsl:if test="$has_big_img">
+			<xsl:if test="$format = 'standard'">
+				<div class="s-content__media col-full">
+					<div class="s-content__post-thumb">
+						<img src="{concat($ni/@path, $ni/main_pic)}"
+							 srcset="{concat($ni/@path, $ni/main_pic)} 2000w,
+									 {concat($ni/@path, $ni/medium_pic)} 1000w,
+									 {concat($ni/@path, $ni/small_pic)} 500w"
+							 sizes="(max-width: 2000px) 100vw, 2000px" alt="" />
+						<xsl:if test="$has_audio">
+							<div class="audio-wrap">
+								<audio id="player{$ni/@id}" src="{concat($ni/@path, $ni/main_audio)}" width="100%" height="42" controls="controls"/>
+							</div>
+						</xsl:if>
+					</div>
+				</div>
+			</xsl:if>
+
+			<xsl:if test="$format = 'gallery'">
+				<div class="s-content__media col-full">
+					<div class="s-content__slider slider">
+						<div class="slider__slides">
+							<xsl:variable name="gal" select="$ni/top_gal"/>
+							<xsl:variable name="path" select="$gal/@path"/>
+							<xsl:for-each select="$ni/top_gal/main_pic">
+								<xsl:variable name="p" select="position()"/>
+								<div class="slider__slide">
+									<img src="{concat($path, .)}"
+										 srcset="{concat($path, .)} 2000w,
+												 {concat($path, $gal/medium_pic[$p])} 1000w,
+												 {concat($path, $gal/small_pic[$p])} 500w"
+										 sizes="(max-width: 2000px) 100vw, 2000px" alt=""/>
+								</div>
+							</xsl:for-each>
+						</div>
+						<xsl:if test="$has_audio">
+							<div class="audio-wrap">
+								<audio id="player2" src="{concat($ni/@path, $ni/main_audio)}" width="100%" height="42" controls="controls"/>
+							</div>
+						</xsl:if>
+					</div>
+				</div>
+			</xsl:if>
+
+			<xsl:if test="$format = 'video'">
+				<div class="s-content__media col-full">
+					<div class="video-container">
+						<iframe src="{$ni/video_url}" width="640" height="360" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+					</div>
+				</div>
+			</xsl:if>
+		</xsl:if>
+		<xsl:if test="not($has_big_img) and $has_audio">
+			<div class="s-content__media col-full">
+				<div class="s-content__post-thumb">
+					<div class="audio-wrap">
+						<audio id="player{$ni/@id}" src="{concat($ni/@path, $ni/main_audio)}" width="100%" height="42" controls="controls"/>
+					</div>
+				</div>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>

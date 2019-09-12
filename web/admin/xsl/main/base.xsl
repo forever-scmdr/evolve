@@ -142,19 +142,18 @@
 											<a class="select-none" title="снять выделние со всех" id="deselect_all" onclick="selectNone();"></a>
 											<a class="invert-selection" title="инвертировать выделение" id="invert_selection" onclick="invertSelection();"></a>
 										</div>
-										<div class="actions pale" id="item-actions">
+										<div class="actions">
 											<span>С айтемами:</span>
 											<a href="admin_copy_all.action" id="copy-all-link" class="copy set-action" rel="multi-item-action-form" title="Копировать выделенное в буфер обмена"></a>
 											<a href="admin_hide_all.action{$base-vars}" class="hide_item set-action" rel="multi-item-action-form" title="Скрыть выделенное"></a>
 											<a href="admin_show_all.action{$base-vars}" class="show_item set-action" rel="multi-item-action-form" title="Показать выделенное"></a>
 											<a href="admin_delete_all.action{$base-vars}" class="delete set-action" rel="multi-item-action-form" title="Удалить выделенное"></a>
 										</div>
-										<div class="actions pale" id="buffer-actions">
+										<div class="actions">
 											<span>С буфером:</span>
-											<a href="admin_paste_selected.action{$base-vars}&amp;preserve_buffer_content=yes" class="copy paste-preserve set-action total-replace" rel="multi-item-action-form" title="вставить выделенное, НЕ очищать буфер"></a>
-											<a href="admin_paste_selected.action{$base-vars}" class="copy paste set-action total-replace" rel="multi-item-action-form" title="вставить выделенное"></a>
-											<a href="admin_move_selected.action{$base-vars}" class="copy move set-action total-replace" rel="multi-item-action-form" title="переместить выделенное"></a>
-											<a href="admin_delete_selected_from_buffer.action{$base-vars}" class="delete set-action" rel="multi-item-action-form" title="удалить из буфера"></a>
+											<a href="admin_paste_all.action{$base-vars}" class="copy paste set-action total-replace" rel="multi-item-action-form" title="вставить выделенное"></a>
+											<a href="admin_move_all.action{$base-vars}" class="copy move set-action total-replace" rel="multi-item-action-form" title="переместить выделенное"></a>
+											<a href="admin_delete_all_from_buffer.action{$base-vars}" class="delete set-action" rel="multi-item-action-form" title="удалить из буфера"></a>
 										</div>
 										<form id="multi-item-action-form" method="POST">
 											<input type="text" name="ids" id="multi-item-action-form-ids"/>
@@ -169,10 +168,6 @@
 							<div class="list additional">
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
-									<li class="visible" title="Список разделов для формирования прайс-листов" style="background: #0c609d;">
-										<a href="section_list" style="color: #fff;">Список разделов</a>
-									</li>
-
 									<li class="visible" title="Загрзить товары из Yandex Market">
 										<a href="integrate/?action=start">Интеграция каталога</a>
 									</li>

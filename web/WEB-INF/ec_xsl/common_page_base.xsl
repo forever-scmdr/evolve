@@ -483,8 +483,11 @@
 			<div class="header__content row">
 				<div class="informers-container">
 					<div class="informer-menu">
+						<a class="toggler" onclick="$('.informer-link').not('.active').toggleClass('visible'); updateHeight();">
+							<span>Свернуть/развенруть меню</span>
+						</a>
 						<xsl:for-each select="$inf">
-							<a href="{informers_ajax_link}" class="informer-link informer-ajax-caller{if(position() = 1) then ' active' else ''}">
+							<a href="{informers_ajax_link}" class="informer-link informer-ajax-caller{if(position() = 1) then ' active ' else ''}">
 								<xsl:value-of select="name"/>
 							</a>
 						</xsl:for-each>
@@ -498,25 +501,34 @@
 						var link = $(".informer-link:eq(0)").attr("href");
 						link = link + "&amp;limit=" + tickersPerRequest + "&amp;tickers_per_request=" + tickersPerRequest;
 						insertAjax(link,'informers', function(){
-								setTimeout(function(){$(".s-pageheader--home").css({
-								"padding-top" : $(".header").height() + 45
-								})}, 500);
+								setTimeout(updateHeight, 500);
 							});
 						});
 						$(document).on("click", ".informer-ajax-caller", function(e){
 							e.preventDefault();
 							el = $(this);
-							$(".informer-link").not(el).removeClass("active");
-							el.addClass("active");
+							$(".informer-link").removeClass("visible");
+							if(!el.is(".no-active")){
+								$(".informer-link").not(el).removeClass("active");
+								el.addClass("active");
+							}
 							var tickersPerRequest = Math.floor($(".row").width()/229);
 							var link = el.attr("href");
 							link = link + "&amp;tickers_per_request=" + tickersPerRequest;
 							insertAjax(link,'informers', function(){
-								setTimeout(function(){$(".s-pageheader--home").css({
-									"padding-top" : $(".header").height() + 45
-								})},250);
+								setTimeout(updateHeight,250);
 							});
 						});
+
+						function updateHeight(){
+							$(".s-pageheader--home").css({"padding-top" : $(".header").height() + 45});
+							var pt = $(".s-pageheader--home").css("padding-top");
+							pt = parseFloat(pt.replace("px", ""));
+							var h = $(".informers-container").outerHeight() + $(".header__logo").height();
+							if(pt &lt; h){
+								setTimeout(updateHeight,250);
+							}
+						}
 					</script>
 				</div>
 			</div>
