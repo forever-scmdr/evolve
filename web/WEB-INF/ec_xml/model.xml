@@ -192,7 +192,6 @@
 		<parameter name="date" type="date" caption="Дата публикации" description="UTC"/>
 		<parameter name="audio" type="file" caption="аудио"/>
 		<parameter name="soc_image" type="picture" caption="изображение для соц.сетей" format="width: 500;"/>
-		<parameter name="soc_picture" type="pai" caption="аудио"/>
 		<parameter name="source" type="string" caption="Источник"/>
 		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
 		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
