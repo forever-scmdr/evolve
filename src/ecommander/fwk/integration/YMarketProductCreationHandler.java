@@ -327,7 +327,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private boolean isNotRussian() {
 		if(notIgnoreCodes.contains(commonParams.get(CATEGORY_ID_ELEMENT))) return false;
 		String lang = commonParams.get(LANGUAGE);
-		return StringUtils.isNotBlank(lang) && !(StringUtils.indexOf(lang, "Русский") != -1 || StringUtils.indexOf(lang, "Белорусский") != -1);
+ 		return StringUtils.isNotBlank(lang) && !(StringUtils.indexOf(lang, "Русский") != -1 || StringUtils.indexOf(lang, "Белорусский") != -1);
 	}
 
 	@Override
