@@ -15,6 +15,7 @@
 
 	<xsl:template name="TWITTER_MARKUP">
 		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:image" content="{concat($main_host, '/',$ni/@path, $ni/soc_image)}"/>
 		<meta name="twitter:image:alt" content="{$h1}" />
 	</xsl:template>
 
@@ -24,7 +25,7 @@
 		<meta property="og:locale" content="ru_RU" />
 		<meta property="og:title" content="{$h1}" />
 		<meta property="og:description" content="{$ni/twitter_description}" />
-		<meta property="og:image" content="{concat($main_host, '/',$ni/@path, $ni/small_pic)}" />
+		<meta property="og:image" content="{concat($main_host, '/',$ni/@path, $ni/soc_pic)}" />
 		<meta name="og:app_id" content="552626568232392" />
 	</xsl:template>
 

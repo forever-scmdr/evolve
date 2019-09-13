@@ -21,8 +21,14 @@
         <meta property="og:locale" content="ru_RU" />
         <meta property="og:title" content="{$h1}" />
         <!-- <meta property="og:description" content="{$ni/short}" /> -->
-        <meta property="og:image" content="http://tempting.pro/images/logo.png" />
+        <meta property="og:image" content="{concat($main_host, '/',$ni/@path, $ni/soc_pic)}" />
        <meta property="og:app_id" content="552626568232392" />
+    </xsl:template>
+
+    <xsl:template name="TWITTER_MARKUP">
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="{concat($main_host, '/',$ni/@path, $ni/soc_image)}"/>
+        <meta name="twitter:image:alt" content="{$h1}" />
     </xsl:template>
 
     <xsl:template name="CONTENT">

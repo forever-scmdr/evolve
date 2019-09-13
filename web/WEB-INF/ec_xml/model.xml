@@ -106,6 +106,7 @@
 		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;"/>
 		<parameter name="small_pic" type="picture" caption="Маленькое изображение" description="500" format="width: 500; src: main_pic;"/>
 		<parameter name="twitter_description" type="string" caption="Описание для твиттера"/>
+		<parameter name="soc_image" type="picture" caption="изображение для соц.сетей" format="width: 500;"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 <!--		<parameter name="text_audio" type="file" caption="Аудио для вставки в текст" multiple="true"/>-->
@@ -189,6 +190,9 @@
 	<item name="small_news_item" caption="Новость" key="name" key-unique="true" super="searchable"  default-page="small_news_item" ag-id="28" ag-hash="-1321162809">
 		<child item="seo" single="true"/>
 		<parameter name="date" type="date" caption="Дата публикации" description="UTC"/>
+		<parameter name="audio" type="file" caption="аудио"/>
+		<parameter name="soc_image" type="picture" caption="изображение для соц.сетей" format="width: 500;"/>
+		<parameter name="soc_picture" type="pai" caption="аудио"/>
 		<parameter name="source" type="string" caption="Источник"/>
 		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
 		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>

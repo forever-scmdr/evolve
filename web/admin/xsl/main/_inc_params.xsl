@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet
+		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:f="f:f"
+		version="2.0">
+
+	<!-- Перевод даты из CMS вида (23.11.2017) в XSL вид -->
+	<xsl:function name="f:xsl_date" as="xs:date">
+		<xsl:param name="str_date"/>
+		<xsl:variable name="parts" select="tokenize(tokenize($str_date, '\s+')[1], '\.')"/>
+		<xsl:sequence select="if ($parts[3]) then xs:date(concat($parts[3], '-', $parts[2], '-', $parts[1])) else xs:date('1970-01-01')"/>
+	</xsl:function>
+
+	<xsl:function name="f:date_to_millis">
+		<xsl:param name="date" as="xs:date"/>
+		<xsl:sequence select="($date - xs:date('1970-01-01')) div xs:dayTimeDuration('PT0.001S')"/>
+	</xsl:function>
+
+	<!-- Перевод миллисекунд в XSL дату -->
+	<xsl:function name="f:millis_to_date" as="xs:date">
+		<xsl:param name="millis"/>
+		<xsl:sequence select="if ($millis) then xs:date('1970-01-01') + $millis * xs:dayTimeDuration('PT0.001S') else xs:date('1970-01-01')"/>
+	</xsl:function>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br/&gt;</xsl:text></xsl:template>
 
@@ -213,11 +236,14 @@
 			</label>
 			<xsl:if test="@format = '' or @format = 'dd.MM.yyyy HH:mm'">
 				<label style="float:left;">
+					<xsl:for-each select="@*">
+						<xsl:value-of select="name(current())"/><br/>
+					</xsl:for-each>
 					<input type="text" class="time" value="{substring(.,12)}" style="width: 42px;text-align:center; padding: 4px 0;"/>
 				</label>
 			</xsl:if>
 			<!-- этот инпут отправляется. Дата в формате dd.mm.yy, hh:mm -->
-			<input class="whole" type="hidden" name="{@input}" value="{.}" />
+			<input class="whole" type="hidden" name="{@input}" value="{f:date}" />
 		</div>
 	</xsl:template>
 

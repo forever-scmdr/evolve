@@ -67,11 +67,11 @@ function isValidUrl(url)
                time.val(tls.substring(11));
 			}
 			date.change(function() {
-				makeVal(targ, date, time);
+				//makeVal(targ, date, time);
 			});
 			time.change(function() {
 				validateTime(this);
-				makeVal(targ, date, time);
+				//makeVal(targ, date, time);
 			});
 		});
 		function validateTime(el) {
@@ -84,10 +84,10 @@ function isValidUrl(url)
 			$(el).val(arr.join(":"));
 
 		}
-		function makeVal(target, date, time) {
-         	v = (time.val() == undefined)? $(date).val() : $(date).val()+' '+$(time).val();
-			$(target).val(v);
-		}
+		// function makeVal(target, date, time) {
+        //  	v = (time.val() == undefined)? $(date).val() : $(date).val()+' '+$(time).val();
+		// 	$(target).val(v);
+		// }
 		
 		// Открытие окна редактирования фильтра
 		function openFilter(filterId, itemId, paramId) {
