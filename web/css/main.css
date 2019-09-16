@@ -2687,19 +2687,19 @@ body.search-is-visible {
 
 /* animate .featured
  * ------------------------------------------------------------------- */
-html.cl-preload .featured {
-	opacity: 0;
-}
+/*html.cl-preload .featured {*/
+/*	opacity: 0;*/
+/*}*/
 
-html.cl-loaded .featured {
-	animation-duration: 2s;
-	-webkit-animation-name: fadeIn;
-	animation-name: fadeIn;
-}
+/*html.cl-loaded .featured {*/
+/*	animation-duration: 2s;*/
+/*	-webkit-animation-name: fadeIn;*/
+/*	animation-name: fadeIn;*/
+/*}*/
 
-html.no-csstransitions .featured {
-	opacity: 1;
-}
+/*html.no-csstransitions .featured {*/
+/*	opacity: 1;*/
+/*}*/
 
 
 /* ------------------------------------------------------------------- 
