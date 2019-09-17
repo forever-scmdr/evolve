@@ -41,7 +41,7 @@
 						<div class="col-four tab-full small-news-item" data-aos="fade-up">
 						<!-- <div class="col-four tab-full small-news-item masonry__brick" data-aos="fade-up"> -->
 							<p class="date" data-utc="{date/@millis}">
-								<xsl:value-of select="date"/>
+								<xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/>
 							</p>
 							<p class="name{if(not(tag)) then ' botmar' else ' mar-0'}">
 								<a href="{show_page}">

@@ -62,7 +62,7 @@
 	<xsl:template match="small_news_item" mode="masonry">
 		<div class="col-four tab-full small-news-item" data-aos="fade-up" style="background: transparent;">
 			<p class="date" data-utc="{date/@millis}">
-				<xsl:value-of select="date"/>
+				<xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/>
 			</p>
 			<p class="name{if(not(tag)) then ' botmar' else ' mar-0'}">
 				<a href="{show_small_news_item}">
@@ -118,7 +118,7 @@
 			<div class="entry__text">
 				<div class="entry__header">
 					<div class="entry__date">
-						<a href="{show_news_item}" data-utc="{date/@millis}"><xsl:value-of select="date"/></a>
+						<a href="{show_news_item}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></a>
 					</div>
 					<div class="h1 entry__title"><a href="{show_news_item}"><xsl:value-of select="name"/></a></div>
 				</div>

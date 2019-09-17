@@ -93,7 +93,7 @@
 
 	<item name="news_item" key="name" caption="Статья" key-unique="true" default-page="news_item" super="searchable" ag-id="14" ag-hash="300774655">
 		<child item="seo" single="true"/>
-		<parameter name="date" type="date" caption="Дата публикации" description="UTC"/>
+		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="source" type="string" caption="Источник"/>
 		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
 		<parameter name="popular" type="byte" caption="Популярная новость" domain="0-1"/>
@@ -189,7 +189,7 @@
 
 	<item name="small_news_item" caption="Новость" key="name" key-unique="true" super="searchable"  default-page="small_news_item" ag-id="28" ag-hash="-1321162809">
 		<child item="seo" single="true"/>
-		<parameter name="date" type="date" caption="Дата публикации" description="UTC"/>
+		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="audio" type="file" caption="аудио"/>
 		<parameter name="soc_image" type="picture" caption="изображение для соц.сетей" format="width: 500;"/>
 		<parameter name="source" type="string" caption="Источник"/>

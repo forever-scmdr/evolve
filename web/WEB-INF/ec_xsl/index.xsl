@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -21,7 +21,7 @@
 								<xsl:for-each select="/page/small_news_item">
 									<div class="brief-news">
 										<div class="date" data-utc="{date/@millis}">
-											<xsl:value-of select="date"/>
+											<xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/>
 										</div>
 										<div>
 											<a href="{show_page}">
@@ -76,7 +76,7 @@
 											<!--<span>Источник</span> <a href="{source_link}"><xsl:value-of select="source"/></a>-->
 										<!--</span>-->
 									</xsl:if>
-									<span class="popular__date"><time datetime="{date}" data-utc="{date/@millis}"><xsl:value-of select="date"/></time></span>
+									<span class="popular__date"><time datetime="{date}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></time></span>
 								</section>
 							</article>
 						</xsl:for-each>
@@ -124,7 +124,7 @@
 
 				<div class="entry__info">
 					<ul class="entry__meta" style="margin-left:0;">
-						<li style="margin-left:0;" data-utc="{date/@millis}"><xsl:value-of select="date"/></li>
+						<li style="margin-left:0;" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></li>
 					</ul>
 				</div>
 			</div>

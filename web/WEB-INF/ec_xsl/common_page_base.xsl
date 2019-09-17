@@ -454,7 +454,7 @@
 			<div class="entry__text">
 				<div class="entry__header">
 					<div class="entry__date">
-						<a href="{show_page}" data-utc="{date/@millis}"><xsl:value-of select="date"/></a>
+						<a href="{show_page}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></a>
 					</div>
 					<div class="h1 entry__title"><a href="{show_page}"><xsl:value-of select="name"/></a></div>
 				</div>

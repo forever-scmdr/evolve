@@ -47,7 +47,7 @@
                                 </a>
                             </li>
                         </xsl:if>
-                        <li class="date" data-utc="{$ni/date/@millis}"><xsl:value-of select="$ni/date"/></li>
+                        <li class="date" data-utc="{$ni/date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date($ni/date/@millis)"/></li>
                     </ul>
                     <xsl:if test="$ni/complexity != '' or $ni/read_time != '' or $ni/size != ''">
                         <div class="tags">

@@ -45,7 +45,7 @@
 								</a>
 							</li>
 						</xsl:if>
-						<li class="date" data-utc="{$ni/date/@millis}"><xsl:value-of select="$ni/date"/></li>
+						<li class="date" data-utc="{$ni/date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date($ni/date/@millis)"/></li>
 						<li class="cat">
 							Категория:	<a href="{$parent/show_page}" >
 								<xsl:value-of select="$parent/name"/>
@@ -140,7 +140,7 @@
 			<div class="comment__content">
 				<cite><xsl:value-of select="$comment/name"/></cite>
 				<div class="comment__meta">
-					<time class="comment__time"><xsl:value-of select="$comment/date"/></time>
+					<time class="comment__time"><xsl:value-of select="f:utc_millis_to_bel_date($comment/date/@millis)"/></time>
 					<a class="reply" href="{$comment/@id}">Ответить</a>
 				</div>
 				<div class="comment__text">

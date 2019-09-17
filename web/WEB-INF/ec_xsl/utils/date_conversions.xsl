@@ -7,6 +7,25 @@
         version="2.0">
     <xsl:output method="xhtml" encoding="UTF-8" media-type="text/html" indent="yes" omit-xml-declaration="yes"/>
 
+    <!-- Перевод миллисекунд в XSL дату -->
+    <xsl:function name="f:millis_to_date_time" as="xs:dateTime">
+        <xsl:param name="millis"/>
+        <xsl:sequence select="if ($millis) then xs:dateTime('1970-01-01T00:00:00Z') + $millis * xs:dayTimeDuration('PT0.001S') else xs:dateTime('1970-01-01T00:00:00Z')"/>
+    </xsl:function>
+
+    <!-- Перевод даты из XSL вида в CMS вид (23.11.2017) -->
+    <xsl:function name="f:format_date_time">
+        <xsl:param name="date" as="xs:dateTime"/>
+        <xsl:sequence select="format-dateTime($date, '[D01].[M01].[Y0001] [H01]:[m01]')"/>
+    </xsl:function>
+
+    <!-- UTC- Миллисекунды в бел. дату -->
+    <xsl:function name="f:utc_millis_to_bel_date">
+        <xsl:param name="millis"/>
+        <xsl:variable name="m" select="f:num($millis) + (3*60*60*1000)"/>
+        <xsl:sequence select="f:format_date_time(f:millis_to_date_time($m))"/>
+    </xsl:function>
+
     <!-- Перевод XSL даты в миллисекунды -->
     <xsl:function name="f:date_to_millis">
         <xsl:param name="date" as="xs:date"/>
