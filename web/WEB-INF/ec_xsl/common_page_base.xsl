@@ -107,9 +107,6 @@
 						<li class="{'active'[$current_tag = 'Технологии']}">
 							<a href="{page/news_link_tech}">Технологии</a>
 						</li>
-						<li class="{'active'[$current_tag = 'Технологии']}">
-							<a href="{page/news_link_tech}">Технологии</a>
-						</li>
 						<li class="{'active'[$current_tag = 'Экономика']}">
 							<a href="{page/news_link_econ}">Экономика</a>
 						</li>
