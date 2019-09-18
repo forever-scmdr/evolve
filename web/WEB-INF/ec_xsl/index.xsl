@@ -66,7 +66,7 @@
 					<div class="block-1-2 block-m-full popular__posts">
 						<xsl:for-each select="page/popular">
 							<article class="col-block popular__post">
-								<a href="#0" class="popular__thumb">
+								<a href="{show_page}" class="popular__thumb">
 									<img src="{concat(@path,small_pic)}" alt="{name}"/>
 								</a>
 								<h5><a href="{show_page}"><xsl:value-of select="name"/></a></h5>

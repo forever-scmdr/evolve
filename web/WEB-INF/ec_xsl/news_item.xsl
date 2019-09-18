@@ -102,6 +102,34 @@
 			<xsl:call-template name="COMMENTS"/>
 
 		</section>
+
+		<!-- popular_posts -->
+		<section class="s-extra">
+			<div class="row top">
+				<div class="col-full md-six tab-full popular">
+				<h3>Популярные статьи</h3>
+					<div class="block-1-3 block-m-full popular__posts">
+						<xsl:for-each select="page/popular">
+							<article class="col-block popular__post">
+								<a href="{show_page}" class="popular__thumb">
+									<img src="{concat(@path,small_pic)}" alt="{name}"/>
+								</a>
+								<h5><a href="{show_page}"><xsl:value-of select="name"/></a></h5>
+								<section class="popular__meta">
+									<xsl:if test="source != ''">
+										<!--<span class="popular__author">-->
+										<!--<span>Источник</span> <a href="{source_link}"><xsl:value-of select="source"/></a>-->
+										<!--</span>-->
+									</xsl:if>
+									<span class="popular__date"><time datetime="{date}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></time></span>
+								</section>
+							</article>
+						</xsl:for-each>
+					</div>
+				</div>
+			</div>
+		</section>
+
 	</xsl:template>
 
 	<xsl:template name="COMMENTS">

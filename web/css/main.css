@@ -3313,7 +3313,7 @@ html.no-csstransitions .featured {
 		max-width: 900px;
 	}
 
-	.s-extra .popular__posts article:nth-child(n+5) {
+	.s-extra .popular__posts article:nth-child(n+9) {
 		display: none;
 	}
 
