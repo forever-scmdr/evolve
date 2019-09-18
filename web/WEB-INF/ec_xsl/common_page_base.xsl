@@ -88,8 +88,32 @@
 			<ul class="header__nav">
 				<li class="{'current'[$active_menu_item = 'index']}"><a href="{$main_host}">Главная страница</a></li>
 
-				<li class="{'current'[$active_menu_item = 'small_news']}">
+				<li class="has-children">
 					<a href="{page/news_link}">Новости</a>
+					<ul class="sub-menu">
+						<xsl:variable name="current_tag" select="if(page/@name = 'news') then page/variables/tag else ''"/>
+						<li class="{'current'[$current_tag = '' and $active_menu_item = 'small_news']}">
+							<a href="{page/news_link}">Все новости</a>
+						</li>
+						<li class="{'active'[$current_tag = 'Политика']}">
+							<a href="{page/news_link_pol}">Политика</a>
+						</li>
+						<li class="{'active'[$current_tag = 'Финансы']}">
+							<a href="{page/news_link_fin}">Финансы</a>
+						</li>
+						<li class="{'active'[$current_tag = 'Бизнес']}">
+							<a href="{page/news_link_biz}">Бизнес</a>
+						</li>
+						<li class="{'active'[$current_tag = 'Технологии']}">
+							<a href="{page/news_link_tech}">Технологии</a>
+						</li>
+						<li class="{'active'[$current_tag = 'Технологии']}">
+							<a href="{page/news_link_tech}">Технологии</a>
+						</li>
+						<li class="{'active'[$current_tag = 'Экономика']}">
+							<a href="{page/news_link_econ}">Экономика</a>
+						</li>
+					</ul>
 				</li>
 				<li class="has-children">
 					<a>Статьи</a>
@@ -521,17 +545,18 @@
 						});
 
 						function updateHeight(){
-							$(".s-pageheader--home").css({"padding-top" : $(".header").height() + 45});
-							var pt = $(".s-pageheader--home").css("padding-top");
+							<!-- $(".s-pageheader- -home").css({"padding-top" : $(".header").height() + 45});
+							var pt = $(".s-pageheader- -home").css("padding-top");
 							pt = parseFloat(pt.replace("px", ""));
 							var h = $(".informers-container").outerHeight() + $(".header__logo").height();
 							if(pt &lt; h){
 								setTimeout(updateHeight,250);
-							}
+							} -->
 						}
 					</script>
 				</div>
 			</div>
+			<div style="margin-bottom: 20px;"></div>
 		</xsl:if>
 	</xsl:template>
 

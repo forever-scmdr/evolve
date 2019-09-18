@@ -22,13 +22,28 @@
 					<h1>
 						<xsl:value-of select="$h1"/>
 					</h1>
-					<xsl:if test="page/variables/tag">
+<!--					<xsl:if test="page/variables/tag">-->
 						<p class="s-content__tags" style="margin-top:0;">
-							<a href="news" class="all" >
+							<a href="news">
 								Все новости
+							</a>&#160;&#160;
+							<a href="{page/news_link_pol}" >
+								Политика
+							</a>&#160;&#160;
+							<a href="{page/news_link_fin}">
+								Финансы
+							</a>&#160;&#160;
+							<a href="{page/news_link_biz}">
+								Бизнес
+							</a>&#160;&#160;
+							<a href="{page/news_link_tech}">
+								Технологии
+							</a>&#160;&#160;
+							<a href="{page/news_link_econ}">
+								Экономика
 							</a>
 						</p>
-					</xsl:if>
+<!--					</xsl:if>-->
 					<div class="lead">
 						<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
 					</div>

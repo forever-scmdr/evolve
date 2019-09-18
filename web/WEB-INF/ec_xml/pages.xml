@@ -18,6 +18,22 @@
 			</link>
 		</list>
 
+		<link name="news_link_pol" target="news">
+			<var name="tag" value="Политика"/>
+		</link>
+		<link name="news_link_fin" target="news">
+			<var name="tag" value="Финансы"/>
+		</link>
+		<link name="news_link_biz" target="news">
+			<var name="tag" value="Бизнес"/>
+		</link>
+		<link name="news_link_tech" target="news">
+			<var name="tag" value="Технологии"/>
+		</link>
+		<link name="news_link_econ" target="news">
+			<var name="tag" value="Экономика"/>
+		</link>
+
 		<single item="common" cacheable="true">
 			<list item="soc_link"/>
 		</single>
