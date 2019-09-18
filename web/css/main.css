@@ -105,6 +105,7 @@ a {
 	color: #403030;
 	-webkit-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
+	outline: none;
 }
 
 a:hover, a:focus, a:active {
