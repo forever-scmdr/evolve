@@ -1,24 +1,18 @@
 package extra;
 
 import ecommander.controllers.AppContext;
-import ecommander.controllers.PageController;
 import ecommander.fwk.EmailUtils;
 import ecommander.fwk.ItemUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
-import ecommander.model.ParameterDescription;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
 import ecommander.model.datatypes.DateDataType;
 import ecommander.pages.Command;
-import ecommander.pages.PagePE;
 import ecommander.pages.ResultPE;
-import ecommander.pages.var.StaticVariable;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Warranty_form;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -81,7 +75,7 @@ public class CreateCertificate extends Command implements ItemNames.warranty_for
 					"Воспользуйтесь формой обратной связи для связи с менеджерами");
 			return error;
 		}
-		DateTime certDate = purchaseDate.plusYears(2);
+		DateTime certDate = purchaseDate.plusYears(3);
 
 		ServerLogger.error("\t\t\t\tWARRANTY MAIN");
 		File productPicFile = product.getFileValue(ItemNames.product_.GALLERY, AppContext.getFilesDirPath(product.isFileProtected()));
