@@ -1,5 +1,6 @@
 package ecommander.fwk;
 
+import com.uwyn.jhighlight.tools.ExceptionUtils;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.mappers.LuceneIndexMapper;
@@ -81,6 +82,7 @@ public abstract class IntegrateBase extends Command {
 
 		private volatile String operation = "Инициализация";
 		private volatile int lineNumber = 0;
+		private volatile int position = 0;
 		private volatile int processed = 0;
 		private volatile int toProcess = 0;
 		private ArrayDeque<LogMessage> log = new ArrayDeque<>();
@@ -94,6 +96,10 @@ public abstract class IntegrateBase extends Command {
 
 		public synchronized void setLineNumber(int lineNumber) {
 			this.lineNumber = lineNumber;
+		}
+
+		public synchronized void setLinePosition(int position) {
+			this.position = position;
 		}
 
 		public synchronized void setProcessed(int processed) {
@@ -114,6 +120,10 @@ public abstract class IntegrateBase extends Command {
 
 		public synchronized void increaseProcessed() {
 			this.processed++;
+		}
+
+		public synchronized void increaseProcessed(int procCount) {
+			this.processed += procCount;
 		}
 
 		public synchronized void increaseLineNumber() {
@@ -279,7 +289,7 @@ public abstract class IntegrateBase extends Command {
 					} catch (Exception se) {
 						setOperation("Интеграция завершена с ошибками");
 						ServerLogger.error("Integration error", se);
-						getInfo().addError(se.getMessage(), 0, 0);
+						getInfo().addError(ExceptionUtils.getExceptionStackTrace(se), info.lineNumber, info.position);
 					} finally {
 						isInProgress = false;
 						getInfo().setInProgress(false);
@@ -314,7 +324,7 @@ public abstract class IntegrateBase extends Command {
 	 */
 	private ResultPE buildResult() throws IOException {
 		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
-		doc.startElement("page");
+		doc.startElement("page", "name");
 		getInfo().output(doc);
 		doc.endElement();
 		ResultPE result = null;
