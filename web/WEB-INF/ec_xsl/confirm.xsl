@@ -24,7 +24,7 @@
 		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="item-summ" style="padding-bottom: 20px;">
 			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
-			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
+			Сумма: <span><xsl:value-of select="f:currency_decimal($cart/sum)"/></span> руб.
 		</div>
 		<div class="checkout-cont1">
 			<div class="info" style="padding-bottom: 20px;">
@@ -129,10 +129,10 @@
 						<xsl:variable name="price">
 							<xsl:choose>
 								<xsl:when test="$is_reg_jur">
-									<xsl:value-of select="if (f:num($product/price) != 0) then concat(f:currency_decimal($product/price), ' p.') else 'по запросу'"/>
+									<xsl:value-of select="if (f:num($product/price_opt) != 0) then concat(f:currency_decimal($product/price_opt), '') else 'по запросу'"/>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:value-of select="if (f:num($product/price_opt) != 0) then concat(f:currency_decimal($product/price_opt), ' p.') else 'по запросу'"/>
+									<xsl:value-of select="if (f:num($product/price) != 0) then concat(f:currency_decimal($product/price), '') else 'по запросу'"/>
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
@@ -151,7 +151,7 @@
 								<xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if>
 							</td>
 							<td>
-								<xsl:value-of select="sum"/>
+								<xsl:value-of select="f:currency_decimal(sum)"/>
 							</td>
 							<!-- <td>
 								<xsl:value-of select="$product/qty"/>

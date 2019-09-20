@@ -31,8 +31,9 @@
 		<xsl:param name="vals" select="$inp"/>
 		<div>
 			<div class="form-group">
-				<label>Способ доставки <a href="dostavka">Подробнее</a></label>
+				<label>Способ доставки <a href="/usloviya_otgruzki">Подробнее</a></label>
 				<select class="form-control" name="{$inp/ship_type/@input}" value="{f:not_empty($inp/ship_type, $vals/ship_type)}" error="{$inp/ship_type/@validation-error}">
+						<option>Не указано</option>
 					<xsl:for-each select="page/common/delivery/option">
 						<option><xsl:value-of select="."/></option>
 					</xsl:for-each>
@@ -78,8 +79,9 @@
 		<xsl:param name="inp"/>
 		<xsl:param name="vals" select="$inp"/>
 		<div class="form-group">
-			<label>Способ доставки <a href="dostavka">Подробнее</a></label>
+			<label>Способ доставки <a href="/usloviya_otgruzki">Подробнее</a></label>
 			<select class="form-control" name="{$inp/ship_type/@input}" value="{f:not_empty($inp/ship_type, $vals/ship_type)}">
+				<option>Не указано</option>
 				<xsl:for-each select="page/common/delivery/option">
 					<option><xsl:value-of select="."/></option>
 				</xsl:for-each>

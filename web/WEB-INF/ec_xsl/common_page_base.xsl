@@ -471,7 +471,7 @@
 					<div class="device__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="$qty"/> шт.</div>
 				</xsl:when>
 				<xsl:otherwise>
-					<div class="device__in-stock device__in-stock_no" title="Ближайшая поставка: 01.01.2020"><i class="fas fa-truck"></i> товар в пути</div>
+					<div class="device__in-stock device__in-stock_no" ><i class="fas fa-truck"></i>Поставка: <xsl:value-of select="substring(//catalog/ship_date, 1,10)"/></div>
 				</xsl:otherwise>
 			</xsl:choose>
 
@@ -555,7 +555,7 @@
 						<div class="device__in-stock device_row__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="$qty"/> шт.</div>
 					</xsl:when>
 					<xsl:otherwise>
-						<div class="device__in-stock device_row__in-stock device__in-stock_no" title="Ближайшая поставка: 01.01.2020"><i class="fas fa-truck"></i> товар в пути</div>
+						<div class="device__in-stock device_row__in-stock device__in-stock_no"><i class="fas fa-truck"></i>Поставка: <xsl:value-of select="substring(//catalog/ship_date, 1,10)"/></div>
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
