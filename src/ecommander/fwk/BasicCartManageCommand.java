@@ -372,7 +372,9 @@ public abstract class BasicCartManageCommand extends Command {
      * @param qtyWanted
      */
 	private void setBoughtQtys(Item product, Item bought, double qtyWanted) {
-        double maxQuantity = product.getDoubleValue(QTY_PARAM, MAX_QTY);
+		byte b = getInitiator().getRole("registered");
+		String qp = b > -1? "qty_opt" : QTY_PARAM;
+        double maxQuantity = product.getDoubleValue(qp, MAX_QTY);
         double qtyAvail = 0;
         double qtyTotal = 0;
         double qty = 0;
