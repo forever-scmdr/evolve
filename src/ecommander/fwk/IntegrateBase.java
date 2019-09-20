@@ -329,7 +329,8 @@ public abstract class IntegrateBase extends Command {
 	protected abstract void terminate() throws Exception;
 	/**
 	 * Создать результат выполнения команды (xml документ)
-	 * 
+	 *
+	 *
 	 * @return
 	 * @throws IOException
 	 */
