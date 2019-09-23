@@ -68,7 +68,7 @@
 					<xsl:for-each select="/page/log">
 						<tr>
 							<td class="string-no">
-							Время: <span class="no"><xsl:value-of select="@time"/></span>
+							Время: <span class="no"><xsl:value-of select="@time"/></span> 
 							</td>
 							<td class="error"><xsl:value-of select="." disable-output-escaping="yes"/></td>
 						</tr>

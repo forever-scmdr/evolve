@@ -95,7 +95,7 @@
 			<!-- Отображние блоками/списком, товаров на страницу, сортировка, наличие -->
 
 			<xsl:if test="$subs and $sub_view = 'pics' and $show_devices and not($sel_sec/show_subs = '0')">
-				<div class="title_2" style="margin-top: 32px;">Товары</div>
+				<div class="h3">Товары</div>
 			</xsl:if>
 			<xsl:call-template name="DISPLAY_CONTROL"/>
 
@@ -107,7 +107,7 @@
 					<xsl:if test="$view = 'list'">
 						<xsl:apply-templates select="$sel_sec/product" mode="lines"/>
 					</xsl:if>
-					<xsl:if test="not($sel_sec/product)">
+					<xsl:if test="$not_found">
 						<h4>По заданным критериям товары не найдены</h4>
 					</xsl:if>
 				</div>
@@ -173,8 +173,7 @@
 	</xsl:template>
 
 	<xsl:template name="FILTER">
-		<xsl:variable name="inputs" select="$sel_sec/params_filter/filter/input[not(@caption = $sel_sec/hide_params)]"/>
-		<xsl:variable name="valid_inputs" select="$inputs[count(domain/value) &gt; 1]"/>
+		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input"/>
 
 		<xsl:if test="not($subs) and $valid_inputs">
 			<div class="toggle-filters">
@@ -215,29 +214,21 @@
 	</xsl:template>
 
 	<xsl:template name="DISPLAY_CONTROL">
-		<xsl:if test="$show_devices">
+		<xsl:if test="$show_devices and not($not_found) and $sel_sec/product">
 			<div class="view-container desktop">
-				<div class="view"><span>Вид:&#160;&#160;</span>
+				<div class="view">
 					<span class="{'active'[not($view = 'list')]}">
+						
 						<a href="{page/set_view_table}"><i class="fas fa-th-large"></i></a>
 					</span>
 					<span class="{'active'[$view = 'list']}">
+						
 						<a href="{page/set_view_list}"><i class="fas fa-th-list"></i></a>
 					</span>
 				</div>
 
 
-
-				<span>
-					<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
-							onchange="window.location.href = $(this).find(':selected').attr('link')">
-						<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
-						<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
-						<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
-						<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
-						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
-					</select></span>
-				<div class="checkbox">
+				<!-- <div class="checkbox">
 					<label>
 						<xsl:if test="not($only_available)">
 							<input type="checkbox"
@@ -249,9 +240,21 @@
 						</xsl:if>
 						в наличии на складе
 					</label>
-				</div>
+				</div> -->
+				
+				Сортировка: 
+				<span>
+					<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
+							onchange="window.location.href = $(this).find(':selected').attr('link')">
+						<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
+						<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
+						<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
+						<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
+						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
+					</select>
+				</span>
 				<div class="quantity">
-					<span>Кол-во на странице:&#160;&#160;</span>
+					<span>Кол-во на странице:</span>
 					<span>
 						<select class="form-control" value="{page/variables/limit}"
 								onchange="window.location.href = $(this).find(':selected').attr('link')">
@@ -275,7 +278,7 @@
 
 	<xsl:template match="section" mode="pic">
 		<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
-		<xsl:variable name="product_pic" select="if (product[1]/main_pic != '') then concat(product[1]/@path, product[1]/main_pic) else ''"/>
+		<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
 		<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 		<div class="device items-catalog__section">
 			<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>

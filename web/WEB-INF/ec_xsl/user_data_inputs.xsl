@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0"> 
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -11,42 +11,9 @@
 	</xsl:function>
 
 
-	<xsl:template name="SUBMIT_SCRIPT">
-		<xsl:if test="page/@name = 'proceed'">
-			<script>
-				$(document).ready(function() {
-					$('select').change(function() {
-						var form = $(this).closest('form');
-						form.attr('action', '<xsl:value-of select="page/recalculate_link" />');
-						form.submit();
-					});
-				});
-			</script>
-		</xsl:if>
-	</xsl:template>
-
-
 	<xsl:template name="USER_PHYS_INPUTS">
 		<xsl:param name="inp"/>
 		<xsl:param name="vals" select="$inp"/>
-		<div>
-			<div class="form-group">
-				<label>Способ доставки <a href="dostavka">Подробнее</a></label>
-				<select class="form-control" name="{$inp/ship_type/@input}" value="{f:not_empty($inp/ship_type, $vals/ship_type)}" error="{$inp/ship_type/@validation-error}">
-					<xsl:for-each select="page/common/delivery/option">
-						<option><xsl:value-of select="."/></option>
-					</xsl:for-each>
-				</select>
-			</div>
-			<div class="form-group">
-				<label>Способ оплаты</label>
-				<select class="form-control" name="{$inp/pay_type/@input}" value="{f:not_empty($inp/pay_type, $vals/pay_type)}" error="{$inp/pay_type/@validation-error}">
-					<xsl:for-each select="page/common/payment/option">
-						<option><xsl:value-of select="."/></option>
-					</xsl:for-each>
-				</select>
-			</div>
-		</div>
 		<div>
 			<div class="form-group">
 				<label>Ваше имя *:</label>
@@ -67,6 +34,26 @@
 				<input type="text" class="form-control" name="{$inp/email/@input}" value="{f:not_empty($inp/email, $vals/email)}" error="{$inp/email/@validation-error}"/>
 			</div>
 		</div>
+		<xsl:if test="page/@name != 'register'">
+			<div>
+				<div class="form-group">
+					<label>Способ доставки <a href="dostavka">Подробнее</a></label>
+					<select class="form-control" name="{$inp/ship_type/@input}" value="{f:not_empty($inp/ship_type, $vals/ship_type)}" error="{$inp/ship_type/@validation-error}">
+						<xsl:for-each select="page/common/delivery/option">
+							<option><xsl:value-of select="."/></option>
+						</xsl:for-each>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Способ оплаты</label>
+					<select class="form-control" name="{$inp/pay_type/@input}" value="{f:not_empty($inp/pay_type, $vals/pay_type)}" error="{$inp/pay_type/@validation-error}">
+						<xsl:for-each select="page/common/payment/option">
+							<option><xsl:value-of select="."/></option>
+						</xsl:for-each>
+					</select>
+				</div>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 
@@ -77,22 +64,6 @@
 	<xsl:template name="USER_JUR_INPUTS">
 		<xsl:param name="inp"/>
 		<xsl:param name="vals" select="$inp"/>
-		<div class="form-group">
-			<label>Способ доставки <a href="dostavka">Подробнее</a></label>
-			<select class="form-control" name="{$inp/ship_type/@input}" value="{f:not_empty($inp/ship_type, $vals/ship_type)}">
-				<xsl:for-each select="page/common/delivery/option">
-					<option><xsl:value-of select="."/></option>
-				</xsl:for-each>
-			</select>
-		</div>
-		<div class="form-group">
-			<label>Способ оплаты</label>
-			<select class="form-control" name="{$inp/pay_type/@input}" value="{f:not_empty($inp/pay_type, $vals/pay_type)}">
-				<xsl:for-each select="page/common/payment/option">
-					<option><xsl:value-of select="."/></option>
-				</xsl:for-each>
-			</select>
-		</div>
 		<div class="form-group">
 			<label>Наименование организации *:</label>
 			<input type="text" class="form-control" name="{$inp/organization/@input}"
@@ -114,6 +85,24 @@
 			<label>Телефон контактного лица:</label>
 			<input type="text" class="form-control" name="{$inp/contact_phone/@input}" value="{f:not_empty($inp/contact_phone, $vals/contact_phone)}"/>
 		</div>
+		<xsl:if test="page/@name != 'register'">
+			<div class="form-group">
+				<label>Способ доставки <a href="dostavka">Подробнее</a></label>
+				<select class="form-control" name="{$inp/ship_type/@input}" value="{f:not_empty($inp/ship_type, $vals/ship_type)}">
+					<xsl:for-each select="page/common/delivery/option">
+						<option><xsl:value-of select="."/></option>
+					</xsl:for-each>
+				</select>
+			</div>
+			<div class="form-group">
+				<label>Способ оплаты</label>
+				<select class="form-control" name="{$inp/pay_type/@input}" value="{f:not_empty($inp/pay_type, $vals/pay_type)}">
+					<xsl:for-each select="page/common/payment/option">
+						<option><xsl:value-of select="."/></option>
+					</xsl:for-each>
+				</select>
+			</div>
+		</xsl:if>
 		<div class="form-group">
 			<label>Юридический адрес:</label>
 			<input type="text" class="form-control" name="{$inp/address/@input}" value="{f:not_empty($inp/address, $vals/address)}"/>
@@ -146,7 +135,6 @@
 			<label>Действует на основании:</label>
 			<input type="text" class="form-control" name="{$inp/base/@input}" value="{f:not_empty($inp/base, $vals/base)}"/>
 		</div>
-		<xsl:call-template name="SUBMIT_SCRIPT"/>
 	</xsl:template>
 
 

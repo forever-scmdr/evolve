@@ -29,9 +29,9 @@
 			<div class="catalog-items info">
 				<xsl:for-each select="$p/custom_page">
 					<div class="catalog-item">
-						<a href="{show_page}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="http://aquacom.must.by/{@path}{main_pic}" alt=""/> --></a>
+						<a href="{show_page}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="http://shop4.must.by/{@path}{main_pic}" alt=""/> --></a>
 						<div class="text">
-							<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]"/></div>
+							<div class="date"><xsl:value-of select="date"/></div>
 							<a href="{show_page}"><xsl:value-of select="header"/></a>
 							<xsl:value-of select="short" disable-output-escaping="yes"/>
 						</div>

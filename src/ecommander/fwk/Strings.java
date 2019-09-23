@@ -76,6 +76,19 @@ public class Strings
         }
         return english.toString();
     }
+
+	/**
+	 * Создать часть урла при помощи транслитерации
+	 * @param russian
+	 * @return
+	 */
+	public static String createTranslitedUrlPart(String russian) {
+		String halfValid = translit(StringUtils.trim(russian));
+		if (StringUtils.isBlank(halfValid))
+			return null;
+		return StringUtils.replaceChars(halfValid, '.', '_');
+	}
+
     /**
      * Создать строку, которая не содержит русских символов, спецсимволов и может являться именем XML элемента
      * @param invalid
