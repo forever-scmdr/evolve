@@ -58,7 +58,7 @@
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
-	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+	<xsl:variable name="only_available" select="(not($is_reg_jur) and page/variables/minqty = '0') or $is_reg_jur and page/variables/minqty_opt = '0'"/>
 	<xsl:variable name="canonical"
 				  select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/>
 
@@ -240,12 +240,10 @@
 				<div class="checkbox">
 					<label>
 						<xsl:if test="not($only_available)">
-							<input type="checkbox"
-								   onclick="window.location.href = '{page/show_only_available}'"/>
+							<input type="checkbox" onclick="window.location.href = '{if($is_reg_jur) then page/show_only_available_opt else page/show_only_available}'"/>
 						</xsl:if>
 						<xsl:if test="$only_available">
-							<input type="checkbox" checked="checked"
-								   onclick="window.location.href = '{page/show_all}'"/>
+							<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
 						</xsl:if>
 						в наличии на складе
 					</label>

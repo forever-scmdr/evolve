@@ -197,6 +197,7 @@
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
+			<var name="minqty_opt" value="" scope="cookie"/>
 			<var name="fil"/>
 			<var name="tag"/>
 		</request>
@@ -210,6 +211,7 @@
 					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
 					<parameter name="qty" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+					<parameter name="qty_opt" sign="&gt;" compare="ANY"><var var="minqty_opt" /></parameter>
 					<sorting direction-var="direction">
 						<var var="sort"/>
 					</sorting>
@@ -284,9 +286,14 @@
 			<var name="sec" var="sec" style="key"/>
 			<var name="minqty" value="0"/>
 		</link>
+		<link name="show_only_available_opt" target="section" type="exclusive">
+			<var name="sec" var="sec" style="key"/>
+			<var name="minqty_opt" value="0"/>
+		</link>
 		<link name="show_all" target="section" type="exclusive">
 			<var name="sec" var="sec" style="key"/>
 			<var name="minqty" value=""/>
+			<var name="minqty_opt" value=""/>
 		</link>
 		<link name="set_sort_name_asc" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="sort" value="name"/>

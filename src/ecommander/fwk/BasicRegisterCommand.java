@@ -105,6 +105,8 @@ public abstract class BasicRegisterCommand extends Command {
 					// Удалить корзину
 					getSessionMapper().removeItems(CART_ITEM);
 				}
+				setCookieVariable("minqty_opt", "");
+				setCookieVariable("minqty", "");
 				return getResult("login");
 			} else {
 				return getResult("login_error");
