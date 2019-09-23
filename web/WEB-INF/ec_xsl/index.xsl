@@ -166,16 +166,23 @@
 
 
 	<xsl:template name="BANNERS">
-		<section class="hero">
+		<section class="hero pb">
 			<div class="container">
-				<div class="fotorama mobile-image" data-width="100%">
+				<div class="fotorama" data-width="100%">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<div data-img="{@path}{pic_mobile}"><a class="slider__link" href="{link}"></a></div>
-					</xsl:for-each>
-				</div>
-				<div class="fotorama desktop-image" data-width="100%">
-					<xsl:for-each select="page/main_page/main_slider_frame">
+						<!-- <img src="{@path}{pic}" alt="{name}"/> -->
 						<div data-img="{@path}{pic}"><a class="slider__link" href="{link}"></a></div>
+						<!-- <div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+							<div class="slider-item__block fotorama__select">
+								<div class="slider-item__wrapper">
+									<div class="slider-item__title"><xsl:value-of select="name" /></div>
+									<div class="slider-item__text">
+										<xsl:value-of select="text" disable-output-escaping="yes"/>
+									</div>
+									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+								</div>
+							</div>
+						</div> -->
 					</xsl:for-each>
 				</div>
 			</div>
@@ -199,15 +206,34 @@
 				</div>
 			</div>
 		</section> -->
-
-		<section class="bannerz pt">
+		<section class="bannerz pb">
+			<div class="container">
+				<div class="block-title">Лодочные моторы Suzuki</div>
+			</div>
 			<div class="container">
 				<xsl:apply-templates select="page/banner_section[1]/banner"/>
 			</div>
 		</section>
-		
-		
-		<section class="news pt pb">
+
+		<!-- <section class="special-items ptb" style="background-color: #f2f2f2;">
+			<div class="container">
+				<div class="block-title">Новинки и акции</div>
+				<div class="special-items__devices slick-slider">
+					<xsl:apply-templates select="page/main_page/product[tag='Новинка']"/>
+				</div>
+			</div>
+		</section> -->
+
+		<section class="bannerz pt">
+			<div class="container">
+				<div class="block-title">Обслуживание мотора</div>
+			</div>
+			<div class="container">
+				<xsl:apply-templates select="page/banner_section[2]/banner"/>
+			</div>
+		</section>
+
+		<section class="news pt">
 			<div class="container">
 				<div class="block-title">
 					Новости
@@ -224,23 +250,14 @@
 			</div>
 		</section>
 
-		<section class="special-items ptb" style="background-color: #f2f2f2;">
-			<div class="container">
-				<div class="block-title">Новинки и акции</div>
-				<div class="special-items__devices slick-slider">
-					<xsl:apply-templates select="page/main_page/product[tag='Новинка']"/>
-				</div>
-			</div>
-		</section>
-
 		<section class="bannerz pt">
 			<div class="container">
-			<h2 class="block-title" style="grid-column: 1 / -1;">Наши преимущества</h2>
-				<xsl:apply-templates select="page/banner_section[2]/banner"/>
+				<div class="block-title">Другие сайты Suzuki</div>
+			</div>
+			<div class="container">
+				<xsl:apply-templates select="page/banner_section[3]/banner"/>
 			</div>
 		</section>
-
-
 		<!-- <section class="ptb mtb" style="background-color: #f2f2f2;">
 			<div class="container">
 				<div class="banners-big-icons">

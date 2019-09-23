@@ -218,12 +218,12 @@
 			<div class="view-container desktop">
 				<div class="view">
 					<span class="{'active'[not($view = 'list')]}">
-						<i class="fas fa-th-large"></i>
-						<a href="{page/set_view_table}">Плиткой</a>
+						
+						<a href="{page/set_view_table}"><i class="fas fa-th-large"></i></a>
 					</span>
 					<span class="{'active'[$view = 'list']}">
-						<i class="fas fa-th-list"></i>
-						<a href="{page/set_view_list}">Строками</a>
+						
+						<a href="{page/set_view_list}"><i class="fas fa-th-list"></i></a>
 					</span>
 				</div>
 

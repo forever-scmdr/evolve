@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
-	<xsl:import href="callback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
@@ -53,7 +52,7 @@
 	<xsl:template match="custom_page" mode="menu_first">
 		<xsl:variable name="key" select="@key"/>
 		<xsl:if test="not(custom_page)">
-			<div class="main-menu__item">
+			<div class="main-menu__item {'active'[$active_menu_item = $key]}">
 				<a href="{show_page}" class="{'active'[$active_menu_item = $key]}">
 					<xsl:value-of select="header"/>
 				</a>
@@ -97,20 +96,20 @@
 
 
 	<xsl:template name="INC_DESKTOP_HEADER">
-		<section class="top-stripe desktop">
+		<!-- <section class="top-stripe desktop">
 			<div class="container">
 				<xsl:value-of select="$common/top" disable-output-escaping="yes"/>
-				<!-- <div class="top-stripe__phone"><img src="img/phone_logo.svg" />(+375 17) 123-45-67;</div>
+				<div class="top-stripe__phone"><img src="img/phone_logo.svg" />(+375 17) 123-45-67;</div>
 				<div class="top-stripe__phone"><img src="img/velcom_logo.svg" />(+375 17) 123-45-67 - отдел продаж;</div>
 				<div class="top-stripe__phone"><img src="img/mts_logo.svg" />(+375 17) 123-45-67 - отдел сервиса;</div>
-				<div class="top-stripe__address">г. Орша Ул. 1 Мая 81В-2; Время работы: пн. - пт. с 9 до 18;</div> -->
+				<div class="top-stripe__address">г. Орша Ул. 1 Мая 81В-2; Время работы: пн. - пт. с 9 до 18;</div>
 			</div>
-		</section>
+		</section> -->
 		<section class="header desktop">
 			<div class="container">
-				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
+				<a href="{$main_host}" class="logo"><img src="img/logo.svg" alt="" /></a>
 				<form action="{page/search_link}" method="post" class="header__search header__column">
-					<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" />
+					<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
 					<input type="submit" class="button header__button" value="Поиск" />
 				</form>
 				<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
@@ -181,7 +180,7 @@
 		<div class="header mobile">
 			<div class="header-container">
 				<a href="{$main_host}" class="logo">
-					<img src="img/logo.png" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
+					<img src="img/logo.svg" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
 					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
@@ -213,46 +212,26 @@
 
 	<xsl:template name="INC_FOOTER">
 		<!-- FOOTER BEGIN -->
-		<xsl:call-template name="CALLBACK_BUTTON"/>
 		<div class="footer-placeholder"></div>
 		<footer class="footer">
 			<div class="container">
-			<xsl:variable name="footer" select="page/common/footer"/>
-			<div class="footer__column">
-				<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
-					<div class="title_3"><xsl:value-of select="$footer/block[1]/header" /></div>
-				</xsl:if>
-				<xsl:value-of select="$footer/block[1]/text" disable-output-escaping="yes"/>
-				
-			</div>
-			<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/><!-- 
-				<div>
-					<p>
-						<strong>© ООО «Скобяной трейд», 2018</strong>
-					</p>
-					<div class="footer__forever">
-						<a href="http://forever.by">Разработка сайта — студия веб-дизайна Forever</a>
+				<xsl:variable name="footer" select="page/common/footer"/>
+				<div class="footer__column">
+					<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
+						<div class="title_3"><xsl:value-of select="$footer/block[1]/header" /></div>
+					</xsl:if>
+					<xsl:value-of select="$footer/block[1]/text" disable-output-escaping="yes"/>
+					
+				</div>
+				<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
+				<div class="footer__column">
+					<p>Мы в социальных сетях</p>
+					<div class="social">
+						<a href="https://www.instagram.com/taktsminsk/"><i class="fab fa-instagram" style="color: #ffffff;" /></a>
+						<a href="https://www.facebook.com/stihlminsk/"><i class="fab fa-facebook" style="color: #ffffff;" /></a>
 					</div>
 				</div>
-				<div>
-					<p>
-						<strong>Заказ и констультация</strong>
-					</p>
-					<p>(+375 17) 123-45-67 - городской;</p>
-					<p>(+375 17) 123-45-67 - велком;</p>
-					<p>(+375 17) 123-45-67 - МТС;</p>
-					<p>email: <a href="mailto:skobtrade@mail.ru">skobtrade@mail.ru</a></p>
-				</div>
-				<div>
-					<p>Республика Беларусь Витебская обл., 211394 г. Орша Ул. 1 Мая 81В-2</p>
-					<p>email: <a href="mailto:skobtrade@mail.ru">skobtrade@mail.ru</a></p>
-					<p><strong>Режим работы</strong></p>
-					<p>Пн.-пт.: с 9:00 до 20:00</p>
-				</div>
-				<div>
-					<p>Работаем только с юридическими лицами и индивидуальными предпринимателями по безналичному расчету</p>
-				</div>
-			 --></div>
+			</div>
 		</footer>
 		<!-- FOOTER END -->
 
@@ -281,38 +260,10 @@
 				</div>
 			</div>
 		</div>
-		<!-- modal call-back -->
-		<xsl:call-template name="CALLBACK_FORM"/>
-<!--		<div class="modal fade" tabindex="-1" role="dialog" id="modal-call-back">-->
-<!--			<div class="modal-dialog modal-sm" role="document">-->
-<!--				<div class="modal-content">-->
-<!--					<div class="modal-header">-->
-<!--						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>-->
-<!--						<div class="modal-title h4">Обратный звонок</div>-->
-<!--					</div>-->
-<!--					<div class="modal-body">-->
-<!--						<p>Оставьте свой номер телефона и наш консультант свяжется с вами в рабочее время с 9:00 до 20:00.</p>-->
-<!--						<form action="" method="post">-->
-<!--							<div class="form-group">-->
-<!--								<label for="">Номер телефона:</label>-->
-<!--								<input type="text" class="form-control" placeholder="+375-XX-XXX-XX-XX"/>-->
-<!--							</div>-->
-<!--							<input class="button" type="submit" name="" value="Заказать обратный звонок"/>-->
-<!--						</form>-->
-<!--					</div>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--		</div>-->
 
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
-
-		<!-- modal assoc products -->
-		<div id="assoc-products-modal" class="modal fade" tabindex="-1" role="dialog" show-loader="yes">
-			Loading...
-		</div>
 		<!-- MODALS END -->
-
 	</xsl:template>
 
 
@@ -662,6 +613,10 @@
 				<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
 				<div class="device__description">
 					<!-- <xsl:value-of select="description" disable-output-escaping="yes"/> -->
+					<xsl:for-each select="params/param">
+						<span style="color: #616161;"><xsl:value-of select="@caption"/></span>&#160;-&#160;<xsl:value-of select="."/>
+						<xsl:text>; </xsl:text>
+					</xsl:for-each>
 				</div>
 			</div>
 			<div class="device__article-number"><xsl:value-of select="code"/></div>
@@ -880,7 +835,7 @@
 				<script type="text/javascript" src="slick/slick.min.js"></script>
 				<script type="text/javascript">
 					$(document).ready(function(){
-					$(".magnific_popup-image, a[rel=fancybox]").magnificPopup({
+					$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
 						type: 'image',
 						closeOnContentClick: true,
 						mainClass: 'mfp-img-mobile',

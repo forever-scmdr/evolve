@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0"> 
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -66,13 +66,10 @@
 		<p class="subtitle">арт. <xsl:value-of select="$p/code"/></p>
 		<div class="catalog-item-container">
 			<div class="gallery">
-				<div class="fotorama" data-nav="thumbs" data-thumbheight="80" data-thumbwidth="80" data-width="100%" data-allowfullscreen="true">
+				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="native">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
-					<!--<xsl:for-each-group select="$p/gallery" group-by="f:substring-before-last(name, '_')">-->
-						<!--<img src="{$p/@path}{current-group()[1]/.}" alt="{$p/name}"/>-->
-					<!--</xsl:for-each-group>-->
 					<xsl:if test="not($p/gallery)">
 						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
@@ -188,6 +185,9 @@
 						</div>
 					</div>
 				</xsl:if>
+				<div>
+					<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
+				</div>
 				<div class="extra-info">
 					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 				</div>
@@ -253,7 +253,7 @@
 		<xsl:if test="page/assoc">
 			<h3>Вас также может заинтересовать</h3>
 			<div class="catalog-items">
-				<xsl:apply-templates select="page/assoc" />
+				<xsl:apply-templates select="page/assoc" mode="lines"/>
 			</div>
 		</xsl:if>
 

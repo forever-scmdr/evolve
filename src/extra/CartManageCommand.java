@@ -66,7 +66,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 	}
 
 
-	private Discounts discounts;
+	//private Discounts discounts;
 
 
 	@Override
@@ -95,7 +95,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 		}
 		return !hasError;
 	}
-
+/*
 	@Override
 	protected boolean recalculateCart(String...priceParamName) throws Exception {
 //		if (discounts == null) {
@@ -200,4 +200,6 @@ public class CartManageCommand extends BasicCartManageCommand {
 			return false;
 		}
 	}
+	*/
+
 }

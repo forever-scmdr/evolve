@@ -1010,11 +1010,6 @@ td,th {
 	-moz-box-sizing:border-box;
 	box-sizing:border-box;
 }
-
-.hero {
-    margin-bottom: 24px;
-    background: #ebebeb;
-}
 *:before,*:after {
 	-webkit-box-sizing:border-box;
 	-moz-box-sizing:border-box;
@@ -1037,7 +1032,7 @@ input,button,select,textarea {
 	line-height:inherit;
 }
 a {
-	color: #3355b7;
+	color: #0072bc;
 	text-decoration:none;
 }
 a:hover,a:focus {
@@ -2204,7 +2199,7 @@ table td[class*="col-"],table th[class*="col-"] {
 .table-hover>tbody>tr>td.danger:hover,.table-hover>tbody>tr>th.danger:hover,.table-hover>tbody>tr.danger:hover>td,.table-hover>tbody>tr:hover>.danger,.table-hover>tbody>tr.danger:hover>th {
 	background-color:#ebcccc;
 }
-.table-responsive, .responsive {
+.table-responsive {
 	overflow-x:auto;
 	min-height:0.01%;
 	max-width: 858px;
@@ -3451,13 +3446,13 @@ tbody.collapse.in {
 .nav-tabs>li>a:hover {
 	border-color:#eeeeee #eeeeee #ddd;
 }
-.nav-tabs>li.active>a,.nav-tabs>li.active>a:hover,.nav-tabs>li.active>a:focus {
+/* .nav-tabs>li.active>a,.nav-tabs>li.active>a:hover,.nav-tabs>li.active>a:focus {
 	color:#555555;
 	background-color:#fff;
 	border: 1px solid #BDBDBD;
 	border-bottom-color:transparent;
 	cursor:default;
-}
+} */
 .nav-pills>li {
 	float:left;
 }
@@ -5824,8 +5819,8 @@ img {
 .popup-catalog-menu {
 	background-color:#fff;
 	left:0;
-	top:62px;
-	box-shadow:#b9b9b9 0 0 1rem;
+	top: 53px;
+	box-shadow: #92A7BC 0 4px 1rem;
 	z-index:3;
 	padding:unset !important;
 	display:flex;
@@ -5853,7 +5848,7 @@ img {
 	font-weight:normal !important;
 	display:block !important;
 	padding:.7rem 2rem !important;
-	font-size:15px !important;
+	font-size: 18px !important;
 }
 .popup-catalog-menu .sections {
 	background-color: #FAFAFA;
@@ -5896,7 +5891,7 @@ img {
 	padding:.5rem 2rem;
 }
 .menu-container.mobile svg {
-	color: #52af4d;
+	color: #D8232A;
 }
 .nav-container.mobile {
 	position:fixed;
@@ -5924,6 +5919,7 @@ img {
 	flex:1;
 	text-align:center;
 	font-weight:bold;
+	background-color: #fff;
 }
 .nav-container.mobile .content ul {
 	padding:0;
@@ -6128,7 +6124,8 @@ img {
 }
 .side-menu .level-3 {
 	padding-left:2rem;
-	margin-left: 64px;
+	margin-left: 39px;
+	font-size: 14px;
 }
 .side-menu .level-4 {
 	padding-left:2rem;
@@ -6146,7 +6143,7 @@ img {
 .side-menu .level-1:before {
 	width: 6px;
 	height: 6px;
-	background-color: #f44b2b;
+	background-color: #D8232A;
 	left: 0;
 	top: 14px;
 	border-radius: 3px;
@@ -6211,7 +6208,7 @@ img {
 	color:#c4c4c4;
 }
 .toggle-filters svg,.view .active svg {
-	color: #014f80;
+	color: #009ADA;
 }
 .filters label {
 	font-size:14px;
@@ -6294,7 +6291,7 @@ img {
 	font-weight: bold;
 }
 .view-container + .catalog-items {
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
 }
 .catalog-items .catalog-item {
 	flex-basis:24%;
@@ -6314,7 +6311,7 @@ img {
 .catalog-items .catalog-item div a {
 	display:block;
 	overflow:hidden;
-	height:32px;
+	height:80px;
 	margin-bottom: 1rem;
 }
 .catalog-items .catalog-item .tags {
@@ -6555,8 +6552,8 @@ table.compare .catalog-items {
 	flex-basis:100%;
 }
 .catalog-item-container .gallery {
-	flex-basis: 60%;
-	width: 60%;
+	flex-basis: 40%;
+	width: 40%;
 	min-width:0;
 }
 .catalog-item-container .tags span {
@@ -6686,7 +6683,6 @@ table.compare .catalog-items {
 }
 .catalog-item-container .description {
 	padding:3rem 0 2rem;
-	width: 100%;
 }
 .catalog-item-container .page-description {
 	flex-basis:100%;
@@ -6888,6 +6884,7 @@ ul.icons li>*:first-child {
 		padding:1rem;
 		border-radius:.4rem;
 		background-color: #fff;
+		box-shadow: none;
 	}
 	.cart-container .item .image-container {
 		flex-basis:20%;
@@ -6920,7 +6917,7 @@ ul.icons li>*:first-child {
 }
 input[type="submit"].to_cart,input.submit.to_cart {
 	background-image:none;
-	background-color: #005081;
+	background-color: #0369c2;
 }
 input[type="submit"].not_available,input.submit.not_available {
 	background-image:none;
@@ -6951,12 +6948,12 @@ body {
 	background-color: #fff;
 }
 .fotorama__active .fotorama__dot {
-	border-color:#232653 !important;
+	border-color:#D8232A !important;
 }
 .fotorama__dot {
 	top:4px !important;
 	border-width:.5rem !important;
-	border-color:#fff !important;
+	border-color:#c7c7c7;
 }
 .other-container svg,.path+span svg {
 	color:#FCB602;
@@ -6979,12 +6976,12 @@ body {
 	margin:2rem 0 .5rem;
 }
 .mobile .search-container input[type="text"] {
-	border: 3px solid #232653;
+	border: 0;
 	border-radius:.2rem;
-	padding:.5rem;
+	padding:.5rem 1rem;
 }
 .mobile .icons-container a {
-	color: #232653;
+	color: #D8232A;
 }
 .actions h3 {
 	background-color:#0F5392;
@@ -6994,8 +6991,7 @@ body {
 	background-color:#0F5392;
 }
 .footer,.footer-container {
-	background-color:#898989;
-	color: #fff;
+	background-color: #003145;
 }
 .footer-container {
 	border-top:0.4rem solid #0F5392;
@@ -7169,8 +7165,8 @@ body {
 	display:inline-block;
 	padding: 4px 8px;
 	border-radius:4px;
-	color: #232653;
-	border: 1px solid #232653;
+	color: #009ADA;
+	border: 1px solid #009ADA;
 	margin: 0 8px 8px 0;
 	font-size: 14px;
 	font-weight:normal;
@@ -7180,7 +7176,7 @@ body {
 	text-decoration: line-through;
 }
 .tags label.active {
-	background:#232653;
+	background:#4cae4f;
 	color:#fff;
 }
 .tags {
@@ -7271,10 +7267,11 @@ svg {
 	overflow:hidden;
 }
 .page-title {
-	font-size:30px;
+	font-size: 36px;
 	font-weight:bold;
 	margin-top:0;
 	margin-bottom:24px;
+	font-family: suzukipro;
 }
 .subtitle {
 	margin-top: -16px;
@@ -7426,7 +7423,7 @@ td .catalog-item {
 }
 .button {
 	border:none;
-	background-color: #757575;
+	background-color: #009ADA;
 	color:#ffffff;
 	height:28px;
 	cursor:pointer;
@@ -7527,7 +7524,7 @@ td .catalog-item {
 	flex-direction:column;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 	padding:16px;
-	padding-top: 0;
+	padding-top: 16px;
 	border-radius:2px;
 	overflow:hidden;
 	position:relative;
@@ -7539,9 +7536,9 @@ td .catalog-item {
 	display:block;
 	margin-bottom:10px;
 	overflow:hidden;
-	height:40px;
+	height:42px;
 	line-height:1;
-	font-size: 13px;
+	font-size: 14px;
 }
 .device__article-number {
 	color:#828282;
@@ -7562,10 +7559,10 @@ td .catalog-item {
 	margin-right:-16px;
 	margin-bottom:16px;
 	background-image:url(../img/device-image-small.jpg);
-	background-size: contain;
+	background-size:contain;
 	background-position:50%;
 	background-repeat:no-repeat;
-	padding-top: 120%;
+	padding-top:100%;
 }
 .device__image_line {
 	border-bottom:1px solid #E0E0E0;
@@ -7589,13 +7586,13 @@ td .catalog-item {
 	color: #52af4d;
 }
 .device__in-stock_no {
-	color: #fc9d00;
+	color: #9E9E9E;
 }
 .device__tag {
 	position:absolute;
 	top: 0;
 	left: 0;
-	background-color: #DA231B;
+	background-color: #D8232A;
 	color:#ffffff;
 	padding: 4px 6px;
 	font-size: 13px;
@@ -7610,7 +7607,7 @@ td .catalog-item {
 	color:#828282;
 }
 .device__action-link_active {
-	color: #FF5722;
+	color: #52af4d;
 }
 .price_old {
 	text-decoration:line-through;
@@ -7751,13 +7748,12 @@ td .catalog-item {
 }
 /* header */
 .top-stripe {
-	background-color: #232653;
+	background-color: #ffffff;
 	padding-top:8px;
 	padding-bottom:8px;
 	position:relative;
 	display: flex;
 	font-size: 14px;
-	color: #fff;
 }
 .top-stripe .container {
 	display:flex;
@@ -7795,9 +7791,9 @@ td .catalog-item {
 	border:0;
 }
 .header {
-	/* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	margin-bottom:32px;
-	background-color: #ffffff;
+	background-color: #003145;
 }
 .index .header {
 	margin-bottom:unset;
@@ -7806,13 +7802,14 @@ td .catalog-item {
 	display:flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
-	padding-top: 24px;
+	/* padding-top: 24px; */
+	color: #fff;
 }
 .logo {
 	display: flex;
 }
 .logo img {
-	height: 62px;
+	height: 100px;
 	margin: auto 0;
 }
 .header__content {
@@ -7821,35 +7818,41 @@ td .catalog-item {
 }
 .header__column {
 	font-size:13px;
+	margin-top: 24px;
+}
+
+.header__column a {
+    color: #fff;
 }
 .header__column svg {
-	color: #616161;
+	color: #D8232A;
 	margin-right:4px;
 }
 .header__search {
 	display:flex;
 	flex-grow: .5;
 	align-items: center;
+	margin-top: 0;
 }
 .header__field,.header__button {
 	height:36px;
 }
 .header__field {
 	flex:1;
-	/* box-shadow: none !important; */
-	/* border: 2px solid #e0e0e0; */
+	color: #333;
 }
 .header__button {
 	padding-left:16px;
 	padding-right:16px;
 	margin-left:8px;
-	font-size:18px;
+	font-size: 20px;
+	background-color: #D8232A;
+	font-family: suzukipro;
 }
 .main-menu {
 	flex-basis:100%;
 	display:flex;
-	background-color: #003875;
-	margin-top: 24px;
+	background-color: #00a599;
 }
 .main-menu__item {
 	flex:auto;
@@ -7858,7 +7861,8 @@ td .catalog-item {
 	align-content:center;
 	align-items:center;
 	height:52px;
-	font-size: 17px;
+	font-size: 20px;
+	font-family: suzukipro;
 }
 .main-menu__item a {
 	color: #fff;
@@ -7868,10 +7872,10 @@ td .catalog-item {
 	pointer-events:none;
 }
 .main-menu__special {
-	background-color: #232653;
+	background-color: #00a599;
 }
 .main-menu__special a {
-	color:#fff;
+	color: #fff;
 }
 .header__columns {
 	display:flex;
@@ -7906,6 +7910,8 @@ td .catalog-item {
 @media (max-width:767px) {
 	.hero .container {
 		flex-wrap:wrap;
+		margin-left: -15px;
+		margin-right: -15px;r
 	}
 	.hero__banners {
 		margin-left:unset;
@@ -7921,7 +7927,7 @@ td .catalog-item {
 	}
 	.fotorama {
 		flex-basis:100%;
-		/* margin-bottom:16px; */
+		margin-bottom:16px;
 	}
 	.hero__banners {
 		flex-direction:row;
@@ -7936,9 +7942,8 @@ td .catalog-item {
 /* banner */
 .banner {
 	position:relative;
-	border-radius:4px;
 	overflow:hidden;
-	box-shadow:0 0 15px gray;
+	box-shadow: 0 0 10px #92A7BC;
 }
 .banner__background {
 	position:absolute;
@@ -7961,8 +7966,10 @@ td .catalog-item {
 	line-height:1.3;
 }
 .banner__title {
-	/* font-size: 1em; */
+	font-size: 20px;
 	font-weight:bold;
+	font-family: suzukipro;
+	text-align: center;
 }
 .banner__text {
 	font-size:14px;
@@ -7981,12 +7988,6 @@ td .catalog-item {
 	right:0;
 }
 .banner__image {
-}
-
-.banner__image img {
-	width: 100%;
-	height: 140px;
-	object-fit: cover;
 }
 .banner__image svg {
 	color: #fff;
@@ -8135,6 +8136,7 @@ td .catalog-item {
 	position:relative;
 	padding-bottom:8px;
 	margin-bottom: 24px;
+	font-family: suzukipro;
 }
 .block-title_normal {
 	text-transform: none;
@@ -8297,10 +8299,10 @@ td .catalog-item {
 	padding:32px 0;
 }
 .footer .container {
-	display:flex;
-	/*border-top: 4px solid #0369c2;*/
-	padding-top: 32px;
+	color: #fff;
 }
+
+
 .footer .container>div {
 	flex:auto;
 }
@@ -8349,6 +8351,8 @@ td .catalog-item {
 .title_3 {
 	font-weight:bold;
 	margin-bottom:8px;
+	font-family: suzukipro;
+	font-size: 18px;
 }
 @media (max-width:767px) {
 	.footer .container {
@@ -8437,7 +8441,7 @@ td .catalog-item {
   align-self: flex-start;
 }
 .device__price_device-page {
-	font-size: 28px;
+	font-size: 24px;
 }
 .device-page__actions .device__in-stock {
 	flex-basis: 100%;
@@ -8541,8 +8545,9 @@ td .catalog-item {
 .nav-tabs>li.active a:hover,
 .nav-tabs>li.active a {
     /* background-image: linear-gradient(to bottom, #1b50a0, #2766c5); */
-    color: #616161;
-    background-color: #ffffff;
+    color: #ffffff;
+    background-color: #009ada;
+    border-color: #009ada;
 }
 /* device description end */
 
@@ -8677,7 +8682,7 @@ td .catalog-item {
 /* new footer */
 .footer .container {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 	grid-gap: 48px;
 }
 .footer p {
@@ -8687,6 +8692,9 @@ td .catalog-item {
 	font-size: 16px;
 }
 /* social */
+.social {
+	margin-bottom: 24px;
+}
 .social-links {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
@@ -8752,7 +8760,6 @@ td .catalog-item {
 	margin-bottom: 16px;
 	padding-left: 15px;
 	padding-right: 15px;
-	background-color: #f1f1f1;
 }
 
 /* new news */
@@ -8766,7 +8773,6 @@ td .catalog-item {
 	width: 100%;
 	object-fit: cover;
 	align-self: stretch;
-	border: 1px solid #f2f2f2;
   }
   
   .news__item > * {
@@ -8829,72 +8835,33 @@ td .catalog-item {
 .footer .rating p {
 	font-size: 12px;
 }
-
-
-.call-back {
-	position: fixed;
-	bottom: 24px;
-	right: 24px;
-	z-index: 2;
-}
-.call-back__link {
-	height: 64px;
-	width: 64px;
-	display: flex;
-	background-color: #fb9f00;
-	border-radius: 100%;
-	justify-content: center;
-	align-items: center;
-	box-shadow: 0 4px 15px gray;
-}
-.call-back__image {
-	width: 60%;
+@font-face{
+	font-family: "SuzukiPro";
+	src: url("/font/SuzukiPROHeadline.woff2") format("woff2"),url("/font/SuzukiPROHeadline.woff") format("woff")
 }
 
-@media all (max-width: 480px) {
-	
+.stars img {
+	height: 16px;
 }
-
-
-/* utp banner */
-.utp {
-	box-shadow: none;
+.device__description {
+	font-size: 13px;
 }
-.utp .banner__image {
-	padding-left: 16px;
-}
-.utp .banner__image img {
-	width: auto;
+.device_row .device__title {
 	height: auto;
-	object-fit: unset;
 }
-/* utp banner end */
-
-/* responsive fotorama image */
-@media (max-width: 425px) {
-	.fotorama.mobile-image {
-		display: block;
-	}
-	.fotorama.desktop-image {
-		display: none;
-	}
+.common-catalog-info {
+	font-size: 14px;
 }
-@media (min-width: 426px) {
-	.fotorama.mobile-image {
-		display: none;
-	}
-	.fotorama.desktop-image {
-		display: block;
-	}
-}
-/* responsive fotorama image end */
-
-.call-back {
-	display: none;
+.index .header.mobile {
+	margin-bottom: 0;
 }
 
-.responsive>table,
-.responsive>table td {
-	border-collapse: collapse;
-	border: 1px solid #333;
+.other-suzuki .banner__title {
+	color: #fff;
+}
+.other-suzuki .banner__background {
+	background-color: #003145;
+}
+.other-suzuki:hover .banner__background {
+	background-color: #D8232A;
 }
