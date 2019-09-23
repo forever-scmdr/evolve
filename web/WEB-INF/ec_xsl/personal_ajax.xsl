@@ -8,8 +8,7 @@
 	<xsl:template match="/">
 		<xsl:if test="not($registered)">
 			<div class="result" id="personal_desktop">
-				<i class="fas fa-lock"></i>
-				<a href="{page/login_link}"> Вход / Регистрация</a>
+				<i class="fas fa-lock"></i><a href="" id="login_click">Вход</a> / <a href="/register/">Регистрация</a>
 			</div>
 			<div class="result" id="personal_mobile">
 				<i class="fas fa-lock"></i>
@@ -18,12 +17,11 @@
 		</xsl:if>
 		<xsl:if test="$registered">
 			<div class="result" id="personal_desktop">
-				<i class="fas fa-lock"/>
-				<a href="{page/personal_link}"> Анкета</a> / <a href="{page/purchase_history_link}">Заказы</a> / <a href="/logout.login?target=index">×</a>
+				<i class="fas fa-lock"></i><a href="{page/personal_link}"> Анкета</a> / <a href="{page/purchase_history_link}">Заказы</a> / <a href="logout.login?target=index" title="Выход"><i class="fas fa-times"/></a>
 			</div>
 			<div class="result" id="personal_mobile">
 				<i class="fas fa-lock"></i>
-				<a href="{page/personal_link}"> Анкета</a> / <a href="{page/purchase_history_link}">Заказы</a> / <a href="/logout.login?target=index">×</a>
+				<a href="{page/personal_link}"> Анкета</a> / <a href="{page/purchase_history_link}">Заказы</a> / <a href="logout.login?target=index">Выход</a>
 			</div>
 		</xsl:if>
 	</xsl:template>
@@ -31,8 +29,7 @@
 
 	<xsl:template name="PERSONAL_DESKTOP">
 		<div id="personal_desktop" ajax-href="{page/personal_ajax_link}">
-			<i class="fas fa-lock"/>
-			<a href="{page/login_link}"> Вход / Регистрация</a>
+			<i class="fas fa-lock"></i><a href="#" id="login_click" mouseenter="$('.login-popup').show('fade', 150)">Вход</a> / <a href="/register/">Регистрация</a>
 		</div>
 	</xsl:template>
 
