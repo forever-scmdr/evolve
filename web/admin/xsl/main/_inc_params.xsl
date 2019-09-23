@@ -303,9 +303,9 @@
 				</xsl:if>
 			</xsl:if>
 		</script>
-
-		<script type="text/javascript" src="admin/js/mce-setup.js"></script>
-		<script type="text/javascript" src="admin/js/inputs_script.js"></script>
+		<script type="text/javascript" src="admin/js/mce-5-setup.js"></script>
+<!--		<script type="text/javascript" src="admin/js/mce-setup.js"></script>-->
+<!--		<script type="text/javascript" src="admin/js/inputs_script.js"></script>-->
 	</xsl:template>
 		
 </xsl:stylesheet>

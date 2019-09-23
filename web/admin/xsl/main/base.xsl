@@ -46,7 +46,7 @@
 		<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 		<!-- MCE -->
 <!--		<script type="text/javascript" src="admin/tinymce/tinymce.min.js"/>-->
-		<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+		<script src="https://cdn.tiny.cloud/1/2xg5cg6upchgz8jk6znz4bek1xiq06tof8ip5mhmgmg92nxu/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 		<script type="text/javascript" src="admin/js/regional-ru.js"/>
 		<!-- FANCYBOX -->
 		<script type="text/javascript" src="admin/js/jquery.fancybox.min.js"/>

@@ -59,10 +59,10 @@ var mceSettings = {
 	,"mce_medium" : {
 		selector : "textarea.mce_medium",
 		language : 'ru',
-	//	theme : "modern",
+	//	theme : "modern",,content_css : ["css/text-style.css",
+		// 				"font-awesome-4.6.3/css/font-awesome.min.css" ]
 		skin : "lightgray"
-		,content_css : ["css/text-style.css",
-				"font-awesome-4.6.3/css/font-awesome.min.css" ]
+
 		,plugins : [
 				'advlist autolink lists link image charmap print preview anchor textcolor',
 				'searchreplace visualblocks code fullscreen',
