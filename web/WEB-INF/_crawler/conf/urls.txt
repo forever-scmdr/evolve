@@ -10,7 +10,7 @@ https://suzuki.ru
 
 
 #
-# Pages to parse
+#  Pages to parse
 #
 
 https:\/\/suzuki\.ru\/.+\.html  product.xsl     https://suzuki.ru/motor-lodochnyy-suzuki-df4as-00136347.html
