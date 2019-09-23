@@ -147,6 +147,7 @@ public abstract class BasicRegisterCommand extends Command {
 		}
 		Item userItem = ItemQuery.loadById(form.getId());
 		Item.updateParamValues(form, userItem);
+		userItem.setValue(PASSWORD_PARAM, pass1);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(userItem));
 		return getResult("success_personal");
 	}
