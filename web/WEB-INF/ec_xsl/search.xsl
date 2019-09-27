@@ -194,7 +194,7 @@
 				</xsl:if>
 			</td>
 			<td><xsl:value-of select="$unit"/></td>
-			<td><xsl:value-of select="min_qty"/></td>
+			<td><xsl:value-of select="$min_qty"/></td>
 			<xsl:if test="$has_price">
 				<td>
 					<xsl:call-template name="ALL_PRICES">

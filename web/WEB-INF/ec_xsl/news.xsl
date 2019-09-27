@@ -27,7 +27,7 @@
 						<a href="{show_news_item}" class="image-container" style="background-image: url('http://alfacomponent.com/{@path}{main_pic}');"><!-- <img src="http://alfacomponent.com/{@path}{main_pic}" alt=""/> --></a>
 						<div class="text">
 							<div class="date"><xsl:value-of select="date"/></div>
-							<a href="{show_news_item}"><xsl:value-of select="header"/></a>
+							<a href="{show_news_item}" style="height: 9.7rem"><xsl:value-of select="header"/></a>
 							<xsl:value-of select="short" disable-output-escaping="yes"/>
 						</div>
 					</div>

@@ -51,7 +51,7 @@
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
 							<xsl:variable name="p_p" select="//page/product[code = $p/code]"/>
-							<xsl:variable name="min_qty" select="if (min_qty and f:num(min_qty) &gt; 0) then f:num(min_qty) else 1"/>
+							<xsl:variable name="min_qty" select="if ($p_p/min_qty and f:num($p_p/min_qty) &gt; 0) then f:num($p_p/min_qty) else 1"/>
 							<xsl:variable name="has_price" select="f:num(f:exchange($p, 'price')) &gt; 0.0001"/>
 							<xsl:variable name="price" select="if (f:num(f:exchange($p, 'price')) != 0) then f:exchange_cur($p, 'price') else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num(f:exchange(current(), 'sum')) != 0) then f:exchange_cur(current(), 'sum') else 'по запросу'"/>

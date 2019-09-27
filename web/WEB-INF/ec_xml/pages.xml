@@ -735,10 +735,18 @@
 		<session>
 			<single item="cart">
 				<list item="bought">
-					<list item="product" tag="product"/>
+					<list item="product" id="prod" tag="product"/>
 				</list>
 			</single>
 		</session>
+		<list item="product">
+			<filter>
+				<parameter name="code" compare="SOME">
+					<var ref="prod" parameter="code"/>
+				</parameter>
+			</filter>
+			<ancestor item="plain_section"/>
+		</list>
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="confirm"/>
 		</link>
@@ -747,6 +755,9 @@
 
 
 	<page name="customer_email" template="customer_email">
+		<request>
+			<var name="cur" value="BYN" scope="cookie"/>
+		</request>
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought"/>
@@ -774,6 +785,9 @@
 
 
 	<page name="shop_email" template="order_email">
+		<request>
+			<var name="cur" value="BYN" scope="cookie"/>
+		</request>
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought"/>

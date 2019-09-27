@@ -24,7 +24,7 @@
 		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="item-summ" style="padding-bottom: 20px;">
 			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
-			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
+			Сумма: <span><xsl:value-of select="f:exchange_cur($cart, 'sum')"/></span>
 		</div>
 		<div class="checkout-cont1">
 			<div class="info" style="padding-bottom: 20px;">
@@ -125,6 +125,12 @@
 					</tr>
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
+						<xsl:variable name="p" select="product"/>
+						<xsl:variable name="p_p" select="//page/product[code = $p/code]"/>
+						<xsl:variable name="min_qty" select="if ($p_p/min_qty and f:num($p_p/min_qty) &gt; 0) then f:num($p_p/min_qty) else 1"/>
+						<xsl:variable name="has_price" select="f:num(f:exchange($p_p, 'price')) &gt; 0.0001"/>
+						<xsl:variable name="sum" select="if (f:num(f:exchange(current(), 'sum')) != 0) then f:exchange_cur(current(), 'sum') else 'по запросу'"/>
+						<xsl:variable name="price" select="if (f:num(f:exchange(current(), 'sum')) != 0) then f:format_currency_precise(f:num(f:exchange(current(), 'sum')) div f:num(qty)) else 'по запросу'"/>
 						<tr>
 							<td>
 								<xsl:value-of select="product/name"/>
@@ -136,10 +142,10 @@
 								<xsl:value-of select="qty"/>
 							</td>
 							<td>
-								<xsl:value-of select="if (f:num(f:exchange(product, 'price')) != 0) then f:exchange_cur(product, 'price') else 'по запросу'"/>
+								<xsl:value-of select="$price"/>
 							</td>
 							<td>
-								<xsl:value-of select="if (f:num(f:exchange(product, 'sum')) != 0) then f:exchange_cur(product, 'sum') else ''"/>
+								<xsl:value-of select="$sum"/>
 							</td>
 							<!-- <td>
 								<xsl:value-of select="product/qty"/>
