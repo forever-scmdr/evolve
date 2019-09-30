@@ -2,7 +2,7 @@
  * Philosophy - Main JS
  *
  * ------------------------------------------------------------------- */
-
+var hideTipTimeout;
 (function($) {
 
     "use strict";
@@ -741,6 +741,98 @@
         });
     };
 
+    var wikiTip = function(){
+        var $wikiLinks = $("a[rel=tip]");
+        $wikiLinks.on('mouseenter', function (e) {
+            if(typeof hideTipTimeout != "undefined"){ clearTimeout(hideTipTimeout);}
+            e.preventDefault();
+            var $tip = $('#wikitip').html();
+            $('#wikitip').css({left:"", top: ""});
+            var $t = $(this);
+            var href = $t.attr("href");
+            var position = $t.position();
+            var top = position.top;
+            var left = position.left;
+            var width = $t.width();
+            var height = $t.outerHeight();
+
+            $.ajax({
+                url: href,
+                dataType: "html",
+                cache: true,
+                error: function(arg1, errorType, arg3) {
+                    positionTip(top,left,width, height);
+                    $tip.html('ajax error.');
+                }
+                ,success: function(data, status, arg3) {
+                    positionTip(top,left,width, height);
+                    $('#wikitip').html(data);
+                }
+            });
+
+
+        });
+        $wikiLinks.on("click", function (e) {
+            e.preventDefault();
+            var $tip = $('#wikitip').html();
+            $('#wikitip').css({left:"", top: ""});
+            var $t = $(this);
+            var href = $t.attr("href");
+            var position = $t.position();
+            var top = position.top;
+            var left = position.left;
+            var width = $t.width();
+            var height = $t.outerHeight();
+
+            $.ajax({
+                url: href,
+                dataType: "html",
+                cache: true,
+                error: function(arg1, errorType, arg3) {
+                    positionTip(top,left,width, height);
+                    $tip.html('ajax error.');
+                }
+                ,success: function(data, status, arg3) {
+                    positionTip(top,left,width, height);
+                    $('#wikitip').html(data);
+                }
+            });
+        });
+        $wikiLinks.on("mouseleave", function () {
+            if(typeof hideTipTimeout != "undefined"){ clearTimeout(hideTipTimeout);}
+            hideTipTimeout = setTimeout(function () {
+                $('#wikitip').hide();
+                $("#wikitip").html("");
+                $("#wikitip").css({top: "", left: ""});
+            }, 1000);
+        });
+        $("#wikitip").on("mouseenter", function () {
+            if(typeof hideTipTimeout != "undefined"){ clearTimeout(hideTipTimeout);}
+        });
+        $("#wikitip").on("mouseleave", function () {
+            if(typeof hideTipTimeout != "undefined"){ clearTimeout(hideTipTimeout);}
+           hideTipTimeout = setTimeout(function () {
+                $('#wikitip').hide();
+                $("#wikitip").html("");
+                $("#wikitip").css({top: "", left: ""});
+            }, 1000);
+        });
+        $(document).on('click', function(e){
+            if($(e.target).is("a[rel=tip], #wikitip") || $(e.target).closest("a[rel=tip], #wikitip").length == 1) return;
+            $('#wikitip').hide();
+            $("#wikitip").html("");
+            $("#wikitip").css({top: "", left: ""});
+        });
+        var positionTip = function (top, left, width, height) {
+            console.log(top);
+            $('#wikitip').show();
+            var w = $("#wikitip").outerWidth()/2;
+            var l = left - w + width/2 > 0? left - w + width/2 : 0;
+            var t = top + height + 12;
+            $("#wikitip").css({"left" : l, "top" : t});
+        }
+    };
+
     // var newsItemLength = function () {
     //     var nil = $("#nil").text().length;
     //     $("#news-text-length").text("Количество символов: "+nil);
@@ -766,7 +858,8 @@
         loadMoreNews();
         infiniteScroll();
         reply();
-        fromUTC();
+        wikiTip();
+      // fromUTC();
       //  newsItemLength();
     })();
         

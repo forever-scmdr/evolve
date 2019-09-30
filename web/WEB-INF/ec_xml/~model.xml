@@ -196,6 +196,7 @@
 		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
 		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
 		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
+		<parameter name="twitter_description" type="string" caption="Описание для твиттера"/>
 		<parameter name="size" type="string" caption="Размер" domain="size"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags" text-index="fulltext"/>
@@ -235,7 +236,14 @@
 		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
 	</item>
 
+	<item name="wiki_tip" caption="слово" key="name" key-unique="true" ag-id="33" ag-hash="-1197127796">
+		<parameter name="name" type="string" caption="Слово"/>
+		<parameter name="text" type="text" caption="пояснение"/>
+	</item>
 
+	<item name="dictionary" caption="Словарь" ag-id="34" ag-hash="447049878">
+		<child item="wiki_tip"/>
+	</item>
 
 	<root>
 		<child item="feedback_params" single="true" />
@@ -247,6 +255,7 @@
 		<child item="custom_page"/>
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
+		<child item="dictionary" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

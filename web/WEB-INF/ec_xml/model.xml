@@ -236,7 +236,14 @@
 		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
 	</item>
 
+	<item name="wiki_tip" caption="слово" key="name" key-unique="true" ag-id="33" ag-hash="-1197127796">
+		<parameter name="name" type="string" caption="Слово"/>
+		<parameter name="text" type="text" caption="пояснение"/>
+	</item>
 
+	<item name="dictionary" caption="Словарь" ag-id="34" ag-hash="447049878">
+		<child item="wiki_tip"/>
+	</item>
 
 	<root>
 		<child item="feedback_params" single="true" />
@@ -248,6 +255,7 @@
 		<child item="custom_page"/>
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
+		<child item="dictionary" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

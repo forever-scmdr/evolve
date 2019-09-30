@@ -54,6 +54,7 @@ var mceSettings = {
 			 {title: '-', value: ''}
 			,{title: 'Сыылка на внешний сайт', value: 'nofollow'}
 			,{title: 'Картинка с увеичением', value: 'fancybox'}
+			,{title: 'Подсказка', value: 'tip'}
   		]
 	}
 	,"mce_medium" : {

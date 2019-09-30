@@ -228,6 +228,7 @@
 				</div>
 			</div>
 		</footer>
+		<div id="wikitip"></div>
 	</xsl:template>
 
 

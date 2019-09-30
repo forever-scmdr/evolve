@@ -826,5 +826,10 @@
 		</request>
 	</page>
 
-
+	<page name="word" template="word" cacheable="true">
+		<request>
+			<var name="word" style="translit"/>
+		</request>
+		<single item="wiki_tip" var="word" cache-vars="word" cacheable="true"/>
+	</page>
 </site>
