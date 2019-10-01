@@ -313,6 +313,18 @@
 		<parameter name="count" type="integer" caption="Счетчик"/>
 	</item>
 
+
+    <item name="cart_temp" caption="Временная корзина" key="user">
+        <parameter name="user" type="string" caption="Имя пользователя"/>
+        <parameter name="time" type="date" caption="Время обновления"/>
+        <parameter name="cart_cookie" type="plain-text" caption="Состояние корзины"/>
+    </item>
+
+
+    <item name="cart_temp_catalog" caption="Каталог временных корзин">
+        <child item="cart_temp"/>
+    </item>
+
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                            END КОРЗИНА                               ////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -621,6 +633,7 @@
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<child item="seo_catalog" single="true"/>
+        <child item="cart_temp_catalog" single="true" virtual="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

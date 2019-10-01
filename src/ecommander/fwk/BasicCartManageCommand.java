@@ -67,7 +67,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 
-	private static final String CART_COOKIE = "cart_cookie";
+	protected static final String CART_COOKIE = "cart_cookie";
     private static final String STRATEGY_VAR = "strategy";
 
 
@@ -91,7 +91,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @throws Exception
 	 */
 	public ResultPE addToCart() throws Exception {
-	    checkStrategy();
+		checkStrategy();
 		String code = getVarSingleValue(CODE_PARAM);
 		double quantity = 0;
 		try {
@@ -399,7 +399,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * Загрузить корзину из сеанса или создать новую корзину
 	 * @throws Exception
 	 */
-	private void ensureCart() throws Exception {
+	protected void ensureCart() throws Exception {
 		if (cart == null) {
 			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 			if (cart == null) {

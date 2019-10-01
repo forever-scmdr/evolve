@@ -3,8 +3,11 @@ package extra;
 import ecommander.fwk.BasicCartManageCommand;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
+import ecommander.pages.ResultPE;
 import extra._generated.ItemNames;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -64,4 +67,28 @@ public class CartManageCommand extends BasicCartManageCommand {
 		}
 		return !hasError;
 	}
+
+
+    @Override
+    protected void saveCookie() throws Exception {
+        ensureCart();
+        ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
+        ArrayList<String> codeQtys = new ArrayList<>();
+        for (Item bought : boughts) {
+            Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
+            double quantity = bought.getDoubleValue(QTY_TOTAL_PARAM);
+            codeQtys.add(product.getStringValue(CODE_PARAM) + ":" + quantity);
+        }
+        if (codeQtys.size() > 0) {
+            String cookie = StringUtils.join(codeQtys, '/');
+            setCookieVariable(CART_COOKIE, cookie);
+        } else {
+            setCookieVariable(CART_COOKIE, null);
+        }
+    }
+
+    @Override
+    public ResultPE restoreFromCookie() throws Exception {
+        return super.restoreFromCookie();
+    }
 }

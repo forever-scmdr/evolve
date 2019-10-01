@@ -30,7 +30,7 @@ public class Timer {
 	}
 	private static final DecimalFormat FORMATTER = new DecimalFormat("#,##0.###", SYMBOLS);
 	
-    private static interface TimerMessage {
+    private interface TimerMessage {
     	void output();
     	long getExecTime();
     }
