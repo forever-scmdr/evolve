@@ -10,23 +10,25 @@
 	<xsl:variable name="Q" select="f:num(page/price_catalog[name = 'default']/quotient)"/>
 	<xsl:variable name="currency" select="'USD'"/>
 
+
 	<xsl:template name="ALL_PRICES">
 		<xsl:param name="section_name"/>
 		<xsl:param name="price"/>
 		<xsl:param name="min_qty"/>
+		<xsl:param name="price_byn" select="$price"/>
 		<xsl:variable name="intervals" select="$price_catalogs[name = $section_name]/price_interval"/>
 		<xsl:variable name="price_intervals" select="if ($intervals) then $intervals else $price_intervals_default"/>
 		<xsl:for-each select="$price_intervals">
 			<xsl:variable name="quotient" select="f:num(quotient)"/>
 			<xsl:variable name="unit_price" select="$price * $Q * $quotient"/>
-			<xsl:if test="$price * $min_qty &lt; f:num(max)">
-				<xsl:variable name="min_number" select="ceiling(f:num(min) div $price)"/>
+			<xsl:if test="$price_byn * $min_qty &lt; f:num(max)">
+				<xsl:variable name="min_number" select="ceiling(f:num(min) div $price_byn)"/>
 				<xsl:variable name="number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) * $min_qty else $min_qty"/>
-				<!--<xsl:variable name="sum" select="$unit_price * $number"/>-->
 				<pb qty="{$number}"><xsl:value-of select="f:format_currency($unit_price)"/></pb>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
+
 
 
 	<xsl:template match="/">
@@ -46,6 +48,7 @@
 							<xsl:with-param name="section_name" select="plain_section/name"/>
 							<xsl:with-param name="min_qty" select="$min_qty"/>
 							<xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
+							<xsl:with-param name="price_byn" select="f:num(price)"/>
 						</xsl:call-template>
 					</xsl:if>
 					<stock><xsl:value-of select="qty"/></stock>

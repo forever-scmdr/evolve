@@ -139,13 +139,14 @@
 		<xsl:param name="price"/>
 		<xsl:param name="min_qty"/>
 		<xsl:param name="need_sum"/>
+        <xsl:param name="price_byn" select="$price"/>
 		<xsl:variable name="intervals" select="$price_catalogs[name = $section_name]/price_interval"/>
 		<xsl:variable name="price_intervals" select="if ($intervals) then $intervals else $price_intervals_default"/>
 		<xsl:for-each select="$price_intervals">
 			<xsl:variable name="quotient" select="f:num(quotient)"/>
 			<xsl:variable name="unit_price" select="$price * $Q * $quotient"/>
-			<xsl:if test="$price * $min_qty &lt; f:num(max)">
-				<xsl:variable name="min_number" select="ceiling(f:num(min) div $price)"/>
+            <xsl:if test="$price_byn * $min_qty &lt; f:num(max)">
+				<xsl:variable name="min_number" select="ceiling(f:num(min) div $price_byn)"/>
 				<xsl:variable name="number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) * $min_qty else $min_qty"/>
 				<xsl:variable name="sum" select="$unit_price * $number"/>
 				<p>
@@ -201,6 +202,7 @@
 						<xsl:with-param name="section_name" select="plain_section/name"/>
 						<xsl:with-param name="min_qty" select="$min_qty"/>
 						<xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
+                        <xsl:with-param name="price_byn" select="f:num(price)"/>
 						<xsl:with-param name="need_sum" select="false()"/>
 					</xsl:call-template>
 				</td>
@@ -209,6 +211,7 @@
 						<xsl:with-param name="section_name" select="plain_section/name"/>
 						<xsl:with-param name="min_qty" select="$min_qty"/>
 						<xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
+                        <xsl:with-param name="price_byn" select="f:num(price)"/>
 						<xsl:with-param name="need_sum" select="true()"/>
 					</xsl:call-template>
 				</td>
