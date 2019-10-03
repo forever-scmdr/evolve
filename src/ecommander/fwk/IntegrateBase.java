@@ -3,6 +3,7 @@ package ecommander.fwk;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import org.apache.tika.utils.ExceptionUtils;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.IOException;
@@ -67,6 +68,13 @@ public abstract class IntegrateBase extends Command {
 			this.lineNumber = -1;
 			this.position = -1;
 			this.originator = originator;
+		}
+
+		private Error(Throwable e){
+			message = ExceptionUtils.getStackTrace(e);
+			lineNumber = info.lineNumber;
+			position = info.position;
+			originator = "";
 		}
 
 		@SuppressWarnings("unused")
@@ -153,6 +161,10 @@ public abstract class IntegrateBase extends Command {
 
 		public synchronized void addError(String message, int lineNumber, int position) {
 			errors.add(new Error(message, lineNumber, position));
+		}
+
+		public synchronized void addError(Throwable e){
+			errors.add(new Error(e));
 		}
 
 		public synchronized void addError(String message, String originator) {
@@ -330,7 +342,7 @@ public abstract class IntegrateBase extends Command {
 					} catch (Exception se) {
 						setOperation("Интеграция завершена с ошибками");
 						ServerLogger.error("Integration error", se);
-						getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
+						getInfo().addError(se);
 					} finally {
 						isInProgress = false;
 						getInfo().setInProgress(false);
@@ -367,6 +379,7 @@ public abstract class IntegrateBase extends Command {
 	private ResultPE buildResult() throws IOException {
 		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
 		doc.startElement("page", "name", getPageName());
+		doc.startElement("base").addText(getUrlBase()).endElement();
 		getInfo().output(doc);
 		doc.endElement();
 		ResultPE result;

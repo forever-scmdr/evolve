@@ -241,7 +241,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 							needSave = true;
 						}
 					} catch (Exception e) {
-						info.addError("Неверный формат картинки: " + picUrl, picUrl);
+						info.setLineNumber(locator.getLineNumber());
+						info.addError("Неверный формат картинки: " + picUrl, locator.getLineNumber(), 0);
 					}
 				}
 
@@ -264,6 +265,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
 					} catch (Exception e) {
 						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+						info.setLineNumber(locator.getLineNumber());
+						info.addError(e);
 					}
 					needSave = false;
 				}
@@ -272,6 +275,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 					} catch (Exception e) {
 						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+						info.setLineNumber(locator.getLineNumber());
+						info.addError(e);
 					}
 				}
 
@@ -296,7 +301,9 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			parameterReady = false;
 		} catch (Exception e) {
 			ServerLogger.error("Integration error", e);
-			info.addError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
+			info.setLineNumber(locator.getLineNumber());
+			info.setLinePosition(locator.getColumnNumber());
+			info.addError(e);
 		}
 	}
 
