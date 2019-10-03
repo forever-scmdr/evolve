@@ -227,7 +227,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				boolean needSave = false;
 				ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
 				for (File galleryPic : galleryPics) {
-					if (!galleryPic.exists()) {
+					if (!galleryPic.exists() || galleryPic.getName().equals(GALLERY_PARAM + "_" + product.getValue(MAIN_PIC_PARAM)) || galleryPic.getName().equals(product.getValue(MAIN_PIC_PARAM))) {
 						product.removeEqualValue(GALLERY_PARAM, galleryPic.getName());
 					}
 				}
@@ -235,6 +235,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				for (String picUrl : picUrls) {
 					try {
 						String fileName = Strings.getFileName(picUrl);
+						if(fileName.equals(product.getValue(MAIN_PIC_PARAM))) continue;
 						if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
 							product.setValue(GALLERY_PARAM, new URL(picUrl));
 							needSave = true;
