@@ -10,7 +10,7 @@
 			<input type="text" class="form-control" name="{$inp/name/@input}" value="{$inp/name}" error="{$inp/name/@validation-error}"/>
 		</div>
 		<div class="form-group">
-			<label for="">Адрес:</label>
+			<label>Адрес:</label>
 			<input type="text" class="form-control" name="{$inp/address/@input}" value="{$inp/address}" error="{$inp/address/@validation-error}"/>
 		</div>
 		<div class="form-group">
@@ -22,7 +22,7 @@
 			</select>
 		</div>
 		<div class="form-group">
-			<label>Телефон *:</label>
+			<label>Мобильный телефон *:</label>
 			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}" error="{$inp/phone/@validation-error}"/>
 		</div>
 		<div class="form-group">
@@ -44,7 +44,7 @@
 			       value="{$inp/organization}" error="{$inp/organization/@validation-error}"/>
 		</div>
 		<div class="form-group">
-			<label for="">Телефон/факс *:</label>
+			<label for="">Мобильный телефон:</label>
 			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}"/>
 		</div>
 		<div class="form-group">

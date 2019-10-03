@@ -13,7 +13,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Список товаров</h1>
+		<h1>Корзина товаров</h1>
 
 		<div class="cart-container">
 			<xsl:choose>
@@ -42,6 +42,9 @@
 									<p>
 										<span>Цена</span>
 										<xsl:value-of select="$price"/>
+										<xsl:if test="$p/unit">
+											/<xsl:value-of select="$p/unit"/>
+										</xsl:if>
 									</p>
 								</div>
 								<div class="quantity">

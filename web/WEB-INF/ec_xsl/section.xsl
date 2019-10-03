@@ -174,7 +174,8 @@
 	</xsl:template>
 
 	<xsl:template name="FILTER">
-		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 1]"/>
+		<xsl:variable name="unwanted" select="$sel_sec/hide_params"/>
+		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 1 and not(@caption = $unwanted)]"/>
 
 		<xsl:if test="not($subs) and $valid_inputs">
 			<div class="toggle-filters">

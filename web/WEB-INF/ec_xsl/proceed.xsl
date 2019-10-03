@@ -57,11 +57,11 @@
 							</select>
 						</div> -->
 						<div class="form-group">
-							<label>Телефон *:</label>
+							<label>Мобильный телефон *:</label>
 							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{if($inp/phone != '') then $inp/phone else $phys_reg/phone}" error="{$inp/phone/@validation-error}"/>
 						</div>
 						<div class="form-group">
-							<label>Электронная почта:</label>
+							<label>Электронная почта *:</label>
 							<input type="text" class="form-control" name="{$inp/email/@input}" value="{if($inp/email != '') then $inp/email else $phys_reg/email}" error="{$inp/email/@validation-error}"/>
 						</div>
 						<div class="form-group">
@@ -90,7 +90,7 @@
 							       value="{if($inp/organization != '') then $inp/organization else $jur_reg/organization}" error="{$inp/organization/@validation-error}"/>
 						</div>
 						<div class="form-group">
-							<label for="">Телефон/факс *:</label>
+							<label for="">Мобильный телефон:</label>
 							<input type="text" class="form-control" name="{$inp/phone/@input}" value="{if($inp/phone != '') then $inp/phone else $jur_reg/phone}"/>
 						</div>
 						<!-- <div class="form-group">
@@ -104,7 +104,7 @@
 							</select>
 						</div> -->
 						<div class="form-group">
-							<label>E-mail:</label>
+							<label>E-mail *:</label>
 							<input type="text" class="form-control" name="{$inp/email/@input}" value="{if($inp/email != '') then $inp/email else $jur_reg/email}"/>
 						</div>
 						<div class="form-group">

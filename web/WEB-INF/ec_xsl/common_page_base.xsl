@@ -529,8 +529,19 @@
 			<div class="device__article-number">арт. <xsl:value-of select="mizida_code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
+					<xsl:if test="price_old">
+						<div class="price_old">
+							<span>
+								<xsl:value-of select="price_old"/> руб.
+								<xsl:if test="unit != ''">/<xsl:value-of select="unit"/></xsl:if>
+							</span>
+						</div>
+					</xsl:if>
+					<div class="price_normal">
+						<xsl:if test="$has_lines" >от </xsl:if>
+						<xsl:value-of select="price"/> руб.
+						<xsl:if test="unit != ''">/<xsl:value-of select="unit"/></xsl:if>
+					</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -642,8 +653,19 @@
 			</div>
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
+					<xsl:if test="price_old">
+						<div class="price_old">
+							<span>
+								<xsl:value-of select="price_old"/> руб.
+								<xsl:if test="unit != ''">/<xsl:value-of select="unit"/></xsl:if>
+							</span>
+						</div>
+					</xsl:if>
+					<div class="price_normal">
+						<xsl:if test="$has_lines" >от </xsl:if>
+						<xsl:value-of select="price"/> руб.
+						<xsl:if test="unit != ''">/<xsl:value-of select="unit"/></xsl:if>
+					</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">

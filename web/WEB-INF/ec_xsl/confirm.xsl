@@ -20,6 +20,11 @@
 		</div>
 		<h1>Спасибо за заявку!</h1>
 
+		<p>
+			 Уважаемый покупатель, теперь Вашу заявку будет обрабатывать менеджер. В связи с загруженностью работы менеджеров,оставляем за собой право обрабатывать заявку в срок до 3-х рабочих дней. Менеджер свяжется с Вами по телефону (при возникновении вопросов), либо выставит счёт на указанный е-мейл.<br/>
+			Счёт необходимо оплатить в течении 3-х рабочих дней.<br/>
+			Забрать товар можно только после его полной оплаты.
+		</p>
 
 		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="item-summ" style="padding-bottom: 20px;">
@@ -136,7 +141,10 @@
 								<xsl:value-of select="qty"/>
 							</td>
 							<td>
-								<xsl:value-of select="product/price"/>
+								<xsl:value-of select="product/price"/> <xsl:if test="product/price != ''">р.</xsl:if>
+								<xsl:if test="product/unit">
+									/<xsl:value-of select="product/unit"/>
+								</xsl:if>
 							</td>
 							<td>
 								<xsl:value-of select="sum"/>

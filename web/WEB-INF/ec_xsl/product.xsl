@@ -61,10 +61,14 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
-		<p>арт. <xsl:value-of select="$p/mizida_code"/></p>
+		<p>
+			<xsl:if test="$p/mizida_code != ''">
+				арт. <xsl:value-of select="$p/mizida_code"/>
+			</xsl:if>
+		</p>
 		<div class="catalog-item-container">
 			<div class="gallery">
-				<div class="fotorama" data-nav="thumbs" data-thumbheight="80" data-thumbwidth="80" data-allowfullscreen="true">
+				<div class="fotorama" data-nav="thumbs" data-thumbheight="80" data-thumbwidth="80" data-allowfullscreen="native" data-width="100%">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
@@ -72,6 +76,28 @@
 						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
 				</div>
+
+				<div class="extra-contacts">
+					<xsl:value-of select="$common/product_side/text" disable-output-escaping="yes"/>
+				</div>
+
+				<script>
+				$('.fotorama')
+					.on('fotorama:fullscreenenter fotorama:fullscreenexit', function (e, fotorama) {
+					if (e.type === 'fotorama:fullscreenenter') {
+						// Options for the fullscreen
+						fotorama.setOptions({
+							fit: 'scaledown'
+						});
+					} else {
+						// Back to normal settings
+						fotorama.setOptions({
+							fit: 'contain'
+						});
+					}
+					})
+					.fotorama();
+				</script>
 			</div>
 			<div class="product-info">
 				<!-- new html -->
@@ -85,8 +111,18 @@
 					<div class="device-page__actions">
 						<xsl:if test="$has_price">
 							<div class="device__price device__price_device-page">
-								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$p/price_old"/> руб.</span></div></xsl:if>
-								<div class="price_normal"><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</div>
+								<xsl:if test="$p/price_old">
+									<div class="price_old">
+										<span>
+											<xsl:value-of select="$p/price_old"/> руб.
+											<xsl:if test="$p/unit != ''">/<xsl:value-of select="$p/unit"/></xsl:if>
+										</span>
+									</div>
+								</xsl:if>
+								<div class="price_normal">
+									<xsl:value-of select="if ($p/price) then $p/price else '0'"/> руб.
+									<xsl:if test="$p/unit != ''">/<xsl:value-of select="$p/unit"/></xsl:if>
+								</div>
 							</div>
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
@@ -124,6 +160,7 @@
 					<div class="multi-device">
 						<div style="padding-left: 0;">Размер</div>
 						<div>Цена</div>
+						<div>Наличие</div>
 						<div></div>
 
 						<xsl:for-each select="$p/line_product">
@@ -131,12 +168,23 @@
 							<div class="multi-device__name"><xsl:value-of select="name" /></div>
 							<div class="multi-device__price">
 								<xsl:if test="$has_price">
-									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="price_old"/> руб.</div></xsl:if>
-									<div class="multi-device__price_new"><xsl:value-of select="if (price) then price else '0'"/></div>
+									<xsl:if test="price_old">
+										<div class="multi-device__price_old">
+											<xsl:value-of select="price_old"/> руб.
+											<xsl:if test="unit != ''">/<xsl:value-of select="unit"/></xsl:if>
+										</div>
+									</xsl:if>
+									<div class="multi-device__price_new">
+										<xsl:value-of select="if (price) then price else '0'"/> руб.
+										<xsl:if test="unit != ''">/<xsl:value-of select="unit"/></xsl:if>
+									</div>
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<div class="multi-device__price_new">по запросу</div>
 								</xsl:if>
+							</div>
+							<div class="multi-device__price">
+								<xsl:value-of select="if (f:num($p/qty) &gt; 0) then 'на складе' else 'под заказ'"/>
 							</div>
 							<div class="multi-device__actions" id="cart_list_{@id}">
 								<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
@@ -181,11 +229,9 @@
 						<div class="device-benefits__label">Обучение и сопровождение</div>
 					</div>
 				</div>
+				
 				<div class="extra-contacts">
-					<xsl:value-of select="$common/product_side/text" disable-output-escaping="yes"/>
-				</div>
-				<div class="extra-contacts">
-					<div class="extra-contacts__title">Звоните, чтобы получить помощь и консультацию</div>
+					<div class="extra-contacts__title">Телефоны для связи</div>
 					<div class="extra-contacts__items">
 						<div class="extra-contacts__item">
 							<div class="extra-contacts__number">(+375 17) 233-65-94</div>
@@ -209,20 +255,20 @@
 
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-							<xsl:for-each select="$p/product_extra">
+							<xsl:for-each select="$p/product_extra[. != '']">
 								<xsl:variable name="first" select="position()=1" />
 								<li role="presentation" class="{'active'[$first]}">
 									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a> 
 								</li>
 							</xsl:for-each>
-							<xsl:if test="$p/params">
-							<li role="presentation" class="{'active'[not($p/product_extra)]}">
-								<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
-							</li>
+							<xsl:if test="$p/params != ''">
+								<li role="presentation" class="{'active'[not($p/product_extra)]}">
+									<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
+								</li>
 							</xsl:if>
 					</ul>
 				<div class="tab-content">
-					<xsl:if test="$p/params">
+					<xsl:if test="$p/params != ''">
 						<div role="tabpanel" class="tab-pane {'active'[not($p/product_extra)]}" id="tab1">
 							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
 							<table>
@@ -243,10 +289,9 @@
 
 						</div>
 					</xsl:if>
-					<xsl:for-each select="$p/product_extra">
+					<xsl:for-each select="$p/product_extra[. != '']">
 						<xsl:variable name="first" select="position()=1" />
 						<div role="tabpanel" class="tab-pane {'active'[$first]}" id="tab{@id}">
-							<h4><xsl:value-of select="name"/></h4>
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
 					</xsl:for-each>
