@@ -123,13 +123,13 @@
 						</xsl:for-each>
 					</ul>
 				</li>
-				<xsl:for-each select="page/menu_custom[name != 'Использование Cookie' and name != 'О проекте']">
-					<xsl:variable name="k" select="@key"/>
+				<xsl:for-each select="page/menu_custom">
+					<!-- <xsl:variable name="k" select="@key"/>
 					<li class="{'current'[$active_menu_item = $k]}">
 						<a href="{show_page}">
 							<xsl:value-of select="name"/>
 						</a>
-					</li>
+					</li> -->
 				</xsl:for-each>
 					<!--<xsl:if test="count(page/news) = 1">-->
 						<!--<xsl:variable name="k" select="page/news/@key"/>-->
