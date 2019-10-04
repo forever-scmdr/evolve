@@ -4,9 +4,9 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.DeleteItemTypeBDUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
@@ -106,6 +106,12 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		}
 
 		info.pushLog("Создание товаров завершено");
+		info.pushLog("Прикрепление картинок к разделам");
+		info.setOperation("Прикрепление картинок к разделам");
+
+		attachImages();
+
+		info.pushLog("Прикрепление картинок к разделам завершено");
 		info.pushLog("Индексация");
 		info.setOperation("Индексация");
 
@@ -120,6 +126,26 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.pushLog("Создание фильтров завершено");
 		info.pushLog("Интеграция успешно завершена");
 		info.setOperation("Интеграция завершена");
+	}
+
+	private void attachImages() throws Exception {
+		for(Item section : new ItemQuery(SECTION_ITEM).loadItems()){
+			File mainPic = section.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(section.isFileProtected()));
+			if(!mainPic.isFile()){
+				ItemQuery q = new ItemQuery(PRODUCT_ITEM);
+				q.setLimit(10);
+				q.setParentId(section.getId(), true);
+				q.addParameterCriteria(MAIN_PIC_PARAM, "//", "!=", null, Compare.SOME);
+				for(Item prod : q.loadItems()){
+					mainPic = prod.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(prod.isFileProtected()));
+					if(mainPic.isFile()){
+						section.setValue(MAIN_PIC_PARAM, mainPic);
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
+						break;
+					}
+				}
+			}
+		}
 	}
 
 
