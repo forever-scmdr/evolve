@@ -1,9 +1,9 @@
 package ecommander.filesystem;
 
 import ecommander.fwk.FileException;
+import ecommander.fwk.FluentWebClient;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
-import ecommander.fwk.WebClient;
 import ecommander.model.Item;
 import ecommander.model.ParameterDescription;
 import ecommander.model.SingleParameter;
@@ -123,7 +123,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 							else if (isDirect)
 								Files.copy(((File) value).toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 							else if (isUrl)
-								WebClient.saveFile(value.toString(), fileDirectoryName, fileName);
+								FluentWebClient.saveFile(value.toString(), fileDirectoryName, fileName);
 							else if (isBuffer)
 								ImageIO.write(((FileDataType.BufferedPic) value).pic, ((FileDataType.BufferedPic) value).type, newFile);
 						} catch (Exception e) {
