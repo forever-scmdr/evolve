@@ -684,4 +684,8 @@
 <!--START_p279358-->
 <item name="p279358" caption="Урны уличные" key="" ag-id="0" ag-hash="2100164466" virtual="false" user-def="true" description="" super="params *"></item>
 <!--END_p279358-->
+
+<!--START_p280420-->
+<item name="p280420" caption="Петли гаражные" key="" ag-id="0" ag-hash="2100820728" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p280420-->
 <!--EXP--></model>

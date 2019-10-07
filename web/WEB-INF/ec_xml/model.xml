@@ -314,14 +314,14 @@
 	</item>
 
 
-    <item name="cart_temp" caption="Временная корзина" key="user">
+    <item name="cart_temp" caption="Временная корзина" key="user" ag-id="1154" ag-hash="213022099">
         <parameter name="user" type="string" caption="Имя пользователя"/>
         <parameter name="time" type="date" caption="Время обновления"/>
         <parameter name="cart_cookie" type="plain-text" caption="Состояние корзины"/>
     </item>
 
 
-    <item name="cart_temp_catalog" caption="Каталог временных корзин">
+    <item name="cart_temp_catalog" caption="Каталог временных корзин" ag-id="1155" ag-hash="1382562157">
         <child item="cart_temp"/>
     </item>
 

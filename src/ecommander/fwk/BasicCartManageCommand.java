@@ -127,6 +127,9 @@ public abstract class BasicCartManageCommand extends Command {
 		return getResult("proceed");
 	}
 
+	protected void postProcessCartClean() throws Exception {
+
+	}
 
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
@@ -288,6 +291,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// 6. Очистить корзину
 		cart.setValue(PROCESSED_PARAM, (byte)1);
 		cart.setExtra(IN_PROGRESS, null);
+		postProcessCartClean();
 		setCookieVariable(CART_COOKIE, null);
 		getSessionMapper().saveTemporaryItem(cart);
 		return getResult("confirm");
@@ -324,7 +328,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 
-	private void addProduct(String code, double qty) throws Exception {
+	protected void addProduct(String code, double qty) throws Exception {
 	    checkStrategy();
 		ensureCart();
 		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)

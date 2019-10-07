@@ -807,6 +807,20 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			return result.get(0);
 		return null;
 	}
+
+	/**
+	 * Загрузить только видимые айтемы
+	 * @param id
+	 * @param conn
+	 * @return
+	 * @throws Exception
+	 */
+	public static Item loadByIdVisible(long id, Connection... conn) throws Exception {
+		Item item = loadById(id, conn);
+		if (item != null && item.isStatusNormal())
+			return item;
+		return null;
+	}
 	/**
 	 * Загрузить айтемы по их ID
 	 * @param id
