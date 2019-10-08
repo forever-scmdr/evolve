@@ -381,7 +381,7 @@ public class CrawlerController {
 			downloadFiles();
 		}
 	}
-	
+
 	private void terminateInt() {
 		CONTROLLER.shutdown();
 	}
@@ -516,17 +516,17 @@ public class CrawlerController {
 				Document result = Jsoup.parse(path.toFile(), UTF_8);
 				Elements downloads = result.getElementsByAttribute(DOWNLOAD);
 				for (Element download : downloads) {
-						// Найти первого родителя с заданным ID
-						Element idOwner = download;
-						String id = null;
-						for (; idOwner != null && StringUtils.isBlank(id); idOwner = idOwner.parent()) {
-							id = idOwner.attr(ID);
-						}
-						if (!StringUtils.isBlank(id)) {
-							String fileName = download.ownText();
-							String url = download.attr(DOWNLOAD);
-							if (StringUtils.isBlank(fileName))
-								fileName = Strings.getFileName(url);
+					// Найти первого родителя с заданным ID
+					Element idOwner = download;
+					String id = null;
+					for (; idOwner != null && StringUtils.isBlank(id); idOwner = idOwner.parent()) {
+						id = idOwner.attr(ID);
+					}
+					if (!StringUtils.isBlank(id)) {
+						String fileName = download.ownText();
+						String url = download.attr(DOWNLOAD);
+						if (StringUtils.isBlank(fileName))
+							fileName = Strings.getFileName(url);
 						downloadQueue.add(new Download(id, url, fileName));
 					}
 				}
@@ -561,12 +561,18 @@ public class CrawlerController {
 
 					}
 				};
+				threads[i].setDaemon(true);
 				threads[i].start();
 			}
-
+			for (Thread thread : threads) {
+				thread.join();
+			}
 			info.pushLog("Finished downloading files");
 		} catch (IOException e) {
-			info.pushLog("Can not parse result file", e);
+			info.pushLog("Can not parse result file");
+		} catch (InterruptedException e) {
+			ServerLogger.error("Thread join error", e);
+			info.pushLog("Ошибка объединения потоков скачивания файлов");
 		}
 	}
 	/**
@@ -803,6 +809,7 @@ public class CrawlerController {
 				info.increaseProcessed();
 			}
 		} catch (IOException e) {
+			ServerLogger.error("Error while normalizing item personal file", e);
 			info.pushLog("Error while normalizing item personal file", e);
 		}
 		info.pushLog("ЗАВЕРШЕНО: Удаление дублирующихся данных");
