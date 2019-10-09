@@ -20,6 +20,7 @@ import java.util.*;
 
 public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
 
+	private static final String EMPTY_PICTURE = "http://titantools.must.by/photo/";
 	private static final HashSet<String> SINGLE_PARAMS = new HashSet<>();
 	private static final HashSet<String> MULTIPLE_PARAMS = new HashSet<>();
 	static {
@@ -226,13 +227,19 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				boolean needSave = false;
 				ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+				String mainPicName = product.getStringValue(MAIN_PIC_PARAM);
 				for (File galleryPic : galleryPics) {
-					if (!galleryPic.exists() || galleryPic.getName().equals(GALLERY_PARAM + "_" + product.getValue(MAIN_PIC_PARAM)) || galleryPic.getName().equals(product.getValue(MAIN_PIC_PARAM))) {
-						product.removeEqualValue(GALLERY_PARAM, galleryPic.getName());
+					String gpn = galleryPic.getName();
+					if (!galleryPic.exists() || gpn.equals(GALLERY_PARAM + "_" + mainPicName) || gpn.equals(mainPicName)) {
+						product.removeEqualValue(GALLERY_PARAM, gpn);
+						needSave = true;
+					}if(gpn.equals(mainPicName)){
+						product.clearValue(MAIN_PIC_PARAM);
 					}
 				}
 				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
 				for (String picUrl : picUrls) {
+					if(picUrl.intern() == EMPTY_PICTURE) continue;
 					try {
 						String fileName = Strings.getFileName(picUrl);
 						if(fileName.equals(product.getValue(MAIN_PIC_PARAM))) continue;
@@ -264,7 +271,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
 						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
 					} catch (Exception e) {
-						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+						//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
 						info.setLineNumber(locator.getLineNumber());
 						info.addError(e);
 					}
@@ -274,7 +281,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					try {
 						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 					} catch (Exception e) {
-						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+						//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
 						info.setLineNumber(locator.getLineNumber());
 						info.addError(e);
 					}

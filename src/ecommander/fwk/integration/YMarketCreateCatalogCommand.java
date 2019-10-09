@@ -129,14 +129,16 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 	}
 
 	private void attachImages() throws Exception {
-		for(Item section : new ItemQuery(SECTION_ITEM).loadItems()){
+		List<Item> sections = new ItemQuery(SECTION_ITEM).loadItems();
+		for(Item section : sections){
 			File mainPic = section.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(section.isFileProtected()));
 			if(!mainPic.isFile()){
 				ItemQuery q = new ItemQuery(PRODUCT_ITEM);
-				q.setLimit(10);
+				q.setLimit(50);
 				q.setParentId(section.getId(), true);
-				q.addParameterCriteria(MAIN_PIC_PARAM, "//", "!=", null, Compare.SOME);
-				for(Item prod : q.loadItems()){
+				//q.addParameterCriteria(MAIN_PIC_PARAM, "-", "!=", null, Compare.SOME);
+				List<Item> products = q.loadItems();
+				for(Item prod : products){
 					mainPic = prod.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(prod.isFileProtected()));
 					if(mainPic.isFile()){
 						section.setValue(MAIN_PIC_PARAM, mainPic);
