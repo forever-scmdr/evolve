@@ -101,26 +101,19 @@ public class POIUtils {
             newCell.setCellType(oldCell.getCellType());
 
             // Set the cell data value
-            switch (oldCell.getCellType()) {
-                case Cell.CELL_TYPE_BLANK:
-                    newCell.setCellValue(oldCell.getStringCellValue());
-                    break;
-                case Cell.CELL_TYPE_BOOLEAN:
-                    newCell.setCellValue(oldCell.getBooleanCellValue());
-                    break;
-                case Cell.CELL_TYPE_ERROR:
-                    newCell.setCellErrorValue(oldCell.getErrorCellValue());
-                    break;
-                case Cell.CELL_TYPE_FORMULA:
-                    newCell.setCellFormula(oldCell.getCellFormula());
-                    break;
-                case Cell.CELL_TYPE_NUMERIC:
-                    newCell.setCellValue(oldCell.getNumericCellValue());
-                    break;
-                case Cell.CELL_TYPE_STRING:
-                    newCell.setCellValue(oldCell.getRichStringCellValue());
-                    break;
-            }
+			if (oldCell.getCellType() == CellType.BLANK) {
+				newCell.setCellValue(oldCell.getStringCellValue());
+			} else if (oldCell.getCellType() == CellType.BOOLEAN) {
+				newCell.setCellValue(oldCell.getBooleanCellValue());
+			} else if (oldCell.getCellType() == CellType.ERROR) {
+				newCell.setCellErrorValue(oldCell.getErrorCellValue());
+			} else if (oldCell.getCellType() == CellType.FORMULA) {
+				newCell.setCellFormula(oldCell.getCellFormula());
+			} else if (oldCell.getCellType() == CellType.NUMERIC) {
+				newCell.setCellValue(oldCell.getNumericCellValue());
+			} else if (oldCell.getCellType() == CellType.STRING) {
+				newCell.setCellValue(oldCell.getRichStringCellValue());
+			}
         }
 
         // If there are are any merged regions in the source row, copy to new row
@@ -212,26 +205,19 @@ public class POIUtils {
             newCell.setCellType(oldCell.getCellType());
 
             // Set the cell data value
-            switch (oldCell.getCellType()) {
-                case Cell.CELL_TYPE_BLANK:
-                    newCell.setCellValue(oldCell.getStringCellValue());
-                    break;
-                case Cell.CELL_TYPE_BOOLEAN:
-                    newCell.setCellValue(oldCell.getBooleanCellValue());
-                    break;
-                case Cell.CELL_TYPE_ERROR:
-                    newCell.setCellErrorValue(oldCell.getErrorCellValue());
-                    break;
-                case Cell.CELL_TYPE_FORMULA:
-                    newCell.setCellFormula(oldCell.getCellFormula());
-                    break;
-                case Cell.CELL_TYPE_NUMERIC:
-                    newCell.setCellValue(oldCell.getNumericCellValue());
-                    break;
-                case Cell.CELL_TYPE_STRING:
-                    newCell.setCellValue(oldCell.getRichStringCellValue());
-                    break;
-            }
+			if (oldCell.getCellType() == CellType.BLANK) {
+				newCell.setCellValue(oldCell.getStringCellValue());
+			} else if (oldCell.getCellType() == CellType.BOOLEAN) {
+				newCell.setCellValue(oldCell.getBooleanCellValue());
+			} else if (oldCell.getCellType() == CellType.ERROR) {
+				newCell.setCellErrorValue(oldCell.getErrorCellValue());
+			} else if (oldCell.getCellType() == CellType.FORMULA) {
+				newCell.setCellFormula(oldCell.getCellFormula());
+			} else if (oldCell.getCellType() == CellType.NUMERIC) {
+				newCell.setCellValue(oldCell.getNumericCellValue());
+			} else if (oldCell.getCellType() == CellType.STRING) {
+				newCell.setCellValue(oldCell.getRichStringCellValue());
+			}
         }
 
         // If there are are any merged regions in the source row, copy to new row
@@ -271,8 +257,8 @@ public class POIUtils {
 		try {
 			hssfColor = palette.findColor(r, g, b);
 			if (hssfColor == null) {
-				palette.setColorAtIndex(HSSFColor.LAVENDER.index, r, g, b);
-				hssfColor = palette.getColor(HSSFColor.LAVENDER.index);
+				palette.setColorAtIndex(HSSFColor.HSSFColorPredefined.LAVENDER.getIndex(), r, g, b);
+				hssfColor = palette.getColor(HSSFColor.HSSFColorPredefined.LAVENDER.getIndex());
 			}
 		} catch (Exception e) {
 			ServerLogger.error(e);
