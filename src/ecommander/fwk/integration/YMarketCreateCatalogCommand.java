@@ -3,9 +3,9 @@ package ecommander.fwk.integration;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
-import ecommander.model.*;
-import ecommander.persistence.commandunits.DeleteItemTypeBDUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.model.Item;
+import ecommander.model.User;
+import ecommander.model.UserGroupRegistry;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
@@ -16,7 +16,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -70,29 +69,29 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		}
 
 		// Удаление всех пользовательских параметров товаров (айтемов и типов)
-		info.pushLog("Удаление параметров товаров");
-		int processed = 0;
-		info.setProcessed(processed);
-		ItemQuery paramsQuery = new ItemQuery(PARAMS_ITEM);
-		paramsQuery.setLimit(10);
-		List<Item> itemsToDelete = paramsQuery.loadItems();
-		while (itemsToDelete.size() > 0) {
-			for (Item item : itemsToDelete) {
-				executeCommandUnit(ItemStatusDBUnit.delete(item));
-			}
-			commitCommandUnits();
-			processed += itemsToDelete.size();
-			info.setProcessed(processed);
-			itemsToDelete = paramsQuery.loadItems();
-		}
-
-		LinkedHashSet<String> typesToDelete = ItemTypeRegistry.getItemExtenders(PARAMS_ITEM);
-		typesToDelete.remove(PARAMS_ITEM);
-		for (String typeToDelete : typesToDelete) {
-			executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(ItemTypeRegistry.getItemType(typeToDelete).getTypeId()));
-		}
-
-		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+//		info.pushLog("Удаление параметров товаров");
+//		int processed = 0;
+//		info.setProcessed(processed);
+//		ItemQuery paramsQuery = new ItemQuery(PARAMS_ITEM);
+//		paramsQuery.setLimit(10);
+//		List<Item> itemsToDelete = paramsQuery.loadItems();
+//		while (itemsToDelete.size() > 0) {
+//			for (Item item : itemsToDelete) {
+//				executeCommandUnit(ItemStatusDBUnit.delete(item));
+//			}
+//			commitCommandUnits();
+//			processed += itemsToDelete.size();
+//			info.setProcessed(processed);
+//			itemsToDelete = paramsQuery.loadItems();
+//		}
+//
+//		LinkedHashSet<String> typesToDelete = ItemTypeRegistry.getItemExtenders(PARAMS_ITEM);
+//		typesToDelete.remove(PARAMS_ITEM);
+//		for (String typeToDelete : typesToDelete) {
+//			executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(ItemTypeRegistry.getItemType(typeToDelete).getTypeId()));
+//		}
+//
+//		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
 
 		// Создание самих товаров
 		info.pushLog("Подготовка каталога и типов завершена.");
