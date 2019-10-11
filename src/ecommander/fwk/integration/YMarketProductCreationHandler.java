@@ -16,6 +16,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
@@ -23,6 +24,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private static final String EMPTY_PICTURE = "http://titantools.must.by/photo/";
 	private static final HashSet<String> SINGLE_PARAMS = new HashSet<>();
 	private static final HashSet<String> MULTIPLE_PARAMS = new HashSet<>();
+	private static String host;
+
 	static {
 		SINGLE_PARAMS.add(URL_ELEMENT);
 		SINGLE_PARAMS.add(PRICE_ELEMENT);
@@ -78,6 +81,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
 		this.catalogLinkAssoc = ItemTypeRegistry.getAssoc("catalog_link");
+		host = info.getHost();
 	}
 
 	@Override
@@ -262,18 +266,32 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						noMainPic = true;
 					}
 				}
-				if (noMainPic && picUrls.size() > 0) {
-					if (picUrls.size() > 0) {
-						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
+				if (picUrls.size() > 0) {
+					boolean save = false;
+					String url = picUrls.iterator().next();
+					if (picUrls.size() > 0 && noMainPic) {
+						product.setValue(MAIN_PIC_PARAM, new URL(url));
+						save = true;
+					}else if(!noMainPic && StringUtils.startsWith(url, host)){
+						File pic = Paths.get(AppContext.getContextPath(), StringUtils.substringAfter(url, host)).toFile();
+						if(pic.isFile()){
+							if(pic.length() != product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).length()){
+								product.setValue(MAIN_PIC_PARAM, pic);
+								save = true;
+								info.addLog("Overriding picture. Product:" + product.getStringValue(NAME_PARAM));
+							}
+						}
 					}
-					try {
-						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-					} catch (Exception e) {
-						//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-						info.setLineNumber(locator.getLineNumber());
-						info.addError(e);
+					if(save) {
+						try {
+							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+							DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
+							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+						} catch (Exception e) {
+							//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+							info.setLineNumber(locator.getLineNumber());
+							info.addError(e);
+						}
 					}
 					needSave = false;
 				}
@@ -354,4 +372,5 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	public void getPrice(boolean getPrice) {
 		this.getPrice = getPrice;
 	}
+
 }

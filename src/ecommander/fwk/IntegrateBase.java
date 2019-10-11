@@ -230,6 +230,7 @@ public abstract class IntegrateBase extends Command {
 				slowQueries.remove(slowQueries.firstKey());
 			}
 		}
+		public String getHost(){return host;}
 	}
 
 	public IntegrateBase() {

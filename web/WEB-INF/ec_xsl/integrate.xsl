@@ -82,12 +82,14 @@
 						<td class="error"><xsl:value-of select="."/></td>
 					</tr>
 				</xsl:for-each>
-				<xsl:for-each select="/page/error">
+				<xsl:for-each-group group-by="substring-after(text() , '\n')" select="/page/error">
+
 					<tr>
 						<td class="string-no"><xsl:value-of select="@line"/></td>
 						<td class="error"><xsl:value-of select="."/></td>
 					</tr>
-				</xsl:for-each>
+
+				</xsl:for-each-group>
 			</table>
 			<xsl:if test="/page/log">
 				<h2>Сообщения</h2>
