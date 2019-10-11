@@ -234,8 +234,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				String mainPicName = product.getStringValue(MAIN_PIC_PARAM);
 				for (File galleryPic : galleryPics) {
 					String gpn = galleryPic.getName();
-					//tmp hotfix.
-					if (!galleryPic.exists() || gpn.equals(GALLERY_PARAM + "_" + mainPicName) || gpn.equals(mainPicName) || 1 == 1) {
+					if (!galleryPic.exists() || gpn.equals(GALLERY_PARAM + "_" + mainPicName) || gpn.equals(mainPicName)) {
 						product.removeEqualValue(GALLERY_PARAM, gpn);
 						needSave = true;
 					}if(gpn.equals(mainPicName)){
