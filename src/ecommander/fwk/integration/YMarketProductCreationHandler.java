@@ -234,34 +234,40 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				String mainPicName = product.getStringValue(MAIN_PIC_PARAM);
 				for (File galleryPic : galleryPics) {
 					String gpn = galleryPic.getName();
-					if (!galleryPic.exists() || gpn.equals(GALLERY_PARAM + "_" + mainPicName) || gpn.equals(mainPicName)) {
+					if (x!galleryPic.exists() || gpn.equals(GALLERY_PARAM + "_" + mainPicName) || gpn.equals(mainPicName)) {
 						product.removeEqualValue(GALLERY_PARAM, gpn);
 						needSave = true;
-					}if(gpn.equals(mainPicName)){
+					}
+					if(gpn.equals(mainPicName)){
 						product.clearValue(MAIN_PIC_PARAM);
 					}
 				}
 				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
-				for (String picUrl : picUrls) {
-					if(picUrl.intern() == EMPTY_PICTURE) continue;
-					try {
-						String fileName = Strings.getFileName(picUrl);
-						if(fileName.equals(product.getValue(MAIN_PIC_PARAM))) continue;
-						if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
-							product.setValue(GALLERY_PARAM, new URL(picUrl));
-							needSave = true;
+				if(picUrls.size() > 1) {
+					for (String picUrl : picUrls) {
+						if (picUrl.intern() == EMPTY_PICTURE) continue;
+						try {
+							String fileName = Strings.getFileName(picUrl);
+							mainPicName = product.getStringValue(MAIN_PIC_PARAM, "");
+							boolean skipGal = fileName.equals(mainPicName);
+							skipGal = skipGal || fileName.replaceAll("-", "_").equals(mainPicName.replaceAll("-", "_"));
+
+							if (skipGal) continue;
+							if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
+								product.setValue(GALLERY_PARAM, new URL(picUrl));
+								needSave = true;
+							}
+						} catch (Exception e) {
+							info.setLineNumber(locator.getLineNumber());
+							info.addError("Неверный формат картинки: " + picUrl, locator.getLineNumber(), 0);
 						}
-					} catch (Exception e) {
-						info.setLineNumber(locator.getLineNumber());
-						info.addError("Неверный формат картинки: " + picUrl, locator.getLineNumber(), 0);
 					}
 				}
-
 				// Генерация маленького изображения
-				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
+				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM) ;
 				if (!noMainPic) {
 					File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-					if (!mainPic.exists()) {
+					if (!mainPic.isFile()) {
 						product.clearValue(MAIN_PIC_PARAM);
 						noMainPic = true;
 					}
@@ -287,13 +293,14 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 							DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
 							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+							needSave = false;
 						} catch (Exception e) {
 							//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
 							info.setLineNumber(locator.getLineNumber());
 							info.addError(e);
 						}
 					}
-					needSave = false;
+					//needSave = false;
 				}
 				if (needSave) {
 					try {
