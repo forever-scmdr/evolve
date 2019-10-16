@@ -4,10 +4,22 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns="http://www.w3.org/1999/xhtml"
+
         xmlns:f="f:f"
         version="2.0">
 
     <xsl:decimal-format name="r" decimal-separator="." grouping-separator=" "/>
+
+    <xsl:function name="f:substring-before-last">
+        <xsl:param name="arg" as="xs:string?"/>
+        <xsl:param name="delim" as="xs:string"/>
+        <xsl:sequence select="if (matches($arg, f:escape-for-regex($delim))) then replace($arg, concat('^(.*)', f:escape-for-regex($delim),'.*'),'$1') else '' "/>
+    </xsl:function>
+
+    <xsl:function name="f:escape-for-regex">
+        <xsl:param name="arg" as="xs:string?"/>
+        <xsl:sequence select="replace($arg,'(\.|\[|\]|\\|\||\-|\^|\$|\?|\*|\+|\{|\}|\(|\))','\\$1')"/>
+    </xsl:function>
 
     <xsl:function name="f:num" as="xs:double">
         <xsl:param name="str" as="xs:string?"/>

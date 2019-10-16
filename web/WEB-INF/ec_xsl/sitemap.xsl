@@ -1,5 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-				version="2.0">
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0">
 
 	<xsl:output method="xml" encoding="UTF-8" media-type="text/xml" indent="yes" omit-xml-declaration="no"/>
 	<xsl:strip-space elements="*"/>
@@ -12,7 +12,7 @@
 
 	<xsl:template match="/">
 		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-		>
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<url>
 				<loc>
 					<xsl:value-of select="page/base"/>

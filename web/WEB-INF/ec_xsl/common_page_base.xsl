@@ -50,7 +50,7 @@
 				<div class="col-xs-12">
 					<div class="header-container" style="position: relative;">
 						<div class="logo">
-							<a href="{$main_host}"><img src="img/logo.jpg" alt="" /></a>
+							<a href="{$main_host}"><img src="img/logo.svg" alt="" /></a>
 						</div>
 						<div class="search">
 							<form action="{page/search_link}" method="post">
@@ -116,7 +116,7 @@
 		<div class="header mobile">
 			<div class="header-container">
 				<a href="" class="logo">
-					<img src="img/logo.jpg" alt="" style="height: 1.5em; max-width: 100%;"/>
+					<img src="img/logo.svg" alt="" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
 					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
@@ -531,44 +531,47 @@
 							</div>
 						</xsl:otherwise>
 					</xsl:choose>
-					<xsl:if test="$pres">
-						<div class="hover-tag mobile">
-							<i class="hover-tag__icon fas fa-gift" />
-							<a href="" data-toggle="modal" data-target="#pres_{code}">Подарок</a>
-						</div>
-						<div class="hover-tag desktop">
-							<i class="hover-tag__icon fas fa-gift" />
-							<a data-toggle="popover" data-trigger="hover" data-placement="bottom" data-html="true">
-								<xsl:attribute name="data-content">
-									<xsl:for-each select="$pres">
-										<xsl:variable name="present" select="//page/present[code = current()/present_code]"/>
-										<xsl:variable name="pic_path"
-										              select="if ($present/main_pic) then concat($present/@path, $present/main_pic) else 'img/no_image.png'"/>
-										<xsl:variable name="link" select="$present/show_product"/>
-										<xsl:text disable-output-escaping="yes">&lt;div class="gift-item"&gt;</xsl:text>
-										<xsl:text disable-output-escaping="yes">&lt;img src="</xsl:text><xsl:value-of select="$pic_path"/><xsl:text disable-output-escaping="yes">" alt=""/&gt;</xsl:text>
-											<xsl:text disable-output-escaping="yes">&lt;h3&gt;</xsl:text>
-												<xsl:if test="$link">
-													<xsl:text disable-output-escaping="yes">&lt;a href="</xsl:text><xsl:value-of select="$link"/><xsl:text disable-output-escaping="yes">"&gt;</xsl:text>
-												</xsl:if>
-												<xsl:value-of select="$present/name"/><xsl:text> </xsl:text><xsl:value-of select="$present/type"/>
-												<xsl:if test="qty">
-													(<xsl:value-of select="qty"/>)<xsl:text> </xsl:text>
-												</xsl:if>
-												<xsl:if test="$link">
-													<xsl:text disable-output-escaping="yes">&lt;/a&gt;</xsl:text>
-												</xsl:if>
-											<xsl:text disable-output-escaping="yes">&lt;/h3&gt;</xsl:text>
-											<xsl:value-of select="$present/short" disable-output-escaping="yes"/>
-										<xsl:text disable-output-escaping="yes">&lt;/div&gt;</xsl:text>
-									</xsl:for-each>
-								</xsl:attribute>
-								Подарок
-							</a>
-						</div>
-					</xsl:if>
 				</div>
 			</div>
+			<xsl:if test="$pres">
+				<xsl:variable name="present" select="//page/present[code = $pres[1]/present_code]"/>
+				<xsl:variable name="first_gift_pic_path" select="if ($present/main_pic) then concat($present/@path, $present/main_pic) else 'img/no_image.png'"/>
+				<!-- срабатывает по клику -->
+				<a href="" class="gift-link mobile" data-toggle="modal" data-target="#pres_{code}">
+					<img src="{$first_gift_pic_path}" alt=""/>
+					<img src="img/plus.svg" alt="" class="gift-icon"/>
+				</a>
+				<div class="desktop">
+					<!-- срабатывает по ховеру -->
+					<a class="gift-link"  data-toggle="popover" data-trigger="hover" data-placement="bottom" data-html="true">
+						<xsl:attribute name="data-content">
+							<xsl:for-each select="$pres">
+								<xsl:variable name="present" select="//page/present[code = current()/present_code]"/>
+								<xsl:variable name="gift_pic_path" select="if ($present/main_pic) then concat($present/@path, $present/main_pic) else 'img/no_image.png'"/>
+								<xsl:variable name="link" select="$present/show_product"/>
+								<xsl:text disable-output-escaping="yes">&lt;div class="gift-item"&gt;</xsl:text>
+								<xsl:text disable-output-escaping="yes">&lt;img src="</xsl:text><xsl:value-of select="$gift_pic_path"/><xsl:text disable-output-escaping="yes">" alt=""/&gt;</xsl:text>
+									<xsl:text disable-output-escaping="yes">&lt;h3&gt;</xsl:text>
+										<xsl:if test="$link">
+											<xsl:text disable-output-escaping="yes">&lt;a href="</xsl:text><xsl:value-of select="$link"/><xsl:text disable-output-escaping="yes">"&gt;</xsl:text>
+										</xsl:if>
+										<xsl:value-of select="$present/name"/><xsl:text> </xsl:text><xsl:value-of select="$present/type"/>
+										<xsl:if test="qty">
+											(<xsl:value-of select="qty"/>)<xsl:text> </xsl:text>
+										</xsl:if>
+										<xsl:if test="$link">
+											<xsl:text disable-output-escaping="yes">&lt;/a&gt;</xsl:text>
+										</xsl:if>
+									<xsl:text disable-output-escaping="yes">&lt;/h3&gt;</xsl:text>
+									<xsl:value-of select="$present/short" disable-output-escaping="yes"/>
+								<xsl:text disable-output-escaping="yes">&lt;/div&gt;</xsl:text>
+							</xsl:for-each>
+						</xsl:attribute>
+						<img src="{$first_gift_pic_path}" alt=""/>
+						<img src="img/plus.svg" alt="" class="gift-icon"/>
+					</a>
+				</div>
+			</xsl:if>
 		</div>
 	</xsl:template>
 
@@ -577,10 +580,10 @@
 	<xsl:template name="CART_SCRIPT">
 		<script>
 			$(document).ready(function() {
-				$('.product_purchase_container').find('input[type="submit"]').click(function(event) {
+				$('.product_purchase_container, .sticky-product__button').find('input[type="submit"]').click(function(event) {
 					event.preventDefault();
 					var qtyForm = $(this).closest('form');
-					var lockId = $(this).closest('.product_purchase_container').attr('id');
+					var lockId = $(this).closest('.product_purchase_container, .sticky-product__button').attr('id');
 					postForm(qtyForm, lockId, null);
 				});
 				$('[data-toggle="popover"]')
@@ -616,9 +619,7 @@
 			<div class="container">
 				<div class="row">
 					<!-- LEFT COLOUMN BEGIN -->
-					<div class="col-md-3 lc desktop">
-						<xsl:call-template name="LEFT_COLOUMN"/>
-					</div>
+					<xsl:call-template name="LEFT_COLOUMN_WRAPPER"/>
 					<!-- LEFT COLOUMN END -->
 
 					<!-- RIGHT COLOUMN BEGIN -->
@@ -635,6 +636,11 @@
 		<!-- MAIN COLOUMNS END -->
 	</xsl:template>
 
+	<xsl:template name="LEFT_COLOUMN_WRAPPER">
+		<div class="col-md-3 lc desktop">
+			<xsl:call-template name="LEFT_COLOUMN"/>
+		</div>
+	</xsl:template>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<div class="side-menu">
@@ -685,8 +691,10 @@
 			<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&amp;subset=cyrillic" rel="stylesheet" />
 			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700&amp;subset=cyrillic" rel="stylesheet" />
 			<link rel="stylesheet" href="css/app.css"/>
-			<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
-			<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+			<xsl:if test="page/@name = 'index'">
+				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+			</xsl:if>
 			<link rel="stylesheet" href="fotorama/fotorama.css"/>
 			<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 			<script defer="defer" src="js/font_awesome_all.js"/>
@@ -721,35 +729,37 @@
 			<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 			<script type="text/javascript" src="js/fwk/common.js"/>
 			<script type="text/javascript" src="js/search-tip.js"></script>
-			<xsl:if test="/page/@name = 'index'">
+			<xsl:if test="page/@name = 'index'">
 				<script type="text/javascript" src="slick/slick.min.js"></script>
+			</xsl:if>	
 				<script type="text/javascript">
 					$(document).ready(function(){
-						$(".footer-placeholder").height($(".footer").outerHeight()+40);
-						$('.slick-slider').slick({
-							infinite: true,
-							slidesToShow: 6,
-							slidesToScroll: 6,
-							dots: true,
-							arrows: false,
-							responsive: [
-								{
-								  breakpoint: 767,
-								  settings: {
-									slidesToShow: 2,
-									slidesToScroll: 2,
-									infinite: true,
-									dots: true
-								  }
-								}
-							]
-						});
-
+						$(".footer-placeholder").height($(".footer").outerHeight());
+						<xsl:if test="page/@name = 'index'">
+							$('.slick-slider').slick({
+								infinite: true,
+								slidesToShow: 6,
+								slidesToScroll: 6,
+								dots: true,
+								arrows: false,
+								responsive: [
+									{
+									  breakpoint: 767,
+									  settings: {
+										slidesToShow: 2,
+										slidesToScroll: 2,
+										infinite: true,
+										dots: true
+									  }
+									}
+								]
+							});
+						</xsl:if>
 						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
 						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
 					});
 				</script>
-			</xsl:if>
+		
 			<xsl:call-template name="EXTRA_SCRIPTS"/>
 			<xsl:call-template name="USER_SCRIPTS"/>
 		</body>

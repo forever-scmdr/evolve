@@ -89,6 +89,7 @@
 		<include name="COMMON"/>
 		<single item="catalog">
 			<single item="seo"/>
+			<single item="catalog_banner"/>
 		</single>
 	</page>
 
@@ -132,6 +133,7 @@
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<single item="seo"/>
+			<list item="catalog_banner"/>
 			<list item="product" id="prod" transit="true" assoc="catalog_link *">
 				<filter>
 					<parameter name="available" compare="ANY"><var var="minqty" /></parameter>
@@ -241,6 +243,49 @@
 		</link>
 		<include name="COMMON"/>
 	</page>
+
+
+	<page name="brand" template="brand">
+		<include name="COMMON"/>
+		<list item="product" id="prod" transit="true">
+			<filter>
+				<limit><var value="20"/></limit>
+			</filter>
+			<single item="params_xml"/>
+			<link name="show_product" target="product">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="prod" parameter="code"/>
+			</link>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
+			<link name="my_price_link" target="my_price_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
+			<link name="defer_link" target="defer_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
+		</list>
+	</page>
+
 
 	<page name="search_ajax" template="search_ajax">
 		<request>
@@ -574,7 +619,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="metabobelarus@gmail.com"/>
+			<var name="email" value="metabobelarus@gmail.com, bio@forever-ds.com"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -874,7 +919,7 @@
 			<filter>
 				<parameter name="code" compare="SOME"><var var="compare"/></parameter>
 			</filter>
-			<single item="params"/>
+			<list item="params"/>
 			<link name="from_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>

@@ -296,31 +296,33 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 				h = targetHeight;
 			}
 
-			do {
-				if (stepQuotient > 1) {
-					if (w > targetWidth) {
-						w /= stepQuotient;
-						if (w < targetWidth) {
-							w = targetWidth;
+			if (w > targetWidth || h > targetHeight) {
+				do {
+					if (stepQuotient > 1) {
+						if (w > targetWidth) {
+							w /= stepQuotient;
+							if (w < targetWidth) {
+								w = targetWidth;
+							}
+						}
+
+						if (h > targetHeight) {
+							h /= stepQuotient;
+							if (h < targetHeight) {
+								h = targetHeight;
+							}
 						}
 					}
 
-					if (h > targetHeight) {
-						h /= stepQuotient;
-						if (h < targetHeight) {
-							h = targetHeight;
-						}
-					}
-				}
+					BufferedImage tmp = new BufferedImage(w, h, type);
+					Graphics2D g2 = tmp.createGraphics();
+					g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, hint);
+					g2.drawImage(ret, 0, 0, w, h, null);
+					g2.dispose();
 
-				BufferedImage tmp = new BufferedImage(w, h, type);
-				Graphics2D g2 = tmp.createGraphics();
-				g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, hint);
-				g2.drawImage(ret, 0, 0, w, h, null);
-				g2.dispose();
-
-				ret = tmp;
-			} while (w != targetWidth || h != targetHeight);
+					ret = tmp;
+				} while (w > targetWidth || h > targetHeight);
+			}
 
 			return ret;
 		}

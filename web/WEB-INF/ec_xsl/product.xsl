@@ -64,6 +64,27 @@
 		<xsl:value-of select="$p/name_extra"/>
 		<div><br></br></div>
 		<div class="catalog-item-container">
+			<!-- <section style="position: fixed; top: 0; left: 0; width: 100%; background-color: red;">ddd</section> -->
+			<section class="sticky" style="display: none;" id="sticky">
+				<div class="container sticky-product">
+					<div class="sticky-product__image">
+						<img src="{if($p/gallery != '') then concat($p/@path, $p/gallery[1]) else 'img/no_image.png'}" style="max-width: 150px;"/>
+					</div>
+					<div class="sticky-product__title"><xsl:value-of select="$h1"/></div>
+					<div class="sticky-product__price"><xsl:value-of select="$price"/> <span>руб.</span></div>
+					<div class="sticky-product__button" id="cart-button-top-{$p/code}">
+						<form action="{$p/to_cart}" method="post">
+							<input type="hidden" name="qty" value="1"/>
+							<input type="submit" class="button button_big" value="купить"/>
+						</form>
+					</div>
+					<div class="sticky-product__menu">
+						<xsl:variable name="v" select="concat(page/base, 'product/', $p/@key)"/>
+						<a href="#char" class="sticky-product__link scroll-to">Описание и характеристики</a>
+						<a href="#assoc" class="sticky-product__link scroll-to">Сопутствующие товары</a>
+					</div>
+				</div>
+			</section>
 			<!--
 			<div class="tags">
 				<span>Акция</span>
@@ -119,12 +140,12 @@
 						</form>
 					</div>
 
-					 <a href="#" class="online-button product-button">Онлайн-рассрочка</a>
+					<a href="{$p/defer_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-defer" class="online-button product-button">Онлайн-рассрочка</a>
 					
-<!--					<xsl:choose>-->
-<!--						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>-->
-<!--						<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
-<!--					</xsl:choose>-->
+					<!--<xsl:choose>-->
+						<!--<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>-->
+						<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
+					<!--</xsl:choose>-->
 				</div>
 				<div class="art-number">
 					№ для заказа: <xsl:value-of select="$p/code" />
@@ -143,9 +164,51 @@
 				</div>
 				<xsl:variable name="pres" select="$pp[product_code = $p/code]"/>
 				<xsl:if test="$pres">
+					<xsl:variable name="present" select="//page/present[code = $pres[1]/present_code]"/>
+					<xsl:variable name="first_gift_pic_path" select="if ($present/main_pic) then concat($present/@path, $present/main_pic) else 'img/no_image.png'"/>
+					<!-- срабатывает по клику -->
+					<a href="" class="gift-link mobile" data-toggle="modal" data-target="#pres_{$p/code}">
+						<img src="{$first_gift_pic_path}" alt=""/>
+						<img src="img/plus.svg" alt="" class="gift-icon"/>
+					</a>
+					<div class="desktop">
+						<!-- срабатывает по ховеру -->
+						<a class="gift-link"  data-toggle="popover" data-trigger="hover" data-placement="bottom" data-html="true">
+							<xsl:attribute name="data-content">
+								<xsl:for-each select="$pres">
+									<xsl:variable name="present" select="//page/present[code = current()/present_code]"/>
+									<xsl:variable name="pic_path"
+									              select="if ($present/main_pic) then concat($present/@path, $present/main_pic) else 'img/no_image.png'"/>
+									<xsl:variable name="link" select="$present/show_product"/>
+									<xsl:text disable-output-escaping="yes">&lt;div class="gift-item"&gt;</xsl:text>
+									<xsl:text disable-output-escaping="yes">&lt;img src="</xsl:text><xsl:value-of select="$pic_path"/><xsl:text disable-output-escaping="yes">" alt=""/&gt;</xsl:text>
+										<xsl:text disable-output-escaping="yes">&lt;h3&gt;</xsl:text>
+											<xsl:if test="$link">
+												<xsl:text disable-output-escaping="yes">&lt;a href="</xsl:text><xsl:value-of select="$link"/><xsl:text disable-output-escaping="yes">"&gt;</xsl:text>
+											</xsl:if>
+											<xsl:value-of select="$present/name"/><xsl:text> </xsl:text><xsl:value-of select="$present/type"/>
+											<xsl:if test="qty">
+												(<xsl:value-of select="qty"/>)<xsl:text> </xsl:text>
+											</xsl:if>
+											<xsl:if test="$link">
+												<xsl:text disable-output-escaping="yes">&lt;/a&gt;</xsl:text>
+											</xsl:if>
+										<xsl:text disable-output-escaping="yes">&lt;/h3&gt;</xsl:text>
+										<xsl:value-of select="$present/short" disable-output-escaping="yes"/>
+									<xsl:text disable-output-escaping="yes">&lt;/div&gt;</xsl:text>
+								</xsl:for-each>
+							</xsl:attribute>
+							<img src="{$first_gift_pic_path}" alt=""/>
+							<img src="img/plus.svg" alt="" class="gift-icon"/>
+						</a>
+					</div>
+				</xsl:if>
+				<!-- <xsl:if test="$pres">
+					<xsl:variable name="pic_path" select="if ($pp[1]/main_pic) then concat($pp[1]/@path, $pp[1]/main_pic) else 'img/no_image.png'"/>
 					<div class="hover-tag mobile">
 						<i class="hover-tag__icon fas fa-gift" />
 						<a href="" data-toggle="modal" data-target="#pres_{$p/code}">Подарок</a>
+						<img src="{$pic_path}" alt=""/>
 					</div>
 					<div class="hover-tag desktop">
 						<i class="hover-tag__icon fas fa-gift" />
@@ -175,9 +238,10 @@
 								</xsl:for-each>
 							</xsl:attribute>
 							Подарок
+							<img src="{$pic_path}" alt=""/>
 						</a>
 					</div>
-				</xsl:if>
+				</xsl:if> -->
 				<div class="info-blocks">
 					<div class="info-block">
 						<xsl:value-of select="$p/short" disable-output-escaping="yes"/>
@@ -207,7 +271,7 @@
 					-->
 				</div>
 			</div>
-			<div class="description">
+			<div class="description" id="char">
 				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><a href="#text" role="tab" data-toggle="tab">Описание</a></li>
 					<li role="presentation"><a href="#tech" role="tab" data-toggle="tab">Технические данные</a></li>
@@ -227,7 +291,7 @@
 			</div>
 		</div>
 		<xsl:if test="page/assoc">
-			<h3>Вас также может заинтересовать</h3>
+			<h3 id="assoc">Вас также может заинтересовать</h3>
 			<div class="catalog-items">
 				<xsl:apply-templates select="page/assoc"/>
 			</div>
@@ -235,52 +299,15 @@
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 
-		<div class="modal fade" tabindex="-1" role="dialog" id="pres_{$p/code}">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-						<h4 class="modal-title">Подарки к выбранному товару</h4>
-					</div>
-					<div class="modal-body">
-						<div class="catalog-items lines">
-							<xsl:for-each select="$pp">
-								<xsl:variable name="pres" select="//page/present[code = current()/present_code]"/>
-								<div class="catalog-item">
-									<xsl:variable name="pic_path"
-									              select="if ($pres/main_pic) then concat($pres/@path, $pres/main_pic) else 'img/no_image.png'"/>
-									<a class="image-container" style="background-image: url({$pic_path});"/>
-									<div>
-										<a title="{$pres/name}">
-											<xsl:value-of select="$pres/name"/><xsl:text> </xsl:text>
-											<xsl:value-of select="$pres/type"/><xsl:text> </xsl:text>
-											<xsl:if test="qty">
-												(<xsl:value-of select="qty"/>)<xsl:text> </xsl:text>
-											</xsl:if>
-										</a>
-										<div class="art-number">
-											№ для заказа: <xsl:value-of select="$pres/code"/>
-										</div>
-										<p><xsl:value-of select="$pres/short" disable-output-escaping="yes"/></p>
-									</div>
-								</div>
-							</xsl:for-each>
-						</div>
-					</div>
-					<!-- <div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
-					</div> -->
-				</div>
-			</div>
-		</div>
-
 	</xsl:template>
 
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript" src="fotorama/fotorama.js"/>
+		<script>
+			bindScroll();
+		</script>
 	</xsl:template>
 
 </xsl:stylesheet>

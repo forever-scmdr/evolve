@@ -140,6 +140,7 @@
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
+		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
@@ -441,9 +442,9 @@
 		<parameter name="product_name" type="string" caption="Название товара"/>
 	</item>
 
-	<item name="defer_form" caption="Форма заказа в один клик" virtual="true">
+	<item name="defer_form" caption="Форма заказа в один клик" virtual="true" ag-id="2449" ag-hash="-164595343">
 		<parameter name="phone" type="string" caption="Телефон"/>
-		<parameter name="name" type="string" caption="Ф.И.О."/>
+		<parameter name="name" type="string" caption="ФИО"/>
 		<parameter name="product_code" type="string" caption="Артикул товара"/>
 		<parameter name="product_name" type="string" caption="Название товара"/>
 	</item>

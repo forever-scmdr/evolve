@@ -127,34 +127,32 @@
 
 	<xsl:template name="CONTENT">
 		<div class="container-fluid has-slider">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="slider-container">
-							<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
-								<xsl:for-each select="page/main_page/main_slider_frame">
-									<xsl:if test="link and not(link = '')">
-										<div data-img="{@path}{pic}"><a href="{link}">&#160;</a></div>
-									</xsl:if>
-									<xsl:if test="not(link) or link = ''">
-										<img src="{@path}{pic}" />
-									</xsl:if>
-								</xsl:for-each>
-							</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="slider-container">
+						<div class="fotorama" data-width="100%" data-maxwidth="100%" data-thumbheight="40" data-thumbwidth="40" data-autoplay="true" data-loop="true">
+							<xsl:for-each select="page/main_page/main_slider_frame">
+								<xsl:if test="link and not(link = '')">
+									<div data-img="{@path}{pic}"><a href="{link}">&#160;</a></div>
+								</xsl:if>
+								<xsl:if test="not(link) or link = ''">
+									<img src="{@path}{pic}" />
+								</xsl:if>
+							</xsl:for-each>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="container-fluid" style="background-color: #fff;">
+		<div class="container-fluid" style="background-color: #f2f2f2;">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12 more-products p-t p-b">
 						<h4>Продукция</h4>
 						<div class="catalog-items main-page">
 							<xsl:for-each select="page/main_page/cat_pic">
-								
+								<xsl:sort select="number(@id)" order="ascending"/>
 								<xsl:variable name="main_pic" select="concat(@path, main_pic)"/>
 
 								<div class="catalog-item">
@@ -283,7 +281,7 @@
 		</div>
 		<div class="container">
 			<div class="new-list-wrap">
-				<h2 style="text-align:center"><span style="color:#ffffff">КАТЕГОРИИ ТОВАРОВ</span></h2>
+				<h2 style="text-align:center"><span>КАТЕГОРИИ ТОВАРОВ</span></h2>
 				<div class="new-list">
 					<xsl:for-each select="page/catalog/section">
 						<ul>

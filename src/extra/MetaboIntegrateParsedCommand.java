@@ -41,6 +41,8 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 	private final String TEXT = "text";
 	private final String CODE = "code";
 	private final String TYPE = "type";
+	private final String VENDOR = "vendor";
+	private final String PRICE = "price";
 	private final String EXTRA = "extra";
 	private final String TECH = "tech";
 	private final String PACKAGE = "package";
@@ -88,7 +90,6 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			for (Item catalog : catalogs) {
 				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(catalog));
 			}
-			executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10, null));
 		}
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		Document tree = infoProvider.getTree();
@@ -98,10 +99,13 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 	private void processSubsections(Element root, Item parent) throws Exception {
 		Elements sectionEls = root.select("> section");
 		for (Element sectionEl : sectionEls) {
-			String[] path = StringUtils.split(sectionEl.attr(ID), '_');
-			if (path.length <= 0)
+			String secCode = sectionEl.attr(ID);
+			if (StringUtils.isBlank(secCode))
 				continue;
-			String secName = path[path.length - 1];
+			Document sectionDoc = infoProvider.getItem(secCode);
+			if (sectionDoc == null)
+				continue;
+			String secName = getOwnText(sectionDoc, NAME);
 			Item section = Item.newChildItem(sectionType, parent);
 			section.setValue(NAME, secName);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex());
@@ -124,16 +128,18 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 	}
 
 	Item deployProduct(Element productEl, Item parent, Parse_item pi) throws Exception {
-		String code = productEl.getElementsByTag(CODE).first().ownText();
-		String name = productEl.getElementsByTag(NAME).first().ownText();
-		String type = productEl.getElementsByTag(TYPE).first().ownText();
-		String nameExtra = productEl.getElementsByTag(NAME_EXTRA).first().ownText();
-		String shortTxt = productEl.getElementsByTag(SHORT).first().html();
-		String description = productEl.getElementsByTag(EXTRA).first().html();
-		String text = productEl.getElementsByTag(DESCRIPTION).first().html();
-		String tech = productEl.getElementsByTag(TECH).first().html();
-		String packageTxt = productEl.getElementsByTag(PACKAGE).first().html();
-		String extraXml = productEl.getElementsByTag(SYMBOLS).first().html();
+		String code = getOwnText(productEl, CODE);
+		String name = getOwnText(productEl, NAME);
+		String type = getOwnText(productEl, TYPE);
+		String vendor = getOwnText(productEl, VENDOR);
+		String priceStr = getOwnText(productEl, PRICE);
+		String nameExtra = getOwnText(productEl, NAME_EXTRA);
+		String shortTxt = getHtml(productEl, SHORT);
+		String description = getHtml(productEl, EXTRA);
+		String text = getHtml(productEl, DESCRIPTION);
+		String tech = getHtml(productEl, TECH);
+		String packageTxt = getHtml(productEl, PACKAGE);
+		String extraXml = getHtml(productEl, SYMBOLS);
 		Elements spinEls = productEl.getElementsByTag(SPIN);
 		for (Element spinEl : spinEls) {
 			extraXml += spinEl.outerHtml();
@@ -174,7 +180,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			}
 		}
 		ArrayList<String> assocCodes = new ArrayList<>();
-		Elements codeEls = productEl.getElementsByTag(ASSOC).first().getElementsByTag(CODE);
+		Elements codeEls = productEl.getElementsByTag(ASSOC).first().getElementsByTag(NAME);
 		for (Element codeEl : codeEls) {
 			assocCodes.add(codeEl.ownText());
 		}
@@ -188,6 +194,8 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		product.setValue(NAME, name);
 		product.setValue(CODE, code);
 		product.setValue(TYPE, type);
+		product.setValue(VENDOR, vendor);
+		product.setValueUI(PRICE, priceStr);
 		product.setValue(NAME_EXTRA, nameExtra);
 		product.setValue(SHORT, shortTxt);
 		product.setValue(DESCRIPTION, description);
@@ -202,9 +210,13 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		if (gallery.size() > 0) {
 			Path firstPic = gallery.get(0);
 			Path newMainPic = firstPic.resolveSibling("main_" + firstPic.getFileName());
-            ByteArrayOutputStream bos = ResizeImagesFactory.resize(firstPic.toFile(), 0, 400);
-			Files.write(newMainPic, bos.toByteArray());
-			product.setValue(MAIN_PIC, newMainPic.toFile());
+            try {
+				ByteArrayOutputStream bos = ResizeImagesFactory.resize(firstPic.toFile(), 0, 400);
+				Files.write(newMainPic, bos.toByteArray());
+				product.setValue(MAIN_PIC, newMainPic.toFile());
+			} catch (Exception e) {
+            	ServerLogger.error("Error while creating main image", e);
+			}
 		}
 
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
@@ -213,28 +225,18 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 
 		XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 		if (StringUtils.isNotBlank(tech)) {
-		Element techEl = productEl.getElementsByTag(TECH).first().getElementById("attributes");
-			Elements childrenDivs = techEl.children();
-			for (Element div : childrenDivs) {
-				String divClass = div.attr("class");
-				if (StringUtils.equalsIgnoreCase(divClass, "attributesGroup")) {
-					xml.endElement();
-					xml.startElement("group").startElement("name").addText(div.ownText()).endElement();
-				} else if (StringUtils.equalsIgnoreCase(divClass, "attributes")) {
-					Elements rows = div.children();
-					for (Element row : rows) {
-						Elements nameValue = row.children();
-						if (nameValue.size() > 0) {
-							String paramName = nameValue.get(0).ownText();
-							xml.startElement("parameter").startElement("name").addText(paramName).endElement();
-							if (nameValue.size() > 1) {
-								String paramValue = nameValue.get(1).ownText();
-								xml.startElement("value").addText(paramValue).endElement();
-							}
-							xml.endElement(); // параметр закрывается
-						}
+			Element techEl = productEl.getElementsByTag(TECH).first().getElementsByTag("table").first();
+			if (techEl != null) {
+				Elements childrenTrs = techEl.getElementsByTag("tr");
+				for (Element tr : childrenTrs) {
+					Elements tds = tr.children();
+					if (tds.size() >= 2) {
+						String paramName = tds.get(0).ownText();
+						xml.startElement("parameter").startElement("name").addText(paramName).endElement();
+						String paramValue = tds.get(1).ownText();
+						xml.startElement("value").addText(paramValue).endElement();
+						xml.endElement(); // параметр закрывается
 					}
-					xml.endElement(); // группа закрывается
 				}
 			}
 
@@ -261,6 +263,22 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		return product;
 	}
 
+
+	private String getHtmlValue(Element parent, String element, boolean ownText) {
+		Element el = parent.getElementsByTag(element).first();
+		if (el != null)
+			return ownText ? el.ownText() : el.html();
+		return null;
+	}
+
+
+	private String getHtml(Element parent, String element) {
+		return getHtmlValue(parent, element, false);
+	}
+
+	private String getOwnText(Element parent, String element) {
+		return getHtmlValue(parent, element, true);
+	}
 
 	@Override
 	protected void terminate() throws Exception {

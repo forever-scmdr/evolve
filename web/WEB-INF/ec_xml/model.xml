@@ -106,6 +106,7 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
+		<child item="catalog_banner" />
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 	</item>
@@ -118,6 +119,7 @@
 		<child item="section" />
 		<child item="product"/>
 		<child item="product" assoc="catalog_link"/>
+		<child item="catalog_banner" />
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
@@ -140,6 +142,7 @@
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
+		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
@@ -208,6 +211,12 @@
 
 	<item name="product_present_catalog" caption="Соответствие товаров подаркам" ag-id="1674" ag-hash="-1712785083">
 		<child item="product_present"/>
+	</item>
+
+
+	<item name="catalog_banner" caption="Баннер для каталога" key="link">
+		<parameter name="link" type="string" caption="Ссылка" description="если внешняя, то начиная с http://"/>
+		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
 

@@ -76,6 +76,11 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1><xsl:value-of select="$h1"/></h1>
+		<xsl:for-each select="//page/current_section/catalog_banner">
+			<div>
+				<a href="{link}"><img src="{@path}{pic}"/></a>
+			</div>
+		</xsl:for-each>
 		<xsl:if test="$seo/text">
 			<div class="page-content m-t">
 				<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
