@@ -32,6 +32,9 @@ public class FixKeyUnique extends Command implements CatalogConst {
 				id = product.getId();
 				String keyUnique = product.getKeyUnique();
 				String expectedKeyUnique = StringUtils.substring(Strings.translit(product.getKey()), 0, 98);
+				//remove all da fuckin dots
+				expectedKeyUnique = expectedKeyUnique.replaceAll("\\.", "");
+
 				if ((!keyUnique.equals(expectedKeyUnique) && !keyUnique.equals(expectedKeyUnique + id)) || existingKeys.contains(keyUnique)) {
 					if (existingKeys.contains(expectedKeyUnique)) {
 						product.setKeyUnique(expectedKeyUnique + id);
