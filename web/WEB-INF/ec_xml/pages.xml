@@ -1160,5 +1160,12 @@
         </command>
 	</page>
 
+	<page name="fix_keys">
+		<link name="success" target="ok"/>
+		<command class="extra.FixKeyUnique">
+			<result name="success" type="redirect"/>
+		</command>
+	</page>
 
+	<page name="ok"></page>
 </site>
