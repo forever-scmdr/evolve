@@ -44,11 +44,14 @@
 		<link name="register_link" target="register"/>
 		<link name="login_form_link" target="login_form_ajax"/>
 		<link name="personal_ajax_link" target="personal_ajax"/>
-		<single item="modules">
+		<single item="modules" cacheable="true">
 			<list item="named_code"/>
 		</single>
-		<single item="url_seo_wrap">
+		<single item="url_seo_wrap" cacheable="true">
 			<list item="url_seo"/>
+		</single>
+		<single item="brands" cacheable="true">
+			<list item="brand"/>
 		</single>
 	</include-definition>
 
@@ -246,10 +249,30 @@
 
 
 	<page name="brand" template="brand">
+		<request>
+			<var name="brand"/>
+			<var name="sec"/>
+			<var name="p" value="1"/>
+		</request>
 		<include name="COMMON"/>
-		<list item="product" id="prod" transit="true">
+		<list item="section" id="brand_sec" tag="brand_section">
 			<filter>
+				<child item="product" transit="false">
+					<parameter name="vendor" compare="SOME"><var var="brand" /></parameter>
+				</child>
+			</filter>
+			<link name="set_section" target="brand">
+				<var name="brand" var="brand"/>
+				<var name="sec" ref="brand_sec"/>
+			</link>
+		</list>
+		<single item="section" var="sec" id="sel_sec" tag="sel_sec"/>
+		<list item="product" id="prod">
+			<filter>
+				<parameter name="vendor" compare="SOME"><var var="brand" /></parameter>
+				<predecessor ref="sel_sec" compare="ANY"/>
 				<limit><var value="20"/></limit>
+				<pages><var var="p" /></pages>
 			</filter>
 			<single item="params_xml"/>
 			<link name="show_product" target="product">
@@ -285,6 +308,7 @@
 			</link>
 		</list>
 	</page>
+
 
 
 	<page name="search_ajax" template="search_ajax">

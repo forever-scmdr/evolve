@@ -132,8 +132,6 @@
 
 
 
-
-
 	<!--Товар из магазина yandex market-->
 	<item name="product" key="name vendor_code code" caption="Продукт" super="* gallery" extendable="false" key-unique="true" default-page="product" ag-id="6" ag-hash="-309474065">
 		<child item="seo" single="true"/>
@@ -217,6 +215,22 @@
 	<item name="catalog_banner" caption="Баннер для каталога" key="link">
 		<parameter name="link" type="string" caption="Ссылка" description="если внешняя, то начиная с http://"/>
 		<parameter name="pic" type="picture" caption="Картинка"/>
+	</item>
+
+
+	<item name="brand" caption="Бренд" key="name">
+		<parameter name="name" caption="Название" type="string"/>
+		<parameter name="mask" caption="Маска" type="string" description="для сопоставления с заполненным значением в товаре"/>
+		<parameter name="pic" caption="Изображение" type="picture"/>
+		<parameter name="warranty" caption="Гарантицный листок" type="picture"/>
+		<parameter name="text" caption="Описание" type="text"/>
+		<parameter name="text_pic" caption="Картинка" type="picture" description="для прикрепления к тексту" multiple="true"/>
+	</item>
+
+
+
+	<item name="brands" caption="Бренды">
+		<child item="brand"/>
 	</item>
 
 
@@ -501,6 +515,7 @@
 		<child item="url_seo_wrap" single="true"/>
 		<child item="present_catalog" single="true"/>
 		<child item="product_present_catalog" single="true" virtual="true"/>
+		<child item="brands" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 
