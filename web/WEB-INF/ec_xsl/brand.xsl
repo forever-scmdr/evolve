@@ -12,6 +12,8 @@
 	<xsl:variable name="brand" select="page/brands/brand[mask = $brand_mask]"/>
 	<xsl:variable name="sel_sec" select="page/sel_sec"/>
 
+	<xsl:variable name="leaf_sections" select="page//section[not(section)]"/>
+
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
@@ -33,7 +35,7 @@
 		<xsl:value-of select="$brand/text" disable-output-escaping="yes"/>
 		<h3><xsl:value-of select="if ($sel_sec) then $sel_sec/name else 'Продукция'"/>&#160;<xsl:value-of select="$brand/name" /></h3>
 		<div class="catalog-links">
-			<xsl:for-each select="page/brand_section">
+			<xsl:for-each select="page/brand_section[@id = $leaf_sections/@id]">
 				<a href="{set_section}" class="catalog-links__link"><xsl:value-of select="name" /></a>
 			</xsl:for-each>
 		</div>

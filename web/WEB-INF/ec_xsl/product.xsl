@@ -3,9 +3,9 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="concat(if($p/type != '') then concat($p/type, ' ') else '', 'Метабо ', $p/name, ' купить в Минске: цена, рассрочка')"/>
-	<xsl:variable name="meta_description" select="concat(if($p/type != '') then $p/type else $p/name, ' Метабо от официального дилера №1 ✅ Доставка по Беларуси ☎☎☎ +375 29 566 61 16 Хорошая цена, рассрочка, гарантия 3 года!')"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($p/type,' Metabo ' ,$p/name)"/>
+	<xsl:variable name="title" select="concat(if($p/type != '') then concat($p/type, ' ') else '', $p/name, ' купить в Минске: цена, рассрочка')"/>
+	<xsl:variable name="meta_description" select="concat(if($p/type != '') then $p/type else $p/name, ' От официального дилера №1 ✅ Доставка по Беларуси ☎☎☎ +375 29 566 61 16 Хорошая цена, рассрочка, гарантия 3 года!')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($p/type, ' ', $p/name)"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
@@ -19,6 +19,8 @@
 	<xsl:variable name="price_old" select="if($discount_time) then $p/price else $p/price_old"/>
 
 	<xsl:variable name="extra_xml" select="parse-xml(concat('&lt;extra&gt;', $p/extra_xml, '&lt;/extra&gt;'))/extra"/>
+
+    <xsl:variable name="brand" select="page/brands/brand[mask = $p/vendor]"/>
 
 	<xsl:template name="MARKUP">
 
@@ -255,6 +257,13 @@
 								<i class="fas fa-file-alt"></i><a href="{$extra_xml/parts}" target="_blank" rel="nofollow"><strong>Список запчастей</strong></a>
 							</div>
 						</xsl:if>
+                        <xsl:if test="$brand">
+                            <div class="extra-block">
+                                Производитель:
+                                <a href="{$p/show_brand}"><img src="{$brand/@path}{$brand/pic}" /></a>
+                                <a href="{$p/show_brand}"><xsl:value-of select="$brand/name" /></a>
+                            </div>
+                        </xsl:if>
 						<!--
 						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 						-->

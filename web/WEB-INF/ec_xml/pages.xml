@@ -6,11 +6,11 @@
 	<include-definition name="COMMON">
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec">
-<!--				<list item="product" transit="true">-->
-<!--					<filter>-->
-<!--						<limit><var value="1" /></limit>-->
-<!--					</filter>-->
-<!--				</list>-->
+				<list item="product" transit="true">
+					<filter>
+						<limit><var value="1" /></limit>
+					</filter>
+				</list>
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="key"/>
 				</link>
@@ -437,10 +437,13 @@
 				<var name="pname" ref="prod" parameter="name"/>
 				<var name="pcode" ref="prod" parameter="code"/>
 			</link>
+			<link name="show_brand" target="brand">
+				<var name="brand" ref="prod" parameter="vendor"/>
+			</link>
 		</single>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
-				<parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
+				<parameter name="name" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="assoc" style="key"/>

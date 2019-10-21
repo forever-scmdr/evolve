@@ -21,4 +21,9 @@
 		<value>tags</value>
 		<value>pics</value>
 	</domain>
+	<domain name="change_status" view-type="combobox">
+		<value>скрыть</value>
+		<value>удалить</value>
+		<value>раскрыть</value>
+	</domain>
 </domains>

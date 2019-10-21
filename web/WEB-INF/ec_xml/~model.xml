@@ -106,6 +106,7 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
+		<child item="catalog_banner" />
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 	</item>
@@ -118,6 +119,7 @@
 		<child item="section" />
 		<child item="product"/>
 		<child item="product" assoc="catalog_link"/>
+		<child item="catalog_banner" />
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
@@ -127,8 +129,6 @@
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
-
-
 
 
 
@@ -209,6 +209,30 @@
 
 	<item name="product_present_catalog" caption="Соответствие товаров подаркам" ag-id="1674" ag-hash="-1712785083">
 		<child item="product_present"/>
+	</item>
+
+
+	<item name="catalog_banner" caption="Баннер для каталога" key="link">
+		<parameter name="link" type="string" caption="Ссылка" description="если внешняя, то начиная с http://"/>
+		<parameter name="pic" type="picture" caption="Картинка"/>
+	</item>
+
+
+	<item name="brand" caption="Бренд" key="name">
+		<parameter name="name" caption="Название" type="string"/>
+		<parameter name="mask" caption="Маска" type="string" description="для сопоставления с заполненным значением в товаре"/>
+		<parameter name="pic" caption="Изображение" type="picture"/>
+		<parameter name="warranty" caption="Гарантицный листок" type="picture"/>
+		<parameter name="change_status" caption="Изменить статус товаров" domain="change_status" type="string"/>
+		<parameter name="text" caption="Описание" type="text"/>
+		<parameter name="text_pic" caption="Картинка" type="picture" description="для прикрепления к тексту" multiple="true"/>
+		<on-update class="extra.HideBrandProductsHandler"/>
+	</item>
+
+
+
+	<item name="brands" caption="Бренды">
+		<child item="brand"/>
 	</item>
 
 
@@ -493,6 +517,7 @@
 		<child item="url_seo_wrap" single="true"/>
 		<child item="present_catalog" single="true"/>
 		<child item="product_present_catalog" single="true" virtual="true"/>
+		<child item="brands" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

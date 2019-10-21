@@ -3,9 +3,9 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="if(not(section)) then concat($sel_sec/name, ' Метабо купить в Минске: цена') else $sel_sec/name" />
-	<xsl:variable name="meta_description" select="if(not(section)) then concat($sel_sec/name, ' Метабо от официального дилера №1 ✅ Доставка по РБ ☎☎☎ +375 29 566 61 16 Отличная цена, гарантия 3 года! Рассрочка по Халве') else ''"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($sel_sec/name,' Metabo')"/>
+	<xsl:variable name="title" select="if(not(section)) then concat($sel_sec/name, ' Купить в Минске: цена') else $sel_sec/name" />
+	<xsl:variable name="meta_description" select="if(not(section)) then concat($sel_sec/name, ' От официального дилера №1 ✅ Доставка по РБ ☎☎☎ +375 29 566 61 16 Отличная цена, гарантия 3 года! Рассрочка по Халве') else ''"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $sel_sec/name"/>
 	<xsl:variable name="canonical" select="concat('/', $sel_sec/@key, '/')"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
