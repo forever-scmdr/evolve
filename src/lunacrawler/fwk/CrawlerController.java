@@ -381,7 +381,7 @@ public class CrawlerController {
 			downloadFiles();
 		}
 	}
-	
+
 	private void terminateInt() {
 		CONTROLLER.shutdown();
 	}
@@ -402,6 +402,8 @@ public class CrawlerController {
 		CONFIG.setMaxPagesToFetch(maxPages);
 		CONFIG.setMaxDepthOfCrawling(maxDepth);
 		CONFIG.setUserAgentString("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
+		CONFIG.setConnectionTimeout(60000);
+		CONFIG.setSocketTimeout(60000);
 
 		/*
 		 * Instantiate the controller for this crawl.
@@ -721,6 +723,8 @@ public class CrawlerController {
 				Elements items = pageDoc.select("result > *[" + ID + "]");
 				for (Element partItem : items) {
 					String itemId = partItem.attr(ID);
+					if (StringUtils.isBlank(itemId))
+						continue;
 					String fileName = Strings.createFileName(itemId) + ".xml";
 					Path file = joinedDir.resolve(fileName);
 					Files.write(file, partItem.outerHtml().getBytes(UTF_8),
