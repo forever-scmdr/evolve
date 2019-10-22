@@ -153,8 +153,8 @@
 						<div class="catalog-items main-page">
 							<xsl:for-each select="page/main_page/cat_pic">
 								<xsl:sort select="number(@id)" order="ascending"/>
-								<xsl:variable name="main_pic" select="concat(@path, main_pic)"/>
-
+								<xsl:variable name="sec" select="//page/catalog//section[@id = current()/@id]"/>
+								<xsl:variable name="main_pic" select="if(not(main_pic != '')) then concat($sec/product[1]/@path, $sec/product[1]/gallery[1]) else concat(@path, main_pic)"/>
 								<div class="catalog-item">
 <!--									<xsl:value-of select="main_pic"/>-->
 									<xsl:variable name="pic_path" select="if ($main_pic != '') then $main_pic else 'img/no_image.png'"/>

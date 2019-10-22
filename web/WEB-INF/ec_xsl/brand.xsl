@@ -28,9 +28,9 @@
 			<div class="brand-logo">
 				<img src="{$brand/@path}{$brand/pic}" alt="" />
 			</div>
-			<div class="brand-paper">
+			<!-- <div class="brand-paper">
 				<img src="http://placehold.it/50x100" alt=""/>
-			</div>
+			</div> -->
 		</div>
 		<xsl:value-of select="$brand/text" disable-output-escaping="yes"/>
 		<h3><xsl:value-of select="if ($sel_sec) then $sel_sec/name else 'Продукция'"/>&#160;<xsl:value-of select="$brand/name" /></h3>
