@@ -132,7 +132,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					product.setValueUI(DESCRIPTION_PARAM, singleParams.get(DESCRIPTION_ELEMENT));
 				if (product.getItemType().hasParameter(COUNTRY_PARAM))
 					product.setValueUI(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
-				if (product.getItemType().hasParameter(OPTPRICE_ELEMENT))
+				if (product.getItemType().hasParameter(PRICE_OPT_PARAM))
 					product.setValueUI(PRICE_OPT_PARAM, singleParams.get(OPTPRICE_ELEMENT));
 				if (product.getItemType().hasParameter(PRICE_OLD_PARAM))
 					product.setValueUI(PRICE_OLD_PARAM, singleParams.get(OLDPRICE_ELEMENT));
