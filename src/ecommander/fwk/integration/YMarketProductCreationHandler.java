@@ -275,14 +275,16 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				if (picUrls.size() > 0) {
 					boolean save = false;
 					String url = picUrls.iterator().next();
-					if (picUrls.size() > 0 && noMainPic) {
+					if ((picUrls.size() > 0 && noMainPic) || true) {
 						product.setValue(MAIN_PIC_PARAM, new URL(url));
+						product.clearValue(SMALL_PIC_PARAM);
 						save = true;
 					}else if(!noMainPic && StringUtils.startsWith(url, host)){
 						File pic = Paths.get(AppContext.getContextPath(), StringUtils.substringAfter(url, host)).toFile();
 						if(pic.isFile()){
 							if(pic.length() != product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).length()){
 								product.setValue(MAIN_PIC_PARAM, pic);
+								product.clearValue(SMALL_PIC_PARAM);
 								save = true;
 								info.addLog("Overriding picture. Product:" + product.getStringValue(NAME_PARAM));
 							}
