@@ -213,6 +213,37 @@ public abstract class BasicCartManageCommand extends Command {
 		//counter.setValue(DATE_PARAM, newDate);
 		executeCommandUnit(SaveItemDBUnit.get(counter).ignoreUser());
 
+
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		// Сохранить файл для 1С
+		//
+
+		// Сохранить файлы в папках для 1С.
+		String clientType = (isPhys)? "phys" : "jur" ;
+		Path savePath = Paths.get(AppContext.getContextPath(), "orders", clientType);
+
+		File dir = savePath.toFile();
+		if(!dir.exists()){dir.mkdirs();}
+
+		savePath = savePath.resolve(orderNumber+".xml");
+
+		LinkPE xmlOrderLink = LinkPE.newDirectLink("link", "order_xml", false);
+		xmlOrderLink.addStaticVariable("order_num", orderNumber + "");
+		ExecutablePagePE xmlOrderTemplate = getExecutablePage(xmlOrderLink.serialize());
+
+		ByteArrayOutputStream xmlBos = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(xmlOrderTemplate, xmlBos);
+
+		try(OutputStream outputStream = new FileOutputStream(savePath.toFile())) {
+			xmlBos.writeTo(outputStream);
+		}
+		//
+		//
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		// Сохранить историю
 		//
@@ -252,9 +283,14 @@ public abstract class BasicCartManageCommand extends Command {
 			executeCommandUnit(SaveItemDBUnit.get(purchase).ignoreUser());
 			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 			for (Item bought : boughts) {
+				long bufParentId = bought.getContextParentId();
+				byte bufOwnerGroup = bought.getOwnerGroupId();
+				int bufOwnerUser = bought.getOwnerUserId();
 				bought.setContextPrimaryParentId(purchase.getId());
 				bought.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
 				executeCommandUnit(SaveItemDBUnit.get(bought).ignoreUser());
+				bought.setContextPrimaryParentId(bufParentId);
+				bought.setOwner(bufOwnerGroup, bufOwnerUser);
 			}
 		}
 		//
@@ -263,30 +299,6 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Подтвердить изменения
 		commitCommandUnits();
-
-		// 5. Сохранить файлы в папках для 1С.
-		String clientType = (isPhys)? "phys" : "jur" ;
-		Path savePath = Paths.get(AppContext.getContextPath(), "orders", clientType);
-
-		File dir = savePath.toFile();
-		if(!dir.exists()){dir.mkdirs();}
-
-		savePath = savePath.resolve(orderNumber+".xml");
-
-		LinkPE xmlOrderLink = LinkPE.newDirectLink("link", "order_xml", false);
-		xmlOrderLink.addStaticVariable("order_num", orderNumber + "");
-		ExecutablePagePE xmlOrderTemplate = getExecutablePage(xmlOrderLink.serialize());
-
-		ByteArrayOutputStream xmlBos = new ByteArrayOutputStream();
-		PageController.newSimple().executePage(xmlOrderTemplate, xmlBos);
-
-		try(OutputStream outputStream = new FileOutputStream(savePath.toFile())) {
-			xmlBos.writeTo(outputStream);
-		}
-
-		//
-		//
-		///////////////////////////////////////////////////////////////////////////////////////////////////
 
 		// 6. Очистить корзину
 		cart.setValue(PROCESSED_PARAM, (byte)1);
