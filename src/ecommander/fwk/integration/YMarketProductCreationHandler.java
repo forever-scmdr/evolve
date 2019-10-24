@@ -275,7 +275,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				if (picUrls.size() > 0) {
 					boolean save = false;
 					String url = picUrls.iterator().next();
-					if ((picUrls.size() > 0 && noMainPic) || true) {
+					if ((picUrls.size() > 0 && noMainPic)) {
 						product.setValue(MAIN_PIC_PARAM, new URL(url));
 						product.clearValue(SMALL_PIC_PARAM);
 						save = true;
