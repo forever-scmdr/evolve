@@ -18,7 +18,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> &gt;
+				<a href="/">Главная страницаf</a> &gt;
 				<xsl:value-of select="$brand/name"/>
 			</div>
 			<xsl:call-template name="PRINT"/>
