@@ -1,0 +1,39 @@
+<common_count>1</common_count>
+<common type="common" id="57984" path="files/579/84f/" key="na_vseh_stranitsah" keypath="na_vseh_stranitsah">
+<show_window>400</show_window>
+<discount_last>600</discount_last>
+<discount>0,03</discount>
+<discount_text>&lt;h4 id=&quot;p247553_5&quot; class=&quot;sfst&quot; style=&quot;text-align: center;&quot; title=&quot;Кликните мышкой для выделения&quot;&gt;&amp;nbsp;&lt;/h4&gt;
+&lt;h4 class=&quot;sfst&quot; style=&quot;text-align: center;&quot; title=&quot;Кликните мышкой для выделения&quot;&gt;&lt;strong&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;Вам предоставляется дополнительная скидка 3% на все товары!&lt;/span&gt;&lt;/strong&gt;&lt;/h4&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;Если вы сделаете заказ через корзину в течение &lt;span id=&quot;dsc-timer-1&quot; style=&quot;color: #ff0000;&quot;&gt;время до окрочания&lt;/span&gt;, то получите скидку.&lt;/p&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;Цены на сайте будут пересчитаны с учетом Скидки.&lt;/p&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;*скидка предоставляется только при оплате наличными&lt;/p&gt;</discount_text>
+<top>&lt;p&gt;+375 29 566 61 16&lt;/p&gt;
+&lt;p&gt;+375 29 655&amp;nbsp; 53 68&lt;/p&gt;</top>
+<left>&lt;div class=&quot;contacts&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div class=&quot;contacts&quot;&gt;&lt;strong&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Заказ и консультация&lt;/span&gt;&lt;/strong&gt;
+&lt;p&gt;&amp;nbsp;+375 29 566 61 16&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;Email:metabobelarus@gmail.com&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;contacts/&quot; rel=&quot;nofollow&quot;&gt;Схема проезда к офису&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;</left>
+<link_text>АКЦИЯ! АККУМУЛЯТОРНЫЙ ИНСТРУМЕНТ ПО ЦЕНЕ СЕТЕВОГО!</link_text>
+<link_link>http://www.metabo-promo.by/</link_link>
+<bottom>&lt;p&gt;ИП Щербич Петр Игоревич&lt;br /&gt;223050 Минский р-н.,аг.Колодищи, ул. Узлесная, д.140, кв 2&lt;br /&gt;Свидетельство № 691797960 от 22.09.2015&lt;br /&gt;Дата включения в торговый реестр: 07.07.2018&lt;br /&gt;Регистрационный номер:420497&lt;/p&gt;</bottom>
+<bottom_address>&lt;div class=&quot;block address&quot;&gt;
+&lt;p&gt;ИП Щербич Петр Игоревич&lt;br /&gt;223050 Минский р-н.,аг.Колодищи, ул. Узлесная, д.140, кв 2&lt;br /&gt;Свидетельство № 691797960 от 22.09.2015&lt;br /&gt;Дата включения в торговый реестр: 07.07.2018&lt;br /&gt;Регистрационный номер:420497&lt;/p&gt;
+&lt;p&gt;Режим работы:&lt;br /&gt; Пн-Пт 09.00-20.00&lt;br /&gt;e-mail:&amp;nbsp;Email:metabobelarus@gmail.com&amp;nbsp;&lt;/p&gt;
+&lt;/div&gt;</bottom_address>
+<bottom_social>&lt;p&gt;&lt;a href=&quot;https://www.facebook.com/metabobel/&quot; target=&quot;_blank&quot;&gt;&lt;img style=&quot;height: 24px;&quot; src=&quot;img/fblogo.png&quot; /&gt;&lt;/a&gt;&amp;nbsp; &lt;a href=&quot;https://www.instagram.com/metabobelarus/&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;files/708/03f/inst.png&quot; alt=&quot;instagram&quot; width=&quot;24&quot; height=&quot;24&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</bottom_social>
+	<delivery_count>1</delivery_count>
+	<delivery type="delivery" id="106895" path="files/106/895f/" key="dostavka" keypath="dostavka">
+<option>самовывоз</option>
+<option>Курьером</option>
+	</delivery>
+	<payment_count>1</payment_count>
+	<payment type="payment" id="106896" path="files/106/896f/" key="oplata" keypath="oplata">
+<option>Наличными</option>
+<option>Через ЕРИП</option>
+<option>По карте &quot;Халва&quot; (стоимость без скидки)</option>
+	</payment>
+</common>

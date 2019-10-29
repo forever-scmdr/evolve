@@ -1,0 +1,158 @@
+
+<filter item-desc="p266612" id="1" count="35">
+	<input id="2" type="droplist" domain="" caption="Тип" description="">
+		<domain>
+			<value>кусторез</value>
+			<value>ножницы-кусторез</value>
+		</domain>
+		<criteria id="3" param="tip" sign="=" pattern="" type="string"/>
+	</input>
+	<input id="4" type="droplist" domain="" caption="Мощность (Вт)" description="">
+		<domain>
+			<value>400</value>
+			<value>550</value>
+			<value>600</value>
+			<value>650</value>
+			<value>700</value>
+			<value>750</value>
+		</domain>
+		<criteria id="5" param="moschnost_vt" sign="=" pattern="" type="integer"/>
+	</input>
+	<input id="6" type="droplist" domain="" caption="Источник питания" description="">
+		<domain>
+			<value>аккумулятор</value>
+			<value>сеть</value>
+		</domain>
+		<criteria id="7" param="istochnik_pitaniya" sign="=" pattern="" type="string"/>
+	</input>
+	<input id="8" type="droplist" domain="" caption="Число оборотов (об/мин)" description="">
+		<domain>
+			<value>1500</value>
+			<value>1600</value>
+			<value>1700</value>
+			<value>3000</value>
+		</domain>
+		<criteria id="9" param="chislo_oborotov_ob_min" sign="=" pattern="" type="integer"/>
+	</input>
+	<input id="10" type="droplist" domain="" caption="Длина лезвия (для кустов)" description="см">
+		<domain>
+			<value>50</value>
+			<value>52</value>
+			<value>55</value>
+			<value>61</value>
+			<value>610</value>
+		</domain>
+		<criteria id="11" param="dlina_lezviya_dlya_kustov" sign="=" pattern="" type="integer"/>
+	</input>
+	<input id="12" type="droplist" domain="" caption="Расстояние между ножами" description="мм">
+		<domain>
+			<value>18</value>
+			<value>27</value>
+			<value>30</value>
+		</domain>
+		<criteria id="13" param="rasstoyanie_megdu_nogami" sign="=" pattern="" type="integer"/>
+	</input>
+	<input id="14" type="droplist" domain="" caption="Рекомендованный диаметр ветвей (мм)" description="мм">
+		<domain>
+			<value>15</value>
+			<value>16</value>
+			<value>20</value>
+			<value>21</value>
+			<value>22</value>
+			<value>26</value>
+			<value>550</value>
+		</domain>
+		<criteria id="15" param="rekomendovannyi_diametr_vetvei_mm" sign="=" pattern="" type="integer"/>
+	</input>
+	<input id="16" type="droplist" domain="" caption="Поставляется" description="">
+		<domain>
+			<value>в коробке</value>
+		</domain>
+		<criteria id="17" param="postavlyaetsya" sign="=" pattern="" type="string"/>
+	</input>
+	<input id="18" type="droplist" domain="" caption="Вес (кг)" description="">
+		<domain>
+			<value>2,5</value>
+			<value>3</value>
+			<value>3,24</value>
+			<value>3,3</value>
+			<value>3,4</value>
+			<value>3,6</value>
+			<value>3,7</value>
+			<value>3,9</value>
+			<value>4,3</value>
+		</domain>
+		<criteria id="19" param="ves_kg" sign="=" pattern="" type="double"/>
+	</input>
+	<input id="20" type="droplist" domain="" caption="Вес упаковки (гр)" description="">
+		<domain>
+			<value>3600</value>
+			<value>3900</value>
+			<value>4260</value>
+			<value>4300</value>
+			<value>4400</value>
+			<value>4500</value>
+			<value>4620</value>
+			<value>5100</value>
+			<value>6000</value>
+		</domain>
+		<criteria id="21" param="ves_upakovki_gr" sign="=" pattern="" type="integer"/>
+	</input>
+	<input id="22" type="droplist" domain="" caption="Габариты упаковки (мм)" description="">
+		<domain>
+			<value>170 х 1060 x 200</value>
+			<value>180 х 1030 x 185</value>
+			<value>210 х 1080 x 200</value>
+			<value>245 х 1197 x 225</value>
+		</domain>
+		<criteria id="23" param="gabarity_upakovki_mm" sign="=" pattern="" type="string"/>
+	</input>
+	<input id="24" type="droplist" domain="" caption="Страна изготовления" description="">
+		<domain>
+			<value>Италия</value>
+			<value>Китай</value>
+			<value>Швеция</value>
+			<value>Япония</value>
+		</domain>
+		<criteria id="25" param="strana_izgotovleniya" sign="=" pattern="" type="string"/>
+	</input>
+	<input id="26" type="droplist" domain="" caption="Длина (мм)" description="">
+		<domain>
+			<value>821</value>
+			<value>970</value>
+			<value>1012</value>
+			<value>1150</value>
+		</domain>
+		<criteria id="27" param="dlina_mm" sign="=" pattern="" type="integer"/>
+	</input>
+	<input id="28" type="droplist" domain="" caption="Ширина (мм)" description="">
+		<domain>
+			<value>123</value>
+			<value>194</value>
+			<value>206</value>
+			<value>250</value>
+		</domain>
+		<criteria id="29" param="shirina_mm" sign="=" pattern="" type="integer"/>
+	</input>
+	<input id="30" type="droplist" domain="" caption="Высота (мм)" description="">
+		<domain>
+			<value>194</value>
+			<value>200</value>
+			<value>223</value>
+			<value>255</value>
+		</domain>
+		<criteria id="31" param="vysota_mm" sign="=" pattern="" type="integer"/>
+	</input>
+	<input id="32" type="droplist" domain="" caption="Тип аккумулятора" description="">
+		<domain>
+			<value>Li-ion</value>
+		</domain>
+		<criteria id="33" param="tip_akkumulyatora" sign="=" pattern="" type="string"/>
+	</input>
+	<input id="34" type="droplist" domain="" caption="Напряжение аккумулятора" description="В">
+		<domain>
+			<value>18</value>
+		</domain>
+		<criteria id="35" param="napryagenie_akkumulyatora" sign="=" pattern="" type="integer"/>
+	</input>
+</filter>

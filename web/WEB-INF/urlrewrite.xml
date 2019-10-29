@@ -9,11 +9,14 @@
 
 -->
 <urlrewrite>
+    
+  
     <!--Переход на страницу index-->
     <rule match-type="regex" enabled="true">
         <from>^/?$</from>
         <to type="forward" last="false">/index/</to>
     </rule>
+    
     <!--Защищенные файлы (доступные только для авторизованных пользователей) - спецсервлет protected-->
     <rule match-type="wildcard" enabled="true">
         <from>/restrict_files/**.*</from>
@@ -29,6 +32,7 @@
         <from>/**</from>
         <to type="forward" last="true">/eco/$1</to>
     </rule>
+    
     <!-- 
     <rule match-type="wildcard" enabled="true">
         <from>/**/</from>

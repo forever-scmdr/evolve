@@ -212,13 +212,13 @@
 	</item>
 
 
-	<item name="catalog_banner" caption="Баннер для каталога" key="link">
+	<item name="catalog_banner" caption="Баннер для каталога" key="link" ag-id="2452" ag-hash="302480914">
 		<parameter name="link" type="string" caption="Ссылка" description="если внешняя, то начиная с http://"/>
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
 
-	<item name="brand" caption="Бренд" key="name">
+	<item name="brand" caption="Бренд" key="name" ag-id="3758" ag-hash="93997959">
 		<parameter name="name" caption="Название" type="string"/>
 		<parameter name="mask" caption="Маска" type="string" description="для сопоставления с заполненным значением в товаре"/>
 		<parameter name="pic" caption="Изображение" type="picture"/>
@@ -231,7 +231,7 @@
 
 
 
-	<item name="brands" caption="Бренды">
+	<item name="brands" caption="Бренды" ag-id="3759" ag-hash="-1381030452">
 		<child item="brand"/>
 	</item>
 

@@ -1,0 +1,49 @@
+<modules_count>1</modules_count>
+<modules type="modules" id="104442" path="files/104/442f/" key="metriki_chaty_i.t.d" keypath="metriki_chaty_i.t.d">
+	<named_code_count>2</named_code_count>
+	<named_code type="named_code" id="104443" path="files/104/443f/" key="yand_metrika" keypath="yand_metrika">
+<name>Янд-метрика</name>
+<code>&lt;!-- Yandex.Metrika counter --&gt;
+&lt;script type=&quot;text/javascript&quot; &gt;
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter49169761 = new Ya.Metrika2({
+                    id:49169761,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName(&quot;script&quot;)[0],
+            s = d.createElement(&quot;script&quot;),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = &quot;text/javascript&quot;;
+        s.async = true;
+        s.src = &quot;https://mc.yandex.ru/metrika/tag.js&quot;;
+
+        if (w.opera == &quot;[object Opera]&quot;) {
+            d.addEventListener(&quot;DOMContentLoaded&quot;, f, false);
+        } else { f(); }
+    })(document, window, &quot;yandex_metrika_callbacks2&quot;);
+&lt;/script&gt;
+&lt;noscript&gt;&lt;div&gt;&lt;img src=&quot;https://mc.yandex.ru/watch/49169761&quot; style=&quot;position:absolute; left:-9999px;&quot; alt=&quot;&quot; /&gt;&lt;/div&gt;&lt;/noscript&gt;
+&lt;!-- /Yandex.Metrika counter --&gt;</code>
+	</named_code>
+	<named_code type="named_code" id="104444" path="files/104/444f/" key="gugl_analitiks" keypath="gugl_analitiks">
+<name>Гугл-аналитикс</name>
+<code>&lt;!-- Global site tag (gtag.js) - Google Analytics --&gt;
+&lt;script async src=&quot;https://www.googletagmanager.com/gtag/js?id=UA-41533807-7&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag(&apos;js&apos;, new Date());
+
+  gtag(&apos;config&apos;, &apos;UA-41533807-7&apos;);
+&lt;/script&gt;
+</code>
+	</named_code>
+</modules>

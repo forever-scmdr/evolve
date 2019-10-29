@@ -97,3 +97,22 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 	);
 }
 
+$(document).on("click", ".scroll-to", function(e){
+	e.preventDefault();
+	$el = $($(this).attr("href"));
+	$([document.documentElement, document.body]).animate({scrollTop: $el.offset().top - 150}, 1000);
+});
+
+function bindScroll(){
+	var $s = $("#sticky");
+	$s.css({"display": "none"});
+	var $d = $(".info-blocks");
+	$(document).on("scroll", function(){
+		var h = $(document).scrollTop();
+		if(h > $d.offset().top){
+			$s.fadeIn();
+		}else{
+			$s.fadeOut();
+		}
+	}); 
+}

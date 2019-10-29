@@ -19,34 +19,36 @@ function discount() {
     var windowClosed = getCookie("window_closed") == "yes";
 
     step();
+    scroll();
    // $(".price-highlight, .price").css({"line-height" : lineHeight});
 
     function step() {
         if(discountUsed)return;
         if(time < expires) {
             if(typeof timeout != "undefined"){clearTimeout(timeout);}
-            var timeout = setTimeout(step, 1000);
+            timeout = setTimeout(step, 1000);
         }else{
             clearTimeout(timeout);
             deleteCookie("window_closed");
             deleteCookie("discount_active");
-            setTimeout(function(){document.location.reload();},1000);
+            $(".top-stripe").eq(0).css({"padding-top": ""});
+            setTimeout(function(){document.location.reload();},500);
         }
         var delta = expires - time;
         if(!windowClosed && time > showTime){
             activateDiscount();
             showWindow();
         }else if(windowClosed && time > showTime){
-            $("#discount-popup-2").show();
+            $("#discount-popup-2").css({"position": "fixed", "display": "block", "width" : "100%", "z-index" : 3});
+            $(".top-stripe").eq(0).css({"padding-top": 25});
             $("#discount-popup").remove();
         }
+        //  $("#discount-popup-2").css({"position": "fixed", "display": "block", "width" : "100%", "z-index" : 3});
         time += 1000;
         setCookie("current_time", time+"", 24*60*60*1000);
-       // bounceFont();
         var secondsFromNow = Math.round((delta)/1000);
         var min = Math.floor(secondsFromNow/60);
         var seconds = secondsFromNow % 60;
-        //console.log(secondsFromNow);
         var t = ((min > 0)? pad(min)+"мин. " : "")+pad(seconds)+"сек.";
         $("#dsc-timer-1").text(t);
         $("#dsc-timer-2").text(t);
@@ -65,7 +67,7 @@ function discount() {
             $("#discount-popup-2").hide();
         }
     }
-   }
+}
 function closeDiscountWindow() {
     setCookie("window_closed","yes", 60*60*1000);
     document.location.reload();
