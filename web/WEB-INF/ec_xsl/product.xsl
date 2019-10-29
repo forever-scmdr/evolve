@@ -118,7 +118,7 @@
 				<!-- <p>№ для заказа: <xsl:value-of select="$p/code" /></p> -->
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 				<xsl:if test="$has_price">
-					<div class="price">
+					<div class="price" style="font-size: 33px;">
 						<xsl:if test="$price_old and not($price_old = '')"><p><span>Цена</span><b>
 							<xsl:value-of select="$price_old"/> р.</b></p></xsl:if>
 						<p>
@@ -259,9 +259,13 @@
 						</xsl:if>
                         <xsl:if test="$brand">
                             <div class="extra-block">
-                                Производитель:
-                                <a href="{$p/show_brand}"><img src="{$brand/@path}{$brand/pic}" /></a>
-                                <a href="{$p/show_brand}"><xsl:value-of select="$brand/name" /></a>
+                                <div style="margin-bott: 8px; width: 120px;">
+                                	<a href="{$p/show_brand}"><img src="{$brand/@path}{$brand/pic}" style="width: 100%;" /></a>
+                                </div>
+                                <p>
+                                	Производитель: <a href="{$p/show_brand}"><xsl:value-of select="$brand/name" /></a>
+                                </p>
+                                <p>Импрортёр: importer_name</p>
                             </div>
                         </xsl:if>
 						<!--

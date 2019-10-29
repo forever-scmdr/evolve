@@ -475,7 +475,7 @@
 					</script>
 				</div>
 			</div>
-			<div class="price">
+			<div class="price" style="font-size: 23px;">
 				<xsl:if test="$has_price">
 					<xsl:if test="price_old and not($price_old = '')"><p><span>Цена</span><b>
 						<xsl:value-of select="$price_old"/> р.</b></p></xsl:if>

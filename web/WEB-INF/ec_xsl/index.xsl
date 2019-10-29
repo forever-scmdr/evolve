@@ -166,9 +166,65 @@
 								</div>
 							</xsl:for-each>
 						</div>
+						<a href="/catalog" class="kvld-link_big">Смотреть всю продукцию</a>
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="container kvld-brands">
+			<div class="wrap">
+				<div class="kvld-brands__item">
+					<a href="/brand" class="kvld-brands__image">
+						<img src="img/brand-logo.png" alt=""/>
+					</a>
+				</div>
+				<div class="kvld-brands__item">
+					<a href="/brand" class="kvld-brands__image">
+						<img src="img/brand-logo.png" alt=""/>
+					</a>
+				</div>
+				<div class="kvld-brands__item">
+					<a href="/brand" class="kvld-brands__image">
+						<img src="img/brand-logo.png" alt=""/>
+					</a>
+				</div>
+				<div class="kvld-brands__item">
+					<a href="/brand" class="kvld-brands__image">
+						<img src="img/brand-logo.png" alt=""/>
+					</a>
+				</div>
+				<div class="kvld-brands__item">
+					<a href="/brand" class="kvld-brands__image">
+						<img src="img/brand-logo.png" alt=""/>
+					</a>
+				</div>
+				<div class="kvld-brands__item">
+					<a href="/brand" class="kvld-brands__image">
+						<img src="img/brand-logo.png" alt=""/>
+					</a>
+				</div>
+				<div class="kvld-brands__item">
+					<a href="/brand" class="kvld-brands__image">
+						<img src="img/brand-logo.png" alt=""/>
+					</a>
+				</div>
+				<div class="kvld-brands__item">
+					<a href="/brand" class="kvld-brands__image">
+						<img src="img/brand-logo.png" alt=""/>
+					</a>
+				</div>
+				<div class="kvld-brands__item">
+					<a href="/brand" class="kvld-brands__image">
+						<img src="img/brand-logo.png" alt=""/>
+					</a>
+				</div>
+				<div class="kvld-brands__item">
+					<a href="/brand" class="kvld-brands__image">
+						<img src="img/brand-logo.png" alt=""/>
+					</a>
+				</div>
+			</div>
+			<a href="/brand" class="kvld-link_big">Все бренды</a>
 		</div>
 		<!-- <div class="container">
 			<div class="row">
