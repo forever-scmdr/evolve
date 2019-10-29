@@ -171,7 +171,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="container kvld-brands">
+		<!-- <div class="container kvld-brands">
 			<div class="wrap">
 				<div class="kvld-brands__item">
 					<a href="/brand" class="kvld-brands__image">
@@ -225,7 +225,7 @@
 				</div>
 			</div>
 			<a href="/brand" class="kvld-link_big">Все бренды</a>
-		</div>
+		</div> -->
 		<!-- <div class="container">
 			<div class="row">
 				<div class="col-md-12">
