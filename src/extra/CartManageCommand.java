@@ -106,7 +106,9 @@ public class CartManageCommand extends BasicCartManageCommand {
 					User.getDefaultUser(), common.getId(), common.getOwnerGroupId(), common.getOwnerUserId()));
 		}
 		double discount = 0.0d;
-		User_jur user = User_jur.get(new ItemQuery(ItemNames.USER_JUR).setUser(getInitiator()).loadFirstItem());
+		User_jur user = null;
+		if (!getInitiator().isAnonimous())
+			user = User_jur.get(new ItemQuery(ItemNames.USER_JUR).setUser(getInitiator()).loadFirstItem());
 		if (user != null) {
 			discount += user.getDefault_discount(0.0d);
 		}
